@@ -14,7 +14,7 @@ $(function() {
 			}
 		}
 	},{
-		init: function(el, options) {
+		init: function() {
 			this.state = new can.Observe({
 				link: this.options.link
 			});
@@ -26,7 +26,7 @@ $(function() {
 		},
 
 		route: function() {
-			this.state.attr('content', can.view.render(this.options.pages + 'index.mustache'));
+			can.route.attr('type', 'index');
 		}
 	});
 
