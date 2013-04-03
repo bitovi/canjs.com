@@ -85,6 +85,52 @@ button.color:hover {
 	-webkit-box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
 	box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
+#hero-download {
+	position: relative;
+}
+.hero .customize-box {
+	display: none;
+	position: absolute;
+	top: 60px;
+	width: 96%;
+	font-size: 12px;
+	background: white;
+	padding: 8px;
+	z-index: 1000;
+	-moz-box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+	box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+
+	input[type="checkbox"] + label {
+		margin-left: 2px;
+	}
+
+	.general-options {
+		margin-bottom: 8px;
+
+		select {
+			margin-right: 40px;
+		}
+
+		input[type="checkbox"] {
+			margin-left: 4px;
+		}
+	}
+
+	.half {
+		float: left;
+		width: 50%;
+		text-align: left;
+	}
+
+	button {
+		height: auto;
+		clear: both;
+		font-size: 10px;
+		margin: 8px auto 0;
+
+	}
+}
 .hero p {
 	color: #fff;
 	text-shadow: 0 -1px 0 #000000;
@@ -102,6 +148,9 @@ button.color:hover {
 	display: inline-block;
 	margin-left: 50px;
 	text-align: center;
+}
+.home .hero + .content {
+	clear: both;
 }
 .home .circle-tabs li {
 	margin-left: 200px;
@@ -128,6 +177,7 @@ button.color:hover {
 	font: 110px/110px Bitstrap;
 	display: inline-block;
 	bottom: 40px;
+	left: -2px;
 	text-align: center;
 	.border-radius(160px);
 	margin: 0 auto;
@@ -204,7 +254,7 @@ button.color:hover {
 	z-index: 1;
 	text-align: center;
 }
-.tab-description:before { 
+.tab-description::before { 
     position:absolute;
     content : '';
     height : 20px;
@@ -222,11 +272,20 @@ button.color:hover {
 	border-left-style: none;
 	border-bottom-style: none;
 }
+.home .tab-description.flexible::before {
+	left: 125px;
+}
+.home .tab-description.powerful::before {
+	left: 470px;
+}
+.home .tab-description.fast::before {
+	left: 815px;
+}
 .community .tab-description {
 	margin-top: -80px;
 	height: 460px;
 	text-align: left;
 }
-.community .tab-description:before {  
+.community .tab-description::before {  
 	left: 74px;
 }

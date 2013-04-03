@@ -5,7 +5,7 @@
 
 		<h1>The can-do attitude your web applications can't do without.</h1>
 
-		<div class="pull-right">
+		<div id="hero-download" class="pull-right">
 			<button class="download">Download 1.1.4 <span>(Zip file. Everything you need.)</span></button>
 			<button class="customize">Customize <span class="arrow down"></span></button>
 			<p class="button-desc">Works with: JQuery, Zepto, Dojo, Mootools, YUI</p>
@@ -31,17 +31,7 @@
 
 	<div class="container twitter">
 
-		<a href="https://twitter.com/canjs" class="twitter-follow-button" data-show-count="true" data-dnt="true">Follow
-			@canjs</a>
-		<script>!function (d, s, id) {
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (!d.getElementById(id)) {
-				js = d.createElement(s);
-				js.id = id;
-				js.src = "//platform.twitter.com/widgets.js";
-				fjs.parentNode.insertBefore(js, fjs);
-			}
-		}(document, "script", "twitter-wjs");</script>
+		<a href="https://twitter.com/canjs" class="twitter-follow-button" data-show-count="true" data-dnt="true">Follow @canjs</a>
 
 		<iframe src="http://ghbtns.com/github-btn.html?user=bitovi&repo=canjs&type=watch&count=true"
 		        allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
@@ -55,11 +45,11 @@
 	<div class="dark social">
 		<div class="container">
 			<ul class="social-stats">
-				<li class="apps"><a href="#apps">8 apps submitted</a></li>
-				<li class="commits"><a href="#commits">5 recent commits</a></li>
-				<li class="forums"><a href="#forums">12 new forum posts</a></li>
-				<li class="irc"><a href="#irc">10 people on IRC</a></li>
-				<li class="plugins"><a href="#plugins">34 plugins submitted</a></li>
+				<li class="apps"><a href="#apps">0 apps submitted</a></li>
+				<li class="commits"><a href="#commits">0 recent commits</a></li>
+				<li class="forums"><a href="#forums">0 new forum posts</a></li>
+				<li class="irc"><a href="#irc">0 people on IRC</a></li>
+				<li class="plugins"><a href="#plugins">0 plugins submitted</a></li>
 			</ul>
 		</div>
 		<!-- .container -->
@@ -71,26 +61,42 @@
 
 		<h2>BUILD A TO-DO LIST APP WITH NO EFFORT AT ALL</h2>
 
-
-		<button class="color">Edit</button>
+		<a href="#"><button class="color">Edit</button></a>
 		<div class="js">
-				<pre>
-					<ol>
-						<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-						<li>Etiam sodales iaculis neque, nec commodo magna lacinia id.</li>
-						<li>congue volutpat arcu, <span class="has-tip">this code has a tooltip<span class="tooltip">This is the tooltip for this snippet.</span></span>
-							vel aliquam nibh volutpat ut
-						</li>
-					</ol>
-				</pre>
+			<pre><code data-language="javascript">
+can.Control('TodoApp' { }, {
+  init: function() {
+    this.element.html(
+      can.view('./app.mustache',
+          this.options)
+    );
+  }
+});
+
+new TodoApp('#todos', {
+  todos: [
+    'Wash the dishes',
+    'Take out the trash'
+  ]
+});
+			</code></pre>
 		</div>
-		<div class="html">HTML</div>
+		<div class="html">
+			<pre><code data-language="html">
+&lt;h3&gt;To-Do App:&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;% can.each(todos, function(todo) { %&gt;
+  &lt;li&gt;<%= todo %>&lt;/li&gt;
+  &lt;% }) %&gt;
+&lt;/ul&gt;
+			</code></pre>
+		</div>
 		<div class="result">
-			<h3>To Do App:</h3>
-			<ul>
-				<li>Wash the dishes</li>
-				<li>Take out the trash</li>
-			</ul>
+<h3>To Do App:</h3>
+<ul>
+	<li>Wash the dishes</li>
+	<li>Take out the trash</li>
+</ul>
 		</div>
 		<br/>
 	</div>
@@ -104,15 +110,11 @@
 	<div class="light">
 		<div class="container projects">
 			<ul class="carousel">
-				<li><a href="#mindjet"><img class="grey" src="../img/home-carousel/mindjet.jpg"/> Mindjet Web App</a>
-				</li>
-				<li><a href="#snowhit"><img class="grey" src="../img/home-carousel/snowhit.jpg"/> Snowhit</a></li>
-				<li><a href="#laureate"><img class="grey" src="../img/home-carousel/laureate.jpg"/> Laureate.net</a>
-				</li>
-				<li><a href="#iksonjumbo"><img class="grey" src="../img/home-carousel/iksonjumbo.jpg"/> Ikson Jumbo</a>
-				</li>
-				<li><a href="#bootswatchr"><img class="grey" src="../img/home-carousel/bootswatchr.jpg"/>
-					Bootswatchr</a></li>
+				<li><a href="#mindjet"><img class="grey" src="../img/home-carousel/mindjet.jpg"/>Mindjet Web App</a></li>
+				<li><a href="#snowhit"><img class="grey" src="../img/home-carousel/snowhit.jpg"/>Snowhit</a></li>
+				<li><a href="#laureate"><img class="grey" src="../img/home-carousel/laureate.jpg"/>Laureate.net</a></li>
+				<li><a href="#iksonjumbo"><img class="grey" src="../img/home-carousel/iksonjumbo.jpg"/>Ikson Jumbo</a></li>
+				<li><a href="#bootswatchr"><img class="grey" src="../img/home-carousel/bootswatchr.jpg"/>Bootswatchr</a></li>
 			</ul>
 		</div>
 		<!-- .container -->

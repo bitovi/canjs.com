@@ -1,5 +1,37 @@
 $(function() {
 	can.route.ready(false);
+	window.CanJSUS = window.CanJSUS || {};
+	
+	window.CanJSUS.init = {
+		'index': function() {
+			// replace the "Follow @canjs!" link with a little wiget with follower count.
+			$('#twitter-wjs').remove();
+			!function (d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (!d.getElementById(id)) {
+					js = d.createElement(s);
+					js.id = id;
+					js.src = "//platform.twitter.com/widgets.js";
+					fjs.parentNode.insertBefore(js, fjs);
+				}
+			}(document, "script", "twitter-wjs");
+
+			new CanJSUS.HeroDownload($('#hero-download'));
+			new CanJSUS.Benefits($('.benefits'));
+			new CanJSUS.SocialStats($('.social'));
+
+			// Syntax highlighting for our example.
+			Rainbow.color();
+
+			console.log('index');
+		},
+		'community': function() {
+			console.log('community');
+		},
+		'download': function() {
+			console.log('download');
+		}
+	};
 
 	var Development = can.Control({
 		defaults: {
@@ -23,6 +55,7 @@ $(function() {
 
 		':type route': function(data) {
 			this.state.attr('content', can.view.render(this.options.pages + data.type + '.mustache', {}));
+			CanJSUS.init[data.type].apply();
 		},
 
 		route: function() {
