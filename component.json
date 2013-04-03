@@ -1,0 +1,8 @@
+{
+  "name": "canjs.us",
+  "version": "0.0.1",
+  "dependencies": {
+    "canjs": "~1.1.5",
+    "less.js": "~1.4.0-b2"
+  }
+}

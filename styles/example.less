@@ -1,0 +1,37 @@
+/* @override 
+	http://w-canjs/css/example.css */
+
+.example {
+	position: relative;
+	margin-top: 20px;
+	clear: both;
+}
+.example > div {
+	float: left;
+	display: block;
+	height: 315px;
+	.border-radius(@borderRadius);
+	border: 1px solid #797979;
+	background-color: @light;
+	text-align: left;
+	margin-top: 20px;
+	margin-bottom: 40px;
+	font-size: 12px;
+	color: #666;
+}
+.example .js, .example .html {
+	display: block;
+	width: 365px;
+	margin-right: 10px;
+}
+.example .result {
+	width: 200px;
+}
+.example button.color {
+	text-transform: uppercase;
+	font-size: 12px;
+	position: absolute;
+	right: 3px;
+	padding: 3px 20px;
+	top: 50px;
+}

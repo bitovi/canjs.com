@@ -1,0 +1,232 @@
+/* @override 
+	http://w-canjs/css/hero.css */
+button {
+	background-color: @dark;
+	border: 1px solid #0b2e4b;
+	color: #fff;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+	.border-radius(@borderRadius);
+	padding: 5px 15px;
+	font-size: 14px;
+	line-height: 18px;
+}
+button.color {
+	background-color: @color;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+	border-color: #c1881a;
+}
+button.color:hover {
+	background-color: #c1881a;
+}
+.hero {
+	background: url(../img/hero-ribbons.png) no-repeat center center, url(../img/bkg-dots-dark.png) #797977;
+	border-bottom: 20px solid @color;
+	height: 300px;
+	overflow: visible;
+}
+.community .hero {
+	height: 243px;
+}
+.hero h1 {
+	font-weight: 200; 
+	color: #fff;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.52);
+	font-size: 40px;
+	display: block;
+	width: 500px;
+	float: left;
+	margin-top: 70px;
+	
+}
+.hero .pull-right {
+	margin-top: 90px;
+	width: 340px;
+	text-align: center;
+}
+.hero button {
+	background-color: #15b716;
+	border-color: #0f8b10;
+	text-transform: uppercase;
+	font-size: 17px;
+	line-height: 18px;
+	display: inline-block;
+	height: 54px;
+}
+.hero button span {
+	display: block;
+	text-transform: none;
+	font-size: 11px;
+}
+.hero button:hover {
+	background-color: #0f8b10;
+}
+.hero button.download {
+	padding-right: 40px;
+	padding-left: 40px;
+}
+.hero button.customize {
+	font-size: 10px;
+	border-left-style: none;
+	position: relative;
+}
+.hero button.customize .arrow.down {
+	display: inline-block;
+	margin-left: 3px;
+}
+.hero button.customize .arrow.down:before {
+	content: "";
+	border-style: solid;
+	display: block;
+	height: 0;
+	width: 0;
+	border-color:  #fff transparent;
+	border-width: 6px 4px 0 4px;
+	-moz-box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+	box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+.hero p {
+	color: #fff;
+	text-shadow: 0 -1px 0 #000000;
+	text-transform: uppercase;
+	font-size: 11px;
+}
+
+.circle-tabs {
+	list-style-type: none;
+	text-align: center;
+	padding: 0;
+	margin: 0 auto;
+}
+.circle-tabs li {
+	display: inline-block;
+	margin-left: 50px;
+	text-align: center;
+}
+.home .circle-tabs li {
+	margin-left: 200px;
+}
+.circle-tabs li:first-child {
+	margin-left: 0px;
+}
+.circle-tabs li a {
+	text-transform: uppercase;
+	font-size: 20px;
+	text-decoration: none;
+	color: @dark;
+	text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.48);
+	position: relative;
+	width: 140px;
+	display: block;
+	text-align: center;
+}
+.circle-tabs li a::before {
+	content: '';
+	background-color: @light;
+	border: 1px solid #d9d9d9;
+	color: @color;
+	font: 110px/110px Bitstrap;
+	display: inline-block;
+	bottom: 40px;
+	text-align: center;
+	.border-radius(160px);
+	margin: 0 auto;
+	position: absolute;
+	width: 138px;
+	height: 138px;
+}
+.home .circle-tabs li a  {
+	padding-top: 170px;
+}
+.community .circle-tabs li a {
+	font-size: 13px;
+	padding-top: 140px;
+	width: 105px;
+	color: #fff;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+}
+.community .circle-tabs li a::before {
+	font-size: 80px;
+	line-height: 60px;
+	bottom: 25px;
+	width: 85px;
+	height: 85px;
+	text-shadow: none;
+	left: 10px;
+}
+.circle-tabs li a:hover::before {
+	color: @light;
+	background-color: @color;
+	border-color: @light;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+.circle-tabs .powerful a::before {
+	content: "\e011";
+}
+.circle-tabs .fast a::before {
+	content: "\e013";
+}
+.circle-tabs .flexible a::before {
+	content: "\e042";
+}
+.circle-tabs .forums a::before {
+	content: "\e006";
+}
+.circle-tabs .irc a::before {
+	content: "\e007";
+}
+.circle-tabs .plugins a::before {
+	content: "\e008";
+}
+.circle-tabs .twitter a::before {
+	content: "\e003";
+}
+.circle-tabs .issues a::before {
+	content: "\e009";
+}
+.circle-tabs .github a::before {
+	content: "\e014";
+}
+.home .circle-tabs {
+	margin-top: -97px;
+	margin-bottom: 30px;
+}
+
+.tab-description {
+	background-color: @light;
+	padding: 20px;
+	font-weight: 100;
+	font-size: 22px;
+	border: 1px solid #dedbdb;
+	color: #1d1c1c;
+	margin-bottom: 20px;
+	position: relative;
+	z-index: 1;
+	text-align: center;
+}
+.tab-description:before { 
+    position:absolute;
+    content : '';
+    height : 20px;
+    width: 20px;
+    background: @light;
+    -moz-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
+    -o-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
+    -webkit-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
+    transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
+    border: 1px solid #dedbdb;
+	top: -11px;
+	z-index: -1;
+	display: block;
+	left: 125px;
+	border-left-style: none;
+	border-bottom-style: none;
+}
+.community .tab-description {
+	margin-top: -80px;
+	height: 460px;
+	text-align: left;
+}
+.community .tab-description:before {  
+	left: 74px;
+}

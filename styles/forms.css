@@ -1,0 +1,39 @@
+/* @override 
+	http://w-canjs/css/forms.css */
+label {
+    
+}
+input[type='checkbox'] {
+	
+}
+input[type='checkbox'] + label {
+
+}
+
+.customize center button {
+	text-transform: uppercase;
+	font-size: 17px;
+	padding: 10px 70px;
+}
+.customize form {
+	font-size: 14px;
+	line-height: 16px;
+}
+.customize .options {
+	width: 49%;
+	float: left;
+	margin-top: 10px;
+	margin-right: 2%;
+	border: none;
+}
+.customize .options:last-of-type {
+	margin-right: 0%;
+}
+.customize .options, .customize .options th, .customize .options td {
+	border: none;
+}
+.customize .options th {
+	text-transform: uppercase;
+	color: #222121;
+}
+

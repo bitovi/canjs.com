@@ -1,0 +1,160 @@
+<div class="hero">
+	<div class="container">
+
+		<div class="cdn">
+			<h4>CDN:</h4>
+			<div class="input">
+				<select name="library" id="library">
+					<option value="JQuery">JQuery</option>
+					<option value="Zepto">Zepto</option>
+					<option value="Dojo">Dojo</option>
+					<option value="Mootools">Mootools</option>
+					<option value="YUI">YUI</option>
+				</select>
+				<span>//cdn.canjs.com/releases/1.1.5/can.jquery.js</span>
+			</div>
+
+		</div>
+
+		<div class="pull-right">
+			<button class="download">Download 1.1.4 <span>(Zip file. Everything you need.)</span></button>
+			<p class="button-desc">Download for: <a href="#">JQuery</a> | <a href="#">Zepto</a> | <a href="#">Dojo</a> | <a href="#">Mootools</a> | <a href="#">YUI</a></p>
+		</div>
+
+
+	</div><!-- .container -->
+</div><!-- .hero -->
+
+<div class="customize container">
+	<h1>Customize<span class="pullright">version 1.1.5</span></h1>
+	<form id="form1" name="form1" method="post" action="">
+
+		<div class="libraries">
+
+			<input id="jquery" name="lib" checked="checked" type="radio" value="jquery">
+			<label for="jquery">jQuery</label>
+
+			<input name="lib" type="radio" value="zepto">
+			<label for="zepto">Zepto</label>
+
+			<input name="lib" type="radio" value="dojo" id="dojo">
+			<label for="dojo">Dojo</label>
+
+			<input name="lib" type="radio" value="moo" id="moo">
+			<label for="moo">Mootools</label>
+
+			<input name="lib" type="radio" value="yui" id="yui">
+			<label for="yui">YUI</label>
+
+    <span class="pullright">
+    <input type="checkbox" id="separate" checked /><label for="separate">Separate Files</label>
+    <input type="checkbox" id="minified" /><label for="minified">Minified</label>
+    </span>
+		</div>
+
+
+		<table class="options" width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<th width="40" align="center" valign="top"><input type="checkbox" id="core" checked /></th>
+				<th colspan="2" align="center" valign="middle"><label for="core">Core</label></th>
+			</tr>
+			<tr>
+				<td width="40" align="center" valign="top"><input type="checkbox" id="construct" checked /></td>
+				<td width="175" align="left" valign="top"><label for="construct">can.Construct</label></td>
+				<td align="left" valign="top">inheritable constructor functions</td>
+			</tr>
+			<tr>
+				<td width="40" align="center" valign="top"><input type="checkbox" id="observe" checked /></td>
+				<td width="175" align="left" valign="top"><label for="observe">can.Observe</label></td>
+				<td align="left" valign="top">key-value binding</td>
+			</tr>
+			<tr>
+				<td width="40" align="center" valign="top"><input type="checkbox" id="model" checked /></td>
+				<td width="175" align="left" valign="top"><label for="model">can.Model</label></td>
+				<td align="left" valign="top">observes connected to a RESTful JSON interface</td>
+			</tr>
+			<tr>
+				<td width="40" align="center" valign="top"><input type="checkbox" id="view" checked /></td>
+				<td width="175" align="left" valign="top"><label for="view">can.view</label></td>
+				<td align="left" valign="top">template loading, caching, rendering</td>
+			</tr>
+			<tr>
+				<td width="40" align="center" valign="top"><input type="checkbox" id="ejs" checked /></td>
+				<td width="175" align="left" valign="top"><label for="ejs">can.EJS</label></td>
+				<td align="left" valign="top">live binding templates</td>
+			</tr>
+			<tr>
+				<td width="40" align="center" valign="top"><input type="checkbox" id="control" checked /></td>
+				<td width="175" align="left" valign="top"><label for="control">can.Control</label></td>
+				<td align="left" valign="top">declarative event bindings</td>
+			</tr>
+			<tr>
+				<td width="40" align="center" valign="top"><input type="checkbox" id="route" checked /></td>
+				<td width="175" align="left" valign="top"><label for="route">can.route</label></td>
+				<td align="left" valign="top">back button and bookmarking support</td>
+			</tr>
+		</table>
+
+		<table class="options" width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<th width="40" align="center" valign="top"><input type="checkbox" id="plugins" /></th>
+				<th colspan="2" align="center" valign="middle"><label for="plugins">Plugins</label></th>
+			</tr>
+			<tr>
+				<td width="40" align="center" valign="top"><input type="checkbox" id="mustache" /></td>
+				<td width="175" align="left" valign="top"><label for="mustache">can.Mustache</label></td>
+				<td align="left" valign="top">Live binding Handlebars and Mustache views</td>
+			</tr>
+			<tr>
+				<td width="40" align="center" valign="top"><input type="checkbox" id="proxy" /></td>
+				<td width="175" align="left" valign="top"><label for="proxy">can.Construct.proxy</label></td>
+				<td align="left" valign="top">Proxy construct methods</td>
+			</tr>
+			<tr>
+				<td width="40" align="center" valign="top"><input type="checkbox" id="super" /></td>
+				<td width="175" align="left" valign="top"><label for="super">can.Contruct.super</label></td>
+				<td align="left" valign="top">Call super methods</td>
+			</tr>
+			<tr>
+				<td width="40" align="center" valign="top"><input type="checkbox" id="delegate" /></td>
+				<td width="175" align="left" valign="top"><label for="delegate">can.Observe.delegate</label></td>
+				<td align="left" valign="top">Listen to Observe attributes</td>
+			</tr>
+			<tr>
+				<td width="40" align="center" valign="top"><input type="checkbox" id="setter" /></td>
+				<td width="175" align="left" valign="top"><label for="setter">can.Observe.setter</label></td>
+				<td align="left" valign="top">Use setter methods on Observes</td>
+			</tr>
+			<tr>
+				<td width="40" align="center" valign="top"><input type="checkbox" id="attributes" /></td>
+				<td width="175" align="left" valign="top"><label for="attributes">can.Observe.attributes</label></td>
+				<td align="left" valign="top">Define Observe attributes</td>
+			</tr>
+			<tr>
+				<td width="40" align="center" valign="top"><input type="checkbox" id="validations" /></td>
+				<td width="175" align="left" valign="top"><label for="validations">can.Observe.validations</label></td>
+				<td align="left" valign="top">Validate attributes</td>
+			</tr>
+			<tr>
+				<td width="40" align="center" valign="top"><input type="checkbox" id="backup" /></td>
+				<td width="175" align="left" valign="top"><label for="backup">can.Observe.backup</label></td>
+				<td align="left" valign="top">Backup and restore an Observe's state</td>
+			</tr>
+			<tr class="disabled">
+				<td width="40" align="center" valign="top"><input type="checkbox" id="controlplugin" /></td>
+				<td width="175" align="left" valign="top"><label for="controlplugin">can.Control.plugin</label></td>
+				<td align="left" valign="top">Registers a jQuery plugin function for Controls</td>
+			</tr>
+			<tr class="disabled">
+				<td width="40" align="center" valign="top"><input type="checkbox" id="modifiers" /></td>
+				<td width="175" align="left" valign="top"><label for="modifiers">View modifiers</label></td>
+				<td align="left" valign="top">Use jQuery modifiers to render views</td>
+			</tr>
+
+		</table>
+		<br />
+
+		<center><button class="color" type="submit">Customize & Download</button></center>
+
+	</form>
+</div><!-- .customize .container -->
