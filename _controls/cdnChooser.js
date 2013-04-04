@@ -1,11 +1,8 @@
 can.Control('CanJSUS.CDNChooser', {
 	defaults: {
-		libraries: [{
-			id: 'jquery',
-			description: 'jQuery',
-			isDefault: true
-		}],
-		selectedLibrary: 'jquery'
+		version: '',
+		libraries: [],
+		selectedLibrary: ''
 	}
 }, {
 	init: function() {
@@ -14,6 +11,7 @@ can.Control('CanJSUS.CDNChooser', {
 		var self = this;
 		CanJSUS.Configuration.findOne().done(function(config) {
 			self.options.libraries.attr(config.libraries);
+			self.options.attr('version', config.version);
 		});
 
 		this.element.html(can.view('../_templates/cdnChooser.mustache', this.options));
