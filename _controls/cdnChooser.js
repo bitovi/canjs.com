@@ -13,7 +13,7 @@ can.Control('CanJSUS.CDNChooser', {
 		
 		var self = this;
 		CanJSUS.Configuration.findOne().done(function(config) {
-			self.options.attr('libraries', config.libraries);
+			self.options.libraries.attr(config.libraries);
 		});
 
 		this.element.html(can.view('../_templates/cdnChooser.mustache', this.options));
