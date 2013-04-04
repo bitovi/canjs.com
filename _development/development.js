@@ -29,6 +29,7 @@ $(function() {
 			console.log('community');
 		},
 		'download': function() {
+			new CanJSUS.CDNChooser($('.cdn'));
 			new CanJSUS.DownloadCustomizer($('.customize'));
 
 			console.log('download');

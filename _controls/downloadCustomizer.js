@@ -1,18 +1,19 @@
 can.Control('CanJSUS.DownloadCustomizer', {
 	defaults: {
 		minified: false,
-		configuration: new can.Observe({}),
+		configuration: null,
 		view: '../_templates/downloadCustomizer.mustache'
 	}
 }, {
 	init: function() {
-		this.checkAlls = {};
+		this.options = new can.Observe(this.options);
 		this.isDependedOnBy = {};
-
+		this.checkAlls = {};
+		
 		var self = this;
 		CanJSUS.Configuration.findOne().done(function(config) {
 			self.isDependedOnBy = self._collectDependedOn(config);
-			self.options.configuration.attr(config);
+			self.options.attr('configuration', config);
 		});
 
 		this.element.html(can.view(this.options.view, this.options));
@@ -59,17 +60,20 @@ can.Control('CanJSUS.DownloadCustomizer', {
 			}
 		});
 	},
-	'input[name=library] change': function(el, ev) {
+	'input[name=configuration] change': function(el, ev) {
 		if(el.prop('checked')) {
-			var self = this;
-			can.each(this.options.configuration.modules, function(module) {
-				var disallowed = module.configurations && module.configurations.indexOf(el.prop('id')) < 0;
-				var check = $('#' + module.id);
-				check
-					.prop('disabled', disallowed)
-					.prop('checked', disallowed ? false : check.prop('checked') || self.checkAlls[module.type]).change();
-			});
+			this._libraryChanged(el.prop('id'));
 		}
+	},
+	_libraryChanged: function(libraryID) {
+		var self = this;
+		can.each(this.options.configuration.modules, function(module) {
+			var disallowed = module.configurations && module.configurations.indexOf(libraryID) < 0;
+			var check = $('#' + module.id);
+			check
+				.prop('disabled', disallowed)
+				.prop('checked', disallowed ? false : check.prop('checked') || self.checkAlls[module.type]).change();
+		});
 	}
 
 });
