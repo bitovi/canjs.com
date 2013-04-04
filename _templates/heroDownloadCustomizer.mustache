@@ -13,12 +13,12 @@
 		</div>
 		<div class="half">
 			{{#configuration.types.core.modules}}
-			<div class="checkbox-wrap"><input id="{{id}}" type="checkbox" name="plugins" value="{{path}}" {{#isDefault}}checked{{/isDefault}}/><label>{{name}}</label></div>
+			<div class="checkbox-wrap"><input id="{{id}}" class="module" type="checkbox" name="plugins" value="{{path}}" {{#isDefault}}checked{{/isDefault}} {{data 'module'}}/><label>{{name}}</label></div>
 			{{/configuration.types.core.modules}}
 		</div>
 		<div class="half">
 			{{#configuration.types.plugin.modules}}
-			<div class="checkbox-wrap"><input id="{{id}}" type="checkbox" name="plugins" value="{{path}}" {{#isDefault}}checked{{/isDefault}}/><label>{{name}}</label></div>
+			<div class="checkbox-wrap"><input id="{{id}}" class="module" type="checkbox" name="plugins" value="{{path}}" {{#isDefault}}checked{{/isDefault}} {{data 'module'}}/><label>{{name}}</label></div>
 			{{/configuration.types.plugin.modules}}
 		</div>
 		<button class="color" type="submit">Download</button>

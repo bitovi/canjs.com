@@ -27,9 +27,11 @@ can.Model('CanJSUS.Configuration', {
 
 		return {
 			name: data.name,
+			version: data.version,
 			description: data.description,
 			libraries: libraries,
-			types: types
+			types: types,
+			modules: data.modules
 		};
 	},
 	pathToID: function(path) {
