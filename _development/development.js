@@ -16,7 +16,7 @@ $(function() {
 				}
 			}(document, "script", "twitter-wjs");
 
-			new CanJSUS.HeroDownload($('#hero-download'));
+			new CanJSUS.HeroDownloadCustomizer($('#hero-download'));
 			new CanJSUS.Benefits($('.benefits'));
 			new CanJSUS.SocialStats($('.social'));
 
@@ -29,6 +29,8 @@ $(function() {
 			console.log('community');
 		},
 		'download': function() {
+			new CanJSUS.DownloadCustomizer($('.customize'));
+
 			console.log('download');
 		}
 	};

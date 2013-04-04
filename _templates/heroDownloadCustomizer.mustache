@@ -1,0 +1,27 @@
+<a href="http://bitbuilder.herokuapp.com/can.custom.js"><button class="download">Download 1.1.5 <span>(One file. Everything you need.)</span></button></a>
+<button class="customize">Customize <span class="arrow down"></span></button>
+<div class="customize-box">
+	<form method="get" action="http://bitbuilder.herokuapp.com/can.custom.js">
+		<div class="general-options">
+			<select name="configuration" class="library">
+				{{#configuration.libraries}}
+				<option value="{{description}}" {{#isDefault}}checked{{/isDefault}}>{{description}}</option>
+				{{/configuration.libraries}}
+			</select>
+			<input id="separateFiles" type="checkbox" {{#seperateFiles}}checked{{/seperateFiles}}><label>Separate Files</label>
+			<input id="minified" type="checkbox" {{#minified}}checked{{/minified}}><label>Minified</label>
+		</div>
+		<div class="half">
+			{{#configuration.types.core.modules}}
+			<div class="checkbox-wrap"><input id="{{id}}" type="checkbox" name="plugins" value="{{path}}" {{#isDefault}}checked{{/isDefault}}/><label>{{name}}</label></div>
+			{{/configuration.types.core.modules}}
+		</div>
+		<div class="half">
+			{{#configuration.types.plugin.modules}}
+			<div class="checkbox-wrap"><input id="{{id}}" type="checkbox" name="plugins" value="{{path}}" {{#isDefault}}checked{{/isDefault}}/><label>{{name}}</label></div>
+			{{/configuration.types.plugin.modules}}
+		</div>
+		<button class="color" type="submit">Download</button>
+	</form>
+</div>
+<p class="button-desc">Works with: JQuery, Zepto, Dojo, Mootools, YUI</p>
