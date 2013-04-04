@@ -3,12 +3,11 @@
 <div class="customize-box">
 	<form method="get" action="http://bitbuilder.herokuapp.com/can.custom.js">
 		<div class="general-options">
-			<select name="configuration" class="library">
+			<select name="library" class="library">
 				{{#configuration.libraries}}
 				<option value="{{description}}" {{#isDefault}}checked{{/isDefault}}>{{description}}</option>
 				{{/configuration.libraries}}
 			</select>
-			<input id="separateFiles" type="checkbox" {{#seperateFiles}}checked{{/seperateFiles}}><label>Separate Files</label>
 			<input id="minified" type="checkbox" {{#minified}}checked{{/minified}}><label>Minified</label>
 		</div>
 		<div class="half">
