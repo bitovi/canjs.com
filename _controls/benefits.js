@@ -11,7 +11,9 @@ can.Control('CanJSUS.Benefits', {
 		this.state = new can.Observe({quality: 'flexible', tagline: this.options.taglines.flexible});
 		this.element.html(can.view('../_templates/benefits.mustache', this.state));
 	},
-	'li click': function(el, ev) {
+	'li mouseenter': '_switchBenefit',
+	'li click': '_switchBenefit',
+	_switchBenefit: function(el, ev) {
 		this.state.attr({
 			'quality': el.prop('class') || '',
 			'tagline': this.options.taglines[el.prop('class')] || ''

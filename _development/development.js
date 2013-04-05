@@ -46,6 +46,13 @@ $(function() {
 				docs: '#!docs',
 				community: '#!community',
 				download: '#!download'
+			},
+			classes: {
+				index: 'home',
+				guides: 'guides',
+				docs: 'api',
+				community: 'community',
+				download: 'download'
 			}
 		}
 	},{
@@ -58,6 +65,7 @@ $(function() {
 
 		':type route': function(data) {
 			this.state.attr('content', can.view.render(this.options.pages + data.type + '.mustache', {}));
+			$('body').prop('className', this.options.classes[data.type]);
 			CanJSUS.init[data.type].apply();
 		},
 
