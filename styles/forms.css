@@ -3,6 +3,17 @@
 label {
     
 }
+input[type='text'],
+input[type='textarea'],
+input[type='search'],
+input[type='number'] {
+	background-color: #fff;
+	-webkit-appearance: none;
+	border-radius: 2px;
+	border: 1px solid #dedddd;
+	font-family: LatoLight, sans-serif;
+	text-shadow: none;
+}
 input[type='checkbox'] {
 	
 }
