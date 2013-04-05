@@ -2,20 +2,23 @@ $(function() {
 	can.route.ready(false);
 	window.CanJSUS = window.CanJSUS || {};
 	
+	window.CanJSUS.initTwitterWidgets = function() {
+		// replace the "Follow @canjs!" link with a little wiget with follower count.
+		$('#twitter-wjs').remove();
+		!function (d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (!d.getElementById(id)) {
+				js = d.createElement(s);
+				js.id = id;
+				js.src = "//platform.twitter.com/widgets.js";
+				fjs.parentNode.insertBefore(js, fjs);
+			}
+		}(document, "script", "twitter-wjs");
+	};
+
 	window.CanJSUS.init = {
 		'index': function() {
-			// replace the "Follow @canjs!" link with a little wiget with follower count.
-			$('#twitter-wjs').remove();
-			!function (d, s, id) {
-				var js, fjs = d.getElementsByTagName(s)[0];
-				if (!d.getElementById(id)) {
-					js = d.createElement(s);
-					js.id = id;
-					js.src = "//platform.twitter.com/widgets.js";
-					fjs.parentNode.insertBefore(js, fjs);
-				}
-			}(document, "script", "twitter-wjs");
-
+			CanJSUS.initTwitterWidgets();
 			new CanJSUS.HeroDownloadCustomizer($('#hero-download'));
 			new CanJSUS.Benefits($('.benefits'));
 			new CanJSUS.SocialStats($('.social'));
@@ -26,6 +29,8 @@ $(function() {
 			console.log('index');
 		},
 		'community': function() {
+			new CanJSUS.CommunityTabs($('.hero'));
+
 			console.log('community');
 		},
 		'download': function() {
