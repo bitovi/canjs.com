@@ -8,7 +8,7 @@
 				<option value="{{id}}" {{#isDefault}}checked{{/isDefault}}>{{description}}</option>
 				{{/configuration.libraries}}
 			</select>
-			<input id="minified" type="checkbox" {{#minified}}checked{{/minified}}><label>Minified</label>
+			<input id="minified" type="checkbox" name="minify" value="true" {{#minified}}checked{{/minified}}><label>Minified</label>
 		</div>
 		<div class="half">
 			{{#configuration.types.core.modules}}

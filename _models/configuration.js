@@ -1,7 +1,16 @@
 can.Model('CanJSUS.Configuration', {
-	findOne: {
-		url: 'http://bitbuilder.herokuapp.com/canjs',
-		dataType: 'jsonp'
+	configuration: null,
+	// the configuration is not going to change,
+	// and it's pretty much a singleton, so:
+	findOne: function() {
+		if(CanJSUS.Configuration.configuration === null) {
+			CanJSUS.Configuration.configuration = $.ajax({
+				url: 'http://bitbuilder.herokuapp.com/canjs',
+				dataType: 'jsonp'
+			});
+		}
+
+		return CanJSUS.Configuration.configuration;
 	},
 	model: function(data) {
 		var libraries = [];
