@@ -225,3 +225,32 @@ iframe {
 	margin-bottom: 20px;
 }
 
+button, .button {
+	background-color: @dark;
+	border: 1px solid darken(@dark, 10%);
+	color: #fff;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+	.border-radius(@borderRadius);
+	padding: 5px 15px;
+	position: relative;
+	font-size: 14px;
+	line-height: 18px;
+	text-decoration: none;
+	&:hover {
+		background-color: darken(@dark, 10%);
+	}
+}
+button.color, .button.color {
+	background-color: @color;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+	border-color: darken(@color, 10%);;
+	
+	&:hover {
+		background-color: darken(@color, 10%);
+	}
+}
+.center {
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+}

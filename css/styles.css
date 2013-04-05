@@ -377,6 +377,40 @@ hr {
 iframe {
   margin-bottom: 20px;
 }
+button,
+.button {
+  background-color: #165489;
+  border: 1px solid #0f395d;
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  padding: 5px 15px;
+  position: relative;
+  font-size: 14px;
+  line-height: 18px;
+  text-decoration: none;
+}
+button:hover,
+.button:hover {
+  background-color: #0f395d;
+}
+button.color,
+.button.color {
+  background-color: #efa81e;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  border-color: #cc8b0e;
+}
+button.color:hover,
+.button.color:hover {
+  background-color: #cc8b0e;
+}
+.center {
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
 @font-face {
   font-family: 'Bitstrap';
   src: url('../fonts/Bitstrap-Regular.otf');
@@ -824,26 +858,6 @@ footer .brand:before {
 footer .brand:hover:before {
   color: #929191;
 }
-button {
-  background-color: #165489;
-  border: 1px solid #0b2e4b;
-  color: #fff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
-  border-radius: 2px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  padding: 5px 15px;
-  font-size: 14px;
-  line-height: 18px;
-}
-button.color {
-  background-color: #efa81e;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-  border-color: #c1881a;
-}
-button.color:hover {
-  background-color: #c1881a;
-}
 .hero {
   background: url(../img/hero-ribbons.png) no-repeat center center, url(../img/bkg-dots-dark.png) #797977;
   border-bottom: 20px solid #efa81e;
@@ -871,20 +885,20 @@ button.color:hover {
 }
 .hero button {
   background-color: #15b716;
-  border-color: #0f8b10;
+  border-color: #108911;
   text-transform: uppercase;
   font-size: 17px;
   line-height: 18px;
   display: inline-block;
   height: 54px;
 }
+.hero button:hover {
+  background-color: #108911;
+}
 .hero button span {
   display: block;
   text-transform: none;
   font-size: 11px;
-}
-.hero button:hover {
-  background-color: #0f8b10;
 }
 .hero button.download {
   padding-right: 40px;
@@ -2116,4 +2130,52 @@ pre ol li {
 .community .categories ul li {
   font-size: 16px;
   line-height: 30px;
+}
+.bithub-content {
+  padding: 10px;
+}
+.bithub-content .bithub-post h5,
+.bithub-content .bithub-post h5 a {
+  font-weight: bold;
+  color: #000;
+  text-decoration: none;
+  margin: 0;
+  font-size: 14px;
+  line-height: 18px;
+}
+.bithub-content .bithub-post h5 span,
+.bithub-content .bithub-post h5 a span {
+  font-size: 11px;
+  color: #fff;
+  background-color: green;
+}
+.bithub-content .bithub-post h5 a:hover,
+.bithub-content .bithub-post h5 a a:hover {
+  text-decoration: underline;
+}
+.bithub-content .bithub-post p {
+  margin: 0;
+  color: #333;
+  font-size: 12px;
+  line-height: 17px;
+}
+.bithub-content .bithub-post .score {
+  font-size: 14px;
+  font-weight: bold;
+  width: 36px;
+}
+.bithub-content .bithub-post img {
+  width: 48px;
+  max-width: 48px;
+  margin-right: 10px;
+}
+.bithub-content .bithub-footer {
+  color: #999;
+  font-size: 11px;
+  text-align: right;
+  display: block;
+  line-height: 14px;
+}
+.bithub-content .bithub-footer a {
+  color: #999;
 }

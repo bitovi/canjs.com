@@ -1,21 +1,3 @@
-button {
-	background-color: @dark;
-	border: 1px solid #0b2e4b;
-	color: #fff;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
-	.border-radius(@borderRadius);
-	padding: 5px 15px;
-	font-size: 14px;
-	line-height: 18px;
-}
-button.color {
-	background-color: @color;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-	border-color: #c1881a;
-}
-button.color:hover {
-	background-color: #c1881a;
-}
 .hero {
 	background: url(../img/hero-ribbons.png) no-repeat center center, url(../img/bkg-dots-dark.png) #797977;
 	border-bottom: 20px solid @color;
@@ -42,21 +24,21 @@ button.color:hover {
 	text-align: center;
 }
 .hero button {
-	background-color: #15b716;
-	border-color: #0f8b10;
+	background-color: @action;
+	border-color: darken(@action, 10%);
 	text-transform: uppercase;
 	font-size: 17px;
 	line-height: 18px;
 	display: inline-block;
 	height: 54px;
+	&:hover {
+		background-color: darken(@action, 10%);
+	}
 }
 .hero button span {
 	display: block;
 	text-transform: none;
 	font-size: 11px;
-}
-.hero button:hover {
-	background-color: #0f8b10;
 }
 .hero button.download {
 	padding-right: 40px;
