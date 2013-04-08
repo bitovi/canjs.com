@@ -4,7 +4,10 @@ can.Control('CanJSUS.CommunityTab', {
 	}
 }, {
 	init: function() {
-		this.state = new can.Observe({});
-		this.element.html(can.view(this.options.view), this.state);
+		can.Mustache.registerHelper('formatDate', function(date) {
+			return moment(date()).calendar();
+		});
+
+		this.element.html(can.view(this.options.view, this.options.state));
 	}
 });

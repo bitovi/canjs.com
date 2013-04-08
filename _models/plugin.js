@@ -1,20 +1,21 @@
-can.Model("CanJSUS.Tweet", {
+can.Model("CanJSUS.Plugin", {
 	//TODO: remove models() once the Bithub API can filter
 	models: function(list) {
 		var models = list.data.filter(function(el) {
-			return el.feed === 'twitter' && el.category === 'twitter';
+			return el.category === 'app' || el.category === 'plugin';
 		}).map(function(el) {
-			return CanJSUS.Tweet.model(el);
+			return CanJSUS.ForumPost.model(el);
 		});
 
 		return new can.Observe.List(models.slice(0, 3));
 	},
 	model: function(data) {
+		// The API's not returning plugins and apps yet, so this may
+		// end up being innacurate.
 		return {
-			handle: data.actor,
-			realName: data.source_data.user.name,
-			picture: data.source_data.user.profile_image_url,
-			body: data.title,
+			actor: data.actor,
+			title: data.title,
+			body: data.body,
 
 			feed: data.feed,
 			link: data.link,
@@ -23,7 +24,7 @@ can.Model("CanJSUS.Tweet", {
 		};
 	},
 	findAll: {
-		url: 'http://bithub.com/api/events/?feed=twitter&order=origin_ts:desc&limit=3',
+		url: 'http://bithub.com/api/events/?category[]=app&category[]=plugin&category[]=article&order=upvotes:desc&limit=3',
 		dataType: 'json'
 	}
 }, { });

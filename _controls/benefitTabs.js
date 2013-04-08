@@ -12,7 +12,7 @@ can.Control('CanJSUS.Benefits', {
 		this.element.html(can.view('../_templates/benefitTabs.mustache', this.state));
 		this._switchBenefit($('li[data-benefit=' + this.state.selectedTab + ']', this.element));
 	},
-	'li mouse': '_switchBenefit',
+	'li mouseover': '_switchBenefit',
 	'li click': '_switchBenefit',
 	_switchBenefit: function(el) {
 		this.state.attr({

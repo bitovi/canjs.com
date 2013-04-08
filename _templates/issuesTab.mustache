@@ -1,12 +1,9 @@
 <div class="tab-description issues">
 	<div class="pull-right categories">
 		
-		<a href="#" class="button">+ New Issue</a>
+		<div class="button-container"><a href="https://github.com/bitovi/canjs/issues/new" class="button">+ New Issue</a></div>
 		
-		<ul class="follower-badges"><h4>Today</h4>
-			<li class="watch">3 people started watching <a href="">canjs</a></li>
-			<li class="forked">2 people forked <a href="">canjs</a></li>
-		</ul>
+		{{! >../_templates/githubFollowers.mustache }}
 		
 		<div class="center">
 		<iframe src="http://ghbtns.com/github-btn.html?user=bitovi&repo=canjs&type=watch&count=true"
@@ -19,12 +16,10 @@
 			
 	<div class="posts">
 		<h1>Top Issues</h1>
-		
 		<div class="bithub-content">
-		<p>BitHub content will be populated here. The top 3 posts</p>
-		
+		{{#issues}}
+		{{>../_templates/githubIssue.mustache}}
+		{{/issues}}
 		</div>
-
-
 	</div>
 </div>

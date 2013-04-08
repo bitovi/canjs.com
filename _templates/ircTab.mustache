@@ -1,9 +1,7 @@
 <div class="tab-description irc">
 	<div class="pull-right categories">
-		
-		<a href="#" class="button">Join the Chat</a>
-		
-		<ul><h4>Currently Online</h4>
+		<a href="http://webchat.freenode.net/?channels=canjs" class="button">Join the Chat</a>
+		<!--<ul><h4>Currently Online</h4>
 			<li>tomgreever</li>
 			<li>someone</li>
 			<li>rabies423</li>
@@ -11,14 +9,11 @@
 			<li>canjsbot</li>
 			<li>@bitovi</li>
 			<li>me</li>
-		</ul>
+		</ul>-->
 	</div>
 	<h1>Real-Time Chat</h1>
-	<h2>Freenode IRC Channel <a href=""></a>#canjs</a></h2>
-	
-	<div class="irc-chat-container">
-			<div><span class="username">schovi</span>: !ask Found bug in current release. can.jquery-all.min.js is not minified at all :) Actuallly it is complete with comments</div>
-			<div><span class="username">foxdonut</span>: hehe yes is known issue I believe</div>
-</div>
-
+	<h2>Freenode IRC Channel <a href="http://webchat.freenode.net/?channels=canjs">#canjs</a></h2>
+	{{#chats}}
+	{{>../_templates/chat.mustache}}
+	{{/chats}}
 </div><!-- .tab-description -->

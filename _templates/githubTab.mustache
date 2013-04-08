@@ -1,12 +1,9 @@
-<div class="tab-description issues">
+<div class="tab-description commits">
 	<div class="pull-right categories">
 		
-		<a href="#" class="button">View it on Github</a>
+		<div class="button-container"><a href="http://github.com/bitovi/canjs" class="button">Follow CanJS on Github</a></div>
 		
-		<ul class="follower-badges"><h4>Today</h4>
-			<li class="watch">3 people started watching <a href="">canjs</a></li>
-			<li class="forked">2 people forked <a href="">canjs</a></li>
-		</ul>
+		{{! >../_templates/githubFollowers.mustache }}
 		
 		<div class="center">
 		<iframe src="http://ghbtns.com/github-btn.html?user=bitovi&repo=canjs&type=watch&count=true"
@@ -21,8 +18,9 @@
 		<h1>Latest Commits</h1>
 		
 		<div class="bithub-content">
-		<p>BitHub content will be populated here. The top 3 posts</p>
-		
+		{{#commits}}
+		{{>../_templates/githubEvent.mustache}}
+		{{/commits}}
 		</div>
 
 

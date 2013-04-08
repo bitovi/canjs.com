@@ -1,34 +1,29 @@
 <div class="tab-description forums">
-			<form>
-				<input type="search" placeholder="Search the forums..." />
-				<button type="submit">Go</button>
-			</form>
-			<div class="pull-right categories">
-				<ul>
-					<li><a href="#">Discussions (24)</a></li>
-					<li><a href="#">Announcements (2)</a></li>
-					<li><a href="#">Questions (16)</a></li>
-					<li><a href="#">Ideas (1)</a></li>
-					<li><a href="#">Problems (3)</a></li>
-				</ul>
-				<ul>
-					<li><a href="#">Today (2)</a></li>
-					<li><a href="#">This Week (4)</a></li>
-					<li><a href="#">This Month (18)</a></li>
-					<li><a href="#">This Year (43)</a></li>
-				</ul>
-			</div>
-			<div class="posts">
-				<h1>Top Posts</h1>
-				
-				<div class="bithub-content">
-				<p>BitHub content will be populated here. The top 3 posts</p>
-				
-				</div>
-
-
-			</div>
-
-
-
-		</div><!-- .tab-description -->
+	<form id="forumSearch">
+		<input type="search" placeholder="Search the forums..." />
+		<button type="button">Search</button>
+	</form>
+	<div class="posts">
+		<h1>Top Posts</h1>
+		<div class="bithub-content">
+		{{#forumPosts}}
+		{{>../_templates/forumPost.mustache}}
+		{{/forumPosts}}
+		</div>
+	</div>
+	<div class="pull-right categories">
+		<ul>
+			<li><a href="https://forum.javascriptmvc.com/#filter/discussions">Discussions</a></li>
+			<li><a href="https://forum.javascriptmvc.com/#filter/announcement">Announcements</a></li>
+			<li><a href="https://forum.javascriptmvc.com/#filter/questions">Questions</a></li>
+			<li><a href="https://forum.javascriptmvc.com/#filter/ideas">Ideas</a></li>
+			<li><a href="https://forum.javascriptmvc.com/#filter/problems">Problems</a></li>
+		</ul>
+		<!--<ul>
+			<li><a href="#">Today</a></li>
+			<li><a href="#">This Week</a></li>
+			<li><a href="#">This Month</a></li>
+			<li><a href="#">This Year</a></li>
+		</ul>-->
+	</div>
+</div><!-- .tab-description -->

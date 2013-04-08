@@ -5,5 +5,9 @@ CanJSUS.CommunityTab('CanJSUS.GithubTab', {
 }, {
 	init: function() {
 		this._super();
+
+		can.Mustache.registerHelper('truncateHash', function(hash) {
+			return hash().substr(0, 6);
+		});
 	}
 });

@@ -5,6 +5,5 @@ CanJSUS.CommunityTab('CanJSUS.TwitterTab', {
 }, {
 	init: function() {
 		this._super();
-		CanJSUS.initTwitterWidgets();
 	}
 });

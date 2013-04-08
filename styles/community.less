@@ -10,7 +10,34 @@
 		h1 {
 			padding: 0;
 			font-family: LatoLight, sans-serif;
-		} 
+		}
+		.bithub-post {
+			float: left;
+			clear: both;
+			width: 100%;
+
+			h2 {
+				color: #000;
+				text-transform: none;
+				font-weight: bold;
+				font-size: 14px;
+
+				a {
+					text-decoration: none;
+					color: inherit;
+					font-weight: inherit;
+					font-size: inherit;
+				}
+			}
+
+			&.tweet {
+				.handle {
+					color: #999;
+					text-decoration: none;
+					font-weight: normal;
+				}
+			}
+		}
 		
 	}
 	.forums {
@@ -29,7 +56,28 @@
 			height: 50px;
 			font-size: 18px;
 		}
+		.posts {
+			float: left;
+			width: 740px;
+		}
+		.categories {
+			width: 144px;
+		}
 		
+	}
+	.commits, .issues {
+		.posts {
+			float: left;
+			width: 640px;
+		}
+
+		.button-container {
+			margin-bottom: 16px;
+		}
+
+		.bithub-post {
+			margin-bottom: 12px;
+		}
 	}
 	.categories {
 		width: 190px;

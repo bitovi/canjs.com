@@ -1,9 +1,13 @@
 <div class="tab-description twitter">
+	<div class="pull-right categories">
+		<a href="http://twitter.com/canjs" class="button">Follow CanJS on Twitter</a>
+	</div><!-- categories -->
 	<div class="posts">
 		<h1>Top User Tweets</h1>
-			<div class="bithub-content">
-				<p>BitHub content will be populated here. The top 3 posts</p>
-			</div>
-
+		<div class="bithub-content">
+			{{#tweets}}
+			{{>../_templates/tweet.mustache}}
+			{{/tweets}}
+		</div>
 	</div>
 </div>
