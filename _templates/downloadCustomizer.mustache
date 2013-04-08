@@ -3,7 +3,7 @@
 
   <div class="libraries">
     {{#configuration.libraries}}
-    <input type="radio" id="{{id}}" name="configuration" value="{{description}}" {{#isDefault}}checked{{/isDefault}}>
+    <input type="radio" id="{{id}}" name="configuration" value="{{description}}" {{#isDefault}}checked{{/isDefault}}><label for="{{id}}" class="radio"></label>
     <label for="{{id}}">{{description}}</label>
     {{/configuration.libraries}}
     
