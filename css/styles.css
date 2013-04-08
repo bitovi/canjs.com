@@ -140,6 +140,7 @@ section {
 a {
   text-decoration: underline;
   color: #165489;
+  cursor: pointer;
 }
 a:hover {
   text-decoration: none;
@@ -627,12 +628,6 @@ button.color:hover,
   font-weight: normal;
   font-style: normal;
 }
-@font-face {
-  font-family: 'LatoThin';
-  src: url('../fonts/Lato-Hai.ttf');
-  font-weight: normal;
-  font-style: normal;
-}
 * {
   font-family: 'Lato', sans-serif;
 }
@@ -868,7 +863,7 @@ footer .brand:hover:before {
   height: 243px;
 }
 .hero h1 {
-  font-family: 'LatoThin', sans-serif;
+  font-family: 'LatoLight', sans-serif;
   color: #fff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.52);
   font-size: 40px;
@@ -908,6 +903,7 @@ footer .brand:hover:before {
   font-size: 10px;
   border-left-style: none;
   position: relative;
+  margin-left: -3px;
 }
 .hero button.customize .arrow.down {
   display: inline-block;
@@ -932,7 +928,8 @@ footer .brand:hover:before {
   display: none;
   position: absolute;
   top: 60px;
-  width: 96%;
+  left: 3px;
+  width: 312px;
   font-size: 12px;
   padding: 11px;
   z-index: 3;
@@ -1069,7 +1066,8 @@ footer .brand:hover:before {
   text-shadow: none;
   left: 10px;
 }
-.circle-tabs li a:hover::before {
+.circle-tabs li a:hover::before,
+.circle-tabs li.active a::before {
   color: #ffffff;
   background-color: #efa81e;
   border-color: #ffffff;
@@ -1109,7 +1107,7 @@ footer .brand:hover:before {
 .tab-description {
   background-color: #ffffff;
   padding: 20px;
-  font-family: 'LatoThin', sans-serif;
+  font-family: 'LatoLight', sans-serif;
   font-size: 22px;
   border: 1px solid #dedbdb;
   color: #1d1c1c;
@@ -1144,6 +1142,24 @@ footer .brand:hover:before {
 }
 .home .tab-description.fast::before {
   left: 815px;
+}
+.community .tab-description.forums::before {
+  left: 73px;
+}
+.community .tab-description.irc::before {
+  left: 231px;
+}
+.community .tab-description.plugins::before {
+  left: 389px;
+}
+.community .tab-description.twitter::before {
+  left: 549px;
+}
+.community .tab-description.issues::before {
+  left: 706px;
+}
+.community .tab-description.commits::before {
+  left: 865px;
 }
 .content .container h1,
 .content .container h2,
@@ -1477,14 +1493,27 @@ div.light:after {
   font-size: 12px;
   color: #666;
 }
-.example .js,
-.example .html {
+.example > div pre {
   display: block;
-  width: 365px;
+  height: 100%;
+  border: 0px solid transparent;
+}
+.example > .js,
+.example > .html {
+  display: block;
+  width: 346px;
   margin-right: 10px;
 }
-.example .result {
+.example > .html {
+  width: 360px;
+}
+.example > .result {
   width: 200px;
+  padding: 12px 12px 0px;
+  height: 303px;
+}
+.example > .result ul {
+  margin-left: 0px;
 }
 .example button.color {
   text-transform: uppercase;
@@ -2104,6 +2133,28 @@ pre ol li {
   padding: 0;
   font-family: LatoLight, sans-serif;
 }
+.community .tab-description .bithub-post {
+  float: left;
+  clear: both;
+  width: 100%;
+}
+.community .tab-description .bithub-post h2 {
+  color: #000;
+  text-transform: none;
+  font-weight: bold;
+  font-size: 14px;
+}
+.community .tab-description .bithub-post h2 a {
+  text-decoration: none;
+  color: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+}
+.community .tab-description .bithub-post.tweet .handle {
+  color: #999;
+  text-decoration: none;
+  font-weight: normal;
+}
 .community .forums form {
   display: block;
   margin-bottom: 20px;
@@ -2118,6 +2169,26 @@ pre ol li {
   width: 137px;
   height: 50px;
   font-size: 18px;
+}
+.community .forums .posts {
+  float: left;
+  width: 740px;
+}
+.community .forums .categories {
+  width: 144px;
+}
+.community .commits .posts,
+.community .issues .posts {
+  float: left;
+  width: 640px;
+}
+.community .commits .button-container,
+.community .issues .button-container {
+  margin-bottom: 16px;
+}
+.community .commits .bithub-post,
+.community .issues .bithub-post {
+  margin-bottom: 12px;
 }
 .community .categories {
   width: 190px;
