@@ -2034,9 +2034,11 @@ pre ol li {
 .guides .container.api {
   margin-bottom: 20px;
 }
+.download button.color,
 .download button.download {
   padding-left: 80px;
   padding-right: 80px;
+  margin: 0 auto;
 }
 .download .button-desc a {
   color: #fff;
@@ -2074,15 +2076,6 @@ pre ol li {
 }
 .download .libraries {
   margin-bottom: 12px;
-}
-.download .libraries input[type=radio] {
-  margin-right: 2px;
-}
-.download .libraries input[type=radio] + label {
-  margin-right: 20px;
-}
-.download .libraries input[type=checkbox] {
-  margin-right: 2px;
 }
 .download .options {
   float: left;

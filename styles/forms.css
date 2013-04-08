@@ -54,6 +54,7 @@ label.checkbox {
 	-webkit-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.05), 0 1px 0 #ffffff;
 	box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.05), 0 1px 0 #ffffff;
 	position: relative;
+	margin: 0;
 }
 input[type='checkbox']:checked + label.checkbox,
 input[type='radio']:checked + label.radio {
@@ -89,6 +90,7 @@ label.radio {
 	-webkit-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.05), 0 1px 0 #ffffff;
 	box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.05), 0 1px 0 #ffffff;
 	position: relative;
+	margin-right: 0;
 }
 input[type='radio']:checked + label.radio:after {
     content: ' ';
@@ -102,4 +104,9 @@ input[type='radio']:checked + label.radio:after {
     box-shadow: inset 0px 0px 10px rgba(0,0,0,0.3);
     text-shadow: 0px;
     font-size: 32px;
+	margin-right: 0;
+	
+}
+.customize-box label.checkbox {
+	margin-right: 3px;
 }
