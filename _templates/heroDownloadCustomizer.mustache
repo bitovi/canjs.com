@@ -8,16 +8,16 @@
 				<option value="{{id}}" {{#isDefault}}checked{{/isDefault}}>{{description}}</option>
 				{{/configuration.libraries}}
 			</select>
-			<input id="minified" type="checkbox" name="minify" value="true" {{#minified}}checked{{/minified}}><label for="minified">Minified</label>
+			<input id="minified" type="checkbox" name="minify" value="true" {{#minified}}checked{{/minified}}><label for="minified" class="checkbox"></label><label for="minified">Minified</label>
 		</div>
 		<ul class="half">
 			{{#configuration.types.core.modules}}
-			<li class="checkbox-wrap"><input id="{{id}}" class="module" type="checkbox" name="plugins" value="{{path}}" {{#isDefault}}checked{{/isDefault}} {{data 'module'}}/><label for="{{id}}">{{name}}</label></li>
+			<li class="checkbox-wrap"><input id="{{id}}" class="module" type="checkbox" name="plugins" value="{{path}}" {{#isDefault}}checked{{/isDefault}} {{data 'module'}}/><label for="{{id}}" class="checkbox"></label><label for="{{id}}">{{name}}</label></li>
 			{{/configuration.types.core.modules}}
 		</ul>
 		<ul class="half">
 			{{#configuration.types.plugin.modules}}
-			<li class="checkbox-wrap"><input id="{{id}}" class="module" type="checkbox" name="plugins" value="{{path}}" {{#isDefault}}checked{{/isDefault}} {{data 'module'}}/><label for="{{id}}">{{name}}</label></li>
+			<li class="checkbox-wrap"><input id="{{id}}" class="module" type="checkbox" name="plugins" value="{{path}}" {{#isDefault}}checked{{/isDefault}} {{data 'module'}}/><label for="{{id}}" class="checkbox"></label><label for="{{id}}">{{name}}</label></li>
 			{{/configuration.types.plugin.modules}}
 		</ul>
 		<button class="color" type="submit">Download</button>
