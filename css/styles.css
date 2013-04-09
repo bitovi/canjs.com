@@ -851,6 +851,23 @@ footer .brand:before {
 footer .brand:hover:before {
   color: #929191;
 }
+.loading {
+  background: url(../img/ajax-loader.gif) no-repeat center center #ffffff;
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 54px;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  -moz-box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.54);
+  -webkit-box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.54);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.54);
+  top: -100px;
+  z-index: 1;
+}
+.loading.active {
+  top: 54px;
+}
 .hero {
   background: url(../img/hero-ribbons.png) no-repeat center center, url(../img/bkg-dots-dark.png) #797977;
   border-bottom: 20px solid #efa81e;
