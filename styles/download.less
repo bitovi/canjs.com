@@ -10,29 +10,69 @@
 	.hero {
 		height: 270px;
 	}
-
+	@cdn-height: 40px;
 	.cdn {
 		width: 550px;
 		float: left;
 		position: relative;
-		top: 107px;
+		top: 97px;
+		font-size: 15px;
 		
 		h4 {
 			display: inline;
 			color: #fff;
 			.text-shadow;
+			line-height: @cdn-height;
 		}
 		.input {
-			display: inline;
+			display: inline-block;
 			.input;
+			height: @cdn-height;
+			width: 470px;
+			-moz-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+			-webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+			box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
 		}
+		span {
+			line-height: @cdn-height;
+			color: #717171;
+			font-family: LatoLight;
+		}
+		select, .dropdown, .dropdown::before, .dropdown::after {
+			height: @cdn-height;
+		}
+		.dropdown {
+			width: 100px;
+			border: none;
+			background: none;
+			background-color: none;
+			display: inline-block;
+			margin-right: 5px;
+			border: 0px solid #ccc;
+			border-right: 1px solid #ccc;
+			.border-radius (@radius: 0px);
+			position: relative;
+			top: -3px;
+			height: (@cdn-height -2px);
+			
+			&::before {
+				top: 18px;
+			}
+			select {
+				font-size: 15px;
+				color: #717171;
+				font-family: LatoLight;
+				line-height: (@cdn-height - 1px);
+			}
+		}
+		
 	}
 	
 	.input {
 		background: #fff;
 		.border-radius;
-		padding: 8px;
 		color: #999;
+		border: 1px solid #4d4d4d;
 	}
 	
 	.libraries {

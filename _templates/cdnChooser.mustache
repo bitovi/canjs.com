@@ -1,9 +1,11 @@
 <h4>CDN:</h4>
 <div class="input">
-  <select>
-    {{#libraries}}
-    <option value="{{id}}">{{description}}</option>
-    {{/libraries}}
-  </select>
+	<div class="dropdown">
+	  <select>
+	    {{#libraries}}
+	    <option value="{{id}}">{{description}}</option>
+	    {{/libraries}}
+	  </select>
+  </div>
   <span>//cdn.canjs.com/releases/{{version}}/can.{{selectedLibrary}}.js</span>
 </div>
