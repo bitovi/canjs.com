@@ -3,11 +3,13 @@
 <div class="customize-box">
 	<form method="get" action="http://bitbuilder.herokuapp.com/can.custom.js">
 		<div class="general-options">
-			<select name="configuration" class="library pullleft">
+			<div class="dropdown">
+			<select name="configuration" class="library">
 				{{#configuration.libraries}}
 				<option value="{{id}}" {{#isDefault}}checked{{/isDefault}}>{{description}}</option>
 				{{/configuration.libraries}}
 			</select>
+			</div>
 			<input id="minified" type="checkbox" name="minify" value="true" {{#minified}}checked{{/minified}}><label for="minified" class="checkbox"></label><label for="minified">Minified</label>
 		</div>
 		<ul class="half">
