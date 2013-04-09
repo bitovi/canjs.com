@@ -24,10 +24,52 @@
 		font-size: 11px;
 		padding-top: 3px;
 	}
+	td {
+		padding: 15px 0 0;
+		
+		label.checkbox {
+			top: 2px;
+		}	
+	}
+	
 	
 }
 
+.customize {
+	center button {
+		text-transform: uppercase;
+		font-size: 17px;
+		padding: 10px 70px;
+	}
+	form {
+		font-size: 14px;
+		line-height: 16px;
+	}
+	.options {
+		width: 49%;
+		float: left;
+		margin-top: 10px;
+		margin-right: 2%;
+		border: none;
+		&:last-of-type {
+			margin-right: 0%;
+		}
+		th {
+			text-transform: uppercase;
+			color: #222121;
+		}
+	}
+
+}
+
+.customize .options, .customize .options th, .customize .options td {
+	border: none;
+}
+
 .download {
+	footer {
+		margin-top: 60px;
+	}
 	.hero .pull-right {
 		margin-top: 70px;
 	}
@@ -37,7 +79,13 @@
 		margin: 0 auto;
 	}
 	button.color {
-		
+		margin: 10px auto;
+		font-size: 17px;
+		text-transform: uppercase;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		text-align: center;
+		display: block;
 	}
 	.button-desc a {
 		color: #fff;
@@ -113,12 +161,27 @@
 	
 	.libraries {
 		margin-bottom: 12px;
+		line-height: 50px;
+		
+		label.radio, label.checkbox {
+			margin-left: 20px;
+			margin-right: 5px;
+		}
+	
 	}
 	
 	.options {
 		float: left;
 		width: 439px;
 		margin-right: 40px;
+		
+		.inactive {
+			color: #d4d4d4;
+			.checkbox {
+				background-color: #ebebeb;
+				border-color: #dcdcdc;
+			}
+		}
 	}
 	
 	.options + .options {

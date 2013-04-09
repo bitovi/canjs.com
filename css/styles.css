@@ -2049,34 +2049,6 @@ input[type='number'] {
   font-family: LatoLight, sans-serif;
   text-shadow: none;
 }
-.customize center button {
-  text-transform: uppercase;
-  font-size: 17px;
-  padding: 10px 70px;
-}
-.customize form {
-  font-size: 14px;
-  line-height: 16px;
-}
-.customize .options {
-  width: 49%;
-  float: left;
-  margin-top: 10px;
-  margin-right: 2%;
-  border: none;
-}
-.customize .options:last-of-type {
-  margin-right: 0%;
-}
-.customize .options th {
-  text-transform: uppercase;
-  color: #222121;
-}
-.customize .options,
-.customize .options th,
-.customize .options td {
-  border: none;
-}
 input.all,
 input.module,
 input#minify,
@@ -2270,6 +2242,43 @@ input[type='radio']:checked + label.radio:after {
   font-size: 11px;
   padding-top: 3px;
 }
+.customize.container td {
+  padding: 15px 0 0;
+}
+.customize.container td label.checkbox {
+  top: 2px;
+}
+.customize center button {
+  text-transform: uppercase;
+  font-size: 17px;
+  padding: 10px 70px;
+}
+.customize form {
+  font-size: 14px;
+  line-height: 16px;
+}
+.customize .options {
+  width: 49%;
+  float: left;
+  margin-top: 10px;
+  margin-right: 2%;
+  border: none;
+}
+.customize .options:last-of-type {
+  margin-right: 0%;
+}
+.customize .options th {
+  text-transform: uppercase;
+  color: #222121;
+}
+.customize .options,
+.customize .options th,
+.customize .options td {
+  border: none;
+}
+.download footer {
+  margin-top: 60px;
+}
 .download .hero .pull-right {
   margin-top: 70px;
 }
@@ -2278,6 +2287,15 @@ input[type='radio']:checked + label.radio:after {
   padding-left: 80px;
   padding-right: 80px;
   margin: 0 auto;
+}
+.download button.color {
+  margin: 10px auto;
+  font-size: 17px;
+  text-transform: uppercase;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+  display: block;
 }
 .download .button-desc a {
   color: #fff;
@@ -2359,11 +2377,24 @@ input[type='radio']:checked + label.radio:after {
 }
 .download .libraries {
   margin-bottom: 12px;
+  line-height: 50px;
+}
+.download .libraries label.radio,
+.download .libraries label.checkbox {
+  margin-left: 20px;
+  margin-right: 5px;
 }
 .download .options {
   float: left;
   width: 439px;
   margin-right: 40px;
+}
+.download .options .inactive {
+  color: #d4d4d4;
+}
+.download .options .inactive .checkbox {
+  background-color: #ebebeb;
+  border-color: #dcdcdc;
 }
 .download .options + .options {
   margin-right: 0px;
