@@ -1,7 +1,7 @@
 <h1>Customize<span class="pullright">version {{version}}</span></h1>
 <form method="get" action="http://bitbuilder.herokuapp.com/can.custom.js">
 
-  <div class="libraries">
+  <div class="libraries">Library:
     {{#configuration.libraries}}
     <input type="radio" id="{{id}}" name="configuration" value="{{description}}" {{#isDefault}}checked{{/isDefault}}><label for="{{id}}" class="radio"></label>
     <label for="{{id}}">{{description}}</label>

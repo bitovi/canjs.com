@@ -1,21 +1,57 @@
+.customize.container {
+	background-color: #fff;
+	border: solid 1px #ccc;
+	margin-bottom: 20px;
+	margin-top: -80px;
+	padding: 20px;
+	color: #222121;
+	.border-box;
+	.text-smoothing;
+	
+	h1 {
+		color: #fff;
+		background-color: @dark;
+		font-size: 17px;
+		text-transform: uppercase;
+		padding: 10px;
+		.text-smoothing;
+		.text-shadow;
+		margin: -21px;
+		margin-bottom: 21px;
+	}
+	
+	h1 .pullright {
+		font-size: 11px;
+		padding-top: 3px;
+	}
+	
+}
+
 .download {
+	.hero .pull-right {
+		margin-top: 70px;
+	}
 	button.color, button.download {
 		padding-left: 80px;
 		padding-right: 80px;
 		margin: 0 auto;
+	}
+	button.color {
+		
 	}
 	.button-desc a {
 		color: #fff;
 	}
 	.hero {
 		height: 270px;
+		border-bottom: none;
 	}
 	@cdn-height: 40px;
 	.cdn {
 		width: 550px;
 		float: left;
 		position: relative;
-		top: 97px;
+		top: 77px;
 		font-size: 15px;
 		
 		h4 {
@@ -77,18 +113,6 @@
 	
 	.libraries {
 		margin-bottom: 12px;
-	
-		input[type=radio] {
-			
-	
-			& + label {
-				
-			}
-		}
-	
-		input[type=checkbox] {
-			
-		}
 	}
 	
 	.options {
