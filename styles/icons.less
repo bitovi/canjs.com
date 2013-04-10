@@ -18,13 +18,14 @@
   background-image: none !important;
   background-position: 0% 0%;
   background-repeat: repeat;
+  
+  &:before {
+    text-decoration: inherit;
+    display: inline-block;
+    speak: none;
+  }
 }
-[class^="icon-"]:before,
-[class*=" icon-"]:before {
-  text-decoration: inherit;
-  display: inline-block;
-  speak: none;
-}
+
 .icon-breakout:before                { content: "\e000"; }
 .icon-menudown:before                { content: "\e001"; }
 .icon-bits:before                { content: "\e002"; }

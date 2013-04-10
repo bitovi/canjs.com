@@ -1,14 +1,21 @@
 .community {
-	.irc {
-		h1, h2 {
-			text-align: center;
-			margin-right: auto;
-			margin-left: auto;
-			display: block;
-			&:before, &:after {
-				display: none;
-			}
+	.posts, .irc-chat-container {
+		float: left;
+		width: 640px;
+	}
+	[class^="icon-"],
+	[class*=" icon-"] {
+		font-size: 25px;
+		.font-smoothing;
+		line-height: 10px;
+		margin-right: 5px;
+		
+		&:before {
+			position: relative;
+			top: -4px;
 		}
+	}
+	.irc {
 		.irc-chat-container {
 			margin-top: 20px;
 		}
@@ -18,7 +25,7 @@
 		margin-top: -20px;
 		margin-bottom: 40px;
 	}
-
+	
 	.tab-description {
 		margin-top: -80px;
 		height: 460px;
@@ -74,9 +81,18 @@
 			width: 137px;
 			height: 50px;
 			font-size: 18px;
+			
+			&:before {
+				font-family: Bitstrap;
+				text-decoration: inherit;
+				display: inline-block;
+				speak: none;
+				font-size: 25px;
+				content: "\e012";
+				margin-right: 10px;
+			}
 		}
 		.posts {
-			float: left;
 			width: 740px;
 		}
 		.categories {
@@ -85,21 +101,20 @@
 		
 	}
 	.commits, .issues {
-		.posts {
-			float: left;
-			width: 640px;
-		}
-
-		.button-container {
-			margin-bottom: 16px;
-		}
 
 		.bithub-post {
 			margin-bottom: 12px;
 		}
 	}
 	.categories {
-		width: 190px;
+		width: 220px;
+		
+		.button {
+			text-align: center;
+			display: block;
+			margin-bottom: 16px;
+			.border-box;
+		}
 		
 		ul {
 			list-style-type: none;

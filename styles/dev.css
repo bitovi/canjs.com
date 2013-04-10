@@ -24,3 +24,7 @@
 	padding-left: 40px;
 	min-height: 40px;
 }
+.community .categories .center, 
+.community .categories .button {
+	display: inline-block;
+} 

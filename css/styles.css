@@ -1,5 +1,6 @@
 @import 'rainbow.solarized-light.css';
-.text-smoothing {
+.text-smoothing,
+.font-smoothing {
   -webkit-font-smoothing: antialiased;
 }
 body {
@@ -426,6 +427,11 @@ a.next:after {
   text-decoration: inherit;
   display: inline;
   font: normal normal 18px/12px Bitstrap;
+}
+.well {
+  padding: 20px;
+  margin-bottom: 20px;
+  background: #eeeeee;
 }
 @font-face {
   font-family: 'Bitstrap';
@@ -1210,8 +1216,7 @@ footer .brand:hover:before {
 .dark h1,
 .color h1,
 .dark h2,
-.color h2,
-.community .irc h1 {
+.color h2 {
   display: block;
   font-family: 'LatoLight', sans-serif;
   font-size: 33px;
@@ -1223,8 +1228,7 @@ footer .brand:hover:before {
 .dark h1,
 .color h1,
 .content .container h1,
-.light h1,
-.community .irc h1 {
+.light h1 {
   display: inline-block;
   position: relative;
   padding-right: 20px;
@@ -1235,9 +1239,7 @@ footer .brand:hover:before {
 .dark h1:after,
 .dark h1:before,
 .color h1:after,
-.color h1:before,
-.community .irc h1:after,
-.community .irc h1:before {
+.color h1:before {
   content: "";
   position: absolute;
   width: 200%;
@@ -1252,8 +1254,7 @@ footer .brand:hover:before {
 }
 .light h1:after,
 .dark h1:after,
-.color h1:after,
-.community .irc h1:after {
+.color h1:after {
   left: 100%;
 }
 .content .container h2,
@@ -2438,18 +2439,22 @@ input[type='radio']:checked + label.radio:after {
 .download .options + .options {
   margin-right: 0px;
 }
-.community .irc h1,
-.community .irc h2 {
-  text-align: center;
-  margin-right: auto;
-  margin-left: auto;
-  display: block;
+.community .posts,
+.community .irc-chat-container {
+  float: left;
+  width: 640px;
 }
-.community .irc h1:before,
-.community .irc h2:before,
-.community .irc h1:after,
-.community .irc h2:after {
-  display: none;
+.community [class^="icon-"],
+.community [class*=" icon-"] {
+  font-size: 25px;
+  -webkit-font-smoothing: antialiased;
+  line-height: 10px;
+  margin-right: 5px;
+}
+.community [class^="icon-"]:before,
+.community [class*=" icon-"]:before {
+  position: relative;
+  top: -4px;
 }
 .community .irc .irc-chat-container {
   margin-top: 20px;
@@ -2508,28 +2513,39 @@ input[type='radio']:checked + label.radio:after {
   height: 50px;
   font-size: 18px;
 }
+.community .forums button:before {
+  font-family: Bitstrap;
+  text-decoration: inherit;
+  display: inline-block;
+  speak: none;
+  font-size: 25px;
+  content: "\e012";
+  margin-right: 10px;
+}
 .community .forums .posts {
-  float: left;
   width: 740px;
 }
 .community .forums .categories {
   width: 144px;
-}
-.community .commits .posts,
-.community .issues .posts {
-  float: left;
-  width: 640px;
-}
-.community .commits .button-container,
-.community .issues .button-container {
-  margin-bottom: 16px;
 }
 .community .commits .bithub-post,
 .community .issues .bithub-post {
   margin-bottom: 12px;
 }
 .community .categories {
-  width: 190px;
+  width: 220px;
+}
+.community .categories .button {
+  text-align: center;
+  display: block;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  /* Firefox */
+
+  -webkit-box-sizing: border-box;
+  /* Safari */
+
 }
 .community .categories ul {
   list-style-type: none;
@@ -2606,7 +2622,6 @@ input[type='radio']:checked + label.radio:after {
   font-size: 12px;
   line-height: 14px;
   height: 320px;
-  width: 670px;
   border-radius: 2px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
