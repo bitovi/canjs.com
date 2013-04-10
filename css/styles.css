@@ -1,4 +1,10 @@
 @import 'rainbow.solarized-light.css';
+
+@import 'ff.css';
+
+@import 'ie.css';
+
+@import 'responsive.css';
 .text-smoothing,
 .font-smoothing {
   -webkit-font-smoothing: antialiased;
@@ -2555,6 +2561,24 @@ input[type='radio']:checked + label.radio:after {
 .community .categories ul li {
   font-size: 16px;
   line-height: 30px;
+}
+.community .follower-badges {
+  background-color: #eeeeee;
+  padding: 10px;
+  margin: 0;
+}
+.community .follower-badges h4 {
+  font-size: 12px;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 10px;
+}
+.community .follower-badges li {
+  font-size: 12px;
+  color: #666;
+  line-height: 13px;
+  padding-left: 40px;
+  min-height: 40px;
 }
 .bithub-content {
   margin-top: 20px;

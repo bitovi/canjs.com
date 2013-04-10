@@ -1,30 +1,4 @@
 /* @override 
 	http://localhost:3022/canjs.us/styles/dev.css */
-.pull-right.categories {
-	width: 240px;
-}
-.pull-right.categories .button {
-	width: 100%;
-}
-.follower-badges {
-	background-color: #eeeeee;
-	padding: 10px;
-	margin: 0;
-}
-.follower-badges h4 {
-	font-size: 12px;
-	text-transform: uppercase;
-	margin: 0;
-	padding: 10px;
-}
-.pull-right.categories .follower-badges li {
-	font-size: 12px;
-	color: #666;
-	line-height: 13px;
-	padding-left: 40px;
-	min-height: 40px;
-}
-.community .categories .center, 
-.community .categories .button {
-	display: inline-block;
-} 
+
+
