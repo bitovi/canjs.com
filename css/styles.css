@@ -2520,7 +2520,15 @@ input[type='radio']:checked + label.radio:after {
   line-height: 30px;
 }
 .bithub-content {
-  padding: 10px;
+  margin-top: 20px;
+}
+.bithub-content .bithub-post {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: solid 1px #eee;
+}
+.bithub-content .bithub-post:last-child {
+  border-bottom: solid 0px #eee;
 }
 .bithub-content .bithub-post h5,
 .bithub-content .bithub-post h5 a {
