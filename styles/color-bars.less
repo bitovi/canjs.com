@@ -1,4 +1,4 @@
-.content .container h1, .content .container h2, .dark h1, .color h1, .dark h2, .color h2 {
+.content .container h1, .content .container h2, .dark h1, .color h1, .dark h2, .color h2, .community .irc h1 {
 	display: block;
 	font-family: 'LatoLight', sans-serif;
 	font-size: 33px;
@@ -7,7 +7,8 @@
 	color: #333333;
 	position: relative;
 }
-.dark h1, .color h1, .content .container h1, .light h1 {
+.dark h1, .color h1, .content .container h1, .light h1,
+.community .irc h1 {
 	display: inline-block;
     position: relative;
 	padding-right: 20px;
@@ -18,7 +19,9 @@
 .dark h1:after,
 .dark h1:before,
 .color h1:after,
-.color h1:before {
+.color h1:before,
+.community .irc h1:after,
+.community .irc h1:before {
     content: "";
     position: absolute;
 	width: 200%;
@@ -33,7 +36,8 @@
 }
 .light h1:after,
 .dark h1:after,
-.color h1:after
+.color h1:after,
+.community .irc h1:after
  { left: 100%; }
 
 

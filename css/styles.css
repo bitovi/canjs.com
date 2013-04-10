@@ -1210,7 +1210,8 @@ footer .brand:hover:before {
 .dark h1,
 .color h1,
 .dark h2,
-.color h2 {
+.color h2,
+.community .irc h1 {
   display: block;
   font-family: 'LatoLight', sans-serif;
   font-size: 33px;
@@ -1222,7 +1223,8 @@ footer .brand:hover:before {
 .dark h1,
 .color h1,
 .content .container h1,
-.light h1 {
+.light h1,
+.community .irc h1 {
   display: inline-block;
   position: relative;
   padding-right: 20px;
@@ -1233,7 +1235,9 @@ footer .brand:hover:before {
 .dark h1:after,
 .dark h1:before,
 .color h1:after,
-.color h1:before {
+.color h1:before,
+.community .irc h1:after,
+.community .irc h1:before {
   content: "";
   position: absolute;
   width: 200%;
@@ -1248,7 +1252,8 @@ footer .brand:hover:before {
 }
 .light h1:after,
 .dark h1:after,
-.color h1:after {
+.color h1:after,
+.community .irc h1:after {
   left: 100%;
 }
 .content .container h2,
@@ -2433,6 +2438,22 @@ input[type='radio']:checked + label.radio:after {
 .download .options + .options {
   margin-right: 0px;
 }
+.community .irc h1,
+.community .irc h2 {
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+}
+.community .irc h1:before,
+.community .irc h2:before,
+.community .irc h1:after,
+.community .irc h2:after {
+  display: none;
+}
+.community .irc .irc-chat-container {
+  margin-top: 20px;
+}
 .community .container.bithub {
   text-align: right;
   margin-top: -20px;
@@ -2581,8 +2602,12 @@ input[type='radio']:checked + label.radio:after {
 }
 .irc-chat-container {
   background-color: #fff;
-  border: 1px solid #eee;
+  border: 1px solid #dedbdb;
   font-size: 12px;
   line-height: 14px;
-  height: 200px;
+  height: 320px;
+  width: 670px;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
 }
