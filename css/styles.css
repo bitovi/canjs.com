@@ -410,6 +410,23 @@ button.color:hover,
   margin-left: auto;
   text-align: center;
 }
+a.next {
+  text-transform: uppercase;
+  color: #7b7b7a;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 14px;
+  text-decoration: none;
+}
+a.next:hover {
+  text-decoration: underline;
+}
+a.next:after {
+  content: '\e015';
+  text-decoration: inherit;
+  display: inline;
+  font: normal normal 18px/12px Bitstrap;
+}
 @font-face {
   font-family: 'Bitstrap';
   src: url('../fonts/Bitstrap-Regular.otf');
@@ -2416,6 +2433,11 @@ input[type='radio']:checked + label.radio:after {
 .download .options + .options {
   margin-right: 0px;
 }
+.community .container.bithub {
+  text-align: right;
+  margin-top: -20px;
+  margin-bottom: 40px;
+}
 .community .tab-description {
   margin-top: -80px;
   height: 460px;
@@ -2509,6 +2531,10 @@ input[type='radio']:checked + label.radio:after {
   font-size: 14px;
   line-height: 18px;
 }
+.bithub-content .bithub-post h5 :hover,
+.bithub-content .bithub-post h5 a :hover {
+  text-decoration: underline;
+}
 .bithub-content .bithub-post h5 span,
 .bithub-content .bithub-post h5 a span {
   font-size: 11px;
@@ -2550,4 +2576,5 @@ input[type='radio']:checked + label.radio:after {
   border: 1px solid #eee;
   font-size: 12px;
   line-height: 14px;
+  height: 200px;
 }
