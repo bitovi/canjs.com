@@ -998,7 +998,7 @@ footer .brand:hover:before {
   -moz-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   -o-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   -webkit-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
-  -ms-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
+  -ms-transform: rotate(-45deg);
   transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   border: 1px solid #dedbdb;
   top: -6px;
@@ -1607,7 +1607,7 @@ div.light:after {
   -moz-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   -o-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   -webkit-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
-  -ms-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
+  -ms-transform: rotate(-45deg);
   transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   border: 1px solid #fff;
   top: 7px;
@@ -2014,7 +2014,7 @@ pre ol li {
   -moz-transform: rotateZ(-45deg) skewY(-15deg) skewX(-15deg);
   -o-transform: rotateZ(-45deg) skewY(-15deg) skewX(-15deg);
   -webkit-transform: rotateZ(-45deg) skewY(-15deg) skewX(-15deg);
-  -ms-transform: rotateZ(-45deg) skewY(-15deg) skewX(-15deg);
+  -ms-transform: rotate(-45deg);
   transform: rotateZ(-45deg) skewY(-15deg) skewX(-15deg);
   border-top-right-radius: 2px;
   border-bottom-left-radius: 2px;
@@ -2043,7 +2043,7 @@ pre ol li {
   -moz-transform: rotateZ(-45deg) skewY(15deg) skewX(15deg);
   -o-transform: rotateZ(-45deg) skewY(15deg) skewX(15deg);
   -webkit-transform: rotateZ(-45deg) skewY(15deg) skewX(15deg);
-  -ms-transform: rotateZ(-45deg) skewY(15deg) skewX(15deg);
+  -ms-transform: rotate(-45deg);
   transform: rotateZ(-45deg) skewY(15deg) skewX(15deg);
   border-top-right-radius: 0px;
   border-bottom-left-radius: 0px;
