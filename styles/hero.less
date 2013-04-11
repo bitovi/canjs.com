@@ -187,8 +187,7 @@
 	display: block;
 	text-align: center;
 }
-.circle-tabs li a:before,
-.circle-tabs li a::before {
+.circle-tabs li a:before {
 	content: '';
 	background-color: @light;
 	border: 1px solid #d9d9d9;
@@ -214,8 +213,7 @@
 	color: #fff;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
 }
-.community .circle-tabs li a:before,
-.community .circle-tabs li a::before {
+.community .circle-tabs li a:before {
 	font-size: 80px;
 	line-height: 60px;
 	bottom: 25px;
@@ -224,46 +222,36 @@
 	text-shadow: none;
 	left: 10px;
 }
-.circle-tabs li a:hover::before, .circle-tabs li.active a::before,
 .circle-tabs li a:hover:before, .circle-tabs li.active a:before {
 	color: @light;
 	background-color: @color;
 	border-color: @light;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
 }
-.circle-tabs .powerful a::before,
 .circle-tabs .powerful a:before {
 	content: "\e011";
 }
-.circle-tabs .fast a::before,
 .circle-tabs .fast a:before {
 	content: "\e013";
 }
-.circle-tabs .flexible a::before,
 .circle-tabs .flexible a:before {
 	content: "\e042";
 }
-.circle-tabs .forums a::before,
 .circle-tabs .forums a:before {
 	content: "\e006";
 }
-.circle-tabs .irc a::before,
 .circle-tabs .irc a:before {
 	content: "\e007";
 }
-.circle-tabs .plugins a::before,
 .circle-tabs .plugins a:before {
 	content: "\e008";
 }
-.circle-tabs .twitter a::before,
 .circle-tabs .twitter a:before {
 	content: "\e003";
 }
-.circle-tabs .issues a::before,
 .circle-tabs .issues a:before {
 	content: "\e009";
 }
-.circle-tabs .github a::before,
 .circle-tabs .github a:before {
 	content: "\e014";
 }
@@ -284,7 +272,6 @@
 	z-index: 1;
 	text-align: center;
 }
-.tab-description::before,
 .tab-description:before { 
     position:absolute;
     content : '';
@@ -304,39 +291,30 @@
 	border-left-style: none;
 	border-bottom-style: none;
 }
-.home .tab-description.flexible::before,
 .home .tab-description.flexible:before {
 	left: 125px;
 }
-.home .tab-description.powerful::before,
 .home .tab-description.powerful:before {
 	left: 470px;
 }
-.home .tab-description.fast::before,
 .home .tab-description.fast:before {
 	left: 815px;
 }
-.community .tab-description.forums::before,
 .community .tab-description.forums:before {
 	left: 73px;
 }
-.community .tab-description.irc::before,
 .community .tab-description.irc:before {
 	left: 231px;
 }
-.community .tab-description.plugins::before,
 .community .tab-description.plugins:before {
 	left: 389px;
 }
-.community .tab-description.twitter::before,
 .community .tab-description.twitter:before {
 	left: 549px
 }
-.community .tab-description.issues::before,
 .community .tab-description.issues:before {
 	left: 706px;
 }
-.community .tab-description.commits::before,
 .community .tab-description.commits:before {
 	left: 865px;
 }
