@@ -1,0 +1,8 @@
+.ie .sidebar .api li li.active > a, 
+.ie .sidebar .api li li.active > a:hover,
+.ie .sidebar .api li li.active > a:before,
+.ie .sidebar .api li li.active > a::before {
+	background-image: none;
+	background-color: #ffffff;
+	background: #ffffff;
+}
