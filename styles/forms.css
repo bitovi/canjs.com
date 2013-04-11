@@ -148,7 +148,7 @@ input[type='radio']:checked + label.radio:after {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f4f4f4', endColorstr='#dbdbdb',GradientType=0 );
 	text-align: left;
 }
-.dropdown::before {
+.dropdown:before {
 	content: "";
 	border-style: solid;
 	display: block;
@@ -163,7 +163,7 @@ input[type='radio']:checked + label.radio:after {
 	box-shadow: inset 0 1px 0 #ffffff;
 	position: absolute;
 }
-.dropdown::after {
+.dropdown:after {
 	content: "";
 	border-style: none;
 	display: block;

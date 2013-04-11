@@ -126,7 +126,7 @@
 			display: inline-block;
 			position: relative;
 		}
-		select, .dropdown, .dropdown::before, .dropdown::after {
+		select, .dropdown, .dropdown:before, .dropdown:after {
 			height: @cdn-height;
 		}
 		.dropdown {
@@ -143,7 +143,7 @@
 			top: -3px;
 			height: (@cdn-height -2px);
 			
-			&::before {
+			&:before {
 				top: 18px;
 			}
 			select {

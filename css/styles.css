@@ -468,8 +468,8 @@ a.next:after {
 }
 [class^="icon-"]:before,
 [class*=" icon-"]:before,
-[class^="icon-"]::before,
-[class*=" icon-"]::before {
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
   text-decoration: inherit;
   display: inline-block;
   speak: none;
@@ -722,7 +722,7 @@ header .brand.canjs:after {
   right: 5px;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
 }
-header .brand.canjs:after:hover .brand.canjs::after {
+header .brand.canjs:after:hover .brand.canjs:after {
   color: #ffffff;
   text-shadow: none;
 }
@@ -2219,7 +2219,7 @@ input[type='radio']:checked + label.radio:after {
   line-height: 21px;
   padding: 0px 0px 6px 8px;
 }
-.dropdown::before {
+.dropdown:before {
   content: "";
   border-style: solid;
   display: block;
@@ -2234,7 +2234,7 @@ input[type='radio']:checked + label.radio:after {
   box-shadow: inset 0 1px 0 #ffffff;
   position: absolute;
 }
-.dropdown::after {
+.dropdown:after {
   content: "";
   border-style: none;
   display: block;
@@ -2399,8 +2399,8 @@ input[type='radio']:checked + label.radio:after {
 }
 .download .cdn select,
 .download .cdn .dropdown,
-.download .cdn .dropdown::before,
-.download .cdn .dropdown::after {
+.download .cdn .dropdown:before,
+.download .cdn .dropdown:after {
   height: 40px;
 }
 .download .cdn .dropdown {
@@ -2419,7 +2419,7 @@ input[type='radio']:checked + label.radio:after {
   top: -3px;
   height: 40px -2px;
 }
-.download .cdn .dropdown::before {
+.download .cdn .dropdown:before {
   top: 18px;
 }
 .download .cdn .dropdown select {
