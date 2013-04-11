@@ -46,7 +46,6 @@
 	display: none;
 }
 .lt-ie9 .dropdown {
-	border: none;
 	background-color: #dfdfdf;
 }
 .lt-ie9 .dropdown select {
