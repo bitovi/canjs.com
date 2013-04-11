@@ -6,3 +6,7 @@
 	background-color: #ffffff;
 	background: #ffffff;
 }
+.ie .sidebar .api li li.active > a:before,
+.ie .sidebar .api li li.active > a::before {
+	display: none;
+}
