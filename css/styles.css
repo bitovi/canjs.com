@@ -1179,7 +1179,7 @@ footer .brand:hover:before {
   -moz-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   -o-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   -webkit-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
-  -ms-transform: rotate(45deg);
+  -ms-transform: rotate(-45deg);
   transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   border: 1px solid #dedbdb;
   top: -11px;
