@@ -25,3 +25,6 @@
 .lt-ie9 .hero {
 	background: #797977 url(../img/hero-ribbons.png) no-repeat center center;
 }
+.lt-ie9 .hero .pull-right {
+	width: 360px;
+}
