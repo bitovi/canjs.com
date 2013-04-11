@@ -1776,12 +1776,12 @@ pre ol li {
   display: inline-block;
   margin-top: 1px;
 }
-.docs .title .links li::before {
+.docs .title .links li:before {
   content: '|';
   padding-right: 5px;
   padding-left: 3px;
 }
-.docs .title .links li:first-child::before {
+.docs .title .links li:first-child:before {
   content: none;
   padding: none;
 }
@@ -2001,7 +2001,7 @@ pre ol li {
   border-bottom: 1px solid #c5c3c3;
 }
 .sidebar .api li li.active > a:before,
-.sidebar .api li li.active > a::before {
+.sidebar .api li li.active > a:before {
   position: absolute;
   content: ' ';
   right: -9px;
@@ -2492,7 +2492,7 @@ input[type='radio']:checked + label.radio:after {
   height: 460px;
   text-align: left;
 }
-.community .tab-description::before {
+.community .tab-description:before {
   left: 74px;
 }
 .community .tab-description h1 {

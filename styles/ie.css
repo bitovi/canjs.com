@@ -61,6 +61,6 @@
 	margin-right: 20px;
 }
 .lt-ie9 .circle-tabs li a:before {
-	behavior: url(/styles/border-radius.htc);
+	behavior: url(../styles/border-radius.htc);
 	border-radius: 160px;
 }
