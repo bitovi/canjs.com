@@ -22,9 +22,35 @@
 .ie .download .hero .cdn h4 {
 	top: -14px;
 }
+
+
 .lt-ie9 .hero {
 	background: #797977 url(../img/hero-ribbons.png) no-repeat center center;
 }
 .lt-ie9 .hero .pull-right {
 	width: 360px;
+}
+.lt-ie9 input.all, 
+.lt-ie9 input.module, 
+.lt-ie9 input#minify, 
+.lt-ie9 input#minified,
+.lt-ie9 input#dojo, 
+.lt-ie9 input#yui, 
+.lt-ie9 input#mootools, 
+.lt-ie9 input#zepto, 
+.lt-ie9 input#jquery {
+	display: inline-block;
+}
+.lt-ie9 label.checkbox,
+.lt-ie9 label.radio {
+	display: none;
+}
+.lt-ie9 .dropdown {
+	border: none;
+	background-color: #dfdfdf;
+}
+.lt-ie9 .dropdown select {
+		background: #fff;
+		width: 100%;
+		height: 24px;
 }
