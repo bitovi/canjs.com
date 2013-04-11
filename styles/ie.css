@@ -10,3 +10,15 @@
 .ie .sidebar .api li li.active > a::before {
 	display: none;
 }
+.ie .download .cdn .input .dropdown {
+	top: 0;
+}
+.ie .download .cdn span {
+	top: -14px;
+}
+.ie .download .cdn .dropdown select {
+	padding: 8px 0px 6px 8px;
+}
+.ie .download .hero .cdn h4 {
+	top: -14px;
+}
