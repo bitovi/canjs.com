@@ -103,10 +103,12 @@
 		font-size: 15px;
 		
 		h4 {
-			display: inline;
+			display: inline-block;
 			color: #fff;
 			.text-shadow;
 			line-height: @cdn-height;
+			position: relative;
+			top: 0;
 		}
 		.input {
 			display: inline-block;
@@ -121,6 +123,8 @@
 			line-height: @cdn-height;
 			color: #717171;
 			font-family: LatoLight;
+			display: inline-block;
+			position: relative;
 		}
 		select, .dropdown, .dropdown::before, .dropdown::after {
 			height: @cdn-height;
@@ -147,6 +151,8 @@
 				color: #717171;
 				font-family: LatoLight;
 				line-height: (@cdn-height - 1px);
+				display: inline-block;
+				position: relative;
 			}
 		}
 		
