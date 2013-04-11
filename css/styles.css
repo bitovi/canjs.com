@@ -441,7 +441,13 @@ a.next:after {
 }
 @font-face {
   font-family: 'Bitstrap';
-  src: url('../fonts/Bitstrap-Regular.otf');
+  src: url("../fonts/bitstrapregular.eot");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Bitstrap';
+  src: url("../fonts/bitstrapregular.eot"), url("../fonts/bitstrapregular.eot?#iefix") format("embedded-opentype"), url("../fonts/bitstrapregular.ttf") format("truetype"), url("../fonts/Bitstrap-Regular.otf") format("otf");
   font-weight: normal;
   font-style: normal;
 }
@@ -992,6 +998,7 @@ footer .brand:hover:before {
   -moz-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   -o-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   -webkit-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
+  -ms-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   border: 1px solid #dedbdb;
   top: -6px;
@@ -1172,6 +1179,7 @@ footer .brand:hover:before {
   -moz-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   -o-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   -webkit-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
+  -ms-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   border: 1px solid #dedbdb;
   top: -11px;
@@ -1599,6 +1607,7 @@ div.light:after {
   -moz-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   -o-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   -webkit-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
+  -ms-transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   transform: rotateZ(-45deg) skewY(5deg) skewX(5deg);
   border: 1px solid #fff;
   top: 7px;
@@ -1975,6 +1984,7 @@ pre ol li {
   -webkit-transform: rotate(90deg);
   -moz-transform: rotate(90deg);
   -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 .sidebar .api li li.active > a,
@@ -2004,6 +2014,7 @@ pre ol li {
   -moz-transform: rotateZ(-45deg) skewY(-15deg) skewX(-15deg);
   -o-transform: rotateZ(-45deg) skewY(-15deg) skewX(-15deg);
   -webkit-transform: rotateZ(-45deg) skewY(-15deg) skewX(-15deg);
+  -ms-transform: rotateZ(-45deg) skewY(-15deg) skewX(-15deg);
   transform: rotateZ(-45deg) skewY(-15deg) skewX(-15deg);
   border-top-right-radius: 2px;
   border-bottom-left-radius: 2px;
@@ -2032,6 +2043,7 @@ pre ol li {
   -moz-transform: rotateZ(-45deg) skewY(15deg) skewX(15deg);
   -o-transform: rotateZ(-45deg) skewY(15deg) skewX(15deg);
   -webkit-transform: rotateZ(-45deg) skewY(15deg) skewX(15deg);
+  -ms-transform: rotateZ(-45deg) skewY(15deg) skewX(15deg);
   transform: rotateZ(-45deg) skewY(15deg) skewX(15deg);
   border-top-right-radius: 0px;
   border-bottom-left-radius: 0px;
@@ -2358,10 +2370,12 @@ input[type='radio']:checked + label.radio:after {
   font-size: 15px;
 }
 .download .cdn h4 {
-  display: inline;
+  display: inline-block;
   color: #fff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
   line-height: 40px;
+  position: relative;
+  top: 0;
 }
 .download .cdn .input {
   display: inline-block;
@@ -2381,6 +2395,8 @@ input[type='radio']:checked + label.radio:after {
   line-height: 40px;
   color: #717171;
   font-family: LatoLight;
+  display: inline-block;
+  position: relative;
 }
 .download .cdn select,
 .download .cdn .dropdown,
@@ -2412,6 +2428,8 @@ input[type='radio']:checked + label.radio:after {
   color: #717171;
   font-family: LatoLight;
   line-height: 39px;
+  display: inline-block;
+  position: relative;
 }
 .download .input {
   background: #fff;
