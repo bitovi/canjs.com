@@ -5,10 +5,12 @@
 .lt-ie9 .circle-tabs li a:before {
 	background-color: none;
 	border: none;
-	background: url('../img/ie-circle-tabs-137.png') no-repeat center top;
+	background: url('../img/ie-circle-tabs-137.png') no-repeat left top;
+}
+.lt-ie9 .community .circle-tabs li a:before {
+	background: url('../img/ie-circle-tabs-80.png') no-repeat left top;
 }
 .lt-ie9 .circle-tabs li a:hover:before,
 .lt-ie9 .circle-tabs li.active a:before {
-	background-color: none;
-	background: url('../img/ie-circle-tabs-137.png') no-repeat right top;
+	background-position-x: right;
 }
