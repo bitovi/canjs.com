@@ -1,10 +1,4 @@
 $(function() {
-    if (window.PIE) {
-        $('.circle-tabs li a:before').each(function() {
-            PIE.attach(this);
-        });
-    }
-
 	can.route.ready(false);
 	window.CanJSUS = window.CanJSUS || {};
 	
