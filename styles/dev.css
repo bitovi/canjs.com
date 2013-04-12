@@ -14,3 +14,10 @@
 .lt-ie9 .circle-tabs li.active a:before {
 	background-position-x: right;
 }
+.lt-ie8 header ul.nav li,
+.lt-ie8 footer ul.pullright li,
+.lt-ie8 .content ul.socialstats li,
+.lt-ie8 .content ul.carousel li,
+ {
+	float: left;
+}
