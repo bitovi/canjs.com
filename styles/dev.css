@@ -10,4 +10,5 @@
 .lt-ie9 .circle-tabs li a:hover:before,
 .lt-ie9 .circle-tabs li.active a:before {
 	background-color: none;
+	background: url('../img/ie-circle-tabs-137.png') no-repeat right top;
 }
