@@ -2,3 +2,8 @@
 	http://localhost:3022/canjs.us/styles/dev.css */
 
 
+.lt-ie9 .circle-tabs li a:before {
+	background-color: none;
+	border: none;
+	background: url('../img/ie-circle-tabs-137.png') no-repeat center top;
+}
