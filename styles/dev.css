@@ -2,23 +2,3 @@
 	http://localhost:3022/canjs.us/styles/dev.css */
 
 
-.lt-ie9 .circle-tabs li a:before {
-	background-color: none;
-	border: none;
-	background: url('../img/ie-circle-tabs-137.png') no-repeat left top;
-}
-.lt-ie9 .community .circle-tabs li a:before {
-	background: url('../img/ie-circle-tabs-80.png') no-repeat left top;
-}
-.lt-ie9 .circle-tabs li a:hover:before,
-.lt-ie9 .circle-tabs li.active a:before {
-	background-position-x: right;
-}
-.lt-ie8 .container ul.nav li,
-.lt-ie8 .container ul.pullright li,
-.lt-ie8 .content ul.socialstats li,
-.lt-ie8 .content ul.carousel li,
-.lt-ie8 .container ul.circle-tabs li,
- {
-	float: left;
-}
