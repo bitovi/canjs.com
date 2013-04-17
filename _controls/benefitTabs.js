@@ -1,9 +1,9 @@
 can.Control('CanJSUS.Benefits', {
 	defaults: {
 		taglines: {
-			'flexible': 'Take it anywhere. Designed to work with multiple libraries, plugins, and templating frameworks.',
-			'powerful': 'Strong enough for high-power applications; simple enough to learn in a day.',
-			'fast': 'Fastest framework in the west.'
+			'flexible': 'Use it anywhere. Works with your libraries, plugins, and templates.',
+			'powerful': 'Strong enough for high-power applications. Simple enough to learn in a day.',
+			'fast': 'Sleek, lightweight, and responsive: exactly what it says on the can.'
 		}
 	}
 }, {

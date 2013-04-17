@@ -18,5 +18,12 @@ CanJSUS.CommunityTab('CanJSUS.ForumsTab', {
 	'#forumSearch button click': function(el, ev) {
 		var terms = $('input[type=search]').val();
 		window.location.href = 'https://forum.javascriptmvc.com/#Search/' + terms;
+	},
+	'#forumSearch input[type=search] keypress': function(el, ev) {
+		if(ev.which === 13/* Return */) {
+			ev.preventDefault();
+			var terms = el.val();
+			window.location.href = 'https://forum.javascriptmvc.com/#Search/' + terms;
+		}
 	}
 });
