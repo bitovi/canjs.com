@@ -46,6 +46,9 @@ can.Control('CanJSUS.CommunityTabs', {
 		this._switchTab(el.prop('class'));
 	},
 	_switchTab: function(selectedTab) {
+		this.element
+			.find('li').removeClass('active')
+			.filter('.' + selectedTab).addClass('active');
 		var tabControl = this.options.tabControls[selectedTab];
 		new tabControl($('.content > .container'), {state: this.state});
 	}

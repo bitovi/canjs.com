@@ -7,7 +7,7 @@ can.Model("CanJSUS.Chat", {
 			return CanJSUS.ForumPost.model(el);
 		});
 
-		return new can.Observe.List(models.slice(0, 3));
+		return new can.Observe.List(models.slice(0, 1));
 	},
 	model: function(data) {
 		// The API's not returning plugins and apps yet, so this may
@@ -29,7 +29,7 @@ can.Model("CanJSUS.Chat", {
 	},
 	findAll: {
 		// No idea if this is the right URL yet. 
-		url: 'http://bithub.com/api/events/?category=chat&order=upvotes:desc&limit=3',
+		url: 'http://bithub.com/api/events/?category=chat&order=upvotes:desc&limit=1',
 		dataType: 'json'
 	}
 }, { });
