@@ -4,6 +4,7 @@ CanJSUS.DownloadCustomizer('CanJSUS.HeroDownloadCustomizer', {
 	}
 }, {
 	'.customize click': function(el, ev) {
+		el.toggleClass('active');
 		this.element.find('.customize-box').toggle();
 	},
 	'select[name=configuration] change': function(el, ev) {
