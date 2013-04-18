@@ -20,8 +20,8 @@ can.Control('CanJSUS.CommunityTabs', {
 			self.state.attr('forumPosts', posts);
 		});
 		// Missing counts for forum categories
-		CanJSUS.Chat.findAll().done(function(chats) {
-			self.state.attr('chats', chats);
+		CanJSUS.ChatLine.findAll().done(function(lines) {
+			self.state.attr('lines', lines);
 		});
 		CanJSUS.Plugin.findAll().done(function(plugins) {
 			self.state.attr('plugins', plugins);
