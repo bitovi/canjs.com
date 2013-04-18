@@ -1542,6 +1542,9 @@ div.light:after {
   margin-top: 20px;
   clear: both;
 }
+.example h2 {
+  text-transform: uppercase;
+}
 .example > div {
   float: left;
   display: block;
@@ -2245,6 +2248,21 @@ input[type='radio']:checked + label.radio:after {
   -webkit-box-shadow: 1px 0 0 rgba(255, 255, 255, 0.5);
   box-shadow: 1px 0 0 rgba(255, 255, 255, 0.5);
   position: absolute;
+}
+.inactive,
+tr {
+  color: #eee;
+  cursor: default;
+}
+.inactive label,
+tr label {
+  color: #eee;
+  cursor: default;
+}
+.inactive .checkbox,
+tr .checkbox {
+  background-color: #fff;
+  border-color: #eee;
 }
 .guides .sidebar {
   width: 255px;

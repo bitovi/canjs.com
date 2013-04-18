@@ -161,11 +161,12 @@
 	text-align: center;
 	padding: 0;
 	margin: 0 auto;
-}
-.circle-tabs li {
-	display: inline-block;
-	margin-left: 50px;
-	text-align: center;
+	
+	li {
+		display: inline-block;
+		margin-left: 50px;
+		text-align: center;
+	}
 }
 .home .hero + .content {
 	clear: both;
@@ -186,22 +187,23 @@
 	width: 140px;
 	display: block;
 	text-align: center;
-}
-.circle-tabs li a:before {
-	content: '';
-	background-color: @light;
-	border: 1px solid #d9d9d9;
-	color: @color;
-	font: 110px/110px Bitstrap;
-	display: inline-block;
-	bottom: 40px;
-	left: -2px;
-	text-align: center;
-	.border-radius(160px);
-	margin: 0 auto;
-	position: absolute;
-	width: 138px;
-	height: 138px;
+	
+	&:before {
+		content: '';
+		background-color: @light;
+		border: 1px solid #d9d9d9;
+		color: @color;
+		font: 110px/110px Bitstrap;
+		display: inline-block;
+		bottom: 40px;
+		left: -2px;
+		text-align: center;
+		.border-radius(160px);
+		margin: 0 auto;
+		position: absolute;
+		width: 138px;
+		height: 138px;
+	}
 }
 .home .circle-tabs li a  {
 	padding-top: 170px;
@@ -212,15 +214,16 @@
 	width: 105px;
 	color: #fff;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
-}
-.community .circle-tabs li a:before {
-	font-size: 80px;
-	line-height: 60px;
-	bottom: 25px;
-	width: 85px;
-	height: 85px;
-	text-shadow: none;
-	left: 10px;
+	
+	&:before {
+		font-size: 80px;
+		line-height: 60px;
+		bottom: 25px;
+		width: 85px;
+		height: 85px;
+		text-shadow: none;
+		left: 10px;
+	}
 }
 .circle-tabs li a:hover:before, .circle-tabs li.active a:before {
 	color: @light;
