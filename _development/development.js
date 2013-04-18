@@ -63,9 +63,18 @@ $(function() {
 	},{
 		init: function() {
 			this.state = new can.Observe({
-				link: this.options.link
+				link: this.options.link,
 			});
-			this.element.html(can.view(this.options.layout, this.state));
+			this.element.html(can.view(this.options.layout, this.state, {
+				'activeLink': function(link) {
+					if(can.route.attr('type')) {
+						var currentLink = can.route.attr('type').split('/')[0];
+						return link === currentLink ? 'active' : '';
+					} else {
+						return '';
+					}
+				}
+			}));
 		},
 
 		':type route': function(data) {
