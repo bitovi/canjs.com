@@ -63,6 +63,7 @@ header {
 	background-color: @dark;
 	color: #fff;
 	position: relative;
+	z-index: 2;
 	
 	.container {
 		position: relative;
@@ -262,6 +263,8 @@ footer {
 	box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.54);
 	top: -100px;
 	z-index: 1;
+
+	transition: top .67s;
 }
 .loading.active {
 	top: 54px;
