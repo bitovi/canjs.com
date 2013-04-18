@@ -69,9 +69,13 @@ $(function() {
 		},
 
 		':type route': function(data) {
-			this.state.attr('content', can.view.render(this.options.pages + data.type + '.mustache', {}));
-			$('body').prop('className', this.options.classes[data.type]);
-			CanJSUS.init[data.type].apply();
+			var type = data.type.split('/')[0];
+			if(type !== this.type) {
+				this.type = type;
+				this.state.attr('content', can.view.render(this.options.pages + type + '.mustache', {}));
+				$('body').prop('className', this.options.classes[type]);
+				CanJSUS.init[type] && CanJSUS.init[type].apply();
+			}
 		},
 
 		route: function() {

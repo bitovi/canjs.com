@@ -39,11 +39,15 @@ can.Control('CanJSUS.CommunityTabs', {
 		// Missing follower counts for github
 
 		this.element.html(can.view('../_templates/communityTabs.mustache', {}));
-		this._switchTab('forums');
+		can.route.attr('type', 'community/forums');
 	},
 	//'li mouseenter': '_switchTab',
 	'li click': function(el, ev) {
-		this._switchTab(el.prop('class'));
+		can.route.attr('type', 'community/' + el.prop('class'));
+	},
+	':type route': function(data) {
+		var subtab = data.type.split('/')[1];
+		this._switchTab(subtab);
 	},
 	_switchTab: function(selectedTab) {
 		this.element
