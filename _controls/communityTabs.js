@@ -54,8 +54,10 @@ can.Control('CanJSUS.CommunityTabs', {
 		can.route.attr('type', 'community/' + el.prop('class'));
 	},
 	':type route': function(data) {
-		var subtab = data.type.split('/')[1];
-		this._switchTab(subtab);
+		var route = data.type.split('/');
+		if(route[0] === 'community') {
+			this._switchTab(route[1]);
+		}
 	},
 	_switchTab: function(selectedTab) {
 		this.element

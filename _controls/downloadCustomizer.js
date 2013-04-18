@@ -14,6 +14,9 @@ can.Control('CanJSUS.DownloadCustomizer', {
 		CanJSUS.Configuration.findOne().done(function(config) {
 			self.isDependedOnBy = self._collectDependedOn(config);
 			self.options.attr('configuration', config);
+			can.each(config.types, function(obj, type) {
+				self.element.find('[name=' + type + ']:checkbox:first').change();
+			});
 		});
 
 		this.element.html(can.view(this.options.view, this.options));
@@ -38,6 +41,10 @@ can.Control('CanJSUS.DownloadCustomizer', {
 			can.each(can.data(el, 'module').dependencies, function(dependency) {
 				$('#' + CanJSUS.Configuration.pathToID(dependency)).prop('checked', true).change();
 			});
+
+			if(! $('[name=' + el.prop('name') + ']:checkbox:enabled:not(:checked)').length) {
+				$('#' + el.prop('name')).prop('checked', true);
+			}
 		} else {
 			$('.all[data-type=' + can.data(el, 'module').type + ']').prop('checked', false);
 			this.checkAlls[can.data(el, 'module').type] = false;
@@ -74,6 +81,9 @@ can.Control('CanJSUS.DownloadCustomizer', {
 				.closest('tr').toggleClass('inactive', disallowed).end()
 				.prop('disabled', disallowed)
 				.prop('checked', disallowed ? false : check.prop('checked') || self.checkAlls[module.type]).change();
+		});
+		can.each(this.options.configuration.types, function(obj, type) {
+			self.element.find('[name=' + type + ']:checkbox:first').change();
 		});
 	}
 

@@ -19,7 +19,7 @@
     </tr>
     {{#configuration.types.core.modules}}
     <tr>
-      <td width="40" align="center" valign="top"><input type="checkbox" id="{{id}}" class="module" name="plugins" value="{{path}}" {{#isDefault}}checked{{/isDefault}} {{data 'module'}}/><label for="{{id}}" class="checkbox"></label></td>
+      <td width="40" align="center" valign="top"><input type="checkbox" id="{{id}}" class="module" name="core" value="{{path}}" {{#isDefault}}checked{{/isDefault}} {{data 'module'}}/><label for="{{id}}" class="checkbox"></label></td>
       <td width="175" align="left" valign="top"><label for="{{id}}">{{name}}</label></td>
       <td align="left" valign="top">{{description}}</td>
     </tr>
@@ -34,7 +34,7 @@
     </tr>
     {{#configuration.types.plugin.modules}}
     <tr>
-      <td width="40" align="center" valign="top"><input type="checkbox" id="{{id}}" class="module" name="plugins" value="{{path}}" {{#isDefault}}checked{{/isDefault}} {{data 'module'}}/><label for="{{id}}" class="checkbox"></label></td>
+      <td width="40" align="center" valign="top"><input type="checkbox" id="{{id}}" class="module" name="plugin" value="{{path}}" {{#isDefault}}checked{{/isDefault}} {{data 'module'}}/><label for="{{id}}" class="checkbox"></label></td>
       <td width="175" align="left" valign="top"><label for="{{id}}">{{name}}</label></td>
       <td align="left" valign="top">{{description}}</td>
     </tr>
