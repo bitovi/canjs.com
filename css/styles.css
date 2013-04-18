@@ -386,7 +386,7 @@ button,
   background-color: #165489;
   border: 1px solid #0f395d;
   color: #fff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
   border-radius: 2px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -397,18 +397,26 @@ button,
   text-decoration: none;
 }
 button:hover,
-.button:hover {
+.button:hover,
+button.active,
+.button.active {
   background-color: #0f395d;
 }
 button.color,
 .button.color {
   background-color: #efa81e;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
   border-color: #cc8b0e;
 }
 button.color:hover,
-.button.color:hover {
+.button.color:hover,
+button.color.active,
+.button.color.active {
   background-color: #cc8b0e;
+}
+.hero button.active,
+.hero .button.active {
+  background-color: #108911;
 }
 .center {
   margin-right: auto;
