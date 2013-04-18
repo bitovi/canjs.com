@@ -2258,17 +2258,17 @@ input[type='radio']:checked + label.radio:after {
   position: absolute;
 }
 .inactive,
-tr {
+tr.inactive {
   color: #eee;
   cursor: default;
 }
 .inactive label,
-tr label {
+tr.inactive label {
   color: #eee;
   cursor: default;
 }
 .inactive .checkbox,
-tr .checkbox {
+tr.inactive .checkbox {
   background-color: #fff;
   border-color: #eee;
 }
@@ -2505,6 +2505,10 @@ tr .checkbox {
 }
 .community .irc .irc-chat-container {
   margin-top: 20px;
+  overflow: scroll;
+}
+.community .irc .irc-chat-container .username {
+  font-weight: bold;
 }
 .community .container.bithub {
   text-align: right;
