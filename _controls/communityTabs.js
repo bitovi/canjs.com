@@ -18,29 +18,29 @@ can.Control('CanJSUS.CommunityTabs', {
 
 		this.modelRequests = 6;
 		$('.loading').addClass('active');
-		CanJSUS.ForumPost.findAll().done(function(posts) {
+		CanJSUS.ForumPost.findAll({limit: 3}).done(function(posts) {
 			self._hideLoading();
 			self.state.attr('forumPosts', posts);
 		});
 		// Missing counts for forum categories
-		CanJSUS.ChatLine.findAll().done(function(lines) {
+		CanJSUS.ChatLine.findAll({limit: 30}).done(function(lines) {
 			self._hideLoading();
 			self.state.attr('lines', lines);
 		});
-		CanJSUS.Plugin.findAll().done(function(plugins) {
+		CanJSUS.Plugin.findAll({limit: 3}).done(function(plugins) {
 			self._hideLoading();
 			self.state.attr('plugins', plugins);
 		});
 		// Missing counts for plugins/apps/articles
-		CanJSUS.Tweet.findAll().done(function(tweets) {
+		CanJSUS.Tweet.findAll({limit: 3}).done(function(tweets) {
 			self._hideLoading();
 			self.state.attr('tweets', tweets);
 		});
-		CanJSUS.GithubIssue.findAll().done(function(issues) {
+		CanJSUS.GithubIssue.findAll({limit: 3}).done(function(issues) {
 			self._hideLoading();
 			self.state.attr('issues', issues);
 		});
-		CanJSUS.GithubEvent.findAll().done(function(commits) {
+		CanJSUS.GithubEvent.findAll({limit: 3}).done(function(commits) {
 			self._hideLoading();
 			self.state.attr('commits', commits);
 		});
