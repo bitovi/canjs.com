@@ -1,0 +1,1 @@
+c({"body": "", "description": "<p>A list of modules that should always be loaded when required, even if already\npresent on the page.</p>", "types": undefined, "title": "", "name": "force", "type": "property", "comment": "undefined@type string[]\n", "src": "can/lib/yui-3.7.3.js", "line": 1670})

@@ -1,0 +1,1 @@
+c({"name": "global.getComputedStyle.7", "type": "property", "parent": "global.getComputedStyle", "body": "", "description": "<p>W3C: \"a user interface element E which is checked\n(for instance a radio-button or checkbox)\"</p>", "src": "can/test/ie shims/a.ielt8.js", "line": 2751})

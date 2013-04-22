@@ -1,0 +1,1 @@
+c({"type": "function", "name": "Y.EventHandle.unsubscribe", "params": [], "parent": "Y.EventHandle", "body": "", "description": "<p>detach a listener</p>", "comment": "undefined@method unsubscribe\n@deprecated use detach\n", "src": "can/lib/yui-3.7.3.js", "line": 7953})

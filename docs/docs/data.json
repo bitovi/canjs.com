@@ -1,0 +1,1 @@
+c({"name": "data", "type": "property", "parent": "can/route/route.js", "body": "", "description": "<p>A can.Observe that represents the state of the history.</p>", "hide": true, "src": "can/route/route.js", "line": 260})

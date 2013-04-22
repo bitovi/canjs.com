@@ -1,0 +1,1 @@
+c({"name": "global.getComputedStyle.4", "type": "property", "parent": "global.getComputedStyle", "body": "", "description": "<p>W3C: \"an E element, last rs of its parent\" </p>", "src": "can/test/ie shims/a.ielt8.js", "line": 2732})

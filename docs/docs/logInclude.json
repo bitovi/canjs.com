@@ -1,0 +1,1 @@
+c({"body": "", "description": "<p>A hash of log sources that should be logged.  If specified, only\nlog messages from these sources will be logged.</p>", "types": undefined, "title": "", "name": "logInclude", "type": "property", "comment": "undefined@type object\n", "src": "can/lib/yui-3.7.3.js", "line": 1448})

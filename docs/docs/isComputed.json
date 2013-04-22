@@ -1,0 +1,1 @@
+c({"name": "isComputed", "type": "property", "parent": "can.compute", "body": "", "description": "<p>Whether the value of the compute has been computed yet.</p>", "types": undefined, "title": "", "src": "can/observe/compute/compute.js", "line": 319})

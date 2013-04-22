@@ -1,0 +1,1 @@
+c({"name": "NAME", "type": "property", "parent": "Y.EventHandle", "body": "", "description": "<p>The name of the component</p>", "comment": "undefined@type String\n", "types": undefined, "title": "", "src": "can/lib/yui-3.7.3.js", "line": 10832})

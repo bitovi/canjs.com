@@ -1,0 +1,1 @@
+c({"name": "dom.isDescendant.currentStyle", "type": "property", "parent": "dom.isDescendant", "body": "", "description": "<p>ELEMENT_NODE</p>", "src": "can/util/dojo/dojo-1.8.1.js", "line": 9696})

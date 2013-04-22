@@ -1,0 +1,1 @@
+c({"name": "global.getComputedStyle.1", "type": "property", "parent": "global.getComputedStyle", "body": "", "description": "<p>W3C: \"an E element, the n-th rs of its parent, counting from the last one\" </p>", "src": "can/test/ie shims/a.ielt8.js", "line": 2707})

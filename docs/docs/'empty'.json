@@ -1,0 +1,1 @@
+c({"type": "function", "name": "'empty'", "params": [{"name": "node", "types": [{"type": "*"}]}], "parent": "can/lib/mootools-core-1.4.5.js", "body": "", "description": "<p><pseudo-selectors></p>", "src": "can/lib/mootools-core-1.4.3.js", "line": 2451})

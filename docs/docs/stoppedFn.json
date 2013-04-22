@@ -1,0 +1,1 @@
+c({"name": "stoppedFn", "type": "property", "parent": "Y.CustomEvent", "body": "", "description": "<p>The function to execute if a subscriber calls\nstopPropagation or stopImmediatePropagation</p>", "types": undefined, "title": "", "comment": "undefined@type Function\n", "src": "can/lib/yui-3.7.3.js", "line": 6774})

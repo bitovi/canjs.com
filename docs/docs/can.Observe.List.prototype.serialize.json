@@ -1,0 +1,1 @@
+c({"type": "function", "name": "can.Observe.List.prototype.serialize", "params": [], "parent": "can.Observe.List.prototype", "body": "", "description": "<p>Returns the serialized form of this list.</p>", "hide": true, "src": "can/observe/observe.js", "line": 1096})

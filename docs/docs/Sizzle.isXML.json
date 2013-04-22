@@ -1,0 +1,1 @@
+c({"name": "Sizzle.isXML", "type": "constructor", "body": "", "description": "<p>Detect xml</p>", "params": [{"types": [{"type": "Element"}, {"type": "Object"}], "name": "elem", "description": "<p>An element or a document</p>"}], "src": "can/lib/jquery.1.9.0.js", "line": 3986})

@@ -1,0 +1,1 @@
+c({"name": "Jaml.Node.tagName", "type": "property", "parent": "Jaml.Node", "body": "", "description": "<p>This node's current tag</p>", "comment": "undefined@attribute tagName\n@type String\n", "src": "can/view/jaml/jaml.js", "line": 79})

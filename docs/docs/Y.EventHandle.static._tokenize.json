@@ -1,0 +1,1 @@
+c({"type": "function", "name": "Y.EventHandle.static._tokenize", "params": [{"name": "selector", "types": [{"type": "*"}]}], "parent": "Y.EventHandle.static", "body": "", "description": "<p>Break selector into token units per simple selector.\nCombinator is attached to the previous token.</p>", "src": "can/lib/yui-3.7.3.js", "line": 10571})

@@ -1,0 +1,1 @@
+c({"name": "Y.EventHandle.static.text", "type": "property", "parent": "Y.EventHandle.static", "body": "", "description": "<p>Allows for getting and setting the text of an element.\nFormatting is preserved and special characters are treated literally.</p>", "comment": "undefined@config text\n@type String\n", "src": "can/lib/yui-3.7.3.js", "line": 12700})

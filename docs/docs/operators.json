@@ -1,0 +1,1 @@
+c({"name": "operators", "type": "property", "parent": "Y.EventHandle.static", "body": "", "description": "<p>List of operators and corresponding boolean functions.\nThese functions are passed the attribute and the current node's value of the attribute.</p>", "types": undefined, "title": "", "comment": "undefined@type object\n", "src": "can/lib/yui-3.7.3.js", "line": 10302})

@@ -1,0 +1,1 @@
+c({"name": "fireOnce", "type": "property", "parent": "Y.CustomEvent", "body": "", "description": "<p>This event should only fire one time if true, and if\nit has fired, any new subscribers should be notified\nimmediately.</p>", "types": undefined, "title": "", "comment": "undefined@type boolean\n@default false;\n", "src": "can/lib/yui-3.7.3.js", "line": 6720})

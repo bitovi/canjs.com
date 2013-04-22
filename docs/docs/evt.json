@@ -1,0 +1,1 @@
+c({"name": "evt", "type": "property", "parent": "Y.EventHandle", "body": "", "description": "<p>The custom event</p>", "types": undefined, "title": "", "comment": "undefined@type CustomEvent\n", "src": "can/lib/yui-3.7.3.js", "line": 7444})

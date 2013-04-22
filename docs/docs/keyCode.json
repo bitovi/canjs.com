@@ -1,0 +1,1 @@
+c({"body": "", "description": "<p>The keyCode for key events.  Uses charCode if keyCode is not available</p>", "types": undefined, "title": "", "name": "keyCode", "type": "property", "comment": "undefined@type {Number}\n", "src": "can/lib/yui-3.7.3.js", "line": 13785})

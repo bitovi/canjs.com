@@ -1,0 +1,1 @@
+c({"name": "Jaml.Node.attributes", "type": "property", "parent": "Jaml.Node", "body": "", "description": "<p>Sets of attributes on this node (e.g. 'cls', 'id', etc)</p>", "comment": "undefined@attribute attributes\n@type Object\n", "src": "can/view/jaml/jaml.js", "line": 86})

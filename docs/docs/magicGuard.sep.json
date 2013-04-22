@@ -1,0 +1,1 @@
+c({"name": "magicGuard.sep", "type": "property", "parent": "magicGuard", "body": "", "description": "<p>we used to test for DOM nodes and throw, but FF serializes them as {}, so cross-browser consistency is probably not efficiently attainable </p>", "src": "can/util/dojo/dojo-1.8.1.js", "line": 6858})

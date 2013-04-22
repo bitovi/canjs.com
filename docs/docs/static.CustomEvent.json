@@ -1,0 +1,1 @@
+c({"name": "static.CustomEvent", "type": "property", "parent": "static", "body": "", "description": "<p>Define new DOM events that can be subscribed to from Nodes.</p>", "module": "event", "comment": "undefined@submodule event-synthetic\n", "src": "can/lib/yui-3.7.3.js", "line": 19241})

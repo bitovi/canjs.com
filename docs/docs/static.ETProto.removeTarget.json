@@ -1,0 +1,1 @@
+c({"type": "function", "name": "static.ETProto.removeTarget", "params": [{"name": "o", "description": "<p>{EventTarget} the target to remove</p>"}], "parent": "static", "body": "", "description": "<p>Removes a bubble target</p>", "comment": "undefined@method removeTarget\n@for EventTarget\n", "src": "can/lib/yui-3.7.3.js", "line": 19143})

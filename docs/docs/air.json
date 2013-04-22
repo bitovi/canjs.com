@@ -1,0 +1,1 @@
+c({"name": "air", "type": "property", "parent": "static", "body": "", "description": "<p>Adobe AIR version number or 0.  Only populated if webkit is detected.\nExample: 1.0</p>", "types": undefined, "title": "", "comment": "undefined@type float\n", "src": "can/lib/yui-3.7.3.js", "line": 3434})

@@ -1,0 +1,1 @@
+c({"type": "function", "name": "every", "params": [{"name": "fn", "types": [{"type": "*"}]}, {"name": "bind", "types": [{"type": "*"}]}], "parent": "can/lib/mootools-core-1.4.5.js", "body": "", "description": "<p><!ES5></p>", "src": "can/lib/mootools-core-1.4.3.js", "line": 424})

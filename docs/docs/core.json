@@ -1,0 +1,1 @@
+c({"body": "", "description": "<p>A list of modules that defines the YUI core (overrides the default list).</p>", "types": undefined, "title": "", "name": "core", "type": "property", "comment": "undefined@type Array\n@default [ get,features,intl-base,yui-log,yui-later,loader-base, loader-rollup, loader-yui3 ]\n", "src": "can/lib/yui-3.7.3.js", "line": 1499})

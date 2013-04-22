@@ -1,0 +1,1 @@
+c({"name": "jQuery.Callbacks.event", "type": "property", "parent": "jQuery.Callbacks", "body": "", "description": "<p>Helper functions for managing events -- not part of the public interface.\nProps to Dean Edwards' addEvent library for many of the ideas.</p>", "src": "can/lib/jquery.1.8.3.js", "line": 2635})

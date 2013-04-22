@@ -1,0 +1,1 @@
+c({"name": "tests", "type": "property", "parent": "Y.EventHandle", "body": "", "description": "<p>Object hash of all registered feature tests</p>", "types": undefined, "title": "", "comment": "undefined@type Object\n", "src": "can/lib/yui-3.7.3.js", "line": 5131})

@@ -1,0 +1,1 @@
+c({"name": "Sizzle.getText", "type": "constructor", "body": "", "description": "<p>Utility function for retrieving the text value of an array of DOM nodes</p>", "params": [{"types": [{"type": "Array"}, {"type": "Element"}], "name": "elem", "description": ""}], "src": "can/lib/jquery.1.8.3.js", "line": 3982})

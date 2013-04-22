@@ -1,0 +1,1 @@
+c({"body": "", "description": "<p>Number of milliseconds before a timeout occurs when dynamically\nloading nodes. If not set, there is no timeout.</p>", "types": undefined, "title": "", "name": "timeout", "type": "property", "comment": "undefined@type int\n", "src": "can/lib/yui-3.7.3.js", "line": 1700})

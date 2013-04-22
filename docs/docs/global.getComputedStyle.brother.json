@@ -1,0 +1,1 @@
+c({"name": "global.getComputedStyle.brother", "type": "property", "parent": "global.getComputedStyle", "body": "", "description": "<p>implementation was taken from jQuery.1.7 </p>", "src": "can/test/ie shims/a.ielt8.js", "line": 2806})

@@ -1,0 +1,1 @@
+c({"name": "rootUrl", "type": "property", "parent": "can.fixture", "body": "", "description": "<p><code>can.fixture.rootUrl</code> contains the root URL for fixtures to use.\nIf you are using StealJS it will use the Steal root\nURL by default.</p>", "comment": "undefined@attribute {String} can.fixture.rootUrl\n", "src": "can/util/fixture/fixture.js", "line": 931})

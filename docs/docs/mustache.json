@@ -1,0 +1,1 @@
+c({"name": "Mustache", "type": "constructor", "body": "", "description": "<p>The Mustache templating engine.</p>", "params": [{"types": [{"type": "Object"}], "name": "options", "description": "<p>Configuration options</p>"}], "src": "can/view/mustache/mustache.js", "line": 53})

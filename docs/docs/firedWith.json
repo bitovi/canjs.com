@@ -1,0 +1,1 @@
+c({"body": "", "description": "<p>An array containing the arguments the custom event\nwas last fired with.</p>", "types": undefined, "title": "", "name": "firedWith", "type": "property", "comment": "undefined@type Array\n", "src": "can/lib/yui-3.7.3.js", "line": 6712})

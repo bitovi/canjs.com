@@ -1,0 +1,1 @@
+c({"type": "function", "name": "YUI.static._setup", "params": [{"name": "o", "types": [{"type": "*"}]}], "parent": "YUI.static", "body": "", "description": "<p>Finishes the instance setup. Attaches whatever modules were defined\nwhen the yui modules was registered.</p>", "comment": "undefined@method _setup\n@private\n", "src": "can/lib/yui-3.7.3.js", "line": 493})

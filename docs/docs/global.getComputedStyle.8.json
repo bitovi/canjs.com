@@ -1,0 +1,1 @@
+c({"name": "global.getComputedStyle.8", "type": "property", "parent": "global.getComputedStyle", "body": "", "description": "<p>W3C: \"an element of type E in language \"fr\"\n(the document language specifies how language is determined)\"</p>", "src": "can/test/ie shims/a.ielt8.js", "line": 2726})

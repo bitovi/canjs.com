@@ -1,0 +1,1 @@
+c({"type": "function", "name": "can.Control.static.setup", "params": [], "parent": "can.Control.static", "body": "", "description": "<p>Setup pre-process which methods are event listeners.</p>", "hide": true, "src": "can/control/control.js", "line": 47})

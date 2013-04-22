@@ -1,0 +1,1 @@
+c({"type": "function", "name": "static.stopImmediatePropagation", "params": [], "parent": "static", "body": "", "description": "<p>Stops the propagation to the next bubble target and\nprevents any additional listeners from being exectued\non the current target.</p>", "comment": "undefined@method stopImmediatePropagation\n", "src": "can/lib/yui-3.7.3.js", "line": 18830})

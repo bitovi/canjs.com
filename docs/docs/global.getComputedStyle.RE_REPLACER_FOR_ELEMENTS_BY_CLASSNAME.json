@@ -1,0 +1,1 @@
+c({"name": "global.getComputedStyle.RE_REPLACER_FOR_ELEMENTS_BY_CLASSNAME", "type": "property", "parent": "global.getComputedStyle", "body": "", "description": "", "comment": "undefined@const \n", "src": "can/test/ie shims/a.ie8.js", "line": 2238})

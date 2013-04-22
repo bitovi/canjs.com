@@ -1,0 +1,1 @@
+c({"name": "url", "type": "property", "parent": "can/test/mvc_test.js", "body": "", "description": "<p>$.fixture(\"/mvc/foo\",function(){\n        return [[{\n            id: 1,\n            name : \"foo\"\n        }]]\n    })</p>", "src": "can/build/ci/phantom.js", "line": 0})

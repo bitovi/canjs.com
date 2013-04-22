@@ -1,0 +1,1 @@
+c({"type": "function", "name": "update", "params": [{"name": "currentItem", "types": [{"type": "*"}]}, {"name": "newItem", "types": [{"type": "*"}]}], "parent": "can/model/store/store.js", "body": "", "description": "<p>updates the properties of currentItem</p>", "src": "can/model/store/store.js", "line": 136})

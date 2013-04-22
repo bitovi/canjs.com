@@ -1,0 +1,1 @@
+c({"name": "$.Model.service", "type": "constructor", "body": "", "description": "<p>Creates a service</p>", "params": [{"types": [{"type": "Object"}], "name": "defaults", "description": ""}, {"types": [{"type": "Object"}], "name": "methods", "description": ""}], "src": "can/model/service/service.js", "line": 12})

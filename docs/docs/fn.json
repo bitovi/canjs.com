@@ -1,0 +1,1 @@
+c({"name": "fn", "type": "constructor", "body": "", "description": "<p>This function is created for each tag name and assigned to Template's\nprototype below</p>", "title": undefined, "src": "can/util/object/isplain/isplain_test.js", "line": 26})

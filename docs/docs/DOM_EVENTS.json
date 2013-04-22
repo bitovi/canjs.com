@@ -1,0 +1,1 @@
+c({"name": "DOM_EVENTS", "type": "property", "parent": "Y.EventHandle", "body": "", "description": "<p>List of events that route to DOM events</p>", "types": undefined, "title": "", "comment": "undefined@for Node\n", "src": "can/lib/yui-3.7.3.js", "line": 12809})

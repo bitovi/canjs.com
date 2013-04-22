@@ -1,0 +1,1 @@
+c({"name": "prototype.scanner", "type": "property", "parent": "prototype", "body": "", "description": "<p>Singleton scanner instance for parsing templates.</p>", "hide": true, "src": "can/view/ejs/ejs.js", "line": 61})

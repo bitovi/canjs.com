@@ -1,0 +1,1 @@
+c({"name": "signature", "type": "property", "parent": "Y.CustomEvent", "body": "", "description": "<p>Supports multiple options for listener signatures in order to\nport YUI 2 apps.</p>", "types": undefined, "title": "", "comment": "undefined@type int\n@default 9\n", "src": "can/lib/yui-3.7.3.js", "line": 6812})

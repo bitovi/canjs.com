@@ -1,0 +1,1 @@
+c({"name": "Sizzle.getText.accepts", "type": "property", "parent": "Sizzle.getText", "body": "", "description": "<p>timeout: 0,\ndata: null,\ndataType: null,\nusername: null,\npassword: null,\ncache: null,\nthrows: false,\ntraditional: false,\nheaders: {},</p>", "src": "can/lib/jquery.1.8.3.js", "line": 7553})

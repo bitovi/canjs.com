@@ -1,0 +1,1 @@
+c({"name": "can.classize", "type": "constructor", "body": "", "description": "<p>Like [can.camelize|camelize], but the first part is also capitalized</p>", "params": [{"types": [{"type": "String"}], "name": "s", "description": ""}], "returns": {"types": [{"type": "String"}], "description": "<p>the classized string</p>"}, "src": "can/observe/setter/setter.js", "line": 2})

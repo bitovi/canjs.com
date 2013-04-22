@@ -1,0 +1,1 @@
+c({"type": "function", "name": "create", "params": [{"types": [{"type": "Object"}], "name": "newItem", "description": ""}], "parent": "can/model/store/store.js", "body": "", "description": "", "src": "can/model/store/store.js", "line": 142})

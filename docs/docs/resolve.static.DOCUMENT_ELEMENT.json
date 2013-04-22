@@ -1,0 +1,1 @@
+c({"name": "resolve.static.DOCUMENT_ELEMENT", "type": "property", "parent": "resolve.static", "body": "", "description": "<p>Adds position and region management functionality to DOM.</p>", "module": "dom", "comment": "undefined@submodule dom-screen\n@for DOM\n", "src": "can/lib/yui-3.7.3.js", "line": 15665})

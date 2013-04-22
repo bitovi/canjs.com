@@ -1,0 +1,1 @@
+c({"name": "undefined.evt", "type": "property", "parent": undefined, "body": "", "description": "<p>Signals the interactive state during a file upload transaction.\nThis event fires after io:start and before io:complete.</p>", "comment": "undefined@event io:progress\n", "src": "can/lib/yui-3.7.3.js", "line": 17374})

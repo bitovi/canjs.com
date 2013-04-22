@@ -1,0 +1,1 @@
+c({"name": "buildLibrary", "type": "constructor", "body": "", "description": "<p>Build CanJS and test files for a given library</p>", "params": [{"name": "lib", "description": ""}], "src": "can/build/build.js", "line": 15})

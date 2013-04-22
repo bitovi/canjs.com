@@ -1,0 +1,1 @@
+c({"name": "Y.EventHandle._parseType", "type": "property", "parent": "Y.EventHandle", "body": "", "description": "<p>Returns an array with the detach key (if provided),\nand the prefixed event name from _getType\nY.on('detachcategory| menu:click', fn)</p>", "comment": "undefined@method _parseType\n@private\n", "src": "can/lib/yui-3.7.3.js", "line": 7556})

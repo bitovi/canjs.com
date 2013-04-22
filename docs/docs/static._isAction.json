@@ -1,0 +1,1 @@
+c({"type": "function", "name": "static._isAction", "params": [{"types": [{"type": "String"}], "name": "methodName", "description": "<p>a prototype function</p>"}], "parent": "static", "body": "", "description": "", "hide": true, "returns": {"types": [{"type": "Boolean"}], "description": "<p>truthy if an action or not</p>"}, "src": "can/control/control.js", "line": 92})

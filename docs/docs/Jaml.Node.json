@@ -1,0 +1,1 @@
+c({"name": "Jaml.Node", "type": "constructor", "body": "", "description": "", "comment": "undefined@class\n", "title": undefined, "params": [{"types": [{"type": "String"}], "name": "tagName", "description": "<p>The tag name this node represents (e.g. 'p', 'div', etc)</p>"}], "src": "can/view/jaml/jaml.js", "line": 73})

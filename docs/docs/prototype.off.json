@@ -1,0 +1,1 @@
+c({"type": "function", "name": "prototype.off", "params": [], "parent": "prototype", "body": "", "description": "<p>Unbinds all event handlers on the controller. You should never\nbe calling this unless in use with [can.Control::on].</p>", "hide": true, "src": "can/control/control.js", "line": 594})

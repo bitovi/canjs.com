@@ -1,0 +1,1 @@
+c({"type": "function", "name": "expect", "params": [{"name": "asserts", "types": [{"type": "*"}]}], "parent": "can/build/templates/qunit.js", "body": "", "description": "<p>Specify the number of expected assertions to gurantee that failed test (no assertions are run at all) don't slip through.</p>", "src": "can/build/templates/qunit.js", "line": 312})

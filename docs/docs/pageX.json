@@ -1,0 +1,1 @@
+c({"body": "", "description": "<p>The X location of the event on the page (including scroll)</p>", "types": undefined, "title": "", "name": "pageX", "type": "property", "comment": "undefined@type {Number}\n", "src": "can/lib/yui-3.7.3.js", "line": 13761})

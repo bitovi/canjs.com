@@ -1,0 +1,1 @@
+c({"type": "function", "name": "YUI.static.destroy", "params": [], "parent": "YUI.static", "body": "", "description": "<p>Destroys the YUI instance</p>", "comment": "undefined@method destroy\n@since 3.3.0\n", "src": "can/lib/yui-3.7.3.js", "line": 1304})

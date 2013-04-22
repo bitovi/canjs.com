@@ -1,0 +1,1 @@
+c({"name": "can.view.text", "type": "property", "parent": "can.view", "body": "", "description": "<p>should return something like steal(\"dependencies\",function(EJS){\n     return can.view.preload(\"ID\", options.text)\n})</p>", "src": "can/view/view.js", "line": 575})

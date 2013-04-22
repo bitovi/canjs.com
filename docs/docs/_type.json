@@ -1,0 +1,1 @@
+c({"name": "_type", "type": "property", "parent": "static", "body": "", "description": "<p>The real event type</p>", "types": undefined, "title": "", "comment": "undefined@type string\n@private\n", "src": "can/lib/yui-3.7.3.js", "line": 18786})

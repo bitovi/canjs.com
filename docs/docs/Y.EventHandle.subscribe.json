@@ -1,0 +1,1 @@
+c({"type": "function", "name": "Y.EventHandle.subscribe", "params": [], "parent": "Y.EventHandle", "body": "", "description": "<p>subscribe to an event</p>", "comment": "undefined@method subscribe\n@deprecated use on\n", "src": "can/lib/yui-3.7.3.js", "line": 7834})

@@ -1,0 +1,1 @@
+c({"type": "function", "name": "_hide", "params": [], "parent": "DOM_EVENTS", "body": "", "description": "<p>The implementation for hiding nodes.\nDefault is to toggle the style.display property.</p>", "comment": "undefined@method _hide\n@protected\n@chainable\n", "src": "can/lib/yui-3.7.3.js", "line": 13193})

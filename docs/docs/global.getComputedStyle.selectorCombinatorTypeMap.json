@@ -1,0 +1,1 @@
+c({"name": "global.getComputedStyle.selectorCombinatorTypeMap", "type": "property", "parent": "global.getComputedStyle", "body": "", "description": "", "comment": "undefined@type {Object} @const \n", "src": "can/test/ie shims/a.ielt8.js", "line": 2381})

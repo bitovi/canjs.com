@@ -1,0 +1,1 @@
+c({"name": "Y.EventHandle._getType", "type": "property", "parent": "Y.EventHandle", "body": "", "description": "<p>If the instance has a prefix attribute and the\nevent type is not prefixed, the instance prefix is\napplied to the supplied type.</p>", "comment": "undefined@method _getType\n@private\n", "src": "can/lib/yui-3.7.3.js", "line": 7540})

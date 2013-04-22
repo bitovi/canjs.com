@@ -1,0 +1,1 @@
+c({"name": "isObserve", "type": "constructor", "body": "", "description": "<p>Checks whether an object is a can.Observe.</p>", "params": [{"types": [{"type": "["}], "name": "observable", "description": ""}], "returns": {"types": [{"type": "Boolean"}], "description": "<p>returns if the object is an observable.</p>"}, "src": "can/view/mustache/mustache.js", "line": 34})

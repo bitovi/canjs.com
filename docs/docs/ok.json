@@ -1,0 +1,1 @@
+c({"type": "function", "name": "ok", "params": [{"name": "a", "types": [{"type": "*"}]}, {"name": "msg", "types": [{"type": "*"}]}], "parent": "can/build/templates/qunit.js", "body": "", "description": "<p>Asserts true.</p>", "comment": "undefined@example ok( \"asdfasdf\".length > 5, \"There must be at least 5 chars\" );\n", "src": "can/build/templates/qunit.js", "line": 319})

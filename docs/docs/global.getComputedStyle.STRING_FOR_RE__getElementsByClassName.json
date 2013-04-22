@@ -1,0 +1,1 @@
+c({"name": "global.getComputedStyle.STRING_FOR_RE__getElementsByClassName", "type": "property", "parent": "global.getComputedStyle", "body": "", "description": "", "comment": "undefined@type {string} @const \n", "src": "can/test/ie shims/a.ielt8.js", "line": 2355})

@@ -1,0 +1,1 @@
+c({"name": "Jaml.Node.children", "type": "property", "parent": "Jaml.Node", "body": "", "description": "<p>Array of rendered child nodes that will be steald as this node's innerHTML</p>", "comment": "undefined@attribute children\n@type Array\n", "src": "can/view/jaml/jaml.js", "line": 93})

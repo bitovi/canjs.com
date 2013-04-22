@@ -1,0 +1,1 @@
+c({"name": "buildAmd", "type": "constructor", "body": "", "description": "<p>Build the AMD module distributable</p>", "src": "can/build/build.js", "line": 80})

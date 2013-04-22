@@ -1,0 +1,1 @@
+c({"type": "function", "name": "Jaml.Node.addChild", "params": [{"types": [{"type": "String"}], "name": "childText", "description": "<p>The text of the child node</p>"}], "parent": "Jaml.Node", "body": "", "description": "<p>Adds a child string to this node. This can be called as often as needed to add children to a node</p>", "src": "can/view/jaml/jaml.js", "line": 115})

@@ -1,0 +1,1 @@
+c({"name": "prototype.tokens", "type": "property", "parent": "prototype", "body": "", "description": "<p>An ordered token registry for the scanner.\nThis needs to be ordered by priority to prevent token parsing errors.\nEach token is defined as: [\"token-name\", \"string representation\", \"optional regexp override\"]</p>", "hide": true, "src": "can/view/ejs/ejs.js", "line": 66})

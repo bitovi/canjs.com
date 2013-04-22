@@ -1,0 +1,1 @@
+c({"type": "function", "name": "Y.EventHandle.static.empty", "params": [], "parent": "Y.EventHandle.static", "body": "", "description": "<p>Removes and destroys all of the nodes within the node.</p>", "comment": "undefined@method empty\n@chainable\n", "src": "can/lib/yui-3.7.3.js", "line": 11535})

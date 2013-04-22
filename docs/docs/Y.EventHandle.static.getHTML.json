@@ -1,0 +1,1 @@
+c({"name": "Y.EventHandle.static.getHTML", "type": "property", "parent": "Y.EventHandle.static", "body": "", "description": "<p>Returns the node's current html content (e.g. innerHTML)</p>", "comment": "undefined@method getHTML\n", "returns": {"types": [{"type": "String"}], "description": "<p>The html content</p>"}, "src": "can/lib/yui-3.7.3.js", "line": 12601})
