@@ -34,11 +34,11 @@
 
 		// Syntax highlighting for our example.
 		Rainbow.color();
+	});
 
-		// this needs to wait until everything is loaded.
-		$(window).load(function() {
-			// Grayscaling for our featured apps.
-			Grayscale($('.carousel img'), 300);
-		});
+	// this needs to wait until everything is loaded.
+	$(window).load(function() {
+		// Grayscaling for our featured apps.
+		Grayscale($('.carousel img'), 300);
 	});
 })(jQuery);
