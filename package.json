@@ -1,0 +1,39 @@
+{
+  "name": "canjs.us",
+  "description": "We can do JS better.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/bitovi/canjs.us",
+  "author": {
+    "name": "Bitovi",
+    "url": "http://bitovi.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bitovi/canjs.us.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bitovi/canjs.us/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/bitovi/canjs.us/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "lib/grunt-init-node-sample",
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-watch": "~0.3.1",
+    "grunt-contrib-concat": "~0.2.0",
+    "grunt-contrib-jshint": "~0.4.3",
+    "grunt-contrib-less": "~0.5.0",
+    "can-compile": "~0.2.1"
+  }
+}
