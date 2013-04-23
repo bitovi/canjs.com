@@ -1,0 +1,17 @@
+<div class="pull-right">
+	<ul class="tags">
+		<li>{{type}}</li>
+	</ul>
+	<ul class="links">
+		{{#if download}}
+		<li><a href="{{download}}">download</a></li>
+		{{/if}}
+		{{#if test}}
+		<li><a href="{{test}}">tests</a></li>
+		{{/if}}
+	</ul>
+</div>
+<h1>{{{title}}}</h1>
+{{#if inherits}}
+<span class="inherits"><a href="{{makeHref inherits}}">{{inherits}}</a></span>
+{{/if}}

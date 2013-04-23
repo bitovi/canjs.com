@@ -1,0 +1,28 @@
+<article class="content docs">
+	<section class="title">
+	{{> title}}
+	</section>
+
+	<section class="description">
+	{{{description}}}
+
+	<ul class="contents">
+		{{#contentList this}}
+		<li><a href="#!&where={{where}}">{{text}}</a></li>
+		{{/contentList}}
+	</ul>
+	{{makeContentList this}}
+	</section>
+	
+	{{#signatures}}
+	<section class="signature">
+	{{> signature}}
+	</section>
+	{{/signatures}}
+	
+	{{#if body}}
+	<section class="comment">
+	{{{body}}}
+	</section>
+	{{/if}}
+</article>
