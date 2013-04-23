@@ -1,4 +1,4 @@
-Mustache.registerHelper('makeTypesString', function(types) {
+can.Mustache.registerHelper('makeTypesString', function(types) {
 	if(types.length) {
 		// turns [{type: 'Object'}, {type: 'String'}] into '{Object | String}'
 		return '{' + types.map(function(t) { return t.type; }).join(' | ') + '}';
@@ -7,7 +7,7 @@ Mustache.registerHelper('makeTypesString', function(types) {
 	}
 });
 
-Mustache.registerHelper('listOptions', function(types, options) {
+can.Mustache.registerHelper('listOptions', function(types, options) {
 	var out = [];
 	types.forEach(function(type) {
 		type.options.forEach(function(option) {
@@ -18,7 +18,7 @@ Mustache.registerHelper('listOptions', function(types, options) {
 	return out.join('');
 });
 
-Mustache.registerHelper('contentList', function(page) {
+can.Mustache.registerHelper('contentList', function(page) {
 	var out = [];
 
 	page.signatures.forEach(function(sig) {
@@ -36,7 +36,7 @@ Mustache.registerHelper('contentList', function(page) {
 	return out.join('');
 });
 
-Mustache.registerHelper('makeHref', function(name) {
+can.Mustache.registerHelper('makeHref', function(name) {
 	// I expect there will be some kind of predictable scheme
 	// like pages being at //docs/name.html. At least I hope.
 	// A flat scheme would make this tons easier. So:
