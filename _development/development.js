@@ -54,7 +54,7 @@ $(function() {
 			link: {
 				index: '#!index',
 				guides: '#!guides',
-				docs: '#!docs',
+				docs: '../docs/docs.html',
 				community: '#!community',
 				download: '#!download'
 			},
