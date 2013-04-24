@@ -1,1 +1,0 @@
-c({"type": "function", "name": "static.size", "params": [], "parent": "static", "body": "", "description": "<p>Returns the current number of queued items.</p>", "comment": "undefined@method size\n", "returns": {"types": [{"type": "Number"}], "description": "<p>The size.</p>"}, "src": "can/lib/yui-3.7.3.js", "line": 2645})

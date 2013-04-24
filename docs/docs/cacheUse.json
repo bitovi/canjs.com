@@ -1,1 +1,0 @@
-c({"body": "", "description": "<p>Cache serviced use() requests.</p>", "comment": "undefined@since 3.3.0\n@type boolean\n@default true\n@deprecated no longer used\n", "types": undefined, "title": "", "name": "cacheUse", "type": "property", "src": "can/lib/yui-3.7.3.js", "line": 1905})

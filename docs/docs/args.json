@@ -1,1 +1,0 @@
-c({"name": "args", "type": "property", "parent": "Y.CustomEvent.static.Y.Subscriber", "body": "", "description": "<p>Additional arguments to propagate to the subscriber</p>", "types": undefined, "title": "", "comment": "undefined@type Array\n", "src": "can/lib/yui-3.7.3.js", "line": 7322})

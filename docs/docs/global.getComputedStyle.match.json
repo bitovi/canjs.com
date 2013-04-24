@@ -1,1 +1,0 @@
-c({"name": "global.getComputedStyle.match", "type": "property", "parent": "global.getComputedStyle", "body": "", "description": "<p>Check for node's existence </p>", "src": "can/test/ie shims/a.ielt8.js", "line": 2809})

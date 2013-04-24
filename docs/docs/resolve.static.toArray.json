@@ -1,1 +1,0 @@
-c({"name": "resolve.static.toArray", "type": "property", "parent": "resolve.static", "body": "", "description": "<p>Adds event delegation support to the library.</p>", "module": "event", "comment": "undefined@submodule event-delegate\n", "src": "can/lib/yui-3.7.3.js", "line": 14861})

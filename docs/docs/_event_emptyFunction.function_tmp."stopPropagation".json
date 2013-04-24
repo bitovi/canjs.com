@@ -1,1 +1,0 @@
-c({"type": "function", "name": "_event_emptyFunction.function_tmp.\"stopPropagation\"", "params": [], "parent": "_event_emptyFunction.function_tmp", "body": "", "description": "", "comment": "undefined@this {_ielt9_Event} @lends {function_tmp.prototype} \n", "src": "can/test/ie shims/a.ielt8.js", "line": 800})

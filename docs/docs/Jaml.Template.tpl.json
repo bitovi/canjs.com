@@ -1,1 +1,0 @@
-c({"name": "Jaml.Template.tpl", "type": "property", "parent": "Jaml.Template", "body": "", "description": "<p>The function this template was created from</p>", "comment": "undefined@attribute tpl\n@type Function\n", "src": "can/view/jaml/jaml.js", "line": 236})

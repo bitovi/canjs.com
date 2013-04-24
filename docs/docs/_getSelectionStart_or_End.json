@@ -1,1 +1,0 @@
-c({"name": "_getSelectionStart_or_End", "type": "constructor", "body": "", "description": "", "params": [{"types": [{"type": "boolean"}], "optional": true, "name": "needStart", "description": "<p>true - return start point, otherwise - end point</p>"}], "src": "can/test/ie shims/a.ielt8.js", "line": 1357})

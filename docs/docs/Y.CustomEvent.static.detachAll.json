@@ -1,1 +1,0 @@
-c({"type": "function", "name": "Y.CustomEvent.static.detachAll", "params": [], "parent": "Y.CustomEvent.static", "body": "", "description": "<p>Removes all listeners</p>", "comment": "undefined@method detachAll\n", "returns": {"types": [{"type": "int"}], "description": "<p>The number of listeners unsubscribed.</p>"}, "src": "can/lib/yui-3.7.3.js", "line": 7238})

@@ -1,1 +1,0 @@
-c({"name": "dojo.fromJson.dojoType", "type": "property", "parent": "dojo.fromJson", "body": "", "description": "<p>=====\n             return function(){\n             // summary:\n             //        Default error if a promise is canceled without a reason.\n             };\n             =====</p>", "src": "can/util/dojo/dojo-1.8.1.js", "line": 17717})

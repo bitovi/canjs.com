@@ -1,1 +1,0 @@
-c({"name": "resolve.static.PluginHost", "type": "property", "parent": "resolve.static", "body": "", "description": "<p>Adds pluginhost constructor configuration and static configuration support</p>", "comment": "undefined@submodule pluginhost-config\n", "src": "can/lib/yui-3.7.3.js", "line": 15436})

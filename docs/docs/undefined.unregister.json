@@ -1,1 +1,0 @@
-c({"type": "function", "name": "undefined.unregister", "params": [{"name": "sub", "description": "<p>{Subscription} the subscription</p>"}], "parent": undefined, "body": "", "description": "<p>Removes the subscription from the Notifier registry.</p>", "comment": "undefined@method _unregisterSub\n@since 3.4.0\n", "src": "can/lib/yui-3.7.3.js", "line": 19384})

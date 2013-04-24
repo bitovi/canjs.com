@@ -1,1 +1,0 @@
-c({"name": "preventable", "type": "property", "parent": "Y.CustomEvent", "body": "", "description": "<p>Specifies whether or not this event's default function\ncan be cancelled by a subscriber by executing preventDefault()\non the event facade</p>", "types": undefined, "title": "", "comment": "undefined@type boolean\n@default true\n", "src": "can/lib/yui-3.7.3.js", "line": 6790})

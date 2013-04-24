@@ -1,1 +1,0 @@
-c({"type": "function", "name": "Jaml.Node.isSelfClosing", "params": [], "parent": "Jaml.Node", "body": "", "description": "<p>Returns true if this tag should close itself (e.g. no </tag> element)</p>", "returns": {"types": [{"type": "Boolean"}], "description": "<p>True if this tag should close itself</p>"}, "src": "can/view/jaml/jaml.js", "line": 191})

@@ -1,1 +1,0 @@
-c({"body": "", "description": "<p>Set to true if the yui seed file was dynamically loaded in\norder to bootstrap components relying on the window load event\nand the <code>domready</code> custom event.</p>", "types": undefined, "title": "", "name": "injected", "type": "property", "comment": "undefined@type boolean\n@default false\n", "src": "can/lib/yui-3.7.3.js", "line": 1464})

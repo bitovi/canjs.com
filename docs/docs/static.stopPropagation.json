@@ -1,1 +1,0 @@
-c({"type": "function", "name": "static.stopPropagation", "params": [], "parent": "static", "body": "", "description": "<p>Stops the propagation to the next bubble target</p>", "comment": "undefined@method stopPropagation\n", "src": "can/lib/yui-3.7.3.js", "line": 18821})

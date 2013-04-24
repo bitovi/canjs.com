@@ -1,1 +1,0 @@
-c({"type": "function", "name": "Jaml.Node.setAttributes", "params": [{"types": [{"type": "Object"}], "name": "attrs", "description": "<p>Object containing key: value pairs of node attributes</p>"}], "parent": "Jaml.Node", "body": "", "description": "<p>Adds attributes to this node</p>", "src": "can/view/jaml/jaml.js", "line": 102})

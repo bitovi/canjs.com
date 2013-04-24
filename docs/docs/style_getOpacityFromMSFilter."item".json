@@ -1,1 +1,0 @@
-c({"type": "function", "name": "style_getOpacityFromMSFilter.\"item\"", "params": [{"types": [{"type": "Number"}], "name": "index", "description": ""}], "parent": "style_getOpacityFromMSFilter", "body": "", "description": "", "src": "can/test/ie shims/a.ielt8.js", "line": 271})

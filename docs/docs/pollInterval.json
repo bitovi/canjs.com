@@ -1,1 +1,0 @@
-c({"body": "", "description": "<p>The default interval when polling in milliseconds.</p>", "types": undefined, "title": "", "name": "pollInterval", "type": "property", "comment": "undefined@type int\n@default 20\n", "src": "can/lib/yui-3.7.3.js", "line": 1534})

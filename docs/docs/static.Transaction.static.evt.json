@@ -1,1 +1,0 @@
-c({"name": "static.Transaction.static.evt", "type": "property", "parent": "static.Transaction.static", "body": "", "description": "<p>Custom event engine, DOM event listener abstraction layer, synthetic DOM\nevents.</p>", "module": "event-custom", "src": "can/lib/yui-3.7.3.js", "line": 6150})

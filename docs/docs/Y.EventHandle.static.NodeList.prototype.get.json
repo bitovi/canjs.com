@@ -1,1 +1,0 @@
-c({"type": "function", "name": "Y.EventHandle.static.NodeList.prototype.get", "params": [{"name": "attr", "types": [{"type": "*"}]}], "parent": "Y.EventHandle.static", "body": "", "description": "<p>Called on each Node instance</p>", "comment": "undefined@method get\n@see Node\n", "src": "can/lib/yui-3.7.3.js", "line": 11954})

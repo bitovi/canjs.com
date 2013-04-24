@@ -1,1 +1,0 @@
-c({"type": "function", "name": "can.evalJSON", "params": [{"name": "src", "types": [{"type": "*"}]}], "parent": "can.toJSON", "body": "", "description": "<p>Evaluates a given piece of json source.</p>", "title": "", "src": "can/util/json.js", "line": 141})

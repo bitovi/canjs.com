@@ -1,1 +1,0 @@
-c({"type": "function", "name": "static.preventDefault", "params": [], "parent": "static", "body": "", "description": "<p>Prevents the event's default behavior</p>", "comment": "undefined@method preventDefault\n", "src": "can/lib/yui-3.7.3.js", "line": 18841})

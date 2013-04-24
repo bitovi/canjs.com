@@ -1,1 +1,0 @@
-c({"type": "property", "body": "", "description": "<p>A globally unique ID for this <code>can.Observe</code> instance.</p>", "types": [{"type": "String"}], "title": "", "name": "_cid", "src": "can/observe/observe.js", "line": 353})

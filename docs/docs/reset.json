@@ -1,1 +1,0 @@
-c({"type": "function", "name": "reset", "params": [], "parent": "can/build/templates/qunit.js", "body": "", "description": "<p>Resets the test setup. Useful for tests that modify the DOM.</p>\n\n<p>If jQuery is available, uses jQuery's html(), otherwise just innerHTML.</p>", "src": "can/build/templates/qunit.js", "line": 582})

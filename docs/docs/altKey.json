@@ -1,1 +1,0 @@
-c({"body": "", "description": "<p><code>true</code> if the \"alt\" or \"option\" key is pressed.</p>", "types": undefined, "title": "", "name": "altKey", "type": "property", "comment": "undefined@type {Boolean}\n", "src": "can/lib/yui-3.7.3.js", "line": 13732})

@@ -1,1 +1,0 @@
-c({"name": "can.view.hookups", "type": "property", "parent": "can.view", "body": "", "description": "<p>A list of pending 'hookups'</p>", "comment": "undefined@attribute hookups\n", "hide": true, "src": "can/view/view.js", "line": 161})

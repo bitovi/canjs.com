@@ -1,1 +1,0 @@
-c({"name": "_nodes", "type": "property", "parent": "Y.EventHandle.static", "body": "", "description": "<p>The underlying array of DOM nodes bound to the Y.NodeList instance</p>", "types": undefined, "title": "", "comment": "undefined@private\n", "src": "can/lib/yui-3.7.3.js", "line": 11596})

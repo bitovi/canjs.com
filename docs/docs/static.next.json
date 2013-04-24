@@ -1,1 +1,0 @@
-c({"type": "function", "name": "static.next", "params": [], "parent": "static", "body": "", "description": "<p>Get the next item in the queue. FIFO support</p>", "comment": "undefined@method next\n", "returns": {"types": [{"type": "MIXED"}], "description": "<p>the next item in the queue.</p>"}, "src": "can/lib/yui-3.7.3.js", "line": 2612})

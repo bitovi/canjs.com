@@ -1,1 +1,0 @@
-c({"name": "preventedFn", "type": "property", "parent": "Y.CustomEvent", "body": "", "description": "<p>The function to execute if a subscriber calls\npreventDefault</p>", "types": undefined, "title": "", "comment": "undefined@type Function\n", "src": "can/lib/yui-3.7.3.js", "line": 6782})

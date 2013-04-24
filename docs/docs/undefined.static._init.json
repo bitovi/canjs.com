@@ -1,1 +1,0 @@
-c({"type": "function", "name": "undefined.static._init", "params": [], "parent": "undefined.static", "body": "", "description": "<p>Construction logic for the event.</p>", "comment": "undefined@method _init\n@protected\n", "src": "can/lib/yui-3.7.3.js", "line": 19521})

@@ -1,1 +1,0 @@
-c({"name": "_timeout", "type": "property", "parent": undefined, "body": "", "description": "<p>Object that stores timeout values for any transaction with a defined\n\"timeout\" configuration property.</p>", "types": undefined, "title": "", "comment": "undefined@private\n@type {Object}\n", "src": "can/lib/yui-3.7.3.js", "line": 17106})

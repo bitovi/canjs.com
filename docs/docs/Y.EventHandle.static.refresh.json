@@ -1,1 +1,0 @@
-c({"type": "function", "name": "Y.EventHandle.static.refresh", "params": [], "parent": "Y.EventHandle.static", "body": "", "description": "<p>Reruns the initial query, when created using a selector query</p>", "comment": "undefined@method refresh\n@chainable\n", "src": "can/lib/yui-3.7.3.js", "line": 11829})

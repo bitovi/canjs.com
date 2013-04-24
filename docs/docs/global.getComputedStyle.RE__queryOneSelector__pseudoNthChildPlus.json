@@ -1,1 +1,0 @@
-c({"name": "global.getComputedStyle.RE__queryOneSelector__pseudoNthChildPlus", "type": "property", "parent": "global.getComputedStyle", "body": "", "description": "", "comment": "undefined@type {RegExp} @const \n", "src": "can/test/ie shims/a.ielt8.js", "line": 2375})

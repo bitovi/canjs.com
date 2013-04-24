@@ -1,1 +1,0 @@
-c({"type": "function", "name": "static.CEProto.preventDefault", "params": [], "parent": "static", "body": "", "description": "<p>Prevents the execution of this event's defaultFn</p>", "comment": "undefined@method preventDefault\n", "src": "can/lib/yui-3.7.3.js", "line": 19087})

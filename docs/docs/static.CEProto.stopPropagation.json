@@ -1,1 +1,0 @@
-c({"type": "function", "name": "static.CEProto.stopPropagation", "params": [], "parent": "static", "body": "", "description": "<p>Stop propagation to bubble targets</p>", "comment": "undefined@for CustomEvent\n@method stopPropagation\n", "src": "can/lib/yui-3.7.3.js", "line": 19057})

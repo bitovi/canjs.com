@@ -1,1 +1,0 @@
-c({"name": "monitored", "type": "property", "parent": "Y.CustomEvent", "body": "", "description": "<p>Monitor when an event is attached or detached.</p>", "types": undefined, "title": "", "comment": "undefined@type boolean\n", "src": "can/lib/yui-3.7.3.js", "line": 6630})

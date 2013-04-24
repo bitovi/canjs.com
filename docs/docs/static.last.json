@@ -1,1 +1,0 @@
-c({"type": "function", "name": "static.last", "params": [], "parent": "static", "body": "", "description": "<p>Get the last in the queue. LIFO support.</p>", "comment": "undefined@method last\n", "returns": {"types": [{"type": "MIXED"}], "description": "<p>the last item in the queue.</p>"}, "src": "can/lib/yui-3.7.3.js", "line": 2622})
