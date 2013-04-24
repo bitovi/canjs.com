@@ -1,1 +1,0 @@
-c({"name": "silent", "type": "property", "parent": "Y.CustomEvent", "body": "", "description": "<p>By default all custom events are logged in the debug build, set silent\nto true to disable debug outpu for this event.</p>", "types": undefined, "title": "", "comment": "undefined@type boolean\n", "src": "can/lib/yui-3.7.3.js", "line": 6650})

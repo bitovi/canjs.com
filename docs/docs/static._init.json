@@ -1,1 +1,0 @@
-c({"type": "function", "name": "static._init", "params": [], "parent": "static", "body": "", "description": "<p>Initialize the queue</p>", "comment": "undefined@method _init\n@protected\n", "src": "can/lib/yui-3.7.3.js", "line": 2595})

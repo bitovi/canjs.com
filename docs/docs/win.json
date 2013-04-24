@@ -1,1 +1,0 @@
-c({"body": "", "description": "<p>The window/frame that this instance should operate in.</p>", "types": undefined, "title": "", "name": "win", "type": "property", "comment": "undefined@type Window\n@default the window hosting YUI\n", "src": "can/lib/yui-3.7.3.js", "line": 1483})

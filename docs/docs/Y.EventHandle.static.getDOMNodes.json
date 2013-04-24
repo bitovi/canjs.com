@@ -1,1 +1,0 @@
-c({"type": "function", "name": "Y.EventHandle.static.getDOMNodes", "params": [], "parent": "Y.EventHandle.static", "body": "", "description": "<p>Returns the DOM node bound to the Node instance</p>", "comment": "undefined@method getDOMNodes\n", "returns": {"types": [{"type": "Array"}], "description": ""}, "src": "can/lib/yui-3.7.3.js", "line": 11895})

@@ -1,1 +1,0 @@
-c({"name": "DO.Prevent.Error.onsubscribeType", "type": "property", "parent": "DO.Prevent.Error", "body": "", "description": "<p>Custom event engine, DOM event listener abstraction layer, synthetic DOM\nevents.</p>", "module": "event-custom", "comment": "undefined@submodule event-custom-base\n", "src": "can/lib/yui-3.7.3.js", "line": 6543})

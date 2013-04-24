@@ -1,1 +1,0 @@
-c({"body": "", "description": "<p>Alternative console log function for use in environments without\na supported native console.  The function is executed in the\nYUI instance context.</p>", "comment": "undefined@since 3.1.0\n@type Function\n", "types": undefined, "title": "", "name": "logFn", "type": "property", "src": "can/lib/yui-3.7.3.js", "line": 1856})

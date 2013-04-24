@@ -1,1 +1,0 @@
-c({"name": "can.Observe.static.setup", "type": "function", "body": "", "description": "<p><code>can.Observe.static.setup</code> overrides default <code>can.Observe</code> setup to provide\nfunctionality for attributes.</p>", "hide": true, "title": "", "parent": "can.Observe.attributes", "src": "can/observe/attributes/attributes.js", "line": 199})

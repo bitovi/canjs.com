@@ -1,1 +1,0 @@
-c({"name": "dom.isDescendant.declare", "type": "property", "parent": "dom.isDescendant", "body": "", "description": "<p>=====,\n             '../request',\n             '../_base/declare' =====</p>", "src": "can/util/dojo/dojo-1.8.1.js", "line": 11376})

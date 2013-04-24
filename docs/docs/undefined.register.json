@@ -1,1 +1,0 @@
-c({"type": "function", "name": "undefined.register", "params": [{"name": "handle", "description": "<p>{EventHandle} the subscription</p>"}], "parent": undefined, "body": "", "description": "<p>Adds a subscription from the Notifier registry.</p>", "comment": "undefined@method register\n@since 3.4.0\n", "src": "can/lib/yui-3.7.3.js", "line": 19372})

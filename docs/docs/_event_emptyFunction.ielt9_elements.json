@@ -1,1 +1,0 @@
-c({"name": "_event_emptyFunction.ielt9_elements", "type": "property", "parent": "_event_emptyFunction", "body": "", "description": "<p>Not all elements can be cloned in IE (this list can be shortend) </p>", "src": "can/test/ie shims/a.ielt8.js", "line": 361})

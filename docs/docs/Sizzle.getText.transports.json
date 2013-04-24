@@ -1,1 +1,0 @@
-c({"name": "Sizzle.getText.transports", "type": "property", "parent": "Sizzle.getText", "body": "", "description": "<p>Transports bindings\n1) key is the dataType\n2) the catchall symbol \"<em>\" can be used\n3) selection will start with transport dataType and THEN go to \"</em>\" if needed</p>", "src": "can/lib/jquery.1.8.3.js", "line": 7308})

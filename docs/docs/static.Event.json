@@ -1,1 +1,0 @@
-c({"name": "static.Event", "type": "property", "parent": "static", "body": "", "description": "<p>Adds bubbling and delegation support to DOM events focus and blur.</p>", "module": "event", "comment": "undefined@submodule event-focus\n", "src": "can/lib/yui-3.7.3.js", "line": 20079})

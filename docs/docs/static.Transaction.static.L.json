@@ -1,1 +1,0 @@
-c({"name": "static.Transaction.static.L", "type": "property", "parent": "static.Transaction.static", "body": "", "description": "<p>Adds object inheritance and manipulation utilities to the YUI instance. This\nmodule is required by most YUI components.</p>", "module": "oop", "src": "can/lib/yui-3.7.3.js", "line": 5743})

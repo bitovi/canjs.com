@@ -1,1 +1,0 @@
-c({"body": "", "description": "<p>The button that was pushed. 1 for left click, 2 for middle click, 3 for\nright click.  This is only reliably populated on <code>mouseup</code> events.</p>", "types": undefined, "title": "", "name": "button", "type": "property", "comment": "undefined@type {Number}\n", "src": "can/lib/yui-3.7.3.js", "line": 13797})

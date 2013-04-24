@@ -1,1 +1,0 @@
-c({"type": "function", "body": "", "description": "<p>Called by save after an instance is updated.  Publishes 'updated'.</p>", "title": "", "name": "updated", "hide": true, "params": [{"types": [{"type": "Object"}], "name": "attrs", "description": ""}], "src": "can/model/model.js", "line": 1137})

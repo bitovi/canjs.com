@@ -1,1 +1,0 @@
-c({"type": "function", "name": "sortedIndex", "params": [{"name": "item", "types": [{"type": "*"}]}], "parent": "can/observe/sort/sort.js", "body": "", "description": "", "hide": true, "src": "can/observe/sort/sort.js", "line": 11})

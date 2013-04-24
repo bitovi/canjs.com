@@ -1,1 +1,0 @@
-c({"name": "_safeExtend._String_trim", "type": "property", "parent": "_safeExtend", "body": "", "description": "<p>Use native and probably broken function or Quick and safety for large string but non-full-standard function\nFor system use only\nMore standart solution in a.js</p>", "comment": "undefined@const\n", "src": "can/test/ie shims/a.ielt8.js", "line": 133})

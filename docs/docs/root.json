@@ -1,1 +1,0 @@
-c({"body": "", "description": "<p>The root path to prepend to module path for the combo service.\nEx: 3.0.0b1/build/\nFor dynamic loading.</p>", "types": undefined, "title": "", "name": "root", "type": "property", "comment": "undefined@type string\n", "src": "can/lib/yui-3.7.3.js", "line": 1579})

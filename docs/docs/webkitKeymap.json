@@ -1,1 +1,0 @@
-c({"name": "webkitKeymap", "type": "property", "parent": "DOM_EVENTS", "body": "", "description": "<p>webkit key remapping required for Safari &lt; 3.1</p>", "types": undefined, "title": "", "comment": "undefined@private\n", "src": "can/lib/yui-3.7.3.js", "line": 13557})

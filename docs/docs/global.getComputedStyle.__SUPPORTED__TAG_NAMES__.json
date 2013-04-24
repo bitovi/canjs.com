@@ -1,1 +1,0 @@
-c({"name": "global.getComputedStyle.__SUPPORTED__TAG_NAMES__", "type": "property", "parent": "global.getComputedStyle", "body": "", "description": "", "comment": "undefined@const List of supporting tag names \n", "src": "can/test/ie shims/a.ielt8.js", "line": 2285})

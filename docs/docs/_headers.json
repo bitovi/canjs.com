@@ -1,1 +1,0 @@
-c({"name": "_headers", "type": "property", "parent": undefined, "body": "", "description": "<p>Object of IO HTTP headers sent with each transaction.</p>", "types": undefined, "title": "", "comment": "undefined@private\n@type {Object}\n", "src": "can/lib/yui-3.7.3.js", "line": 17095})

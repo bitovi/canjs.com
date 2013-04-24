@@ -1,1 +1,0 @@
-c({"name": "cached", "type": "property", "parent": "can.view", "body": "", "description": "<p>Cached are put in this object</p>", "types": [{"type": "Object"}], "title": "", "hide": true, "src": "can/view/view.js", "line": 205})

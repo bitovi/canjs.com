@@ -1,1 +1,0 @@
-c({"name": "Event", "type": "property", "parent": "can/route/hashchange.js", "body": "", "description": "<p>$.fn[ str<em>hashchange ].domain = null;\n$.fn[ str</em>hashchange ].src = null;</p>", "src": "can/route/hashchange.js", "line": 177})

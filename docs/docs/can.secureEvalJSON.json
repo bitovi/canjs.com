@@ -1,1 +1,0 @@
-c({"type": "function", "name": "can.secureEvalJSON", "params": [{"name": "src", "types": [{"type": "*"}]}], "parent": "can.toJSON", "body": "", "description": "<p>Evals JSON in a way that is <em>more</em> secure.</p>", "title": "", "src": "can/util/json.js", "line": 151})

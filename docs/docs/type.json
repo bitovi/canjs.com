@@ -1,1 +1,0 @@
-c({"name": "type", "type": "property", "parent": "static", "body": "", "description": "<p>The event type, this can be overridden by the fire() payload</p>", "types": undefined, "title": "", "comment": "undefined@type string\n", "src": "can/lib/yui-3.7.3.js", "line": 6615})

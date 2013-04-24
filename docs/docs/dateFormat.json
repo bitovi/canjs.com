@@ -1,1 +1,0 @@
-c({"body": "", "description": "<p>The default date format</p>", "types": undefined, "title": "", "name": "dateFormat", "type": "property", "comment": "undefined@type string\n@deprecated use configuration in `DataType.Date.format()` instead.\n", "src": "can/lib/yui-3.7.3.js", "line": 1520})

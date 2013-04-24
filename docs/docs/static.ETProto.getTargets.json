@@ -1,1 +1,0 @@
-c({"type": "function", "name": "static.ETProto.getTargets", "params": [], "parent": "static", "body": "", "description": "<p>Returns an array of bubble targets for this object.</p>", "comment": "undefined@method getTargets\n", "src": "can/lib/yui-3.7.3.js", "line": 19134})

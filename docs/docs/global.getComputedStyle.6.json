@@ -1,1 +1,0 @@
-c({"name": "global.getComputedStyle.6", "type": "property", "parent": "global.getComputedStyle", "body": "", "description": "<p>Rrom w3.org: \"an E element that has no rsren (including text nodes)\".\nThx to John, from Sizzle, 2008-12-05, line 416</p>", "src": "can/test/ie shims/a.ielt8.js", "line": 2742})

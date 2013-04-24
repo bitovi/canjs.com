@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS {{#title}} - {{.}}{{/title}}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" href="{{url 'resources/styles.css'}}" />
+</head>
+
+<body class="{{page}}">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand canjs" href="{{url 'index.html'}}">CanJS</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://donejs.com">DoneJS</a></li>
+					<li class="active"><a href="{{url 'index.html'}}">CanJS</a></li>
+					<li><a href="http://jquerypp.com">JQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!FuncUnit">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
+				</ul>
+			</div>
+
+			<ul class="nav">
+				<li class="{{activePage 'index'}}"><a href="{{url 'index.html'}}">Home</a></li>
+				<li class="{{activePage 'docs'}}"><a href="{{url 'docs'}}">Learn</a></li>
+				<li class="{{activePage 'community'}}"><a href="{{url 'community.html'}}">Community</a></li>
+				<li class="{{activePage 'download'}}"><a href="{{url 'download.html'}}">Download</a></li>
+			</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	{{{content}}}
+
+	<footer>
+		<nav class="container">
+			<a class="brand canjs" href="index.html">CanJS</a>
+			<ul class="pullright">
+				<li><a href="{{url 'index.html'}}">Home</a></li>
+				<li><a href="{{url 'docs'}}">Learn</a></li>
+				<li><a href="{{url 'community.html'}}">Community</a></li>
+				<li><a href="{{url 'download.html'}}">Download</a></li>
+			</ul>
+		</nav>
+	</footer>
+	<div class="loading"></div>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="{{url 'resources/production.min.js'}}"></script>
+</body>
+
+</html>
