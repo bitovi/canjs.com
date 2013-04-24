@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" href="../resources/styles.css" />
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand canjs" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://donejs.com">DoneJS</a></li>
+					<li class="active"><a href="../index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">JQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!FuncUnit">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
+				</ul>
+			</div>
+
+			<ul class="nav">
+				<li class=""><a href="../index.html">Home</a></li>
+				<li class=""><a href="../guides">Guides</a></li>
+				<li class="active"><a href="../docs">Api</a></li>
+				<li class=""><a href="../community.html">Community</a></li>
+				<li class=""><a href="../download.html">Download</a></li>
+			</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		<div class="search">
+			<input type="text"/>
+		</div>
+		<ul class="api">
+	
+	<li >
+	<a href="can.Construct.html">can.Construct</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.html">can.Observe</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.html">can.Model</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Control.html">can.Control</a>
+	
+	</li>
+	
+</ul>
+	</nav>
+
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>property</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="can/control/control.js">source</a></li>
+		
+		
+		
+	</ul>
+</div>
+<h1>
+	
+		can.Control.prototype.element
+	
+</h1>
+
+
+		</section>
+
+		<section class="description">
+			<p>The element the Control is associated with. 
+The control instance's HTMLElement (or window) wrapped by the 
+util library for ease of use. It is set by the first
+parameter to <code>new can.Construct( element, options )</code> 
+in [can.Control::setup].  Control listens on <code>this.element</code>
+for events.</p>
+
+<h3>Quick Example</h3>
+
+<p>The following <code>HelloWorld</code> control sets the control`s text to "Hello World":</p>
+
+<pre><code>HelloWorld = can.Control({
+  init: function(){
+       this.element.text( 'Hello World' );
+  }
+});
+
+// create the controller on the element
+new HelloWorld( document.getElementById( '#helloworld' ) );
+</code></pre>
+
+<h2>Wrapped NodeList</h2>
+
+<p><code>this.element</code> is a wrapped NodeList of one HTMLELement (or window).  This
+is for convience in libraries like jQuery where all methods operate only on a
+NodeList.  To get the raw HTMLElement, write:</p>
+
+<pre><code>this.element[0] //-&gt; HTMLElement
+</code></pre>
+
+<p>The following details the NodeList used by each library with 
+an example of updating it's text:</p>
+
+<p><strong>jQuery</strong> <code>jQuery( HTMLElement )</code></p>
+
+<pre><code>this.element.text("Hello World")
+</code></pre>
+
+<p><strong>Zepto</strong> <code>Zepto( HTMLElement )</code></p>
+
+<pre><code>this.element.text("Hello World")
+</code></pre>
+
+<p><strong>Dojo</strong> <code>new dojo.NodeList( HTMLElement )</code></p>
+
+<pre><code>// TODO
+</code></pre>
+
+<p><strong>Mootools</strong> <code>$$( HTMLElement )</code></p>
+
+<p>this.element.empty().appendText("Hello World")</p>
+
+<p><strong>YUI</strong> </p>
+
+<p>// TODO</p>
+
+<h2>Changing <code>this.element</code></h2>
+
+<p>Sometimes you don't want what's passed to <code>new can.Control</code>
+to be this.element.  You can change this by overwriting
+setup or by unbinding, setting this.element, and rebinding.</p>
+
+<h3>Overwriting Setup</h3>
+
+<p>The following Combobox overwrites setup to wrap a
+select element with a div.  That div is used 
+as <code>this.element</code>. Notice how <code>destroy</code> sets back the
+original element.</p>
+
+<pre><code>Combobox = can.Control({
+  setup: function( el, options ) {
+     this.oldElement = $( el );
+     var newEl = $( '&lt;div/&gt;' );
+     this.oldElement.wrap( newEl );
+     can.Controll.prototype.setup.call( this, newEl, options );
+  },
+  init: function() {
+     this.element //-&gt; the div
+  },
+  ".option click": function() {
+    // event handler bound on the div
+  },
+  destroy: function() {
+     var div = this.element; //save reference
+     can.Control.prototype.destroy.call( this );
+     div.replaceWith( this.oldElement );
+  }
+});
+</code></pre>
+
+<h3>unbinding, setting, and rebinding.</h3>
+
+<p>You could also change this.element by calling
+[can.Control::off], setting this.element, and 
+then calling [can.Control::on] like:</p>
+
+<pre><code>move: function( newElement ) {
+   this.off();
+   this.element = $( newElement );
+   this.on();
+}
+</code></pre>
+		</section>
+
+		
+
+		
+	</article>
+</div>
+
+<script type="text/javascript">
+	var docData = {
+    "type": "property",
+    "body": "",
+    "description": "<p>The element the Control is associated with. \nThe control instance's HTMLElement (or window) wrapped by the \nutil library for ease of use. It is set by the first\nparameter to <code>new can.Construct( element, options )</code> \nin [can.Control::setup].  Control listens on <code>this.element</code>\nfor events.</p>\n\n<h3>Quick Example</h3>\n\n<p>The following <code>HelloWorld</code> control sets the control`s text to \"Hello World\":</p>\n\n<pre><code>HelloWorld = can.Control({\n  init: function(){\n       this.element.text( 'Hello World' );\n  }\n});\n\n// create the controller on the element\nnew HelloWorld( document.getElementById( '#helloworld' ) );\n</code></pre>\n\n<h2>Wrapped NodeList</h2>\n\n<p><code>this.element</code> is a wrapped NodeList of one HTMLELement (or window).  This\nis for convience in libraries like jQuery where all methods operate only on a\nNodeList.  To get the raw HTMLElement, write:</p>\n\n<pre><code>this.element[0] //-&gt; HTMLElement\n</code></pre>\n\n<p>The following details the NodeList used by each library with \nan example of updating it's text:</p>\n\n<p><strong>jQuery</strong> <code>jQuery( HTMLElement )</code></p>\n\n<pre><code>this.element.text(\"Hello World\")\n</code></pre>\n\n<p><strong>Zepto</strong> <code>Zepto( HTMLElement )</code></p>\n\n<pre><code>this.element.text(\"Hello World\")\n</code></pre>\n\n<p><strong>Dojo</strong> <code>new dojo.NodeList( HTMLElement )</code></p>\n\n<pre><code>// TODO\n</code></pre>\n\n<p><strong>Mootools</strong> <code>$$( HTMLElement )</code></p>\n\n<p>this.element.empty().appendText(\"Hello World\")</p>\n\n<p><strong>YUI</strong> </p>\n\n<p>// TODO</p>\n\n<h2>Changing <code>this.element</code></h2>\n\n<p>Sometimes you don't want what's passed to <code>new can.Control</code>\nto be this.element.  You can change this by overwriting\nsetup or by unbinding, setting this.element, and rebinding.</p>\n\n<h3>Overwriting Setup</h3>\n\n<p>The following Combobox overwrites setup to wrap a\nselect element with a div.  That div is used \nas <code>this.element</code>. Notice how <code>destroy</code> sets back the\noriginal element.</p>\n\n<pre><code>Combobox = can.Control({\n  setup: function( el, options ) {\n     this.oldElement = $( el );\n     var newEl = $( '&lt;div/&gt;' );\n     this.oldElement.wrap( newEl );\n     can.Controll.prototype.setup.call( this, newEl, options );\n  },\n  init: function() {\n     this.element //-&gt; the div\n  },\n  \".option click\": function() {\n    // event handler bound on the div\n  },\n  destroy: function() {\n     var div = this.element; //save reference\n     can.Control.prototype.destroy.call( this );\n     div.replaceWith( this.oldElement );\n  }\n});\n</code></pre>\n\n<h3>unbinding, setting, and rebinding.</h3>\n\n<p>You could also change this.element by calling\n[can.Control::off], setting this.element, and \nthen calling [can.Control::on] like:</p>\n\n<pre><code>move: function( newElement ) {\n   this.off();\n   this.element = $( newElement );\n   this.on();\n}\n</code></pre>",
+    "title": "",
+    "name": "can.Control.prototype.element",
+    "src": "can/control/control.js",
+    "line": 358,
+    "id": 79
+};
+
+	console.log(docData);
+</script>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand canjs" href="index.html">CanJS</a>
+			<ul class="pullright">
+				<li><a href="../index.html">Home</a></li>
+				<li><a href="../guides">Guides</a></li>
+				<li><a href="../docs">Api</a></li>
+				<li><a href="../community.html">Community</a></li>
+				<li><a href="../download.html">Download</a></li>
+			</ul>
+		</nav>
+	</footer>
+	<div class="loading"></div>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="../resources/production.min.js"></script>
+</body>
+
+</html>

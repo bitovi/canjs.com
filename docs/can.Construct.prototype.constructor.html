@@ -43,7 +43,8 @@
 
 			<ul class="nav">
 				<li class=""><a href="../index.html">Home</a></li>
-				<li class="active"><a href="../docs">Learn</a></li>
+				<li class=""><a href="../guides">Guides</a></li>
+				<li class="active"><a href="../docs">Api</a></li>
 				<li class=""><a href="../community.html">Community</a></li>
 				<li class=""><a href="../download.html">Download</a></li>
 			</ul>
@@ -71,45 +72,126 @@
 			<input type="text"/>
 		</div>
 		<ul class="api">
-			
-			<li class="active">
-				<a href="can.Construct.html">can.Construct</a>
+	
+	<li class="active">
+	<a href="can.Construct.html">can.Construct</a>
+	
+	
+	<ul>
+		
+		
+		<li class="heading"><span>static</span>
+			<ul>
 				
-				<ul>
-					
-					<li class="heading"><span>static</span>
-						<ul>
-							
-							<li ><a href="can.Construct.static.newInstance.html">can.Construct.static.newInstance</a></li>
-							
-							<li ><a href="can.Construct.static.setup.html">can.Construct.static.setup</a></li>
-							
-							<li ><a href="can.Construct.static.extend.html">can.Construct.static.extend</a></li>
-							
-							<li class="active"><a href="namespace.html">namespace</a></li>
-							
-							<li ><a href="shortName.html">shortName</a></li>
-							
-							<li ><a href="fullName.html">fullName</a></li>
-							
-						</ul>
-					</li>
-					
-					<li class="heading"><span>prototype</span>
-						<ul>
-							
-							<li ><a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a></li>
-							
-							<li ><a href="can.Construct.prototype.init.html">can.Construct.prototype.init</a></li>
-							
-						</ul>
-					</li>
-					
-				</ul>
 				
-			</li>
-			
-		</ul>
+				<li >
+					<a href="can.Construct.static.newInstance.html">
+						 newInstance 
+					</a>
+				</li>
+				
+				
+				
+				<li >
+					<a href="can.Construct.static.setup.html">
+						 setup 
+					</a>
+				</li>
+				
+				
+				
+				
+				
+				<li >
+					<a href="can.Construct.static.namespace.html">
+						 namespace 
+					</a>
+				</li>
+				
+				
+				
+				<li >
+					<a href="can.Construct.static.shortName.html">
+						 shortName 
+					</a>
+				</li>
+				
+				
+				
+				<li >
+					<a href="can.Construct.static.fullName.html">
+						 fullName 
+					</a>
+				</li>
+				
+				
+			</ul>
+		</li>
+		
+		
+		
+		<li class="heading"><span>prototype</span>
+			<ul>
+				
+				
+				<li >
+					<a href="can.Construct.prototype.setup.html">
+						 setup 
+					</a>
+				</li>
+				
+				
+				
+				<li >
+					<a href="can.Construct.prototype.init.html">
+						 init 
+					</a>
+				</li>
+				
+				
+				
+				<li class="active">
+					<a href="can.Construct.prototype.constructor.html">
+						 constructor 
+					</a>
+				</li>
+				
+				
+			</ul>
+		</li>
+		
+		
+	</ul>
+	
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.html">can.Observe</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.html">can.Model</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Control.html">can.Control</a>
+	
+	</li>
+	
+</ul>
 	</nav>
 
 	<article class="content docs">
@@ -120,27 +202,39 @@
 	</ul>
 	<ul class="links">
 		
+			<li><a href="can/construct/construct.js">source</a></li>
+		
+		
 		
 	</ul>
 </div>
-<h1></h1>
+<h1>
+	
+		constructor
+	
+</h1>
 
 
 		</section>
 
 		<section class="description">
-			<p>The <code>namespace</code> property returns the namespace your constructor is in.
-This provides a way organize code and ensure globally unique types.</p>
+			<p>A reference to the constructor function that created the instance. This allows you to access
+the constructor's static properties from an instance.</p>
 
-<pre>can.Construct("MyApplication.MyConstructor",{},{});
-MyApplication.MyConstructor.namespace // "MyApplication"
-MyApplication.MyConstructor.shortName // "MyConstructor"
-MyApplication.MyConstructor.fullName  // "MyApplication.MyConstructor"</pre>             
+<h2>Example</h2>
 
-			<ul class="contents">
-				
-			</ul>
-			
+<p>This class has a static counter that counts how mane instances have been created:</p>
+
+<pre>can.Construct("Counter", {
+    count: 0
+}, {
+    init: function() {
+        this.constructor.count++;
+    }
+});
+
+new Counter();
+Counter.count; // 1</pre>         
 		</section>
 
 		
@@ -151,19 +245,26 @@ MyApplication.MyConstructor.fullName  // "MyApplication.MyConstructor"</pre>
 
 <script type="text/javascript">
 	var docData = {
-    "name": "namespace",
     "type": "property",
-    "parent": "can.Construct.static",
     "body": "",
-    "description": "<p>The <code>namespace</code> property returns the namespace your constructor is in.\nThis provides a way organize code and ensure globally unique types.</p>\n\n<pre>can.Construct(\"MyApplication.MyConstructor\",{},{});\nMyApplication.MyConstructor.namespace // \"MyApplication\"\nMyApplication.MyConstructor.shortName // \"MyConstructor\"\nMyApplication.MyConstructor.fullName  // \"MyApplication.MyConstructor\"</pre>             ",
+    "description": "<p>A reference to the constructor function that created the instance. This allows you to access\nthe constructor's static properties from an instance.</p>\n\n<h2>Example</h2>\n\n<p>This class has a static counter that counts how mane instances have been created:</p>\n\n<pre>can.Construct(\"Counter\", {\n    count: 0\n}, {\n    init: function() {\n        this.constructor.count++;\n    }\n});\n\nnew Counter();\nCounter.count; // 1</pre>         ",
     "types": [{
-            "type": "String"
+            "type": "function",
+            "returns": {
+                "types": [{
+                        "type": "undefined"
+                    }
+                ]
+            },
+            "params": []
         }
     ],
-    "title": "",
+    "title": "constructor",
+    "name": "can.Construct.prototype.constructor",
+    "parent": "can.Construct.prototype",
     "src": "can/construct/construct.js",
-    "line": 267,
-    "id": 6
+    "line": 445,
+    "id": 12
 };
 
 	console.log(docData);
@@ -176,7 +277,8 @@ MyApplication.MyConstructor.fullName  // "MyApplication.MyConstructor"</pre>
 			<a class="brand canjs" href="index.html">CanJS</a>
 			<ul class="pullright">
 				<li><a href="../index.html">Home</a></li>
-				<li><a href="../docs">Learn</a></li>
+				<li><a href="../guides">Guides</a></li>
+				<li><a href="../docs">Api</a></li>
 				<li><a href="../community.html">Community</a></li>
 				<li><a href="../download.html">Download</a></li>
 			</ul>

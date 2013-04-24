@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" href="../resources/styles.css" />
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand canjs" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://donejs.com">DoneJS</a></li>
+					<li class="active"><a href="../index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">JQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!FuncUnit">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
+				</ul>
+			</div>
+
+			<ul class="nav">
+				<li class=""><a href="../index.html">Home</a></li>
+				<li class=""><a href="../guides">Guides</a></li>
+				<li class="active"><a href="../docs">Api</a></li>
+				<li class=""><a href="../community.html">Community</a></li>
+				<li class=""><a href="../download.html">Download</a></li>
+			</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		<div class="search">
+			<input type="text"/>
+		</div>
+		<ul class="api">
+	
+	<li class="active">
+	<a href="can.Construct.html">can.Construct</a>
+	
+	
+	<ul>
+		
+		
+		<li class="heading"><span>static</span>
+			<ul>
+				
+				
+				<li >
+					<a href="can.Construct.static.newInstance.html">
+						 newInstance 
+					</a>
+				</li>
+				
+				
+				
+				<li >
+					<a href="can.Construct.static.setup.html">
+						 setup 
+					</a>
+				</li>
+				
+				
+				
+				
+				
+				<li class="active">
+					<a href="can.Construct.static.namespace.html">
+						 namespace 
+					</a>
+				</li>
+				
+				
+				
+				<li >
+					<a href="can.Construct.static.shortName.html">
+						 shortName 
+					</a>
+				</li>
+				
+				
+				
+				<li >
+					<a href="can.Construct.static.fullName.html">
+						 fullName 
+					</a>
+				</li>
+				
+				
+			</ul>
+		</li>
+		
+		
+		
+		<li class="heading"><span>prototype</span>
+			<ul>
+				
+				
+				<li >
+					<a href="can.Construct.prototype.setup.html">
+						 setup 
+					</a>
+				</li>
+				
+				
+				
+				<li >
+					<a href="can.Construct.prototype.init.html">
+						 init 
+					</a>
+				</li>
+				
+				
+				
+				<li >
+					<a href="can.Construct.prototype.constructor.html">
+						 constructor 
+					</a>
+				</li>
+				
+				
+			</ul>
+		</li>
+		
+		
+	</ul>
+	
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.html">can.Observe</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.html">can.Model</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Control.html">can.Control</a>
+	
+	</li>
+	
+</ul>
+	</nav>
+
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>property</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="can/construct/construct.js">source</a></li>
+		
+		
+		
+	</ul>
+</div>
+<h1>
+	
+		namespace
+	
+</h1>
+
+
+		</section>
+
+		<section class="description">
+			<p>The <code>namespace</code> property returns the namespace your constructor is in.
+This provides a way organize code and ensure globally unique types.</p>
+
+<pre>can.Construct("MyApplication.MyConstructor",{},{});
+MyApplication.MyConstructor.namespace // "MyApplication"
+MyApplication.MyConstructor.shortName // "MyConstructor"
+MyApplication.MyConstructor.fullName  // "MyApplication.MyConstructor"</pre>             
+		</section>
+
+		
+
+		
+	</article>
+</div>
+
+<script type="text/javascript">
+	var docData = {
+    "name": "can.Construct.static.namespace",
+    "type": "property",
+    "parent": "can.Construct.static",
+    "body": "",
+    "description": "<p>The <code>namespace</code> property returns the namespace your constructor is in.\nThis provides a way organize code and ensure globally unique types.</p>\n\n<pre>can.Construct(\"MyApplication.MyConstructor\",{},{});\nMyApplication.MyConstructor.namespace // \"MyApplication\"\nMyApplication.MyConstructor.shortName // \"MyConstructor\"\nMyApplication.MyConstructor.fullName  // \"MyApplication.MyConstructor\"</pre>             ",
+    "types": [{
+            "type": "String"
+        }
+    ],
+    "title": "namespace",
+    "src": "can/construct/construct.js",
+    "line": 267,
+    "id": 6
+};
+
+	console.log(docData);
+</script>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand canjs" href="index.html">CanJS</a>
+			<ul class="pullright">
+				<li><a href="../index.html">Home</a></li>
+				<li><a href="../guides">Guides</a></li>
+				<li><a href="../docs">Api</a></li>
+				<li><a href="../community.html">Community</a></li>
+				<li><a href="../download.html">Download</a></li>
+			</ul>
+		</nav>
+	</footer>
+	<div class="loading"></div>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="../resources/production.min.js"></script>
+</body>
+
+</html>

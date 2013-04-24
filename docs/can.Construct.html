@@ -43,7 +43,8 @@
 
 			<ul class="nav">
 				<li class=""><a href="../index.html">Home</a></li>
-				<li class="active"><a href="../docs">Learn</a></li>
+				<li class=""><a href="../guides">Guides</a></li>
+				<li class="active"><a href="../docs">Api</a></li>
 				<li class=""><a href="../community.html">Community</a></li>
 				<li class=""><a href="../download.html">Download</a></li>
 			</ul>
@@ -71,45 +72,126 @@
 			<input type="text"/>
 		</div>
 		<ul class="api">
-			
-			<li class="active">
-				<a href="can.Construct.html">can.Construct</a>
+	
+	<li class="active">
+	<a href="can.Construct.html">can.Construct</a>
+	
+	
+	<ul>
+		
+		
+		<li class="heading"><span>static</span>
+			<ul>
 				
-				<ul>
-					
-					<li class="heading"><span>static</span>
-						<ul>
-							
-							<li ><a href="can.Construct.static.newInstance.html">can.Construct.static.newInstance</a></li>
-							
-							<li ><a href="can.Construct.static.setup.html">can.Construct.static.setup</a></li>
-							
-							<li ><a href="can.Construct.static.extend.html">can.Construct.static.extend</a></li>
-							
-							<li ><a href="namespace.html">namespace</a></li>
-							
-							<li ><a href="shortName.html">shortName</a></li>
-							
-							<li ><a href="fullName.html">fullName</a></li>
-							
-						</ul>
-					</li>
-					
-					<li class="heading"><span>prototype</span>
-						<ul>
-							
-							<li ><a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a></li>
-							
-							<li ><a href="can.Construct.prototype.init.html">can.Construct.prototype.init</a></li>
-							
-						</ul>
-					</li>
-					
-				</ul>
 				
-			</li>
-			
-		</ul>
+				<li >
+					<a href="can.Construct.static.newInstance.html">
+						 newInstance 
+					</a>
+				</li>
+				
+				
+				
+				<li >
+					<a href="can.Construct.static.setup.html">
+						 setup 
+					</a>
+				</li>
+				
+				
+				
+				
+				
+				<li >
+					<a href="can.Construct.static.namespace.html">
+						 namespace 
+					</a>
+				</li>
+				
+				
+				
+				<li >
+					<a href="can.Construct.static.shortName.html">
+						 shortName 
+					</a>
+				</li>
+				
+				
+				
+				<li >
+					<a href="can.Construct.static.fullName.html">
+						 fullName 
+					</a>
+				</li>
+				
+				
+			</ul>
+		</li>
+		
+		
+		
+		<li class="heading"><span>prototype</span>
+			<ul>
+				
+				
+				<li >
+					<a href="can.Construct.prototype.setup.html">
+						 setup 
+					</a>
+				</li>
+				
+				
+				
+				<li >
+					<a href="can.Construct.prototype.init.html">
+						 init 
+					</a>
+				</li>
+				
+				
+				
+				<li >
+					<a href="can.Construct.prototype.constructor.html">
+						 constructor 
+					</a>
+				</li>
+				
+				
+			</ul>
+		</li>
+		
+		
+	</ul>
+	
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.html">can.Observe</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.html">can.Model</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Control.html">can.Control</a>
+	
+	</li>
+	
+</ul>
 	</nav>
 
 	<article class="content docs">
@@ -120,20 +202,26 @@
 	</ul>
 	<ul class="links">
 		
+			<li><a href="can/construct/construct.md">source</a></li>
+		
+		
+			<li><a href="http://builder.bitovi.com/can.custom.js?plugins=can/construct">download</a></li>
+		
+		
+			<li><a href="can/construct/qunit.html">tests</a></li>
 		
 	</ul>
 </div>
-<h1></h1>
+<h1>
+	
+		can.Construct
+	
+</h1>
 
 
 		</section>
 
 		<section class="description">
-			
-
-			<ul class="contents">
-				
-			</ul>
 			
 		</section>
 
@@ -142,11 +230,79 @@
 			<h2>can.Construct([name, [staticProperties,]] instanceProperties)</h2>
 
 
+	<h3>Parameters</h3>
 
-<div class="returns">
-	<h4><code>{function}</code></h4>
-	<div class="description">
-		<p>The constructor.</p>
+	
+	<ol class="parameters">
+		<li class="parameter">
+			<h4>name <code>{String}</code></h4>
+			<div class="description">
+				<p><p>the namespace and name of the constructor</p></p>
+			</div>
+			<!--
+			<ul class="options">
+				
+				<li class="option">
+					<h5><code>{String}</code></h5>
+					<div class="description">
+						<p>the namespace and name of the constructor</p>
+					</div>
+				</li>
+				
+			</ul>
+			-->
+		</li>
+	</ol>
+	
+	<ol class="parameters">
+		<li class="parameter">
+			<h4>staticProperties <code>{Object}</code></h4>
+			<div class="description">
+				<p><p>properties that will belong to the constructor</p></p>
+			</div>
+			<!--
+			<ul class="options">
+				
+				<li class="option">
+					<h5><code>{Object}</code></h5>
+					<div class="description">
+						<p>properties that will belong to the constructor</p>
+					</div>
+				</li>
+				
+			</ul>
+			-->
+		</li>
+	</ol>
+	
+	<ol class="parameters">
+		<li class="parameter">
+			<h4>instanceProperties <code>{Object}</code></h4>
+			<div class="description">
+				<p><p>properties that will belong to instances made with the constructor</p></p>
+			</div>
+			<!--
+			<ul class="options">
+				
+				<li class="option">
+					<h5><code>{Object}</code></h5>
+					<div class="description">
+						<p>properties that will belong to instances made with the constructor</p>
+					</div>
+				</li>
+				
+			</ul>
+			-->
+		</li>
+	</ol>
+	
+
+
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{function}</code></h4>
+		<div class="description">
+			<p>The constructor.</p>
 
 <p>In the example below, <code>Animal</code> is a constructor function. All instances of <code>Animal</code> will have a <code>breathe</code>
 method, and the <code>Animal</code> constructor itself has a <code>legs</code> property.</p>
@@ -244,8 +400,8 @@ Snake.legs; // 0</pre>
 <p>There are two plugins available to help make using <code>can.Construct</code> even simpler.
 * [can.Construct.super] allows you to easily call base methods by making <code>this._super</code> available in inherited methods.
 * [can.Construct.proxy] helps you keep your scope straight when creating callbacks inside constructors.</p>
+		</div>
 	</div>
-</div>
 
 		</section>
 		
@@ -261,6 +417,8 @@ Snake.legs; // 0</pre>
     "body": "",
     "description": "",
     "title": "",
+    "plugin": "can/construct",
+    "test": "can/construct/qunit.html",
     "parent": "canjs",
     "signatures": [{
             "code": "can.Construct([name, [staticProperties,]] instanceProperties)",
@@ -320,7 +478,8 @@ Snake.legs; // 0</pre>
 			<a class="brand canjs" href="index.html">CanJS</a>
 			<ul class="pullright">
 				<li><a href="../index.html">Home</a></li>
-				<li><a href="../docs">Learn</a></li>
+				<li><a href="../guides">Guides</a></li>
+				<li><a href="../docs">Api</a></li>
 				<li><a href="../community.html">Community</a></li>
 				<li><a href="../download.html">Download</a></li>
 			</ul>

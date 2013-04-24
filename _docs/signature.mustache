@@ -1,33 +1,37 @@
 <h2>{{code}}</h2>
 {{{description}}}
-{{#if parameters}}
-<h3>Parameters</h3>
-<ol class="parameters">
-	{{#parameters}}
-	<li class="parameter">
-		<h4>{{name}} {{#if types}}<code>{{makeTypesString types}}</code>{{/if}}</h4>
-		<div class="description">
-			{{{description}}}
-		</div>
-		<ul class="options">
-		{{#listOptions types}}
-			<li class="option">
-				<h5>name {{#if types}}<code>{{makeTypesString types}}</code>{{/if}}</h5>
-				<div class="description">
-					{{{description}}}
-				</div>
-			</li>
-		{{/listOptions}}
-		</ul>
-	</li>
-	{{/parameters}}
-</ol>
+{{#if params}}
+	<h3>Parameters</h3>
+
+	{{#params}}
+	<ol class="parameters">
+		<li class="parameter">
+			<h4>{{name}} {{#if types}}<code>{{makeTypesString types}}</code>{{/if}}</h4>
+			<div class="description">
+				<p>{{{description}}}</p>
+			</div>
+			<!--
+			<ul class="options">
+				{{#if types.length}}
+				<li class="option">
+					<h5>{{#if types}}<code>{{makeTypesString types}}</code>{{/if}}</h5>
+					<div class="description">
+						{{{description}}}
+					</div>
+				</li>
+				{{/if}}
+			</ul>
+			-->
+		</li>
+	</ol>
+	{{/params}}
 {{/if}}
 {{#if returns}}
-<div class="returns">
-	<h4><code>{{makeTypesString returns.types}}</code></h4>
-	<div class="description">
-		{{{returns.description}}}
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{{makeTypesString returns.types}}</code></h4>
+		<div class="description">
+			{{{returns.description}}}
+		</div>
 	</div>
-</div>
 {{/if}}

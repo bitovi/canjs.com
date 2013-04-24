@@ -1,0 +1,45 @@
+{
+    "_guides/constructs.md": {
+        "type": "script",
+        "name": "_guides/constructs.md"
+    },
+    "Constructs": {
+        "type": "page",
+        "name": "Constructs",
+        "body": "<p>Constructor functions made with [can.Construct] are used to create objects with\nshared properties, and they make managing inheritance in JavaScript much easier.\n[Observes] (and through Observes, [Models] and [Controls]) are based off of\nConstructs, so learning how they work is fundamental to understanding CanJS.</p>\n\n<p>To create a constructor function of your own, call <code>can.Construct</code> and pass in\nan object of static properties (which will be attached directly to the \nconstructor) and an object of instance properties (which will be attached to\neach instance of the Construct):</p>\n\n<pre>var Todo = can.Construct({ }, {\n    description: 'Something to do.',\n    author: 'Unknown',\n    allowedToEdit: function() {\n        return true;\n    }\n});\n\nvar t = new Todo();\n\nt.description; // 'Something to do.'\nt.author; // 'Unknown'\nt.allowedToEdit(); // true</pre>\n\n<p>There are a few other ways to create classes with  <code>can.Construct</code>; see\n[the API] for all the details.</p>\n\n<h2>Inheritance</h2>\n\n<p>can.Construct sets up the prototype chain so that Constructs are easy to\nsubclass. Call the constructor function of the class you want to extend and give\nit the arguments you would pass to <code>can.Construct</code>:</p>\n\n<pre>// If only one argument is passed, they are considered instance properties.\nvar PrivateTodo = Todo({\n    description: 'Something secret!',\n    allowedToEdit: function(account) {\n        return account.owns(this);\n    }\n});\n\nvar p = new PrivateTodo();\np.author; // 'Unknown'\np.description; // 'Something secret!'\np.allowedToEdit({owns: function(){ return false; }}); // false</pre>\n\n<h2>Initialization</h2>\n\n<p>As you can see above, when a constructor function is called with <code>new</code>,\ncan.Construct creates a new instance of that class. If you've supplied an\ninstance method called <code>[init]</code>, can.Construct will call that as well, passing\nit the arguments you passed to the constructor.</p>\n\n<p>This helps make our Todo a little more configurable:</p>\n\n<pre>var Todo = can.Construct({\n    description: 'Something to do.',\n    author: 'Unknown',\n\n    init: function(options) {\n        this.author = options.author || this.author;\n        this.description = options.description || this.description;\n    }\n});\n\nvar t = new Todo({author: 'Me!'});\nt.author; // 'Me!'\nt.description; // 'Something to do.'</pre>\n\n<p>If you're extending a Construct, you probably want to make sure you call the\nbase's <code>init</code> method inside the child's <code>init</code>:</p>",
+        "description": "",
+        "title": "Constructs",
+        "parent": "Tutorial",
+        "comment": " ",
+        "src": "_guides/constructs.md",
+        "id": 0
+    },
+    "_guides/guides.md": {
+        "type": "script",
+        "name": "_guides/guides.md"
+    },
+    "guides": {
+        "type": "page",
+        "name": "guides",
+        "body": "",
+        "description": "",
+        "title": "Guides",
+        "src": "_guides/guides.md",
+        "id": 1
+    },
+    "_guides/tutorial.md": {
+        "type": "script",
+        "name": "_guides/tutorial.md"
+    },
+    "Tutorial": {
+        "type": "page",
+        "name": "Tutorial",
+        "body": "<p>This tutorial will walk you though the basics of CanJS by building a small\nto-do app with CanJS and jQuery. When you are finished, your app will look\nsimilar to this:</p>\n\n<div class='iframe_wrapper' data-iframe-src='/path/to/to-do/demo' data-iframe-height='320'></div>\n\n<p>To get started, click <em>[Constructs]</em> in the navigation to the left. Or, if this\ntutorial isn't your thing, you can take a look at some [Videos videos], see\nsome nifty [Recipes recipes] for building functionality with CanJS, check out\nour [API], or dive right in and poke around the [AnnotatedSources annotated\nsource] for CanJS.</p>",
+        "description": "",
+        "title": "Get Started with CanJS",
+        "parent": "guides",
+        "comment": " ",
+        "src": "_guides/tutorial.md",
+        "id": 2
+    }
+}

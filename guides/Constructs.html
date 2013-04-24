@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" href="../resources/styles.css" />
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand canjs" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://donejs.com">DoneJS</a></li>
+					<li class="active"><a href="../index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">JQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!FuncUnit">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
+				</ul>
+			</div>
+
+			<ul class="nav">
+				<li class=""><a href="../index.html">Home</a></li>
+				<li class=""><a href="../guides">Guides</a></li>
+				<li class="active"><a href="../docs">Api</a></li>
+				<li class=""><a href="../community.html">Community</a></li>
+				<li class=""><a href="../download.html">Download</a></li>
+			</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		<div class="search">
+			<input type="text"/>
+		</div>
+		<ul class="api">
+	
+	<li class="active">
+	<a href="Tutorial.html">Tutorial</a>
+	
+	
+	<ul>
+		
+		
+		<li class="active">
+		<a href="Constructs.html">
+			 Constructs 
+		</a>
+		</li>
+		
+		
+	</ul>
+	
+	
+	</li>
+	
+</ul>
+	</nav>
+
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="_guides/constructs.md">source</a></li>
+		
+		
+		
+	</ul>
+</div>
+<h1>
+	
+		Constructs
+	
+</h1>
+
+
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+		<section class="comment">
+			<p>Constructor functions made with [can.Construct] are used to create objects with
+shared properties, and they make managing inheritance in JavaScript much easier.
+[Observes] (and through Observes, [Models] and [Controls]) are based off of
+Constructs, so learning how they work is fundamental to understanding CanJS.</p>
+
+<p>To create a constructor function of your own, call <code>can.Construct</code> and pass in
+an object of static properties (which will be attached directly to the 
+constructor) and an object of instance properties (which will be attached to
+each instance of the Construct):</p>
+
+<pre>var Todo = can.Construct({ }, {
+    description: 'Something to do.',
+    author: 'Unknown',
+    allowedToEdit: function() {
+        return true;
+    }
+});
+
+var t = new Todo();
+
+t.description; // 'Something to do.'
+t.author; // 'Unknown'
+t.allowedToEdit(); // true</pre>
+
+<p>There are a few other ways to create classes with  <code>can.Construct</code>; see
+[the API] for all the details.</p>
+
+<h2>Inheritance</h2>
+
+<p>can.Construct sets up the prototype chain so that Constructs are easy to
+subclass. Call the constructor function of the class you want to extend and give
+it the arguments you would pass to <code>can.Construct</code>:</p>
+
+<pre>// If only one argument is passed, they are considered instance properties.
+var PrivateTodo = Todo({
+    description: 'Something secret!',
+    allowedToEdit: function(account) {
+        return account.owns(this);
+    }
+});
+
+var p = new PrivateTodo();
+p.author; // 'Unknown'
+p.description; // 'Something secret!'
+p.allowedToEdit({owns: function(){ return false; }}); // false</pre>
+
+<h2>Initialization</h2>
+
+<p>As you can see above, when a constructor function is called with <code>new</code>,
+can.Construct creates a new instance of that class. If you've supplied an
+instance method called <code>[init]</code>, can.Construct will call that as well, passing
+it the arguments you passed to the constructor.</p>
+
+<p>This helps make our Todo a little more configurable:</p>
+
+<pre>var Todo = can.Construct({
+    description: 'Something to do.',
+    author: 'Unknown',
+
+    init: function(options) {
+        this.author = options.author || this.author;
+        this.description = options.description || this.description;
+    }
+});
+
+var t = new Todo({author: 'Me!'});
+t.author; // 'Me!'
+t.description; // 'Something to do.'</pre>
+
+<p>If you're extending a Construct, you probably want to make sure you call the
+base's <code>init</code> method inside the child's <code>init</code>:</p>
+		</section>
+		
+	</article>
+</div>
+
+<script type="text/javascript">
+	var docData = {
+    "type": "page",
+    "name": "Constructs",
+    "body": "<p>Constructor functions made with [can.Construct] are used to create objects with\nshared properties, and they make managing inheritance in JavaScript much easier.\n[Observes] (and through Observes, [Models] and [Controls]) are based off of\nConstructs, so learning how they work is fundamental to understanding CanJS.</p>\n\n<p>To create a constructor function of your own, call <code>can.Construct</code> and pass in\nan object of static properties (which will be attached directly to the \nconstructor) and an object of instance properties (which will be attached to\neach instance of the Construct):</p>\n\n<pre>var Todo = can.Construct({ }, {\n    description: 'Something to do.',\n    author: 'Unknown',\n    allowedToEdit: function() {\n        return true;\n    }\n});\n\nvar t = new Todo();\n\nt.description; // 'Something to do.'\nt.author; // 'Unknown'\nt.allowedToEdit(); // true</pre>\n\n<p>There are a few other ways to create classes with  <code>can.Construct</code>; see\n[the API] for all the details.</p>\n\n<h2>Inheritance</h2>\n\n<p>can.Construct sets up the prototype chain so that Constructs are easy to\nsubclass. Call the constructor function of the class you want to extend and give\nit the arguments you would pass to <code>can.Construct</code>:</p>\n\n<pre>// If only one argument is passed, they are considered instance properties.\nvar PrivateTodo = Todo({\n    description: 'Something secret!',\n    allowedToEdit: function(account) {\n        return account.owns(this);\n    }\n});\n\nvar p = new PrivateTodo();\np.author; // 'Unknown'\np.description; // 'Something secret!'\np.allowedToEdit({owns: function(){ return false; }}); // false</pre>\n\n<h2>Initialization</h2>\n\n<p>As you can see above, when a constructor function is called with <code>new</code>,\ncan.Construct creates a new instance of that class. If you've supplied an\ninstance method called <code>[init]</code>, can.Construct will call that as well, passing\nit the arguments you passed to the constructor.</p>\n\n<p>This helps make our Todo a little more configurable:</p>\n\n<pre>var Todo = can.Construct({\n    description: 'Something to do.',\n    author: 'Unknown',\n\n    init: function(options) {\n        this.author = options.author || this.author;\n        this.description = options.description || this.description;\n    }\n});\n\nvar t = new Todo({author: 'Me!'});\nt.author; // 'Me!'\nt.description; // 'Something to do.'</pre>\n\n<p>If you're extending a Construct, you probably want to make sure you call the\nbase's <code>init</code> method inside the child's <code>init</code>:</p>",
+    "description": "",
+    "title": "Constructs",
+    "parent": "Tutorial",
+    "comment": " ",
+    "src": "_guides/constructs.md",
+    "id": 0
+};
+
+	console.log(docData);
+</script>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand canjs" href="index.html">CanJS</a>
+			<ul class="pullright">
+				<li><a href="../index.html">Home</a></li>
+				<li><a href="../guides">Guides</a></li>
+				<li><a href="../docs">Api</a></li>
+				<li><a href="../community.html">Community</a></li>
+				<li><a href="../download.html">Download</a></li>
+			</ul>
+		</nav>
+	</footer>
+	<div class="loading"></div>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="../resources/production.min.js"></script>
+</body>
+
+</html>
