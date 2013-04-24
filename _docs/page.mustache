@@ -54,3 +54,10 @@
 		{{/if}}
 	</article>
 </div>
+{{#if debug}}
+<script type="text/javascript">
+	var docData = {{{debug}}};
+
+	console.log(docData);
+</script>
+{{/if}}

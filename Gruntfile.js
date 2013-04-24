@@ -49,22 +49,45 @@ module.exports = function (grunt) {
 				out: '_js/views.production.js'
 			}
 		},
+		watch: {
+			less: {
+				files: ['_styles/*.less'],
+				tasks: ['less']
+			},
+			docs: {
+				files: '<%= generate.docs.src %>',
+				tasks: ['generate:docs']
+			},
+			js: {
+				files: ['_js/**/*.js', '_js/**/*.mustache'],
+				tasks: ['js']
+			},
+			pages: {
+				files: ['_pages/*.mustache', '_layouts/*.mustache', '_docs/*.mustache'],
+				tasks: ['generate:docs']
+			},
+			all: {
+				files: ['_pages/*.mustache', '_layouts/*.mustache',
+					'_docs/*.mustache', '_js/**/*.js', '_js/**/*.mustache',
+					'<%= generate.docs.src %>', '_styles/*.less'],
+				tasks: ['default']
+			}
+		},
 		generate: {
 			options: {
 				folder: __dirname + '/../../canjs.us',
+				debug: true,
 				data: {
-					package: require(__dirname + '/../../../can/package.json')
+					package: require(__dirname + '/can/package.json')
 				},
 				docs: {
 					parent: 'canjs',
 					root: '../'
 				}
 			},
-			all: {
-				src: ['can/can.md'],
-				options: {
-					x: 'y'
-				}
+			docs: {
+				src: ['can/can.md', 'can/construct/construct.md', 'can/construct/construct.js'],
+				dest: '.'
 			}
 		}
 	});
@@ -76,10 +99,12 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('can-compile');
+	grunt.loadNpmTasks('documentjs');
 
-	grunt.loadTasks('../tasks');
+	grunt.registerTask('js', [ 'cancompile', 'concat', 'uglify' ]);
+	grunt.registerTask('development', ['watch:all']);
 
 	// Default task.
-	grunt.registerTask('default', [ 'cancompile', 'concat', 'uglify', 'less' ]);
+	grunt.registerTask('default', [ 'cancompile', 'concat', 'uglify', 'less', 'generate' ]);
 
 };
