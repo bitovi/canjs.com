@@ -1,28 +1,56 @@
-<article class="content docs">
-	<section class="title">
-	{{> title.mustache}}
-	</section>
+<div class="container api">
+	<nav class="sidebar">
+		<div class="search">
+			<input type="text"/>
+		</div>
+		<ul class="api">
+			{{#menu.children}}
+			<li {{#active}}class="active"{{/active}}>
+				<a href="{{makeHref name}}">{{name}}</a>
+				{{#if active}}
+				<ul>
+					{{#children}}
+					<li class="heading"><span>{{type}}</span>
+						<ul>
+							{{#children}}
+							<li {{#active}}class="active"{{/active}}><a href="{{makeHref name}}">{{name}}</a></li>
+							{{/children}}
+						</ul>
+					</li>
+					{{/children}}
+				</ul>
+				{{/if}}
+			</li>
+			{{/menu.children}}
+		</ul>
+	</nav>
 
-	<section class="description">
-	{{{description}}}
+	<article class="content docs">
+		<section class="title">
+			{{> title.mustache}}
+		</section>
 
-	<ul class="contents">
-		{{#contentList this}}
-		<li><a href="#!&where={{where}}">{{text}}</a></li>
-		{{/contentList}}
-	</ul>
-	{{makeContentList this}}
-	</section>
-	
-	{{#signatures}}
-	<section class="signature">
-	{{> signature.mustache}}
-	</section>
-	{{/signatures}}
-	
-	{{#if body}}
-	<section class="comment">
-	{{{body}}}
-	</section>
-	{{/if}}
-</article>
+		<section class="description">
+			{{{description}}}
+
+			<ul class="contents">
+				{{#contentList this}}
+				<li><a href="#!&where={{where}}">{{text}}</a></li>
+				{{/contentList}}
+			</ul>
+			{{contentList this}}
+		</section>
+
+		{{#signatures}}
+		<section class="signature">
+			{{> signature.mustache}}
+		</section>
+		{{/signatures}}
+
+		{{#if body}}
+		<section class="comment">
+			{{{body}}}
+		</section>
+		{{/if}}
+	</article>
+</div>

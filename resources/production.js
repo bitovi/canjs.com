@@ -1,4 +1,4 @@
-/*! canjs.us - v0.1.0 - 2013-04-22
+/*! canjs.us - v0.1.0 - 2013-04-23
 * https://github.com/bitovi/canjs.us
 * Copyright (c) 2013 Bitovi; Licensed MIT */
 /*!
@@ -7918,21 +7918,25 @@ can.view.preload('templates_twitterTab_mustache',can.Mustache(function(_CONTEXT,
 		}(document, "script", "twitter-wjs");
 	};
 
-	var initControl = function(selector, name) {
-		var el = $(selector);
-		if(el.length) {
-			new CanJSUS[name](el);
-		}
+	var initControls = function(mappings) {
+		can.each(mappings, function(name, selector) {
+			var el = $(selector);
+			if(el.length) {
+				new CanJSUS[name](el);
+			}
+		});
 	}
 
 	$(function() {
 		CanJSUS.initTwitterWidgets();
-		initControl('#hero-download', 'HeroDownloadCustomizer');
-		initControl('.benefits', 'Benefits');
-		initControl('.social', 'SocialStats');
-		// initControl('.cdn', 'CDNChooser');
-		// initControl('.customize', 'DownloadCustomizer');
-
+		initControls({
+			'.index #hero-download': 'HeroDownloadCustomizer',
+			'.index .benefits': 'Benefits',
+			'.index .social': 'SocialStats',
+			'.download .cdn': 'CDNChooser',
+			'.download .customize': 'DownloadCustomizer',
+			'.community .hero': 'CommunityTabs'
+		});
 		// Syntax highlighting for our example.
 		Rainbow.color();
 	});

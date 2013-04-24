@@ -48,6 +48,24 @@ module.exports = function (grunt) {
 				src: ['_js/templates/*.mustache'],
 				out: '_js/views.production.js'
 			}
+		},
+		generate: {
+			options: {
+				folder: __dirname + '/../../canjs.us',
+				data: {
+					package: require(__dirname + '/../../../can/package.json')
+				},
+				docs: {
+					parent: 'canjs',
+					root: '../'
+				}
+			},
+			all: {
+				src: ['can/can.md'],
+				options: {
+					x: 'y'
+				}
+			}
 		}
 	});
 
@@ -58,6 +76,8 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('can-compile');
+
+	grunt.loadTasks('../tasks');
 
 	// Default task.
 	grunt.registerTask('default', [ 'cancompile', 'concat', 'uglify', 'less' ]);

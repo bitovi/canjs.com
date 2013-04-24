@@ -283,9 +283,9 @@ pre{background-color:#fff;border:1px solid #ccc;border:1px solid rgba(0, 0, 0, 0
 pre code{font-size:14px;line-height:16px;letter-spacing:0px;background-color:rgba(0, 0, 0, 0);}
 pre ol{margin:0 0 0 40px;padding:0;}
 pre ol li{padding:10px;text-indent:0;color:#333;background-color:#fff;margin:0;}
-.api .sidebar{width:255px;float:left;margin-top:20px;margin-bottom:-3000px;padding-bottom:3000px;}
-.api .content.docs{float:left;width:662px;margin-top:20px;background-color:#fff;border:1px solid #d5d5d5;padding:20px;border-left-style:none;border-bottom-style:none;}
-.api footer{margin-top:20px;}
+.docs .sidebar{width:255px;float:left;margin-top:20px;margin-bottom:-3000px;padding-bottom:3000px;}
+.docs .content.docs{float:left;width:662px;margin-top:20px;background-color:#fff;border:1px solid #d5d5d5;padding:20px;border-left-style:none;border-bottom-style:none;}
+.docs footer{margin-top:20px;}
 .container.api{overflow:hidden;border-bottom:1px solid #d5d5d5;}
 .search{display:block;border:1px solid #d5d5d5;padding:3px 3px 3px 30px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;-moz-box-shadow:inset 2px 2px 4px rgba(0, 0, 0, 0.1);-webkit-box-shadow:inset 2px 2px 4px rgba(0, 0, 0, 0.1);box-shadow:inset 2px 2px 4px rgba(0, 0, 0, 0.1);margin:8px;}.search input[type='text']:focus,.search input[type='text']:enabled{border-color:none;outline:none;}
 .search input[type='text']{display:block;border-style:none;background-color:rgba(255, 255, 254, 0);width:100%;}

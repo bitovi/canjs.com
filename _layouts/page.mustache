@@ -22,7 +22,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 
-	<link rel="stylesheet" type="text/css" href="{{root}}resources/styles.css" />
+	<link rel="stylesheet" type="text/css" href="{{url 'resources/styles.css'}}" />
 </head>
 
 <body class="{{page}}">
@@ -30,10 +30,10 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand canjs" href="{{root}}index.html">CanJS</a>
+				<a class="brand canjs" href="{{url 'index.html'}}">CanJS</a>
 				<ul class="dropdown-menu">
 					<li><a href="http://donejs.com">DoneJS</a></li>
-					<li class="active"><a href="{{root}}index.html">CanJS</a></li>
+					<li class="active"><a href="{{url 'index.html'}}">CanJS</a></li>
 					<li><a href="http://jquerypp.com">JQuery++</a></li>
 					<li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
 					<li><a href="http://javascriptmvc.com/docs.html#!FuncUnit">FuncUnit</a></li>
@@ -42,10 +42,10 @@
 			</div>
 
 			<ul class="nav">
-				<li class="active"><a href="{{root}}index.html">Home</a></li>
-				<li><a href="{{root}}docs">Learn</a></li>
-				<li><a href="{{root}}community.html">Community</a></li>
-				<li><a href="{{root}}download.html">Download</a></li>
+				<li class="{{activePage 'index'}}"><a href="{{url 'index.html'}}">Home</a></li>
+				<li class="{{activePage 'docs'}}"><a href="{{url 'docs'}}">Learn</a></li>
+				<li class="{{activePage 'community'}}"><a href="{{url 'community.html'}}">Community</a></li>
+				<li class="{{activePage 'download'}}"><a href="{{url 'download.html'}}">Download</a></li>
 			</ul>
 
 			<div class="pull-right">
@@ -71,17 +71,17 @@
 		<nav class="container">
 			<a class="brand canjs" href="index.html">CanJS</a>
 			<ul class="pullright">
-				<li><a href="{{root}}index.html">Home</a></li>
-				<li><a href="{{root}}docs">Learn</a></li>
-				<li><a href="{{root}}community.html">Community</a></li>
-				<li><a href="{{root}}download.html">Download</a></li>
+				<li><a href="{{url 'index.html'}}">Home</a></li>
+				<li><a href="{{url 'docs'}}">Learn</a></li>
+				<li><a href="{{url 'community.html'}}">Community</a></li>
+				<li><a href="{{url 'download.html'}}">Download</a></li>
 			</ul>
 		</nav>
 	</footer>
 	<div class="loading"></div>
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="{{root}}resources/production.min.js"></script>
+	<script src="{{url 'resources/production.min.js'}}"></script>
 </body>
 
 </html>
