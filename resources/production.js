@@ -6840,10 +6840,9 @@ can.view.preload('templates_twitterTab_mustache',can.Mustache(function(_CONTEXT,
 	window.CanJSUS = window.CanJSUS || {};
 
 	window.CanJSUS.initTwitterWidgets = function() {
-		var widget = $('#twitter-wjs');
-		if(widget.length) {
+		if($('.twitter-follow-button').length) {
 			// replace the "Follow @canjs!" link with a little wiget with follower count.
-			widget.remove();
+			$('#twitter-wjs').remove();
 			!function (d, s, id) {
 				var js, fjs = d.getElementsByTagName(s)[0];
 				if (!d.getElementById(id)) {
@@ -6878,7 +6877,11 @@ can.view.preload('templates_twitterTab_mustache',can.Mustache(function(_CONTEXT,
 
 		// Syntax highlighting
 		$('pre code').each(function() {
-			$(this).parent().addClass('prettyprint linenums');
+			var el = $(this).parent();
+			el.addClass('prettyprint');
+			if(!el.hasClass('nolinenums')) {
+				el.addClass('linenums');
+			}
 		});
 
 		prettyPrint();
