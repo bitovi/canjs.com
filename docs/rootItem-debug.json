@@ -11,12 +11,1241 @@
     "id": 0,
     "children": [{
             "active": false,
+            "type": "page",
+            "name": "can.util",
+            "body": "",
+            "description": "<p>Utility methods supported by CanJS</p>",
+            "title": "can.util",
+            "parent": "canjs",
+            "src": "can/util/util.md",
+            "id": 1,
+            "children": [{
+                    "active": false,
+                    "body": "<p><code>can.isDeferred</code> returns if an object is an instance of [can.Deferred].</p>\n\n<p>## Example\n Convert any value to a Deferred:</p>\n\n<p>function convertDeferred(dfd) {\n    return can.isDeferred(dfd) ? dfd : can.Deferred(dfd);\n}</p>",
+                    "description": "<p>Check if an object is a Deferred. </p>",
+                    "title": "",
+                    "name": "can.isDeferred",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.isDeferred(subject)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "*"
+                                        }
+                                    ],
+                                    "name": "subject",
+                                    "description": "<p>The object to check</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "Boolean"
+                                    }
+                                ],
+                                "description": "<p>Whether <strong>subject</strong> is a Deferred.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 0,
+                    "id": 2
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.trim(str)</code> removes leading and trailing whitespace from a string.  It will also\nremove all newlines, spaces including non-breaking, and tabs.  If these occur in the middle\nof the string, then they will be persisted.</p>\n\n<p>can.trim( \" foo \" ) // -> \"foo\"</p>",
+                    "description": "<p>Trim whitespace off a string. </p>",
+                    "title": "",
+                    "name": "can.trim",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.trim(str)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "str",
+                                    "description": "<p>The string to trim.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "String"
+                                    }
+                                ],
+                                "description": "<p>The trimmed string.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 19,
+                    "id": 3
+                }, {
+                    "active": false,
+                    "body": "",
+                    "description": "<p>Convert an array-like object to an Array. </p>",
+                    "title": "",
+                    "name": "can.makeArray",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.makeArray(arrLike)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "arrLike",
+                                    "description": "<p>An array-like object.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "Array"
+                                    }
+                                ],
+                                "description": "<p>The converted object.</p>\n\n<p><code>can.makeArray(arrLike)</code> converts an array-like object into a array.</p>\n\n<p>can.makeArray({0 : \"zero\", 1: \"one\", length: 2})\n// -> [\"zero\",\"one\"]</p>"
+                            }
+                        }
+                    ],
+                    "src": "can/util/util.js",
+                    "line": 35,
+                    "id": 4
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.isArray(object)</code> returns if the object is an Array.</p>\n\n<p>can.isArray([]) //-> true\ncan.isArray(false)</p>",
+                    "description": "<p>Check if an object is an array. </p>",
+                    "title": "",
+                    "name": "can.isArray",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.isArray(obj)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "*"
+                                        }
+                                    ],
+                                    "name": "obj",
+                                    "description": "<p>The object to check.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "Boolean"
+                                    }
+                                ],
+                                "description": "<p>Whether <strong>obj</strong> is an Array.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 49,
+                    "id": 5
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.each(collection, callback)</code> iterates through an array or object like\nlike [http://api.jquery.com/jQuery.each/ jQuery.each].</p>\n\n<p>can.each([{prop: \"val1\"}, {prop: \"val2\"}],\nfunction( value, index ) {\n     // function called with\n     //  index=0 value={prop: \"val1\"}\n     //  index=1 value={prop: \"val2\"}\n   })</p>",
+                    "description": "<p>Iterate through an array or object. </p>",
+                    "title": "",
+                    "name": "can.each",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.each(collection, callback)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "collection",
+                                    "description": "<p>The object to iterate through.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "function",
+                                            "returns": {
+                                                "types": [{
+                                                        "type": "undefined"
+                                                    }
+                                                ]
+                                            },
+                                            "params": []
+                                        }
+                                    ],
+                                    "name": "callback",
+                                    "description": "<p>A function to call for each item in <strong>collection</strong>.\n<strong>callback</strong> will recieve the item's value first and its key second.</p>"
+                                }
+                            ]
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 64,
+                    "id": 6
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.extend(target, objectN)</code> merges the contents of two or more objects together into the first object\nsimilarly to [http://api.jquery.com/jQuery.extend/ jQuery.extend].</p>\n\n<p>var first = {},\nsecond = {a: \"b\"},\nthrid = {c: \"d\"};</p>\n\n<p>can.extend(first, second, third); //-> first</p>\n\n<p>first  //-> {a: \"b\", c: \"d\"}\nsecond //-> {a: \"b\"}\nthird  //-> {c: \"d\"}</p>",
+                    "description": "<p>Merge objects together. </p>",
+                    "title": "",
+                    "name": "can.extend",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.extend(target, ...obj)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "target",
+                                    "description": "<p>The object to merge properties into.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "obj",
+                                    "description": "<p>Objects containing properties to merge.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "Object"
+                                    }
+                                ],
+                                "description": "<p><strong>target</strong>, post-merge.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 85,
+                    "id": 7
+                }, {
+                    "active": false,
+                    "body": "<p>Parameterizes an object into a query string\nlike [http://api.jquery.com/jQuery.param/ jQuery.param].</p>\n\n<p>can.param({a: \"b\", c: \"d\"}) //-> \"a=b&amp;c=d\"</p>",
+                    "description": "<p>Serialize an object into a query string. </p>",
+                    "title": "",
+                    "name": "can.param",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.param(obj)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "obj",
+                                    "description": "<p>An array or object to serialize.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "String"
+                                    }
+                                ],
+                                "description": "<p>The serialized string.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 109,
+                    "id": 8
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.isEmptyObject(obj)</code> returns if an object has no properties similar to\n[http://api.jquery.com/jQuery.isEmptyObject/ jQuery.isEmptyObject].</p>\n\n<p>can.isEmptyObject({})      //-> true\ncan.isEmptyObject({a:\"b\"}) //-> false</p>",
+                    "description": "<p>Check if an object has no properties. </p>",
+                    "title": "",
+                    "name": "can.isEmptyObject",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.isEmptyObject(obj)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "obj",
+                                    "description": "<p>The object to check.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "Boolean"
+                                        }
+                                    ],
+                                    "name": "Whether",
+                                    "description": "<p>the object is empty.</p>"
+                                }
+                            ]
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 124,
+                    "id": 9
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.proxy(fn, context)</code> accepts a function and returns a\nnew one that will always have the context from which it was\ncalled.  This works similar to [http://api.jquery.com/jQuery.proxy/ jQuery.proxy].</p>\n\n<p>var func = can.proxy(function(one){\n      return this.a + one\n    }, {a: \"b\"});\nfunc(\"two\") //-> \"btwo\"</p>",
+                    "description": "<p>Bind a function to its context. </p>",
+                    "title": "",
+                    "name": "can.proxy",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.proxy(fn, context)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "function",
+                                            "returns": {
+                                                "types": [{
+                                                        "type": "undefined"
+                                                    }
+                                                ]
+                                            },
+                                            "params": []
+                                        }
+                                    ],
+                                    "name": "fn",
+                                    "description": "<p>The function to bind to a context.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "context",
+                                    "description": "<p>The context to bind the function to.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "function",
+                                        "returns": {
+                                            "types": [{
+                                                    "type": "undefined"
+                                                }
+                                            ]
+                                        },
+                                        "params": []
+                                    }
+                                ],
+                                "description": "<p>A function that calls <strong>fn</strong> in the context of <strong>context</strong>.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 140,
+                    "id": 10
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.isFunction(object)</code> returns if an object is a function similar to\n[http://api.jquery.com/jQuery.isFunction/ jQuery.isFunction].</p>\n\n<p>can.isFunction({})           //-> false\ncan.isFunction(function(){}) //-> true</p>",
+                    "description": "<p>Check if an Object is a function. </p>",
+                    "title": "",
+                    "name": "can.isFunction",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.isFunction(obj)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "obj",
+                                    "description": "<p>The object to check.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "Boolean"
+                                    }
+                                ],
+                                "description": "<p>Whether <strong>obj</strong> is a function.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 160,
+                    "id": 11
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.bind(eventName, handler)</code> binds a callback handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n<li>Objects</li>\n<li>Objects with bind / unbind methods</li>\n</ul>\n\n<p>The idea is that bind can be used on anything that produces events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.bind</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.bind</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Binding to an object</strong></p>\n\n<p>var obj = {};\ncan.bind.call(obj,\"something\", function(ev, arg1, arg){\n     arg1 // 1\n     arg2 // 2\n   })\ncan.trigger(obj,\"something\",[1,2])</p>\n\n<p><strong>Binding to an HTMLElement</strong></p>\n\n<p>var el = document.getElementById('foo')\ncan.bind.call(el, \"click\", function(ev){\n     this // el\n   })</p>",
+                    "description": "<p>Listen for events on an object. </p>",
+                    "title": "",
+                    "name": "can.bind",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.bind.call(target, eventName, handler)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "target",
+                                    "description": "<p>The object that emits events.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "eventName",
+                                    "description": "<p>The name of the event to listen for.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "function",
+                                            "returns": {
+                                                "types": [{
+                                                        "type": "undefined"
+                                                    }
+                                                ]
+                                            },
+                                            "params": []
+                                        }
+                                    ],
+                                    "name": "handler",
+                                    "description": "<p>The function to execute when the event occurs.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "Object"
+                                    }
+                                ],
+                                "description": "<p>The <strong>target</strong>.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 176,
+                    "id": 12
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.unbind(eventName, handler)</code> unbinds a callback handler\nfrom an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n<li>Objects</li>\n<li>Objects with bind / unbind methods</li>\n</ul>\n\n<p>The idea is that unbind can be used on anything that produces events\nand it will figure out the appropriate way to\nunbind to it.  Typically, <code>can.unbind</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.bind</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Binding/unbinding to an object</strong></p>\n\n<p>var obj = {},\nhandler = function(ev, arg1, arg){\n       arg1 // 1\n       arg2 // 2\n     };\ncan.bind.call(obj,\"something\", handler)\ncan.trigger(obj,\"something\",[1,2])\ncan.unbind.call(obj,\"something\", handler)</p>\n\n<p><strong>Binding/unbinding to an HTMLElement</strong></p>\n\n<p>var el = document.getElementById('foo'),\nhandler = function(ev){\n       this // el\n     };\ncan.bind.call(el, \"click\", handler)\ncan.unbind.call(el, \"click\", handler)</p>",
+                    "description": "<p>Stop listening for events on an object. </p>",
+                    "title": "",
+                    "name": "can.unbind",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.unbind.call(target, eventName, handler)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "target",
+                                    "description": "<p>The object that emits events.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "eventName",
+                                    "description": "<p>The name of the event to listen for.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "function",
+                                            "returns": {
+                                                "types": [{
+                                                        "type": "undefined"
+                                                    }
+                                                ]
+                                            },
+                                            "params": []
+                                        }
+                                    ],
+                                    "name": "handler",
+                                    "description": "<p>The function to unbind.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "Object"
+                                    }
+                                ],
+                                "description": "<p>The <strong>target</strong>.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 218,
+                    "id": 13
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.delegate(selector, eventName, handler)</code> binds a delegate handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n</ul>\n\n<p>The idea is that delegate can be used on anything that produces delegate events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.delegate</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.delegate</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Delegate binding to an HTMLElement</strong></p>\n\n<p>var el = document.getElementById('foo')\ncan.delegate.call(el, \".selector\", \"click\", function(ev){\n     this // el\n   })</p>",
+                    "description": "<p>Listen for events from the children of an element. </p>",
+                    "title": "",
+                    "name": "can.delegate",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.delegate.call(element, selector, eventName, handler)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "HTMLElement"
+                                        }
+                                    ],
+                                    "name": "element",
+                                    "description": "<p>The HTML element to bind to.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "selector",
+                                    "description": "<p>A selector for delegating downward.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "eventName",
+                                    "description": "<p>The name of the event to listen for.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "function",
+                                            "returns": {
+                                                "types": [{
+                                                        "type": "undefined"
+                                                    }
+                                                ]
+                                            },
+                                            "params": []
+                                        }
+                                    ],
+                                    "name": "handler",
+                                    "description": "<p>The function to execute when the event occurs.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "Object"
+                                    }
+                                ],
+                                "description": "<p>The <strong>element</strong>.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 264,
+                    "id": 14
+                }, {
+                    "active": false,
+                    "body": "",
+                    "description": "<p>Stop listening for events from the children of an element. </p>",
+                    "title": "",
+                    "name": "can.undelegate",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.undelegate.call(element, selector, eventName, handler)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "HTMLElement"
+                                        }
+                                    ],
+                                    "name": "element",
+                                    "description": "<p>The HTML element to unbind from.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "selector",
+                                    "description": "<p>A selector for delegating downward.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "eventName",
+                                    "description": "<p>The name of the event to listen for.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "function",
+                                            "returns": {
+                                                "types": [{
+                                                        "type": "undefined"
+                                                    }
+                                                ]
+                                            },
+                                            "params": []
+                                        }
+                                    ],
+                                    "name": "handler",
+                                    "description": "<p>The function that was bound.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "Object"
+                                    }
+                                ],
+                                "description": "<p>The <strong>element</strong>.</p>\n\n<p><code>can.undelegate(selector, eventName, handler)</code> unbinds a delegate handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n</ul>\n\n<p>The idea is that undelegate can be used on anything that produces delegate events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.undelegate</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.undelegate</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Delegate/undelegate binding to an HTMLElement</strong></p>\n\n<p>var el = document.getElementById('foo'),\nhandler = function(ev){\n       this // el\n     };\ncan.delegate.call(el, \".selector\", \"click\", handler)\ncan.undelegate.call(el, \".selector\", \"click\", handler)</p>"
+                            }
+                        }
+                    ],
+                    "src": "can/util/util.js",
+                    "line": 295,
+                    "id": 15
+                }, {
+                    "active": false,
+                    "body": "",
+                    "description": "<p>Trigger an event. </p>",
+                    "title": "",
+                    "name": "can.trigger",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.trigger(target, eventName[, args])",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "target",
+                                    "description": "<p>The object to trigger the event on.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "eventName",
+                                    "description": "<p>The event to trigger.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "Array",
+                                            "template": [{
+                                                    "types": [{
+                                                            "type": "*"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "optional": true,
+                                    "name": "args",
+                                    "description": "<p>The event data.</p>\n\n<p>Trigger an event on an element or object.</p>"
+                                }
+                            ]
+                        }
+                    ],
+                    "src": "can/util/util.js",
+                    "line": 327,
+                    "id": 16
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.ajax( settings )</code> is used to make an asynchronous HTTP (Ajax) request\nsimilar to [http://api.jquery.com/jQuery.ajax/ jQuery.ajax].</p>\n\n<p>can.ajax({\n    url: 'ajax/farm/animals',\n    success: function(animals) {\n        can.$('.farm').html(animals);\n    }\n});</p>",
+                    "description": "<p>Make an AJAX request. </p>",
+                    "title": "",
+                    "name": "can.ajax",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.ajax(settings)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "settings",
+                                    "description": "<p>Configuration options for the AJAX request.\nThe list of configuration options is the same as for <a href=\"http://api.jquery.com/jQuery.ajax/#jQuery-ajax-settings\">jQuery.ajax()</a>.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "Deferred"
+                                    }
+                                ],
+                                "description": "<p>A can.Deferred that resolves to the data.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 339,
+                    "id": 17
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.$(element)</code> returns the the underlying\nlibrary's NodeList.  It can be passed\na css selector, a HTMLElement or an array of HTMLElements.</p>\n\n<p>The following lists how the NodeList is created by each library:</p>\n\n<ul>\n<li><strong>jQuery</strong> <code>jQuery( HTMLElement )</code></li>\n<li><strong>Zepto</strong> <code>Zepto( HTMLElement )</code></li>\n<li><strong>Dojo</strong> <code>new dojo.NodeList( HTMLElement )</code></li>\n<li><strong>Mootools</strong> <code>$$( HTMLElement )</code></li>\n<li><strong>YUI</strong> <code>Y.all(selector)</code> or <code>Y.NodeList</code></li>\n</ul>",
+                    "description": "<p>Make a library's nodelist. </p>",
+                    "title": "",
+                    "name": "can.$",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.$(element)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "String"
+                                        }, {
+                                            "type": "Element"
+                                        }, {
+                                            "type": "NodeList"
+                                        }
+                                    ],
+                                    "name": "element",
+                                    "description": "<p>The selector, HTML element, or nodelist\nto pass to the underlying library.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "NodeList"
+                                    }
+                                ],
+                                "description": "<p>The nodelist as constructed by the underlying library.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 360,
+                    "id": 18
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.buildFragment(html, node)</code> returns a document fragment for the HTML passed.</p>",
+                    "description": "<p>Make a document fragment. </p>",
+                    "title": "",
+                    "name": "can.buildFragment",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.buildFragment(html, node)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "html",
+                                    "description": "<p>A string of HTML.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "DOM"
+                                        }, {
+                                            "type": "Node"
+                                        }
+                                    ],
+                                    "name": "node",
+                                    "description": "<p>A node used to access a document to make the fragment with.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "DocumentFragment"
+                                    }
+                                ],
+                                "description": "<p>A document fragment made from <strong>html</strong>.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 383,
+                    "id": 19
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.append( wrappedNodeList, html )</code> inserts content to the end of each wrapped node list item(s) passed.</p>\n\n<p>// Before</p>\n\n<div id=\"demo\" />\n\ncan.append( can.$('#demo'), 'Demos are fun!' );\n\n// After\n<div id=\"demo\">Demos are fun!</div>",
+                    "description": "<p>Append content to elements. </p>",
+                    "title": "",
+                    "name": "can.append",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.append(nodeList, html)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "NodeList"
+                                        }
+                                    ],
+                                    "name": "nodeList",
+                                    "description": "<p>A nodelist of the elements to append content to.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "html",
+                                    "description": "<p>The HTML to append to the end of the elements in <strong>nodeList</strong>.</p>"
+                                }
+                            ]
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 396,
+                    "id": 20
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.remove( wrappedNodeList )</code> removes the set of matched element(s) from the DOM.</p>\n\n<p><div id=\"wrap\"/>\ncan.remove(can.$('#wrap')) //-> removes 'wrap'</p>",
+                    "description": "<p>Remove elements from the DOM. </p>",
+                    "title": "",
+                    "name": "can.remove",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.remode(nodeList)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "NodeList"
+                                        }
+                                    ],
+                                    "name": "nodeList",
+                                    "description": "<p>A nodelist of elements to remove.</p>"
+                                }
+                            ]
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 416,
+                    "id": 21
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.data</code> enables the associatation of arbitrary data with DOM nodes and JavaScript objects.</p>\n\n<h3>Setting Data</h3>\n\n<p>can.data( can.$('#elm'), key, value )</p>\n\n<ul>\n<li><strong>wrappedNodeList</strong> node list to associate data to.</li>\n<li><strong>key</strong> string name of the association.</li>\n<li><strong>value</strong> tdata value; it can be any Javascript type including Array or Object.</li>\n</ul>\n\n<h3>Accessing Data</h3>\n\n<p>can.data( can.$('#elm'), key )</p>\n\n<ul>\n<li><strong>wrappedNodeList</strong> node list to retrieve association data from.</li>\n<li><strong>key</strong> string name of the association.</li>\n</ul>\n\n<p>Due to the way browsers security restrictions with plugins and external code,\nthe <em>data</em> method cannot be used on <code>object</code> (unless it's a Flash plugin), <code>applet</code> or <code>embed</code> elements.</p>",
+                    "description": "<p>Associate data with or retrieve data from DOM nodes. </p>",
+                    "title": "",
+                    "name": "can.data",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.data(nodeList, key, value)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "NodeList"
+                                        }
+                                    ],
+                                    "name": "nodeList",
+                                    "description": "<p>The list of nodes to add this data to.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "key",
+                                    "description": "<p>The key to store this data under.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "*"
+                                        }
+                                    ],
+                                    "name": "value",
+                                    "description": "<p>The data to store.</p>"
+                                }
+                            ]
+                        }, {
+                            "code": "can.data(nodeList, key)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "NodeList"
+                                        }
+                                    ],
+                                    "name": "nodeList",
+                                    "description": "<p>The list of nodes data was stored under.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "key",
+                                    "description": "<p>The key to retrieve.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "*"
+                                    }
+                                ],
+                                "description": "<p>The data stored under <strong>key</strong>.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 430,
+                    "id": 22
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.addClass( nodelist, className )</code> adds the specified class(es) to\nnodelist's HTMLElements.  It does NOT replace any existing class(es)\nalready defined.</p>\n\n<p>// Before\n<div id=\"foo\" class=\"monkey\" /></p>\n\n<p>can.addClass(can.$(\"#foo\"),\"bar\")</p>\n\n<p>// After\n<div id=\"foo\" class=\"monkey bar\" /></p>\n\n<p>You can also pass multiple class(es) and it will add them to the existing\nset also.</p>\n\n<p>// Before\n<div id=\"foo\" class=\"monkey\" /></p>\n\n<p>can.addClass(can.$(\"#foo\"),\"bar man\")</p>\n\n<p>// After\n<div id=\"foo\" class=\"monkey bar man\" /></p>\n\n<p>This works similarly to [http://api.jquery.com/addClass/ jQuery.fn.addClass].</p>",
+                    "description": "<p>Add a class to elements. </p>",
+                    "title": "",
+                    "name": "can.addClass",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.addClass(nodeList, className)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "NodeList"
+                                        }
+                                    ],
+                                    "name": "nodeList",
+                                    "description": "<p>The list of HTML elements to add the class to.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "className",
+                                    "description": "<p>The class to add.</p>"
+                                }
+                            ]
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 466,
+                    "id": 23
+                }, {
+                    "active": false,
+                    "body": "<p><code>can.when(deferred)</code> provides the ability to execute callback function(s)\ntypically based on a Deferred or AJAX object.</p>\n\n<p>can.when( can.ajax('api/farm/animals') ).then(function(animals){\n        alert(animals); //-> alerts the ajax response\n});</p>\n\n<p>You can also use this for regular JavaScript objects.</p>\n\n<p>$.when( { animals: [ 'cat' ] } ).done(function(animals){\n    alert(animals[0]); //-> alerts 'cat'\n});</p>",
+                    "description": "<p>Call a callback when a Deferred resolves. </p>",
+                    "title": "",
+                    "name": "can.when",
+                    "type": "function",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.when(deferred)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "Deferred"
+                                        }, {
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "deferred",
+                                    "description": "<p>The Deferred, AJAX, or normal Objects to call the callback on.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "Deferred"
+                                    }
+                                ],
+                                "description": "<p><strong>deferred</strong> if <strong>deferred</strong> is a Deferred,\notherwise a Deferred that resolves to <strong>deferred</strong>.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/util/util.js",
+                    "line": 501,
+                    "id": 24
+                }, {
+                    "active": false,
+                    "body": "",
+                    "description": "<p><code>can.Deferred</code> is a object that allows users to assign and chain callback\nfunction(s) for the success or failure state of both asynchronous and synchronous function(s).</p>",
+                    "type": "constructor",
+                    "name": "can.Deferred",
+                    "title": "",
+                    "parent": "can.util",
+                    "signatures": [{
+                            "code": "can.Deferred()",
+                            "description": "",
+                            "params": [],
+                            "returns": {
+                                "types": [{
+                                        "type": "can.Deferred"
+                                    }
+                                ],
+                                "description": "<p>A new Deferred object.</p>"
+                            }
+                        }
+                    ],
+                    "src": "can/util/util.js",
+                    "line": 525,
+                    "id": 25,
+                    "children": [{
+                            "active": false,
+                            "body": "",
+                            "description": "",
+                            "type": "prototype",
+                            "name": "can.Deferred.prototype",
+                            "parent": "can.Deferred",
+                            "src": "can/util/util.js",
+                            "line": 536,
+                            "id": 26,
+                            "children": [{
+                                    "active": false,
+                                    "body": "<p><code>deferred.resolveWith(context, arguments)</code> resolves a Deferred and calls the <code>doneCallbacks</code> with the given arguments.</p>\n\n<p>var def = can.Deferred();\ndef.resolveWith(this, { animals: [ 'cows', 'monkey', 'panda' ] })</p>",
+                                    "description": "<p>Resolve a Deferred in a particular context. </p>",
+                                    "title": "resolveWith",
+                                    "name": "can.Deferred.prototype.resolveWith",
+                                    "type": "function",
+                                    "parent": "can.Deferred.prototype",
+                                    "signatures": [{
+                                            "code": "resolveWith(context[, arguments])",
+                                            "description": "",
+                                            "params": [{
+                                                    "types": [{
+                                                            "type": "Object"
+                                                        }
+                                                    ],
+                                                    "name": "context",
+                                                    "description": "<p>Context passed to the <code>doneCallbacks</code> as the <code>this</code> object.</p>"
+                                                }, {
+                                                    "types": [{
+                                                            "type": "Object"
+                                                        }
+                                                    ],
+                                                    "optional": true,
+                                                    "name": "arguments",
+                                                    "description": "<p>Array of arguments that are passed to the <code>doneCallbacks</code>.</p>"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "comment": " ",
+                                    "src": "can/util/util.js",
+                                    "line": 562,
+                                    "id": 28
+                                }, {
+                                    "active": false,
+                                    "body": "<p><code>deferred.rejectWith(context, arguments)</code> rejects a Deferred and calls the <code>failCallbacks</code> with the given arguments.</p>\n\n<p>var def = can.Deferred();\ndef.rejectWith(this, { error: \"Animals are gone.\" })</p>",
+                                    "description": "<p>Reject a Deferred in a particular context. </p>",
+                                    "title": "rejectWith",
+                                    "name": "can.Deferred.prototype.rejectWith",
+                                    "type": "function",
+                                    "parent": "can.Deferred.prototype",
+                                    "signatures": [{
+                                            "code": "rejectWith(context[, arguments])",
+                                            "description": "",
+                                            "params": [{
+                                                    "types": [{
+                                                            "type": "Object"
+                                                        }
+                                                    ],
+                                                    "name": "context",
+                                                    "description": "<p>Context passed to the <code>failCallbacks</code> as the <code>this</code> object.</p>"
+                                                }, {
+                                                    "types": [{
+                                                            "type": "Object"
+                                                        }
+                                                    ],
+                                                    "optional": true,
+                                                    "name": "arguments",
+                                                    "description": "<p>Array of arguments that are passed to the <code>failCallbacks</code>.</p>"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "comment": " ",
+                                    "src": "can/util/util.js",
+                                    "line": 577,
+                                    "id": 29
+                                }, {
+                                    "active": false,
+                                    "body": "<p><code>deferred.done(doneCallback)</code> adds handler(s) to be called when the Deferred object is resolved.</p>\n\n<p>var def = can.Deferred();\ndef.done(function(){\n    //- Deferred is done.\n});</p>",
+                                    "description": "<p>Add a callback to be called when a Deferred is resolved. </p>",
+                                    "title": "done",
+                                    "name": "can.Deferred.prototype.done",
+                                    "type": "function",
+                                    "parent": "can.Deferred.prototype",
+                                    "signatures": [{
+                                            "code": "done(doneCallback)",
+                                            "description": "",
+                                            "params": [{
+                                                    "types": [{
+                                                            "type": "function",
+                                                            "returns": {
+                                                                "types": [{
+                                                                        "type": "undefined"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "params": []
+                                                        }
+                                                    ],
+                                                    "name": "doneCallback",
+                                                    "description": "<p>A callback to be called when the Deferred is resolved.</p>"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "comment": " ",
+                                    "src": "can/util/util.js",
+                                    "line": 592,
+                                    "id": 30
+                                }, {
+                                    "active": false,
+                                    "body": "<p><code>deferred.always( alwaysCallbacks )</code> adds handler(s) to be called when the Deferred object is either resolved or rejected.</p>\n\n<p>var def = can.Deferred();\ndef.always( function(){\n    //- Called whether the handler fails or is success.\n});</p>",
+                                    "description": "<p>Add a callback to be unconditionally called. </p>",
+                                    "title": "always",
+                                    "name": "can.Deferred.prototype.always",
+                                    "type": "function",
+                                    "parent": "can.Deferred.prototype",
+                                    "signatures": [{
+                                            "code": "always(alwaysCallback)",
+                                            "description": "",
+                                            "params": [{
+                                                    "types": [{
+                                                            "type": "function",
+                                                            "returns": {
+                                                                "types": [{
+                                                                        "type": "undefined"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "params": []
+                                                        }
+                                                    ],
+                                                    "name": "alwaysCallback",
+                                                    "description": "<p>A callback to be called whether the Deferred is resolved or rejected.</p>"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "comment": " ",
+                                    "src": "can/util/util.js",
+                                    "line": 623,
+                                    "id": 31
+                                }, {
+                                    "active": false,
+                                    "body": "<p><code>deferred.then( doneCallback, failCallback )</code> adds handler(s) to be called when the Deferred object to be called after its resolved.</p>\n\n<p>var def = can.Deferred();\ndef.then(function(){\n    //- Called when the deferred is resolved.\n}, function(){\n    //- Called when the deferred fails.\n})</p>",
+                                    "description": "<p>Add callbacks to a Deferred. </p>",
+                                    "title": "then",
+                                    "name": "can.Deferred.prototype.then",
+                                    "type": "function",
+                                    "parent": "can.Deferred.prototype",
+                                    "signatures": [{
+                                            "code": "then(doneCallback[, failCallback])",
+                                            "description": "",
+                                            "params": [{
+                                                    "types": [{
+                                                            "type": "function",
+                                                            "returns": {
+                                                                "types": [{
+                                                                        "type": "undefined"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "params": []
+                                                        }
+                                                    ],
+                                                    "name": "doneCallback",
+                                                    "description": "<p>A function called when the Deferred is resolved.</p>"
+                                                }, {
+                                                    "types": [{
+                                                            "type": "function",
+                                                            "returns": {
+                                                                "types": [{
+                                                                        "type": "undefined"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "params": []
+                                                        }
+                                                    ],
+                                                    "optional": true,
+                                                    "name": "failCallback",
+                                                    "description": "<p>A function called when the Deferred is rejected.</p>"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "comment": " ",
+                                    "src": "can/util/util.js",
+                                    "line": 639,
+                                    "id": 32
+                                }, {
+                                    "active": false,
+                                    "body": "<p><code>deferred.isResolved()</code> returns whether a Deferred object has been resolved.</p>\n\n<p>var def = can.Deferred();\nvar resolved = def.isResolved();</p>",
+                                    "description": "<p>Determine whether a Deferred has been resolved. </p>",
+                                    "title": "isResolved",
+                                    "name": "can.Deferred.prototype.isResolved",
+                                    "type": "function",
+                                    "parent": "can.Deferred.prototype",
+                                    "signatures": [{
+                                            "code": "isResolved()",
+                                            "description": "",
+                                            "params": [],
+                                            "returns": {
+                                                "types": [{
+                                                        "type": "Boolean"
+                                                    }
+                                                ],
+                                                "description": "<p>Whether this Boolean has been resolved.</p>"
+                                            }
+                                        }
+                                    ],
+                                    "comment": " ",
+                                    "src": "can/util/util.js",
+                                    "line": 658,
+                                    "id": 33
+                                }, {
+                                    "active": false,
+                                    "body": "<p><code>deferred.reject( args )</code> rejects the Deferred object and calls the fail callbacks with the given arguments.</p>\n\n<p>var def = can.Deferred();\ndef.reject({ error: 'Thats not an animal.' })</p>",
+                                    "description": "<p>Reject a Deferred. </p>",
+                                    "title": "reject",
+                                    "name": "can.Deferred.prototype.reject",
+                                    "type": "function",
+                                    "parent": "can.Deferred.prototype",
+                                    "signatures": [{
+                                            "code": "reject([argument])",
+                                            "description": "",
+                                            "params": [{
+                                                    "types": [{
+                                                            "type": "Object"
+                                                        }
+                                                    ],
+                                                    "optional": true,
+                                                    "name": "argument",
+                                                    "description": "<p>The argument to call the <code>failCallback</code> with.</p>"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "comment": " ",
+                                    "src": "can/util/util.js",
+                                    "line": 685,
+                                    "id": 34
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }, {
+            "active": false,
             "type": "constructor",
             "name": "can.Construct",
             "body": "",
             "description": "",
             "title": "",
-            "plugin": "can/construct",
+            "download": "can/construct",
             "test": "can/construct/qunit.html",
             "parent": "canjs",
             "signatures": [{
@@ -64,7 +1293,7 @@
                 }
             ],
             "src": "can/construct/construct.md",
-            "id": 1,
+            "id": 36,
             "children": [{
                     "active": false,
                     "type": "static",
@@ -74,7 +1303,7 @@
                     "parent": "can.Construct",
                     "src": "can/construct/construct.js",
                     "line": 22,
-                    "id": 2,
+                    "id": 37,
                     "children": [{
                             "active": false,
                             "type": "function",
@@ -108,7 +1337,7 @@
                             "comment": " ",
                             "src": "can/construct/construct.js",
                             "line": 26,
-                            "id": 3
+                            "id": 38
                         }, {
                             "active": false,
                             "type": "function",
@@ -155,7 +1384,7 @@
                             "comment": " ",
                             "src": "can/construct/construct.js",
                             "line": 93,
-                            "id": 4
+                            "id": 39
                         }, {
                             "active": false,
                             "type": "function",
@@ -237,7 +1466,7 @@
                             },
                             "src": "can/construct/construct.js",
                             "line": 169,
-                            "id": 5
+                            "id": 40
                         }, {
                             "active": false,
                             "name": "can.Construct.static.namespace",
@@ -252,7 +1481,7 @@
                             "title": "namespace",
                             "src": "can/construct/construct.js",
                             "line": 267,
-                            "id": 6
+                            "id": 41
                         }, {
                             "active": false,
                             "name": "can.Construct.static.shortName",
@@ -267,7 +1496,7 @@
                             "title": "shortName",
                             "src": "can/construct/construct.js",
                             "line": 281,
-                            "id": 7
+                            "id": 42
                         }, {
                             "active": false,
                             "name": "can.Construct.static.fullName",
@@ -282,7 +1511,7 @@
                             "title": "fullName",
                             "src": "can/construct/construct.js",
                             "line": 296,
-                            "id": 8
+                            "id": 43
                         }
                     ]
                 }, {
@@ -294,7 +1523,7 @@
                     "parent": "can.Construct",
                     "src": "can/construct/construct.js",
                     "line": 325,
-                    "id": 9,
+                    "id": 44,
                     "children": [{
                             "active": false,
                             "body": "<p>If a prototype <code>setup</code> method is provided, it is called when a new \ninstance is created. It is passed the same arguments that were passed\nto the constructor.</p>\n\n<p>Because <code>setup</code> is not defined on <code>can.Construct</code> itself, calling super from\ndirectly-inheriting classes will break. In other words, don't do this:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('Snowflake', {\n    setup: function() {\n        this._super(); // this will break!\n    }\n});</code></pre>\n\n<h2><code>setup</code> vs. <code>init</code></h2>\n\n<p>Usually, you should use [can.Construct::init] to do your class's initialization.\nUse <code>setup</code> instead for:</p>\n\n<ul>\n<li>initialization code that you want to run before the inheriting constructor's \n<code>init</code> method is called.</li>\n<li>initialization code that should run whether or not inheriting constructors\ncall their base's <code>init</code> methods.</li>\n<li>modifying the arguments that will get passed to <code>init</code>.</li>\n</ul>\n\n<h2>Example</h2>\n\n<p>This code is a simplified version of the code in [can.Control]'s setup\nmethod. It converts the first argument to a jQuery collection and\nextends the controller's defaults with the options that were passed.</p>\n\n<pre><code class=\"lang-javascript\">can.Construct(\"can.Control\", {\n    setup: function(domElement, rawOptions) {\n        // set up this.element\n        this.element = $(domElement);\n\n        // set up this.options\n        this.options = can.extend({},\n                                  this.constructor.defaults,\n                                  rawOptions\n                                 );\n\n        // pass this.element and this.options to init.\n        return [this.element, this.options];        \n    }\n});</code></pre>         ",
@@ -329,7 +1558,7 @@
                             "comment": " ",
                             "src": "can/construct/construct.js",
                             "line": 329,
-                            "id": 10
+                            "id": 45
                         }, {
                             "active": false,
                             "body": "<p>If a prototype <code>init</code> method is provided, it is called when a new Construct is created,\nafter [can.Construct::setup]. The <code>init</code> method is where the bulk of your initialization code\nshould go, and a common thing to do in <code>init</code> is to save the arguments passed into the constructor.</p>\n\n<h2>Examples</h2>\n\n<p>First, we'll make a Person constructor that has a first and last name:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct(\"Person\", {\n    init: function(first, last) {\n        this.first = first;\n        this.last  = last;\n    }\n});\n\nvar justin = new Person(\"Justin\", \"Meyer\");\njustin.first; // \"Justin\"\njustin.last; // \"Meyer\"</code></pre>\n\n<p>Then we'll extend Person into Programmer and add a favorite language:</p>\n\n<pre><code class=\"lang-javascript\">Person(\"Programmer\", {\n    init: function(first, last, language) {\n        // call base's init\n        Person.prototype.init.apply(this, arguments);\n\n        // other initialization code\n        this.language = language;\n    },\n    bio: function() {\n        return 'Hi! I'm ' + this.first + ' ' + this.last +\n            ' and I write ' + this.language + '.';\n    }\n});\n\nvar brian = new Programmer(\"Brian\", \"Moschel\", 'ECMAScript');\nbrian.bio(); // \"Hi! I'm Brian Moschel and I write ECMAScript.\";</code></pre>\n\n<h2>Be Aware</h2>\n\n<p>[can.Construct::setup] is able to modify the arguments passed to <code>init</code>.\nIf you aren't receiving the right arguments to <code>init</code>, check to make sure\nthat they aren't being changed by <code>setup</code> somewhere along the inheritance chain.</p>",
@@ -355,7 +1584,7 @@
                             "comment": " ",
                             "src": "can/construct/construct.js",
                             "line": 389,
-                            "id": 11
+                            "id": 46
                         }, {
                             "active": false,
                             "type": "property",
@@ -377,7 +1606,7 @@
                             "parent": "can.Construct.prototype",
                             "src": "can/construct/construct.js",
                             "line": 445,
-                            "id": 12
+                            "id": 47
                         }
                     ]
                 }
@@ -390,6 +1619,7 @@
             "description": "<p><code>can.Observe</code> provides a way for you to listen for and keep track of changes\nto objects. When you use the getters and setters provided by <code>can.Observe</code>,\nevents are fired that you can react to. <code>can.Observe</code> also has support for\nworking with deep properties. Observable arrays are also available with\n<code>[can.Observe.List]</code>, which is based on <code>can.Observe</code>.</p>",
             "parent": "canjs",
             "test": "can/observe/qunit.html",
+            "download": "can/observe",
             "signatures": [{
                     "code": "can.Observe([props])",
                     "description": "",
@@ -413,7 +1643,7 @@
                 }
             ],
             "src": "can/observe/observe.md",
-            "id": 13,
+            "id": 48,
             "children": [{
                     "active": false,
                     "type": "static",
@@ -423,7 +1653,7 @@
                     "parent": "can.Observe",
                     "src": "can/observe/observe.js",
                     "line": 113,
-                    "id": 15,
+                    "id": 50,
                     "children": [{
                             "active": false,
                             "type": "function",
@@ -451,7 +1681,7 @@
                             "title": "startBatch",
                             "src": "can/observe/observe.js",
                             "line": 124,
-                            "id": 16
+                            "id": 51
                         }, {
                             "active": false,
                             "type": "function",
@@ -482,7 +1712,7 @@
                             "title": "stopBatch",
                             "src": "can/observe/observe.js",
                             "line": 221,
-                            "id": 17
+                            "id": 52
                         }, {
                             "active": false,
                             "type": "function",
@@ -532,7 +1762,7 @@
                             ],
                             "src": "can/observe/observe.js",
                             "line": 289,
-                            "id": 18
+                            "id": 53
                         }, {
                             "active": false,
                             "type": "function",
@@ -565,7 +1795,7 @@
                             "comment": " ",
                             "src": "can/observe/observe.js",
                             "line": 318,
-                            "id": 19
+                            "id": 54
                         }
                     ]
                 }, {
@@ -577,7 +1807,7 @@
                     "parent": "can.Observe",
                     "src": "can/observe/observe.js",
                     "line": 347,
-                    "id": 20,
+                    "id": 55,
                     "children": [{
                             "active": false,
                             "type": "function",
@@ -698,7 +1928,7 @@
                             ],
                             "src": "can/observe/observe.js",
                             "line": 374,
-                            "id": 22
+                            "id": 57
                         }, {
                             "active": false,
                             "type": "function",
@@ -737,7 +1967,7 @@
                             ],
                             "src": "can/observe/observe.js",
                             "line": 519,
-                            "id": 23
+                            "id": 58
                         }, {
                             "active": false,
                             "type": "function",
@@ -769,7 +1999,7 @@
                             ],
                             "src": "can/observe/observe.js",
                             "line": 558,
-                            "id": 24
+                            "id": 59
                         }, {
                             "active": false,
                             "name": "can.Observe.prototype.bind",
@@ -871,7 +2101,7 @@
                             ],
                             "src": "can/observe/observe.js",
                             "line": 711,
-                            "id": 25
+                            "id": 60
                         }, {
                             "active": false,
                             "name": "can.Observe.prototype.unbind",
@@ -911,7 +2141,7 @@
                             ],
                             "src": "can/observe/observe.js",
                             "line": 818,
-                            "id": 26
+                            "id": 61
                         }, {
                             "active": false,
                             "type": "function",
@@ -930,7 +2160,7 @@
                             },
                             "src": "can/observe/observe.js",
                             "line": 849,
-                            "id": 27
+                            "id": 62
                         }, {
                             "active": false,
                             "type": "function",
@@ -957,7 +2187,7 @@
                             "hide": true,
                             "src": "can/observe/observe.js",
                             "line": 871,
-                            "id": 28
+                            "id": 63
                         }, {
                             "active": false,
                             "type": "function",
@@ -989,7 +2219,7 @@
                             ],
                             "src": "can/observe/observe.js",
                             "line": 923,
-                            "id": 29
+                            "id": 64
                         }
                     ]
                 }
@@ -1002,6 +2232,8 @@
             "body": "",
             "description": "<p><code>can.Observe.List</code> provides a way for you to use <code>can.Observe</code>s with arrays. Much like <code>can.Observe</code>,\nwhen you use the getters and setters on <code>can.Observe.List</code>, events are fired that you can listen for\nand react to.</p>",
             "inherits": "can.Observe",
+            "download": "can/observe",
+            "test": "can/observe/qunit.html",
             "signatures": [{
                     "code": "can.Observe.List([elements])",
                     "description": "",
@@ -1025,8 +2257,8 @@
                 }
             ],
             "src": "can/observe/observe.js",
-            "line": 958,
-            "id": 30,
+            "line": 959,
+            "id": 65,
             "children": [{
                     "active": false,
                     "type": "prototype",
@@ -1035,8 +2267,8 @@
                     "name": "can.Observe.List.prototype",
                     "parent": "can.Observe.List",
                     "src": "can/observe/observe.js",
-                    "line": 1056,
-                    "id": 31,
+                    "line": 1058,
+                    "id": 66,
                     "children": [{
                             "active": false,
                             "type": "function",
@@ -1047,8 +2279,8 @@
                             "description": "<p>Returns the serialized form of this list.</p>",
                             "hide": true,
                             "src": "can/observe/observe.js",
-                            "line": 1102,
-                            "id": 32
+                            "line": 1104,
+                            "id": 67
                         }, {
                             "active": false,
                             "type": "function",
@@ -1094,8 +2326,8 @@
                                 }
                             ],
                             "src": "can/observe/observe.js",
-                            "line": 1144,
-                            "id": 34
+                            "line": 1146,
+                            "id": 69
                         }, {
                             "active": false,
                             "type": "function",
@@ -1315,8 +2547,8 @@
                                 }
                             ],
                             "src": "can/observe/observe.js",
-                            "line": 1232,
-                            "id": 35
+                            "line": 1234,
+                            "id": 70
                         }, {
                             "active": false,
                             "name": "can.Observe.List.prototype.push",
@@ -1347,8 +2579,8 @@
                                 }
                             ],
                             "src": "can/observe/observe.js",
-                            "line": 1540,
-                            "id": 36
+                            "line": 1542,
+                            "id": 71
                         }, {
                             "active": false,
                             "name": "can.Observe.List.prototype.unshift",
@@ -1379,8 +2611,8 @@
                                 }
                             ],
                             "src": "can/observe/observe.js",
-                            "line": 1581,
-                            "id": 37
+                            "line": 1583,
+                            "id": 72
                         }, {
                             "active": false,
                             "name": "can.Observe.List.prototype.pop",
@@ -1403,8 +2635,8 @@
                                 }
                             ],
                             "src": "can/observe/observe.js",
-                            "line": 1659,
-                            "id": 38
+                            "line": 1661,
+                            "id": 73
                         }, {
                             "active": false,
                             "name": "can.Observe.List.prototype.shift",
@@ -1427,8 +2659,8 @@
                                 }
                             ],
                             "src": "can/observe/observe.js",
-                            "line": 1693,
-                            "id": 39
+                            "line": 1695,
+                            "id": 74
                         }, {
                             "active": false,
                             "type": "function",
@@ -1459,8 +2691,8 @@
                                 }
                             ],
                             "src": "can/observe/observe.js",
-                            "line": 1753,
-                            "id": 40
+                            "line": 1755,
+                            "id": 75
                         }, {
                             "active": false,
                             "name": "can.Observe.List.prototype.join",
@@ -1491,8 +2723,8 @@
                                 }
                             ],
                             "src": "can/observe/observe.js",
-                            "line": 1783,
-                            "id": 41
+                            "line": 1785,
+                            "id": 76
                         }, {
                             "active": false,
                             "name": "can.Observe.List.prototype.reverse",
@@ -1515,8 +2747,8 @@
                                 }
                             ],
                             "src": "can/observe/observe.js",
-                            "line": 1805,
-                            "id": 42
+                            "line": 1807,
+                            "id": 77
                         }, {
                             "active": false,
                             "type": "function",
@@ -1557,8 +2789,8 @@
                                 }
                             ],
                             "src": "can/observe/observe.js",
-                            "line": 1824,
-                            "id": 43
+                            "line": 1826,
+                            "id": 78
                         }, {
                             "active": false,
                             "type": "function",
@@ -1586,8 +2818,8 @@
                                 }
                             ],
                             "src": "can/observe/observe.js",
-                            "line": 1859,
-                            "id": 44
+                            "line": 1861,
+                            "id": 79
                         }, {
                             "active": false,
                             "type": "function",
@@ -1642,8 +2874,8 @@
                                 }
                             ],
                             "src": "can/observe/observe.js",
-                            "line": 1889,
-                            "id": 45
+                            "line": 1891,
+                            "id": 80
                         }, {
                             "active": false,
                             "type": "function",
@@ -1671,8 +2903,8 @@
                                 }
                             ],
                             "src": "can/observe/observe.js",
-                            "line": 1914,
-                            "id": 46
+                            "line": 1916,
+                            "id": 81
                         }
                     ]
                 }
@@ -1685,6 +2917,8 @@
             "description": "",
             "title": "",
             "parent": "canjs",
+            "download": "can/model",
+            "test": "can/model/qunit.html",
             "signatures": [{
                     "code": "can.Model([name,] staticProperties, instanceProperties)",
                     "description": "<p>Creates a can.Model class constructor. (See [can.Construct] for more details on this syntax.)</p>",
@@ -1750,7 +2984,7 @@
             ],
             "comment": " ",
             "src": "can/model/model.md",
-            "id": 47,
+            "id": 82,
             "children": [{
                     "active": false,
                     "body": "",
@@ -1760,7 +2994,7 @@
                     "parent": "can.Model",
                     "src": "can/model/model.js",
                     "line": 118,
-                    "id": 48,
+                    "id": 83,
                     "children": [{
                             "active": false,
                             "body": "<p><code>bind(eventType, handler(event, instance))</code> listens to\n<strong>created</strong>, <strong>updated</strong>, <strong>destroyed</strong> events on all \ninstances of the model.</p>\n\n<pre><code>Task.bind(\"created\", function(ev, createdTask){\n     this //-&gt; Task\n  createdTask.attr(\"name\") //-&gt; \"Dishes\"\n})\n\nnew Task({name: \"Dishes\"}).save();\n</code></pre>",
@@ -1807,7 +3041,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 122,
-                            "id": 49
+                            "id": 84
                         }, {
                             "active": false,
                             "body": "<p><code>unbind(eventType, handler)</code> removes a listener\nattached with [can.Model.bind].</p>\n\n<pre><code>var handler = function(ev, createdTask){\n\n}\nTask.bind(\"created\", handler)\nTask.unbind(\"created\", handler)\n</code></pre>\n\n<p>You have to pass the same function to <code>unbind</code> that you\npassed to <code>bind</code>.</p>",
@@ -1854,7 +3088,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 148,
-                            "id": 50
+                            "id": 85
                         }, {
                             "active": false,
                             "body": "",
@@ -1869,7 +3103,7 @@
                             "parent": "can.Model.static",
                             "src": "can/model/model.js",
                             "line": 174,
-                            "id": 51
+                            "id": 86
                         }, {
                             "active": false,
                             "name": "can.Model.static.create",
@@ -1913,7 +3147,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 209,
-                            "id": 52
+                            "id": 87
                         }, {
                             "active": false,
                             "name": "can.Model.static.update",
@@ -1964,7 +3198,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 271,
-                            "id": 53
+                            "id": 88
                         }, {
                             "active": false,
                             "name": "can.Model.static.destroy",
@@ -2008,7 +3242,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 362,
-                            "id": 54
+                            "id": 89
                         }, {
                             "active": false,
                             "name": "can.Model.static.findAll",
@@ -2069,7 +3303,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 422,
-                            "id": 55
+                            "id": 90
                         }, {
                             "active": false,
                             "name": "can.Model.static.findOne",
@@ -2130,7 +3364,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 494,
-                            "id": 56
+                            "id": 91
                         }, {
                             "active": false,
                             "type": "function",
@@ -2178,7 +3412,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 650,
-                            "id": 57
+                            "id": 92
                         }, {
                             "active": false,
                             "type": "function",
@@ -2211,7 +3445,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 788,
-                            "id": 58
+                            "id": 93
                         }
                     ]
                 }, {
@@ -2223,7 +3457,7 @@
                     "parent": "can.Model",
                     "src": "can/model/model.js",
                     "line": 868,
-                    "id": 59,
+                    "id": 94,
                     "children": [{
                             "active": false,
                             "type": "function",
@@ -2248,7 +3482,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 872,
-                            "id": 60
+                            "id": 95
                         }, {
                             "active": false,
                             "type": "function",
@@ -2304,7 +3538,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 890,
-                            "id": 61
+                            "id": 96
                         }, {
                             "active": false,
                             "type": "function",
@@ -2360,7 +3594,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 960,
-                            "id": 62
+                            "id": 97
                         }, {
                             "active": false,
                             "type": "function",
@@ -2406,7 +3640,7 @@
                             ],
                             "src": "can/model/model.js",
                             "line": 1006,
-                            "id": 63
+                            "id": 98
                         }, {
                             "active": false,
                             "type": "function",
@@ -2454,7 +3688,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 1075,
-                            "id": 64
+                            "id": 99
                         }
                     ]
                 }
@@ -2468,9 +3702,11 @@
             "description": "<p>Works exactly like [can.Observe.List] and has all of the same properties,\nevents, and functions as an observable list. The only difference is that \nwhen an item from the list is destroyed, it will automatically get removed\nfrom the list.</p>\n\n<h2>Creating a new Model List</h2>\n\n<p>To create a new model list, just use <code>new {model_name}.List(ARRAY)</code> like:</p>\n\n<pre><code>var todo1 = new Todo( { name: \"Do the dishes\" } ),\n    todo2 = new Todo( { name: \"Wash floors\" } )\nvar todos = new Todo.List( [todo1, todo2] );\n</code></pre>\n\n<h3>Model Lists in <code>can.Model</code></h3>\n\n<p>[can.Model.static.findAll can.Model.findAll] or [can.Model.models] will\nalmost always be used to return a <code>can.Model.List</code> object, even though it\nis possible to create new lists like below:</p>\n\n<pre><code>var todos = Todo.models([\n    new Todo( { name: \"Do the dishes\" } ),\n    new Todo( { name: \"Wash floors\" } )\n])\n\ntodos.constructor // -&gt; can.Model.List\n\n// the most correct way to get a can.Model.List\nTodo.findAll({}, function(todos) {\n    todos.constructor // -&gt; can.Model.List\n})\n</code></pre>\n\n<h3>Extending <code>can.Model.List</code></h3>\n\n<p>Creating custom <code>can.Model.Lists</code> allows you to extend lists with helper\nfunctions for a list of a specific type. So, if you wanted to be able to\nsee how many todos were completed and remaining something could be written\nlike:</p>\n\n<pre><code>Todo.List = can.Model.List({\n    completed: function() {\n        var completed = 0;\n        this.each(function(i, todo) {\n            completed += todo.attr('complete') ? 1 : 0\n        })\n        return completed;\n    },\n    remaining: function() {\n        return this.attr('length') - this.completed();\n    }\n})\n\nTodo.findAll({}, function(todos) {\n    todos.completed() // -&gt; 0\n    todos.remaining() // -&gt; 2\n});\n</code></pre>\n\n<h2>Removing models from model list</h2>\n\n<p>The advantage that <code>can.Model.List</code> has over a traditional <code>can.Observe.List</code>\nis that when you destroy a model, if it is in that list, it will automatically\nbe removed from the list. </p>\n\n<pre><code>// Listen for when something is removed from the todos list.\ntodos.bind(\"remove\", function( ev, oldVals, indx ) {\n    console.log(oldVals[indx].attr(\"name\") + \" removed\")\n})\n\ntodo1.destroy(); // console shows \"Do the dishes removed\"\n</code></pre>",
             "title": "",
             "inherits": "can.Observe.List",
+            "download": "can/model",
+            "test": "can/model/qunit.html",
             "src": "can/model/model.js",
             "line": 1185,
-            "id": 68
+            "id": 103
         }, {
             "active": false,
             "type": "constructor",
@@ -2479,11 +3715,11 @@
             "description": "<p>widget factory with declarative event binding. \ncan.Control helps create organized, memory-leak free, rapidly performing,\nstateful controls. Use it to create UI controls like tabs, grids, and context menus,\nand organize them into higher-order business rules with\n[can.route]. It can serve as both a traditional view and a traditional controller.</p>\n\n<h2>Todo Example</h2>\n\n<p>Here is an example of how to build a simple tab widget using can.Control:</p>\n\n<h2>Creating a Control</h2>\n\n<p>The following example builds up a basic todos widget for listing \nand completing todo items. Start by creating a control constructor \nfunction of your own by extending can.Control:</p>\n\n<pre><code>var Todos = can.Control({\n  init: function( element, options ) {\n    var self = this;\n    Todo.findAll( {}, function( todos ) {\n      self.element.html( 'todos.ejs', todos );\n    });\n  }\n});\n</code></pre>\n\n<p>Create an instance of the Todos control on the <code>todos</code> element with:</p>\n\n<pre><code>var todosControl = new Todos( '#todos', {} );\n</code></pre>\n\n<p>The control's associated [can.EJS EJS] template looks like:</p>\n\n<pre><code>&lt;% list( todos, function( todo ) { %&gt;\n  &lt;li &lt;%= (el) -&gt; el.data( 'todo', todo ) %&gt; &gt;\n    &lt;%= todo.attr( 'name' ) %&gt;\n    &lt;a href=\"javascript://\" class=\"destroy\"&gt;\n  &lt;/li&gt;\n&lt;% }) %&gt;\n</code></pre>\n\n<h2>init <code>can.Control.prototype.init( element, options )</code></h2>\n\n<p><code>init</code> is called when a new can.Control instance is created. It is called with:</p>\n\n<ul>\n<li><strong>element</strong> - The wrapped element passed to the \n            control. Control accepts a\n            raw HTMLElement, a CSS selector, or a NodeList. This is\n            set as <strong>this.element</strong> on the control instance.</li>\n<li><strong>options</strong> - The second argument passed to new Control, extended with\n            the can.Control's static <strong>defaults</strong>. This is set as \n            <strong>this.options</strong> on the control instance.</li>\n</ul>\n\n<p>and any other arguments passed to <code>new can.Control()</code>. For example:</p>\n\n<pre><code>var Todos = can.Control({\n  defaults : { view: 'todos.ejs' }\n}, {\n  init: function( element , options ) {\n    var self = this;\n    Todo.findAll( {}, function( todos ) {\n        self.element.html( self.options.view, todos );\n    });\n  }\n});\n\n// create a Todos with default options\nnew Todos( document.body.firstElementChild );\n\n// overwrite the template option\nnew Todos( $( '#todos' ), { template: 'specialTodos.ejs' } );\n</code></pre>\n\n<h2>element <code>this.element</code></h2>\n\n<p>[can.Control::element] is the \nNodeList consisting of the element the control is created on. </p>\n\n<pre><code>var todosControl = new Todos( document.body.firstElementChild );\ntodosControl.element[0] //-&gt; document.body.firstElementChild\n</code></pre>\n\n<p>Each library wraps elements differently. If you are using jQuery, for example,\nthe element is wrapped with <code>jQuery( element )</code>.</p>\n\n<h2>options <code>this.options</code></h2>\n\n<p>[can.Control::options] is the second argument passed to \n<code>new can.Control()</code>, merged with the control's static <strong>defaults</strong> property.</p>\n\n<h2>Listening to events</h2>\n\n<p>Control automatically binds prototype methods that look\nlike event handlers. Listen to <strong>click</strong>s on <code>&lt;li&gt;</code> elements like:</p>\n\n<pre><code>var Todos = can.Control({\n  init: function( element , options ) {\n    var self = this;\n    Todo.findAll( {}, function( todos ) {\n      self.element.html( self.options.template, todos );\n    });\n  },\n\n  'li click': function( li, event ) {\n    console.log( 'You clicked', li.text() );\n\n    // let other controls know what happened\n    li.trigger( 'selected' );\n  }\n});\n</code></pre>\n\n<p>When an <code>&lt;li&gt;</code> is clicked, <code>\"li click\"</code> is called with:</p>\n\n<ul>\n<li>The library-wrapped <strong>element</strong> that was clicked</li>\n<li>The <strong>event</strong> data</li>\n</ul>\n\n<p>Control uses event delegation, so you can add <code>&lt;li&gt;</code>s without needing to rebind\nevent handlers.</p>\n\n<p>To destroy a todo when its <code>&lt;a href=\"javascript://\" class=\"destroy\"&gt;</code> link \nis clicked:</p>\n\n<pre><code>var Todos = can.Control({\n  init: function( element, options ) {\n    var self = this;\n    Todo.findAll( {}, function( todos ) {\n      self.element.html( self.options.template, todos );\n    });\n  },\n\n  'li click': function( li ) {\n    li.trigger( 'selected', li.model() );\n  },\n\n  'li .destroy click': function( el, ev ) {\n    // get the li element that has todo data\n    var li = el.closest( 'li' );\n\n    // get the model\n    var todo = li.data( 'todo' );\n\n    //destroy it\n    todo.destroy();\n  }\n});\n</code></pre>\n\n<p>When the todo is destroyed, EJS's live binding will remove its LI automatically.</p>\n\n<h2>Templated Event Handlers Part 1 <code>\"{eventName}\"</code></h2>\n\n<p>Customize event handler behavior with <code>\"{NAME}\"</code> in\nthe event handler name.  The following allows customization \nof the event that destroys a todo:</p>\n\n<pre><code>var Todos = can.Control( 'Todos', {\n  init: function( element , options ) { ... },\n\n  'li click': function( li ) { ... },\n\n  'li .destroy {destroyEvent}': function( el, ev ) { \n    // previous destroy code here\n  }\n});\n\n// create Todos with this.options.destroyEvent\nnew Todos( '#todos', { destroyEvent: 'mouseenter' } );\n</code></pre>\n\n<p>Values inside <code>{NAME}</code> are looked up on the control's <code>this.options</code> first,\nand then the <code>window</code>. For example, we could customize it instead like:</p>\n\n<pre><code>var Todos = can.Control( 'Todos', {\n  init: function( element , options ) { ... },\n\n  'li click': function( li ) { ... },\n\n  'li .destroy {Events.destroy}': function( el, ev ) { \n    // previous destroy code here\n  }\n});\n\n// Events config\nEvents = { destroy: 'click' };\n\n// Events.destroy is looked up on the window.\nnew Todos( '#todos' );\n</code></pre>\n\n<p>The selector can also be templated.</p>\n\n<pre><code>var Todos = can.Control( 'Todos', {\n  init: function( element , options ) { ... },\n\n  '{listElement} click': function( li ) { ... },\n\n  '{listElement} .destroy {destroyEvent}': function( el, ev ) { \n    // previous destroy code here\n  }\n});\n\n// create Todos with this.options.destroyEvent\nnew Todos( '#todos',  { \n  destroyEvent: 'mouseenter', \n  listElement: 'li' \n} );\n</code></pre>\n\n<h2>Templated Event Handlers Part 2 <code>\"{objectName}\"</code></h2>\n\n<p>Control can also bind to objects other than <code>this.element</code> with\ntemplated event handlers.  This is <em>critical</em>\nfor avoiding memory leaks that are so common among MVC applications.  </p>\n\n<p>If the value inside <code>{NAME}</code> is an object, Control will bind to that\nobject to listen for events. For example, the following tooltip listens to \nclicks on the window:</p>\n\n<pre><code>var Tooltip = can.Control({\n  '{window} click': function( el, ev ) {\n    // hide only if we clicked outside the tooltip\n    if ( !this.element.has( ev.target ) ) {\n      this.element.remove();\n    }\n  }\n});\n\n// create a Tooltip\nnew Tooltip( $( '&lt;div&gt;INFO&lt;/div&gt;' ).appendTo( el ) );\n</code></pre>\n\n<p>This is convenient when listening for model changes. If EJS were not\ntaking care of removing <code>&lt;li&gt;</code>s after their associated models were destroyed,\nwe could implement it in <code>Todos</code> like:</p>\n\n<pre><code>var Todos = can.Control({\n  init: function( element, options ) {\n    var self = this;\n    Todo.findAll( {}, function( todos ) {\n      self.todosList = todos;\n      self.element.html( self.options.template, todos );\n    });\n  },\n\n  'li click': function( li ) {\n    li.trigger( 'selected', li.model() );\n  },\n\n  'li .destroy click': function( el, ev ) {\n    // get the li element that has todo data\n    var li = el.closest( 'li' );\n\n    // get the model\n    var todo = li.data( 'todo' );\n\n    //destroy it\n    todo.destroy();\n  },\n\n  '{Todo} destroyed': function( Todo, ev, todoDestroyed ) {\n    // find where the element\n    var index = this.todosList.indexOf( todoDestroyed );\n    this.element.children( ':nth-child(' + ( index + 1 ) + ')' )\n                .remove();\n  }\n});\n\nnew Todos( '#todos' );\n</code></pre>\n\n<h2>destroy <code>control.destroy()</code></h2>\n\n<p>[can.Control::destroy] unbinds a control's\nevent handlers and releases its element, but does not remove \nthe element from the page. </p>\n\n<pre><code>var todo = new Todos( '#todos' );\ntodo.destroy();\n</code></pre>\n\n<p>When a control's element is removed from the page\n<strong>destroy</strong> is called automatically.</p>\n\n<pre><code>new Todos( '#todos' );\n$( '#todos' ).remove();\n</code></pre>\n\n<p>All event handlers bound with Control are unbound when the control \nis destroyed (or its element is removed).</p>\n\n<p><em>Brief aside on destroy and templated event binding. Taken \ntogether, templated event binding, and control's automatic\nclean-up make it almost impossible \nto write leaking applications. An application that uses\nonly templated event handlers on controls within the body\ncould free up all \ndata by calling <code>$(document.body).empty()</code>.</em></p>\n\n<h2>on <code>control.on()</code></h2>\n\n<p>[can.Control::on] rebinds a control's event handlers. This is useful when you want\nto listen to a specific model and change it:</p>\n\n<pre><code>var Editor = can.Control({\n  todo: function( todo ) {\n    this.options.todo = todo;\n    this.on();\n    this.setName();\n  },\n\n  // a helper that sets the value of the input\n  // to the todo's name\n  setName: function() {\n    this.element.val( this.options.todo.name );\n  },\n\n  // listen for changes in the todo\n  // and update the input\n  '{todo} updated': function() {\n    this.setName();\n  },\n\n  // when the input changes\n  // update the todo instance\n  'change': function() {\n    var todo = this.options.todo;\n    todo.attr( 'name', this.element.val() );\n    todo.save();\n  }\n});\n\nvar todo1 = new Todo({ id: 6, name: 'trash' }),\n    todo2 = new Todo({ id: 6, name: 'dishes' });\n\n// create the editor;\nvar editor = new Editor( '#editor' );\n\n// show the first todo\neditor.todo( todo1 );\n\n// switch it to the second todo\neditor.todo( todo2 );\n</code></pre>\n\n<p>Here's the full todo list manager in action:</p>",
             "title": "",
             "parent": "canjs",
-            "plugin": "can/control",
+            "download": "can/route",
             "test": "can/control/qunit.html",
             "inherits": "can.Construct",
             "src": "can/control/control.md",
-            "id": 69,
+            "id": 104,
             "children": [{
                     "active": false,
                     "type": "static",
@@ -2493,7 +3729,7 @@
                     "parent": "can.Control",
                     "src": "can/control/control.js",
                     "line": 43,
-                    "id": 71,
+                    "id": 106,
                     "children": [{
                             "active": false,
                             "type": "function",
@@ -2505,7 +3741,7 @@
                             "hide": true,
                             "src": "can/control/control.js",
                             "line": 48,
-                            "id": 72
+                            "id": 107
                         }, {
                             "active": false,
                             "type": "function",
@@ -2532,7 +3768,7 @@
                             },
                             "src": "can/control/control.js",
                             "line": 93,
-                            "id": 73
+                            "id": 108
                         }, {
                             "active": false,
                             "type": "function",
@@ -2567,7 +3803,7 @@
                             },
                             "src": "can/control/control.js",
                             "line": 112,
-                            "id": 74
+                            "id": 109
                         }, {
                             "active": false,
                             "name": "can.Control.static.processors",
@@ -2578,12 +3814,35 @@
                             "title": "processors",
                             "src": "can/control/control.js",
                             "line": 165,
-                            "id": 75
+                            "id": 110
                         }, {
+                            "active": false,
+                            "type": "property",
+                            "body": "",
+                            "description": "<p>A object of name-value pairs that act as default values for a control's\n[can.Control::options this.options].</p>\n\n<pre><code>Message = can.Control({\n  defaults: {\n    message: \"Hello World\"\n  }\n}, {\n  init: function(){\n    this.element.text( this.options.message );\n  }\n});\n\nnew Message( \"#el1\" ); //writes \"Hello World\"\nnew Message( \"#el12\", { message: \"hi\" } ); //writes hi\n</code></pre>\n\n<p>In [can.Control::setup] the options passed to the control\nare merged with defaults.  This is not a deep merge.</p>",
+                            "title": "defaults",
+                            "name": "can.Control.static.defaults",
+                            "parent": "can.Control.static",
+                            "src": "can/control/control.js",
+                            "line": 225,
+                            "id": 111
+                        }
+                    ]
+                }, {
+                    "active": false,
+                    "type": "prototype",
+                    "body": "",
+                    "description": "",
+                    "name": "can.Control.prototype",
+                    "parent": "can.Control",
+                    "src": "can/control/control.js",
+                    "line": 250,
+                    "id": 112,
+                    "children": [{
                             "active": false,
                             "type": "function",
                             "name": "can.Control.prototype.setup",
-                            "parent": "can.Control.static",
+                            "parent": "can.Control.prototype",
                             "body": "<p>Setup is where most of control's magic happens.  It does the following:</p>\n\n<h3>Sets this.element</h3>\n\n<p>The first parameter passed to new Control( el, options ) is expected to be \nan element.  This gets converted to a Wrapped NodeList element and set as\n[can.Control.prototype.element this.element].</p>\n\n<h3>Adds the control's name to the element's className.</h3>\n\n<p>Control adds it's plugin name to the element's className for easier \ndebugging.  For example, if your Control is named \"Foo.Bar\", it adds\n\"foo_bar\" to the className.</p>\n\n<h3>Saves the control in $.data</h3>\n\n<p>A reference to the control instance is saved in $.data.  You can find \ninstances of \"Foo.Bar\" like: </p>\n\n<pre><code>$( '#el' ).data( 'controls' )[ 'foo_bar' ]\n</code></pre>\n\n<h3>Merges Options</h3>\n\n<p>Merges the default options with optional user-supplied ones.\nAdditionally, default values are exposed in the static [can.Control.static.defaults defaults] \nso that users can change them.</p>\n\n<h3>Binds event handlers</h3>\n\n<p>Setup does the event binding described in [can.Control.listening Listening To Events].</p>",
                             "description": "<p>Perform pre-initialization logic. </p>",
                             "title": "setup",
@@ -2620,24 +3879,35 @@
                             ],
                             "comment": " ",
                             "src": "can/control/control.js",
-                            "line": 252,
-                            "id": 77
+                            "line": 255,
+                            "id": 113
                         }, {
                             "active": false,
                             "name": "can.Control.prototype.options",
                             "type": "property",
-                            "parent": "can.Control.static",
+                            "parent": "can.Control.prototype",
                             "body": "",
                             "description": "<p>Options are used to configure a control.  They are\nthe 2nd argument\npassed to a control (or the first argument passed to the \n[can.Control.plugin control's jQuery plugin]).</p>\n\n<p>For example:</p>\n\n<pre><code>can.Control('Hello')\n\nvar h1 = new Hello( $( '#content1' ), { message: 'World' } );\nequal( h1.options.message , \"World\" );\n\nvar h2 = $( '#content2' ).hello({ message: 'There' })\n                         .control();\nequal( h2.options.message , \"There\" );\n</code></pre>\n\n<p>Options are merged with [can.Control.static.defaults defaults] in\n[can.Control.prototype.setup setup].</p>\n\n<p>For example:</p>\n\n<pre><code>Tabs = can.Control({\n   defaults: {\n     activeClass: \"ui-active-state\"\n   }\n}, {\n   init: function(){\n     this.element.addClass( this.options.activeClass );\n   }\n});\n\nnew Tabs( $( \"#tabs1\" ) ); // adds 'ui-active-state'\nnew Tabs( $( \"#tabs2\" ), { activeClass : 'active' } ); // adds 'active'\n</code></pre>\n\n<p>Options are typically updated by calling \n[can.Control.prototype.update update];</p>",
                             "title": "options",
                             "src": "can/control/control.js",
-                            "line": 311,
-                            "id": 78
+                            "line": 315,
+                            "id": 114
+                        }, {
+                            "active": false,
+                            "type": "property",
+                            "body": "",
+                            "description": "<p>The element the Control is associated with. \nThe control instance's HTMLElement (or window) wrapped by the \nutil library for ease of use. It is set by the first\nparameter to <code>new can.Construct( element, options )</code> \nin [can.Control::setup].  Control listens on <code>this.element</code>\nfor events.</p>\n\n<h3>Quick Example</h3>\n\n<p>The following <code>HelloWorld</code> control sets the control`s text to \"Hello World\":</p>\n\n<pre><code>HelloWorld = can.Control({\n  init: function(){\n       this.element.text( 'Hello World' );\n  }\n});\n\n// create the controller on the element\nnew HelloWorld( document.getElementById( '#helloworld' ) );\n</code></pre>\n\n<h2>Wrapped NodeList</h2>\n\n<p><code>this.element</code> is a wrapped NodeList of one HTMLELement (or window).  This\nis for convience in libraries like jQuery where all methods operate only on a\nNodeList.  To get the raw HTMLElement, write:</p>\n\n<pre><code>this.element[0] //-&gt; HTMLElement\n</code></pre>\n\n<p>The following details the NodeList used by each library with \nan example of updating it's text:</p>\n\n<p><strong>jQuery</strong> <code>jQuery( HTMLElement )</code></p>\n\n<pre><code>this.element.text(\"Hello World\")\n</code></pre>\n\n<p><strong>Zepto</strong> <code>Zepto( HTMLElement )</code></p>\n\n<pre><code>this.element.text(\"Hello World\")\n</code></pre>\n\n<p><strong>Dojo</strong> <code>new dojo.NodeList( HTMLElement )</code></p>\n\n<pre><code>// TODO\n</code></pre>\n\n<p><strong>Mootools</strong> <code>$$( HTMLElement )</code></p>\n\n<p>this.element.empty().appendText(\"Hello World\")</p>\n\n<p><strong>YUI</strong> </p>\n\n<p>// TODO</p>\n\n<h2>Changing <code>this.element</code></h2>\n\n<p>Sometimes you don't want what's passed to <code>new can.Control</code>\nto be this.element.  You can change this by overwriting\nsetup or by unbinding, setting this.element, and rebinding.</p>\n\n<h3>Overwriting Setup</h3>\n\n<p>The following Combobox overwrites setup to wrap a\nselect element with a div.  That div is used \nas <code>this.element</code>. Notice how <code>destroy</code> sets back the\noriginal element.</p>\n\n<pre><code>Combobox = can.Control({\n  setup: function( el, options ) {\n     this.oldElement = $( el );\n     var newEl = $( '&lt;div/&gt;' );\n     this.oldElement.wrap( newEl );\n     can.Controll.prototype.setup.call( this, newEl, options );\n  },\n  init: function() {\n     this.element //-&gt; the div\n  },\n  \".option click\": function() {\n    // event handler bound on the div\n  },\n  destroy: function() {\n     var div = this.element; //save reference\n     can.Control.prototype.destroy.call( this );\n     div.replaceWith( this.oldElement );\n  }\n});\n</code></pre>\n\n<h3>unbinding, setting, and rebinding.</h3>\n\n<p>You could also change this.element by calling\n[can.Control::off], setting this.element, and \nthen calling [can.Control::on] like:</p>\n\n<pre><code>move: function( newElement ) {\n   this.off();\n   this.element = $( newElement );\n   this.on();\n}\n</code></pre>",
+                            "title": "element",
+                            "name": "can.Control.prototype.element",
+                            "parent": "can.Control.prototype",
+                            "src": "can/control/control.js",
+                            "line": 363,
+                            "id": 115
                         }, {
                             "active": false,
                             "type": "function",
                             "name": "can.Control.prototype.on",
-                            "parent": "can.Control.static",
+                            "parent": "can.Control.prototype",
                             "body": "<p><code>on(el, selector, eventName, func)</code> binds an event handler for an event to a selector under the scope of the given element.</p>\n\n<p><code>this.on()</code> is used to rebind \nall event handlers when [can.Control::options this.options] has changed.  It\ncan also be used to bind or delegate from other elements or objects.</p>\n\n<h2>Rebinding</h2>\n\n<p>By using templated event handlers, a control can listen to objects outside\n<code>this.element</code>.  This is extremely common in MVC programming.  For example,\nthe following control might listen to a task model's <code>completed</code> property and\ntoggle a strike className like:</p>\n\n<pre><code>TaskStriker = can.Control({\n  \"{task} completed\": function(){\n       this.update();\n  },\n  update: function(){\n    if ( this.options.task.completed ) {\n         this.element.addClass( 'strike' );\n       } else {\n      this.element.removeClass( 'strike' );\n    }\n  }\n});\n\nvar taskstriker = new TaskStriker({ \n  task: new Task({ completed: 'true' }) \n});\n</code></pre>\n\n<p>To update the taskstriker's task, add a task method that updates\nthis.options and calls rebind like:</p>\n\n<pre><code>TaskStriker = can.Control({\n  \"{task} completed\": function(){\n       this.update();\n  },\n  update: function() {\n    if ( this.options.task.completed ) {\n         this.element.addClass( 'strike' );\n       } else {\n      this.element.removeClass( 'strike' );\n    }\n  },\n  task: function( newTask ) {\n    this.options.task = newTask;\n    this.on();\n    this.update();\n  }\n});\n\nvar taskstriker = new TaskStriker({ \n  task: new Task({ completed: true }) \n});\ntaskstriker.task( new TaskStriker({ \n  task: new Task({ completed: false }) \n}));\n</code></pre>\n\n<h2>Adding new events</h2>\n\n<p>If events need to be bound to outside of the control and templated event handlers\nare not sufficent, you can call this.on to bind or delegate programatically:</p>\n\n<pre><code>init: function() {\n   // calls somethingClicked( el, ev )\n   this.on( 'click', 'somethingClicked' ); \n\n   // calls function when the window is clicked\n   this.on( window, 'click', function( ev ) {\n     //do something\n   });\n},\nsomethingClicked: function( el, ev ) {\n\n}\n</code></pre>",
                             "description": "<p>Bind an event handler to a Control, or rebind all event handlers on a Control. </p>",
                             "title": "on",
@@ -2713,38 +3983,909 @@
                             ],
                             "comment": " ",
                             "src": "can/control/control.js",
-                            "line": 460,
-                            "id": 80
+                            "line": 466,
+                            "id": 116
                         }, {
                             "active": false,
                             "type": "function",
-                            "name": "can.Control.static.off",
+                            "name": "can.Control.prototype.off",
                             "params": [],
-                            "parent": "can.Control.static",
+                            "parent": "can.Control.prototype",
                             "body": "",
                             "description": "<p>Unbinds all event handlers on the controller. You should never\nbe calling this unless in use with [can.Control::on].</p>",
                             "hide": true,
                             "src": "can/control/control.js",
-                            "line": 610,
-                            "id": 81
+                            "line": 617,
+                            "id": 117
                         }, {
                             "active": false,
                             "type": "function",
-                            "name": "can.Control.static.destroy",
-                            "parent": "can.Control.static",
+                            "name": "can.Control.prototype.destroy",
+                            "parent": "can.Control.prototype",
                             "body": "",
-                            "description": "<p>Clean up after a Control that has been removed. </p>",
+                            "description": "<p>Clean up after a Control that has been removed. \n<code>destroy</code> prepares a control for garbage collection and is a place to\nreset any changes the control has made.  </p>\n\n<h2>Allowing Garbage Collection</h2>\n\n<p>Destroy is called whenever a control's element is removed from the page using \nthe library's standard HTML modifier methods.  This means that you\ndon't have to call destroy yourself and it \nwill be called automatically when appropriate.  </p>\n\n<p>The following <code>Clicker</code> widget listens on the window for clicks and updates\nits element's innerHTML.  If we remove the element, the window's event handler\nis removed auto-magically:</p>\n\n<pre><code> Clickr = can.Control({\n  \"{window} click\": function() {\n       this.element.html( this.count ? \n                          this.count++ : this.count = 0 );\n  }  \n});\n\n// create a clicker on an element\nnew Clicker( \"#clickme\" );\n\n// remove the element\n$( '#clickme' ).remove();\n</code></pre>\n\n<p>The methods you can use that will destroy controls automatically by library:</p>\n\n<p><strong>jQuery and Zepto</strong></p>\n\n<ul>\n<li>$.fn.remove</li>\n<li>$.fn.html</li>\n<li>$.fn.replaceWith</li>\n<li>$.fn.empty</li>\n</ul>\n\n<p><strong>Dojo</strong></p>\n\n<ul>\n<li>dojo.destroy</li>\n<li>dojo.empty</li>\n<li>dojo.place (with the replace option)</li>\n</ul>\n\n<p><strong>Mootools</strong></p>\n\n<ul>\n<li>Element.prototype.destroy</li>\n</ul>\n\n<p><strong>YUI</strong></p>\n\n<ul>\n<li>TODO!</li>\n</ul>\n\n<h2>Teardown in Destroy</h2>\n\n<p>Sometimes, you want to reset a controlled element back to its\noriginal state when the control is destroyed.  Overwriting destroy\nlets you write teardown code of this manner.  <strong>When overwriting\ndestroy, make sure you call Control's base functionality</strong>.</p>\n\n<p>The following example changes an element's text when the control is\ncreated and sets it back when the control is removed:</p>\n\n<pre><code>Changer = can.Control({\n  init: function() {\n    this.oldText = this.element.text();\n    this.element.text( \"Changed!!!\" );\n  },\n  destroy: function() {\n    this.element.text( this.oldText );\n    can.Control.prototype.destroy.call( this );\n  }\n});\n\n// create a changer which changes #myel's text\nvar changer = new Changer( '#myel' );\n\n// destroy changer which will reset it\nchanger.destroy();\n</code></pre>\n\n<h2>Base Functionality</h2>\n\n<p>Control prepares the control for garbage collection by:</p>\n\n<ul>\n<li>unbinding all event handlers</li>\n<li>clearing references to this.element and this.options</li>\n<li>clearing the element's reference to the control</li>\n<li>removing it's [can.Control.pluginName] from the element's className</li>\n</ul>",
                             "signatures": [{
                                     "code": "destroy()",
-                                    "description": "<p><code>destroy</code> prepares a control for garbage collection and is a place to\nreset any changes the control has made.  </p>\n\n<h2>Allowing Garbage Collection</h2>\n\n<p>Destroy is called whenever a control's element is removed from the page using \nthe library's standard HTML modifier methods.  This means that you\ndon't have to call destroy yourself and it \nwill be called automatically when appropriate.  </p>\n\n<p>The following <code>Clicker</code> widget listens on the window for clicks and updates\nits element's innerHTML.  If we remove the element, the window's event handler\nis removed auto-magically:</p>\n\n<pre><code> Clickr = can.Control({\n  \"{window} click\": function() {\n       this.element.html( this.count ? \n                          this.count++ : this.count = 0 );\n  }  \n});\n\n// create a clicker on an element\nnew Clicker( \"#clickme\" );\n\n// remove the element\n$( '#clickme' ).remove();\n</code></pre>\n\n<p>The methods you can use that will destroy controls automatically by library:</p>\n\n<p><strong>jQuery and Zepto</strong></p>\n\n<ul>\n<li>$.fn.remove</li>\n<li>$.fn.html</li>\n<li>$.fn.replaceWith</li>\n<li>$.fn.empty</li>\n</ul>\n\n<p><strong>Dojo</strong></p>\n\n<ul>\n<li>dojo.destroy</li>\n<li>dojo.empty</li>\n<li>dojo.place (with the replace option)</li>\n</ul>\n\n<p><strong>Mootools</strong></p>\n\n<ul>\n<li>Element.prototype.destroy</li>\n</ul>\n\n<p><strong>YUI</strong></p>\n\n<ul>\n<li>TODO!</li>\n</ul>\n\n<h2>Teardown in Destroy</h2>\n\n<p>Sometimes, you want to reset a controlled element back to its\noriginal state when the control is destroyed.  Overwriting destroy\nlets you write teardown code of this manner.  <strong>When overwriting\ndestroy, make sure you call Control's base functionality</strong>.</p>\n\n<p>The following example changes an element's text when the control is\ncreated and sets it back when the control is removed:</p>\n\n<pre><code>Changer = can.Control({\n  init: function() {\n    this.oldText = this.element.text();\n    this.element.text( \"Changed!!!\" );\n  },\n  destroy: function() {\n    this.element.text( this.oldText );\n    can.Control.prototype.destroy.call( this );\n  }\n});\n\n// create a changer which changes #myel's text\nvar changer = new Changer( '#myel' );\n\n// destroy changer which will reset it\nchanger.destroy();\n</code></pre>\n\n<h2>Base Functionality</h2>\n\n<p>Control prepares the control for garbage collection by:</p>\n\n<ul>\n<li>unbinding all event handlers</li>\n<li>clearing references to this.element and this.options</li>\n<li>clearing the element's reference to the control</li>\n<li>removing it's [can.Control.pluginName] from the element's className</li>\n</ul>",
+                                    "description": "",
                                     "params": []
                                 }
                             ],
+                            "title": "destroy",
                             "src": "can/control/control.js",
-                            "line": 624,
-                            "id": 82
+                            "line": 631,
+                            "id": 118
                         }
                     ]
+                }
+            ]
+        }, {
+            "active": false,
+            "type": "page",
+            "name": "can.route",
+            "body": "<h2>Background Information</h2>\n\n<p>To support the browser's back button and bookmarking\nin an Ajax application, most applications use\nthe <code>window.location.hash</code>.  By\nchanging the hash (via a link or JavaScript), \none is able to add to the browser's history \nwithout changing the page.</p>\n\n<p>This provides the basics needed to\ncreate history enabled Ajax websites.  However,\n<code>can.route</code> addresses several other needs such as:</p>\n\n<ul>\n<li>Pretty urls (actually hashes)</li>\n<li>Keeping routes independent of application code</li>\n<li>Listening to specific parts of the history changing</li>\n<li>Setup / Teardown of widgets.</li>\n</ul>\n\n<h2>How it works</h2>\n\n<p><code>can.route</code> is a [can.Observe] that represents the\n<code>window.location.hash</code> as an \nobject.  For example, if the hash looks like:</p>\n\n<pre><code>#!type=videos&amp;id=5\n</code></pre>\n\n<p>the data in <code>can.route</code> looks like:</p>\n\n<pre><code>{ type: 'videos', id: 5 }\n</code></pre>\n\n<p><code>can.route</code> keeps the state of the hash in-sync with the <code>data</code> contained within \n<code>can.route</code>.</p>\n\n<h2>can.Observe</h2>\n\n<p><code>can.route</code> is a [can.Observe]. Understanding\n<code>can.Observe</code> is essential for using <code>can.route</code> correctly.</p>\n\n<p>You can listen to changes in an Observe with <code>bind(eventName, handler(ev, args...))</code> and\nchange can.route's properties with \n[can.Observe.prototype.attr attr].</p>\n\n<h3>Listening to changes in an Observable</h3>\n\n<p>Listen to changes in history \nby [can.Observe.prototype.bind bind]ing to\nchanges in <code>can.route</code> like:</p>\n\n<pre><code>can.route.bind('change', function(ev, attr, how, newVal, oldVal) {\n\n})\n</code></pre>\n\n<ul>\n<li><code>attr</code> - the name of the changed attribute</li>\n<li><code>how</code> - the type of Observe change event (add, set or remove)</li>\n<li><code>newVal</code>/<code>oldVal</code> - the new and old values of the attribute</li>\n</ul>\n\n<p>You can also listen to specific changes \nwith [can.Observe.delegate delegate]:</p>\n\n<pre><code>can.route.delegate('id','change', function(){ ... })\n</code></pre>\n\n<p>Observe lets you listen to the following events:</p>\n\n<ul>\n<li>change - any change to the object</li>\n<li>add - a property is added</li>\n<li>set - a property value is added or changed</li>\n<li>remove - a property is removed</li>\n</ul>\n\n<p>Listening for <code>add</code> is useful for widget setup\nbehavior, <code>remove</code> is useful for teardown.</p>\n\n<h3>Updating an observable</h3>\n\n<p>Create changes in the route data with [can.Observe.prototype.attr attr] like:</p>\n\n<pre><code>can.route.attr('type','images');\n</code></pre>\n\n<p>Or change multiple properties at once like:</p>\n\n<pre><code>can.route.attr({type: 'pages', id: 5}, true)\n</code></pre>\n\n<p>When you make changes to can.route, they will automatically\nchange the <code>hash</code>.</p>\n\n<h2>Creating a Route</h2>\n\n<p>Use <code>can.route(url, defaults)</code> to create a \nroute. A route is a mapping from a url to \nan object (that is the can.route's state). \nIn order to map to a specific properties in the url,\nprepend a colon to the name of the property like:</p>\n\n<pre><code>can.route( \"!#content/:type\" )\n</code></pre>\n\n<p>If no routes are added, or no route is matched, \ncan.route's data is updated with the [can.deparam deparamed]\nhash.</p>\n\n<pre><code>location.hash = \"#!type=videos\";\n// can.route -&gt; {type : \"videos\"}\n</code></pre>\n\n<p>Once routes are added and the hash changes,\ncan.route looks for matching routes and uses them\nto update can.route's data.</p>\n\n<pre><code>can.route( \"!#content/:type\" );\nlocation.hash = \"#!content/images\";\n// can.route -&gt; {type : \"images\"}\ncan.route.attr( \"type\", \"songs\" )\n// location.hash -&gt; \"#!content/songs\"\n</code></pre>\n\n<p>Default values can also be added:</p>\n\n<pre><code>can.route(\"content/:type\",{type: \"videos\" });\nlocation.hash = \"#!content/\"\n// can.route -&gt; {type : \"videos\"}\n</code></pre>\n\n<h2>Delay setting can.route</h2>\n\n<p>By default, <code>can.route</code> sets its initial data\non document ready.  Sometimes, you want to wait to set \nthis data.  To wait, call:</p>\n\n<pre><code>can.route.ready(false);\n</code></pre>\n\n<p>and when ready, call:</p>\n\n<pre><code>can.route.ready(true);\n</code></pre>\n\n<h2>Changing the route.</h2>\n\n<p>Typically, you never want to set <code>location.hash</code>\ndirectly.  Instead, you can change properties on <code>can.route</code>\nlike:</p>\n\n<pre><code>can.route.attr('type', 'videos')\n</code></pre>\n\n<p>This will automatically look up the appropriate \nroute and update the hash.</p>\n\n<p>Often, you want to create links.  <code>can.route</code> provides\nthe [can.route.link] and [can.route.url] helpers to make this \neasy:</p>\n\n<pre><code>can.route.link(\"Videos\", {type: 'videos'})\n</code></pre>\n\n<h2>Demo</h2>\n\n<p>The following demo shows the relationship between <code>window.location.hash</code>,\nroutes given to <code>can.data</code>,\n<code>can.route</code>'s data, and events on <code>can.data</code>.  Most properties \nare editable so experiment!</p>\n\n<div class='iframe_wrapper' data-iframe-src='can/route/demo.html' data-iframe-height='980'></div>\n\n<h2>IE Compatibility</h2>\n\n<p>Internet Explorer 6 and 7 does not support <code>window.onhashchange</code>. \nEven Internet Explorer 8 running in IE7 compatibility mode reports <code>true</code> \nfor <code>onhashchange</code> in window, even though the event isn't supported.</p>\n\n<p>If you are using jQuery, you can include Ben Alman's [HashChange Plugin http://benalman.com/projects/jquery-hashchange-plugin/]\nto support the event in the unsupported browser(s).  Include <code>can/route/hashchange.js</code>\nin your file to support those browsers.</p>\n\n<h2>Using routes with <code>can.Control</code></h2>\n\n<p>Using templated event handlers, it is possible to listen to changes to\n<code>can.route</code> within <code>can.Control</code>. This is convenient as it allows the\ncontrol to listen to and make changes whenever the route is modified, \neven outside of the control itself.</p>\n\n<pre><code>// create the route\ncan.route(\"!#content/:type\")\n\n// the route has changed\n\"{can.route} change\": function(ev, attr, how, newVal, oldVal) {\n    if (attr === \"type\") {\n        // the route has a type\n    }\n}\n</code></pre>\n\n<h3>Creating and binding routes with <code>can.Control.route</code></h3>\n\n<p>Using [can.Control.route], a builtin plugin to CanJS, cuts down on the amount\nof code needed to work with <code>can.route</code> in <code>can.Control</code>. With this plugin, it is possible\nto both create routes and bind to <code>can.route</code> at the same time. Instead of creating\nseveral routes to handle changes to <strong>type</strong> and <strong>id</strong>, write something like this\nin a control:</p>\n\n<pre><code>// the route is empty\n\"route\": function(data) {\n\n},\n// the route has a type\n\":type route\": function(data) {\n\n}, \n// the route has a type and id\n\":type/:id route\": function(data) {\n\n}\n</code></pre>\n\n<h3>Getting more specific with the <code>can.Observe.delegate</code> plugin</h3>\n\n<p>Sometimes, you might only want to trigger a function when the route changes\nonly once, even if the route change gets called multiple times. By using the \n[can.Observe.delegate] plugin, this is extremely easy. This plugin allows you to \nlisten to change, set, add, and remove on <code>can.route</code>.</p>\n\n<p>If you wanted to, say, show a list of recipes when  <strong>type</strong> was set to recipe\nand show a specific recipe when <strong>id</strong> was set, you could do something like:</p>\n\n<pre><code>\"{can.route} type=recipe set\": \n        function( ev, prop, how, newVal, oldVal ) {\n    // show list of recipes\n},\n\"recipe/:id\": function(data) {\n    // show a single recipe\n}\n</code></pre>\n\n<p>If we didn't only listen to when recipe is set, then every time we chose to\nshow a single recipe, we would create and show the list of recipes again which \nwould not very efficient.</p>",
+            "description": "<p>can.route is a plugin that helps manage browser history and\nclient state by synchronizing the window.location.hash with\nan [can.Observe].</p>",
+            "title": "can.route",
+            "inherits": "can.Observe",
+            "download": "can/route",
+            "test": "can/route/qunit.html",
+            "parent": "canjs",
+            "signatures": [{
+                    "code": "can.route(template[, defaults])",
+                    "description": "",
+                    "params": [{
+                            "types": [{
+                                    "type": "String"
+                                }
+                            ],
+                            "name": "template",
+                            "description": "<p>the fragment identifier to match.  The fragment identifier\nshould start with either a character (a-Z) or colon (:).  Examples:</p>\n\n<pre><code>can.route(\":foo\")\ncan.route(\"foo/:bar\")\n</code></pre>"
+                        }, {
+                            "types": [{
+                                    "type": "Object"
+                                }
+                            ],
+                            "optional": true,
+                            "name": "defaults",
+                            "description": "<p>an object of default values</p>"
+                        }
+                    ],
+                    "returns": {
+                        "types": [{
+                                "type": "can.route"
+                            }
+                        ],
+                        "description": ""
+                    }
+                }
+            ],
+            "comment": " ",
+            "src": "can/route/route.md",
+            "id": 119,
+            "children": [{
+                    "active": false,
+                    "type": "function",
+                    "name": "can.route.param",
+                    "parent": "can.route",
+                    "body": "<p>Parameterizes the raw JS object representation provided in data.</p>\n\n<pre><code>can.route.param( { type: \"video\", id: 5 } ) \n     // -&gt; \"type=video&amp;id=5\"\n</code></pre>\n\n<p>If a route matching the provided data is found, that URL is built\nfrom the data. Any remaining data is added at the end of the\nURL as &amp; separated key/value parameters.</p>\n\n<pre><code>can.route(\":type/:id\")\n\ncan.route.param( { type: \"video\", id: 5 } ) // -&gt; \"video/5\"\ncan.route.param( { type: \"video\", id: 5, isNew: false } ) \n     // -&gt; \"video/5&amp;isNew=false\"\n</code></pre>",
+                    "description": "<p>Get a route URL from given data. </p>",
+                    "title": "",
+                    "signatures": [{
+                            "code": "param(data)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "data"
+                                        }
+                                    ],
+                                    "name": "object",
+                                    "description": "<p>The data to populate the route with.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "String"
+                                    }
+                                ],
+                                "description": "<p>The route, with the data populated in it.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/route/route.js",
+                    "line": 96,
+                    "id": 120
+                }, {
+                    "active": false,
+                    "type": "function",
+                    "name": "can.route.deparam",
+                    "parent": "can.route",
+                    "body": "<p>Creates a data object based on the query string passed into it. This is \nuseful to create an object based on the <code>location.hash</code>.</p>\n\n<pre><code>can.route.deparam(\"id=5&amp;type=videos\") \n     // -&gt; { id: 5, type: \"videos\" }\n</code></pre>\n\n<p>It's important to make sure the hash or exclamantion point is not passed\nto <code>can.route.deparam</code> otherwise it will be included in the first property's\nname.</p>\n\n<pre><code>can.route.attr(\"id\", 5) // location.hash -&gt; #!id=5\ncan.route.attr(\"type\", \"videos\") \n     // location.hash -&gt; #!id=5&amp;type=videos\ncan.route.deparam(location.hash) \n     // -&gt; { #!id: 5, type: \"videos\" }\n</code></pre>\n\n<p><code>can.route.deparam</code> will try and find a matching route and, if it does,\nwill deconstruct the URL and parse our the key/value parameters into the data object.</p>\n\n<pre><code>can.route(\":type/:id\")\n\ncan.route.deparam(\"videos/5\");\n     // -&gt; { id: 5, route: \":type/:id\", type: \"videos\" }\n</code></pre>",
+                    "description": "<p>Extract data from a route URL. </p>",
+                    "title": "",
+                    "signatures": [{
+                            "code": "deparam(url)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "url",
+                                    "description": "<p>A URL to extract data from.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "Object"
+                                    }
+                                ],
+                                "description": "<p>An object containing the extracted data.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/route/route.js",
+                    "line": 184,
+                    "id": 121
+                }, {
+                    "active": false,
+                    "type": "function",
+                    "name": "can.route.ready",
+                    "parent": "can.route",
+                    "body": "<p>Indicates that all routes have been added and sets can.route.data\nbased upon the routes and the current hash.</p>\n\n<p>By default, ready is fired on jQuery's ready event.  Sometimes\nyou might want it to happen sooner or earlier.  To do this, call:</p>\n\n<pre><code>can.route.ready(false); //prevents firing by the ready event\ncan.route.ready(true); // fire the first route change\n</code></pre>",
+                    "description": "",
+                    "title": "",
+                    "signatures": [{
+                            "code": "ready(readyYet)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "Boolean"
+                                        }
+                                    ],
+                                    "optional": true,
+                                    "name": "readyYet",
+                                    "description": "<p>Whether the ready event should be fired yet.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "can.route"
+                                    }
+                                ],
+                                "description": "<p>The <code>can.route</code> object.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/route/route.js",
+                    "line": 285,
+                    "id": 124
+                }, {
+                    "active": false,
+                    "type": "function",
+                    "name": "can.route.url",
+                    "parent": "can.route",
+                    "body": "<p>Similar to [can.route.link], but instead of creating an anchor tag, <code>can.route.url</code> creates \nonly the URL based on the route options passed into it.</p>\n\n<pre><code>can.route.url( { type: \"videos\", id: 5 } ) \n     // -&gt; \"#!type=videos&amp;id=5\"\n</code></pre>\n\n<p>If a route matching the provided data is found the URL is built from the data. Any remaining\ndata is added at the end of the URL as &amp; separated key/value parameters.</p>\n\n<pre><code>can.route(\":type/:id\")\n\ncan.route.url( { type: \"videos\", id: 5 } ) // -&gt; \"#!videos/5\"\ncan.route.url( { type: \"video\", id: 5, isNew: false } ) \n     // -&gt; \"#!video/5&amp;isNew=false\"\n</code></pre>",
+                    "description": "",
+                    "title": "",
+                    "signatures": [{
+                            "code": "url(options[, merge])",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "options",
+                                    "description": "<p>The data to populate the route with.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "Boolean"
+                                        }
+                                    ],
+                                    "optional": true,
+                                    "name": "merge",
+                                    "description": "<p>Whether the given options should be merged into the current state of the route.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "String"
+                                    }
+                                ],
+                                "description": "<p>The route URL and query string.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/route/route.js",
+                    "line": 312,
+                    "id": 125
+                }, {
+                    "active": false,
+                    "type": "function",
+                    "name": "can.route.link",
+                    "parent": "can.route",
+                    "body": "<p>Creates and returns an anchor tag with an href of the route \nattributes passed into it, as well as any properies desired\nfor the tag.</p>\n\n<pre><code>can.route.link( \"My videos\", { type: \"videos\" }, {}, false )\n     // -&gt; &lt;a href=\"#!type=videos\"&gt;My videos&lt;/a&gt;\n</code></pre>\n\n<p>Other attributes besides href can be added to the anchor tag\nby passing in a data object with the attributes desired.</p>\n\n<pre><code>can.route.link( \"My videos\", { type: \"videos\" }, \n  { className: \"new\" }, false ) \n     // -&gt; &lt;a href=\"#!type=videos\" class=\"new\"&gt;My Videos&lt;/a&gt;\n</code></pre>\n\n<p>It is possible to utilize the current route options when making anchor\ntags in order to make your code more reusable. If merge is set to true,\nthe route options passed into <code>can.route.link</code> will be passed into the\ncurrent ones.</p>\n\n<pre><code>location.hash = \"#!type=videos\" \ncan.route.link( \"The zoo\", { id: 5 }, true )\n     // -&gt; &lt;a href=\"#!type=videos&amp;id=5\"&gt;The zoo&lt;/true&gt;\n\nlocation.hash = \"#!type=pictures\" \ncan.route.link( \"The zoo\", { id: 5 }, true )\n     // -&gt; &lt;a href=\"#!type=pictures&amp;id=5\"&gt;The zoo&lt;/true&gt;\n</code></pre>",
+                    "description": "",
+                    "title": "",
+                    "signatures": [{
+                            "description": "<p>`link(innerText, options, props[, merge])</p>",
+                            "params": [{
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "innerText",
+                                    "description": "<p>The text inside the link.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "options",
+                                    "description": "<p>The data to populate the route with.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "props",
+                                    "description": "<p>Properties for the anchor other than <code>href</code>.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "Boolean"
+                                        }
+                                    ],
+                                    "optional": true,
+                                    "name": "merge",
+                                    "description": "<p>Whether the given options should be merged into the current state of the route.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "String"
+                                    }
+                                ],
+                                "description": "<p>A string with an anchor tag that points to the populated route.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/route/route.js",
+                    "line": 342,
+                    "id": 126
+                }, {
+                    "active": false,
+                    "type": "function",
+                    "name": "can.route.current",
+                    "parent": "can.route",
+                    "body": "<p>Checks the page's current URL to see if the route represents the options passed \ninto the function.</p>\n\n<p>Returns true if the options respresent the current URL.</p>\n\n<pre><code>can.route.attr('id', 5) // location.hash -&gt; \"#!id=5\"\ncan.route.current({ id: 5 }) // -&gt; true\ncan.route.current({ id: 5, type: 'videos' }) // -&gt; false\n\ncan.route.attr('type', 'videos') \n       // location.hash -&gt; #!id=5&amp;type=videos\ncan.route.current({ id: 5, type: 'videos' }) // -&gt; true\n</code></pre>",
+                    "description": "",
+                    "title": "",
+                    "signatures": [{
+                            "code": "current(options)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "options",
+                                    "description": "<p>Data to check agains the current route.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "Boolean"
+                                    }
+                                ],
+                                "description": "<p>Whether the data matches the current URL.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/route/route.js",
+                    "line": 388,
+                    "id": 127
+                }
+            ]
+        }, {
+            "active": false,
+            "type": "constructor",
+            "name": "can.view",
+            "body": "",
+            "description": "",
+            "title": "",
+            "parent": "canjs",
+            "signatures": [{
+                    "code": "can.view(view, data, helpers)",
+                    "description": "",
+                    "params": [{
+                            "types": [{
+                                    "type": "String"
+                                }
+                            ],
+                            "name": "view",
+                            "description": "<p>The URL to a template or the ID of a template.</p>"
+                        }, {
+                            "types": [{
+                                    "type": "Object"
+                                }
+                            ],
+                            "name": "data",
+                            "description": "<p>Data to populate the template with.</p>"
+                        }, {
+                            "types": [{
+                                    "type": "Object",
+                                    "template": [{
+                                            "types": [{
+                                                    "type": "String"
+                                                }
+                                            ]
+                                        }, {
+                                            "types": [{
+                                                    "type": "function",
+                                                    "returns": {
+                                                        "types": [{
+                                                                "type": "undefined"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "params": []
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "name": "helpers",
+                            "description": "<p>Helpers referenced in the template.</p>"
+                        }
+                    ],
+                    "returns": {
+                        "types": [{
+                                "type": "String"
+                            }
+                        ],
+                        "description": "<p>The template with the data interpolated into it.</p>"
+                    }
+                }
+            ],
+            "comment": " ",
+            "src": "can/view/view.md",
+            "id": 128,
+            "children": [{
+                    "active": false,
+                    "body": "<p><code>can.view.ejs([id,] template)</code> registers an EJS template string \nfor a given id programatically. The following\nregisters <code>myViewEJS</code> and renders it into a documentFragment.</p>\n\n<pre><code> can.view.ejs('myViewEJS', '&lt;h2&gt;&lt;%= message %&gt;&lt;/h2&gt;');\n\n var frag = can.view('myViewEJS', {\n     message : 'Hello there!'\n });\n\n frag // -&gt; &lt;h2&gt;Hello there!&lt;/h2&gt;\n</code></pre>\n\n<p>To convert the template into a render function, just pass \nthe template. Call the render function with the data\nyou want to pass to the template and it returns the \ndocumentFragment.</p>\n\n<pre><code> var renderer = can.view.ejs('&lt;div&gt;&lt;%= message %&gt;&lt;/div&gt;');\n renderer({\n     message : 'EJS'\n }); // -&gt; &lt;div&gt;EJS&lt;/div&gt;\n</code></pre>",
+                    "description": "<p>Register an EJS template string or create a renderer function. </p>",
+                    "title": "",
+                    "name": "can.view.ejs",
+                    "type": "function",
+                    "parent": "can.view",
+                    "signatures": [{
+                            "code": "can.view.ejs(id, template)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "id",
+                                    "description": "<p>An ID for the template.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "template",
+                                    "description": "<p>An EJS template in string form.</p>"
+                                }
+                            ]
+                        }, {
+                            "code": "can.view.ejs(template)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "template",
+                                    "description": "<p>An EJS template in string form.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "function",
+                                        "returns": {
+                                            "types": [{
+                                                    "type": "undefined"
+                                                }
+                                            ]
+                                        },
+                                        "params": []
+                                    }
+                                ],
+                                "description": "<p>A renderer function that takes data and helpers.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/view/view.js",
+                    "line": 103,
+                    "id": 129
+                }, {
+                    "active": false,
+                    "body": "",
+                    "description": "<p>Register a Mustache template string or create a renderer function. </p>",
+                    "title": "",
+                    "name": "can.view.mustache",
+                    "type": "function",
+                    "parent": "can.view",
+                    "signatures": [{
+                            "code": "can.view.mustache(id, template)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "id",
+                                    "description": "<p>An ID for the template.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "template",
+                                    "description": "<p>A Mustache template in string form.</p>"
+                                }
+                            ]
+                        }, {
+                            "code": "can.view.mustache(template)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "template",
+                                    "description": "<p>A Mustache template in string form.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "function",
+                                        "returns": {
+                                            "types": [{
+                                                    "type": "undefined"
+                                                }
+                                            ]
+                                        },
+                                        "params": []
+                                    }
+                                ],
+                                "description": "<p>A renderer function that takes data and helpers.</p>\n\n<p><code>can.view.mustache([id,] template)</code> registers an Mustache template string \nfor a given id programatically. The following\nregisters <code>myStache</code> and renders it into a documentFragment.</p>\n\n<pre><code> can.view.ejs('myStache', '&lt;h2&gt;{{message}}&lt;/h2&gt;');\n\n var frag = can.view('myStache', {\n     message : 'Hello there!'\n });\n\n frag // -&gt; &lt;h2&gt;Hello there!&lt;/h2&gt;\n</code></pre>\n\n<p>To convert the template into a render function, just pass \nthe template. Call the render function with the data\nyou want to pass to the template and it returns the \ndocumentFragment.</p>\n\n<pre><code> var renderer = can.view.mustache('&lt;div&gt;{{message}}&lt;/div&gt;');\n renderer({\n     message : 'Mustache'\n }); // -&gt; &lt;div&gt;Mustache&lt;/div&gt;\n</code></pre>"
+                            }
+                        }
+                    ],
+                    "src": "can/view/view.js",
+                    "line": 140,
+                    "id": 130
+                }, {
+                    "active": false,
+                    "name": "hookups",
+                    "type": "property",
+                    "parent": "can.view",
+                    "body": "",
+                    "description": "<p>A list of pending 'hookups'</p>",
+                    "title": "",
+                    "hide": true,
+                    "src": "can/view/view.js",
+                    "line": 176,
+                    "id": 131
+                }, {
+                    "active": false,
+                    "type": "function",
+                    "name": "can.view.hook",
+                    "parent": "can.view",
+                    "body": "<p>Registers a hookup function that can be called back after the html is \nput on the page.  Typically this is handled by the template engine.  Currently\nonly EJS supports this functionality.</p>\n\n<pre><code>var id = can.view.hook(function(el){\n       //do something with el\n    }),\n    html = \"&lt;div data-view-id='\"+id+\"'&gt;\"\n$('.foo').html(html);\n</code></pre>",
+                    "description": "<p>Create a hookup to insert into templates. </p>",
+                    "title": "hook",
+                    "signatures": [{
+                            "code": "can.view.hook(callback)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "function",
+                                            "returns": {
+                                                "types": [{
+                                                        "type": "undefined"
+                                                    }
+                                                ]
+                                            },
+                                            "params": []
+                                        }
+                                    ],
+                                    "name": "callback",
+                                    "description": "<p>A callback function to be called with the element.</p>"
+                                }
+                            ]
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/view/view.js",
+                    "line": 183,
+                    "id": 132
+                }, {
+                    "active": false,
+                    "name": "cached",
+                    "type": "property",
+                    "parent": "can.view",
+                    "body": "",
+                    "description": "<p>Cached are put in this object</p>",
+                    "types": [{
+                            "type": "Object"
+                        }
+                    ],
+                    "title": "",
+                    "hide": true,
+                    "src": "can/view/view.js",
+                    "line": 205,
+                    "id": 133
+                }, {
+                    "active": false,
+                    "name": "cache",
+                    "type": "property",
+                    "parent": "can.view",
+                    "body": "",
+                    "description": "<p>By default, views are cached on the client.  If you'd like the\nthe views to reload from the server, you can set the <code>cache</code> attribute to <code>false</code>.</p>\n\n<pre><code>    //- Forces loads from server\n    can.view.cache = false; \n</code></pre>",
+                    "types": [{
+                            "type": "Boolean"
+                        }
+                    ],
+                    "title": "",
+                    "src": "can/view/view.js",
+                    "line": 214,
+                    "id": 134
+                }, {
+                    "active": false,
+                    "type": "function",
+                    "name": "can.view.register",
+                    "parent": "can.view",
+                    "body": "<p>Registers a template engine to be used with \nview helpers and compression.  </p>\n\n<h2>Example</h2>\n\n<pre><code class=\"lang-javascript\">can.View.register({\n    suffix : \"tmpl\",\n plugin : \"jquery/view/tmpl\",\n    renderer: function( id, text ) {\n        return function(data){\n            return jQuery.render( text, data );\n        }\n    },\n    script: function( id, text ) {\n        var tmpl = can.tmpl(text).toString();\n        return \"function(data){return (\"+\n            tmpl+\n            \").call(jQuery, jQuery, data); }\";\n    }\n})</code></pre>     ",
+                    "description": "<p>Register a templating language. </p>",
+                    "title": "",
+                    "signatures": [{
+                            "code": "can.view.register(info)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "Object",
+                                            "options": [{
+                                                    "name": "plugin",
+                                                    "description": "The location of the templating language's plugin.",
+                                                    "types": [{
+                                                            "type": "String"
+                                                        }
+                                                    ]
+                                                }, {
+                                                    "name": "suffix",
+                                                    "description": "Files with this suffix will use this templating language's plugin by default.",
+                                                    "types": [{
+                                                            "type": "String"
+                                                        }
+                                                    ]
+                                                }, {
+                                                    "name": "renderer",
+                                                    "description": "A function that returns a function that, given data, will render the template with that data.\nThe __renderer__ function receives the id of the template and the text of the template.",
+                                                    "types": [{
+                                                            "type": "function",
+                                                            "returns": {
+                                                                "types": [{
+                                                                        "type": "undefined"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "params": []
+                                                        }
+                                                    ]
+                                                }, {
+                                                    "name": "script",
+                                                    "description": "A function that returns the string form of the processed template.\n",
+                                                    "types": [{
+                                                            "type": "function",
+                                                            "returns": {
+                                                                "types": [{
+                                                                        "type": "undefined"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "params": []
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "name": "info",
+                                    "description": "<p>Information about the templating language.</p>"
+                                }
+                            ]
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/view/view.js",
+                    "line": 225,
+                    "id": 135
+                }, {
+                    "active": false,
+                    "name": "can.view.ext",
+                    "type": "property",
+                    "parent": "can.view",
+                    "body": "",
+                    "description": "<p>The default suffix to use if none is provided in the view's url. <br />\nThis is set to <code>.ejs</code> by default.</p>\n\n<pre><code>    // Changes view ext to 'txt'\n    can.view.ext = 'txt';\n</code></pre>",
+                    "types": [{
+                            "type": "String"
+                        }
+                    ],
+                    "title": "ext",
+                    "src": "can/view/view.js",
+                    "line": 266,
+                    "id": 136
+                }, {
+                    "active": false,
+                    "type": "function",
+                    "name": "can.view.registerScript",
+                    "params": [{
+                            "types": [{
+                                    "type": "Object"
+                                }
+                            ],
+                            "name": "type",
+                            "description": ""
+                        }, {
+                            "types": [{
+                                    "type": "Object"
+                                }
+                            ],
+                            "name": "id",
+                            "description": ""
+                        }, {
+                            "types": [{
+                                    "type": "Object"
+                                }
+                            ],
+                            "name": "src",
+                            "description": ""
+                        }
+                    ],
+                    "parent": "can.view",
+                    "body": "",
+                    "description": "<p>Returns the text that </p>",
+                    "hide": true,
+                    "src": "can/view/view.js",
+                    "line": 277,
+                    "id": 137
+                }, {
+                    "active": false,
+                    "type": "function",
+                    "name": "can.view.preload",
+                    "params": [{
+                            "types": [{
+                                    "type": "String"
+                                }
+                            ],
+                            "name": "id",
+                            "description": ""
+                        }, {
+                            "types": [{
+                                    "type": "function",
+                                    "returns": {
+                                        "types": [{
+                                                "type": "undefined"
+                                            }
+                                        ]
+                                    },
+                                    "params": []
+                                }
+                            ],
+                            "name": "renderer",
+                            "description": ""
+                        }
+                    ],
+                    "parent": "can.view",
+                    "body": "",
+                    "description": "<p>Called by a production script to pre-load a renderer function\ninto the view cache.</p>",
+                    "hide": true,
+                    "src": "can/view/view.js",
+                    "line": 286,
+                    "id": 138
+                }, {
+                    "active": false,
+                    "type": "function",
+                    "name": "can.view.render",
+                    "parent": "can.view",
+                    "body": "<p><code>can.view.render(view, [data], [helpers], callback)</code> returns the rendered markup produced by the corresponding template\nengine as String. If you pass a deferred object in as data, render returns\na deferred resolving to the rendered markup.</p>\n\n<p><code>can.view.render</code> is commonly used for sub-templates.</p>\n\n<h2>Example</h2>\n\n<p><em>welcome.ejs</em> looks like:</p>\n\n<pre><code>&lt;h1&gt;Hello &lt;%= hello %&gt;&lt;/h1&gt;\n</code></pre>\n\n<p>Render it to a string like:</p>\n\n<pre><code>can.view.render(\"welcome.ejs\",{hello: \"world\"})\n  //-&gt; &lt;h1&gt;Hello world&lt;/h1&gt;\n</code></pre>\n\n<h2>Use as a Subtemplate</h2>\n\n<p>If you have a template like:</p>\n\n<pre><code>&lt;ul&gt;\n  &lt;% list(items, function(item){ %&gt;\n    &lt;%== can.view.render(\"item.ejs\",item) %&gt;\n  &lt;% }) %&gt;\n&lt;/ul&gt;\n</code></pre>\n\n<h2>Using renderer functions</h2>\n\n<p>If you only pass the view path, `can.view will return a renderer function that can be called with\nthe data to render:</p>\n\n<pre><code>var renderer = can.view.render(\"welcome.ejs\");\n// Do some more things\nrenderer({hello: \"world\"}) // -&gt; Document Fragment\n</code></pre>",
+                    "description": "<p>Render a template. </p>",
+                    "title": "",
+                    "signatures": [{
+                            "code": "can.view.render(template[, callback])",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "String"
+                                        }, {
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "view",
+                                    "description": "<p>The path of the view template or a view object.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "function",
+                                            "returns": {
+                                                "types": [{
+                                                        "type": "undefined"
+                                                    }
+                                                ]
+                                            },
+                                            "params": []
+                                        }
+                                    ],
+                                    "optional": true,
+                                    "name": "callback",
+                                    "description": "<p>A function executed after the template has been processed.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "function",
+                                        "returns": {
+                                            "types": [{
+                                                    "type": "undefined"
+                                                }
+                                            ]
+                                        },
+                                        "params": []
+                                    }, {
+                                        "type": "can.Deferred"
+                                    }
+                                ],
+                                "description": "<p>A renderer function to be called with data and helpers\nor a Deferred that resolves to a renderer function.</p>"
+                            }
+                        }, {
+                            "code": "can.view.render(template, data[, [helpers,] callback])",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "String"
+                                        }, {
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "name": "view",
+                                    "description": "<p>The path of the view template or a view object.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "Object"
+                                        }
+                                    ],
+                                    "optional": true,
+                                    "name": "data",
+                                    "description": "<p>The data to populate the template with.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "Object",
+                                            "template": [{
+                                                    "types": [{
+                                                            "type": "String"
+                                                        }
+                                                    ]
+                                                }, {
+                                                    "types": [{
+                                                            "type": "function",
+                                                            "returns": {
+                                                                "types": [{
+                                                                        "type": "undefined"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "params": []
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "optional": true,
+                                    "name": "helpers",
+                                    "description": "<p>Helper methods referenced in the template.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "function",
+                                            "returns": {
+                                                "types": [{
+                                                        "type": "undefined"
+                                                    }
+                                                ]
+                                            },
+                                            "params": []
+                                        }
+                                    ],
+                                    "optional": true,
+                                    "name": "callback",
+                                    "description": "<p>A function executed after the template has been processed.</p>"
+                                }
+                            ],
+                            "returns": {
+                                "types": [{
+                                        "type": "String"
+                                    }, {
+                                        "type": "can.Deferred"
+                                    }
+                                ],
+                                "description": "<p>The template with interpolated data in string form\nor a Deferred that resolves to the template with interpolated data.</p>"
+                            }
+                        }
+                    ],
+                    "comment": " ",
+                    "src": "can/view/view.js",
+                    "line": 295,
+                    "id": 139
+                }, {
+                    "active": false,
+                    "type": "function",
+                    "name": "can.view.registerView",
+                    "params": [{
+                            "types": [{
+                                    "type": "String"
+                                }
+                            ],
+                            "name": "id",
+                            "description": ""
+                        }, {
+                            "types": [{
+                                    "type": "String"
+                                }
+                            ],
+                            "name": "text",
+                            "description": ""
+                        }, {
+                            "types": [{
+                                    "type": "String"
+                                }
+                            ],
+                            "name": "type",
+                            "description": ""
+                        }, {
+                            "types": [{
+                                    "type": "can.Deferred"
+                                }
+                            ],
+                            "name": "def",
+                            "description": ""
+                        }
+                    ],
+                    "parent": "can.view",
+                    "body": "",
+                    "description": "<p>Registers a view with <code>cached</code> object.  This is used\ninternally by this class and Mustache to hookup views.</p>",
+                    "hide": true,
+                    "src": "can/view/view.js",
+                    "line": 447,
+                    "id": 140
+                }, {
+                    "active": false,
+                    "name": "can.view.text",
+                    "type": "property",
+                    "parent": "can.view",
+                    "body": "",
+                    "description": "<p>should return something like steal(\"dependencies\",function(EJS){\n     return can.view.preload(\"ID\", options.text)\n})</p>",
+                    "hide": true,
+                    "src": "can/view/view.js",
+                    "line": 592,
+                    "id": 141
                 }
             ]
         }

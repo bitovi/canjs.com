@@ -3,33 +3,33 @@
 	<li {{#active}}class="active"{{/active}}>
 	<a href="{{makeHref name}}">{{name}}</a>
 	{{#if active}}
-	{{#if children.length}}
-	<ul>
-		{{#children}}
 		{{#if children.length}}
-		<li class="heading"><span>{{type}}</span>
-			<ul>
-				{{#children}}
-				{{^if hide}}
-				<li {{#active}}class="active"{{/active}}>
-					<a href="{{makeHref name}}">
-						{{#if title}} {{title}} {{else}} {{{name}}} {{/if}}
-					</a>
+		<ul>
+		{{#children}}
+			{{#if children.length}}
+				<li class="heading"><span>{{type}}</span>
+					<ul>
+						{{#children}}
+						{{^if hide}}
+						<li {{#active}}class="active"{{/active}}>
+							<a href="{{makeHref name}}">
+								{{#if title}} {{title}} {{else}} {{{name}}} {{/if}}
+							</a>
+						</li>
+						{{/if}}
+						{{/children}}
+					</ul>
 				</li>
-				{{/if}}
-				{{/children}}
-			</ul>
-		</li>
-		{{else}}
-		<li {{#active}}class="active"{{/active}}>
-		<a href="{{makeHref name}}">
-			{{#if title}} {{title}} {{else}} {{{name}}} {{/if}}
-		</a>
-		</li>
-		{{/if}}
+				{{else}}
+				<li {{#active}}class="active"{{/active}}>
+				<a href="{{makeHref name}}">
+					{{#if title}} {{title}} {{else}} {{{name}}} {{/if}}
+				</a>
+				</li>
+			{{/if}}
 		{{/children}}
-	</ul>
-	{{/if}}
+		</ul>
+		{{/if}}
 	{{/if}}
 	</li>
 	{{/menu.children}}

@@ -74,6 +74,11 @@
 		<ul class="api">
 	
 	<li >
+	<a href="can.util.html">can.util</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Construct.html">can.Construct</a>
 	
 	</li>
@@ -101,67 +106,101 @@
 	<li class="active">
 	<a href="can.Control.html">can.Control</a>
 	
+		
+		<ul>
+		
+			
+				<li class="heading"><span>static</span>
+					<ul>
+						
+						
+						
+						
+						
+						
+						
+						
+						<li >
+							<a href="can.Control.static.processors.html">
+								 processors 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Control.static.defaults.html">
+								 defaults 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
+		
+			
+				<li class="heading"><span>prototype</span>
+					<ul>
+						
+						
+						<li >
+							<a href="can.Control.prototype.setup.html">
+								 setup 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Control.prototype.options.html">
+								 options 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Control.prototype.element.html">
+								 element 
+							</a>
+						</li>
+						
+						
+						
+						<li class="active">
+							<a href="can.Control.prototype.on.html">
+								 on 
+							</a>
+						</li>
+						
+						
+						
+						
+						
+						<li >
+							<a href="can.Control.prototype.destroy.html">
+								 destroy 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
+		
+		</ul>
+		
 	
-	<ul>
-		
-		
-		<li class="heading"><span>static</span>
-			<ul>
-				
-				
-				
-				
-				
-				
-				
-				
-				<li >
-					<a href="can.Control.static.processors.html">
-						 processors 
-					</a>
-				</li>
-				
-				
-				
-				<li >
-					<a href="can.Control.prototype.setup.html">
-						 setup 
-					</a>
-				</li>
-				
-				
-				
-				<li >
-					<a href="can.Control.prototype.options.html">
-						 options 
-					</a>
-				</li>
-				
-				
-				
-				<li class="active">
-					<a href="can.Control.prototype.on.html">
-						 on 
-					</a>
-				</li>
-				
-				
-				
-				
-				
-				<li >
-					<a href="can.Control.static.destroy.html">
-						 can.Control.static.destroy 
-					</a>
-				</li>
-				
-				
-			</ul>
-		</li>
-		
-		
-	</ul>
+	</li>
 	
+	<li >
+	<a href="can.route.html">can.route</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.view.html">can.view</a>
 	
 	</li>
 	
@@ -176,17 +215,16 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="can/control/control.js">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/control/control.js#L466">source</a></li>
 		
 		
 		
 	</ul>
 </div>
-<h1>
-	
-		on
-	
-</h1>
+
+	<h1>on</h1> <span class="module">can.Control.prototype.on</span>
+
+
 
 
 		</section>
@@ -402,7 +440,7 @@ somethingClicked: function( el, ev ) {
 	var docData = {
     "type": "function",
     "name": "can.Control.prototype.on",
-    "parent": "can.Control.static",
+    "parent": "can.Control.prototype",
     "body": "<p><code>on(el, selector, eventName, func)</code> binds an event handler for an event to a selector under the scope of the given element.</p>\n\n<p><code>this.on()</code> is used to rebind \nall event handlers when [can.Control::options this.options] has changed.  It\ncan also be used to bind or delegate from other elements or objects.</p>\n\n<h2>Rebinding</h2>\n\n<p>By using templated event handlers, a control can listen to objects outside\n<code>this.element</code>.  This is extremely common in MVC programming.  For example,\nthe following control might listen to a task model's <code>completed</code> property and\ntoggle a strike className like:</p>\n\n<pre><code>TaskStriker = can.Control({\n  \"{task} completed\": function(){\n       this.update();\n  },\n  update: function(){\n    if ( this.options.task.completed ) {\n         this.element.addClass( 'strike' );\n       } else {\n      this.element.removeClass( 'strike' );\n    }\n  }\n});\n\nvar taskstriker = new TaskStriker({ \n  task: new Task({ completed: 'true' }) \n});\n</code></pre>\n\n<p>To update the taskstriker's task, add a task method that updates\nthis.options and calls rebind like:</p>\n\n<pre><code>TaskStriker = can.Control({\n  \"{task} completed\": function(){\n       this.update();\n  },\n  update: function() {\n    if ( this.options.task.completed ) {\n         this.element.addClass( 'strike' );\n       } else {\n      this.element.removeClass( 'strike' );\n    }\n  },\n  task: function( newTask ) {\n    this.options.task = newTask;\n    this.on();\n    this.update();\n  }\n});\n\nvar taskstriker = new TaskStriker({ \n  task: new Task({ completed: true }) \n});\ntaskstriker.task( new TaskStriker({ \n  task: new Task({ completed: false }) \n}));\n</code></pre>\n\n<h2>Adding new events</h2>\n\n<p>If events need to be bound to outside of the control and templated event handlers\nare not sufficent, you can call this.on to bind or delegate programatically:</p>\n\n<pre><code>init: function() {\n   // calls somethingClicked( el, ev )\n   this.on( 'click', 'somethingClicked' ); \n\n   // calls function when the window is clicked\n   this.on( window, 'click', function( ev ) {\n     //do something\n   });\n},\nsomethingClicked: function( el, ev ) {\n\n}\n</code></pre>",
     "description": "<p>Bind an event handler to a Control, or rebind all event handlers on a Control. </p>",
     "title": "on",
@@ -478,8 +516,8 @@ somethingClicked: function( el, ev ) {
     ],
     "comment": " ",
     "src": "can/control/control.js",
-    "line": 460,
-    "id": 80
+    "line": 466,
+    "id": 116
 };
 
 	console.log(docData);

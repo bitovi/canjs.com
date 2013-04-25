@@ -74,6 +74,11 @@
 		<ul class="api">
 	
 	<li >
+	<a href="can.util.html">can.util</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Construct.html">can.Construct</a>
 	
 	</li>
@@ -101,67 +106,101 @@
 	<li class="active">
 	<a href="can.Control.html">can.Control</a>
 	
+		
+		<ul>
+		
+			
+				<li class="heading"><span>static</span>
+					<ul>
+						
+						
+						
+						
+						
+						
+						
+						
+						<li >
+							<a href="can.Control.static.processors.html">
+								 processors 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Control.static.defaults.html">
+								 defaults 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
+		
+			
+				<li class="heading"><span>prototype</span>
+					<ul>
+						
+						
+						<li class="active">
+							<a href="can.Control.prototype.setup.html">
+								 setup 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Control.prototype.options.html">
+								 options 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Control.prototype.element.html">
+								 element 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Control.prototype.on.html">
+								 on 
+							</a>
+						</li>
+						
+						
+						
+						
+						
+						<li >
+							<a href="can.Control.prototype.destroy.html">
+								 destroy 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
+		
+		</ul>
+		
 	
-	<ul>
-		
-		
-		<li class="heading"><span>static</span>
-			<ul>
-				
-				
-				
-				
-				
-				
-				
-				
-				<li >
-					<a href="can.Control.static.processors.html">
-						 processors 
-					</a>
-				</li>
-				
-				
-				
-				<li class="active">
-					<a href="can.Control.prototype.setup.html">
-						 setup 
-					</a>
-				</li>
-				
-				
-				
-				<li >
-					<a href="can.Control.prototype.options.html">
-						 options 
-					</a>
-				</li>
-				
-				
-				
-				<li >
-					<a href="can.Control.prototype.on.html">
-						 on 
-					</a>
-				</li>
-				
-				
-				
-				
-				
-				<li >
-					<a href="can.Control.static.destroy.html">
-						 can.Control.static.destroy 
-					</a>
-				</li>
-				
-				
-			</ul>
-		</li>
-		
-		
-	</ul>
+	</li>
 	
+	<li >
+	<a href="can.route.html">can.route</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.view.html">can.view</a>
 	
 	</li>
 	
@@ -176,17 +215,16 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="can/control/control.js">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/control/control.js#L255">source</a></li>
 		
 		
 		
 	</ul>
 </div>
-<h1>
-	
-		setup
-	
-</h1>
+
+	<h1>setup</h1> <span class="module">can.Control.prototype.setup</span>
+
+
 
 
 		</section>
@@ -301,7 +339,7 @@ so that users can change them.</p>
 	var docData = {
     "type": "function",
     "name": "can.Control.prototype.setup",
-    "parent": "can.Control.static",
+    "parent": "can.Control.prototype",
     "body": "<p>Setup is where most of control's magic happens.  It does the following:</p>\n\n<h3>Sets this.element</h3>\n\n<p>The first parameter passed to new Control( el, options ) is expected to be \nan element.  This gets converted to a Wrapped NodeList element and set as\n[can.Control.prototype.element this.element].</p>\n\n<h3>Adds the control's name to the element's className.</h3>\n\n<p>Control adds it's plugin name to the element's className for easier \ndebugging.  For example, if your Control is named \"Foo.Bar\", it adds\n\"foo_bar\" to the className.</p>\n\n<h3>Saves the control in $.data</h3>\n\n<p>A reference to the control instance is saved in $.data.  You can find \ninstances of \"Foo.Bar\" like: </p>\n\n<pre><code>$( '#el' ).data( 'controls' )[ 'foo_bar' ]\n</code></pre>\n\n<h3>Merges Options</h3>\n\n<p>Merges the default options with optional user-supplied ones.\nAdditionally, default values are exposed in the static [can.Control.static.defaults defaults] \nso that users can change them.</p>\n\n<h3>Binds event handlers</h3>\n\n<p>Setup does the event binding described in [can.Control.listening Listening To Events].</p>",
     "description": "<p>Perform pre-initialization logic. </p>",
     "title": "setup",
@@ -338,8 +376,8 @@ so that users can change them.</p>
     ],
     "comment": " ",
     "src": "can/control/control.js",
-    "line": 252,
-    "id": 77
+    "line": 255,
+    "id": 113
 };
 
 	console.log(docData);

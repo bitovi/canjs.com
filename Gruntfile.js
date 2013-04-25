@@ -1,3 +1,5 @@
+var path = require('path');
+
 /*global module:false*/
 module.exports = function (grunt) {
 
@@ -5,6 +7,10 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		// Metadata.
 		pkg: grunt.file.readJSON('package.json'),
+		can: {
+			pkg: grunt.file.readJSON('can/package.json'),
+			path: 'can/'
+		},
 		banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
 			'<%= grunt.template.today("yyyy-mm-dd") %>\n' +
 			'<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
@@ -88,6 +94,21 @@ module.exports = function (grunt) {
 						} else {
 							return '';
 						}
+					},
+					downloadUrl: function(download) {
+						// TOOO make builder URL configurable
+						return 'http://bitbuilder.herokuapp.com/can.custom.js?plugins=' + download;
+					},
+					sourceUrl: function(src, type, line) {
+						var pkg = grunt.config('can.pkg'),
+							relative = path.relative(grunt.config('can.path'), src),
+							hash = type !== 'page' && type !== 'constructor' ? '#L' + line : '';
+						return pkg.repository.github + '/tree/v' + pkg.version + '/' + relative + hash;
+					},
+					testUrl: function(test) {
+						// TODO we know we're in the docs/ folder for test links but there might
+						// be a more flexible way for doing this
+						return '../' + test;
 					}
 				}
 			},
@@ -119,6 +140,8 @@ module.exports = function (grunt) {
 				},
 				src: [
 					'can/can.md',
+					'can/util/util.md',
+					'can/util/util.js',
 					'can/construct/construct.md',
 					'can/construct/construct.js',
 					'can/observe/observe.md',
@@ -126,7 +149,11 @@ module.exports = function (grunt) {
 					'can/model/model.md',
 					'can/model/model.js',
 					'can/control/control.md',
-					'can/control/control.js'
+					'can/control/control.js',
+					'can/route/route.md',
+					'can/route/route.js',
+					'can/view/view.md',
+					'can/view/view.js'
 				],
 				dest: '.'
 			}

@@ -4,23 +4,22 @@
 	</ul>
 	<ul class="links">
 		{{#if src}}
-			<li><a href="{{src}}">source</a></li>
+			<li><a href="{{sourceUrl src type line}}">source</a></li>
 		{{/if}}
 		{{#if download}}
-			<li><a href="http://builder.bitovi.com/can.custom.js?plugins={{download}}">download</a></li>
+			<li><a href="{{downloadUrl download}}">download</a></li>
 		{{/if}}
 		{{#if test}}
-			<li><a href="{{root}}{{test}}">tests</a></li>
+			<li><a href="{{testUrl test}}">tests</a></li>
 		{{/if}}
 	</ul>
 </div>
-<h1>
-	{{#if title}}
-		{{title}}
-	{{else}}
-		{{{name}}}
-	{{/if}}
-</h1>
+{{#if title}}
+	<h1>{{title}}</h1> <span class="module">{{name}}</span>
+{{else}}
+	<h1>{{{name}}}</h1>
+{{/if}}
+
 {{#if inherits}}
 <span class="inherits"><a href="{{makeHref inherits}}">{{inherits}}</a></span>
 {{/if}}

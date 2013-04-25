@@ -74,6 +74,11 @@
 		<ul class="api">
 	
 	<li >
+	<a href="can.util.html">can.util</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Construct.html">can.Construct</a>
 	
 	</li>
@@ -98,8 +103,104 @@
 	
 	</li>
 	
-	<li >
+	<li class="active">
 	<a href="can.Control.html">can.Control</a>
+	
+		
+		<ul>
+		
+			
+				<li class="heading"><span>static</span>
+					<ul>
+						
+						
+						
+						
+						
+						
+						
+						
+						<li >
+							<a href="can.Control.static.processors.html">
+								 processors 
+							</a>
+						</li>
+						
+						
+						
+						<li class="active">
+							<a href="can.Control.static.defaults.html">
+								 defaults 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
+		
+			
+				<li class="heading"><span>prototype</span>
+					<ul>
+						
+						
+						<li >
+							<a href="can.Control.prototype.setup.html">
+								 setup 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Control.prototype.options.html">
+								 options 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Control.prototype.element.html">
+								 element 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Control.prototype.on.html">
+								 on 
+							</a>
+						</li>
+						
+						
+						
+						
+						
+						<li >
+							<a href="can.Control.prototype.destroy.html">
+								 destroy 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
+		
+		</ul>
+		
+	
+	</li>
+	
+	<li >
+	<a href="can.route.html">can.route</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.view.html">can.view</a>
 	
 	</li>
 	
@@ -114,17 +215,16 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="can/control/control.js">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/control/control.js#L225">source</a></li>
 		
 		
 		
 	</ul>
 </div>
-<h1>
-	
-		defaults
-	
-</h1>
+
+	<h1>defaults</h1> <span class="module">can.Control.static.defaults</span>
+
+
 
 
 		</section>
@@ -159,14 +259,15 @@ are merged with defaults.  This is not a deep merge.</p>
 
 <script type="text/javascript">
 	var docData = {
+    "type": "property",
     "body": "",
     "description": "<p>A object of name-value pairs that act as default values for a control's\n[can.Control::options this.options].</p>\n\n<pre><code>Message = can.Control({\n  defaults: {\n    message: \"Hello World\"\n  }\n}, {\n  init: function(){\n    this.element.text( this.options.message );\n  }\n});\n\nnew Message( \"#el1\" ); //writes \"Hello World\"\nnew Message( \"#el12\", { message: \"hi\" } ); //writes hi\n</code></pre>\n\n<p>In [can.Control::setup] the options passed to the control\nare merged with defaults.  This is not a deep merge.</p>",
     "title": "defaults",
     "name": "can.Control.static.defaults",
-    "type": "property",
+    "parent": "can.Control.static",
     "src": "can/control/control.js",
-    "line": 224,
-    "id": 76
+    "line": 225,
+    "id": 111
 };
 
 	console.log(docData);

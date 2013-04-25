@@ -6422,6 +6422,67 @@ can.Model("CanJSUS.Tweet", {
 		dataType: 'json'
 	}
 }, { });
+can.Control('CanJSUS.ApiSearch', {
+	defaults: {
+		searchData: 'searchdata.json',
+		menu: 'templates/apiSearch.mustache'
+	},
+
+	menuTree: function (data, root) {
+		can.each(data, function(current, index, arr) {
+			var parent = _.find(arr, function(value) {
+				return value.name === current.parent;
+			});
+
+			if(parent) {
+				parent.children = parent.children || [];
+				parent.children.push(current);
+			}
+		});
+
+		return _.find(copies, function(current) {
+			return current.name == root;
+		});
+	}
+}, {
+	init: function(el, options) {
+		this.state = new can.Observe({
+			searchTerm: options.searchTerm
+		});
+	},
+
+	markMatches: function(search) {
+		var traverse = function(children) {
+			var anyMatches = false;
+			can.each(children, function(child) {
+				var matches = false;
+				if(child.children) {
+					matches = traverse(child.children);
+				} else {
+					// Only check for actual matches on leaf nodes
+					matches = search.test(child.name) || search.test(child.title);
+				}
+
+				child.attr('matches', matches);
+
+				if(matches) {
+					anyMatches = true;
+				}
+			});
+
+			return anyMatches;
+		}
+
+		traverse(this.root.children);
+
+		return this.root;
+	},
+
+	'.search keypress': function(el, ev) {
+		console.log(el.val());
+	}
+});
+
 can.Control('CanJSUS.Benefits', {
 	defaults: {
 		taglines: {
@@ -6814,6 +6875,7 @@ CanJSUS.CommunityTab('CanJSUS.TwitterTab', {
 	}
 });
 (function(window) {
+can.view.preload('templates_apiSearch_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<ul class=\"api\">\n</ul>");; return ___v1ew.join('')}} }));
 can.view.preload('templates_benefitTabs_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("  <ul class=\"circle-tabs\">\n    <li class=\"flexible\" data-benefit=\"flexible\"><a>Flexible</a></li>\n    <li class=\"powerful\" data-benefit=\"powerful\"><a>Powerful</a></li>\n    <li class=\"fast\" data-benefit=\"fast\"><a>Fast</a></li>\n  </ul>\n  <div class=\"tab-description ");___v1ew.push(can.view.txt(1,'div','class',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("selectedTab",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("tagline",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</div>");; return ___v1ew.join('')}} }));
 can.view.preload('templates_cdnChooser_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<h4>CDN:</h4>\n<div class=\"input\">\n\t<div class=\"dropdown\">\n\t  <select>");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'select',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("libraries",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t    <option value=\"");___v1ew.push(can.view.txt(1,'option','value',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'option',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("description",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</option>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("\t  </select>\n  </div>\n  <span class=\"cdn-link\">http://cdn.canjs.com/releases/");___v1ew.push(can.view.txt(1,'span',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("version",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("/can.");___v1ew.push(can.view.txt(1,'span',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("selectedLibrary",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push(".js</span>\n</div>");; return ___v1ew.join('')}} }));
 can.view.preload('templates_chat_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<div class=\"irc-chat-container\">");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("lines",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t<div><span class=\"username\">");___v1ew.push(can.view.txt(1,'span',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("actor",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</span>: ");___v1ew.push(can.view.txt(1,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("body",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</div>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("</div>");; return ___v1ew.join('')}} }));
@@ -6872,7 +6934,8 @@ can.view.preload('templates_twitterTab_mustache',can.Mustache(function(_CONTEXT,
 			'.index .social': 'SocialStats',
 			'.download .cdn': 'CDNChooser',
 			'.download .customize': 'DownloadCustomizer',
-			'.community .hero': 'CommunityTabs'
+			'.community .hero': 'CommunityTabs',
+			'.docs .sidebar': 'ApiSearch'
 		});
 
 		// Syntax highlighting

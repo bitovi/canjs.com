@@ -36,7 +36,8 @@
 			'.index .social': 'SocialStats',
 			'.download .cdn': 'CDNChooser',
 			'.download .customize': 'DownloadCustomizer',
-			'.community .hero': 'CommunityTabs'
+			'.community .hero': 'CommunityTabs',
+			'.docs .sidebar': 'ApiSearch'
 		});
 
 		// Syntax highlighting
