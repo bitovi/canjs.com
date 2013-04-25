@@ -228,8 +228,8 @@
 
 	<h3>Parameters</h3>
 
-	
 	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>args <code>{*}</code></h4>
 			<div class="description">
@@ -248,8 +248,8 @@
 			</ul>
 			-->
 		</li>
+		
 	</ol>
-	
 
 
 	<h3>Returns</h3>
@@ -274,11 +274,11 @@ to the constructor.</p>
 <p>Because <code>setup</code> is not defined on <code>can.Construct</code> itself, calling super from
 directly-inheriting classes will break. In other words, don't do this:</p>
 
-<pre>can.Construct('Snowflake', {
+<pre><code class="lang-javascript">can.Construct('Snowflake', {
     setup: function() {
         this._super(); // this will break!
     }
-});</pre>
+});</code></pre>
 
 <h2><code>setup</code> vs. <code>init</code></h2>
 
@@ -299,7 +299,7 @@ call their base's <code>init</code> methods.</li>
 method. It converts the first argument to a jQuery collection and
 extends the controller's defaults with the options that were passed.</p>
 
-<pre>can.Construct("can.Control", {
+<pre><code class="lang-javascript">can.Construct("can.Control", {
     setup: function(domElement, rawOptions) {
         // set up this.element
         this.element = $(domElement);
@@ -313,7 +313,7 @@ extends the controller's defaults with the options that were passed.</p>
         // pass this.element and this.options to init.
         return [this.element, this.options];        
     }
-});</pre>         
+});</code></pre>         
 		</section>
 		
 	</article>
@@ -321,7 +321,7 @@ extends the controller's defaults with the options that were passed.</p>
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<p>If a prototype <code>setup</code> method is provided, it is called when a new \ninstance is created. It is passed the same arguments that were passed\nto the constructor.</p>\n\n<p>Because <code>setup</code> is not defined on <code>can.Construct</code> itself, calling super from\ndirectly-inheriting classes will break. In other words, don't do this:</p>\n\n<pre>can.Construct('Snowflake', {\n    setup: function() {\n        this._super(); // this will break!\n    }\n});</pre>\n\n<h2><code>setup</code> vs. <code>init</code></h2>\n\n<p>Usually, you should use [can.Construct::init] to do your class's initialization.\nUse <code>setup</code> instead for:</p>\n\n<ul>\n<li>initialization code that you want to run before the inheriting constructor's \n<code>init</code> method is called.</li>\n<li>initialization code that should run whether or not inheriting constructors\ncall their base's <code>init</code> methods.</li>\n<li>modifying the arguments that will get passed to <code>init</code>.</li>\n</ul>\n\n<h2>Example</h2>\n\n<p>This code is a simplified version of the code in [can.Control]'s setup\nmethod. It converts the first argument to a jQuery collection and\nextends the controller's defaults with the options that were passed.</p>\n\n<pre>can.Construct(\"can.Control\", {\n    setup: function(domElement, rawOptions) {\n        // set up this.element\n        this.element = $(domElement);\n\n        // set up this.options\n        this.options = can.extend({},\n                                  this.constructor.defaults,\n                                  rawOptions\n                                 );\n\n        // pass this.element and this.options to init.\n        return [this.element, this.options];        \n    }\n});</pre>         ",
+    "body": "<p>If a prototype <code>setup</code> method is provided, it is called when a new \ninstance is created. It is passed the same arguments that were passed\nto the constructor.</p>\n\n<p>Because <code>setup</code> is not defined on <code>can.Construct</code> itself, calling super from\ndirectly-inheriting classes will break. In other words, don't do this:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('Snowflake', {\n    setup: function() {\n        this._super(); // this will break!\n    }\n});</code></pre>\n\n<h2><code>setup</code> vs. <code>init</code></h2>\n\n<p>Usually, you should use [can.Construct::init] to do your class's initialization.\nUse <code>setup</code> instead for:</p>\n\n<ul>\n<li>initialization code that you want to run before the inheriting constructor's \n<code>init</code> method is called.</li>\n<li>initialization code that should run whether or not inheriting constructors\ncall their base's <code>init</code> methods.</li>\n<li>modifying the arguments that will get passed to <code>init</code>.</li>\n</ul>\n\n<h2>Example</h2>\n\n<p>This code is a simplified version of the code in [can.Control]'s setup\nmethod. It converts the first argument to a jQuery collection and\nextends the controller's defaults with the options that were passed.</p>\n\n<pre><code class=\"lang-javascript\">can.Construct(\"can.Control\", {\n    setup: function(domElement, rawOptions) {\n        // set up this.element\n        this.element = $(domElement);\n\n        // set up this.options\n        this.options = can.extend({},\n                                  this.constructor.defaults,\n                                  rawOptions\n                                 );\n\n        // pass this.element and this.options to init.\n        return [this.element, this.options];        \n    }\n});</code></pre>         ",
     "description": "",
     "title": "setup",
     "name": "can.Construct.prototype.setup",

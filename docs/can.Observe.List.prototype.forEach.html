@@ -260,8 +260,8 @@
 
 	<h3>Parameters</h3>
 
-	
 	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>callback <code>{function}</code></h4>
 			<div class="description">
@@ -284,19 +284,17 @@ current element of the list, and <em>list</em> the List the elements are coming 
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>thisArg <code>{Object}</code></h4>
 			<div class="description">
 				<p><p>the object to use as <code>this</code> inside the callback</p>
 
-<pre>var list = new can.Observe.List([1, 2, 3]);
+<pre><code class="lang-javascript">var list = new can.Observe.List([1, 2, 3]);
 list.forEach(function(element, index, list) {
     list.attr(index, element * element);
 });
-list.attr(); // [1, 4, 9]</pre></p>
+list.attr(); // [1, 4, 9]</code></pre></p>
 			</div>
 			<!--
 			<ul class="options">
@@ -306,19 +304,19 @@ list.attr(); // [1, 4, 9]</pre></p>
 					<div class="description">
 						<p>the object to use as <code>this</code> inside the callback</p>
 
-<pre>var list = new can.Observe.List([1, 2, 3]);
+<pre><code class="lang-javascript">var list = new can.Observe.List([1, 2, 3]);
 list.forEach(function(element, index, list) {
     list.attr(index, element * element);
 });
-list.attr(); // [1, 4, 9]</pre>
+list.attr(); // [1, 4, 9]</code></pre>
 					</div>
 				</li>
 				
 			</ul>
 			-->
 		</li>
+		
 	</ol>
-	
 
 
 		</section>
@@ -376,7 +374,7 @@ list.attr(); // [1, 4, 9]</pre>
                     ],
                     "optional": true,
                     "name": "thisArg",
-                    "description": "<p>the object to use as <code>this</code> inside the callback</p>\n\n<pre>var list = new can.Observe.List([1, 2, 3]);\nlist.forEach(function(element, index, list) {\n    list.attr(index, element * element);\n});\nlist.attr(); // [1, 4, 9]</pre>"
+                    "description": "<p>the object to use as <code>this</code> inside the callback</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List([1, 2, 3]);\nlist.forEach(function(element, index, list) {\n    list.attr(index, element * element);\n});\nlist.attr(); // [1, 4, 9]</code></pre>"
                 }
             ]
         }

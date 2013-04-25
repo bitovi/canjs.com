@@ -275,8 +275,8 @@
 
 	<h3>Parameters</h3>
 
-	
 	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>index <code>{Number}</code></h4>
 			<div class="description">
@@ -295,8 +295,8 @@
 			</ul>
 			-->
 		</li>
+		
 	</ol>
-	
 
 
 	<h3>Returns</h3>
@@ -315,8 +315,8 @@
 
 	<h3>Parameters</h3>
 
-	
 	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>index <code>{Number}</code></h4>
 			<div class="description">
@@ -335,9 +335,7 @@
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>the <code>{*}</code></h4>
 			<div class="description">
@@ -356,8 +354,8 @@
 			</ul>
 			-->
 		</li>
+		
 	</ol>
-	
 
 
 	<h3>Returns</h3>
@@ -379,8 +377,8 @@ is shorter than the current List, the extra existing members are not affected (u
 
 	<h3>Parameters</h3>
 
-	
 	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>elements <code>{Array}</code></h4>
 			<div class="description">
@@ -399,9 +397,7 @@ is shorter than the current List, the extra existing members are not affected (u
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>replaceCompletely <code>{bool}</code></h4>
 			<div class="description">
@@ -424,9 +420,7 @@ extra members of the List will be removed.</p>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>ev <code>{Event}</code></h4>
 			<div class="description">
@@ -445,9 +439,7 @@ extra members of the List will be removed.</p>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>index <code>{Index}</code></h4>
 			<div class="description">
@@ -466,9 +458,7 @@ extra members of the List will be removed.</p>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>how <code>{String}</code></h4>
 			<div class="description">
@@ -489,9 +479,7 @@ Possible values are <code>'add'</code>, <code>'remove'</code>, or <code>'set'</c
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>newVal <code>{* | Array | undefined}</code></h4>
 			<div class="description">
@@ -514,9 +502,7 @@ were added, and <code>undefined</code> if elements were removed.</p>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>oldVal <code>{* | Array | undefined}</code></h4>
 			<div class="description">
@@ -526,7 +512,7 @@ were removed, and <code>undefined</code> if elements were added.</p>
 
 <p>Here is a concrete tour through the <em>change</em> event handler's arguments:</p>
 
-<pre>var list = new can.Observe.List();
+<pre><code class="lang-javascript">var list = new can.Observe.List();
 list.bind('change', function(ev, index, how, newVal, oldVal) {
     console.log(ev + ', ' + index + ', ' + how + ', ' + newVal + ', ' + oldVal);
 });
@@ -536,7 +522,7 @@ list.attr(2, 'Eve');           // [object Object], 2, add, Eve, undefined
 list.attr(0, 'Adam');          // [object Object], 0, set, Adam, Alexis
 list.attr(['Alice', 'Bob']);   // [object Object], 0, set, Alice, Adam
                                // [object Object], 1, set, Bob, Bill
-list.removeAttr(1);            // [object Object], 1, remove, undefined, Bob</pre>
+list.removeAttr(1);            // [object Object], 1, remove, undefined, Bob</code></pre>
 
 <h2>The <em>set</em> event</h2>
 
@@ -559,7 +545,7 @@ were removed, and <code>undefined</code> if elements were added.</p>
 
 <p>Here is a concrete tour through the <em>change</em> event handler's arguments:</p>
 
-<pre>var list = new can.Observe.List();
+<pre><code class="lang-javascript">var list = new can.Observe.List();
 list.bind('change', function(ev, index, how, newVal, oldVal) {
     console.log(ev + ', ' + index + ', ' + how + ', ' + newVal + ', ' + oldVal);
 });
@@ -569,7 +555,7 @@ list.attr(2, 'Eve');           // [object Object], 2, add, Eve, undefined
 list.attr(0, 'Adam');          // [object Object], 0, set, Adam, Alexis
 list.attr(['Alice', 'Bob']);   // [object Object], 0, set, Alice, Adam
                                // [object Object], 1, set, Bob, Bill
-list.removeAttr(1);            // [object Object], 1, remove, undefined, Bob</pre>
+list.removeAttr(1);            // [object Object], 1, remove, undefined, Bob</code></pre>
 
 <h2>The <em>set</em> event</h2>
 
@@ -585,9 +571,7 @@ may cause unrelated sets of events to fire after being batched).</p>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>ev <code>{Event}</code></h4>
 			<div class="description">
@@ -606,9 +590,7 @@ may cause unrelated sets of events to fire after being batched).</p>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>newVal <code>{*}</code></h4>
 			<div class="description">
@@ -627,9 +609,7 @@ may cause unrelated sets of events to fire after being batched).</p>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>index <code>{Index}</code></h4>
 			<div class="description">
@@ -637,7 +617,7 @@ may cause unrelated sets of events to fire after being batched).</p>
 
 <p>Here is a concrete tour through the <em>set</em> event handler's arguments:</p>
 
-<pre>var list = new can.Observe.List();
+<pre><code class="lang-javascript">var list = new can.Observe.List();
 list.bind('set', function(ev, newVal, index) {
     console.log(newVal + ', ' + index);
 });
@@ -647,7 +627,7 @@ list.attr(2, 'Eve');
 list.attr(0, 'Adam');          // Adam, 0
 list.attr(['Alice', 'Bob']);   // Alice, 0
                                // Bob, 1
-list.removeAttr(1);            </pre>
+list.removeAttr(1);            </code></pre>
 
 <h2>The <em>add</em> event</h2>
 
@@ -666,7 +646,7 @@ into the List.</p>
 
 <p>Here is a concrete tour through the <em>set</em> event handler's arguments:</p>
 
-<pre>var list = new can.Observe.List();
+<pre><code class="lang-javascript">var list = new can.Observe.List();
 list.bind('set', function(ev, newVal, index) {
     console.log(newVal + ', ' + index);
 });
@@ -676,7 +656,7 @@ list.attr(2, 'Eve');
 list.attr(0, 'Adam');          // Adam, 0
 list.attr(['Alice', 'Bob']);   // Alice, 0
                                // Bob, 1
-list.removeAttr(1);            </pre>
+list.removeAttr(1);            </code></pre>
 
 <h2>The <em>add</em> event</h2>
 
@@ -690,9 +670,7 @@ into the List.</p>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>ev <code>{Event}</code></h4>
 			<div class="description">
@@ -711,9 +689,7 @@ into the List.</p>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>newElements <code>{Array | *}</code></h4>
 			<div class="description">
@@ -736,9 +712,7 @@ Otherwise, it is simply the new element itself.</p>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>index <code>{Index}</code></h4>
 			<div class="description">
@@ -746,7 +720,7 @@ Otherwise, it is simply the new element itself.</p>
 
 <p>Here is a concrete tour through the <em>add</em> event handler's arguments:</p>
 
-<pre>var list = new can.Observe.List();
+<pre><code class="lang-javascript">var list = new can.Observe.List();
 list.bind('add', function(ev, newElements, index) {
     console.log(newElements + ', ' + index);
 });
@@ -756,7 +730,7 @@ list.attr(2, 'Eve');           // Eve, 2
 list.attr(0, 'Adam');          
 list.attr(['Alice', 'Bob']);   
 
-list.removeAttr(1);            </pre>
+list.removeAttr(1);            </code></pre>
 
 <h2>The <em>remove</em> event</h2>
 
@@ -774,7 +748,7 @@ list.removeAttr(1);            </pre>
 
 <p>Here is a concrete tour through the <em>add</em> event handler's arguments:</p>
 
-<pre>var list = new can.Observe.List();
+<pre><code class="lang-javascript">var list = new can.Observe.List();
 list.bind('add', function(ev, newElements, index) {
     console.log(newElements + ', ' + index);
 });
@@ -784,7 +758,7 @@ list.attr(2, 'Eve');           // Eve, 2
 list.attr(0, 'Adam');          
 list.attr(['Alice', 'Bob']);   
 
-list.removeAttr(1);            </pre>
+list.removeAttr(1);            </code></pre>
 
 <h2>The <em>remove</em> event</h2>
 
@@ -797,9 +771,7 @@ list.removeAttr(1);            </pre>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>ev <code>{Event}</code></h4>
 			<div class="description">
@@ -818,9 +790,7 @@ list.removeAttr(1);            </pre>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>removedElements <code>{Array | *}</code></h4>
 			<div class="description">
@@ -843,9 +813,7 @@ Otherwise, it is simply the element itself.</p>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>index <code>{Index}</code></h4>
 			<div class="description">
@@ -853,7 +821,7 @@ Otherwise, it is simply the element itself.</p>
 
 <p>Here is a concrete tour through the <em>remove</em> event handler's arguments:</p>
 
-<pre>var list = new can.Observe.List();
+<pre><code class="lang-javascript">var list = new can.Observe.List();
 list.bind('remove', function(ev, removedElements, index) {
     console.log(removedElements + ', ' + index);
 });
@@ -863,7 +831,7 @@ list.attr(2, 'Eve');
 list.attr(0, 'Adam');          
 list.attr(['Alice', 'Bob']);   
 
-list.removeAttr(1);            // Bob, 1</pre>
+list.removeAttr(1);            // Bob, 1</code></pre>
 
 <h2>The <em>length</em> event</h2>
 
@@ -881,7 +849,7 @@ list.removeAttr(1);            // Bob, 1</pre>
 
 <p>Here is a concrete tour through the <em>remove</em> event handler's arguments:</p>
 
-<pre>var list = new can.Observe.List();
+<pre><code class="lang-javascript">var list = new can.Observe.List();
 list.bind('remove', function(ev, removedElements, index) {
     console.log(removedElements + ', ' + index);
 });
@@ -891,7 +859,7 @@ list.attr(2, 'Eve');
 list.attr(0, 'Adam');          
 list.attr(['Alice', 'Bob']);   
 
-list.removeAttr(1);            // Bob, 1</pre>
+list.removeAttr(1);            // Bob, 1</code></pre>
 
 <h2>The <em>length</em> event</h2>
 
@@ -904,9 +872,7 @@ list.removeAttr(1);            // Bob, 1</pre>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>ev <code>{Event}</code></h4>
 			<div class="description">
@@ -925,9 +891,7 @@ list.removeAttr(1);            // Bob, 1</pre>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>length <code>{Number}</code></h4>
 			<div class="description">
@@ -939,7 +903,7 @@ of this, you may recieve multiple <em>length</em> events with the same
 
 <p>Here is a concrete tour through the <em>length</em> event handler's arguments:</p>
 
-<pre>var list = new can.Observe.List();
+<pre><code class="lang-javascript">var list = new can.Observe.List();
 list.bind('length', function(ev, length) {
     console.log(length);
 });
@@ -949,7 +913,7 @@ list.attr(2, 'Eve');           // 3
 list.attr(0, 'Adam');          
 list.attr(['Alice', 'Bob']);   
 
-list.removeAttr(1);            // 2</pre></p>
+list.removeAttr(1);            // 2</code></pre></p>
 			</div>
 			<!--
 			<ul class="options">
@@ -965,7 +929,7 @@ of this, you may recieve multiple <em>length</em> events with the same
 
 <p>Here is a concrete tour through the <em>length</em> event handler's arguments:</p>
 
-<pre>var list = new can.Observe.List();
+<pre><code class="lang-javascript">var list = new can.Observe.List();
 list.bind('length', function(ev, length) {
     console.log(length);
 });
@@ -975,15 +939,15 @@ list.attr(2, 'Eve');           // 3
 list.attr(0, 'Adam');          
 list.attr(['Alice', 'Bob']);   
 
-list.removeAttr(1);            // 2</pre>
+list.removeAttr(1);            // 2</code></pre>
 					</div>
 				</li>
 				
 			</ul>
 			-->
 		</li>
+		
 	</ol>
-	
 
 
 	<h3>Returns</h3>
@@ -995,7 +959,7 @@ list.removeAttr(1);            // 2</pre>
 <p><code>attr</code> gets or sets elements on the <code>can.Observe.List</code> it's called on. Here's a tour through
 how all of its forms work:</p>
 
-<pre>var people = new can.Observe.List(['Alex', 'Bill']);
+<pre><code class="lang-javascript">var people = new can.Observe.List(['Alex', 'Bill']);
 
 // set an element:
 people.attr(0, 'Adam');
@@ -1013,14 +977,14 @@ people.attr(); // ['Adam', 'Bill', undefined, undefined, 'Charlie']
 
 // merge the elements:
 people.attr(['Alice', 'Bob', 'Eve']);
-people.attr(); // ['Alice', 'Bob', 'Eve', undefined, 'Charlie']</pre>
+people.attr(); // ['Alice', 'Bob', 'Eve', undefined, 'Charlie']</code></pre>
 
 <h2>Deep properties</h2>
 
 <p><code>attr</code> can also set and read deep properties. All you have to do is specify
 the property name as you normally would if you weren't using <code>attr</code>.</p>
 
-<pre>var people = new can.Observe.List([{name: 'Alex'}, {name: 'Bob'}]);
+<pre><code class="lang-javascript">var people = new can.Observe.List([{name: 'Alex'}, {name: 'Bob'}]);
 
 // set a property:
 people.attr('0.name', 'Alice');
@@ -1030,7 +994,7 @@ people.attr('0.name');  // 'Alice'
 people[0].attr('name'); // 'Alice'
 
 // get all properties:
-people.attr(); // [{name: 'Alice'}, {name: 'Bob'}]</pre>
+people.attr(); // [{name: 'Alice'}, {name: 'Bob'}]</code></pre>
 
 <p>The discussion of deep properties under <code>[can.Observe.prototype.attr]</code> may also
 be enlightening.</p>
@@ -1051,10 +1015,10 @@ be enlightening.</p>
 <p>The first event that is fired is the <em>change</em> event. The <em>change</em> event is useful
 if you want to react to all changes on an List.</p>
 
-<pre>var list = new can.Observe.List([]);
+<pre><code class="lang-javascript">var list = new can.Observe.List([]);
 list.bind('change', function(ev, index, how, newVal, oldVal) {
     console.log('Something changed.');
-});</pre>
+});</code></pre>
 
 <p>The parameters of the event handler for the <em>change</em> event are:</p>
 		</div>
@@ -1192,7 +1156,7 @@ list.bind('change', function(ev, index, how, newVal, oldVal) {
                         }
                     ],
                     "name": "oldVal",
-                    "description": "<p>the elements affected before the change\n<em>newVal</em> will be a single value when an index is set, an Array when elements\nwere removed, and <code>undefined</code> if elements were added.</p>\n\n<p>Here is a concrete tour through the <em>change</em> event handler's arguments:</p>\n\n<pre>var list = new can.Observe.List();\nlist.bind('change', function(ev, index, how, newVal, oldVal) {\n    console.log(ev + ', ' + index + ', ' + how + ', ' + newVal + ', ' + oldVal);\n});\n\nlist.attr(['Alexis', 'Bill']); // [object Object], 0, add, ['Alexis', 'Bill'], undefined\nlist.attr(2, 'Eve');           // [object Object], 2, add, Eve, undefined\nlist.attr(0, 'Adam');          // [object Object], 0, set, Adam, Alexis\nlist.attr(['Alice', 'Bob']);   // [object Object], 0, set, Alice, Adam\n                               // [object Object], 1, set, Bob, Bill\nlist.removeAttr(1);            // [object Object], 1, remove, undefined, Bob</pre>\n\n<h2>The <em>set</em> event</h2>\n\n<p><em>set</em> events are fired when an element at an index that already exists in the List is\nmodified. Actions can cause <em>set</em> events to fire never also cause <em>length</em> events\nto fire (although some functions, such as <code>[can.Observe.List.prototype.splice splice]</code>\nmay cause unrelated sets of events to fire after being batched).</p>\n\n<p>The parameters of the event handler for the <em>set</em> event are:</p>"
+                    "description": "<p>the elements affected before the change\n<em>newVal</em> will be a single value when an index is set, an Array when elements\nwere removed, and <code>undefined</code> if elements were added.</p>\n\n<p>Here is a concrete tour through the <em>change</em> event handler's arguments:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List();\nlist.bind('change', function(ev, index, how, newVal, oldVal) {\n    console.log(ev + ', ' + index + ', ' + how + ', ' + newVal + ', ' + oldVal);\n});\n\nlist.attr(['Alexis', 'Bill']); // [object Object], 0, add, ['Alexis', 'Bill'], undefined\nlist.attr(2, 'Eve');           // [object Object], 2, add, Eve, undefined\nlist.attr(0, 'Adam');          // [object Object], 0, set, Adam, Alexis\nlist.attr(['Alice', 'Bob']);   // [object Object], 0, set, Alice, Adam\n                               // [object Object], 1, set, Bob, Bill\nlist.removeAttr(1);            // [object Object], 1, remove, undefined, Bob</code></pre>\n\n<h2>The <em>set</em> event</h2>\n\n<p><em>set</em> events are fired when an element at an index that already exists in the List is\nmodified. Actions can cause <em>set</em> events to fire never also cause <em>length</em> events\nto fire (although some functions, such as <code>[can.Observe.List.prototype.splice splice]</code>\nmay cause unrelated sets of events to fire after being batched).</p>\n\n<p>The parameters of the event handler for the <em>set</em> event are:</p>"
                 }, {
                     "types": [{
                             "type": "Event"
@@ -1213,7 +1177,7 @@ list.bind('change', function(ev, index, how, newVal, oldVal) {
                         }
                     ],
                     "name": "index",
-                    "description": "<p>where the set took place</p>\n\n<p>Here is a concrete tour through the <em>set</em> event handler's arguments:</p>\n\n<pre>var list = new can.Observe.List();\nlist.bind('set', function(ev, newVal, index) {\n    console.log(newVal + ', ' + index);\n});\n\nlist.attr(['Alexis', 'Bill']);\nlist.attr(2, 'Eve');          \nlist.attr(0, 'Adam');          // Adam, 0\nlist.attr(['Alice', 'Bob']);   // Alice, 0\n                               // Bob, 1\nlist.removeAttr(1);            </pre>\n\n<h2>The <em>add</em> event</h2>\n\n<p><em>add</em> events are fired when elements are added or inserted\ninto the List.</p>\n\n<p>The parameters of the event handler for the <em>add</em> event are:</p>"
+                    "description": "<p>where the set took place</p>\n\n<p>Here is a concrete tour through the <em>set</em> event handler's arguments:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List();\nlist.bind('set', function(ev, newVal, index) {\n    console.log(newVal + ', ' + index);\n});\n\nlist.attr(['Alexis', 'Bill']);\nlist.attr(2, 'Eve');          \nlist.attr(0, 'Adam');          // Adam, 0\nlist.attr(['Alice', 'Bob']);   // Alice, 0\n                               // Bob, 1\nlist.removeAttr(1);            </code></pre>\n\n<h2>The <em>add</em> event</h2>\n\n<p><em>add</em> events are fired when elements are added or inserted\ninto the List.</p>\n\n<p>The parameters of the event handler for the <em>add</em> event are:</p>"
                 }, {
                     "types": [{
                             "type": "Event"
@@ -1236,7 +1200,7 @@ list.bind('change', function(ev, index, how, newVal, oldVal) {
                         }
                     ],
                     "name": "index",
-                    "description": "<p>where the add or insert took place</p>\n\n<p>Here is a concrete tour through the <em>add</em> event handler's arguments:</p>\n\n<pre>var list = new can.Observe.List();\nlist.bind('add', function(ev, newElements, index) {\n    console.log(newElements + ', ' + index);\n});\n\nlist.attr(['Alexis', 'Bill']); // ['Alexis', 'Bill'], 0\nlist.attr(2, 'Eve');           // Eve, 2\nlist.attr(0, 'Adam');          \nlist.attr(['Alice', 'Bob']);   \n\nlist.removeAttr(1);            </pre>\n\n<h2>The <em>remove</em> event</h2>\n\n<p><em>remove</em> events are fired when elements are removed from the list.</p>\n\n<p>The parameters of the event handler for the <em>remove</em> event are:</p>"
+                    "description": "<p>where the add or insert took place</p>\n\n<p>Here is a concrete tour through the <em>add</em> event handler's arguments:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List();\nlist.bind('add', function(ev, newElements, index) {\n    console.log(newElements + ', ' + index);\n});\n\nlist.attr(['Alexis', 'Bill']); // ['Alexis', 'Bill'], 0\nlist.attr(2, 'Eve');           // Eve, 2\nlist.attr(0, 'Adam');          \nlist.attr(['Alice', 'Bob']);   \n\nlist.removeAttr(1);            </code></pre>\n\n<h2>The <em>remove</em> event</h2>\n\n<p><em>remove</em> events are fired when elements are removed from the list.</p>\n\n<p>The parameters of the event handler for the <em>remove</em> event are:</p>"
                 }, {
                     "types": [{
                             "type": "Event"
@@ -1259,7 +1223,7 @@ list.bind('change', function(ev, index, how, newVal, oldVal) {
                         }
                     ],
                     "name": "index",
-                    "description": "<p>where the removal took place</p>\n\n<p>Here is a concrete tour through the <em>remove</em> event handler's arguments:</p>\n\n<pre>var list = new can.Observe.List();\nlist.bind('remove', function(ev, removedElements, index) {\n    console.log(removedElements + ', ' + index);\n});\n\nlist.attr(['Alexis', 'Bill']); \nlist.attr(2, 'Eve');           \nlist.attr(0, 'Adam');          \nlist.attr(['Alice', 'Bob']);   \n\nlist.removeAttr(1);            // Bob, 1</pre>\n\n<h2>The <em>length</em> event</h2>\n\n<p><em>length</em> events are fired whenever the list changes.</p>\n\n<p>The parameters of the event handler for the <em>length</em> event are:</p>"
+                    "description": "<p>where the removal took place</p>\n\n<p>Here is a concrete tour through the <em>remove</em> event handler's arguments:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List();\nlist.bind('remove', function(ev, removedElements, index) {\n    console.log(removedElements + ', ' + index);\n});\n\nlist.attr(['Alexis', 'Bill']); \nlist.attr(2, 'Eve');           \nlist.attr(0, 'Adam');          \nlist.attr(['Alice', 'Bob']);   \n\nlist.removeAttr(1);            // Bob, 1</code></pre>\n\n<h2>The <em>length</em> event</h2>\n\n<p><em>length</em> events are fired whenever the list changes.</p>\n\n<p>The parameters of the event handler for the <em>length</em> event are:</p>"
                 }, {
                     "types": [{
                             "type": "Event"
@@ -1273,7 +1237,7 @@ list.bind('change', function(ev, index, how, newVal, oldVal) {
                         }
                     ],
                     "name": "length",
-                    "description": "<p>the current length of the list\nIf events were batched when the <em>length</em> event was triggered, <em>length</em>\nwill have the length of the list when <code>stopBatch</code> was called. Because\nof this, you may recieve multiple <em>length</em> events with the same\n<em>length</em> parameter.</p>\n\n<p>Here is a concrete tour through the <em>length</em> event handler's arguments:</p>\n\n<pre>var list = new can.Observe.List();\nlist.bind('length', function(ev, length) {\n    console.log(length);\n});\n\nlist.attr(['Alexis', 'Bill']); // 2\nlist.attr(2, 'Eve');           // 3\nlist.attr(0, 'Adam');          \nlist.attr(['Alice', 'Bob']);   \n\nlist.removeAttr(1);            // 2</pre>"
+                    "description": "<p>the current length of the list\nIf events were batched when the <em>length</em> event was triggered, <em>length</em>\nwill have the length of the list when <code>stopBatch</code> was called. Because\nof this, you may recieve multiple <em>length</em> events with the same\n<em>length</em> parameter.</p>\n\n<p>Here is a concrete tour through the <em>length</em> event handler's arguments:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List();\nlist.bind('length', function(ev, length) {\n    console.log(length);\n});\n\nlist.attr(['Alexis', 'Bill']); // 2\nlist.attr(2, 'Eve');           // 3\nlist.attr(0, 'Adam');          \nlist.attr(['Alice', 'Bob']);   \n\nlist.removeAttr(1);            // 2</code></pre>"
                 }
             ],
             "returns": {
@@ -1281,7 +1245,7 @@ list.bind('change', function(ev, index, how, newVal, oldVal) {
                         "type": "can.Observe.List"
                     }
                 ],
-                "description": "<p>this List, for chaining</p>\n\n<p><code>attr</code> gets or sets elements on the <code>can.Observe.List</code> it's called on. Here's a tour through\nhow all of its forms work:</p>\n\n<pre>var people = new can.Observe.List(['Alex', 'Bill']);\n\n// set an element:\npeople.attr(0, 'Adam');\n\n// get an element:\npeople.attr(0); // 'Adam'\npeople[0]; // 'Adam'\n\n// get all elements:\npeople.attr(); // ['Adam', 'Bill']\n\n// extend the array:\npeople.attr(4, 'Charlie');\npeople.attr(); // ['Adam', 'Bill', undefined, undefined, 'Charlie']\n\n// merge the elements:\npeople.attr(['Alice', 'Bob', 'Eve']);\npeople.attr(); // ['Alice', 'Bob', 'Eve', undefined, 'Charlie']</pre>\n\n<h2>Deep properties</h2>\n\n<p><code>attr</code> can also set and read deep properties. All you have to do is specify\nthe property name as you normally would if you weren't using <code>attr</code>.</p>\n\n<pre>var people = new can.Observe.List([{name: 'Alex'}, {name: 'Bob'}]);\n\n// set a property:\npeople.attr('0.name', 'Alice');\n\n// get a property:\npeople.attr('0.name');  // 'Alice'\npeople[0].attr('name'); // 'Alice'\n\n// get all properties:\npeople.attr(); // [{name: 'Alice'}, {name: 'Bob'}]</pre>\n\n<p>The discussion of deep properties under <code>[can.Observe.prototype.attr]</code> may also\nbe enlightening.</p>\n\n<h2>Events</h2>\n\n<p><code>can.Observe.List</code>s emit five types of events in response to changes. They are:\n- the <em>change</em> event fires on every change to a List.\n- the <em>set</em> event is fired when an element is set.\n- the <em>add</em> event is fired when an element is added to the List.\n- the <em>remove</em> event is fired when an element is removed from the List.\n- the <em>length</em> event is fired when the length of the List changes.</p>\n\n<ul>\n<li>## The <em>change</em> event</li>\n</ul>\n\n<p>The first event that is fired is the <em>change</em> event. The <em>change</em> event is useful\nif you want to react to all changes on an List.</p>\n\n<pre>var list = new can.Observe.List([]);\nlist.bind('change', function(ev, index, how, newVal, oldVal) {\n    console.log('Something changed.');\n});</pre>\n\n<p>The parameters of the event handler for the <em>change</em> event are:</p>"
+                "description": "<p>this List, for chaining</p>\n\n<p><code>attr</code> gets or sets elements on the <code>can.Observe.List</code> it's called on. Here's a tour through\nhow all of its forms work:</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe.List(['Alex', 'Bill']);\n\n// set an element:\npeople.attr(0, 'Adam');\n\n// get an element:\npeople.attr(0); // 'Adam'\npeople[0]; // 'Adam'\n\n// get all elements:\npeople.attr(); // ['Adam', 'Bill']\n\n// extend the array:\npeople.attr(4, 'Charlie');\npeople.attr(); // ['Adam', 'Bill', undefined, undefined, 'Charlie']\n\n// merge the elements:\npeople.attr(['Alice', 'Bob', 'Eve']);\npeople.attr(); // ['Alice', 'Bob', 'Eve', undefined, 'Charlie']</code></pre>\n\n<h2>Deep properties</h2>\n\n<p><code>attr</code> can also set and read deep properties. All you have to do is specify\nthe property name as you normally would if you weren't using <code>attr</code>.</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe.List([{name: 'Alex'}, {name: 'Bob'}]);\n\n// set a property:\npeople.attr('0.name', 'Alice');\n\n// get a property:\npeople.attr('0.name');  // 'Alice'\npeople[0].attr('name'); // 'Alice'\n\n// get all properties:\npeople.attr(); // [{name: 'Alice'}, {name: 'Bob'}]</code></pre>\n\n<p>The discussion of deep properties under <code>[can.Observe.prototype.attr]</code> may also\nbe enlightening.</p>\n\n<h2>Events</h2>\n\n<p><code>can.Observe.List</code>s emit five types of events in response to changes. They are:\n- the <em>change</em> event fires on every change to a List.\n- the <em>set</em> event is fired when an element is set.\n- the <em>add</em> event is fired when an element is added to the List.\n- the <em>remove</em> event is fired when an element is removed from the List.\n- the <em>length</em> event is fired when the length of the List changes.</p>\n\n<ul>\n<li>## The <em>change</em> event</li>\n</ul>\n\n<p>The first event that is fired is the <em>change</em> event. The <em>change</em> event is useful\nif you want to react to all changes on an List.</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List([]);\nlist.bind('change', function(ev, index, how, newVal, oldVal) {\n    console.log('Something changed.');\n});</code></pre>\n\n<p>The parameters of the event handler for the <em>change</em> event are:</p>"
             }
         }
     ],

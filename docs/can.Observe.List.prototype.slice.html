@@ -260,8 +260,8 @@
 
 	<h3>Parameters</h3>
 
-	
 	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>start <code>{Number}</code></h4>
 			<div class="description">
@@ -280,9 +280,7 @@
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>end <code>{Number}</code></h4>
 			<div class="description">
@@ -303,8 +301,8 @@ If <em>end</em> is not supplied, <code>slice</code> will copy until the end of t
 			</ul>
 			-->
 		</li>
+		
 	</ol>
-	
 
 
 	<h3>Returns</h3>
@@ -313,17 +311,17 @@ If <em>end</em> is not supplied, <code>slice</code> will copy until the end of t
 		<div class="description">
 			<p>a new <code>can.Observe.List</code> with the extracted elements</p>
 
-<pre>var list = new can.Observe.List(['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve']);
+<pre><code class="lang-javascript">var list = new can.Observe.List(['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve']);
 var newList = list.slice(1, 4);
-newList.attr(); // ['Bob', 'Charlie', 'Daniel']</pre>
+newList.attr(); // ['Bob', 'Charlie', 'Daniel']</code></pre>
 
 <p><code>slice</code> is the simplest way to copy a List:</p>
 
-<pre>var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);
+<pre><code class="lang-javascript">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);
 var copy = list.slice();
 
 copy.attr();   // ['Alice', 'Bob', 'Eve']
-list === copy; // false</pre>
+list === copy; // false</code></pre>
 		</div>
 	</div>
 
@@ -369,7 +367,7 @@ list === copy; // false</pre>
                         "type": "can.Observe.List"
                     }
                 ],
-                "description": "<p>a new <code>can.Observe.List</code> with the extracted elements</p>\n\n<pre>var list = new can.Observe.List(['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve']);\nvar newList = list.slice(1, 4);\nnewList.attr(); // ['Bob', 'Charlie', 'Daniel']</pre>\n\n<p><code>slice</code> is the simplest way to copy a List:</p>\n\n<pre>var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nvar copy = list.slice();\n\ncopy.attr();   // ['Alice', 'Bob', 'Eve']\nlist === copy; // false</pre>"
+                "description": "<p>a new <code>can.Observe.List</code> with the extracted elements</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve']);\nvar newList = list.slice(1, 4);\nnewList.attr(); // ['Bob', 'Charlie', 'Daniel']</code></pre>\n\n<p><code>slice</code> is the simplest way to copy a List:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nvar copy = list.slice();\n\ncopy.attr();   // ['Alice', 'Bob', 'Eve']\nlist === copy; // false</code></pre>"
             }
         }
     ],

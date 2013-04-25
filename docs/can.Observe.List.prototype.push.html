@@ -260,8 +260,8 @@
 
 	<h3>Parameters</h3>
 
-	
 	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>elements <code>{*}</code></h4>
 			<div class="description">
@@ -280,8 +280,8 @@
 			</ul>
 			-->
 		</li>
+		
 	</ol>
-	
 
 
 	<h3>Returns</h3>
@@ -292,19 +292,19 @@
 
 <p><code>push</code> is fairly straightforward:</p>
 
-<pre>var list = new can.Observe.List(['Alice']);
+<pre><code class="lang-javascript">var list = new can.Observe.List(['Alice']);
 
 list.push('Bob', 'Eve');
-list.attr(); // ['Alice', 'Bob', 'Eve']</pre>
+list.attr(); // ['Alice', 'Bob', 'Eve']</code></pre>
 
 <p>If you have an array you want to concatenate to the end
 of the List, you can use <code>apply</code>:</p>
 
-<pre>var names = ['Bob', 'Eve'],
+<pre><code class="lang-javascript">var names = ['Bob', 'Eve'],
     list = new can.Observe.List(['Alice']);
 
 list.push.apply(list, names);
-list.attr(); // ['Alice', 'Bob', 'Eve']</pre>
+list.attr(); // ['Alice', 'Bob', 'Eve']</code></pre>
 
 <h2>Events</h2>
 
@@ -349,7 +349,7 @@ looking for [can.Observe.List.unshift unshift] and its counterpart [can.Observe.
                         "type": "Number"
                     }
                 ],
-                "description": "<p>the new length of the List</p>\n\n<p><code>push</code> is fairly straightforward:</p>\n\n<pre>var list = new can.Observe.List(['Alice']);\n\nlist.push('Bob', 'Eve');\nlist.attr(); // ['Alice', 'Bob', 'Eve']</pre>\n\n<p>If you have an array you want to concatenate to the end\nof the List, you can use <code>apply</code>:</p>\n\n<pre>var names = ['Bob', 'Eve'],\n    list = new can.Observe.List(['Alice']);\n\nlist.push.apply(list, names);\nlist.attr(); // ['Alice', 'Bob', 'Eve']</pre>\n\n<h2>Events</h2>\n\n<p><code>push</code> causes <em>change</em>, <em>add</em>, and <em>length</em> events to be fired.</p>\n\n<h2>See also</h2>\n\n<p><code>push</code> has a counterpart in [can.Observe.List.pop pop], or you may be\nlooking for [can.Observe.List.unshift unshift] and its counterpart [can.Observe.List.shift shift].</p>"
+                "description": "<p>the new length of the List</p>\n\n<p><code>push</code> is fairly straightforward:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice']);\n\nlist.push('Bob', 'Eve');\nlist.attr(); // ['Alice', 'Bob', 'Eve']</code></pre>\n\n<p>If you have an array you want to concatenate to the end\nof the List, you can use <code>apply</code>:</p>\n\n<pre><code class=\"lang-javascript\">var names = ['Bob', 'Eve'],\n    list = new can.Observe.List(['Alice']);\n\nlist.push.apply(list, names);\nlist.attr(); // ['Alice', 'Bob', 'Eve']</code></pre>\n\n<h2>Events</h2>\n\n<p><code>push</code> causes <em>change</em>, <em>add</em>, and <em>length</em> events to be fired.</p>\n\n<h2>See also</h2>\n\n<p><code>push</code> has a counterpart in [can.Observe.List.pop pop], or you may be\nlooking for [can.Observe.List.unshift unshift] and its counterpart [can.Observe.List.shift shift].</p>"
             }
         }
     ],

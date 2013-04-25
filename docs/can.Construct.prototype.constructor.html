@@ -225,7 +225,7 @@ the constructor's static properties from an instance.</p>
 
 <p>This class has a static counter that counts how mane instances have been created:</p>
 
-<pre>can.Construct("Counter", {
+<pre><code class="lang-javascript">can.Construct("Counter", {
     count: 0
 }, {
     init: function() {
@@ -234,7 +234,7 @@ the constructor's static properties from an instance.</p>
 });
 
 new Counter();
-Counter.count; // 1</pre>         
+Counter.count; // 1</code></pre>         
 		</section>
 
 		
@@ -247,7 +247,7 @@ Counter.count; // 1</pre>
 	var docData = {
     "type": "property",
     "body": "",
-    "description": "<p>A reference to the constructor function that created the instance. This allows you to access\nthe constructor's static properties from an instance.</p>\n\n<h2>Example</h2>\n\n<p>This class has a static counter that counts how mane instances have been created:</p>\n\n<pre>can.Construct(\"Counter\", {\n    count: 0\n}, {\n    init: function() {\n        this.constructor.count++;\n    }\n});\n\nnew Counter();\nCounter.count; // 1</pre>         ",
+    "description": "<p>A reference to the constructor function that created the instance. This allows you to access\nthe constructor's static properties from an instance.</p>\n\n<h2>Example</h2>\n\n<p>This class has a static counter that counts how mane instances have been created:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct(\"Counter\", {\n    count: 0\n}, {\n    init: function() {\n        this.constructor.count++;\n    }\n});\n\nnew Counter();\nCounter.count; // 1</code></pre>         ",
     "types": [{
             "type": "function",
             "returns": {

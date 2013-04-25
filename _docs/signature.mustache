@@ -3,8 +3,8 @@
 {{#if params}}
 	<h3>Parameters</h3>
 
-	{{#params}}
 	<ol class="parameters">
+		{{#params}}
 		<li class="parameter">
 			<h4>{{name}} {{#if types}}<code>{{makeTypesString types}}</code>{{/if}}</h4>
 			<div class="description">
@@ -23,8 +23,8 @@
 			</ul>
 			-->
 		</li>
+		{{/params}}
 	</ol>
-	{{/params}}
 {{/if}}
 {{#if returns}}
 	<h3>Returns</h3>

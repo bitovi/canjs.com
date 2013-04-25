@@ -267,7 +267,7 @@
 
 <p><code>shift</code> is the opposite action from <code>[can.Observe.List.unshift unshift]</code>:</p>
 
-<pre>var list = new can.Observe.List(['Alice']);
+<pre><code class="lang-javascript">var list = new can.Observe.List(['Alice']);
 
 list.unshift('Bob', 'Eve');
 list.attr(); // ['Bob', 'Eve', 'Alice']
@@ -275,7 +275,7 @@ list.attr(); // ['Bob', 'Eve', 'Alice']
 list.shift(); // 'Bob'
 list.shift(); // 'Eve'
 list.shift(); // 'Alice'
-list.shift(); // undefined</pre>
+list.shift(); // undefined</code></pre>
 
 <h2>Events</h2>
 
@@ -313,7 +313,7 @@ looking for [can.Observe.List.push push] and its counterpart [can.Observe.List.p
                         "type": "*"
                     }
                 ],
-                "description": "<p>the element just shifted off the List, or <code>undefined</code> if the List is empty</p>\n\n<p><code>shift</code> is the opposite action from <code>[can.Observe.List.unshift unshift]</code>:</p>\n\n<pre>var list = new can.Observe.List(['Alice']);\n\nlist.unshift('Bob', 'Eve');\nlist.attr(); // ['Bob', 'Eve', 'Alice']\n\nlist.shift(); // 'Bob'\nlist.shift(); // 'Eve'\nlist.shift(); // 'Alice'\nlist.shift(); // undefined</pre>\n\n<h2>Events</h2>\n\n<p><code>pop</code> causes <em>change</em>, <em>remove</em>, and <em>length</em> events to be fired if the List is not empty\nwhen it is called.</p>\n\n<h2>See also</h2>\n\n<p><code>shift</code> has a counterpart in [can.Observe.List.unshift unshift], or you may be\nlooking for [can.Observe.List.push push] and its counterpart [can.Observe.List.pop pop].</p>"
+                "description": "<p>the element just shifted off the List, or <code>undefined</code> if the List is empty</p>\n\n<p><code>shift</code> is the opposite action from <code>[can.Observe.List.unshift unshift]</code>:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice']);\n\nlist.unshift('Bob', 'Eve');\nlist.attr(); // ['Bob', 'Eve', 'Alice']\n\nlist.shift(); // 'Bob'\nlist.shift(); // 'Eve'\nlist.shift(); // 'Alice'\nlist.shift(); // undefined</code></pre>\n\n<h2>Events</h2>\n\n<p><code>pop</code> causes <em>change</em>, <em>remove</em>, and <em>length</em> events to be fired if the List is not empty\nwhen it is called.</p>\n\n<h2>See also</h2>\n\n<p><code>shift</code> has a counterpart in [can.Observe.List.unshift unshift], or you may be\nlooking for [can.Observe.List.push push] and its counterpart [can.Observe.List.pop pop].</p>"
             }
         }
     ],

@@ -264,8 +264,8 @@ and react to.</p>
 
 	<h3>Parameters</h3>
 
-	
 	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>elements <code>{Array}</code></h4>
 			<div class="description">
@@ -284,8 +284,8 @@ and react to.</p>
 			</ul>
 			-->
 		</li>
+		
 	</ol>
-	
 
 
 	<h3>Returns</h3>
@@ -312,7 +312,7 @@ of a List directly. Always use <code>attr</code> to set the elements of a List, 
 
 <p>Here is a tour through the forms of <code>can.Observe.List</code>'s <code>attr</code> that parallels the one found under [can.Observe.prototype.attr attr]:</p>
 
-<pre>var people = new can.Observe.List(['Alex', 'Bill']);
+<pre><code class="lang-javascript">var people = new can.Observe.List(['Alex', 'Bill']);
 
 // set an element:
 people.attr(0, 'Adam');
@@ -331,7 +331,7 @@ people.attr(); // ['Adam', 'Bill', undefined, undefined, 'Charlie']
 
 // merge the elements:
 people.attr(['Alice', 'Bob', 'Eve']);
-people.attr(); // ['Alice', 'Bob', 'Eve', undefined, 'Charlie']</pre>
+people.attr(); // ['Alice', 'Bob', 'Eve', undefined, 'Charlie']</code></pre>
 
 <h2>Listening to changes</h2>
 
@@ -345,7 +345,7 @@ react to changes in the member elements of the array. Lists emit five types of e
 
 <p>This example presents a brief concrete survey of the times these events are fired:</p>
 
-<pre>var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);
+<pre><code class="lang-javascript">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);
 
 list.bind('change', function() { console.log('An element changed.'); });
 list.bind('set', function() { console.log('An element was set.'); });
@@ -367,7 +367,7 @@ list.attr(['Adam', 'Bill']); // 'An element changed.'
 
 list.pop(); // 'An element changed.'
             // 'An element was removed.'
-            // 'The length of the list was changed.'</pre>
+            // 'The length of the list was changed.'</code></pre>
 
 <p>More information about binding to these events can be found under [can.Observe.List.attr attr].</p>
 		</div>
@@ -406,7 +406,7 @@ list.pop(); // 'An element changed.'
                         "type": "can.Observe.List"
                     }
                 ],
-                "description": "<p>an instance of <code>can.Observe.List</code> with the elements from <em>elements</em></p>\n\n<h2>Working with Lists</h2>\n\n<p><code>can.Observe.List</code> extends <code>[can.Observe]</code>, so all the ways that you're used to working with\nObserves also work here, including [can.Observe.prototype.bind bind], [can.Observe.prototype.unbind unbind],\nand [can.Observe.prototype.each each]. And just as you can directly read properties normally\noff of an Observe, you can use array accessors ([]) to read elements directly off of a List.</p>\n\n<p>The one function of <code>can.Observe</code> that works slightly differently is <code>attr</code>. As expected when working with\narrays, top-level keys passed into <code>attr</code> are required to be numeric. (Strings may still be used when getting\nor modifying deep properties). Any top-level keys that are non-numeric are ignored. In addition, as might be\nexpected, a call to argument-less <code>attr</code> returns an array instead of an object.</p>\n\n<p>Just as you shouldn't set properties of an Observe directly, you shouldn't change elements\nof a List directly. Always use <code>attr</code> to set the elements of a List, or use [can.Observe.List.push push],\n[can.Observe.List.pop pop], [can.Observe.List.shift shift], [can.Observe.List.unshift unshift], or [can.Observe.List.splice splice].</p>\n\n<p>Here is a tour through the forms of <code>can.Observe.List</code>'s <code>attr</code> that parallels the one found under [can.Observe.prototype.attr attr]:</p>\n\n<pre>var people = new can.Observe.List(['Alex', 'Bill']);\n\n// set an element:\npeople.attr(0, 'Adam');\npeople[0] = 'Adam'; // don't do this!\n\n// get an element:\npeople.attr(0); // 'Adam'\npeople[0]; // 'Adam'\n\n// get all elements:\npeople.attr(); // ['Adam', 'Bill']\n\n// extend the array:\npeople.attr(4, 'Charlie');\npeople.attr(); // ['Adam', 'Bill', undefined, undefined, 'Charlie']\n\n// merge the elements:\npeople.attr(['Alice', 'Bob', 'Eve']);\npeople.attr(); // ['Alice', 'Bob', 'Eve', undefined, 'Charlie']</pre>\n\n<h2>Listening to changes</h2>\n\n<p>As with <code>can.Observe</code>s, the real power of observable arrays comes from being able to\nreact to changes in the member elements of the array. Lists emit five types of events:\n- the <em>change</em> event fires on every change to a List.\n- the <em>set</em> event is fired when an element is set.\n- the <em>add</em> event is fired when an element is added to the List.\n- the <em>remove</em> event is fired when an element is removed from the List.\n- the <em>length</em> event is fired when the length of the List changes.</p>\n\n<p>This example presents a brief concrete survey of the times these events are fired:</p>\n\n<pre>var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\n\nlist.bind('change', function() { console.log('An element changed.'); });\nlist.bind('set', function() { console.log('An element was set.'); });\nlist.bind('add', function() { console.log('An element was added.'); });\nlist.bind('remove', function() { console.log('An element was removed.'); });\nlist.bind('length', function() { console.log('The length of the list changed.'); });\n\nlist.attr(0, 'Alexis'); // 'An element changed.'\n                        // 'An element was set.'\n\nlist.attr(3, 'Xerxes'); // 'An element changed.'\n                        // 'An element was added.'\n                        // 'The length of the list was changed.'\n\nlist.attr(['Adam', 'Bill']); // 'An element changed.'\n                             // 'An element was set.'\n                             // 'An element was changed.'\n                             // 'An element was set.'\n\nlist.pop(); // 'An element changed.'\n            // 'An element was removed.'\n            // 'The length of the list was changed.'</pre>\n\n<p>More information about binding to these events can be found under [can.Observe.List.attr attr].</p>"
+                "description": "<p>an instance of <code>can.Observe.List</code> with the elements from <em>elements</em></p>\n\n<h2>Working with Lists</h2>\n\n<p><code>can.Observe.List</code> extends <code>[can.Observe]</code>, so all the ways that you're used to working with\nObserves also work here, including [can.Observe.prototype.bind bind], [can.Observe.prototype.unbind unbind],\nand [can.Observe.prototype.each each]. And just as you can directly read properties normally\noff of an Observe, you can use array accessors ([]) to read elements directly off of a List.</p>\n\n<p>The one function of <code>can.Observe</code> that works slightly differently is <code>attr</code>. As expected when working with\narrays, top-level keys passed into <code>attr</code> are required to be numeric. (Strings may still be used when getting\nor modifying deep properties). Any top-level keys that are non-numeric are ignored. In addition, as might be\nexpected, a call to argument-less <code>attr</code> returns an array instead of an object.</p>\n\n<p>Just as you shouldn't set properties of an Observe directly, you shouldn't change elements\nof a List directly. Always use <code>attr</code> to set the elements of a List, or use [can.Observe.List.push push],\n[can.Observe.List.pop pop], [can.Observe.List.shift shift], [can.Observe.List.unshift unshift], or [can.Observe.List.splice splice].</p>\n\n<p>Here is a tour through the forms of <code>can.Observe.List</code>'s <code>attr</code> that parallels the one found under [can.Observe.prototype.attr attr]:</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe.List(['Alex', 'Bill']);\n\n// set an element:\npeople.attr(0, 'Adam');\npeople[0] = 'Adam'; // don't do this!\n\n// get an element:\npeople.attr(0); // 'Adam'\npeople[0]; // 'Adam'\n\n// get all elements:\npeople.attr(); // ['Adam', 'Bill']\n\n// extend the array:\npeople.attr(4, 'Charlie');\npeople.attr(); // ['Adam', 'Bill', undefined, undefined, 'Charlie']\n\n// merge the elements:\npeople.attr(['Alice', 'Bob', 'Eve']);\npeople.attr(); // ['Alice', 'Bob', 'Eve', undefined, 'Charlie']</code></pre>\n\n<h2>Listening to changes</h2>\n\n<p>As with <code>can.Observe</code>s, the real power of observable arrays comes from being able to\nreact to changes in the member elements of the array. Lists emit five types of events:\n- the <em>change</em> event fires on every change to a List.\n- the <em>set</em> event is fired when an element is set.\n- the <em>add</em> event is fired when an element is added to the List.\n- the <em>remove</em> event is fired when an element is removed from the List.\n- the <em>length</em> event is fired when the length of the List changes.</p>\n\n<p>This example presents a brief concrete survey of the times these events are fired:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\n\nlist.bind('change', function() { console.log('An element changed.'); });\nlist.bind('set', function() { console.log('An element was set.'); });\nlist.bind('add', function() { console.log('An element was added.'); });\nlist.bind('remove', function() { console.log('An element was removed.'); });\nlist.bind('length', function() { console.log('The length of the list changed.'); });\n\nlist.attr(0, 'Alexis'); // 'An element changed.'\n                        // 'An element was set.'\n\nlist.attr(3, 'Xerxes'); // 'An element changed.'\n                        // 'An element was added.'\n                        // 'The length of the list was changed.'\n\nlist.attr(['Adam', 'Bill']); // 'An element changed.'\n                             // 'An element was set.'\n                             // 'An element was changed.'\n                             // 'An element was set.'\n\nlist.pop(); // 'An element changed.'\n            // 'An element was removed.'\n            // 'The length of the list was changed.'</code></pre>\n\n<p>More information about binding to these events can be found under [can.Observe.List.attr attr].</p>"
             }
         }
     ],

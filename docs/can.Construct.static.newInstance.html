@@ -228,8 +228,8 @@
 
 	<h3>Parameters</h3>
 
-	
 	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>args <code>{*}</code></h4>
 			<div class="description">
@@ -252,8 +252,8 @@ instead.</p>
 			</ul>
 			-->
 		</li>
+		
 	</ol>
-	
 
 
 	<h3>Returns</h3>
@@ -278,7 +278,7 @@ with arbitrary parameters. Typically, however, you will simply want to call the 
 <p>The following creates a <code>Person</code> Construct and then creates a new instance of Person,
 using <code>apply</code> on newInstance to pass arbitrary parameters.</p>
 
-<pre>var Person = can.Construct({
+<pre><code class="lang-javascript">var Person = can.Construct({
   init : function(first, middle, last) {
     this.first = first;
     this.middle = middle;
@@ -287,7 +287,7 @@ using <code>apply</code> on newInstance to pass arbitrary parameters.</p>
 });
 
 var args = ["Justin","Barry","Meyer"],
-    justin = new Person.newInstance.apply(null, args);</pre>     
+    justin = new Person.newInstance.apply(null, args);</code></pre>     
 		</section>
 		
 	</article>
@@ -298,7 +298,7 @@ var args = ["Justin","Barry","Meyer"],
     "type": "function",
     "name": "can.Construct.static.newInstance",
     "parent": "can.Construct.static",
-    "body": "<p>Creates a new instance of the constructor function. This method is useful for creating new instances\nwith arbitrary parameters. Typically, however, you will simply want to call the constructor with the\n<strong>new</strong> operator.</p>\n\n<h2>Example</h2>\n\n<p>The following creates a <code>Person</code> Construct and then creates a new instance of Person,\nusing <code>apply</code> on newInstance to pass arbitrary parameters.</p>\n\n<pre>var Person = can.Construct({\n  init : function(first, middle, last) {\n    this.first = first;\n    this.middle = middle;\n    this.last = last;\n  }\n});\n\nvar args = [\"Justin\",\"Barry\",\"Meyer\"],\n    justin = new Person.newInstance.apply(null, args);</pre>     ",
+    "body": "<p>Creates a new instance of the constructor function. This method is useful for creating new instances\nwith arbitrary parameters. Typically, however, you will simply want to call the constructor with the\n<strong>new</strong> operator.</p>\n\n<h2>Example</h2>\n\n<p>The following creates a <code>Person</code> Construct and then creates a new instance of Person,\nusing <code>apply</code> on newInstance to pass arbitrary parameters.</p>\n\n<pre><code class=\"lang-javascript\">var Person = can.Construct({\n  init : function(first, middle, last) {\n    this.first = first;\n    this.middle = middle;\n    this.last = last;\n  }\n});\n\nvar args = [\"Justin\",\"Barry\",\"Meyer\"],\n    justin = new Person.newInstance.apply(null, args);</code></pre>     ",
     "description": "<p>Create a new instance of a Construct. </p>",
     "title": "newInstance",
     "signatures": [{

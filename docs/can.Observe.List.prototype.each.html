@@ -141,8 +141,8 @@ for each element.</p>
 
 	<h3>Parameters</h3>
 
-	
 	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>callback <code>{function}</code></h4>
 			<div class="description">
@@ -167,8 +167,8 @@ the loop will stop.</p>
 			</ul>
 			-->
 		</li>
+		
 	</ol>
-	
 
 
 	<h3>Returns</h3>
@@ -177,7 +177,7 @@ the loop will stop.</p>
 		<div class="description">
 			<p>this List, for chaining</p>
 
-<pre>var i = 0;
+<pre><code class="lang-javascript">var i = 0;
 new can.Observe([1, 10, 100]).each(function(element, index) {
     i += element;
 });
@@ -192,7 +192,7 @@ new can.Observe([1, 10, 100]).each(function(element, index) {
     }
 });
 
-i; // 11</pre>
+i; // 11</code></pre>
 		</div>
 	</div>
 
@@ -245,7 +245,7 @@ i; // 11</pre>
                         "type": "can.Observe.List"
                     }
                 ],
-                "description": "<p>this List, for chaining</p>\n\n<pre>var i = 0;\nnew can.Observe([1, 10, 100]).each(function(element, index) {\n    i += element;\n});\n\ni; // 111\n\ni = 0;\nnew can.Observe([1, 10, 100]).each(function(element, index) {\n    i += element;\n    if(index >= 1) {\n        return false;\n    }\n});\n\ni; // 11</pre>"
+                "description": "<p>this List, for chaining</p>\n\n<pre><code class=\"lang-javascript\">var i = 0;\nnew can.Observe([1, 10, 100]).each(function(element, index) {\n    i += element;\n});\n\ni; // 111\n\ni = 0;\nnew can.Observe([1, 10, 100]).each(function(element, index) {\n    i += element;\n    if(index >= 1) {\n        return false;\n    }\n});\n\ni; // 11</code></pre>"
             }
         }
     ],

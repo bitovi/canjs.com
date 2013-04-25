@@ -18,8 +18,7 @@ module.exports = function (grunt) {
 			},
 			dist: {
 				src: [ '_js/lib/can.custom.js', '_js/lib/grayscale.js',
-					'_js/lib/moment.js', '_js/lib/rainbow.js',
-					'_js/lib/language/*.js', '_js/models/*.js',
+					'_js/lib/moment.js', '_js/lib/prettify.js', '_js/models/*.js',
 					'_js/controls/*.js', '_js/views.production.js', '_js/app.js' ],
 				dest: 'resources/production.js'
 			}
@@ -97,6 +96,7 @@ module.exports = function (grunt) {
 					docs: {
 						root: '../',
 						parent: 'guides',
+						page: 'guides',
 						out: 'guides/'
 					}
 				},
@@ -113,6 +113,7 @@ module.exports = function (grunt) {
 								data.type === 'prototype';
 						},
 						parent: 'canjs',
+						page: 'docs',
 						out: 'docs/'
 					}
 				},
@@ -151,6 +152,6 @@ module.exports = function (grunt) {
 	grunt.registerTask('docs', ['clean', 'generate']);
 
 	// Default task.
-	grunt.registerTask('default', [ 'cancompile', 'concat', 'uglify', 'less', 'generate' ]);
+	grunt.registerTask('default', [ 'cancompile', 'concat', 'uglify', 'less', 'clean', 'generate' ]);
 
 };

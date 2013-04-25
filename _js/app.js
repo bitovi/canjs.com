@@ -4,17 +4,20 @@
 	window.CanJSUS = window.CanJSUS || {};
 
 	window.CanJSUS.initTwitterWidgets = function() {
-		// replace the "Follow @canjs!" link with a little wiget with follower count.
-		$('#twitter-wjs').remove();
-		!function (d, s, id) {
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (!d.getElementById(id)) {
-				js = d.createElement(s);
-				js.id = id;
-				js.src = "//platform.twitter.com/widgets.js";
-				fjs.parentNode.insertBefore(js, fjs);
-			}
-		}(document, "script", "twitter-wjs");
+		var widget = $('#twitter-wjs');
+		if(widget.length) {
+			// replace the "Follow @canjs!" link with a little wiget with follower count.
+			widget.remove();
+			!function (d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (!d.getElementById(id)) {
+					js = d.createElement(s);
+					js.id = id;
+					js.src = "//platform.twitter.com/widgets.js";
+					fjs.parentNode.insertBefore(js, fjs);
+				}
+			}(document, "script", "twitter-wjs");
+		}
 	};
 
 	var initControls = function(mappings) {
@@ -36,8 +39,13 @@
 			'.download .customize': 'DownloadCustomizer',
 			'.community .hero': 'CommunityTabs'
 		});
-		// Syntax highlighting for our example.
-		Rainbow.color();
+
+		// Syntax highlighting
+		$('pre code').each(function() {
+			$(this).parent().addClass('prettyprint linenums');
+		});
+
+		prettyPrint();
 	});
 
 	// this needs to wait until everything is loaded.

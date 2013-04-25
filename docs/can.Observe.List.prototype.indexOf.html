@@ -260,8 +260,8 @@
 
 	<h3>Parameters</h3>
 
-	
 	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>item <code>{*}</code></h4>
 			<div class="description">
@@ -280,8 +280,8 @@
 			</ul>
 			-->
 		</li>
+		
 	</ol>
-	
 
 
 	<h3>Returns</h3>
@@ -290,15 +290,15 @@
 		<div class="description">
 			<p>the position of the item in the List, or -1 if the item is not found.</p>
 
-<pre>var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);
+<pre><code class="lang-javascript">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);
 list.indexOf('Alice');   // 0
-list.indexOf('Charlie'); // -1</pre>
+list.indexOf('Charlie'); // -1</code></pre>
 
 <p>It is trivial to make a <code>contains</code>-type function using <code>indexOf</code>:</p>
 
-<pre>function(list, item) {
+<pre><code class="lang-javascript">function(list, item) {
     return list.indexOf(item) >= 0;
-}</pre>
+}</code></pre>
 		</div>
 	</div>
 
@@ -334,7 +334,7 @@ list.indexOf('Charlie'); // -1</pre>
                         "type": "Number"
                     }
                 ],
-                "description": "<p>the position of the item in the List, or -1 if the item is not found.</p>\n\n<pre>var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nlist.indexOf('Alice');   // 0\nlist.indexOf('Charlie'); // -1</pre>\n\n<p>It is trivial to make a <code>contains</code>-type function using <code>indexOf</code>:</p>\n\n<pre>function(list, item) {\n    return list.indexOf(item) >= 0;\n}</pre>"
+                "description": "<p>the position of the item in the List, or -1 if the item is not found.</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nlist.indexOf('Alice');   // 0\nlist.indexOf('Charlie'); // -1</code></pre>\n\n<p>It is trivial to make a <code>contains</code>-type function using <code>indexOf</code>:</p>\n\n<pre><code class=\"lang-javascript\">function(list, item) {\n    return list.indexOf(item) >= 0;\n}</code></pre>"
             }
         }
     ],

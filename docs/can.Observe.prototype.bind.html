@@ -246,8 +246,8 @@
 
 	<h3>Parameters</h3>
 
-	
 	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>eventType <code>{String}</code></h4>
 			<div class="description">
@@ -266,9 +266,7 @@
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>handler <code>{function}</code></h4>
 			<div class="description">
@@ -291,9 +289,7 @@ for details.</p>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>ev <code>{Event}</code></h4>
 			<div class="description">
@@ -312,9 +308,7 @@ for details.</p>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>attr <code>{String}</code></h4>
 			<div class="description">
@@ -333,9 +327,7 @@ for details.</p>
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>how <code>{String}</code></h4>
 			<div class="description">
@@ -356,9 +348,7 @@ Possible values are <code>'add'</code>, <code>'remove'</code>, or <code>'set'</c
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>newVal <code>{*}</code></h4>
 			<div class="description">
@@ -379,9 +369,7 @@ Possible values are <code>'add'</code>, <code>'remove'</code>, or <code>'set'</c
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>oldVal <code>{*}</code></h4>
 			<div class="description">
@@ -390,7 +378,7 @@ Possible values are <code>'add'</code>, <code>'remove'</code>, or <code>'set'</c
 
 <p>Here is a concrete tour through the <em>change</em> event handler's arguments:</p>
 
-<pre>var o = new can.Observe({});
+<pre><code class="lang-javascript">var o = new can.Observe({});
 o.bind('change', function(ev, attr, how, newVal, oldVal) {
     console.log(ev + ', ' + attr + ', ' + how + ', ' + newVal + ', ' + oldVal);
 });
@@ -401,7 +389,7 @@ o.attr({
     'a': 'Alice',      // [object Object], a, set, Alice, Adam
     'b': 'Bob'         // [object Object], b, add, Bob, undefined
 });
-o.removeAttr('a');     // [object Object], a, remove, undefined, Alice</pre>
+o.removeAttr('a');     // [object Object], a, remove, undefined, Alice</code></pre>
 
 <p>(See also <code>[can.Observe::removeAttr|removeAttr]</code>, which removes properties).</p>
 
@@ -410,10 +398,10 @@ o.removeAttr('a');     // [object Object], a, remove, undefined, Alice</pre>
 <p>The second event that is fired is an event whose type is the same as the changed
 property's name. This event is useful for noticing changes to a specific property.</p>
 
-<pre>var o = new can.Observe({});
+<pre><code class="lang-javascript">var o = new can.Observe({});
 o.bind('a', function(ev, newVal, oldVal) {
     console.log('The value of a changed.');
-});</pre>
+});</code></pre>
 
 <p>The parameters of the event handler for the <em>property name</em> event are:</p></p>
 			</div>
@@ -428,7 +416,7 @@ o.bind('a', function(ev, newVal, oldVal) {
 
 <p>Here is a concrete tour through the <em>change</em> event handler's arguments:</p>
 
-<pre>var o = new can.Observe({});
+<pre><code class="lang-javascript">var o = new can.Observe({});
 o.bind('change', function(ev, attr, how, newVal, oldVal) {
     console.log(ev + ', ' + attr + ', ' + how + ', ' + newVal + ', ' + oldVal);
 });
@@ -439,7 +427,7 @@ o.attr({
     'a': 'Alice',      // [object Object], a, set, Alice, Adam
     'b': 'Bob'         // [object Object], b, add, Bob, undefined
 });
-o.removeAttr('a');     // [object Object], a, remove, undefined, Alice</pre>
+o.removeAttr('a');     // [object Object], a, remove, undefined, Alice</code></pre>
 
 <p>(See also <code>[can.Observe::removeAttr|removeAttr]</code>, which removes properties).</p>
 
@@ -448,10 +436,10 @@ o.removeAttr('a');     // [object Object], a, remove, undefined, Alice</pre>
 <p>The second event that is fired is an event whose type is the same as the changed
 property's name. This event is useful for noticing changes to a specific property.</p>
 
-<pre>var o = new can.Observe({});
+<pre><code class="lang-javascript">var o = new can.Observe({});
 o.bind('a', function(ev, newVal, oldVal) {
     console.log('The value of a changed.');
-});</pre>
+});</code></pre>
 
 <p>The parameters of the event handler for the <em>property name</em> event are:</p>
 					</div>
@@ -460,9 +448,7 @@ o.bind('a', function(ev, newVal, oldVal) {
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>ev <code>{Event}</code></h4>
 			<div class="description">
@@ -481,9 +467,7 @@ o.bind('a', function(ev, newVal, oldVal) {
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>newVal <code>{*}</code></h4>
 			<div class="description">
@@ -504,9 +488,7 @@ o.bind('a', function(ev, newVal, oldVal) {
 			</ul>
 			-->
 		</li>
-	</ol>
-	
-	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>oldVal <code>{*}</code></h4>
 			<div class="description">
@@ -515,7 +497,7 @@ o.bind('a', function(ev, newVal, oldVal) {
 
 <p>Here is a concrete tour through the <em>property name</em> event handler's arguments:</p>
 
-<pre>var o = new can.Observe({});
+<pre><code class="lang-javascript">var o = new can.Observe({});
 o.bind('a', function(ev, newVal, oldVal) {
     console.log(ev + ', ' + newVal + ', ' + oldVal);
 });
@@ -526,7 +508,7 @@ o.attr({
     'a': 'Alice',      // [object Object], Alice, Adam
     'b': 'Bob' 
 });
-o.removeAttr('a');     // [object Object], undefined, Alice</pre>
+o.removeAttr('a');     // [object Object], undefined, Alice</code></pre>
 
 <h2>See also</h2>
 
@@ -546,7 +528,7 @@ o.removeAttr('a');     // [object Object], undefined, Alice</pre>
 
 <p>Here is a concrete tour through the <em>property name</em> event handler's arguments:</p>
 
-<pre>var o = new can.Observe({});
+<pre><code class="lang-javascript">var o = new can.Observe({});
 o.bind('a', function(ev, newVal, oldVal) {
     console.log(ev + ', ' + newVal + ', ' + oldVal);
 });
@@ -557,7 +539,7 @@ o.attr({
     'a': 'Alice',      // [object Object], Alice, Adam
     'b': 'Bob' 
 });
-o.removeAttr('a');     // [object Object], undefined, Alice</pre>
+o.removeAttr('a');     // [object Object], undefined, Alice</code></pre>
 
 <h2>See also</h2>
 
@@ -571,8 +553,8 @@ o.removeAttr('a');     // [object Object], undefined, Alice</pre>
 			</ul>
 			-->
 		</li>
+		
 	</ol>
-	
 
 
 	<h3>Returns</h3>
@@ -590,10 +572,10 @@ of your application to observe the changes to the object.</p>
 <p>The first event that is fired is the <em>change</em> event. The <em>change</em> event is useful
 if you want to react to all changes on an Observe.</p>
 
-<pre>var o = new can.Observe({});
+<pre><code class="lang-javascript">var o = new can.Observe({});
 o.bind('change', function(ev, attr, how, newVal, oldVal) {
     console.log('Something changed.');
-});</pre>
+});</code></pre>
 
 <p>The parameters of the event handler for the <em>change</em> event are:</p>
 		</div>
@@ -672,7 +654,7 @@ o.bind('change', function(ev, attr, how, newVal, oldVal) {
                         }
                     ],
                     "name": "oldVal",
-                    "description": "<p>the value of the property before the change\n<code>oldVal</code> will be <code>undefined</code> if the property was added.</p>\n\n<p>Here is a concrete tour through the <em>change</em> event handler's arguments:</p>\n\n<pre>var o = new can.Observe({});\no.bind('change', function(ev, attr, how, newVal, oldVal) {\n    console.log(ev + ', ' + attr + ', ' + how + ', ' + newVal + ', ' + oldVal);\n});\n\no.attr('a', 'Alexis'); // [object Object], a, add, Alexis, undefined\no.attr('a', 'Adam');   // [object Object], a, set, Adam, Alexis\no.attr({\n    'a': 'Alice',      // [object Object], a, set, Alice, Adam\n    'b': 'Bob'         // [object Object], b, add, Bob, undefined\n});\no.removeAttr('a');     // [object Object], a, remove, undefined, Alice</pre>\n\n<p>(See also <code>[can.Observe::removeAttr|removeAttr]</code>, which removes properties).</p>\n\n<h2>The <em>property name</em> event</h2>\n\n<p>The second event that is fired is an event whose type is the same as the changed\nproperty's name. This event is useful for noticing changes to a specific property.</p>\n\n<pre>var o = new can.Observe({});\no.bind('a', function(ev, newVal, oldVal) {\n    console.log('The value of a changed.');\n});</pre>\n\n<p>The parameters of the event handler for the <em>property name</em> event are:</p>"
+                    "description": "<p>the value of the property before the change\n<code>oldVal</code> will be <code>undefined</code> if the property was added.</p>\n\n<p>Here is a concrete tour through the <em>change</em> event handler's arguments:</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.bind('change', function(ev, attr, how, newVal, oldVal) {\n    console.log(ev + ', ' + attr + ', ' + how + ', ' + newVal + ', ' + oldVal);\n});\n\no.attr('a', 'Alexis'); // [object Object], a, add, Alexis, undefined\no.attr('a', 'Adam');   // [object Object], a, set, Adam, Alexis\no.attr({\n    'a': 'Alice',      // [object Object], a, set, Alice, Adam\n    'b': 'Bob'         // [object Object], b, add, Bob, undefined\n});\no.removeAttr('a');     // [object Object], a, remove, undefined, Alice</code></pre>\n\n<p>(See also <code>[can.Observe::removeAttr|removeAttr]</code>, which removes properties).</p>\n\n<h2>The <em>property name</em> event</h2>\n\n<p>The second event that is fired is an event whose type is the same as the changed\nproperty's name. This event is useful for noticing changes to a specific property.</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.bind('a', function(ev, newVal, oldVal) {\n    console.log('The value of a changed.');\n});</code></pre>\n\n<p>The parameters of the event handler for the <em>property name</em> event are:</p>"
                 }, {
                     "types": [{
                             "type": "Event"
@@ -693,7 +675,7 @@ o.bind('change', function(ev, attr, how, newVal, oldVal) {
                         }
                     ],
                     "name": "oldVal",
-                    "description": "<p>the value of the property before the change\n<code>oldVal</code> will be <code>undefined</code> if the property was added.</p>\n\n<p>Here is a concrete tour through the <em>property name</em> event handler's arguments:</p>\n\n<pre>var o = new can.Observe({});\no.bind('a', function(ev, newVal, oldVal) {\n    console.log(ev + ', ' + newVal + ', ' + oldVal);\n});\n\no.attr('a', 'Alexis'); // [object Object], Alexis, undefined\no.attr('a', 'Adam');   // [object Object], Adam, Alexis\no.attr({\n    'a': 'Alice',      // [object Object], Alice, Adam\n    'b': 'Bob' \n});\no.removeAttr('a');     // [object Object], undefined, Alice</pre>\n\n<h2>See also</h2>\n\n<p>More information about changing properties on Observes can be found under\n[can.Observe.prototype.attr attr].</p>\n\n<p>For a more specific way to changes on Observes, see the [can.Observe.delegate] plugin.</p>"
+                    "description": "<p>the value of the property before the change\n<code>oldVal</code> will be <code>undefined</code> if the property was added.</p>\n\n<p>Here is a concrete tour through the <em>property name</em> event handler's arguments:</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.bind('a', function(ev, newVal, oldVal) {\n    console.log(ev + ', ' + newVal + ', ' + oldVal);\n});\n\no.attr('a', 'Alexis'); // [object Object], Alexis, undefined\no.attr('a', 'Adam');   // [object Object], Adam, Alexis\no.attr({\n    'a': 'Alice',      // [object Object], Alice, Adam\n    'b': 'Bob' \n});\no.removeAttr('a');     // [object Object], undefined, Alice</code></pre>\n\n<h2>See also</h2>\n\n<p>More information about changing properties on Observes can be found under\n[can.Observe.prototype.attr attr].</p>\n\n<p>For a more specific way to changes on Observes, see the [can.Observe.delegate] plugin.</p>"
                 }
             ],
             "returns": {
@@ -701,7 +683,7 @@ o.bind('change', function(ev, attr, how, newVal, oldVal) {
                         "type": "can.Observe"
                     }
                 ],
-                "description": "<p>this Observe, for chaining</p>\n\n<p><code>bind</code> binds event handlers to property changes on <code>can.Observe</code>s. When you change\na property using <code>attr</code>, two events are fired on the Observe, allowing other parts\nof your application to observe the changes to the object.</p>\n\n<h2>The <em>change</em> event</h2>\n\n<p>The first event that is fired is the <em>change</em> event. The <em>change</em> event is useful\nif you want to react to all changes on an Observe.</p>\n\n<pre>var o = new can.Observe({});\no.bind('change', function(ev, attr, how, newVal, oldVal) {\n    console.log('Something changed.');\n});</pre>\n\n<p>The parameters of the event handler for the <em>change</em> event are:</p>"
+                "description": "<p>this Observe, for chaining</p>\n\n<p><code>bind</code> binds event handlers to property changes on <code>can.Observe</code>s. When you change\na property using <code>attr</code>, two events are fired on the Observe, allowing other parts\nof your application to observe the changes to the object.</p>\n\n<h2>The <em>change</em> event</h2>\n\n<p>The first event that is fired is the <em>change</em> event. The <em>change</em> event is useful\nif you want to react to all changes on an Observe.</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.bind('change', function(ev, attr, how, newVal, oldVal) {\n    console.log('Something changed.');\n});</code></pre>\n\n<p>The parameters of the event handler for the <em>change</em> event are:</p>"
             }
         }
     ],

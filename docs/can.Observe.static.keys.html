@@ -246,8 +246,8 @@
 
 	<h3>Parameters</h3>
 
-	
 	<ol class="parameters">
+		
 		<li class="parameter">
 			<h4>observe <code>{can.Observe}</code></h4>
 			<div class="description">
@@ -266,8 +266,8 @@
 			</ul>
 			-->
 		</li>
+		
 	</ol>
-	
 
 
 	<h3>Returns</h3>
@@ -285,13 +285,13 @@
 		<section class="comment">
 			<p><code>keys</code> iterates over an observe to get an array of its keys.</p>
 
-<pre>var people = new can.Observe({
+<pre><code class="lang-javascript">var people = new can.Observe({
     a: 'Alice',
     b: 'Bob',
     e: 'Eve'
 });
 
-can.Observe.keys(people); // ['a', 'b', 'e']</pre>     
+can.Observe.keys(people); // ['a', 'b', 'e']</code></pre>     
 		</section>
 		
 	</article>
@@ -302,7 +302,7 @@ can.Observe.keys(people); // ['a', 'b', 'e']</pre>
     "type": "function",
     "name": "can.Observe.static.keys",
     "parent": "can.Observe.static",
-    "body": "<p><code>keys</code> iterates over an observe to get an array of its keys.</p>\n\n<pre>var people = new can.Observe({\n    a: 'Alice',\n    b: 'Bob',\n    e: 'Eve'\n});\n\ncan.Observe.keys(people); // ['a', 'b', 'e']</pre>     ",
+    "body": "<p><code>keys</code> iterates over an observe to get an array of its keys.</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe({\n    a: 'Alice',\n    b: 'Bob',\n    e: 'Eve'\n});\n\ncan.Observe.keys(people); // ['a', 'b', 'e']</code></pre>     ",
     "description": "<p>Iterate over the keys of an Observe. </p>",
     "title": "keys",
     "signatures": [{
