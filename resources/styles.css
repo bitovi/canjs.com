@@ -315,8 +315,8 @@ li.L1,li.L3,li.L5,li.L7,li.L9{}
 .docs .parameters h4 code,.docs .returns h4 code{font-style:italic;font-weight:normal;margin-left:3px;background:none;background-color:none;}
 .docs .parameters .options,.docs .returns .options{margin:0 -10px 15px;border-top:1px solid #eeeeee;list-style-type:none;padding-left:25px;padding-top:5px;}
 .docs .parameters ul.options:last-child,.docs .returns ul.options:last-child{margin-bottom:0;}
-.docs .parameters .description,.docs .returns .description{margin-left:15px;margin-bottom:5px;}
-.docs .parameters .description *:last-child,.docs .returns .description *:last-child{margin-bottom:0px;}
+.docs .parameters .description,.docs .returns .description{margin-left:15px;padding-bottom:15px;}
+.docs .parameters :last-child .description,.docs .returns :last-child .description,.docs .parameters .description *:last-child,.docs .returns .description *:last-child{margin-bottom:0px;padding-bottom:0px;}
 .sidebar{background-color:#f8f8f8;border:1px solid #c5c3c3;position:relative;z-index:1;-moz-box-shadow:5px 5px 10px rgba(0, 0, 0, 0.08);-webkit-box-shadow:5px 5px 10px rgba(0, 0, 0, 0.08);box-shadow:5px 5px 10px rgba(0, 0, 0, 0.08);margin-bottom:15px;}.sidebar ul{list-style-type:none;margin:0;padding:0;}
 .sidebar .api a,.sidebar .api a:hover{text-decoration:none;color:#000;text-shadow:0 1px 0 #ffffff;}
 .sidebar .api li{font-size:15px;line-height:24px;text-indent:15px;position:relative;}
