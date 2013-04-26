@@ -278,7 +278,7 @@ div.light:after{top:auto;bottom:-19px;background-position-y:bottom;}
 .index .example .has-tip .tooltip{width:250px;right:-300px;}
 code{letter-spacing:-1px;background-color:#fdf2dc;}
 pre,code,pre *,code *{font-family:"Courier New",Courier,mono;font-style:normal;font-weight:normal;}
-pre{background-color:#fff;border:1px solid #ccc;border:1px solid rgba(0, 0, 0, 0.15);margin:0;margin-bottom:20px;vertical-align:top;overflow:auto;padding:0px 20px;}
+pre{background-color:#fff;border:1px solid #ccc;border:1px solid rgba(0, 0, 0, 0.15);margin:0;margin-bottom:20px;vertical-align:top;overflow:auto;padding:0px 20px;border-radius:2px;-moz-border-radius:2px;-webkit-border-radius:2px;}
 pre code{font-size:14px;line-height:16px;letter-spacing:0px;background-color:rgba(0, 0, 0, 0);}
 pre ol{margin:0 0 0 40px;padding:0;}
 pre ol li{text-indent:0;color:#333;background-color:#fff;margin:0;}
