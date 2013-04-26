@@ -5,7 +5,6 @@ globally):
 
     git clone git@github.com:bitovi/canjs.us.git
     cd canjs.us
-    git submodule update --init --recursive
     npm install
 
 Now you can run `grunt` to build everything and `grunt watch` to watch for any file changes.
