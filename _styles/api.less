@@ -4,8 +4,8 @@
     width:  255px;
     float: left;
     margin-top: 20px;
-    margin-bottom: -3000px;
-    padding-bottom: 3000px;
+    margin-bottom: -9000px;
+    padding-bottom: 9000px;
   }
   .content.docs {
     float: left;
@@ -16,6 +16,8 @@
     padding: 20px;
     border-left-style: none;
     border-bottom-style: none;
+    margin-bottom: -9000px;
+    padding-bottom: 9000px;
   }
   footer {
     margin-top: 20px;
@@ -198,27 +200,34 @@
   -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.08);
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.08);
   margin-bottom: 15px;
+  
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
 }
-.sidebar ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
+
 .sidebar .api a, .sidebar .api a:hover {
   text-decoration: none;
   color: #000;
   .text-shadow-light;
 }
-.sidebar .api li {
-  font-size: 15px;
-  line-height: 24px;
-  text-indent: 15px;
-  position: relative;
+.sidebar .api {
+
+  li {
+	  font-size: 15px;
+	  line-height: 24px;
+	  text-indent: 15px;
+	  position: relative;
+  }
+  a {
+    display: block;
+    border: 1px solid rgba(255, 255, 254, 0);
+  }
 }
-.sidebar .api li a {
-  display: block;
-  border: 1px solid rgba(255, 255, 254, 0);
-}
+
 .sidebar .api ul ul li a:hover {
   border: 1px solid rgba(255, 255, 254, 0);
   background: rgba(204, 204, 204, 0.25);
@@ -273,6 +282,9 @@
   background: @dark;
   .text-shadow;
   border: none;
+}
+.sidebar .api > li:first-child {
+	margin-top: 10px;
 }
 .sidebar .api .heading span {
   text-transform: uppercase;
@@ -441,4 +453,9 @@
 }
 .sidebar .api.cascading > li:nth-child(10) {
   z-index: 1;
+}
+#low {
+	.container;
+	font-size: 12px;
+	margin-bottom: 15px;
 }
