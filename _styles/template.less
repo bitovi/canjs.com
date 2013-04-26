@@ -251,21 +251,23 @@ footer {
 }
 
 .loading {
-	background: url(../img/ajax-loader.gif) no-repeat center center rgb(255, 255, 255);
 	position: absolute;
-	display: block;
-	width: 650px;
-	height: 350px;
+	width: 350px;
+	height: 150px;
 	margin: 0 auto;
 	border: 1px solid #ccc;
 	-moz-box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.54);
 	-webkit-box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.54);
 	box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.54);
 	top: -1000px;
+	left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
 	z-index: 1;
-
 	transition: top .67s;
 }
 .loading.active {
-	top: 500px;
+	top: 250px;
+	background: url(../img/ajax-loader.gif) no-repeat center center rgb(255, 255, 255);
 }

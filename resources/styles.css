@@ -164,8 +164,8 @@ footer ul{list-style-type:none;list-style:none;margin:0;position:absolute;right:
 footer li{display:inline-block;}
 footer .brand:before{color:#bababa;text-shadow:0 1px 0 #ffffff;line-height:47px;}
 footer .brand:hover:before{color:#929191;}
-.loading{background:url(../img/ajax-loader.gif) no-repeat center center #ffffff;position:absolute;display:block;width:650px;height:350px;margin:0 auto;border:1px solid #ccc;-moz-box-shadow:2px 2px 8px rgba(0, 0, 0, 0.54);-webkit-box-shadow:2px 2px 8px rgba(0, 0, 0, 0.54);box-shadow:2px 2px 8px rgba(0, 0, 0, 0.54);top:-1000px;z-index:1;transition:top .67s;}
-.loading.active{top:500px;}
+.loading{position:absolute;width:350px;height:150px;margin:0 auto;border:1px solid #ccc;-moz-box-shadow:2px 2px 8px rgba(0, 0, 0, 0.54);-webkit-box-shadow:2px 2px 8px rgba(0, 0, 0, 0.54);box-shadow:2px 2px 8px rgba(0, 0, 0, 0.54);top:-1000px;left:0;right:0;margin-left:auto;margin-right:auto;z-index:1;transition:top .67s;}
+.loading.active{top:250px;background:url(../img/ajax-loader.gif) no-repeat center center #ffffff;}
 .hero{background:url(../img/hero-ribbons.png) no-repeat center center,url(../img/bkg-dots-dark.png) #797977;border-bottom:20px solid #efa81e;height:300px;overflow:visible;}
 .community .hero{height:243px;}
 .hero h1{font-family:'LatoLight',sans-serif;color:#fff;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.52);font-size:40px;display:block;width:500px;float:left;margin-top:70px;letter-spacing:-1px;}
@@ -185,7 +185,7 @@ footer .brand:hover:before{color:#929191;}
 .hero .customize-box button{clear:both;height:auto;font-size:10px;line-height:10px;margin:8px auto 0;padding:8px 37px;}
 .hero .customize-box li{font-size:11px;line-height:14px;color:#222121;margin-bottom:8px;}
 .hero p{color:#fff;text-shadow:0 -1px 0 #000000;text-transform:uppercase;font-size:11px;}
-.circle-tabs{list-style-type:none;text-align:center;padding:0;margin:0 auto;}.circle-tabs li{display:inline-block;margin-left:50px;text-align:center;}
+.circle-tabs{width:960px;list-style-type:none;text-align:center;padding:0;margin:0 auto;}.circle-tabs li{display:inline-block;margin-left:50px;text-align:center;}
 .index .hero+.content{clear:both;}
 .index .circle-tabs li{margin-left:200px;}
 .circle-tabs li:first-child{margin-left:0px;}
