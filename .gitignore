@@ -1,0 +1,14 @@
+.tmp*
+dist
+*.swp
+*.orig
+util/can.*.js
+*node_modules*
+standalone*
+docs*
+*.DS_Store
+.idea
+build/ci/can
+build/ci/funcunit
+build/ci/steal
+build/gh-pages
