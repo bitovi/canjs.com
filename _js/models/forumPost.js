@@ -13,6 +13,6 @@ can.Model("CanJSUS.ForumPost", {
 	},
 	findAll: {
 		url: 'http://www.bithub.com/api/events/?feed=forums&order=origin_ts:desc&limit={limit}',
-		dataType: 'json'
+		dataType: 'jsonp'
 	}
 }, { });
