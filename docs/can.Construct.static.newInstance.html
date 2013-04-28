@@ -43,7 +43,8 @@
 
 			<ul class="nav">
 				<li class=""><a href="../index.html">Home</a></li>
-				<li class="active"><a href="../docs">Learn</a></li>
+				<li class=""><a href="../guides">Guides</a></li>
+				<li class="active"><a href="../docs/index.html">Api</a></li>
 				<li class=""><a href="../community.html">Community</a></li>
 				<li class=""><a href="../download.html">Download</a></li>
 			</ul>
@@ -71,45 +72,141 @@
 			<input type="text"/>
 		</div>
 		<ul class="api">
+	
+	<li >
+	<a href="can.util.html">can.util</a>
+	
+	</li>
+	
+	<li class="active">
+	<a href="can.Construct.html">can.Construct</a>
+	
+		
+		<ul>
+		
 			
-			<li class="active">
-				<a href="can.Construct.html">can.Construct</a>
+				<li class="heading"><span>static</span>
+					<ul>
+						
+						
+						<li class="active">
+							<a href="can.Construct.static.newInstance.html">
+								 newInstance 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.static.setup.html">
+								 setup 
+							</a>
+						</li>
+						
+						
+						
+						
+						
+						<li >
+							<a href="can.Construct.static.namespace.html">
+								 namespace 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.static.shortName.html">
+								 shortName 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.static.fullName.html">
+								 fullName 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
 				
-				<ul>
-					
-					<li class="heading"><span>static</span>
-						<ul>
-							
-							<li class="active"><a href="can.Construct.static.newInstance.html">can.Construct.static.newInstance</a></li>
-							
-							<li ><a href="can.Construct.static.setup.html">can.Construct.static.setup</a></li>
-							
-							<li ><a href="can.Construct.static.extend.html">can.Construct.static.extend</a></li>
-							
-							<li ><a href="namespace.html">namespace</a></li>
-							
-							<li ><a href="shortName.html">shortName</a></li>
-							
-							<li ><a href="fullName.html">fullName</a></li>
-							
-						</ul>
-					</li>
-					
-					<li class="heading"><span>prototype</span>
-						<ul>
-							
-							<li ><a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a></li>
-							
-							<li ><a href="can.Construct.prototype.init.html">can.Construct.prototype.init</a></li>
-							
-						</ul>
-					</li>
-					
-				</ul>
-				
-			</li>
+		
 			
+				<li class="heading"><span>prototype</span>
+					<ul>
+						
+						
+						<li >
+							<a href="can.Construct.prototype.setup.html">
+								 setup 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.prototype.init.html">
+								 init 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.prototype.constructor.html">
+								 constructor 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
+		
 		</ul>
+		
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.html">can.Observe</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.html">can.Model</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Control.html">can.Control</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.route.html">can.route</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.view.html">can.view</a>
+	
+	</li>
+	
+</ul>
 	</nav>
 
 	<article class="content docs">
@@ -120,21 +217,22 @@
 	</ul>
 	<ul class="links">
 		
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/construct/construct.js#L26">source</a></li>
+		
+		
 		
 	</ul>
 </div>
-<h1>newInstance</h1>
+
+	<h1>newInstance</h1> <span class="module">can.Construct.static.newInstance</span>
+
+
 
 
 		</section>
 
 		<section class="description">
 			<p>Create a new instance of a Construct. </p>
-
-			<ul class="contents">
-				
-			</ul>
-			
 		</section>
 
 		
@@ -142,13 +240,43 @@
 			<h2>newInstance([...args])</h2>
 
 
+	<h3>Parameters</h3>
 
-<div class="returns">
-	<h4><code>{class}</code></h4>
-	<div class="description">
-		<p>instance of the class</p>
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>args <code>{*}</code></h4>
+			<div class="description">
+				<p><p>arguments that get passed to [can.Construct::setup] and [can.Construct::init]. Note
+that if [can.Construct::setup] returns an array, those arguments will be passed to [can.Construct::init]
+instead.</p></p>
+			</div>
+			<!--
+			<ul class="options">
+				
+				<li class="option">
+					<h5><code>{*}</code></h5>
+					<div class="description">
+						<p>arguments that get passed to [can.Construct::setup] and [can.Construct::init]. Note
+that if [can.Construct::setup] returns an array, those arguments will be passed to [can.Construct::init]
+instead.</p>
+					</div>
+				</li>
+				
+			</ul>
+			-->
+		</li>
+		
+	</ol>
+
+
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{class}</code></h4>
+		<div class="description">
+			<p>instance of the class</p>
+		</div>
 	</div>
-</div>
 
 		</section>
 		
@@ -164,7 +292,7 @@ with arbitrary parameters. Typically, however, you will simply want to call the 
 <p>The following creates a <code>Person</code> Construct and then creates a new instance of Person,
 using <code>apply</code> on newInstance to pass arbitrary parameters.</p>
 
-<pre>var Person = can.Construct({
+<pre><code class="lang-javascript">var Person = can.Construct({
   init : function(first, middle, last) {
     this.first = first;
     this.middle = middle;
@@ -173,7 +301,7 @@ using <code>apply</code> on newInstance to pass arbitrary parameters.</p>
 });
 
 var args = ["Justin","Barry","Meyer"],
-    justin = new Person.newInstance.apply(null, args);</pre>     
+    justin = new Person.newInstance.apply(null, args);</code></pre>     
 		</section>
 		
 	</article>
@@ -184,7 +312,7 @@ var args = ["Justin","Barry","Meyer"],
     "type": "function",
     "name": "can.Construct.static.newInstance",
     "parent": "can.Construct.static",
-    "body": "<p>Creates a new instance of the constructor function. This method is useful for creating new instances\nwith arbitrary parameters. Typically, however, you will simply want to call the constructor with the\n<strong>new</strong> operator.</p>\n\n<h2>Example</h2>\n\n<p>The following creates a <code>Person</code> Construct and then creates a new instance of Person,\nusing <code>apply</code> on newInstance to pass arbitrary parameters.</p>\n\n<pre>var Person = can.Construct({\n  init : function(first, middle, last) {\n    this.first = first;\n    this.middle = middle;\n    this.last = last;\n  }\n});\n\nvar args = [\"Justin\",\"Barry\",\"Meyer\"],\n    justin = new Person.newInstance.apply(null, args);</pre>     ",
+    "body": "<p>Creates a new instance of the constructor function. This method is useful for creating new instances\nwith arbitrary parameters. Typically, however, you will simply want to call the constructor with the\n<strong>new</strong> operator.</p>\n\n<h2>Example</h2>\n\n<p>The following creates a <code>Person</code> Construct and then creates a new instance of Person,\nusing <code>apply</code> on newInstance to pass arbitrary parameters.</p>\n\n<pre><code class=\"lang-javascript\">var Person = can.Construct({\n  init : function(first, middle, last) {\n    this.first = first;\n    this.middle = middle;\n    this.last = last;\n  }\n});\n\nvar args = [\"Justin\",\"Barry\",\"Meyer\"],\n    justin = new Person.newInstance.apply(null, args);</code></pre>     ",
     "description": "<p>Create a new instance of a Construct. </p>",
     "title": "newInstance",
     "signatures": [{
@@ -212,7 +340,7 @@ var args = ["Justin","Barry","Meyer"],
     "comment": " ",
     "src": "can/construct/construct.js",
     "line": 26,
-    "id": 3
+    "id": 38
 };
 
 	console.log(docData);
@@ -225,7 +353,8 @@ var args = ["Justin","Barry","Meyer"],
 			<a class="brand canjs" href="index.html">CanJS</a>
 			<ul class="pullright">
 				<li><a href="../index.html">Home</a></li>
-				<li><a href="../docs">Learn</a></li>
+				<li><a href="../guides">Guides</a></li>
+				<li><a href="../docs/index.html">Api</a></li>
 				<li><a href="../community.html">Community</a></li>
 				<li><a href="../download.html">Download</a></li>
 			</ul>

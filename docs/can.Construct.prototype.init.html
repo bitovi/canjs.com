@@ -43,7 +43,8 @@
 
 			<ul class="nav">
 				<li class=""><a href="../index.html">Home</a></li>
-				<li class="active"><a href="../docs">Learn</a></li>
+				<li class=""><a href="../guides">Guides</a></li>
+				<li class="active"><a href="../docs/index.html">Api</a></li>
 				<li class=""><a href="../community.html">Community</a></li>
 				<li class=""><a href="../download.html">Download</a></li>
 			</ul>
@@ -71,45 +72,141 @@
 			<input type="text"/>
 		</div>
 		<ul class="api">
+	
+	<li >
+	<a href="can.util.html">can.util</a>
+	
+	</li>
+	
+	<li class="active">
+	<a href="can.Construct.html">can.Construct</a>
+	
+		
+		<ul>
+		
 			
-			<li class="active">
-				<a href="can.Construct.html">can.Construct</a>
+				<li class="heading"><span>static</span>
+					<ul>
+						
+						
+						<li >
+							<a href="can.Construct.static.newInstance.html">
+								 newInstance 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.static.setup.html">
+								 setup 
+							</a>
+						</li>
+						
+						
+						
+						
+						
+						<li >
+							<a href="can.Construct.static.namespace.html">
+								 namespace 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.static.shortName.html">
+								 shortName 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.static.fullName.html">
+								 fullName 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
 				
-				<ul>
-					
-					<li class="heading"><span>static</span>
-						<ul>
-							
-							<li ><a href="can.Construct.static.newInstance.html">can.Construct.static.newInstance</a></li>
-							
-							<li ><a href="can.Construct.static.setup.html">can.Construct.static.setup</a></li>
-							
-							<li ><a href="can.Construct.static.extend.html">can.Construct.static.extend</a></li>
-							
-							<li ><a href="namespace.html">namespace</a></li>
-							
-							<li ><a href="shortName.html">shortName</a></li>
-							
-							<li ><a href="fullName.html">fullName</a></li>
-							
-						</ul>
-					</li>
-					
-					<li class="heading"><span>prototype</span>
-						<ul>
-							
-							<li ><a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a></li>
-							
-							<li class="active"><a href="can.Construct.prototype.init.html">can.Construct.prototype.init</a></li>
-							
-						</ul>
-					</li>
-					
-				</ul>
-				
-			</li>
+		
 			
+				<li class="heading"><span>prototype</span>
+					<ul>
+						
+						
+						<li >
+							<a href="can.Construct.prototype.setup.html">
+								 setup 
+							</a>
+						</li>
+						
+						
+						
+						<li class="active">
+							<a href="can.Construct.prototype.init.html">
+								 init 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.prototype.constructor.html">
+								 constructor 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
+		
 		</ul>
+		
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.html">can.Observe</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.html">can.Model</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Control.html">can.Control</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.route.html">can.route</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.view.html">can.view</a>
+	
+	</li>
+	
+</ul>
 	</nav>
 
 	<article class="content docs">
@@ -120,20 +217,21 @@
 	</ul>
 	<ul class="links">
 		
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/construct/construct.js#L389">source</a></li>
+		
+		
 		
 	</ul>
 </div>
-<h1>init</h1>
+
+	<h1>init</h1> <span class="module">can.Construct.prototype.init</span>
+
+
 
 
 		</section>
 
 		<section class="description">
-			
-
-			<ul class="contents">
-				
-			</ul>
 			
 		</section>
 
@@ -141,6 +239,31 @@
 		<section class="signature">
 			<h2>init(...args)</h2>
 
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>args <code>{*}</code></h4>
+			<div class="description">
+				<p><p>the arguments passed to the constructor (or the elements of the array returned from [can.Construct::setup])</p></p>
+			</div>
+			<!--
+			<ul class="options">
+				
+				<li class="option">
+					<h5><code>{*}</code></h5>
+					<div class="description">
+						<p>the arguments passed to the constructor (or the elements of the array returned from [can.Construct::setup])</p>
+					</div>
+				</li>
+				
+			</ul>
+			-->
+		</li>
+		
+	</ol>
 
 
 		</section>
@@ -156,7 +279,7 @@ should go, and a common thing to do in <code>init</code> is to save the argument
 
 <p>First, we'll make a Person constructor that has a first and last name:</p>
 
-<pre>can.Construct("Person", {
+<pre><code class="lang-javascript">can.Construct("Person", {
     init: function(first, last) {
         this.first = first;
         this.last  = last;
@@ -165,11 +288,11 @@ should go, and a common thing to do in <code>init</code> is to save the argument
 
 var justin = new Person("Justin", "Meyer");
 justin.first; // "Justin"
-justin.last; // "Meyer"</pre>
+justin.last; // "Meyer"</code></pre>
 
 <p>Then we'll extend Person into Programmer and add a favorite language:</p>
 
-<pre>Person("Programmer", {
+<pre><code class="lang-javascript">Person("Programmer", {
     init: function(first, last, language) {
         // call base's init
         Person.prototype.init.apply(this, arguments);
@@ -184,7 +307,7 @@ justin.last; // "Meyer"</pre>
 });
 
 var brian = new Programmer("Brian", "Moschel", 'ECMAScript');
-brian.bio(); // "Hi! I'm Brian Moschel and I write ECMAScript.";</pre>
+brian.bio(); // "Hi! I'm Brian Moschel and I write ECMAScript.";</code></pre>
 
 <h2>Be Aware</h2>
 
@@ -198,7 +321,7 @@ that they aren't being changed by <code>setup</code> somewhere along the inherit
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<p>If a prototype <code>init</code> method is provided, it is called when a new Construct is created,\nafter [can.Construct::setup]. The <code>init</code> method is where the bulk of your initialization code\nshould go, and a common thing to do in <code>init</code> is to save the arguments passed into the constructor.</p>\n\n<h2>Examples</h2>\n\n<p>First, we'll make a Person constructor that has a first and last name:</p>\n\n<pre>can.Construct(\"Person\", {\n    init: function(first, last) {\n        this.first = first;\n        this.last  = last;\n    }\n});\n\nvar justin = new Person(\"Justin\", \"Meyer\");\njustin.first; // \"Justin\"\njustin.last; // \"Meyer\"</pre>\n\n<p>Then we'll extend Person into Programmer and add a favorite language:</p>\n\n<pre>Person(\"Programmer\", {\n    init: function(first, last, language) {\n        // call base's init\n        Person.prototype.init.apply(this, arguments);\n\n        // other initialization code\n        this.language = language;\n    },\n    bio: function() {\n        return 'Hi! I'm ' + this.first + ' ' + this.last +\n            ' and I write ' + this.language + '.';\n    }\n});\n\nvar brian = new Programmer(\"Brian\", \"Moschel\", 'ECMAScript');\nbrian.bio(); // \"Hi! I'm Brian Moschel and I write ECMAScript.\";</pre>\n\n<h2>Be Aware</h2>\n\n<p>[can.Construct::setup] is able to modify the arguments passed to <code>init</code>.\nIf you aren't receiving the right arguments to <code>init</code>, check to make sure\nthat they aren't being changed by <code>setup</code> somewhere along the inheritance chain.</p>",
+    "body": "<p>If a prototype <code>init</code> method is provided, it is called when a new Construct is created,\nafter [can.Construct::setup]. The <code>init</code> method is where the bulk of your initialization code\nshould go, and a common thing to do in <code>init</code> is to save the arguments passed into the constructor.</p>\n\n<h2>Examples</h2>\n\n<p>First, we'll make a Person constructor that has a first and last name:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct(\"Person\", {\n    init: function(first, last) {\n        this.first = first;\n        this.last  = last;\n    }\n});\n\nvar justin = new Person(\"Justin\", \"Meyer\");\njustin.first; // \"Justin\"\njustin.last; // \"Meyer\"</code></pre>\n\n<p>Then we'll extend Person into Programmer and add a favorite language:</p>\n\n<pre><code class=\"lang-javascript\">Person(\"Programmer\", {\n    init: function(first, last, language) {\n        // call base's init\n        Person.prototype.init.apply(this, arguments);\n\n        // other initialization code\n        this.language = language;\n    },\n    bio: function() {\n        return 'Hi! I'm ' + this.first + ' ' + this.last +\n            ' and I write ' + this.language + '.';\n    }\n});\n\nvar brian = new Programmer(\"Brian\", \"Moschel\", 'ECMAScript');\nbrian.bio(); // \"Hi! I'm Brian Moschel and I write ECMAScript.\";</code></pre>\n\n<h2>Be Aware</h2>\n\n<p>[can.Construct::setup] is able to modify the arguments passed to <code>init</code>.\nIf you aren't receiving the right arguments to <code>init</code>, check to make sure\nthat they aren't being changed by <code>setup</code> somewhere along the inheritance chain.</p>",
     "description": "",
     "title": "init",
     "name": "can.Construct.prototype.init",
@@ -220,8 +343,8 @@ that they aren't being changed by <code>setup</code> somewhere along the inherit
     ],
     "comment": " ",
     "src": "can/construct/construct.js",
-    "line": 386,
-    "id": 11
+    "line": 389,
+    "id": 46
 };
 
 	console.log(docData);
@@ -234,7 +357,8 @@ that they aren't being changed by <code>setup</code> somewhere along the inherit
 			<a class="brand canjs" href="index.html">CanJS</a>
 			<ul class="pullright">
 				<li><a href="../index.html">Home</a></li>
-				<li><a href="../docs">Learn</a></li>
+				<li><a href="../guides">Guides</a></li>
+				<li><a href="../docs/index.html">Api</a></li>
 				<li><a href="../community.html">Community</a></li>
 				<li><a href="../download.html">Download</a></li>
 			</ul>

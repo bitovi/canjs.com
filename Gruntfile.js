@@ -1,3 +1,5 @@
+var path = require('path');
+
 /*global module:false*/
 module.exports = function (grunt) {
 
@@ -5,6 +7,10 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		// Metadata.
 		pkg: grunt.file.readJSON('package.json'),
+		can: {
+			pkg: grunt.file.readJSON('can/package.json'),
+			path: 'can/'
+		},
 		banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
 			'<%= grunt.template.today("yyyy-mm-dd") %>\n' +
 			'<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
@@ -18,8 +24,7 @@ module.exports = function (grunt) {
 			},
 			dist: {
 				src: [ '_js/lib/can.custom.js', '_js/lib/grayscale.js',
-					'_js/lib/moment.js', '_js/lib/rainbow.js',
-					'_js/lib/language/*.js', '_js/models/*.js',
+					'_js/lib/moment.js', '_js/lib/prettify.js', '_js/models/*.js',
 					'_js/controls/*.js', '_js/views.production.js', '_js/app.js' ],
 				dest: 'resources/production.js'
 			}
@@ -56,15 +61,15 @@ module.exports = function (grunt) {
 			},
 			docs: {
 				files: '<%= generate.docs.src %>',
-				tasks: ['generate:docs']
+				tasks: ['docs']
 			},
 			js: {
 				files: ['_js/**/*.js', '_js/**/*.mustache'],
 				tasks: ['js']
 			},
 			pages: {
-				files: ['_pages/*.mustache', '_layouts/*.mustache', '_docs/*.mustache'],
-				tasks: ['generate:docs']
+				files: ['<%= generate.docs.src %>', '_pages/*.mustache', '_layouts/*.mustache', '_docs/*.mustache'],
+				tasks: ['docs']
 			},
 			all: {
 				files: ['_pages/*.mustache', '_layouts/*.mustache',
@@ -75,20 +80,87 @@ module.exports = function (grunt) {
 		},
 		generate: {
 			options: {
-				folder: __dirname + '/../../canjs.us',
 				debug: true,
 				data: {
 					package: require(__dirname + '/can/package.json')
 				},
-				docs: {
-					parent: 'canjs',
-					root: '../'
+				helpers: {
+					makeTypesString: function (types) {
+						if (types.length) {
+							// turns [{type: 'Object'}, {type: 'String'}] into '{Object | String}'
+							return '{' + types.map(function (t) {
+								return t.type;
+							}).join(' | ') + '}';
+						} else {
+							return '';
+						}
+					},
+					downloadUrl: function(download) {
+						// TOOO make builder URL configurable
+						return 'http://bitbuilder.herokuapp.com/can.custom.js?plugins=' + download;
+					},
+					sourceUrl: function(src, type, line) {
+						var pkg = grunt.config('can.pkg'),
+							relative = path.relative(grunt.config('can.path'), src),
+							hash = type !== 'page' && type !== 'constructor' ? '#L' + line : '';
+						return pkg.repository.github + '/tree/v' + pkg.version + '/' + relative + hash;
+					},
+					testUrl: function(test) {
+						// TODO we know we're in the docs/ folder for test links but there might
+						// be a more flexible way for doing this
+						return '../' + test;
+					}
 				}
 			},
+			guides: {
+				options: {
+					docs: {
+						root: '../',
+						parent: 'guides',
+						page: 'guides',
+						out: 'guides/'
+					}
+				},
+				src: ['_guides/*.md'],
+				dest: '.'
+			},
 			docs: {
-				src: ['can/can.md', 'can/construct/construct.md', 'can/construct/construct.js'],
+				options: {
+					docs: {
+						root: '../',
+						ignore: function (data) {
+							return data.hide || data.type === 'script' ||
+								data.type === 'static' ||
+								data.type === 'prototype';
+						},
+						parent: 'canjs',
+						page: 'docs',
+						out: 'docs/'
+					}
+				},
+				src: [
+					'can/can.md',
+					'can/util/util.md',
+					'can/util/util.js',
+					'can/construct/construct.md',
+					'can/construct/construct.js',
+					'can/observe/observe.md',
+					'can/observe/observe.js',
+					'can/model/model.md',
+					'can/model/model.js',
+					'can/control/control.md',
+					'can/control/control.js',
+					'can/route/route.md',
+					'can/route/route.js',
+					'can/view/view.md',
+					'can/view/view.js'
+				],
 				dest: '.'
 			}
+		},
+		clean: {
+			docs: ['docs/'],
+			guides: ['guides/']
 		}
 	});
 
@@ -98,13 +170,15 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-less');
+	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('can-compile');
 	grunt.loadNpmTasks('documentjs');
 
 	grunt.registerTask('js', [ 'cancompile', 'concat', 'uglify' ]);
 	grunt.registerTask('development', ['watch:all']);
+	grunt.registerTask('docs', ['clean', 'generate']);
 
 	// Default task.
-	grunt.registerTask('default', [ 'cancompile', 'concat', 'uglify', 'less', 'generate' ]);
+	grunt.registerTask('default', [ 'cancompile', 'concat', 'uglify', 'less', 'clean', 'generate' ]);
 
 };

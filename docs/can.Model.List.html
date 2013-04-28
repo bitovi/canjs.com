@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" href="../resources/styles.css" />
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand canjs" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://donejs.com">DoneJS</a></li>
+					<li class="active"><a href="../index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">JQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!FuncUnit">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
+				</ul>
+			</div>
+
+			<ul class="nav">
+				<li class=""><a href="../index.html">Home</a></li>
+				<li class=""><a href="../guides">Guides</a></li>
+				<li class="active"><a href="../docs/index.html">Api</a></li>
+				<li class=""><a href="../community.html">Community</a></li>
+				<li class=""><a href="../download.html">Download</a></li>
+			</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		<div class="search">
+			<input type="text"/>
+		</div>
+		<ul class="api">
+	
+	<li >
+	<a href="can.util.html">can.util</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Construct.html">can.Construct</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.html">can.Observe</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.html">can.Model</a>
+	
+	</li>
+	
+	<li class="active">
+	<a href="can.Model.List.html">can.Model.List</a>
+	
+		
+	
+	</li>
+	
+	<li >
+	<a href="can.Control.html">can.Control</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.route.html">can.route</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.view.html">can.view</a>
+	
+	</li>
+	
+</ul>
+	</nav>
+
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>constructor</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/model/model.js">source</a></li>
+		
+		
+			<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/model">download</a></li>
+		
+		
+			<li><a href="../can/model/qunit.html">tests</a></li>
+		
+	</ul>
+</div>
+
+	<h1>can.Model.List</h1>
+
+
+
+<span class="inherits"><a href="can.Observe.List.html">can.Observe.List</a></span>
+
+
+		</section>
+
+		<section class="description">
+			<p>Works exactly like [can.Observe.List] and has all of the same properties,
+events, and functions as an observable list. The only difference is that 
+when an item from the list is destroyed, it will automatically get removed
+from the list.</p>
+
+<h2>Creating a new Model List</h2>
+
+<p>To create a new model list, just use <code>new {model_name}.List(ARRAY)</code> like:</p>
+
+<pre><code>var todo1 = new Todo( { name: "Do the dishes" } ),
+    todo2 = new Todo( { name: "Wash floors" } )
+var todos = new Todo.List( [todo1, todo2] );
+</code></pre>
+
+<h3>Model Lists in <code>can.Model</code></h3>
+
+<p>[can.Model.static.findAll can.Model.findAll] or [can.Model.models] will
+almost always be used to return a <code>can.Model.List</code> object, even though it
+is possible to create new lists like below:</p>
+
+<pre><code>var todos = Todo.models([
+    new Todo( { name: "Do the dishes" } ),
+    new Todo( { name: "Wash floors" } )
+])
+
+todos.constructor // -&gt; can.Model.List
+
+// the most correct way to get a can.Model.List
+Todo.findAll({}, function(todos) {
+    todos.constructor // -&gt; can.Model.List
+})
+</code></pre>
+
+<h3>Extending <code>can.Model.List</code></h3>
+
+<p>Creating custom <code>can.Model.Lists</code> allows you to extend lists with helper
+functions for a list of a specific type. So, if you wanted to be able to
+see how many todos were completed and remaining something could be written
+like:</p>
+
+<pre><code>Todo.List = can.Model.List({
+    completed: function() {
+        var completed = 0;
+        this.each(function(i, todo) {
+            completed += todo.attr('complete') ? 1 : 0
+        })
+        return completed;
+    },
+    remaining: function() {
+        return this.attr('length') - this.completed();
+    }
+})
+
+Todo.findAll({}, function(todos) {
+    todos.completed() // -&gt; 0
+    todos.remaining() // -&gt; 2
+});
+</code></pre>
+
+<h2>Removing models from model list</h2>
+
+<p>The advantage that <code>can.Model.List</code> has over a traditional <code>can.Observe.List</code>
+is that when you destroy a model, if it is in that list, it will automatically
+be removed from the list. </p>
+
+<pre><code>// Listen for when something is removed from the todos list.
+todos.bind("remove", function( ev, oldVals, indx ) {
+    console.log(oldVals[indx].attr("name") + " removed")
+})
+
+todo1.destroy(); // console shows "Do the dishes removed"
+</code></pre>
+		</section>
+
+		
+
+		
+	</article>
+</div>
+
+<script type="text/javascript">
+	var docData = {
+    "name": "can.Model.List",
+    "type": "constructor",
+    "parent": "canjs",
+    "body": "",
+    "description": "<p>Works exactly like [can.Observe.List] and has all of the same properties,\nevents, and functions as an observable list. The only difference is that \nwhen an item from the list is destroyed, it will automatically get removed\nfrom the list.</p>\n\n<h2>Creating a new Model List</h2>\n\n<p>To create a new model list, just use <code>new {model_name}.List(ARRAY)</code> like:</p>\n\n<pre><code>var todo1 = new Todo( { name: \"Do the dishes\" } ),\n    todo2 = new Todo( { name: \"Wash floors\" } )\nvar todos = new Todo.List( [todo1, todo2] );\n</code></pre>\n\n<h3>Model Lists in <code>can.Model</code></h3>\n\n<p>[can.Model.static.findAll can.Model.findAll] or [can.Model.models] will\nalmost always be used to return a <code>can.Model.List</code> object, even though it\nis possible to create new lists like below:</p>\n\n<pre><code>var todos = Todo.models([\n    new Todo( { name: \"Do the dishes\" } ),\n    new Todo( { name: \"Wash floors\" } )\n])\n\ntodos.constructor // -&gt; can.Model.List\n\n// the most correct way to get a can.Model.List\nTodo.findAll({}, function(todos) {\n    todos.constructor // -&gt; can.Model.List\n})\n</code></pre>\n\n<h3>Extending <code>can.Model.List</code></h3>\n\n<p>Creating custom <code>can.Model.Lists</code> allows you to extend lists with helper\nfunctions for a list of a specific type. So, if you wanted to be able to\nsee how many todos were completed and remaining something could be written\nlike:</p>\n\n<pre><code>Todo.List = can.Model.List({\n    completed: function() {\n        var completed = 0;\n        this.each(function(i, todo) {\n            completed += todo.attr('complete') ? 1 : 0\n        })\n        return completed;\n    },\n    remaining: function() {\n        return this.attr('length') - this.completed();\n    }\n})\n\nTodo.findAll({}, function(todos) {\n    todos.completed() // -&gt; 0\n    todos.remaining() // -&gt; 2\n});\n</code></pre>\n\n<h2>Removing models from model list</h2>\n\n<p>The advantage that <code>can.Model.List</code> has over a traditional <code>can.Observe.List</code>\nis that when you destroy a model, if it is in that list, it will automatically\nbe removed from the list. </p>\n\n<pre><code>// Listen for when something is removed from the todos list.\ntodos.bind(\"remove\", function( ev, oldVals, indx ) {\n    console.log(oldVals[indx].attr(\"name\") + \" removed\")\n})\n\ntodo1.destroy(); // console shows \"Do the dishes removed\"\n</code></pre>",
+    "title": "",
+    "inherits": "can.Observe.List",
+    "download": "can/model",
+    "test": "can/model/qunit.html",
+    "src": "can/model/model.js",
+    "line": 1185,
+    "id": 103
+};
+
+	console.log(docData);
+</script>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand canjs" href="index.html">CanJS</a>
+			<ul class="pullright">
+				<li><a href="../index.html">Home</a></li>
+				<li><a href="../guides">Guides</a></li>
+				<li><a href="../docs/index.html">Api</a></li>
+				<li><a href="../community.html">Community</a></li>
+				<li><a href="../download.html">Download</a></li>
+			</ul>
+		</nav>
+	</footer>
+	<div class="loading"></div>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="../resources/production.min.js"></script>
+</body>
+
+</html>

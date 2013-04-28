@@ -4,17 +4,19 @@
 	window.CanJSUS = window.CanJSUS || {};
 
 	window.CanJSUS.initTwitterWidgets = function() {
-		// replace the "Follow @canjs!" link with a little wiget with follower count.
-		$('#twitter-wjs').remove();
-		!function (d, s, id) {
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (!d.getElementById(id)) {
-				js = d.createElement(s);
-				js.id = id;
-				js.src = "//platform.twitter.com/widgets.js";
-				fjs.parentNode.insertBefore(js, fjs);
-			}
-		}(document, "script", "twitter-wjs");
+		if($('.twitter-follow-button').length) {
+			// replace the "Follow @canjs!" link with a little wiget with follower count.
+			$('#twitter-wjs').remove();
+			!function (d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (!d.getElementById(id)) {
+					js = d.createElement(s);
+					js.id = id;
+					js.src = "//platform.twitter.com/widgets.js";
+					fjs.parentNode.insertBefore(js, fjs);
+				}
+			}(document, "script", "twitter-wjs");
+		}
 	};
 
 	var initControls = function(mappings) {
@@ -34,10 +36,20 @@
 			'.index .social': 'SocialStats',
 			'.download .cdn': 'CDNChooser',
 			'.download .customize': 'DownloadCustomizer',
-			'.community .hero': 'CommunityTabs'
+			'.community .hero': 'CommunityTabs',
+			'.docs .sidebar': 'ApiSearch'
 		});
-		// Syntax highlighting for our example.
-		Rainbow.color();
+
+		// Syntax highlighting
+		$('pre code').each(function() {
+			var el = $(this).parent();
+			el.addClass('prettyprint');
+			if(!el.hasClass('nolinenums')) {
+				el.addClass('linenums');
+			}
+		});
+
+		prettyPrint();
 	});
 
 	// this needs to wait until everything is loaded.

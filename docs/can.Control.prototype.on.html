@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" href="../resources/styles.css" />
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand canjs" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://donejs.com">DoneJS</a></li>
+					<li class="active"><a href="../index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">JQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!FuncUnit">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
+				</ul>
+			</div>
+
+			<ul class="nav">
+				<li class=""><a href="../index.html">Home</a></li>
+				<li class=""><a href="../guides">Guides</a></li>
+				<li class="active"><a href="../docs/index.html">Api</a></li>
+				<li class=""><a href="../community.html">Community</a></li>
+				<li class=""><a href="../download.html">Download</a></li>
+			</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		<div class="search">
+			<input type="text"/>
+		</div>
+		<ul class="api">
+	
+	<li >
+	<a href="can.util.html">can.util</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Construct.html">can.Construct</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.html">can.Observe</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.html">can.Model</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li class="active">
+	<a href="can.Control.html">can.Control</a>
+	
+		
+		<ul>
+		
+			
+				<li class="heading"><span>static</span>
+					<ul>
+						
+						
+						
+						
+						
+						
+						
+						
+						<li >
+							<a href="can.Control.static.processors.html">
+								 processors 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Control.static.defaults.html">
+								 defaults 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
+		
+			
+				<li class="heading"><span>prototype</span>
+					<ul>
+						
+						
+						<li >
+							<a href="can.Control.prototype.setup.html">
+								 setup 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Control.prototype.options.html">
+								 options 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Control.prototype.element.html">
+								 element 
+							</a>
+						</li>
+						
+						
+						
+						<li class="active">
+							<a href="can.Control.prototype.on.html">
+								 on 
+							</a>
+						</li>
+						
+						
+						
+						
+						
+						<li >
+							<a href="can.Control.prototype.destroy.html">
+								 destroy 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
+		
+		</ul>
+		
+	
+	</li>
+	
+	<li >
+	<a href="can.route.html">can.route</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.view.html">can.view</a>
+	
+	</li>
+	
+</ul>
+	</nav>
+
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>function</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/control/control.js#L466">source</a></li>
+		
+		
+		
+	</ul>
+</div>
+
+	<h1>on</h1> <span class="module">can.Control.prototype.on</span>
+
+
+
+
+		</section>
+
+		<section class="description">
+			<p>Bind an event handler to a Control, or rebind all event handlers on a Control. </p>
+		</section>
+
+		
+		<section class="signature">
+			<h2>on([el,] selector, eventName, func)</h2>
+
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>el <code>{HTMLElement | jQuery | collection | Object}</code></h4>
+			<div class="description">
+				<p><p>The element to be bound.  If no element is provided, the control's element is used instead.</p></p>
+			</div>
+			<!--
+			<ul class="options">
+				
+				<li class="option">
+					<h5><code>{HTMLElement | jQuery | collection | Object}</code></h5>
+					<div class="description">
+						<p>The element to be bound.  If no element is provided, the control's element is used instead.</p>
+					</div>
+				</li>
+				
+			</ul>
+			-->
+		</li>
+		
+		<li class="parameter">
+			<h4>selector <code>{String}</code></h4>
+			<div class="description">
+				<p><p>A css selector for event delegation.</p></p>
+			</div>
+			<!--
+			<ul class="options">
+				
+				<li class="option">
+					<h5><code>{String}</code></h5>
+					<div class="description">
+						<p>A css selector for event delegation.</p>
+					</div>
+				</li>
+				
+			</ul>
+			-->
+		</li>
+		
+		<li class="parameter">
+			<h4>eventName <code>{String}</code></h4>
+			<div class="description">
+				<p><p>The event to listen for.</p></p>
+			</div>
+			<!--
+			<ul class="options">
+				
+				<li class="option">
+					<h5><code>{String}</code></h5>
+					<div class="description">
+						<p>The event to listen for.</p>
+					</div>
+				</li>
+				
+			</ul>
+			-->
+		</li>
+		
+		<li class="parameter">
+			<h4>func <code>{function | String}</code></h4>
+			<div class="description">
+				<p><p>A callback function or the String name of a control function.  If a control
+function name is given, the control function is called back with the bound element and event as the first
+and second parameter.  Otherwise the function is called back like a normal bind.</p></p>
+			</div>
+			<!--
+			<ul class="options">
+				
+				<li class="option">
+					<h5><code>{function | String}</code></h5>
+					<div class="description">
+						<p>A callback function or the String name of a control function.  If a control
+function name is given, the control function is called back with the bound element and event as the first
+and second parameter.  Otherwise the function is called back like a normal bind.</p>
+					</div>
+				</li>
+				
+			</ul>
+			-->
+		</li>
+		
+	</ol>
+
+
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{Number}</code></h4>
+		<div class="description">
+			<p>The id of the binding in this._bindings</p>
+		</div>
+	</div>
+
+		</section>
+		
+		<section class="signature">
+			<h2>on()</h2>
+
+
+
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{Number}</code></h4>
+		<div class="description">
+			<p>The number of handlers bound to this Control.</p>
+		</div>
+	</div>
+
+		</section>
+		
+
+		
+		<section class="comment">
+			<p><code>on(el, selector, eventName, func)</code> binds an event handler for an event to a selector under the scope of the given element.</p>
+
+<p><code>this.on()</code> is used to rebind 
+all event handlers when [can.Control::options this.options] has changed.  It
+can also be used to bind or delegate from other elements or objects.</p>
+
+<h2>Rebinding</h2>
+
+<p>By using templated event handlers, a control can listen to objects outside
+<code>this.element</code>.  This is extremely common in MVC programming.  For example,
+the following control might listen to a task model's <code>completed</code> property and
+toggle a strike className like:</p>
+
+<pre><code>TaskStriker = can.Control({
+  "{task} completed": function(){
+       this.update();
+  },
+  update: function(){
+    if ( this.options.task.completed ) {
+         this.element.addClass( 'strike' );
+       } else {
+      this.element.removeClass( 'strike' );
+    }
+  }
+});
+
+var taskstriker = new TaskStriker({ 
+  task: new Task({ completed: 'true' }) 
+});
+</code></pre>
+
+<p>To update the taskstriker's task, add a task method that updates
+this.options and calls rebind like:</p>
+
+<pre><code>TaskStriker = can.Control({
+  "{task} completed": function(){
+       this.update();
+  },
+  update: function() {
+    if ( this.options.task.completed ) {
+         this.element.addClass( 'strike' );
+       } else {
+      this.element.removeClass( 'strike' );
+    }
+  },
+  task: function( newTask ) {
+    this.options.task = newTask;
+    this.on();
+    this.update();
+  }
+});
+
+var taskstriker = new TaskStriker({ 
+  task: new Task({ completed: true }) 
+});
+taskstriker.task( new TaskStriker({ 
+  task: new Task({ completed: false }) 
+}));
+</code></pre>
+
+<h2>Adding new events</h2>
+
+<p>If events need to be bound to outside of the control and templated event handlers
+are not sufficent, you can call this.on to bind or delegate programatically:</p>
+
+<pre><code>init: function() {
+   // calls somethingClicked( el, ev )
+   this.on( 'click', 'somethingClicked' ); 
+
+   // calls function when the window is clicked
+   this.on( window, 'click', function( ev ) {
+     //do something
+   });
+},
+somethingClicked: function( el, ev ) {
+
+}
+</code></pre>
+		</section>
+		
+	</article>
+</div>
+
+<script type="text/javascript">
+	var docData = {
+    "type": "function",
+    "name": "can.Control.prototype.on",
+    "parent": "can.Control.prototype",
+    "body": "<p><code>on(el, selector, eventName, func)</code> binds an event handler for an event to a selector under the scope of the given element.</p>\n\n<p><code>this.on()</code> is used to rebind \nall event handlers when [can.Control::options this.options] has changed.  It\ncan also be used to bind or delegate from other elements or objects.</p>\n\n<h2>Rebinding</h2>\n\n<p>By using templated event handlers, a control can listen to objects outside\n<code>this.element</code>.  This is extremely common in MVC programming.  For example,\nthe following control might listen to a task model's <code>completed</code> property and\ntoggle a strike className like:</p>\n\n<pre><code>TaskStriker = can.Control({\n  \"{task} completed\": function(){\n       this.update();\n  },\n  update: function(){\n    if ( this.options.task.completed ) {\n         this.element.addClass( 'strike' );\n       } else {\n      this.element.removeClass( 'strike' );\n    }\n  }\n});\n\nvar taskstriker = new TaskStriker({ \n  task: new Task({ completed: 'true' }) \n});\n</code></pre>\n\n<p>To update the taskstriker's task, add a task method that updates\nthis.options and calls rebind like:</p>\n\n<pre><code>TaskStriker = can.Control({\n  \"{task} completed\": function(){\n       this.update();\n  },\n  update: function() {\n    if ( this.options.task.completed ) {\n         this.element.addClass( 'strike' );\n       } else {\n      this.element.removeClass( 'strike' );\n    }\n  },\n  task: function( newTask ) {\n    this.options.task = newTask;\n    this.on();\n    this.update();\n  }\n});\n\nvar taskstriker = new TaskStriker({ \n  task: new Task({ completed: true }) \n});\ntaskstriker.task( new TaskStriker({ \n  task: new Task({ completed: false }) \n}));\n</code></pre>\n\n<h2>Adding new events</h2>\n\n<p>If events need to be bound to outside of the control and templated event handlers\nare not sufficent, you can call this.on to bind or delegate programatically:</p>\n\n<pre><code>init: function() {\n   // calls somethingClicked( el, ev )\n   this.on( 'click', 'somethingClicked' ); \n\n   // calls function when the window is clicked\n   this.on( window, 'click', function( ev ) {\n     //do something\n   });\n},\nsomethingClicked: function( el, ev ) {\n\n}\n</code></pre>",
+    "description": "<p>Bind an event handler to a Control, or rebind all event handlers on a Control. </p>",
+    "title": "on",
+    "signatures": [{
+            "code": "on([el,] selector, eventName, func)",
+            "description": "",
+            "params": [{
+                    "types": [{
+                            "type": "HTMLElement"
+                        }, {
+                            "type": "jQuery"
+                        }, {
+                            "type": "collection"
+                        }, {
+                            "type": "Object"
+                        }
+                    ],
+                    "optional": true,
+                    "name": "el",
+                    "defaultValue": "this.element",
+                    "description": "<p>The element to be bound.  If no element is provided, the control's element is used instead.</p>"
+                }, {
+                    "types": [{
+                            "type": "String"
+                        }
+                    ],
+                    "name": "selector",
+                    "description": "<p>A css selector for event delegation.</p>"
+                }, {
+                    "types": [{
+                            "type": "String"
+                        }
+                    ],
+                    "name": "eventName",
+                    "description": "<p>The event to listen for.</p>"
+                }, {
+                    "types": [{
+                            "type": "function",
+                            "returns": {
+                                "types": [{
+                                        "type": "undefined"
+                                    }
+                                ]
+                            },
+                            "params": []
+                        }, {
+                            "type": "String"
+                        }
+                    ],
+                    "name": "func",
+                    "description": "<p>A callback function or the String name of a control function.  If a control\nfunction name is given, the control function is called back with the bound element and event as the first\nand second parameter.  Otherwise the function is called back like a normal bind.</p>"
+                }
+            ],
+            "returns": {
+                "types": [{
+                        "type": "Number"
+                    }
+                ],
+                "description": "<p>The id of the binding in this._bindings</p>"
+            }
+        }, {
+            "code": "on()",
+            "description": "",
+            "params": [],
+            "returns": {
+                "types": [{
+                        "type": "Number"
+                    }
+                ],
+                "description": "<p>The number of handlers bound to this Control.</p>"
+            }
+        }
+    ],
+    "comment": " ",
+    "src": "can/control/control.js",
+    "line": 466,
+    "id": 116
+};
+
+	console.log(docData);
+</script>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand canjs" href="index.html">CanJS</a>
+			<ul class="pullright">
+				<li><a href="../index.html">Home</a></li>
+				<li><a href="../guides">Guides</a></li>
+				<li><a href="../docs/index.html">Api</a></li>
+				<li><a href="../community.html">Community</a></li>
+				<li><a href="../download.html">Download</a></li>
+			</ul>
+		</nav>
+	</footer>
+	<div class="loading"></div>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="../resources/production.min.js"></script>
+</body>
+
+</html>

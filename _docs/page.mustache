@@ -3,26 +3,7 @@
 		<div class="search">
 			<input type="text"/>
 		</div>
-		<ul class="api">
-			{{#menu.children}}
-			<li {{#active}}class="active"{{/active}}>
-				<a href="{{makeHref name}}">{{name}}</a>
-				{{#if active}}
-				<ul>
-					{{#children}}
-					<li class="heading"><span>{{type}}</span>
-						<ul>
-							{{#children}}
-							<li {{#active}}class="active"{{/active}}><a href="{{makeHref name}}">{{name}}</a></li>
-							{{/children}}
-						</ul>
-					</li>
-					{{/children}}
-				</ul>
-				{{/if}}
-			</li>
-			{{/menu.children}}
-		</ul>
+		{{> menu.mustache}}
 	</nav>
 
 	<article class="content docs">
@@ -32,13 +13,6 @@
 
 		<section class="description">
 			{{{description}}}
-
-			<ul class="contents">
-				{{#contentList this}}
-				<li><a href="#!&where={{where}}">{{text}}</a></li>
-				{{/contentList}}
-			</ul>
-			{{contentList this}}
 		</section>
 
 		{{#signatures}}
