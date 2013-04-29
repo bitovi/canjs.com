@@ -1,5 +1,5 @@
 @page EJS EJS
-@parent Tutorial 7
+@parent Tutorial 4
 
 @body
 [EJS](can.EJS) is CanJS's default template language, which provides live

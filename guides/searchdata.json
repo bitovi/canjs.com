@@ -12,7 +12,8 @@
         "type": "page",
         "id": 1,
         "title": "Controls",
-        "parent": "Tutorial"
+        "parent": "Tutorial",
+        "order": 6
     },
     "Deferreds": {
         "name": "Deferreds",
@@ -20,7 +21,7 @@
         "id": 2,
         "title": "Deferreds",
         "parent": "Tutorial",
-        "order": 5
+        "order": 7
     },
     "EJS": {
         "name": "EJS",
@@ -28,7 +29,7 @@
         "id": 3,
         "title": "EJS",
         "parent": "Tutorial",
-        "order": 7
+        "order": 4
     },
     "guides": {
         "name": "guides",
@@ -50,7 +51,7 @@
         "id": 6,
         "title": "Mustache",
         "parent": "Tutorial",
-        "order": 8
+        "order": 5
     },
     "Observes": {
         "name": "Observes",
@@ -66,7 +67,7 @@
         "id": 8,
         "title": "Routing",
         "parent": "Tutorial",
-        "order": 4
+        "order": 8
     },
     "Tutorial": {
         "name": "Tutorial",
@@ -81,7 +82,7 @@
         "id": 10,
         "title": "Utilities",
         "parent": "Tutorial",
-        "order": 6
+        "order": 9
     },
     "Templates": {
         "name": "Templates",

@@ -1,5 +1,5 @@
 @page Utilities Utilities
-@parent Tutorial 6
+@parent Tutorial 9
 
 @body
 CanJS provides a plethora of utility methods. These methods are usually mapped
