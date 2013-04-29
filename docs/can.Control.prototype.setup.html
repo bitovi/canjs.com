@@ -74,12 +74,108 @@
 		<ul class="api">
 	
 	<li >
-	<a href="can.util.html">can.util</a>
+	<a href="can.Construct.html">can.Construct</a>
+	
+	</li>
+	
+	<li class="active">
+	<a href="can.Control.html">can.Control</a>
+	
+		
+		<ul>
+		
+			
+				<li class="heading"><span>prototype</span>
+					<ul>
+						
+						
+						<li >
+							<a href="can.Control.prototype.destroy.html">
+								 destroy 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Control.prototype.element.html">
+								 element 
+							</a>
+						</li>
+						
+						
+						
+						
+						
+						<li >
+							<a href="can.Control.prototype.on.html">
+								 on 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Control.prototype.options.html">
+								 options 
+							</a>
+						</li>
+						
+						
+						
+						<li class="active">
+							<a href="can.Control.prototype.setup.html">
+								 setup 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
+		
+			
+				<li class="heading"><span>static</span>
+					<ul>
+						
+						
+						
+						
+						
+						
+						<li >
+							<a href="can.Control.static.defaults.html">
+								 defaults 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Control.static.processors.html">
+								 processors 
+							</a>
+						</li>
+						
+						
+						
+						
+					</ul>
+				</li>
+				
+		
+		</ul>
+		
 	
 	</li>
 	
 	<li >
-	<a href="can.Construct.html">can.Construct</a>
+	<a href="can.Model.html">can.Model</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.List.html">can.Model.List</a>
 	
 	</li>
 	
@@ -94,108 +190,12 @@
 	</li>
 	
 	<li >
-	<a href="can.Model.html">can.Model</a>
-	
-	</li>
-	
-	<li >
-	<a href="can.Model.List.html">can.Model.List</a>
-	
-	</li>
-	
-	<li class="active">
-	<a href="can.Control.html">can.Control</a>
-	
-		
-		<ul>
-		
-			
-				<li class="heading"><span>static</span>
-					<ul>
-						
-						
-						
-						
-						
-						
-						
-						
-						<li >
-							<a href="can.Control.static.processors.html">
-								 processors 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Control.static.defaults.html">
-								 defaults 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
-		
-			
-				<li class="heading"><span>prototype</span>
-					<ul>
-						
-						
-						<li class="active">
-							<a href="can.Control.prototype.setup.html">
-								 setup 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Control.prototype.options.html">
-								 options 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Control.prototype.element.html">
-								 element 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Control.prototype.on.html">
-								 on 
-							</a>
-						</li>
-						
-						
-						
-						
-						
-						<li >
-							<a href="can.Control.prototype.destroy.html">
-								 destroy 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
-		
-		</ul>
-		
-	
-	</li>
-	
-	<li >
 	<a href="can.route.html">can.route</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.util.html">can.util</a>
 	
 	</li>
 	
@@ -305,7 +305,7 @@ default it is called with the element and options passed to the control.</p>
 
 <p>The first parameter passed to new Control( el, options ) is expected to be 
 an element.  This gets converted to a Wrapped NodeList element and set as
-[can.Control.prototype.element this.element].</p>
+<a href="can.Control.prototype.element.html">this.element</a>.</p>
 
 <h3>Adds the control's name to the element's className.</h3>
 
@@ -324,7 +324,7 @@ instances of "Foo.Bar" like: </p>
 <h3>Merges Options</h3>
 
 <p>Merges the default options with optional user-supplied ones.
-Additionally, default values are exposed in the static [can.Control.static.defaults defaults] 
+Additionally, default values are exposed in the static <a href="can.Control.static.defaults.html">defaults</a> 
 so that users can change them.</p>
 
 <h3>Binds event handlers</h3>
@@ -340,7 +340,7 @@ so that users can change them.</p>
     "type": "function",
     "name": "can.Control.prototype.setup",
     "parent": "can.Control.prototype",
-    "body": "<p>Setup is where most of control's magic happens.  It does the following:</p>\n\n<h3>Sets this.element</h3>\n\n<p>The first parameter passed to new Control( el, options ) is expected to be \nan element.  This gets converted to a Wrapped NodeList element and set as\n[can.Control.prototype.element this.element].</p>\n\n<h3>Adds the control's name to the element's className.</h3>\n\n<p>Control adds it's plugin name to the element's className for easier \ndebugging.  For example, if your Control is named \"Foo.Bar\", it adds\n\"foo_bar\" to the className.</p>\n\n<h3>Saves the control in $.data</h3>\n\n<p>A reference to the control instance is saved in $.data.  You can find \ninstances of \"Foo.Bar\" like: </p>\n\n<pre><code>$( '#el' ).data( 'controls' )[ 'foo_bar' ]\n</code></pre>\n\n<h3>Merges Options</h3>\n\n<p>Merges the default options with optional user-supplied ones.\nAdditionally, default values are exposed in the static [can.Control.static.defaults defaults] \nso that users can change them.</p>\n\n<h3>Binds event handlers</h3>\n\n<p>Setup does the event binding described in [can.Control.listening Listening To Events].</p>",
+    "body": "<p>Setup is where most of control's magic happens.  It does the following:</p>\n\n<h3>Sets this.element</h3>\n\n<p>The first parameter passed to new Control( el, options ) is expected to be \nan element.  This gets converted to a Wrapped NodeList element and set as\n<a href=\"can.Control.prototype.element.html\">this.element</a>.</p>\n\n<h3>Adds the control's name to the element's className.</h3>\n\n<p>Control adds it's plugin name to the element's className for easier \ndebugging.  For example, if your Control is named \"Foo.Bar\", it adds\n\"foo_bar\" to the className.</p>\n\n<h3>Saves the control in $.data</h3>\n\n<p>A reference to the control instance is saved in $.data.  You can find \ninstances of \"Foo.Bar\" like: </p>\n\n<pre><code>$( '#el' ).data( 'controls' )[ 'foo_bar' ]\n</code></pre>\n\n<h3>Merges Options</h3>\n\n<p>Merges the default options with optional user-supplied ones.\nAdditionally, default values are exposed in the static <a href=\"can.Control.static.defaults.html\">defaults</a> \nso that users can change them.</p>\n\n<h3>Binds event handlers</h3>\n\n<p>Setup does the event binding described in [can.Control.listening Listening To Events].</p>",
     "description": "<p>Perform pre-initialization logic. </p>",
     "title": "setup",
     "signatures": [{

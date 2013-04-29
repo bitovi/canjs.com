@@ -74,22 +74,12 @@
 		<ul class="api">
 	
 	<li >
-	<a href="can.util.html">can.util</a>
-	
-	</li>
-	
-	<li >
 	<a href="can.Construct.html">can.Construct</a>
 	
 	</li>
 	
 	<li >
-	<a href="can.Observe.html">can.Observe</a>
-	
-	</li>
-	
-	<li >
-	<a href="can.Observe.List.html">can.Observe.List</a>
+	<a href="can.Control.html">can.Control</a>
 	
 	</li>
 	
@@ -98,6 +88,54 @@
 	
 		
 		<ul>
+		
+			
+				<li class="heading"><span>prototype</span>
+					<ul>
+						
+						
+						<li >
+							<a href="can.Model.prototype.bind.html">
+								 bind 
+							</a>
+						</li>
+						
+						
+						
+						<li class="active">
+							<a href="can.Model.prototype.destroy.html">
+								 destroy 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Model.prototype.isNew.html">
+								 isNew 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Model.prototype.save.html">
+								 save 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Model.prototype.unbind.html">
+								 unbind 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
 		
 			
 				<li class="heading"><span>static</span>
@@ -113,32 +151,8 @@
 						
 						
 						<li >
-							<a href="can.Model.static.unbind.html">
-								 unbind 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.id.html">
-								 id 
-							</a>
-						</li>
-						
-						
-						
-						<li >
 							<a href="can.Model.static.create.html">
 								 create 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.update.html">
-								 update 
 							</a>
 						</li>
 						
@@ -169,8 +183,8 @@
 						
 						
 						<li >
-							<a href="can.Model.static.models.html">
-								 models 
+							<a href="can.Model.static.id.html">
+								 id 
 							</a>
 						</li>
 						
@@ -183,50 +197,26 @@
 						</li>
 						
 						
-					</ul>
-				</li>
-				
-		
-			
-				<li class="heading"><span>prototype</span>
-					<ul>
-						
 						
 						<li >
-							<a href="can.Model.prototype.isNew.html">
-								 isNew 
+							<a href="can.Model.static.models.html">
+								 models 
 							</a>
 						</li>
 						
 						
 						
 						<li >
-							<a href="can.Model.prototype.save.html">
-								 save 
-							</a>
-						</li>
-						
-						
-						
-						<li class="active">
-							<a href="can.Model.prototype.destroy.html">
-								 destroy 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.prototype.bind.html">
-								 bind 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.prototype.unbind.html">
+							<a href="can.Model.static.unbind.html">
 								 unbind 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Model.static.update.html">
+								 update 
 							</a>
 						</li>
 						
@@ -246,12 +236,22 @@
 	</li>
 	
 	<li >
-	<a href="can.Control.html">can.Control</a>
+	<a href="can.Observe.html">can.Observe</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.List.html">can.Observe.List</a>
 	
 	</li>
 	
 	<li >
 	<a href="can.route.html">can.route</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.util.html">can.util</a>
 	
 	</li>
 	
@@ -364,7 +364,7 @@ XmlHttpRequest object.</p>
 
 <p>This triggers "destroyed" events on the instance and the 
 Model constructor function which can be listened to with
-[can.Model::bind] and [can.Model.bind]. </p>
+<a href="can.Model.prototype.bind.html">can.Model.prototype.bind</a> and [can.Model.bind]. </p>
 
 <pre><code>Recipe = can.Model({
   destroy : "DELETE /services/recipes/{id}",
@@ -393,7 +393,7 @@ Recipe.findOne({id: 5}, function(recipe){
     "type": "function",
     "name": "can.Model.prototype.destroy",
     "parent": "can.Model.prototype",
-    "body": "<p>Destroys the instance by calling \n[Can.Model.destroy] with the id of the instance.</p>\n\n<pre><code>recipe.destroy(success, error);\n</code></pre>\n\n<p>This triggers \"destroyed\" events on the instance and the \nModel constructor function which can be listened to with\n[can.Model::bind] and [can.Model.bind]. </p>\n\n<pre><code>Recipe = can.Model({\n  destroy : \"DELETE /services/recipes/{id}\",\n  findOne : \"/services/recipes/{id}\"\n},{})\n\nRecipe.bind(\"destroyed\", function(){\n  console.log(\"a recipe destroyed\");    \n});\n\n// get a recipe\nRecipe.findOne({id: 5}, function(recipe){\n  recipe.bind(\"destroyed\", function(){\n    console.log(\"this recipe destroyed\")    \n  })\n  recipe.destroy();\n})\n</code></pre>",
+    "body": "<p>Destroys the instance by calling \n[Can.Model.destroy] with the id of the instance.</p>\n\n<pre><code>recipe.destroy(success, error);\n</code></pre>\n\n<p>This triggers \"destroyed\" events on the instance and the \nModel constructor function which can be listened to with\n<a href=\"can.Model.prototype.bind.html\">can.Model.prototype.bind</a> and [can.Model.bind]. </p>\n\n<pre><code>Recipe = can.Model({\n  destroy : \"DELETE /services/recipes/{id}\",\n  findOne : \"/services/recipes/{id}\"\n},{})\n\nRecipe.bind(\"destroyed\", function(){\n  console.log(\"a recipe destroyed\");    \n});\n\n// get a recipe\nRecipe.findOne({id: 5}, function(recipe){\n  recipe.bind(\"destroyed\", function(){\n    console.log(\"this recipe destroyed\")    \n  })\n  recipe.destroy();\n})\n</code></pre>",
     "description": "<p>Destroy a Model on the server. </p>",
     "title": "destroy",
     "signatures": [{

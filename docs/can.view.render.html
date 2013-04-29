@@ -74,22 +74,12 @@
 		<ul class="api">
 	
 	<li >
-	<a href="can.util.html">can.util</a>
-	
-	</li>
-	
-	<li >
 	<a href="can.Construct.html">can.Construct</a>
 	
 	</li>
 	
 	<li >
-	<a href="can.Observe.html">can.Observe</a>
-	
-	</li>
-	
-	<li >
-	<a href="can.Observe.List.html">can.Observe.List</a>
+	<a href="can.Control.html">can.Control</a>
 	
 	</li>
 	
@@ -104,12 +94,22 @@
 	</li>
 	
 	<li >
-	<a href="can.Control.html">can.Control</a>
+	<a href="can.Observe.html">can.Observe</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.List.html">can.Observe.List</a>
 	
 	</li>
 	
 	<li >
 	<a href="can.route.html">can.route</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.util.html">can.util</a>
 	
 	</li>
 	
@@ -121,32 +121,8 @@
 		
 			
 				<li >
-				<a href="can.view.ejs.html">
-					 can.view.ejs 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.view.mustache.html">
-					 can.view.mustache 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="hookups.html">
-					 hookups 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.view.hook.html">
-					 hook 
+				<a href="cache.html">
+					 cache 
 				</a>
 				</li>
 			
@@ -161,16 +137,8 @@
 		
 			
 				<li >
-				<a href="cache.html">
-					 cache 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.view.register.html">
-					 can.view.register 
+				<a href="can.view.ejs.html">
+					 can.view.ejs 
 				</a>
 				</li>
 			
@@ -185,8 +153,16 @@
 		
 			
 				<li >
-				<a href="can.view.registerScript.html">
-					 can.view.registerScript 
+				<a href="can.view.hook.html">
+					 hook 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="can.view.mustache.html">
+					 can.view.mustache 
 				</a>
 				</li>
 			
@@ -195,6 +171,30 @@
 				<li >
 				<a href="can.view.preload.html">
 					 can.view.preload 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="can.view.register.html">
+					 can.view.register 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="can.view.registerScript.html">
+					 can.view.registerScript 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="can.view.registerView.html">
+					 can.view.registerView 
 				</a>
 				</li>
 			
@@ -209,16 +209,16 @@
 		
 			
 				<li >
-				<a href="can.view.registerView.html">
-					 can.view.registerView 
+				<a href="can.view.text.html">
+					 can.view.text 
 				</a>
 				</li>
 			
 		
 			
 				<li >
-				<a href="can.view.text.html">
-					 can.view.text 
+				<a href="hookups.html">
+					 hookups 
 				</a>
 				</li>
 			
@@ -419,7 +419,7 @@ or a Deferred that resolves to the template with interpolated data.</p>
 
 		
 		<section class="comment">
-			<p><code>can.view.render(view, [data], [helpers], callback)</code> returns the rendered markup produced by the corresponding template
+			<p><code>can.view.render(view, <a href="data.html">data</a>, [helpers], callback)</code> returns the rendered markup produced by the corresponding template
 engine as String. If you pass a deferred object in as data, render returns
 a deferred resolving to the rendered markup.</p>
 
@@ -468,7 +468,7 @@ renderer({hello: "world"}) // -&gt; Document Fragment
     "type": "function",
     "name": "can.view.render",
     "parent": "can.view",
-    "body": "<p><code>can.view.render(view, [data], [helpers], callback)</code> returns the rendered markup produced by the corresponding template\nengine as String. If you pass a deferred object in as data, render returns\na deferred resolving to the rendered markup.</p>\n\n<p><code>can.view.render</code> is commonly used for sub-templates.</p>\n\n<h2>Example</h2>\n\n<p><em>welcome.ejs</em> looks like:</p>\n\n<pre><code>&lt;h1&gt;Hello &lt;%= hello %&gt;&lt;/h1&gt;\n</code></pre>\n\n<p>Render it to a string like:</p>\n\n<pre><code>can.view.render(\"welcome.ejs\",{hello: \"world\"})\n  //-&gt; &lt;h1&gt;Hello world&lt;/h1&gt;\n</code></pre>\n\n<h2>Use as a Subtemplate</h2>\n\n<p>If you have a template like:</p>\n\n<pre><code>&lt;ul&gt;\n  &lt;% list(items, function(item){ %&gt;\n    &lt;%== can.view.render(\"item.ejs\",item) %&gt;\n  &lt;% }) %&gt;\n&lt;/ul&gt;\n</code></pre>\n\n<h2>Using renderer functions</h2>\n\n<p>If you only pass the view path, `can.view will return a renderer function that can be called with\nthe data to render:</p>\n\n<pre><code>var renderer = can.view.render(\"welcome.ejs\");\n// Do some more things\nrenderer({hello: \"world\"}) // -&gt; Document Fragment\n</code></pre>",
+    "body": "<p><code>can.view.render(view, <a href=\"data.html\">data</a>, [helpers], callback)</code> returns the rendered markup produced by the corresponding template\nengine as String. If you pass a deferred object in as data, render returns\na deferred resolving to the rendered markup.</p>\n\n<p><code>can.view.render</code> is commonly used for sub-templates.</p>\n\n<h2>Example</h2>\n\n<p><em>welcome.ejs</em> looks like:</p>\n\n<pre><code>&lt;h1&gt;Hello &lt;%= hello %&gt;&lt;/h1&gt;\n</code></pre>\n\n<p>Render it to a string like:</p>\n\n<pre><code>can.view.render(\"welcome.ejs\",{hello: \"world\"})\n  //-&gt; &lt;h1&gt;Hello world&lt;/h1&gt;\n</code></pre>\n\n<h2>Use as a Subtemplate</h2>\n\n<p>If you have a template like:</p>\n\n<pre><code>&lt;ul&gt;\n  &lt;% list(items, function(item){ %&gt;\n    &lt;%== can.view.render(\"item.ejs\",item) %&gt;\n  &lt;% }) %&gt;\n&lt;/ul&gt;\n</code></pre>\n\n<h2>Using renderer functions</h2>\n\n<p>If you only pass the view path, `can.view will return a renderer function that can be called with\nthe data to render:</p>\n\n<pre><code>var renderer = can.view.render(\"welcome.ejs\");\n// Do some more things\nrenderer({hello: \"world\"}) // -&gt; Document Fragment\n</code></pre>",
     "description": "<p>Render a template. </p>",
     "title": "",
     "signatures": [{

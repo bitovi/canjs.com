@@ -97,8 +97,8 @@
 		
 			
 				<li >
-				<a href="Deferreds.html">
-					 Deferreds 
+				<a href="Observes.html">
+					 Observes 
 				</a>
 				</li>
 			
@@ -113,8 +113,16 @@
 		
 			
 				<li >
-				<a href="Observes.html">
-					 Observes 
+				<a href="Templates.html">
+					 Templates 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Deferreds.html">
+					 Deferreds 
 				</a>
 				</li>
 			
@@ -128,28 +136,20 @@
 			
 		
 			
-				<li class="heading"><span>page</span>
-					<ul>
-						
-						
-						<li >
-							<a href="EJS.html">
-								 EJS 
-							</a>
-						</li>
-						
-						
-						
-						<li class="active">
-							<a href="Mustache.html">
-								 Mustache 
-							</a>
-						</li>
-						
-						
-					</ul>
+				<li >
+				<a href="EJS.html">
+					 EJS 
+				</a>
 				</li>
-				
+			
+		
+			
+				<li class="active">
+				<a href="Mustache.html">
+					 Mustache 
+				</a>
+				</li>
+			
 		
 		</ul>
 		
@@ -451,7 +451,8 @@ ID inside <code>{{&gt; }}</code>.</p>
     "body": "<p><a href=\"can.Mustache\">Mustache</a> provides logic-less templates that will live-bind to\nObserves. You can get Mustache functionality as a <a href=\"http://canjs.us/release/latest/can.view.mustache.js\">plugin</a>\nfor CanJS. Mustach and Handlebar templates are both compatible with CanJS's\nMustache implementation, so you can reuse any existing templates you have.</p>\n\n<p>Mustache is easy to get started with. Templates look like normal HTML, except\nthey contain special tags for inserting data into the template, iterating\nthrough lists, and filtering blocks.</p>\n\n<p>Here's an example of a template that might render a list of Todos:</p>\n\n<pre><code class=\"lang-javascript\">&lt;script type=\"text/mustache\" id=\"todosList\">\n{{#todos}}\n&lt;li>{{description}}&lt;/li>\n{{/todos}}\n&lt;/script></code></pre>\n\n<p>And you can use <code>can.view</code> to render the template:</p>\n\n<pre><code class=\"lang-javascript\">Todo.findAll({}, function(todos) {\n    document.getElementById('list')\n        .appendChild(can.view('todoList', {todos: todos}));\n});</code></pre>\n\n<h2>Magic tags</h2>\n\n<p>There are three kinds of magic tags used in Mustache:</p>\n\n<ul>\n<li><code>{{ }}</code> will HTML-escape the value enclosed inside the tags and write it to\nthe template.</li>\n<li><code>{{{ }}}</code> will write the value enclosed inside the tags and write it directly\nto the template without escaping it.</li>\n<li><code>{{! }}</code> will write nothing to the template and is mostly used for comments.</li>\n</ul>\n\n<h3>Keys</h3>\n\n<p>Keys insert data into the template. They reference variables in the current\ncontext.</p>\n\n<p>This template:</p>\n\n<pre><code class=\"lang-javascript\">Name: {{name}}</code></pre>\n\n<p>given this data:</p>\n\n<pre><code class=\"lang-javascript\">{name: 'Alice'}</code></pre>\n\n<p>will render thusly:</p>\n\n<pre><code class=\"lang-javascript\">Name: Alice</code></pre>\n\n<h3>Sections</h3>\n\n<p>Sections contain text blocks and are conditionally rendered based on the value\nenclosed in the opening tag. They also change the context inside them to the\nkey referenced in the opening tag.</p>\n\n<p>For the following examples, we will assume the template is being populated with\nthis set of data:</p>\n\n<pre><code class=\"lang-javascript\">{\n    name: 'Alice Liddell',\n    nickname: '',\n    friends: ['Bob', 'Eve'],\n    enemies: []\n}</code></pre>\n\n<p>If the key is <code>undefined</code>, <code>null</code>, <code>false</code>, <code>''</code>, or <code>[]</code>, it is considered\na falsey value and the section is not rendered at all. Neither of these sections\nwill render:</p>\n\n<pre><code class=\"lang-javascript\">{{#enemies}}\n&lt;li>{{.}}&lt;/li>\n{{/enemies}}</code></pre>\n\n<pre><code class=\"lang-javascript\">{{#nickname}}{{.}}{{/nickname}}</code></pre>\n\n<p>If the key is a non-empty array, the section will be rendered once for each\nelement in the array. If it is truthy but not an array, the section is rendered\nonce.</p>\n\n<p>This template:</p>\n\n<pre><code class=\"lang-javascript\">&lt;h1>{{#name}}{{.}}{{/name}}&lt;/h1>\n&lt;ul>\n    {{#friends}}\n    &lt;li>{{.}}&lt;/li>\n    {{/friends}}\n&lt;/ul></code></pre>\n\n<p>will render like this:</p>\n\n<pre><code class=\"lang-javascript\">&lt;h1>Alice Liddell&lt;/h1>\n&lt;ul>\n    &lt;li>Bob&lt;/li>\n    &lt;li>Eve&lt;/li>\n&lt;/ul></code></pre>\n\n<p>You can also make inverted sections that render if the key referenced in the\nopening tag is falsey:</p>\n\n<pre><code class=\"lang-javascript\">&lt;ul>\n    {{#friends}}\n    &lt;li>{{.}}&lt;/li>\n    {{/friends}}\n    {{^friends}}\n    &lt;li>You have no friends.&lt;/li>\n    {{/friends}}\n&lt;/ul></code></pre>\n\n<h3>Context</h3>\n\n<p>When Mustache is resolving an object in a section, it sets the current context\nto the object value for which it is iterating. (If the key in the opening tag\nof a section was not an array, it sets the context to the value of that key.)\nYou can reference the current context as <code>.</code>.</p>\n\n<p>Internally, Mustache keeps a stack of contexts as the template enters nested\nsections and helpers. If a key is not found in the current context, Mustache\nwill look for the the in each successive parent context until it resolves the\nkey or runs out of parent contexts.</p>\n\n<p>For example, with this data:</p>\n\n<pre><code class=\"lang-javascript\">{\n    brothers: [{name: 'Bob'}, {name: 'David'}],\n    sisters: [{name: 'Alice'}, {name: 'Eve'}]\n}</code></pre>\n\n<p>and this template:</p>\n\n<pre><code class=\"lang-javascript\">{{#brothers}}\n    {{#sisters}}\n        {{name}}\n    {{/sisters}}\n{{/brothers}}</code></pre>\n\n<p>the rendered result will be:</p>\n\n<pre><code class=\"lang-javascript\">Alice\nEve\nAlice\nEve</code></pre>\n\n<p>Since there is no <code>sisters</code> key in the context of the elements of the <code>brothers</code>\narray, Mustache jumps up to the parent context and resolves <code>sisters</code> there.</p>\n\n<h2>Helpers</h2>\n\n<p>Mustache lets you register functions to be called from inside the template called\nhelpers. Since Mustache template are logic-less, all your view logic will be\ninside helpers.</p>\n\n<p>To use a helper that is local to the template you're rendering, pass it as the\nthird argument to <code>can.view</code> in an object where the key is the name of the helper\nand the value is the helper function:</p>\n\n<pre><code class=\"lang-javascript\">var fragment = can.view('todosList', {todos: todos}, {\n    uppercase: function(str) {\n        return str.toUppercase();\n    }\n});</code></pre>\n\n<p>This might be used in a template like this:</p>\n\n<pre><code class=\"lang-javascript\">&lt;script type=\"text/mustache\" id=\"todosList\">\n{{#todos}}\n&lt;li>{{uppercase description}}&lt;/li>\n{{/todos}}\n&lt;/script></code></pre>\n\n<p>If a property of an observe is passed to a helper function, the helper will\nbecome a <code>[can.compute](can.compute)</code>. As an example, if you had this template:</p>\n\n<pre><code class=\"lang-javascript\">&lt;script type=\"text/mustache\" id=\"prefixedName\">\n&lt;div>{{addMs lastName}}&lt;/div>\n&lt;/script></code></pre>\n\n<p>And you ran this code:</p>\n\n<pre><code class=\"lang-javascript\">var name = new can.Observe({firstName: 'Alice', lastName: 'Liddell'});\ndocument.getElementById('name')\n    .appendChild(can.view('prefixedName', name, {\n        addMs: function(lastName) {\n            return 'Ms. ' + lastName;\n        }\n    }));\nname.attr({firstName: 'Allison', lastName: 'Wonderland'});</code></pre>\n\n<p>The contents of the &lt;div> would be <code>Ms. Wonderland</code>.</p>\n\n<h3>Global helpers</h3>\n\n<p>You can register global helpers using <code>can.Mustache.registerHelper</code>:</p>\n\n<pre><code class=\"lang-javascript\">can.Mustache.registerHelper('i10n', function(str, options) {\n    return (Globalize != undefined ? Globalize.localize(str) : str);\n});</code></pre>\n\n<h3>Data helpers</h3>\n\n<p>You can use the <code>data</code> helper in Mustache to associate data to an element. This\nhelper will associate the current context (<code>.</code>) with a key you pass to the\nhelper.</p>\n\n<p>For example, this template:</p>\n\n<pre><code class=\"lang-javascript\">&lt;script type=\"text/mustache\" id=\"nameDiv\">\n&lt;div id=\"person\" {{data 'name'}}>{{firstName}} {{lastName}}&lt;/div>\n&lt;/script></code></pre>\n\n<p>lets you do this in code:</p>\n\n<pre><code class=\"lang-javascript\">document.body.appendChild(can.view('nameDiv', {\n    firstName: 'Alice',\n    lastName: 'Liddell'\n}));\n\nvar obj = can.data(document.getElementById('person'), 'name');\nobj; // { firstName: 'Alice', lastName: 'Liddell'}</code></pre>\n\n<h2>Partials</h2>\n\n<p>You can embed templates in other templates by using partials. Partials inherit\nthe context where they are called. They are evaluated at render time, so you\nshould be careful to avoid infinite loops. To include a partial, put its URL or\nID inside <code>{{&gt; }}</code>.</p>\n\n<p>With these templates:</p>\n\n<pre><code class=\"lang-javascript\">&lt;script type=\"text/mustache\" id=\"names\">\n&lt;ul>\n{{#names}}\n    {{>user}}\n{{/names}}\n&lt;/ul>\n&lt;/script>\n&lt;script type=\"text/mustache\" id=\"user\">\n&lt;li>{{firstName}} {{lastName}}&lt;/li>\n&lt;/script></code></pre>\n\n<p>the expanded template at render time would look similar to:</p>\n\n<pre><code class=\"lang-javascript\">&lt;ul>\n{{#names}}\n    &lt;li>{{firstName}} {{lastName}}&lt;/li>\n{{/names}}\n&lt;/ul></code></pre>",
     "description": "",
     "title": "Mustache",
-    "parent": "Views",
+    "parent": "Tutorial",
+    "order": 8,
     "comment": " ",
     "src": "_guides/mustache.md",
     "id": 6

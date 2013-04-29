@@ -73,11 +73,6 @@
 		</div>
 		<ul class="api">
 	
-	<li >
-	<a href="can.util.html">can.util</a>
-	
-	</li>
-	
 	<li class="active">
 	<a href="can.Construct.html">can.Construct</a>
 	
@@ -85,8 +80,58 @@
 		<ul>
 		
 			
+				<li class="heading"><span>prototype</span>
+					<ul>
+						
+						
+						<li >
+							<a href="can.Construct.prototype.constructor.html">
+								 constructor 
+							</a>
+						</li>
+						
+						
+						
+						<li class="active">
+							<a href="can.Construct.prototype.init.html">
+								 init 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.prototype.setup.html">
+								 setup 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
+		
+			
 				<li class="heading"><span>static</span>
 					<ul>
+						
+						
+						
+						
+						<li >
+							<a href="can.Construct.static.fullName.html">
+								 fullName 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.static.namespace.html">
+								 namespace 
+							</a>
+						</li>
+						
 						
 						
 						<li >
@@ -105,59 +150,9 @@
 						
 						
 						
-						
-						
-						<li >
-							<a href="can.Construct.static.namespace.html">
-								 namespace 
-							</a>
-						</li>
-						
-						
-						
 						<li >
 							<a href="can.Construct.static.shortName.html">
 								 shortName 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Construct.static.fullName.html">
-								 fullName 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
-		
-			
-				<li class="heading"><span>prototype</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Construct.prototype.setup.html">
-								 setup 
-							</a>
-						</li>
-						
-						
-						
-						<li class="active">
-							<a href="can.Construct.prototype.init.html">
-								 init 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Construct.prototype.constructor.html">
-								 constructor 
 							</a>
 						</li>
 						
@@ -172,12 +167,7 @@
 	</li>
 	
 	<li >
-	<a href="can.Observe.html">can.Observe</a>
-	
-	</li>
-	
-	<li >
-	<a href="can.Observe.List.html">can.Observe.List</a>
+	<a href="can.Control.html">can.Control</a>
 	
 	</li>
 	
@@ -192,12 +182,22 @@
 	</li>
 	
 	<li >
-	<a href="can.Control.html">can.Control</a>
+	<a href="can.Observe.html">can.Observe</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.List.html">can.Observe.List</a>
 	
 	</li>
 	
 	<li >
 	<a href="can.route.html">can.route</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.util.html">can.util</a>
 	
 	</li>
 	
@@ -272,7 +272,7 @@
 		
 		<section class="comment">
 			<p>If a prototype <code>init</code> method is provided, it is called when a new Construct is created,
-after [can.Construct::setup]. The <code>init</code> method is where the bulk of your initialization code
+after <a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a>. The <code>init</code> method is where the bulk of your initialization code
 should go, and a common thing to do in <code>init</code> is to save the arguments passed into the constructor.</p>
 
 <h2>Examples</h2>
@@ -311,7 +311,7 @@ brian.bio(); // "Hi! I'm Brian Moschel and I write ECMAScript.";</code></pre>
 
 <h2>Be Aware</h2>
 
-<p>[can.Construct::setup] is able to modify the arguments passed to <code>init</code>.
+<p><a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a> is able to modify the arguments passed to <code>init</code>.
 If you aren't receiving the right arguments to <code>init</code>, check to make sure
 that they aren't being changed by <code>setup</code> somewhere along the inheritance chain.</p>
 		</section>
@@ -321,7 +321,7 @@ that they aren't being changed by <code>setup</code> somewhere along the inherit
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<p>If a prototype <code>init</code> method is provided, it is called when a new Construct is created,\nafter [can.Construct::setup]. The <code>init</code> method is where the bulk of your initialization code\nshould go, and a common thing to do in <code>init</code> is to save the arguments passed into the constructor.</p>\n\n<h2>Examples</h2>\n\n<p>First, we'll make a Person constructor that has a first and last name:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct(\"Person\", {\n    init: function(first, last) {\n        this.first = first;\n        this.last  = last;\n    }\n});\n\nvar justin = new Person(\"Justin\", \"Meyer\");\njustin.first; // \"Justin\"\njustin.last; // \"Meyer\"</code></pre>\n\n<p>Then we'll extend Person into Programmer and add a favorite language:</p>\n\n<pre><code class=\"lang-javascript\">Person(\"Programmer\", {\n    init: function(first, last, language) {\n        // call base's init\n        Person.prototype.init.apply(this, arguments);\n\n        // other initialization code\n        this.language = language;\n    },\n    bio: function() {\n        return 'Hi! I'm ' + this.first + ' ' + this.last +\n            ' and I write ' + this.language + '.';\n    }\n});\n\nvar brian = new Programmer(\"Brian\", \"Moschel\", 'ECMAScript');\nbrian.bio(); // \"Hi! I'm Brian Moschel and I write ECMAScript.\";</code></pre>\n\n<h2>Be Aware</h2>\n\n<p>[can.Construct::setup] is able to modify the arguments passed to <code>init</code>.\nIf you aren't receiving the right arguments to <code>init</code>, check to make sure\nthat they aren't being changed by <code>setup</code> somewhere along the inheritance chain.</p>",
+    "body": "<p>If a prototype <code>init</code> method is provided, it is called when a new Construct is created,\nafter <a href=\"can.Construct.prototype.setup.html\">can.Construct.prototype.setup</a>. The <code>init</code> method is where the bulk of your initialization code\nshould go, and a common thing to do in <code>init</code> is to save the arguments passed into the constructor.</p>\n\n<h2>Examples</h2>\n\n<p>First, we'll make a Person constructor that has a first and last name:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct(\"Person\", {\n    init: function(first, last) {\n        this.first = first;\n        this.last  = last;\n    }\n});\n\nvar justin = new Person(\"Justin\", \"Meyer\");\njustin.first; // \"Justin\"\njustin.last; // \"Meyer\"</code></pre>\n\n<p>Then we'll extend Person into Programmer and add a favorite language:</p>\n\n<pre><code class=\"lang-javascript\">Person(\"Programmer\", {\n    init: function(first, last, language) {\n        // call base's init\n        Person.prototype.init.apply(this, arguments);\n\n        // other initialization code\n        this.language = language;\n    },\n    bio: function() {\n        return 'Hi! I'm ' + this.first + ' ' + this.last +\n            ' and I write ' + this.language + '.';\n    }\n});\n\nvar brian = new Programmer(\"Brian\", \"Moschel\", 'ECMAScript');\nbrian.bio(); // \"Hi! I'm Brian Moschel and I write ECMAScript.\";</code></pre>\n\n<h2>Be Aware</h2>\n\n<p><a href=\"can.Construct.prototype.setup.html\">can.Construct.prototype.setup</a> is able to modify the arguments passed to <code>init</code>.\nIf you aren't receiving the right arguments to <code>init</code>, check to make sure\nthat they aren't being changed by <code>setup</code> somewhere along the inheritance chain.</p>",
     "description": "",
     "title": "init",
     "name": "can.Construct.prototype.init",

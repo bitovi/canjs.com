@@ -74,22 +74,12 @@
 		<ul class="api">
 	
 	<li >
-	<a href="can.util.html">can.util</a>
-	
-	</li>
-	
-	<li >
 	<a href="can.Construct.html">can.Construct</a>
 	
 	</li>
 	
 	<li >
-	<a href="can.Observe.html">can.Observe</a>
-	
-	</li>
-	
-	<li >
-	<a href="can.Observe.List.html">can.Observe.List</a>
+	<a href="can.Control.html">can.Control</a>
 	
 	</li>
 	
@@ -98,6 +88,54 @@
 	
 		
 		<ul>
+		
+			
+				<li class="heading"><span>prototype</span>
+					<ul>
+						
+						
+						<li >
+							<a href="can.Model.prototype.bind.html">
+								 bind 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Model.prototype.destroy.html">
+								 destroy 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Model.prototype.isNew.html">
+								 isNew 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Model.prototype.save.html">
+								 save 
+							</a>
+						</li>
+						
+						
+						
+						<li class="active">
+							<a href="can.Model.prototype.unbind.html">
+								 unbind 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
 		
 			
 				<li class="heading"><span>static</span>
@@ -113,32 +151,8 @@
 						
 						
 						<li >
-							<a href="can.Model.static.unbind.html">
-								 unbind 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.id.html">
-								 id 
-							</a>
-						</li>
-						
-						
-						
-						<li >
 							<a href="can.Model.static.create.html">
 								 create 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.update.html">
-								 update 
 							</a>
 						</li>
 						
@@ -169,8 +183,8 @@
 						
 						
 						<li >
-							<a href="can.Model.static.models.html">
-								 models 
+							<a href="can.Model.static.id.html">
+								 id 
 							</a>
 						</li>
 						
@@ -183,50 +197,26 @@
 						</li>
 						
 						
-					</ul>
-				</li>
-				
-		
-			
-				<li class="heading"><span>prototype</span>
-					<ul>
-						
 						
 						<li >
-							<a href="can.Model.prototype.isNew.html">
-								 isNew 
+							<a href="can.Model.static.models.html">
+								 models 
 							</a>
 						</li>
 						
 						
 						
 						<li >
-							<a href="can.Model.prototype.save.html">
-								 save 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.prototype.destroy.html">
-								 destroy 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.prototype.bind.html">
-								 bind 
-							</a>
-						</li>
-						
-						
-						
-						<li class="active">
-							<a href="can.Model.prototype.unbind.html">
+							<a href="can.Model.static.unbind.html">
 								 unbind 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Model.static.update.html">
+								 update 
 							</a>
 						</li>
 						
@@ -246,12 +236,22 @@
 	</li>
 	
 	<li >
-	<a href="can.Control.html">can.Control</a>
+	<a href="can.Observe.html">can.Observe</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.List.html">can.Observe.List</a>
 	
 	</li>
 	
 	<li >
 	<a href="can.route.html">can.route</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.util.html">can.util</a>
 	
 	</li>
 	
@@ -357,7 +357,7 @@ for the given event.</p>
 		
 		<section class="comment">
 			<p><code>unbind(eventName, handler)</code> removes a listener
-attached with [can.Model::bind].</p>
+attached with <a href="can.Model.prototype.bind.html">can.Model.prototype.bind</a>.</p>
 
 <pre><code>var handler = function(ev, createdTask){
 
@@ -381,7 +381,7 @@ if there are no other listeners.</p>
     "type": "function",
     "name": "can.Model.prototype.unbind",
     "parent": "can.Model.prototype",
-    "body": "<p><code>unbind(eventName, handler)</code> removes a listener\nattached with [can.Model::bind].</p>\n\n<pre><code>var handler = function(ev, createdTask){\n\n}\ntask.bind(\"created\", handler)\ntask.unbind(\"created\", handler)\n</code></pre>\n\n<p>You have to pass the same function to <code>unbind</code> that you\npassed to <code>bind</code>.</p>\n\n<p>Unbind will also remove the instance from the store\nif there are no other listeners.</p>",
+    "body": "<p><code>unbind(eventName, handler)</code> removes a listener\nattached with <a href=\"can.Model.prototype.bind.html\">can.Model.prototype.bind</a>.</p>\n\n<pre><code>var handler = function(ev, createdTask){\n\n}\ntask.bind(\"created\", handler)\ntask.unbind(\"created\", handler)\n</code></pre>\n\n<p>You have to pass the same function to <code>unbind</code> that you\npassed to <code>bind</code>.</p>\n\n<p>Unbind will also remove the instance from the store\nif there are no other listeners.</p>",
     "description": "<p>Stop listening to events on this Model. </p>",
     "title": "unbind",
     "signatures": [{

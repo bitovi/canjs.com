@@ -73,11 +73,6 @@
 		</div>
 		<ul class="api">
 	
-	<li >
-	<a href="can.util.html">can.util</a>
-	
-	</li>
-	
 	<li class="active">
 	<a href="can.Construct.html">can.Construct</a>
 	
@@ -85,8 +80,58 @@
 		<ul>
 		
 			
+				<li class="heading"><span>prototype</span>
+					<ul>
+						
+						
+						<li >
+							<a href="can.Construct.prototype.constructor.html">
+								 constructor 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.prototype.init.html">
+								 init 
+							</a>
+						</li>
+						
+						
+						
+						<li class="active">
+							<a href="can.Construct.prototype.setup.html">
+								 setup 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
+		
+			
 				<li class="heading"><span>static</span>
 					<ul>
+						
+						
+						
+						
+						<li >
+							<a href="can.Construct.static.fullName.html">
+								 fullName 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.static.namespace.html">
+								 namespace 
+							</a>
+						</li>
+						
 						
 						
 						<li >
@@ -105,59 +150,9 @@
 						
 						
 						
-						
-						
-						<li >
-							<a href="can.Construct.static.namespace.html">
-								 namespace 
-							</a>
-						</li>
-						
-						
-						
 						<li >
 							<a href="can.Construct.static.shortName.html">
 								 shortName 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Construct.static.fullName.html">
-								 fullName 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
-		
-			
-				<li class="heading"><span>prototype</span>
-					<ul>
-						
-						
-						<li class="active">
-							<a href="can.Construct.prototype.setup.html">
-								 setup 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Construct.prototype.init.html">
-								 init 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Construct.prototype.constructor.html">
-								 constructor 
 							</a>
 						</li>
 						
@@ -172,12 +167,7 @@
 	</li>
 	
 	<li >
-	<a href="can.Observe.html">can.Observe</a>
-	
-	</li>
-	
-	<li >
-	<a href="can.Observe.List.html">can.Observe.List</a>
+	<a href="can.Control.html">can.Control</a>
 	
 	</li>
 	
@@ -192,12 +182,22 @@
 	</li>
 	
 	<li >
-	<a href="can.Control.html">can.Control</a>
+	<a href="can.Observe.html">can.Observe</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.List.html">can.Observe.List</a>
 	
 	</li>
 	
 	<li >
 	<a href="can.route.html">can.route</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.util.html">can.util</a>
 	
 	</li>
 	
@@ -296,7 +296,7 @@ directly-inheriting classes will break. In other words, don't do this:</p>
 
 <h2><code>setup</code> vs. <code>init</code></h2>
 
-<p>Usually, you should use [can.Construct::init] to do your class's initialization.
+<p>Usually, you should use <a href="can.Construct.prototype.init.html">can.Construct.prototype.init</a> to do your class's initialization.
 Use <code>setup</code> instead for:</p>
 
 <ul>
@@ -309,7 +309,7 @@ call their base's <code>init</code> methods.</li>
 
 <h2>Example</h2>
 
-<p>This code is a simplified version of the code in [can.Control]'s setup
+<p>This code is a simplified version of the code in <a href="can.Control.html">can.Control</a>'s setup
 method. It converts the first argument to a jQuery collection and
 extends the controller's defaults with the options that were passed.</p>
 
@@ -335,7 +335,7 @@ extends the controller's defaults with the options that were passed.</p>
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<p>If a prototype <code>setup</code> method is provided, it is called when a new \ninstance is created. It is passed the same arguments that were passed\nto the constructor.</p>\n\n<p>Because <code>setup</code> is not defined on <code>can.Construct</code> itself, calling super from\ndirectly-inheriting classes will break. In other words, don't do this:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('Snowflake', {\n    setup: function() {\n        this._super(); // this will break!\n    }\n});</code></pre>\n\n<h2><code>setup</code> vs. <code>init</code></h2>\n\n<p>Usually, you should use [can.Construct::init] to do your class's initialization.\nUse <code>setup</code> instead for:</p>\n\n<ul>\n<li>initialization code that you want to run before the inheriting constructor's \n<code>init</code> method is called.</li>\n<li>initialization code that should run whether or not inheriting constructors\ncall their base's <code>init</code> methods.</li>\n<li>modifying the arguments that will get passed to <code>init</code>.</li>\n</ul>\n\n<h2>Example</h2>\n\n<p>This code is a simplified version of the code in [can.Control]'s setup\nmethod. It converts the first argument to a jQuery collection and\nextends the controller's defaults with the options that were passed.</p>\n\n<pre><code class=\"lang-javascript\">can.Construct(\"can.Control\", {\n    setup: function(domElement, rawOptions) {\n        // set up this.element\n        this.element = $(domElement);\n\n        // set up this.options\n        this.options = can.extend({},\n                                  this.constructor.defaults,\n                                  rawOptions\n                                 );\n\n        // pass this.element and this.options to init.\n        return [this.element, this.options];        \n    }\n});</code></pre>         ",
+    "body": "<p>If a prototype <code>setup</code> method is provided, it is called when a new \ninstance is created. It is passed the same arguments that were passed\nto the constructor.</p>\n\n<p>Because <code>setup</code> is not defined on <code>can.Construct</code> itself, calling super from\ndirectly-inheriting classes will break. In other words, don't do this:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('Snowflake', {\n    setup: function() {\n        this._super(); // this will break!\n    }\n});</code></pre>\n\n<h2><code>setup</code> vs. <code>init</code></h2>\n\n<p>Usually, you should use <a href=\"can.Construct.prototype.init.html\">can.Construct.prototype.init</a> to do your class's initialization.\nUse <code>setup</code> instead for:</p>\n\n<ul>\n<li>initialization code that you want to run before the inheriting constructor's \n<code>init</code> method is called.</li>\n<li>initialization code that should run whether or not inheriting constructors\ncall their base's <code>init</code> methods.</li>\n<li>modifying the arguments that will get passed to <code>init</code>.</li>\n</ul>\n\n<h2>Example</h2>\n\n<p>This code is a simplified version of the code in <a href=\"can.Control.html\">can.Control</a>'s setup\nmethod. It converts the first argument to a jQuery collection and\nextends the controller's defaults with the options that were passed.</p>\n\n<pre><code class=\"lang-javascript\">can.Construct(\"can.Control\", {\n    setup: function(domElement, rawOptions) {\n        // set up this.element\n        this.element = $(domElement);\n\n        // set up this.options\n        this.options = can.extend({},\n                                  this.constructor.defaults,\n                                  rawOptions\n                                 );\n\n        // pass this.element and this.options to init.\n        return [this.element, this.options];        \n    }\n});</code></pre>         ",
     "description": "",
     "title": "setup",
     "name": "can.Construct.prototype.setup",
