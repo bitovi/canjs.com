@@ -1,5 +1,5 @@
 @page Controls Controls
-@parent Tutorial
+@parent Tutorial 6
 
 @body
 Controls made with can.Control are organized, memory-leak free,
