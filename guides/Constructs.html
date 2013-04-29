@@ -43,7 +43,7 @@
 
 			<ul class="nav">
 				<li class=""><a href="../index.html">Home</a></li>
-				<li class="active"><a href="../guides">Guides</a></li>
+				<li class="active"><a href="../guides/index.html">Guides</a></li>
 				<li class=""><a href="../docs/index.html">Api</a></li>
 				<li class=""><a href="../community.html">Community</a></li>
 				<li class=""><a href="../download.html">Download</a></li>
@@ -86,6 +86,70 @@
 				</a>
 				</li>
 			
+		
+			
+				<li >
+				<a href="Controls.html">
+					 Controls 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Deferreds.html">
+					 Deferreds 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Models.html">
+					 Models 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Observes.html">
+					 Observes 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Utilities.html">
+					 Utilities 
+				</a>
+				</li>
+			
+		
+			
+				<li class="heading"><span>page</span>
+					<ul>
+						
+						
+						<li >
+							<a href="EJS.html">
+								 EJS 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="Mustache.html">
+								 Mustache 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
 		
 		</ul>
 		
@@ -196,6 +260,12 @@ t.description; // 'Something to do.'</code></pre>
 
 <p>If you're extending a Construct, you probably want to make sure you call the
 base's <code>init</code> method inside the child's <code>init</code>:</p>
+
+<pre><code class="lang-javascript">var PrivateTodo = can.Construct({
+    init: function(options) {
+        this.
+    }
+});</code></pre>
 		</section>
 		
 	</article>
@@ -205,10 +275,11 @@ base's <code>init</code> method inside the child's <code>init</code>:</p>
 	var docData = {
     "type": "page",
     "name": "Constructs",
-    "body": "<p>Constructor functions made with [can.Construct] are used to create objects with\nshared properties, and they make managing inheritance in JavaScript much easier.\n[Observes] (and through Observes, [Models] and [Controls]) are based off of\nConstructs, so learning how they work is fundamental to understanding CanJS.</p>\n\n<p>To create a constructor function of your own, call <code>can.Construct</code> and pass in\nan object of static properties (which will be attached directly to the \nconstructor) and an object of instance properties (which will be attached to\neach instance of the Construct):</p>\n\n<pre><code class=\"lang-javascript\">var Todo = can.Construct({ }, {\n    description: 'Something to do.',\n    author: 'Unknown',\n    allowedToEdit: function() {\n        return true;\n    }\n});\n\nvar t = new Todo();\n\nt.description; // 'Something to do.'\nt.author; // 'Unknown'\nt.allowedToEdit(); // true</code></pre>\n\n<p>There are a few other ways to create classes with  <code>can.Construct</code>; see\n[the API] for all the details.</p>\n\n<h2>Inheritance</h2>\n\n<p>can.Construct sets up the prototype chain so that Constructs are easy to\nsubclass. Call the constructor function of the class you want to extend and give\nit the arguments you would pass to <code>can.Construct</code>:</p>\n\n<pre><code class=\"lang-javascript\">// If only one argument is passed, they are considered instance properties.\nvar PrivateTodo = Todo({\n    description: 'Something secret!',\n    allowedToEdit: function(account) {\n        return account.owns(this);\n    }\n});\n\nvar p = new PrivateTodo();\np.author; // 'Unknown'\np.description; // 'Something secret!'\np.allowedToEdit({owns: function(){ return false; }}); // false</code></pre>\n\n<h2>Initialization</h2>\n\n<p>As you can see above, when a constructor function is called with <code>new</code>,\ncan.Construct creates a new instance of that class. If you've supplied an\ninstance method called <code>[init]</code>, can.Construct will call that as well, passing\nit the arguments you passed to the constructor.</p>\n\n<p>This helps make our Todo a little more configurable:</p>\n\n<pre><code class=\"lang-javascript\">var Todo = can.Construct({\n    description: 'Something to do.',\n    author: 'Unknown',\n\n    init: function(options) {\n        this.author = options.author || this.author;\n        this.description = options.description || this.description;\n    }\n});\n\nvar t = new Todo({author: 'Me!'});\nt.author; // 'Me!'\nt.description; // 'Something to do.'</code></pre>\n\n<p>If you're extending a Construct, you probably want to make sure you call the\nbase's <code>init</code> method inside the child's <code>init</code>:</p>",
+    "body": "<p>Constructor functions made with [can.Construct] are used to create objects with\nshared properties, and they make managing inheritance in JavaScript much easier.\n[Observes] (and through Observes, [Models] and [Controls]) are based off of\nConstructs, so learning how they work is fundamental to understanding CanJS.</p>\n\n<p>To create a constructor function of your own, call <code>can.Construct</code> and pass in\nan object of static properties (which will be attached directly to the \nconstructor) and an object of instance properties (which will be attached to\neach instance of the Construct):</p>\n\n<pre><code class=\"lang-javascript\">var Todo = can.Construct({ }, {\n    description: 'Something to do.',\n    author: 'Unknown',\n    allowedToEdit: function() {\n        return true;\n    }\n});\n\nvar t = new Todo();\n\nt.description; // 'Something to do.'\nt.author; // 'Unknown'\nt.allowedToEdit(); // true</code></pre>\n\n<p>There are a few other ways to create classes with  <code>can.Construct</code>; see\n[the API] for all the details.</p>\n\n<h2>Inheritance</h2>\n\n<p>can.Construct sets up the prototype chain so that Constructs are easy to\nsubclass. Call the constructor function of the class you want to extend and give\nit the arguments you would pass to <code>can.Construct</code>:</p>\n\n<pre><code class=\"lang-javascript\">// If only one argument is passed, they are considered instance properties.\nvar PrivateTodo = Todo({\n    description: 'Something secret!',\n    allowedToEdit: function(account) {\n        return account.owns(this);\n    }\n});\n\nvar p = new PrivateTodo();\np.author; // 'Unknown'\np.description; // 'Something secret!'\np.allowedToEdit({owns: function(){ return false; }}); // false</code></pre>\n\n<h2>Initialization</h2>\n\n<p>As you can see above, when a constructor function is called with <code>new</code>,\ncan.Construct creates a new instance of that class. If you've supplied an\ninstance method called <code>[init]</code>, can.Construct will call that as well, passing\nit the arguments you passed to the constructor.</p>\n\n<p>This helps make our Todo a little more configurable:</p>\n\n<pre><code class=\"lang-javascript\">var Todo = can.Construct({\n    description: 'Something to do.',\n    author: 'Unknown',\n\n    init: function(options) {\n        this.author = options.author || this.author;\n        this.description = options.description || this.description;\n    }\n});\n\nvar t = new Todo({author: 'Me!'});\nt.author; // 'Me!'\nt.description; // 'Something to do.'</code></pre>\n\n<p>If you're extending a Construct, you probably want to make sure you call the\nbase's <code>init</code> method inside the child's <code>init</code>:</p>\n\n<pre><code class=\"lang-javascript\">var PrivateTodo = can.Construct({\n    init: function(options) {\n        this.\n    }\n});</code></pre>",
     "description": "",
     "title": "Constructs",
     "parent": "Tutorial",
+    "order": 0,
     "comment": " ",
     "src": "_guides/constructs.md",
     "id": 0

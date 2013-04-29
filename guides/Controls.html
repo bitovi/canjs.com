@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" href="../resources/styles.css" />
+</head>
+
+<body class="guides">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand canjs" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://donejs.com">DoneJS</a></li>
+					<li class="active"><a href="../index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">JQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!FuncUnit">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
+				</ul>
+			</div>
+
+			<ul class="nav">
+				<li class=""><a href="../index.html">Home</a></li>
+				<li class="active"><a href="../guides/index.html">Guides</a></li>
+				<li class=""><a href="../docs/index.html">Api</a></li>
+				<li class=""><a href="../community.html">Community</a></li>
+				<li class=""><a href="../download.html">Download</a></li>
+			</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		<div class="search">
+			<input type="text"/>
+		</div>
+		<ul class="api">
+	
+	<li class="active">
+	<a href="Tutorial.html">Tutorial</a>
+	
+		
+		<ul>
+		
+			
+				<li >
+				<a href="Constructs.html">
+					 Constructs 
+				</a>
+				</li>
+			
+		
+			
+				<li class="active">
+				<a href="Controls.html">
+					 Controls 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Deferreds.html">
+					 Deferreds 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Models.html">
+					 Models 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Observes.html">
+					 Observes 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Utilities.html">
+					 Utilities 
+				</a>
+				</li>
+			
+		
+			
+				<li class="heading"><span>page</span>
+					<ul>
+						
+						
+						<li >
+							<a href="EJS.html">
+								 EJS 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="Mustache.html">
+								 Mustache 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
+		
+		</ul>
+		
+	
+	</li>
+	
+</ul>
+	</nav>
+
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/../_guides/controls.md">source</a></li>
+		
+		
+		
+	</ul>
+</div>
+
+	<h1>Controls</h1> <span class="module">Controls</span>
+
+
+
+
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+		<section class="comment">
+			<p>Controls made with can.Control are organized, memory-leak free,
+performant, stateful UI controls. can.Control lets you create controls like
+tabs, grids, context menus, and forms, and helps you organize them into
+higher-order business units, tying them all together with <a href="can.route">can.route</a>.
+Controls fill the traditional MVC controller role, managing data through Models
+made with can.Model and directing it to be displayed through views made with
+can.view.</p>
+
+<p>Because Controls are Constructs, you can create control constructors and
+instances just like with can.Construct. Here's what the constructor for a Control
+that manages a Todo list might look like:</p>
+
+<pre><code class="lang-javascript">var Todos = can.Control({
+    init: function(el, options) {
+        var self = this;
+        Todo.findAll({}, function(todos) {
+            self.element.html(can.view('todoList', todos));
+        });
+    }
+});</code></pre>
+
+<p>When you instantiate a control, pass it a selector, element, or library-wrapped
+NodeList that corresponds to the DOM element you want the Control to set to
+<code>this.element</code> for that Control. Also pass the control an object with any options
+for that particular instance. These options will be extended off of the Control's
+constructor's static defaults and set as <code>this.options</code> for that Control.</p>
+
+<p>Here we'll initiate a Todos controller to hang off of the element with ID <em>todos</em>
+and with no options supplied:</p>
+
+<pre><code class="lang-javascript">var todosList = new Todos('#todos', {});</code></pre>
+
+<p>If you specify a method called <code>init</code> when creating your Control's constructor,
+that method will be called when a new instance of that Control is created. The
+<code>init</code> method gets passed a library-wrapped NodeList containing <code>this.element</code>
+as the first parameter and <code>this.options</code> as the second parameter. Any other
+parameters you passed to the constructor during instantiation will also be passed
+to <code>init</code>.</p>
+
+<p>To demonstrate this, here is another version of the Todo list Control constructor
+that can have its view overridden, and the instantiation of that Control:</p>
+
+<pre><code class="lang-javascript">var Todos = can.Control({
+    defaults: {
+        view: 'todos.ejs'
+    }
+},{
+    init: function(el, options) {
+        var self = this;
+        Todo.findAll({}, function(todos) {
+            self.element.html(can.view(this.options.view, todos));
+        });
+    }
+});
+
+// this Control will use todos.ejs
+new Todos(document.body.firstChild);
+
+// this Control will use todos2.ejs
+new Todos('#todoList', {view: 'todos2.ejs'});</code></pre>
+
+<h2>Listening to events</h2>
+
+<p>Controls will automatically bind instance methods that look like event handlers.
+On this Control, <em>click</em> events on &lit;li> elements inside <code>this.element</code> will
+trigger the console log to be written to:</p>
+
+<pre><code class="lang-javascript">var Todos = can.Control({
+    init: function(el, options) {
+        var self = this;
+        Todo.findAll({}, function(todos) {
+            self.element.html(can.view('todoList', todos));
+        });
+    },
+    'li click': function(el, ev) {
+        console.log('You clicked ' + el.text());
+    }
+});</code></pre>
+
+<p>The event handlers are passed a library-wrapped NodeList containing the element
+that was clicked, and the event. can.Control uses event delegation, so you don't
+need to rebind handlers when you add or remove elements.</p>
+
+<p>One of the things we want to do with our to-do list is delete Todos. This is
+made easy with event handling in can.Control. Let's say that our view template looks like this:</p>
+
+<pre><code class="lang-javascript">&lt;script type="text/ejs" id="todoList">
+<% this.each(function(todo) { %>
+&lt;li <%= (el) -> el.data('todo', todo) %>>
+    <%= todo.attr('description'); %>
+    &lt;a class="destroy">X</a>
+&lt;/li>
+<% }) %>
+&lt;/script></code></pre>
+
+<p>We should put an event listener on our Todos Control to remove a Todo when its
+destruction link is clicked:</p>
+
+<pre><code class="lang-javascript">var Todos = can.Control({
+    init: function(el, options) {
+        var self = this;
+        Todo.findAll({}, function(todos) {
+            self.element.html(can.view('todoList', todos));
+        });
+    },
+    'li click': function(el, ev) {
+        console.log('You clicked ' + el.text());
+    },
+    'li .destroy click': function(el, ev) {
+        var li = el.closest('li'),
+            todo = li.data('todo');
+
+        todo.destroy();
+    }
+});</code></pre>
+
+<p>Destroying the Todo will take it out of the list of Todos being rendered
+(because the list of Todos passed into the template is a Model List), which will
+cause the template to re-render itself. This means that EJS's live binding will
+remove the appropriate &lt;li> automatically.</p>
+
+<h2>Templating event handlers</h2>
+
+<p>If a variable is placed in braces in the event handler key, can.Control will
+look up that key in the Control's <code>options</code>, and then on <code>window</code>. You can use
+this to customize the events that cause handlers to fire:</p>
+
+<pre><code class="lang-javascript">var Todos = can.Control({
+    defaults: {
+        destroyEvent: 'click'
+    }
+},{
+    init: function(el, options) {
+        var self = this;
+        Todo.findAll({}, function(todos) {
+            self.element.html(can.view(this.options.view, todos));
+        });
+    },
+    'li .destroy {destroyEvent}': function(el, ev) {
+        var li = el.closest('li'),
+            todo = li.data('todo');
+
+        todo.destroy();
+    }
+});
+
+new Todos('#todos', {destroyEvent; 'mouseenter'});</code></pre>
+
+<p>You can also use this to bind events to objects other that <code>this.element</code>
+within Controls. This is critical for avoiding memory leaks that are
+commonplace with other MVC applications and frameworks because it ensures that
+these handlers get unbound when the control is destroyed:</p>
+
+<pre><code class="lang-javascript">var Tooltip = can.Control({
+    '{window} click': function(el, ev) {
+        // hide only if we clicked outside the tooltip
+        if(! this.element.has(ev.target).length) {
+            this.element.remove();
+        }
+    }
+});</code></pre>
+
+<p>This is useful for listening to changes on models. Say that our live-binding did
+not take care of removing &lt;li>s after the corresponding Model was destroyed.
+In that case, we could implement that functionality by listening to when Todos
+are destroyed:</p>
+
+<pre><code class="lang-javascript">var Todos = can.Control({
+    defaults: {
+        destroyEvent: 'click'
+    }
+},{
+    init: function(el, options) {
+        var self = this;
+        self.todosList = todos;
+        Todo.findAll({}, function(todos) {
+            self.element.html(can.view(this.options.view, todos));
+        });
+    },
+    'li .destroy {destroyEvent}': function(el, ev) {
+        var li = el.closest('li'),
+            todo = li.data('todo');
+
+        todo.destroy();
+    },
+    '{Todo} destroyed': function(Todo, ev, destroyed) {
+        // find where the element is in the list
+        var index = this.todosList.indexOf(destroyed);
+        this.element.children(':nth-child(' + (index + 1) + ')').remove();
+        this.todosList.splice(index, 1);
+    }
+});</code></pre>
+
+<h2>Rebinding events</h2>
+
+<p>You can unbind and rebind all a Control's event handlers by calling <code>on</code> on it.
+This is useful when a Control starts listening to a specific Model, and you want
+to change which model it is listening to.</p>
+
+<p>In the example below, an Editor Control keeps a reference to the specific Todo
+it is editing. Its <code>todo</code> method calls <code>on</code> when the Todo being edited switches,
+because it needs to rebind <code>{todo} updated</code>.</p>
+
+<pre><code class="lang-javascript">var Editor = can.Control({
+    setDesc: function() {
+        this.element.val(this.options.todo.description);
+    },
+    // change what Todo this Control points at
+    todo: function(todo) {
+        this.options.todo = todo;
+        this.on();
+        this.setDesc();
+    },
+    // listen for changes in the Todo
+    '{todo} updated': function() {
+        this.setDesc();
+    },
+    // when the input changes, update the Todo
+    ' change': function(el, ev) {
+        this.options.todo.attr('description', el.val());
+        this.options.todo.save();
+    }
+});
+
+var todo1 = new Todo({id: 7, description: 'Take out the trash.'}),
+    todo2 = new Todo({id: 8, description: 'Wash the dishes.'}),
+    editor = new Editor('#editor');
+
+// start editing the first Todo
+editor.todo(todo1);
+
+// switch to editing the second Todo
+editor.todo(todo2);</code></pre>
+
+<h2>Destrying Controls</h2>
+
+<p>Calling <code>destroy</code> on a Control unbinds the Control's event handlers and removes
+its association with its element, but it does not remove the element from the
+page.</p>
+
+<pre><code class="lang-javascript">var list = new Todos('#todos');
+$('#todos').length; // 1
+list.destroy();
+$('#todos').length; // 1</code></pre>
+
+<p>However, when a Control's element is removed from the page, <code>destroy</code> is called
+on the Control.</p>
+
+<p>Taken together, templated event binding and Control's automatic cleanup make it
+nearly impossible to write applications with memory leaks. An application that
+uses only templated event handlers on the controls within the body could free
+up all the data it uses by calling <code>$(document.body).empty()</code>.</p>
+		</section>
+		
+	</article>
+</div>
+
+<script type="text/javascript">
+	var docData = {
+    "type": "page",
+    "name": "Controls",
+    "body": "<p>Controls made with can.Control are organized, memory-leak free,\nperformant, stateful UI controls. can.Control lets you create controls like\ntabs, grids, context menus, and forms, and helps you organize them into\nhigher-order business units, tying them all together with <a href=\"can.route\">can.route</a>.\nControls fill the traditional MVC controller role, managing data through Models\nmade with can.Model and directing it to be displayed through views made with\ncan.view.</p>\n\n<p>Because Controls are Constructs, you can create control constructors and\ninstances just like with can.Construct. Here's what the constructor for a Control\nthat manages a Todo list might look like:</p>\n\n<pre><code class=\"lang-javascript\">var Todos = can.Control({\n    init: function(el, options) {\n        var self = this;\n        Todo.findAll({}, function(todos) {\n            self.element.html(can.view('todoList', todos));\n        });\n    }\n});</code></pre>\n\n<p>When you instantiate a control, pass it a selector, element, or library-wrapped\nNodeList that corresponds to the DOM element you want the Control to set to\n<code>this.element</code> for that Control. Also pass the control an object with any options\nfor that particular instance. These options will be extended off of the Control's\nconstructor's static defaults and set as <code>this.options</code> for that Control.</p>\n\n<p>Here we'll initiate a Todos controller to hang off of the element with ID <em>todos</em>\nand with no options supplied:</p>\n\n<pre><code class=\"lang-javascript\">var todosList = new Todos('#todos', {});</code></pre>\n\n<p>If you specify a method called <code>init</code> when creating your Control's constructor,\nthat method will be called when a new instance of that Control is created. The\n<code>init</code> method gets passed a library-wrapped NodeList containing <code>this.element</code>\nas the first parameter and <code>this.options</code> as the second parameter. Any other\nparameters you passed to the constructor during instantiation will also be passed\nto <code>init</code>.</p>\n\n<p>To demonstrate this, here is another version of the Todo list Control constructor\nthat can have its view overridden, and the instantiation of that Control:</p>\n\n<pre><code class=\"lang-javascript\">var Todos = can.Control({\n    defaults: {\n        view: 'todos.ejs'\n    }\n},{\n    init: function(el, options) {\n        var self = this;\n        Todo.findAll({}, function(todos) {\n            self.element.html(can.view(this.options.view, todos));\n        });\n    }\n});\n\n// this Control will use todos.ejs\nnew Todos(document.body.firstChild);\n\n// this Control will use todos2.ejs\nnew Todos('#todoList', {view: 'todos2.ejs'});</code></pre>\n\n<h2>Listening to events</h2>\n\n<p>Controls will automatically bind instance methods that look like event handlers.\nOn this Control, <em>click</em> events on &lit;li> elements inside <code>this.element</code> will\ntrigger the console log to be written to:</p>\n\n<pre><code class=\"lang-javascript\">var Todos = can.Control({\n    init: function(el, options) {\n        var self = this;\n        Todo.findAll({}, function(todos) {\n            self.element.html(can.view('todoList', todos));\n        });\n    },\n    'li click': function(el, ev) {\n        console.log('You clicked ' + el.text());\n    }\n});</code></pre>\n\n<p>The event handlers are passed a library-wrapped NodeList containing the element\nthat was clicked, and the event. can.Control uses event delegation, so you don't\nneed to rebind handlers when you add or remove elements.</p>\n\n<p>One of the things we want to do with our to-do list is delete Todos. This is\nmade easy with event handling in can.Control. Let's say that our view template looks like this:</p>\n\n<pre><code class=\"lang-javascript\">&lt;script type=\"text/ejs\" id=\"todoList\">\n<% this.each(function(todo) { %>\n&lt;li <%= (el) -> el.data('todo', todo) %>>\n    <%= todo.attr('description'); %>\n    &lt;a class=\"destroy\">X</a>\n&lt;/li>\n<% }) %>\n&lt;/script></code></pre>\n\n<p>We should put an event listener on our Todos Control to remove a Todo when its\ndestruction link is clicked:</p>\n\n<pre><code class=\"lang-javascript\">var Todos = can.Control({\n    init: function(el, options) {\n        var self = this;\n        Todo.findAll({}, function(todos) {\n            self.element.html(can.view('todoList', todos));\n        });\n    },\n    'li click': function(el, ev) {\n        console.log('You clicked ' + el.text());\n    },\n    'li .destroy click': function(el, ev) {\n        var li = el.closest('li'),\n            todo = li.data('todo');\n\n        todo.destroy();\n    }\n});</code></pre>\n\n<p>Destroying the Todo will take it out of the list of Todos being rendered\n(because the list of Todos passed into the template is a Model List), which will\ncause the template to re-render itself. This means that EJS's live binding will\nremove the appropriate &lt;li> automatically.</p>\n\n<h2>Templating event handlers</h2>\n\n<p>If a variable is placed in braces in the event handler key, can.Control will\nlook up that key in the Control's <code>options</code>, and then on <code>window</code>. You can use\nthis to customize the events that cause handlers to fire:</p>\n\n<pre><code class=\"lang-javascript\">var Todos = can.Control({\n    defaults: {\n        destroyEvent: 'click'\n    }\n},{\n    init: function(el, options) {\n        var self = this;\n        Todo.findAll({}, function(todos) {\n            self.element.html(can.view(this.options.view, todos));\n        });\n    },\n    'li .destroy {destroyEvent}': function(el, ev) {\n        var li = el.closest('li'),\n            todo = li.data('todo');\n\n        todo.destroy();\n    }\n});\n\nnew Todos('#todos', {destroyEvent; 'mouseenter'});</code></pre>\n\n<p>You can also use this to bind events to objects other that <code>this.element</code>\nwithin Controls. This is critical for avoiding memory leaks that are\ncommonplace with other MVC applications and frameworks because it ensures that\nthese handlers get unbound when the control is destroyed:</p>\n\n<pre><code class=\"lang-javascript\">var Tooltip = can.Control({\n    '{window} click': function(el, ev) {\n        // hide only if we clicked outside the tooltip\n        if(! this.element.has(ev.target).length) {\n            this.element.remove();\n        }\n    }\n});</code></pre>\n\n<p>This is useful for listening to changes on models. Say that our live-binding did\nnot take care of removing &lt;li>s after the corresponding Model was destroyed.\nIn that case, we could implement that functionality by listening to when Todos\nare destroyed:</p>\n\n<pre><code class=\"lang-javascript\">var Todos = can.Control({\n    defaults: {\n        destroyEvent: 'click'\n    }\n},{\n    init: function(el, options) {\n        var self = this;\n        self.todosList = todos;\n        Todo.findAll({}, function(todos) {\n            self.element.html(can.view(this.options.view, todos));\n        });\n    },\n    'li .destroy {destroyEvent}': function(el, ev) {\n        var li = el.closest('li'),\n            todo = li.data('todo');\n\n        todo.destroy();\n    },\n    '{Todo} destroyed': function(Todo, ev, destroyed) {\n        // find where the element is in the list\n        var index = this.todosList.indexOf(destroyed);\n        this.element.children(':nth-child(' + (index + 1) + ')').remove();\n        this.todosList.splice(index, 1);\n    }\n});</code></pre>\n\n<h2>Rebinding events</h2>\n\n<p>You can unbind and rebind all a Control's event handlers by calling <code>on</code> on it.\nThis is useful when a Control starts listening to a specific Model, and you want\nto change which model it is listening to.</p>\n\n<p>In the example below, an Editor Control keeps a reference to the specific Todo\nit is editing. Its <code>todo</code> method calls <code>on</code> when the Todo being edited switches,\nbecause it needs to rebind <code>{todo} updated</code>.</p>\n\n<pre><code class=\"lang-javascript\">var Editor = can.Control({\n    setDesc: function() {\n        this.element.val(this.options.todo.description);\n    },\n    // change what Todo this Control points at\n    todo: function(todo) {\n        this.options.todo = todo;\n        this.on();\n        this.setDesc();\n    },\n    // listen for changes in the Todo\n    '{todo} updated': function() {\n        this.setDesc();\n    },\n    // when the input changes, update the Todo\n    ' change': function(el, ev) {\n        this.options.todo.attr('description', el.val());\n        this.options.todo.save();\n    }\n});\n\nvar todo1 = new Todo({id: 7, description: 'Take out the trash.'}),\n    todo2 = new Todo({id: 8, description: 'Wash the dishes.'}),\n    editor = new Editor('#editor');\n\n// start editing the first Todo\neditor.todo(todo1);\n\n// switch to editing the second Todo\neditor.todo(todo2);</code></pre>\n\n<h2>Destrying Controls</h2>\n\n<p>Calling <code>destroy</code> on a Control unbinds the Control's event handlers and removes\nits association with its element, but it does not remove the element from the\npage.</p>\n\n<pre><code class=\"lang-javascript\">var list = new Todos('#todos');\n$('#todos').length; // 1\nlist.destroy();\n$('#todos').length; // 1</code></pre>\n\n<p>However, when a Control's element is removed from the page, <code>destroy</code> is called\non the Control.</p>\n\n<p>Taken together, templated event binding and Control's automatic cleanup make it\nnearly impossible to write applications with memory leaks. An application that\nuses only templated event handlers on the controls within the body could free\nup all the data it uses by calling <code>$(document.body).empty()</code>.</p>",
+    "description": "",
+    "title": "Controls",
+    "parent": "Tutorial",
+    "comment": " ",
+    "src": "_guides/controls.md",
+    "id": 1
+};
+
+	console.log(docData);
+</script>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand canjs" href="index.html">CanJS</a>
+			<ul class="pullright">
+				<li><a href="../index.html">Home</a></li>
+				<li><a href="../guides">Guides</a></li>
+				<li><a href="../docs/index.html">Api</a></li>
+				<li><a href="../community.html">Community</a></li>
+				<li><a href="../download.html">Download</a></li>
+			</ul>
+		</nav>
+	</footer>
+	<div class="loading"></div>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="../resources/production.min.js"></script>
+</body>
+
+</html>

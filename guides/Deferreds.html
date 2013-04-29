@@ -25,7 +25,7 @@
 	<link rel="stylesheet" type="text/css" href="../resources/styles.css" />
 </head>
 
-<body class="docs">
+<body class="guides">
 	<header>
 		<nav class="container">
 
@@ -43,8 +43,8 @@
 
 			<ul class="nav">
 				<li class=""><a href="../index.html">Home</a></li>
-				<li class=""><a href="../guides/index.html">Guides</a></li>
-				<li class="active"><a href="../docs/index.html">Api</a></li>
+				<li class="active"><a href="../guides/index.html">Guides</a></li>
+				<li class=""><a href="../docs/index.html">Api</a></li>
 				<li class=""><a href="../community.html">Community</a></li>
 				<li class=""><a href="../download.html">Download</a></li>
 			</ul>
@@ -73,155 +73,83 @@
 		</div>
 		<ul class="api">
 	
-	<li >
-	<a href="can.util.html">can.util</a>
-	
-	</li>
-	
-	<li >
-	<a href="can.Construct.html">can.Construct</a>
-	
-	</li>
-	
-	<li >
-	<a href="can.Observe.html">can.Observe</a>
-	
-	</li>
-	
-	<li >
-	<a href="can.Observe.List.html">can.Observe.List</a>
-	
-	</li>
-	
-	<li >
-	<a href="can.Model.html">can.Model</a>
-	
-	</li>
-	
-	<li >
-	<a href="can.Model.List.html">can.Model.List</a>
-	
-	</li>
-	
-	<li >
-	<a href="can.Control.html">can.Control</a>
-	
-	</li>
-	
-	<li >
-	<a href="can.route.html">can.route</a>
-	
-	</li>
-	
 	<li class="active">
-	<a href="can.view.html">can.view</a>
+	<a href="Tutorial.html">Tutorial</a>
 	
 		
 		<ul>
 		
 			
 				<li >
-				<a href="can.view.ejs.html">
-					 can.view.ejs 
+				<a href="Constructs.html">
+					 Constructs 
 				</a>
 				</li>
 			
 		
 			
 				<li >
-				<a href="can.view.mustache.html">
-					 can.view.mustache 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="hookups.html">
-					 hookups 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.view.hook.html">
-					 hook 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="cached.html">
-					 cached 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="cache.html">
-					 cache 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.view.register.html">
-					 can.view.register 
+				<a href="Controls.html">
+					 Controls 
 				</a>
 				</li>
 			
 		
 			
 				<li class="active">
-				<a href="can.view.ext.html">
-					 ext 
+				<a href="Deferreds.html">
+					 Deferreds 
 				</a>
 				</li>
 			
 		
 			
 				<li >
-				<a href="can.view.registerScript.html">
-					 can.view.registerScript 
+				<a href="Models.html">
+					 Models 
 				</a>
 				</li>
 			
 		
 			
 				<li >
-				<a href="can.view.preload.html">
-					 can.view.preload 
+				<a href="Observes.html">
+					 Observes 
 				</a>
 				</li>
 			
 		
 			
 				<li >
-				<a href="can.view.render.html">
-					 can.view.render 
+				<a href="Utilities.html">
+					 Utilities 
 				</a>
 				</li>
 			
 		
 			
-				<li >
-				<a href="can.view.registerView.html">
-					 can.view.registerView 
-				</a>
+				<li class="heading"><span>page</span>
+					<ul>
+						
+						
+						<li >
+							<a href="EJS.html">
+								 EJS 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="Mustache.html">
+								 Mustache 
+							</a>
+						</li>
+						
+						
+					</ul>
 				</li>
-			
-		
-			
-				<li >
-				<a href="can.view.text.html">
-					 can.view.text 
-				</a>
-				</li>
-			
+				
 		
 		</ul>
 		
@@ -235,18 +163,18 @@
 		<section class="title">
 			<div class="pull-right">
 	<ul class="tags">
-		<li>property</li>
+		<li>page</li>
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/view/view.js#L266">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/../_guides/deferred.md">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>ext</h1> <span class="module">can.view.ext</span>
+	<h1>Deferreds</h1> <span class="module">Deferreds</span>
 
 
 
@@ -254,35 +182,70 @@
 		</section>
 
 		<section class="description">
-			<p>The default suffix to use if none is provided in the view's url. <br />
-This is set to <code>.ejs</code> by default.</p>
-
-<pre><code>    // Changes view ext to 'txt'
-    can.view.ext = 'txt';
-</code></pre>
+			
 		</section>
 
 		
 
+		
+		<section class="comment">
+			<p>Deferreds in CanJS are explained in greater detail in the <a href="can.Deferred">API</a>.
+Below is a quick tour through can.Deferred, which should look familiar to you
+if you have experience with the Deferred pattern.</p>
+
+<pre><code class="lang-javascript">// Create a new Deferred:
+var dfd = new can.Deferred();
+
+// Add a done callback:
+dfd.done(function(foo) {
+    console.log('Resolved!');
+});
+// Add a fail callback:
+dfd.fail(function(bar) {
+    console.log('Rejected!');
+});
+// Add a callback that fires whether the
+// Deferred is resolve or rejected.
+dfd.always(function(obj) {
+    console.log('Apathetic!');
+});
+
+var dfd2 = new can.Deferred();
+// Add done and fail callbacks:
+dfd2.then(functon(foo) {
+    console.log('Also resolved.');
+}, function(bar) {
+    console.log('Also rejected.');
+});
+
+// Create a Deferred that resolves when
+// all passed Deferreds resolve:
+var endDfd = can.when(dfd, dfd2).then(function() {
+    console.log('I open at the close.');
+});
+
+// Resolve a Deferred (and call all its done callbacks):
+dfd.resolve('foo');
+
+// Reject a Deferred (and call all its fail callbacks):
+dfd.reject('bar');</code></pre>
+		</section>
 		
 	</article>
 </div>
 
 <script type="text/javascript">
 	var docData = {
-    "name": "can.view.ext",
-    "type": "property",
-    "parent": "can.view",
-    "body": "",
-    "description": "<p>The default suffix to use if none is provided in the view's url. <br />\nThis is set to <code>.ejs</code> by default.</p>\n\n<pre><code>    // Changes view ext to 'txt'\n    can.view.ext = 'txt';\n</code></pre>",
-    "types": [{
-            "type": "String"
-        }
-    ],
-    "title": "ext",
-    "src": "can/view/view.js",
-    "line": 266,
-    "id": 136
+    "type": "page",
+    "name": "Deferreds",
+    "body": "<p>Deferreds in CanJS are explained in greater detail in the <a href=\"can.Deferred\">API</a>.\nBelow is a quick tour through can.Deferred, which should look familiar to you\nif you have experience with the Deferred pattern.</p>\n\n<pre><code class=\"lang-javascript\">// Create a new Deferred:\nvar dfd = new can.Deferred();\n\n// Add a done callback:\ndfd.done(function(foo) {\n    console.log('Resolved!');\n});\n// Add a fail callback:\ndfd.fail(function(bar) {\n    console.log('Rejected!');\n});\n// Add a callback that fires whether the\n// Deferred is resolve or rejected.\ndfd.always(function(obj) {\n    console.log('Apathetic!');\n});\n\nvar dfd2 = new can.Deferred();\n// Add done and fail callbacks:\ndfd2.then(functon(foo) {\n    console.log('Also resolved.');\n}, function(bar) {\n    console.log('Also rejected.');\n});\n\n// Create a Deferred that resolves when\n// all passed Deferreds resolve:\nvar endDfd = can.when(dfd, dfd2).then(function() {\n    console.log('I open at the close.');\n});\n\n// Resolve a Deferred (and call all its done callbacks):\ndfd.resolve('foo');\n\n// Reject a Deferred (and call all its fail callbacks):\ndfd.reject('bar');</code></pre>",
+    "description": "",
+    "title": "Deferreds",
+    "parent": "Tutorial",
+    "order": 5,
+    "comment": " ",
+    "src": "_guides/deferred.md",
+    "id": 2
 };
 
 	console.log(docData);

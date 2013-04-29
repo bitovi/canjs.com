@@ -1,4 +1,4 @@
-/*! canjs.us - v0.1.0 - 2013-04-26
+/*! canjs.us - v0.1.0 - 2013-04-29
 * https://github.com/bitovi/canjs.us
 * Copyright (c) 2013 Bitovi; Licensed MIT */
 /*!
@@ -6324,7 +6324,7 @@ can.Model("CanJSUS.ForumPost", {
 	},
 	findAll: {
 		url: 'http://www.bithub.com/api/events/?feed=forums&order=origin_ts:desc&limit={limit}',
-		dataType: 'json'
+		dataType: 'jsonp'
 	}
 }, { });
 can.Model("CanJSUS.GithubEvent", {
