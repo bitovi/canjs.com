@@ -1,1 +1,937 @@
-{"canjs":{"name":"canjs","type":"page","id":0,"title":"CanJS","parent":"index","order":0},"can.util":{"name":"can.util","type":"page","id":1,"title":"can.util","parent":"canjs"},"can.isDeferred":{"name":"can.isDeferred","type":"function","id":2,"parent":"can.util"},"can.trim":{"name":"can.trim","type":"function","id":3,"parent":"can.util"},"can.makeArray":{"name":"can.makeArray","type":"function","id":4,"parent":"can.util"},"can.isArray":{"name":"can.isArray","type":"function","id":5,"parent":"can.util"},"can.each":{"name":"can.each","type":"function","id":6,"parent":"can.util"},"can.extend":{"name":"can.extend","type":"function","id":7,"parent":"can.util"},"can.param":{"name":"can.param","type":"function","id":8,"parent":"can.util"},"can.isEmptyObject":{"name":"can.isEmptyObject","type":"function","id":9,"parent":"can.util"},"can.proxy":{"name":"can.proxy","type":"function","id":10,"parent":"can.util"},"can.isFunction":{"name":"can.isFunction","type":"function","id":11,"parent":"can.util"},"can.bind":{"name":"can.bind","type":"function","id":12,"parent":"can.util"},"can.unbind":{"name":"can.unbind","type":"function","id":13,"parent":"can.util"},"can.delegate":{"name":"can.delegate","type":"function","id":14,"parent":"can.util"},"can.undelegate":{"name":"can.undelegate","type":"function","id":15,"parent":"can.util"},"can.trigger":{"name":"can.trigger","type":"function","id":16,"parent":"can.util"},"can.ajax":{"name":"can.ajax","type":"function","id":17,"parent":"can.util"},"can.$":{"name":"can.$","type":"function","id":18,"parent":"can.util"},"can.buildFragment":{"name":"can.buildFragment","type":"function","id":19,"parent":"can.util"},"can.append":{"name":"can.append","type":"function","id":20,"parent":"can.util"},"can.remove":{"name":"can.remove","type":"function","id":21,"parent":"can.util"},"can.data":{"name":"can.data","type":"function","id":22,"parent":"can.util"},"can.addClass":{"name":"can.addClass","type":"function","id":23,"parent":"can.util"},"can.when":{"name":"can.when","type":"function","id":24,"parent":"can.util"},"can.Deferred":{"name":"can.Deferred","type":"constructor","id":25,"parent":"can.util"},"can.Deferred.prototype":{"name":"can.Deferred.prototype","type":"prototype","id":26,"parent":"can.Deferred"},"can.Deferred.prototype.pipe":{"name":"can.Deferred.prototype.pipe","type":"function","id":27},"can.Deferred.prototype.resolveWith":{"name":"can.Deferred.prototype.resolveWith","type":"function","id":28,"title":"resolveWith","parent":"can.Deferred.prototype"},"can.Deferred.prototype.rejectWith":{"name":"can.Deferred.prototype.rejectWith","type":"function","id":29,"title":"rejectWith","parent":"can.Deferred.prototype"},"can.Deferred.prototype.done":{"name":"can.Deferred.prototype.done","type":"function","id":30,"title":"done","parent":"can.Deferred.prototype"},"can.Deferred.prototype.always":{"name":"can.Deferred.prototype.always","type":"function","id":31,"title":"always","parent":"can.Deferred.prototype"},"can.Deferred.prototype.then":{"name":"can.Deferred.prototype.then","type":"function","id":32,"title":"then","parent":"can.Deferred.prototype"},"can.Deferred.prototype.isResolved":{"name":"can.Deferred.prototype.isResolved","type":"function","id":33,"title":"isResolved","parent":"can.Deferred.prototype"},"can.Deferred.prototype.reject":{"name":"can.Deferred.prototype.reject","type":"function","id":34,"title":"reject","parent":"can.Deferred.prototype"},"can.Deferred.prototype.resolve":{"name":"can.Deferred.prototype.resolve","type":"function","id":35,"title":"resolve"},"can.Construct":{"name":"can.Construct","type":"constructor","id":36,"parent":"canjs"},"can.Construct.static":{"name":"can.Construct.static","type":"static","id":37,"parent":"can.Construct"},"can.Construct.static.newInstance":{"name":"can.Construct.static.newInstance","type":"function","id":38,"title":"newInstance","parent":"can.Construct.static"},"can.Construct.static.setup":{"name":"can.Construct.static.setup","type":"function","id":39,"title":"setup","parent":"can.Construct.static"},"can.Construct.static.extend":{"name":"can.Construct.static.extend","type":"function","id":40,"hide":true,"parent":"can.Construct.static"},"can.Construct.static.namespace":{"name":"can.Construct.static.namespace","type":"property","id":41,"title":"namespace","parent":"can.Construct.static"},"can.Construct.static.shortName":{"name":"can.Construct.static.shortName","type":"property","id":42,"title":"shortName","parent":"can.Construct.static"},"can.Construct.static.fullName":{"name":"can.Construct.static.fullName","type":"property","id":43,"title":"fullName","parent":"can.Construct.static"},"can.Construct.prototype":{"name":"can.Construct.prototype","type":"prototype","id":44,"parent":"can.Construct"},"can.Construct.prototype.setup":{"name":"can.Construct.prototype.setup","type":"function","id":45,"title":"setup","parent":"can.Construct.prototype"},"can.Construct.prototype.init":{"name":"can.Construct.prototype.init","type":"function","id":46,"title":"init","parent":"can.Construct.prototype"},"can.Construct.prototype.constructor":{"name":"can.Construct.prototype.constructor","type":"property","id":47,"title":"constructor","parent":"can.Construct.prototype"},"can.Observe":{"name":"can.Observe","type":"constructor","id":48,"parent":"canjs"},"Observe":{"name":"Observe","type":"property","id":49,"parent":"can/observe/observe.js"},"can.Observe.static":{"name":"can.Observe.static","type":"static","id":50,"parent":"can.Observe"},"can.Observe.static.startBatch":{"name":"can.Observe.static.startBatch","type":"function","id":51,"title":"startBatch","parent":"can.Observe.static"},"can.Observe.static.stopBatch":{"name":"can.Observe.static.stopBatch","type":"function","id":52,"title":"stopBatch","parent":"can.Observe.static"},"can.Observe.static.triggerBatch":{"name":"can.Observe.static.triggerBatch","type":"function","id":53,"title":"triggerBatch","parent":"can.Observe.static"},"can.Observe.static.keys":{"name":"can.Observe.static.keys","type":"function","id":54,"title":"keys","parent":"can.Observe.static"},"can.Observe.prototype":{"name":"can.Observe.prototype","type":"prototype","id":55,"parent":"can.Observe"},"can.Observe.static._cid":{"name":"can.Observe.static._cid","type":"property","id":56,"hide":true},"can.Observe.prototype.attr":{"name":"can.Observe.prototype.attr","type":"function","id":57,"title":"attr","parent":"can.Observe.prototype"},"can.Observe.prototype.each":{"name":"can.Observe.prototype.each","type":"function","id":58,"title":"each","parent":"can.Observe.prototype"},"can.Observe.prototype.removeAttr":{"name":"can.Observe.prototype.removeAttr","type":"function","id":59,"title":"removeAttr","parent":"can.Observe.prototype"},"can.Observe.prototype.bind":{"name":"can.Observe.prototype.bind","type":"function","id":60,"title":"bind","parent":"can.Observe.prototype"},"can.Observe.prototype.unbind":{"name":"can.Observe.prototype.unbind","type":"function","id":61,"title":"unbind","parent":"can.Observe.prototype"},"can.Observe.prototype.serialize":{"name":"can.Observe.prototype.serialize","type":"function","id":62,"hide":true,"parent":"can.Observe.prototype"},"can.Observe.prototype._attrs":{"name":"can.Observe.prototype._attrs","type":"function","id":63,"hide":true,"parent":"can.Observe.prototype"},"can.Observe.prototype.compute":{"name":"can.Observe.prototype.compute","type":"function","id":64,"title":"compute","parent":"can.Observe.prototype"},"can.Observe.List":{"name":"can.Observe.List","type":"constructor","id":65,"parent":"canjs"},"can.Observe.List.prototype":{"name":"can.Observe.List.prototype","type":"prototype","id":66,"parent":"can.Observe.List"},"can.Observe.List.prototype.serialize":{"name":"can.Observe.List.prototype.serialize","type":"function","id":67,"hide":true,"parent":"can.Observe.List.prototype"},"can.Observe.List.prototype.each":{"name":"can.Observe.List.prototype.each","type":"function","id":68,"title":"each"},"can.Observe.List.prototype.splice":{"name":"can.Observe.List.prototype.splice","type":"function","id":69,"title":"splice","parent":"can.Observe.List.prototype"},"can.Observe.List.prototype.attr":{"name":"can.Observe.List.prototype.attr","type":"function","id":70,"title":"attr","parent":"can.Observe.List.prototype"},"can.Observe.List.prototype.push":{"name":"can.Observe.List.prototype.push","type":"function","id":71,"title":"push","parent":"can.Observe.List.prototype"},"can.Observe.List.prototype.unshift":{"name":"can.Observe.List.prototype.unshift","type":"function","id":72,"title":"unshift","parent":"can.Observe.List.prototype"},"can.Observe.List.prototype.pop":{"name":"can.Observe.List.prototype.pop","type":"function","id":73,"title":"pop","parent":"can.Observe.List.prototype"},"can.Observe.List.prototype.shift":{"name":"can.Observe.List.prototype.shift","type":"function","id":74,"title":"shift","parent":"can.Observe.List.prototype"},"can.Observe.List.prototype.indexOf":{"name":"can.Observe.List.prototype.indexOf","type":"function","id":75,"title":"indexOf","parent":"can.Observe.List.prototype"},"can.Observe.List.prototype.join":{"name":"can.Observe.List.prototype.join","type":"function","id":76,"title":"join","parent":"can.Observe.List.prototype"},"can.Observe.List.prototype.reverse":{"name":"can.Observe.List.prototype.reverse","type":"function","id":77,"title":"reverse","parent":"can.Observe.List.prototype"},"can.Observe.List.prototype.slice":{"name":"can.Observe.List.prototype.slice","type":"function","id":78,"title":"slice","parent":"can.Observe.List.prototype"},"can.Observe.List.prototype.concat":{"name":"can.Observe.List.prototype.concat","type":"function","id":79,"title":"concat","parent":"can.Observe.List.prototype"},"can.Observe.List.prototype.forEach":{"name":"can.Observe.List.prototype.forEach","type":"function","id":80,"title":"forEach","parent":"can.Observe.List.prototype"},"can.Observe.List.prototype.replace":{"name":"can.Observe.List.prototype.replace","type":"function","id":81,"title":"replace","parent":"can.Observe.List.prototype"},"can.Model":{"name":"can.Model","type":"constructor","id":82,"parent":"canjs"},"can.Model.static":{"name":"can.Model.static","type":"static","id":83,"parent":"can.Model"},"can.Model.static.bind":{"name":"can.Model.static.bind","type":"function","id":84,"title":"bind","parent":"can.Model.static"},"can.Model.static.unbind":{"name":"can.Model.static.unbind","type":"function","id":85,"title":"unbind","parent":"can.Model.static"},"can.Model.static.id":{"name":"can.Model.static.id","type":"property","id":86,"title":"id","parent":"can.Model.static"},"can.Model.static.create":{"name":"can.Model.static.create","type":"function","id":87,"title":"create","parent":"can.Model.static"},"can.Model.static.update":{"name":"can.Model.static.update","type":"function","id":88,"title":"update","parent":"can.Model.static"},"can.Model.static.destroy":{"name":"can.Model.static.destroy","type":"function","id":89,"title":"destroy","parent":"can.Model.static"},"can.Model.static.findAll":{"name":"can.Model.static.findAll","type":"function","id":90,"title":"findAll","parent":"can.Model.static"},"can.Model.static.findOne":{"name":"can.Model.static.findOne","type":"function","id":91,"title":"findOne","parent":"can.Model.static"},"can.Model.static.models":{"name":"can.Model.static.models","type":"function","id":92,"title":"models","parent":"can.Model.static"},"can.Model.static.model":{"name":"can.Model.static.model","type":"function","id":93,"title":"model","parent":"can.Model.static"},"can.Model.prototype":{"name":"can.Model.prototype","type":"prototype","id":94,"parent":"can.Model"},"can.Model.prototype.isNew":{"name":"can.Model.prototype.isNew","type":"function","id":95,"title":"isNew","parent":"can.Model.prototype"},"can.Model.prototype.save":{"name":"can.Model.prototype.save","type":"function","id":96,"title":"save","parent":"can.Model.prototype"},"can.Model.prototype.destroy":{"name":"can.Model.prototype.destroy","type":"function","id":97,"title":"destroy","parent":"can.Model.prototype"},"can.Model.prototype.bind":{"name":"can.Model.prototype.bind","type":"function","id":98,"title":"bind","parent":"can.Model.prototype"},"can.Model.prototype.unbind":{"name":"can.Model.prototype.unbind","type":"function","id":99,"title":"unbind","parent":"can.Model.prototype"},"created":{"name":"created","type":"function","id":100,"hide":true},"updated":{"name":"updated","type":"function","id":101,"hide":true},"destroyed":{"name":"destroyed","type":"function","id":102,"hide":true},"can.Model.List":{"name":"can.Model.List","type":"constructor","id":103,"parent":"canjs"},"can.Control":{"name":"can.Control","type":"constructor","id":104,"parent":"canjs"},"Control":{"name":"Control","type":"property","id":105,"parent":"can/control/control.js"},"can.Control.static":{"name":"can.Control.static","type":"static","id":106,"parent":"can.Control"},"can.Control.static.setup":{"name":"can.Control.static.setup","type":"function","id":107,"hide":true,"parent":"can.Control.static"},"can.Control.static._isAction":{"name":"can.Control.static._isAction","type":"function","id":108,"hide":true,"parent":"can.Control.static"},"can.Control.static._action":{"name":"can.Control.static._action","type":"function","id":109,"hide":true,"parent":"can.Control.static"},"can.Control.static.processors":{"name":"can.Control.static.processors","type":"property","id":110,"title":"processors","parent":"can.Control.static"},"can.Control.static.defaults":{"name":"can.Control.static.defaults","type":"property","id":111,"title":"defaults","parent":"can.Control.static"},"can.Control.prototype":{"name":"can.Control.prototype","type":"prototype","id":112,"parent":"can.Control"},"can.Control.prototype.setup":{"name":"can.Control.prototype.setup","type":"function","id":113,"title":"setup","parent":"can.Control.prototype"},"can.Control.prototype.options":{"name":"can.Control.prototype.options","type":"property","id":114,"title":"options","parent":"can.Control.prototype"},"can.Control.prototype.element":{"name":"can.Control.prototype.element","type":"property","id":115,"title":"element","parent":"can.Control.prototype"},"can.Control.prototype.on":{"name":"can.Control.prototype.on","type":"function","id":116,"title":"on","parent":"can.Control.prototype"},"can.Control.prototype.off":{"name":"can.Control.prototype.off","type":"function","id":117,"hide":true,"parent":"can.Control.prototype"},"can.Control.prototype.destroy":{"name":"can.Control.prototype.destroy","type":"function","id":118,"title":"destroy","parent":"can.Control.prototype"},"can.route":{"name":"can.route","type":"page","id":119,"title":"can.route","parent":"canjs"},"can.route.param":{"name":"can.route.param","type":"function","id":120,"parent":"can.route"},"can.route.deparam":{"name":"can.route.deparam","type":"function","id":121,"parent":"can.route"},"data":{"name":"data","type":"property","id":122,"hide":true,"parent":"can/route/route.js"},"routes":{"name":"routes","type":"property","id":123,"hide":true,"parent":"can/route/route.js"},"can.route.ready":{"name":"can.route.ready","type":"function","id":124,"parent":"can.route"},"can.route.url":{"name":"can.route.url","type":"function","id":125,"parent":"can.route"},"can.route.link":{"name":"can.route.link","type":"function","id":126,"parent":"can.route"},"can.route.current":{"name":"can.route.current","type":"function","id":127,"parent":"can.route"},"can.view":{"name":"can.view","type":"constructor","id":128,"parent":"canjs"},"can.view.ejs":{"name":"can.view.ejs","type":"function","id":129,"parent":"can.view"},"can.view.mustache":{"name":"can.view.mustache","type":"function","id":130,"parent":"can.view"},"hookups":{"name":"hookups","type":"property","id":131,"hide":true,"parent":"can.view"},"can.view.hook":{"name":"can.view.hook","type":"function","id":132,"title":"hook","parent":"can.view"},"cached":{"name":"cached","type":"property","id":133,"hide":true,"parent":"can.view"},"cache":{"name":"cache","type":"property","id":134,"parent":"can.view"},"can.view.register":{"name":"can.view.register","type":"function","id":135,"parent":"can.view"},"can.view.ext":{"name":"can.view.ext","type":"property","id":136,"title":"ext","parent":"can.view"},"can.view.registerScript":{"name":"can.view.registerScript","type":"function","id":137,"hide":true,"parent":"can.view"},"can.view.preload":{"name":"can.view.preload","type":"function","id":138,"hide":true,"parent":"can.view"},"can.view.render":{"name":"can.view.render","type":"function","id":139,"parent":"can.view"},"can.view.registerView":{"name":"can.view.registerView","type":"function","id":140,"hide":true,"parent":"can.view"},"can.view.text":{"name":"can.view.text","type":"property","id":141,"hide":true,"parent":"can.view"}}
+{
+    "canjs": {
+        "name": "canjs",
+        "type": "page",
+        "id": 0,
+        "title": "CanJS",
+        "parent": "index",
+        "order": 0
+    },
+    "can.Construct": {
+        "name": "can.Construct",
+        "type": "constructor",
+        "id": 1,
+        "parent": "canjs"
+    },
+    "can.Construct.static": {
+        "name": "can.Construct.static",
+        "type": "static",
+        "id": 2,
+        "parent": "can.Construct"
+    },
+    "can.Construct.static.newInstance": {
+        "name": "can.Construct.static.newInstance",
+        "type": "function",
+        "id": 3,
+        "title": "newInstance",
+        "parent": "can.Construct.static"
+    },
+    "can.Construct.static.setup": {
+        "name": "can.Construct.static.setup",
+        "type": "function",
+        "id": 4,
+        "title": "setup",
+        "parent": "can.Construct.static"
+    },
+    "can.Construct.static.extend": {
+        "name": "can.Construct.static.extend",
+        "type": "function",
+        "id": 5,
+        "hide": true,
+        "parent": "can.Construct.static"
+    },
+    "can.Construct.static.namespace": {
+        "name": "can.Construct.static.namespace",
+        "type": "property",
+        "id": 6,
+        "title": "namespace",
+        "parent": "can.Construct.static"
+    },
+    "can.Construct.static.shortName": {
+        "name": "can.Construct.static.shortName",
+        "type": "property",
+        "id": 7,
+        "title": "shortName",
+        "parent": "can.Construct.static"
+    },
+    "can.Construct.static.fullName": {
+        "name": "can.Construct.static.fullName",
+        "type": "property",
+        "id": 8,
+        "title": "fullName",
+        "parent": "can.Construct.static"
+    },
+    "can.Construct.prototype": {
+        "name": "can.Construct.prototype",
+        "type": "prototype",
+        "id": 9,
+        "parent": "can.Construct"
+    },
+    "can.Construct.prototype.setup": {
+        "name": "can.Construct.prototype.setup",
+        "type": "function",
+        "id": 10,
+        "title": "setup",
+        "parent": "can.Construct.prototype"
+    },
+    "can.Construct.prototype.init": {
+        "name": "can.Construct.prototype.init",
+        "type": "function",
+        "id": 11,
+        "title": "init",
+        "parent": "can.Construct.prototype"
+    },
+    "can.Construct.prototype.constructor": {
+        "name": "can.Construct.prototype.constructor",
+        "type": "property",
+        "id": 12,
+        "title": "constructor",
+        "parent": "can.Construct.prototype"
+    },
+    "can.Observe": {
+        "name": "can.Observe",
+        "type": "constructor",
+        "id": 13,
+        "parent": "canjs"
+    },
+    "Observe": {
+        "name": "Observe",
+        "type": "property",
+        "id": 14,
+        "parent": "can/observe/observe.js"
+    },
+    "can.Observe.static": {
+        "name": "can.Observe.static",
+        "type": "static",
+        "id": 15,
+        "parent": "can.Observe"
+    },
+    "can.Observe.static.startBatch": {
+        "name": "can.Observe.static.startBatch",
+        "type": "function",
+        "id": 16,
+        "title": "startBatch",
+        "parent": "can.Observe.static"
+    },
+    "can.Observe.static.stopBatch": {
+        "name": "can.Observe.static.stopBatch",
+        "type": "function",
+        "id": 17,
+        "title": "stopBatch",
+        "parent": "can.Observe.static"
+    },
+    "can.Observe.static.triggerBatch": {
+        "name": "can.Observe.static.triggerBatch",
+        "type": "function",
+        "id": 18,
+        "title": "triggerBatch",
+        "parent": "can.Observe.static"
+    },
+    "can.Observe.static.keys": {
+        "name": "can.Observe.static.keys",
+        "type": "function",
+        "id": 19,
+        "title": "keys",
+        "parent": "can.Observe.static"
+    },
+    "can.Observe.prototype": {
+        "name": "can.Observe.prototype",
+        "type": "prototype",
+        "id": 20,
+        "parent": "can.Observe"
+    },
+    "can.Observe.static._cid": {
+        "name": "can.Observe.static._cid",
+        "type": "property",
+        "id": 21,
+        "hide": true
+    },
+    "can.Observe.prototype.attr": {
+        "name": "can.Observe.prototype.attr",
+        "type": "function",
+        "id": 22,
+        "title": "attr",
+        "parent": "can.Observe.prototype"
+    },
+    "can.Observe.prototype.each": {
+        "name": "can.Observe.prototype.each",
+        "type": "function",
+        "id": 23,
+        "title": "each",
+        "parent": "can.Observe.prototype"
+    },
+    "can.Observe.prototype.removeAttr": {
+        "name": "can.Observe.prototype.removeAttr",
+        "type": "function",
+        "id": 24,
+        "title": "removeAttr",
+        "parent": "can.Observe.prototype"
+    },
+    "can.Observe.prototype.bind": {
+        "name": "can.Observe.prototype.bind",
+        "type": "function",
+        "id": 25,
+        "title": "bind",
+        "parent": "can.Observe.prototype"
+    },
+    "can.Observe.prototype.unbind": {
+        "name": "can.Observe.prototype.unbind",
+        "type": "function",
+        "id": 26,
+        "title": "unbind",
+        "parent": "can.Observe.prototype"
+    },
+    "can.Observe.prototype.serialize": {
+        "name": "can.Observe.prototype.serialize",
+        "type": "function",
+        "id": 27,
+        "hide": true,
+        "parent": "can.Observe.prototype"
+    },
+    "can.Observe.prototype._attrs": {
+        "name": "can.Observe.prototype._attrs",
+        "type": "function",
+        "id": 28,
+        "hide": true,
+        "parent": "can.Observe.prototype"
+    },
+    "can.Observe.prototype.compute": {
+        "name": "can.Observe.prototype.compute",
+        "type": "function",
+        "id": 29,
+        "title": "compute",
+        "parent": "can.Observe.prototype"
+    },
+    "can.Observe.List": {
+        "name": "can.Observe.List",
+        "type": "constructor",
+        "id": 30,
+        "parent": "canjs"
+    },
+    "can.Observe.List.prototype": {
+        "name": "can.Observe.List.prototype",
+        "type": "prototype",
+        "id": 31,
+        "parent": "can.Observe.List"
+    },
+    "can.Observe.List.prototype.serialize": {
+        "name": "can.Observe.List.prototype.serialize",
+        "type": "function",
+        "id": 32,
+        "hide": true,
+        "parent": "can.Observe.List.prototype"
+    },
+    "can.Observe.List.prototype.each": {
+        "name": "can.Observe.List.prototype.each",
+        "type": "function",
+        "id": 33,
+        "title": "each"
+    },
+    "can.Observe.List.prototype.splice": {
+        "name": "can.Observe.List.prototype.splice",
+        "type": "function",
+        "id": 34,
+        "title": "splice",
+        "parent": "can.Observe.List.prototype"
+    },
+    "can.Observe.List.prototype.attr": {
+        "name": "can.Observe.List.prototype.attr",
+        "type": "function",
+        "id": 35,
+        "title": "attr",
+        "parent": "can.Observe.List.prototype"
+    },
+    "can.Observe.List.prototype.push": {
+        "name": "can.Observe.List.prototype.push",
+        "type": "function",
+        "id": 36,
+        "title": "push",
+        "parent": "can.Observe.List.prototype"
+    },
+    "can.Observe.List.prototype.unshift": {
+        "name": "can.Observe.List.prototype.unshift",
+        "type": "function",
+        "id": 37,
+        "title": "unshift",
+        "parent": "can.Observe.List.prototype"
+    },
+    "can.Observe.List.prototype.pop": {
+        "name": "can.Observe.List.prototype.pop",
+        "type": "function",
+        "id": 38,
+        "title": "pop",
+        "parent": "can.Observe.List.prototype"
+    },
+    "can.Observe.List.prototype.shift": {
+        "name": "can.Observe.List.prototype.shift",
+        "type": "function",
+        "id": 39,
+        "title": "shift",
+        "parent": "can.Observe.List.prototype"
+    },
+    "can.Observe.List.prototype.indexOf": {
+        "name": "can.Observe.List.prototype.indexOf",
+        "type": "function",
+        "id": 40,
+        "title": "indexOf",
+        "parent": "can.Observe.List.prototype"
+    },
+    "can.Observe.List.prototype.join": {
+        "name": "can.Observe.List.prototype.join",
+        "type": "function",
+        "id": 41,
+        "title": "join",
+        "parent": "can.Observe.List.prototype"
+    },
+    "can.Observe.List.prototype.reverse": {
+        "name": "can.Observe.List.prototype.reverse",
+        "type": "function",
+        "id": 42,
+        "title": "reverse",
+        "parent": "can.Observe.List.prototype"
+    },
+    "can.Observe.List.prototype.slice": {
+        "name": "can.Observe.List.prototype.slice",
+        "type": "function",
+        "id": 43,
+        "title": "slice",
+        "parent": "can.Observe.List.prototype"
+    },
+    "can.Observe.List.prototype.concat": {
+        "name": "can.Observe.List.prototype.concat",
+        "type": "function",
+        "id": 44,
+        "title": "concat",
+        "parent": "can.Observe.List.prototype"
+    },
+    "can.Observe.List.prototype.forEach": {
+        "name": "can.Observe.List.prototype.forEach",
+        "type": "function",
+        "id": 45,
+        "title": "forEach",
+        "parent": "can.Observe.List.prototype"
+    },
+    "can.Observe.List.prototype.replace": {
+        "name": "can.Observe.List.prototype.replace",
+        "type": "function",
+        "id": 46,
+        "title": "replace",
+        "parent": "can.Observe.List.prototype"
+    },
+    "can.Model": {
+        "name": "can.Model",
+        "type": "constructor",
+        "id": 47,
+        "parent": "canjs"
+    },
+    "can.Model.static": {
+        "name": "can.Model.static",
+        "type": "static",
+        "id": 48,
+        "parent": "can.Model"
+    },
+    "can.Model.static.bind": {
+        "name": "can.Model.static.bind",
+        "type": "function",
+        "id": 49,
+        "title": "bind",
+        "parent": "can.Model.static"
+    },
+    "can.Model.static.unbind": {
+        "name": "can.Model.static.unbind",
+        "type": "function",
+        "id": 50,
+        "title": "unbind",
+        "parent": "can.Model.static"
+    },
+    "can.Model.static.id": {
+        "name": "can.Model.static.id",
+        "type": "property",
+        "id": 51,
+        "title": "id",
+        "parent": "can.Model.static"
+    },
+    "can.Model.static.create": {
+        "name": "can.Model.static.create",
+        "type": "function",
+        "id": 52,
+        "title": "create",
+        "parent": "can.Model.static"
+    },
+    "can.Model.static.update": {
+        "name": "can.Model.static.update",
+        "type": "function",
+        "id": 53,
+        "title": "update",
+        "parent": "can.Model.static"
+    },
+    "can.Model.static.destroy": {
+        "name": "can.Model.static.destroy",
+        "type": "function",
+        "id": 54,
+        "title": "destroy",
+        "parent": "can.Model.static"
+    },
+    "can.Model.static.findAll": {
+        "name": "can.Model.static.findAll",
+        "type": "function",
+        "id": 55,
+        "title": "findAll",
+        "parent": "can.Model.static"
+    },
+    "can.Model.static.findOne": {
+        "name": "can.Model.static.findOne",
+        "type": "function",
+        "id": 56,
+        "title": "findOne",
+        "parent": "can.Model.static"
+    },
+    "can.Model.static.models": {
+        "name": "can.Model.static.models",
+        "type": "function",
+        "id": 57,
+        "title": "models",
+        "parent": "can.Model.static"
+    },
+    "can.Model.static.model": {
+        "name": "can.Model.static.model",
+        "type": "function",
+        "id": 58,
+        "title": "model",
+        "parent": "can.Model.static"
+    },
+    "can.Model.prototype": {
+        "name": "can.Model.prototype",
+        "type": "prototype",
+        "id": 59,
+        "parent": "can.Model"
+    },
+    "can.Model.prototype.isNew": {
+        "name": "can.Model.prototype.isNew",
+        "type": "function",
+        "id": 60,
+        "title": "isNew",
+        "parent": "can.Model.prototype"
+    },
+    "can.Model.prototype.save": {
+        "name": "can.Model.prototype.save",
+        "type": "function",
+        "id": 61,
+        "title": "save",
+        "parent": "can.Model.prototype"
+    },
+    "can.Model.prototype.destroy": {
+        "name": "can.Model.prototype.destroy",
+        "type": "function",
+        "id": 62,
+        "title": "destroy",
+        "parent": "can.Model.prototype"
+    },
+    "can.Model.prototype.bind": {
+        "name": "can.Model.prototype.bind",
+        "type": "function",
+        "id": 63,
+        "title": "bind",
+        "parent": "can.Model.prototype"
+    },
+    "can.Model.prototype.unbind": {
+        "name": "can.Model.prototype.unbind",
+        "type": "function",
+        "id": 64,
+        "title": "unbind",
+        "parent": "can.Model.prototype"
+    },
+    "created": {
+        "name": "created",
+        "type": "function",
+        "id": 65,
+        "hide": true
+    },
+    "updated": {
+        "name": "updated",
+        "type": "function",
+        "id": 66,
+        "hide": true
+    },
+    "destroyed": {
+        "name": "destroyed",
+        "type": "function",
+        "id": 67,
+        "hide": true
+    },
+    "can.Model.List": {
+        "name": "can.Model.List",
+        "type": "constructor",
+        "id": 68,
+        "parent": "canjs"
+    },
+    "can.Control": {
+        "name": "can.Control",
+        "type": "constructor",
+        "id": 69,
+        "parent": "canjs"
+    },
+    "Control": {
+        "name": "Control",
+        "type": "property",
+        "id": 70,
+        "parent": "can/control/control.js"
+    },
+    "can.Control.static": {
+        "name": "can.Control.static",
+        "type": "static",
+        "id": 71,
+        "parent": "can.Control"
+    },
+    "can.Control.static.setup": {
+        "name": "can.Control.static.setup",
+        "type": "function",
+        "id": 72,
+        "hide": true,
+        "parent": "can.Control.static"
+    },
+    "can.Control.static._isAction": {
+        "name": "can.Control.static._isAction",
+        "type": "function",
+        "id": 73,
+        "hide": true,
+        "parent": "can.Control.static"
+    },
+    "can.Control.static._action": {
+        "name": "can.Control.static._action",
+        "type": "function",
+        "id": 74,
+        "hide": true,
+        "parent": "can.Control.static"
+    },
+    "can.Control.static.processors": {
+        "name": "can.Control.static.processors",
+        "type": "property",
+        "id": 75,
+        "title": "processors",
+        "parent": "can.Control.static"
+    },
+    "can.Control.static.defaults": {
+        "name": "can.Control.static.defaults",
+        "type": "property",
+        "id": 76,
+        "title": "defaults",
+        "parent": "can.Control.static"
+    },
+    "can.Control.prototype": {
+        "name": "can.Control.prototype",
+        "type": "prototype",
+        "id": 77,
+        "parent": "can.Control"
+    },
+    "can.Control.prototype.setup": {
+        "name": "can.Control.prototype.setup",
+        "type": "function",
+        "id": 78,
+        "title": "setup",
+        "parent": "can.Control.prototype"
+    },
+    "can.Control.prototype.options": {
+        "name": "can.Control.prototype.options",
+        "type": "property",
+        "id": 79,
+        "title": "options",
+        "parent": "can.Control.prototype"
+    },
+    "can.Control.prototype.element": {
+        "name": "can.Control.prototype.element",
+        "type": "property",
+        "id": 80,
+        "title": "element",
+        "parent": "can.Control.prototype"
+    },
+    "can.Control.prototype.on": {
+        "name": "can.Control.prototype.on",
+        "type": "function",
+        "id": 81,
+        "title": "on",
+        "parent": "can.Control.prototype"
+    },
+    "can.Control.prototype.off": {
+        "name": "can.Control.prototype.off",
+        "type": "function",
+        "id": 82,
+        "hide": true,
+        "parent": "can.Control.prototype"
+    },
+    "can.Control.prototype.destroy": {
+        "name": "can.Control.prototype.destroy",
+        "type": "function",
+        "id": 83,
+        "title": "destroy",
+        "parent": "can.Control.prototype"
+    },
+    "can.route": {
+        "name": "can.route",
+        "type": "page",
+        "id": 84,
+        "title": "can.route",
+        "parent": "canjs"
+    },
+    "can.route.param": {
+        "name": "can.route.param",
+        "type": "function",
+        "id": 85,
+        "parent": "can.route"
+    },
+    "can.route.deparam": {
+        "name": "can.route.deparam",
+        "type": "function",
+        "id": 86,
+        "parent": "can.route"
+    },
+    "data": {
+        "name": "data",
+        "type": "property",
+        "id": 87,
+        "hide": true,
+        "parent": "can/route/route.js"
+    },
+    "routes": {
+        "name": "routes",
+        "type": "property",
+        "id": 88,
+        "hide": true,
+        "parent": "can/route/route.js"
+    },
+    "can.route.ready": {
+        "name": "can.route.ready",
+        "type": "function",
+        "id": 89,
+        "parent": "can.route"
+    },
+    "can.route.url": {
+        "name": "can.route.url",
+        "type": "function",
+        "id": 90,
+        "parent": "can.route"
+    },
+    "can.route.link": {
+        "name": "can.route.link",
+        "type": "function",
+        "id": 91,
+        "parent": "can.route"
+    },
+    "can.route.current": {
+        "name": "can.route.current",
+        "type": "function",
+        "id": 92,
+        "parent": "can.route"
+    },
+    "can.view": {
+        "name": "can.view",
+        "type": "constructor",
+        "id": 93,
+        "parent": "canjs"
+    },
+    "can.view.ejs": {
+        "name": "can.view.ejs",
+        "type": "function",
+        "id": 94,
+        "parent": "can.view"
+    },
+    "can.view.mustache": {
+        "name": "can.view.mustache",
+        "type": "function",
+        "id": 95,
+        "parent": "can.view"
+    },
+    "hookups": {
+        "name": "hookups",
+        "type": "property",
+        "id": 96,
+        "hide": true,
+        "parent": "can.view"
+    },
+    "can.view.hook": {
+        "name": "can.view.hook",
+        "type": "function",
+        "id": 97,
+        "title": "hook",
+        "parent": "can.view"
+    },
+    "can.view.cached": {
+        "name": "can.view.cached",
+        "type": "property",
+        "id": 98,
+        "title": "cached",
+        "hide": true,
+        "parent": "can.view"
+    },
+    "can.view.cache": {
+        "name": "can.view.cache",
+        "type": "property",
+        "id": 99,
+        "title": "cache",
+        "parent": "can.view"
+    },
+    "can.view.register": {
+        "name": "can.view.register",
+        "type": "function",
+        "id": 100,
+        "parent": "can.view"
+    },
+    "can.view.ext": {
+        "name": "can.view.ext",
+        "type": "property",
+        "id": 101,
+        "title": "ext",
+        "parent": "can.view"
+    },
+    "can.view.registerScript": {
+        "name": "can.view.registerScript",
+        "type": "function",
+        "id": 102,
+        "hide": true,
+        "parent": "can.view"
+    },
+    "can.view.preload": {
+        "name": "can.view.preload",
+        "type": "function",
+        "id": 103,
+        "hide": true,
+        "parent": "can.view"
+    },
+    "can.view.render": {
+        "name": "can.view.render",
+        "type": "function",
+        "id": 104,
+        "parent": "can.view"
+    },
+    "can.view.registerView": {
+        "name": "can.view.registerView",
+        "type": "function",
+        "id": 105,
+        "hide": true,
+        "parent": "can.view"
+    },
+    "can.view.text": {
+        "name": "can.view.text",
+        "type": "property",
+        "id": 106,
+        "hide": true,
+        "parent": "can.view"
+    },
+    "can.util": {
+        "name": "can.util",
+        "type": "page",
+        "id": 107,
+        "title": "can.util",
+        "parent": "canjs"
+    },
+    "can.isDeferred": {
+        "name": "can.isDeferred",
+        "type": "function",
+        "id": 108,
+        "parent": "can.util"
+    },
+    "can.trim": {
+        "name": "can.trim",
+        "type": "function",
+        "id": 109,
+        "parent": "can.util"
+    },
+    "can.makeArray": {
+        "name": "can.makeArray",
+        "type": "function",
+        "id": 110,
+        "parent": "can.util"
+    },
+    "can.isArray": {
+        "name": "can.isArray",
+        "type": "function",
+        "id": 111,
+        "parent": "can.util"
+    },
+    "can.each": {
+        "name": "can.each",
+        "type": "function",
+        "id": 112,
+        "parent": "can.util"
+    },
+    "can.extend": {
+        "name": "can.extend",
+        "type": "function",
+        "id": 113,
+        "parent": "can.util"
+    },
+    "can.param": {
+        "name": "can.param",
+        "type": "function",
+        "id": 114,
+        "parent": "can.util"
+    },
+    "can.isEmptyObject": {
+        "name": "can.isEmptyObject",
+        "type": "function",
+        "id": 115,
+        "parent": "can.util"
+    },
+    "can.proxy": {
+        "name": "can.proxy",
+        "type": "function",
+        "id": 116,
+        "parent": "can.util"
+    },
+    "can.isFunction": {
+        "name": "can.isFunction",
+        "type": "function",
+        "id": 117,
+        "parent": "can.util"
+    },
+    "can.bind": {
+        "name": "can.bind",
+        "type": "function",
+        "id": 118,
+        "parent": "can.util"
+    },
+    "can.unbind": {
+        "name": "can.unbind",
+        "type": "function",
+        "id": 119,
+        "parent": "can.util"
+    },
+    "can.delegate": {
+        "name": "can.delegate",
+        "type": "function",
+        "id": 120,
+        "parent": "can.util"
+    },
+    "can.undelegate": {
+        "name": "can.undelegate",
+        "type": "function",
+        "id": 121,
+        "parent": "can.util"
+    },
+    "can.trigger": {
+        "name": "can.trigger",
+        "type": "function",
+        "id": 122,
+        "parent": "can.util"
+    },
+    "can.ajax": {
+        "name": "can.ajax",
+        "type": "function",
+        "id": 123,
+        "parent": "can.util"
+    },
+    "can.$": {
+        "name": "can.$",
+        "type": "function",
+        "id": 124,
+        "parent": "can.util"
+    },
+    "can.buildFragment": {
+        "name": "can.buildFragment",
+        "type": "function",
+        "id": 125,
+        "parent": "can.util"
+    },
+    "can.append": {
+        "name": "can.append",
+        "type": "function",
+        "id": 126,
+        "parent": "can.util"
+    },
+    "can.remove": {
+        "name": "can.remove",
+        "type": "function",
+        "id": 127,
+        "parent": "can.util"
+    },
+    "can.data": {
+        "name": "can.data",
+        "type": "function",
+        "id": 128,
+        "parent": "can.util"
+    },
+    "can.addClass": {
+        "name": "can.addClass",
+        "type": "function",
+        "id": 129,
+        "parent": "can.util"
+    },
+    "can.when": {
+        "name": "can.when",
+        "type": "function",
+        "id": 130,
+        "parent": "can.util"
+    },
+    "can.Deferred": {
+        "name": "can.Deferred",
+        "type": "constructor",
+        "id": 131,
+        "parent": "can.util"
+    },
+    "can.Deferred.prototype": {
+        "name": "can.Deferred.prototype",
+        "type": "prototype",
+        "id": 132,
+        "parent": "can.Deferred"
+    },
+    "can.Deferred.prototype.pipe": {
+        "name": "can.Deferred.prototype.pipe",
+        "type": "function",
+        "id": 133
+    },
+    "can.Deferred.prototype.resolveWith": {
+        "name": "can.Deferred.prototype.resolveWith",
+        "type": "function",
+        "id": 134,
+        "title": "resolveWith",
+        "parent": "can.Deferred.prototype"
+    },
+    "can.Deferred.prototype.rejectWith": {
+        "name": "can.Deferred.prototype.rejectWith",
+        "type": "function",
+        "id": 135,
+        "title": "rejectWith",
+        "parent": "can.Deferred.prototype"
+    },
+    "can.Deferred.prototype.done": {
+        "name": "can.Deferred.prototype.done",
+        "type": "function",
+        "id": 136,
+        "title": "done",
+        "parent": "can.Deferred.prototype"
+    },
+    "can.Deferred.prototype.always": {
+        "name": "can.Deferred.prototype.always",
+        "type": "function",
+        "id": 137,
+        "title": "always",
+        "parent": "can.Deferred.prototype"
+    },
+    "can.Deferred.prototype.then": {
+        "name": "can.Deferred.prototype.then",
+        "type": "function",
+        "id": 138,
+        "title": "then",
+        "parent": "can.Deferred.prototype"
+    },
+    "can.Deferred.prototype.isResolved": {
+        "name": "can.Deferred.prototype.isResolved",
+        "type": "function",
+        "id": 139,
+        "title": "isResolved",
+        "parent": "can.Deferred.prototype"
+    },
+    "can.Deferred.prototype.reject": {
+        "name": "can.Deferred.prototype.reject",
+        "type": "function",
+        "id": 140,
+        "title": "reject",
+        "parent": "can.Deferred.prototype"
+    },
+    "can.Deferred.prototype.resolve": {
+        "name": "can.Deferred.prototype.resolve",
+        "type": "function",
+        "id": 141,
+        "title": "resolve"
+    }
+}

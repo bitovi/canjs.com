@@ -81,9 +81,11 @@ module.exports = function (grunt) {
 		generate: {
 			options: {
 				debug: true,
-				data: {
-					package: require(__dirname + '/can/package.json')
-				},
+				layout: '_layouts/page.mustache',
+				docs: '_docs/page.mustache',
+				out: 'docs/',
+				root: '',
+				package: require(__dirname + '/can/package.json'),
 				helpers: {
 					makeTypesString: function (types) {
 						if (types.length) {
@@ -114,34 +116,21 @@ module.exports = function (grunt) {
 			},
 			guides: {
 				options: {
-					docs: {
-						root: '../',
-						parent: 'guides',
-						page: 'guides',
-						out: 'guides/'
-					}
+					root: '../',
+					parent: 'guides',
+					page: 'guides'
 				},
 				src: ['_guides/*.md'],
-				dest: '.'
+				dest: 'guides/'
 			},
 			docs: {
 				options: {
-					docs: {
-						root: '../',
-						ignore: function (data) {
-							return data.hide || data.type === 'script' ||
-								data.type === 'static' ||
-								data.type === 'prototype';
-						},
-						parent: 'canjs',
-						page: 'docs',
-						out: 'docs/'
-					}
+					root: '../',
+					parent: 'canjs',
+					page: 'docs'
 				},
 				src: [
 					'can/can.md',
-					'can/util/util.md',
-					'can/util/util.js',
 					'can/construct/construct.md',
 					'can/construct/construct.js',
 					'can/observe/observe.md',
@@ -153,14 +142,21 @@ module.exports = function (grunt) {
 					'can/route/route.md',
 					'can/route/route.js',
 					'can/view/view.md',
-					'can/view/view.js'
+					'can/view/view.js',
+					'can/util/util.md',
+					'can/util/util.js'
 				],
+				dest: 'docs/'
+			},
+			statics: {
+				src: ['_pages/*.mustache'],
 				dest: '.'
 			}
 		},
 		clean: {
-			docs: ['docs/'],
-			guides: ['guides/']
+			docs: ['<%= generate.docs.dest %>'],
+			guides: ['<%= generate.guides.dest %>'],
+			statics: ['*.html']
 		}
 	});
 

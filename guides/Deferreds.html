@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" href="../resources/styles.css" />
+</head>
+
+<body class="guides">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand canjs" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://donejs.com">DoneJS</a></li>
+					<li class="active"><a href="../index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">JQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!FuncUnit">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
+				</ul>
+			</div>
+
+			<ul class="nav">
+				<li class=""><a href="../index.html">Home</a></li>
+				<li class="active"><a href="../guides/index.html">Guides</a></li>
+				<li class=""><a href="../docs/index.html">Api</a></li>
+				<li class=""><a href="../community.html">Community</a></li>
+				<li class=""><a href="../download.html">Download</a></li>
+			</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		<div class="search">
+			<input type="text"/>
+		</div>
+		<ul class="api">
+	
+	<li class="active">
+	<a href="Tutorial.html">Tutorial</a>
+	
+		
+		<ul>
+		
+			
+				<li >
+				<a href="Constructs.html">
+					 Constructs 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Controls.html">
+					 Controls 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Observes.html">
+					 Observes 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Models.html">
+					 Models 
+				</a>
+				</li>
+			
+		
+			
+				<li class="heading"><span>page</span>
+					<ul>
+						
+						
+						<li >
+							<a href="EJS.html">
+								 EJS 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="Mustache.html">
+								 Mustache 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
+		
+			
+				<li class="active">
+				<a href="Deferreds.html">
+					 Deferreds 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Utilities.html">
+					 Utilities 
+				</a>
+				</li>
+			
+		
+		</ul>
+		
+	
+	</li>
+	
+</ul>
+	</nav>
+
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/../_guides/deferred.md">source</a></li>
+		
+		
+		
+	</ul>
+</div>
+
+	<h1>Deferreds</h1> <span class="module">Deferreds</span>
+
+
+
+
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+		<section class="comment">
+			<p>Deferreds in CanJS are explained in greater detail in the <a href="can.Deferred">API</a>.
+Below is a quick tour through can.Deferred, which should look familiar to you
+if you have experience with the Deferred pattern.</p>
+
+<pre><code class="lang-javascript">// Create a new Deferred:
+var dfd = new can.Deferred();
+
+// Add a done callback:
+dfd.done(function(foo) {
+    console.log('Resolved!');
+});
+// Add a fail callback:
+dfd.fail(function(bar) {
+    console.log('Rejected!');
+});
+// Add a callback that fires whether the
+// Deferred is resolve or rejected.
+dfd.always(function(obj) {
+    console.log('Apathetic!');
+});
+
+var dfd2 = new can.Deferred();
+// Add done and fail callbacks:
+dfd2.then(functon(foo) {
+    console.log('Also resolved.');
+}, function(bar) {
+    console.log('Also rejected.');
+});
+
+// Create a Deferred that resolves when
+// all passed Deferreds resolve:
+var endDfd = can.when(dfd, dfd2).then(function() {
+    console.log('I open at the close.');
+});
+
+// Resolve a Deferred (and call all its done callbacks):
+dfd.resolve('foo');
+
+// Reject a Deferred (and call all its fail callbacks):
+dfd.reject('bar');</code></pre>
+		</section>
+		
+	</article>
+</div>
+
+<script type="text/javascript">
+	var docData = {
+    "type": "page",
+    "name": "Deferreds",
+    "body": "<p>Deferreds in CanJS are explained in greater detail in the <a href=\"can.Deferred\">API</a>.\nBelow is a quick tour through can.Deferred, which should look familiar to you\nif you have experience with the Deferred pattern.</p>\n\n<pre><code class=\"lang-javascript\">// Create a new Deferred:\nvar dfd = new can.Deferred();\n\n// Add a done callback:\ndfd.done(function(foo) {\n    console.log('Resolved!');\n});\n// Add a fail callback:\ndfd.fail(function(bar) {\n    console.log('Rejected!');\n});\n// Add a callback that fires whether the\n// Deferred is resolve or rejected.\ndfd.always(function(obj) {\n    console.log('Apathetic!');\n});\n\nvar dfd2 = new can.Deferred();\n// Add done and fail callbacks:\ndfd2.then(functon(foo) {\n    console.log('Also resolved.');\n}, function(bar) {\n    console.log('Also rejected.');\n});\n\n// Create a Deferred that resolves when\n// all passed Deferreds resolve:\nvar endDfd = can.when(dfd, dfd2).then(function() {\n    console.log('I open at the close.');\n});\n\n// Resolve a Deferred (and call all its done callbacks):\ndfd.resolve('foo');\n\n// Reject a Deferred (and call all its fail callbacks):\ndfd.reject('bar');</code></pre>",
+    "description": "",
+    "title": "Deferreds",
+    "parent": "Tutorial",
+    "order": 5,
+    "comment": " ",
+    "src": "_guides/deferred.md",
+    "id": 2
+};
+
+	console.log(docData);
+</script>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand canjs" href="index.html">CanJS</a>
+			<ul class="pullright">
+				<li><a href="../index.html">Home</a></li>
+				<li><a href="../guides">Guides</a></li>
+				<li><a href="../docs/index.html">Api</a></li>
+				<li><a href="../community.html">Community</a></li>
+				<li><a href="../download.html">Download</a></li>
+			</ul>
+		</nav>
+	</footer>
+	<div class="loading"></div>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="../resources/production.min.js"></script>
+</body>
+
+</html>

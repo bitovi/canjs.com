@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" href="../resources/styles.css" />
+</head>
+
+<body class="guides">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand canjs" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://donejs.com">DoneJS</a></li>
+					<li class="active"><a href="../index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">JQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!FuncUnit">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
+				</ul>
+			</div>
+
+			<ul class="nav">
+				<li class=""><a href="../index.html">Home</a></li>
+				<li class="active"><a href="../guides/index.html">Guides</a></li>
+				<li class=""><a href="../docs/index.html">Api</a></li>
+				<li class=""><a href="../community.html">Community</a></li>
+				<li class=""><a href="../download.html">Download</a></li>
+			</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		<div class="search">
+			<input type="text"/>
+		</div>
+		<ul class="api">
+	
+	<li class="active">
+	<a href="Tutorial.html">Tutorial</a>
+	
+		
+		<ul>
+		
+			
+				<li >
+				<a href="Constructs.html">
+					 Constructs 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Controls.html">
+					 Controls 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Observes.html">
+					 Observes 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Models.html">
+					 Models 
+				</a>
+				</li>
+			
+		
+			
+				<li class="heading"><span>page</span>
+					<ul>
+						
+						
+						<li >
+							<a href="EJS.html">
+								 EJS 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="Mustache.html">
+								 Mustache 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
+		
+			
+				<li >
+				<a href="Deferreds.html">
+					 Deferreds 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Utilities.html">
+					 Utilities 
+				</a>
+				</li>
+			
+		
+		</ul>
+		
+	
+	</li>
+	
+</ul>
+	</nav>
+
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/../_guides/views.md">source</a></li>
+		
+		
+		
+	</ul>
+</div>
+
+	<h1>Views</h1> <span class="module">Views</span>
+
+
+
+
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+		<section class="comment">
+			<p><code>[can.view](can.view)</code> loads and renders templates with the data you provide, and
+returns a documentFragment with the populated template. can.view supports many
+templating languages, but <a href="can.EJS">EJS</a> and <a href="can.Mustache">Mustache</a> allow you
+to live-bind Observes into templates.</p>
+
+<h2>Loading templates</h2>
+
+<p>You can load templates from a URL or directly from an existent script tag. To
+load from a script tag, pass <code>can.view</code> the tag's ID as the first parameter. To
+load from a URL, pass the URL as the first parameter. Use the second parameter to
+pass the data to populate the template with.</p>
+
+<p>In order to register a template with can.view, create a script tag on the page
+with an ID, a <code>type</code> attribute that matches the templating language, and the
+content of the template inside:</p>
+
+<pre><code class="lang-javascript">&lt;script type="text/ejs" id="todoList">
+<% can.each(this, function(val, key) { %>
+    &lt;li><%= val.description %>&lt;/li>
+<% }); %>
+&lt;/script></code></pre>
+
+<p>Then load the template using the script tag's ID and pass the template data:</p>
+
+<pre><code class="lang-javascript">Todo.findAll({}, function(todos) {
+    $('#nav').html(can.view('todoList', todos))
+});</code></pre>
+
+<p>Or you can load a template without registering it first (or including it on the
+page) by giving the URL to <code>can.view</code>:</p>
+
+<pre><code class="lang-javascript">Todo.findAll({}, function(todos) {
+    $('#nav').html(can.view('todos/todos.ejs', todos))
+});</code></pre>
+
+<h2>Passing Deferreds</h2>
+
+<p>If the second parameter you pass to <code>can.view</code> contains Deferreds, can.view will
+instead return a Deferred that resolves to the documentFragment containing the
+populated template after all the deferreds have resolved.</p>
+
+<p>This aspect is most useful because <code>can.Model.findAll</code> returns a Deferred, which
+means it's easy to lead a template, retrieve one or more Models, and render the
+resulting documentFragment when everything has been loaded:</p>
+
+<pre><code class="lang-javascript">can.view('todos.ejs', {
+    todos: Todo.findAll().
+    user: User.findOne({id: 5})
+}).then(function(fragment) {
+    document.getElementById('todos').appendChild(fragment);
+});</code></pre>
+
+<h2>Rendering to string</h2>
+
+<p>To render to a string instead of a documentFragment, use <code>can.view.render</code>. This
+is mainly used to include templates inside of other templates:</p>
+
+<pre><code class="lang-javascript"><% can.each(todos, function(todo, key) { %>
+    &lt;li><%== can.view.render('todos.ejs', todo); %>&lt;/li>
+<% }) %></code></pre>
+		</section>
+		
+	</article>
+</div>
+
+<script type="text/javascript">
+	var docData = {
+    "type": "page",
+    "name": "Views",
+    "body": "<p><code>[can.view](can.view)</code> loads and renders templates with the data you provide, and\nreturns a documentFragment with the populated template. can.view supports many\ntemplating languages, but <a href=\"can.EJS\">EJS</a> and <a href=\"can.Mustache\">Mustache</a> allow you\nto live-bind Observes into templates.</p>\n\n<h2>Loading templates</h2>\n\n<p>You can load templates from a URL or directly from an existent script tag. To\nload from a script tag, pass <code>can.view</code> the tag's ID as the first parameter. To\nload from a URL, pass the URL as the first parameter. Use the second parameter to\npass the data to populate the template with.</p>\n\n<p>In order to register a template with can.view, create a script tag on the page\nwith an ID, a <code>type</code> attribute that matches the templating language, and the\ncontent of the template inside:</p>\n\n<pre><code class=\"lang-javascript\">&lt;script type=\"text/ejs\" id=\"todoList\">\n<% can.each(this, function(val, key) { %>\n    &lt;li><%= val.description %>&lt;/li>\n<% }); %>\n&lt;/script></code></pre>\n\n<p>Then load the template using the script tag's ID and pass the template data:</p>\n\n<pre><code class=\"lang-javascript\">Todo.findAll({}, function(todos) {\n    $('#nav').html(can.view('todoList', todos))\n});</code></pre>\n\n<p>Or you can load a template without registering it first (or including it on the\npage) by giving the URL to <code>can.view</code>:</p>\n\n<pre><code class=\"lang-javascript\">Todo.findAll({}, function(todos) {\n    $('#nav').html(can.view('todos/todos.ejs', todos))\n});</code></pre>\n\n<h2>Passing Deferreds</h2>\n\n<p>If the second parameter you pass to <code>can.view</code> contains Deferreds, can.view will\ninstead return a Deferred that resolves to the documentFragment containing the\npopulated template after all the deferreds have resolved.</p>\n\n<p>This aspect is most useful because <code>can.Model.findAll</code> returns a Deferred, which\nmeans it's easy to lead a template, retrieve one or more Models, and render the\nresulting documentFragment when everything has been loaded:</p>\n\n<pre><code class=\"lang-javascript\">can.view('todos.ejs', {\n    todos: Todo.findAll().\n    user: User.findOne({id: 5})\n}).then(function(fragment) {\n    document.getElementById('todos').appendChild(fragment);\n});</code></pre>\n\n<h2>Rendering to string</h2>\n\n<p>To render to a string instead of a documentFragment, use <code>can.view.render</code>. This\nis mainly used to include templates inside of other templates:</p>\n\n<pre><code class=\"lang-javascript\"><% can.each(todos, function(todo, key) { %>\n    &lt;li><%== can.view.render('todos.ejs', todo); %>&lt;/li>\n<% }) %></code></pre>",
+    "description": "",
+    "title": "Views",
+    "parent": "Tutorial",
+    "order": 3,
+    "comment": " ",
+    "src": "_guides/views.md",
+    "id": 10
+};
+
+	console.log(docData);
+</script>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand canjs" href="index.html">CanJS</a>
+			<ul class="pullright">
+				<li><a href="../index.html">Home</a></li>
+				<li><a href="../guides">Guides</a></li>
+				<li><a href="../docs/index.html">Api</a></li>
+				<li><a href="../community.html">Community</a></li>
+				<li><a href="../download.html">Download</a></li>
+			</ul>
+		</nav>
+	</footer>
+	<div class="loading"></div>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="../resources/production.min.js"></script>
+</body>
+
+</html>

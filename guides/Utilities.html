@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" href="../resources/styles.css" />
+</head>
+
+<body class="guides">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand canjs" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://donejs.com">DoneJS</a></li>
+					<li class="active"><a href="../index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">JQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!FuncUnit">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
+				</ul>
+			</div>
+
+			<ul class="nav">
+				<li class=""><a href="../index.html">Home</a></li>
+				<li class="active"><a href="../guides/index.html">Guides</a></li>
+				<li class=""><a href="../docs/index.html">Api</a></li>
+				<li class=""><a href="../community.html">Community</a></li>
+				<li class=""><a href="../download.html">Download</a></li>
+			</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		<div class="search">
+			<input type="text"/>
+		</div>
+		<ul class="api">
+	
+	<li class="active">
+	<a href="Tutorial.html">Tutorial</a>
+	
+		
+		<ul>
+		
+			
+				<li >
+				<a href="Constructs.html">
+					 Constructs 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Controls.html">
+					 Controls 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Observes.html">
+					 Observes 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="Models.html">
+					 Models 
+				</a>
+				</li>
+			
+		
+			
+				<li class="heading"><span>page</span>
+					<ul>
+						
+						
+						<li >
+							<a href="EJS.html">
+								 EJS 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="Mustache.html">
+								 Mustache 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+				
+		
+			
+				<li >
+				<a href="Deferreds.html">
+					 Deferreds 
+				</a>
+				</li>
+			
+		
+			
+				<li class="active">
+				<a href="Utilities.html">
+					 Utilities 
+				</a>
+				</li>
+			
+		
+		</ul>
+		
+	
+	</li>
+	
+</ul>
+	</nav>
+
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/../_guides/util.md">source</a></li>
+		
+		
+		
+	</ul>
+</div>
+
+	<h1>Utilities</h1> <span class="module">Utilities</span>
+
+
+
+
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+		<section class="comment">
+			<p>CanJS provides a plethora of utility methods. These methods are usually mapped
+to similar methods in the library that underlies CanJS, but for libraries that
+do not have the given methods, CanJS provides them for you. This way, you can
+create plugins for CanJS that work no matter what library someone else is using.</p>
+
+<h2>String utilities</h2>
+
+<p><code>can.trim</code> removes leading and trailing whitespace.</p>
+
+<pre><code class="lang-javascript">can.trim(' foo '); // 'foo'</code></pre>
+
+<p><code>can.esc</code> escapes HTML code.</p>
+
+<pre><code class="lang-javascript">can.esc('&lt;foo>&lt;bar>'); // '&amp;lt;foo&amp;gt;&amp;&amp;lt;bar&amp;gt;'</code></pre>
+
+<p><code>can.getObject</code> looks up an object by path.</p>
+
+<pre><code class="lang-javascript">can.('foo.bar', [{foo: {bar: 'baz'}}]); // 'baz'</code></pre>
+
+<p><code>can.capitalize</code> capitalizes a string.</p>
+
+<pre><code class="lang-javascript">can.('fooBar'); // 'FooBar'</code></pre>
+
+<p><code>can.sub</code> allows micro-templating.</p>
+
+<pre><code class="lang-javascript">can.sub('{greet}, world!', {greet: 'Hello'}); // 'Hello, world!'</code></pre>
+
+<p><code>can.deparam</code> transforms a form-encoded string into an object..</p>
+
+<pre><code class="lang-javascript">can.deparam('foo=bar&hello=world'); // {foo: 'bar', hello: 'world'}</code></pre>
+
+<h2>Array utilities</h2>
+
+<p><code>can.makeArray</code> converts array-like objects into real Arrays.</p>
+
+<pre><code class="lang-javascript">can.makeArray({0: 'foo', 1: 'bar', length: 2}); // ['foo', 'bar']</code></pre>
+
+<p><code>can.isArray</code> checks if an object is an Array.</p>
+
+<pre><code class="lang-javascript">can.isArray([]); // true</code></pre>
+
+<p><code>can.map</code> converts an array into another array using a callback.</p>
+
+<pre><code class="lang-javascript">can.map(['foo', 'bar'], function(element, index) {
+    return el.toUppercase();
+}); // ['FOO', 'BAR']</code></pre>
+
+<p><code>can.each</code> iterates through an array.</p>
+
+<pre><code class="lang-javascript">can.each([{prop: 'foo'}, {prop: 'bar'}], function(element, index) {
+    // this callback will be called with:
+    // element = {prop: 'foo'}, index = 0
+    // element = {prop: 'bar'}, index = 1
+});</code></pre>
+
+<h2>Object utilites</h2>
+
+<p><code>can.extend</code> extends one object with the properties of another.</p>
+
+<pre><code class="lang-javascript">var first  = {},
+    second = {a: 'b', c: 'd'},
+    third  = {c: 'e'};
+
+var extended = can.extend(first, second, third);
+extended === first; // true
+first;  // {a: 'b', c: 'e'}
+second; // {a: 'b', c: 'd'}
+third;  // {c: 'e'}</code></pre>
+
+<p><code>can.param</code> turns an object into a query string.</p>
+
+<pre><code class="lang-javascript">can.param({a: 'b', c: 'd'}); // 'a=b&c=d'</code></pre>
+
+<p><code>can.isEmptyObject</code> checks whether an object is empty.</p>
+
+<pre><code class="lang-javascript">can.isEmptyObject({});           // true
+can.isEmptyObject({foo: 'bar'}); // false</code></pre>
+
+<h2>Function utilites</h2>
+
+<p><code>can.proxy</code> returns a function that calls another function with a set context.</p>
+
+<pre><code class="lang-javascript">var f = can.proxy(function(str) {
+    return this.a + str;
+}, {a: 'b'});
+f('bar'); // 'bbar'</code></pre>
+
+<p><code>can.isFunction</code> checks whether an object is a function.</p>
+
+<pre><code class="lang-javascript">can.isFunction({});             // false
+can.isFunction(function() { }); // true</code></pre>
+
+<h2>Event utilities</h2>
+
+<p><code>can.bind</code> binds a callback to an event on an object.</p>
+
+<pre><code class="lang-javascript">can.bind(obj, eventName, handler); // Binds handler on obj's eventName event.</code></pre>
+
+<p><code>can.unbind</code> unbinds a callback from an event on an object.</p>
+
+<pre><code class="lang-javascript">can.unbind(obj, eventName, handler); // Unbinds handler from obj's eventName event.</code></pre>
+
+<p><code>can.delegate</code> binds a callback to an event on an all elements that match a selector.</p>
+
+<pre><code class="lang-javascript">can.delegate(obj, eventName, handler); // Binds handler on eventName events from all elements under obj that match selector.</code></pre>
+
+<p><code>can.undelegate</code> unbinds a callback from an event on an all elements that
+match a selector.</p>
+
+<pre><code class="lang-javascript">can.undelegate(obj, eventName, handler); // Unbinds handler from eventName events from all elements under obj that match selector.</code></pre>
+
+<p><code>can.trigger</code> triggers an event on an object.</p>
+
+<pre><code class="lang-javascript">can.trigger(obj, eventName, args); // Executes all handlers attached to obj for eventName with args as additional arguments.</code></pre>
+
+<h2>AJAX utilites</h2>
+
+<p><code>can.ajax</code> will make an AJAX call and return a Deferred that resolves when the
+call has returned.</p>
+
+<pre><code class="lang-javascript">can.ajax({
+    url: '/path/to/url',
+    type: 'GET',
+    async: true,
+    dataType: 'json',
+    success: function(json) { },
+    error: function(xhr) { }
+});</code></pre>
+
+<h2>Element utilities</h2>
+
+<p><code>can.$</code> creates a library-wrapped NodeList.</p>
+
+<pre><code class="lang-javascript">can.$(div.bar); // (in jQuery, a jQuery.fn object)</code></pre>
+
+<p><code>can.append</code> appends elements to the elements in a NodeList.</p>
+
+<pre><code class="lang-javascript">can.append(nodelist, content); // Appends content to each element in nodelist.</code></pre>
+		</section>
+		
+	</article>
+</div>
+
+<script type="text/javascript">
+	var docData = {
+    "type": "page",
+    "name": "Utilities",
+    "body": "<p>CanJS provides a plethora of utility methods. These methods are usually mapped\nto similar methods in the library that underlies CanJS, but for libraries that\ndo not have the given methods, CanJS provides them for you. This way, you can\ncreate plugins for CanJS that work no matter what library someone else is using.</p>\n\n<h2>String utilities</h2>\n\n<p><code>can.trim</code> removes leading and trailing whitespace.</p>\n\n<pre><code class=\"lang-javascript\">can.trim(' foo '); // 'foo'</code></pre>\n\n<p><code>can.esc</code> escapes HTML code.</p>\n\n<pre><code class=\"lang-javascript\">can.esc('&lt;foo>&lt;bar>'); // '&amp;lt;foo&amp;gt;&amp;&amp;lt;bar&amp;gt;'</code></pre>\n\n<p><code>can.getObject</code> looks up an object by path.</p>\n\n<pre><code class=\"lang-javascript\">can.('foo.bar', [{foo: {bar: 'baz'}}]); // 'baz'</code></pre>\n\n<p><code>can.capitalize</code> capitalizes a string.</p>\n\n<pre><code class=\"lang-javascript\">can.('fooBar'); // 'FooBar'</code></pre>\n\n<p><code>can.sub</code> allows micro-templating.</p>\n\n<pre><code class=\"lang-javascript\">can.sub('{greet}, world!', {greet: 'Hello'}); // 'Hello, world!'</code></pre>\n\n<p><code>can.deparam</code> transforms a form-encoded string into an object..</p>\n\n<pre><code class=\"lang-javascript\">can.deparam('foo=bar&hello=world'); // {foo: 'bar', hello: 'world'}</code></pre>\n\n<h2>Array utilities</h2>\n\n<p><code>can.makeArray</code> converts array-like objects into real Arrays.</p>\n\n<pre><code class=\"lang-javascript\">can.makeArray({0: 'foo', 1: 'bar', length: 2}); // ['foo', 'bar']</code></pre>\n\n<p><code>can.isArray</code> checks if an object is an Array.</p>\n\n<pre><code class=\"lang-javascript\">can.isArray([]); // true</code></pre>\n\n<p><code>can.map</code> converts an array into another array using a callback.</p>\n\n<pre><code class=\"lang-javascript\">can.map(['foo', 'bar'], function(element, index) {\n    return el.toUppercase();\n}); // ['FOO', 'BAR']</code></pre>\n\n<p><code>can.each</code> iterates through an array.</p>\n\n<pre><code class=\"lang-javascript\">can.each([{prop: 'foo'}, {prop: 'bar'}], function(element, index) {\n    // this callback will be called with:\n    // element = {prop: 'foo'}, index = 0\n    // element = {prop: 'bar'}, index = 1\n});</code></pre>\n\n<h2>Object utilites</h2>\n\n<p><code>can.extend</code> extends one object with the properties of another.</p>\n\n<pre><code class=\"lang-javascript\">var first  = {},\n    second = {a: 'b', c: 'd'},\n    third  = {c: 'e'};\n\nvar extended = can.extend(first, second, third);\nextended === first; // true\nfirst;  // {a: 'b', c: 'e'}\nsecond; // {a: 'b', c: 'd'}\nthird;  // {c: 'e'}</code></pre>\n\n<p><code>can.param</code> turns an object into a query string.</p>\n\n<pre><code class=\"lang-javascript\">can.param({a: 'b', c: 'd'}); // 'a=b&c=d'</code></pre>\n\n<p><code>can.isEmptyObject</code> checks whether an object is empty.</p>\n\n<pre><code class=\"lang-javascript\">can.isEmptyObject({});           // true\ncan.isEmptyObject({foo: 'bar'}); // false</code></pre>\n\n<h2>Function utilites</h2>\n\n<p><code>can.proxy</code> returns a function that calls another function with a set context.</p>\n\n<pre><code class=\"lang-javascript\">var f = can.proxy(function(str) {\n    return this.a + str;\n}, {a: 'b'});\nf('bar'); // 'bbar'</code></pre>\n\n<p><code>can.isFunction</code> checks whether an object is a function.</p>\n\n<pre><code class=\"lang-javascript\">can.isFunction({});             // false\ncan.isFunction(function() { }); // true</code></pre>\n\n<h2>Event utilities</h2>\n\n<p><code>can.bind</code> binds a callback to an event on an object.</p>\n\n<pre><code class=\"lang-javascript\">can.bind(obj, eventName, handler); // Binds handler on obj's eventName event.</code></pre>\n\n<p><code>can.unbind</code> unbinds a callback from an event on an object.</p>\n\n<pre><code class=\"lang-javascript\">can.unbind(obj, eventName, handler); // Unbinds handler from obj's eventName event.</code></pre>\n\n<p><code>can.delegate</code> binds a callback to an event on an all elements that match a selector.</p>\n\n<pre><code class=\"lang-javascript\">can.delegate(obj, eventName, handler); // Binds handler on eventName events from all elements under obj that match selector.</code></pre>\n\n<p><code>can.undelegate</code> unbinds a callback from an event on an all elements that\nmatch a selector.</p>\n\n<pre><code class=\"lang-javascript\">can.undelegate(obj, eventName, handler); // Unbinds handler from eventName events from all elements under obj that match selector.</code></pre>\n\n<p><code>can.trigger</code> triggers an event on an object.</p>\n\n<pre><code class=\"lang-javascript\">can.trigger(obj, eventName, args); // Executes all handlers attached to obj for eventName with args as additional arguments.</code></pre>\n\n<h2>AJAX utilites</h2>\n\n<p><code>can.ajax</code> will make an AJAX call and return a Deferred that resolves when the\ncall has returned.</p>\n\n<pre><code class=\"lang-javascript\">can.ajax({\n    url: '/path/to/url',\n    type: 'GET',\n    async: true,\n    dataType: 'json',\n    success: function(json) { },\n    error: function(xhr) { }\n});</code></pre>\n\n<h2>Element utilities</h2>\n\n<p><code>can.$</code> creates a library-wrapped NodeList.</p>\n\n<pre><code class=\"lang-javascript\">can.$(div.bar); // (in jQuery, a jQuery.fn object)</code></pre>\n\n<p><code>can.append</code> appends elements to the elements in a NodeList.</p>\n\n<pre><code class=\"lang-javascript\">can.append(nodelist, content); // Appends content to each element in nodelist.</code></pre>",
+    "description": "",
+    "title": "Utilities",
+    "parent": "Tutorial",
+    "order": 6,
+    "comment": " ",
+    "src": "_guides/util.md",
+    "id": 9
+};
+
+	console.log(docData);
+</script>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand canjs" href="index.html">CanJS</a>
+			<ul class="pullright">
+				<li><a href="../index.html">Home</a></li>
+				<li><a href="../guides">Guides</a></li>
+				<li><a href="../docs/index.html">Api</a></li>
+				<li><a href="../community.html">Community</a></li>
+				<li><a href="../download.html">Download</a></li>
+			</ul>
+		</nav>
+	</footer>
+	<div class="loading"></div>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="../resources/production.min.js"></script>
+</body>
+
+</html>
