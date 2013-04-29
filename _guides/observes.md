@@ -1,5 +1,5 @@
 @page Observes Observes
-@parent Tutorial
+@parent Tutorial 1
 
 @body
 Observes made with can.Observe will let you set and remove properties like on

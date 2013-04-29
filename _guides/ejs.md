@@ -10,11 +10,11 @@ behavior.
 Here's an example of a template that might render a list of Todos:
 
 @codestart
-<script type="text/ejs" id="todoList">
+&lt;script type="text/ejs" id="todoList">
 <% for(var i = 0; i < todos.length; ++i) { %>
-	<li><%= this[i].description </li>
+	&lt;li><%= this[i].description &lt;/li>
 <% } %>
-</script>
+&lt;/script>
 @codeend
 
 And you can use `can.view` to render the template:
@@ -30,12 +30,12 @@ As you can see from the template and the call to `can.view`, `todos` becomes
 object without having to prefix it with `this.`:
 
 @codestart
-<script type="text/ejs" id="todosAndUser">
-<h2> <%= user.name %></h2>
+&lt;script type="text/ejs" id="todosAndUser">
+&lt;h2> <%= user.name %>&lt;/h2>
 <% for(var i = 0; i < todos.length; ++i) { %>
-	<li><%= this[i].description </li>
+	&lt;li><%= this[i].description &lt;/li>
 <% } %>
-</script>
+&lt;/script>
 @codeend
 
 Which can be inserted in the document with:
@@ -60,13 +60,13 @@ almost any JavaScript code is valid in `<% %>`, EJS is incredibly powerful.
 
 @codestart
 <% if(todos.attr('length') > 0) { %>
-	<div>You have no to-dos.</div>
+	&lt;div>You have no to-dos.&lt;/div>
 <% } else { %>
-	<ul>
+	&lt;ul>
 		<% todos.each(function(todo) { %>
-		<li>todo.description</li>
+		&lt;li>todo.description&lt;/li>
 		<% }); %>
-	</ul>
+	&lt;/ul>
 <% } %>
 @codeend
 
@@ -74,13 +74,13 @@ almost any JavaScript code is valid in `<% %>`, EJS is incredibly powerful.
 into the populated template. For example, an EJS template like this:
 
 @codestart
-<div>My favorite element is <%= '<b>blink</b>' %>.</div>
+&lt;div>My favorite element is <%= '&lt;b>blink&lt;/b>' %>.&lt;/div>
 @codeend
 
 will result in HTML like this:
 
 @codestart
-<div>My favorite element is &lt;b>blink&lt;/b>.</div>
+&lt;div>My favorite element is &amp;lt;b&amp;gt;blink&amp;lt;/b&amp;gt;.&lt;/div>
 @codeend
 
 This is almost always the tag you want to use when writing values to your
@@ -91,20 +91,20 @@ populated template. This is like `<%= %>` but without escaping the result first.
 For example, an EJS template like this:
 
 @codestart
-<div>My favorite element is <%== '<b>blink</b>' %>.</div>
+&lt;div>My favorite element is <%== '&lt;b>blink&lt;/b>' %>.&lt;/div>
 @codeend
 
 will result in HTML like this:
 
 @codestart
-<div>My favorite element is <b>blink</b>.</div>
+&lt;div>My favorite element is &lt;b>blink&lt;/b>.&lt;/div>
 @codeend
 
 The most common use of `<%== %>` is to include templates in other templates:
 
 @codestart
 <% todos.each(function(todo) { %>
-	<li><%== can.view.render('todoEJS', todo); %></li>
+	&lt;li><%== can.view.render('todoEJS', todo); %>&lt;/li>
 <% }); %>
 @codeend
 
@@ -119,7 +119,7 @@ Observes and use `attr` to read properties. In this template, using `attr` sets
 up live binding on the `description` property of `todo`:
 
 @codestart
-<li><%= todo.attr('description') %></li>
+&lt;li><%= todo.attr('description') %>&lt;/li>
 @codeend
 
 If you change the Todo's description, the template's output will automatically
@@ -135,7 +135,7 @@ template like this will not work:
 
 @codestart
 <% for(var i = 0; i < todos.length; ++i) { %>
-	<li><%= todos[i].attr('name') %></li>
+	&lt;li><%= todos[i].attr('name') %>&lt;/li>
 <% } %>
 @codeend
 
@@ -145,7 +145,7 @@ run). You can fix this by using a closure and the `each` method of Observes:
 
 @codestart
 <% todos.each(function() { %>
-	<li><%= todo.attr('name') %></li>
+	&lt;li><%= todo.attr('name') %>&lt;/li>
 <% }); %>
 @codeend
 
@@ -160,7 +160,7 @@ useful to initialize functionality on an element within the template, like
 starting an element hidden:
 
 @codestart
-<img src="surprise.gif" <%= function(element) { element.style.display = 'none'; } %>/>
+&lt;img src="surprise.gif" <%= function(element) { element.style.display = 'none'; } %>/>
 @codeend
 
 This is so common that EJS also supports [ECMAScript 5 arrow functions](http://wiki.ecmascript.org/doku.php?id=strawman:arrow_function_syntax)
@@ -168,7 +168,7 @@ that get passed a library-wrapped NodeList containing the element. Because we
 are using jQuery, the example above can be more simply written like this:
 
 @codestart
-<img src="surprise.gif" <%= (el) -> el.hide() %>/>
+&lt;img src="surprise.gif" <%= (el) -> el.hide() %>/>
 @codeend
 
 You can use this functionality to easily attach data to an element. A common
@@ -176,8 +176,8 @@ reason to do this is to attach a Model to the element that represents it:
 
 @codestart
 <% todos.each(function(todo) { %>
-<li <%= (el) -> can.data(el, 'todo', todo) %>>
+&lt;li <%= (el) -> can.data(el, 'todo', todo) %>>
 	<%= todo.attr('description') %>
-</li>
+&lt;/li>
 <% }) %>
 @codeend

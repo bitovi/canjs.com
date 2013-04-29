@@ -14,11 +14,11 @@ through lists, and filtering blocks.
 Here's an example of a template that might render a list of Todos:
 
 @codestart
-<script type="text/mustache" id="todosList">
+&lt;script type="text/mustache" id="todosList">
 {{#todos}}
-<li>{{description}}</li>
+&lt;li>{{description}}&lt;/li>
 {{/todos}}
-</script>
+&lt;/script>
 @codeend
 
 And you can use `can.view` to render the template:
@@ -87,7 +87,7 @@ will render:
 
 @codestart
 {{#enemies}}
-<li>{{.}}</li>
+&lt;li>{{.}}&lt;/li>
 {{/enemies}}
 @codeend
 
@@ -102,36 +102,37 @@ once.
 This template:
 
 @codestart
-<h1>{{#name}}{{.}}{{/name}}</h1>
-<ul>
+&lt;h1>{{#name}}{{.}}{{/name}}&lt;/h1>
+&lt;ul>
 	{{#friends}}
-	<li>{{.}}</li>
+	&lt;li>{{.}}&lt;/li>
 	{{/friends}}
-</ul>
+&lt;/ul>
 @codeend
 
 will render like this:
 
 @codestart
-<h1>Alice Liddell</h1>
-<ul>
-	<li>Bob</li>
-	<li>Eve</li>
-</ul>
+&lt;h1>Alice Liddell&lt;/h1>
+&lt;ul>
+	&lt;li>Bob&lt;/li>
+	&lt;li>Eve&lt;/li>
+&lt;/ul>
 @codeend
 
 You can also make inverted sections that render if the key referenced in the
 opening tag is falsey:
 
 @codestart
-<ul>
+&lt;ul>
 	{{#friends}}
-	<li>{{.}}</li>
+	&lt;li>{{.}}&lt;/li>
 	{{/friends}}
 	{{^friends}}
-	<li>You have no friends.</li>
+	&lt;li>You have no friends.&lt;/li>
 	{{/friends}}
-</ul>
+&lt;/ul>
+@codeend
 
 ### Context
 
@@ -197,20 +198,20 @@ var fragment = can.view('todosList', {todos: todos}, {
 This might be used in a template like this:
 
 @codestart
-<script type="text/mustache" id="todosList">
+&lt;script type="text/mustache" id="todosList">
 {{#todos}}
-<li>{{uppercase description}}</li>
+&lt;li>{{uppercase description}}&lt;/li>
 {{/todos}}
-</script>
+&lt;/script>
 @codeend
 
 If a property of an observe is passed to a helper function, the helper will
 become a `[can.compute](can.compute)`. As an example, if you had this template:
 
 @codestart
-<script type="text/mustache" id="prefixedName">
-<div>{{addMs lastName}}</div>
-</script>
+&lt;script type="text/mustache" id="prefixedName">
+&lt;div>{{addMs lastName}}&lt;/div>
+&lt;/script>
 @codeend
 
 And you ran this code:
@@ -247,9 +248,9 @@ helper.
 For example, this template:
 
 @codestart
-<script type="text/mustache" id="nameDiv">
-<div id="person" {{data 'name'}}>{{firstName}} {{lastName}}</div>
-</script>
+&lt;script type="text/mustache" id="nameDiv">
+&lt;div id="person" {{data 'name'}}>{{firstName}} {{lastName}}&lt;/div>
+&lt;/script>
 @codeend
 
 lets you do this in code:
@@ -273,24 +274,24 @@ ID inside `{{> }}`.
 
 With these templates:
 @codestart
-<script type="text/mustache" id="names">
-<ul>
+&lt;script type="text/mustache" id="names">
+&lt;ul>
 {{#names}}
 	{{>user}}
 {{/names}}
-</ul>
-</script>
-<script type="text/mustache" id="user">
-<li>{{firstName}} {{lastName}}</li>
-</script>
+&lt;/ul>
+&lt;/script>
+&lt;script type="text/mustache" id="user">
+&lt;li>{{firstName}} {{lastName}}&lt;/li>
+&lt;/script>
 @codeend
 
 the expanded template at render time would look similar to:
 
 @codestart
-<ul>
+&lt;ul>
 {{#names}}
-	<li>{{firstName}} {{lastName}}</li>
+	&lt;li>{{firstName}} {{lastName}}&lt;/li>
 {{/names}}
-</ul>
+&lt;/ul>
 @codeend

@@ -1,5 +1,5 @@
 @page Constructs Constructs
-@parent Tutorial
+@parent Tutorial 0
 
 @body
 Constructor functions made with [can.Construct] are used to create objects with
@@ -84,3 +84,4 @@ var PrivateTodo = can.Construct({
 		this.
 	}
 });
+@codeend

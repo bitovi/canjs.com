@@ -1,5 +1,5 @@
 @page Models Models
-@parent Tutorial
+@parent Tutorial 2
 
 @body
 Models are Observes that connect to a RESTful interface. They come with a set of

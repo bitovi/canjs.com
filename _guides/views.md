@@ -1,6 +1,7 @@
 @page Views Views
-@parent Tutorial
+@parent Tutorial 3
 
+@body
 `[can.view](can.view)` loads and renders templates with the data you provide, and
 returns a documentFragment with the populated template. can.view supports many
 templating languages, but [EJS](can.EJS) and [Mustache](can.Mustache) allow you
@@ -19,7 +20,7 @@ content of the template inside:
 @codestart
 &lt;script type="text/ejs" id="todoList">
 <% can.each(this, function(val, key) { %>
-	&lt;li><%= val.description %></li>
+	&lt;li><%= val.description %>&lt;/li>
 <% }); %>
 &lt;/script>
 @codeend
@@ -65,6 +66,6 @@ is mainly used to include templates inside of other templates:
 
 @codestart
 <% can.each(todos, function(todo, key) { %>
-	<li><%== can.view.render('todos.ejs', todo); %></li>
+	&lt;li><%== can.view.render('todos.ejs', todo); %>&lt;/li>
 <% }) %>
 @codeend

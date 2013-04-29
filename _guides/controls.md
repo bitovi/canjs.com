@@ -97,14 +97,14 @@ One of the things we want to do with our to-do list is delete Todos. This is
 made easy with event handling in can.Control. Let's say that our view template looks like this:
 
 @codestart
-<script type="text/ejs" id="todoList">
+&lt;script type="text/ejs" id="todoList">
 <% this.each(function(todo) { %>
-<li <%= (el) -> el.data('todo', todo) %>>
+&lt;li <%= (el) -> el.data('todo', todo) %>>
 	<%= todo.attr('description'); %>
-	<a class="destroy">X</a>
-</li>
+	&lt;a class="destroy">X</a>
+&lt;/li>
 <% }) %>
-</script>
+&lt;/script>
 @codeend
 
 We should put an event listener on our Todos Control to remove a Todo when its
@@ -162,7 +162,7 @@ var Todos = can.Control({
 });
 
 new Todos('#todos', {destroyEvent; 'mouseenter'});
-@codeeend
+@codeend
 
 You can also use this to bind events to objects other that `this.element`
 within Controls. This is critical for avoiding memory leaks that are
@@ -254,6 +254,7 @@ editor.todo(todo1);
 
 // switch to editing the second Todo
 editor.todo(todo2);
+@codeend
 
 ## Destrying Controls
 
