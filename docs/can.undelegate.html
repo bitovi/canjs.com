@@ -84,6 +84,11 @@
 	</li>
 	
 	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
@@ -100,6 +105,11 @@
 	
 	<li >
 	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.compute.html">can.compute</a>
 	
 	</li>
 	
@@ -121,22 +131,6 @@
 				</a>
 				</li>
 			
-		
-			
-				<li class="heading"><span>constructor</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Deferred.prototype.html">
-								 can.Deferred.prototype 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
 		
 			
 				<li >
@@ -335,7 +329,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L295">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L325">source</a></li>
 		
 		
 		
@@ -462,12 +456,12 @@ CanJS; however, if you are making libraries or extensions, use
 
 <p><strong>Delegate/undelegate binding to an HTMLElement</strong></p>
 
-<p>var el = document.getElementById('foo'),
+<pre><code class="lang-javascript">var el = document.getElementById('foo'),
 handler = function(ev){
-       this // el
-     };
+  this // el
+};
 can.delegate.call(el, ".selector", "click", handler)
-can.undelegate.call(el, ".selector", "click", handler)</p>
+can.undelegate.call(el, ".selector", "click", handler)</code></pre>
 		</div>
 	</div>
 
@@ -531,13 +525,13 @@ can.undelegate.call(el, ".selector", "click", handler)</p>
                         "type": "Object"
                     }
                 ],
-                "description": "<p>The <strong>element</strong>.</p>\n\n<p><code>can.undelegate(selector, eventName, handler)</code> unbinds a delegate handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n</ul>\n\n<p>The idea is that undelegate can be used on anything that produces delegate events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.undelegate</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.undelegate</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Delegate/undelegate binding to an HTMLElement</strong></p>\n\n<p>var el = document.getElementById('foo'),\nhandler = function(ev){\n       this // el\n     };\ncan.delegate.call(el, \".selector\", \"click\", handler)\ncan.undelegate.call(el, \".selector\", \"click\", handler)</p>"
+                "description": "<p>The <strong>element</strong>.</p>\n\n<p><code>can.undelegate(selector, eventName, handler)</code> unbinds a delegate handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n</ul>\n\n<p>The idea is that undelegate can be used on anything that produces delegate events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.undelegate</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.undelegate</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Delegate/undelegate binding to an HTMLElement</strong></p>\n\n<pre><code class=\"lang-javascript\">var el = document.getElementById('foo'),\nhandler = function(ev){\n  this // el\n};\ncan.delegate.call(el, \".selector\", \"click\", handler)\ncan.undelegate.call(el, \".selector\", \"click\", handler)</code></pre>"
             }
         }
     ],
     "src": "can/util/util.js",
-    "line": 295,
-    "id": 121
+    "line": 325,
+    "id": 125
 };
 
 	console.log(docData);

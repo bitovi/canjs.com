@@ -25,7 +25,7 @@
 	<link rel="stylesheet" type="text/css" href="../resources/styles.css" />
 </head>
 
-<body class="guides">
+<body class="docs">
 	<header>
 		<nav class="container">
 
@@ -43,8 +43,8 @@
 
 			<ul class="nav">
 				<li class=""><a href="../index.html">Home</a></li>
-				<li class="active"><a href="../guides/index.html">Guides</a></li>
-				<li class=""><a href="../docs/index.html">Api</a></li>
+				<li class=""><a href="../guides/index.html">Guides</a></li>
+				<li class="active"><a href="../docs/index.html">Api</a></li>
 				<li class=""><a href="../community.html">Community</a></li>
 				<li class=""><a href="../download.html">Download</a></li>
 			</ul>
@@ -73,94 +73,58 @@
 		</div>
 		<ul class="api">
 	
-	<li class="active">
-	<a href="Tutorial.html">Tutorial</a>
+	<li >
+	<a href="can.Construct.html">can.Construct</a>
 	
-		
-		<ul>
-		
-			
-				<li >
-				<a href="Constructs.html">
-					 Constructs 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="Controls.html">
-					 Controls 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="Observes.html">
-					 Observes 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="Models.html">
-					 Models 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="Templates.html">
-					 Templates 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="Routing.html">
-					 Routing 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="Deferreds.html">
-					 Deferreds 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="Utilities.html">
-					 Utilities 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="EJS.html">
-					 EJS 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="Mustache.html">
-					 Mustache 
-				</a>
-				</li>
-			
-		
-		</ul>
-		
+	</li>
+	
+	<li >
+	<a href="can.Control.html">can.Control</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.html">can.Model</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.html">can.Observe</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.compute.html">can.compute</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.route.html">can.route</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.util.html">can.util</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.view.html">can.view</a>
 	
 	</li>
 	
@@ -171,18 +135,18 @@
 		<section class="title">
 			<div class="pull-right">
 	<ul class="tags">
-		<li>page</li>
+		<li>property</li>
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/../_guides/tutorial.md">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/control/control.js#L263">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>Get Started with CanJS</h1><!-- <span class="module">Tutorial</span>-->
+	<h1>defaults</h1><!-- <span class="module">can.Control.defaults</span>-->
 
 
 
@@ -190,24 +154,31 @@
 		</section>
 
 		<section class="description">
-			
+			<p>Default values for the Control's options. </p>
 		</section>
 
 		
 
 		
 		<section class="comment">
-			<p>This tutorial will walk you though the basics of CanJS by building a small
-to-do app with CanJS and jQuery. When you are finished, your app will look
-similar to this:</p>
+			<p><code>defaults</code> provides default values for a Control's options.
+Options passed into the constructor function will be shallowly merged
+into the values from defaults in [can.Control::setup], and
+the result will be stored in <code>[can.Control::options this.options]</code>.</p>
 
-<div class='iframe_wrapper' data-iframe-src='/path/to/to-do/demo' data-iframe-height='320'></div>
+<pre><code>Message = can.Control({
+  defaults: {
+    message: "Hello World"
+  }
+}, {
+  init: function(){
+    this.element.text( this.options.message );
+  }
+});
 
-<p>To get started, click [Constructs Constructs] in the navigation to the left. Or, if this
-tutorial isn't your thing, you can take a look at some [Videos Videos], see
-some nifty [Recipes Recipes] for building functionality with CanJS, check out
-our <a href="../docs/index.html">API</a>, or dive right in and poke around the [AnnotatedSources annotated
-source] for CanJS.</p>
+new Message( "#el1" ); //writes "Hello World"
+new Message( "#el12", { message: "hi" } ); //writes hi
+</code></pre>
 		</section>
 		
 	</article>
@@ -215,15 +186,15 @@ source] for CanJS.</p>
 
 <script type="text/javascript">
 	var docData = {
-    "type": "page",
-    "name": "Tutorial",
-    "body": "<p>This tutorial will walk you though the basics of CanJS by building a small\nto-do app with CanJS and jQuery. When you are finished, your app will look\nsimilar to this:</p>\n\n<div class='iframe_wrapper' data-iframe-src='/path/to/to-do/demo' data-iframe-height='320'></div>\n\n<p>To get started, click [Constructs Constructs] in the navigation to the left. Or, if this\ntutorial isn't your thing, you can take a look at some [Videos Videos], see\nsome nifty [Recipes Recipes] for building functionality with CanJS, check out\nour <a href=\"../docs/index.html\">API</a>, or dive right in and poke around the [AnnotatedSources annotated\nsource] for CanJS.</p>",
-    "description": "",
-    "title": "Get Started with CanJS",
-    "parent": "guides",
+    "type": "property",
+    "body": "<p><code>defaults</code> provides default values for a Control's options.\nOptions passed into the constructor function will be shallowly merged\ninto the values from defaults in [can.Control::setup], and\nthe result will be stored in <code>[can.Control::options this.options]</code>.</p>\n\n<pre><code>Message = can.Control({\n  defaults: {\n    message: \"Hello World\"\n  }\n}, {\n  init: function(){\n    this.element.text( this.options.message );\n  }\n});\n\nnew Message( \"#el1\" ); //writes \"Hello World\"\nnew Message( \"#el12\", { message: \"hi\" } ); //writes hi\n</code></pre>",
+    "description": "<p>Default values for the Control's options. </p>",
+    "title": "defaults",
+    "name": "can.Control.defaults",
     "comment": " ",
-    "src": "_guides/tutorial.md",
-    "id": 9
+    "src": "can/control/control.js",
+    "line": 263,
+    "id": 80
 };
 
 	console.log(docData);

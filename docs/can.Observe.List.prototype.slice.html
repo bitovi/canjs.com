@@ -84,6 +84,11 @@
 	</li>
 	
 	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
@@ -224,6 +229,11 @@
 	</li>
 	
 	<li >
+	<a href="can.compute.html">can.compute</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.route.html">can.route</a>
 	
 	</li>
@@ -249,14 +259,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1826">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1843">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>slice</h1> <span class="module">can.Observe.List.prototype.slice</span>
+	<h1>slice</h1><!-- <span class="module">can.Observe.List.prototype.slice</span>-->
 
 
 
@@ -324,8 +334,15 @@ If <em>end</em> is not supplied, <code>slice</code> will copy until the end of t
 		<h4><code>{can.Observe.List}</code></h4>
 		<div class="description">
 			<p>a new <code>can.Observe.List</code> with the extracted elements</p>
+		</div>
+	</div>
 
-<pre><code class="lang-javascript">var list = new can.Observe.List(['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve']);
+		</section>
+		
+
+		
+		<section class="comment">
+			<pre><code class="lang-javascript">var list = new can.Observe.List(['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve']);
 var newList = list.slice(1, 4);
 newList.attr(); // ['Bob', 'Charlie', 'Daniel']</code></pre>
 
@@ -335,13 +352,8 @@ newList.attr(); // ['Bob', 'Charlie', 'Daniel']</code></pre>
 var copy = list.slice();
 
 copy.attr();   // ['Alice', 'Bob', 'Eve']
-list === copy; // false</code></pre>
-		</div>
-	</div>
-
+list === copy; // false</code></pre>     
 		</section>
-		
-
 		
 	</article>
 </div>
@@ -351,7 +363,7 @@ list === copy; // false</code></pre>
     "type": "function",
     "name": "can.Observe.List.prototype.slice",
     "parent": "can.Observe.List.prototype",
-    "body": "",
+    "body": "<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve']);\nvar newList = list.slice(1, 4);\nnewList.attr(); // ['Bob', 'Charlie', 'Daniel']</code></pre>\n\n<p><code>slice</code> is the simplest way to copy a List:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nvar copy = list.slice();\n\ncopy.attr();   // ['Alice', 'Bob', 'Eve']\nlist === copy; // false</code></pre>     ",
     "description": "<p>Make a copy of a part of a List. </p>",
     "title": "slice",
     "signatures": [{
@@ -381,12 +393,13 @@ list === copy; // false</code></pre>
                         "type": "can.Observe.List"
                     }
                 ],
-                "description": "<p>a new <code>can.Observe.List</code> with the extracted elements</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve']);\nvar newList = list.slice(1, 4);\nnewList.attr(); // ['Bob', 'Charlie', 'Daniel']</code></pre>\n\n<p><code>slice</code> is the simplest way to copy a List:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nvar copy = list.slice();\n\ncopy.attr();   // ['Alice', 'Bob', 'Eve']\nlist === copy; // false</code></pre>"
+                "description": "<p>a new <code>can.Observe.List</code> with the extracted elements</p>"
             }
         }
     ],
+    "comment": " ",
     "src": "can/observe/observe.js",
-    "line": 1826,
+    "line": 1843,
     "id": 43
 };
 

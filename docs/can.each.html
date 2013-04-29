@@ -84,6 +84,11 @@
 	</li>
 	
 	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
@@ -100,6 +105,11 @@
 	
 	<li >
 	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.compute.html">can.compute</a>
 	
 	</li>
 	
@@ -121,22 +131,6 @@
 				</a>
 				</li>
 			
-		
-			
-				<li class="heading"><span>constructor</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Deferred.prototype.html">
-								 can.Deferred.prototype 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
 		
 			
 				<li >
@@ -335,7 +329,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L64">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L72">source</a></li>
 		
 		
 		
@@ -413,12 +407,13 @@
 			<p><code>can.each(collection, callback)</code> iterates through an array or object like
 like [http://api.jquery.com/jQuery.each/ jQuery.each].</p>
 
-<p>can.each([{prop: "val1"}, {prop: "val2"}],
-function( value, index ) {
-     // function called with
-     //  index=0 value={prop: "val1"}
-     //  index=1 value={prop: "val2"}
-   })</p>
+<pre><code class="lang-javascript">can.each([{prop: "val1"}, {prop: "val2"}],
+ function( value, index ) {
+   // function called with
+   // index=0 value={prop: "val1"}
+   // index=1 value={prop: "val2"}
+ }
+);</code></pre>
 		</section>
 		
 	</article>
@@ -426,7 +421,7 @@ function( value, index ) {
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<p><code>can.each(collection, callback)</code> iterates through an array or object like\nlike [http://api.jquery.com/jQuery.each/ jQuery.each].</p>\n\n<p>can.each([{prop: \"val1\"}, {prop: \"val2\"}],\nfunction( value, index ) {\n     // function called with\n     //  index=0 value={prop: \"val1\"}\n     //  index=1 value={prop: \"val2\"}\n   })</p>",
+    "body": "<p><code>can.each(collection, callback)</code> iterates through an array or object like\nlike [http://api.jquery.com/jQuery.each/ jQuery.each].</p>\n\n<pre><code class=\"lang-javascript\">can.each([{prop: \"val1\"}, {prop: \"val2\"}],\n function( value, index ) {\n   // function called with\n   // index=0 value={prop: \"val1\"}\n   // index=1 value={prop: \"val2\"}\n }\n);</code></pre>",
     "description": "<p>Iterate through an array or object. </p>",
     "title": "",
     "name": "can.each",
@@ -462,8 +457,8 @@ function( value, index ) {
     ],
     "comment": " ",
     "src": "can/util/util.js",
-    "line": 64,
-    "id": 112
+    "line": 72,
+    "id": 116
 };
 
 	console.log(docData);

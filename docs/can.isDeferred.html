@@ -84,6 +84,11 @@
 	</li>
 	
 	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
@@ -100,6 +105,11 @@
 	
 	<li >
 	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.compute.html">can.compute</a>
 	
 	</li>
 	
@@ -121,22 +131,6 @@
 				</a>
 				</li>
 			
-		
-			
-				<li class="heading"><span>constructor</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Deferred.prototype.html">
-								 can.Deferred.prototype 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
 		
 			
 				<li >
@@ -365,7 +359,7 @@
 		<li class="parameter">
 			<h4>subject <code>{*}</code></h4>
 			<div class="description">
-				<p><p>The object to check</p></p>
+				<p><p>The object to check.</p></p>
 			</div>
 			<!--
 			<ul class="options">
@@ -373,7 +367,7 @@
 				<li class="option">
 					<h5><code>{*}</code></h5>
 					<div class="description">
-						<p>The object to check</p>
+						<p>The object to check.</p>
 					</div>
 				</li>
 				
@@ -399,12 +393,13 @@
 		<section class="comment">
 			<p><code>can.isDeferred</code> returns if an object is an instance of [can.Deferred].</p>
 
-<p>## Example
- Convert any value to a Deferred:</p>
+<h2>Example</h2>
 
-<p>function convertDeferred(dfd) {
+<p>Convert any value to a Deferred:</p>
+
+<pre><code class="lang-javascript">function convertDeferred(dfd) {
     return can.isDeferred(dfd) ? dfd : can.Deferred(dfd);
-}</p>
+}</code></pre>
 		</section>
 		
 	</article>
@@ -412,7 +407,7 @@
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<p><code>can.isDeferred</code> returns if an object is an instance of [can.Deferred].</p>\n\n<p>## Example\n Convert any value to a Deferred:</p>\n\n<p>function convertDeferred(dfd) {\n    return can.isDeferred(dfd) ? dfd : can.Deferred(dfd);\n}</p>",
+    "body": "<p><code>can.isDeferred</code> returns if an object is an instance of [can.Deferred].</p>\n\n<h2>Example</h2>\n\n<p>Convert any value to a Deferred:</p>\n\n<pre><code class=\"lang-javascript\">function convertDeferred(dfd) {\n    return can.isDeferred(dfd) ? dfd : can.Deferred(dfd);\n}</code></pre>",
     "description": "<p>Check if an object is a Deferred. </p>",
     "title": "",
     "name": "can.isDeferred",
@@ -427,7 +422,7 @@
                         }
                     ],
                     "name": "subject",
-                    "description": "<p>The object to check</p>"
+                    "description": "<p>The object to check.</p>"
                 }
             ],
             "returns": {
@@ -442,7 +437,7 @@
     "comment": " ",
     "src": "can/util/util.js",
     "line": 0,
-    "id": 108
+    "id": 112
 };
 
 	console.log(docData);

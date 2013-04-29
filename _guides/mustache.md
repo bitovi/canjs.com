@@ -1,5 +1,5 @@
 @page Mustache Mustache
-@parent Views
+@parent Tutorial 8
 
 @body
 [Mustache](can.Mustache) provides logic-less templates that will live-bind to

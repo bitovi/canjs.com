@@ -27,7 +27,8 @@
         "type": "page",
         "id": 3,
         "title": "EJS",
-        "parent": "Views"
+        "parent": "Tutorial",
+        "order": 7
     },
     "guides": {
         "name": "guides",
@@ -48,7 +49,8 @@
         "type": "page",
         "id": 6,
         "title": "Mustache",
-        "parent": "Views"
+        "parent": "Tutorial",
+        "order": 8
     },
     "Observes": {
         "name": "Observes",
@@ -58,26 +60,34 @@
         "parent": "Tutorial",
         "order": 1
     },
+    "Routing": {
+        "name": "Routing",
+        "type": "page",
+        "id": 8,
+        "title": "Routing",
+        "parent": "Tutorial",
+        "order": 4
+    },
     "Tutorial": {
         "name": "Tutorial",
         "type": "page",
-        "id": 8,
+        "id": 9,
         "title": "Get Started with CanJS",
         "parent": "guides"
     },
     "Utilities": {
         "name": "Utilities",
         "type": "page",
-        "id": 9,
+        "id": 10,
         "title": "Utilities",
         "parent": "Tutorial",
         "order": 6
     },
-    "Views": {
-        "name": "Views",
+    "Templates": {
+        "name": "Templates",
         "type": "page",
-        "id": 10,
-        "title": "Views",
+        "id": 11,
+        "title": "Templates",
         "parent": "Tutorial",
         "order": 3
     }

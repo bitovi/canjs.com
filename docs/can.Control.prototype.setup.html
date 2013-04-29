@@ -139,23 +139,15 @@
 					<ul>
 						
 						
-						
-						
-						
-						
 						<li >
-							<a href="can.Control.static.defaults.html">
-								 defaults 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Control.static.processors.html">
+							<a href="can.Control.processors.html">
 								 processors 
 							</a>
 						</li>
+						
+						
+						
+						
 						
 						
 						
@@ -166,6 +158,11 @@
 		
 		</ul>
 		
+	
+	</li>
+	
+	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
 	
 	</li>
 	
@@ -186,6 +183,11 @@
 	
 	<li >
 	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.compute.html">can.compute</a>
 	
 	</li>
 	
@@ -215,14 +217,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/control/control.js#L255">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/control/control.js#L309">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>setup</h1> <span class="module">can.Control.prototype.setup</span>
+	<h1>setup</h1><!-- <span class="module">can.Control.prototype.setup</span>-->
 
 
 
@@ -243,17 +245,17 @@
 	<ol class="parameters">
 		
 		<li class="parameter">
-			<h4>element <code>{HTMLElement}</code></h4>
+			<h4>element <code>{HTMLElement | NodeList | String}</code></h4>
 			<div class="description">
-				<p><p>the element this instance operates on.</p></p>
+				<p><p>The element as passed to the constructor.</p></p>
 			</div>
 			<!--
 			<ul class="options">
 				
 				<li class="option">
-					<h5><code>{HTMLElement}</code></h5>
+					<h5><code>{HTMLElement | NodeList | String}</code></h5>
 					<div class="description">
-						<p>the element this instance operates on.</p>
+						<p>The element as passed to the constructor.</p>
 					</div>
 				</li>
 				
@@ -329,7 +331,7 @@ so that users can change them.</p>
 
 <h3>Binds event handlers</h3>
 
-<p>Setup does the event binding described in [can.Control.listening Listening To Events].</p>
+<p>Setup does the event binding described in [can.Control].</p>
 		</section>
 		
 	</article>
@@ -340,7 +342,7 @@ so that users can change them.</p>
     "type": "function",
     "name": "can.Control.prototype.setup",
     "parent": "can.Control.prototype",
-    "body": "<p>Setup is where most of control's magic happens.  It does the following:</p>\n\n<h3>Sets this.element</h3>\n\n<p>The first parameter passed to new Control( el, options ) is expected to be \nan element.  This gets converted to a Wrapped NodeList element and set as\n[can.Control.prototype.element this.element].</p>\n\n<h3>Adds the control's name to the element's className.</h3>\n\n<p>Control adds it's plugin name to the element's className for easier \ndebugging.  For example, if your Control is named \"Foo.Bar\", it adds\n\"foo_bar\" to the className.</p>\n\n<h3>Saves the control in $.data</h3>\n\n<p>A reference to the control instance is saved in $.data.  You can find \ninstances of \"Foo.Bar\" like: </p>\n\n<pre><code>$( '#el' ).data( 'controls' )[ 'foo_bar' ]\n</code></pre>\n\n<h3>Merges Options</h3>\n\n<p>Merges the default options with optional user-supplied ones.\nAdditionally, default values are exposed in the static [can.Control.static.defaults defaults] \nso that users can change them.</p>\n\n<h3>Binds event handlers</h3>\n\n<p>Setup does the event binding described in [can.Control.listening Listening To Events].</p>",
+    "body": "<p>Setup is where most of control's magic happens.  It does the following:</p>\n\n<h3>Sets this.element</h3>\n\n<p>The first parameter passed to new Control( el, options ) is expected to be \nan element.  This gets converted to a Wrapped NodeList element and set as\n[can.Control.prototype.element this.element].</p>\n\n<h3>Adds the control's name to the element's className.</h3>\n\n<p>Control adds it's plugin name to the element's className for easier \ndebugging.  For example, if your Control is named \"Foo.Bar\", it adds\n\"foo_bar\" to the className.</p>\n\n<h3>Saves the control in $.data</h3>\n\n<p>A reference to the control instance is saved in $.data.  You can find \ninstances of \"Foo.Bar\" like: </p>\n\n<pre><code>$( '#el' ).data( 'controls' )[ 'foo_bar' ]\n</code></pre>\n\n<h3>Merges Options</h3>\n\n<p>Merges the default options with optional user-supplied ones.\nAdditionally, default values are exposed in the static [can.Control.static.defaults defaults] \nso that users can change them.</p>\n\n<h3>Binds event handlers</h3>\n\n<p>Setup does the event binding described in [can.Control].</p>",
     "description": "<p>Perform pre-initialization logic. </p>",
     "title": "setup",
     "signatures": [{
@@ -349,10 +351,14 @@ so that users can change them.</p>
             "params": [{
                     "types": [{
                             "type": "HTMLElement"
+                        }, {
+                            "type": "NodeList"
+                        }, {
+                            "type": "String"
                         }
                     ],
                     "name": "element",
-                    "description": "<p>the element this instance operates on.</p>"
+                    "description": "<p>The element as passed to the constructor.</p>"
                 }, {
                     "types": [{
                             "type": "Object"
@@ -376,8 +382,8 @@ so that users can change them.</p>
     ],
     "comment": " ",
     "src": "can/control/control.js",
-    "line": 255,
-    "id": 78
+    "line": 309,
+    "id": 83
 };
 
 	console.log(docData);

@@ -84,6 +84,11 @@
 	</li>
 	
 	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
@@ -224,6 +229,11 @@
 	</li>
 	
 	<li >
+	<a href="can.compute.html">can.compute</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.route.html">can.route</a>
 	
 	</li>
@@ -249,14 +259,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1785">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1800">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>join</h1> <span class="module">can.Observe.List.prototype.join</span>
+	<h1>join</h1><!-- <span class="module">can.Observe.List.prototype.join</span>-->
 
 
 
@@ -304,18 +314,20 @@ of all the elements of the List.</p>
 		<h4><code>{String}</code></h4>
 		<div class="description">
 			<p>the joined string</p>
-
-<pre><code class="lang-javascript">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);
-list.join(', '); // 'Alice, Bob, Eve'
-
-var beatles = new can.Observe.List(['John', 'Paul', 'Ringo', 'George']);
-beatles.join('&'); // 'John&Paul&Ringo&George'</code></pre>
 		</div>
 	</div>
 
 		</section>
 		
 
+		
+		<section class="comment">
+			<pre><code class="lang-javascript">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);
+list.join(', '); // 'Alice, Bob, Eve'
+
+var beatles = new can.Observe.List(['John', 'Paul', 'Ringo', 'George']);
+beatles.join('&'); // 'John&Paul&Ringo&George'</code></pre>     
+		</section>
 		
 	</article>
 </div>
@@ -325,7 +337,7 @@ beatles.join('&'); // 'John&Paul&Ringo&George'</code></pre>
     "name": "can.Observe.List.prototype.join",
     "type": "function",
     "parent": "can.Observe.List.prototype",
-    "body": "",
+    "body": "<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nlist.join(', '); // 'Alice, Bob, Eve'\n\nvar beatles = new can.Observe.List(['John', 'Paul', 'Ringo', 'George']);\nbeatles.join('&'); // 'John&Paul&Ringo&George'</code></pre>     ",
     "description": "<p>Join a List's elements into a string. </p>",
     "title": "join",
     "signatures": [{
@@ -345,12 +357,13 @@ beatles.join('&'); // 'John&Paul&Ringo&George'</code></pre>
                         "type": "String"
                     }
                 ],
-                "description": "<p>the joined string</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nlist.join(', '); // 'Alice, Bob, Eve'\n\nvar beatles = new can.Observe.List(['John', 'Paul', 'Ringo', 'George']);\nbeatles.join('&'); // 'John&Paul&Ringo&George'</code></pre>"
+                "description": "<p>the joined string</p>"
             }
         }
     ],
+    "comment": " ",
     "src": "can/observe/observe.js",
-    "line": 1785,
+    "line": 1800,
     "id": 41
 };
 

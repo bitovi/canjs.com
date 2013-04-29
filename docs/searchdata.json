@@ -318,347 +318,372 @@
         "title": "replace",
         "parent": "can.Observe.List.prototype"
     },
+    "can.compute": {
+        "name": "can.compute",
+        "type": "constructor",
+        "id": 47,
+        "parent": "canjs"
+    },
+    "isComputed": {
+        "name": "isComputed",
+        "type": "property",
+        "id": 48,
+        "parent": "can.compute"
+    },
+    "can.compute.bind": {
+        "name": "can.compute.bind",
+        "type": "function",
+        "id": 49,
+        "title": "bind",
+        "parent": "can.compute"
+    },
+    "can.compute.unbind": {
+        "name": "can.compute.unbind",
+        "type": "function",
+        "id": 50,
+        "title": "unbind",
+        "parent": "can.compute"
+    },
     "can.Model": {
         "name": "can.Model",
         "type": "constructor",
-        "id": 47,
+        "id": 51,
         "parent": "canjs"
     },
     "can.Model.static": {
         "name": "can.Model.static",
         "type": "static",
-        "id": 48,
+        "id": 52,
         "parent": "can.Model"
     },
     "can.Model.static.bind": {
         "name": "can.Model.static.bind",
         "type": "function",
-        "id": 49,
+        "id": 53,
         "title": "bind",
         "parent": "can.Model.static"
     },
     "can.Model.static.unbind": {
         "name": "can.Model.static.unbind",
         "type": "function",
-        "id": 50,
+        "id": 54,
         "title": "unbind",
         "parent": "can.Model.static"
     },
     "can.Model.static.id": {
         "name": "can.Model.static.id",
         "type": "property",
-        "id": 51,
+        "id": 55,
         "title": "id",
         "parent": "can.Model.static"
     },
     "can.Model.static.create": {
         "name": "can.Model.static.create",
         "type": "function",
-        "id": 52,
+        "id": 56,
         "title": "create",
         "parent": "can.Model.static"
     },
     "can.Model.static.update": {
         "name": "can.Model.static.update",
         "type": "function",
-        "id": 53,
+        "id": 57,
         "title": "update",
         "parent": "can.Model.static"
     },
     "can.Model.static.destroy": {
         "name": "can.Model.static.destroy",
         "type": "function",
-        "id": 54,
+        "id": 58,
         "title": "destroy",
         "parent": "can.Model.static"
     },
     "can.Model.static.findAll": {
         "name": "can.Model.static.findAll",
         "type": "function",
-        "id": 55,
+        "id": 59,
         "title": "findAll",
         "parent": "can.Model.static"
     },
     "can.Model.static.findOne": {
         "name": "can.Model.static.findOne",
         "type": "function",
-        "id": 56,
+        "id": 60,
         "title": "findOne",
         "parent": "can.Model.static"
     },
     "can.Model.static.models": {
         "name": "can.Model.static.models",
         "type": "function",
-        "id": 57,
+        "id": 61,
         "title": "models",
         "parent": "can.Model.static"
     },
     "can.Model.static.model": {
         "name": "can.Model.static.model",
         "type": "function",
-        "id": 58,
+        "id": 62,
         "title": "model",
         "parent": "can.Model.static"
     },
     "can.Model.prototype": {
         "name": "can.Model.prototype",
         "type": "prototype",
-        "id": 59,
+        "id": 63,
         "parent": "can.Model"
     },
     "can.Model.prototype.isNew": {
         "name": "can.Model.prototype.isNew",
         "type": "function",
-        "id": 60,
+        "id": 64,
         "title": "isNew",
         "parent": "can.Model.prototype"
     },
     "can.Model.prototype.save": {
         "name": "can.Model.prototype.save",
         "type": "function",
-        "id": 61,
+        "id": 65,
         "title": "save",
         "parent": "can.Model.prototype"
     },
     "can.Model.prototype.destroy": {
         "name": "can.Model.prototype.destroy",
         "type": "function",
-        "id": 62,
+        "id": 66,
         "title": "destroy",
         "parent": "can.Model.prototype"
     },
     "can.Model.prototype.bind": {
         "name": "can.Model.prototype.bind",
         "type": "function",
-        "id": 63,
+        "id": 67,
         "title": "bind",
         "parent": "can.Model.prototype"
     },
     "can.Model.prototype.unbind": {
         "name": "can.Model.prototype.unbind",
         "type": "function",
-        "id": 64,
+        "id": 68,
         "title": "unbind",
         "parent": "can.Model.prototype"
     },
     "created": {
         "name": "created",
         "type": "function",
-        "id": 65,
+        "id": 69,
         "hide": true
     },
     "updated": {
         "name": "updated",
         "type": "function",
-        "id": 66,
+        "id": 70,
         "hide": true
     },
     "destroyed": {
         "name": "destroyed",
         "type": "function",
-        "id": 67,
+        "id": 71,
         "hide": true
     },
     "can.Model.List": {
         "name": "can.Model.List",
         "type": "constructor",
-        "id": 68,
+        "id": 72,
         "parent": "canjs"
     },
     "can.Control": {
         "name": "can.Control",
         "type": "constructor",
-        "id": 69,
+        "id": 73,
         "parent": "canjs"
     },
     "Control": {
         "name": "Control",
         "type": "property",
-        "id": 70,
+        "id": 74,
         "parent": "can/control/control.js"
     },
     "can.Control.static": {
         "name": "can.Control.static",
         "type": "static",
-        "id": 71,
+        "id": 75,
         "parent": "can.Control"
     },
     "can.Control.static.setup": {
         "name": "can.Control.static.setup",
         "type": "function",
-        "id": 72,
+        "id": 76,
         "hide": true,
         "parent": "can.Control.static"
     },
     "can.Control.static._isAction": {
         "name": "can.Control.static._isAction",
         "type": "function",
-        "id": 73,
+        "id": 77,
         "hide": true,
         "parent": "can.Control.static"
     },
     "can.Control.static._action": {
         "name": "can.Control.static._action",
         "type": "function",
-        "id": 74,
+        "id": 78,
         "hide": true,
         "parent": "can.Control.static"
     },
-    "can.Control.static.processors": {
-        "name": "can.Control.static.processors",
+    "can.Control.processors": {
+        "name": "can.Control.processors",
         "type": "property",
-        "id": 75,
+        "id": 79,
         "title": "processors",
         "parent": "can.Control.static"
     },
-    "can.Control.static.defaults": {
-        "name": "can.Control.static.defaults",
+    "can.Control.defaults": {
+        "name": "can.Control.defaults",
         "type": "property",
-        "id": 76,
-        "title": "defaults",
-        "parent": "can.Control.static"
+        "id": 80,
+        "title": "defaults"
     },
     "can.Control.prototype": {
         "name": "can.Control.prototype",
         "type": "prototype",
-        "id": 77,
+        "id": 81,
         "parent": "can.Control"
+    },
+    "can.Control.prototype.element": {
+        "name": "can.Control.prototype.element",
+        "type": "property",
+        "id": 82,
+        "title": "element",
+        "parent": "can.Control.prototype"
     },
     "can.Control.prototype.setup": {
         "name": "can.Control.prototype.setup",
         "type": "function",
-        "id": 78,
+        "id": 83,
         "title": "setup",
         "parent": "can.Control.prototype"
     },
     "can.Control.prototype.options": {
         "name": "can.Control.prototype.options",
         "type": "property",
-        "id": 79,
+        "id": 84,
         "title": "options",
-        "parent": "can.Control.prototype"
-    },
-    "can.Control.prototype.element": {
-        "name": "can.Control.prototype.element",
-        "type": "property",
-        "id": 80,
-        "title": "element",
         "parent": "can.Control.prototype"
     },
     "can.Control.prototype.on": {
         "name": "can.Control.prototype.on",
         "type": "function",
-        "id": 81,
+        "id": 85,
         "title": "on",
         "parent": "can.Control.prototype"
     },
     "can.Control.prototype.off": {
         "name": "can.Control.prototype.off",
         "type": "function",
-        "id": 82,
+        "id": 86,
         "hide": true,
         "parent": "can.Control.prototype"
     },
     "can.Control.prototype.destroy": {
         "name": "can.Control.prototype.destroy",
         "type": "function",
-        "id": 83,
+        "id": 87,
         "title": "destroy",
         "parent": "can.Control.prototype"
     },
     "can.route": {
         "name": "can.route",
         "type": "page",
-        "id": 84,
+        "id": 88,
         "title": "can.route",
         "parent": "canjs"
     },
     "can.route.param": {
         "name": "can.route.param",
         "type": "function",
-        "id": 85,
+        "id": 89,
         "parent": "can.route"
     },
     "can.route.deparam": {
         "name": "can.route.deparam",
         "type": "function",
-        "id": 86,
+        "id": 90,
         "parent": "can.route"
     },
     "data": {
         "name": "data",
         "type": "property",
-        "id": 87,
+        "id": 91,
         "hide": true,
         "parent": "can/route/route.js"
     },
     "routes": {
         "name": "routes",
         "type": "property",
-        "id": 88,
+        "id": 92,
         "hide": true,
         "parent": "can/route/route.js"
     },
     "can.route.ready": {
         "name": "can.route.ready",
         "type": "function",
-        "id": 89,
+        "id": 93,
         "parent": "can.route"
     },
     "can.route.url": {
         "name": "can.route.url",
         "type": "function",
-        "id": 90,
+        "id": 94,
         "parent": "can.route"
     },
     "can.route.link": {
         "name": "can.route.link",
         "type": "function",
-        "id": 91,
+        "id": 95,
         "parent": "can.route"
     },
     "can.route.current": {
         "name": "can.route.current",
         "type": "function",
-        "id": 92,
+        "id": 96,
         "parent": "can.route"
     },
     "can.view": {
         "name": "can.view",
         "type": "constructor",
-        "id": 93,
+        "id": 97,
         "parent": "canjs"
     },
     "can.view.ejs": {
         "name": "can.view.ejs",
         "type": "function",
-        "id": 94,
+        "id": 98,
         "parent": "can.view"
     },
     "can.view.mustache": {
         "name": "can.view.mustache",
         "type": "function",
-        "id": 95,
+        "id": 99,
         "parent": "can.view"
     },
     "hookups": {
         "name": "hookups",
         "type": "property",
-        "id": 96,
+        "id": 100,
         "hide": true,
         "parent": "can.view"
     },
     "can.view.hook": {
         "name": "can.view.hook",
         "type": "function",
-        "id": 97,
+        "id": 101,
         "title": "hook",
         "parent": "can.view"
     },
     "can.view.cached": {
         "name": "can.view.cached",
         "type": "property",
-        "id": 98,
+        "id": 102,
         "title": "cached",
         "hide": true,
         "parent": "can.view"
@@ -666,272 +691,272 @@
     "can.view.cache": {
         "name": "can.view.cache",
         "type": "property",
-        "id": 99,
+        "id": 103,
         "title": "cache",
         "parent": "can.view"
     },
     "can.view.register": {
         "name": "can.view.register",
         "type": "function",
-        "id": 100,
+        "id": 104,
         "parent": "can.view"
     },
     "can.view.ext": {
         "name": "can.view.ext",
         "type": "property",
-        "id": 101,
+        "id": 105,
         "title": "ext",
         "parent": "can.view"
     },
     "can.view.registerScript": {
         "name": "can.view.registerScript",
         "type": "function",
-        "id": 102,
+        "id": 106,
         "hide": true,
         "parent": "can.view"
     },
     "can.view.preload": {
         "name": "can.view.preload",
         "type": "function",
-        "id": 103,
+        "id": 107,
         "hide": true,
         "parent": "can.view"
     },
     "can.view.render": {
         "name": "can.view.render",
         "type": "function",
-        "id": 104,
+        "id": 108,
         "parent": "can.view"
     },
     "can.view.registerView": {
         "name": "can.view.registerView",
         "type": "function",
-        "id": 105,
+        "id": 109,
         "hide": true,
         "parent": "can.view"
     },
     "can.view.text": {
         "name": "can.view.text",
         "type": "property",
-        "id": 106,
+        "id": 110,
         "hide": true,
         "parent": "can.view"
     },
     "can.util": {
         "name": "can.util",
         "type": "page",
-        "id": 107,
+        "id": 111,
         "title": "can.util",
         "parent": "canjs"
     },
     "can.isDeferred": {
         "name": "can.isDeferred",
         "type": "function",
-        "id": 108,
+        "id": 112,
         "parent": "can.util"
     },
     "can.trim": {
         "name": "can.trim",
         "type": "function",
-        "id": 109,
+        "id": 113,
         "parent": "can.util"
     },
     "can.makeArray": {
         "name": "can.makeArray",
         "type": "function",
-        "id": 110,
+        "id": 114,
         "parent": "can.util"
     },
     "can.isArray": {
         "name": "can.isArray",
         "type": "function",
-        "id": 111,
+        "id": 115,
         "parent": "can.util"
     },
     "can.each": {
         "name": "can.each",
         "type": "function",
-        "id": 112,
+        "id": 116,
         "parent": "can.util"
     },
     "can.extend": {
         "name": "can.extend",
         "type": "function",
-        "id": 113,
+        "id": 117,
         "parent": "can.util"
     },
     "can.param": {
         "name": "can.param",
         "type": "function",
-        "id": 114,
+        "id": 118,
         "parent": "can.util"
     },
     "can.isEmptyObject": {
         "name": "can.isEmptyObject",
         "type": "function",
-        "id": 115,
+        "id": 119,
         "parent": "can.util"
     },
     "can.proxy": {
         "name": "can.proxy",
         "type": "function",
-        "id": 116,
+        "id": 120,
         "parent": "can.util"
     },
     "can.isFunction": {
         "name": "can.isFunction",
         "type": "function",
-        "id": 117,
+        "id": 121,
         "parent": "can.util"
     },
     "can.bind": {
         "name": "can.bind",
         "type": "function",
-        "id": 118,
+        "id": 122,
         "parent": "can.util"
     },
     "can.unbind": {
         "name": "can.unbind",
         "type": "function",
-        "id": 119,
+        "id": 123,
         "parent": "can.util"
     },
     "can.delegate": {
         "name": "can.delegate",
         "type": "function",
-        "id": 120,
+        "id": 124,
         "parent": "can.util"
     },
     "can.undelegate": {
         "name": "can.undelegate",
         "type": "function",
-        "id": 121,
+        "id": 125,
         "parent": "can.util"
     },
     "can.trigger": {
         "name": "can.trigger",
         "type": "function",
-        "id": 122,
+        "id": 126,
         "parent": "can.util"
     },
     "can.ajax": {
         "name": "can.ajax",
         "type": "function",
-        "id": 123,
+        "id": 127,
         "parent": "can.util"
     },
     "can.$": {
         "name": "can.$",
         "type": "function",
-        "id": 124,
+        "id": 128,
         "parent": "can.util"
     },
     "can.buildFragment": {
         "name": "can.buildFragment",
         "type": "function",
-        "id": 125,
+        "id": 129,
         "parent": "can.util"
     },
     "can.append": {
         "name": "can.append",
         "type": "function",
-        "id": 126,
+        "id": 130,
         "parent": "can.util"
     },
     "can.remove": {
         "name": "can.remove",
         "type": "function",
-        "id": 127,
+        "id": 131,
         "parent": "can.util"
     },
     "can.data": {
         "name": "can.data",
         "type": "function",
-        "id": 128,
+        "id": 132,
         "parent": "can.util"
     },
     "can.addClass": {
         "name": "can.addClass",
         "type": "function",
-        "id": 129,
+        "id": 133,
         "parent": "can.util"
     },
     "can.when": {
         "name": "can.when",
         "type": "function",
-        "id": 130,
+        "id": 134,
         "parent": "can.util"
     },
     "can.Deferred": {
         "name": "can.Deferred",
         "type": "constructor",
-        "id": 131,
-        "parent": "can.util"
+        "id": 135,
+        "parent": "canjs"
     },
     "can.Deferred.prototype": {
         "name": "can.Deferred.prototype",
         "type": "prototype",
-        "id": 132,
+        "id": 136,
         "parent": "can.Deferred"
     },
     "can.Deferred.prototype.pipe": {
         "name": "can.Deferred.prototype.pipe",
         "type": "function",
-        "id": 133
+        "id": 137
     },
     "can.Deferred.prototype.resolveWith": {
         "name": "can.Deferred.prototype.resolveWith",
         "type": "function",
-        "id": 134,
+        "id": 138,
         "title": "resolveWith",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.rejectWith": {
         "name": "can.Deferred.prototype.rejectWith",
         "type": "function",
-        "id": 135,
+        "id": 139,
         "title": "rejectWith",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.done": {
         "name": "can.Deferred.prototype.done",
         "type": "function",
-        "id": 136,
+        "id": 140,
         "title": "done",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.always": {
         "name": "can.Deferred.prototype.always",
         "type": "function",
-        "id": 137,
+        "id": 141,
         "title": "always",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.then": {
         "name": "can.Deferred.prototype.then",
         "type": "function",
-        "id": 138,
+        "id": 142,
         "title": "then",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.isResolved": {
         "name": "can.Deferred.prototype.isResolved",
         "type": "function",
-        "id": 139,
+        "id": 143,
         "title": "isResolved",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.reject": {
         "name": "can.Deferred.prototype.reject",
         "type": "function",
-        "id": 140,
+        "id": 144,
         "title": "reject",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.resolve": {
         "name": "can.Deferred.prototype.resolve",
         "type": "function",
-        "id": 141,
+        "id": 145,
         "title": "resolve"
     }
 }

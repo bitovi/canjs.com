@@ -78,94 +78,13 @@
 	
 	</li>
 	
-	<li class="active">
+	<li >
 	<a href="can.Control.html">can.Control</a>
 	
-		
-		<ul>
-		
-			
-				<li class="heading"><span>prototype</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Control.prototype.destroy.html">
-								 destroy 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Control.prototype.element.html">
-								 element 
-							</a>
-						</li>
-						
-						
-						
-						
-						
-						<li >
-							<a href="can.Control.prototype.on.html">
-								 on 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Control.prototype.options.html">
-								 options 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Control.prototype.setup.html">
-								 setup 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
-		
-			
-				<li class="heading"><span>static</span>
-					<ul>
-						
-						
-						
-						
-						
-						
-						<li class="active">
-							<a href="can.Control.static.defaults.html">
-								 defaults 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Control.static.processors.html">
-								 processors 
-							</a>
-						</li>
-						
-						
-						
-						
-					</ul>
-				</li>
-				
-		
-		</ul>
-		
+	</li>
+	
+	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
 	
 	</li>
 	
@@ -186,6 +105,41 @@
 	
 	<li >
 	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li class="active">
+	<a href="can.compute.html">can.compute</a>
+	
+		
+		<ul>
+		
+			
+				<li >
+				<a href="can.compute.bind.html">
+					 bind 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="can.compute.unbind.html">
+					 unbind 
+				</a>
+				</li>
+			
+		
+			
+				<li class="active">
+				<a href="isComputed.html">
+					 isComputed 
+				</a>
+				</li>
+			
+		
+		</ul>
+		
 	
 	</li>
 	
@@ -215,14 +169,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/control/control.js#L225">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/compute/compute.js#L319">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>defaults</h1> <span class="module">can.Control.static.defaults</span>
+	<h1>isComputed</h1>
 
 
 
@@ -230,25 +184,7 @@
 		</section>
 
 		<section class="description">
-			<p>A object of name-value pairs that act as default values for a control's
-[can.Control::options this.options].</p>
-
-<pre><code>Message = can.Control({
-  defaults: {
-    message: "Hello World"
-  }
-}, {
-  init: function(){
-    this.element.text( this.options.message );
-  }
-});
-
-new Message( "#el1" ); //writes "Hello World"
-new Message( "#el12", { message: "hi" } ); //writes hi
-</code></pre>
-
-<p>In [can.Control::setup] the options passed to the control
-are merged with defaults.  This is not a deep merge.</p>
+			<p>Whether the value of the compute has been computed yet.</p>
 		</section>
 
 		
@@ -259,15 +195,15 @@ are merged with defaults.  This is not a deep merge.</p>
 
 <script type="text/javascript">
 	var docData = {
+    "name": "isComputed",
     "type": "property",
+    "parent": "can.compute",
     "body": "",
-    "description": "<p>A object of name-value pairs that act as default values for a control's\n[can.Control::options this.options].</p>\n\n<pre><code>Message = can.Control({\n  defaults: {\n    message: \"Hello World\"\n  }\n}, {\n  init: function(){\n    this.element.text( this.options.message );\n  }\n});\n\nnew Message( \"#el1\" ); //writes \"Hello World\"\nnew Message( \"#el12\", { message: \"hi\" } ); //writes hi\n</code></pre>\n\n<p>In [can.Control::setup] the options passed to the control\nare merged with defaults.  This is not a deep merge.</p>",
-    "title": "defaults",
-    "name": "can.Control.static.defaults",
-    "parent": "can.Control.static",
-    "src": "can/control/control.js",
-    "line": 225,
-    "id": 76
+    "description": "<p>Whether the value of the compute has been computed yet.</p>",
+    "title": "",
+    "src": "can/observe/compute/compute.js",
+    "line": 319,
+    "id": 48
 };
 
 	console.log(docData);

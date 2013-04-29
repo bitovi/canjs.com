@@ -84,6 +84,11 @@
 	</li>
 	
 	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
@@ -100,6 +105,11 @@
 	
 	<li >
 	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.compute.html">can.compute</a>
 	
 	</li>
 	
@@ -121,22 +131,6 @@
 				</a>
 				</li>
 			
-		
-			
-				<li class="heading"><span>constructor</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Deferred.prototype.html">
-								 can.Deferred.prototype 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
 		
 			
 				<li >
@@ -335,7 +329,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L501">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L543">source</a></li>
 		
 		
 		
@@ -401,15 +395,15 @@ otherwise a Deferred that resolves to <strong>deferred</strong>.</p>
 			<p><code>can.when(deferred)</code> provides the ability to execute callback function(s)
 typically based on a Deferred or AJAX object.</p>
 
-<p>can.when( can.ajax('api/farm/animals') ).then(function(animals){
-        alert(animals); //-> alerts the ajax response
-});</p>
+<pre><code class="lang-javascript">can.when( can.ajax('api/farm/animals') ).then(function(animals){
+     alert(animals); //-> alerts the ajax response
+});</code></pre>
 
 <p>You can also use this for regular JavaScript objects.</p>
 
-<p>$.when( { animals: [ 'cat' ] } ).done(function(animals){
+<pre><code class="lang-javascript">$.when( { animals: [ 'cat' ] } ).done(function(animals){
     alert(animals[0]); //-> alerts 'cat'
-});</p>
+});</code></pre>
 		</section>
 		
 	</article>
@@ -417,7 +411,7 @@ typically based on a Deferred or AJAX object.</p>
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<p><code>can.when(deferred)</code> provides the ability to execute callback function(s)\ntypically based on a Deferred or AJAX object.</p>\n\n<p>can.when( can.ajax('api/farm/animals') ).then(function(animals){\n        alert(animals); //-> alerts the ajax response\n});</p>\n\n<p>You can also use this for regular JavaScript objects.</p>\n\n<p>$.when( { animals: [ 'cat' ] } ).done(function(animals){\n    alert(animals[0]); //-> alerts 'cat'\n});</p>",
+    "body": "<p><code>can.when(deferred)</code> provides the ability to execute callback function(s)\ntypically based on a Deferred or AJAX object.</p>\n\n<pre><code class=\"lang-javascript\">can.when( can.ajax('api/farm/animals') ).then(function(animals){\n     alert(animals); //-> alerts the ajax response\n});</code></pre>\n\n<p>You can also use this for regular JavaScript objects.</p>\n\n<pre><code class=\"lang-javascript\">$.when( { animals: [ 'cat' ] } ).done(function(animals){\n    alert(animals[0]); //-> alerts 'cat'\n});</code></pre>",
     "description": "<p>Call a callback when a Deferred resolves. </p>",
     "title": "",
     "name": "can.when",
@@ -448,8 +442,8 @@ typically based on a Deferred or AJAX object.</p>
     ],
     "comment": " ",
     "src": "can/util/util.js",
-    "line": 501,
-    "id": 130
+    "line": 543,
+    "id": 134
 };
 
 	console.log(docData);

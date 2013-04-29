@@ -84,6 +84,11 @@
 	</li>
 	
 	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
@@ -100,6 +105,11 @@
 	
 	<li >
 	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.compute.html">can.compute</a>
 	
 	</li>
 	
@@ -129,14 +139,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1111">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1118">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>each</h1> <span class="module">can.Observe.List.prototype.each</span>
+	<h1>each</h1><!-- <span class="module">can.Observe.List.prototype.each</span>-->
 
 
 
@@ -190,8 +200,15 @@ the loop will stop.</p>
 		<h4><code>{can.Observe.List}</code></h4>
 		<div class="description">
 			<p>this List, for chaining</p>
+		</div>
+	</div>
 
-<pre><code class="lang-javascript">var i = 0;
+		</section>
+		
+
+		
+		<section class="comment">
+			<pre><code class="lang-javascript">var i = 0;
 new can.Observe([1, 10, 100]).each(function(element, index) {
     i += element;
 });
@@ -206,20 +223,15 @@ new can.Observe([1, 10, 100]).each(function(element, index) {
     }
 });
 
-i; // 11</code></pre>
-		</div>
-	</div>
-
+i; // 11</code></pre>     
 		</section>
-		
-
 		
 	</article>
 </div>
 
 <script type="text/javascript">
 	var docData = {
-    "body": "",
+    "body": "<pre><code class=\"lang-javascript\">var i = 0;\nnew can.Observe([1, 10, 100]).each(function(element, index) {\n    i += element;\n});\n\ni; // 111\n\ni = 0;\nnew can.Observe([1, 10, 100]).each(function(element, index) {\n    i += element;\n    if(index >= 1) {\n        return false;\n    }\n});\n\ni; // 11</code></pre>     ",
     "description": "<p>Call a function on each element of a List. </p>",
     "title": "each",
     "name": "can.Observe.List.prototype.each",
@@ -259,12 +271,13 @@ i; // 11</code></pre>
                         "type": "can.Observe.List"
                     }
                 ],
-                "description": "<p>this List, for chaining</p>\n\n<pre><code class=\"lang-javascript\">var i = 0;\nnew can.Observe([1, 10, 100]).each(function(element, index) {\n    i += element;\n});\n\ni; // 111\n\ni = 0;\nnew can.Observe([1, 10, 100]).each(function(element, index) {\n    i += element;\n    if(index >= 1) {\n        return false;\n    }\n});\n\ni; // 11</code></pre>"
+                "description": "<p>this List, for chaining</p>"
             }
         }
     ],
+    "comment": " ",
     "src": "can/observe/observe.js",
-    "line": 1111,
+    "line": 1118,
     "id": 33
 };
 

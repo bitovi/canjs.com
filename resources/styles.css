@@ -264,6 +264,7 @@ div.light:after{top:auto;bottom:-19px;background-position-y:bottom;}
 .carousel li img,.carousel li a canvas.gsCanvas{display:block;border:3px solid #efa81e;border-radius:2px;-moz-border-radius:2px;-webkit-border-radius:2px;}
 .carousel li a:hover img{border-color:#165489;}
 .gsWrapper,.carousel li a canvas.gsCanvas{display:block;}
+.carousel li div{margin-top:4px;}
 .index .carousel li a{width:163px;}
 .example{position:relative;margin-top:20px;clear:both;}.example h2{text-transform:uppercase;}
 .example>div{float:left;display:block;height:315px;border-radius:2px;-moz-border-radius:2px;-webkit-border-radius:2px;border:1px solid #797979;background-color:#ffffff;text-align:left;margin-top:20px;margin-bottom:40px;font-size:12px;color:#666;}.example>div pre{display:block;height:100%;border:0px solid transparent;}

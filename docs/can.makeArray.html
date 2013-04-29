@@ -84,6 +84,11 @@
 	</li>
 	
 	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
@@ -100,6 +105,11 @@
 	
 	<li >
 	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.compute.html">can.compute</a>
 	
 	</li>
 	
@@ -121,22 +131,6 @@
 				</a>
 				</li>
 			
-		
-			
-				<li class="heading"><span>constructor</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Deferred.prototype.html">
-								 can.Deferred.prototype 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
 		
 			
 				<li >
@@ -335,7 +329,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L35">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L39">source</a></li>
 		
 		
 		
@@ -389,11 +383,6 @@
 		<h4><code>{Array}</code></h4>
 		<div class="description">
 			<p>The converted object.</p>
-
-<p><code>can.makeArray(arrLike)</code> converts an array-like object into a array.</p>
-
-<p>can.makeArray({0 : "zero", 1: "one", length: 2})
-// -> ["zero","one"]</p>
 		</div>
 	</div>
 
@@ -401,12 +390,18 @@
 		
 
 		
+		<section class="comment">
+			<p><code>can.makeArray(arrLike)</code> converts an array-like object into a array.</p>
+
+<pre><code class="lang-javascript">can.makeArray({0 : "zero", 1: "one", length: 2}); // ["zero","one"]</code></pre>
+		</section>
+		
 	</article>
 </div>
 
 <script type="text/javascript">
 	var docData = {
-    "body": "",
+    "body": "<p><code>can.makeArray(arrLike)</code> converts an array-like object into a array.</p>\n\n<pre><code class=\"lang-javascript\">can.makeArray({0 : \"zero\", 1: \"one\", length: 2}); // [\"zero\",\"one\"]</code></pre>",
     "description": "<p>Convert an array-like object to an Array. </p>",
     "title": "",
     "name": "can.makeArray",
@@ -429,13 +424,14 @@
                         "type": "Array"
                     }
                 ],
-                "description": "<p>The converted object.</p>\n\n<p><code>can.makeArray(arrLike)</code> converts an array-like object into a array.</p>\n\n<p>can.makeArray({0 : \"zero\", 1: \"one\", length: 2})\n// -> [\"zero\",\"one\"]</p>"
+                "description": "<p>The converted object.</p>"
             }
         }
     ],
+    "comment": " ",
     "src": "can/util/util.js",
-    "line": 35,
-    "id": 110
+    "line": 39,
+    "id": 114
 };
 
 	console.log(docData);

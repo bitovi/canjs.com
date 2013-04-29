@@ -1,4 +1,4 @@
-@page Views Views
+@page Templates Templates
 @parent Tutorial 3
 
 @body

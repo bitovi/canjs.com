@@ -103,133 +103,43 @@
 	
 	</li>
 	
-	<li class="active">
+	<li >
 	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li class="active">
+	<a href="can.compute.html">can.compute</a>
 	
 		
 		<ul>
 		
 			
-				<li class="heading"><span>prototype</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Observe.List.prototype.attr.html">
-								 attr 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Observe.List.prototype.concat.html">
-								 concat 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Observe.List.prototype.forEach.html">
-								 forEach 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Observe.List.prototype.indexOf.html">
-								 indexOf 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Observe.List.prototype.join.html">
-								 join 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Observe.List.prototype.pop.html">
-								 pop 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Observe.List.prototype.push.html">
-								 push 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Observe.List.prototype.replace.html">
-								 replace 
-							</a>
-						</li>
-						
-						
-						
-						<li class="active">
-							<a href="can.Observe.List.prototype.reverse.html">
-								 reverse 
-							</a>
-						</li>
-						
-						
-						
-						
-						
-						<li >
-							<a href="can.Observe.List.prototype.shift.html">
-								 shift 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Observe.List.prototype.slice.html">
-								 slice 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Observe.List.prototype.splice.html">
-								 splice 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Observe.List.prototype.unshift.html">
-								 unshift 
-							</a>
-						</li>
-						
-						
-					</ul>
+				<li >
+				<a href="can.compute.bind.html">
+					 bind 
+				</a>
 				</li>
-				
+			
+		
+			
+				<li class="active">
+				<a href="can.compute.unbind.html">
+					 unbind 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="isComputed.html">
+					 isComputed 
+				</a>
+				</li>
+			
 		
 		</ul>
 		
-	
-	</li>
-	
-	<li >
-	<a href="can.compute.html">can.compute</a>
 	
 	</li>
 	
@@ -259,14 +169,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1823">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/compute/compute.js#L362">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>reverse</h1><!-- <span class="module">can.Observe.List.prototype.reverse</span>-->
+	<h1>unbind</h1><!-- <span class="module">can.compute.unbind</span>-->
 
 
 
@@ -274,63 +184,112 @@
 		</section>
 
 		<section class="description">
-			<p>Reverse the order of a List. </p>
+			<p>Unbind an event handler from a compute. </p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>reverse()</h2>
-<p><code>reverse</code> reverses the elements of the List in place.</p>
+			<h2>unbind(eventType[, handler])</h2>
 
 
-	<h3>Returns</h3>
-	<div class="returns">
-		<h4><code>{can.Observe.List}</code></h4>
-		<div class="description">
-			<p>the List, for chaining</p>
-		</div>
-	</div>
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>eventType <code>{String}</code></h4>
+			<div class="description">
+				<p><p>The type of event to unbind.
+The only event type available for computes is <em>change</em>.</p></p>
+			</div>
+			<!--
+			<ul class="options">
+				
+				<li class="option">
+					<h5><code>{String}</code></h5>
+					<div class="description">
+						<p>The type of event to unbind.
+The only event type available for computes is <em>change</em>.</p>
+					</div>
+				</li>
+				
+			</ul>
+			-->
+		</li>
+		
+		<li class="parameter">
+			<h4>handler <code>{function}</code></h4>
+			<div class="description">
+				<p><p>If given, the handler to unbind.
+If <em>handler</em> is not supplied, all handlers bound to <em>eventType</em>
+will be removed.</p></p>
+			</div>
+			<!--
+			<ul class="options">
+				
+				<li class="option">
+					<h5><code>{function}</code></h5>
+					<div class="description">
+						<p>If given, the handler to unbind.
+If <em>handler</em> is not supplied, all handlers bound to <em>eventType</em>
+will be removed.</p>
+					</div>
+				</li>
+				
+			</ul>
+			-->
+		</li>
+		
+	</ol>
+
 
 		</section>
 		
 
-		
-		<section class="comment">
-			<pre><code class="lang-javascript">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);
-var reversedList = list.reverse();
-
-reversedList.attr(); // ['Eve', 'Bob', 'Alice'];
-list === reversedList; // true</code></pre>     
-		</section>
 		
 	</article>
 </div>
 
 <script type="text/javascript">
 	var docData = {
-    "name": "can.Observe.List.prototype.reverse",
     "type": "function",
-    "parent": "can.Observe.List.prototype",
-    "body": "<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nvar reversedList = list.reverse();\n\nreversedList.attr(); // ['Eve', 'Bob', 'Alice'];\nlist === reversedList; // true</code></pre>     ",
-    "description": "<p>Reverse the order of a List. </p>",
-    "title": "reverse",
+    "name": "can.compute.unbind",
+    "parent": "can.compute",
+    "body": "",
+    "description": "<p>Unbind an event handler from a compute. </p>",
+    "title": "unbind",
     "signatures": [{
-            "code": "reverse()",
-            "description": "<p><code>reverse</code> reverses the elements of the List in place.</p>",
-            "params": [],
-            "returns": {
-                "types": [{
-                        "type": "can.Observe.List"
-                    }
-                ],
-                "description": "<p>the List, for chaining</p>"
-            }
+            "code": "unbind(eventType[, handler])",
+            "description": "",
+            "params": [{
+                    "types": [{
+                            "type": "String"
+                        }
+                    ],
+                    "name": "eventType",
+                    "description": "<p>The type of event to unbind.\nThe only event type available for computes is <em>change</em>.</p>"
+                }, {
+                    "types": [{
+                            "type": "function",
+                            "returns": {
+                                "types": [{
+                                        "type": "undefined"
+                                    }
+                                ]
+                            },
+                            "params": []
+                        }
+                    ],
+                    "optional": true,
+                    "name": "handler",
+                    "description": "<p>If given, the handler to unbind.\nIf <em>handler</em> is not supplied, all handlers bound to <em>eventType</em>\nwill be removed.</p>"
+                }
+            ]
         }
     ],
-    "comment": " ",
-    "src": "can/observe/observe.js",
-    "line": 1823,
-    "id": 42
+    "src": "can/observe/compute/compute.js",
+    "line": 362,
+    "id": 50
 };
 
 	console.log(docData);

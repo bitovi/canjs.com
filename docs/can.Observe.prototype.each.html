@@ -84,6 +84,11 @@
 	</li>
 	
 	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
@@ -210,6 +215,11 @@
 	</li>
 	
 	<li >
+	<a href="can.compute.html">can.compute</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.route.html">can.route</a>
 	
 	</li>
@@ -235,14 +245,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L519">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L521">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>each</h1> <span class="module">can.Observe.prototype.each</span>
+	<h1>each</h1><!-- <span class="module">can.Observe.prototype.each</span>-->
 
 
 
@@ -296,8 +306,15 @@ the loop will stop.</p>
 		<h4><code>{can.Observe}</code></h4>
 		<div class="description">
 			<p>this Observe, for chaining</p>
+		</div>
+	</div>
 
-<pre><code class="lang-javascript">var names = [];
+		</section>
+		
+
+		
+		<section class="comment">
+			<pre><code class="lang-javascript">var names = [];
 new can.Observe({a: 'Alice', b: 'Bob', e: 'Eve'}).each(function(value, key) {
     names.push(value);
 });
@@ -313,13 +330,8 @@ new can.Observe({a: 'Alice', b: 'Bob', e: 'Eve'}).each(function(value, key) {
 });
 
 names; // ['Alice', 'Bob']
-</code></pre>
-		</div>
-	</div>
-
+</code></pre>     
 		</section>
-		
-
 		
 	</article>
 </div>
@@ -329,7 +341,7 @@ names; // ['Alice', 'Bob']
     "type": "function",
     "name": "can.Observe.prototype.each",
     "parent": "can.Observe.prototype",
-    "body": "",
+    "body": "<pre><code class=\"lang-javascript\">var names = [];\nnew can.Observe({a: 'Alice', b: 'Bob', e: 'Eve'}).each(function(value, key) {\n    names.push(value);\n});\n\nnames; // ['Alice', 'Bob', 'Eve']\n\nnames = [];\nnew can.Observe({a: 'Alice', b: 'Bob', e: 'Eve'}).each(function(value, key) {\n    names.push(value);\n    if(key === 'b') {\n        return false;\n    }\n});\n\nnames; // ['Alice', 'Bob']\n</code></pre>     ",
     "description": "<p>Call a function on each property of an Observe. </p>",
     "title": "each",
     "signatures": [{
@@ -356,12 +368,13 @@ names; // ['Alice', 'Bob']
                         "type": "can.Observe"
                     }
                 ],
-                "description": "<p>this Observe, for chaining</p>\n\n<pre><code class=\"lang-javascript\">var names = [];\nnew can.Observe({a: 'Alice', b: 'Bob', e: 'Eve'}).each(function(value, key) {\n    names.push(value);\n});\n\nnames; // ['Alice', 'Bob', 'Eve']\n\nnames = [];\nnew can.Observe({a: 'Alice', b: 'Bob', e: 'Eve'}).each(function(value, key) {\n    names.push(value);\n    if(key === 'b') {\n        return false;\n    }\n});\n\nnames; // ['Alice', 'Bob']\n</code></pre>"
+                "description": "<p>this Observe, for chaining</p>"
             }
         }
     ],
+    "comment": " ",
     "src": "can/observe/observe.js",
-    "line": 519,
+    "line": 521,
     "id": 23
 };
 

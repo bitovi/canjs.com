@@ -83,78 +83,8 @@
 	
 	</li>
 	
-	<li class="active">
+	<li >
 	<a href="can.Deferred.html">can.Deferred</a>
-	
-		
-		<ul>
-		
-			
-				<li class="heading"><span>prototype</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Deferred.prototype.always.html">
-								 always 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Deferred.prototype.done.html">
-								 done 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Deferred.prototype.isResolved.html">
-								 isResolved 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Deferred.prototype.reject.html">
-								 reject 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Deferred.prototype.rejectWith.html">
-								 rejectWith 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Deferred.prototype.resolveWith.html">
-								 resolveWith 
-							</a>
-						</li>
-						
-						
-						
-						<li class="active">
-							<a href="can.Deferred.prototype.then.html">
-								 then 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
-		
-		</ul>
-		
 	
 	</li>
 	
@@ -178,8 +108,38 @@
 	
 	</li>
 	
-	<li >
+	<li class="active">
 	<a href="can.compute.html">can.compute</a>
+	
+		
+		<ul>
+		
+			
+				<li class="active">
+				<a href="can.compute.bind.html">
+					 bind 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="can.compute.unbind.html">
+					 unbind 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="isComputed.html">
+					 isComputed 
+				</a>
+				</li>
+			
+		
+		</ul>
+		
 	
 	</li>
 	
@@ -209,14 +169,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L697">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/compute/compute.js#L327">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>then</h1><!-- <span class="module">can.Deferred.prototype.then</span>-->
+	<h1>bind</h1><!-- <span class="module">can.compute.bind</span>-->
 
 
 
@@ -224,12 +184,12 @@
 		</section>
 
 		<section class="description">
-			<p>Add callbacks to a Deferred. </p>
+			<p>Bind an event handler to a compute. </p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>then(doneCallback[, failCallback])</h2>
+			<h2>bind(eventType, handler)</h2>
 
 
 	<h3>Parameters</h3>
@@ -237,17 +197,19 @@
 	<ol class="parameters">
 		
 		<li class="parameter">
-			<h4>doneCallback <code>{function}</code></h4>
+			<h4>eventType <code>{String}</code></h4>
 			<div class="description">
-				<p><p>A function called when the Deferred is resolved.</p></p>
+				<p><p>The event to bind this handler to.
+The only event type that computes emit is <em>change</em>.</p></p>
 			</div>
 			<!--
 			<ul class="options">
 				
 				<li class="option">
-					<h5><code>{function}</code></h5>
+					<h5><code>{String}</code></h5>
 					<div class="description">
-						<p>A function called when the Deferred is resolved.</p>
+						<p>The event to bind this handler to.
+The only event type that computes emit is <em>change</em>.</p>
 					</div>
 				</li>
 				
@@ -256,9 +218,24 @@
 		</li>
 		
 		<li class="parameter">
-			<h4>failCallback <code>{function}</code></h4>
+			<h4>handler <code>{function}</code></h4>
 			<div class="description">
-				<p><p>A function called when the Deferred is rejected.</p></p>
+				<p><p>The handler to call when the event happens.
+The handler should have three parameters:
+- <em>event</em> is the event object.
+- <em>newVal</em> is the newly-computed value of the compute.
+- <em>oldVal</em> is the value of the compute before it changed.</p>
+
+<p><code>bind</code> lets you listen to a compute to know when it changes. It works just like
+can.Observe's <code>[can.Observe.prototype.bind bind]</code>:</p>
+
+<pre><code class="lang-javascript">var tally = can.compute(0);
+tally.bind('change', function(ev, newVal, oldVal) {
+    console.log('The tally is now at ' + newVal + '.');
+});
+
+tally(tally() + 5); // The log reads:
+                    // 'The tally is now at 5.'</code></pre></p>
 			</div>
 			<!--
 			<ul class="options">
@@ -266,7 +243,22 @@
 				<li class="option">
 					<h5><code>{function}</code></h5>
 					<div class="description">
-						<p>A function called when the Deferred is rejected.</p>
+						<p>The handler to call when the event happens.
+The handler should have three parameters:
+- <em>event</em> is the event object.
+- <em>newVal</em> is the newly-computed value of the compute.
+- <em>oldVal</em> is the value of the compute before it changed.</p>
+
+<p><code>bind</code> lets you listen to a compute to know when it changes. It works just like
+can.Observe's <code>[can.Observe.prototype.bind bind]</code>:</p>
+
+<pre><code class="lang-javascript">var tally = can.compute(0);
+tally.bind('change', function(ev, newVal, oldVal) {
+    console.log('The tally is now at ' + newVal + '.');
+});
+
+tally(tally() + 5); // The log reads:
+                    // 'The tally is now at 5.'</code></pre>
 					</div>
 				</li>
 				
@@ -281,45 +273,27 @@
 		
 
 		
-		<section class="comment">
-			<p><code>deferred.then( doneCallback, failCallback )</code> adds handler(s) to be called when the Deferred object to be called after its resolved.</p>
-
-<pre><code class="lang-javascript">var def = can.Deferred();
-def.then(function(){
-    //- Called when the deferred is resolved.
-}, function(){
-    //- Called when the deferred fails.
-})</code></pre>
-		</section>
-		
 	</article>
 </div>
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<p><code>deferred.then( doneCallback, failCallback )</code> adds handler(s) to be called when the Deferred object to be called after its resolved.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.then(function(){\n    //- Called when the deferred is resolved.\n}, function(){\n    //- Called when the deferred fails.\n})</code></pre>",
-    "description": "<p>Add callbacks to a Deferred. </p>",
-    "title": "then",
-    "name": "can.Deferred.prototype.then",
     "type": "function",
-    "parent": "can.Deferred.prototype",
+    "name": "can.compute.bind",
+    "parent": "can.compute",
+    "body": "",
+    "description": "<p>Bind an event handler to a compute. </p>",
+    "title": "bind",
     "signatures": [{
-            "code": "then(doneCallback[, failCallback])",
+            "code": "bind(eventType, handler)",
             "description": "",
             "params": [{
                     "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
+                            "type": "String"
                         }
                     ],
-                    "name": "doneCallback",
-                    "description": "<p>A function called when the Deferred is resolved.</p>"
+                    "name": "eventType",
+                    "description": "<p>The event to bind this handler to.\nThe only event type that computes emit is <em>change</em>.</p>"
                 }, {
                     "types": [{
                             "type": "function",
@@ -329,20 +303,46 @@ def.then(function(){
                                     }
                                 ]
                             },
-                            "params": []
+                            "params": [{
+                                    "types": [{
+                                            "type": "Object",
+                                            "options": [{
+                                                    "name": "Object"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }, {
+                                    "types": [{
+                                            "type": "Object",
+                                            "options": [{
+                                                    "name": "*"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }, {
+                                    "types": [{
+                                            "type": "Object",
+                                            "options": [{
+                                                    "name": "*"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ],
-                    "optional": true,
-                    "name": "failCallback",
-                    "description": "<p>A function called when the Deferred is rejected.</p>"
+                    "name": "handler",
+                    "description": "<p>The handler to call when the event happens.\nThe handler should have three parameters:\n- <em>event</em> is the event object.\n- <em>newVal</em> is the newly-computed value of the compute.\n- <em>oldVal</em> is the value of the compute before it changed.</p>\n\n<p><code>bind</code> lets you listen to a compute to know when it changes. It works just like\ncan.Observe's <code>[can.Observe.prototype.bind bind]</code>:</p>\n\n<pre><code class=\"lang-javascript\">var tally = can.compute(0);\ntally.bind('change', function(ev, newVal, oldVal) {\n    console.log('The tally is now at ' + newVal + '.');\n});\n\ntally(tally() + 5); // The log reads:\n                    // 'The tally is now at 5.'</code></pre>"
                 }
             ]
         }
     ],
-    "comment": " ",
-    "src": "can/util/util.js",
-    "line": 697,
-    "id": 142
+    "src": "can/observe/compute/compute.js",
+    "line": 327,
+    "id": 49
 };
 
 	console.log(docData);
