@@ -257,7 +257,7 @@
 		<li class="parameter">
 			<h4>args <code>{*}</code></h4>
 			<div class="description">
-				<p><p>the arguments passed to the constructor (or the elements of the array returned from [can.Construct::setup])</p></p>
+				<p><p>the arguments passed to the constructor (or the elements of the array returned from <a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a>)</p></p>
 			</div>
 			<!--
 			<ul class="options">
@@ -282,7 +282,7 @@
 		
 		<section class="comment">
 			<p>If a prototype <code>init</code> method is provided, it is called when a new Construct is created,
-after [can.Construct::setup]. The <code>init</code> method is where the bulk of your initialization code
+after <a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a>. The <code>init</code> method is where the bulk of your initialization code
 should go, and a common thing to do in <code>init</code> is to save the arguments passed into the constructor.</p>
 
 <h2>Examples</h2>
@@ -321,7 +321,7 @@ brian.bio(); // "Hi! I'm Brian Moschel and I write ECMAScript.";</code></pre>
 
 <h2>Be Aware</h2>
 
-<p>[can.Construct::setup] is able to modify the arguments passed to <code>init</code>.
+<p><a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a> is able to modify the arguments passed to <code>init</code>.
 If you aren't receiving the right arguments to <code>init</code>, check to make sure
 that they aren't being changed by <code>setup</code> somewhere along the inheritance chain.</p>
 		</section>

@@ -208,7 +208,7 @@
 
 
 
-<span class="inherits"><a href="can.Observe.html">can.Observe</a></span>
+<span class="inherits">inherits: <a href="can.Observe.html">can.Observe</a></span>
 
 
 		</section>
@@ -216,7 +216,7 @@
 		<section class="description">
 			<p>can.route is a plugin that helps manage browser history and
 client state by synchronizing the window.location.hash with
-an [can.Observe].</p>
+an <a href="can.Observe.html">can.Observe</a>.</p>
 		</section>
 
 		
@@ -314,7 +314,7 @@ create history enabled Ajax websites.  However,
 
 <h2>How it works</h2>
 
-<p><code>can.route</code> is a [can.Observe] that represents the
+<p><code>can.route</code> is a <a href="can.Observe.html">can.Observe</a> that represents the
 <code>window.location.hash</code> as an 
 object.  For example, if the hash looks like:</p>
 
@@ -331,17 +331,17 @@ object.  For example, if the hash looks like:</p>
 
 <h2>can.Observe</h2>
 
-<p><code>can.route</code> is a [can.Observe]. Understanding
+<p><code>can.route</code> is a <a href="can.Observe.html">can.Observe</a>. Understanding
 <code>can.Observe</code> is essential for using <code>can.route</code> correctly.</p>
 
 <p>You can listen to changes in an Observe with <code>bind(eventName, handler(ev, args...))</code> and
 change can.route's properties with 
-[can.Observe.prototype.attr attr].</p>
+<a href="can.Observe.prototype.attr.html"> </a>.</p>
 
 <h3>Listening to changes in an Observable</h3>
 
 <p>Listen to changes in history 
-by [can.Observe.prototype.bind bind]ing to
+by <a href="can.Observe.prototype.bind.html"> </a>ing to
 changes in <code>can.route</code> like:</p>
 
 <pre><code>can.route.bind('change', function(ev, attr, how, newVal, oldVal) {
@@ -375,7 +375,7 @@ behavior, <code>remove</code> is useful for teardown.</p>
 
 <h3>Updating an observable</h3>
 
-<p>Create changes in the route data with [can.Observe.prototype.attr attr] like:</p>
+<p>Create changes in the route data with <a href="can.Observe.prototype.attr.html"> </a> like:</p>
 
 <pre><code>can.route.attr('type','images');
 </code></pre>
@@ -452,7 +452,7 @@ like:</p>
 route and update the hash.</p>
 
 <p>Often, you want to create links.  <code>can.route</code> provides
-the [can.route.link] and [can.route.url] helpers to make this 
+the <a href="can.route.link.html">can.route.link</a> and <a href="can.route.url.html">can.route.url</a> helpers to make this 
 easy:</p>
 
 <pre><code>can.route.link("Videos", {type: 'videos'})

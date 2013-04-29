@@ -347,7 +347,7 @@ you'll want to make sure you save your constructor to use later:</p>
     }
 });</code></pre>
 
-<p>You can make instances by calling your constructor with the <code>new</code> keyword. When you do, the [can.Construct::init|init]
+<p>You can make instances by calling your constructor with the <code>new</code> keyword. When you do, the <a href="can.Construct.prototype.init.html">can.Construct.prototype.init</a>
 method gets called (if you supplied one):</p>
 
 <pre><code class="lang-javascript">var panther = new Animal({sound: 'growl'});
@@ -385,7 +385,7 @@ baslisk instanceof Animal; // true</code></pre>
 
 <p>If you pass all three arguments to can.Construct, the second one will be attached directy to the
 constructor, allowing you to imitate static properties and functions. You can access these
-properties through the <code>[can.Construct::constructor|this.constructor]</code> property.</p>
+properties through the <code><a href="can.Construct.prototype.constructor.html">can.Construct.prototype.constructor</a></code> property.</p>
 
 <p>Static properties can get overridden through inheritance just like instance properties. Let's see
 how this works with <code>Animal</code> and <code>Snake</code>:</p>

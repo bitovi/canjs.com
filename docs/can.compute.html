@@ -259,7 +259,7 @@ produces that value.</p>
 			<p><code>can.compute</code> lets you make observable values. A compute is actually a function that returns
 the computed value, but you can also use the compute to set the value and you can use
 <code>bind</code> to listen to changes in the compute's return value. In this way, computes are similar
-to [can.Observe Observes], but they represent a single value rather than a collection of values.</p>
+to <a href="can.Observe.html"> </a>, but they represent a single value rather than a collection of values.</p>
 
 <h2>Working with computes</h2>
 
@@ -273,7 +273,7 @@ tally(13);
 tally(); // 13</code></pre>
 
 <p>This is useful for making observable values, but the real power of <code>can.compute</code> reveals
-itself when you combine it with <code>[can.Observe]</code>. If you use a compute that derives its
+itself when you combine it with <code><a href="can.Observe.html">can.Observe</a></code>. If you use a compute that derives its
 value from properties of an Observe, the compute will listen for changes in those
 properties and automatically recalculate itself, emitting a <em>change</em> event if its value
 changes.</p>
@@ -295,7 +295,7 @@ fullName.bind('change', function(ev, newVal, oldVal) {
 person.attr('firstName', 'Allison'); // The log reads:
                                      // "This person's full name is now Allison Liddell."</code></pre>
 
-<p>Take special notice of how the definition of the compute uses <code>[can.Observe.prototype.attr attr]</code>
+<p>Take special notice of how the definition of the compute uses <code><a href="can.Observe.prototype.attr.html"> </a></code>
 to read the values of the properties of <code>person</code>. This is how the compute knows to listen
 for changes. and is similar to the need to use <code>attr</code> when live-binding properties of Observes into
 <code>[can.EJS EJS]</code> templates.</p>
@@ -327,7 +327,7 @@ wall.length;          // 16.4042</code></pre>
 <h2>Events</h2>
 
 <p>When a compute's value is changed, it emits a <em>change</em> event. You can listen for this change
-event by using <code>[can.compute.bind bind]</code> to bind an event handler to the compute:</p>
+event by using <code><a href="can.compute.bind.html"> </a></code> to bind an event handler to the compute:</p>
 
 <pre><code class="lang-javascript">var tally = can.compute(0);
 tally.bind('change', function(ev, newVal, oldVal) {
@@ -339,7 +339,7 @@ tally(tally() + 5); // The log reads:
 
 <h2>Using computes to build Controls</h2>
 
-<p>It's a piece of cake to build a <code>[can.Control]</code> off of the value of a compute. And since computes
+<p>It's a piece of cake to build a <code><a href="can.Control.html">can.Control</a></code> off of the value of a compute. And since computes
 are observable, it means that the view of that Control will update itself whenever the value
 of the compute updates. Here's a simple slider that works off of a compute:</p>
 
@@ -367,8 +367,8 @@ can.Control('SimpleSlider', { }, {
 
 new SimpleSlider('#slider', {percentDone: project.compute('percentDone')});</code></pre>
 
-<p>Now that's some delicious cake. More information on Controls can be found under <code>[can.Control]</code>.
-There is also a full explanation of can.Observe's <code>[can.Observe.prototype.compute compute]</code>,
+<p>Now that's some delicious cake. More information on Controls can be found under <code><a href="can.Control.html">can.Control</a></code>.
+There is also a full explanation of can.Observe's <code><a href="can.Observe.prototype.compute.html"> </a></code>,
 which is used in the last line of the example above.</p>
 		</section>
 		

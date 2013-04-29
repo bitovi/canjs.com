@@ -83,7 +83,6 @@ module.exports = function (grunt) {
 				debug: true,
 				layout: '_layouts/page.mustache',
 				docs: '_docs/page.mustache',
-				out: 'docs/',
 				root: '',
 				package: require(__dirname + '/can/package.json'),
 				helpers: {

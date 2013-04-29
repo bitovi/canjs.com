@@ -1,5 +1,5 @@
 <h2>{{code}}</h2>
-{{{description}}}
+{{{docLinks description}}}
 {{#if params}}
 	<h3>Parameters</h3>
 
@@ -8,7 +8,7 @@
 		<li class="parameter">
 			<h4>{{name}} {{#if types}}<code>{{makeTypesString types}}</code>{{/if}}</h4>
 			<div class="description">
-				<p>{{{description}}}</p>
+				<p>{{{docLinks description}}}</p>
 			</div>
 			<!--
 			<ul class="options">
@@ -31,7 +31,7 @@
 	<div class="returns">
 		<h4><code>{{makeTypesString returns.types}}</code></h4>
 		<div class="description">
-			{{{returns.description}}}
+			{{{docLinks returns.description}}}
 		</div>
 	</div>
 {{/if}}

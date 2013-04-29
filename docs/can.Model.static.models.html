@@ -366,11 +366,11 @@
 		<section class="comment">
 			<p><code>can.Model.models(data, xhr)</code> is used to 
 convert the raw response of a [can.Model.findAll] request 
-into a [can.Model.List] of model instances.  </p>
+into a <a href="can.Model.List.html">can.Model.List</a> of model instances.  </p>
 
 <p>This method is rarely called directly. Instead the deferred returned
 by findAll is piped into <code>models</code>.  This creates a new deferred that
-resolves to a [can.Model.List] of instances instead of an array of
+resolves to a <a href="can.Model.List.html">can.Model.List</a> of instances instead of an array of
 simple JS objects.</p>
 
 <p>If your server is returning data in non-standard way,
@@ -378,7 +378,7 @@ overwriting <code>can.Model.models</code> is the best way to normalize it.</p>
 
 <h2>Quick Example</h2>
 
-<p>The following uses models to convert to a [can.Model.List] of model
+<p>The following uses models to convert to a <a href="can.Model.List.html">can.Model.List</a> of model
 instances.</p>
 
 <pre><code>Task = can.Model({},{})
@@ -406,7 +406,7 @@ objects like:</p>
 }
 </code></pre>
 
-<p>In this case, models will return a [can.Model.List] of instances found in 
+<p>In this case, models will return a <a href="can.Model.List.html">can.Model.List</a> of instances found in 
 data, but with additional properties as expandos on the list:</p>
 
 <pre><code>var tasks = Task.models({

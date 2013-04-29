@@ -369,13 +369,13 @@ XmlHttpRequest object.</p>
 			<p><code>model.save([success(model)],[error(xhr)])</code> creates or updates 
 the model instance using [can.Model.create] or
 [can.Model.update] depending if the instance
-[can.Model::isNew has an id or not].</p>
+<a href="can.Model.prototype.isNew.html"> </a>.</p>
 
 <h2>Using <code>save</code> to create an instance.</h2>
 
 <p>If <code>save</code> is called on an instance that does not have 
 an [can.Model.id id] property, it calls [can.Model.create]
-with the instance's properties.  It also [can.trigger triggers]
+with the instance's properties.  It also <a href="can.trigger.html"> </a>
 a "created" event on the instance and the model.</p>
 
 <pre><code>// create a model instance

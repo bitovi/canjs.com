@@ -260,7 +260,7 @@
 
 
 
-<span class="inherits"><a href="can.Construct.html">can.Construct</a></span>
+<span class="inherits">inherits: <a href="can.Construct.html">can.Construct</a></span>
 
 
 		</section>
@@ -270,7 +270,7 @@
 to objects. When you use the getters and setters provided by <code>can.Observe</code>,
 events are fired that you can react to. <code>can.Observe</code> also has support for
 working with deep properties. Observable arrays are also available with
-<code>[can.Observe.List]</code>, which is based on <code>can.Observe</code>.</p>
+<code><a href="can.Observe.List.html">can.Observe.List</a></code>, which is based on <code>can.Observe</code>.</p>
 		</section>
 
 		
@@ -321,11 +321,11 @@ working with deep properties. Observable arrays are also available with
 
 <p>To create an Observe, use <code>new can.Observe([props])</code>. This will return a
 copy of <code>props</code> that emits events when its properties are changed with
-<code>[can.Observe.prototype.attr attr]</code>.</p>
+<code><a href="can.Observe.prototype.attr.html"> </a></code>.</p>
 
 <p>You can read the values of properties on Observes directly, but you should
 never set them directly. You can also read property values using <code>attr</code>.
-Usually, you will want to do this when creating a <code>[can.compute]</code> or when
+Usually, you will want to do this when creating a <code><a href="can.compute.html">can.compute</a></code> or when
 live-binding properties in an [can.EJS EJS] template. (If you are using
 [can.Mustache Mustache], you don't need to use <code>attr</code>.)</p>
 
@@ -382,8 +382,8 @@ o.attr({
 o.removeAttr('a');     // 'Something on o changed.'
                        // 'a was changed.'</code></pre>
 
-<p>For more detail on how to use these events, see [can.Observe.prototype.bind bind] and
-[can.Observe.prototype.unbind unbind]. There is also a plugin called [can.Observe.delegate]
+<p>For more detail on how to use these events, see <a href="can.Observe.prototype.bind.html"> </a> and
+<a href="can.Observe.prototype.unbind.html"> </a>. There is also a plugin called [can.Observe.delegate]
 that makes binding to specific types of events easier:</p>
 
 <pre><code class="lang-javascript">var o = new can.Observe({});
