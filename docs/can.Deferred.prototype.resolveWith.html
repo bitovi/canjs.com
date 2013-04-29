@@ -73,204 +73,73 @@
 		</div>
 		<ul class="api">
 	
-	<li class="active">
+	<li >
 	<a href="can.util.html">can.util</a>
+	
+	</li>
+	
+	<li class="active">
+	<a href="can.Deferred.html">can.Deferred</a>
 	
 		
 		<ul>
 		
 			
-				<li >
-				<a href="can.isDeferred.html">
-					 can.isDeferred 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.trim.html">
-					 can.trim 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.makeArray.html">
-					 can.makeArray 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.isArray.html">
-					 can.isArray 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.each.html">
-					 can.each 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.extend.html">
-					 can.extend 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.param.html">
-					 can.param 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.isEmptyObject.html">
-					 can.isEmptyObject 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.proxy.html">
-					 can.proxy 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.isFunction.html">
-					 can.isFunction 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.bind.html">
-					 can.bind 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.unbind.html">
-					 can.unbind 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.delegate.html">
-					 can.delegate 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.undelegate.html">
-					 can.undelegate 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.trigger.html">
-					 can.trigger 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.ajax.html">
-					 can.ajax 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.$.html">
-					 can.$ 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.buildFragment.html">
-					 can.buildFragment 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.append.html">
-					 can.append 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.remove.html">
-					 can.remove 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.data.html">
-					 can.data 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.addClass.html">
-					 can.addClass 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.when.html">
-					 can.when 
-				</a>
-				</li>
-			
-		
-			
-				<li class="heading"><span>constructor</span>
+				<li class="heading"><span>prototype</span>
 					<ul>
 						
 						
 						<li class="active">
-							<a href="can.Deferred.prototype.html">
-								 can.Deferred.prototype 
+							<a href="can.Deferred.prototype.resolveWith.html">
+								 resolveWith 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Deferred.prototype.rejectWith.html">
+								 rejectWith 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Deferred.prototype.done.html">
+								 done 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Deferred.prototype.always.html">
+								 always 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Deferred.prototype.then.html">
+								 then 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Deferred.prototype.isResolved.html">
+								 isResolved 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Deferred.prototype.reject.html">
+								 reject 
 							</a>
 						</li>
 						
@@ -296,6 +165,11 @@
 	
 	<li >
 	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.compute.html">can.compute</a>
 	
 	</li>
 	
@@ -335,7 +209,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L562">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L610">source</a></li>
 		
 		
 		
@@ -410,8 +284,8 @@
 		<section class="comment">
 			<p><code>deferred.resolveWith(context, arguments)</code> resolves a Deferred and calls the <code>doneCallbacks</code> with the given arguments.</p>
 
-<p>var def = can.Deferred();
-def.resolveWith(this, { animals: [ 'cows', 'monkey', 'panda' ] })</p>
+<pre><code class="lang-javascript">var def = can.Deferred();
+def.resolveWith(this, { animals: [ 'cows', 'monkey', 'panda' ] })</code></pre>
 		</section>
 		
 	</article>
@@ -419,7 +293,7 @@ def.resolveWith(this, { animals: [ 'cows', 'monkey', 'panda' ] })</p>
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<p><code>deferred.resolveWith(context, arguments)</code> resolves a Deferred and calls the <code>doneCallbacks</code> with the given arguments.</p>\n\n<p>var def = can.Deferred();\ndef.resolveWith(this, { animals: [ 'cows', 'monkey', 'panda' ] })</p>",
+    "body": "<p><code>deferred.resolveWith(context, arguments)</code> resolves a Deferred and calls the <code>doneCallbacks</code> with the given arguments.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.resolveWith(this, { animals: [ 'cows', 'monkey', 'panda' ] })</code></pre>",
     "description": "<p>Resolve a Deferred in a particular context. </p>",
     "title": "resolveWith",
     "name": "can.Deferred.prototype.resolveWith",
@@ -449,7 +323,7 @@ def.resolveWith(this, { animals: [ 'cows', 'monkey', 'panda' ] })</p>
     ],
     "comment": " ",
     "src": "can/util/util.js",
-    "line": 562,
+    "line": 610,
     "id": 28
 };
 

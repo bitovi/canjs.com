@@ -79,6 +79,11 @@
 	</li>
 	
 	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Construct.html">can.Construct</a>
 	
 	</li>
@@ -200,6 +205,11 @@
 	</li>
 	
 	<li >
+	<a href="can.compute.html">can.compute</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
@@ -235,7 +245,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L711">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L715">source</a></li>
 		
 		
 		
@@ -576,8 +586,15 @@ o.removeAttr('a');     // [object Object], undefined, Alice</code></pre>
 		<h4><code>{can.Observe}</code></h4>
 		<div class="description">
 			<p>this Observe, for chaining</p>
+		</div>
+	</div>
 
-<p><code>bind</code> binds event handlers to property changes on <code>can.Observe</code>s. When you change
+		</section>
+		
+
+		
+		<section class="comment">
+			<p><code>bind</code> binds event handlers to property changes on <code>can.Observe</code>s. When you change
 a property using <code>attr</code>, two events are fired on the Observe, allowing other parts
 of your application to observe the changes to the object.</p>
 
@@ -592,12 +609,7 @@ o.bind('change', function(ev, attr, how, newVal, oldVal) {
 });</code></pre>
 
 <p>The parameters of the event handler for the <em>change</em> event are:</p>
-		</div>
-	</div>
-
 		</section>
-		
-
 		
 	</article>
 </div>
@@ -607,7 +619,7 @@ o.bind('change', function(ev, attr, how, newVal, oldVal) {
     "name": "can.Observe.prototype.bind",
     "type": "function",
     "parent": "can.Observe.prototype",
-    "body": "",
+    "body": "<p><code>bind</code> binds event handlers to property changes on <code>can.Observe</code>s. When you change\na property using <code>attr</code>, two events are fired on the Observe, allowing other parts\nof your application to observe the changes to the object.</p>\n\n<h2>The <em>change</em> event</h2>\n\n<p>The first event that is fired is the <em>change</em> event. The <em>change</em> event is useful\nif you want to react to all changes on an Observe.</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.bind('change', function(ev, attr, how, newVal, oldVal) {\n    console.log('Something changed.');\n});</code></pre>\n\n<p>The parameters of the event handler for the <em>change</em> event are:</p>",
     "description": "<p>Bind event handlers to an Observe. </p>",
     "title": "bind",
     "signatures": [{
@@ -697,12 +709,13 @@ o.bind('change', function(ev, attr, how, newVal, oldVal) {
                         "type": "can.Observe"
                     }
                 ],
-                "description": "<p>this Observe, for chaining</p>\n\n<p><code>bind</code> binds event handlers to property changes on <code>can.Observe</code>s. When you change\na property using <code>attr</code>, two events are fired on the Observe, allowing other parts\nof your application to observe the changes to the object.</p>\n\n<h2>The <em>change</em> event</h2>\n\n<p>The first event that is fired is the <em>change</em> event. The <em>change</em> event is useful\nif you want to react to all changes on an Observe.</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.bind('change', function(ev, attr, how, newVal, oldVal) {\n    console.log('Something changed.');\n});</code></pre>\n\n<p>The parameters of the event handler for the <em>change</em> event are:</p>"
+                "description": "<p>this Observe, for chaining</p>"
             }
         }
     ],
+    "comment": " ",
     "src": "can/observe/observe.js",
-    "line": 711,
+    "line": 715,
     "id": 60
 };
 

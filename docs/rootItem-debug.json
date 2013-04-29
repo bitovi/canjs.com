@@ -21,7 +21,7 @@
             "id": 1,
             "children": [{
                     "active": false,
-                    "body": "<p><code>can.isDeferred</code> returns if an object is an instance of [can.Deferred].</p>\n\n<p>## Example\n Convert any value to a Deferred:</p>\n\n<p>function convertDeferred(dfd) {\n    return can.isDeferred(dfd) ? dfd : can.Deferred(dfd);\n}</p>",
+                    "body": "<p><code>can.isDeferred</code> returns if an object is an instance of [can.Deferred].</p>\n\n<h2>Example</h2>\n\n<p>Convert any value to a Deferred:</p>\n\n<pre><code class=\"lang-javascript\">function convertDeferred(dfd) {\n    return can.isDeferred(dfd) ? dfd : can.Deferred(dfd);\n}</code></pre>",
                     "description": "<p>Check if an object is a Deferred. </p>",
                     "title": "",
                     "name": "can.isDeferred",
@@ -36,7 +36,7 @@
                                         }
                                     ],
                                     "name": "subject",
-                                    "description": "<p>The object to check</p>"
+                                    "description": "<p>The object to check.</p>"
                                 }
                             ],
                             "returns": {
@@ -54,7 +54,7 @@
                     "id": 2
                 }, {
                     "active": false,
-                    "body": "<p><code>can.trim(str)</code> removes leading and trailing whitespace from a string.  It will also\nremove all newlines, spaces including non-breaking, and tabs.  If these occur in the middle\nof the string, then they will be persisted.</p>\n\n<p>can.trim( \" foo \" ) // -> \"foo\"</p>",
+                    "body": "<p><code>can.trim(str)</code> removes leading and trailing whitespace from a string.  It will also\nremove all newlines, spaces including non-breaking, and tabs.  If these occur in the middle\nof the string, then they will be persisted.</p>\n\n<pre><code class=\"lang-javascript\">can.trim(\" foo \") // \"foo\"</code></pre>",
                     "description": "<p>Trim whitespace off a string. </p>",
                     "title": "",
                     "name": "can.trim",
@@ -83,11 +83,11 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 19,
+                    "line": 21,
                     "id": 3
                 }, {
                     "active": false,
-                    "body": "",
+                    "body": "<p><code>can.makeArray(arrLike)</code> converts an array-like object into a array.</p>\n\n<pre><code class=\"lang-javascript\">can.makeArray({0 : \"zero\", 1: \"one\", length: 2}); // [\"zero\",\"one\"]</code></pre>",
                     "description": "<p>Convert an array-like object to an Array. </p>",
                     "title": "",
                     "name": "can.makeArray",
@@ -110,16 +110,17 @@
                                         "type": "Array"
                                     }
                                 ],
-                                "description": "<p>The converted object.</p>\n\n<p><code>can.makeArray(arrLike)</code> converts an array-like object into a array.</p>\n\n<p>can.makeArray({0 : \"zero\", 1: \"one\", length: 2})\n// -> [\"zero\",\"one\"]</p>"
+                                "description": "<p>The converted object.</p>"
                             }
                         }
                     ],
+                    "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 35,
+                    "line": 39,
                     "id": 4
                 }, {
                     "active": false,
-                    "body": "<p><code>can.isArray(object)</code> returns if the object is an Array.</p>\n\n<p>can.isArray([]) //-> true\ncan.isArray(false)</p>",
+                    "body": "<p><code>can.isArray(object)</code> returns if the object is an Array.</p>\n\n<pre><code class=\"lang-javascript\">can.isArray([]);    // true\ncan.isArray(false); // false</code></pre>",
                     "description": "<p>Check if an object is an array. </p>",
                     "title": "",
                     "name": "can.isArray",
@@ -148,11 +149,11 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 49,
+                    "line": 55,
                     "id": 5
                 }, {
                     "active": false,
-                    "body": "<p><code>can.each(collection, callback)</code> iterates through an array or object like\nlike [http://api.jquery.com/jQuery.each/ jQuery.each].</p>\n\n<p>can.each([{prop: \"val1\"}, {prop: \"val2\"}],\nfunction( value, index ) {\n     // function called with\n     //  index=0 value={prop: \"val1\"}\n     //  index=1 value={prop: \"val2\"}\n   })</p>",
+                    "body": "<p><code>can.each(collection, callback)</code> iterates through an array or object like\nlike [http://api.jquery.com/jQuery.each/ jQuery.each].</p>\n\n<pre><code class=\"lang-javascript\">can.each([{prop: \"val1\"}, {prop: \"val2\"}],\n function( value, index ) {\n   // function called with\n   // index=0 value={prop: \"val1\"}\n   // index=1 value={prop: \"val2\"}\n }\n);</code></pre>",
                     "description": "<p>Iterate through an array or object. </p>",
                     "title": "",
                     "name": "can.each",
@@ -188,11 +189,11 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 64,
+                    "line": 72,
                     "id": 6
                 }, {
                     "active": false,
-                    "body": "<p><code>can.extend(target, objectN)</code> merges the contents of two or more objects together into the first object\nsimilarly to [http://api.jquery.com/jQuery.extend/ jQuery.extend].</p>\n\n<p>var first = {},\nsecond = {a: \"b\"},\nthrid = {c: \"d\"};</p>\n\n<p>can.extend(first, second, third); //-> first</p>\n\n<p>first  //-> {a: \"b\", c: \"d\"}\nsecond //-> {a: \"b\"}\nthird  //-> {c: \"d\"}</p>",
+                    "body": "<p><code>can.extend(target, objectN)</code> merges the contents of two or more objects together into the first object\nsimilarly to [http://api.jquery.com/jQuery.extend/ jQuery.extend].</p>\n\n<pre><code class=\"lang-javascript\">var first = {},\nsecond = {a: \"b\"},\nthird = {c: \"d\"};\n\ncan.extend(first, second, third); //-> first\n\nfirst  //-> {a: \"b\", c: \"d\"}\nsecond //-> {a: \"b\"}\nthird  //-> {c: \"d\"}</code></pre>",
                     "description": "<p>Merge objects together. </p>",
                     "title": "",
                     "name": "can.extend",
@@ -228,11 +229,11 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 85,
+                    "line": 96,
                     "id": 7
                 }, {
                     "active": false,
-                    "body": "<p>Parameterizes an object into a query string\nlike [http://api.jquery.com/jQuery.param/ jQuery.param].</p>\n\n<p>can.param({a: \"b\", c: \"d\"}) //-> \"a=b&amp;c=d\"</p>",
+                    "body": "<p>Parameterizes an object into a query string\nlike [http://api.jquery.com/jQuery.param/ jQuery.param].</p>\n\n<pre><code class=\"lang-javascript\">can.param({a: \"b\", c: \"d\"}) //-> \"a=b&c=d\"</code></pre>",
                     "description": "<p>Serialize an object into a query string. </p>",
                     "title": "",
                     "name": "can.param",
@@ -261,11 +262,11 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 109,
+                    "line": 122,
                     "id": 8
                 }, {
                     "active": false,
-                    "body": "<p><code>can.isEmptyObject(obj)</code> returns if an object has no properties similar to\n[http://api.jquery.com/jQuery.isEmptyObject/ jQuery.isEmptyObject].</p>\n\n<p>can.isEmptyObject({})      //-> true\ncan.isEmptyObject({a:\"b\"}) //-> false</p>",
+                    "body": "<p><code>can.isEmptyObject(obj)</code> returns if an object has no properties similar to\n[http://api.jquery.com/jQuery.isEmptyObject/ jQuery.isEmptyObject].</p>\n\n<pre><code class=\"lang-javascript\">can.isEmptyObject({})      //-> true\ncan.isEmptyObject({a:\"b\"}) //-> false</code></pre>",
                     "description": "<p>Check if an object has no properties. </p>",
                     "title": "",
                     "name": "can.isEmptyObject",
@@ -294,11 +295,11 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 124,
+                    "line": 139,
                     "id": 9
                 }, {
                     "active": false,
-                    "body": "<p><code>can.proxy(fn, context)</code> accepts a function and returns a\nnew one that will always have the context from which it was\ncalled.  This works similar to [http://api.jquery.com/jQuery.proxy/ jQuery.proxy].</p>\n\n<p>var func = can.proxy(function(one){\n      return this.a + one\n    }, {a: \"b\"});\nfunc(\"two\") //-> \"btwo\"</p>",
+                    "body": "<p><code>can.proxy(fn, context)</code> accepts a function and returns a\nnew one that will always have the context from which it was\ncalled.  This works similar to [http://api.jquery.com/jQuery.proxy/ jQuery.proxy].</p>\n\n<pre><code class=\"lang-javascript\">var func = can.proxy(function(one){\n      return this.a + one\n    }, {a: \"b\"});\nfunc(\"two\") //-> \"btwo\"</code></pre>",
                     "description": "<p>Bind a function to its context. </p>",
                     "title": "",
                     "name": "can.proxy",
@@ -348,11 +349,11 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 140,
+                    "line": 157,
                     "id": 10
                 }, {
                     "active": false,
-                    "body": "<p><code>can.isFunction(object)</code> returns if an object is a function similar to\n[http://api.jquery.com/jQuery.isFunction/ jQuery.isFunction].</p>\n\n<p>can.isFunction({})           //-> false\ncan.isFunction(function(){}) //-> true</p>",
+                    "body": "<p><code>can.isFunction(object)</code> returns if an object is a function similar to\n[http://api.jquery.com/jQuery.isFunction/ jQuery.isFunction].</p>\n\n<pre><code class=\"lang-javascript\">can.isFunction({})           //-> false\ncan.isFunction(function(){}) //-> true</code></pre>",
                     "description": "<p>Check if an Object is a function. </p>",
                     "title": "",
                     "name": "can.isFunction",
@@ -381,11 +382,11 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 160,
+                    "line": 179,
                     "id": 11
                 }, {
                     "active": false,
-                    "body": "<p><code>can.bind(eventName, handler)</code> binds a callback handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n<li>Objects</li>\n<li>Objects with bind / unbind methods</li>\n</ul>\n\n<p>The idea is that bind can be used on anything that produces events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.bind</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.bind</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Binding to an object</strong></p>\n\n<p>var obj = {};\ncan.bind.call(obj,\"something\", function(ev, arg1, arg){\n     arg1 // 1\n     arg2 // 2\n   })\ncan.trigger(obj,\"something\",[1,2])</p>\n\n<p><strong>Binding to an HTMLElement</strong></p>\n\n<p>var el = document.getElementById('foo')\ncan.bind.call(el, \"click\", function(ev){\n     this // el\n   })</p>",
+                    "body": "<p><code>can.bind(eventName, handler)</code> binds a callback handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n<li>Objects</li>\n<li>Objects with bind / unbind methods</li>\n</ul>\n\n<p>The idea is that bind can be used on anything that produces events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.bind</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.bind</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Binding to an object</strong></p>\n\n<pre><code class=\"lang-javascript\">var obj = {};\ncan.bind.call(obj,\"something\", function(ev, arg1, arg){\n     arg1 // 1\n     arg2 // 2\n   })\ncan.trigger(obj,\"something\",[1,2])</code></pre>\n\n<p><strong>Binding to an HTMLElement</strong></p>\n\n<pre><code class=\"lang-javascript\">var el = document.getElementById('foo')\ncan.bind.call(el, \"click\", function(ev){\n   this // el\n });</code></pre>",
                     "description": "<p>Listen for events on an object. </p>",
                     "title": "",
                     "name": "can.bind",
@@ -435,11 +436,11 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 176,
+                    "line": 197,
                     "id": 12
                 }, {
                     "active": false,
-                    "body": "<p><code>can.unbind(eventName, handler)</code> unbinds a callback handler\nfrom an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n<li>Objects</li>\n<li>Objects with bind / unbind methods</li>\n</ul>\n\n<p>The idea is that unbind can be used on anything that produces events\nand it will figure out the appropriate way to\nunbind to it.  Typically, <code>can.unbind</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.bind</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Binding/unbinding to an object</strong></p>\n\n<p>var obj = {},\nhandler = function(ev, arg1, arg){\n       arg1 // 1\n       arg2 // 2\n     };\ncan.bind.call(obj,\"something\", handler)\ncan.trigger(obj,\"something\",[1,2])\ncan.unbind.call(obj,\"something\", handler)</p>\n\n<p><strong>Binding/unbinding to an HTMLElement</strong></p>\n\n<p>var el = document.getElementById('foo'),\nhandler = function(ev){\n       this // el\n     };\ncan.bind.call(el, \"click\", handler)\ncan.unbind.call(el, \"click\", handler)</p>",
+                    "body": "<p><code>can.unbind(eventName, handler)</code> unbinds a callback handler\nfrom an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n<li>Objects</li>\n<li>Objects with bind / unbind methods</li>\n</ul>\n\n<p>The idea is that unbind can be used on anything that produces events\nand it will figure out the appropriate way to\nunbind to it.  Typically, <code>can.unbind</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.bind</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Binding/unbinding to an object</strong></p>\n\n<pre><code class=\"lang-javascript\">var obj = {},\nhandler = function(ev, arg1, arg){\n       arg1 // 1\n       arg2 // 2\n     };\ncan.bind.call(obj,\"something\", handler)\ncan.trigger(obj,\"something\",[1,2])\ncan.unbind.call(obj,\"something\", handler)</code></pre>\n\n<p><strong>Binding/unbinding to an HTMLElement</strong></p>\n\n<pre><code class=\"lang-javascript\">var el = document.getElementById('foo'),\nhandler = function(ev){\n       this // el\n     };\ncan.bind.call(el, \"click\", handler)\ncan.unbind.call(el, \"click\", handler)</code></pre>",
                     "description": "<p>Stop listening for events on an object. </p>",
                     "title": "",
                     "name": "can.unbind",
@@ -489,11 +490,11 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 218,
+                    "line": 243,
                     "id": 13
                 }, {
                     "active": false,
-                    "body": "<p><code>can.delegate(selector, eventName, handler)</code> binds a delegate handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n</ul>\n\n<p>The idea is that delegate can be used on anything that produces delegate events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.delegate</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.delegate</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Delegate binding to an HTMLElement</strong></p>\n\n<p>var el = document.getElementById('foo')\ncan.delegate.call(el, \".selector\", \"click\", function(ev){\n     this // el\n   })</p>",
+                    "body": "<p><code>can.delegate(selector, eventName, handler)</code> binds a delegate handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n</ul>\n\n<p>The idea is that delegate can be used on anything that produces delegate events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.delegate</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.delegate</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Delegate binding to an HTMLElement</strong></p>\n\n<pre><code class=\"lang-javascript\">var el = document.getElementById('foo')\ncan.delegate.call(el, \".selector\", \"click\", function(ev){\n   this // el\n})</code></pre>",
                     "description": "<p>Listen for events from the children of an element. </p>",
                     "title": "",
                     "name": "can.delegate",
@@ -550,7 +551,7 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 264,
+                    "line": 292,
                     "id": 14
                 }, {
                     "active": false,
@@ -605,12 +606,12 @@
                                         "type": "Object"
                                     }
                                 ],
-                                "description": "<p>The <strong>element</strong>.</p>\n\n<p><code>can.undelegate(selector, eventName, handler)</code> unbinds a delegate handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n</ul>\n\n<p>The idea is that undelegate can be used on anything that produces delegate events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.undelegate</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.undelegate</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Delegate/undelegate binding to an HTMLElement</strong></p>\n\n<p>var el = document.getElementById('foo'),\nhandler = function(ev){\n       this // el\n     };\ncan.delegate.call(el, \".selector\", \"click\", handler)\ncan.undelegate.call(el, \".selector\", \"click\", handler)</p>"
+                                "description": "<p>The <strong>element</strong>.</p>\n\n<p><code>can.undelegate(selector, eventName, handler)</code> unbinds a delegate handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n</ul>\n\n<p>The idea is that undelegate can be used on anything that produces delegate events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.undelegate</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.undelegate</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Delegate/undelegate binding to an HTMLElement</strong></p>\n\n<pre><code class=\"lang-javascript\">var el = document.getElementById('foo'),\nhandler = function(ev){\n  this // el\n};\ncan.delegate.call(el, \".selector\", \"click\", handler)\ncan.undelegate.call(el, \".selector\", \"click\", handler)</code></pre>"
                             }
                         }
                     ],
                     "src": "can/util/util.js",
-                    "line": 295,
+                    "line": 325,
                     "id": 15
                 }, {
                     "active": false,
@@ -657,11 +658,11 @@
                         }
                     ],
                     "src": "can/util/util.js",
-                    "line": 327,
+                    "line": 359,
                     "id": 16
                 }, {
                     "active": false,
-                    "body": "<p><code>can.ajax( settings )</code> is used to make an asynchronous HTTP (Ajax) request\nsimilar to [http://api.jquery.com/jQuery.ajax/ jQuery.ajax].</p>\n\n<p>can.ajax({\n    url: 'ajax/farm/animals',\n    success: function(animals) {\n        can.$('.farm').html(animals);\n    }\n});</p>",
+                    "body": "<p><code>can.ajax( settings )</code> is used to make an asynchronous HTTP (Ajax) request\nsimilar to [http://api.jquery.com/jQuery.ajax/ jQuery.ajax].</p>\n\n<pre><code class=\"lang-javascript\">can.ajax({\n  url: 'ajax/farm/animals',\n    success: function(animals) {\n        can.$('.farm').html(animals);\n    }\n});</code></pre>",
                     "description": "<p>Make an AJAX request. </p>",
                     "title": "",
                     "name": "can.ajax",
@@ -690,7 +691,7 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 339,
+                    "line": 371,
                     "id": 17
                 }, {
                     "active": false,
@@ -727,7 +728,7 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 360,
+                    "line": 394,
                     "id": 18
                 }, {
                     "active": false,
@@ -769,11 +770,11 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 383,
+                    "line": 417,
                     "id": 19
                 }, {
                     "active": false,
-                    "body": "<p><code>can.append( wrappedNodeList, html )</code> inserts content to the end of each wrapped node list item(s) passed.</p>\n\n<p>// Before</p>\n\n<div id=\"demo\" />\n\ncan.append( can.$('#demo'), 'Demos are fun!' );\n\n// After\n<div id=\"demo\">Demos are fun!</div>",
+                    "body": "<p><code>can.append( wrappedNodeList, html )</code> inserts content to the end of each wrapped node list item(s) passed.</p>\n\n<pre><code class=\"lang-javascript\">// Before\n<div id=\"demo\" />\n\ncan.append( can.$('#demo'), 'Demos are fun!' );\n\n// After\n<div id=\"demo\">Demos are fun!</div></code></pre>",
                     "description": "<p>Append content to elements. </p>",
                     "title": "",
                     "name": "can.append",
@@ -802,11 +803,11 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 396,
+                    "line": 430,
                     "id": 20
                 }, {
                     "active": false,
-                    "body": "<p><code>can.remove( wrappedNodeList )</code> removes the set of matched element(s) from the DOM.</p>\n\n<p><div id=\"wrap\"/>\ncan.remove(can.$('#wrap')) //-> removes 'wrap'</p>",
+                    "body": "<p><code>can.remove( wrappedNodeList )</code> removes the set of matched element(s) from the DOM.</p>\n\n<pre><code class=\"lang-javascript\"><div id=\"wrap\"/>\ncan.remove(can.$('#wrap')) //-> removes 'wrap'</code></pre>",
                     "description": "<p>Remove elements from the DOM. </p>",
                     "title": "",
                     "name": "can.remove",
@@ -828,7 +829,7 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 416,
+                    "line": 452,
                     "id": 21
                 }, {
                     "active": false,
@@ -894,11 +895,11 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 430,
+                    "line": 468,
                     "id": 22
                 }, {
                     "active": false,
-                    "body": "<p><code>can.addClass( nodelist, className )</code> adds the specified class(es) to\nnodelist's HTMLElements.  It does NOT replace any existing class(es)\nalready defined.</p>\n\n<p>// Before\n<div id=\"foo\" class=\"monkey\" /></p>\n\n<p>can.addClass(can.$(\"#foo\"),\"bar\")</p>\n\n<p>// After\n<div id=\"foo\" class=\"monkey bar\" /></p>\n\n<p>You can also pass multiple class(es) and it will add them to the existing\nset also.</p>\n\n<p>// Before\n<div id=\"foo\" class=\"monkey\" /></p>\n\n<p>can.addClass(can.$(\"#foo\"),\"bar man\")</p>\n\n<p>// After\n<div id=\"foo\" class=\"monkey bar man\" /></p>\n\n<p>This works similarly to [http://api.jquery.com/addClass/ jQuery.fn.addClass].</p>",
+                    "body": "<p><code>can.addClass( nodelist, className )</code> adds the specified class(es) to\nnodelist's HTMLElements.  It does NOT replace any existing class(es)\nalready defined.</p>\n\n<pre><code class=\"lang-javascript\">// Before\n<div id=\"foo\" class=\"monkey\" />\n\ncan.addClass(can.$(\"#foo\"),\"bar\")\n\n// After\n<div id=\"foo\" class=\"monkey bar\" /></code></pre>\n\n<p>You can also pass multiple class(es) and it will add them to the existing\nset also.</p>\n\n<pre><code class=\"lang-javascript\">// Before\n<div id=\"foo\" class=\"monkey\" />\n\ncan.addClass(can.$(\"#foo\"),\"bar man\")\n\n// After\n<div id=\"foo\" class=\"monkey bar man\" /></code></pre>\n\n<p>This works similarly to [http://api.jquery.com/addClass/ jQuery.fn.addClass].</p>",
                     "description": "<p>Add a class to elements. </p>",
                     "title": "",
                     "name": "can.addClass",
@@ -927,11 +928,11 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 466,
+                    "line": 504,
                     "id": 23
                 }, {
                     "active": false,
-                    "body": "<p><code>can.when(deferred)</code> provides the ability to execute callback function(s)\ntypically based on a Deferred or AJAX object.</p>\n\n<p>can.when( can.ajax('api/farm/animals') ).then(function(animals){\n        alert(animals); //-> alerts the ajax response\n});</p>\n\n<p>You can also use this for regular JavaScript objects.</p>\n\n<p>$.when( { animals: [ 'cat' ] } ).done(function(animals){\n    alert(animals[0]); //-> alerts 'cat'\n});</p>",
+                    "body": "<p><code>can.when(deferred)</code> provides the ability to execute callback function(s)\ntypically based on a Deferred or AJAX object.</p>\n\n<pre><code class=\"lang-javascript\">can.when( can.ajax('api/farm/animals') ).then(function(animals){\n     alert(animals); //-> alerts the ajax response\n});</code></pre>\n\n<p>You can also use this for regular JavaScript objects.</p>\n\n<pre><code class=\"lang-javascript\">$.when( { animals: [ 'cat' ] } ).done(function(animals){\n    alert(animals[0]); //-> alerts 'cat'\n});</code></pre>",
                     "description": "<p>Call a callback when a Deferred resolves. </p>",
                     "title": "",
                     "name": "can.when",
@@ -962,278 +963,278 @@
                     ],
                     "comment": " ",
                     "src": "can/util/util.js",
-                    "line": 501,
+                    "line": 543,
                     "id": 24
-                }, {
+                }
+            ]
+        }, {
+            "active": false,
+            "body": "",
+            "description": "<p><code>can.Deferred</code> is a object that allows users to assign and chain callback\nfunction(s) for the success or failure state of both asynchronous and synchronous function(s).</p>",
+            "type": "constructor",
+            "name": "can.Deferred",
+            "title": "",
+            "parent": "canjs",
+            "signatures": [{
+                    "code": "can.Deferred()",
+                    "description": "",
+                    "params": [],
+                    "returns": {
+                        "types": [{
+                                "type": "can.Deferred"
+                            }
+                        ],
+                        "description": "<p>A new Deferred object.</p>"
+                    }
+                }
+            ],
+            "src": "can/util/util.js",
+            "line": 571,
+            "id": 25,
+            "children": [{
                     "active": false,
                     "body": "",
-                    "description": "<p><code>can.Deferred</code> is a object that allows users to assign and chain callback\nfunction(s) for the success or failure state of both asynchronous and synchronous function(s).</p>",
-                    "type": "constructor",
-                    "name": "can.Deferred",
-                    "title": "",
-                    "parent": "can.util",
-                    "signatures": [{
-                            "code": "can.Deferred()",
-                            "description": "",
-                            "params": [],
-                            "returns": {
-                                "types": [{
-                                        "type": "can.Deferred"
-                                    }
-                                ],
-                                "description": "<p>A new Deferred object.</p>"
-                            }
-                        }
-                    ],
+                    "description": "",
+                    "type": "prototype",
+                    "name": "can.Deferred.prototype",
+                    "parent": "can.Deferred",
                     "src": "can/util/util.js",
-                    "line": 525,
-                    "id": 25,
+                    "line": 582,
+                    "id": 26,
                     "children": [{
                             "active": false,
-                            "body": "",
-                            "description": "",
-                            "type": "prototype",
-                            "name": "can.Deferred.prototype",
-                            "parent": "can.Deferred",
-                            "src": "can/util/util.js",
-                            "line": 536,
-                            "id": 26,
-                            "children": [{
-                                    "active": false,
-                                    "body": "<p><code>deferred.resolveWith(context, arguments)</code> resolves a Deferred and calls the <code>doneCallbacks</code> with the given arguments.</p>\n\n<p>var def = can.Deferred();\ndef.resolveWith(this, { animals: [ 'cows', 'monkey', 'panda' ] })</p>",
-                                    "description": "<p>Resolve a Deferred in a particular context. </p>",
-                                    "title": "resolveWith",
-                                    "name": "can.Deferred.prototype.resolveWith",
-                                    "type": "function",
-                                    "parent": "can.Deferred.prototype",
-                                    "signatures": [{
-                                            "code": "resolveWith(context[, arguments])",
-                                            "description": "",
-                                            "params": [{
-                                                    "types": [{
-                                                            "type": "Object"
-                                                        }
-                                                    ],
-                                                    "name": "context",
-                                                    "description": "<p>Context passed to the <code>doneCallbacks</code> as the <code>this</code> object.</p>"
-                                                }, {
-                                                    "types": [{
-                                                            "type": "Object"
-                                                        }
-                                                    ],
-                                                    "optional": true,
-                                                    "name": "arguments",
-                                                    "description": "<p>Array of arguments that are passed to the <code>doneCallbacks</code>.</p>"
+                            "body": "<p><code>deferred.resolveWith(context, arguments)</code> resolves a Deferred and calls the <code>doneCallbacks</code> with the given arguments.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.resolveWith(this, { animals: [ 'cows', 'monkey', 'panda' ] })</code></pre>",
+                            "description": "<p>Resolve a Deferred in a particular context. </p>",
+                            "title": "resolveWith",
+                            "name": "can.Deferred.prototype.resolveWith",
+                            "type": "function",
+                            "parent": "can.Deferred.prototype",
+                            "signatures": [{
+                                    "code": "resolveWith(context[, arguments])",
+                                    "description": "",
+                                    "params": [{
+                                            "types": [{
+                                                    "type": "Object"
                                                 }
-                                            ]
-                                        }
-                                    ],
-                                    "comment": " ",
-                                    "src": "can/util/util.js",
-                                    "line": 562,
-                                    "id": 28
-                                }, {
-                                    "active": false,
-                                    "body": "<p><code>deferred.rejectWith(context, arguments)</code> rejects a Deferred and calls the <code>failCallbacks</code> with the given arguments.</p>\n\n<p>var def = can.Deferred();\ndef.rejectWith(this, { error: \"Animals are gone.\" })</p>",
-                                    "description": "<p>Reject a Deferred in a particular context. </p>",
-                                    "title": "rejectWith",
-                                    "name": "can.Deferred.prototype.rejectWith",
-                                    "type": "function",
-                                    "parent": "can.Deferred.prototype",
-                                    "signatures": [{
-                                            "code": "rejectWith(context[, arguments])",
-                                            "description": "",
-                                            "params": [{
-                                                    "types": [{
-                                                            "type": "Object"
-                                                        }
-                                                    ],
-                                                    "name": "context",
-                                                    "description": "<p>Context passed to the <code>failCallbacks</code> as the <code>this</code> object.</p>"
-                                                }, {
-                                                    "types": [{
-                                                            "type": "Object"
-                                                        }
-                                                    ],
-                                                    "optional": true,
-                                                    "name": "arguments",
-                                                    "description": "<p>Array of arguments that are passed to the <code>failCallbacks</code>.</p>"
+                                            ],
+                                            "name": "context",
+                                            "description": "<p>Context passed to the <code>doneCallbacks</code> as the <code>this</code> object.</p>"
+                                        }, {
+                                            "types": [{
+                                                    "type": "Object"
                                                 }
-                                            ]
+                                            ],
+                                            "optional": true,
+                                            "name": "arguments",
+                                            "description": "<p>Array of arguments that are passed to the <code>doneCallbacks</code>.</p>"
                                         }
-                                    ],
-                                    "comment": " ",
-                                    "src": "can/util/util.js",
-                                    "line": 577,
-                                    "id": 29
-                                }, {
-                                    "active": false,
-                                    "body": "<p><code>deferred.done(doneCallback)</code> adds handler(s) to be called when the Deferred object is resolved.</p>\n\n<p>var def = can.Deferred();\ndef.done(function(){\n    //- Deferred is done.\n});</p>",
-                                    "description": "<p>Add a callback to be called when a Deferred is resolved. </p>",
-                                    "title": "done",
-                                    "name": "can.Deferred.prototype.done",
-                                    "type": "function",
-                                    "parent": "can.Deferred.prototype",
-                                    "signatures": [{
-                                            "code": "done(doneCallback)",
-                                            "description": "",
-                                            "params": [{
-                                                    "types": [{
-                                                            "type": "function",
-                                                            "returns": {
-                                                                "types": [{
-                                                                        "type": "undefined"
-                                                                    }
-                                                                ]
-                                                            },
-                                                            "params": []
-                                                        }
-                                                    ],
-                                                    "name": "doneCallback",
-                                                    "description": "<p>A callback to be called when the Deferred is resolved.</p>"
-                                                }
-                                            ]
-                                        }
-                                    ],
-                                    "comment": " ",
-                                    "src": "can/util/util.js",
-                                    "line": 592,
-                                    "id": 30
-                                }, {
-                                    "active": false,
-                                    "body": "<p><code>deferred.always( alwaysCallbacks )</code> adds handler(s) to be called when the Deferred object is either resolved or rejected.</p>\n\n<p>var def = can.Deferred();\ndef.always( function(){\n    //- Called whether the handler fails or is success.\n});</p>",
-                                    "description": "<p>Add a callback to be unconditionally called. </p>",
-                                    "title": "always",
-                                    "name": "can.Deferred.prototype.always",
-                                    "type": "function",
-                                    "parent": "can.Deferred.prototype",
-                                    "signatures": [{
-                                            "code": "always(alwaysCallback)",
-                                            "description": "",
-                                            "params": [{
-                                                    "types": [{
-                                                            "type": "function",
-                                                            "returns": {
-                                                                "types": [{
-                                                                        "type": "undefined"
-                                                                    }
-                                                                ]
-                                                            },
-                                                            "params": []
-                                                        }
-                                                    ],
-                                                    "name": "alwaysCallback",
-                                                    "description": "<p>A callback to be called whether the Deferred is resolved or rejected.</p>"
-                                                }
-                                            ]
-                                        }
-                                    ],
-                                    "comment": " ",
-                                    "src": "can/util/util.js",
-                                    "line": 623,
-                                    "id": 31
-                                }, {
-                                    "active": false,
-                                    "body": "<p><code>deferred.then( doneCallback, failCallback )</code> adds handler(s) to be called when the Deferred object to be called after its resolved.</p>\n\n<p>var def = can.Deferred();\ndef.then(function(){\n    //- Called when the deferred is resolved.\n}, function(){\n    //- Called when the deferred fails.\n})</p>",
-                                    "description": "<p>Add callbacks to a Deferred. </p>",
-                                    "title": "then",
-                                    "name": "can.Deferred.prototype.then",
-                                    "type": "function",
-                                    "parent": "can.Deferred.prototype",
-                                    "signatures": [{
-                                            "code": "then(doneCallback[, failCallback])",
-                                            "description": "",
-                                            "params": [{
-                                                    "types": [{
-                                                            "type": "function",
-                                                            "returns": {
-                                                                "types": [{
-                                                                        "type": "undefined"
-                                                                    }
-                                                                ]
-                                                            },
-                                                            "params": []
-                                                        }
-                                                    ],
-                                                    "name": "doneCallback",
-                                                    "description": "<p>A function called when the Deferred is resolved.</p>"
-                                                }, {
-                                                    "types": [{
-                                                            "type": "function",
-                                                            "returns": {
-                                                                "types": [{
-                                                                        "type": "undefined"
-                                                                    }
-                                                                ]
-                                                            },
-                                                            "params": []
-                                                        }
-                                                    ],
-                                                    "optional": true,
-                                                    "name": "failCallback",
-                                                    "description": "<p>A function called when the Deferred is rejected.</p>"
-                                                }
-                                            ]
-                                        }
-                                    ],
-                                    "comment": " ",
-                                    "src": "can/util/util.js",
-                                    "line": 639,
-                                    "id": 32
-                                }, {
-                                    "active": false,
-                                    "body": "<p><code>deferred.isResolved()</code> returns whether a Deferred object has been resolved.</p>\n\n<p>var def = can.Deferred();\nvar resolved = def.isResolved();</p>",
-                                    "description": "<p>Determine whether a Deferred has been resolved. </p>",
-                                    "title": "isResolved",
-                                    "name": "can.Deferred.prototype.isResolved",
-                                    "type": "function",
-                                    "parent": "can.Deferred.prototype",
-                                    "signatures": [{
-                                            "code": "isResolved()",
-                                            "description": "",
-                                            "params": [],
-                                            "returns": {
-                                                "types": [{
-                                                        "type": "Boolean"
-                                                    }
-                                                ],
-                                                "description": "<p>Whether this Boolean has been resolved.</p>"
-                                            }
-                                        }
-                                    ],
-                                    "comment": " ",
-                                    "src": "can/util/util.js",
-                                    "line": 658,
-                                    "id": 33
-                                }, {
-                                    "active": false,
-                                    "body": "<p><code>deferred.reject( args )</code> rejects the Deferred object and calls the fail callbacks with the given arguments.</p>\n\n<p>var def = can.Deferred();\ndef.reject({ error: 'Thats not an animal.' })</p>",
-                                    "description": "<p>Reject a Deferred. </p>",
-                                    "title": "reject",
-                                    "name": "can.Deferred.prototype.reject",
-                                    "type": "function",
-                                    "parent": "can.Deferred.prototype",
-                                    "signatures": [{
-                                            "code": "reject([argument])",
-                                            "description": "",
-                                            "params": [{
-                                                    "types": [{
-                                                            "type": "Object"
-                                                        }
-                                                    ],
-                                                    "optional": true,
-                                                    "name": "argument",
-                                                    "description": "<p>The argument to call the <code>failCallback</code> with.</p>"
-                                                }
-                                            ]
-                                        }
-                                    ],
-                                    "comment": " ",
-                                    "src": "can/util/util.js",
-                                    "line": 685,
-                                    "id": 34
+                                    ]
                                 }
-                            ]
+                            ],
+                            "comment": " ",
+                            "src": "can/util/util.js",
+                            "line": 610,
+                            "id": 28
+                        }, {
+                            "active": false,
+                            "body": "<p><code>deferred.rejectWith(context, arguments)</code> rejects a Deferred and calls the <code>failCallbacks</code> with the given arguments.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.rejectWith(this, { error: \"Animals are gone.\" })</code></pre>",
+                            "description": "<p>Reject a Deferred in a particular context. </p>",
+                            "title": "rejectWith",
+                            "name": "can.Deferred.prototype.rejectWith",
+                            "type": "function",
+                            "parent": "can.Deferred.prototype",
+                            "signatures": [{
+                                    "code": "rejectWith(context[, arguments])",
+                                    "description": "",
+                                    "params": [{
+                                            "types": [{
+                                                    "type": "Object"
+                                                }
+                                            ],
+                                            "name": "context",
+                                            "description": "<p>Context passed to the <code>failCallbacks</code> as the <code>this</code> object.</p>"
+                                        }, {
+                                            "types": [{
+                                                    "type": "Object"
+                                                }
+                                            ],
+                                            "optional": true,
+                                            "name": "arguments",
+                                            "description": "<p>Array of arguments that are passed to the <code>failCallbacks</code>.</p>"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "comment": " ",
+                            "src": "can/util/util.js",
+                            "line": 627,
+                            "id": 29
+                        }, {
+                            "active": false,
+                            "body": "<p><code>deferred.done(doneCallback)</code> adds handler(s) to be called when the Deferred object is resolved.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.done(function(){\n    //- Deferred is done.\n});</code></pre>",
+                            "description": "<p>Add a callback to be called when a Deferred is resolved. </p>",
+                            "title": "done",
+                            "name": "can.Deferred.prototype.done",
+                            "type": "function",
+                            "parent": "can.Deferred.prototype",
+                            "signatures": [{
+                                    "code": "done(doneCallback)",
+                                    "description": "",
+                                    "params": [{
+                                            "types": [{
+                                                    "type": "function",
+                                                    "returns": {
+                                                        "types": [{
+                                                                "type": "undefined"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "params": []
+                                                }
+                                            ],
+                                            "name": "doneCallback",
+                                            "description": "<p>A callback to be called when the Deferred is resolved.</p>"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "comment": " ",
+                            "src": "can/util/util.js",
+                            "line": 644,
+                            "id": 30
+                        }, {
+                            "active": false,
+                            "body": "<p><code>deferred.always( alwaysCallbacks )</code> adds handler(s) to be called when the Deferred object is either resolved or rejected.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.always( function(){\n    //- Called whether the handler fails or is success.\n});</code></pre>",
+                            "description": "<p>Add a callback to be unconditionally called. </p>",
+                            "title": "always",
+                            "name": "can.Deferred.prototype.always",
+                            "type": "function",
+                            "parent": "can.Deferred.prototype",
+                            "signatures": [{
+                                    "code": "always(alwaysCallback)",
+                                    "description": "",
+                                    "params": [{
+                                            "types": [{
+                                                    "type": "function",
+                                                    "returns": {
+                                                        "types": [{
+                                                                "type": "undefined"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "params": []
+                                                }
+                                            ],
+                                            "name": "alwaysCallback",
+                                            "description": "<p>A callback to be called whether the Deferred is resolved or rejected.</p>"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "comment": " ",
+                            "src": "can/util/util.js",
+                            "line": 679,
+                            "id": 31
+                        }, {
+                            "active": false,
+                            "body": "<p><code>deferred.then( doneCallback, failCallback )</code> adds handler(s) to be called when the Deferred object to be called after its resolved.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.then(function(){\n    //- Called when the deferred is resolved.\n}, function(){\n    //- Called when the deferred fails.\n})</code></pre>",
+                            "description": "<p>Add callbacks to a Deferred. </p>",
+                            "title": "then",
+                            "name": "can.Deferred.prototype.then",
+                            "type": "function",
+                            "parent": "can.Deferred.prototype",
+                            "signatures": [{
+                                    "code": "then(doneCallback[, failCallback])",
+                                    "description": "",
+                                    "params": [{
+                                            "types": [{
+                                                    "type": "function",
+                                                    "returns": {
+                                                        "types": [{
+                                                                "type": "undefined"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "params": []
+                                                }
+                                            ],
+                                            "name": "doneCallback",
+                                            "description": "<p>A function called when the Deferred is resolved.</p>"
+                                        }, {
+                                            "types": [{
+                                                    "type": "function",
+                                                    "returns": {
+                                                        "types": [{
+                                                                "type": "undefined"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "params": []
+                                                }
+                                            ],
+                                            "optional": true,
+                                            "name": "failCallback",
+                                            "description": "<p>A function called when the Deferred is rejected.</p>"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "comment": " ",
+                            "src": "can/util/util.js",
+                            "line": 697,
+                            "id": 32
+                        }, {
+                            "active": false,
+                            "body": "<p><code>deferred.isResolved()</code> returns whether a Deferred object has been resolved.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\nvar resolved = def.isResolved();</code></pre>",
+                            "description": "<p>Determine whether a Deferred has been resolved. </p>",
+                            "title": "isResolved",
+                            "name": "can.Deferred.prototype.isResolved",
+                            "type": "function",
+                            "parent": "can.Deferred.prototype",
+                            "signatures": [{
+                                    "code": "isResolved()",
+                                    "description": "",
+                                    "params": [],
+                                    "returns": {
+                                        "types": [{
+                                                "type": "Boolean"
+                                            }
+                                        ],
+                                        "description": "<p>Whether this Boolean has been resolved.</p>"
+                                    }
+                                }
+                            ],
+                            "comment": " ",
+                            "src": "can/util/util.js",
+                            "line": 718,
+                            "id": 33
+                        }, {
+                            "active": false,
+                            "body": "<p><code>deferred.reject( args )</code> rejects the Deferred object and calls the fail callbacks with the given arguments.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.reject({ error: 'Thats not an animal.' })</code></pre>",
+                            "description": "<p>Reject a Deferred. </p>",
+                            "title": "reject",
+                            "name": "can.Deferred.prototype.reject",
+                            "type": "function",
+                            "parent": "can.Deferred.prototype",
+                            "signatures": [{
+                                    "code": "reject([argument])",
+                                    "description": "",
+                                    "params": [{
+                                            "types": [{
+                                                    "type": "Object"
+                                                }
+                                            ],
+                                            "optional": true,
+                                            "name": "argument",
+                                            "description": "<p>The argument to call the <code>failCallback</code> with.</p>"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "comment": " ",
+                            "src": "can/util/util.js",
+                            "line": 748,
+                            "id": 34
                         }
                     ]
                 }
@@ -1615,8 +1616,9 @@
             "active": false,
             "type": "constructor",
             "name": "can.Observe",
-            "body": "",
+            "body": "<h2>Working with Observes</h2>\n\n<p>To create an Observe, use <code>new can.Observe([props])</code>. This will return a\ncopy of <code>props</code> that emits events when its properties are changed with\n<code>[can.Observe.prototype.attr attr]</code>.</p>\n\n<p>You can read the values of properties on Observes directly, but you should\nnever set them directly. You can also read property values using <code>attr</code>.\nUsually, you will want to do this when creating a <code>[can.compute]</code> or when\nlive-binding properties in an [can.EJS EJS] template. (If you are using\n[can.Mustache Mustache], you don't need to use <code>attr</code>.)</p>\n\n<pre><code class=\"lang-javascript\">var aName = {a: 'Alexis'},\n    observe = can.Observe(aName);\n\n// Observes are copies of data:\naName === observe; // false\n\n// reading from an Observe:\nobserve.attr();    // {a: 'Alexis'}\nobserve.a;         // 'Alexis'\nobserve.attr('a'); // 'Alexis'\n\n// setting an Observe's property:\nobserve.attr('a, 'Alice');\nobserve.a; // Alice\n\n// removing an Observe's property;\nobserve.removeAttr('a');\nobserve.attr(); // {}\n\n// Don't do this!\nobserve.a = 'Adam'; // wrong!</code></pre>\n\n<p>Find out more about manipulating properties of Observes under\n[can.Observe.protoype.attr attr] and [can.Observe.protoype.removeAtt removeAttr].</p>\n\n<h2>Listening to changes</h2>\n\n<p>The real power of observable objects comes from being able to react to\nproperties being added, set, and removed. Observes emit events when\nproperties are changed that you can bind to.</p>\n\n<p><code>can.Observe</code> has two types of events that fire due to changes on an Observe:\n- the <em>change</em> event fires on every change to an Observe.\n- an event named after the property name fires on every change to that property.</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.bind('change', function(ev, attr, how, newVal, oldVal) {\n    console.log('Something on o changed.');\n});\no.bind('a', function(ev, newVal, oldVal) {\n    console.log('a was changed.');\n});\n\no.attr('a', 'Alexis'); // 'Something on o changed.'\n                       // 'a was changed.'\no.attr({\n    'a': 'Alice',      // 'Something on o changed.' (for a's change)\n    'b': 'Bob'         // 'Something on o changed.' (for b's change)\n});                    // 'a was changed.'\n\no.removeAttr('a');     // 'Something on o changed.'\n                       // 'a was changed.'</code></pre>\n\n<p>For more detail on how to use these events, see [can.Observe.prototype.bind bind] and\n[can.Observe.prototype.unbind unbind]. There is also a plugin called [can.Observe.delegate]\nthat makes binding to specific types of events easier:</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.delegate('a', 'add' function(ev, newVal, oldVal) {\n    console.log('a was added.');\n});\no.delegate('a', 'set' function(ev, newVal, oldVal) {\n    console.log('a was set.');\n});\no.delegate('a', 'remove' function(ev, newVal, oldVal) {\n    console.log('a was removed.');\n});\no.delegate('a', 'change' function(ev, newVal, oldVal) {\n    console.log('a was changed.');\n});\n\no.attr('a', 'Alexis'); // 'a was added.'\n                       // 'a was changed.'\n\no.attr('a', 'Alice'); // 'a was set.'\n                      // 'a was changed.'\n\n\no.removeAttr('a'); // 'a was removed.'\n                   // 'a was changed.'</code></pre>",
             "description": "<p><code>can.Observe</code> provides a way for you to listen for and keep track of changes\nto objects. When you use the getters and setters provided by <code>can.Observe</code>,\nevents are fired that you can react to. <code>can.Observe</code> also has support for\nworking with deep properties. Observable arrays are also available with\n<code>[can.Observe.List]</code>, which is based on <code>can.Observe</code>.</p>",
+            "inherits": "can.Construct",
             "parent": "canjs",
             "test": "can/observe/qunit.html",
             "download": "can/observe",
@@ -1638,10 +1640,11 @@
                                 "type": "can.Observe"
                             }
                         ],
-                        "description": "<p>an instance of <code>can.Observe</code> with the properties from <em>props</em></p>\n\n<h2>Working with Observes</h2>\n\n<p>To create an Observe, use <code>new can.Observe([props])</code>. This will return a\ncopy of <code>props</code> that emits events when its properties are changed with\n<code>[can.Observe.prototype.attr attr]</code>.</p>\n\n<p>You can read the values of properties on Observes directly, but you should\nnever set them directly. You can also read property values using <code>attr</code>.\nUsually, you will want to do this when creating a <code>[can.compute]</code> or when\nlive-binding properties in an [can.EJS EJS] template. (If you are using\n[can.Mustache Mustache], you don't need to use <code>attr</code>.)</p>\n\n<pre><code class=\"lang-javascript\">var aName = {a: 'Alexis'},\n    observe = can.Observe(aName);\n\n// Observes are copies of data:\naName === observe; // false\n\n// reading from an Observe:\nobserve.attr();    // {a: 'Alexis'}\nobserve.a;         // 'Alexis'\nobserve.attr('a'); // 'Alexis'\n\n// setting an Observe's property:\nobserve.attr('a, 'Alice');\nobserve.a; // Alice\n\n// removing an Observe's property;\nobserve.removeAttr('a');\nobserve.attr(); // {}\n\n// Don't do this!\nobserve.a = 'Adam'; // wrong!</code></pre>\n\n<p>Find out more about manipulating properties of Observes under\n[can.Observe.protoype.attr attr] and [can.Observe.protoype.removeAtt removeAttr].</p>\n\n<h2>Listening to changes</h2>\n\n<p>The real power of observable objects comes from being able to react to\nproperties being added, set, and removed. Observes emit events when\nproperties are changed that you can bind to.</p>\n\n<p><code>can.Observe</code> has two types of events that fire due to changes on an Observe:\n- the <em>change</em> event fires on every change to an Observe.\n- an event named after the property name fires on every change to that property.</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.bind('change', function(ev, attr, how, newVal, oldVal) {\n    console.log('Something on o changed.');\n});\no.bind('a', function(ev, newVal, oldVal) {\n    console.log('a was changed.');\n});\n\no.attr('a', 'Alexis'); // 'Something on o changed.'\n                       // 'a was changed.'\no.attr({\n    'a': 'Alice',      // 'Something on o changed.' (for a's change)\n    'b': 'Bob'         // 'Something on o changed.' (for b's change)\n});                    // 'a was changed.'\n\no.removeAttr('a');     // 'Something on o changed.'\n                       // 'a was changed.'</code></pre>\n\n<p>For more detail on how to use these events, see [can.Observe.prototype.bind bind] and\n[can.Observe.prototype.unbind unbind]. There is also a plugin called [can.Observe.delegate]\nthat makes binding to specific types of events easier:</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.delegate('a', 'add' function(ev, newVal, oldVal) {\n    console.log('a was added.');\n});\no.delegate('a', 'set' function(ev, newVal, oldVal) {\n    console.log('a was set.');\n});\no.delegate('a', 'remove' function(ev, newVal, oldVal) {\n    console.log('a was removed.');\n});\no.delegate('a', 'change' function(ev, newVal, oldVal) {\n    console.log('a was changed.');\n});\n\no.attr('a', 'Alexis'); // 'a was added.'\n                       // 'a was changed.'\n\no.attr('a', 'Alice'); // 'a was set.'\n                      // 'a was changed.'\n\n\no.removeAttr('a'); // 'a was removed.'\n                   // 'a was changed.'</code></pre>"
+                        "description": "<p>an instance of <code>can.Observe</code> with the properties from <em>props</em></p>"
                     }
                 }
             ],
+            "comment": " ",
             "src": "can/observe/observe.md",
             "id": 48,
             "children": [{
@@ -1813,7 +1816,7 @@
                             "type": "function",
                             "name": "can.Observe.prototype.attr",
                             "parent": "can.Observe.prototype",
-                            "body": "",
+                            "body": "<p><code>attr</code> gets or sets properties on the <code>can.Observe</code> it's called on. Here's a tour through\nhow all of its forms work:</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe({});\n\n// set a property:\npeople.attr('a', 'Alex');\n\n// get a property:\npeople.attr('a'); // 'Alex'\n\n// set and merge multiple properties:\npeople.attr({\n    a: 'Alice',\n    b: 'Bob'\n});\n\n// get all properties:\npeople.attr(); // {a: 'Alice', b: 'Bob'}\n\n// set properties while removing others:\npeople.attr({\n    b: 'Bill',\n    e: 'Eve'\n}, true);\n\npeople.attr(); // {b: 'Bill', e: 'Eve'}</code></pre>\n\n<h2>Deep properties</h2>\n\n<p><code>attr</code> can also set and read deep properties. All you have to do is specify\nthe property name as you normally would if you weren't using <code>attr</code>.</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe({names: {}});\n\n// set a property:\npeople.attr('names.a', 'Alice');\n\n// get a property:\npeople.attr('names.a'); // 'Alice'\npeople.names.attr('a'); // 'Alice'\n\n// get all properties:\npeople.attr(); // {names: {a: 'Alice'}}</code></pre>\n\n<p>Objects that are added to Observes become Observes themselves behind the scenes,\nso changes to deep properties fire events at each level, and you can bind at any\nlevel. As this example shows, all the same events are fired no matter what level\nyou call <code>attr</code> at:</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe({names: {}});\n\npeople.bind('change', function(ev, attr, how, newVal, oldVal) {\n  console.log('people change: ' + attr + ', ' + how + ', ' + newVal + ', ' + oldVal);\n});\n\npeople.names.bind('change', function(ev, attr, how, newVal, oldVal) {\n   console.log('people.names change' + attr + ', ' + how + ', ' + newVal + ', ' + oldVal);\n});\n\npeople.bind('names', function(ev, newVal, oldVal) {\n    console.log('people names: ' + newVal + ', ' + oldVal);\n});\n\npeople.names.bind('a', function(ev, newVal, oldVal) {\n    console.log('people.names a: ' + newVal + ', ' + oldVal);\n});\n\npeople.bind('names.a', function(ev, newVal, oldVal) {\n    console.log('people names.a: ' + newVal + ', ' + oldVal);\n});\n\npeople.attr('names.a', 'Alice'); // people change: names.a, add, Alice, undefined\n                                 // people.names change: a, add, Alice, undefined\n                                 // people.names a: Alice, undefined\n                                 // people names.a: Alice, undefined\n\npeople.names.attr('b', 'Bob');   // people change: names.b, add, Bob, undefined\n                                 // people.names change: b, add, Bob, undefined\n                                 // people.names b: Bob, undefined\n                                 // people names.b: Bob, undefined</code></pre>\n\n<h2>See also</h2>\n\n<p>For information on the events that are fired on property changes and how\nto listen for those events, see [can.Observe.prototype.bind bind].</p>",
                             "description": "<p>Get or set properties on an Observe. </p>",
                             "title": "attr",
                             "signatures": [{
@@ -1886,7 +1889,7 @@
                                     }
                                 }, {
                                     "code": "attr(obj[, removeOthers])",
-                                    "description": "<p>Assigns each value in <em>obj</em> to a property on this <code>can.Observe</code> named after the corresponding key in <em>obj</em>.</p>",
+                                    "description": "<p>Assigns each value in <em>obj</em> to a property on this <code>can.Observe</code> named after the\ncorresponding key in <em>obj</em>, effectively merging <em>obj</em> into the Observe.</p>",
                                     "params": [{
                                             "types": [{
                                                     "type": "Object",
@@ -1922,10 +1925,11 @@
                                                 "type": "can.Observe"
                                             }
                                         ],
-                                        "description": "<p>this Observe, for chaining</p>\n\n<p><code>attr</code> gets or sets properties on the <code>can.Observe</code> it's called on. Here's a tour through\nhow all of its forms work:</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe({});\n\n// set a property:\npeople.attr('a', 'Alex');\n\n// get a property:\npeople.attr('a'); // 'Alex'\n\n// set and merge multiple properties:\npeople.attr({\n    a: 'Alice',\n    b: 'Bob'\n});\n\n// get all properties:\npeople.attr(); // {a: 'Alice', b: 'Bob'}\n\n// set properties while removing others:\npeople.attr({\n    b: 'Bill',\n    e: 'Eve'\n}, true);\n\npeople.attr(); // {b: 'Bill', e: 'Eve'}</code></pre>\n\n<h2>Deep properties</h2>\n\n<p><code>attr</code> can also set and read deep properties. All you have to do is specify\nthe property name as you normally would if you weren't using <code>attr</code>.</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe({names: {}});\n\n// set a property:\npeople.attr('names.a', 'Alice');\n\n// get a property:\npeople.attr('names.a'); // 'Alice'\npeople.names.attr('a'); // 'Alice'\n\n// get all properties:\npeople.attr(); // {names: {a: 'Alice'}}</code></pre>\n\n<p>Objects that are added to Observes become Observes themselves behind the scenes,\nso changes to deep properties fire events at each level, and you can bind at any\nlevel. As this example shows, all the same events are fired no matter what level\nyou call <code>attr</code> at:</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe({names: {}});\n\npeople.bind('change', function(ev, attr, how, newVal, oldVal) {\n  console.log('people change: ' + attr + ', ' + how + ', ' + newVal + ', ' + oldVal);\n});\n\npeople.names.bind('change', function(ev, attr, how, newVal, oldVal) {\n   console.log('people.names change' + attr + ', ' + how + ', ' + newVal + ', ' + oldVal);\n});\n\npeople.bind('names', function(ev, newVal, oldVal) {\n    console.log('people names: ' + newVal + ', ' + oldVal);\n});\n\npeople.names.bind('a', function(ev, newVal, oldVal) {\n    console.log('people.names a: ' + newVal + ', ' + oldVal);\n});\n\npeople.bind('names.a', function(ev, newVal, oldVal) {\n    console.log('people names.a: ' + newVal + ', ' + oldVal);\n});\n\npeople.attr('names.a', 'Alice'); // people change: names.a, add, Alice, undefined\n                                 // people.names change: a, add, Alice, undefined\n                                 // people.names a: Alice, undefined\n                                 // people names.a: Alice, undefined\n\npeople.names.attr('b', 'Bob');   // people change: names.b, add, Bob, undefined\n                                 // people.names change: b, add, Bob, undefined\n                                 // people.names b: Bob, undefined\n                                 // people names.b: Bob, undefined</code></pre>\n\n<h2>See also</h2>\n\n<p>For information on the events that are fired on property changes and how\nto listen for those events, see [can.Observe.prototype.bind bind].</p>"
+                                        "description": "<p>this Observe, for chaining</p>"
                                     }
                                 }
                             ],
+                            "comment": " ",
                             "src": "can/observe/observe.js",
                             "line": 374,
                             "id": 57
@@ -1934,7 +1938,7 @@
                             "type": "function",
                             "name": "can.Observe.prototype.each",
                             "parent": "can.Observe.prototype",
-                            "body": "",
+                            "body": "<pre><code class=\"lang-javascript\">var names = [];\nnew can.Observe({a: 'Alice', b: 'Bob', e: 'Eve'}).each(function(value, key) {\n    names.push(value);\n});\n\nnames; // ['Alice', 'Bob', 'Eve']\n\nnames = [];\nnew can.Observe({a: 'Alice', b: 'Bob', e: 'Eve'}).each(function(value, key) {\n    names.push(value);\n    if(key === 'b') {\n        return false;\n    }\n});\n\nnames; // ['Alice', 'Bob']\n</code></pre>     ",
                             "description": "<p>Call a function on each property of an Observe. </p>",
                             "title": "each",
                             "signatures": [{
@@ -1961,19 +1965,20 @@
                                                 "type": "can.Observe"
                                             }
                                         ],
-                                        "description": "<p>this Observe, for chaining</p>\n\n<pre><code class=\"lang-javascript\">var names = [];\nnew can.Observe({a: 'Alice', b: 'Bob', e: 'Eve'}).each(function(value, key) {\n    names.push(value);\n});\n\nnames; // ['Alice', 'Bob', 'Eve']\n\nnames = [];\nnew can.Observe({a: 'Alice', b: 'Bob', e: 'Eve'}).each(function(value, key) {\n    names.push(value);\n    if(key === 'b') {\n        return false;\n    }\n});\n\nnames; // ['Alice', 'Bob']\n</code></pre>"
+                                        "description": "<p>this Observe, for chaining</p>"
                                     }
                                 }
                             ],
+                            "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 519,
+                            "line": 521,
                             "id": 58
                         }, {
                             "active": false,
                             "type": "function",
                             "name": "can.Observe.prototype.removeAttr",
                             "parent": "can.Observe.prototype",
-                            "body": "",
+                            "body": "<p><code>removeAttr</code> removes a property by name from an Observe.</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe({a: 'Alice', b: 'Bob', e: 'Eve'});\n\npeople.removeAttr('b'); // 'Bob'\npeople.attr();          // {a: 'Alice', e: 'Eve'}</code></pre>\n\n<p>Removing an attribute will cause a <em>change</em> event to fire with <code>'remove'</code>\npassed as the <em>how</em> parameter and <code>undefined</code> passed as the <em>newVal</em> to\nhandlers. It will also cause a <em>property name</em> event to fire with <code>undefined</code>\npassed as <em>newVal</em>. An in-depth description at these events can be found\nunder <code>[can.Observe.prototype.attr attr]</code>.</p>",
                             "description": "<p>Remove a property from an Observe. </p>",
                             "title": "removeAttr",
                             "signatures": [{
@@ -1993,19 +1998,20 @@
                                                 "type": "*"
                                             }
                                         ],
-                                        "description": "<p>the value of the property that was removed</p>\n\n<p><code>removeAttr</code> removes a property by name from an Observe.</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe({a: 'Alice', b: 'Bob', e: 'Eve'});\n\npeople.removeAttr('b'); // 'Bob'\npeople.attr();          // {a: 'Alice', e: 'Eve'}</code></pre>\n\n<p>Removing an attribute will cause a <em>change</em> event to fire with <code>'remove'</code>\npassed as the <em>how</em> parameter and <code>undefined</code> passed as the <em>newVal</em> to\nhandlers. It will also cause a <em>property name</em> event to fire with <code>undefined</code>\npassed as <em>newVal</em>. An in-depth description at these events can be found\nunder <code>[can.Observe.prototype.attr attr]</code>.</p>"
+                                        "description": "<p>the value of the property that was removed</p>"
                                     }
                                 }
                             ],
+                            "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 558,
+                            "line": 561,
                             "id": 59
                         }, {
                             "active": false,
                             "name": "can.Observe.prototype.bind",
                             "type": "function",
                             "parent": "can.Observe.prototype",
-                            "body": "",
+                            "body": "<p><code>bind</code> binds event handlers to property changes on <code>can.Observe</code>s. When you change\na property using <code>attr</code>, two events are fired on the Observe, allowing other parts\nof your application to observe the changes to the object.</p>\n\n<h2>The <em>change</em> event</h2>\n\n<p>The first event that is fired is the <em>change</em> event. The <em>change</em> event is useful\nif you want to react to all changes on an Observe.</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.bind('change', function(ev, attr, how, newVal, oldVal) {\n    console.log('Something changed.');\n});</code></pre>\n\n<p>The parameters of the event handler for the <em>change</em> event are:</p>",
                             "description": "<p>Bind event handlers to an Observe. </p>",
                             "title": "bind",
                             "signatures": [{
@@ -2095,12 +2101,13 @@
                                                 "type": "can.Observe"
                                             }
                                         ],
-                                        "description": "<p>this Observe, for chaining</p>\n\n<p><code>bind</code> binds event handlers to property changes on <code>can.Observe</code>s. When you change\na property using <code>attr</code>, two events are fired on the Observe, allowing other parts\nof your application to observe the changes to the object.</p>\n\n<h2>The <em>change</em> event</h2>\n\n<p>The first event that is fired is the <em>change</em> event. The <em>change</em> event is useful\nif you want to react to all changes on an Observe.</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.bind('change', function(ev, attr, how, newVal, oldVal) {\n    console.log('Something changed.');\n});</code></pre>\n\n<p>The parameters of the event handler for the <em>change</em> event are:</p>"
+                                        "description": "<p>this Observe, for chaining</p>"
                                     }
                                 }
                             ],
+                            "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 711,
+                            "line": 715,
                             "id": 60
                         }, {
                             "active": false,
@@ -2140,7 +2147,7 @@
                                 }
                             ],
                             "src": "can/observe/observe.js",
-                            "line": 818,
+                            "line": 823,
                             "id": 61
                         }, {
                             "active": false,
@@ -2159,7 +2166,7 @@
                                 "description": "<p>a JavaScript Object that can be \nserialized with <code>JSON.stringify</code> or other methods. </p>"
                             },
                             "src": "can/observe/observe.js",
-                            "line": 849,
+                            "line": 854,
                             "id": 62
                         }, {
                             "active": false,
@@ -2186,14 +2193,14 @@
                             "description": "<p>Set multiple properties on the observable</p>",
                             "hide": true,
                             "src": "can/observe/observe.js",
-                            "line": 871,
+                            "line": 876,
                             "id": 63
                         }, {
                             "active": false,
                             "type": "function",
                             "name": "can.Observe.prototype.compute",
                             "parent": "can.Observe.prototype",
-                            "body": "",
+                            "body": "<p><code>compute</code> is a convenience method for making computes from properties\nof Observes. More information about computes can be found under [can.compute].</p>",
                             "description": "<p>Make a can.compute from an observable property. </p>",
                             "title": "compute",
                             "signatures": [{
@@ -2213,12 +2220,13 @@
                                                 "type": "can.compute"
                                             }
                                         ],
-                                        "description": "<p>a [can.compute] bound to <em>attrName</em></p>\n\n<p><code>compute</code> is a convenience method for making computes from properties\nof Observes. More information about computes can be found under [can.compute].</p>"
+                                        "description": "<p>a [can.compute] bound to <em>attrName</em></p>"
                                     }
                                 }
                             ],
+                            "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 923,
+                            "line": 928,
                             "id": 64
                         }
                     ]
@@ -2229,7 +2237,7 @@
             "name": "can.Observe.List",
             "type": "constructor",
             "parent": "canjs",
-            "body": "",
+            "body": "<h2>Working with Lists</h2>\n\n<p><code>can.Observe.List</code> extends <code>[can.Observe]</code>, so all the ways that you're used to working with\nObserves also work here, including [can.Observe.prototype.bind bind], [can.Observe.prototype.unbind unbind],\nand [can.Observe.prototype.each each]. And just as you can directly read properties normally\noff of an Observe, you can use array accessors ([]) to read elements directly off of a List.</p>\n\n<p>The one function of <code>can.Observe</code> that works slightly differently is <code>attr</code>. As expected when working with\narrays, top-level keys passed into <code>attr</code> are required to be numeric. (Strings may still be used when getting\nor modifying deep properties). Any top-level keys that are non-numeric are ignored. In addition, as might be\nexpected, a call to argument-less <code>attr</code> returns an array instead of an object.</p>\n\n<p>Just as you shouldn't set properties of an Observe directly, you shouldn't change elements\nof a List directly. Always use <code>attr</code> to set the elements of a List, or use [can.Observe.List.push push],\n[can.Observe.List.pop pop], [can.Observe.List.shift shift], [can.Observe.List.unshift unshift], or [can.Observe.List.splice splice].</p>\n\n<p>Here is a tour through the forms of <code>can.Observe.List</code>'s <code>attr</code> that parallels the one found under [can.Observe.prototype.attr attr]:</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe.List(['Alex', 'Bill']);\n\n// set an element:\npeople.attr(0, 'Adam');\npeople[0] = 'Adam'; // don't do this!\n\n// get an element:\npeople.attr(0); // 'Adam'\npeople[0]; // 'Adam'\n\n// get all elements:\npeople.attr(); // ['Adam', 'Bill']\n\n// extend the array:\npeople.attr(4, 'Charlie');\npeople.attr(); // ['Adam', 'Bill', undefined, undefined, 'Charlie']\n\n// merge the elements:\npeople.attr(['Alice', 'Bob', 'Eve']);\npeople.attr(); // ['Alice', 'Bob', 'Eve', undefined, 'Charlie']</code></pre>\n\n<h2>Listening to changes</h2>\n\n<p>As with <code>can.Observe</code>s, the real power of observable arrays comes from being able to\nreact to changes in the member elements of the array. Lists emit five types of events:\n- the <em>change</em> event fires on every change to a List.\n- the <em>set</em> event is fired when an element is set.\n- the <em>add</em> event is fired when an element is added to the List.\n- the <em>remove</em> event is fired when an element is removed from the List.\n- the <em>length</em> event is fired when the length of the List changes.</p>\n\n<p>This example presents a brief concrete survey of the times these events are fired:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\n\nlist.bind('change', function() { console.log('An element changed.'); });\nlist.bind('set', function() { console.log('An element was set.'); });\nlist.bind('add', function() { console.log('An element was added.'); });\nlist.bind('remove', function() { console.log('An element was removed.'); });\nlist.bind('length', function() { console.log('The length of the list changed.'); });\n\nlist.attr(0, 'Alexis'); // 'An element changed.'\n                        // 'An element was set.'\n\nlist.attr(3, 'Xerxes'); // 'An element changed.'\n                        // 'An element was added.'\n                        // 'The length of the list was changed.'\n\nlist.attr(['Adam', 'Bill']); // 'An element changed.'\n                             // 'An element was set.'\n                             // 'An element was changed.'\n                             // 'An element was set.'\n\nlist.pop(); // 'An element changed.'\n            // 'An element was removed.'\n            // 'The length of the list was changed.'</code></pre>\n\n<p>More information about binding to these events can be found under [can.Observe.List.attr attr].</p>",
             "description": "<p><code>can.Observe.List</code> provides a way for you to use <code>can.Observe</code>s with arrays. Much like <code>can.Observe</code>,\nwhen you use the getters and setters on <code>can.Observe.List</code>, events are fired that you can listen for\nand react to.</p>",
             "inherits": "can.Observe",
             "download": "can/observe",
@@ -2252,12 +2260,13 @@
                                 "type": "can.Observe.List"
                             }
                         ],
-                        "description": "<p>an instance of <code>can.Observe.List</code> with the elements from <em>elements</em></p>\n\n<h2>Working with Lists</h2>\n\n<p><code>can.Observe.List</code> extends <code>[can.Observe]</code>, so all the ways that you're used to working with\nObserves also work here, including [can.Observe.prototype.bind bind], [can.Observe.prototype.unbind unbind],\nand [can.Observe.prototype.each each]. And just as you can directly read properties normally\noff of an Observe, you can use array accessors ([]) to read elements directly off of a List.</p>\n\n<p>The one function of <code>can.Observe</code> that works slightly differently is <code>attr</code>. As expected when working with\narrays, top-level keys passed into <code>attr</code> are required to be numeric. (Strings may still be used when getting\nor modifying deep properties). Any top-level keys that are non-numeric are ignored. In addition, as might be\nexpected, a call to argument-less <code>attr</code> returns an array instead of an object.</p>\n\n<p>Just as you shouldn't set properties of an Observe directly, you shouldn't change elements\nof a List directly. Always use <code>attr</code> to set the elements of a List, or use [can.Observe.List.push push],\n[can.Observe.List.pop pop], [can.Observe.List.shift shift], [can.Observe.List.unshift unshift], or [can.Observe.List.splice splice].</p>\n\n<p>Here is a tour through the forms of <code>can.Observe.List</code>'s <code>attr</code> that parallels the one found under [can.Observe.prototype.attr attr]:</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe.List(['Alex', 'Bill']);\n\n// set an element:\npeople.attr(0, 'Adam');\npeople[0] = 'Adam'; // don't do this!\n\n// get an element:\npeople.attr(0); // 'Adam'\npeople[0]; // 'Adam'\n\n// get all elements:\npeople.attr(); // ['Adam', 'Bill']\n\n// extend the array:\npeople.attr(4, 'Charlie');\npeople.attr(); // ['Adam', 'Bill', undefined, undefined, 'Charlie']\n\n// merge the elements:\npeople.attr(['Alice', 'Bob', 'Eve']);\npeople.attr(); // ['Alice', 'Bob', 'Eve', undefined, 'Charlie']</code></pre>\n\n<h2>Listening to changes</h2>\n\n<p>As with <code>can.Observe</code>s, the real power of observable arrays comes from being able to\nreact to changes in the member elements of the array. Lists emit five types of events:\n- the <em>change</em> event fires on every change to a List.\n- the <em>set</em> event is fired when an element is set.\n- the <em>add</em> event is fired when an element is added to the List.\n- the <em>remove</em> event is fired when an element is removed from the List.\n- the <em>length</em> event is fired when the length of the List changes.</p>\n\n<p>This example presents a brief concrete survey of the times these events are fired:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\n\nlist.bind('change', function() { console.log('An element changed.'); });\nlist.bind('set', function() { console.log('An element was set.'); });\nlist.bind('add', function() { console.log('An element was added.'); });\nlist.bind('remove', function() { console.log('An element was removed.'); });\nlist.bind('length', function() { console.log('The length of the list changed.'); });\n\nlist.attr(0, 'Alexis'); // 'An element changed.'\n                        // 'An element was set.'\n\nlist.attr(3, 'Xerxes'); // 'An element changed.'\n                        // 'An element was added.'\n                        // 'The length of the list was changed.'\n\nlist.attr(['Adam', 'Bill']); // 'An element changed.'\n                             // 'An element was set.'\n                             // 'An element was changed.'\n                             // 'An element was set.'\n\nlist.pop(); // 'An element changed.'\n            // 'An element was removed.'\n            // 'The length of the list was changed.'</code></pre>\n\n<p>More information about binding to these events can be found under [can.Observe.List.attr attr].</p>"
+                        "description": "<p>an instance of <code>can.Observe.List</code> with the elements from <em>elements</em></p>"
                     }
                 }
             ],
+            "comment": " ",
             "src": "can/observe/observe.js",
-            "line": 959,
+            "line": 965,
             "id": 65,
             "children": [{
                     "active": false,
@@ -2267,7 +2276,7 @@
                     "name": "can.Observe.List.prototype",
                     "parent": "can.Observe.List",
                     "src": "can/observe/observe.js",
-                    "line": 1058,
+                    "line": 1065,
                     "id": 66,
                     "children": [{
                             "active": false,
@@ -2279,14 +2288,14 @@
                             "description": "<p>Returns the serialized form of this list.</p>",
                             "hide": true,
                             "src": "can/observe/observe.js",
-                            "line": 1104,
+                            "line": 1111,
                             "id": 67
                         }, {
                             "active": false,
                             "type": "function",
                             "name": "can.Observe.List.prototype.splice",
                             "parent": "can.Observe.List.prototype",
-                            "body": "",
+                            "body": "<p><code>splice</code> lets you remove elements from and insert elements into a List.</p>\n\n<p>This example demonstrates how to do surgery on a list of numbers:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List([0, 1, 2, 3]);\n\n// starting at index 2, remove one element and insert 'Alice' and 'Bob':\nlist.splice(2, 1, 'Alice', 'Bob');\nlist.attr(); // [0, 1, 'Alice', 'Bob', 3]</code></pre>\n\n<h2>Events</h2>\n\n<p><code>splice</code> causes the List it's called on to emit <em>change</em> events,\n<em>add</em> events, <em>remove</em> events, and <em>length</em> events. If there are\nany elements to remove, a <em>change</em> event, a <em>remove</em> event, and a\n<em>length</em> event will be fired. If there are any elements to insert, a\nseparate <em>change</em> event, an <em>add</em> event, and a separate <em>length</em> event\nwill be fired. </p>\n\n<p>This slightly-modified version of the above example should help\nmake it clear how <code>splice</code> causes events to be emitted:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['a', 'b', 'c', 'd']);\nlist.bind('change', function(ev, attr, how, newVals, oldVals) {\n    console.log('change: ' + attr + ', ' + how + ', ' + newVals + ', ' + oldVals);\n});\nlist.bind('add', function(ev, newVals, where) {\n    console.log('add: ' + newVals + ', ' + where);\n});\nlist.bind('remove', function(ev, oldVals, where) {\n    console.log('remove: ' + oldVals + ', ' + where);\n});\nlist.bind('length', function(ev, length) {\n    console.log('length: ' + length + ', ' + this.attr());\n});\n\n// starting at index 2, remove one element and insert 'Alice' and 'Bob':\nlist.splice(2, 1, 'Alice', 'Bob'); // change: 2, 'remove', undefined, ['c']\n                                   // remove: ['c'], 2\n                                   // length: 5, ['a', 'b', 'Alice', 'Bob', 'd']\n                                   // change: 2, 'add', ['Alice', 'Bob'], ['c']\n                                   // add: ['Alice', 'Bob'], 2\n                                   // length: 5, ['a', 'b', 'Alice', 'Bob', 'd']</code></pre>\n\n<p>More information about binding to these events can be found under [can.Observe.List.attr attr].</p>",
                             "description": "<p>Insert and remove elements from a List. </p>",
                             "title": "splice",
                             "signatures": [{
@@ -2321,19 +2330,20 @@
                                                 "type": "Array"
                                             }
                                         ],
-                                        "description": "<p>the elements removed by <code>splice</code></p>\n\n<p><code>splice</code> lets you remove elements from and insert elements into a List.</p>\n\n<p>This example demonstrates how to do surgery on a list of numbers:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List([0, 1, 2, 3]);\n\n// starting at index 2, remove one element and insert 'Alice' and 'Bob':\nlist.splice(2, 1, 'Alice', 'Bob');\nlist.attr(); // [0, 1, 'Alice', 'Bob', 3]</code></pre>\n\n<h2>Events</h2>\n\n<p><code>splice</code> causes the List it's called on to emit <em>change</em> events,\n<em>add</em> events, <em>remove</em> events, and <em>length</em> events. If there are\nany elements to remove, a <em>change</em> event, a <em>remove</em> event, and a\n<em>length</em> event will be fired. If there are any elements to insert, a\nseparate <em>change</em> event, an <em>add</em> event, and a separate <em>length</em> event\nwill be fired. </p>\n\n<p>This slightly-modified version of the above example should help\nmake it clear how <code>splice</code> causes events to be emitted:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['a', 'b', 'c', 'd']);\nlist.bind('change', function(ev, attr, how, newVals, oldVals) {\n    console.log('change: ' + attr + ', ' + how + ', ' + newVals + ', ' + oldVals);\n});\nlist.bind('add', function(ev, newVals, where) {\n    console.log('add: ' + newVals + ', ' + where);\n});\nlist.bind('remove', function(ev, oldVals, where) {\n    console.log('remove: ' + oldVals + ', ' + where);\n});\nlist.bind('length', function(ev, length) {\n    console.log('length: ' + length + ', ' + this.attr());\n});\n\n// starting at index 2, remove one element and insert 'Alice' and 'Bob':\nlist.splice(2, 1, 'Alice', 'Bob'); // change: 2, 'remove', undefined, ['c']\n                                   // remove: ['c'], 2\n                                   // length: 5, ['a', 'b', 'Alice', 'Bob', 'd']\n                                   // change: 2, 'add', ['Alice', 'Bob'], ['c']\n                                   // add: ['Alice', 'Bob'], 2\n                                   // length: 5, ['a', 'b', 'Alice', 'Bob', 'd']</code></pre>\n\n<p>More information about binding to these events can be found under [can.Observe.List.attr attr].</p>"
+                                        "description": "<p>the elements removed by <code>splice</code></p>"
                                     }
                                 }
                             ],
+                            "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1146,
+                            "line": 1154,
                             "id": 69
                         }, {
                             "active": false,
                             "type": "function",
                             "name": "can.Observe.List.prototype.attr",
                             "parent": "can.Observe.List.prototype",
-                            "body": "",
+                            "body": "<p><code>attr</code> gets or sets elements on the <code>can.Observe.List</code> it's called on. Here's a tour through\nhow all of its forms work:</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe.List(['Alex', 'Bill']);\n\n// set an element:\npeople.attr(0, 'Adam');\n\n// get an element:\npeople.attr(0); // 'Adam'\npeople[0]; // 'Adam'\n\n// get all elements:\npeople.attr(); // ['Adam', 'Bill']\n\n// extend the array:\npeople.attr(4, 'Charlie');\npeople.attr(); // ['Adam', 'Bill', undefined, undefined, 'Charlie']\n\n// merge the elements:\npeople.attr(['Alice', 'Bob', 'Eve']);\npeople.attr(); // ['Alice', 'Bob', 'Eve', undefined, 'Charlie']</code></pre>\n\n<h2>Deep properties</h2>\n\n<p><code>attr</code> can also set and read deep properties. All you have to do is specify\nthe property name as you normally would if you weren't using <code>attr</code>.</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe.List([{name: 'Alex'}, {name: 'Bob'}]);\n\n// set a property:\npeople.attr('0.name', 'Alice');\n\n// get a property:\npeople.attr('0.name');  // 'Alice'\npeople[0].attr('name'); // 'Alice'\n\n// get all properties:\npeople.attr(); // [{name: 'Alice'}, {name: 'Bob'}]</code></pre>\n\n<p>The discussion of deep properties under <code>[can.Observe.prototype.attr]</code> may also\nbe enlightening.</p>\n\n<h2>Events</h2>\n\n<p><code>can.Observe.List</code>s emit five types of events in response to changes. They are:\n- the <em>change</em> event fires on every change to a List.\n- the <em>set</em> event is fired when an element is set.\n- the <em>add</em> event is fired when an element is added to the List.\n- the <em>remove</em> event is fired when an element is removed from the List.\n- the <em>length</em> event is fired when the length of the List changes.</p>\n\n<ul>\n<li>## The <em>change</em> event</li>\n</ul>\n\n<p>The first event that is fired is the <em>change</em> event. The <em>change</em> event is useful\nif you want to react to all changes on an List.</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List([]);\nlist.bind('change', function(ev, index, how, newVal, oldVal) {\n    console.log('Something changed.');\n});</code></pre>\n\n<p>The parameters of the event handler for the <em>change</em> event are:</p>",
                             "description": "<p>Get or set elements in a List. </p>",
                             "title": "attr",
                             "signatures": [{
@@ -2542,19 +2552,20 @@
                                                 "type": "can.Observe.List"
                                             }
                                         ],
-                                        "description": "<p>this List, for chaining</p>\n\n<p><code>attr</code> gets or sets elements on the <code>can.Observe.List</code> it's called on. Here's a tour through\nhow all of its forms work:</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe.List(['Alex', 'Bill']);\n\n// set an element:\npeople.attr(0, 'Adam');\n\n// get an element:\npeople.attr(0); // 'Adam'\npeople[0]; // 'Adam'\n\n// get all elements:\npeople.attr(); // ['Adam', 'Bill']\n\n// extend the array:\npeople.attr(4, 'Charlie');\npeople.attr(); // ['Adam', 'Bill', undefined, undefined, 'Charlie']\n\n// merge the elements:\npeople.attr(['Alice', 'Bob', 'Eve']);\npeople.attr(); // ['Alice', 'Bob', 'Eve', undefined, 'Charlie']</code></pre>\n\n<h2>Deep properties</h2>\n\n<p><code>attr</code> can also set and read deep properties. All you have to do is specify\nthe property name as you normally would if you weren't using <code>attr</code>.</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe.List([{name: 'Alex'}, {name: 'Bob'}]);\n\n// set a property:\npeople.attr('0.name', 'Alice');\n\n// get a property:\npeople.attr('0.name');  // 'Alice'\npeople[0].attr('name'); // 'Alice'\n\n// get all properties:\npeople.attr(); // [{name: 'Alice'}, {name: 'Bob'}]</code></pre>\n\n<p>The discussion of deep properties under <code>[can.Observe.prototype.attr]</code> may also\nbe enlightening.</p>\n\n<h2>Events</h2>\n\n<p><code>can.Observe.List</code>s emit five types of events in response to changes. They are:\n- the <em>change</em> event fires on every change to a List.\n- the <em>set</em> event is fired when an element is set.\n- the <em>add</em> event is fired when an element is added to the List.\n- the <em>remove</em> event is fired when an element is removed from the List.\n- the <em>length</em> event is fired when the length of the List changes.</p>\n\n<ul>\n<li>## The <em>change</em> event</li>\n</ul>\n\n<p>The first event that is fired is the <em>change</em> event. The <em>change</em> event is useful\nif you want to react to all changes on an List.</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List([]);\nlist.bind('change', function(ev, index, how, newVal, oldVal) {\n    console.log('Something changed.');\n});</code></pre>\n\n<p>The parameters of the event handler for the <em>change</em> event are:</p>"
+                                        "description": "<p>this List, for chaining</p>"
                                     }
                                 }
                             ],
+                            "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1234,
+                            "line": 1243,
                             "id": 70
                         }, {
                             "active": false,
                             "name": "can.Observe.List.prototype.push",
                             "type": "function",
                             "parent": "can.Observe.List.prototype",
-                            "body": "",
+                            "body": "<p><code>push</code> is fairly straightforward:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice']);\n\nlist.push('Bob', 'Eve');\nlist.attr(); // ['Alice', 'Bob', 'Eve']</code></pre>\n\n<p>If you have an array you want to concatenate to the end\nof the List, you can use <code>apply</code>:</p>\n\n<pre><code class=\"lang-javascript\">var names = ['Bob', 'Eve'],\n    list = new can.Observe.List(['Alice']);\n\nlist.push.apply(list, names);\nlist.attr(); // ['Alice', 'Bob', 'Eve']</code></pre>\n\n<h2>Events</h2>\n\n<p><code>push</code> causes <em>change</em>, <em>add</em>, and <em>length</em> events to be fired.</p>\n\n<h2>See also</h2>\n\n<p><code>push</code> has a counterpart in [can.Observe.List.pop pop], or you may be\nlooking for [can.Observe.List.unshift unshift] and its counterpart [can.Observe.List.shift shift].</p>",
                             "description": "<p>Add elements to the end of a list. </p>",
                             "title": "push",
                             "signatures": [{
@@ -2574,19 +2585,20 @@
                                                 "type": "Number"
                                             }
                                         ],
-                                        "description": "<p>the new length of the List</p>\n\n<p><code>push</code> is fairly straightforward:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice']);\n\nlist.push('Bob', 'Eve');\nlist.attr(); // ['Alice', 'Bob', 'Eve']</code></pre>\n\n<p>If you have an array you want to concatenate to the end\nof the List, you can use <code>apply</code>:</p>\n\n<pre><code class=\"lang-javascript\">var names = ['Bob', 'Eve'],\n    list = new can.Observe.List(['Alice']);\n\nlist.push.apply(list, names);\nlist.attr(); // ['Alice', 'Bob', 'Eve']</code></pre>\n\n<h2>Events</h2>\n\n<p><code>push</code> causes <em>change</em>, <em>add</em>, and <em>length</em> events to be fired.</p>\n\n<h2>See also</h2>\n\n<p><code>push</code> has a counterpart in [can.Observe.List.pop pop], or you may be\nlooking for [can.Observe.List.unshift unshift] and its counterpart [can.Observe.List.shift shift].</p>"
+                                        "description": "<p>the new length of the List</p>"
                                     }
                                 }
                             ],
+                            "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1542,
+                            "line": 1552,
                             "id": 71
                         }, {
                             "active": false,
                             "name": "can.Observe.List.prototype.unshift",
                             "type": "function",
                             "parent": "can.Observe.List.prototype",
-                            "body": "",
+                            "body": "<p><code>unshift</code> adds elements to the front of the list in bulk in the order specified:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice']);\n\nlist.unshift('Bob', 'Eve');\nlist.attr(); // ['Bob', 'Eve', 'Alice']</code></pre>\n\n<p>If you have an array you want to concatenate to the beginning\nof the List, you can use <code>apply</code>:</p>\n\n<pre><code class=\"lang-javascript\">var names = ['Bob', 'Eve'],\n    list = new can.Observe.List(['Alice']);\n\nlist.push.apply(list, names);\nlist.attr(); // ['Bob', 'Eve', 'Alice']</code></pre>\n\n<h2>Events</h2>\n\n<p><code>unshift</code> causes <em>change</em>, <em>add</em>, and <em>length</em> events to be fired.</p>\n\n<h2>See also</h2>\n\n<p><code>unshift</code> has a counterpart in [can.Observe.List.shift shift], or you may be\nlooking for [can.Observe.List.push push] and its counterpart [can.Observe.List.pop pop].</p>",
                             "description": "<p>Add elements to the beginning of a List. </p>",
                             "title": "unshift",
                             "signatures": [{
@@ -2606,19 +2618,20 @@
                                                 "type": "Number"
                                             }
                                         ],
-                                        "description": "<p>the new length of the List</p>\n\n<p><code>unshift</code> adds elements to the front of the list in bulk in the order specified:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice']);\n\nlist.unshift('Bob', 'Eve');\nlist.attr(); // ['Bob', 'Eve', 'Alice']</code></pre>\n\n<p>If you have an array you want to concatenate to the beginning\nof the List, you can use <code>apply</code>:</p>\n\n<pre><code class=\"lang-javascript\">var names = ['Bob', 'Eve'],\n    list = new can.Observe.List(['Alice']);\n\nlist.push.apply(list, names);\nlist.attr(); // ['Bob', 'Eve', 'Alice']</code></pre>\n\n<h2>Events</h2>\n\n<p><code>unshift</code> causes <em>change</em>, <em>add</em>, and <em>length</em> events to be fired.</p>\n\n<h2>See also</h2>\n\n<p><code>unshift</code> has a counterpart in [can.Observe.List.shift shift], or you may be\nlooking for [can.Observe.List.push push] and its counterpart [can.Observe.List.pop pop].</p>"
+                                        "description": "<p>the new length of the List</p>"
                                     }
                                 }
                             ],
+                            "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1583,
+                            "line": 1594,
                             "id": 72
                         }, {
                             "active": false,
                             "name": "can.Observe.List.prototype.pop",
                             "type": "function",
                             "parent": "can.Observe.List.prototype",
-                            "body": "",
+                            "body": "<p><code>pop</code> is the opposite action from <code>[can.Observe.List.push push]</code>:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice']);\n\nlist.push('Bob', 'Eve');\nlist.attr(); // ['Alice', 'Bob', 'Eve']\n\nlist.pop(); // 'Eve'\nlist.pop(); // 'Bob'\nlist.pop(); // 'Alice'\nlist.pop(); // undefined</code></pre>\n\n<h2>Events</h2>\n\n<p><code>pop</code> causes <em>change</em>, <em>remove</em>, and <em>length</em> events to be fired if the List is not empty\nwhen it is called.</p>\n\n<h2>See also</h2>\n\n<p><code>pop</code> has its counterpart in [can.Observe.List.push push], or you may be\nlooking for [can.Observe.List.unshift unshift] and its counterpart [can.Observe.List.shift shift].</p>",
                             "description": "<p>Remove an element from the end of a List. </p>",
                             "title": "pop",
                             "signatures": [{
@@ -2630,19 +2643,20 @@
                                                 "type": "*"
                                             }
                                         ],
-                                        "description": "<p>the element just popped off the List, or <code>undefined</code> if the List was empty</p>\n\n<p><code>pop</code> is the opposite action from <code>[can.Observe.List.push push]</code>:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice']);\n\nlist.push('Bob', 'Eve');\nlist.attr(); // ['Alice', 'Bob', 'Eve']\n\nlist.pop(); // 'Eve'\nlist.pop(); // 'Bob'\nlist.pop(); // 'Alice'\nlist.pop(); // undefined</code></pre>\n\n<h2>Events</h2>\n\n<p><code>pop</code> causes <em>change</em>, <em>remove</em>, and <em>length</em> events to be fired if the List is not empty\nwhen it is called.</p>\n\n<h2>See also</h2>\n\n<p><code>pop</code> has its counterpart in [can.Observe.List.push push], or you may be\nlooking for [can.Observe.List.unshift unshift] and its counterpart [can.Observe.List.shift shift].</p>"
+                                        "description": "<p>the element just popped off the List, or <code>undefined</code> if the List was empty</p>"
                                     }
                                 }
                             ],
+                            "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1661,
+                            "line": 1673,
                             "id": 73
                         }, {
                             "active": false,
                             "name": "can.Observe.List.prototype.shift",
                             "type": "function",
                             "parent": "can.Observe.List.prototype",
-                            "body": "",
+                            "body": "<p><code>shift</code> is the opposite action from <code>[can.Observe.List.unshift unshift]</code>:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice']);\n\nlist.unshift('Bob', 'Eve');\nlist.attr(); // ['Bob', 'Eve', 'Alice']\n\nlist.shift(); // 'Bob'\nlist.shift(); // 'Eve'\nlist.shift(); // 'Alice'\nlist.shift(); // undefined</code></pre>\n\n<h2>Events</h2>\n\n<p><code>pop</code> causes <em>change</em>, <em>remove</em>, and <em>length</em> events to be fired if the List is not empty\nwhen it is called.</p>\n\n<h2>See also</h2>\n\n<p><code>shift</code> has a counterpart in [can.Observe.List.unshift unshift], or you may be\nlooking for [can.Observe.List.push push] and its counterpart [can.Observe.List.pop pop].</p>",
                             "description": "<p>Remove en element from the front of a list. </p>",
                             "title": "shift",
                             "signatures": [{
@@ -2654,19 +2668,20 @@
                                                 "type": "*"
                                             }
                                         ],
-                                        "description": "<p>the element just shifted off the List, or <code>undefined</code> if the List is empty</p>\n\n<p><code>shift</code> is the opposite action from <code>[can.Observe.List.unshift unshift]</code>:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice']);\n\nlist.unshift('Bob', 'Eve');\nlist.attr(); // ['Bob', 'Eve', 'Alice']\n\nlist.shift(); // 'Bob'\nlist.shift(); // 'Eve'\nlist.shift(); // 'Alice'\nlist.shift(); // undefined</code></pre>\n\n<h2>Events</h2>\n\n<p><code>pop</code> causes <em>change</em>, <em>remove</em>, and <em>length</em> events to be fired if the List is not empty\nwhen it is called.</p>\n\n<h2>See also</h2>\n\n<p><code>shift</code> has a counterpart in [can.Observe.List.unshift unshift], or you may be\nlooking for [can.Observe.List.push push] and its counterpart [can.Observe.List.pop pop].</p>"
+                                        "description": "<p>the element just shifted off the List, or <code>undefined</code> if the List is empty</p>"
                                     }
                                 }
                             ],
+                            "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1695,
+                            "line": 1708,
                             "id": 74
                         }, {
                             "active": false,
                             "type": "function",
                             "name": "can.Observe.List.prototype.indexOf",
                             "parent": "can.Observe.List.prototype",
-                            "body": "",
+                            "body": "<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nlist.indexOf('Alice');   // 0\nlist.indexOf('Charlie'); // -1</code></pre>\n\n<p>It is trivial to make a <code>contains</code>-type function using <code>indexOf</code>:</p>\n\n<pre><code class=\"lang-javascript\">function(list, item) {\n    return list.indexOf(item) >= 0;\n}</code></pre>     ",
                             "description": "<p>Look for an item in a List. </p>",
                             "title": "indexOf",
                             "signatures": [{
@@ -2686,19 +2701,20 @@
                                                 "type": "Number"
                                             }
                                         ],
-                                        "description": "<p>the position of the item in the List, or -1 if the item is not found.</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nlist.indexOf('Alice');   // 0\nlist.indexOf('Charlie'); // -1</code></pre>\n\n<p>It is trivial to make a <code>contains</code>-type function using <code>indexOf</code>:</p>\n\n<pre><code class=\"lang-javascript\">function(list, item) {\n    return list.indexOf(item) >= 0;\n}</code></pre>"
+                                        "description": "<p>the position of the item in the List, or -1 if the item is not found.</p>"
                                     }
                                 }
                             ],
+                            "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1755,
+                            "line": 1769,
                             "id": 75
                         }, {
                             "active": false,
                             "name": "can.Observe.List.prototype.join",
                             "type": "function",
                             "parent": "can.Observe.List.prototype",
-                            "body": "",
+                            "body": "<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nlist.join(', '); // 'Alice, Bob, Eve'\n\nvar beatles = new can.Observe.List(['John', 'Paul', 'Ringo', 'George']);\nbeatles.join('&'); // 'John&Paul&Ringo&George'</code></pre>     ",
                             "description": "<p>Join a List's elements into a string. </p>",
                             "title": "join",
                             "signatures": [{
@@ -2718,19 +2734,20 @@
                                                 "type": "String"
                                             }
                                         ],
-                                        "description": "<p>the joined string</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nlist.join(', '); // 'Alice, Bob, Eve'\n\nvar beatles = new can.Observe.List(['John', 'Paul', 'Ringo', 'George']);\nbeatles.join('&'); // 'John&Paul&Ringo&George'</code></pre>"
+                                        "description": "<p>the joined string</p>"
                                     }
                                 }
                             ],
+                            "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1785,
+                            "line": 1800,
                             "id": 76
                         }, {
                             "active": false,
                             "name": "can.Observe.List.prototype.reverse",
                             "type": "function",
                             "parent": "can.Observe.List.prototype",
-                            "body": "",
+                            "body": "<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nvar reversedList = list.reverse();\n\nreversedList.attr(); // ['Eve', 'Bob', 'Alice'];\nlist === reversedList; // true</code></pre>     ",
                             "description": "<p>Reverse the order of a List. </p>",
                             "title": "reverse",
                             "signatures": [{
@@ -2742,19 +2759,20 @@
                                                 "type": "can.Observe.List"
                                             }
                                         ],
-                                        "description": "<p>the List, for chaining</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nvar reversedList = list.reverse();\n\nreversedList.attr(); // ['Eve', 'Bob', 'Alice'];\nlist === reversedList; // true</code></pre>"
+                                        "description": "<p>the List, for chaining</p>"
                                     }
                                 }
                             ],
+                            "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1807,
+                            "line": 1823,
                             "id": 77
                         }, {
                             "active": false,
                             "type": "function",
                             "name": "can.Observe.List.prototype.slice",
                             "parent": "can.Observe.List.prototype",
-                            "body": "",
+                            "body": "<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve']);\nvar newList = list.slice(1, 4);\nnewList.attr(); // ['Bob', 'Charlie', 'Daniel']</code></pre>\n\n<p><code>slice</code> is the simplest way to copy a List:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nvar copy = list.slice();\n\ncopy.attr();   // ['Alice', 'Bob', 'Eve']\nlist === copy; // false</code></pre>     ",
                             "description": "<p>Make a copy of a part of a List. </p>",
                             "title": "slice",
                             "signatures": [{
@@ -2784,12 +2802,13 @@
                                                 "type": "can.Observe.List"
                                             }
                                         ],
-                                        "description": "<p>a new <code>can.Observe.List</code> with the extracted elements</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve']);\nvar newList = list.slice(1, 4);\nnewList.attr(); // ['Bob', 'Charlie', 'Daniel']</code></pre>\n\n<p><code>slice</code> is the simplest way to copy a List:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nvar copy = list.slice();\n\ncopy.attr();   // ['Alice', 'Bob', 'Eve']\nlist === copy; // false</code></pre>"
+                                        "description": "<p>a new <code>can.Observe.List</code> with the extracted elements</p>"
                                     }
                                 }
                             ],
+                            "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1826,
+                            "line": 1843,
                             "id": 78
                         }, {
                             "active": false,
@@ -2818,7 +2837,7 @@
                                 }
                             ],
                             "src": "can/observe/observe.js",
-                            "line": 1861,
+                            "line": 1879,
                             "id": 79
                         }, {
                             "active": false,
@@ -2874,7 +2893,7 @@
                                 }
                             ],
                             "src": "can/observe/observe.js",
-                            "line": 1891,
+                            "line": 1909,
                             "id": 80
                         }, {
                             "active": false,
@@ -2903,10 +2922,177 @@
                                 }
                             ],
                             "src": "can/observe/observe.js",
-                            "line": 1916,
+                            "line": 1934,
                             "id": 81
                         }
                     ]
+                }
+            ]
+        }, {
+            "active": false,
+            "name": "can.compute",
+            "type": "constructor",
+            "body": "<p><code>can.compute</code> lets you make observable values. A compute is actually a function that returns\nthe computed value, but you can also use the compute to set the value and you can use\n<code>bind</code> to listen to changes in the compute's return value. In this way, computes are similar\nto [can.Observe Observes], but they represent a single value rather than a collection of values.</p>\n\n<h2>Working with computes</h2>\n\n<p>The simplest way to use a compute is to have it store a single value, and to set it when\nthat value needs to change:</p>\n\n<pre><code class=\"lang-javascript\">var tally = can.compute(12);\ntally(); // 12\n\ntally(13);\ntally(); // 13</code></pre>\n\n<p>This is useful for making observable values, but the real power of <code>can.compute</code> reveals\nitself when you combine it with <code>[can.Observe]</code>. If you use a compute that derives its\nvalue from properties of an Observe, the compute will listen for changes in those\nproperties and automatically recalculate itself, emitting a <em>change</em> event if its value\nchanges.</p>\n\n<p>As this example shows, this kind of compute rarely has need to be set directly:</p>\n\n<pre><code class=\"lang-javascript\">var person = new can.Observe({\n    firstName: 'Alice',\n    lastName: 'Liddell'\n});\n\nvar fullName = can.compute(function() {\n    return person.attr('firstName') + ' ' + person.attr('lastName');\n});\nfullName.bind('change', function(ev, newVal, oldVal) {\n    console.log(\"This person's full name is now \" + newVal + '.');\n});\n\nperson.attr('firstName', 'Allison'); // The log reads:\n                                     // \"This person's full name is now Allison Liddell.\"</code></pre>\n\n<p>Take special notice of how the definition of the compute uses <code>[can.Observe.prototype.attr attr]</code>\nto read the values of the properties of <code>person</code>. This is how the compute knows to listen\nfor changes. and is similar to the need to use <code>attr</code> when live-binding properties of Observes into\n<code>[can.EJS EJS]</code> templates.</p>\n\n<p>A specific use for bound computes like this is to provide a way to work with values of Observable\nproperties in different units:</p>\n\n<pre><code class=\"lang-javascript\">var wall = new can.Observe({\n    material: 'brick',\n    length: 10 // in feet\n});\n\nvar wallLengthInMeters = can.compute(function(lengthInM) {\n    if(lengthInM !== undefined) {\n        wall.attr('length', lengthInM / 3.28084);\n    } else {\n        return wall.attr('length') * 3.28084;\n    }\n});\n\nwallLengthInMeters(); // 3.048\n\n// When you set the compute...\nwallLengthInMeters(5);\nwallLengthInMeters(); // 5\n// ...the original Observe changes too.\nwall.length;          // 16.4042</code></pre>\n\n<h2>Events</h2>\n\n<p>When a compute's value is changed, it emits a <em>change</em> event. You can listen for this change\nevent by using <code>[can.compute.bind bind]</code> to bind an event handler to the compute:</p>\n\n<pre><code class=\"lang-javascript\">var tally = can.compute(0);\ntally.bind('change', function(ev, newVal, oldVal) {\n    console.log('The tally is now at ' + newVal + '.');\n});\n\ntally(tally() + 5); // The log reads:\n                    // 'The tally is now at 5.'</code></pre>\n\n<h2>Using computes to build Controls</h2>\n\n<p>It's a piece of cake to build a <code>[can.Control]</code> off of the value of a compute. And since computes\nare observable, it means that the view of that Control will update itself whenever the value\nof the compute updates. Here's a simple slider that works off of a compute:</p>\n\n<pre><code class=\"lang-javascript\">var project = new Observe({\n    name: 'A Very Important Project',\n    percentDone: .35\n});\n\ncan.Control('SimpleSlider', { }, {\n    init: function() {\n        this.element.html(can.view(this.options.view, this.options));\n    },\n    '.handle dragend': function(el, ev) {\n        var percent = this.calculateSliderPercent();\n        // set the compute's value\n        this.options.percentDone(percent);\n    },\n    '{percentDone} change': function(ev, newVal, oldVal) {\n       // react to the percentage changing some other way\n        this.moveSliderTo(newVal);\n    }\n    // Implementing calculateSliderPercent and moveSliderTo\n    // has been left as an exercise for the reader.\n});\n\nnew SimpleSlider('#slider', {percentDone: project.compute('percentDone')});</code></pre>\n\n<p>Now that's some delicious cake. More information on Controls can be found under <code>[can.Control]</code>.\nThere is also a full explanation of can.Observe's <code>[can.Observe.prototype.compute compute]</code>,\nwhich is used in the last line of the example above.</p>",
+            "description": "",
+            "parent": "canjs",
+            "signatures": [{
+                    "code": "can.compute(getterSetter[, context])",
+                    "description": "",
+                    "params": [{
+                            "types": [{
+                                    "type": "function",
+                                    "returns": {
+                                        "types": [{
+                                                "type": "undefined"
+                                            }
+                                        ]
+                                    },
+                                    "params": []
+                                }
+                            ],
+                            "name": "getterSetter",
+                            "description": "<p>A function that gets and optionally sets the value of the compute.\nWhen called with no parameters, <em>getterSetter</em> should return the current value of the compute. When\ncalled with a single parameter, <em>getterSetter</em> should arrange things so that the next read of the compute\nproduces that value.</p>"
+                        }, {
+                            "types": [{
+                                    "type": "Object"
+                                }
+                            ],
+                            "optional": true,
+                            "name": "context",
+                            "description": "<p>The context to use when evaluating the compute.</p>"
+                        }
+                    ],
+                    "returns": {
+                        "types": [{
+                                "type": "can.compute"
+                            }
+                        ],
+                        "description": "<p>A new compute.</p>"
+                    }
+                }
+            ],
+            "comment": " ",
+            "src": "can/observe/compute/compute.js",
+            "line": 130,
+            "id": 82,
+            "children": [{
+                    "active": false,
+                    "name": "isComputed",
+                    "type": "property",
+                    "parent": "can.compute",
+                    "body": "",
+                    "description": "<p>Whether the value of the compute has been computed yet.</p>",
+                    "title": "",
+                    "src": "can/observe/compute/compute.js",
+                    "line": 319,
+                    "id": 83
+                }, {
+                    "active": false,
+                    "type": "function",
+                    "name": "can.compute.bind",
+                    "parent": "can.compute",
+                    "body": "",
+                    "description": "<p>Bind an event handler to a compute. </p>",
+                    "title": "bind",
+                    "signatures": [{
+                            "code": "bind(eventType, handler)",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "eventType",
+                                    "description": "<p>The event to bind this handler to.\nThe only event type that computes emit is <em>change</em>.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "function",
+                                            "returns": {
+                                                "types": [{
+                                                        "type": "undefined"
+                                                    }
+                                                ]
+                                            },
+                                            "params": [{
+                                                    "types": [{
+                                                            "type": "Object",
+                                                            "options": [{
+                                                                    "name": "Object"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }, {
+                                                    "types": [{
+                                                            "type": "Object",
+                                                            "options": [{
+                                                                    "name": "*"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }, {
+                                                    "types": [{
+                                                            "type": "Object",
+                                                            "options": [{
+                                                                    "name": "*"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "name": "handler",
+                                    "description": "<p>The handler to call when the event happens.\nThe handler should have three parameters:\n- <em>event</em> is the event object.\n- <em>newVal</em> is the newly-computed value of the compute.\n- <em>oldVal</em> is the value of the compute before it changed.</p>\n\n<p><code>bind</code> lets you listen to a compute to know when it changes. It works just like\ncan.Observe's <code>[can.Observe.prototype.bind bind]</code>:</p>\n\n<pre><code class=\"lang-javascript\">var tally = can.compute(0);\ntally.bind('change', function(ev, newVal, oldVal) {\n    console.log('The tally is now at ' + newVal + '.');\n});\n\ntally(tally() + 5); // The log reads:\n                    // 'The tally is now at 5.'</code></pre>"
+                                }
+                            ]
+                        }
+                    ],
+                    "src": "can/observe/compute/compute.js",
+                    "line": 327,
+                    "id": 84
+                }, {
+                    "active": false,
+                    "type": "function",
+                    "name": "can.compute.unbind",
+                    "parent": "can.compute",
+                    "body": "",
+                    "description": "<p>Unbind an event handler from a compute. </p>",
+                    "title": "unbind",
+                    "signatures": [{
+                            "code": "unbind(eventType[, handler])",
+                            "description": "",
+                            "params": [{
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ],
+                                    "name": "eventType",
+                                    "description": "<p>The type of event to unbind.\nThe only event type available for computes is <em>change</em>.</p>"
+                                }, {
+                                    "types": [{
+                                            "type": "function",
+                                            "returns": {
+                                                "types": [{
+                                                        "type": "undefined"
+                                                    }
+                                                ]
+                                            },
+                                            "params": []
+                                        }
+                                    ],
+                                    "optional": true,
+                                    "name": "handler",
+                                    "description": "<p>If given, the handler to unbind.\nIf <em>handler</em> is not supplied, all handlers bound to <em>eventType</em>\nwill be removed.</p>"
+                                }
+                            ]
+                        }
+                    ],
+                    "src": "can/observe/compute/compute.js",
+                    "line": 362,
+                    "id": 85
                 }
             ]
         }, {
@@ -2984,7 +3170,7 @@
             ],
             "comment": " ",
             "src": "can/model/model.md",
-            "id": 82,
+            "id": 86,
             "children": [{
                     "active": false,
                     "body": "",
@@ -2994,7 +3180,7 @@
                     "parent": "can.Model",
                     "src": "can/model/model.js",
                     "line": 118,
-                    "id": 83,
+                    "id": 87,
                     "children": [{
                             "active": false,
                             "body": "<p><code>bind(eventType, handler(event, instance))</code> listens to\n<strong>created</strong>, <strong>updated</strong>, <strong>destroyed</strong> events on all \ninstances of the model.</p>\n\n<pre><code>Task.bind(\"created\", function(ev, createdTask){\n     this //-&gt; Task\n  createdTask.attr(\"name\") //-&gt; \"Dishes\"\n})\n\nnew Task({name: \"Dishes\"}).save();\n</code></pre>",
@@ -3041,7 +3227,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 122,
-                            "id": 84
+                            "id": 88
                         }, {
                             "active": false,
                             "body": "<p><code>unbind(eventType, handler)</code> removes a listener\nattached with [can.Model.bind].</p>\n\n<pre><code>var handler = function(ev, createdTask){\n\n}\nTask.bind(\"created\", handler)\nTask.unbind(\"created\", handler)\n</code></pre>\n\n<p>You have to pass the same function to <code>unbind</code> that you\npassed to <code>bind</code>.</p>",
@@ -3088,7 +3274,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 148,
-                            "id": 85
+                            "id": 89
                         }, {
                             "active": false,
                             "body": "",
@@ -3103,7 +3289,7 @@
                             "parent": "can.Model.static",
                             "src": "can/model/model.js",
                             "line": 174,
-                            "id": 86
+                            "id": 90
                         }, {
                             "active": false,
                             "name": "can.Model.static.create",
@@ -3147,7 +3333,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 209,
-                            "id": 87
+                            "id": 91
                         }, {
                             "active": false,
                             "name": "can.Model.static.update",
@@ -3198,7 +3384,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 271,
-                            "id": 88
+                            "id": 92
                         }, {
                             "active": false,
                             "name": "can.Model.static.destroy",
@@ -3242,7 +3428,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 362,
-                            "id": 89
+                            "id": 93
                         }, {
                             "active": false,
                             "name": "can.Model.static.findAll",
@@ -3303,7 +3489,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 422,
-                            "id": 90
+                            "id": 94
                         }, {
                             "active": false,
                             "name": "can.Model.static.findOne",
@@ -3364,7 +3550,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 494,
-                            "id": 91
+                            "id": 95
                         }, {
                             "active": false,
                             "type": "function",
@@ -3412,7 +3598,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 650,
-                            "id": 92
+                            "id": 96
                         }, {
                             "active": false,
                             "type": "function",
@@ -3445,7 +3631,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 788,
-                            "id": 93
+                            "id": 97
                         }
                     ]
                 }, {
@@ -3457,7 +3643,7 @@
                     "parent": "can.Model",
                     "src": "can/model/model.js",
                     "line": 868,
-                    "id": 94,
+                    "id": 98,
                     "children": [{
                             "active": false,
                             "type": "function",
@@ -3482,7 +3668,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 872,
-                            "id": 95
+                            "id": 99
                         }, {
                             "active": false,
                             "type": "function",
@@ -3538,7 +3724,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 890,
-                            "id": 96
+                            "id": 100
                         }, {
                             "active": false,
                             "type": "function",
@@ -3594,7 +3780,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 960,
-                            "id": 97
+                            "id": 101
                         }, {
                             "active": false,
                             "type": "function",
@@ -3640,7 +3826,7 @@
                             ],
                             "src": "can/model/model.js",
                             "line": 1006,
-                            "id": 98
+                            "id": 102
                         }, {
                             "active": false,
                             "type": "function",
@@ -3688,7 +3874,7 @@
                             "comment": " ",
                             "src": "can/model/model.js",
                             "line": 1075,
-                            "id": 99
+                            "id": 103
                         }
                     ]
                 }
@@ -3706,7 +3892,7 @@
             "test": "can/model/qunit.html",
             "src": "can/model/model.js",
             "line": 1185,
-            "id": 103
+            "id": 107
         }, {
             "active": false,
             "type": "constructor",
@@ -3719,7 +3905,7 @@
             "test": "can/control/qunit.html",
             "inherits": "can.Construct",
             "src": "can/control/control.md",
-            "id": 104,
+            "id": 108,
             "children": [{
                     "active": false,
                     "type": "static",
@@ -3729,7 +3915,7 @@
                     "parent": "can.Control",
                     "src": "can/control/control.js",
                     "line": 43,
-                    "id": 106,
+                    "id": 110,
                     "children": [{
                             "active": false,
                             "type": "function",
@@ -3741,7 +3927,7 @@
                             "hide": true,
                             "src": "can/control/control.js",
                             "line": 48,
-                            "id": 107
+                            "id": 111
                         }, {
                             "active": false,
                             "type": "function",
@@ -3768,7 +3954,7 @@
                             },
                             "src": "can/control/control.js",
                             "line": 93,
-                            "id": 108
+                            "id": 112
                         }, {
                             "active": false,
                             "type": "function",
@@ -3803,29 +3989,19 @@
                             },
                             "src": "can/control/control.js",
                             "line": 112,
-                            "id": 109
+                            "id": 113
                         }, {
                             "active": false,
-                            "name": "can.Control.static.processors",
+                            "name": "can.Control.processors",
                             "type": "property",
                             "parent": "can.Control.static",
-                            "body": "",
-                            "description": "<p>An object of <code>{eventName : function}</code> pairs that Control uses to hook up events\nauto-magically.  A processor function looks like:</p>\n\n<pre><code>can.Control.processors.\n  myprocessor = function( el, event, selector, cb, control ) {\n     //el - the control's element\n     //event - the event (myprocessor)\n     //selector - the left of the selector\n     //cb - the function to call\n     //control - the binding control\n  };\n</code></pre>\n\n<p>This would bind anything like: \"foo~3242 myprocessor\".</p>\n\n<p>The processor must return a function that when called, \nunbinds the event handler.</p>\n\n<p>Control already has processors for the following events:</p>\n\n<ul>\n<li>change </li>\n<li>click </li>\n<li>contextmenu </li>\n<li>dblclick </li>\n<li>focusin</li>\n<li>focusout</li>\n<li>keydown </li>\n<li>keyup </li>\n<li>keypress </li>\n<li>mousedown </li>\n<li>mouseenter</li>\n<li>mouseleave</li>\n<li>mousemove </li>\n<li>mouseout </li>\n<li>mouseover </li>\n<li>mouseup </li>\n<li>reset </li>\n<li>resize </li>\n<li>scroll </li>\n<li>select </li>\n<li>submit  </li>\n</ul>\n\n<p>Listen to events on the document or window \nwith templated event handlers:</p>\n\n<pre><code>Sized = can.Control({\n  \"{window} resize\": function(){\n    this.element.width( this.element.parent().width() / 2 );\n  }\n});\n\nnew Sized( $( '#foo' ) );\n</code></pre>",
+                            "body": "<p><code>processors</code> is an object that allows you to add new events to bind\nto on a control, or to change how existent events are bound. Each\nkey-value pair of <code>processors</code> is a specification that pertains to\nan event where the key is the name of the event, and the value is\na function that processes calls to bind to the event.</p>\n\n<p>The processor function takes five arguments:</p>\n\n<ul>\n<li><em>el</em>: The Control's element.</li>\n<li><em>event</em>: The event type.</li>\n<li><em>selector</em>: The selector preceding the event in the binding used on the Control.</li>\n<li><em>callback</em>: The callback function being bound.</li>\n<li><em>control</em>: The Control the event is bound on.</li>\n</ul>\n\n<p>Inside your processor function, you should bind <em>callback</em> to the event, and\nreturn a function for can.Control to call when <em>callback</em> needs to be unbound.\n(If <em>selector</em> is defined, you will likely want to use some form of delegation\nto bind the event.)</p>\n\n<p>Here is a Control with a custom event processor set and two callbacks bound\nto that event:</p>\n\n<pre><code class=\"lang-javascript\">can.Control.processors.birthday = function(el, ev, selector, callback, control) {\n  if(selector) {\n    myFramework.delegate(ev, el, selector, callback);\n    return function() { myFramework.undelegate(ev, el, selector, callback); };\n  } else {\n    myFramework.bind(ev, el, callback);\n    return function() { myFramework.unbind(ev, el, callback); };  \n  }\n};\n\ncan.Control(\"EventTarget\", { }, {\n  'birthday': function(el, ev) {\n    // do something appropriate for the occasion\n  },\n  '.grandchild birthday': function(el, ev) {\n    // do something appropriate for the occasion\n  }\n});\n\nvar target = new EventTarget('#person');</code></pre>\n\n<p>When <code>target</code> is initialized, can.Control will call <code>can.Control.processors.birthday</code>\ntwice (because there are two event hookups for the <em>birthday</em> event). The first\ntime it's called, the arguments will be:</p>\n\n<ul>\n<li><em>el</em>: A NodeList that wraps the element with id 'person'.</li>\n<li><em>ev</em>: <code>'birthday'</code></li>\n<li><em>selector</em>: <code>''</code></li>\n<li><em>callback</em>: The function assigned to <code>' birthday'</code> in the prototype section of <code>EventTarget</code>'s\ndefinition.</li>\n<li><em>control</em>: <code>target</code> itself.</li>\n</ul>\n\n<p>The second time, the arguments are slightly different:</p>\n\n<ul>\n<li><em>el</em>: A NodeList that wraps the element with id 'person'.</li>\n<li><em>ev</em>: <code>'birthday'</code></li>\n<li><em>selector</em>: <code>'.grandchild'</code></li>\n<li><em>callback</em>: The function assigned to <code>'.grandchild birthday'</code> in the prototype section of <code>EventTarget</code>'s\ndefinition.</li>\n<li><em>control</em>: <code>target</code> itself.</li>\n</ul>\n\n<p>can.Control already has processors for these events:</p>\n\n<ul>\n<li>change </li>\n<li>click </li>\n<li>contextmenu </li>\n<li>dblclick </li>\n<li>focusin</li>\n<li>focusout</li>\n<li>keydown </li>\n<li>keyup </li>\n<li>keypress </li>\n<li>mousedown </li>\n<li>mouseenter</li>\n<li>mouseleave</li>\n<li>mousemove </li>\n<li>mouseout </li>\n<li>mouseover </li>\n<li>mouseup </li>\n<li>reset </li>\n<li>resize </li>\n<li>scroll </li>\n<li>select </li>\n<li>submit  </li>\n</ul>",
+                            "description": "<p>A collection of hookups for custom events on Controls. </p>",
                             "title": "processors",
+                            "comment": " ",
                             "src": "can/control/control.js",
                             "line": 165,
-                            "id": 110
-                        }, {
-                            "active": false,
-                            "type": "property",
-                            "body": "",
-                            "description": "<p>A object of name-value pairs that act as default values for a control's\n[can.Control::options this.options].</p>\n\n<pre><code>Message = can.Control({\n  defaults: {\n    message: \"Hello World\"\n  }\n}, {\n  init: function(){\n    this.element.text( this.options.message );\n  }\n});\n\nnew Message( \"#el1\" ); //writes \"Hello World\"\nnew Message( \"#el12\", { message: \"hi\" } ); //writes hi\n</code></pre>\n\n<p>In [can.Control::setup] the options passed to the control\nare merged with defaults.  This is not a deep merge.</p>",
-                            "title": "defaults",
-                            "name": "can.Control.static.defaults",
-                            "parent": "can.Control.static",
-                            "src": "can/control/control.js",
-                            "line": 225,
-                            "id": 111
+                            "id": 114
                         }
                     ]
                 }, {
@@ -3836,14 +4012,26 @@
                     "name": "can.Control.prototype",
                     "parent": "can.Control",
                     "src": "can/control/control.js",
-                    "line": 250,
-                    "id": 112,
+                    "line": 288,
+                    "id": 116,
                     "children": [{
+                            "active": false,
+                            "body": "",
+                            "description": "<p>The element the Control is associated with. \nThe control instance's HTMLElement (or window) wrapped by the \nutil library for ease of use. It is set by the first\nparameter to <code>new can.Construct( element, options )</code> \nin [can.Control::setup].  Control listens on <code>this.element</code>\nfor events.</p>\n\n<h3>Quick Example</h3>\n\n<p>The following <code>HelloWorld</code> control sets the control`s text to \"Hello World\":</p>\n\n<pre><code>HelloWorld = can.Control({\n  init: function(){\n       this.element.text( 'Hello World' );\n  }\n});\n\n// create the controller on the element\nnew HelloWorld( document.getElementById( '#helloworld' ) );\n</code></pre>\n\n<h2>Wrapped NodeList</h2>\n\n<p><code>this.element</code> is a wrapped NodeList of one HTMLELement (or window).  This\nis for convience in libraries like jQuery where all methods operate only on a\nNodeList.  To get the raw HTMLElement, write:</p>\n\n<pre><code>this.element[0] //-&gt; HTMLElement\n</code></pre>\n\n<p>The following details the NodeList used by each library with \nan example of updating it's text:</p>\n\n<p><strong>jQuery</strong> <code>jQuery( HTMLElement )</code></p>\n\n<pre><code>this.element.text(\"Hello World\")\n</code></pre>\n\n<p><strong>Zepto</strong> <code>Zepto( HTMLElement )</code></p>\n\n<pre><code>this.element.text(\"Hello World\")\n</code></pre>\n\n<p><strong>Dojo</strong> <code>new dojo.NodeList( HTMLElement )</code></p>\n\n<pre><code>// TODO\n</code></pre>\n\n<p><strong>Mootools</strong> <code>$$( HTMLElement )</code></p>\n\n<p>this.element.empty().appendText(\"Hello World\")</p>\n\n<p><strong>YUI</strong> </p>\n\n<p>// TODO</p>\n\n<h2>Changing <code>this.element</code></h2>\n\n<p>Sometimes you don't want what's passed to <code>new can.Control</code>\nto be this.element.  You can change this by overwriting\nsetup or by unbinding, setting this.element, and rebinding.</p>\n\n<h3>Overwriting Setup</h3>\n\n<p>The following Combobox overwrites setup to wrap a\nselect element with a div.  That div is used \nas <code>this.element</code>. Notice how <code>destroy</code> sets back the\noriginal element.</p>\n\n<pre><code>Combobox = can.Control({\n  setup: function( el, options ) {\n     this.oldElement = $( el );\n     var newEl = $( '&lt;div/&gt;' );\n     this.oldElement.wrap( newEl );\n     can.Controll.prototype.setup.call( this, newEl, options );\n  },\n  init: function() {\n     this.element //-&gt; the div\n  },\n  \".option click\": function() {\n    // event handler bound on the div\n  },\n  destroy: function() {\n     var div = this.element; //save reference\n     can.Control.prototype.destroy.call( this );\n     div.replaceWith( this.oldElement );\n  }\n});\n</code></pre>\n\n<h3>unbinding, setting, and rebinding.</h3>\n\n<p>You could also change this.element by calling\n[can.Control::off], setting this.element, and \nthen calling [can.Control::on] like:</p>\n\n<pre><code>move: function( newElement ) {\n   this.off();\n   this.element = $( newElement );\n   this.on();\n}\n</code></pre>",
+                            "title": "element",
+                            "name": "can.Control.prototype.element",
+                            "type": "property",
+                            "parent": "can.Control.prototype",
+                            "comment": " ",
+                            "src": "can/control/control.js",
+                            "line": 293,
+                            "id": 117
+                        }, {
                             "active": false,
                             "type": "function",
                             "name": "can.Control.prototype.setup",
                             "parent": "can.Control.prototype",
-                            "body": "<p>Setup is where most of control's magic happens.  It does the following:</p>\n\n<h3>Sets this.element</h3>\n\n<p>The first parameter passed to new Control( el, options ) is expected to be \nan element.  This gets converted to a Wrapped NodeList element and set as\n[can.Control.prototype.element this.element].</p>\n\n<h3>Adds the control's name to the element's className.</h3>\n\n<p>Control adds it's plugin name to the element's className for easier \ndebugging.  For example, if your Control is named \"Foo.Bar\", it adds\n\"foo_bar\" to the className.</p>\n\n<h3>Saves the control in $.data</h3>\n\n<p>A reference to the control instance is saved in $.data.  You can find \ninstances of \"Foo.Bar\" like: </p>\n\n<pre><code>$( '#el' ).data( 'controls' )[ 'foo_bar' ]\n</code></pre>\n\n<h3>Merges Options</h3>\n\n<p>Merges the default options with optional user-supplied ones.\nAdditionally, default values are exposed in the static [can.Control.static.defaults defaults] \nso that users can change them.</p>\n\n<h3>Binds event handlers</h3>\n\n<p>Setup does the event binding described in [can.Control.listening Listening To Events].</p>",
+                            "body": "<p>Setup is where most of control's magic happens.  It does the following:</p>\n\n<h3>Sets this.element</h3>\n\n<p>The first parameter passed to new Control( el, options ) is expected to be \nan element.  This gets converted to a Wrapped NodeList element and set as\n[can.Control.prototype.element this.element].</p>\n\n<h3>Adds the control's name to the element's className.</h3>\n\n<p>Control adds it's plugin name to the element's className for easier \ndebugging.  For example, if your Control is named \"Foo.Bar\", it adds\n\"foo_bar\" to the className.</p>\n\n<h3>Saves the control in $.data</h3>\n\n<p>A reference to the control instance is saved in $.data.  You can find \ninstances of \"Foo.Bar\" like: </p>\n\n<pre><code>$( '#el' ).data( 'controls' )[ 'foo_bar' ]\n</code></pre>\n\n<h3>Merges Options</h3>\n\n<p>Merges the default options with optional user-supplied ones.\nAdditionally, default values are exposed in the static [can.Control.static.defaults defaults] \nso that users can change them.</p>\n\n<h3>Binds event handlers</h3>\n\n<p>Setup does the event binding described in [can.Control].</p>",
                             "description": "<p>Perform pre-initialization logic. </p>",
                             "title": "setup",
                             "signatures": [{
@@ -3852,10 +4040,14 @@
                                     "params": [{
                                             "types": [{
                                                     "type": "HTMLElement"
+                                                }, {
+                                                    "type": "NodeList"
+                                                }, {
+                                                    "type": "String"
                                                 }
                                             ],
                                             "name": "element",
-                                            "description": "<p>the element this instance operates on.</p>"
+                                            "description": "<p>The element as passed to the constructor.</p>"
                                         }, {
                                             "types": [{
                                                     "type": "Object"
@@ -3879,30 +4071,20 @@
                             ],
                             "comment": " ",
                             "src": "can/control/control.js",
-                            "line": 255,
-                            "id": 113
+                            "line": 309,
+                            "id": 118
                         }, {
                             "active": false,
                             "name": "can.Control.prototype.options",
                             "type": "property",
                             "parent": "can.Control.prototype",
-                            "body": "",
-                            "description": "<p>Options are used to configure a control.  They are\nthe 2nd argument\npassed to a control (or the first argument passed to the \n[can.Control.plugin control's jQuery plugin]).</p>\n\n<p>For example:</p>\n\n<pre><code>can.Control('Hello')\n\nvar h1 = new Hello( $( '#content1' ), { message: 'World' } );\nequal( h1.options.message , \"World\" );\n\nvar h2 = $( '#content2' ).hello({ message: 'There' })\n                         .control();\nequal( h2.options.message , \"There\" );\n</code></pre>\n\n<p>Options are merged with [can.Control.static.defaults defaults] in\n[can.Control.prototype.setup setup].</p>\n\n<p>For example:</p>\n\n<pre><code>Tabs = can.Control({\n   defaults: {\n     activeClass: \"ui-active-state\"\n   }\n}, {\n   init: function(){\n     this.element.addClass( this.options.activeClass );\n   }\n});\n\nnew Tabs( $( \"#tabs1\" ) ); // adds 'ui-active-state'\nnew Tabs( $( \"#tabs2\" ), { activeClass : 'active' } ); // adds 'active'\n</code></pre>\n\n<p>Options are typically updated by calling \n[can.Control.prototype.update update];</p>",
+                            "body": "<p>Options are used to configure a control.  They are\nthe 2nd argument\npassed to a control (or the first argument passed to the \n[can.Control.plugin control's jQuery plugin]).</p>\n\n<p>For example:</p>\n\n<pre><code>can.Control('Hello')\n\nvar h1 = new Hello( $( '#content1' ), { message: 'World' } );\nequal( h1.options.message , \"World\" );\n\nvar h2 = $( '#content2' ).hello({ message: 'There' })\n                         .control();\nequal( h2.options.message , \"There\" );\n</code></pre>\n\n<p>Options are merged with [can.Control.static.defaults defaults] in\n[can.Control.prototype.setup setup].</p>\n\n<p>For example:</p>\n\n<pre><code>Tabs = can.Control({\n   defaults: {\n     activeClass: \"ui-active-state\"\n   }\n}, {\n   init: function(){\n     this.element.addClass( this.options.activeClass );\n   }\n});\n\nnew Tabs( $( \"#tabs1\" ) ); // adds 'ui-active-state'\nnew Tabs( $( \"#tabs2\" ), { activeClass : 'active' } ); // adds 'active'\n</code></pre>",
+                            "description": "",
                             "title": "options",
+                            "comment": " ",
                             "src": "can/control/control.js",
-                            "line": 315,
-                            "id": 114
-                        }, {
-                            "active": false,
-                            "type": "property",
-                            "body": "",
-                            "description": "<p>The element the Control is associated with. \nThe control instance's HTMLElement (or window) wrapped by the \nutil library for ease of use. It is set by the first\nparameter to <code>new can.Construct( element, options )</code> \nin [can.Control::setup].  Control listens on <code>this.element</code>\nfor events.</p>\n\n<h3>Quick Example</h3>\n\n<p>The following <code>HelloWorld</code> control sets the control`s text to \"Hello World\":</p>\n\n<pre><code>HelloWorld = can.Control({\n  init: function(){\n       this.element.text( 'Hello World' );\n  }\n});\n\n// create the controller on the element\nnew HelloWorld( document.getElementById( '#helloworld' ) );\n</code></pre>\n\n<h2>Wrapped NodeList</h2>\n\n<p><code>this.element</code> is a wrapped NodeList of one HTMLELement (or window).  This\nis for convience in libraries like jQuery where all methods operate only on a\nNodeList.  To get the raw HTMLElement, write:</p>\n\n<pre><code>this.element[0] //-&gt; HTMLElement\n</code></pre>\n\n<p>The following details the NodeList used by each library with \nan example of updating it's text:</p>\n\n<p><strong>jQuery</strong> <code>jQuery( HTMLElement )</code></p>\n\n<pre><code>this.element.text(\"Hello World\")\n</code></pre>\n\n<p><strong>Zepto</strong> <code>Zepto( HTMLElement )</code></p>\n\n<pre><code>this.element.text(\"Hello World\")\n</code></pre>\n\n<p><strong>Dojo</strong> <code>new dojo.NodeList( HTMLElement )</code></p>\n\n<pre><code>// TODO\n</code></pre>\n\n<p><strong>Mootools</strong> <code>$$( HTMLElement )</code></p>\n\n<p>this.element.empty().appendText(\"Hello World\")</p>\n\n<p><strong>YUI</strong> </p>\n\n<p>// TODO</p>\n\n<h2>Changing <code>this.element</code></h2>\n\n<p>Sometimes you don't want what's passed to <code>new can.Control</code>\nto be this.element.  You can change this by overwriting\nsetup or by unbinding, setting this.element, and rebinding.</p>\n\n<h3>Overwriting Setup</h3>\n\n<p>The following Combobox overwrites setup to wrap a\nselect element with a div.  That div is used \nas <code>this.element</code>. Notice how <code>destroy</code> sets back the\noriginal element.</p>\n\n<pre><code>Combobox = can.Control({\n  setup: function( el, options ) {\n     this.oldElement = $( el );\n     var newEl = $( '&lt;div/&gt;' );\n     this.oldElement.wrap( newEl );\n     can.Controll.prototype.setup.call( this, newEl, options );\n  },\n  init: function() {\n     this.element //-&gt; the div\n  },\n  \".option click\": function() {\n    // event handler bound on the div\n  },\n  destroy: function() {\n     var div = this.element; //save reference\n     can.Control.prototype.destroy.call( this );\n     div.replaceWith( this.oldElement );\n  }\n});\n</code></pre>\n\n<h3>unbinding, setting, and rebinding.</h3>\n\n<p>You could also change this.element by calling\n[can.Control::off], setting this.element, and \nthen calling [can.Control::on] like:</p>\n\n<pre><code>move: function( newElement ) {\n   this.off();\n   this.element = $( newElement );\n   this.on();\n}\n</code></pre>",
-                            "title": "element",
-                            "name": "can.Control.prototype.element",
-                            "parent": "can.Control.prototype",
-                            "src": "can/control/control.js",
-                            "line": 363,
-                            "id": 115
+                            "line": 369,
+                            "id": 119
                         }, {
                             "active": false,
                             "type": "function",
@@ -3983,8 +4165,8 @@
                             ],
                             "comment": " ",
                             "src": "can/control/control.js",
-                            "line": 466,
-                            "id": 116
+                            "line": 517,
+                            "id": 120
                         }, {
                             "active": false,
                             "type": "function",
@@ -3995,15 +4177,15 @@
                             "description": "<p>Unbinds all event handlers on the controller. You should never\nbe calling this unless in use with [can.Control::on].</p>",
                             "hide": true,
                             "src": "can/control/control.js",
-                            "line": 617,
-                            "id": 117
+                            "line": 668,
+                            "id": 121
                         }, {
                             "active": false,
                             "type": "function",
                             "name": "can.Control.prototype.destroy",
                             "parent": "can.Control.prototype",
                             "body": "",
-                            "description": "<p>Clean up after a Control that has been removed. \n<code>destroy</code> prepares a control for garbage collection and is a place to\nreset any changes the control has made.  </p>\n\n<h2>Allowing Garbage Collection</h2>\n\n<p>Destroy is called whenever a control's element is removed from the page using \nthe library's standard HTML modifier methods.  This means that you\ndon't have to call destroy yourself and it \nwill be called automatically when appropriate.  </p>\n\n<p>The following <code>Clicker</code> widget listens on the window for clicks and updates\nits element's innerHTML.  If we remove the element, the window's event handler\nis removed auto-magically:</p>\n\n<pre><code> Clickr = can.Control({\n  \"{window} click\": function() {\n       this.element.html( this.count ? \n                          this.count++ : this.count = 0 );\n  }  \n});\n\n// create a clicker on an element\nnew Clicker( \"#clickme\" );\n\n// remove the element\n$( '#clickme' ).remove();\n</code></pre>\n\n<p>The methods you can use that will destroy controls automatically by library:</p>\n\n<p><strong>jQuery and Zepto</strong></p>\n\n<ul>\n<li>$.fn.remove</li>\n<li>$.fn.html</li>\n<li>$.fn.replaceWith</li>\n<li>$.fn.empty</li>\n</ul>\n\n<p><strong>Dojo</strong></p>\n\n<ul>\n<li>dojo.destroy</li>\n<li>dojo.empty</li>\n<li>dojo.place (with the replace option)</li>\n</ul>\n\n<p><strong>Mootools</strong></p>\n\n<ul>\n<li>Element.prototype.destroy</li>\n</ul>\n\n<p><strong>YUI</strong></p>\n\n<ul>\n<li>TODO!</li>\n</ul>\n\n<h2>Teardown in Destroy</h2>\n\n<p>Sometimes, you want to reset a controlled element back to its\noriginal state when the control is destroyed.  Overwriting destroy\nlets you write teardown code of this manner.  <strong>When overwriting\ndestroy, make sure you call Control's base functionality</strong>.</p>\n\n<p>The following example changes an element's text when the control is\ncreated and sets it back when the control is removed:</p>\n\n<pre><code>Changer = can.Control({\n  init: function() {\n    this.oldText = this.element.text();\n    this.element.text( \"Changed!!!\" );\n  },\n  destroy: function() {\n    this.element.text( this.oldText );\n    can.Control.prototype.destroy.call( this );\n  }\n});\n\n// create a changer which changes #myel's text\nvar changer = new Changer( '#myel' );\n\n// destroy changer which will reset it\nchanger.destroy();\n</code></pre>\n\n<h2>Base Functionality</h2>\n\n<p>Control prepares the control for garbage collection by:</p>\n\n<ul>\n<li>unbinding all event handlers</li>\n<li>clearing references to this.element and this.options</li>\n<li>clearing the element's reference to the control</li>\n<li>removing it's [can.Control.pluginName] from the element's className</li>\n</ul>",
+                            "description": "<p>Remove a Control from an element and clean up the Control. \n<code>destroy</code> prepares a control for garbage collection and is a place to\nreset any changes the control has made.  </p>\n\n<h2>Allowing Garbage Collection</h2>\n\n<p>Destroy is called whenever a control's element is removed from the page using \nthe library's standard HTML modifier methods.  This means that you\ndon't have to call destroy yourself and it \nwill be called automatically when appropriate.  </p>\n\n<p>The following <code>Clicker</code> widget listens on the window for clicks and updates\nits element's innerHTML.  If we remove the element, the window's event handler\nis removed auto-magically:</p>\n\n<pre><code> Clickr = can.Control({\n  \"{window} click\": function() {\n       this.element.html( this.count ? \n                          this.count++ : this.count = 0 );\n  }  \n});\n\n// create a clicker on an element\nnew Clicker( \"#clickme\" );\n\n// remove the element\n$( '#clickme' ).remove();\n</code></pre>\n\n<p>The methods you can use that will destroy controls automatically by library:</p>\n\n<p><strong>jQuery and Zepto</strong></p>\n\n<ul>\n<li>$.fn.remove</li>\n<li>$.fn.html</li>\n<li>$.fn.replaceWith</li>\n<li>$.fn.empty</li>\n</ul>\n\n<p><strong>Dojo</strong></p>\n\n<ul>\n<li>dojo.destroy</li>\n<li>dojo.empty</li>\n<li>dojo.place (with the replace option)</li>\n</ul>\n\n<p><strong>Mootools</strong></p>\n\n<ul>\n<li>Element.prototype.destroy</li>\n</ul>\n\n<p><strong>YUI</strong></p>\n\n<ul>\n<li>TODO!</li>\n</ul>\n\n<h2>Teardown in Destroy</h2>\n\n<p>Sometimes, you want to reset a controlled element back to its\noriginal state when the control is destroyed.  Overwriting destroy\nlets you write teardown code of this manner.  <strong>When overwriting\ndestroy, make sure you call Control's base functionality</strong>.</p>\n\n<p>The following example changes an element's text when the control is\ncreated and sets it back when the control is removed:</p>\n\n<pre><code>Changer = can.Control({\n  init: function() {\n    this.oldText = this.element.text();\n    this.element.text( \"Changed!!!\" );\n  },\n  destroy: function() {\n    this.element.text( this.oldText );\n    can.Control.prototype.destroy.call( this );\n  }\n});\n\n// create a changer which changes #myel's text\nvar changer = new Changer( '#myel' );\n\n// destroy changer which will reset it\nchanger.destroy();\n</code></pre>\n\n<h2>Base Functionality</h2>\n\n<p>Control prepares the control for garbage collection by:</p>\n\n<ul>\n<li>unbinding all event handlers</li>\n<li>clearing references to this.element and this.options</li>\n<li>clearing the element's reference to the control</li>\n<li>removing it's [can.Control.pluginName] from the element's className</li>\n</ul>",
                             "signatures": [{
                                     "code": "destroy()",
                                     "description": "",
@@ -4012,8 +4194,8 @@
                             ],
                             "title": "destroy",
                             "src": "can/control/control.js",
-                            "line": 631,
-                            "id": 118
+                            "line": 682,
+                            "id": 122
                         }
                     ]
                 }
@@ -4060,7 +4242,7 @@
             ],
             "comment": " ",
             "src": "can/route/route.md",
-            "id": 119,
+            "id": 123,
             "children": [{
                     "active": false,
                     "type": "function",
@@ -4093,7 +4275,7 @@
                     "comment": " ",
                     "src": "can/route/route.js",
                     "line": 96,
-                    "id": 120
+                    "id": 124
                 }, {
                     "active": false,
                     "type": "function",
@@ -4126,7 +4308,7 @@
                     "comment": " ",
                     "src": "can/route/route.js",
                     "line": 184,
-                    "id": 121
+                    "id": 125
                 }, {
                     "active": false,
                     "type": "function",
@@ -4160,7 +4342,7 @@
                     "comment": " ",
                     "src": "can/route/route.js",
                     "line": 285,
-                    "id": 124
+                    "id": 128
                 }, {
                     "active": false,
                     "type": "function",
@@ -4201,7 +4383,7 @@
                     "comment": " ",
                     "src": "can/route/route.js",
                     "line": 312,
-                    "id": 125
+                    "id": 129
                 }, {
                     "active": false,
                     "type": "function",
@@ -4255,7 +4437,7 @@
                     "comment": " ",
                     "src": "can/route/route.js",
                     "line": 342,
-                    "id": 126
+                    "id": 130
                 }, {
                     "active": false,
                     "type": "function",
@@ -4288,7 +4470,7 @@
                     "comment": " ",
                     "src": "can/route/route.js",
                     "line": 388,
-                    "id": 127
+                    "id": 131
                 }
             ]
         }, {
@@ -4355,7 +4537,7 @@
             ],
             "comment": " ",
             "src": "can/view/view.md",
-            "id": 128,
+            "id": 132,
             "children": [{
                     "active": false,
                     "body": "<p><code>can.view.ejs([id,] template)</code> registers an EJS template string \nfor a given id programatically. The following\nregisters <code>myViewEJS</code> and renders it into a documentFragment.</p>\n\n<pre><code> can.view.ejs('myViewEJS', '&lt;h2&gt;&lt;%= message %&gt;&lt;/h2&gt;');\n\n var frag = can.view('myViewEJS', {\n     message : 'Hello there!'\n });\n\n frag // -&gt; &lt;h2&gt;Hello there!&lt;/h2&gt;\n</code></pre>\n\n<p>To convert the template into a render function, just pass \nthe template. Call the render function with the data\nyou want to pass to the template and it returns the \ndocumentFragment.</p>\n\n<pre><code> var renderer = can.view.ejs('&lt;div&gt;&lt;%= message %&gt;&lt;/div&gt;');\n renderer({\n     message : 'EJS'\n }); // -&gt; &lt;div&gt;EJS&lt;/div&gt;\n</code></pre>",
@@ -4414,7 +4596,7 @@
                     "comment": " ",
                     "src": "can/view/view.js",
                     "line": 103,
-                    "id": 129
+                    "id": 133
                 }, {
                     "active": false,
                     "body": "",
@@ -4472,7 +4654,7 @@
                     ],
                     "src": "can/view/view.js",
                     "line": 140,
-                    "id": 130
+                    "id": 134
                 }, {
                     "active": false,
                     "name": "hookups",
@@ -4484,7 +4666,7 @@
                     "hide": true,
                     "src": "can/view/view.js",
                     "line": 176,
-                    "id": 131
+                    "id": 135
                 }, {
                     "active": false,
                     "type": "function",
@@ -4517,7 +4699,7 @@
                     "comment": " ",
                     "src": "can/view/view.js",
                     "line": 183,
-                    "id": 132
+                    "id": 136
                 }, {
                     "active": false,
                     "name": "cached",
@@ -4533,7 +4715,7 @@
                     "hide": true,
                     "src": "can/view/view.js",
                     "line": 205,
-                    "id": 133
+                    "id": 137
                 }, {
                     "active": false,
                     "name": "cache",
@@ -4548,7 +4730,7 @@
                     "title": "",
                     "src": "can/view/view.js",
                     "line": 214,
-                    "id": 134
+                    "id": 138
                 }, {
                     "active": false,
                     "type": "function",
@@ -4618,7 +4800,7 @@
                     "comment": " ",
                     "src": "can/view/view.js",
                     "line": 225,
-                    "id": 135
+                    "id": 139
                 }, {
                     "active": false,
                     "name": "can.view.ext",
@@ -4633,7 +4815,7 @@
                     "title": "ext",
                     "src": "can/view/view.js",
                     "line": 266,
-                    "id": 136
+                    "id": 140
                 }, {
                     "active": false,
                     "type": "function",
@@ -4667,7 +4849,7 @@
                     "hide": true,
                     "src": "can/view/view.js",
                     "line": 277,
-                    "id": 137
+                    "id": 141
                 }, {
                     "active": false,
                     "type": "function",
@@ -4701,7 +4883,7 @@
                     "hide": true,
                     "src": "can/view/view.js",
                     "line": 286,
-                    "id": 138
+                    "id": 142
                 }, {
                     "active": false,
                     "type": "function",
@@ -4833,7 +5015,7 @@
                     "comment": " ",
                     "src": "can/view/view.js",
                     "line": 295,
-                    "id": 139
+                    "id": 143
                 }, {
                     "active": false,
                     "type": "function",
@@ -4874,7 +5056,7 @@
                     "hide": true,
                     "src": "can/view/view.js",
                     "line": 447,
-                    "id": 140
+                    "id": 144
                 }, {
                     "active": false,
                     "name": "can.view.text",
@@ -4885,7 +5067,7 @@
                     "hide": true,
                     "src": "can/view/view.js",
                     "line": 592,
-                    "id": 141
+                    "id": 145
                 }
             ]
         }

@@ -79,6 +79,11 @@
 	</li>
 	
 	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Construct.html">can.Construct</a>
 	
 	</li>
@@ -214,6 +219,11 @@
 	</li>
 	
 	<li >
+	<a href="can.compute.html">can.compute</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
@@ -249,7 +259,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1695">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1708">source</a></li>
 		
 		
 		
@@ -278,8 +288,15 @@
 		<h4><code>{*}</code></h4>
 		<div class="description">
 			<p>the element just shifted off the List, or <code>undefined</code> if the List is empty</p>
+		</div>
+	</div>
 
-<p><code>shift</code> is the opposite action from <code>[can.Observe.List.unshift unshift]</code>:</p>
+		</section>
+		
+
+		
+		<section class="comment">
+			<p><code>shift</code> is the opposite action from <code>[can.Observe.List.unshift unshift]</code>:</p>
 
 <pre><code class="lang-javascript">var list = new can.Observe.List(['Alice']);
 
@@ -300,12 +317,7 @@ when it is called.</p>
 
 <p><code>shift</code> has a counterpart in [can.Observe.List.unshift unshift], or you may be
 looking for [can.Observe.List.push push] and its counterpart [can.Observe.List.pop pop].</p>
-		</div>
-	</div>
-
 		</section>
-		
-
 		
 	</article>
 </div>
@@ -315,7 +327,7 @@ looking for [can.Observe.List.push push] and its counterpart [can.Observe.List.p
     "name": "can.Observe.List.prototype.shift",
     "type": "function",
     "parent": "can.Observe.List.prototype",
-    "body": "",
+    "body": "<p><code>shift</code> is the opposite action from <code>[can.Observe.List.unshift unshift]</code>:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice']);\n\nlist.unshift('Bob', 'Eve');\nlist.attr(); // ['Bob', 'Eve', 'Alice']\n\nlist.shift(); // 'Bob'\nlist.shift(); // 'Eve'\nlist.shift(); // 'Alice'\nlist.shift(); // undefined</code></pre>\n\n<h2>Events</h2>\n\n<p><code>pop</code> causes <em>change</em>, <em>remove</em>, and <em>length</em> events to be fired if the List is not empty\nwhen it is called.</p>\n\n<h2>See also</h2>\n\n<p><code>shift</code> has a counterpart in [can.Observe.List.unshift unshift], or you may be\nlooking for [can.Observe.List.push push] and its counterpart [can.Observe.List.pop pop].</p>",
     "description": "<p>Remove en element from the front of a list. </p>",
     "title": "shift",
     "signatures": [{
@@ -327,12 +339,13 @@ looking for [can.Observe.List.push push] and its counterpart [can.Observe.List.p
                         "type": "*"
                     }
                 ],
-                "description": "<p>the element just shifted off the List, or <code>undefined</code> if the List is empty</p>\n\n<p><code>shift</code> is the opposite action from <code>[can.Observe.List.unshift unshift]</code>:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice']);\n\nlist.unshift('Bob', 'Eve');\nlist.attr(); // ['Bob', 'Eve', 'Alice']\n\nlist.shift(); // 'Bob'\nlist.shift(); // 'Eve'\nlist.shift(); // 'Alice'\nlist.shift(); // undefined</code></pre>\n\n<h2>Events</h2>\n\n<p><code>pop</code> causes <em>change</em>, <em>remove</em>, and <em>length</em> events to be fired if the List is not empty\nwhen it is called.</p>\n\n<h2>See also</h2>\n\n<p><code>shift</code> has a counterpart in [can.Observe.List.unshift unshift], or you may be\nlooking for [can.Observe.List.push push] and its counterpart [can.Observe.List.pop pop].</p>"
+                "description": "<p>the element just shifted off the List, or <code>undefined</code> if the List is empty</p>"
             }
         }
     ],
+    "comment": " ",
     "src": "can/observe/observe.js",
-    "line": 1695,
+    "line": 1708,
     "id": 74
 };
 

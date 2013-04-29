@@ -79,6 +79,11 @@
 	</li>
 	
 	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Construct.html">can.Construct</a>
 	
 	</li>
@@ -214,6 +219,11 @@
 	</li>
 	
 	<li >
+	<a href="can.compute.html">can.compute</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
@@ -249,7 +259,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1755">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1769">source</a></li>
 		
 		
 		
@@ -303,8 +313,15 @@
 		<h4><code>{Number}</code></h4>
 		<div class="description">
 			<p>the position of the item in the List, or -1 if the item is not found.</p>
+		</div>
+	</div>
 
-<pre><code class="lang-javascript">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);
+		</section>
+		
+
+		
+		<section class="comment">
+			<pre><code class="lang-javascript">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);
 list.indexOf('Alice');   // 0
 list.indexOf('Charlie'); // -1</code></pre>
 
@@ -312,13 +329,8 @@ list.indexOf('Charlie'); // -1</code></pre>
 
 <pre><code class="lang-javascript">function(list, item) {
     return list.indexOf(item) >= 0;
-}</code></pre>
-		</div>
-	</div>
-
+}</code></pre>     
 		</section>
-		
-
 		
 	</article>
 </div>
@@ -328,7 +340,7 @@ list.indexOf('Charlie'); // -1</code></pre>
     "type": "function",
     "name": "can.Observe.List.prototype.indexOf",
     "parent": "can.Observe.List.prototype",
-    "body": "",
+    "body": "<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nlist.indexOf('Alice');   // 0\nlist.indexOf('Charlie'); // -1</code></pre>\n\n<p>It is trivial to make a <code>contains</code>-type function using <code>indexOf</code>:</p>\n\n<pre><code class=\"lang-javascript\">function(list, item) {\n    return list.indexOf(item) >= 0;\n}</code></pre>     ",
     "description": "<p>Look for an item in a List. </p>",
     "title": "indexOf",
     "signatures": [{
@@ -348,12 +360,13 @@ list.indexOf('Charlie'); // -1</code></pre>
                         "type": "Number"
                     }
                 ],
-                "description": "<p>the position of the item in the List, or -1 if the item is not found.</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nlist.indexOf('Alice');   // 0\nlist.indexOf('Charlie'); // -1</code></pre>\n\n<p>It is trivial to make a <code>contains</code>-type function using <code>indexOf</code>:</p>\n\n<pre><code class=\"lang-javascript\">function(list, item) {\n    return list.indexOf(item) >= 0;\n}</code></pre>"
+                "description": "<p>the position of the item in the List, or -1 if the item is not found.</p>"
             }
         }
     ],
+    "comment": " ",
     "src": "can/observe/observe.js",
-    "line": 1755,
+    "line": 1769,
     "id": 75
 };
 

@@ -146,6 +146,7 @@ module.exports = function (grunt) {
 					'can/construct/construct.js',
 					'can/observe/observe.md',
 					'can/observe/observe.js',
+					'can/observe/compute/compute.js',
 					'can/model/model.md',
 					'can/model/model.js',
 					'can/control/control.md',

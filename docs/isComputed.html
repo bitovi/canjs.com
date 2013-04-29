@@ -98,8 +98,38 @@
 	
 	</li>
 	
-	<li >
+	<li class="active">
 	<a href="can.compute.html">can.compute</a>
+	
+		
+		<ul>
+		
+			
+				<li class="active">
+				<a href="isComputed.html">
+					 isComputed 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="can.compute.bind.html">
+					 bind 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="can.compute.unbind.html">
+					 unbind 
+				</a>
+				</li>
+			
+		
+		</ul>
+		
 	
 	</li>
 	
@@ -135,18 +165,18 @@
 		<section class="title">
 			<div class="pull-right">
 	<ul class="tags">
-		<li>function</li>
+		<li>property</li>
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1118">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/compute/compute.js#L319">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>each</h1> <span class="module">can.Observe.List.prototype.each</span>
+	<h1>isComputed</h1>
 
 
 
@@ -154,131 +184,26 @@
 		</section>
 
 		<section class="description">
-			<p>Call a function on each element of a List. </p>
+			<p>Whether the value of the compute has been computed yet.</p>
 		</section>
 
 		
-		<section class="signature">
-			<h2>each(callback)</h2>
-<p><code>each</code> iterates through the Observe, calling a function
-for each element.</p>
 
-	<h3>Parameters</h3>
-
-	<ol class="parameters">
-		
-		<li class="parameter">
-			<h4>callback <code>{function}</code></h4>
-			<div class="description">
-				<p><p>the function to call for each element
-The value and index of each element will be passed as the first and second
-arguments, respectively, to the callback. If the callback returns false,
-the loop will stop.</p></p>
-			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{function}</code></h5>
-					<div class="description">
-						<p>the function to call for each element
-The value and index of each element will be passed as the first and second
-arguments, respectively, to the callback. If the callback returns false,
-the loop will stop.</p>
-					</div>
-				</li>
-				
-			</ul>
-			-->
-		</li>
-		
-	</ol>
-
-
-	<h3>Returns</h3>
-	<div class="returns">
-		<h4><code>{can.Observe.List}</code></h4>
-		<div class="description">
-			<p>this List, for chaining</p>
-		</div>
-	</div>
-
-		</section>
-		
-
-		
-		<section class="comment">
-			<pre><code class="lang-javascript">var i = 0;
-new can.Observe([1, 10, 100]).each(function(element, index) {
-    i += element;
-});
-
-i; // 111
-
-i = 0;
-new can.Observe([1, 10, 100]).each(function(element, index) {
-    i += element;
-    if(index >= 1) {
-        return false;
-    }
-});
-
-i; // 11</code></pre>     
-		</section>
 		
 	</article>
 </div>
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<pre><code class=\"lang-javascript\">var i = 0;\nnew can.Observe([1, 10, 100]).each(function(element, index) {\n    i += element;\n});\n\ni; // 111\n\ni = 0;\nnew can.Observe([1, 10, 100]).each(function(element, index) {\n    i += element;\n    if(index >= 1) {\n        return false;\n    }\n});\n\ni; // 11</code></pre>     ",
-    "description": "<p>Call a function on each element of a List. </p>",
-    "title": "each",
-    "name": "can.Observe.List.prototype.each",
-    "type": "function",
-    "signatures": [{
-            "code": "each(callback)",
-            "description": "<p><code>each</code> iterates through the Observe, calling a function\nfor each element.</p>",
-            "params": [{
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": [{
-                                    "types": [{
-                                            "type": "*"
-                                        }
-                                    ]
-                                }, {
-                                    "types": [{
-                                            "type": "Number"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ],
-                    "name": "callback",
-                    "description": "<p>the function to call for each element\nThe value and index of each element will be passed as the first and second\narguments, respectively, to the callback. If the callback returns false,\nthe loop will stop.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "can.Observe.List"
-                    }
-                ],
-                "description": "<p>this List, for chaining</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/observe/observe.js",
-    "line": 1118,
-    "id": 68
+    "name": "isComputed",
+    "type": "property",
+    "parent": "can.compute",
+    "body": "",
+    "description": "<p>Whether the value of the compute has been computed yet.</p>",
+    "title": "",
+    "src": "can/observe/compute/compute.js",
+    "line": 319,
+    "id": 83
 };
 
 	console.log(docData);

@@ -263,24 +263,13 @@
 				</li>
 			
 		
-			
-				<li class="heading"><span>constructor</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Deferred.prototype.html">
-								 can.Deferred.prototype 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
-		
 		</ul>
 		
+	
+	</li>
+	
+	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
 	
 	</li>
 	
@@ -296,6 +285,11 @@
 	
 	<li >
 	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.compute.html">can.compute</a>
 	
 	</li>
 	
@@ -335,7 +329,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L85">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L96">source</a></li>
 		
 		
 		
@@ -419,15 +413,15 @@
 			<p><code>can.extend(target, objectN)</code> merges the contents of two or more objects together into the first object
 similarly to [http://api.jquery.com/jQuery.extend/ jQuery.extend].</p>
 
-<p>var first = {},
+<pre><code class="lang-javascript">var first = {},
 second = {a: "b"},
-thrid = {c: "d"};</p>
+third = {c: "d"};
 
-<p>can.extend(first, second, third); //-> first</p>
+can.extend(first, second, third); //-> first
 
-<p>first  //-> {a: "b", c: "d"}
+first  //-> {a: "b", c: "d"}
 second //-> {a: "b"}
-third  //-> {c: "d"}</p>
+third  //-> {c: "d"}</code></pre>
 		</section>
 		
 	</article>
@@ -435,7 +429,7 @@ third  //-> {c: "d"}</p>
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<p><code>can.extend(target, objectN)</code> merges the contents of two or more objects together into the first object\nsimilarly to [http://api.jquery.com/jQuery.extend/ jQuery.extend].</p>\n\n<p>var first = {},\nsecond = {a: \"b\"},\nthrid = {c: \"d\"};</p>\n\n<p>can.extend(first, second, third); //-> first</p>\n\n<p>first  //-> {a: \"b\", c: \"d\"}\nsecond //-> {a: \"b\"}\nthird  //-> {c: \"d\"}</p>",
+    "body": "<p><code>can.extend(target, objectN)</code> merges the contents of two or more objects together into the first object\nsimilarly to [http://api.jquery.com/jQuery.extend/ jQuery.extend].</p>\n\n<pre><code class=\"lang-javascript\">var first = {},\nsecond = {a: \"b\"},\nthird = {c: \"d\"};\n\ncan.extend(first, second, third); //-> first\n\nfirst  //-> {a: \"b\", c: \"d\"}\nsecond //-> {a: \"b\"}\nthird  //-> {c: \"d\"}</code></pre>",
     "description": "<p>Merge objects together. </p>",
     "title": "",
     "name": "can.extend",
@@ -471,7 +465,7 @@ third  //-> {c: "d"}</p>
     ],
     "comment": " ",
     "src": "can/util/util.js",
-    "line": 85,
+    "line": 96,
     "id": 7
 };
 

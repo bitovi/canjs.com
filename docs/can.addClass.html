@@ -263,24 +263,13 @@
 				</li>
 			
 		
-			
-				<li class="heading"><span>constructor</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Deferred.prototype.html">
-								 can.Deferred.prototype 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
-		
 		</ul>
 		
+	
+	</li>
+	
+	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
 	
 	</li>
 	
@@ -296,6 +285,11 @@
 	
 	<li >
 	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.compute.html">can.compute</a>
 	
 	</li>
 	
@@ -335,7 +329,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L466">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L504">source</a></li>
 		
 		
 		
@@ -412,24 +406,24 @@
 nodelist's HTMLElements.  It does NOT replace any existing class(es)
 already defined.</p>
 
-<p>// Before
-<div id="foo" class="monkey" /></p>
+<pre><code class="lang-javascript">// Before
+<div id="foo" class="monkey" />
 
-<p>can.addClass(can.$("#foo"),"bar")</p>
+can.addClass(can.$("#foo"),"bar")
 
-<p>// After
-<div id="foo" class="monkey bar" /></p>
+// After
+<div id="foo" class="monkey bar" /></code></pre>
 
 <p>You can also pass multiple class(es) and it will add them to the existing
 set also.</p>
 
-<p>// Before
-<div id="foo" class="monkey" /></p>
+<pre><code class="lang-javascript">// Before
+<div id="foo" class="monkey" />
 
-<p>can.addClass(can.$("#foo"),"bar man")</p>
+can.addClass(can.$("#foo"),"bar man")
 
-<p>// After
-<div id="foo" class="monkey bar man" /></p>
+// After
+<div id="foo" class="monkey bar man" /></code></pre>
 
 <p>This works similarly to [http://api.jquery.com/addClass/ jQuery.fn.addClass].</p>
 		</section>
@@ -439,7 +433,7 @@ set also.</p>
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<p><code>can.addClass( nodelist, className )</code> adds the specified class(es) to\nnodelist's HTMLElements.  It does NOT replace any existing class(es)\nalready defined.</p>\n\n<p>// Before\n<div id=\"foo\" class=\"monkey\" /></p>\n\n<p>can.addClass(can.$(\"#foo\"),\"bar\")</p>\n\n<p>// After\n<div id=\"foo\" class=\"monkey bar\" /></p>\n\n<p>You can also pass multiple class(es) and it will add them to the existing\nset also.</p>\n\n<p>// Before\n<div id=\"foo\" class=\"monkey\" /></p>\n\n<p>can.addClass(can.$(\"#foo\"),\"bar man\")</p>\n\n<p>// After\n<div id=\"foo\" class=\"monkey bar man\" /></p>\n\n<p>This works similarly to [http://api.jquery.com/addClass/ jQuery.fn.addClass].</p>",
+    "body": "<p><code>can.addClass( nodelist, className )</code> adds the specified class(es) to\nnodelist's HTMLElements.  It does NOT replace any existing class(es)\nalready defined.</p>\n\n<pre><code class=\"lang-javascript\">// Before\n<div id=\"foo\" class=\"monkey\" />\n\ncan.addClass(can.$(\"#foo\"),\"bar\")\n\n// After\n<div id=\"foo\" class=\"monkey bar\" /></code></pre>\n\n<p>You can also pass multiple class(es) and it will add them to the existing\nset also.</p>\n\n<pre><code class=\"lang-javascript\">// Before\n<div id=\"foo\" class=\"monkey\" />\n\ncan.addClass(can.$(\"#foo\"),\"bar man\")\n\n// After\n<div id=\"foo\" class=\"monkey bar man\" /></code></pre>\n\n<p>This works similarly to [http://api.jquery.com/addClass/ jQuery.fn.addClass].</p>",
     "description": "<p>Add a class to elements. </p>",
     "title": "",
     "name": "can.addClass",
@@ -468,7 +462,7 @@ set also.</p>
     ],
     "comment": " ",
     "src": "can/util/util.js",
-    "line": 466,
+    "line": 504,
     "id": 23
 };
 

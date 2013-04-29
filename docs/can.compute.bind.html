@@ -98,8 +98,38 @@
 	
 	</li>
 	
-	<li >
+	<li class="active">
 	<a href="can.compute.html">can.compute</a>
+	
+		
+		<ul>
+		
+			
+				<li >
+				<a href="isComputed.html">
+					 isComputed 
+				</a>
+				</li>
+			
+		
+			
+				<li class="active">
+				<a href="can.compute.bind.html">
+					 bind 
+				</a>
+				</li>
+			
+		
+			
+				<li >
+				<a href="can.compute.unbind.html">
+					 unbind 
+				</a>
+				</li>
+			
+		
+		</ul>
+		
 	
 	</li>
 	
@@ -139,14 +169,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1118">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/compute/compute.js#L327">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>each</h1> <span class="module">can.Observe.List.prototype.each</span>
+	<h1>bind</h1> <span class="module">can.compute.bind</span>
 
 
 
@@ -154,26 +184,58 @@
 		</section>
 
 		<section class="description">
-			<p>Call a function on each element of a List. </p>
+			<p>Bind an event handler to a compute. </p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>each(callback)</h2>
-<p><code>each</code> iterates through the Observe, calling a function
-for each element.</p>
+			<h2>bind(eventType, handler)</h2>
+
 
 	<h3>Parameters</h3>
 
 	<ol class="parameters">
 		
 		<li class="parameter">
-			<h4>callback <code>{function}</code></h4>
+			<h4>eventType <code>{String}</code></h4>
 			<div class="description">
-				<p><p>the function to call for each element
-The value and index of each element will be passed as the first and second
-arguments, respectively, to the callback. If the callback returns false,
-the loop will stop.</p></p>
+				<p><p>The event to bind this handler to.
+The only event type that computes emit is <em>change</em>.</p></p>
+			</div>
+			<!--
+			<ul class="options">
+				
+				<li class="option">
+					<h5><code>{String}</code></h5>
+					<div class="description">
+						<p>The event to bind this handler to.
+The only event type that computes emit is <em>change</em>.</p>
+					</div>
+				</li>
+				
+			</ul>
+			-->
+		</li>
+		
+		<li class="parameter">
+			<h4>handler <code>{function}</code></h4>
+			<div class="description">
+				<p><p>The handler to call when the event happens.
+The handler should have three parameters:
+- <em>event</em> is the event object.
+- <em>newVal</em> is the newly-computed value of the compute.
+- <em>oldVal</em> is the value of the compute before it changed.</p>
+
+<p><code>bind</code> lets you listen to a compute to know when it changes. It works just like
+can.Observe's <code>[can.Observe.prototype.bind bind]</code>:</p>
+
+<pre><code class="lang-javascript">var tally = can.compute(0);
+tally.bind('change', function(ev, newVal, oldVal) {
+    console.log('The tally is now at ' + newVal + '.');
+});
+
+tally(tally() + 5); // The log reads:
+                    // 'The tally is now at 5.'</code></pre></p>
 			</div>
 			<!--
 			<ul class="options">
@@ -181,10 +243,22 @@ the loop will stop.</p></p>
 				<li class="option">
 					<h5><code>{function}</code></h5>
 					<div class="description">
-						<p>the function to call for each element
-The value and index of each element will be passed as the first and second
-arguments, respectively, to the callback. If the callback returns false,
-the loop will stop.</p>
+						<p>The handler to call when the event happens.
+The handler should have three parameters:
+- <em>event</em> is the event object.
+- <em>newVal</em> is the newly-computed value of the compute.
+- <em>oldVal</em> is the value of the compute before it changed.</p>
+
+<p><code>bind</code> lets you listen to a compute to know when it changes. It works just like
+can.Observe's <code>[can.Observe.prototype.bind bind]</code>:</p>
+
+<pre><code class="lang-javascript">var tally = can.compute(0);
+tally.bind('change', function(ev, newVal, oldVal) {
+    console.log('The tally is now at ' + newVal + '.');
+});
+
+tally(tally() + 5); // The log reads:
+                    // 'The tally is now at 5.'</code></pre>
 					</div>
 				</li>
 				
@@ -195,51 +269,32 @@ the loop will stop.</p>
 	</ol>
 
 
-	<h3>Returns</h3>
-	<div class="returns">
-		<h4><code>{can.Observe.List}</code></h4>
-		<div class="description">
-			<p>this List, for chaining</p>
-		</div>
-	</div>
-
 		</section>
 		
 
-		
-		<section class="comment">
-			<pre><code class="lang-javascript">var i = 0;
-new can.Observe([1, 10, 100]).each(function(element, index) {
-    i += element;
-});
-
-i; // 111
-
-i = 0;
-new can.Observe([1, 10, 100]).each(function(element, index) {
-    i += element;
-    if(index >= 1) {
-        return false;
-    }
-});
-
-i; // 11</code></pre>     
-		</section>
 		
 	</article>
 </div>
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<pre><code class=\"lang-javascript\">var i = 0;\nnew can.Observe([1, 10, 100]).each(function(element, index) {\n    i += element;\n});\n\ni; // 111\n\ni = 0;\nnew can.Observe([1, 10, 100]).each(function(element, index) {\n    i += element;\n    if(index >= 1) {\n        return false;\n    }\n});\n\ni; // 11</code></pre>     ",
-    "description": "<p>Call a function on each element of a List. </p>",
-    "title": "each",
-    "name": "can.Observe.List.prototype.each",
     "type": "function",
+    "name": "can.compute.bind",
+    "parent": "can.compute",
+    "body": "",
+    "description": "<p>Bind an event handler to a compute. </p>",
+    "title": "bind",
     "signatures": [{
-            "code": "each(callback)",
-            "description": "<p><code>each</code> iterates through the Observe, calling a function\nfor each element.</p>",
+            "code": "bind(eventType, handler)",
+            "description": "",
             "params": [{
+                    "types": [{
+                            "type": "String"
+                        }
+                    ],
+                    "name": "eventType",
+                    "description": "<p>The event to bind this handler to.\nThe only event type that computes emit is <em>change</em>.</p>"
+                }, {
                     "types": [{
                             "type": "function",
                             "returns": {
@@ -250,35 +305,44 @@ i; // 11</code></pre>
                             },
                             "params": [{
                                     "types": [{
-                                            "type": "*"
+                                            "type": "Object",
+                                            "options": [{
+                                                    "name": "Object"
+                                                }
+                                            ]
                                         }
                                     ]
                                 }, {
                                     "types": [{
-                                            "type": "Number"
+                                            "type": "Object",
+                                            "options": [{
+                                                    "name": "*"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }, {
+                                    "types": [{
+                                            "type": "Object",
+                                            "options": [{
+                                                    "name": "*"
+                                                }
+                                            ]
                                         }
                                     ]
                                 }
                             ]
                         }
                     ],
-                    "name": "callback",
-                    "description": "<p>the function to call for each element\nThe value and index of each element will be passed as the first and second\narguments, respectively, to the callback. If the callback returns false,\nthe loop will stop.</p>"
+                    "name": "handler",
+                    "description": "<p>The handler to call when the event happens.\nThe handler should have three parameters:\n- <em>event</em> is the event object.\n- <em>newVal</em> is the newly-computed value of the compute.\n- <em>oldVal</em> is the value of the compute before it changed.</p>\n\n<p><code>bind</code> lets you listen to a compute to know when it changes. It works just like\ncan.Observe's <code>[can.Observe.prototype.bind bind]</code>:</p>\n\n<pre><code class=\"lang-javascript\">var tally = can.compute(0);\ntally.bind('change', function(ev, newVal, oldVal) {\n    console.log('The tally is now at ' + newVal + '.');\n});\n\ntally(tally() + 5); // The log reads:\n                    // 'The tally is now at 5.'</code></pre>"
                 }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "can.Observe.List"
-                    }
-                ],
-                "description": "<p>this List, for chaining</p>"
-            }
+            ]
         }
     ],
-    "comment": " ",
-    "src": "can/observe/observe.js",
-    "line": 1118,
-    "id": 68
+    "src": "can/observe/compute/compute.js",
+    "line": 327,
+    "id": 84
 };
 
 	console.log(docData);

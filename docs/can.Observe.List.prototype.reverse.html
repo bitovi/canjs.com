@@ -79,6 +79,11 @@
 	</li>
 	
 	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Construct.html">can.Construct</a>
 	
 	</li>
@@ -214,6 +219,11 @@
 	</li>
 	
 	<li >
+	<a href="can.compute.html">can.compute</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
@@ -249,7 +259,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1807">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1823">source</a></li>
 		
 		
 		
@@ -278,18 +288,20 @@
 		<h4><code>{can.Observe.List}</code></h4>
 		<div class="description">
 			<p>the List, for chaining</p>
-
-<pre><code class="lang-javascript">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);
-var reversedList = list.reverse();
-
-reversedList.attr(); // ['Eve', 'Bob', 'Alice'];
-list === reversedList; // true</code></pre>
 		</div>
 	</div>
 
 		</section>
 		
 
+		
+		<section class="comment">
+			<pre><code class="lang-javascript">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);
+var reversedList = list.reverse();
+
+reversedList.attr(); // ['Eve', 'Bob', 'Alice'];
+list === reversedList; // true</code></pre>     
+		</section>
 		
 	</article>
 </div>
@@ -299,7 +311,7 @@ list === reversedList; // true</code></pre>
     "name": "can.Observe.List.prototype.reverse",
     "type": "function",
     "parent": "can.Observe.List.prototype",
-    "body": "",
+    "body": "<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nvar reversedList = list.reverse();\n\nreversedList.attr(); // ['Eve', 'Bob', 'Alice'];\nlist === reversedList; // true</code></pre>     ",
     "description": "<p>Reverse the order of a List. </p>",
     "title": "reverse",
     "signatures": [{
@@ -311,12 +323,13 @@ list === reversedList; // true</code></pre>
                         "type": "can.Observe.List"
                     }
                 ],
-                "description": "<p>the List, for chaining</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nvar reversedList = list.reverse();\n\nreversedList.attr(); // ['Eve', 'Bob', 'Alice'];\nlist === reversedList; // true</code></pre>"
+                "description": "<p>the List, for chaining</p>"
             }
         }
     ],
+    "comment": " ",
     "src": "can/observe/observe.js",
-    "line": 1807,
+    "line": 1823,
     "id": 77
 };
 

@@ -79,6 +79,11 @@
 	</li>
 	
 	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Construct.html">can.Construct</a>
 	
 	</li>
@@ -94,6 +99,11 @@
 	</li>
 	
 	<li >
+	<a href="can.compute.html">can.compute</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
@@ -103,94 +113,8 @@
 	
 	</li>
 	
-	<li class="active">
+	<li >
 	<a href="can.Control.html">can.Control</a>
-	
-		
-		<ul>
-		
-			
-				<li class="heading"><span>static</span>
-					<ul>
-						
-						
-						
-						
-						
-						
-						
-						
-						<li >
-							<a href="can.Control.static.processors.html">
-								 processors 
-							</a>
-						</li>
-						
-						
-						
-						<li class="active">
-							<a href="can.Control.static.defaults.html">
-								 defaults 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
-		
-			
-				<li class="heading"><span>prototype</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Control.prototype.setup.html">
-								 setup 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Control.prototype.options.html">
-								 options 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Control.prototype.element.html">
-								 element 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Control.prototype.on.html">
-								 on 
-							</a>
-						</li>
-						
-						
-						
-						
-						
-						<li >
-							<a href="can.Control.prototype.destroy.html">
-								 destroy 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
-		
-		</ul>
-		
 	
 	</li>
 	
@@ -215,14 +139,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/control/control.js#L225">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/control/control.js#L263">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>defaults</h1> <span class="module">can.Control.static.defaults</span>
+	<h1>defaults</h1> <span class="module">can.Control.defaults</span>
 
 
 
@@ -230,8 +154,17 @@
 		</section>
 
 		<section class="description">
-			<p>A object of name-value pairs that act as default values for a control's
-[can.Control::options this.options].</p>
+			<p>Default values for the Control's options. </p>
+		</section>
+
+		
+
+		
+		<section class="comment">
+			<p><code>defaults</code> provides default values for a Control's options.
+Options passed into the constructor function will be shallowly merged
+into the values from defaults in [can.Control::setup], and
+the result will be stored in <code>[can.Control::options this.options]</code>.</p>
 
 <pre><code>Message = can.Control({
   defaults: {
@@ -246,13 +179,7 @@
 new Message( "#el1" ); //writes "Hello World"
 new Message( "#el12", { message: "hi" } ); //writes hi
 </code></pre>
-
-<p>In [can.Control::setup] the options passed to the control
-are merged with defaults.  This is not a deep merge.</p>
 		</section>
-
-		
-
 		
 	</article>
 </div>
@@ -260,14 +187,14 @@ are merged with defaults.  This is not a deep merge.</p>
 <script type="text/javascript">
 	var docData = {
     "type": "property",
-    "body": "",
-    "description": "<p>A object of name-value pairs that act as default values for a control's\n[can.Control::options this.options].</p>\n\n<pre><code>Message = can.Control({\n  defaults: {\n    message: \"Hello World\"\n  }\n}, {\n  init: function(){\n    this.element.text( this.options.message );\n  }\n});\n\nnew Message( \"#el1\" ); //writes \"Hello World\"\nnew Message( \"#el12\", { message: \"hi\" } ); //writes hi\n</code></pre>\n\n<p>In [can.Control::setup] the options passed to the control\nare merged with defaults.  This is not a deep merge.</p>",
+    "body": "<p><code>defaults</code> provides default values for a Control's options.\nOptions passed into the constructor function will be shallowly merged\ninto the values from defaults in [can.Control::setup], and\nthe result will be stored in <code>[can.Control::options this.options]</code>.</p>\n\n<pre><code>Message = can.Control({\n  defaults: {\n    message: \"Hello World\"\n  }\n}, {\n  init: function(){\n    this.element.text( this.options.message );\n  }\n});\n\nnew Message( \"#el1\" ); //writes \"Hello World\"\nnew Message( \"#el12\", { message: \"hi\" } ); //writes hi\n</code></pre>",
+    "description": "<p>Default values for the Control's options. </p>",
     "title": "defaults",
-    "name": "can.Control.static.defaults",
-    "parent": "can.Control.static",
+    "name": "can.Control.defaults",
+    "comment": " ",
     "src": "can/control/control.js",
-    "line": 225,
-    "id": 111
+    "line": 263,
+    "id": 115
 };
 
 	console.log(docData);

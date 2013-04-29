@@ -263,24 +263,13 @@
 				</li>
 			
 		
-			
-				<li class="heading"><span>constructor</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Deferred.prototype.html">
-								 can.Deferred.prototype 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
-		
 		</ul>
 		
+	
+	</li>
+	
+	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
 	
 	</li>
 	
@@ -296,6 +285,11 @@
 	
 	<li >
 	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.compute.html">can.compute</a>
 	
 	</li>
 	
@@ -335,7 +329,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L176">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L197">source</a></li>
 		
 		
 		
@@ -452,19 +446,19 @@ CanJS; however, if you are making libraries or extensions, use
 
 <p><strong>Binding to an object</strong></p>
 
-<p>var obj = {};
+<pre><code class="lang-javascript">var obj = {};
 can.bind.call(obj,"something", function(ev, arg1, arg){
      arg1 // 1
      arg2 // 2
    })
-can.trigger(obj,"something",[1,2])</p>
+can.trigger(obj,"something",[1,2])</code></pre>
 
 <p><strong>Binding to an HTMLElement</strong></p>
 
-<p>var el = document.getElementById('foo')
+<pre><code class="lang-javascript">var el = document.getElementById('foo')
 can.bind.call(el, "click", function(ev){
-     this // el
-   })</p>
+   this // el
+ });</code></pre>
 		</section>
 		
 	</article>
@@ -472,7 +466,7 @@ can.bind.call(el, "click", function(ev){
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<p><code>can.bind(eventName, handler)</code> binds a callback handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n<li>Objects</li>\n<li>Objects with bind / unbind methods</li>\n</ul>\n\n<p>The idea is that bind can be used on anything that produces events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.bind</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.bind</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Binding to an object</strong></p>\n\n<p>var obj = {};\ncan.bind.call(obj,\"something\", function(ev, arg1, arg){\n     arg1 // 1\n     arg2 // 2\n   })\ncan.trigger(obj,\"something\",[1,2])</p>\n\n<p><strong>Binding to an HTMLElement</strong></p>\n\n<p>var el = document.getElementById('foo')\ncan.bind.call(el, \"click\", function(ev){\n     this // el\n   })</p>",
+    "body": "<p><code>can.bind(eventName, handler)</code> binds a callback handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n<li>Objects</li>\n<li>Objects with bind / unbind methods</li>\n</ul>\n\n<p>The idea is that bind can be used on anything that produces events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.bind</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.bind</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Binding to an object</strong></p>\n\n<pre><code class=\"lang-javascript\">var obj = {};\ncan.bind.call(obj,\"something\", function(ev, arg1, arg){\n     arg1 // 1\n     arg2 // 2\n   })\ncan.trigger(obj,\"something\",[1,2])</code></pre>\n\n<p><strong>Binding to an HTMLElement</strong></p>\n\n<pre><code class=\"lang-javascript\">var el = document.getElementById('foo')\ncan.bind.call(el, \"click\", function(ev){\n   this // el\n });</code></pre>",
     "description": "<p>Listen for events on an object. </p>",
     "title": "",
     "name": "can.bind",
@@ -522,7 +516,7 @@ can.bind.call(el, "click", function(ev){
     ],
     "comment": " ",
     "src": "can/util/util.js",
-    "line": 176,
+    "line": 197,
     "id": 12
 };
 

@@ -263,24 +263,13 @@
 				</li>
 			
 		
-			
-				<li class="heading"><span>constructor</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Deferred.prototype.html">
-								 can.Deferred.prototype 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
-		
 		</ul>
 		
+	
+	</li>
+	
+	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
 	
 	</li>
 	
@@ -296,6 +285,11 @@
 	
 	<li >
 	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.compute.html">can.compute</a>
 	
 	</li>
 	
@@ -335,7 +329,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L140">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L157">source</a></li>
 		
 		
 		
@@ -420,10 +414,10 @@
 new one that will always have the context from which it was
 called.  This works similar to [http://api.jquery.com/jQuery.proxy/ jQuery.proxy].</p>
 
-<p>var func = can.proxy(function(one){
+<pre><code class="lang-javascript">var func = can.proxy(function(one){
       return this.a + one
     }, {a: "b"});
-func("two") //-> "btwo"</p>
+func("two") //-> "btwo"</code></pre>
 		</section>
 		
 	</article>
@@ -431,7 +425,7 @@ func("two") //-> "btwo"</p>
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<p><code>can.proxy(fn, context)</code> accepts a function and returns a\nnew one that will always have the context from which it was\ncalled.  This works similar to [http://api.jquery.com/jQuery.proxy/ jQuery.proxy].</p>\n\n<p>var func = can.proxy(function(one){\n      return this.a + one\n    }, {a: \"b\"});\nfunc(\"two\") //-> \"btwo\"</p>",
+    "body": "<p><code>can.proxy(fn, context)</code> accepts a function and returns a\nnew one that will always have the context from which it was\ncalled.  This works similar to [http://api.jquery.com/jQuery.proxy/ jQuery.proxy].</p>\n\n<pre><code class=\"lang-javascript\">var func = can.proxy(function(one){\n      return this.a + one\n    }, {a: \"b\"});\nfunc(\"two\") //-> \"btwo\"</code></pre>",
     "description": "<p>Bind a function to its context. </p>",
     "title": "",
     "name": "can.proxy",
@@ -481,7 +475,7 @@ func("two") //-> "btwo"</p>
     ],
     "comment": " ",
     "src": "can/util/util.js",
-    "line": 140,
+    "line": 157,
     "id": 10
 };
 

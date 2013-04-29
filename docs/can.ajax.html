@@ -263,24 +263,13 @@
 				</li>
 			
 		
-			
-				<li class="heading"><span>constructor</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Deferred.prototype.html">
-								 can.Deferred.prototype 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-				
-		
 		</ul>
 		
+	
+	</li>
+	
+	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
 	
 	</li>
 	
@@ -296,6 +285,11 @@
 	
 	<li >
 	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.compute.html">can.compute</a>
 	
 	</li>
 	
@@ -335,7 +329,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L339">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/util/util.js#L371">source</a></li>
 		
 		
 		
@@ -402,12 +396,12 @@ The list of configuration options is the same as for <a href="http://api.jquery.
 			<p><code>can.ajax( settings )</code> is used to make an asynchronous HTTP (Ajax) request
 similar to [http://api.jquery.com/jQuery.ajax/ jQuery.ajax].</p>
 
-<p>can.ajax({
-    url: 'ajax/farm/animals',
+<pre><code class="lang-javascript">can.ajax({
+  url: 'ajax/farm/animals',
     success: function(animals) {
         can.$('.farm').html(animals);
     }
-});</p>
+});</code></pre>
 		</section>
 		
 	</article>
@@ -415,7 +409,7 @@ similar to [http://api.jquery.com/jQuery.ajax/ jQuery.ajax].</p>
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<p><code>can.ajax( settings )</code> is used to make an asynchronous HTTP (Ajax) request\nsimilar to [http://api.jquery.com/jQuery.ajax/ jQuery.ajax].</p>\n\n<p>can.ajax({\n    url: 'ajax/farm/animals',\n    success: function(animals) {\n        can.$('.farm').html(animals);\n    }\n});</p>",
+    "body": "<p><code>can.ajax( settings )</code> is used to make an asynchronous HTTP (Ajax) request\nsimilar to [http://api.jquery.com/jQuery.ajax/ jQuery.ajax].</p>\n\n<pre><code class=\"lang-javascript\">can.ajax({\n  url: 'ajax/farm/animals',\n    success: function(animals) {\n        can.$('.farm').html(animals);\n    }\n});</code></pre>",
     "description": "<p>Make an AJAX request. </p>",
     "title": "",
     "name": "can.ajax",
@@ -444,7 +438,7 @@ similar to [http://api.jquery.com/jQuery.ajax/ jQuery.ajax].</p>
     ],
     "comment": " ",
     "src": "can/util/util.js",
-    "line": 339,
+    "line": 371,
     "id": 17
 };
 

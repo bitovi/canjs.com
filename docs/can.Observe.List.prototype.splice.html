@@ -79,6 +79,11 @@
 	</li>
 	
 	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Construct.html">can.Construct</a>
 	
 	</li>
@@ -214,6 +219,11 @@
 	</li>
 	
 	<li >
+	<a href="can.compute.html">can.compute</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
@@ -249,7 +259,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1146">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1154">source</a></li>
 		
 		
 		
@@ -343,8 +353,15 @@ If <em>howMany</em> is not provided, <code>splice</code> will all elements from 
 		<h4><code>{Array}</code></h4>
 		<div class="description">
 			<p>the elements removed by <code>splice</code></p>
+		</div>
+	</div>
 
-<p><code>splice</code> lets you remove elements from and insert elements into a List.</p>
+		</section>
+		
+
+		
+		<section class="comment">
+			<p><code>splice</code> lets you remove elements from and insert elements into a List.</p>
 
 <p>This example demonstrates how to do surgery on a list of numbers:</p>
 
@@ -389,12 +406,7 @@ list.splice(2, 1, 'Alice', 'Bob'); // change: 2, 'remove', undefined, ['c']
                                    // length: 5, ['a', 'b', 'Alice', 'Bob', 'd']</code></pre>
 
 <p>More information about binding to these events can be found under [can.Observe.List.attr attr].</p>
-		</div>
-	</div>
-
 		</section>
-		
-
 		
 	</article>
 </div>
@@ -404,7 +416,7 @@ list.splice(2, 1, 'Alice', 'Bob'); // change: 2, 'remove', undefined, ['c']
     "type": "function",
     "name": "can.Observe.List.prototype.splice",
     "parent": "can.Observe.List.prototype",
-    "body": "",
+    "body": "<p><code>splice</code> lets you remove elements from and insert elements into a List.</p>\n\n<p>This example demonstrates how to do surgery on a list of numbers:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List([0, 1, 2, 3]);\n\n// starting at index 2, remove one element and insert 'Alice' and 'Bob':\nlist.splice(2, 1, 'Alice', 'Bob');\nlist.attr(); // [0, 1, 'Alice', 'Bob', 3]</code></pre>\n\n<h2>Events</h2>\n\n<p><code>splice</code> causes the List it's called on to emit <em>change</em> events,\n<em>add</em> events, <em>remove</em> events, and <em>length</em> events. If there are\nany elements to remove, a <em>change</em> event, a <em>remove</em> event, and a\n<em>length</em> event will be fired. If there are any elements to insert, a\nseparate <em>change</em> event, an <em>add</em> event, and a separate <em>length</em> event\nwill be fired. </p>\n\n<p>This slightly-modified version of the above example should help\nmake it clear how <code>splice</code> causes events to be emitted:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['a', 'b', 'c', 'd']);\nlist.bind('change', function(ev, attr, how, newVals, oldVals) {\n    console.log('change: ' + attr + ', ' + how + ', ' + newVals + ', ' + oldVals);\n});\nlist.bind('add', function(ev, newVals, where) {\n    console.log('add: ' + newVals + ', ' + where);\n});\nlist.bind('remove', function(ev, oldVals, where) {\n    console.log('remove: ' + oldVals + ', ' + where);\n});\nlist.bind('length', function(ev, length) {\n    console.log('length: ' + length + ', ' + this.attr());\n});\n\n// starting at index 2, remove one element and insert 'Alice' and 'Bob':\nlist.splice(2, 1, 'Alice', 'Bob'); // change: 2, 'remove', undefined, ['c']\n                                   // remove: ['c'], 2\n                                   // length: 5, ['a', 'b', 'Alice', 'Bob', 'd']\n                                   // change: 2, 'add', ['Alice', 'Bob'], ['c']\n                                   // add: ['Alice', 'Bob'], 2\n                                   // length: 5, ['a', 'b', 'Alice', 'Bob', 'd']</code></pre>\n\n<p>More information about binding to these events can be found under [can.Observe.List.attr attr].</p>",
     "description": "<p>Insert and remove elements from a List. </p>",
     "title": "splice",
     "signatures": [{
@@ -439,12 +451,13 @@ list.splice(2, 1, 'Alice', 'Bob'); // change: 2, 'remove', undefined, ['c']
                         "type": "Array"
                     }
                 ],
-                "description": "<p>the elements removed by <code>splice</code></p>\n\n<p><code>splice</code> lets you remove elements from and insert elements into a List.</p>\n\n<p>This example demonstrates how to do surgery on a list of numbers:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List([0, 1, 2, 3]);\n\n// starting at index 2, remove one element and insert 'Alice' and 'Bob':\nlist.splice(2, 1, 'Alice', 'Bob');\nlist.attr(); // [0, 1, 'Alice', 'Bob', 3]</code></pre>\n\n<h2>Events</h2>\n\n<p><code>splice</code> causes the List it's called on to emit <em>change</em> events,\n<em>add</em> events, <em>remove</em> events, and <em>length</em> events. If there are\nany elements to remove, a <em>change</em> event, a <em>remove</em> event, and a\n<em>length</em> event will be fired. If there are any elements to insert, a\nseparate <em>change</em> event, an <em>add</em> event, and a separate <em>length</em> event\nwill be fired. </p>\n\n<p>This slightly-modified version of the above example should help\nmake it clear how <code>splice</code> causes events to be emitted:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['a', 'b', 'c', 'd']);\nlist.bind('change', function(ev, attr, how, newVals, oldVals) {\n    console.log('change: ' + attr + ', ' + how + ', ' + newVals + ', ' + oldVals);\n});\nlist.bind('add', function(ev, newVals, where) {\n    console.log('add: ' + newVals + ', ' + where);\n});\nlist.bind('remove', function(ev, oldVals, where) {\n    console.log('remove: ' + oldVals + ', ' + where);\n});\nlist.bind('length', function(ev, length) {\n    console.log('length: ' + length + ', ' + this.attr());\n});\n\n// starting at index 2, remove one element and insert 'Alice' and 'Bob':\nlist.splice(2, 1, 'Alice', 'Bob'); // change: 2, 'remove', undefined, ['c']\n                                   // remove: ['c'], 2\n                                   // length: 5, ['a', 'b', 'Alice', 'Bob', 'd']\n                                   // change: 2, 'add', ['Alice', 'Bob'], ['c']\n                                   // add: ['Alice', 'Bob'], 2\n                                   // length: 5, ['a', 'b', 'Alice', 'Bob', 'd']</code></pre>\n\n<p>More information about binding to these events can be found under [can.Observe.List.attr attr].</p>"
+                "description": "<p>the elements removed by <code>splice</code></p>"
             }
         }
     ],
+    "comment": " ",
     "src": "can/observe/observe.js",
-    "line": 1146,
+    "line": 1154,
     "id": 69
 };
 

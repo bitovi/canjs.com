@@ -79,6 +79,11 @@
 	</li>
 	
 	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Construct.html">can.Construct</a>
 	
 	</li>
@@ -214,6 +219,11 @@
 	</li>
 	
 	<li >
+	<a href="can.compute.html">can.compute</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
@@ -249,7 +259,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1542">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1552">source</a></li>
 		
 		
 		
@@ -303,8 +313,15 @@
 		<h4><code>{Number}</code></h4>
 		<div class="description">
 			<p>the new length of the List</p>
+		</div>
+	</div>
 
-<p><code>push</code> is fairly straightforward:</p>
+		</section>
+		
+
+		
+		<section class="comment">
+			<p><code>push</code> is fairly straightforward:</p>
 
 <pre><code class="lang-javascript">var list = new can.Observe.List(['Alice']);
 
@@ -328,12 +345,7 @@ list.attr(); // ['Alice', 'Bob', 'Eve']</code></pre>
 
 <p><code>push</code> has a counterpart in [can.Observe.List.pop pop], or you may be
 looking for [can.Observe.List.unshift unshift] and its counterpart [can.Observe.List.shift shift].</p>
-		</div>
-	</div>
-
 		</section>
-		
-
 		
 	</article>
 </div>
@@ -343,7 +355,7 @@ looking for [can.Observe.List.unshift unshift] and its counterpart [can.Observe.
     "name": "can.Observe.List.prototype.push",
     "type": "function",
     "parent": "can.Observe.List.prototype",
-    "body": "",
+    "body": "<p><code>push</code> is fairly straightforward:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice']);\n\nlist.push('Bob', 'Eve');\nlist.attr(); // ['Alice', 'Bob', 'Eve']</code></pre>\n\n<p>If you have an array you want to concatenate to the end\nof the List, you can use <code>apply</code>:</p>\n\n<pre><code class=\"lang-javascript\">var names = ['Bob', 'Eve'],\n    list = new can.Observe.List(['Alice']);\n\nlist.push.apply(list, names);\nlist.attr(); // ['Alice', 'Bob', 'Eve']</code></pre>\n\n<h2>Events</h2>\n\n<p><code>push</code> causes <em>change</em>, <em>add</em>, and <em>length</em> events to be fired.</p>\n\n<h2>See also</h2>\n\n<p><code>push</code> has a counterpart in [can.Observe.List.pop pop], or you may be\nlooking for [can.Observe.List.unshift unshift] and its counterpart [can.Observe.List.shift shift].</p>",
     "description": "<p>Add elements to the end of a list. </p>",
     "title": "push",
     "signatures": [{
@@ -363,12 +375,13 @@ looking for [can.Observe.List.unshift unshift] and its counterpart [can.Observe.
                         "type": "Number"
                     }
                 ],
-                "description": "<p>the new length of the List</p>\n\n<p><code>push</code> is fairly straightforward:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice']);\n\nlist.push('Bob', 'Eve');\nlist.attr(); // ['Alice', 'Bob', 'Eve']</code></pre>\n\n<p>If you have an array you want to concatenate to the end\nof the List, you can use <code>apply</code>:</p>\n\n<pre><code class=\"lang-javascript\">var names = ['Bob', 'Eve'],\n    list = new can.Observe.List(['Alice']);\n\nlist.push.apply(list, names);\nlist.attr(); // ['Alice', 'Bob', 'Eve']</code></pre>\n\n<h2>Events</h2>\n\n<p><code>push</code> causes <em>change</em>, <em>add</em>, and <em>length</em> events to be fired.</p>\n\n<h2>See also</h2>\n\n<p><code>push</code> has a counterpart in [can.Observe.List.pop pop], or you may be\nlooking for [can.Observe.List.unshift unshift] and its counterpart [can.Observe.List.shift shift].</p>"
+                "description": "<p>the new length of the List</p>"
             }
         }
     ],
+    "comment": " ",
     "src": "can/observe/observe.js",
-    "line": 1542,
+    "line": 1552,
     "id": 71
 };
 
