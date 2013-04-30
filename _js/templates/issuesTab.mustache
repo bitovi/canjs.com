@@ -23,6 +23,9 @@
 		{{#issues}}
 		{{>templates/githubIssue.mustache}}
 		{{/issues}}
+		{{^issues}}
+		<div class="loading"/>
+		{{/issues}}
 		</div>
 	</div>
 </div>

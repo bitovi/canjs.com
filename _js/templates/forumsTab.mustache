@@ -9,6 +9,9 @@
 		{{#forumPosts}}
 		{{>templates/forumPost.mustache}}
 		{{/forumPosts}}
+		{{^forumPosts}}
+		<div class="loading"/>
+		{{/forumPosts}}
 		</div>
 	</div>
 	<div class="pull-right categories">

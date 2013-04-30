@@ -22,6 +22,9 @@
 		{{#commits}}
 		{{>templates/githubEvent.mustache}}
 		{{/commits}}
+		{{^commits}}
+		<div class="loading"/>
+		{{/commits}}
 		</div>
 
 	</div>

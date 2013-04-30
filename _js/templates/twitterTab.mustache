@@ -8,6 +8,9 @@
 			{{#tweets}}
 			{{>templates/tweet.mustache}}
 			{{/tweets}}
+			{{^tweets}}
+			<div class="loading"/>
+			{{/tweets}}
 		</div>
 	</div>
 </div>
