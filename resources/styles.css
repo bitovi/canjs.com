@@ -44,7 +44,7 @@ ul ul,ol ol,ul ol,ol ul{margin-bottom:0;}
 dl{margin:0 0 18px 3px;}
 dl dt{font-weight:bold;margin:12px 0 0 0;}
 dl dd{margin:6px 0 0 1.5em;}
-strong{font-weight:bold;}
+strong{font-weight:700;-webkit-font-smoothing:antialiased;}
 strong strong{font-weight:normal;}
 em,cite{font-style:italic;}
 em em,cite cite{font-style:normal;}
