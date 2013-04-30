@@ -61,10 +61,17 @@
         "parent": "Tutorial",
         "order": 1
     },
+    "Recipes": {
+        "name": "Recipes",
+        "type": "page",
+        "id": 8,
+        "title": "CanJS Recipes",
+        "parent": "guides"
+    },
     "Routing": {
         "name": "Routing",
         "type": "page",
-        "id": 8,
+        "id": 9,
         "title": "Routing",
         "parent": "Tutorial",
         "order": 8
@@ -72,14 +79,14 @@
     "Tutorial": {
         "name": "Tutorial",
         "type": "page",
-        "id": 9,
+        "id": 10,
         "title": "Get Started with CanJS",
         "parent": "guides"
     },
     "Utilities": {
         "name": "Utilities",
         "type": "page",
-        "id": 10,
+        "id": 11,
         "title": "Utilities",
         "parent": "Tutorial",
         "order": 9
@@ -87,7 +94,7 @@
     "Templates": {
         "name": "Templates",
         "type": "page",
-        "id": 11,
+        "id": 12,
         "title": "Templates",
         "parent": "Tutorial",
         "order": 3
