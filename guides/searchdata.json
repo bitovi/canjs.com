@@ -138,5 +138,12 @@
         "title": "Templates",
         "parent": "Tutorial",
         "order": 3
+    },
+    "Why": {
+        "name": "Why",
+        "type": "page",
+        "id": 18,
+        "title": "Why CanJS",
+        "parent": "guides"
     }
 }
