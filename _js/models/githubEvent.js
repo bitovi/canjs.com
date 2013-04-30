@@ -20,7 +20,7 @@ can.Model("CanJSUS.GithubEvent", {
 		};
 	},
 	findAll: {
-		url: 'http://www.bithub.com/api/events/?category=code&also=source_data&order=origin_ts:desc&limit={limit}',
+		url: 'http://api.bithub.com/api/events/?category=code&also=source_data&order=origin_ts:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });

@@ -15,7 +15,7 @@ can.Model("CanJSUS.GithubIssue", {
 		};
 	},
 	findAll: {
-		url: 'http://www.bithub.com/api/events/?category=bug&also=source_data&order=upvotes&limit={limit}',
+		url: 'http://api.bithub.com/api/events/?category=bug&also=source_data&order=upvotes&limit={limit}',
 		dataType: 'json'
 	}
 }, { });

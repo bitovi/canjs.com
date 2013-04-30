@@ -1,12 +1,12 @@
 can.Control('CanJSUS.CommunityTabs', {
 	defaults: {
 		tabControls: {
-			'forums': CanJSUS.ForumsTab,
-			'irc': CanJSUS.IRCTab,
-			'plugins': CanJSUS.PluginsTab,
-			'twitter': CanJSUS.TwitterTab,
-			'issues': CanJSUS.IssuesTab,
-			'github': CanJSUS.GithubTab
+			'forums': 'ForumsTab',
+			'irc': 'IRCTab',
+			'plugins': 'PluginsTab',
+			'twitter': 'TwitterTab',
+			'issues': 'IssuesTab',
+			'github': 'GithubTab'
 		}
 	}
 }, {
@@ -64,7 +64,7 @@ can.Control('CanJSUS.CommunityTabs', {
 			.find('li').removeClass('active')
 			.filter('.' + selectedTab).addClass('active');
 		var tabControl = this.options.tabControls[selectedTab];
-		new tabControl($('.content > .container'), {state: this.state});
+		new CanJSUS[tabControl]($('.content > .container'), {state: this.state});
 	},
 	_hideLoading: function() {
 		this.modelRequests--;

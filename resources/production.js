@@ -6251,8 +6251,7 @@ can.Model("CanJSUS.ChatLine", {
 		};
 	},
 	findAll: {
-		// No idea if this is the right URL yet. 
-		url: 'http://www.bithub.com/api/events/?category=chat&order=origin_ts:desc&limit={limit}',
+		url: 'http://api.bithub.com/api/events/?category=chat&order=origin_ts:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });
@@ -6323,8 +6322,8 @@ can.Model("CanJSUS.ForumPost", {
 		};
 	},
 	findAll: {
-		url: 'http://www.bithub.com/api/events/?feed=forums&order=origin_ts:desc&limit={limit}',
-		dataType: 'jsonp'
+		url: 'http://api.bithub.com/api/events/?feed=forums&order=origin_ts:desc&limit={limit}',
+		dataType: 'json'
 	}
 }, { });
 can.Model("CanJSUS.GithubEvent", {
@@ -6349,7 +6348,7 @@ can.Model("CanJSUS.GithubEvent", {
 		};
 	},
 	findAll: {
-		url: 'http://www.bithub.com/api/events/?category=code&also=source_data&order=origin_ts:desc&limit={limit}',
+		url: 'http://api.bithub.com/api/events/?category=code&also=source_data&order=origin_ts:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });
@@ -6370,7 +6369,7 @@ can.Model("CanJSUS.GithubIssue", {
 		};
 	},
 	findAll: {
-		url: 'http://www.bithub.com/api/events/?category=bug&also=source_data&order=upvotes&limit={limit}',
+		url: 'http://api.bithub.com/api/events/?category=bug&also=source_data&order=upvotes&limit={limit}',
 		dataType: 'json'
 	}
 }, { });
@@ -6398,7 +6397,7 @@ can.Model("CanJSUS.Plugin", {
 		};
 	},
 	findAll: {
-		url: 'http://www.bithub.com/api/events/?category=article|app|plugin&order=upvotes:desc&limit={limit}',
+		url: 'http://api.bithub.com/api/events/?category=article|app|plugin&order=upvotes:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });
@@ -6418,7 +6417,7 @@ can.Model("CanJSUS.Tweet", {
 		};
 	},
 	findAll: {
-		url: 'http://www.bithub.com/api/events/?feed=twitter&order=origin_ts:desc&limit={limit}',
+		url: 'http://api.bithub.com/api/events/?feed=twitter&order=origin_ts:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });
@@ -6566,12 +6565,12 @@ can.Control('CanJSUS.CommunityTab', {
 can.Control('CanJSUS.CommunityTabs', {
 	defaults: {
 		tabControls: {
-			'forums': CanJSUS.ForumsTab,
-			'irc': CanJSUS.IRCTab,
-			'plugins': CanJSUS.PluginsTab,
-			'twitter': CanJSUS.TwitterTab,
-			'issues': CanJSUS.IssuesTab,
-			'github': CanJSUS.GithubTab
+			'forums': 'ForumsTab',
+			'irc': 'IRCTab',
+			'plugins': 'PluginsTab',
+			'twitter': 'TwitterTab',
+			'issues': 'IssuesTab',
+			'github': 'GithubTab'
 		}
 	}
 }, {
@@ -6629,7 +6628,7 @@ can.Control('CanJSUS.CommunityTabs', {
 			.find('li').removeClass('active')
 			.filter('.' + selectedTab).addClass('active');
 		var tabControl = this.options.tabControls[selectedTab];
-		new tabControl($('.content > .container'), {state: this.state});
+		new CanJSUS[tabControl]($('.content > .container'), {state: this.state});
 	},
 	_hideLoading: function() {
 		this.modelRequests--;

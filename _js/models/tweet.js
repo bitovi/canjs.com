@@ -14,7 +14,7 @@ can.Model("CanJSUS.Tweet", {
 		};
 	},
 	findAll: {
-		url: 'http://www.bithub.com/api/events/?feed=twitter&order=origin_ts:desc&limit={limit}',
+		url: 'http://api.bithub.com/api/events/?feed=twitter&order=origin_ts:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });

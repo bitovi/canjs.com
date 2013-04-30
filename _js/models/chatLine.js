@@ -15,8 +15,7 @@ can.Model("CanJSUS.ChatLine", {
 		};
 	},
 	findAll: {
-		// No idea if this is the right URL yet. 
-		url: 'http://www.bithub.com/api/events/?category=chat&order=origin_ts:desc&limit={limit}',
+		url: 'http://api.bithub.com/api/events/?category=chat&order=origin_ts:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });
