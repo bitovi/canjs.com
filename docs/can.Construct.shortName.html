@@ -73,8 +73,96 @@
 		</div>
 		<ul class="api">
 	
-	<li >
+	<li class="active">
 	<a href="can.Construct.html">can.Construct</a>
+	
+		
+		<ul>
+		
+			
+				<li class="heading"><span>prototype</span>
+					<ul>
+						
+						
+						<li >
+							<a href="can.Construct.prototype.constructor.html">
+								 constructor 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.prototype.init.html">
+								 init 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.prototype.setup.html">
+								 setup 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+			
+		
+			
+				<li class="heading"><span>static</span>
+					<ul>
+						
+						
+						<li >
+							<a href="can.Construct.fullName.html">
+								 fullName 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.namespace.html">
+								 namespace 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.newInstance.html">
+								 newInstance 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.setup.html">
+								 setup 
+							</a>
+						</li>
+						
+						
+						
+						<li class="active">
+							<a href="can.Construct.shortName.html">
+								 shortName 
+							</a>
+						</li>
+						
+						
+						
+						
+					</ul>
+				</li>
+			
+		
+		</ul>
+		
 	
 	</li>
 	
@@ -93,150 +181,8 @@
 	
 	</li>
 	
-	<li class="active">
+	<li >
 	<a href="can.Model.html">can.Model</a>
-	
-		
-		<ul>
-		
-			
-				<li class="heading"><span>prototype</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Model.prototype.bind.html">
-								 bind 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.prototype.destroy.html">
-								 destroy 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.prototype.isNew.html">
-								 isNew 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.prototype.save.html">
-								 save 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.prototype.unbind.html">
-								 unbind 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-			
-		
-			
-				<li class="heading"><span>static</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Model.static.bind.html">
-								 bind 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.create.html">
-								 create 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.destroy.html">
-								 destroy 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.findAll.html">
-								 findAll 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.findOne.html">
-								 findOne 
-							</a>
-						</li>
-						
-						
-						
-						<li class="active">
-							<a href="can.Model.static.id.html">
-								 id 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.model.html">
-								 model 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.models.html">
-								 models 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.unbind.html">
-								 unbind 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.update.html">
-								 update 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-			
-		
-		</ul>
-		
 	
 	</li>
 	
@@ -291,14 +237,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/model/model.js#L174">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/construct/construct.js#L283">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>id</h1><!-- <span class="module">can.Model.static.id</span>-->
+	<h1>shortName</h1><!-- <span class="module">can.Construct.shortName</span>-->
 
 
 
@@ -306,14 +252,13 @@
 		</section>
 
 		<section class="description">
-			<p>The name of the id field.  Defaults to <code>'id'</code>. Change this if it is something different.</p>
+			<p>If you pass a name when creating a Construct, the <code>shortName</code> property will be set to the
+name you passed without the namespace.</p>
 
-<p>For example, it's common in .NET to use <code>'Id'</code>.  Your model might look like:</p>
-
-<pre><code>Friend = can.Model({
-  id: "Id"
-},{});
-</code></pre>
+<pre><code class="lang-javascript">can.Construct("MyApplication.MyConstructor",{},{});
+MyApplication.MyConstructor.namespace // "MyApplication"
+MyApplication.MyConstructor.shortName // "MyConstructor"
+MyApplication.MyConstructor.fullName  // "MyApplication.MyConstructor"</code></pre>             
 		</section>
 
 		
@@ -324,19 +269,19 @@
 
 <script type="text/javascript">
 	var docData = {
+    "name": "can.Construct.shortName",
+    "type": "property",
+    "parent": "can.Construct.static",
     "body": "",
-    "description": "<p>The name of the id field.  Defaults to <code>'id'</code>. Change this if it is something different.</p>\n\n<p>For example, it's common in .NET to use <code>'Id'</code>.  Your model might look like:</p>\n\n<pre><code>Friend = can.Model({\n  id: \"Id\"\n},{});\n</code></pre>",
+    "description": "<p>If you pass a name when creating a Construct, the <code>shortName</code> property will be set to the\nname you passed without the namespace.</p>\n\n<pre><code class=\"lang-javascript\">can.Construct(\"MyApplication.MyConstructor\",{},{});\nMyApplication.MyConstructor.namespace // \"MyApplication\"\nMyApplication.MyConstructor.shortName // \"MyConstructor\"\nMyApplication.MyConstructor.fullName  // \"MyApplication.MyConstructor\"</code></pre>             ",
     "types": [{
             "type": "String"
         }
     ],
-    "title": "id",
-    "name": "can.Model.static.id",
-    "type": "property",
-    "parent": "can.Model.static",
-    "src": "can/model/model.js",
-    "line": 174,
-    "id": 55
+    "title": "shortName",
+    "src": "can/construct/construct.js",
+    "line": 283,
+    "id": 7
 };
 
 	console.log(docData);

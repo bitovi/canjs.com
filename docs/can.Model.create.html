@@ -152,16 +152,16 @@
 					<ul>
 						
 						
-						<li class="active">
-							<a href="can.Model.static.bind.html">
+						<li >
+							<a href="can.Model.bind.html">
 								 bind 
 							</a>
 						</li>
 						
 						
 						
-						<li >
-							<a href="can.Model.static.create.html">
+						<li class="active">
+							<a href="can.Model.create.html">
 								 create 
 							</a>
 						</li>
@@ -169,7 +169,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.destroy.html">
+							<a href="can.Model.destroy.html">
 								 destroy 
 							</a>
 						</li>
@@ -177,7 +177,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.findAll.html">
+							<a href="can.Model.findAll.html">
 								 findAll 
 							</a>
 						</li>
@@ -185,7 +185,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.findOne.html">
+							<a href="can.Model.findOne.html">
 								 findOne 
 							</a>
 						</li>
@@ -193,7 +193,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.id.html">
+							<a href="can.Model.id.html">
 								 id 
 							</a>
 						</li>
@@ -201,7 +201,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.model.html">
+							<a href="can.Model.model.html">
 								 model 
 							</a>
 						</li>
@@ -209,7 +209,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.models.html">
+							<a href="can.Model.models.html">
 								 models 
 							</a>
 						</li>
@@ -217,7 +217,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.unbind.html">
+							<a href="can.Model.unbind.html">
 								 unbind 
 							</a>
 						</li>
@@ -225,7 +225,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.update.html">
+							<a href="can.Model.update.html">
 								 update 
 							</a>
 						</li>
@@ -291,14 +291,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/model/model.js#L122">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/model/model.js#L209">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>bind</h1><!-- <span class="module">can.Model.static.bind</span>-->
+	<h1>create</h1><!-- <span class="module">can.Model.create</span>-->
 
 
 
@@ -306,35 +306,40 @@
 		</section>
 
 		<section class="description">
-			<p>Listen for events on a Model class. </p>
+			<p>Create a new resource on the server. </p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>bind(eventType, handler)</h2>
+			<h2>[METHOD] /path/to/resource</h2>
+<p>If you provide a URL, the Model will send a request to that URL using
+the method specified (or POST if none is specified) when saving a
+new instance on the server. (See below for more details.)</p>
 
+
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{can.Deferred}</code></h4>
+		<div class="description">
+			<p>A Deferred that resolves to the created model.</p>
+		</div>
+	</div>
+
+		</section>
+		
+		<section class="signature">
+			<h2>function(serialized)</h2>
+<p>If you provide a function, the Model will expect you to do your own AJAX requests.</p>
 
 	<h3>Parameters</h3>
 
 	<ol class="parameters">
 		
 		<li class="parameter">
-			<h4>eventType <code>{String}</code></h4>
+			<h4>serialized <code>{Object}</code></h4>
 			<div class="description">
-				<p><p>The type of event.  It must be
-<code>"created"</code>, <code>"udpated"</code>, <code>"destroyed"</code>.</p></p>
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>handler <code>{function}</code></h4>
-			<div class="description">
-				<p><p>A callback function
-that gets called with the event and instance that was
-created, destroyed, or updated.</p></p>
+				<p><p>The <a href="can.Observe.prototype.serialize.html"> </a> properties of
+the model to create.</p></p>
 			</div>
 			
 			
@@ -346,9 +351,9 @@ created, destroyed, or updated.</p></p>
 
 	<h3>Returns</h3>
 	<div class="returns">
-		<h4><code>{can.Model}</code></h4>
+		<h4><code>{can.Deferred}</code></h4>
 		<div class="description">
-			<p>The model constructor function.</p>
+			<p>A Deferred that resolves to the created model.</p>
 		</div>
 	</div>
 
@@ -357,16 +362,49 @@ created, destroyed, or updated.</p></p>
 
 		
 		<section class="comment">
-			<p><code>bind(eventType, handler(event, instance))</code> listens to
-<strong>created</strong>, <strong>updated</strong>, <strong>destroyed</strong> events on all 
-instances of the model.</p>
+			<p><code>create(attributes) -&gt; Deferred</code> is used by <a href="can.Model.prototype.save.html"> </a> to create a 
+model instance on the server. </p>
 
-<pre><code>Task.bind("created", function(ev, createdTask){
-     this //-&gt; Task
-  createdTask.attr("name") //-&gt; "Dishes"
-})
+<h2>Implement with a URL</h2>
 
-new Task({name: "Dishes"}).save();
+<p>The easiest way to implement create is to give it the url 
+to post data to:</p>
+
+<pre><code>var Recipe = can.Model({
+  create: "/recipes"
+},{})
+</code></pre>
+
+<p>This lets you create a recipe like:</p>
+
+<pre><code>new Recipe({name: "hot dog"}).save();
+</code></pre>
+
+<h2>Implement with a Function</h2>
+
+<p>You can also implement create by yourself. Create gets called 
+with <code>attrs</code>, which are the <a href="can.Observe.prototype.serialize.html"> </a> model 
+attributes.  Create returns a <code>Deferred</code> 
+that contains the id of the new instance and any other 
+properties that should be set on the instance.</p>
+
+<p>For example, the following code makes a request 
+to <code>POST /recipes.json {'name': 'hot+dog'}</code> and gets back
+something that looks like:</p>
+
+<pre><code>{ 
+  "id": 5,
+  "createdAt": 2234234329
+}
+</code></pre>
+
+<p>The code looks like:</p>
+
+<pre><code>can.Model("Recipe", {
+  create : function( attrs ){
+    return $.post("/recipes.json",attrs, undefined ,"json");
+  }
+},{})
 </code></pre>
 		</section>
 		
@@ -375,51 +413,48 @@ new Task({name: "Dishes"}).save();
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<p><code>bind(eventType, handler(event, instance))</code> listens to\n<strong>created</strong>, <strong>updated</strong>, <strong>destroyed</strong> events on all \ninstances of the model.</p>\n\n<pre><code>Task.bind(\"created\", function(ev, createdTask){\n     this //-&gt; Task\n  createdTask.attr(\"name\") //-&gt; \"Dishes\"\n})\n\nnew Task({name: \"Dishes\"}).save();\n</code></pre>",
-    "description": "<p>Listen for events on a Model class. </p>",
-    "title": "bind",
-    "name": "can.Model.static.bind",
+    "name": "can.Model.create",
     "type": "function",
     "parent": "can.Model.static",
+    "body": "<p><code>create(attributes) -&gt; Deferred</code> is used by [can.Model::save save] to create a \nmodel instance on the server. </p>\n\n<h2>Implement with a URL</h2>\n\n<p>The easiest way to implement create is to give it the url \nto post data to:</p>\n\n<pre><code>var Recipe = can.Model({\n  create: \"/recipes\"\n},{})\n</code></pre>\n\n<p>This lets you create a recipe like:</p>\n\n<pre><code>new Recipe({name: \"hot dog\"}).save();\n</code></pre>\n\n<h2>Implement with a Function</h2>\n\n<p>You can also implement create by yourself. Create gets called \nwith <code>attrs</code>, which are the [can.Observe::serialize serialized] model \nattributes.  Create returns a <code>Deferred</code> \nthat contains the id of the new instance and any other \nproperties that should be set on the instance.</p>\n\n<p>For example, the following code makes a request \nto <code>POST /recipes.json {'name': 'hot+dog'}</code> and gets back\nsomething that looks like:</p>\n\n<pre><code>{ \n  \"id\": 5,\n  \"createdAt\": 2234234329\n}\n</code></pre>\n\n<p>The code looks like:</p>\n\n<pre><code>can.Model(\"Recipe\", {\n  create : function( attrs ){\n    return $.post(\"/recipes.json\",attrs, undefined ,\"json\");\n  }\n},{})\n</code></pre>",
+    "description": "<p>Create a new resource on the server. </p>",
+    "title": "create",
     "signatures": [{
-            "code": "bind(eventType, handler)",
-            "description": "",
+            "code": "[METHOD] /path/to/resource",
+            "description": "<p>If you provide a URL, the Model will send a request to that URL using\nthe method specified (or POST if none is specified) when saving a\nnew instance on the server. (See below for more details.)</p>",
+            "params": [],
+            "returns": {
+                "types": [{
+                        "type": "can.Deferred"
+                    }
+                ],
+                "description": "<p>A Deferred that resolves to the created model.</p>"
+            }
+        }, {
+            "code": "function(serialized)",
+            "description": "<p>If you provide a function, the Model will expect you to do your own AJAX requests.</p>",
             "params": [{
                     "types": [{
-                            "type": "String"
+                            "type": "Object"
                         }
                     ],
-                    "name": "eventType",
-                    "description": "<p>The type of event.  It must be\n<code>\"created\"</code>, <code>\"udpated\"</code>, <code>\"destroyed\"</code>.</p>"
-                }, {
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
-                        }
-                    ],
-                    "name": "handler",
-                    "description": "<p>A callback function\nthat gets called with the event and instance that was\ncreated, destroyed, or updated.</p>"
+                    "name": "serialized",
+                    "description": "<p>The [can.Observe::serialize serialized] properties of\nthe model to create.</p>"
                 }
             ],
             "returns": {
                 "types": [{
-                        "type": "can.Model"
+                        "type": "can.Deferred"
                     }
                 ],
-                "description": "<p>The model constructor function.</p>"
+                "description": "<p>A Deferred that resolves to the created model.</p>"
             }
         }
     ],
     "comment": " ",
     "src": "can/model/model.js",
-    "line": 122,
-    "id": 53
+    "line": 209,
+    "id": 55
 };
 
 	console.log(docData);

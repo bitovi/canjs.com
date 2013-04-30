@@ -73,8 +73,96 @@
 		</div>
 		<ul class="api">
 	
-	<li >
+	<li class="active">
 	<a href="can.Construct.html">can.Construct</a>
+	
+		
+		<ul>
+		
+			
+				<li class="heading"><span>prototype</span>
+					<ul>
+						
+						
+						<li >
+							<a href="can.Construct.prototype.constructor.html">
+								 constructor 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.prototype.init.html">
+								 init 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.prototype.setup.html">
+								 setup 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+			
+		
+			
+				<li class="heading"><span>static</span>
+					<ul>
+						
+						
+						<li >
+							<a href="can.Construct.fullName.html">
+								 fullName 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.namespace.html">
+								 namespace 
+							</a>
+						</li>
+						
+						
+						
+						<li class="active">
+							<a href="can.Construct.newInstance.html">
+								 newInstance 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.setup.html">
+								 setup 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.shortName.html">
+								 shortName 
+							</a>
+						</li>
+						
+						
+						
+						
+					</ul>
+				</li>
+			
+		
+		</ul>
+		
 	
 	</li>
 	
@@ -108,114 +196,8 @@
 	
 	</li>
 	
-	<li class="active">
+	<li >
 	<a href="can.Observe.html">can.Observe</a>
-	
-		
-		<ul>
-		
-			
-				<li class="heading"><span>prototype</span>
-					<ul>
-						
-						
-						
-						
-						<li >
-							<a href="can.Observe.prototype.attr.html">
-								 attr 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Observe.prototype.bind.html">
-								 bind 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Observe.prototype.compute.html">
-								 compute 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Observe.prototype.each.html">
-								 each 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Observe.prototype.removeAttr.html">
-								 removeAttr 
-							</a>
-						</li>
-						
-						
-						
-						
-						
-						<li >
-							<a href="can.Observe.prototype.unbind.html">
-								 unbind 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-			
-		
-			
-				<li class="heading"><span>static</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Observe.static.keys.html">
-								 keys 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Observe.static.startBatch.html">
-								 startBatch 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Observe.static.stopBatch.html">
-								 stopBatch 
-							</a>
-						</li>
-						
-						
-						
-						<li class="active">
-							<a href="can.Observe.static.triggerBatch.html">
-								 triggerBatch 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-			
-		
-		</ul>
-		
 	
 	</li>
 	
@@ -255,14 +237,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L293">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/construct/construct.js#L26">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>triggerBatch</h1><!-- <span class="module">can.Observe.static.triggerBatch</span>-->
+	<h1>newInstance</h1><!-- <span class="module">can.Construct.newInstance</span>-->
 
 
 
@@ -270,12 +252,12 @@
 		</section>
 
 		<section class="description">
-			<p>Trigger an event to be added to the current batch. </p>
+			<p>Create a new instance of a Construct. </p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>can.Observe.triggerBatch(item, event [, args])</h2>
+			<h2>newInstance([...args])</h2>
 
 
 	<h3>Parameters</h3>
@@ -283,42 +265,11 @@
 	<ol class="parameters">
 		
 		<li class="parameter">
-			<h4>item <code>{can.Observe}</code></h4>
+			<h4>args <code>{*}</code></h4>
 			<div class="description">
-				<p><p>the target of the event</p></p>
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>event <code>{String | Object}</code></h4>
-			<div class="description">
-				<p><p>the type of event, or an event object with a type given</p></p>
-			</div>
-			
-			
-			
-			
-			<ul class="options">
-				
-				<li class="option">
-					<h5>type <code>{String}</code></h5>
-					<div class="description">
-						
-					</div>
-				</li>
-				
-			</ul>
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>args <code>{Array}</code></h4>
-			<div class="description">
-				<p><p>the parameters to trigger the event with.</p></p>
+				<p><p>arguments that get passed to <a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a> and <a href="can.Construct.prototype.init.html">can.Construct.prototype.init</a>. Note
+that if <a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a> returns an array, those arguments will be passed to <a href="can.Construct.prototype.init.html">can.Construct.prototype.init</a>
+instead.</p></p>
 			</div>
 			
 			
@@ -328,14 +279,38 @@
 	</ol>
 
 
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{class}</code></h4>
+		<div class="description">
+			<p>instance of the class</p>
+		</div>
+	</div>
+
 		</section>
 		
 
 		
 		<section class="comment">
-			<p>If events are currently being batched, calling <code>triggerBatch</code> adds an event
-to the batch. If events are not currently being batched, the event is triggered
-immediately.</p>
+			<p>Creates a new instance of the constructor function. This method is useful for creating new instances
+with arbitrary parameters. Typically, however, you will simply want to call the constructor with the
+<strong>new</strong> operator.</p>
+
+<h2>Example</h2>
+
+<p>The following creates a <code>Person</code> Construct and then creates a new instance of Person,
+using <code>apply</code> on newInstance to pass arbitrary parameters.</p>
+
+<pre><code class="lang-javascript">var Person = can.Construct({
+  init : function(first, middle, last) {
+    this.first = first;
+    this.middle = middle;
+    this.last = last;
+  }
+});
+
+var args = ["Justin","Barry","Meyer"],
+    justin = new Person.newInstance.apply(null, args);</code></pre>     
 		</section>
 		
 	</article>
@@ -344,54 +319,37 @@ immediately.</p>
 <script type="text/javascript">
 	var docData = {
     "type": "function",
-    "name": "can.Observe.static.triggerBatch",
-    "parent": "can.Observe.static",
-    "body": "<p>If events are currently being batched, calling <code>triggerBatch</code> adds an event\nto the batch. If events are not currently being batched, the event is triggered\nimmediately.</p>",
-    "description": "<p>Trigger an event to be added to the current batch. </p>",
-    "title": "triggerBatch",
+    "name": "can.Construct.newInstance",
+    "parent": "can.Construct.static",
+    "body": "<p>Creates a new instance of the constructor function. This method is useful for creating new instances\nwith arbitrary parameters. Typically, however, you will simply want to call the constructor with the\n<strong>new</strong> operator.</p>\n\n<h2>Example</h2>\n\n<p>The following creates a <code>Person</code> Construct and then creates a new instance of Person,\nusing <code>apply</code> on newInstance to pass arbitrary parameters.</p>\n\n<pre><code class=\"lang-javascript\">var Person = can.Construct({\n  init : function(first, middle, last) {\n    this.first = first;\n    this.middle = middle;\n    this.last = last;\n  }\n});\n\nvar args = [\"Justin\",\"Barry\",\"Meyer\"],\n    justin = new Person.newInstance.apply(null, args);</code></pre>     ",
+    "description": "<p>Create a new instance of a Construct. </p>",
+    "title": "newInstance",
     "signatures": [{
-            "code": "can.Observe.triggerBatch(item, event [, args])",
+            "code": "newInstance([...args])",
             "description": "",
             "params": [{
                     "types": [{
-                            "type": "can.Observe"
-                        }
-                    ],
-                    "name": "item",
-                    "description": "<p>the target of the event</p>"
-                }, {
-                    "types": [{
-                            "type": "String"
-                        }, {
-                            "type": "Object",
-                            "options": [{
-                                    "name": "type",
-                                    "types": [{
-                                            "type": "String"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ],
-                    "name": "event",
-                    "description": "<p>the type of event, or an event object with a type given</p>"
-                }, {
-                    "types": [{
-                            "type": "Array"
+                            "type": "*"
                         }
                     ],
                     "optional": true,
                     "name": "args",
-                    "description": "<p>the parameters to trigger the event with.</p>"
+                    "description": "<p>arguments that get passed to [can.Construct::setup] and [can.Construct::init]. Note\nthat if [can.Construct::setup] returns an array, those arguments will be passed to [can.Construct::init]\ninstead.</p>"
                 }
-            ]
+            ],
+            "returns": {
+                "types": [{
+                        "type": "class"
+                    }
+                ],
+                "description": "<p>instance of the class</p>"
+            }
         }
     ],
     "comment": " ",
-    "src": "can/observe/observe.js",
-    "line": 293,
-    "id": 18
+    "src": "can/construct/construct.js",
+    "line": 26,
+    "id": 3
 };
 
 	console.log(docData);

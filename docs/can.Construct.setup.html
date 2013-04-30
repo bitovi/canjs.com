@@ -116,10 +116,8 @@
 					<ul>
 						
 						
-						
-						
 						<li >
-							<a href="can.Construct.static.fullName.html">
+							<a href="can.Construct.fullName.html">
 								 fullName 
 							</a>
 						</li>
@@ -127,7 +125,7 @@
 						
 						
 						<li >
-							<a href="can.Construct.static.namespace.html">
+							<a href="can.Construct.namespace.html">
 								 namespace 
 							</a>
 						</li>
@@ -135,7 +133,7 @@
 						
 						
 						<li >
-							<a href="can.Construct.static.newInstance.html">
+							<a href="can.Construct.newInstance.html">
 								 newInstance 
 							</a>
 						</li>
@@ -143,7 +141,7 @@
 						
 						
 						<li class="active">
-							<a href="can.Construct.static.setup.html">
+							<a href="can.Construct.setup.html">
 								 setup 
 							</a>
 						</li>
@@ -151,10 +149,12 @@
 						
 						
 						<li >
-							<a href="can.Construct.static.shortName.html">
+							<a href="can.Construct.shortName.html">
 								 shortName 
 							</a>
 						</li>
+						
+						
 						
 						
 					</ul>
@@ -237,14 +237,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/construct/construct.js#L93">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/construct/construct.js#L94">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>setup</h1><!-- <span class="module">can.Construct.static.setup</span>-->
+	<h1>setup</h1><!-- <span class="module">can.Construct.setup</span>-->
 
 
 
@@ -362,7 +362,7 @@ Child.base; // Parent</code></pre>
 <script type="text/javascript">
 	var docData = {
     "type": "function",
-    "name": "can.Construct.static.setup",
+    "name": "can.Construct.setup",
     "parent": "can.Construct.static",
     "body": "<p>The static <code>setup</code> method is called immediately after a constructor function is created and \nset to inherit from its base constructor. It is useful for setting up additional inheritance work.\nDo not confuse this with the prototype <code>[can.Construct::setup]</code> method.</p>\n\n<h2>Setup Extends Defaults</h2>\n\n<p>Setup deeply extends the static <code>defaults</code> property of the base constructor with \nproperties of the inheriting constructor.  For example:</p>\n\n<pre><code class=\"lang-javascript\">Parent = can.Construct({\n  defaults : {\n    parentProp: 'foo'\n  }\n},{})\n\nChild = Parent({\n  defaults : {\n    childProp : 'bar'\n  }\n},{}\n\nChild.defaults // {parentProp: 'foo', 'childProp': 'bar'}</code></pre>\n\n<h2>Example</h2>\n\n<p>This <code>Parent</code> class adds a reference to its base class to itself, and\nso do all the classes that inherit from it.</p>\n\n<pre><code class=\"lang-javascript\">Parent = can.Construct({\n  setup : function(base, fullName, staticProps, protoProps){\n    this.base = base;\n\n    // call base functionality\n    can.Construct.setup.apply(this, arguments)\n  }\n},{});\n\nParent.base; // can.Construct\n\nChild = Parent({});\n\nChild.base; // Parent</code></pre>     ",
     "description": "<p>Perform initialization logic for a constructor function. </p>",
@@ -404,7 +404,7 @@ Child.base; // Parent</code></pre>
     ],
     "comment": " ",
     "src": "can/construct/construct.js",
-    "line": 93,
+    "line": 94,
     "id": 4
 };
 

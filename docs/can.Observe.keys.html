@@ -73,96 +73,8 @@
 		</div>
 		<ul class="api">
 	
-	<li class="active">
+	<li >
 	<a href="can.Construct.html">can.Construct</a>
-	
-		
-		<ul>
-		
-			
-				<li class="heading"><span>prototype</span>
-					<ul>
-						
-						
-						<li >
-							<a href="can.Construct.prototype.constructor.html">
-								 constructor 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Construct.prototype.init.html">
-								 init 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Construct.prototype.setup.html">
-								 setup 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-			
-		
-			
-				<li class="heading"><span>static</span>
-					<ul>
-						
-						
-						
-						
-						<li >
-							<a href="can.Construct.static.fullName.html">
-								 fullName 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Construct.static.namespace.html">
-								 namespace 
-							</a>
-						</li>
-						
-						
-						
-						<li class="active">
-							<a href="can.Construct.static.newInstance.html">
-								 newInstance 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Construct.static.setup.html">
-								 setup 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Construct.static.shortName.html">
-								 shortName 
-							</a>
-						</li>
-						
-						
-					</ul>
-				</li>
-			
-		
-		</ul>
-		
 	
 	</li>
 	
@@ -196,8 +108,114 @@
 	
 	</li>
 	
-	<li >
+	<li class="active">
 	<a href="can.Observe.html">can.Observe</a>
+	
+		
+		<ul>
+		
+			
+				<li class="heading"><span>prototype</span>
+					<ul>
+						
+						
+						
+						
+						<li >
+							<a href="can.Observe.prototype.attr.html">
+								 attr 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Observe.prototype.bind.html">
+								 bind 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Observe.prototype.compute.html">
+								 compute 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Observe.prototype.each.html">
+								 each 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Observe.prototype.removeAttr.html">
+								 removeAttr 
+							</a>
+						</li>
+						
+						
+						
+						
+						
+						<li >
+							<a href="can.Observe.prototype.unbind.html">
+								 unbind 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+			
+		
+			
+				<li class="heading"><span>static</span>
+					<ul>
+						
+						
+						<li class="active">
+							<a href="can.Observe.keys.html">
+								 keys 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Observe.startBatch.html">
+								 startBatch 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Observe.stopBatch.html">
+								 stopBatch 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Observe.triggerBatch.html">
+								 triggerBatch 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+			
+		
+		</ul>
+		
 	
 	</li>
 	
@@ -237,14 +255,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/construct/construct.js#L26">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L325">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>newInstance</h1><!-- <span class="module">can.Construct.static.newInstance</span>-->
+	<h1>keys</h1><!-- <span class="module">can.Observe.keys</span>-->
 
 
 
@@ -252,12 +270,12 @@
 		</section>
 
 		<section class="description">
-			<p>Create a new instance of a Construct. </p>
+			<p>Iterate over the keys of an Observe. </p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>newInstance([...args])</h2>
+			<h2>can.Observe.keys(observe)</h2>
 
 
 	<h3>Parameters</h3>
@@ -265,11 +283,9 @@
 	<ol class="parameters">
 		
 		<li class="parameter">
-			<h4>args <code>{*}</code></h4>
+			<h4>observe <code>{can.Observe}</code></h4>
 			<div class="description">
-				<p><p>arguments that get passed to <a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a> and <a href="can.Construct.prototype.init.html">can.Construct.prototype.init</a>. Note
-that if <a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a> returns an array, those arguments will be passed to <a href="can.Construct.prototype.init.html">can.Construct.prototype.init</a>
-instead.</p></p>
+				<p><p>the <code>can.Observe</code> to get the keys from</p></p>
 			</div>
 			
 			
@@ -281,9 +297,9 @@ instead.</p></p>
 
 	<h3>Returns</h3>
 	<div class="returns">
-		<h4><code>{class}</code></h4>
+		<h4><code>{Array}</code></h4>
 		<div class="description">
-			<p>instance of the class</p>
+			<p>array An array containing the keys from <em>observe</em>.</p>
 		</div>
 	</div>
 
@@ -292,25 +308,15 @@ instead.</p></p>
 
 		
 		<section class="comment">
-			<p>Creates a new instance of the constructor function. This method is useful for creating new instances
-with arbitrary parameters. Typically, however, you will simply want to call the constructor with the
-<strong>new</strong> operator.</p>
+			<p><code>keys</code> iterates over an observe to get an array of its keys.</p>
 
-<h2>Example</h2>
-
-<p>The following creates a <code>Person</code> Construct and then creates a new instance of Person,
-using <code>apply</code> on newInstance to pass arbitrary parameters.</p>
-
-<pre><code class="lang-javascript">var Person = can.Construct({
-  init : function(first, middle, last) {
-    this.first = first;
-    this.middle = middle;
-    this.last = last;
-  }
+<pre><code class="lang-javascript">var people = new can.Observe({
+    a: 'Alice',
+    b: 'Bob',
+    e: 'Eve'
 });
 
-var args = ["Justin","Barry","Meyer"],
-    justin = new Person.newInstance.apply(null, args);</code></pre>     
+can.Observe.keys(people); // ['a', 'b', 'e']</code></pre>     
 		</section>
 		
 	</article>
@@ -319,37 +325,36 @@ var args = ["Justin","Barry","Meyer"],
 <script type="text/javascript">
 	var docData = {
     "type": "function",
-    "name": "can.Construct.static.newInstance",
-    "parent": "can.Construct.static",
-    "body": "<p>Creates a new instance of the constructor function. This method is useful for creating new instances\nwith arbitrary parameters. Typically, however, you will simply want to call the constructor with the\n<strong>new</strong> operator.</p>\n\n<h2>Example</h2>\n\n<p>The following creates a <code>Person</code> Construct and then creates a new instance of Person,\nusing <code>apply</code> on newInstance to pass arbitrary parameters.</p>\n\n<pre><code class=\"lang-javascript\">var Person = can.Construct({\n  init : function(first, middle, last) {\n    this.first = first;\n    this.middle = middle;\n    this.last = last;\n  }\n});\n\nvar args = [\"Justin\",\"Barry\",\"Meyer\"],\n    justin = new Person.newInstance.apply(null, args);</code></pre>     ",
-    "description": "<p>Create a new instance of a Construct. </p>",
-    "title": "newInstance",
+    "name": "can.Observe.keys",
+    "parent": "can.Observe.static",
+    "body": "<p><code>keys</code> iterates over an observe to get an array of its keys.</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe({\n    a: 'Alice',\n    b: 'Bob',\n    e: 'Eve'\n});\n\ncan.Observe.keys(people); // ['a', 'b', 'e']</code></pre>     ",
+    "description": "<p>Iterate over the keys of an Observe. </p>",
+    "title": "keys",
     "signatures": [{
-            "code": "newInstance([...args])",
+            "code": "can.Observe.keys(observe)",
             "description": "",
             "params": [{
                     "types": [{
-                            "type": "*"
+                            "type": "can.Observe"
                         }
                     ],
-                    "optional": true,
-                    "name": "args",
-                    "description": "<p>arguments that get passed to [can.Construct::setup] and [can.Construct::init]. Note\nthat if [can.Construct::setup] returns an array, those arguments will be passed to [can.Construct::init]\ninstead.</p>"
+                    "name": "observe",
+                    "description": "<p>the <code>can.Observe</code> to get the keys from</p>"
                 }
             ],
             "returns": {
                 "types": [{
-                        "type": "class"
+                        "type": "Array"
                     }
                 ],
-                "description": "<p>instance of the class</p>"
+                "description": "<p>array An array containing the keys from <em>observe</em>.</p>"
             }
         }
     ],
     "comment": " ",
-    "src": "can/construct/construct.js",
-    "line": 26,
-    "id": 3
+    "src": "can/observe/observe.js",
+    "line": 325,
+    "id": 18
 };
 
 	console.log(docData);

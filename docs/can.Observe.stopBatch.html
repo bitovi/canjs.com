@@ -179,8 +179,8 @@
 					<ul>
 						
 						
-						<li class="active">
-							<a href="can.Observe.static.keys.html">
+						<li >
+							<a href="can.Observe.keys.html">
 								 keys 
 							</a>
 						</li>
@@ -188,15 +188,15 @@
 						
 						
 						<li >
-							<a href="can.Observe.static.startBatch.html">
+							<a href="can.Observe.startBatch.html">
 								 startBatch 
 							</a>
 						</li>
 						
 						
 						
-						<li >
-							<a href="can.Observe.static.stopBatch.html">
+						<li class="active">
+							<a href="can.Observe.stopBatch.html">
 								 stopBatch 
 							</a>
 						</li>
@@ -204,7 +204,7 @@
 						
 						
 						<li >
-							<a href="can.Observe.static.triggerBatch.html">
+							<a href="can.Observe.triggerBatch.html">
 								 triggerBatch 
 							</a>
 						</li>
@@ -255,14 +255,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L323">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L223">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>keys</h1><!-- <span class="module">can.Observe.static.keys</span>-->
+	<h1>stopBatch</h1><!-- <span class="module">can.Observe.stopBatch</span>-->
 
 
 
@@ -270,12 +270,12 @@
 		</section>
 
 		<section class="description">
-			<p>Iterate over the keys of an Observe. </p>
+			<p>End an event batch. </p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>can.Observe.keys(observe)</h2>
+			<h2>stopBatch([force[, callStart]])</h2>
 
 
 	<h3>Parameters</h3>
@@ -283,9 +283,19 @@
 	<ol class="parameters">
 		
 		<li class="parameter">
-			<h4>observe <code>{can.Observe}</code></h4>
+			<h4>force <code>{bool}</code></h4>
 			<div class="description">
-				<p><p>the <code>can.Observe</code> to get the keys from</p></p>
+				<p><p>whether to stop batching events immediately</p></p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>callStart <code>{bool}</code></h4>
+			<div class="description">
+				<p><p>whether to call <code><a href="can.Observe.startBatch.html"> </a></code> after firing batched events</p></p>
 			</div>
 			
 			
@@ -295,28 +305,49 @@
 	</ol>
 
 
-	<h3>Returns</h3>
-	<div class="returns">
-		<h4><code>{Array}</code></h4>
-		<div class="description">
-			<p>array An array containing the keys from <em>observe</em>.</p>
-		</div>
-	</div>
-
 		</section>
 		
 
 		
 		<section class="comment">
-			<p><code>keys</code> iterates over an observe to get an array of its keys.</p>
+			<p><code>stopBatch</code> matches an earlier <code><a href="can.Observe.startBatch.html">can.Observe.startBatch</a></code> call. If <code>stopBatch</code> has been
+called as many times as <code>startBatch</code> (or if <em>force</em> is true), all batched events will be
+fired and any callbacks passed to <code>startBatch</code> since the beginning of the batch will be
+called. If <em>force and _callStart</em> are both true, a new batch will be started when all
+the events and callbacks have been fired.</p>
 
-<pre><code class="lang-javascript">var people = new can.Observe({
-    a: 'Alice',
-    b: 'Bob',
-    e: 'Eve'
+<p>See <code><a href="can.Observe.startBatch.html">can.Observe.startBatch</a></code> for examples of <code>startBatch</code> and <code>stopBatch</code> in normal use.</p>
+
+<p>In this example, the batch is forceably ended in the <code>addPeople</code> function.</p>
+
+<pre><code class="lang-javascript">var addPeople = function(observable) {
+    can.Observe.startBatch();
+    observable.attr('a', 'Alice');
+    observable.attr('b', 'Bob');
+    observable.attr('e', 'Eve');
+    can.Observe.stopBatch(true);
+};
+
+// In a completely different place:
+var list = new can.Observe();
+list.bind('change', function() {
+    console.log('The list changed.');
 });
 
-can.Observe.keys(people); // ['a', 'b', 'e']</code></pre>     
+can.Observe.startBatch();
+addPeople(list);
+console.log('Still in the batch.');
+
+// Here, the console has:
+// Still in the batch.
+
+can.Observe.stopBatch();
+
+// Here, the console has:
+// The list changed.
+// The list changed.
+// The list changed.
+// Still in the batch.</code></pre>     
 		</section>
 		
 	</article>
@@ -325,36 +356,40 @@ can.Observe.keys(people); // ['a', 'b', 'e']</code></pre>
 <script type="text/javascript">
 	var docData = {
     "type": "function",
-    "name": "can.Observe.static.keys",
+    "name": "can.Observe.stopBatch",
     "parent": "can.Observe.static",
-    "body": "<p><code>keys</code> iterates over an observe to get an array of its keys.</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe({\n    a: 'Alice',\n    b: 'Bob',\n    e: 'Eve'\n});\n\ncan.Observe.keys(people); // ['a', 'b', 'e']</code></pre>     ",
-    "description": "<p>Iterate over the keys of an Observe. </p>",
-    "title": "keys",
+    "body": "<p><code>stopBatch</code> matches an earlier <code>[can.Observe.startBatch]</code> call. If <code>stopBatch</code> has been\ncalled as many times as <code>startBatch</code> (or if <em>force</em> is true), all batched events will be\nfired and any callbacks passed to <code>startBatch</code> since the beginning of the batch will be\ncalled. If <em>force and _callStart</em> are both true, a new batch will be started when all\nthe events and callbacks have been fired.</p>\n\n<p>See <code>[can.Observe.startBatch]</code> for examples of <code>startBatch</code> and <code>stopBatch</code> in normal use.</p>\n\n<p>In this example, the batch is forceably ended in the <code>addPeople</code> function.</p>\n\n<pre><code class=\"lang-javascript\">var addPeople = function(observable) {\n    can.Observe.startBatch();\n    observable.attr('a', 'Alice');\n    observable.attr('b', 'Bob');\n    observable.attr('e', 'Eve');\n    can.Observe.stopBatch(true);\n};\n\n// In a completely different place:\nvar list = new can.Observe();\nlist.bind('change', function() {\n    console.log('The list changed.');\n});\n\ncan.Observe.startBatch();\naddPeople(list);\nconsole.log('Still in the batch.');\n\n// Here, the console has:\n// Still in the batch.\n\ncan.Observe.stopBatch();\n\n// Here, the console has:\n// The list changed.\n// The list changed.\n// The list changed.\n// Still in the batch.</code></pre>     ",
+    "description": "<p>End an event batch. </p>",
+    "title": "stopBatch",
     "signatures": [{
-            "code": "can.Observe.keys(observe)",
+            "code": "stopBatch([force[, callStart]])",
             "description": "",
             "params": [{
                     "types": [{
-                            "type": "can.Observe"
+                            "type": "bool"
                         }
                     ],
-                    "name": "observe",
-                    "description": "<p>the <code>can.Observe</code> to get the keys from</p>"
+                    "optional": true,
+                    "name": "force",
+                    "defaultValue": "false",
+                    "description": "<p>whether to stop batching events immediately</p>"
+                }, {
+                    "types": [{
+                            "type": "bool"
+                        }
+                    ],
+                    "optional": true,
+                    "name": "callStart",
+                    "defaultValue": "false",
+                    "description": "<p>whether to call <code>[can.Observe.startBatch startBatch]</code> after firing batched events</p>"
                 }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "Array"
-                    }
-                ],
-                "description": "<p>array An array containing the keys from <em>observe</em>.</p>"
-            }
+            ]
         }
     ],
     "comment": " ",
     "src": "can/observe/observe.js",
-    "line": 323,
-    "id": 19
+    "line": 223,
+    "id": 16
 };
 
 	console.log(docData);

@@ -133,8 +133,108 @@
 	
 	</li>
 	
-	<li >
+	<li class="active">
 	<a href="can.view.html">can.view</a>
+	
+		
+		<ul>
+		
+			
+				
+				<li class="active">
+				<a href="can.view.cache.html">
+					 view 
+				</a>
+				</li>
+				
+			
+		
+			
+				
+			
+		
+			
+				
+				<li >
+				<a href="can.view.ejs.html">
+					 can.view.ejs 
+				</a>
+				</li>
+				
+			
+		
+			
+				
+				<li >
+				<a href="can.view.ext.html">
+					 ext 
+				</a>
+				</li>
+				
+			
+		
+			
+				
+				<li >
+				<a href="can.view.hook.html">
+					 hook 
+				</a>
+				</li>
+				
+			
+		
+			
+				
+				<li >
+				<a href="can.view.mustache.html">
+					 can.view.mustache 
+				</a>
+				</li>
+				
+			
+		
+			
+				
+			
+		
+			
+				
+				<li >
+				<a href="can.view.register.html">
+					 can.view.register 
+				</a>
+				</li>
+				
+			
+		
+			
+				
+			
+		
+			
+				
+			
+		
+			
+				
+				<li >
+				<a href="can.view.render.html">
+					 can.view.render 
+				</a>
+				</li>
+				
+			
+		
+			
+				
+			
+		
+			
+				
+			
+		
+		</ul>
+		
 	
 	</li>
 	
@@ -149,14 +249,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L109">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/view/view.js#L215">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>Observe</h1>
+	<h1>view</h1><!-- <span class="module">can.view.cache</span>-->
 
 
 
@@ -164,7 +264,12 @@
 		</section>
 
 		<section class="description">
-			
+			<p>By default, views are cached on the client.  If you'd like the
+the views to reload from the server, you can set the <code>cache</code> attribute to <code>false</code>.</p>
+
+<pre><code>    //- Forces loads from server
+    can.view.cache = false; 
+</code></pre>
 		</section>
 
 		
@@ -175,14 +280,19 @@
 
 <script type="text/javascript">
 	var docData = {
-    "name": "Observe",
+    "name": "can.view.cache",
     "type": "property",
-    "parent": "can/observe/observe.js",
+    "parent": "can.view",
     "body": "",
-    "description": "",
-    "src": "can/observe/observe.js",
-    "line": 109,
-    "id": 14
+    "description": "<p>By default, views are cached on the client.  If you'd like the\nthe views to reload from the server, you can set the <code>cache</code> attribute to <code>false</code>.</p>\n\n<pre><code>    //- Forces loads from server\n    can.view.cache = false; \n</code></pre>",
+    "types": [{
+            "type": "Boolean"
+        }
+    ],
+    "title": "view",
+    "src": "can/view/view.js",
+    "line": 215,
+    "id": 101
 };
 
 	console.log(docData);

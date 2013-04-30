@@ -93,8 +93,23 @@
 	
 	</li>
 	
-	<li class="active">
+	<li >
 	<a href="can.Model.html">can.Model</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Mustache.html">can.Mustache</a>
+	
+	</li>
+	
+	<li class="active">
+	<a href="can.Observe.html">can.Observe</a>
 	
 		
 		<ul>
@@ -104,8 +119,18 @@
 					<ul>
 						
 						
+						
+						
 						<li >
-							<a href="can.Model.prototype.bind.html">
+							<a href="can.Observe.prototype.attr.html">
+								 attr 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Observe.prototype.bind.html">
 								 bind 
 							</a>
 						</li>
@@ -113,31 +138,33 @@
 						
 						
 						<li >
-							<a href="can.Model.prototype.destroy.html">
-								 destroy 
+							<a href="can.Observe.prototype.compute.html">
+								 compute 
 							</a>
 						</li>
 						
 						
 						
 						<li >
-							<a href="can.Model.prototype.isNew.html">
-								 isNew 
+							<a href="can.Observe.prototype.each.html">
+								 each 
 							</a>
 						</li>
 						
 						
 						
 						<li >
-							<a href="can.Model.prototype.save.html">
-								 save 
+							<a href="can.Observe.prototype.removeAttr.html">
+								 removeAttr 
 							</a>
 						</li>
 						
 						
 						
+						
+						
 						<li >
-							<a href="can.Model.prototype.unbind.html">
+							<a href="can.Observe.prototype.unbind.html">
 								 unbind 
 							</a>
 						</li>
@@ -153,80 +180,32 @@
 						
 						
 						<li >
-							<a href="can.Model.static.bind.html">
-								 bind 
+							<a href="can.Observe.keys.html">
+								 keys 
 							</a>
 						</li>
 						
 						
 						
 						<li >
-							<a href="can.Model.static.create.html">
-								 create 
+							<a href="can.Observe.startBatch.html">
+								 startBatch 
 							</a>
 						</li>
 						
 						
 						
 						<li >
-							<a href="can.Model.static.destroy.html">
-								 destroy 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.findAll.html">
-								 findAll 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.findOne.html">
-								 findOne 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.id.html">
-								 id 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.model.html">
-								 model 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.models.html">
-								 models 
+							<a href="can.Observe.stopBatch.html">
+								 stopBatch 
 							</a>
 						</li>
 						
 						
 						
 						<li class="active">
-							<a href="can.Model.static.unbind.html">
-								 unbind 
-							</a>
-						</li>
-						
-						
-						
-						<li >
-							<a href="can.Model.static.update.html">
-								 update 
+							<a href="can.Observe.triggerBatch.html">
+								 triggerBatch 
 							</a>
 						</li>
 						
@@ -237,21 +216,6 @@
 		
 		</ul>
 		
-	
-	</li>
-	
-	<li >
-	<a href="can.Model.List.html">can.Model.List</a>
-	
-	</li>
-	
-	<li >
-	<a href="can.Mustache.html">can.Mustache</a>
-	
-	</li>
-	
-	<li >
-	<a href="can.Observe.html">can.Observe</a>
 	
 	</li>
 	
@@ -291,14 +255,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/model/model.js#L148">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L294">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>unbind</h1><!-- <span class="module">can.Model.static.unbind</span>-->
+	<h1>triggerBatch</h1><!-- <span class="module">can.Observe.triggerBatch</span>-->
 
 
 
@@ -306,12 +270,12 @@
 		</section>
 
 		<section class="description">
-			<p>Stop listening for events on a Model class. </p>
+			<p>Trigger an event to be added to the current batch. </p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>unbind(eventType, handler)</h2>
+			<h2>can.Observe.triggerBatch(item, event [, args])</h2>
 
 
 	<h3>Parameters</h3>
@@ -319,10 +283,9 @@
 	<ol class="parameters">
 		
 		<li class="parameter">
-			<h4>eventType <code>{String}</code></h4>
+			<h4>item <code>{can.Observe}</code></h4>
 			<div class="description">
-				<p><p>The type of event. It must be
-<code>"created"</code>, <code>"udpated"</code>, <code>"destroyed"</code>.</p></p>
+				<p><p>the target of the event</p></p>
 			</div>
 			
 			
@@ -330,10 +293,32 @@
 		</li>
 		
 		<li class="parameter">
-			<h4>handler <code>{function}</code></h4>
+			<h4>event <code>{String | Object}</code></h4>
 			<div class="description">
-				<p><p>A callback function
-that was passed to <code>bind</code>.</p></p>
+				<p><p>the type of event, or an event object with a type given</p></p>
+			</div>
+			
+			
+			
+			
+			<ul class="options">
+				
+				<li class="option">
+					<h5>type <code>{String}</code></h5>
+					<div class="description">
+						
+					</div>
+				</li>
+				
+			</ul>
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>args <code>{Array}</code></h4>
+			<div class="description">
+				<p><p>the parameters to trigger the event with.</p></p>
 			</div>
 			
 			
@@ -343,31 +328,14 @@ that was passed to <code>bind</code>.</p></p>
 	</ol>
 
 
-	<h3>Returns</h3>
-	<div class="returns">
-		<h4><code>{can.Model}</code></h4>
-		<div class="description">
-			<p>The model constructor function.</p>
-		</div>
-	</div>
-
 		</section>
 		
 
 		
 		<section class="comment">
-			<p><code>unbind(eventType, handler)</code> removes a listener
-attached with [can.Model.bind].</p>
-
-<pre><code>var handler = function(ev, createdTask){
-
-}
-Task.bind("created", handler)
-Task.unbind("created", handler)
-</code></pre>
-
-<p>You have to pass the same function to <code>unbind</code> that you
-passed to <code>bind</code>.</p>
+			<p>If events are currently being batched, calling <code>triggerBatch</code> adds an event
+to the batch. If events are not currently being batched, the event is triggered
+immediately.</p>
 		</section>
 		
 	</article>
@@ -375,51 +343,55 @@ passed to <code>bind</code>.</p>
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<p><code>unbind(eventType, handler)</code> removes a listener\nattached with [can.Model.bind].</p>\n\n<pre><code>var handler = function(ev, createdTask){\n\n}\nTask.bind(\"created\", handler)\nTask.unbind(\"created\", handler)\n</code></pre>\n\n<p>You have to pass the same function to <code>unbind</code> that you\npassed to <code>bind</code>.</p>",
-    "description": "<p>Stop listening for events on a Model class. </p>",
-    "title": "unbind",
-    "name": "can.Model.static.unbind",
     "type": "function",
-    "parent": "can.Model.static",
+    "name": "can.Observe.triggerBatch",
+    "parent": "can.Observe.static",
+    "body": "<p>If events are currently being batched, calling <code>triggerBatch</code> adds an event\nto the batch. If events are not currently being batched, the event is triggered\nimmediately.</p>",
+    "description": "<p>Trigger an event to be added to the current batch. </p>",
+    "title": "triggerBatch",
     "signatures": [{
-            "code": "unbind(eventType, handler)",
+            "code": "can.Observe.triggerBatch(item, event [, args])",
             "description": "",
             "params": [{
                     "types": [{
-                            "type": "String"
+                            "type": "can.Observe"
                         }
                     ],
-                    "name": "eventType",
-                    "description": "<p>The type of event. It must be\n<code>\"created\"</code>, <code>\"udpated\"</code>, <code>\"destroyed\"</code>.</p>"
+                    "name": "item",
+                    "description": "<p>the target of the event</p>"
                 }, {
                     "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
+                            "type": "String"
+                        }, {
+                            "type": "Object",
+                            "options": [{
+                                    "name": "type",
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ],
-                    "name": "handler",
-                    "description": "<p>A callback function\nthat was passed to <code>bind</code>.</p>"
+                    "name": "event",
+                    "description": "<p>the type of event, or an event object with a type given</p>"
+                }, {
+                    "types": [{
+                            "type": "Array"
+                        }
+                    ],
+                    "optional": true,
+                    "name": "args",
+                    "description": "<p>the parameters to trigger the event with.</p>"
                 }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "can.Model"
-                    }
-                ],
-                "description": "<p>The model constructor function.</p>"
-            }
+            ]
         }
     ],
     "comment": " ",
-    "src": "can/model/model.js",
-    "line": 148,
-    "id": 54
+    "src": "can/observe/observe.js",
+    "line": 294,
+    "id": 17
 };
 
 	console.log(docData);

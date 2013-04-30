@@ -153,7 +153,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.bind.html">
+							<a href="can.Model.bind.html">
 								 bind 
 							</a>
 						</li>
@@ -161,15 +161,15 @@
 						
 						
 						<li >
-							<a href="can.Model.static.create.html">
+							<a href="can.Model.create.html">
 								 create 
 							</a>
 						</li>
 						
 						
 						
-						<li class="active">
-							<a href="can.Model.static.destroy.html">
+						<li >
+							<a href="can.Model.destroy.html">
 								 destroy 
 							</a>
 						</li>
@@ -177,15 +177,15 @@
 						
 						
 						<li >
-							<a href="can.Model.static.findAll.html">
+							<a href="can.Model.findAll.html">
 								 findAll 
 							</a>
 						</li>
 						
 						
 						
-						<li >
-							<a href="can.Model.static.findOne.html">
+						<li class="active">
+							<a href="can.Model.findOne.html">
 								 findOne 
 							</a>
 						</li>
@@ -193,7 +193,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.id.html">
+							<a href="can.Model.id.html">
 								 id 
 							</a>
 						</li>
@@ -201,7 +201,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.model.html">
+							<a href="can.Model.model.html">
 								 model 
 							</a>
 						</li>
@@ -209,7 +209,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.models.html">
+							<a href="can.Model.models.html">
 								 models 
 							</a>
 						</li>
@@ -217,7 +217,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.unbind.html">
+							<a href="can.Model.unbind.html">
 								 unbind 
 							</a>
 						</li>
@@ -225,7 +225,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.update.html">
+							<a href="can.Model.update.html">
 								 update 
 							</a>
 						</li>
@@ -291,14 +291,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/model/model.js#L362">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/model/model.js#L498">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>destroy</h1><!-- <span class="module">can.Model.static.destroy</span>-->
+	<h1>findOne</h1><!-- <span class="module">can.Model.findOne</span>-->
 
 
 
@@ -306,39 +306,44 @@
 		</section>
 
 		<section class="description">
-			<p>Destroy a resource on the server. </p>
+			<p>Retrieve a resource from a server. </p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>[METHOD] /path/to/resource</h2>
-<p>If you provide a URL, the Model will send a request to that URL using
-the method specified (or DELETE if none is specified) when deleting an
-instance on the server. (See below for more details.)</p>
+			<h2>findOne(params[, success[, error]])</h2>
 
-
-	<h3>Returns</h3>
-	<div class="returns">
-		<h4><code>{can.Deferred}</code></h4>
-		<div class="description">
-			<p>A Deferred that resolves to the destroyed model.</p>
-		</div>
-	</div>
-
-		</section>
-		
-		<section class="signature">
-			<h2>function(id)</h2>
-<p>If you provide a function, the Model will expect you to do your own AJAX requests.</p>
 
 	<h3>Parameters</h3>
 
 	<ol class="parameters">
 		
 		<li class="parameter">
-			<h4>id <code>{*}</code></h4>
+			<h4>params <code>{Object}</code></h4>
 			<div class="description">
-				<p><p>The ID of the resource to destroy.</p></p>
+				<p><p>Values to filter the request or results with.</p></p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>success <code>{function}</code></h4>
+			<div class="description">
+				<p><p>A callback to call on successful retrieval. The callback recieves
+the retrieved resource as a can.Model.</p></p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>error <code>{function}</code></h4>
+			<div class="description">
+				<p><p>A callback to call when an error occurs. The callback receives the
+XmlHttpRequest object.</p></p>
 			</div>
 			
 			
@@ -352,7 +357,7 @@ instance on the server. (See below for more details.)</p>
 	<div class="returns">
 		<h4><code>{can.Deferred}</code></h4>
 		<div class="description">
-			<p>A Deferred that resolves to the destroyed model.</p>
+			<p>A deferred that resolves to a <a href="can.Model.List.html">can.Model.List</a> of retrieved models.</p>
 		</div>
 	</div>
 
@@ -361,46 +366,69 @@ instance on the server. (See below for more details.)</p>
 
 		
 		<section class="comment">
-			<p><code>destroy(id) -&gt; Deferred</code> is used by <a href="can.Model.prototype.destroy.html">can.Model.prototype.destroy</a> remove a model 
-instance from the server.</p>
+			<p><code>findOne( params, success(instance), error(xhr) ) -&gt; Deferred</code> is used to retrieve a model 
+instance from the server. Before you can use <code>findOne</code>, you must implement it.</p>
 
 <h2>Implement with a URL</h2>
 
-<p>You can implement destroy with a string like:</p>
+<p>Implement findAll with a url like:</p>
 
 <pre><code>Recipe = can.Model({
-  destroy : "/recipe/{id}"
-},{})
+  findOne : "/recipes/{id}.json"
+},{});
 </code></pre>
 
-<p>And use <a href="can.Model.prototype.destroy.html">can.Model.prototype.destroy</a> to destroy it like:</p>
+<p>If <code>findOne</code> is called like:</p>
 
-<pre><code>Recipe.findOne({id: 1}, function(recipe){
-      recipe.destroy();
-});
+<pre><code>Recipe.findOne({id: 57});
 </code></pre>
 
-<p>This sends a <code>DELETE</code> request to <code>/thing/destroy/1</code>.</p>
+<p>The server should return data that looks like:</p>
 
-<p>If your server does not support <code>DELETE</code> you can override it like:</p>
+<pre><code>{"id" : 57, "name": "Ice Water"}
+</code></pre>
+
+<h2>Implement with an Object</h2>
+
+<p>Implement <code>findOne</code> with an object that specifies the parameters to
+<code>can.ajax</code> (jQuery.ajax) like:</p>
 
 <pre><code>Recipe = can.Model({
-  destroy : "POST /recipe/destroy/{id}"
-},{})
-</code></pre>
-
-<h2>Implement with a function</h2>
-
-<p>Implement destroy with a function like:</p>
-
-<pre><code>Recipe = can.Model({
-  destroy : function(id){
-    return $.post("/recipe/destroy/"+id,{});
+  findOne : {
+    url: "/recipes/{id}.xml",
+    dataType: "xml"
   }
 },{})
 </code></pre>
 
-<p>Destroy just needs to return a deferred that resolves.</p>
+<h2>Implement with a Function</h2>
+
+<p>To implement with a function, <code>findOne</code> is passed <strong>params</strong> to specify
+the instance retrieved from the server and it should return a
+deferred that resolves to the model data.  Also notice that you now need to
+build the URL manually. For example:</p>
+
+<pre><code>Recipe = can.Model({
+  findOne : function(params){
+    return $.ajax({
+      url: '/recipes/' + params.id,
+      type: 'get',
+      dataType: 'json'})
+  }
+},{})
+</code></pre>
+
+<h2>Use</h2>
+
+<p>After implementing <code>findOne</code>, you can use it to retrieve an instance of the model
+like:</p>
+
+<pre><code>Recipe.findOne({id: 57}, function(recipe){
+     recipe.attr('name') //-&gt; "Ice Water"
+}, function( xhr ){
+     // called if an error
+}) //-&gt; Deferred
+</code></pre>
 		</section>
 		
 	</article>
@@ -408,33 +436,52 @@ instance from the server.</p>
 
 <script type="text/javascript">
 	var docData = {
-    "name": "can.Model.static.destroy",
+    "name": "can.Model.findOne",
     "type": "function",
     "parent": "can.Model.static",
-    "body": "<p><code>destroy(id) -&gt; Deferred</code> is used by [can.Model::destroy] remove a model \ninstance from the server.</p>\n\n<h2>Implement with a URL</h2>\n\n<p>You can implement destroy with a string like:</p>\n\n<pre><code>Recipe = can.Model({\n  destroy : \"/recipe/{id}\"\n},{})\n</code></pre>\n\n<p>And use [can.Model::destroy] to destroy it like:</p>\n\n<pre><code>Recipe.findOne({id: 1}, function(recipe){\n      recipe.destroy();\n});\n</code></pre>\n\n<p>This sends a <code>DELETE</code> request to <code>/thing/destroy/1</code>.</p>\n\n<p>If your server does not support <code>DELETE</code> you can override it like:</p>\n\n<pre><code>Recipe = can.Model({\n  destroy : \"POST /recipe/destroy/{id}\"\n},{})\n</code></pre>\n\n<h2>Implement with a function</h2>\n\n<p>Implement destroy with a function like:</p>\n\n<pre><code>Recipe = can.Model({\n  destroy : function(id){\n    return $.post(\"/recipe/destroy/\"+id,{});\n  }\n},{})\n</code></pre>\n\n<p>Destroy just needs to return a deferred that resolves.</p>",
-    "description": "<p>Destroy a resource on the server. </p>",
-    "title": "destroy",
+    "body": "<p><code>findOne( params, success(instance), error(xhr) ) -&gt; Deferred</code> is used to retrieve a model \ninstance from the server. Before you can use <code>findOne</code>, you must implement it.</p>\n\n<h2>Implement with a URL</h2>\n\n<p>Implement findAll with a url like:</p>\n\n<pre><code>Recipe = can.Model({\n  findOne : \"/recipes/{id}.json\"\n},{});\n</code></pre>\n\n<p>If <code>findOne</code> is called like:</p>\n\n<pre><code>Recipe.findOne({id: 57});\n</code></pre>\n\n<p>The server should return data that looks like:</p>\n\n<pre><code>{\"id\" : 57, \"name\": \"Ice Water\"}\n</code></pre>\n\n<h2>Implement with an Object</h2>\n\n<p>Implement <code>findOne</code> with an object that specifies the parameters to\n<code>can.ajax</code> (jQuery.ajax) like:</p>\n\n<pre><code>Recipe = can.Model({\n  findOne : {\n    url: \"/recipes/{id}.xml\",\n    dataType: \"xml\"\n  }\n},{})\n</code></pre>\n\n<h2>Implement with a Function</h2>\n\n<p>To implement with a function, <code>findOne</code> is passed <strong>params</strong> to specify\nthe instance retrieved from the server and it should return a\ndeferred that resolves to the model data.  Also notice that you now need to\nbuild the URL manually. For example:</p>\n\n<pre><code>Recipe = can.Model({\n  findOne : function(params){\n    return $.ajax({\n      url: '/recipes/' + params.id,\n      type: 'get',\n      dataType: 'json'})\n  }\n},{})\n</code></pre>\n\n<h2>Use</h2>\n\n<p>After implementing <code>findOne</code>, you can use it to retrieve an instance of the model\nlike:</p>\n\n<pre><code>Recipe.findOne({id: 57}, function(recipe){\n     recipe.attr('name') //-&gt; \"Ice Water\"\n}, function( xhr ){\n     // called if an error\n}) //-&gt; Deferred\n</code></pre>",
+    "description": "<p>Retrieve a resource from a server. </p>",
+    "title": "findOne",
     "signatures": [{
-            "code": "[METHOD] /path/to/resource",
-            "description": "<p>If you provide a URL, the Model will send a request to that URL using\nthe method specified (or DELETE if none is specified) when deleting an\ninstance on the server. (See below for more details.)</p>",
-            "params": [],
-            "returns": {
-                "types": [{
-                        "type": "can.Deferred"
-                    }
-                ],
-                "description": "<p>A Deferred that resolves to the destroyed model.</p>"
-            }
-        }, {
-            "code": "function(id)",
-            "description": "<p>If you provide a function, the Model will expect you to do your own AJAX requests.</p>",
+            "code": "findOne(params[, success[, error]])",
+            "description": "",
             "params": [{
                     "types": [{
-                            "type": "*"
+                            "type": "Object"
                         }
                     ],
-                    "name": "id",
-                    "description": "<p>The ID of the resource to destroy.</p>"
+                    "name": "params",
+                    "description": "<p>Values to filter the request or results with.</p>"
+                }, {
+                    "types": [{
+                            "type": "function",
+                            "returns": {
+                                "types": [{
+                                        "type": "undefined"
+                                    }
+                                ]
+                            },
+                            "params": []
+                        }
+                    ],
+                    "optional": true,
+                    "name": "success",
+                    "description": "<p>A callback to call on successful retrieval. The callback recieves\nthe retrieved resource as a can.Model.</p>"
+                }, {
+                    "types": [{
+                            "type": "function",
+                            "returns": {
+                                "types": [{
+                                        "type": "undefined"
+                                    }
+                                ]
+                            },
+                            "params": []
+                        }
+                    ],
+                    "optional": true,
+                    "name": "error",
+                    "description": "<p>A callback to call when an error occurs. The callback receives the\nXmlHttpRequest object.</p>"
                 }
             ],
             "returns": {
@@ -442,14 +489,14 @@ instance from the server.</p>
                         "type": "can.Deferred"
                     }
                 ],
-                "description": "<p>A Deferred that resolves to the destroyed model.</p>"
+                "description": "<p>A deferred that resolves to a [can.Model.List] of retrieved models.</p>"
             }
         }
     ],
     "comment": " ",
     "src": "can/model/model.js",
-    "line": 362,
-    "id": 58
+    "line": 498,
+    "id": 59
 };
 
 	console.log(docData);

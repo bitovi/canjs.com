@@ -180,7 +180,7 @@
 						
 						
 						<li >
-							<a href="can.Observe.static.keys.html">
+							<a href="can.Observe.keys.html">
 								 keys 
 							</a>
 						</li>
@@ -188,7 +188,7 @@
 						
 						
 						<li class="active">
-							<a href="can.Observe.static.startBatch.html">
+							<a href="can.Observe.startBatch.html">
 								 startBatch 
 							</a>
 						</li>
@@ -196,7 +196,7 @@
 						
 						
 						<li >
-							<a href="can.Observe.static.stopBatch.html">
+							<a href="can.Observe.stopBatch.html">
 								 stopBatch 
 							</a>
 						</li>
@@ -204,7 +204,7 @@
 						
 						
 						<li >
-							<a href="can.Observe.static.triggerBatch.html">
+							<a href="can.Observe.triggerBatch.html">
 								 triggerBatch 
 							</a>
 						</li>
@@ -255,14 +255,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L124">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L123">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>startBatch</h1><!-- <span class="module">can.Observe.static.startBatch</span>-->
+	<h1>startBatch</h1><!-- <span class="module">can.Observe.startBatch</span>-->
 
 
 
@@ -300,7 +300,7 @@
 
 		
 		<section class="comment">
-			<p><code>startBatch</code> causes can.Observe to begin an event batch. Until <code>[can.Observe.stopBatch]</code> is called, any
+			<p><code>startBatch</code> causes can.Observe to begin an event batch. Until <code><a href="can.Observe.stopBatch.html">can.Observe.stopBatch</a></code> is called, any
 events that would result from calls to <code><a href="can.Observe.prototype.attr.html"> </a></code> are held back from firing. If you have
 lots of changes to make to can.Observes, batching them together can help performance &emdash; especially if
 those can.Observes are live-bound to the DOM.</p>
@@ -349,7 +349,7 @@ can.Observe.stopBatch();
 
 <p>If you call <code>startBatch</code> more than once, <code>stopBatch</code> needs to be called
 the same number of times before any batched events will fire. For ways
-to circumvent this process, see [can.Observe.stopBatch].</p>
+to circumvent this process, see <a href="can.Observe.stopBatch.html">can.Observe.stopBatch</a>.</p>
 
 <p>Here is an example that demonstrates how events are affected by calling
 <code>startBatch</code> multiple times.</p>
@@ -390,7 +390,7 @@ can.Observe.stopBatch();
 <script type="text/javascript">
 	var docData = {
     "type": "function",
-    "name": "can.Observe.static.startBatch",
+    "name": "can.Observe.startBatch",
     "parent": "can.Observe.static",
     "body": "<p><code>startBatch</code> causes can.Observe to begin an event batch. Until <code>[can.Observe.stopBatch]</code> is called, any\nevents that would result from calls to <code>[can.Observe::attr attr]</code> are held back from firing. If you have\nlots of changes to make to can.Observes, batching them together can help performance &emdash; especially if\nthose can.Observes are live-bound to the DOM.</p>\n\n<p>In this example, you can see how the <em>first</em> and <em>change</em> events are not fired (and their handlers\nare not called) until <code>stopBatch</code> is called.</p>\n\n<pre><code class=\"lang-javascript\">var person = new can.Observe({\n    first: 'Alexis',\n    last: 'Abril'\n});\n\nperson.bind('first', function() {\n    console.log(\"First name changed.\"\");\n}).bind('change', function() {\n    console.log(\"Something changed.\");\n});\n\ncan.Observe.startBatch();\nperson.attr('first', 'Alex');\nconsole.log('Still in the batch.');\ncan.Observe.stopBatch();\n\n// the log has:\n// Still in the batch.\n// First name changed.\n// Something changed.</code></pre>\n\n<p>You can also pass a callback to <code>startBatch</code> which will be called after all the events have\nbeen fired:</p>\n\n<pre><code class=\"lang-javascript\">can.Observe.startBatch(function() {\n    console.log('The batch is over.');\n});\nperson.attr('first', 'Izzy');\nconsole.log('Still in the batch.');\ncan.Observe.stopBatch();\n\n// The console has:\n// Still in the batch.\n// First name changed.\n// Something changed.\n// The batch is over.</code></pre>\n\n<h2>Calling <code>startBatch</code> multiple times</h2>\n\n<p>If you call <code>startBatch</code> more than once, <code>stopBatch</code> needs to be called\nthe same number of times before any batched events will fire. For ways\nto circumvent this process, see [can.Observe.stopBatch].</p>\n\n<p>Here is an example that demonstrates how events are affected by calling\n<code>startBatch</code> multiple times.</p>\n\n<pre><code class=\"lang-javascript\">var addPeople = function(observable) {\n    can.Observe.startBatch();\n    observable.attr('a', 'Alice');\n    observable.attr('b', 'Bob');\n    observable.attr('e', 'Eve');\n    can.Observe.stopBatch();\n};\n\n// In a completely different place:\nvar list = new can.Observe();\nlist.bind('change', function() {\n    console.log('The list changed.');\n});\n\ncan.Observe.startBatch();\naddPeople(list);\nconsole.log('Still in the batch.');\n\n// Here, the console has:\n// Still in the batch.\n\ncan.Observe.stopBatch();\n\n// Here, the console has:\n// Still in the batch.\n// The list changed.\n// The list changed.\n// The list changed.</code></pre>     ",
     "description": "<p>Begin an event batch. </p>",
@@ -419,8 +419,8 @@ can.Observe.stopBatch();
     ],
     "comment": " ",
     "src": "can/observe/observe.js",
-    "line": 124,
-    "id": 16
+    "line": 123,
+    "id": 15
 };
 
 	console.log(docData);

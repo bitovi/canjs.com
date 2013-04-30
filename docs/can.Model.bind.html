@@ -152,8 +152,8 @@
 					<ul>
 						
 						
-						<li >
-							<a href="can.Model.static.bind.html">
+						<li class="active">
+							<a href="can.Model.bind.html">
 								 bind 
 							</a>
 						</li>
@@ -161,7 +161,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.create.html">
+							<a href="can.Model.create.html">
 								 create 
 							</a>
 						</li>
@@ -169,7 +169,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.destroy.html">
+							<a href="can.Model.destroy.html">
 								 destroy 
 							</a>
 						</li>
@@ -177,7 +177,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.findAll.html">
+							<a href="can.Model.findAll.html">
 								 findAll 
 							</a>
 						</li>
@@ -185,7 +185,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.findOne.html">
+							<a href="can.Model.findOne.html">
 								 findOne 
 							</a>
 						</li>
@@ -193,15 +193,15 @@
 						
 						
 						<li >
-							<a href="can.Model.static.id.html">
+							<a href="can.Model.id.html">
 								 id 
 							</a>
 						</li>
 						
 						
 						
-						<li class="active">
-							<a href="can.Model.static.model.html">
+						<li >
+							<a href="can.Model.model.html">
 								 model 
 							</a>
 						</li>
@@ -209,7 +209,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.models.html">
+							<a href="can.Model.models.html">
 								 models 
 							</a>
 						</li>
@@ -217,7 +217,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.unbind.html">
+							<a href="can.Model.unbind.html">
 								 unbind 
 							</a>
 						</li>
@@ -225,7 +225,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.update.html">
+							<a href="can.Model.update.html">
 								 update 
 							</a>
 						</li>
@@ -291,14 +291,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/model/model.js#L788">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/model/model.js#L122">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>model</h1><!-- <span class="module">can.Model.static.model</span>-->
+	<h1>bind</h1><!-- <span class="module">can.Model.bind</span>-->
 
 
 
@@ -306,12 +306,12 @@
 		</section>
 
 		<section class="description">
-			<p>Convert raw data into a can.Model instance. </p>
+			<p>Listen for events on a Model class. </p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>model(data)</h2>
+			<h2>bind(eventType, handler)</h2>
 
 
 	<h3>Parameters</h3>
@@ -319,9 +319,22 @@
 	<ol class="parameters">
 		
 		<li class="parameter">
-			<h4>data <code>{Object}</code></h4>
+			<h4>eventType <code>{String}</code></h4>
 			<div class="description">
-				<p><p>The data to convert to a can.Model instance.</p></p>
+				<p><p>The type of event.  It must be
+<code>"created"</code>, <code>"udpated"</code>, <code>"destroyed"</code>.</p></p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>handler <code>{function}</code></h4>
+			<div class="description">
+				<p><p>A callback function
+that gets called with the event and instance that was
+created, destroyed, or updated.</p></p>
 			</div>
 			
 			
@@ -335,7 +348,7 @@
 	<div class="returns">
 		<h4><code>{can.Model}</code></h4>
 		<div class="description">
-			<p>An instance of can.Model made with the given data.</p>
+			<p>The model constructor function.</p>
 		</div>
 	</div>
 
@@ -344,63 +357,16 @@
 
 		
 		<section class="comment">
-			<p><code>can.Model.model(attributes)</code> is used to convert data from the server into
-a model instance.  It is rarely called directly.  Instead it is invoked as 
-a result of [can.Model.findOne] or [can.Model.findAll].  </p>
+			<p><code>bind(eventType, handler(event, instance))</code> listens to
+<strong>created</strong>, <strong>updated</strong>, <strong>destroyed</strong> events on all 
+instances of the model.</p>
 
-<p>If your server is returning data in non-standard way,
-overwriting <code>can.Model.model</code> is a good way to normalize it.</p>
+<pre><code>Task.bind("created", function(ev, createdTask){
+     this //-&gt; Task
+  createdTask.attr("name") //-&gt; "Dishes"
+})
 
-<h2>Example</h2>
-
-<p>The following uses <code>model</code> to convert to a model
-instance.</p>
-
-<pre><code>Task = can.Model({},{})
-var task = Task.model({id: 1, name : "dishes", complete : false})
-
-tasks.attr("complete", true)
-</code></pre>
-
-<p><code>Task.model(attrs)</code> is very similar to simply calling <code>new Model(attrs)</code> except
-that it checks the model's store if the instance has already been created.  The model's 
-store is a collection of instances that have event handlers.  </p>
-
-<p>This means that if the model's store already has an instance, you'll get the same instance
-back.  Example:</p>
-
-<pre><code>// create a task
-var taskA = new Task({id: 5, complete: true});
-
-// bind to it, which puts it in the store
-   taskA.bind("complete", function(){});
-
-// use model to create / retrieve a task
-var taskB = Task.model({id: 5, complete: true});
-
-taskA === taskB //-&gt; true
-</code></pre>
-
-<h2>Non-standard Services</h2>
-
-<p><code>can.Model.model</code> expects to retreive attributes of the model 
-instance like:</p>
-
-<pre><code>{id: 5, name : "dishes"}
-</code></pre>
-
-<p>If the service returns data formatted differently, like:</p>
-
-<pre><code>{todo: {name: "dishes", id: 5}}
-</code></pre>
-
-<p>Overwrite <code>model</code> like:</p>
-
-<pre><code>Task = can.Model({
-  model : function(data){
-    return can.Model.model.call(this,data.todo);
-  }
-},{});
+new Task({name: "Dishes"}).save();
 </code></pre>
 		</section>
 		
@@ -409,22 +375,36 @@ instance like:</p>
 
 <script type="text/javascript">
 	var docData = {
+    "body": "<p><code>bind(eventType, handler(event, instance))</code> listens to\n<strong>created</strong>, <strong>updated</strong>, <strong>destroyed</strong> events on all \ninstances of the model.</p>\n\n<pre><code>Task.bind(\"created\", function(ev, createdTask){\n     this //-&gt; Task\n  createdTask.attr(\"name\") //-&gt; \"Dishes\"\n})\n\nnew Task({name: \"Dishes\"}).save();\n</code></pre>",
+    "description": "<p>Listen for events on a Model class. </p>",
+    "title": "bind",
+    "name": "can.Model.bind",
     "type": "function",
-    "name": "can.Model.static.model",
     "parent": "can.Model.static",
-    "body": "<p><code>can.Model.model(attributes)</code> is used to convert data from the server into\na model instance.  It is rarely called directly.  Instead it is invoked as \na result of [can.Model.findOne] or [can.Model.findAll].  </p>\n\n<p>If your server is returning data in non-standard way,\noverwriting <code>can.Model.model</code> is a good way to normalize it.</p>\n\n<h2>Example</h2>\n\n<p>The following uses <code>model</code> to convert to a model\ninstance.</p>\n\n<pre><code>Task = can.Model({},{})\nvar task = Task.model({id: 1, name : \"dishes\", complete : false})\n\ntasks.attr(\"complete\", true)\n</code></pre>\n\n<p><code>Task.model(attrs)</code> is very similar to simply calling <code>new Model(attrs)</code> except\nthat it checks the model's store if the instance has already been created.  The model's \nstore is a collection of instances that have event handlers.  </p>\n\n<p>This means that if the model's store already has an instance, you'll get the same instance\nback.  Example:</p>\n\n<pre><code>// create a task\nvar taskA = new Task({id: 5, complete: true});\n\n// bind to it, which puts it in the store\n   taskA.bind(\"complete\", function(){});\n\n// use model to create / retrieve a task\nvar taskB = Task.model({id: 5, complete: true});\n\ntaskA === taskB //-&gt; true\n</code></pre>\n\n<h2>Non-standard Services</h2>\n\n<p><code>can.Model.model</code> expects to retreive attributes of the model \ninstance like:</p>\n\n<pre><code>{id: 5, name : \"dishes\"}\n</code></pre>\n\n<p>If the service returns data formatted differently, like:</p>\n\n<pre><code>{todo: {name: \"dishes\", id: 5}}\n</code></pre>\n\n<p>Overwrite <code>model</code> like:</p>\n\n<pre><code>Task = can.Model({\n  model : function(data){\n    return can.Model.model.call(this,data.todo);\n  }\n},{});\n</code></pre>",
-    "description": "<p>Convert raw data into a can.Model instance. </p>",
-    "title": "model",
     "signatures": [{
-            "code": "model(data)",
+            "code": "bind(eventType, handler)",
             "description": "",
             "params": [{
                     "types": [{
-                            "type": "Object"
+                            "type": "String"
                         }
                     ],
-                    "name": "data",
-                    "description": "<p>The data to convert to a can.Model instance.</p>"
+                    "name": "eventType",
+                    "description": "<p>The type of event.  It must be\n<code>\"created\"</code>, <code>\"udpated\"</code>, <code>\"destroyed\"</code>.</p>"
+                }, {
+                    "types": [{
+                            "type": "function",
+                            "returns": {
+                                "types": [{
+                                        "type": "undefined"
+                                    }
+                                ]
+                            },
+                            "params": []
+                        }
+                    ],
+                    "name": "handler",
+                    "description": "<p>A callback function\nthat gets called with the event and instance that was\ncreated, destroyed, or updated.</p>"
                 }
             ],
             "returns": {
@@ -432,14 +412,14 @@ instance like:</p>
                         "type": "can.Model"
                     }
                 ],
-                "description": "<p>An instance of can.Model made with the given data.</p>"
+                "description": "<p>The model constructor function.</p>"
             }
         }
     ],
     "comment": " ",
     "src": "can/model/model.js",
-    "line": 788,
-    "id": 62
+    "line": 122,
+    "id": 52
 };
 
 	console.log(docData);

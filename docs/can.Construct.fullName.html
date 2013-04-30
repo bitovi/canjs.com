@@ -73,8 +73,96 @@
 		</div>
 		<ul class="api">
 	
-	<li >
+	<li class="active">
 	<a href="can.Construct.html">can.Construct</a>
+	
+		
+		<ul>
+		
+			
+				<li class="heading"><span>prototype</span>
+					<ul>
+						
+						
+						<li >
+							<a href="can.Construct.prototype.constructor.html">
+								 constructor 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.prototype.init.html">
+								 init 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.prototype.setup.html">
+								 setup 
+							</a>
+						</li>
+						
+						
+					</ul>
+				</li>
+			
+		
+			
+				<li class="heading"><span>static</span>
+					<ul>
+						
+						
+						<li class="active">
+							<a href="can.Construct.fullName.html">
+								 fullName 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.namespace.html">
+								 namespace 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.newInstance.html">
+								 newInstance 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.setup.html">
+								 setup 
+							</a>
+						</li>
+						
+						
+						
+						<li >
+							<a href="can.Construct.shortName.html">
+								 shortName 
+							</a>
+						</li>
+						
+						
+						
+						
+					</ul>
+				</li>
+			
+		
+		</ul>
+		
 	
 	</li>
 	
@@ -133,108 +221,8 @@
 	
 	</li>
 	
-	<li class="active">
+	<li >
 	<a href="can.view.html">can.view</a>
-	
-		
-		<ul>
-		
-			
-				
-				<li class="active">
-				<a href="cache.html">
-					 cache 
-				</a>
-				</li>
-				
-			
-		
-			
-				
-			
-		
-			
-				
-				<li >
-				<a href="can.view.ejs.html">
-					 can.view.ejs 
-				</a>
-				</li>
-				
-			
-		
-			
-				
-				<li >
-				<a href="can.view.ext.html">
-					 ext 
-				</a>
-				</li>
-				
-			
-		
-			
-				
-				<li >
-				<a href="can.view.hook.html">
-					 hook 
-				</a>
-				</li>
-				
-			
-		
-			
-				
-				<li >
-				<a href="can.view.mustache.html">
-					 can.view.mustache 
-				</a>
-				</li>
-				
-			
-		
-			
-				
-			
-		
-			
-				
-				<li >
-				<a href="can.view.register.html">
-					 can.view.register 
-				</a>
-				</li>
-				
-			
-		
-			
-				
-			
-		
-			
-				
-			
-		
-			
-				
-				<li >
-				<a href="can.view.render.html">
-					 can.view.render 
-				</a>
-				</li>
-				
-			
-		
-			
-				
-			
-		
-			
-				
-			
-		
-		</ul>
-		
 	
 	</li>
 	
@@ -249,14 +237,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/view/view.js#L214">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/construct/construct.js#L299">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>cache</h1>
+	<h1>fullName</h1><!-- <span class="module">can.Construct.fullName</span>-->
 
 
 
@@ -264,12 +252,13 @@
 		</section>
 
 		<section class="description">
-			<p>By default, views are cached on the client.  If you'd like the
-the views to reload from the server, you can set the <code>cache</code> attribute to <code>false</code>.</p>
+			<p>If you pass a name when creating a Construct, the <code>fullName</code> property will be set to
+the name you passed.</p>
 
-<pre><code>    //- Forces loads from server
-    can.view.cache = false; 
-</code></pre>
+<pre><code class="lang-javascript">can.Construct("MyApplication.MyConstructor",{},{});
+MyApplication.MyConstructor.namespace // "MyApplication"
+MyApplication.MyConstructor.shortName // "MyConstructor"
+MyApplication.MyConstructor.fullName  // "MyApplication.MyConstructor"</code></pre>             
 		</section>
 
 		
@@ -280,19 +269,19 @@ the views to reload from the server, you can set the <code>cache</code> attribut
 
 <script type="text/javascript">
 	var docData = {
-    "name": "cache",
+    "name": "can.Construct.fullName",
     "type": "property",
-    "parent": "can.view",
+    "parent": "can.Construct.static",
     "body": "",
-    "description": "<p>By default, views are cached on the client.  If you'd like the\nthe views to reload from the server, you can set the <code>cache</code> attribute to <code>false</code>.</p>\n\n<pre><code>    //- Forces loads from server\n    can.view.cache = false; \n</code></pre>",
+    "description": "<p>If you pass a name when creating a Construct, the <code>fullName</code> property will be set to\nthe name you passed.</p>\n\n<pre><code class=\"lang-javascript\">can.Construct(\"MyApplication.MyConstructor\",{},{});\nMyApplication.MyConstructor.namespace // \"MyApplication\"\nMyApplication.MyConstructor.shortName // \"MyConstructor\"\nMyApplication.MyConstructor.fullName  // \"MyApplication.MyConstructor\"</code></pre>             ",
     "types": [{
-            "type": "Boolean"
+            "type": "String"
         }
     ],
-    "title": "",
-    "src": "can/view/view.js",
-    "line": 214,
-    "id": 103
+    "title": "fullName",
+    "src": "can/construct/construct.js",
+    "line": 299,
+    "id": 8
 };
 
 	console.log(docData);

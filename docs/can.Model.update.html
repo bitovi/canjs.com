@@ -153,15 +153,15 @@
 						
 						
 						<li >
-							<a href="can.Model.static.bind.html">
+							<a href="can.Model.bind.html">
 								 bind 
 							</a>
 						</li>
 						
 						
 						
-						<li class="active">
-							<a href="can.Model.static.create.html">
+						<li >
+							<a href="can.Model.create.html">
 								 create 
 							</a>
 						</li>
@@ -169,7 +169,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.destroy.html">
+							<a href="can.Model.destroy.html">
 								 destroy 
 							</a>
 						</li>
@@ -177,7 +177,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.findAll.html">
+							<a href="can.Model.findAll.html">
 								 findAll 
 							</a>
 						</li>
@@ -185,7 +185,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.findOne.html">
+							<a href="can.Model.findOne.html">
 								 findOne 
 							</a>
 						</li>
@@ -193,7 +193,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.id.html">
+							<a href="can.Model.id.html">
 								 id 
 							</a>
 						</li>
@@ -201,7 +201,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.model.html">
+							<a href="can.Model.model.html">
 								 model 
 							</a>
 						</li>
@@ -209,7 +209,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.models.html">
+							<a href="can.Model.models.html">
 								 models 
 							</a>
 						</li>
@@ -217,15 +217,15 @@
 						
 						
 						<li >
-							<a href="can.Model.static.unbind.html">
+							<a href="can.Model.unbind.html">
 								 unbind 
 							</a>
 						</li>
 						
 						
 						
-						<li >
-							<a href="can.Model.static.update.html">
+						<li class="active">
+							<a href="can.Model.update.html">
 								 update 
 							</a>
 						</li>
@@ -291,14 +291,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/model/model.js#L209">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/model/model.js#L272">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>create</h1><!-- <span class="module">can.Model.static.create</span>-->
+	<h1>update</h1><!-- <span class="module">can.Model.update</span>-->
 
 
 
@@ -306,29 +306,29 @@
 		</section>
 
 		<section class="description">
-			<p>Create a new resource on the server. </p>
+			<p>Update a resource on the server. </p>
 		</section>
 
 		
 		<section class="signature">
 			<h2>[METHOD] /path/to/resource</h2>
 <p>If you provide a URL, the Model will send a request to that URL using
-the method specified (or POST if none is specified) when saving a
-new instance on the server. (See below for more details.)</p>
+the method specified (or PUT if none is specified) when updating an
+instance on the server. (See below for more details.)</p>
 
 
 	<h3>Returns</h3>
 	<div class="returns">
 		<h4><code>{can.Deferred}</code></h4>
 		<div class="description">
-			<p>A Deferred that resolves to the created model.</p>
+			<p>A Deferred that resolves to the updated model.</p>
 		</div>
 	</div>
 
 		</section>
 		
 		<section class="signature">
-			<h2>function(serialized)</h2>
+			<h2>function(id, serialized)</h2>
 <p>If you provide a function, the Model will expect you to do your own AJAX requests.</p>
 
 	<h3>Parameters</h3>
@@ -336,10 +336,20 @@ new instance on the server. (See below for more details.)</p>
 	<ol class="parameters">
 		
 		<li class="parameter">
+			<h4>id <code>{*}</code></h4>
+			<div class="description">
+				<p><p>The ID of the model to update.</p></p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
 			<h4>serialized <code>{Object}</code></h4>
 			<div class="description">
 				<p><p>The <a href="can.Observe.prototype.serialize.html"> </a> properties of
-the model to create.</p></p>
+the model to update.</p></p>
 			</div>
 			
 			
@@ -353,7 +363,7 @@ the model to create.</p></p>
 	<div class="returns">
 		<h4><code>{can.Deferred}</code></h4>
 		<div class="description">
-			<p>A Deferred that resolves to the created model.</p>
+			<p>A Deferred that resolves to the updated model.</p>
 		</div>
 	</div>
 
@@ -362,49 +372,72 @@ the model to create.</p></p>
 
 		
 		<section class="comment">
-			<p><code>create(attributes) -&gt; Deferred</code> is used by <a href="can.Model.prototype.save.html"> </a> to create a 
-model instance on the server. </p>
+			<p><code>update( id, attrs ) -&gt; Deferred</code> is used by <a href="can.Model.prototype.save.html"> </a> to 
+update a model instance on the server. </p>
 
 <h2>Implement with a URL</h2>
 
-<p>The easiest way to implement create is to give it the url 
-to post data to:</p>
+<p>The easist way to implement update is to just give it the url to <code>PUT</code> data to:</p>
 
-<pre><code>var Recipe = can.Model({
-  create: "/recipes"
-},{})
+<pre><code>Recipe = can.Model({
+  update: "/recipes/{id}"
+},{});
 </code></pre>
 
-<p>This lets you create a recipe like:</p>
+<p>This lets you update a recipe like:</p>
 
-<pre><code>new Recipe({name: "hot dog"}).save();
+<pre><code>Recipe.findOne({id: 1}, function(recipe){
+  recipe.attr('name','salad');
+  recipe.save();
+})
+</code></pre>
+
+<p>This will make an XHR request like:</p>
+
+<pre><code>PUT /recipes/1 
+name=salad
+</code></pre>
+
+<p>If your server doesn't use PUT, you can change it to post like:</p>
+
+<pre><code>$.Model("Recipe",{
+  update: "POST /recipes/{id}"
+},{});
+</code></pre>
+
+<p>The server should send back an object with any new attributes the model 
+should have.  For example if your server udpates the "updatedAt" property, it
+should send back something like:</p>
+
+<pre><code>// PUT /recipes/4 {name: "Food"} -&gt;
+{
+  updatedAt : "10-20-2011"
+}
 </code></pre>
 
 <h2>Implement with a Function</h2>
 
-<p>You can also implement create by yourself. Create gets called 
-with <code>attrs</code>, which are the <a href="can.Observe.prototype.serialize.html"> </a> model 
-attributes.  Create returns a <code>Deferred</code> 
-that contains the id of the new instance and any other 
+<p>You can also implement update by yourself.  Update takes the <code>id</code> and
+<code>attributes</code> of the instance to be udpated.  Update must return
+a <a href="can.Deferred.html"> </a> that resolves to an object that contains any 
 properties that should be set on the instance.</p>
 
 <p>For example, the following code makes a request 
-to <code>POST /recipes.json {'name': 'hot+dog'}</code> and gets back
+to '/recipes/5.json?name=hot+dog' and gets back
 something that looks like:</p>
 
 <pre><code>{ 
-  "id": 5,
-  "createdAt": 2234234329
+  updatedAt: "10-20-2011"
 }
 </code></pre>
 
 <p>The code looks like:</p>
 
-<pre><code>can.Model("Recipe", {
-  create : function( attrs ){
-    return $.post("/recipes.json",attrs, undefined ,"json");
+<pre><code>Recipe = can.Model({
+  update : function(id, attrs ) {
+    return $.post("/recipes/"+id+".json",attrs, null,"json");
   }
-},{})
+},{});
 </code></pre>
 		</section>
 		
@@ -413,33 +446,40 @@ something that looks like:</p>
 
 <script type="text/javascript">
 	var docData = {
-    "name": "can.Model.static.create",
+    "name": "can.Model.update",
     "type": "function",
     "parent": "can.Model.static",
-    "body": "<p><code>create(attributes) -&gt; Deferred</code> is used by [can.Model::save save] to create a \nmodel instance on the server. </p>\n\n<h2>Implement with a URL</h2>\n\n<p>The easiest way to implement create is to give it the url \nto post data to:</p>\n\n<pre><code>var Recipe = can.Model({\n  create: \"/recipes\"\n},{})\n</code></pre>\n\n<p>This lets you create a recipe like:</p>\n\n<pre><code>new Recipe({name: \"hot dog\"}).save();\n</code></pre>\n\n<h2>Implement with a Function</h2>\n\n<p>You can also implement create by yourself. Create gets called \nwith <code>attrs</code>, which are the [can.Observe::serialize serialized] model \nattributes.  Create returns a <code>Deferred</code> \nthat contains the id of the new instance and any other \nproperties that should be set on the instance.</p>\n\n<p>For example, the following code makes a request \nto <code>POST /recipes.json {'name': 'hot+dog'}</code> and gets back\nsomething that looks like:</p>\n\n<pre><code>{ \n  \"id\": 5,\n  \"createdAt\": 2234234329\n}\n</code></pre>\n\n<p>The code looks like:</p>\n\n<pre><code>can.Model(\"Recipe\", {\n  create : function( attrs ){\n    return $.post(\"/recipes.json\",attrs, undefined ,\"json\");\n  }\n},{})\n</code></pre>",
-    "description": "<p>Create a new resource on the server. </p>",
-    "title": "create",
+    "body": "<p><code>update( id, attrs ) -&gt; Deferred</code> is used by [can.Model::save save] to \nupdate a model instance on the server. </p>\n\n<h2>Implement with a URL</h2>\n\n<p>The easist way to implement update is to just give it the url to <code>PUT</code> data to:</p>\n\n<pre><code>Recipe = can.Model({\n  update: \"/recipes/{id}\"\n},{});\n</code></pre>\n\n<p>This lets you update a recipe like:</p>\n\n<pre><code>Recipe.findOne({id: 1}, function(recipe){\n  recipe.attr('name','salad');\n  recipe.save();\n})\n</code></pre>\n\n<p>This will make an XHR request like:</p>\n\n<pre><code>PUT /recipes/1 \nname=salad\n</code></pre>\n\n<p>If your server doesn't use PUT, you can change it to post like:</p>\n\n<pre><code>$.Model(\"Recipe\",{\n  update: \"POST /recipes/{id}\"\n},{});\n</code></pre>\n\n<p>The server should send back an object with any new attributes the model \nshould have.  For example if your server udpates the \"updatedAt\" property, it\nshould send back something like:</p>\n\n<pre><code>// PUT /recipes/4 {name: \"Food\"} -&gt;\n{\n  updatedAt : \"10-20-2011\"\n}\n</code></pre>\n\n<h2>Implement with a Function</h2>\n\n<p>You can also implement update by yourself.  Update takes the <code>id</code> and\n<code>attributes</code> of the instance to be udpated.  Update must return\na [can.Deferred Deferred] that resolves to an object that contains any \nproperties that should be set on the instance.</p>\n\n<p>For example, the following code makes a request \nto '/recipes/5.json?name=hot+dog' and gets back\nsomething that looks like:</p>\n\n<pre><code>{ \n  updatedAt: \"10-20-2011\"\n}\n</code></pre>\n\n<p>The code looks like:</p>\n\n<pre><code>Recipe = can.Model({\n  update : function(id, attrs ) {\n    return $.post(\"/recipes/\"+id+\".json\",attrs, null,\"json\");\n  }\n},{});\n</code></pre>",
+    "description": "<p>Update a resource on the server. </p>",
+    "title": "update",
     "signatures": [{
             "code": "[METHOD] /path/to/resource",
-            "description": "<p>If you provide a URL, the Model will send a request to that URL using\nthe method specified (or POST if none is specified) when saving a\nnew instance on the server. (See below for more details.)</p>",
+            "description": "<p>If you provide a URL, the Model will send a request to that URL using\nthe method specified (or PUT if none is specified) when updating an\ninstance on the server. (See below for more details.)</p>",
             "params": [],
             "returns": {
                 "types": [{
                         "type": "can.Deferred"
                     }
                 ],
-                "description": "<p>A Deferred that resolves to the created model.</p>"
+                "description": "<p>A Deferred that resolves to the updated model.</p>"
             }
         }, {
-            "code": "function(serialized)",
+            "code": "function(id, serialized)",
             "description": "<p>If you provide a function, the Model will expect you to do your own AJAX requests.</p>",
             "params": [{
+                    "types": [{
+                            "type": "*"
+                        }
+                    ],
+                    "name": "id",
+                    "description": "<p>The ID of the model to update.</p>"
+                }, {
                     "types": [{
                             "type": "Object"
                         }
                     ],
                     "name": "serialized",
-                    "description": "<p>The [can.Observe::serialize serialized] properties of\nthe model to create.</p>"
+                    "description": "<p>The [can.Observe::serialize serialized] properties of\nthe model to update.</p>"
                 }
             ],
             "returns": {
@@ -447,13 +487,13 @@ something that looks like:</p>
                         "type": "can.Deferred"
                     }
                 ],
-                "description": "<p>A Deferred that resolves to the created model.</p>"
+                "description": "<p>A Deferred that resolves to the updated model.</p>"
             }
         }
     ],
     "comment": " ",
     "src": "can/model/model.js",
-    "line": 209,
+    "line": 272,
     "id": 56
 };
 

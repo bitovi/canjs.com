@@ -153,7 +153,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.bind.html">
+							<a href="can.Model.bind.html">
 								 bind 
 							</a>
 						</li>
@@ -161,7 +161,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.create.html">
+							<a href="can.Model.create.html">
 								 create 
 							</a>
 						</li>
@@ -169,23 +169,23 @@
 						
 						
 						<li >
-							<a href="can.Model.static.destroy.html">
+							<a href="can.Model.destroy.html">
 								 destroy 
 							</a>
 						</li>
 						
 						
 						
-						<li >
-							<a href="can.Model.static.findAll.html">
+						<li class="active">
+							<a href="can.Model.findAll.html">
 								 findAll 
 							</a>
 						</li>
 						
 						
 						
-						<li class="active">
-							<a href="can.Model.static.findOne.html">
+						<li >
+							<a href="can.Model.findOne.html">
 								 findOne 
 							</a>
 						</li>
@@ -193,7 +193,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.id.html">
+							<a href="can.Model.id.html">
 								 id 
 							</a>
 						</li>
@@ -201,7 +201,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.model.html">
+							<a href="can.Model.model.html">
 								 model 
 							</a>
 						</li>
@@ -209,7 +209,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.models.html">
+							<a href="can.Model.models.html">
 								 models 
 							</a>
 						</li>
@@ -217,7 +217,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.unbind.html">
+							<a href="can.Model.unbind.html">
 								 unbind 
 							</a>
 						</li>
@@ -225,7 +225,7 @@
 						
 						
 						<li >
-							<a href="can.Model.static.update.html">
+							<a href="can.Model.update.html">
 								 update 
 							</a>
 						</li>
@@ -291,14 +291,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/model/model.js#L494">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/model/model.js#L425">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>findOne</h1><!-- <span class="module">can.Model.static.findOne</span>-->
+	<h1>findAll</h1><!-- <span class="module">can.Model.findAll</span>-->
 
 
 
@@ -306,12 +306,12 @@
 		</section>
 
 		<section class="description">
-			<p>Retrieve a resource from a server. </p>
+			<p>Retrieve multiple resources from a server. </p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>findOne(params[, success[, error]])</h2>
+			<h2>findAll(params[, success[, error]])</h2>
 
 
 	<h3>Parameters</h3>
@@ -332,7 +332,7 @@
 			<h4>success <code>{function}</code></h4>
 			<div class="description">
 				<p><p>A callback to call on successful retrieval. The callback recieves
-the retrieved resource as a can.Model.</p></p>
+a can.Model.List of the retrieved resources.</p></p>
 			</div>
 			
 			
@@ -366,36 +366,34 @@ XmlHttpRequest object.</p></p>
 
 		
 		<section class="comment">
-			<p><code>findOne( params, success(instance), error(xhr) ) -&gt; Deferred</code> is used to retrieve a model 
-instance from the server. Before you can use <code>findOne</code>, you must implement it.</p>
+			<p><code>findAll( params, success(instances), error(xhr) ) -&gt; Deferred</code> is used to retrieve model 
+instances from the server. Before you can use <code>findAll</code>, you must implement it.</p>
 
 <h2>Implement with a URL</h2>
 
 <p>Implement findAll with a url like:</p>
 
 <pre><code>Recipe = can.Model({
-  findOne : "/recipes/{id}.json"
+  findAll : "/recipes.json"
 },{});
-</code></pre>
-
-<p>If <code>findOne</code> is called like:</p>
-
-<pre><code>Recipe.findOne({id: 57});
 </code></pre>
 
 <p>The server should return data that looks like:</p>
 
-<pre><code>{"id" : 57, "name": "Ice Water"}
+<pre><code>[
+  {"id" : 57, "name": "Ice Water"},
+  {"id" : 58, "name": "Toast"}
+]
 </code></pre>
 
 <h2>Implement with an Object</h2>
 
-<p>Implement <code>findOne</code> with an object that specifies the parameters to
+<p>Implement findAll with an object that specifies the parameters to
 <code>can.ajax</code> (jQuery.ajax) like:</p>
 
 <pre><code>Recipe = can.Model({
-  findOne : {
-    url: "/recipes/{id}.xml",
+  findAll : {
+    url: "/recipes.xml",
     dataType: "xml"
   }
 },{})
@@ -403,15 +401,14 @@ instance from the server. Before you can use <code>findOne</code>, you must impl
 
 <h2>Implement with a Function</h2>
 
-<p>To implement with a function, <code>findOne</code> is passed <strong>params</strong> to specify
-the instance retrieved from the server and it should return a
-deferred that resolves to the model data.  Also notice that you now need to
-build the URL manually. For example:</p>
+<p>To implement with a function, <code>findAll</code> is passed <strong>params</strong> to filter
+the instances retrieved from the server and it should return a
+deferred that resolves to an array of model data. For example:</p>
 
 <pre><code>Recipe = can.Model({
-  findOne : function(params){
+  findAll : function(params){
     return $.ajax({
-      url: '/recipes/' + params.id,
+      url: '/recipes.json',
       type: 'get',
       dataType: 'json'})
   }
@@ -420,13 +417,13 @@ build the URL manually. For example:</p>
 
 <h2>Use</h2>
 
-<p>After implementing <code>findOne</code>, you can use it to retrieve an instance of the model
+<p>After implementing <code>findAll</code>, you can use it to retrieve instances of the model
 like:</p>
 
-<pre><code>Recipe.findOne({id: 57}, function(recipe){
-     recipe.attr('name') //-&gt; "Ice Water"
+<pre><code>Recipe.findAll({favorite: true}, function(recipes){
+  recipes[0].attr('name') //-&gt; "Ice Water"
 }, function( xhr ){
-     // called if an error
+  // called if an error
 }) //-&gt; Deferred
 </code></pre>
 		</section>
@@ -436,14 +433,14 @@ like:</p>
 
 <script type="text/javascript">
 	var docData = {
-    "name": "can.Model.static.findOne",
+    "name": "can.Model.findAll",
     "type": "function",
     "parent": "can.Model.static",
-    "body": "<p><code>findOne( params, success(instance), error(xhr) ) -&gt; Deferred</code> is used to retrieve a model \ninstance from the server. Before you can use <code>findOne</code>, you must implement it.</p>\n\n<h2>Implement with a URL</h2>\n\n<p>Implement findAll with a url like:</p>\n\n<pre><code>Recipe = can.Model({\n  findOne : \"/recipes/{id}.json\"\n},{});\n</code></pre>\n\n<p>If <code>findOne</code> is called like:</p>\n\n<pre><code>Recipe.findOne({id: 57});\n</code></pre>\n\n<p>The server should return data that looks like:</p>\n\n<pre><code>{\"id\" : 57, \"name\": \"Ice Water\"}\n</code></pre>\n\n<h2>Implement with an Object</h2>\n\n<p>Implement <code>findOne</code> with an object that specifies the parameters to\n<code>can.ajax</code> (jQuery.ajax) like:</p>\n\n<pre><code>Recipe = can.Model({\n  findOne : {\n    url: \"/recipes/{id}.xml\",\n    dataType: \"xml\"\n  }\n},{})\n</code></pre>\n\n<h2>Implement with a Function</h2>\n\n<p>To implement with a function, <code>findOne</code> is passed <strong>params</strong> to specify\nthe instance retrieved from the server and it should return a\ndeferred that resolves to the model data.  Also notice that you now need to\nbuild the URL manually. For example:</p>\n\n<pre><code>Recipe = can.Model({\n  findOne : function(params){\n    return $.ajax({\n      url: '/recipes/' + params.id,\n      type: 'get',\n      dataType: 'json'})\n  }\n},{})\n</code></pre>\n\n<h2>Use</h2>\n\n<p>After implementing <code>findOne</code>, you can use it to retrieve an instance of the model\nlike:</p>\n\n<pre><code>Recipe.findOne({id: 57}, function(recipe){\n     recipe.attr('name') //-&gt; \"Ice Water\"\n}, function( xhr ){\n     // called if an error\n}) //-&gt; Deferred\n</code></pre>",
-    "description": "<p>Retrieve a resource from a server. </p>",
-    "title": "findOne",
+    "body": "<p><code>findAll( params, success(instances), error(xhr) ) -&gt; Deferred</code> is used to retrieve model \ninstances from the server. Before you can use <code>findAll</code>, you must implement it.</p>\n\n<h2>Implement with a URL</h2>\n\n<p>Implement findAll with a url like:</p>\n\n<pre><code>Recipe = can.Model({\n  findAll : \"/recipes.json\"\n},{});\n</code></pre>\n\n<p>The server should return data that looks like:</p>\n\n<pre><code>[\n  {\"id\" : 57, \"name\": \"Ice Water\"},\n  {\"id\" : 58, \"name\": \"Toast\"}\n]\n</code></pre>\n\n<h2>Implement with an Object</h2>\n\n<p>Implement findAll with an object that specifies the parameters to\n<code>can.ajax</code> (jQuery.ajax) like:</p>\n\n<pre><code>Recipe = can.Model({\n  findAll : {\n    url: \"/recipes.xml\",\n    dataType: \"xml\"\n  }\n},{})\n</code></pre>\n\n<h2>Implement with a Function</h2>\n\n<p>To implement with a function, <code>findAll</code> is passed <strong>params</strong> to filter\nthe instances retrieved from the server and it should return a\ndeferred that resolves to an array of model data. For example:</p>\n\n<pre><code>Recipe = can.Model({\n  findAll : function(params){\n    return $.ajax({\n      url: '/recipes.json',\n      type: 'get',\n      dataType: 'json'})\n  }\n},{})\n</code></pre>\n\n<h2>Use</h2>\n\n<p>After implementing <code>findAll</code>, you can use it to retrieve instances of the model\nlike:</p>\n\n<pre><code>Recipe.findAll({favorite: true}, function(recipes){\n  recipes[0].attr('name') //-&gt; \"Ice Water\"\n}, function( xhr ){\n  // called if an error\n}) //-&gt; Deferred\n</code></pre>",
+    "description": "<p>Retrieve multiple resources from a server. </p>",
+    "title": "findAll",
     "signatures": [{
-            "code": "findOne(params[, success[, error]])",
+            "code": "findAll(params[, success[, error]])",
             "description": "",
             "params": [{
                     "types": [{
@@ -466,7 +463,7 @@ like:</p>
                     ],
                     "optional": true,
                     "name": "success",
-                    "description": "<p>A callback to call on successful retrieval. The callback recieves\nthe retrieved resource as a can.Model.</p>"
+                    "description": "<p>A callback to call on successful retrieval. The callback recieves\na can.Model.List of the retrieved resources.</p>"
                 }, {
                     "types": [{
                             "type": "function",
@@ -495,8 +492,8 @@ like:</p>
     ],
     "comment": " ",
     "src": "can/model/model.js",
-    "line": 494,
-    "id": 60
+    "line": 425,
+    "id": 58
 };
 
 	console.log(docData);
