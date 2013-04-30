@@ -13,6 +13,9 @@
 		{{#plugins}}
 		{{>templates/plugin.mustache}}
 		{{/plugins}}
+		{{^plugins}}
+		<div class="loading"/>
+		{{/plugins}}
 		</div>
 	</div>
 </div><!-- .tab-description -->
