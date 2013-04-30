@@ -88,6 +88,11 @@
 	
 	</li>
 	
+	<li >
+	<a href="can.EJS.html">can.EJS</a>
+	
+	</li>
+	
 	<li class="active">
 	<a href="can.Model.html">can.Model</a>
 	
@@ -140,7 +145,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 			
 				<li class="heading"><span>static</span>
@@ -228,7 +233,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 		</ul>
 		
@@ -237,6 +242,11 @@
 	
 	<li >
 	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Mustache.html">can.Mustache</a>
 	
 	</li>
 	
@@ -301,7 +311,7 @@
 
 		
 		<section class="signature">
-			<h2>findOne(filters[, success[, error]])</h2>
+			<h2>findOne(params[, success[, error]])</h2>
 
 
 	<h3>Parameters</h3>
@@ -309,22 +319,13 @@
 	<ol class="parameters">
 		
 		<li class="parameter">
-			<h4>filters <code>{Object}</code></h4>
+			<h4>params <code>{Object}</code></h4>
 			<div class="description">
 				<p><p>Values to filter the request or results with.</p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{Object}</code></h5>
-					<div class="description">
-						<p>Values to filter the request or results with.</p>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
 		</li>
 		
 		<li class="parameter">
@@ -333,19 +334,9 @@
 				<p><p>A callback to call on successful retrieval. The callback recieves
 the retrieved resource as a can.Model.</p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{function}</code></h5>
-					<div class="description">
-						<p>A callback to call on successful retrieval. The callback recieves
-the retrieved resource as a can.Model.</p>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
 		</li>
 		
 		<li class="parameter">
@@ -354,19 +345,9 @@ the retrieved resource as a can.Model.</p>
 				<p><p>A callback to call when an error occurs. The callback receives the
 XmlHttpRequest object.</p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{function}</code></h5>
-					<div class="description">
-						<p>A callback to call when an error occurs. The callback receives the
-XmlHttpRequest object.</p>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
 		</li>
 		
 	</ol>
@@ -462,14 +443,14 @@ like:</p>
     "description": "<p>Retrieve a resource from a server. </p>",
     "title": "findOne",
     "signatures": [{
-            "code": "findOne(filters[, success[, error]])",
+            "code": "findOne(params[, success[, error]])",
             "description": "",
             "params": [{
                     "types": [{
                             "type": "Object"
                         }
                     ],
-                    "name": "filters",
+                    "name": "params",
                     "description": "<p>Values to filter the request or results with.</p>"
                 }, {
                     "types": [{
@@ -483,6 +464,7 @@ like:</p>
                             "params": []
                         }
                     ],
+                    "optional": true,
                     "name": "success",
                     "description": "<p>A callback to call on successful retrieval. The callback recieves\nthe retrieved resource as a can.Model.</p>"
                 }, {
@@ -497,6 +479,7 @@ like:</p>
                             "params": []
                         }
                     ],
+                    "optional": true,
                     "name": "error",
                     "description": "<p>A callback to call when an error occurs. The callback receives the\nXmlHttpRequest object.</p>"
                 }

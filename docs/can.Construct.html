@@ -109,7 +109,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 			
 				<li class="heading"><span>static</span>
@@ -159,7 +159,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 		</ul>
 		
@@ -177,12 +177,22 @@
 	</li>
 	
 	<li >
+	<a href="can.EJS.html">can.EJS</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
 	
 	<li >
 	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Mustache.html">can.Mustache</a>
 	
 	</li>
 	
@@ -263,18 +273,9 @@
 			<div class="description">
 				<p><p>the namespace and name of the constructor</p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{String}</code></h5>
-					<div class="description">
-						<p>the namespace and name of the constructor</p>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
 		</li>
 		
 		<li class="parameter">
@@ -282,18 +283,9 @@
 			<div class="description">
 				<p><p>properties that will belong to the constructor</p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{Object}</code></h5>
-					<div class="description">
-						<p>properties that will belong to the constructor</p>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
 		</li>
 		
 		<li class="parameter">
@@ -301,18 +293,9 @@
 			<div class="description">
 				<p><p>properties that will belong to instances made with the constructor</p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{Object}</code></h5>
-					<div class="description">
-						<p>properties that will belong to instances made with the constructor</p>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
 		</li>
 		
 	</ol>
@@ -323,103 +306,6 @@
 		<h4><code>{function}</code></h4>
 		<div class="description">
 			<p>The constructor.</p>
-
-<p>In the example below, <code>Animal</code> is a constructor function. All instances of <code>Animal</code> will have a <code>breathe</code>
-method, and the <code>Animal</code> constructor itself has a <code>legs</code> property.</p>
-
-<pre><code class="lang-javascript">can.Construct('Animal', {
-    legs: 4
-}, {
-    init: function(sound) {
-        this.sound = sound;
-    }
-    speak: function() {
-        console.log(this.sound);
-    }
-});</code></pre>
-
-<p>You don't have to pass in a name. If you do, the constructor is assigned to that name globally. If not,
-you'll want to make sure you save your constructor to use later:</p>
-
-<pre><code class="lang-javascript">var Robot = can.Construct({
-    beep: function() {
-        console.log('Beep boop.');
-    }
-});</code></pre>
-
-<p>You can make instances by calling your constructor with the <code>new</code> keyword. When you do, the <a href="can.Construct.prototype.init.html">can.Construct.prototype.init</a>
-method gets called (if you supplied one):</p>
-
-<pre><code class="lang-javascript">var panther = new Animal({sound: 'growl'});
-panther.speak(); // "growl"
-panther instanceof Animal; // true</code></pre>
-
-<p>This becomes much more powerful when you add inheritance.</p>
-
-<h2>Inheritance</h2>
-
-<p>Subclasses with <code>can.Construct</code> are simple. All you need to do is call the base constructor
-with the new function's static and instance properties. For example, we want our <code>Snake</code> to
-be an <code>Animal</code>, but there are some differences:</p>
-
-<pre><code class="lang-javascript">Animal('Snake', {
-    legs: 0
-}, {
-    init: function() {
-        this.sound = 'ssssss';
-    },
-    slither: function() {
-        console.log('slithering...');
-    }
-});
-
-var baslisk = new Snake();
-baslisk.speak();   // "ssssss"
-baslisk.slither(); // "slithering..."
-baslisk instanceof Snake;  // true
-baslisk instanceof Animal; // true</code></pre>
-
-<p>Note that <code>Animal</code>'s <code>init</code> does not get called.</p>
-
-<h2>Static properties and inheritance</h2>
-
-<p>If you pass all three arguments to can.Construct, the second one will be attached directy to the
-constructor, allowing you to imitate static properties and functions. You can access these
-properties through the <code><a href="can.Construct.prototype.constructor.html">can.Construct.prototype.constructor</a></code> property.</p>
-
-<p>Static properties can get overridden through inheritance just like instance properties. Let's see
-how this works with <code>Animal</code> and <code>Snake</code>:</p>
-
-<pre><code class="lang-javascript">can.Construct('Animal', {
-    legs: 4
-}, {
-    init: function(sound) {
-        this.sound = sound;
-    }
-    speak: function() {
-        console.log(this.sound);
-    }
-});
-
-Animal('Snake', {
-    legs: 0
-}, {
-    init: function() {
-        this.sound = 'ssssss';
-    },
-    slither: function() {
-        console.log('slithering...');
-    }
-});
-
-Animal.legs; // 4
-Snake.legs; // 0</code></pre>
-
-<h2>Plugins</h2>
-
-<p>There are two plugins available to help make using <code>can.Construct</code> even simpler.
-* [can.Construct.super] allows you to easily call base methods by making <code>this._super</code> available in inherited methods.
-* [can.Construct.proxy] helps you keep your scope straight when creating callbacks inside constructors.</p>
 		</div>
 	</div>
 
@@ -480,10 +366,11 @@ Snake.legs; // 0</code></pre>
                         "params": []
                     }
                 ],
-                "description": "<p>The constructor.</p>\n\n<p>In the example below, <code>Animal</code> is a constructor function. All instances of <code>Animal</code> will have a <code>breathe</code>\nmethod, and the <code>Animal</code> constructor itself has a <code>legs</code> property.</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('Animal', {\n    legs: 4\n}, {\n    init: function(sound) {\n        this.sound = sound;\n    }\n    speak: function() {\n        console.log(this.sound);\n    }\n});</code></pre>\n\n<p>You don't have to pass in a name. If you do, the constructor is assigned to that name globally. If not,\nyou'll want to make sure you save your constructor to use later:</p>\n\n<pre><code class=\"lang-javascript\">var Robot = can.Construct({\n    beep: function() {\n        console.log('Beep boop.');\n    }\n});</code></pre>\n\n<p>You can make instances by calling your constructor with the <code>new</code> keyword. When you do, the [can.Construct::init|init]\nmethod gets called (if you supplied one):</p>\n\n<pre><code class=\"lang-javascript\">var panther = new Animal({sound: 'growl'});\npanther.speak(); // \"growl\"\npanther instanceof Animal; // true</code></pre>\n\n<p>This becomes much more powerful when you add inheritance.</p>\n\n<h2>Inheritance</h2>\n\n<p>Subclasses with <code>can.Construct</code> are simple. All you need to do is call the base constructor\nwith the new function's static and instance properties. For example, we want our <code>Snake</code> to\nbe an <code>Animal</code>, but there are some differences:</p>\n\n<pre><code class=\"lang-javascript\">Animal('Snake', {\n    legs: 0\n}, {\n    init: function() {\n        this.sound = 'ssssss';\n    },\n    slither: function() {\n        console.log('slithering...');\n    }\n});\n\nvar baslisk = new Snake();\nbaslisk.speak();   // \"ssssss\"\nbaslisk.slither(); // \"slithering...\"\nbaslisk instanceof Snake;  // true\nbaslisk instanceof Animal; // true</code></pre>\n\n<p>Note that <code>Animal</code>'s <code>init</code> does not get called.</p>\n\n<h2>Static properties and inheritance</h2>\n\n<p>If you pass all three arguments to can.Construct, the second one will be attached directy to the\nconstructor, allowing you to imitate static properties and functions. You can access these\nproperties through the <code>[can.Construct::constructor|this.constructor]</code> property.</p>\n\n<p>Static properties can get overridden through inheritance just like instance properties. Let's see\nhow this works with <code>Animal</code> and <code>Snake</code>:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('Animal', {\n    legs: 4\n}, {\n    init: function(sound) {\n        this.sound = sound;\n    }\n    speak: function() {\n        console.log(this.sound);\n    }\n});\n\nAnimal('Snake', {\n    legs: 0\n}, {\n    init: function() {\n        this.sound = 'ssssss';\n    },\n    slither: function() {\n        console.log('slithering...');\n    }\n});\n\nAnimal.legs; // 4\nSnake.legs; // 0</code></pre>\n\n<h2>Plugins</h2>\n\n<p>There are two plugins available to help make using <code>can.Construct</code> even simpler.\n* [can.Construct.super] allows you to easily call base methods by making <code>this._super</code> available in inherited methods.\n* [can.Construct.proxy] helps you keep your scope straight when creating callbacks inside constructors.</p>"
+                "description": "<p>The constructor.</p>"
             }
         }
     ],
+    "comment": " ",
     "src": "can/construct/construct.md",
     "id": 1
 };

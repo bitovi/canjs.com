@@ -89,12 +89,22 @@
 	</li>
 	
 	<li >
+	<a href="can.EJS.html">can.EJS</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
 	
 	<li >
 	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Mustache.html">can.Mustache</a>
 	
 	</li>
 	
@@ -162,7 +172,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 			
 				<li class="heading"><span>static</span>
@@ -202,7 +212,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 		</ul>
 		
@@ -245,7 +255,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L289">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L293">source</a></li>
 		
 		
 		
@@ -277,18 +287,9 @@
 			<div class="description">
 				<p><p>the target of the event</p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{can.Observe}</code></h5>
-					<div class="description">
-						<p>the target of the event</p>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
 		</li>
 		
 		<li class="parameter">
@@ -296,45 +297,32 @@
 			<div class="description">
 				<p><p>the type of event, or an event object with a type given</p></p>
 			</div>
-			<!--
+			
+			
+			
+			
 			<ul class="options">
 				
 				<li class="option">
-					<h5><code>{String | Object}</code></h5>
+					<h5>type <code>{String}</code></h5>
 					<div class="description">
-						<p>the type of event, or an event object with a type given</p>
+						
 					</div>
 				</li>
 				
 			</ul>
-			-->
+			
+			
 		</li>
 		
 		<li class="parameter">
 			<h4>args <code>{Array}</code></h4>
 			<div class="description">
-				<p><p>the parameters to trigger the event with.</p>
-
-<p>If events are currently being batched, calling <code>triggerBatch</code> adds an event
-to the batch. If events are not currently being batched, the event is triggered
-immediately.</p></p>
+				<p><p>the parameters to trigger the event with.</p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{Array}</code></h5>
-					<div class="description">
-						<p>the parameters to trigger the event with.</p>
-
-<p>If events are currently being batched, calling <code>triggerBatch</code> adds an event
-to the batch. If events are not currently being batched, the event is triggered
-immediately.</p>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
 		</li>
 		
 	</ol>
@@ -344,6 +332,12 @@ immediately.</p>
 		
 
 		
+		<section class="comment">
+			<p>If events are currently being batched, calling <code>triggerBatch</code> adds an event
+to the batch. If events are not currently being batched, the event is triggered
+immediately.</p>
+		</section>
+		
 	</article>
 </div>
 
@@ -352,7 +346,7 @@ immediately.</p>
     "type": "function",
     "name": "can.Observe.static.triggerBatch",
     "parent": "can.Observe.static",
-    "body": "",
+    "body": "<p>If events are currently being batched, calling <code>triggerBatch</code> adds an event\nto the batch. If events are not currently being batched, the event is triggered\nimmediately.</p>",
     "description": "<p>Trigger an event to be added to the current batch. </p>",
     "title": "triggerBatch",
     "signatures": [{
@@ -389,13 +383,14 @@ immediately.</p>
                     ],
                     "optional": true,
                     "name": "args",
-                    "description": "<p>the parameters to trigger the event with.</p>\n\n<p>If events are currently being batched, calling <code>triggerBatch</code> adds an event\nto the batch. If events are not currently being batched, the event is triggered\nimmediately.</p>"
+                    "description": "<p>the parameters to trigger the event with.</p>"
                 }
             ]
         }
     ],
+    "comment": " ",
     "src": "can/observe/observe.js",
-    "line": 289,
+    "line": 293,
     "id": 18
 };
 

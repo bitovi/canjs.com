@@ -89,12 +89,22 @@
 	</li>
 	
 	<li >
+	<a href="can.EJS.html">can.EJS</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
 	
 	<li >
 	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Mustache.html">can.Mustache</a>
 	
 	</li>
 	
@@ -162,7 +172,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 			
 				<li class="heading"><span>static</span>
@@ -202,7 +212,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 		</ul>
 		
@@ -245,7 +255,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L823">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L817">source</a></li>
 		
 		
 		
@@ -277,79 +287,19 @@
 			<div class="description">
 				<p><p>the type of event to unbind, exactly as passed to <code>bind</code></p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{String}</code></h5>
-					<div class="description">
-						<p>the type of event to unbind, exactly as passed to <code>bind</code></p>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
 		</li>
 		
 		<li class="parameter">
 			<h4>handler <code>{function}</code></h4>
 			<div class="description">
-				<p><p>the handler to unbind</p>
-
-<p><code>unbind</code> unbinds event handlers previously bound with <a href="can.Observe.prototype.bind.html">can.Observe.prototype.bind</a>.
-If no <em>handler</em> is passed, all handlers for the given event type will be unbound.</p>
-
-<pre><code class="lang-javascript">var i = 0,
-    increaseBy2 = function() { i += 2; },
-    increaseBy3 = function() { i += 3; },
-    o = new can.Observe();
-
-o.bind('change', increaseBy2);
-o.bind('change', increaseBy3);
-o.attr('a', 'Alice');
-i; // 5
-
-o.unbind('change', increaseBy2);
-o.attr('b', 'Bob');
-i; // 8
-
-o.unbind('change');
-o.attr('e', 'Eve');
-i; // 8</code></pre></p>
+				<p><p>the handler to unbind</p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{function}</code></h5>
-					<div class="description">
-						<p>the handler to unbind</p>
-
-<p><code>unbind</code> unbinds event handlers previously bound with [can.Observe.prototype.bind|<code>bind</code>].
-If no <em>handler</em> is passed, all handlers for the given event type will be unbound.</p>
-
-<pre><code class="lang-javascript">var i = 0,
-    increaseBy2 = function() { i += 2; },
-    increaseBy3 = function() { i += 3; },
-    o = new can.Observe();
-
-o.bind('change', increaseBy2);
-o.bind('change', increaseBy3);
-o.attr('a', 'Alice');
-i; // 5
-
-o.unbind('change', increaseBy2);
-o.attr('b', 'Bob');
-i; // 8
-
-o.unbind('change');
-o.attr('e', 'Eve');
-i; // 8</code></pre>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
 		</li>
 		
 	</ol>
@@ -359,6 +309,29 @@ i; // 8</code></pre>
 		
 
 		
+		<section class="comment">
+			<p><code>unbind</code> unbinds event handlers previously bound with <a href="can.Observe.prototype.bind.html">can.Observe.prototype.bind</a>.
+If no <em>handler</em> is passed, all handlers for the given event type will be unbound.</p>
+
+<pre><code class="lang-javascript">var i = 0,
+    increaseBy2 = function() { i += 2; },
+    increaseBy3 = function() { i += 3; },
+    o = new can.Observe();
+
+o.bind('change', increaseBy2);
+o.bind('change', increaseBy3);
+o.attr('a', 'Alice');
+i; // 5
+
+o.unbind('change', increaseBy2);
+o.attr('b', 'Bob');
+i; // 8
+
+o.unbind('change');
+o.attr('e', 'Eve');
+i; // 8</code></pre>     
+		</section>
+		
 	</article>
 </div>
 
@@ -367,7 +340,7 @@ i; // 8</code></pre>
     "name": "can.Observe.prototype.unbind",
     "type": "function",
     "parent": "can.Observe.prototype",
-    "body": "",
+    "body": "<p><code>unbind</code> unbinds event handlers previously bound with [can.Observe.prototype.bind|<code>bind</code>].\nIf no <em>handler</em> is passed, all handlers for the given event type will be unbound.</p>\n\n<pre><code class=\"lang-javascript\">var i = 0,\n    increaseBy2 = function() { i += 2; },\n    increaseBy3 = function() { i += 3; },\n    o = new can.Observe();\n\no.bind('change', increaseBy2);\no.bind('change', increaseBy3);\no.attr('a', 'Alice');\ni; // 5\n\no.unbind('change', increaseBy2);\no.attr('b', 'Bob');\ni; // 8\n\no.unbind('change');\no.attr('e', 'Eve');\ni; // 8</code></pre>     ",
     "description": "<p>Unbind event handlers from an Observe. </p>",
     "title": "unbind",
     "signatures": [{
@@ -394,13 +367,14 @@ i; // 8</code></pre>
                     ],
                     "optional": true,
                     "name": "handler",
-                    "description": "<p>the handler to unbind</p>\n\n<p><code>unbind</code> unbinds event handlers previously bound with [can.Observe.prototype.bind|<code>bind</code>].\nIf no <em>handler</em> is passed, all handlers for the given event type will be unbound.</p>\n\n<pre><code class=\"lang-javascript\">var i = 0,\n    increaseBy2 = function() { i += 2; },\n    increaseBy3 = function() { i += 3; },\n    o = new can.Observe();\n\no.bind('change', increaseBy2);\no.bind('change', increaseBy3);\no.attr('a', 'Alice');\ni; // 5\n\no.unbind('change', increaseBy2);\no.attr('b', 'Bob');\ni; // 8\n\no.unbind('change');\no.attr('e', 'Eve');\ni; // 8</code></pre>"
+                    "description": "<p>the handler to unbind</p>"
                 }
             ]
         }
     ],
+    "comment": " ",
     "src": "can/observe/observe.js",
-    "line": 823,
+    "line": 817,
     "id": 26
 };
 

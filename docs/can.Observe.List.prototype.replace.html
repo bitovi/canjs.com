@@ -89,12 +89,22 @@
 	</li>
 	
 	<li >
+	<a href="can.EJS.html">can.EJS</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
 	
 	<li >
 	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Mustache.html">can.Mustache</a>
 	
 	</li>
 	
@@ -221,7 +231,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 		</ul>
 		
@@ -259,7 +269,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1934">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1917">source</a></li>
 		
 		
 		
@@ -280,7 +290,7 @@
 		
 		<section class="signature">
 			<h2>replace(collection)</h2>
-<p><code>replace</code> replaces all the elements of this List with new ones.</p>
+
 
 	<h3>Parameters</h3>
 
@@ -291,7 +301,26 @@
 			<div class="description">
 				<p><p>the collection of new elements to use
 If a <a href="can.Deferred.html">can.Deferred</a> is passed, it must resolve to an <code>Array</code> or <code>can.Observe.List</code>.
-The elements of the list are not actually removed until the Deferred resolves.</p>
+The elements of the list are not actually removed until the Deferred resolves.</p></p>
+			</div>
+			
+			
+			
+			
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+		</section>
+		
+
+		
+		<section class="comment">
+			<p><code>replace</code> replaces all the elements of this List with new ones.</p>
 
 <p><code>replace</code> is especially useful when <code>can.Observe.List</code>s are live-bound into <code><a href="can.Control.html">can.Control</a></code>s,
 and you intend to populate them with the results of a <code><a href="can.Model.html">can.Model</a></code> call:</p>
@@ -339,78 +368,8 @@ replaceList.replace(['Amber']);               // 0, remove, undefined, ['Adam', 
 attrList.attr(['Alice', 'Bob', 'Eve'], true); // 0, set, Alice, Amber
                                               // 1, add, ['Bob', 'Eve'], undefined
 replaceList.replace(['Alice', 'Bob', 'Eve']); // 0, remove, undefined, Amber
-                                              // 0, add, ['Alice', 'Bob', 'Eve'], Amber</code></pre></p>
-			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{Array | can.Observe.List | can.Deferred}</code></h5>
-					<div class="description">
-						<p>the collection of new elements to use
-If a [can.Deferred] is passed, it must resolve to an <code>Array</code> or <code>can.Observe.List</code>.
-The elements of the list are not actually removed until the Deferred resolves.</p>
-
-<p><code>replace</code> is especially useful when <code>can.Observe.List</code>s are live-bound into <code>[can.Control]</code>s,
-and you intend to populate them with the results of a <code>[can.Model]</code> call:</p>
-
-<pre><code class="lang-javascript">can.Control({
-    init: function() {
-        this.list = new Todo.List();
-        // live-bind the list into the DOM
-        this.element.html(can.view('list.mustache', this.list));
-        // when this AJAX call returns, the live-bound DOM will be updated
-        this.list.replace(Todo.findAll());
-    }
-});</code></pre>
-
-<p>Learn more about [can.Model.List making Lists of models].</p>
-
-<h2>Events</h2>
-
-<p>A major difference between <code>replace</code> and <code>attr(newElements, true)</code> is that <code>replace</code> always emits
-an<em>add</em> event and a <em>remove</em> event, whereas <code>attr</code> will cause <em>set</em> events along an <em>add</em> or <em>remove</em>
-event if needed. Corresponding <em>change</em> and <em>length</em> events will be fired as well.</p>
-
-<p>The differences in the events fired by <code>attr</code> and <code>replace</code> are demonstrated concretely by this example:</p>
-
-<pre><code class="lang-javascript">var attrList = new can.Observe.List(['Alexis', 'Bill']);
-attrList.bind('change', function(ev, index, how, newVals, oldVals) {
-    console.log(index + ', ' + how + ', ' + newVals + ', ' + oldVals);
-});
-
-var replaceList = new can.Observe.List(['Alexis', 'Bill']);
-replaceList.bind('change', function(ev, index, how, newVals, oldVals) {
-    console.log(index + ', ' + how + ', ' + newVals + ', ' + oldVals);
-});
-
-attrList.attr(['Adam', 'Ben'], true);         // 0, set, Adam, Alexis
-                                              // 1, set, Ben, Bill
-replaceList.replace(['Adam', 'Ben']);         // 0, remove, undefined, ['Alexis', 'Bill']
-                                              // 0, add, undefined, ['Adam', 'Ben']
-
-attrList.attr(['Amber'], true);               // 0, set, Amber, Adam
-                                              // 1, remove, undefined, Ben
-replaceList.replace(['Amber']);               // 0, remove, undefined, ['Adam', 'Ben']
-                                              // 0, add, Amber, ['Adam', 'Ben']
-
-attrList.attr(['Alice', 'Bob', 'Eve'], true); // 0, set, Alice, Amber
-                                              // 1, add, ['Bob', 'Eve'], undefined
-replaceList.replace(['Alice', 'Bob', 'Eve']); // 0, remove, undefined, Amber
-                                              // 0, add, ['Alice', 'Bob', 'Eve'], Amber</code></pre>
-					</div>
-				</li>
-				
-			</ul>
-			-->
-		</li>
-		
-	</ol>
-
-
+                                              // 0, add, ['Alice', 'Bob', 'Eve'], Amber</code></pre>     
 		</section>
-		
-
 		
 	</article>
 </div>
@@ -420,12 +379,12 @@ replaceList.replace(['Alice', 'Bob', 'Eve']); // 0, remove, undefined, Amber
     "type": "function",
     "name": "can.Observe.List.prototype.replace",
     "parent": "can.Observe.List.prototype",
-    "body": "",
+    "body": "<p><code>replace</code> replaces all the elements of this List with new ones.</p>\n\n<p><code>replace</code> is especially useful when <code>can.Observe.List</code>s are live-bound into <code>[can.Control]</code>s,\nand you intend to populate them with the results of a <code>[can.Model]</code> call:</p>\n\n<pre><code class=\"lang-javascript\">can.Control({\n    init: function() {\n        this.list = new Todo.List();\n        // live-bind the list into the DOM\n        this.element.html(can.view('list.mustache', this.list));\n        // when this AJAX call returns, the live-bound DOM will be updated\n        this.list.replace(Todo.findAll());\n    }\n});</code></pre>\n\n<p>Learn more about [can.Model.List making Lists of models].</p>\n\n<h2>Events</h2>\n\n<p>A major difference between <code>replace</code> and <code>attr(newElements, true)</code> is that <code>replace</code> always emits\nan<em>add</em> event and a <em>remove</em> event, whereas <code>attr</code> will cause <em>set</em> events along an <em>add</em> or <em>remove</em>\nevent if needed. Corresponding <em>change</em> and <em>length</em> events will be fired as well.</p>\n\n<p>The differences in the events fired by <code>attr</code> and <code>replace</code> are demonstrated concretely by this example:</p>\n\n<pre><code class=\"lang-javascript\">var attrList = new can.Observe.List(['Alexis', 'Bill']);\nattrList.bind('change', function(ev, index, how, newVals, oldVals) {\n    console.log(index + ', ' + how + ', ' + newVals + ', ' + oldVals);\n});\n\nvar replaceList = new can.Observe.List(['Alexis', 'Bill']);\nreplaceList.bind('change', function(ev, index, how, newVals, oldVals) {\n    console.log(index + ', ' + how + ', ' + newVals + ', ' + oldVals);\n});\n\nattrList.attr(['Adam', 'Ben'], true);         // 0, set, Adam, Alexis\n                                              // 1, set, Ben, Bill\nreplaceList.replace(['Adam', 'Ben']);         // 0, remove, undefined, ['Alexis', 'Bill']\n                                              // 0, add, undefined, ['Adam', 'Ben']\n\nattrList.attr(['Amber'], true);               // 0, set, Amber, Adam\n                                              // 1, remove, undefined, Ben\nreplaceList.replace(['Amber']);               // 0, remove, undefined, ['Adam', 'Ben']\n                                              // 0, add, Amber, ['Adam', 'Ben']\n\nattrList.attr(['Alice', 'Bob', 'Eve'], true); // 0, set, Alice, Amber\n                                              // 1, add, ['Bob', 'Eve'], undefined\nreplaceList.replace(['Alice', 'Bob', 'Eve']); // 0, remove, undefined, Amber\n                                              // 0, add, ['Alice', 'Bob', 'Eve'], Amber</code></pre>     ",
     "description": "<p>Replace all the elements of a List. </p>",
     "title": "replace",
     "signatures": [{
             "code": "replace(collection)",
-            "description": "<p><code>replace</code> replaces all the elements of this List with new ones.</p>",
+            "description": "",
             "params": [{
                     "types": [{
                             "type": "Array"
@@ -436,13 +395,14 @@ replaceList.replace(['Alice', 'Bob', 'Eve']); // 0, remove, undefined, Amber
                         }
                     ],
                     "name": "collection",
-                    "description": "<p>the collection of new elements to use\nIf a [can.Deferred] is passed, it must resolve to an <code>Array</code> or <code>can.Observe.List</code>.\nThe elements of the list are not actually removed until the Deferred resolves.</p>\n\n<p><code>replace</code> is especially useful when <code>can.Observe.List</code>s are live-bound into <code>[can.Control]</code>s,\nand you intend to populate them with the results of a <code>[can.Model]</code> call:</p>\n\n<pre><code class=\"lang-javascript\">can.Control({\n    init: function() {\n        this.list = new Todo.List();\n        // live-bind the list into the DOM\n        this.element.html(can.view('list.mustache', this.list));\n        // when this AJAX call returns, the live-bound DOM will be updated\n        this.list.replace(Todo.findAll());\n    }\n});</code></pre>\n\n<p>Learn more about [can.Model.List making Lists of models].</p>\n\n<h2>Events</h2>\n\n<p>A major difference between <code>replace</code> and <code>attr(newElements, true)</code> is that <code>replace</code> always emits\nan<em>add</em> event and a <em>remove</em> event, whereas <code>attr</code> will cause <em>set</em> events along an <em>add</em> or <em>remove</em>\nevent if needed. Corresponding <em>change</em> and <em>length</em> events will be fired as well.</p>\n\n<p>The differences in the events fired by <code>attr</code> and <code>replace</code> are demonstrated concretely by this example:</p>\n\n<pre><code class=\"lang-javascript\">var attrList = new can.Observe.List(['Alexis', 'Bill']);\nattrList.bind('change', function(ev, index, how, newVals, oldVals) {\n    console.log(index + ', ' + how + ', ' + newVals + ', ' + oldVals);\n});\n\nvar replaceList = new can.Observe.List(['Alexis', 'Bill']);\nreplaceList.bind('change', function(ev, index, how, newVals, oldVals) {\n    console.log(index + ', ' + how + ', ' + newVals + ', ' + oldVals);\n});\n\nattrList.attr(['Adam', 'Ben'], true);         // 0, set, Adam, Alexis\n                                              // 1, set, Ben, Bill\nreplaceList.replace(['Adam', 'Ben']);         // 0, remove, undefined, ['Alexis', 'Bill']\n                                              // 0, add, undefined, ['Adam', 'Ben']\n\nattrList.attr(['Amber'], true);               // 0, set, Amber, Adam\n                                              // 1, remove, undefined, Ben\nreplaceList.replace(['Amber']);               // 0, remove, undefined, ['Adam', 'Ben']\n                                              // 0, add, Amber, ['Adam', 'Ben']\n\nattrList.attr(['Alice', 'Bob', 'Eve'], true); // 0, set, Alice, Amber\n                                              // 1, add, ['Bob', 'Eve'], undefined\nreplaceList.replace(['Alice', 'Bob', 'Eve']); // 0, remove, undefined, Amber\n                                              // 0, add, ['Alice', 'Bob', 'Eve'], Amber</code></pre>"
+                    "description": "<p>the collection of new elements to use\nIf a [can.Deferred] is passed, it must resolve to an <code>Array</code> or <code>can.Observe.List</code>.\nThe elements of the list are not actually removed until the Deferred resolves.</p>"
                 }
             ]
         }
     ],
+    "comment": " ",
     "src": "can/observe/observe.js",
-    "line": 1934,
+    "line": 1917,
     "id": 46
 };
 

@@ -88,6 +88,11 @@
 	
 	</li>
 	
+	<li >
+	<a href="can.EJS.html">can.EJS</a>
+	
+	</li>
+	
 	<li class="active">
 	<a href="can.Model.html">can.Model</a>
 	
@@ -140,7 +145,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 			
 				<li class="heading"><span>static</span>
@@ -228,7 +233,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 		</ul>
 		
@@ -237,6 +242,11 @@
 	
 	<li >
 	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Mustache.html">can.Mustache</a>
 	
 	</li>
 	
@@ -313,18 +323,9 @@
 			<div class="description">
 				<p><p>The event to bind to.</p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{String}</code></h5>
-					<div class="description">
-						<p>The event to bind to.</p>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
 		</li>
 		
 		<li class="parameter">
@@ -334,20 +335,9 @@
 event occurs. <strong>handler</strong> is passed the event and the
 Model instance.</p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{function}</code></h5>
-					<div class="description">
-						<p>The function to call when the
-event occurs. <strong>handler</strong> is passed the event and the
-Model instance.</p>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
 		</li>
 		
 	</ol>
@@ -358,8 +348,15 @@ Model instance.</p>
 		<h4><code>{can.Model}</code></h4>
 		<div class="description">
 			<p>The Model, for chaining.</p>
+		</div>
+	</div>
 
-<p><code>bind(eventName, handler(ev, args...) )</code> is used to listen
+		</section>
+		
+
+		
+		<section class="comment">
+			<p><code>bind(eventName, handler(ev, args...) )</code> is used to listen
 to events on this model instance.  Example:</p>
 
 <pre><code>Task = can.Model()
@@ -409,12 +406,7 @@ behavior of <a href="can.Observe.prototype.bind.html">can.Observe.prototype.bind
 of event bindings on this object which is used to store
 the model instance.  When there are no bindings, the 
 model instance is removed from the store, freeing memory.  </p>
-		</div>
-	</div>
-
 		</section>
-		
-
 		
 	</article>
 </div>
@@ -424,7 +416,7 @@ model instance is removed from the store, freeing memory.  </p>
     "type": "function",
     "name": "can.Model.prototype.bind",
     "parent": "can.Model.prototype",
-    "body": "",
+    "body": "<p><code>bind(eventName, handler(ev, args...) )</code> is used to listen\nto events on this model instance.  Example:</p>\n\n<pre><code>Task = can.Model()\nvar task = new Task({name : \"dishes\"})\ntask.bind(\"name\", function(ev, newVal, oldVal){})\n</code></pre>\n\n<p>Use <code>bind</code> the\nsame as [can.Observe::bind] which should be used as\na reference for listening to property changes.</p>\n\n<p>Bind on model can be used to listen to when \nan instance is:</p>\n\n<ul>\n<li>created</li>\n<li>updated</li>\n<li>destroyed</li>\n</ul>\n\n<p>like:</p>\n\n<pre><code>Task = can.Model()\nvar task = new Task({name : \"dishes\"})\n\ntask.bind(\"created\", function(ev, newTask){\n     console.log(\"created\", newTask)\n})\n.bind(\"updated\", function(ev, updatedTask){\n  console.log(\"updated\", updatedTask)\n})\n.bind(\"destroyed\", function(ev, destroyedTask){\n     console.log(\"destroyed\", destroyedTask)\n})\n\n// create, update, and destroy\ntask.save(function(){\n  task.attr('name', \"do dishes\")\n      .save(function(){\n            task.destroy()\n      })\n}); \n</code></pre>\n\n<p><code>bind</code> also extends the inherited \nbehavior of [can.Observe::bind] to track the number\nof event bindings on this object which is used to store\nthe model instance.  When there are no bindings, the \nmodel instance is removed from the store, freeing memory.  </p>",
     "description": "<p>Listen to events on this Model. </p>",
     "title": "bind",
     "signatures": [{
@@ -458,10 +450,11 @@ model instance is removed from the store, freeing memory.  </p>
                         "type": "can.Model"
                     }
                 ],
-                "description": "<p>The Model, for chaining.</p>\n\n<p><code>bind(eventName, handler(ev, args...) )</code> is used to listen\nto events on this model instance.  Example:</p>\n\n<pre><code>Task = can.Model()\nvar task = new Task({name : \"dishes\"})\ntask.bind(\"name\", function(ev, newVal, oldVal){})\n</code></pre>\n\n<p>Use <code>bind</code> the\nsame as [can.Observe::bind] which should be used as\na reference for listening to property changes.</p>\n\n<p>Bind on model can be used to listen to when \nan instance is:</p>\n\n<ul>\n<li>created</li>\n<li>updated</li>\n<li>destroyed</li>\n</ul>\n\n<p>like:</p>\n\n<pre><code>Task = can.Model()\nvar task = new Task({name : \"dishes\"})\n\ntask.bind(\"created\", function(ev, newTask){\n     console.log(\"created\", newTask)\n})\n.bind(\"updated\", function(ev, updatedTask){\n  console.log(\"updated\", updatedTask)\n})\n.bind(\"destroyed\", function(ev, destroyedTask){\n     console.log(\"destroyed\", destroyedTask)\n})\n\n// create, update, and destroy\ntask.save(function(){\n  task.attr('name', \"do dishes\")\n      .save(function(){\n            task.destroy()\n      })\n}); \n</code></pre>\n\n<p><code>bind</code> also extends the inherited \nbehavior of [can.Observe::bind] to track the number\nof event bindings on this object which is used to store\nthe model instance.  When there are no bindings, the \nmodel instance is removed from the store, freeing memory.  </p>"
+                "description": "<p>The Model, for chaining.</p>"
             }
         }
     ],
+    "comment": " ",
     "src": "can/model/model.js",
     "line": 1006,
     "id": 67

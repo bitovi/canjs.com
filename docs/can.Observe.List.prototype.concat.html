@@ -89,12 +89,22 @@
 	</li>
 	
 	<li >
+	<a href="can.EJS.html">can.EJS</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
 	
 	<li >
 	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Mustache.html">can.Mustache</a>
 	
 	</li>
 	
@@ -221,7 +231,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 		</ul>
 		
@@ -259,7 +269,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1879">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1863">source</a></li>
 		
 		
 		
@@ -280,7 +290,7 @@
 		
 		<section class="signature">
 			<h2>concat(...args)</h2>
-<p><code>concat</code> makes a new List with the elements of the List followed by the elements of the parameters.</p>
+
 
 	<h3>Parameters</h3>
 
@@ -291,40 +301,15 @@
 			<div class="description">
 				<p><p>Any number of arrays, Lists, or values to add in
 For each parameter given, if it is an Array or a List, each of its elements will be added to
-the end of the concatenated List. Otherwise, the parameter itself will be added.</p>
-
-<pre><code class="lang-javascript">var list = new can.Observe.List();
-var newList = list.concat(
-    'Alice',
-    ['Bob', 'Charlie']),
-    new can.Observe.List(['Daniel', 'Eve']),
-    {f: 'Francis'}
-);
-newList.attr(); // ['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve', {f: 'Francis'}]</code></pre></p>
+the end of the concatenated List. Otherwise, the parameter itself will be added.</p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{Array | can.Observe.List | *}</code></h5>
-					<div class="description">
-						<p>Any number of arrays, Lists, or values to add in
-For each parameter given, if it is an Array or a List, each of its elements will be added to
-the end of the concatenated List. Otherwise, the parameter itself will be added.</p>
-
-<pre><code class="lang-javascript">var list = new can.Observe.List();
-var newList = list.concat(
-    'Alice',
-    ['Bob', 'Charlie']),
-    new can.Observe.List(['Daniel', 'Eve']),
-    {f: 'Francis'}
-);
-newList.attr(); // ['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve', {f: 'Francis'}]</code></pre>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
+			
+			
+			
+			
 		</li>
 		
 	</ol>
@@ -334,6 +319,19 @@ newList.attr(); // ['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve', {f: 'Francis'}]<
 		
 
 		
+		<section class="comment">
+			<p><code>concat</code> makes a new List with the elements of the List followed by the elements of the parameters.</p>
+
+<pre><code class="lang-javascript">var list = new can.Observe.List();
+var newList = list.concat(
+    'Alice',
+    ['Bob', 'Charlie']),
+    new can.Observe.List(['Daniel', 'Eve']),
+    {f: 'Francis'}
+);
+newList.attr(); // ['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve', {f: 'Francis'}]</code></pre>     
+		</section>
+		
 	</article>
 </div>
 
@@ -342,12 +340,12 @@ newList.attr(); // ['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve', {f: 'Francis'}]<
     "type": "function",
     "name": "can.Observe.List.prototype.concat",
     "parent": "can.Observe.List.prototype",
-    "body": "",
+    "body": "<p><code>concat</code> makes a new List with the elements of the List followed by the elements of the parameters.</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List();\nvar newList = list.concat(\n    'Alice',\n    ['Bob', 'Charlie']),\n    new can.Observe.List(['Daniel', 'Eve']),\n    {f: 'Francis'}\n);\nnewList.attr(); // ['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve', {f: 'Francis'}]</code></pre>     ",
     "description": "<p>Merge many collections together into a List. </p>",
     "title": "concat",
     "signatures": [{
             "code": "concat(...args)",
-            "description": "<p><code>concat</code> makes a new List with the elements of the List followed by the elements of the parameters.</p>",
+            "description": "",
             "params": [{
                     "types": [{
                             "type": "Array"
@@ -358,13 +356,14 @@ newList.attr(); // ['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve', {f: 'Francis'}]<
                         }
                     ],
                     "name": "args",
-                    "description": "<p>Any number of arrays, Lists, or values to add in\nFor each parameter given, if it is an Array or a List, each of its elements will be added to\nthe end of the concatenated List. Otherwise, the parameter itself will be added.</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List();\nvar newList = list.concat(\n    'Alice',\n    ['Bob', 'Charlie']),\n    new can.Observe.List(['Daniel', 'Eve']),\n    {f: 'Francis'}\n);\nnewList.attr(); // ['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve', {f: 'Francis'}]</code></pre>"
+                    "description": "<p>Any number of arrays, Lists, or values to add in\nFor each parameter given, if it is an Array or a List, each of its elements will be added to\nthe end of the concatenated List. Otherwise, the parameter itself will be added.</p>"
                 }
             ]
         }
     ],
+    "comment": " ",
     "src": "can/observe/observe.js",
-    "line": 1879,
+    "line": 1863,
     "id": 44
 };
 

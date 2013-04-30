@@ -10,18 +10,20 @@
 			<div class="description">
 				<p>{{{docLinks description}}}</p>
 			</div>
-			<!--
+			{{#types}}
+			{{#if options.length}}
 			<ul class="options">
-				{{#if types.length}}
+				{{#options}}
 				<li class="option">
-					<h5>{{#if types}}<code>{{makeTypesString types}}</code>{{/if}}</h5>
+					<h5>{{name}} {{#if types}}<code>{{makeTypesString types}}</code>{{/if}}</h5>
 					<div class="description">
 						{{{description}}}
 					</div>
 				</li>
-				{{/if}}
+				{{/options}}
 			</ul>
-			-->
+			{{/if}}
+			{{/types}}
 		</li>
 		{{/params}}
 	</ol>

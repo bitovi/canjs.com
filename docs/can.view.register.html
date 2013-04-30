@@ -89,12 +89,22 @@
 	</li>
 	
 	<li >
+	<a href="can.EJS.html">can.EJS</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
 	
 	<li >
 	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Mustache.html">can.Mustache</a>
 	
 	</li>
 	
@@ -130,107 +140,97 @@
 		<ul>
 		
 			
+				
 				<li >
-				<a href="can.view.cache.html">
+				<a href="cache.html">
 					 cache 
 				</a>
 				</li>
+				
 			
 		
 			
-				<li >
-				<a href="can.view.cached.html">
-					 cached 
-				</a>
-				</li>
+				
 			
 		
 			
+				
 				<li >
 				<a href="can.view.ejs.html">
 					 can.view.ejs 
 				</a>
 				</li>
+				
 			
 		
 			
+				
 				<li >
 				<a href="can.view.ext.html">
 					 ext 
 				</a>
 				</li>
+				
 			
 		
 			
+				
 				<li >
 				<a href="can.view.hook.html">
 					 hook 
 				</a>
 				</li>
+				
 			
 		
 			
+				
 				<li >
 				<a href="can.view.mustache.html">
 					 can.view.mustache 
 				</a>
 				</li>
+				
 			
 		
 			
-				<li >
-				<a href="can.view.preload.html">
-					 can.view.preload 
-				</a>
-				</li>
+				
 			
 		
 			
+				
 				<li class="active">
 				<a href="can.view.register.html">
 					 can.view.register 
 				</a>
 				</li>
+				
 			
 		
 			
-				<li >
-				<a href="can.view.registerScript.html">
-					 can.view.registerScript 
-				</a>
-				</li>
+				
 			
 		
 			
-				<li >
-				<a href="can.view.registerView.html">
-					 can.view.registerView 
-				</a>
-				</li>
+				
 			
 		
 			
+				
 				<li >
 				<a href="can.view.render.html">
 					 can.view.render 
 				</a>
 				</li>
+				
 			
 		
 			
-				<li >
-				<a href="can.view.text.html">
-					 can.view.text 
-				</a>
-				</li>
+				
 			
 		
 			
-				<li >
-				<a href="hookups.html">
-					 hookups 
-				</a>
-				</li>
+				
 			
 		
 		</ul>
@@ -249,7 +249,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/view/view.js#L226">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/view/view.js#L225">source</a></li>
 		
 		
 		
@@ -281,18 +281,43 @@
 			<div class="description">
 				<p><p>Information about the templating language.</p></p>
 			</div>
-			<!--
+			
+			
 			<ul class="options">
 				
 				<li class="option">
-					<h5><code>{Object}</code></h5>
+					<h5>plugin <code>{String}</code></h5>
 					<div class="description">
-						<p>Information about the templating language.</p>
+						The location of the templating language's plugin.
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>suffix <code>{String}</code></h5>
+					<div class="description">
+						Files with this suffix will use this templating language's plugin by default.
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>renderer <code>{function}</code></h5>
+					<div class="description">
+						A function that returns a function that, given data, will render the template with that data.
+The __renderer__ function receives the id of the template and the text of the template.
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>script <code>{function}</code></h5>
+					<div class="description">
+						A function that returns the string form of the processed template.
+
 					</div>
 				</li>
 				
 			</ul>
-			-->
+			
+			
 		</li>
 		
 	</ol>
@@ -396,7 +421,7 @@ view helpers and compression.  </p>
     ],
     "comment": " ",
     "src": "can/view/view.js",
-    "line": 226,
+    "line": 225,
     "id": 104
 };
 

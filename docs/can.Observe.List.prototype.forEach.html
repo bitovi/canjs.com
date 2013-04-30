@@ -89,12 +89,22 @@
 	</li>
 	
 	<li >
+	<a href="can.EJS.html">can.EJS</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
 	
 	<li >
 	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Mustache.html">can.Mustache</a>
 	
 	</li>
 	
@@ -221,7 +231,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 		</ul>
 		
@@ -259,7 +269,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1909">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/observe/observe.js#L1893">source</a></li>
 		
 		
 		
@@ -280,7 +290,7 @@
 		
 		<section class="signature">
 			<h2>forEach(callback[, thisArg])</h2>
-<p><code>forEach</code> calls a callback for each element in the List.</p>
+
 
 	<h3>Parameters</h3>
 
@@ -293,51 +303,19 @@
 The three parameters that <em>callback</em> gets passed are <em>element</em>, the element at <em>index</em>, <em>index</em> the
 current element of the list, and <em>list</em> the List the elements are coming from.</p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{function}</code></h5>
-					<div class="description">
-						<p>a function to call with each element of the List
-The three parameters that <em>callback</em> gets passed are <em>element</em>, the element at <em>index</em>, <em>index</em> the
-current element of the list, and <em>list</em> the List the elements are coming from.</p>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
 		</li>
 		
 		<li class="parameter">
 			<h4>thisArg <code>{Object}</code></h4>
 			<div class="description">
-				<p><p>the object to use as <code>this</code> inside the callback</p>
-
-<pre><code class="lang-javascript">var list = new can.Observe.List([1, 2, 3]);
-list.forEach(function(element, index, list) {
-    list.attr(index, element * element);
-});
-list.attr(); // [1, 4, 9]</code></pre></p>
+				<p><p>the object to use as <code>this</code> inside the callback</p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{Object}</code></h5>
-					<div class="description">
-						<p>the object to use as <code>this</code> inside the callback</p>
-
-<pre><code class="lang-javascript">var list = new can.Observe.List([1, 2, 3]);
-list.forEach(function(element, index, list) {
-    list.attr(index, element * element);
-});
-list.attr(); // [1, 4, 9]</code></pre>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
 		</li>
 		
 	</ol>
@@ -347,6 +325,16 @@ list.attr(); // [1, 4, 9]</code></pre>
 		
 
 		
+		<section class="comment">
+			<p><code>forEach</code> calls a callback for each element in the List.</p>
+
+<pre><code class="lang-javascript">var list = new can.Observe.List([1, 2, 3]);
+list.forEach(function(element, index, list) {
+    list.attr(index, element * element);
+});
+list.attr(); // [1, 4, 9]</code></pre>     
+		</section>
+		
 	</article>
 </div>
 
@@ -355,12 +343,12 @@ list.attr(); // [1, 4, 9]</code></pre>
     "type": "function",
     "name": "can.Observe.List.prototype.forEach",
     "parent": "can.Observe.List.prototype",
-    "body": "",
+    "body": "<p><code>forEach</code> calls a callback for each element in the List.</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List([1, 2, 3]);\nlist.forEach(function(element, index, list) {\n    list.attr(index, element * element);\n});\nlist.attr(); // [1, 4, 9]</code></pre>     ",
     "description": "<p>Call a function for each element of a List. </p>",
     "title": "forEach",
     "signatures": [{
             "code": "forEach(callback[, thisArg])",
-            "description": "<p><code>forEach</code> calls a callback for each element in the List.</p>",
+            "description": "",
             "params": [{
                     "types": [{
                             "type": "function",
@@ -398,13 +386,14 @@ list.attr(); // [1, 4, 9]</code></pre>
                     ],
                     "optional": true,
                     "name": "thisArg",
-                    "description": "<p>the object to use as <code>this</code> inside the callback</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List([1, 2, 3]);\nlist.forEach(function(element, index, list) {\n    list.attr(index, element * element);\n});\nlist.attr(); // [1, 4, 9]</code></pre>"
+                    "description": "<p>the object to use as <code>this</code> inside the callback</p>"
                 }
             ]
         }
     ],
+    "comment": " ",
     "src": "can/observe/observe.js",
-    "line": 1909,
+    "line": 1893,
     "id": 45
 };
 

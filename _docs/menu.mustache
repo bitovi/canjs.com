@@ -20,12 +20,14 @@
 						{{/children}}
 					</ul>
 				</li>
-				{{else}}
+			{{else}}
+				{{^if hide}}
 				<li {{#active}}class="active"{{/active}}>
 				<a href="{{makeHref name}}">
 					{{#if title}} {{title}} {{else}} {{{name}}} {{/if}}
 				</a>
 				</li>
+				{{/if}}
 			{{/if}}
 		{{/children}}
 		</ul>

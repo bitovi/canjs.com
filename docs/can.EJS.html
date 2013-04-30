@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" href="../resources/styles.css" />
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand canjs" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://donejs.com">DoneJS</a></li>
+					<li class="active"><a href="../index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">JQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!FuncUnit">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
+				</ul>
+			</div>
+
+			<ul class="nav">
+				<li class=""><a href="../index.html">Home</a></li>
+				<li class=""><a href="../guides/index.html">Guides</a></li>
+				<li class="active"><a href="../docs/index.html">Api</a></li>
+				<li class=""><a href="../community.html">Community</a></li>
+				<li class=""><a href="../download.html">Download</a></li>
+			</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		<div class="search">
+			<input type="text"/>
+		</div>
+		<ul class="api">
+	
+	<li >
+	<a href="can.Construct.html">can.Construct</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Control.html">can.Control</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Deferred.html">can.Deferred</a>
+	
+	</li>
+	
+	<li class="active">
+	<a href="can.EJS.html">can.EJS</a>
+	
+		
+		<ul>
+		
+			
+				
+				<li >
+				<a href="can.EJS.Helpers.html">
+					 Helpers 
+				</a>
+				</li>
+				
+			
+		
+			
+				
+				<li >
+				<a href="can.EJS.prototype.render.html">
+					 render 
+				</a>
+				</li>
+				
+			
+		
+		</ul>
+		
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.html">can.Model</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Mustache.html">can.Mustache</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.html">can.Observe</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Observe.List.html">can.Observe.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.compute.html">can.compute</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.route.html">can.route</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.util.html">can.util</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.view.html">can.view</a>
+	
+	</li>
+	
+</ul>
+	</nav>
+
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/view/ejs/ejs.md">source</a></li>
+		
+		
+		
+	</ul>
+</div>
+
+	<h1>can.EJS</h1><!-- <span class="module">can.EJS</span>-->
+
+
+
+
+		</section>
+
+		<section class="description">
+			<p>EJS provides <strong>live</strong> ERB-style client-side templates. Use EJS 
+with <a href="can.view.html">can.view</a> and for live templating use EJS with <a href="can.Observe.html">can.Observe</a>.</p>
+
+<h2>Basic Example</h2>
+
+<p>The following renders a Teacher's name and students into an element.  First, 
+create a teacher template in a script tag like:</p>
+
+<pre><code>&lt;script type='text/ejs' id='teacherEJS'&gt;
+
+  &lt;h2 class='&lt;%= teacher.grade &lt; 'c'? "good" : "bad" %&gt;'&gt;
+    &lt;%= teacher.name %&gt;
+  &lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;% for(var i =0; i&lt; teacher.students.length; i++){ %&gt;
+      &lt;li&gt;&lt;%= teacher.students[i].name %&gt;&lt;/li&gt;
+    &lt;% } %&gt;
+  &lt;/ul&gt;
+
+&lt;/script&gt;
+</code></pre>
+
+<p>Notice the magic tags?  Those are things that look like <code>&lt;% %&gt;</code> and 
+<code>&lt;%= %&gt;</code>.  Code between <code>&lt;% %&gt;</code> is run and the return value of code
+between <code>&lt;%= %&gt;</code> is inserted into the page.</p>
+
+<p>Next, create a teacher and use can.view to render the template:</p>
+
+<pre><code>var teacher = {
+  name : "Mr. Smith",
+  grade : "a",
+  students : [
+    {name : "Suzy"},
+    {name : "Payal"},
+    {name : "Curtis"},
+    {name : "Alexis"}
+  ]
+};
+
+document.getElementById('teacher')
+  .appendChild( can.view("teacherEjs", teacher) )
+</code></pre>
+
+<p>This results in HTML like:</p>
+
+<pre><code>&lt;div id='teachers'&gt;
+  &lt;h2 class='good'&gt;
+    Mr. Smith
+  &lt;/h2&gt;
+
+  &lt;ul&gt;
+     &lt;li&gt;Suzy&lt;/li&gt;
+     &lt;li&gt;Payal&lt;/li&gt;
+     &lt;li&gt;Curtis&lt;/li&gt;
+     &lt;li&gt;Alexis&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>This is nice, but what if we change properties of the teacher?</p>
+
+<h2>Basic Live Binding Example</h2>
+
+<p>EJS sets up live templating binding when a <a href="can.Observe.html">can.Observe</a>'s properties are read 
+via <a href="can.Observe.prototype.attr.html"> </a> within a magic tag.  To make this template
+respond to changes in the teacher data, first rewrite the template
+to use the attr method to read properties and <code>list( observeList, cb(item, i) )</code>
+to iterate through a list like:</p>
+
+<pre><code>&lt;script type='text/ejs' id='teacherEJS'&gt;
+
+  &lt;h2 class='&lt;%= teacher.attr('grade') &lt; 'c'? "good" : "bad" %&gt;'&gt;
+    &lt;%= teacher.attr('name') %&gt;
+  &lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;% list(teacher.students, function(student){ %&gt;
+      &lt;li&gt;&lt;%= student.attr('name') %&gt;&lt;/li&gt;
+    &lt;% }) %&gt;
+  &lt;/ul&gt;
+
+&lt;/script&gt;
+</code></pre>
+
+<p><strong>Note:</strong> The end of this page discusses why using <code>list</code> is 
+helpful, but it does nothing fancy.</p>
+
+<p>Next, turn your teacher into a <code>new can.Observe(object)</code> and pass
+that to <code>can.view</code>:</p>
+
+<pre><code>var teacher = can.Observe({
+  name : "Mr. Smith",
+  grade : "a"
+  students : [
+    {name : "Suzy"},
+    {name : "Payal"},
+    {name : "Curtis"},
+    {name : "Alexis"}
+  ]
+});
+
+document.getElementById('teacher')
+  .appendChild( can.view("teacherEjs", teacher) );
+</code></pre>
+
+<p>Finally, update some properties of teacher and slap your 
+head with disbelief ...</p>
+
+<pre><code>teacher.attr('name',"Prof. Snape")
+teacher.attr('grade','f+')
+teacher.attr('students').push({
+  name : "Harry Potter"
+})
+</code></pre>
+
+<p>... but don't slap it too hard, you'll need it for building awesome apps.</p>
+
+<h2>Demo</h2>
+
+<p>The following demo shows an EJS template being rendered with observable data. 
+It demonstrates live binding to attributes. The template and all data properties 
+are editable, so experiment!</p>
+
+<h2>Magic Tags</h2>
+
+<p>EJS uses 5 types of tags:</p>
+
+<p><strong><code>&lt;% CODE %&gt;</code></strong> - Runs JS Code.</p>
+
+<p>This type of magic tag does not modify the template but is used for JS control statements 
+like for-loops, if/else, switch, etc.  Some examples:</p>
+
+<pre><code>&lt;% if( items.attr('length') === 0 ) { %&gt;
+    &lt;tr&gt;&lt;td&gt;You have no items&lt;/td&gt;&lt;/tr&gt;
+&lt;% } else { %&gt;
+    &lt;% list(items, function(){ %&gt;
+      &lt;tr&gt; .... &lt;/tr&gt;
+    &lt;% }) %&gt;
+&lt;% } %&gt;
+
+
+&lt;% var address = person.attr('address') %&gt;
+&lt;span&gt;&lt;%= address.attr('street') %&gt;&lt;span&gt;
+</code></pre>
+
+<p><strong><code>&lt;%= CODE %&gt;</code></strong> - Runs JS Code and writes the <em>escaped</em> result into the result of the template.</p>
+
+<p>The following results in the user seeing "my favorite element is &lt;blink>BLINK&lt;blink>" and not
+<blink>BLINK</blink>.</p>
+
+<pre><code> &lt;div&gt;my favorite element is &lt;%= '&lt;blink&gt;BLINK&lt;/blink&gt;' %&gt;.&lt;/div&gt;
+</code></pre>
+
+<p><strong><code>&lt;%== CODE %&gt;</code></strong>  - Runs JS Code and writes the <em>unescaped</em> result into the result of the template.</p>
+
+<p>The following results in "my favorite element is <B>B</B>.". Using <code>&lt;%==</code> is useful
+for sub-templates.</p>
+
+<pre><code>     &lt;div&gt;my favorite element is &lt;%== '&lt;B&gt;B&lt;/B&gt;' %&gt;.&lt;/div&gt;
+</code></pre>
+
+<p><strong><code>&lt;%% CODE %&gt;</code></strong> - Writes &lt;% CODE %> to the result of the template.  This is very useful for generators.</p>
+
+<pre><code>     &lt;%%= 'hello world' %&gt;
+</code></pre>
+
+<p><strong><code>&lt;%# CODE %&gt;</code></strong>  - Used for comments.  This does nothing.</p>
+
+<pre><code>     &lt;%# 'hello world' %&gt;
+</code></pre>
+
+<h2>Live Binding</h2>
+
+<p>EJS allows live binding by wrapping magic tag content within a function. When <code>attr()</code> is called 
+to update an observable object, these functions are executed to return the new value.</p>
+
+<pre><code>// Suppose an observable "foo":
+
+var foo = can.Observe({
+  count: '0'
+});
+
+// Suppose also, the above observable is passed to our view:
+
+&lt;%= foo.attr('bar') %&gt;
+
+// EJS locates the magic tag and turns the above into:
+
+function() { return foo.attr('bar'); }
+
+// As "foo" is updated using attr(), this function is called again to
+// render the view with the new value.
+</code></pre>
+
+<p>This means that each function tag has a closure will reference variables in it's 
+parent functions. This can cause problems if you don't understand closures in 
+JavaScript. For example, the following binding does not work:</p>
+
+<pre><code>&lt;% for(var i =0; i &lt; items.attr('length'); i++){ %&gt;
+  &lt;li&gt;&lt;%= items[i].attr('name') %&gt;&lt;/li&gt;
+&lt;% } %&gt;
+</code></pre>
+
+<p>This is because it gets turned into:</p>
+
+<pre><code>&lt;% for(var i =0; i &lt; items.attr('length'); i++){ %&gt;
+  LIVEBIND( function() { return items[i].attr('name') )
+&lt;% } %&gt;
+</code></pre>
+
+<p>When the wrapping function is called again, <code>i</code> will 
+not be the index of the item, but instead be items.length.</p>
+
+<p>The [can.EJS.Helpers::view view]<code>(observeList,function(item,index,list){})</code> method in EJS should be used to iterate through observe lists:</p>
+
+<pre><code>&lt;% list(items, function(item){ %&gt;
+  &lt;li&gt;&lt;%= item.attr('name') %&gt;&lt;/li&gt;
+&lt;% }) %&gt;
+</code></pre>
+
+<h2>Advanced Live Binding</h2>
+
+<p>Once you get the hang of how EJS works, it makes live-binding of complex
+calculations possible.  The following extends a <a href="can.Model.List.html">can.Model.List</a> to suppot a <code>completed</code> method that
+returns the total number of completed items in the list.  It can be used in a template like:</p>
+
+<pre><code>&lt;h2&gt;&lt;%= todos.complete() %&gt; Complete Todos &lt;/h2&gt;
+</code></pre>
+
+<p>And implemented like:</p>
+
+<pre><code>Todo.List = can.Model.List({
+  completed: function() {
+    var count = 0;
+
+    this.attr('length');
+    this.each(function(i, todo) {
+      if(this.attr('completed')) {
+        count++;
+      }
+    });
+
+    return count;
+  }
+});
+</code></pre>
+
+<p><code>completed</code> listens on changes to the list (via <code>this.attr('length')</code>) and 
+each item's <code>'completed'</code> property.  EJS keeps track of which observe/attribute pairs are called
+by <code>.complete()</code>.  If they change, EJS will automatically unbind.</p>
+
+<p>Adding a "completed" helper function to the todo model list to return the number of completed todos:</p>
+
+<p><strong>Note:</strong> The object passed into the view becomes "this" within the view template.</p>
+
+<pre><code>var todos = Todo.findAll({}); //returns a can.Model.List
+can.view('//todo/views/init.ejs', todos)
+</code></pre>
+		</section>
+
+		
+
+		
+		<section class="comment">
+			<div class='iframe_wrapper' data-iframe-src='can/view/ejs/demo.html' data-iframe-height='1020'></div>
+		</section>
+		
+	</article>
+</div>
+
+<script type="text/javascript">
+	var docData = {
+    "type": "page",
+    "name": "can.EJS",
+    "body": "<div class='iframe_wrapper' data-iframe-src='can/view/ejs/demo.html' data-iframe-height='1020'></div>",
+    "description": "<p>EJS provides <strong>live</strong> ERB-style client-side templates. Use EJS \nwith [can.view] and for live templating use EJS with [can.Observe].</p>\n\n<h2>Basic Example</h2>\n\n<p>The following renders a Teacher's name and students into an element.  First, \ncreate a teacher template in a script tag like:</p>\n\n<pre><code>&lt;script type='text/ejs' id='teacherEJS'&gt;\n\n  &lt;h2 class='&lt;%= teacher.grade &lt; 'c'? \"good\" : \"bad\" %&gt;'&gt;\n    &lt;%= teacher.name %&gt;\n  &lt;/h2&gt;\n\n  &lt;ul&gt;\n    &lt;% for(var i =0; i&lt; teacher.students.length; i++){ %&gt;\n      &lt;li&gt;&lt;%= teacher.students[i].name %&gt;&lt;/li&gt;\n    &lt;% } %&gt;\n  &lt;/ul&gt;\n\n&lt;/script&gt;\n</code></pre>\n\n<p>Notice the magic tags?  Those are things that look like <code>&lt;% %&gt;</code> and \n<code>&lt;%= %&gt;</code>.  Code between <code>&lt;% %&gt;</code> is run and the return value of code\nbetween <code>&lt;%= %&gt;</code> is inserted into the page.</p>\n\n<p>Next, create a teacher and use can.view to render the template:</p>\n\n<pre><code>var teacher = {\n  name : \"Mr. Smith\",\n  grade : \"a\",\n  students : [\n    {name : \"Suzy\"},\n    {name : \"Payal\"},\n    {name : \"Curtis\"},\n    {name : \"Alexis\"}\n  ]\n};\n\ndocument.getElementById('teacher')\n  .appendChild( can.view(\"teacherEjs\", teacher) )\n</code></pre>\n\n<p>This results in HTML like:</p>\n\n<pre><code>&lt;div id='teachers'&gt;\n  &lt;h2 class='good'&gt;\n    Mr. Smith\n  &lt;/h2&gt;\n\n  &lt;ul&gt;\n     &lt;li&gt;Suzy&lt;/li&gt;\n     &lt;li&gt;Payal&lt;/li&gt;\n     &lt;li&gt;Curtis&lt;/li&gt;\n     &lt;li&gt;Alexis&lt;/li&gt;\n  &lt;/ul&gt;\n&lt;/div&gt;\n</code></pre>\n\n<p>This is nice, but what if we change properties of the teacher?</p>\n\n<h2>Basic Live Binding Example</h2>\n\n<p>EJS sets up live templating binding when a [can.Observe]'s properties are read \nvia [can.Observe::attr attr] within a magic tag.  To make this template\nrespond to changes in the teacher data, first rewrite the template\nto use the attr method to read properties and <code>list( observeList, cb(item, i) )</code>\nto iterate through a list like:</p>\n\n<pre><code>&lt;script type='text/ejs' id='teacherEJS'&gt;\n\n  &lt;h2 class='&lt;%= teacher.attr('grade') &lt; 'c'? \"good\" : \"bad\" %&gt;'&gt;\n    &lt;%= teacher.attr('name') %&gt;\n  &lt;/h2&gt;\n\n  &lt;ul&gt;\n    &lt;% list(teacher.students, function(student){ %&gt;\n      &lt;li&gt;&lt;%= student.attr('name') %&gt;&lt;/li&gt;\n    &lt;% }) %&gt;\n  &lt;/ul&gt;\n\n&lt;/script&gt;\n</code></pre>\n\n<p><strong>Note:</strong> The end of this page discusses why using <code>list</code> is \nhelpful, but it does nothing fancy.</p>\n\n<p>Next, turn your teacher into a <code>new can.Observe(object)</code> and pass\nthat to <code>can.view</code>:</p>\n\n<pre><code>var teacher = can.Observe({\n  name : \"Mr. Smith\",\n  grade : \"a\"\n  students : [\n    {name : \"Suzy\"},\n    {name : \"Payal\"},\n    {name : \"Curtis\"},\n    {name : \"Alexis\"}\n  ]\n});\n\ndocument.getElementById('teacher')\n  .appendChild( can.view(\"teacherEjs\", teacher) );\n</code></pre>\n\n<p>Finally, update some properties of teacher and slap your \nhead with disbelief ...</p>\n\n<pre><code>teacher.attr('name',\"Prof. Snape\")\nteacher.attr('grade','f+')\nteacher.attr('students').push({\n  name : \"Harry Potter\"\n})\n</code></pre>\n\n<p>... but don't slap it too hard, you'll need it for building awesome apps.</p>\n\n<h2>Demo</h2>\n\n<p>The following demo shows an EJS template being rendered with observable data. \nIt demonstrates live binding to attributes. The template and all data properties \nare editable, so experiment!</p>\n\n<h2>Magic Tags</h2>\n\n<p>EJS uses 5 types of tags:</p>\n\n<p><strong><code>&lt;% CODE %&gt;</code></strong> - Runs JS Code.</p>\n\n<p>This type of magic tag does not modify the template but is used for JS control statements \nlike for-loops, if/else, switch, etc.  Some examples:</p>\n\n<pre><code>&lt;% if( items.attr('length') === 0 ) { %&gt;\n    &lt;tr&gt;&lt;td&gt;You have no items&lt;/td&gt;&lt;/tr&gt;\n&lt;% } else { %&gt;\n    &lt;% list(items, function(){ %&gt;\n      &lt;tr&gt; .... &lt;/tr&gt;\n    &lt;% }) %&gt;\n&lt;% } %&gt;\n\n\n&lt;% var address = person.attr('address') %&gt;\n&lt;span&gt;&lt;%= address.attr('street') %&gt;&lt;span&gt;\n</code></pre>\n\n<p><strong><code>&lt;%= CODE %&gt;</code></strong> - Runs JS Code and writes the <em>escaped</em> result into the result of the template.</p>\n\n<p>The following results in the user seeing \"my favorite element is &lt;blink>BLINK&lt;blink>\" and not\n<blink>BLINK</blink>.</p>\n\n<pre><code> &lt;div&gt;my favorite element is &lt;%= '&lt;blink&gt;BLINK&lt;/blink&gt;' %&gt;.&lt;/div&gt;\n</code></pre>\n\n<p><strong><code>&lt;%== CODE %&gt;</code></strong>  - Runs JS Code and writes the <em>unescaped</em> result into the result of the template.</p>\n\n<p>The following results in \"my favorite element is <B>B</B>.\". Using <code>&lt;%==</code> is useful\nfor sub-templates.</p>\n\n<pre><code>     &lt;div&gt;my favorite element is &lt;%== '&lt;B&gt;B&lt;/B&gt;' %&gt;.&lt;/div&gt;\n</code></pre>\n\n<p><strong><code>&lt;%% CODE %&gt;</code></strong> - Writes &lt;% CODE %> to the result of the template.  This is very useful for generators.</p>\n\n<pre><code>     &lt;%%= 'hello world' %&gt;\n</code></pre>\n\n<p><strong><code>&lt;%# CODE %&gt;</code></strong>  - Used for comments.  This does nothing.</p>\n\n<pre><code>     &lt;%# 'hello world' %&gt;\n</code></pre>\n\n<h2>Live Binding</h2>\n\n<p>EJS allows live binding by wrapping magic tag content within a function. When <code>attr()</code> is called \nto update an observable object, these functions are executed to return the new value.</p>\n\n<pre><code>// Suppose an observable \"foo\":\n\nvar foo = can.Observe({\n  count: '0'\n});\n\n// Suppose also, the above observable is passed to our view:\n\n&lt;%= foo.attr('bar') %&gt;\n\n// EJS locates the magic tag and turns the above into:\n\nfunction() { return foo.attr('bar'); }\n\n// As \"foo\" is updated using attr(), this function is called again to\n// render the view with the new value.\n</code></pre>\n\n<p>This means that each function tag has a closure will reference variables in it's \nparent functions. This can cause problems if you don't understand closures in \nJavaScript. For example, the following binding does not work:</p>\n\n<pre><code>&lt;% for(var i =0; i &lt; items.attr('length'); i++){ %&gt;\n  &lt;li&gt;&lt;%= items[i].attr('name') %&gt;&lt;/li&gt;\n&lt;% } %&gt;\n</code></pre>\n\n<p>This is because it gets turned into:</p>\n\n<pre><code>&lt;% for(var i =0; i &lt; items.attr('length'); i++){ %&gt;\n  LIVEBIND( function() { return items[i].attr('name') )\n&lt;% } %&gt;\n</code></pre>\n\n<p>When the wrapping function is called again, <code>i</code> will \nnot be the index of the item, but instead be items.length.</p>\n\n<p>The [can.EJS.Helpers::view view]<code>(observeList,function(item,index,list){})</code> method in EJS should be used to iterate through observe lists:</p>\n\n<pre><code>&lt;% list(items, function(item){ %&gt;\n  &lt;li&gt;&lt;%= item.attr('name') %&gt;&lt;/li&gt;\n&lt;% }) %&gt;\n</code></pre>\n\n<h2>Advanced Live Binding</h2>\n\n<p>Once you get the hang of how EJS works, it makes live-binding of complex\ncalculations possible.  The following extends a [can.Model.List] to suppot a <code>completed</code> method that\nreturns the total number of completed items in the list.  It can be used in a template like:</p>\n\n<pre><code>&lt;h2&gt;&lt;%= todos.complete() %&gt; Complete Todos &lt;/h2&gt;\n</code></pre>\n\n<p>And implemented like:</p>\n\n<pre><code>Todo.List = can.Model.List({\n  completed: function() {\n    var count = 0;\n\n    this.attr('length');\n    this.each(function(i, todo) {\n      if(this.attr('completed')) {\n        count++;\n      }\n    });\n\n    return count;\n  }\n});\n</code></pre>\n\n<p><code>completed</code> listens on changes to the list (via <code>this.attr('length')</code>) and \neach item's <code>'completed'</code> property.  EJS keeps track of which observe/attribute pairs are called\nby <code>.complete()</code>.  If they change, EJS will automatically unbind.</p>\n\n<p>Adding a \"completed\" helper function to the todo model list to return the number of completed todos:</p>\n\n<p><strong>Note:</strong> The object passed into the view becomes \"this\" within the view template.</p>\n\n<pre><code>var todos = Todo.findAll({}); //returns a can.Model.List\ncan.view('//todo/views/init.ejs', todos)\n</code></pre>",
+    "title": "can.EJS",
+    "parent": "canjs",
+    "src": "can/view/ejs/ejs.md",
+    "id": 111
+};
+
+	console.log(docData);
+</script>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand canjs" href="index.html">CanJS</a>
+			<ul class="pullright">
+				<li><a href="../index.html">Home</a></li>
+				<li><a href="../guides">Guides</a></li>
+				<li><a href="../docs/index.html">Api</a></li>
+				<li><a href="../community.html">Community</a></li>
+				<li><a href="../download.html">Download</a></li>
+			</ul>
+		</nav>
+	</footer>
+	<div class="loading"></div>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="../resources/production.min.js"></script>
+</body>
+
+</html>

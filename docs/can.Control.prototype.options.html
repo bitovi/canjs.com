@@ -132,7 +132,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 			
 				<li class="heading"><span>static</span>
@@ -154,7 +154,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 		</ul>
 		
@@ -167,12 +167,22 @@
 	</li>
 	
 	<li >
+	<a href="can.EJS.html">can.EJS</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
 	
 	<li >
 	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Mustache.html">can.Mustache</a>
 	
 	</li>
 	
@@ -242,7 +252,7 @@
 			<p>Options are used to configure a control.  They are
 the 2nd argument
 passed to a control (or the first argument passed to the 
-[can.Control.plugin control's jQuery plugin]).</p>
+[can.Control.plugin control]'s jQuery plugin).</p>
 
 <p>For example:</p>
 
@@ -284,7 +294,7 @@ new Tabs( $( "#tabs2" ), { activeClass : 'active' } ); // adds 'active'
     "name": "can.Control.prototype.options",
     "type": "property",
     "parent": "can.Control.prototype",
-    "body": "<p>Options are used to configure a control.  They are\nthe 2nd argument\npassed to a control (or the first argument passed to the \n[can.Control.plugin control's jQuery plugin]).</p>\n\n<p>For example:</p>\n\n<pre><code>can.Control('Hello')\n\nvar h1 = new Hello( $( '#content1' ), { message: 'World' } );\nequal( h1.options.message , \"World\" );\n\nvar h2 = $( '#content2' ).hello({ message: 'There' })\n                         .control();\nequal( h2.options.message , \"There\" );\n</code></pre>\n\n<p>Options are merged with [can.Control.static.defaults defaults] in\n[can.Control.prototype.setup setup].</p>\n\n<p>For example:</p>\n\n<pre><code>Tabs = can.Control({\n   defaults: {\n     activeClass: \"ui-active-state\"\n   }\n}, {\n   init: function(){\n     this.element.addClass( this.options.activeClass );\n   }\n});\n\nnew Tabs( $( \"#tabs1\" ) ); // adds 'ui-active-state'\nnew Tabs( $( \"#tabs2\" ), { activeClass : 'active' } ); // adds 'active'\n</code></pre>",
+    "body": "<p>Options are used to configure a control.  They are\nthe 2nd argument\npassed to a control (or the first argument passed to the \n[can.Control.plugin control]'s jQuery plugin).</p>\n\n<p>For example:</p>\n\n<pre><code>can.Control('Hello')\n\nvar h1 = new Hello( $( '#content1' ), { message: 'World' } );\nequal( h1.options.message , \"World\" );\n\nvar h2 = $( '#content2' ).hello({ message: 'There' })\n                         .control();\nequal( h2.options.message , \"There\" );\n</code></pre>\n\n<p>Options are merged with [can.Control.static.defaults defaults] in\n[can.Control.prototype.setup setup].</p>\n\n<p>For example:</p>\n\n<pre><code>Tabs = can.Control({\n   defaults: {\n     activeClass: \"ui-active-state\"\n   }\n}, {\n   init: function(){\n     this.element.addClass( this.options.activeClass );\n   }\n});\n\nnew Tabs( $( \"#tabs1\" ) ); // adds 'ui-active-state'\nnew Tabs( $( \"#tabs2\" ), { activeClass : 'active' } ); // adds 'active'\n</code></pre>",
     "description": "",
     "title": "options",
     "comment": " ",

@@ -89,12 +89,22 @@
 	</li>
 	
 	<li >
+	<a href="can.EJS.html">can.EJS</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
 	
 	<li >
 	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Mustache.html">can.Mustache</a>
 	
 	</li>
 	
@@ -115,27 +125,33 @@
 		<ul>
 		
 			
+				
 				<li >
 				<a href="can.compute.bind.html">
 					 bind 
 				</a>
 				</li>
+				
 			
 		
 			
+				
 				<li >
 				<a href="can.compute.unbind.html">
 					 unbind 
 				</a>
 				</li>
+				
 			
 		
 			
+				
 				<li >
 				<a href="isComputed.html">
 					 isComputed 
 				</a>
 				</li>
+				
 			
 		
 		</ul>
@@ -204,21 +220,9 @@ When called with no parameters, <em>getterSetter</em> should return the current 
 called with a single parameter, <em>getterSetter</em> should arrange things so that the next read of the compute
 produces that value.</p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{function}</code></h5>
-					<div class="description">
-						<p>A function that gets and optionally sets the value of the compute.
-When called with no parameters, <em>getterSetter</em> should return the current value of the compute. When
-called with a single parameter, <em>getterSetter</em> should arrange things so that the next read of the compute
-produces that value.</p>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
 		</li>
 		
 		<li class="parameter">
@@ -226,18 +230,9 @@ produces that value.</p>
 			<div class="description">
 				<p><p>The context to use when evaluating the compute.</p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{Object}</code></h5>
-					<div class="description">
-						<p>The context to use when evaluating the compute.</p>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
 		</li>
 		
 	</ol>
@@ -298,7 +293,7 @@ person.attr('firstName', 'Allison'); // The log reads:
 <p>Take special notice of how the definition of the compute uses <code><a href="can.Observe.prototype.attr.html"> </a></code>
 to read the values of the properties of <code>person</code>. This is how the compute knows to listen
 for changes. and is similar to the need to use <code>attr</code> when live-binding properties of Observes into
-<code>[can.EJS EJS]</code> templates.</p>
+<code><a href="can.EJS.html"> </a></code> templates.</p>
 
 <p>A specific use for bound computes like this is to provide a way to work with values of Observable
 properties in different units:</p>

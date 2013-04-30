@@ -89,12 +89,22 @@
 	</li>
 	
 	<li >
+	<a href="can.EJS.html">can.EJS</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
 	
 	<li >
 	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Mustache.html">can.Mustache</a>
 	
 	</li>
 	
@@ -162,7 +172,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 			
 				<li class="heading"><span>static</span>
@@ -202,7 +212,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 		</ul>
 		
@@ -287,18 +297,9 @@ working with deep properties. Observable arrays are also available with
 			<div class="description">
 				<p><p>properties and values to seed the Observe with</p></p>
 			</div>
-			<!--
-			<ul class="options">
-				
-				<li class="option">
-					<h5><code>{Object}</code></h5>
-					<div class="description">
-						<p>properties and values to seed the Observe with</p>
-					</div>
-				</li>
-				
-			</ul>
-			-->
+			
+			
+			
 		</li>
 		
 	</ol>
@@ -326,8 +327,8 @@ copy of <code>props</code> that emits events when its properties are changed wit
 <p>You can read the values of properties on Observes directly, but you should
 never set them directly. You can also read property values using <code>attr</code>.
 Usually, you will want to do this when creating a <code><a href="can.compute.html">can.compute</a></code> or when
-live-binding properties in an [can.EJS EJS] template. (If you are using
-[can.Mustache Mustache], you don't need to use <code>attr</code>.)</p>
+live-binding properties in an <a href="can.EJS.html"> </a> template. (If you are using
+<a href="can.Mustache.html"> </a>, you don't need to use <code>attr</code>.)</p>
 
 <pre><code class="lang-javascript">var aName = {a: 'Alexis'},
     observe = can.Observe(aName);

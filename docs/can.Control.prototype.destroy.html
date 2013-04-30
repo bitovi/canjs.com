@@ -132,7 +132,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 			
 				<li class="heading"><span>static</span>
@@ -154,7 +154,7 @@
 						
 					</ul>
 				</li>
-				
+			
 		
 		</ul>
 		
@@ -167,12 +167,22 @@
 	</li>
 	
 	<li >
+	<a href="can.EJS.html">can.EJS</a>
+	
+	</li>
+	
+	<li >
 	<a href="can.Model.html">can.Model</a>
 	
 	</li>
 	
 	<li >
 	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Mustache.html">can.Mustache</a>
 	
 	</li>
 	
@@ -232,8 +242,21 @@
 		</section>
 
 		<section class="description">
-			<p>Remove a Control from an element and clean up the Control. 
-<code>destroy</code> prepares a control for garbage collection and is a place to
+			<p>Remove a Control from an element and clean up the Control. </p>
+		</section>
+
+		
+		<section class="signature">
+			<h2>destroy()</h2>
+
+
+
+		</section>
+		
+
+		
+		<section class="comment">
+			<p><code>destroy</code> prepares a control for garbage collection and is a place to
 reset any changes the control has made.  </p>
 
 <h2>Allowing Garbage Collection</h2>
@@ -331,16 +354,6 @@ changer.destroy();
 <li>removing it's [can.Control.pluginName] from the element's className</li>
 </ul>
 		</section>
-
-		
-		<section class="signature">
-			<h2>destroy()</h2>
-
-
-
-		</section>
-		
-
 		
 	</article>
 </div>
@@ -350,8 +363,8 @@ changer.destroy();
     "type": "function",
     "name": "can.Control.prototype.destroy",
     "parent": "can.Control.prototype",
-    "body": "",
-    "description": "<p>Remove a Control from an element and clean up the Control. \n<code>destroy</code> prepares a control for garbage collection and is a place to\nreset any changes the control has made.  </p>\n\n<h2>Allowing Garbage Collection</h2>\n\n<p>Destroy is called whenever a control's element is removed from the page using \nthe library's standard HTML modifier methods.  This means that you\ndon't have to call destroy yourself and it \nwill be called automatically when appropriate.  </p>\n\n<p>The following <code>Clicker</code> widget listens on the window for clicks and updates\nits element's innerHTML.  If we remove the element, the window's event handler\nis removed auto-magically:</p>\n\n<pre><code> Clickr = can.Control({\n  \"{window} click\": function() {\n       this.element.html( this.count ? \n                          this.count++ : this.count = 0 );\n  }  \n});\n\n// create a clicker on an element\nnew Clicker( \"#clickme\" );\n\n// remove the element\n$( '#clickme' ).remove();\n</code></pre>\n\n<p>The methods you can use that will destroy controls automatically by library:</p>\n\n<p><strong>jQuery and Zepto</strong></p>\n\n<ul>\n<li>$.fn.remove</li>\n<li>$.fn.html</li>\n<li>$.fn.replaceWith</li>\n<li>$.fn.empty</li>\n</ul>\n\n<p><strong>Dojo</strong></p>\n\n<ul>\n<li>dojo.destroy</li>\n<li>dojo.empty</li>\n<li>dojo.place (with the replace option)</li>\n</ul>\n\n<p><strong>Mootools</strong></p>\n\n<ul>\n<li>Element.prototype.destroy</li>\n</ul>\n\n<p><strong>YUI</strong></p>\n\n<ul>\n<li>TODO!</li>\n</ul>\n\n<h2>Teardown in Destroy</h2>\n\n<p>Sometimes, you want to reset a controlled element back to its\noriginal state when the control is destroyed.  Overwriting destroy\nlets you write teardown code of this manner.  <strong>When overwriting\ndestroy, make sure you call Control's base functionality</strong>.</p>\n\n<p>The following example changes an element's text when the control is\ncreated and sets it back when the control is removed:</p>\n\n<pre><code>Changer = can.Control({\n  init: function() {\n    this.oldText = this.element.text();\n    this.element.text( \"Changed!!!\" );\n  },\n  destroy: function() {\n    this.element.text( this.oldText );\n    can.Control.prototype.destroy.call( this );\n  }\n});\n\n// create a changer which changes #myel's text\nvar changer = new Changer( '#myel' );\n\n// destroy changer which will reset it\nchanger.destroy();\n</code></pre>\n\n<h2>Base Functionality</h2>\n\n<p>Control prepares the control for garbage collection by:</p>\n\n<ul>\n<li>unbinding all event handlers</li>\n<li>clearing references to this.element and this.options</li>\n<li>clearing the element's reference to the control</li>\n<li>removing it's [can.Control.pluginName] from the element's className</li>\n</ul>",
+    "body": "<p><code>destroy</code> prepares a control for garbage collection and is a place to\nreset any changes the control has made.  </p>\n\n<h2>Allowing Garbage Collection</h2>\n\n<p>Destroy is called whenever a control's element is removed from the page using \nthe library's standard HTML modifier methods.  This means that you\ndon't have to call destroy yourself and it \nwill be called automatically when appropriate.  </p>\n\n<p>The following <code>Clicker</code> widget listens on the window for clicks and updates\nits element's innerHTML.  If we remove the element, the window's event handler\nis removed auto-magically:</p>\n\n<pre><code> Clickr = can.Control({\n  \"{window} click\": function() {\n       this.element.html( this.count ? \n                          this.count++ : this.count = 0 );\n  }  \n});\n\n// create a clicker on an element\nnew Clicker( \"#clickme\" );\n\n// remove the element\n$( '#clickme' ).remove();\n</code></pre>\n\n<p>The methods you can use that will destroy controls automatically by library:</p>\n\n<p><strong>jQuery and Zepto</strong></p>\n\n<ul>\n<li>$.fn.remove</li>\n<li>$.fn.html</li>\n<li>$.fn.replaceWith</li>\n<li>$.fn.empty</li>\n</ul>\n\n<p><strong>Dojo</strong></p>\n\n<ul>\n<li>dojo.destroy</li>\n<li>dojo.empty</li>\n<li>dojo.place (with the replace option)</li>\n</ul>\n\n<p><strong>Mootools</strong></p>\n\n<ul>\n<li>Element.prototype.destroy</li>\n</ul>\n\n<p><strong>YUI</strong></p>\n\n<ul>\n<li>TODO!</li>\n</ul>\n\n<h2>Teardown in Destroy</h2>\n\n<p>Sometimes, you want to reset a controlled element back to its\noriginal state when the control is destroyed.  Overwriting destroy\nlets you write teardown code of this manner.  <strong>When overwriting\ndestroy, make sure you call Control's base functionality</strong>.</p>\n\n<p>The following example changes an element's text when the control is\ncreated and sets it back when the control is removed:</p>\n\n<pre><code>Changer = can.Control({\n  init: function() {\n    this.oldText = this.element.text();\n    this.element.text( \"Changed!!!\" );\n  },\n  destroy: function() {\n    this.element.text( this.oldText );\n    can.Control.prototype.destroy.call( this );\n  }\n});\n\n// create a changer which changes #myel's text\nvar changer = new Changer( '#myel' );\n\n// destroy changer which will reset it\nchanger.destroy();\n</code></pre>\n\n<h2>Base Functionality</h2>\n\n<p>Control prepares the control for garbage collection by:</p>\n\n<ul>\n<li>unbinding all event handlers</li>\n<li>clearing references to this.element and this.options</li>\n<li>clearing the element's reference to the control</li>\n<li>removing it's [can.Control.pluginName] from the element's className</li>\n</ul>",
+    "description": "<p>Remove a Control from an element and clean up the Control. </p>",
     "signatures": [{
             "code": "destroy()",
             "description": "",
@@ -359,6 +372,7 @@ changer.destroy();
         }
     ],
     "title": "destroy",
+    "comment": " ",
     "src": "can/control/control.js",
     "line": 682,
     "id": 87

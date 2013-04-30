@@ -88,6 +88,37 @@
 	
 	</li>
 	
+	<li class="active">
+	<a href="can.EJS.html">can.EJS</a>
+	
+		
+		<ul>
+		
+			
+				
+				<li >
+				<a href="can.EJS.Helpers.html">
+					 Helpers 
+				</a>
+				</li>
+				
+			
+		
+			
+				
+				<li class="active">
+				<a href="can.EJS.prototype.render.html">
+					 render 
+				</a>
+				</li>
+				
+			
+		
+		</ul>
+		
+	
+	</li>
+	
 	<li >
 	<a href="can.Model.html">can.Model</a>
 	
@@ -95,6 +126,11 @@
 	
 	<li >
 	<a href="can.Model.List.html">can.Model.List</a>
+	
+	</li>
+	
+	<li >
+	<a href="can.Mustache.html">can.Mustache</a>
 	
 	</li>
 	
@@ -123,118 +159,8 @@
 	
 	</li>
 	
-	<li class="active">
+	<li >
 	<a href="can.view.html">can.view</a>
-	
-		
-		<ul>
-		
-			
-				<li class="active">
-				<a href="can.view.cache.html">
-					 cache 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.view.cached.html">
-					 cached 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.view.ejs.html">
-					 can.view.ejs 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.view.ext.html">
-					 ext 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.view.hook.html">
-					 hook 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.view.mustache.html">
-					 can.view.mustache 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.view.preload.html">
-					 can.view.preload 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.view.register.html">
-					 can.view.register 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.view.registerScript.html">
-					 can.view.registerScript 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.view.registerView.html">
-					 can.view.registerView 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.view.render.html">
-					 can.view.render 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="can.view.text.html">
-					 can.view.text 
-				</a>
-				</li>
-			
-		
-			
-				<li >
-				<a href="hookups.html">
-					 hookups 
-				</a>
-				</li>
-			
-		
-		</ul>
-		
 	
 	</li>
 	
@@ -245,18 +171,18 @@
 		<section class="title">
 			<div class="pull-right">
 	<ul class="tags">
-		<li>property</li>
+		<li>function</li>
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/view/view.js#L214">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/view/ejs/ejs.js#L39">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>cache</h1><!-- <span class="module">can.view.cache</span>-->
+	<h1>render</h1><!-- <span class="module">can.EJS.prototype.render</span>-->
 
 
 
@@ -264,35 +190,126 @@
 		</section>
 
 		<section class="description">
-			<p>By default, views are cached on the client.  If you'd like the
-the views to reload from the server, you can set the <code>cache</code> attribute to <code>false</code>.</p>
-
-<pre><code>    //- Forces loads from server
-    can.view.cache = false; 
-</code></pre>
+			<p>Render a view object with data and helpers. </p>
 		</section>
 
 		
+		<section class="signature">
+			<h2>render(data[, helpers])</h2>
 
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>data <code>{Object}</code></h4>
+			<div class="description">
+				<p><p>The data to populate the template with.</p></p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>helpers <code>{Object}</code></h4>
+			<div class="description">
+				<p><p>Helper methods referenced in the template.</p></p>
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{String}</code></h4>
+		<div class="description">
+			<p>The template with interpolated data.</p>
+		</div>
+	</div>
+
+		</section>
+		
+
+		
+		<section class="comment">
+			<p>Renders an object with view helpers attached to the view.</p>
+
+<pre><code>new can.EJS({text: "&lt;%= message %&gt;"}).render({
+  message: "foo"
+},{helper: function(){ ... }})
+</code></pre>
+		</section>
 		
 	</article>
 </div>
 
 <script type="text/javascript">
 	var docData = {
-    "name": "can.view.cache",
-    "type": "property",
-    "parent": "can.view",
-    "body": "",
-    "description": "<p>By default, views are cached on the client.  If you'd like the\nthe views to reload from the server, you can set the <code>cache</code> attribute to <code>false</code>.</p>\n\n<pre><code>    //- Forces loads from server\n    can.view.cache = false; \n</code></pre>",
-    "types": [{
-            "type": "Boolean"
+    "type": "function",
+    "name": "can.EJS.prototype.render",
+    "parent": "can.EJS",
+    "body": "<p>Renders an object with view helpers attached to the view.</p>\n\n<pre><code>new can.EJS({text: \"&lt;%= message %&gt;\"}).render({\n  message: \"foo\"\n},{helper: function(){ ... }})\n</code></pre>",
+    "description": "<p>Render a view object with data and helpers. </p>",
+    "title": "render",
+    "signatures": [{
+            "code": "render(data[, helpers])",
+            "description": "",
+            "params": [{
+                    "types": [{
+                            "type": "Object"
+                        }
+                    ],
+                    "optional": true,
+                    "name": "data",
+                    "description": "<p>The data to populate the template with.</p>"
+                }, {
+                    "types": [{
+                            "type": "Object",
+                            "template": [{
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ]
+                                }, {
+                                    "types": [{
+                                            "type": "function",
+                                            "returns": {
+                                                "types": [{
+                                                        "type": "undefined"
+                                                    }
+                                                ]
+                                            },
+                                            "params": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "optional": true,
+                    "name": "helpers",
+                    "description": "<p>Helper methods referenced in the template.</p>"
+                }
+            ],
+            "returns": {
+                "types": [{
+                        "type": "String"
+                    }
+                ],
+                "description": "<p>The template with interpolated data.</p>"
+            }
         }
     ],
-    "title": "cache",
-    "src": "can/view/view.js",
-    "line": 214,
-    "id": 103
+    "comment": " ",
+    "src": "can/view/ejs/ejs.js",
+    "line": 39,
+    "id": 114
 };
 
 	console.log(docData);
