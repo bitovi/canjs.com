@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" href="../resources/styles.css" />
+	
+	 <!--[if lt IE 9]>
+	   <script src="/_js/lib/html5shiv.js"></script>
+   <!--<![endif]-->
+</head>
+
+<body class="guides">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand canjs" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://donejs.com">DoneJS</a></li>
+					<li class="active"><a href="../index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">JQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!FuncUnit">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
+				</ul>
+			</div>
+
+			<ul class="nav">
+				<li class=""><a href="../index.html">Home</a></li>
+				<li class="active"><a href="../guides/index.html">Guides</a></li>
+				<li class=""><a href="../docs/index.html">Api</a></li>
+				<li class=""><a href="../community.html">Community</a></li>
+				<li class=""><a href="../download.html">Download</a></li>
+			</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		<div class="search">
+			<input type="text"/>
+		</div>
+		<ul class="api">
+	
+	<li class="active">
+	<a href="Recipes.html">Recipes</a>
+	
+		
+		<ul>
+		
+			
+				
+				<li >
+				<a href="RecipesControls.html">
+					 Controls 
+				</a>
+				</li>
+				
+			
+		
+			
+				
+				<li >
+				<a href="RecipesLiveBindings.html">
+					 Live Bindings 
+				</a>
+				</li>
+				
+			
+		
+			
+				
+				<li class="active">
+				<a href="RecipesRouting.html">
+					 Routing 
+				</a>
+				</li>
+				
+			
+		
+			
+				
+				<li >
+				<a href="RecipesModels.html">
+					 Models 
+				</a>
+				</li>
+				
+			
+		
+			
+				
+				<li >
+				<a href="RecipesEverything.html">
+					 Everything Together 
+				</a>
+				</li>
+				
+			
+		
+		</ul>
+		
+	
+	</li>
+	
+	<li >
+	<a href="Tutorial.html">Tutorial</a>
+	
+	</li>
+	
+</ul>
+	</nav>
+
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/../_guides/recipes_routing.md">source</a></li>
+		
+		
+		
+	</ul>
+</div>
+
+	<h1>Routing</h1><!-- <span class="module">RecipesRouting</span>-->
+
+
+
+
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+		<section class="comment">
+			<p>The following recipes explore using <code>can.route</code>.</p>
+
+<h3>History Tabs</h3>
+
+<p>This recipe shows how to make a history-based tabs widget and have routes
+configured independently by can.route.</p>
+
+<iframe style="width: 100%; height: 300px" 
+        src="http://jsfiddle.net/Z9Cv5/2/embedded/result,html,js,css" 
+        allowfullscreen="allowfullscreen" 
+        frameborder="0">JSFiddle</iframe>
+
+<h4>How it works</h4>
+
+<p>The HTML is structured such that each tab button has an <code>&lt;a&gt;</code> element with an 
+href property that matches the <code>id</code> attribute of the tab content 
+panel it should show.  This means that even if JavaScript was disabled,
+clicking a button would send the user to the tab panel (even though
+HistoryTabs overwrites this behavior).</p>
+
+<p>For example:</p>
+
+<pre><code class="lang-javascript">&lt;li>&lt;a href="#model">can.Model&lt;/a>&lt;/li></code></pre>
+
+<p>references:</p>
+
+<pre><code class="lang-javascript">&lt;div id="model" class="tab"></code></pre>
+
+<p>The JavaScript code begins by creating a <code>HistoryTabs</code> 
+control.  When a new <code>HistoryTabs</code> instance is created, it gets
+an <strong>attr</strong> option like:</p>
+
+<pre><code class="lang-javascript">new HistoryTabs( '#components',{attr: 'component'});</code></pre>
+
+<p>The <strong>attr</strong> method is used to configure which part of <code>can.route</code>'s data the 
+history tab will be listening to.  </p>
+
+<p>When <code>init</code> is called, it hides each tab button's content div, looking up
+the content div with the <code>tab</code> helper method.  It then reads the current 
+active tab with:</p>
+
+<pre><code class="lang-javascript">var active = can.route.attr(this.options.attr);</code></pre>
+
+<p>It passes that value to the <code>active</code> helper which will hide the old active
+content (if <code>oldActive</code> is passed) and activate the new active button and
+show it's content.</p>
+
+<p><code>HistoryTab</code> updates the active tab by listening when a tab button is clicked with
+<code>"li click"</code>.  It prevents the default behavior (which is changing the hash) and
+updates it's route data attribute with the select tab's id:</p>
+
+<pre><code class="lang-javascript">can.route.attr(this.options.attr, this.tab(el)[0].id)</code></pre>
+
+<p><code>HistoryTabs</code> listens to these route changes with <code>"{can.route} {attr}"</code> and activates
+the new tab.</p>
+
+<p><strong>Configuring Routes</strong></p>
+
+<p>The code ends by configuring the routes and creating the <code>HistoryTabs</code>.  Here's what each
+route rule means:</p>
+
+<pre><code class="lang-javascript">can.route(":component",{
+  component: "model",
+  person: "mihael"
+});</code></pre>
+
+<p>This matches the empty routes <code>("","#","#!")</code>, and a single "word" route.  If the route
+is one of the empty routes, the route data will look 
+like: <code>{component: "modal", person: "mihael"}</code>.  If it is a single "word" route like
+<code>"#!view"</code>, the data will look like:  <code>{component: "view", person: "mihael"}</code>.</p>
+
+<pre><code class="lang-javascript">can.route(":component/:person",{
+  component: "model",
+  person: "mihael"
+});</code></pre>
+
+<p>This matches two-word routes seperated by a slash ("/").  Each word can be empty. If both
+words are empty "#!/", the data will look 
+like: <code>{component: "model", person: "mihael"}</code>.  If the words are non-empty, that word
+will replace the default value.</p>
+
+<h3>Observe Backed Routes</h3>
+
+<p>This recipe shows how to have multiple widgets listening on 
+overlapping parts of the route. The app lets the user select a type of issue, show issues for that type,
+and select a issue and see details about that issue.</p>
+
+<iframe style="width: 100%; height: 300px" 
+        src="http://jsfiddle.net/2UL6R/1/embedded/result,html,js,css" 
+        allowfullscreen="allowfullscreen" 
+        frameborder="0">JSFiddle</iframe>
+
+<h4>How it works</h4>
+
+<p>This functionality is broken down 
+into <strong>Nav</strong>, <strong>Issues</strong>, and <strong>Details</strong> can.controls.  Here's how
+each part works:</p>
+
+<p><code>Nav</code> creates links using <code>can.route.link</code> that update the hash like:</p>
+
+<pre><code class="lang-javascript">&lt;%== can.route.link("Critical",{filter: "critical"}) %></code></pre>
+
+<p>When these are clicked on, they update the route's filter data.  </p>
+
+<p><code>Issues</code> listens to filter changes like:</p>
+
+<pre><code class="lang-javascript">"{can.route} filter" : function(route, ev, filter){ ... }</code></pre>
+
+<p>It then retrieve's issue with <code>Issue.findAll</code> and renders 
+them into the <code>#issues</code> element.</p>
+
+<p>When an issue is clicked, <code>Issues</code> updates the route's issue data like:</p>
+
+<pre><code class="lang-javascript">can.route.attr("issue", issue.id)</code></pre>
+
+<p>It listens to changes in <code>issue</code> data and highlights the corresponding
+issue in the list like:</p>
+
+<pre><code class="lang-javascript">"{can.route} issue" : function(route, ev, issue){ ... }</code></pre>
+
+<p><code>Details</code> listens to issue chagnes like:</p>
+
+<pre><code class="lang-javascript">"{can.route} issue" : function(route, ev, issue){ ... }</code></pre>
+
+<p>And updates the details panel.</p>
+		</section>
+		
+	</article>
+</div>
+
+<script type="text/javascript">
+	var docData = {
+    "type": "page",
+    "name": "RecipesRouting",
+    "body": "<p>The following recipes explore using <code>can.route</code>.</p>\n\n<h3>History Tabs</h3>\n\n<p>This recipe shows how to make a history-based tabs widget and have routes\nconfigured independently by can.route.</p>\n\n<iframe style=\"width: 100%; height: 300px\" \n        src=\"http://jsfiddle.net/Z9Cv5/2/embedded/result,html,js,css\" \n        allowfullscreen=\"allowfullscreen\" \n        frameborder=\"0\">JSFiddle</iframe>\n\n<h4>How it works</h4>\n\n<p>The HTML is structured such that each tab button has an <code>&lt;a&gt;</code> element with an \nhref property that matches the <code>id</code> attribute of the tab content \npanel it should show.  This means that even if JavaScript was disabled,\nclicking a button would send the user to the tab panel (even though\nHistoryTabs overwrites this behavior).</p>\n\n<p>For example:</p>\n\n<pre><code class=\"lang-javascript\">&lt;li>&lt;a href=\"#model\">can.Model&lt;/a>&lt;/li></code></pre>\n\n<p>references:</p>\n\n<pre><code class=\"lang-javascript\">&lt;div id=\"model\" class=\"tab\"></code></pre>\n\n<p>The JavaScript code begins by creating a <code>HistoryTabs</code> \ncontrol.  When a new <code>HistoryTabs</code> instance is created, it gets\nan <strong>attr</strong> option like:</p>\n\n<pre><code class=\"lang-javascript\">new HistoryTabs( '#components',{attr: 'component'});</code></pre>\n\n<p>The <strong>attr</strong> method is used to configure which part of <code>can.route</code>'s data the \nhistory tab will be listening to.  </p>\n\n<p>When <code>init</code> is called, it hides each tab button's content div, looking up\nthe content div with the <code>tab</code> helper method.  It then reads the current \nactive tab with:</p>\n\n<pre><code class=\"lang-javascript\">var active = can.route.attr(this.options.attr);</code></pre>\n\n<p>It passes that value to the <code>active</code> helper which will hide the old active\ncontent (if <code>oldActive</code> is passed) and activate the new active button and\nshow it's content.</p>\n\n<p><code>HistoryTab</code> updates the active tab by listening when a tab button is clicked with\n<code>\"li click\"</code>.  It prevents the default behavior (which is changing the hash) and\nupdates it's route data attribute with the select tab's id:</p>\n\n<pre><code class=\"lang-javascript\">can.route.attr(this.options.attr, this.tab(el)[0].id)</code></pre>\n\n<p><code>HistoryTabs</code> listens to these route changes with <code>\"{can.route} {attr}\"</code> and activates\nthe new tab.</p>\n\n<p><strong>Configuring Routes</strong></p>\n\n<p>The code ends by configuring the routes and creating the <code>HistoryTabs</code>.  Here's what each\nroute rule means:</p>\n\n<pre><code class=\"lang-javascript\">can.route(\":component\",{\n  component: \"model\",\n  person: \"mihael\"\n});</code></pre>\n\n<p>This matches the empty routes <code>(\"\",\"#\",\"#!\")</code>, and a single \"word\" route.  If the route\nis one of the empty routes, the route data will look \nlike: <code>{component: \"modal\", person: \"mihael\"}</code>.  If it is a single \"word\" route like\n<code>\"#!view\"</code>, the data will look like:  <code>{component: \"view\", person: \"mihael\"}</code>.</p>\n\n<pre><code class=\"lang-javascript\">can.route(\":component/:person\",{\n  component: \"model\",\n  person: \"mihael\"\n});</code></pre>\n\n<p>This matches two-word routes seperated by a slash (\"/\").  Each word can be empty. If both\nwords are empty \"#!/\", the data will look \nlike: <code>{component: \"model\", person: \"mihael\"}</code>.  If the words are non-empty, that word\nwill replace the default value.</p>\n\n<h3>Observe Backed Routes</h3>\n\n<p>This recipe shows how to have multiple widgets listening on \noverlapping parts of the route. The app lets the user select a type of issue, show issues for that type,\nand select a issue and see details about that issue.</p>\n\n<iframe style=\"width: 100%; height: 300px\" \n        src=\"http://jsfiddle.net/2UL6R/1/embedded/result,html,js,css\" \n        allowfullscreen=\"allowfullscreen\" \n        frameborder=\"0\">JSFiddle</iframe>\n\n<h4>How it works</h4>\n\n<p>This functionality is broken down \ninto <strong>Nav</strong>, <strong>Issues</strong>, and <strong>Details</strong> can.controls.  Here's how\neach part works:</p>\n\n<p><code>Nav</code> creates links using <code>can.route.link</code> that update the hash like:</p>\n\n<pre><code class=\"lang-javascript\">&lt;%== can.route.link(\"Critical\",{filter: \"critical\"}) %></code></pre>\n\n<p>When these are clicked on, they update the route's filter data.  </p>\n\n<p><code>Issues</code> listens to filter changes like:</p>\n\n<pre><code class=\"lang-javascript\">\"{can.route} filter\" : function(route, ev, filter){ ... }</code></pre>\n\n<p>It then retrieve's issue with <code>Issue.findAll</code> and renders \nthem into the <code>#issues</code> element.</p>\n\n<p>When an issue is clicked, <code>Issues</code> updates the route's issue data like:</p>\n\n<pre><code class=\"lang-javascript\">can.route.attr(\"issue\", issue.id)</code></pre>\n\n<p>It listens to changes in <code>issue</code> data and highlights the corresponding\nissue in the list like:</p>\n\n<pre><code class=\"lang-javascript\">\"{can.route} issue\" : function(route, ev, issue){ ... }</code></pre>\n\n<p><code>Details</code> listens to issue chagnes like:</p>\n\n<pre><code class=\"lang-javascript\">\"{can.route} issue\" : function(route, ev, issue){ ... }</code></pre>\n\n<p>And updates the details panel.</p>",
+    "description": "",
+    "title": "Routing",
+    "parent": "Recipes",
+    "order": 2,
+    "comment": " ",
+    "src": "_guides/recipes_routing.md",
+    "id": 13
+};
+
+	console.log(docData);
+</script>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand canjs" href="index.html">CanJS</a>
+			<ul class="pullright">
+				<li><a href="../index.html">Home</a></li>
+				<li><a href="../guides">Guides</a></li>
+				<li><a href="../docs/index.html">Api</a></li>
+				<li><a href="../community.html">Community</a></li>
+				<li><a href="../download.html">Download</a></li>
+			</ul>
+		</nav>
+	</footer>
+	<div class="loading"></div>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="../resources/production.min.js"></script>
+</body>
+
+</html>
