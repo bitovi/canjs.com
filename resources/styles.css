@@ -379,6 +379,7 @@ input[type='radio']:checked+label.radio:after{content:' ';width:6px;height:6px;b
 .customize .options,.customize .options th,.customize .options td{border:none;}
 .download footer{margin-top:60px;}
 .download .hero .pull-right{margin-top:70px;}
+.download .download-link{display:block;height:54px;}
 .download button.color,.download button.download{padding-left:80px;padding-right:80px;margin:0 auto;}
 .download button.color{margin:10px auto;font-size:17px;text-transform:uppercase;padding-top:10px;padding-bottom:10px;text-align:center;display:block;}
 .download .button-desc a{color:#fff;}
