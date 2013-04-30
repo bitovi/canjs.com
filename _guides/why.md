@@ -1,5 +1,5 @@
-@page Why Why CanJS
-@parent guides
+@page Why Why CanJS?
+@parent guides 2
 
 @body
 There are many libraries out there and it can be difficult to pick the one that’s right for you. In our humble opinion, the technology in CanJS is simply the best. It strikes a balance between:
@@ -22,11 +22,12 @@ On top of jQuery, CanJS is ~11k. Here’s some other frameworks for comparison:
 * Batman 15kb
 
 Size is not everything. It really is what’s inside that counts. And that’s where we think CanJS really delivers a lot of bang for your buck.
-Ease of use
 
-This site highlights the most important features of CanJS. The library comes with thorough documentation and examples on the [DoneJS documentation page](http://donejs.com/docs.html). There are example apps for each library and several example for jQuery.
+## Ease of use
 
-CanJS is also supported by [Bitovi](http://bitovi.com/), formerly Jupiter Consulting. We are extremely active on the [forums](https://forum.javascriptmvc.com/#Forum/canjs). And should the need arise, we provide support, training, and development.
+This site highlights the most important features of CanJS. The library comes with thorough documentation and examples on the [CanJS documentation page](/docs). There are example apps for each library and several example for jQuery.
+
+CanJS is also supported by [Bitovi](http://bitovi.com/). We are extremely active on the [forums](https://forum.javascriptmvc.com/#Forum/canjs). And should the need arise, we provide support, training, and development.
 
 ## Safety
 
@@ -94,7 +95,7 @@ If the result for of `Todo.findAll( { due: 'today' } )` and `Todo.findAll( { typ
 }
 @codeend
 
-[can.Model](Models.html) knows that this data represents the same todo and only creates one instance. This means that a single model instance is in both lists. By changing the todo’s name or destroying it, both lists will be changed.
+[Models can.Model] knows that this data represents the same todo and only creates one instance. This means that a single model instance is in both lists. By changing the todo’s name or destroying it, both lists will be changed.
 
 However, model only stores these model instances while something is binding to them. Once nothing is bound to the model instance, they are removed from the store, freeing their memory for garbage collection.
 
@@ -104,7 +105,7 @@ The importance of performance is almost impossible to exaggerate. CanJS’s guts
 
 ### Control initialization
 
-[can.Control](Controls.html) pre-processes event handlers so binding is super fast. Compare [initializing a can.Control, Backbone.View and Ember.View tabs](http://jsperf.com/tabs-timing-test/7) widget:
+[Controls can.Control] pre-processes event handlers so binding is super fast. Compare [initializing a can.Control, Backbone.View and Ember.View tabs](http://jsperf.com/tabs-timing-test/7) widget:
 [![Control performance](http://bitovi.com/images/introducing-canjs/performance_control.png)](http://jsperf.com/tabs-timing-test/7)
 
 ### Tabs initialization performance
@@ -126,7 +127,7 @@ _Note: AngularJS throttles updates, which means it doesn’t fit well with these
 
 ### Model and view deferred support for parallel loading
 
-[Deferreds](Deferreds.html) are simply awesome for handling asynchronous behavior. [can.Model](Models.html) produces deferreds and [can.view](http://canjs.com/#can_view) consumes them. With the view modifiers plugin, you can load a template and its data in parallel and render it into an element with:
+[Deferreds Deferreds] are simply awesome for handling asynchronous behavior. [Models can.Model] produces deferreds and [can.view](../docs/can.view.html) consumes them. With the view modifiers plugin, you can load a template and its data in parallel and render it into an element with:
 
 @codestart
 $( '#todos' ).html( 'todos.ejs', Todo.findAll() );
@@ -142,7 +143,7 @@ can.view( 'todos.ejs', Todo.findAll() ).then(function( frag ) {
 
 ### Opt-in data binding
 
-Although [can.EJS’s](EJS.html) live-binding is super fast, setting up live data binding can be too slow in certain situations (like rendering a list of 1000 items). EJS’s live binding is opt-in. It only turns on if you are using the `attr` method. If the following template binds to a `todo`'s `name` …
+Although [EJS can.EJS’s] live-binding is super fast, setting up live data binding can be too slow in certain situations (like rendering a list of 1000 items). EJS’s live binding is opt-in. It only turns on if you are using the `attr` method. If the following template binds to a `todo`'s `name` …
 
 @codestart
 &lt;li> &lt;%= todo.attr('name') %> &lt;/li>
@@ -176,9 +177,9 @@ These plugins have forced the core to be quite extendable, making 3rd party plug
 
 ### Engineered limber
 
-CanJS’s tools are designed to work under almost every situation. Your server sends back XML with strange urls? That’s ok, overwrite [can.Model.findAll](/docs/can.Model.static.findAll.html) or [can.Model.models](/docs/can.Model.static.models.html). Want some special teardown code for a control? Overwrite [can.Control:destroy](/docs/can.Model.prototype.destroy.html).
+CanJS’s tools are designed to work under almost every situation. Your server sends back XML with strange urls? That’s ok, overwrite [can.Model.findAll](../docs/can.Model.static.findAll.html) or [can.Model.models](../docs/can.Model.static.models.html). Want some special teardown code for a control? Overwrite [can.Control:destroy](../docs/can.Model.prototype.destroy.html).
 
-But our favorite bit of flexibility is how [can.Observe](/docs/can.Observe.html) works with nested data. It converts nested objects into observes automatically. For example:
+But our favorite bit of flexibility is how [can.Observe](../docs/can.Observe.html) works with nested data. It converts nested objects into observes automatically. For example:
 
 @codestart
 var person = new can.Observe({
