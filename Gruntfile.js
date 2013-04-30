@@ -71,6 +71,10 @@ module.exports = function (grunt) {
 				files: ['<%= generate.docs.src %>', '_pages/*.mustache', '_layouts/*.mustache', '_docs/*.mustache'],
 				tasks: ['docs']
 			},
+			guides: {
+				files: ['_guides/*.md'],
+				tasks: ['docs']
+			},
 			all: {
 				files: ['_pages/*.mustache', '_layouts/*.mustache',
 					'_docs/*.mustache', '_js/**/*.js', '_js/**/*.mustache',
