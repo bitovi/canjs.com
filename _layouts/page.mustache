@@ -84,8 +84,12 @@
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="{{url 'resources/html5shiv.js'}}"></script>
     <!--<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="{{url 'resources/production.js'}}"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	{{#if debug}}
+	<script type="text/javascript" src="{{url 'resources/production.js'}}"></script>
+	{{else}}
+	<script type="text/javascript" src="{{url 'resources/production.min.js'}}"></script>
+	{{/if}}
 </body>
 
 </html>

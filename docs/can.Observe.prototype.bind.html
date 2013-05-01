@@ -67,7 +67,7 @@
 		</nav>
 	</header>
 
-	<div class="container api">
+	<div class="container api" data-parent="can.Observe.prototype">
 	<nav class="sidebar">
 		<div class="search">
 			<input type="text"/>
@@ -360,7 +360,7 @@ o.attr({
 });
 o.removeAttr('a');     // [object Object], a, remove, undefined, Alice</code></pre>
 
-<p>(See also <code><a href="can.Observe.prototype.removeAttr.html"> </a></code>, which removes properties).</p>
+<p>(See also <code><a href="can.Observe.prototype.removeAttr.html">removeAttr</a></code>, which removes properties).</p>
 
 <h2>The <em>property name</em> event</h2>
 
@@ -398,7 +398,7 @@ o.removeAttr('a');     // [object Object], undefined, Alice</code></pre>
 <h2>See also</h2>
 
 <p>More information about changing properties on Observes can be found under
-<a href="can.Observe.prototype.attr.html"> </a>.</p>
+<a href="can.Observe.prototype.attr.html">attr</a>.</p>
 
 <p>For a more specific way to changes on Observes, see the [can.Observe.delegate] plugin.</p>
 		</section>
@@ -475,8 +475,10 @@ o.removeAttr('a');     // [object Object], undefined, Alice</code></pre>
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="../resources/html5shiv.js"></script>
     <!--<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="../resources/production.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../resources/production.js"></script>
+	
 </body>
 
 </html>

@@ -67,7 +67,7 @@
 		</nav>
 	</header>
 
-	<div class="container api">
+	<div class="container api" data-parent="canjs">
 	<nav class="sidebar">
 		<div class="search">
 			<input type="text"/>
@@ -288,7 +288,7 @@ function of your own by extending can.Control:</p>
 <pre><code>var todosControl = new Todos( '#todos', {} );
 </code></pre>
 
-<p>The control's associated <a href="can.EJS.html"> </a> template looks like:</p>
+<p>The control's associated <a href="can.EJS.html">EJS</a> template looks like:</p>
 
 <pre><code>&lt;% list( todos, function( todo ) { %&gt;
   &lt;li &lt;%= (el) -&gt; el.data( 'todo', todo ) %&gt; &gt;
@@ -654,8 +654,10 @@ editor.todo( todo2 );
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="../resources/html5shiv.js"></script>
     <!--<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="../resources/production.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../resources/production.js"></script>
+	
 </body>
 
 </html>

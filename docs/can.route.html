@@ -67,7 +67,7 @@
 		</nav>
 	</header>
 
-	<div class="container api">
+	<div class="container api" data-parent="canjs">
 	<nav class="sidebar">
 		<div class="search">
 			<input type="text"/>
@@ -336,12 +336,12 @@ object.  For example, if the hash looks like:</p>
 
 <p>You can listen to changes in an Observe with <code>bind(eventName, handler(ev, args...))</code> and
 change can.route's properties with 
-<a href="can.Observe.prototype.attr.html"> </a>.</p>
+<a href="can.Observe.prototype.attr.html">attr</a>.</p>
 
 <h3>Listening to changes in an Observable</h3>
 
 <p>Listen to changes in history 
-by <a href="can.Observe.prototype.bind.html"> </a>ing to
+by <a href="can.Observe.prototype.bind.html">bind</a>ing to
 changes in <code>can.route</code> like:</p>
 
 <pre><code>can.route.bind('change', function(ev, attr, how, newVal, oldVal) {
@@ -375,7 +375,7 @@ behavior, <code>remove</code> is useful for teardown.</p>
 
 <h3>Updating an observable</h3>
 
-<p>Create changes in the route data with <a href="can.Observe.prototype.attr.html"> </a> like:</p>
+<p>Create changes in the route data with <a href="can.Observe.prototype.attr.html">attr</a> like:</p>
 
 <pre><code>can.route.attr('type','images');
 </code></pre>
@@ -609,8 +609,10 @@ would not very efficient.</p>
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="../resources/html5shiv.js"></script>
     <!--<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="../resources/production.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../resources/production.js"></script>
+	
 </body>
 
 </html>

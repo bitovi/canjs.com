@@ -67,7 +67,7 @@
 		</nav>
 	</header>
 
-	<div class="container api">
+	<div class="container api" data-parent="can.Control.prototype">
 	<nav class="sidebar">
 		<div class="search">
 			<input type="text"/>
@@ -311,7 +311,7 @@ default it is called with the element and options passed to the control.</p>
 
 <p>The first parameter passed to new Control( el, options ) is expected to be 
 an element.  This gets converted to a Wrapped NodeList element and set as
-<a href="can.Control.prototype.element.html"> </a>.</p>
+<a href="can.Control.prototype.element.html">this.element</a>.</p>
 
 <h3>Adds the control's name to the element's className</h3>
 
@@ -410,8 +410,10 @@ so that users can change them.</p>
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="../resources/html5shiv.js"></script>
     <!--<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="../resources/production.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../resources/production.js"></script>
+	
 </body>
 
 </html>

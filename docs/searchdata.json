@@ -770,12 +770,13 @@
         "title": "Helpers",
         "parent": "can.EJS"
     },
-    "can.Mustache": {
-        "name": "can.Mustache",
+    "can.Mustache.Acquisition": {
+        "name": "can.Mustache.Acquisition",
         "type": "page",
         "id": 114,
-        "title": "can.Mustache",
-        "parent": "canjs"
+        "title": "Template Acquisition",
+        "parent": "can.Mustache",
+        "order": 3
     },
     "can.Mustache.Basics": {
         "name": "can.Mustache.Basics",
@@ -785,34 +786,10 @@
         "parent": "can.Mustache",
         "order": 0
     },
-    "can.Mustache.Sections": {
-        "name": "can.Mustache.Sections",
-        "type": "page",
-        "id": 116,
-        "title": "Sections",
-        "parent": "can.Mustache",
-        "order": 1
-    },
-    "can.Mustache.Partials": {
-        "name": "can.Mustache.Partials",
-        "type": "page",
-        "id": 117,
-        "title": "Partials",
-        "parent": "can.Mustache",
-        "order": 2
-    },
-    "can.Mustache.Acquisition": {
-        "name": "can.Mustache.Acquisition",
-        "type": "page",
-        "id": 118,
-        "title": "Template Acquisition",
-        "parent": "can.Mustache",
-        "order": 3
-    },
     "can.Mustache.Helpers": {
         "name": "can.Mustache.Helpers",
         "type": "page",
-        "id": 119,
+        "id": 116,
         "title": "Helpers",
         "parent": "can.Mustache",
         "order": 4
@@ -820,10 +797,33 @@
     "can.Mustache.Binding": {
         "name": "can.Mustache.Binding",
         "type": "page",
-        "id": 120,
+        "id": 117,
         "title": "Live Binding",
         "parent": "can.Mustache",
         "order": 5
+    },
+    "can.Mustache": {
+        "name": "can.Mustache",
+        "type": "page",
+        "id": 118,
+        "title": "can.Mustache",
+        "parent": "canjs"
+    },
+    "can.Mustache.Partials": {
+        "name": "can.Mustache.Partials",
+        "type": "page",
+        "id": 119,
+        "title": "Partials",
+        "parent": "can.Mustache",
+        "order": 2
+    },
+    "can.Mustache.Sections": {
+        "name": "can.Mustache.Sections",
+        "type": "page",
+        "id": 120,
+        "title": "Sections",
+        "parent": "can.Mustache",
+        "order": 1
     },
     "can.util": {
         "name": "can.util",

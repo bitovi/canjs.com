@@ -67,7 +67,7 @@
 		</nav>
 	</header>
 
-	<div class="container api">
+	<div class="container api" data-parent="canjs">
 	<nav class="sidebar">
 		<div class="search">
 			<input type="text"/>
@@ -323,13 +323,13 @@ working with deep properties. Observable arrays are also available with
 
 <p>To create an Observe, use <code>new can.Observe([props])</code>. This will return a
 copy of <code>props</code> that emits events when its properties are changed with
-<code><a href="can.Observe.prototype.attr.html"> </a></code>.</p>
+<code><a href="can.Observe.prototype.attr.html">attr</a></code>.</p>
 
 <p>You can read the values of properties on Observes directly, but you should
 never set them directly. You can also read property values using <code>attr</code>.
 Usually, you will want to do this when creating a <code><a href="can.compute.html">can.compute</a></code> or when
-live-binding properties in an <a href="can.EJS.html"> </a> template. (If you are using
-<a href="can.Mustache.html"> </a>, you don't need to use <code>attr</code>.)</p>
+live-binding properties in an <a href="can.EJS.html">EJS</a> template. (If you are using
+<a href="can.Mustache.html">Mustache</a>, you don't need to use <code>attr</code>.)</p>
 
 <pre><code class="lang-javascript">var aName = {a: 'Alexis'},
     observe = can.Observe(aName);
@@ -384,8 +384,8 @@ o.attr({
 o.removeAttr('a');     // 'Something on o changed.'
                        // 'a was changed.'</code></pre>
 
-<p>For more detail on how to use these events, see <a href="can.Observe.prototype.bind.html"> </a> and
-<a href="can.Observe.prototype.unbind.html"> </a>. There is also a plugin called [can.Observe.delegate]
+<p>For more detail on how to use these events, see <a href="can.Observe.prototype.bind.html">bind</a> and
+<a href="can.Observe.prototype.unbind.html">unbind</a>. There is also a plugin called [can.Observe.delegate]
 that makes binding to specific types of events easier:</p>
 
 <pre><code class="lang-javascript">var o = new can.Observe({});
@@ -474,8 +474,10 @@ o.removeAttr('a'); // 'a was removed.'
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="../resources/html5shiv.js"></script>
     <!--<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="../resources/production.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../resources/production.js"></script>
+	
 </body>
 
 </html>

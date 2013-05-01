@@ -67,7 +67,7 @@
 		</nav>
 	</header>
 
-	<div class="container api">
+	<div class="container api" data-parent="can.Model.static">
 	<nav class="sidebar">
 		<div class="search">
 			<input type="text"/>
@@ -349,7 +349,7 @@ instance on the server. (See below for more details.)</p>
 		<li class="parameter">
 			<h4>serialized <code>{Object}</code></h4>
 			<div class="description">
-				<p><p>The <a href="can.Observe.prototype.serialize.html"> </a> properties of
+				<p><p>The <a href="can.Observe.prototype.serialize.html">serialized</a> properties of
 the model to update.</p></p>
 			</div>
 			
@@ -373,7 +373,7 @@ the model to update.</p></p>
 
 		
 		<section class="comment">
-			<p><code>update( id, attrs ) -&gt; Deferred</code> is used by <a href="can.Model.prototype.save.html"> </a> to 
+			<p><code>update( id, attrs ) -&gt; Deferred</code> is used by <a href="can.Model.prototype.save.html">save</a> to 
 update a model instance on the server. </p>
 
 <h2>Implement with a URL</h2>
@@ -420,7 +420,7 @@ should send back something like:</p>
 
 <p>You can also implement update by yourself.  Update takes the <code>id</code> and
 <code>attributes</code> of the instance to be udpated.  Update must return
-a <a href="can.Deferred.html"> </a> that resolves to an object that contains any 
+a <a href="can.Deferred.html">Deferred</a> that resolves to an object that contains any 
 properties that should be set on the instance.</p>
 
 <p>For example, the following code makes a request 
@@ -518,8 +518,10 @@ something that looks like:</p>
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="../resources/html5shiv.js"></script>
     <!--<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="../resources/production.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../resources/production.js"></script>
+	
 </body>
 
 </html>

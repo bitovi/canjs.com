@@ -67,7 +67,7 @@
 		</nav>
 	</header>
 
-	<div class="container api">
+	<div class="container api" data-parent="can.Observe.List.prototype">
 	<nav class="sidebar">
 		<div class="search">
 			<input type="text"/>
@@ -522,7 +522,7 @@ were removed, and <code>undefined</code> if elements were added.</p>
 
 <p><em>set</em> events are fired when an element at an index that already exists in the List is
  modified. Actions can cause <em>set</em> events to fire never also cause <em>length</em> events
- to fire (although some functions, such as <code><a href="can.Observe.List.prototype.splice.html"> </a></code>
+ to fire (although some functions, such as <code><a href="can.Observe.List.prototype.splice.html">splice</a></code>
  may cause unrelated sets of events to fire after being batched).</p>
 
 <p>The parameters of the event handler for the <em>set</em> event are:</p>
@@ -758,8 +758,10 @@ of this, you may recieve multiple <em>length</em> events with the same
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="../resources/html5shiv.js"></script>
     <!--<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="../resources/production.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../resources/production.js"></script>
+	
 </body>
 
 </html>

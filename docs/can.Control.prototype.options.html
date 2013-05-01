@@ -67,7 +67,7 @@
 		</nav>
 	</header>
 
-	<div class="container api">
+	<div class="container api" data-parent="can.Control.prototype">
 	<nav class="sidebar">
 		<div class="search">
 			<input type="text"/>
@@ -276,7 +276,7 @@ equal( h2.options.message , "There" );
 </code></pre>
 
 <p>Options are merged with [can.Control.static.defaults defaults] in
-<a href="can.Control.prototype.setup.html"> </a>.</p>
+<a href="can.Control.prototype.setup.html">setup</a>.</p>
 
 <p>For example:</p>
 
@@ -332,8 +332,10 @@ new Tabs( $( "#tabs2" ), { activeClass : 'active' } ); // adds 'active'
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="../resources/html5shiv.js"></script>
     <!--<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="../resources/production.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../resources/production.js"></script>
+	
 </body>
 
 </html>

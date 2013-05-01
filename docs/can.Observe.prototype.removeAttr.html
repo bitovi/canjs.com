@@ -67,7 +67,7 @@
 		</nav>
 	</header>
 
-	<div class="container api">
+	<div class="container api" data-parent="can.Observe.prototype">
 	<nav class="sidebar">
 		<div class="search">
 			<input type="text"/>
@@ -320,7 +320,7 @@ people.attr();          // {a: 'Alice', e: 'Eve'}</code></pre>
 passed as the <em>how</em> parameter and <code>undefined</code> passed as the <em>newVal</em> to
 handlers. It will also cause a <em>property name</em> event to fire with <code>undefined</code>
 passed as <em>newVal</em>. An in-depth description at these events can be found
-under <code><a href="can.Observe.prototype.attr.html"> </a></code>.</p>
+under <code><a href="can.Observe.prototype.attr.html">attr</a></code>.</p>
 		</section>
 		
 	</article>
@@ -381,8 +381,10 @@ under <code><a href="can.Observe.prototype.attr.html"> </a></code>.</p>
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="../resources/html5shiv.js"></script>
     <!--<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="../resources/production.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../resources/production.js"></script>
+	
 </body>
 
 </html>

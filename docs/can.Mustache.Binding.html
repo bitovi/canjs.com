@@ -67,7 +67,7 @@
 		</nav>
 	</header>
 
-	<div class="container api">
+	<div class="container api" data-parent="can.Mustache">
 	<nav class="sidebar">
 		<div class="search">
 			<input type="text"/>
@@ -113,6 +113,16 @@
 			
 				
 				<li >
+				<a href="can.Mustache.Acquisition.html">
+					 Template Acquisition 
+				</a>
+				</li>
+				
+			
+		
+			
+				
+				<li >
 				<a href="can.Mustache.Basics.html">
 					 Basics 
 				</a>
@@ -135,16 +145,6 @@
 				<li >
 				<a href="can.Mustache.Partials.html">
 					 Partials 
-				</a>
-				</li>
-				
-			
-		
-			
-				
-				<li >
-				<a href="can.Mustache.Acquisition.html">
-					 Template Acquisition 
 				</a>
 				</li>
 				
@@ -298,7 +298,7 @@ update the paragraph tag to reflect the new value.</p>
     "parent": "can.Mustache",
     "order": 5,
     "src": "can/view/mustache/doc/livebinding.md",
-    "id": 120
+    "id": 117
 };
 
 	console.log(docData);
@@ -321,8 +321,10 @@ update the paragraph tag to reflect the new value.</p>
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="../resources/html5shiv.js"></script>
     <!--<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="../resources/production.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../resources/production.js"></script>
+	
 </body>
 
 </html>

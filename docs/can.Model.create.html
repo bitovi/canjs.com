@@ -67,7 +67,7 @@
 		</nav>
 	</header>
 
-	<div class="container api">
+	<div class="container api" data-parent="can.Model.static">
 	<nav class="sidebar">
 		<div class="search">
 			<input type="text"/>
@@ -339,7 +339,7 @@ new instance on the server. (See below for more details.)</p>
 		<li class="parameter">
 			<h4>serialized <code>{Object}</code></h4>
 			<div class="description">
-				<p><p>The <a href="can.Observe.prototype.serialize.html"> </a> properties of
+				<p><p>The <a href="can.Observe.prototype.serialize.html">serialized</a> properties of
 the model to create.</p></p>
 			</div>
 			
@@ -363,7 +363,7 @@ the model to create.</p></p>
 
 		
 		<section class="comment">
-			<p><code>create(attributes) -&gt; Deferred</code> is used by <a href="can.Model.prototype.save.html"> </a> to create a 
+			<p><code>create(attributes) -&gt; Deferred</code> is used by <a href="can.Model.prototype.save.html">save</a> to create a 
 model instance on the server. </p>
 
 <h2>Implement with a URL</h2>
@@ -384,7 +384,7 @@ to post data to:</p>
 <h2>Implement with a Function</h2>
 
 <p>You can also implement create by yourself. Create gets called 
-with <code>attrs</code>, which are the <a href="can.Observe.prototype.serialize.html"> </a> model 
+with <code>attrs</code>, which are the <a href="can.Observe.prototype.serialize.html">serialized</a> model 
 attributes.  Create returns a <code>Deferred</code> 
 that contains the id of the new instance and any other 
 properties that should be set on the instance.</p>
@@ -478,8 +478,10 @@ something that looks like:</p>
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="../resources/html5shiv.js"></script>
     <!--<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="../resources/production.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../resources/production.js"></script>
+	
 </body>
 
 </html>

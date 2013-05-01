@@ -67,7 +67,7 @@
 		</nav>
 	</header>
 
-	<div class="container api">
+	<div class="container api" data-parent="can.Model.prototype">
 	<nav class="sidebar">
 		<div class="search">
 			<input type="text"/>
@@ -360,13 +360,13 @@ XmlHttpRequest object.</p></p>
 			<p><code>model.save([success(model)],[error(xhr)])</code> creates or updates 
 the model instance using <a href="can.Model.create.html">can.Model.create</a> or
 <a href="can.Model.update.html">can.Model.update</a> depending if the instance
-<a href="can.Model.prototype.isNew.html"> </a>.</p>
+<a href="can.Model.prototype.isNew.html">has</a>.</p>
 
 <h2>Using <code>save</code> to create an instance.</h2>
 
 <p>If <code>save</code> is called on an instance that does not have 
-an <a href="can.Model.id.html"> </a> property, it calls <a href="can.Model.create.html">can.Model.create</a>
-with the instance's properties.  It also <a href="can.trigger.html"> </a>
+an <a href="can.Model.id.html">id</a> property, it calls <a href="can.Model.create.html">can.Model.create</a>
+with the instance's properties.  It also <a href="can.trigger.html">triggers</a>
 a "created" event on the instance and the model.</p>
 
 <pre><code>// create a model instance
@@ -386,7 +386,7 @@ todo.save(function(todo){
 <h2>Using <code>save</code> to update an instance.</h2>
 
 <p>If save is called on an instance that has 
-an <a href="can.Model.id.html"> </a> property, it calls <a href="can.Model.create.html">can.Model.create</a>
+an <a href="can.Model.id.html">id</a> property, it calls <a href="can.Model.create.html">can.Model.create</a>
 with the instance's properties.  When the save is complete,
 it triggers an "updated" event on the instance and the instance's model.</p>
 
@@ -495,8 +495,10 @@ Todo.findOne({id: 5},function(todo){
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="../resources/html5shiv.js"></script>
     <!--<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="../resources/production.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../resources/production.js"></script>
+	
 </body>
 
 </html>

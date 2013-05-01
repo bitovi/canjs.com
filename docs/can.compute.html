@@ -67,7 +67,7 @@
 		</nav>
 	</header>
 
-	<div class="container api">
+	<div class="container api" data-parent="canjs">
 	<nav class="sidebar">
 		<div class="search">
 			<input type="text"/>
@@ -255,7 +255,7 @@ produces that value.</p></p>
 			<p><code>can.compute</code> lets you make observable values. A compute is actually a function that returns
 the computed value, but you can also use the compute to set the value and you can use
 <code>bind</code> to listen to changes in the compute's return value. In this way, computes are similar
-to <a href="can.Observe.html"> </a>, but they represent a single value rather than a collection of values.</p>
+to <a href="can.Observe.html">Observes</a>, but they represent a single value rather than a collection of values.</p>
 
 <h2>Working with computes</h2>
 
@@ -291,10 +291,10 @@ fullName.bind('change', function(ev, newVal, oldVal) {
 person.attr('firstName', 'Allison'); // The log reads:
                                      // "This person's full name is now Allison Liddell."</code></pre>
 
-<p>Take special notice of how the definition of the compute uses <code><a href="can.Observe.prototype.attr.html"> </a></code>
+<p>Take special notice of how the definition of the compute uses <code><a href="can.Observe.prototype.attr.html">attr</a></code>
 to read the values of the properties of <code>person</code>. This is how the compute knows to listen
 for changes. and is similar to the need to use <code>attr</code> when live-binding properties of Observes into
-<code><a href="can.EJS.html"> </a></code> templates.</p>
+<code><a href="can.EJS.html">EJS</a></code> templates.</p>
 
 <p>A specific use for bound computes like this is to provide a way to work with values of Observable
 properties in different units:</p>
@@ -323,7 +323,7 @@ wall.length;          // 16.4042</code></pre>
 <h2>Events</h2>
 
 <p>When a compute's value is changed, it emits a <em>change</em> event. You can listen for this change
-event by using <code><a href="can.compute.bind.html"> </a></code> to bind an event handler to the compute:</p>
+event by using <code><a href="can.compute.bind.html">bind</a></code> to bind an event handler to the compute:</p>
 
 <pre><code class="lang-javascript">var tally = can.compute(0);
 tally.bind('change', function(ev, newVal, oldVal) {
@@ -364,7 +364,7 @@ can.Control('SimpleSlider', { }, {
 new SimpleSlider('#slider', {percentDone: project.compute('percentDone')});</code></pre>
 
 <p>Now that's some delicious cake. More information on Controls can be found under <code><a href="can.Control.html">can.Control</a></code>.
-There is also a full explanation of can.Observe's <code><a href="can.Observe.prototype.compute.html"> </a></code>,
+There is also a full explanation of can.Observe's <code><a href="can.Observe.prototype.compute.html">compute</a></code>,
 which is used in the last line of the example above.</p>
 		</section>
 		
@@ -440,8 +440,10 @@ which is used in the last line of the example above.</p>
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="../resources/html5shiv.js"></script>
     <!--<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="../resources/production.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../resources/production.js"></script>
+	
 </body>
 
 </html>

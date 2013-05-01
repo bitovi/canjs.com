@@ -67,7 +67,7 @@
 		</nav>
 	</header>
 
-	<div class="container api">
+	<div class="container api" data-parent="can.Control.static">
 	<nav class="sidebar">
 		<div class="search">
 			<input type="text"/>
@@ -261,7 +261,7 @@
 			<p><code>defaults</code> provides default values for a Control's options.
 Options passed into the constructor function will be shallowly merged
 into the values from defaults in <a href="can.Control.prototype.setup.html">can.Control.prototype.setup</a>, and
-the result will be stored in <code><a href="can.Control.prototype.options.html"> </a></code>.</p>
+the result will be stored in <code><a href="can.Control.prototype.options.html">this.options</a></code>.</p>
 
 <pre><code>Message = can.Control({
   defaults: {
@@ -315,8 +315,10 @@ new Message( "#el12", { message: "hi" } ); //writes hi
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="../resources/html5shiv.js"></script>
     <!--<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="../resources/production.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../resources/production.js"></script>
+	
 </body>
 
 </html>

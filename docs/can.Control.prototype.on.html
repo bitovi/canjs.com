@@ -67,7 +67,7 @@
 		</nav>
 	</header>
 
-	<div class="container api">
+	<div class="container api" data-parent="can.Control.prototype">
 	<nav class="sidebar">
 		<div class="search">
 			<input type="text"/>
@@ -347,7 +347,7 @@ and second parameter.  Otherwise the function is called back like a normal bind.
 			<p><code>on(el, selector, eventName, func)</code> binds an event handler for an event to a selector under the scope of the given element.</p>
 
 <p><code>this.on()</code> is used to rebind 
-all event handlers when <a href="can.Control.prototype.options.html"> </a> has changed.  It
+all event handlers when <a href="can.Control.prototype.options.html">this.options</a> has changed.  It
 can also be used to bind or delegate from other elements or objects.</p>
 
 <h2>Rebinding</h2>
@@ -531,8 +531,10 @@ somethingClicked: function( el, ev ) {
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="../resources/html5shiv.js"></script>
     <!--<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="../resources/production.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../resources/production.js"></script>
+	
 </body>
 
 </html>

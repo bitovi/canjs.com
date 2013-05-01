@@ -67,7 +67,7 @@
 		</nav>
 	</header>
 
-	<div class="container api">
+	<div class="container api" data-parent="can.Observe.prototype">
 	<nav class="sidebar">
 		<div class="search">
 			<input type="text"/>
@@ -311,7 +311,7 @@
 
 		
 		<section class="comment">
-			<p><code>unbind</code> unbinds event handlers previously bound with <a href="can.Observe.prototype.bind.html">can.Observe.prototype.bind</a>.
+			<p><code>unbind</code> unbinds event handlers previously bound with [can.Observe.prototype.bind|<code>bind</code>].
 If no <em>handler</em> is passed, all handlers for the given event type will be unbound.</p>
 
 <pre><code class="lang-javascript">var i = 0,
@@ -399,8 +399,10 @@ i; // 8</code></pre>
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="../resources/html5shiv.js"></script>
     <!--<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="../resources/production.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../resources/production.js"></script>
+	
 </body>
 
 </html>
