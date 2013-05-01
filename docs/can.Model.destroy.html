@@ -368,7 +368,7 @@ instance on the server. (See below for more details.)</p>
 
 		
 		<section class="comment">
-			<p><code>destroy(id) -&gt; Deferred</code> is used by <a href="can.Model.prototype.destroy.html">can.Model.prototype.destroy</a> remove a model 
+			<p><code>destroy(id) -&gt; Deferred</code> is used by [can.Model::destroy] remove a model 
 instance from the server.</p>
 
 <h2>Implement with a URL</h2>
@@ -380,7 +380,7 @@ instance from the server.</p>
 },{})
 </code></pre>
 
-<p>And use <a href="can.Model.prototype.destroy.html">can.Model.prototype.destroy</a> to destroy it like:</p>
+<p>And use [can.Model::destroy] to destroy it like:</p>
 
 <pre><code>Recipe.findOne({id: 1}, function(recipe){
       recipe.destroy();

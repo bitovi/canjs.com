@@ -316,7 +316,7 @@
 The control instance's HTMLElement (or window) wrapped by the 
 util library for ease of use. It is set by the first
 parameter to <code>new can.Construct( element, options )</code> 
-in <a href="can.Control.prototype.setup.html">can.Control.prototype.setup</a>.  Control listens on <code>this.element</code>
+in [can.Control::setup].  Control listens on <code>this.element</code>
 for events.</p>
 
 <h3>Quick Example</h3>
@@ -405,8 +405,8 @@ original element.</p>
 <h3>unbinding, setting, and rebinding.</h3>
 
 <p>You could also change this.element by calling
-<a href="can.Control.prototype.off.html">can.Control.prototype.off</a>, setting this.element, and 
-then calling <a href="can.Control.prototype.on.html">can.Control.prototype.on</a> like:</p>
+[can.Control::off], setting this.element, and 
+then calling [can.Control::on] like:</p>
 
 <pre><code>move: function( newElement ) {
    this.off();

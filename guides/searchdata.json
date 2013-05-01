@@ -133,10 +133,18 @@
         "parent": "Tutorial",
         "order": 9
     },
+    "Videos": {
+        "name": "Videos",
+        "type": "page",
+        "id": 17,
+        "title": "Videos",
+        "parent": "guides",
+        "order": 3
+    },
     "Templates": {
         "name": "Templates",
         "type": "page",
-        "id": 17,
+        "id": 18,
         "title": "Templates",
         "parent": "Tutorial",
         "order": 3
@@ -144,7 +152,7 @@
     "Why": {
         "name": "Why",
         "type": "page",
-        "id": 18,
+        "id": 19,
         "title": "Why CanJS?",
         "parent": "guides",
         "order": 2
