@@ -37,7 +37,8 @@
 			'.download .customize': 'DownloadCustomizer',
 			'.community .hero': 'CommunityTabs',
 			'.docs .sidebar': 'ApiSearch',
-			'.docs .signature': 'ApiSignature'
+			'.docs .signature': 'ApiSignature',
+			'.docs .contents': 'ContentsList'
 		});
 
 		// Syntax highlighting
