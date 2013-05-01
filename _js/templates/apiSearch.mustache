@@ -1,3 +1,45 @@
-<ul class="api">
-
+<ul class="api search-results">
+	{{#menu.children}}
+	{{#if matches}}
+	<li>
+		<a href="{{makeHref name}}">{{name}}</a>
+		{{#if matches}}
+		{{#if children.length}}
+		<ul>
+			{{#children}}
+			{{#if matches}}
+			{{#if children.length}}
+				<li class="heading">
+					<span>{{type}}</span>
+					<ul>
+						{{#children}}
+						{{^if hide}}
+						{{#if matches}}
+							<li>
+							<a href="{{makeHref name}}">
+								{{#if title}} {{title}} {{else}} {{{name}}} {{/if}}
+							</a>
+							</li>
+						{{/if}}
+						{{/if}}
+						{{/children}}
+					</ul>
+				</li>
+			{{else}}
+				{{^if hide}}
+					<li {{#active}}class="active"{{/active}}>
+						<a href="{{makeHref name}}">
+							{{#if title}} {{title}} {{else}} {{{name}}} {{/if}}
+						</a>
+					</li>
+				{{/if}}
+			{{/if}}
+			{{/if}}
+			{{/children}}
+		</ul>
+		{{/if}}
+		{{/if}}
+	</li>
+	{{/if}}
+	{{/menu.children}}
 </ul>

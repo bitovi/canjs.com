@@ -6421,15 +6421,35 @@ can.Model("CanJSUS.Tweet", {
 		dataType: 'json'
 	}
 }, { });
+can.Mustache.registerHelper('makeHref', function(src) {
+	return src().replace(/ /g, "_")
+		.replace(/&#46;/g, ".")
+		.replace(/&gt;/g, "_gt_")
+		.replace(/\*/g, "_star_")
+		.replace(/\//g, "|") + '.html';
+});
+
 can.Control('CanJSUS.ApiSearch', {
 	defaults: {
+		parent: 'canjs',
 		searchData: 'searchdata.json',
-		menu: 'templates/apiSearch.mustache'
+		view: 'templates/apiSearch.mustache',
+		emptyText: 'Nothing found...'
 	},
 
 	menuTree: function (data, root) {
+		var find = function(items, callback) {
+			for(var key in items) {
+				if(items.hasOwnProperty(key) && callback(items[key])) {
+					return items[key];
+				}
+			}
+
+			return null;
+		}
+
 		can.each(data, function(current, index, arr) {
-			var parent = _.find(arr, function(value) {
+			var parent = find(arr, function(value) {
 				return value.name === current.parent;
 			});
 
@@ -6439,7 +6459,7 @@ can.Control('CanJSUS.ApiSearch', {
 			}
 		});
 
-		return _.find(copies, function(current) {
+		return find(data, function(current) {
 			return current.name == root;
 		});
 	}
@@ -6448,19 +6468,33 @@ can.Control('CanJSUS.ApiSearch', {
 		this.state = new can.Observe({
 			searchTerm: options.searchTerm
 		});
+
+		can.ajax({
+			url: this.options.searchData,
+			dataType: 'json'
+		}).then(can.proxy(function(result) {
+			this.searchData = new can.Observe(this.constructor.menuTree(result, this.options.parent));
+
+			this.element.append(can.view(this.options.view, {
+				menu: this.searchData
+			}));
+
+			this.element.find('.search-results').hide();
+		}, this));
 	},
 
 	markMatches: function(search) {
 		var traverse = function(children) {
 			var anyMatches = false;
 			can.each(children, function(child) {
-				var matches = false;
+				var matches = false,
+					rx = new RegExp(search, 'gim');
+
 				if(child.children) {
 					matches = traverse(child.children);
-				} else {
-					// Only check for actual matches on leaf nodes
-					matches = search.test(child.name) || search.test(child.title);
 				}
+
+				matches = matches || (rx.test(child.name) || rx.test(child.title));
 
 				child.attr('matches', matches);
 
@@ -6472,13 +6506,33 @@ can.Control('CanJSUS.ApiSearch', {
 			return anyMatches;
 		}
 
-		traverse(this.root.children);
+		traverse(this.searchData.children);
 
-		return this.root;
+		return this.searchData;
 	},
 
-	'.search keypress': function(el, ev) {
-		console.log(el.val());
+	toggleResults: function(state) {
+		var reverse = state == 'show' ? 'hide': 'show';
+		this.element.find('.api')[reverse]().end().find('.search-results')[state]();
+	},
+
+	search: function(text) {
+		this.markMatches(text);
+		if(!this.element.find('.search-results li').length) {
+			this.element.find('.search-results').append('<li class="empty">' + this.options.emptyText + '</li>');
+		} else {
+			this.element.find('.search-results li.empty').remove();
+		}
+	},
+
+	'.search input keyup': function(el) {
+		var value = el.val();
+		if(value.length > 1) {
+			this.toggleResults('show');
+			this.search(value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"));
+		} else {
+			this.toggleResults('hide');
+		}
 	}
 });
 
@@ -6857,7 +6911,7 @@ CanJSUS.CommunityTab('CanJSUS.TwitterTab', {
 	}
 });
 (function(window) {
-can.view.preload('templates_apiSearch_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<ul class=\"api\">\n</ul>");; return ___v1ew.join('')}} }));
+can.view.preload('templates_apiSearch_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<ul class=\"api search-results\">");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'ul',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("menu.children",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t");___v1ew.push(can.view.txt(0,'ul',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("if",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("matches",{context:___st4ck(___c0nt3xt,this),options:options},false,true),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\n\t<li>\n\t\t<a href=\"");___v1ew.push(can.view.txt(1,'a','href',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("makeHref",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("name",{context:___st4ck(___c0nt3xt,this),options:options},false,true));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'a',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("name",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</a>");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'li',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("if",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("matches",{context:___st4ck(___c0nt3xt,this),options:options},false,true),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t\t");___v1ew.push(can.view.txt(0,'li',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("if",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("children.length",{context:___st4ck(___c0nt3xt,this),options:options},false,true),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\n\t\t<ul>");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'ul',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("children",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t\t\t");___v1ew.push(can.view.txt(0,'ul',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("if",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("matches",{context:___st4ck(___c0nt3xt,this),options:options},false,true),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\n");___v1ew.push(can.view.txt(0,'ul',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("if",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("children.length",{context:___st4ck(___c0nt3xt,this),options:options},false,true),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t\t\t\t<li class=\"heading\">\n\t\t\t\t\t<span>");___v1ew.push(can.view.txt(1,'span',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("type",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</span>\n\t\t\t\t\t<ul>");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'ul',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("children",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t\t\t\t\t\t");___v1ew.push(can.view.txt(0,'ul',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"^",can.Mustache.get("if",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("hide",{context:___st4ck(___c0nt3xt,this),options:options},false,true),[{_:function(){return ___v1ew.join("");}},{inverse:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\n");___v1ew.push(can.view.txt(0,'ul',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("if",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("matches",{context:___st4ck(___c0nt3xt,this),options:options},false,true),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t<a href=\"");___v1ew.push(can.view.txt(1,'a','href',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("makeHref",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("name",{context:___st4ck(___c0nt3xt,this),options:options},false,true));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push("\n\t\t\t\t\t\t\t\t");___v1ew.push(can.view.txt(0,'a',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("if",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("title",{context:___st4ck(___c0nt3xt,this),options:options},false,true),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push(" ");___v1ew.push(can.view.txt(1,'a',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("title",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push(" ");return ___v1ew.join("");}},{inverse:function(___c0nt3xt){var ___v1ew = [];___v1ew.push(" ");___v1ew.push(can.view.txt(0,'a',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("name",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push(" ");return ___v1ew.join("");}}])}));___v1ew.push("\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t</li>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("\t\t\t\t\t\t");return ___v1ew.join("");}}])}));___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("\t\t\t\t\t</ul>\n\t\t\t\t</li>\n\t\t\t");return ___v1ew.join("");}},{inverse:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\n");___v1ew.push(can.view.txt(0,'ul',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"^",can.Mustache.get("if",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("hide",{context:___st4ck(___c0nt3xt,this),options:options},false,true),[{_:function(){return ___v1ew.join("");}},{inverse:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t\t\t\t\t<li ");___v1ew.push(can.view.txt(0,'li',1,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("active",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("class=\"active\"");return ___v1ew.join("");}}])}));___v1ew.push("",can.view.pending(),">");___v1ew.push("\n\t\t\t\t\t\t<a href=\"");___v1ew.push(can.view.txt(1,'a','href',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("makeHref",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("name",{context:___st4ck(___c0nt3xt,this),options:options},false,true));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push("\n\t\t\t\t\t\t\t");___v1ew.push(can.view.txt(0,'a',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("if",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("title",{context:___st4ck(___c0nt3xt,this),options:options},false,true),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push(" ");___v1ew.push(can.view.txt(1,'a',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("title",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push(" ");return ___v1ew.join("");}},{inverse:function(___c0nt3xt){var ___v1ew = [];___v1ew.push(" ");___v1ew.push(can.view.txt(0,'a',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("name",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push(" ");return ___v1ew.join("");}}])}));___v1ew.push("\n\t\t\t\t\t\t</a>\n\t\t\t\t\t</li>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("\t\t\t");return ___v1ew.join("");}}])}));___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("\t\t\t");return ___v1ew.join("");}}])}));___v1ew.push("\n\t\t</ul>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("\t\t");return ___v1ew.join("");}}])}));___v1ew.push("\n\t</li>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("\t");return ___v1ew.join("");}}])}));___v1ew.push("\n</ul>");; return ___v1ew.join('')}} }));
 can.view.preload('templates_benefitTabs_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("  <ul class=\"circle-tabs\">\n    <li class=\"flexible\" data-benefit=\"flexible\"><a>Flexible</a></li>\n    <li class=\"powerful\" data-benefit=\"powerful\"><a>Powerful</a></li>\n    <li class=\"fast\" data-benefit=\"fast\"><a>Fast</a></li>\n  </ul>\n  <div class=\"tab-description ");___v1ew.push(can.view.txt(1,'div','class',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("selectedTab",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("tagline",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</div>");; return ___v1ew.join('')}} }));
 can.view.preload('templates_cdnChooser_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<h4>CDN:</h4>\n<div class=\"input\">\n\t<div class=\"dropdown\">\n\t  <select>");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'select',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("libraries",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t    <option value=\"");___v1ew.push(can.view.txt(1,'option','value',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'option',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("description",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</option>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("\t  </select>\n  </div>\n  <span class=\"cdn-link\">http://cdn.canjs.com/releases/");___v1ew.push(can.view.txt(1,'span',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("version",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("/can.");___v1ew.push(can.view.txt(1,'span',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("selectedLibrary",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push(".js</span>\n</div>");; return ___v1ew.join('')}} }));
 can.view.preload('templates_chat_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<div class=\"irc-chat-container\">");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("lines",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t<div><span class=\"username\">");___v1ew.push(can.view.txt(1,'span',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("actor",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</span>: ");___v1ew.push(can.view.txt(1,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("body",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</div>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("</div>");; return ___v1ew.join('')}} }));

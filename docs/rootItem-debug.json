@@ -2143,8 +2143,19 @@
             "plugin": "can/view/mustache",
             "download": "http://canjs.us/release/latest/can.view.mustache.js",
             "src": "can/view/mustache/doc/mustache.md",
-            "id": 152,
+            "id": 156,
             "children": [{
+                    "active": false,
+                    "type": "page",
+                    "name": "can.Mustache.Acquisition",
+                    "body": "",
+                    "description": "<p>There are number of ways to acquire templates such as: raw text,\nURL, or script tags in the markup.</p>\n\n<p><strong>Raw Text</strong></p>\n\n<p>Raw text can by templated by passing an object with a <code>text</code>\nattribute containing your template and Mustache will return a \ndocument fragment back.  For example:</p>\n\n<pre><code>var template = \"My body lies over the {{.}}\";\nvar fragment = new can.Mustache({ text: template })\n                .render('water');\ncan.append(can.$(document.body), can.view.frag(fragment));\n</code></pre>\n\n<p><strong>Script Tags</strong></p>\n\n<p>Inline script tags in your HTML document can be used to render \ntemplates.  Set the <code>type</code> to <code>text/mustache</code> and the <code>id</code> as a unique\nkey Mustache will use for look up.</p>\n\n<pre><code>&lt;script id=\"mytemplate\" type=\"text/mustache\"&gt;\n    My body lies over the {{.}}\n&lt;/script&gt;\n\nvar template = can.view(\"#mytemplate\", 'water');\ncan.$(document.body).append(template);\n</code></pre>\n\n<p><strong>URL</strong></p>\n\n<p>Templates can be defined in its own file and  Mustache will fetch the \nfiles on render.  This is the preferred way since it will keep your application\nnicely organized seperating views from logic code. </p>\n\n<pre><code>var template = can.view('//lib/views/mytemplate.mustache', \n                dataToPass)\ncan.$(document.body).append(template);\n</code></pre>\n\n<p>Since could potentially make several XHR requests, in a big application\nthis could be a performance concern.  Creating a build step to \nconcatenate and include all of the views in one file would be one way to optimize performance. <br />\nIf you are using Steal, it will do this automatically at build for you.</p>",
+                    "title": "Template Acquisition",
+                    "parent": "can.Mustache",
+                    "order": 3,
+                    "src": "can/view/mustache/doc/acquisition.md",
+                    "id": 152
+                }, {
                     "active": false,
                     "type": "page",
                     "name": "can.Mustache.Basics",
@@ -2165,7 +2176,7 @@
                     "parent": "can.Mustache",
                     "order": 1,
                     "src": "can/view/mustache/doc/sections.md",
-                    "id": 154
+                    "id": 158
                 }, {
                     "active": false,
                     "type": "page",
@@ -2177,18 +2188,7 @@
                     "order": 2,
                     "comment": " ",
                     "src": "can/view/mustache/doc/partials.md",
-                    "id": 155
-                }, {
-                    "active": false,
-                    "type": "page",
-                    "name": "can.Mustache.Acquisition",
-                    "body": "",
-                    "description": "<p>There are number of ways to acquire templates such as: raw text,\nURL, or script tags in the markup.</p>\n\n<p><strong>Raw Text</strong></p>\n\n<p>Raw text can by templated by passing an object with a <code>text</code>\nattribute containing your template and Mustache will return a \ndocument fragment back.  For example:</p>\n\n<pre><code>var template = \"My body lies over the {{.}}\";\nvar fragment = new can.Mustache({ text: template })\n                .render('water');\ncan.append(can.$(document.body), can.view.frag(fragment));\n</code></pre>\n\n<p><strong>Script Tags</strong></p>\n\n<p>Inline script tags in your HTML document can be used to render \ntemplates.  Set the <code>type</code> to <code>text/mustache</code> and the <code>id</code> as a unique\nkey Mustache will use for look up.</p>\n\n<pre><code>&lt;script id=\"mytemplate\" type=\"text/mustache\"&gt;\n    My body lies over the {{.}}\n&lt;/script&gt;\n\nvar template = can.view(\"#mytemplate\", 'water');\ncan.$(document.body).append(template);\n</code></pre>\n\n<p><strong>URL</strong></p>\n\n<p>Templates can be defined in its own file and  Mustache will fetch the \nfiles on render.  This is the preferred way since it will keep your application\nnicely organized seperating views from logic code. </p>\n\n<pre><code>var template = can.view('//lib/views/mytemplate.mustache', \n                dataToPass)\ncan.$(document.body).append(template);\n</code></pre>\n\n<p>Since could potentially make several XHR requests, in a big application\nthis could be a performance concern.  Creating a build step to \nconcatenate and include all of the views in one file would be one way to optimize performance. <br />\nIf you are using Steal, it will do this automatically at build for you.</p>",
-                    "title": "Template Acquisition",
-                    "parent": "can.Mustache",
-                    "order": 3,
-                    "src": "can/view/mustache/doc/acquisition.md",
-                    "id": 156
+                    "id": 157
                 }, {
                     "active": false,
                     "type": "page",
@@ -2199,7 +2199,7 @@
                     "parent": "can.Mustache",
                     "order": 4,
                     "src": "can/view/mustache/doc/helpers.md",
-                    "id": 157
+                    "id": 154
                 }, {
                     "active": false,
                     "type": "page",
@@ -2210,7 +2210,7 @@
                     "parent": "can.Mustache",
                     "order": 5,
                     "src": "can/view/mustache/doc/livebinding.md",
-                    "id": 158
+                    "id": 155
                 }
             ]
         }, {
