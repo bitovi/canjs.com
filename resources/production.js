@@ -6533,9 +6533,22 @@ can.Control('CanJSUS.ApiSearch', {
 		} else {
 			this.toggleResults('hide');
 		}
+	},
+
+	'li.active > a click': function(el, ev) {
+		ev.preventDefault();
+	},
+
+	'li.active click': function(el, ev) {
+		el.toggleClass('collapsed');
 	}
 });
 
+can.Control('CanJSUS.ApiSignature', {}, {
+	'h2 click': function(el, ev) {
+		this.element.toggleClass('collapsed');
+	}
+});
 can.Control('CanJSUS.Benefits', {
 	defaults: {
 		taglines: {
@@ -6955,10 +6968,9 @@ can.view.preload('templates_twitterTab_mustache',can.Mustache(function(_CONTEXT,
 
 	var initControls = function(mappings) {
 		can.each(mappings, function(name, selector) {
-			var el = $(selector);
-			if(el.length) {
-				new CanJSUS[name](el);
-			}
+			$(selector).each(function() {
+				new CanJSUS[name]($(this));
+			});
 		});
 	}
 
@@ -6971,7 +6983,8 @@ can.view.preload('templates_twitterTab_mustache',can.Mustache(function(_CONTEXT,
 			'.download .cdn': 'CDNChooser',
 			'.download .customize': 'DownloadCustomizer',
 			'.community .hero': 'CommunityTabs',
-			'.docs .sidebar': 'ApiSearch'
+			'.docs .sidebar': 'ApiSearch',
+			'.docs .signature': 'ApiSignature'
 		});
 
 		// Syntax highlighting

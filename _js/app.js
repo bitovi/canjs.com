@@ -21,10 +21,9 @@
 
 	var initControls = function(mappings) {
 		can.each(mappings, function(name, selector) {
-			var el = $(selector);
-			if(el.length) {
-				new CanJSUS[name](el);
-			}
+			$(selector).each(function() {
+				new CanJSUS[name]($(this));
+			});
 		});
 	}
 
@@ -37,7 +36,8 @@
 			'.download .cdn': 'CDNChooser',
 			'.download .customize': 'DownloadCustomizer',
 			'.community .hero': 'CommunityTabs',
-			'.docs .sidebar': 'ApiSearch'
+			'.docs .sidebar': 'ApiSearch',
+			'.docs .signature': 'ApiSignature'
 		});
 
 		// Syntax highlighting

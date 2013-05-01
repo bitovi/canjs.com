@@ -110,5 +110,13 @@ can.Control('CanJSUS.ApiSearch', {
 		} else {
 			this.toggleResults('hide');
 		}
+	},
+
+	'li.active > a click': function(el, ev) {
+		ev.preventDefault();
+	},
+
+	'li.active click': function(el, ev) {
+		el.toggleClass('collapsed');
 	}
 });
