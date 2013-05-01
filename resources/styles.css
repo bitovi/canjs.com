@@ -306,6 +306,7 @@ li.L1,li.L3,li.L5,li.L7,li.L9{}
 .docs .title .links li:first-child:before{content:none;padding:none;}
 .docs .inherits{display:block;}
 .docs .contents li{line-height:24px;list-style-type:square;}
+.docs .signature.collapsed :not(h2){display:none;}
 .docs .signature h2{background-color:#165489;color:#fff;font-size:18px;line-height:24px;-webkit-border-top-left-radius:3px;-webkit-border-top-right-radius:3px;-moz-border-radius-topleft:3px;-moz-border-radius-topright:3px;border-top-left-radius:3px;border-top-right-radius:3px;padding:3px 10px;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.5);}.docs .signature h2 span{font-size:10px;font-weight:normal;font-style:normal;float:right;}
 .docs .parameters,.docs .returns{list-style-type:none;margin:0 0 15px;border:1px solid #eeeeee;background-color:#fff;padding:10px 10px 5px;}
 .docs .parameters h4,.docs .returns h4{background-color:#767676;padding:3px 10px;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.5);color:#fff;margin:-11px -11px 5px;}
@@ -323,6 +324,7 @@ li.L1,li.L3,li.L5,li.L7,li.L9{}
 .sidebar .api li li li li a{font-size:13px;color:#666;}
 .sidebar .api>li.active{border-bottom:3px solid #165489;border-left:3px solid #165489;border-right:3px solid #165489;margin-left:-1px;margin-right:-1px;margin-top:-1px;position:relative;z-index:0;background-color:#eee;background:-moz-linear-gradient(top, rgba(0, 0, 0, 0.1) 0%, rgba(255, 255, 255, 0) 5%, rgba(255, 255, 255, 0) 96%, rgba(0, 0, 0, 0.1) 100%);background:-webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.1)), color-stop(5%, rgba(255, 255, 255, 0)), color-stop(96%, rgba(255, 255, 255, 0)), color-stop(100%, rgba(0, 0, 0, 0.1)));background:-webkit-linear-gradient(top, rgba(0, 0, 0, 0.1) 0%, rgba(255, 255, 255, 0) 5%, rgba(255, 255, 255, 0) 96%, rgba(0, 0, 0, 0.1) 100%);background:-o-linear-gradient(top, rgba(0, 0, 0, 0.1) 0%, rgba(255, 255, 255, 0) 5%, rgba(255, 255, 255, 0) 96%, rgba(0, 0, 0, 0.1) 100%);background:-ms-linear-gradient(top, rgba(0, 0, 0, 0.1) 0%, rgba(255, 255, 255, 0) 5%, rgba(255, 255, 255, 0) 96%, rgba(0, 0, 0, 0.1) 100%);background:linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(255, 255, 255, 0) 5%, rgba(255, 255, 255, 0) 96%, rgba(0, 0, 0, 0.1) 100%);}
 .sidebar .api li.active>a{font-weight:bold;}
+.sidebar .api li.active.collapsed>:not(a){display:none;}
 .sidebar .api li li li{text-indent:30px;}
 .sidebar .api li li li li{text-indent:45px;}
 .sidebar .api>li>a,.sidebar .api.cascading>.active>ul>li>a{font-size:17px;font-weight:bold;line-height:40px;color:#767676;display:block;border:none;}

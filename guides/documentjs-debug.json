@@ -70,7 +70,7 @@
     "guides": {
         "type": "page",
         "name": "guides",
-        "body": "<p>This page contains recipes and tutorials that will get you started with building CanJS projects. Choose a section on the left to learn more about the components that make CanJS work and to see CanJS being used in real projects. If you're new to CanJS, a good starting point is [Why Why CanJS?].</p>",
+        "body": "<p>This page contains recipes and tutorials that will get you started with building CanJS projects. Choose a section on the left to learn more about the components that make CanJS work and to see CanJS being used in real projects. If you're new to CanJS, a good starting point is [Why Why CanJS?]</p>",
         "description": "",
         "title": "Guides",
         "comment": " ",
@@ -243,7 +243,7 @@
     "Tutorial": {
         "type": "page",
         "name": "Tutorial",
-        "body": "<p>This tutorial will walk you though the basics of CanJS by building a small\nto-do app with CanJS and jQuery. When you are finished, your app will look\nsimilar to this:</p>\n\n<div class='iframe_wrapper' data-iframe-src='/path/to/to-do/demo' data-iframe-height='320'></div>\n\n<p>To get started, click [Constructs Constructs] in the navigation to the left. Or, if this\ntutorial isn't your thing, you can take a look at some [Videos Videos], see\nsome nifty [Recipes Recipes] for building functionality with CanJS, check out\nour <a href=\"../docs/index.html\">API</a>, or dive right in and poke around the [AnnotatedSources annotated\nsource] for CanJS.</p>",
+        "body": "<p>This tutorial will walk you though the basics of CanJS by building a small\nto-do app with CanJS and jQuery. When you are finished, your app will look\nsimilar to this:</p>\n\n<div class='iframe_wrapper' data-iframe-src='/path/to/to-do/demo' data-iframe-height='320'></div>\n\n<p>To get started, click [Constructs Constructs] in the navigation to the left. Or, if this\ntutorial isn't your thing, you can take a look at some [Videos Videos], see\nsome nifty [Recipes Recipes] for building functionality with CanJS, check out\nour <a href=\"../docs/index.html\">API</a>, or dive right in and poke around the <a href=\"http://canjs.com/release/latest/docs/can.jquery.html\">annotated source</a> for CanJS.</p>",
         "description": "",
         "title": "Get Started with CanJS",
         "parent": "guides",
@@ -268,6 +268,22 @@
         "src": "_guides/util.md",
         "id": 16
     },
+    "_guides/videos.md": {
+        "type": "script",
+        "name": "_guides/videos.md"
+    },
+    "Videos": {
+        "type": "page",
+        "name": "Videos",
+        "body": "<h2>Getting started</h2>\n\n<iframe width=\"100%\" height=\"350\" src=\"http://www.youtube.com/embed/GdT4Oq6ZQ68\" frameborder=\"0\" allowfullscreen></iframe>",
+        "description": "",
+        "title": "Videos",
+        "parent": "guides",
+        "order": 3,
+        "comment": " ",
+        "src": "_guides/videos.md",
+        "id": 17
+    },
     "_guides/views.md": {
         "type": "script",
         "name": "_guides/views.md"
@@ -282,7 +298,7 @@
         "order": 3,
         "comment": " ",
         "src": "_guides/views.md",
-        "id": 17
+        "id": 18
     },
     "_guides/why.md": {
         "type": "script",
@@ -298,6 +314,6 @@
         "order": 2,
         "comment": " ",
         "src": "_guides/why.md",
-        "id": 18
+        "id": 19
     }
 }
