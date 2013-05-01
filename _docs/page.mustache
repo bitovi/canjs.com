@@ -1,8 +1,10 @@
 <div class="container api">
 	<nav class="sidebar">
+		{{#if enableSearch}}
 		<div class="search">
 			<input type="text"/>
 		</div>
+		{{/if}}
 		{{> menu.mustache}}
 	</nav>
 

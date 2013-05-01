@@ -121,7 +121,8 @@ module.exports = function (grunt) {
 				options: {
 					root: '../',
 					parent: 'guides',
-					page: 'guides'
+					page: 'guides',
+					enableSearch: false
 				},
 				src: ['_guides/*.md'],
 				dest: 'guides/'
@@ -130,7 +131,8 @@ module.exports = function (grunt) {
 				options: {
 					root: '../',
 					parent: 'canjs',
-					page: 'docs'
+					page: 'docs',
+					enableSearch: true
 				},
 				src: [
 					'can/can.md',
