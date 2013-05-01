@@ -130,7 +130,7 @@ steal('can/util', function(can) {
 	// if no one is listening ... we can not calculate every time
 	/**
 	 * @page can.compute
-	 * @parent util
+	 * @parent canjs
 	 * @signature `can.compute(getterSetter[, context])`
 	 * @param {Function} getterSetter A function that gets and optionally sets the value of the compute.
 	 * When called with no parameters, _getterSetter_ should return the current value of the compute. When
@@ -318,7 +318,7 @@ steal('can/util', function(can) {
 			canbind = false;
 		}
 		/**
-		 * @property isComputed
+		 * @property can.compute.isComputed isComputed
 		 * Whether the value of the compute has been computed yet.
 		 */
 		computed.isComputed = true;
@@ -333,6 +333,7 @@ steal('can/util', function(can) {
 		 * The only event type that computes emit is _change_.
 		 * @param {function({Object},{*},{*})} handler The handler to call when the event happens.
 		 * The handler should have three parameters:
+		 *
 		 * - _event_ is the event object.
 		 * - _newVal_ is the newly-computed value of the compute.
 		 * - _oldVal_ is the value of the compute before it changed.
