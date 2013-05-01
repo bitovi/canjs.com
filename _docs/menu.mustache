@@ -7,6 +7,24 @@
 		<ul>
 		{{#children}}
 			{{#if children.length}}
+				{{#if plugin}}
+				<li {{#active}}class="active"{{/active}}>
+					<a href="{{makeHref name}}">
+						{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
+					</a>
+					<ul>
+						{{#children}}
+						{{^if hide}}
+						<li {{#active}}class="active"{{/active}}>
+							<a href="{{makeHref name}}">
+								{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
+							</a>
+						</li>
+						{{/if}}
+						{{/children}}
+					</ul>
+				</li>
+				{{else}}
 				<li class="heading">
 					<span>{{type}}</span>
 					<ul>
@@ -21,6 +39,7 @@
 						{{/children}}
 					</ul>
 				</li>
+				{{/if}}
 			{{else}}
 				{{^if hide}}
 				<li {{#active}}class="active"{{/active}}>
