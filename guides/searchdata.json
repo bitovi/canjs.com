@@ -66,7 +66,8 @@
         "type": "page",
         "id": 8,
         "title": "CanJS Recipes",
-        "parent": "guides"
+        "parent": "guides",
+        "order": 1
     },
     "RecipesControls": {
         "name": "RecipesControls",
@@ -121,7 +122,8 @@
         "type": "page",
         "id": 15,
         "title": "Get Started with CanJS",
-        "parent": "guides"
+        "parent": "guides",
+        "order": 0
     },
     "Utilities": {
         "name": "Utilities",
@@ -143,7 +145,8 @@
         "name": "Why",
         "type": "page",
         "id": 18,
-        "title": "Why CanJS",
-        "parent": "guides"
+        "title": "Why CanJS?",
+        "parent": "guides",
+        "order": 2
     }
 }

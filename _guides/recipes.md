@@ -1,5 +1,5 @@
 @page Recipes CanJS Recipes
-@parent guides
+@parent guides 1
 
 @body
 To the left is a list of __CanJS__ recipes to help you learn CanJS.  To

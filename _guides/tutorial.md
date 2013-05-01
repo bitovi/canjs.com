@@ -1,5 +1,5 @@
 @page Tutorial Get Started with CanJS
-@parent guides
+@parent guides 0
 
 @body
 This tutorial will walk you though the basics of CanJS by building a small
