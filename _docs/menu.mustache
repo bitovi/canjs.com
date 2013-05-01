@@ -1,7 +1,7 @@
 <ul class="api">
 	{{#menu.children}}
 	<li {{#active}}class="active"{{/active}}>
-	<a href="{{makeHref name}}">{{title}}</a>
+	<a href="{{makeHref name}}">{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}</a>
 	{{#if active}}
 		{{#if children.length}}
 		<ul>
@@ -13,7 +13,7 @@
 						{{^if hide}}
 						<li {{#active}}class="active"{{/active}}>
 							<a href="{{makeHref name}}">
-								{{#if title}} {{title}} {{else}} {{{name}}} {{/if}}
+								{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
 							</a>
 						</li>
 						{{/if}}
@@ -24,7 +24,7 @@
 				{{^if hide}}
 				<li {{#active}}class="active"{{/active}}>
 				<a href="{{makeHref name}}">
-					{{#if title}} {{title}} {{else}} {{{name}}} {{/if}}
+					{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
 				</a>
 				</li>
 				{{/if}}

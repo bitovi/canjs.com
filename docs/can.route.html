@@ -134,7 +134,7 @@
 				
 				<li >
 				<a href="can.route.current.html">
-					 can.route.current 
+					can.route.current
 				</a>
 				</li>
 				
@@ -144,7 +144,7 @@
 				
 				<li >
 				<a href="can.route.deparam.html">
-					 can.route.deparam 
+					can.route.deparam
 				</a>
 				</li>
 				
@@ -154,7 +154,7 @@
 				
 				<li >
 				<a href="can.route.link.html">
-					 can.route.link 
+					can.route.link
 				</a>
 				</li>
 				
@@ -164,7 +164,7 @@
 				
 				<li >
 				<a href="can.route.param.html">
-					 can.route.param 
+					can.route.param
 				</a>
 				</li>
 				
@@ -174,7 +174,7 @@
 				
 				<li >
 				<a href="can.route.ready.html">
-					 can.route.ready 
+					can.route.ready
 				</a>
 				</li>
 				
@@ -184,7 +184,7 @@
 				
 				<li >
 				<a href="can.route.url.html">
-					 can.route.url 
+					can.route.url
 				</a>
 				</li>
 				
@@ -336,12 +336,12 @@ object.  For example, if the hash looks like:</p>
 
 <p>You can listen to changes in an Observe with <code>bind(eventName, handler(ev, args...))</code> and
 change can.route's properties with 
-<a href="can.Observe.prototype.attr.html"> </a>.</p>
+<a href="can.Observe.prototype.attr.html">attr</a>.</p>
 
 <h3>Listening to changes in an Observable</h3>
 
 <p>Listen to changes in history 
-by <a href="can.Observe.prototype.bind.html"> </a>ing to
+by <a href="can.Observe.prototype.bind.html">bind</a>ing to
 changes in <code>can.route</code> like:</p>
 
 <pre><code>can.route.bind('change', function(ev, attr, how, newVal, oldVal) {
@@ -356,7 +356,7 @@ changes in <code>can.route</code> like:</p>
 </ul>
 
 <p>You can also listen to specific changes 
-with [can.Observe.delegate delegate]:</p>
+with <a href="can.Observe.delegate.html">delegate</a>:</p>
 
 <pre><code>can.route.delegate('id','change', function(){ ... })
 </code></pre>
@@ -375,7 +375,7 @@ behavior, <code>remove</code> is useful for teardown.</p>
 
 <h3>Updating an observable</h3>
 
-<p>Create changes in the route data with <a href="can.Observe.prototype.attr.html"> </a> like:</p>
+<p>Create changes in the route data with <a href="can.Observe.prototype.attr.html">attr</a> like:</p>
 
 <pre><code>can.route.attr('type','images');
 </code></pre>
@@ -521,7 +521,7 @@ in a control:</p>
 
 <p>Sometimes, you might only want to trigger a function when the route changes
 only once, even if the route change gets called multiple times. By using the 
-[can.Observe.delegate] plugin, this is extremely easy. This plugin allows you to 
+<a href="can.Observe.delegate.html">can.Observe.delegate</a> plugin, this is extremely easy. This plugin allows you to 
 listen to change, set, add, and remove on <code>can.route</code>.</p>
 
 <p>If you wanted to, say, show a list of recipes when  <strong>type</strong> was set to recipe
@@ -586,7 +586,7 @@ would not very efficient.</p>
     ],
     "comment": " ",
     "src": "can/route/route.md",
-    "id": 86
+    "id": 124
 };
 
 	console.log(docData);
