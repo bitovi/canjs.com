@@ -132,7 +132,7 @@
     "Recipes": {
         "type": "page",
         "name": "Recipes",
-        "body": "<p>To the left is a list of <strong>CanJS</strong> recipes to help you learn CanJS.  To\nadd your own, simply <a href=\"https://github.com/bitovi/canjs/edit/gh-pages/recipes.md\">edit this file</a>. To\nhelp create a JSFiddle, we've created the following fiddles you can fork [Recipes Blabliblu] Really:</p>\n\n<ul>\n<li><a href=\"http://jsfiddle.net/donejs/qYdwR/\">jQuery and CanJS</a></li>\n<li><a href=\"http://jsfiddle.net/donejs/7Yaxk/\">Zepto and CanJS</a></li>\n<li><a href=\"http://jsfiddle.net/donejs/9x96n/\">Dojo and CanJS</a></li>\n<li><a href=\"http://jsfiddle.net/donejs/w6m73/\">YUI and CanJS</a></li>\n<li><a href=\"http://jsfiddle.net/donejs/mnNJX/\">Mootools and CanJS</a></li>\n</ul>",
+        "body": "<p>To the left is a list of <strong>CanJS</strong> recipes to help you learn CanJS.  To\nadd your own, simply <a href=\"https://github.com/bitovi/canjs/edit/gh-pages/recipes.md\">edit this file</a>. To\nhelp create a JSFiddle, we've created the following fiddles you can fork:</p>\n\n<ul>\n<li><a href=\"http://jsfiddle.net/donejs/qYdwR/\">jQuery and CanJS</a></li>\n<li><a href=\"http://jsfiddle.net/donejs/7Yaxk/\">Zepto and CanJS</a></li>\n<li><a href=\"http://jsfiddle.net/donejs/9x96n/\">Dojo and CanJS</a></li>\n<li><a href=\"http://jsfiddle.net/donejs/w6m73/\">YUI and CanJS</a></li>\n<li><a href=\"http://jsfiddle.net/donejs/mnNJX/\">Mootools and CanJS</a></li>\n</ul>",
         "description": "",
         "title": "CanJS Recipes",
         "parent": "guides",
