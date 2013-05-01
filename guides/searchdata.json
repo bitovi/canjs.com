@@ -156,5 +156,19 @@
         "title": "Why CanJS?",
         "parent": "guides",
         "order": 2
+    },
+    "changelog": {
+        "name": "changelog",
+        "type": "page",
+        "id": 20,
+        "title": "Changelog",
+        "parent": "guides"
+    },
+    "contributing": {
+        "name": "contributing",
+        "type": "page",
+        "id": 21,
+        "title": "Contributing",
+        "parent": "guides"
     }
 }

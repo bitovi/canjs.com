@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" href="../resources/styles.css" />
+	
+</head>
+
+<body class="guides">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand canjs" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://donejs.com">DoneJS</a></li>
+					<li class="active"><a href="../index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">JQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!FuncUnit">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
+				</ul>
+			</div>
+
+			<ul class="nav">
+				<li class=""><a href="../index.html">Home</a></li>
+				<li class="active"><a href="../guides/index.html">Guides</a></li>
+				<li class=""><a href="../docs/index.html">Api</a></li>
+				<li class=""><a href="../community.html">Community</a></li>
+				<li class=""><a href="../download.html">Download</a></li>
+			</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<ul class="api">
+	
+	<li >
+	<a href="Recipes.html">CanJS Recipes</a>
+	
+	</li>
+	
+	<li >
+	<a href="Tutorial.html">Get Started with CanJS</a>
+	
+	</li>
+	
+	<li >
+	<a href="Why.html">Why CanJS?</a>
+	
+	</li>
+	
+	<li >
+	<a href="Videos.html">Videos</a>
+	
+	</li>
+	
+	<li >
+	<a href="changelog.html">Changelog</a>
+	
+	</li>
+	
+	<li class="active">
+	<a href="contributing.html">Contributing</a>
+	
+		
+	
+	</li>
+	
+</ul>
+	</nav>
+
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.5/contributing.md">source</a></li>
+		
+		
+		
+	</ul>
+</div>
+
+	<h1>Contributing</h1><!-- <span class="module">contributing</span>-->
+
+
+
+
+		</section>
+
+		<section class="description">
+			<!--
+-->
+
+<h1>Contributing to CanJS</h1>
+
+<h2>Contributing</h2>
+
+<p>When contributing, include tests with new features or bug fixes in a feature branch until you're ready to submit the code for consideration; then fork the repository, push to the fork, and issue a pull request.</p>
+
+<p>Clone the branch and create a new feature branch.</p>
+
+<pre><code>$ git clone git://github.com/bitovi/canjs.git
+$ git branch html5-fix
+$ git checkout html5-fix
+</code></pre>
+
+<p>Add the new remote to your local repository on your local machine.</p>
+
+<pre><code>$ git remote add github git@github.com:bitovi/canjs.git
+</code></pre>
+
+<p>Once your happy with your changes, push to the feature branch.</p>
+
+<pre><code>$ git push github html5-fix
+</code></pre>
+
+<p>Now that we have pushed all the changes to the repo, we need to submit a Pull Request to the main branch.  Navigate to <a href="https://github.com/bitovi/canjs/pulls">Pull Requests</a> and click 'Pull Request' in the top navigation bar.  Fill in some details about your potential patch including a meaningful title. When finished, press "Send pull request". The core team will be notified about your submission and let you know of any problems or targeted release date.</p>
+
+<h2>Documentation</h2>
+
+<p>If your pull request affects the public API, make relevant changes to the documentation.  Documentation is found either inline or in markdown files in the respective directory.</p>
+
+<h2>Reporting Bugs</h2>
+
+<p>To report a bug, please visit <a href="https://github.com/bitovi/canjs/issues">GitHub Issues</a>.  </p>
+
+<p>When filing a bug, its helpful to include:</p>
+
+<ul>
+<li>Small examples using tools like <a href="http://jsbin.com/">JSBin</a></li>
+<li>Breaking unit tests</li>
+<li>Proposed fix solutions</li>
+<li>Search for previous tickets, if there is one add to that one rather than creating another.</li>
+</ul>
+
+<p>You can also post on the <a href="https://forum.javascriptmvc.com/canjs">Forums</a> or talk to us in <a href="http://webchat.freenode.net/?channels=canjs">IRC #canjs channel</a>.</p>
+
+<h2>Running Tests Locally</h2>
+
+<p>Its important that all tests pass before sending a pull request.  TravisCI will determine if your commits pass the tests, but while your developing you can run the QUnit tests locally.  </p>
+
+<p>Open <code>~/can/test/tests.html</code> in a web browser to run the tests locally.  Each module has its own tests too, you can run them by opening the <code>qunit.html</code> in each folder.</p>
+
+<p>CanJS supports the following browsers:</p>
+
+<ul>
+<li>Chrome Current-1</li>
+<li>Safari Current-1</li>
+<li>Firefox Current-1</li>
+<li>IE 7+</li>
+<li>Opera Current-1</li>
+</ul>
+
+<h2>Style Guide</h2>
+
+<h3>Linting</h3>
+
+<p>Grunt provides a JSHint task to verify some basic, practical soundness of the codebase. The options are preset.</p>
+
+<h3>Spacing</h3>
+
+<p>Indentation with tabs, not spaces.</p>
+
+<p><code>if/else/for/while/try</code> always have braces, with the first brace on the same line.  For example:</p>
+
+<pre><code>if(foo){
+
+}
+</code></pre>
+
+<p>Spaces after commas.  For example:</p>
+
+<pre><code>myfn = function(foo, bar, moo){ ... }
+</code></pre>
+
+<h3>Assignments</h3>
+
+<p>Assignments should always have a semicolon after them.</p>
+
+<p>Assignments in a declaration should always be on their own line. Declarations that don't have an assignment should be listed together at the start of the declaration. For example:</p>
+
+<pre><code>// Bad
+var foo = true;
+var bar = false;
+var a;
+var b;
+
+// Good
+var a, b,
+    foo = true,
+    bar = false;
+</code></pre>
+
+<h3>Equality</h3>
+
+<p>Strict equality checks <code>===</code> should be used in favor of <code>==</code>. The only exception is when checking for undefined and null by way of null.</p>
+
+<pre><code>// Bad
+if(bar == "can"){ ... }
+
+// Good
+if(bar === "can"){ ... }
+</code></pre>
+
+<p>If the statement is a truthey or falsey, use implied operators.  Falseys are when variables return <code>false</code>, <code>undefined</code>, <code>null</code>, or <code>0</code>.  Trutheys are when variables return <code>true</code>, <code>1</code>, or anything defined.</p>
+
+<p>For example:</p>
+
+<pre><code>// Bad
+if(bar === false){ ... }
+
+// Good 
+if(bar){ ... }
+
+// Good
+var foo = [];
+if(!foo.length){ ... }
+</code></pre>
+
+<h3>Quotes</h3>
+
+<p>Use double quotes.</p>
+
+<pre><code>var double = "I am wrapped in double quotes";
+</code></pre>
+
+<p>Strings that require inner quoting must use double outside and single inside.</p>
+
+<pre><code>var html = "&lt;div id='my-id'&gt;&lt;/div&gt;";
+</code></pre>
+
+<h3>Comments</h3>
+
+<p>Single line comments go OVER the line they refer to:</p>
+
+<pre><code>// We need an explicit "bar", because later in the code foo is checked.
+var foo = "bar";
+</code></pre>
+
+<p>For long comments, use:</p>
+
+<pre><code>/* myFn
+ * Four score and seven—pause—minutes ago...
+  */
+</code></pre>
+		</section>
+
+		
+
+		
+	</article>
+</div>
+
+<script type="text/javascript">
+	var docData = {
+    "type": "page",
+    "name": "contributing",
+    "body": "",
+    "description": "<!--\n-->\n\n<h1>Contributing to CanJS</h1>\n\n<h2>Contributing</h2>\n\n<p>When contributing, include tests with new features or bug fixes in a feature branch until you're ready to submit the code for consideration; then fork the repository, push to the fork, and issue a pull request.</p>\n\n<p>Clone the branch and create a new feature branch.</p>\n\n<pre><code>$ git clone git://github.com/bitovi/canjs.git\n$ git branch html5-fix\n$ git checkout html5-fix\n</code></pre>\n\n<p>Add the new remote to your local repository on your local machine.</p>\n\n<pre><code>$ git remote add github git@github.com:bitovi/canjs.git\n</code></pre>\n\n<p>Once your happy with your changes, push to the feature branch.</p>\n\n<pre><code>$ git push github html5-fix\n</code></pre>\n\n<p>Now that we have pushed all the changes to the repo, we need to submit a Pull Request to the main branch.  Navigate to <a href=\"https://github.com/bitovi/canjs/pulls\">Pull Requests</a> and click 'Pull Request' in the top navigation bar.  Fill in some details about your potential patch including a meaningful title. When finished, press \"Send pull request\". The core team will be notified about your submission and let you know of any problems or targeted release date.</p>\n\n<h2>Documentation</h2>\n\n<p>If your pull request affects the public API, make relevant changes to the documentation.  Documentation is found either inline or in markdown files in the respective directory.</p>\n\n<h2>Reporting Bugs</h2>\n\n<p>To report a bug, please visit <a href=\"https://github.com/bitovi/canjs/issues\">GitHub Issues</a>.  </p>\n\n<p>When filing a bug, its helpful to include:</p>\n\n<ul>\n<li>Small examples using tools like <a href=\"http://jsbin.com/\">JSBin</a></li>\n<li>Breaking unit tests</li>\n<li>Proposed fix solutions</li>\n<li>Search for previous tickets, if there is one add to that one rather than creating another.</li>\n</ul>\n\n<p>You can also post on the <a href=\"https://forum.javascriptmvc.com/canjs\">Forums</a> or talk to us in <a href=\"http://webchat.freenode.net/?channels=canjs\">IRC #canjs channel</a>.</p>\n\n<h2>Running Tests Locally</h2>\n\n<p>Its important that all tests pass before sending a pull request.  TravisCI will determine if your commits pass the tests, but while your developing you can run the QUnit tests locally.  </p>\n\n<p>Open <code>~/can/test/tests.html</code> in a web browser to run the tests locally.  Each module has its own tests too, you can run them by opening the <code>qunit.html</code> in each folder.</p>\n\n<p>CanJS supports the following browsers:</p>\n\n<ul>\n<li>Chrome Current-1</li>\n<li>Safari Current-1</li>\n<li>Firefox Current-1</li>\n<li>IE 7+</li>\n<li>Opera Current-1</li>\n</ul>\n\n<h2>Style Guide</h2>\n\n<h3>Linting</h3>\n\n<p>Grunt provides a JSHint task to verify some basic, practical soundness of the codebase. The options are preset.</p>\n\n<h3>Spacing</h3>\n\n<p>Indentation with tabs, not spaces.</p>\n\n<p><code>if/else/for/while/try</code> always have braces, with the first brace on the same line.  For example:</p>\n\n<pre><code>if(foo){\n\n}\n</code></pre>\n\n<p>Spaces after commas.  For example:</p>\n\n<pre><code>myfn = function(foo, bar, moo){ ... }\n</code></pre>\n\n<h3>Assignments</h3>\n\n<p>Assignments should always have a semicolon after them.</p>\n\n<p>Assignments in a declaration should always be on their own line. Declarations that don't have an assignment should be listed together at the start of the declaration. For example:</p>\n\n<pre><code>// Bad\nvar foo = true;\nvar bar = false;\nvar a;\nvar b;\n\n// Good\nvar a, b,\n    foo = true,\n    bar = false;\n</code></pre>\n\n<h3>Equality</h3>\n\n<p>Strict equality checks <code>===</code> should be used in favor of <code>==</code>. The only exception is when checking for undefined and null by way of null.</p>\n\n<pre><code>// Bad\nif(bar == \"can\"){ ... }\n\n// Good\nif(bar === \"can\"){ ... }\n</code></pre>\n\n<p>If the statement is a truthey or falsey, use implied operators.  Falseys are when variables return <code>false</code>, <code>undefined</code>, <code>null</code>, or <code>0</code>.  Trutheys are when variables return <code>true</code>, <code>1</code>, or anything defined.</p>\n\n<p>For example:</p>\n\n<pre><code>// Bad\nif(bar === false){ ... }\n\n// Good \nif(bar){ ... }\n\n// Good\nvar foo = [];\nif(!foo.length){ ... }\n</code></pre>\n\n<h3>Quotes</h3>\n\n<p>Use double quotes.</p>\n\n<pre><code>var double = \"I am wrapped in double quotes\";\n</code></pre>\n\n<p>Strings that require inner quoting must use double outside and single inside.</p>\n\n<pre><code>var html = \"&lt;div id='my-id'&gt;&lt;/div&gt;\";\n</code></pre>\n\n<h3>Comments</h3>\n\n<p>Single line comments go OVER the line they refer to:</p>\n\n<pre><code>// We need an explicit \"bar\", because later in the code foo is checked.\nvar foo = \"bar\";\n</code></pre>\n\n<p>For long comments, use:</p>\n\n<pre><code>/* myFn\n * Four score and seven—pause—minutes ago...\n  */\n</code></pre>",
+    "title": "Contributing",
+    "parent": "guides",
+    "src": "can/contributing.md",
+    "id": 21
+};
+
+	console.log(docData);
+</script>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand canjs" href="index.html">CanJS</a>
+			<ul class="pullright">
+				<li><a href="../index.html">Home</a></li>
+				<li><a href="../guides/index.html">Guides</a></li>
+				<li><a href="../docs/index.html">Api</a></li>
+				<li><a href="../community.html">Community</a></li>
+				<li><a href="../download.html">Download</a></li>
+			</ul>
+		</nav>
+	</footer>
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="../resources/html5shiv.js"></script>
+    <!--<![endif]-->
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="../resources/production.js"></script>
+	
+</body>
+
+</html>
