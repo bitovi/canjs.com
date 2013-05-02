@@ -6,10 +6,10 @@
 	    data-search="{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}">
 			<a href="{{makeHref name}}">
 				{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
-				{{#if children.length}}
-					{{> submenu.mustache}}
-				{{/if}}
 			</a>
+			{{#if children.length}}
+				{{> submenu.mustache}}
+			{{/if}}
 	</li>
 	{{/if}}
 	{{/children}}
@@ -18,7 +18,7 @@
 {{^if hide}}
 <li {{#active}}class="active"{{/active}} data-search="{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}">
 <a href="{{makeHref name}}">
-	{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
+	Other branch {{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
 </a>
 </li>
 {{/if}}

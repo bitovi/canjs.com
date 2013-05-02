@@ -847,7 +847,7 @@
 	
 	</li>
 	
-	<li >
+	<li class="active">
 	<a href="can.Observe.html">can.Observe</a>
 	
 	<ul>
@@ -1032,7 +1032,7 @@
 	
 	
 	
-	<li class=" parent expanded"
+	<li class="active parent expanded"
 	    data-search="validations">
 			<a href="can.Observe.validations.html">
 				validations
@@ -1042,7 +1042,7 @@
 <ul>
 	
 	
-	<li class=" "
+	<li class="active "
 	    data-search="validate">
 			<a href="can.Observe.validations.static.validate.html">
 				validate
@@ -1551,7 +1551,7 @@
 	
 	</li>
 	
-	<li class="active">
+	<li >
 	<a href="can.util.html">can.util</a>
 	
 	<ul>
@@ -1715,7 +1715,7 @@
 		
 			
 
-<li class="active" data-search="can.isEmptyObject">
+<li  data-search="can.isEmptyObject">
 <a href="can.isEmptyObject.html">
 	Other branch can.isEmptyObject
 </a>
@@ -2012,14 +2012,14 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/util/util.js#L139">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/observe/validations/validations.js#L78">source</a></li>
 		
 		
 		
 	</ul>
 </div>
 
-	<h1>can.isEmptyObject</h1>
+	<h1>validate</h1><!-- <span class="module">can.Observe.validations.static.validate</span>-->
 
 
 
@@ -2030,89 +2030,109 @@
 		</section>
 
 		<section class="description">
-			<p>Check if an object has no properties. </p>
+			<p><code>validate(attrNames, [options,] validateProc(value, attrName) )</code> validates each of the
+specified attributes with the given <code>validateProc</code> function.  The function
+should return a value if there is an error.  By default, the return value is
+the error message.  Validations should be set in the Constructor's static init method.</p>
+
+<p>The following example validates that a person's age is a number:</p>
+
+<pre><code>Person = can.Observe({
+    init : function(){
+      this.validate(["age"], function(val){
+        if( typeof val === 'number' ){
+          return "must be a number"
+        }
+      })
+    }
+},{})
+</code></pre>
+
+<p>The error message can be overwritten with <code>options</code> <strong>message</strong> property:</p>
+
+<pre><code>Person = can.Observe({
+    init : function(){
+      this.validate(
+        "age",
+      {message: "must be a number"},
+      function(val){
+          if( typeof val === 'number' ){
+            return true
+          }
+      })
+  }
+},{})
+</code></pre>
 		</section>
 
 		
-		<section class="signature">
-			<h2>can.isEmptyObject(obj)</h2>
 
-
-	<h3>Parameters</h3>
-
-	<ol class="parameters">
-		
-		<li class="parameter">
-			<h4>obj <code>{Object}</code></h4>
-			<div class="description">
-				<p><p>The object to check.</p></p>
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>Whether <code>{Boolean}</code></h4>
-			<div class="description">
-				<p><p>the object is empty.</p></p>
-			</div>
-			
-			
-			
-		</li>
-		
-	</ol>
-
-
-		</section>
-		
-
-		
-		<section class="comment">
-			<p><code>can.isEmptyObject(obj)</code> returns if an object has no properties similar to
-[http://api.jquery.com/jQuery.isEmptyObject/ jQuery.isEmptyObject].</p>
-
-<pre><code class="lang-javascript">can.isEmptyObject({})      //-> true
-can.isEmptyObject({a:"b"}) //-> false</code></pre>
-		</section>
 		
 	</article>
 </div>
 
 <script type="text/javascript">
 	var docData = {
-    "body": "<p><code>can.isEmptyObject(obj)</code> returns if an object has no properties similar to\n[http://api.jquery.com/jQuery.isEmptyObject/ jQuery.isEmptyObject].</p>\n\n<pre><code class=\"lang-javascript\">can.isEmptyObject({})      //-> true\ncan.isEmptyObject({a:\"b\"}) //-> false</code></pre>",
-    "description": "<p>Check if an object has no properties. </p>",
-    "title": "",
-    "name": "can.isEmptyObject",
+    "name": "can.Observe.validations.static.validate",
     "type": "function",
-    "parent": "can.util",
-    "signatures": [{
-            "code": "can.isEmptyObject(obj)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "Object"
+    "parent": "can.Observe.validations",
+    "body": "",
+    "description": "<p><code>validate(attrNames, [options,] validateProc(value, attrName) )</code> validates each of the\nspecified attributes with the given <code>validateProc</code> function.  The function\nshould return a value if there is an error.  By default, the return value is\nthe error message.  Validations should be set in the Constructor's static init method.</p>\n\n<p>The following example validates that a person's age is a number:</p>\n\n<pre><code>Person = can.Observe({\n    init : function(){\n      this.validate([\"age\"], function(val){\n        if( typeof val === 'number' ){\n          return \"must be a number\"\n        }\n      })\n    }\n},{})\n</code></pre>\n\n<p>The error message can be overwritten with <code>options</code> <strong>message</strong> property:</p>\n\n<pre><code>Person = can.Observe({\n    init : function(){\n      this.validate(\n        \"age\",\n      {message: \"must be a number\"},\n      function(val){\n          if( typeof val === 'number' ){\n            return true\n          }\n      })\n  }\n},{})\n</code></pre>",
+    "title": "validate",
+    "params": [{
+            "types": [{
+                    "type": "Array",
+                    "template": [{
+                            "types": [{
+                                    "type": "String"
+                                }
+                            ]
                         }
-                    ],
-                    "name": "obj",
-                    "description": "<p>The object to check.</p>"
-                }, {
-                    "types": [{
-                            "type": "Boolean"
-                        }
-                    ],
-                    "name": "Whether",
-                    "description": "<p>the object is empty.</p>"
+                    ]
                 }
-            ]
+            ],
+            "name": "attrNames",
+            "description": "<p>Attribute name(s) to to validate</p>"
+        }, {
+            "types": [{
+                    "type": "Object"
+                }
+            ],
+            "optional": true,
+            "name": "options",
+            "description": "<p>Options for the\nvalidations.  Valid options include 'message' and 'testIf'.</p>"
+        }, {
+            "types": [{
+                    "type": "function",
+                    "returns": {
+                        "types": [{
+                                "type": "undefined"
+                            }
+                        ]
+                    },
+                    "params": [{
+                            "types": [{
+                                    "type": "*"
+                                }
+                            ],
+                            "name": "value"
+                        }, {
+                            "types": [{
+                                    "type": "String"
+                                }
+                            ],
+                            "name": "attrName"
+                        }
+                    ]
+                }
+            ],
+            "name": "validateProc",
+            "description": "<p>Function used to validate each\ngiven attribute. Returns nothing if valid and an error message\notherwise. Function is called in the instance context and takes the\n<code>value</code> and <code>attrName</code> to validate.</p>"
         }
     ],
-    "comment": " ",
-    "src": "can/util/util.js",
-    "line": 139,
-    "id": 167
+    "src": "can/observe/validations/validations.js",
+    "line": 78,
+    "id": 68
 };
 
 	console.log(docData);
