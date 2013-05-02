@@ -124,7 +124,7 @@ module.exports = function (grunt) {
 					page: 'guides',
 					enableSearch: false
 				},
-				src: ['_guides/*.md', 'can/changelog.md', 'can/contributing.md'],
+				src: ['_guides/*.md', 'can/changelog.md', 'can/contributing.md', 'can/license.md'],
 				dest: 'guides/'
 			},
 			docs: {

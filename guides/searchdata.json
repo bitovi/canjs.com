@@ -166,5 +166,10 @@
         "name": "contributing",
         "type": "page",
         "id": 21
+    },
+    "license": {
+        "name": "license",
+        "type": "page",
+        "id": 22
     }
 }

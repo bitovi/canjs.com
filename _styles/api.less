@@ -255,6 +255,9 @@
   font-size: 13px;
   color: #666;
 }
+.sidebar .api > li > ul {
+  display: none;
+}
 
 .sidebar .api > li.active {
   border-bottom: 3px solid @dark;
@@ -272,6 +275,10 @@
   background: -o-linear-gradient(top,  rgba(0,0,0,0.1) 0%,rgba(255,255,255,0) 5%,rgba(255,255,255,0) 96%,rgba(0,0,0,0.1) 100%);
   background: -ms-linear-gradient(top,  rgba(0,0,0,0.1) 0%,rgba(255,255,255,0) 5%,rgba(255,255,255,0) 96%,rgba(0,0,0,0.1) 100%);
   background: linear-gradient(to bottom,  rgba(0,0,0,0.1) 0%,rgba(255,255,255,0) 5%,rgba(255,255,255,0) 96%,rgba(0,0,0,0.1) 100%);
+
+  &> ul {
+    display: block;
+  }
 }
 .sidebar .api li.active > a {
   font-weight: bold;
