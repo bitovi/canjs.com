@@ -1644,7 +1644,7 @@
                             ],
                             "comment": " ",
                             "src": "can/model/model.js",
-                            "line": 1083,
+                            "line": 1076,
                             "id": 98
                         }
                     ]
@@ -2129,7 +2129,7 @@
             "download": "can/model",
             "test": "can/model/qunit.html",
             "src": "can/model/model.js",
-            "line": 1193,
+            "line": 1185,
             "id": 102
         }, {
             "active": false,
@@ -2595,7 +2595,7 @@
                     "name": "can.Observe.prototype",
                     "parent": "can.Observe",
                     "src": "can/observe/observe.js",
-                    "line": 355,
+                    "line": 365,
                     "id": 21,
                     "children": [{
                             "active": false,
@@ -2622,7 +2622,7 @@
                             "description": "<p>Set multiple properties on the observable</p>",
                             "hide": true,
                             "src": "can/observe/observe.js",
-                            "line": 874,
+                            "line": 900,
                             "id": 29
                         }, {
                             "active": false,
@@ -2744,7 +2744,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 382,
+                            "line": 408,
                             "id": 23
                         }, {
                             "active": false,
@@ -2791,7 +2791,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 723,
+                            "line": 749,
                             "id": 26
                         }, {
                             "active": false,
@@ -2824,7 +2824,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 926,
+                            "line": 952,
                             "id": 30
                         }, {
                             "active": false,
@@ -2864,7 +2864,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 529,
+                            "line": 555,
                             "id": 24
                         }, {
                             "active": false,
@@ -2897,7 +2897,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 569,
+                            "line": 595,
                             "id": 25
                         }, {
                             "active": false,
@@ -2916,7 +2916,7 @@
                                 "description": "<p>a JavaScript Object that can be \nserialized with <code>JSON.stringify</code> or other methods. </p>"
                             },
                             "src": "can/observe/observe.js",
-                            "line": 852,
+                            "line": 878,
                             "id": 28
                         }, {
                             "active": false,
@@ -2957,7 +2957,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 820,
+                            "line": 846,
                             "id": 27
                         }
                     ]
@@ -3018,7 +3018,7 @@
                     "name": "can.Observe.static",
                     "parent": "can.Observe",
                     "src": "can/observe/observe.js",
-                    "line": 112,
+                    "line": 122,
                     "id": 16,
                     "children": [{
                             "active": false,
@@ -3051,7 +3051,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 325,
+                            "line": 335,
                             "id": 20
                         }, {
                             "active": false,
@@ -3085,7 +3085,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 123,
+                            "line": 133,
                             "id": 17
                         }, {
                             "active": false,
@@ -3122,7 +3122,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 223,
+                            "line": 233,
                             "id": 18
                         }, {
                             "active": false,
@@ -3173,7 +3173,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 294,
+                            "line": 304,
                             "id": 19
                         }
                     ]
@@ -3456,7 +3456,7 @@
             ],
             "comment": " ",
             "src": "can/observe/observe.js",
-            "line": 963,
+            "line": 984,
             "id": 31,
             "children": [{
                     "active": false,
@@ -3466,7 +3466,7 @@
                     "name": "can.Observe.List.prototype",
                     "parent": "can.Observe.List",
                     "src": "can/observe/observe.js",
-                    "line": 1063,
+                    "line": 1084,
                     "id": 32,
                     "children": [{
                             "active": false,
@@ -3564,7 +3564,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1241,
+                            "line": 1270,
                             "id": 36
                         }, {
                             "active": false,
@@ -3594,7 +3594,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1866,
+                            "line": 1895,
                             "id": 45
                         }, {
                             "active": false,
@@ -3651,7 +3651,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1896,
+                            "line": 1925,
                             "id": 46
                         }, {
                             "active": false,
@@ -3684,7 +3684,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1756,
+                            "line": 1785,
                             "id": 41
                         }, {
                             "active": false,
@@ -3717,7 +3717,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1787,
+                            "line": 1816,
                             "id": 42
                         }, {
                             "active": false,
@@ -3742,7 +3742,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1660,
+                            "line": 1689,
                             "id": 39
                         }, {
                             "active": false,
@@ -3775,7 +3775,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1539,
+                            "line": 1568,
                             "id": 37
                         }, {
                             "active": false,
@@ -3805,7 +3805,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1920,
+                            "line": 1949,
                             "id": 47
                         }, {
                             "active": false,
@@ -3830,7 +3830,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1810,
+                            "line": 1839,
                             "id": 43
                         }, {
                             "active": false,
@@ -3842,7 +3842,7 @@
                             "description": "<p>Returns the serialized form of this list.</p>",
                             "hide": true,
                             "src": "can/observe/observe.js",
-                            "line": 1109,
+                            "line": 1138,
                             "id": 33
                         }, {
                             "active": false,
@@ -3867,7 +3867,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1695,
+                            "line": 1724,
                             "id": 40
                         }, {
                             "active": false,
@@ -3910,7 +3910,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1830,
+                            "line": 1859,
                             "id": 44
                         }, {
                             "active": false,
@@ -3958,7 +3958,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1152,
+                            "line": 1181,
                             "id": 35
                         }, {
                             "active": false,
@@ -3991,7 +3991,7 @@
                             ],
                             "comment": " ",
                             "src": "can/observe/observe.js",
-                            "line": 1581,
+                            "line": 1610,
                             "id": 38
                         }
                     ]
@@ -4042,12 +4042,12 @@
             ],
             "comment": " ",
             "src": "can/observe/compute/compute.js",
-            "line": 130,
+            "line": 132,
             "id": 77,
             "children": [{
                     "active": false,
-                    "type": "function",
                     "name": "can.compute.bind",
+                    "type": "function",
                     "parent": "can.compute",
                     "body": "",
                     "description": "<p>Bind an event handler to a compute. </p>",
@@ -4109,7 +4109,7 @@
                         }
                     ],
                     "src": "can/observe/compute/compute.js",
-                    "line": 327,
+                    "line": 445,
                     "id": 79
                 }, {
                     "active": false,
@@ -4120,12 +4120,12 @@
                     "description": "<p>Whether the value of the compute has been computed yet.</p>",
                     "title": "isComputed",
                     "src": "can/observe/compute/compute.js",
-                    "line": 319,
+                    "line": 421,
                     "id": 78
                 }, {
                     "active": false,
-                    "type": "function",
                     "name": "can.compute.unbind",
+                    "type": "function",
                     "parent": "can.compute",
                     "body": "",
                     "description": "<p>Unbind an event handler from a compute. </p>",
@@ -4160,7 +4160,7 @@
                         }
                     ],
                     "src": "can/observe/compute/compute.js",
-                    "line": 363,
+                    "line": 471,
                     "id": 80
                 }
             ]

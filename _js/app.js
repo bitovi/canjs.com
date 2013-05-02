@@ -1,6 +1,4 @@
 (function($) {
-	can.route.ready(false);
-
 	window.CanJSUS = window.CanJSUS || {};
 
 	window.CanJSUS.initTwitterWidgets = function() {

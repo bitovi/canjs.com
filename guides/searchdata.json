@@ -160,15 +160,11 @@
     "changelog": {
         "name": "changelog",
         "type": "page",
-        "id": 20,
-        "title": "Changelog",
-        "parent": "guides"
+        "id": 20
     },
     "contributing": {
         "name": "contributing",
         "type": "page",
-        "id": 21,
-        "title": "Contributing",
-        "parent": "guides"
+        "id": 21
     }
 }

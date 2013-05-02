@@ -1,5 +1,4 @@
 can.Model("CanJSUS.Tweet", {
-	//TODO: remove models() once the Bithub API can filter
 	model: function(data) {
 		return {
 			handle: data.actor,

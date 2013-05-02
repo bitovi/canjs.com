@@ -5,5 +5,14 @@ CanJSUS.CommunityTab('CanJSUS.IRCTab', {
 }, {
 	init: function() {
 		this._super();
+		this.scrollToBottom();
+	},
+	scrollToBottom: function() {
+		var chatbox = $('.irc-chat-container', this.element);
+		chatbox.scrollTop(chatbox.prop('scrollHeight'));
+	},
+	'{state} lines': function(ev, newVal, oldVal) {
+		// we have to wait until the tempate re-renders
+		window.setTimeout(can.proxy(this.scrollToBottom, this), 0);
 	}
 });

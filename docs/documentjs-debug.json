@@ -551,7 +551,7 @@
         "name": "can.Observe.static",
         "parent": "can.Observe",
         "src": "can/observe/observe.js",
-        "line": 112,
+        "line": 122,
         "id": 16
     },
     "can.Observe.startBatch": {
@@ -585,7 +585,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 123,
+        "line": 133,
         "id": 17
     },
     "can.Observe.stopBatch": {
@@ -622,7 +622,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 223,
+        "line": 233,
         "id": 18
     },
     "can.Observe.triggerBatch": {
@@ -673,7 +673,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 294,
+        "line": 304,
         "id": 19
     },
     "can.Observe.keys": {
@@ -706,7 +706,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 325,
+        "line": 335,
         "id": 20
     },
     "can.Observe.prototype": {
@@ -716,7 +716,7 @@
         "name": "can.Observe.prototype",
         "parent": "can.Observe",
         "src": "can/observe/observe.js",
-        "line": 355,
+        "line": 365,
         "id": 21
     },
     "can.Observe.prototype._cid": {
@@ -731,7 +731,7 @@
         "name": "can.Observe.prototype._cid",
         "hide": true,
         "src": "can/observe/observe.js",
-        "line": 362,
+        "line": 372,
         "id": 22
     },
     "can.Observe.prototype.attr": {
@@ -853,7 +853,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 382,
+        "line": 408,
         "id": 23
     },
     "can.Observe.prototype.each": {
@@ -893,7 +893,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 529,
+        "line": 555,
         "id": 24
     },
     "can.Observe.prototype.removeAttr": {
@@ -926,7 +926,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 569,
+        "line": 595,
         "id": 25
     },
     "can.Observe.prototype.bind": {
@@ -973,7 +973,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 723,
+        "line": 749,
         "id": 26
     },
     "can.Observe.prototype.unbind": {
@@ -1014,7 +1014,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 820,
+        "line": 846,
         "id": 27
     },
     "can.Observe.prototype.serialize": {
@@ -1033,7 +1033,7 @@
             "description": "<p>a JavaScript Object that can be \nserialized with <code>JSON.stringify</code> or other methods. </p>"
         },
         "src": "can/observe/observe.js",
-        "line": 852,
+        "line": 878,
         "id": 28
     },
     "can.Observe.prototype._attrs": {
@@ -1060,7 +1060,7 @@
         "description": "<p>Set multiple properties on the observable</p>",
         "hide": true,
         "src": "can/observe/observe.js",
-        "line": 874,
+        "line": 900,
         "id": 29
     },
     "can.Observe.prototype.compute": {
@@ -1093,7 +1093,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 926,
+        "line": 952,
         "id": 30
     },
     "can.Observe.List": {
@@ -1129,7 +1129,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 963,
+        "line": 984,
         "id": 31
     },
     "can.Observe.List.prototype": {
@@ -1139,7 +1139,7 @@
         "name": "can.Observe.List.prototype",
         "parent": "can.Observe.List",
         "src": "can/observe/observe.js",
-        "line": 1063,
+        "line": 1084,
         "id": 32
     },
     "can.Observe.List.prototype.serialize": {
@@ -1151,7 +1151,7 @@
         "description": "<p>Returns the serialized form of this list.</p>",
         "hide": true,
         "src": "can/observe/observe.js",
-        "line": 1109,
+        "line": 1138,
         "id": 33
     },
     "can.Observe.List.prototype.each": {
@@ -1201,7 +1201,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1116,
+        "line": 1145,
         "id": 34
     },
     "can.Observe.List.prototype.splice": {
@@ -1249,7 +1249,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1152,
+        "line": 1181,
         "id": 35
     },
     "can.Observe.List.prototype.attr": {
@@ -1347,7 +1347,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1241,
+        "line": 1270,
         "id": 36
     },
     "can.Observe.List.prototype.push": {
@@ -1380,7 +1380,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1539,
+        "line": 1568,
         "id": 37
     },
     "can.Observe.List.prototype.unshift": {
@@ -1413,7 +1413,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1581,
+        "line": 1610,
         "id": 38
     },
     "can.Observe.List.prototype.pop": {
@@ -1438,7 +1438,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1660,
+        "line": 1689,
         "id": 39
     },
     "can.Observe.List.prototype.shift": {
@@ -1463,7 +1463,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1695,
+        "line": 1724,
         "id": 40
     },
     "can.Observe.List.prototype.indexOf": {
@@ -1496,7 +1496,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1756,
+        "line": 1785,
         "id": 41
     },
     "can.Observe.List.prototype.join": {
@@ -1529,7 +1529,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1787,
+        "line": 1816,
         "id": 42
     },
     "can.Observe.List.prototype.reverse": {
@@ -1554,7 +1554,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1810,
+        "line": 1839,
         "id": 43
     },
     "can.Observe.List.prototype.slice": {
@@ -1597,7 +1597,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1830,
+        "line": 1859,
         "id": 44
     },
     "can.Observe.List.prototype.concat": {
@@ -1627,7 +1627,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1866,
+        "line": 1895,
         "id": 45
     },
     "can.Observe.List.prototype.forEach": {
@@ -1684,7 +1684,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1896,
+        "line": 1925,
         "id": 46
     },
     "can.Observe.List.prototype.replace": {
@@ -1714,7 +1714,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1920,
+        "line": 1949,
         "id": 47
     },
     "can/observe/attributes/attributes.md": {
@@ -2561,7 +2561,7 @@
         ],
         "comment": " ",
         "src": "can/observe/compute/compute.js",
-        "line": 130,
+        "line": 132,
         "id": 77
     },
     "can.compute.isComputed": {
@@ -2572,12 +2572,12 @@
         "description": "<p>Whether the value of the compute has been computed yet.</p>",
         "title": "isComputed",
         "src": "can/observe/compute/compute.js",
-        "line": 319,
+        "line": 421,
         "id": 78
     },
     "can.compute.bind": {
-        "type": "function",
         "name": "can.compute.bind",
+        "type": "function",
         "parent": "can.compute",
         "body": "",
         "description": "<p>Bind an event handler to a compute. </p>",
@@ -2639,12 +2639,12 @@
             }
         ],
         "src": "can/observe/compute/compute.js",
-        "line": 327,
+        "line": 445,
         "id": 79
     },
     "can.compute.unbind": {
-        "type": "function",
         "name": "can.compute.unbind",
+        "type": "function",
         "parent": "can.compute",
         "body": "",
         "description": "<p>Unbind an event handler from a compute. </p>",
@@ -2679,7 +2679,7 @@
             }
         ],
         "src": "can/observe/compute/compute.js",
-        "line": 363,
+        "line": 471,
         "id": 80
     },
     "can/model/model.md": {
@@ -3470,7 +3470,7 @@
         ],
         "comment": " ",
         "src": "can/model/model.js",
-        "line": 1083,
+        "line": 1076,
         "id": 98
     },
     "can.Model.prototype.created": {
@@ -3490,7 +3490,7 @@
             }
         ],
         "src": "can/model/model.js",
-        "line": 1143,
+        "line": 1135,
         "id": 99
     },
     "can.Model.prototype.updated": {
@@ -3510,7 +3510,7 @@
             }
         ],
         "src": "can/model/model.js",
-        "line": 1150,
+        "line": 1142,
         "id": 100
     },
     "can.Model.prototype.destroyed": {
@@ -3521,7 +3521,7 @@
         "name": "can.Model.prototype.destroyed",
         "hide": true,
         "src": "can/model/model.js",
-        "line": 1157,
+        "line": 1149,
         "id": 101
     },
     "can.Model.List": {
@@ -3535,7 +3535,7 @@
         "download": "can/model",
         "test": "can/model/qunit.html",
         "src": "can/model/model.js",
-        "line": 1193,
+        "line": 1185,
         "id": 102
     },
     "can/control/control.md": {
