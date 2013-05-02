@@ -167,9 +167,13 @@ module.exports = function (grunt) {
 					'can/view/ejs/ejs.md',
 					'can/view/ejs/ejs.js',
 					'can/view/mustache/doc/*.md',
-					//'can/view/mustache/mustache.js',
+					'can/view/mustache/mustache.js',
+					'can/view/modifiers/modifiers.md',
+					'can/view/modifiers/modifiers.js',
 					'can/util/util.md',
-					'can/util/util.js'
+					'can/util/util.js',
+					'can/util/fixture/fixture.md',
+					'can/util/fixture.js'
 				],
 				dest: 'docs/'
 			},

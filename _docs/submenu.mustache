@@ -2,7 +2,7 @@
 <ul>
 	{{#children}}
 	{{^if hide}}
-	<li class="{{#active}}active{{/active}} {{#children.length}}parent expanded{{/children.length}}"
+	<li class="{{#active}}active{{/active}}{{#children.length}} parent expanded{{/children.length}}"
 	    data-search="{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}">
 			<a href="{{makeHref name}}">
 				{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
@@ -18,7 +18,7 @@
 {{^if hide}}
 <li {{#active}}class="active"{{/active}} data-search="{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}">
 <a href="{{makeHref name}}">
-	Other branch {{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
+	{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
 </a>
 </li>
 {{/if}}
