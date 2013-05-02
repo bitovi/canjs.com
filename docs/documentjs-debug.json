@@ -19,6 +19,14 @@
         "type": "script",
         "name": "can/construct/construct.md"
     },
+    "can.Construct.plugins": {
+        "name": "can.Construct.plugins",
+        "title": "plugins",
+        "type": "plugins",
+        "parent": "can.Construct",
+        "description": "",
+        "id": 1
+    },
     "can.Construct": {
         "type": "constructor",
         "name": "can.Construct",
@@ -74,7 +82,7 @@
         ],
         "comment": " ",
         "src": "can/construct/construct.md",
-        "id": 1
+        "id": 2
     },
     "can/construct/construct.js": {
         "type": "script",
@@ -88,7 +96,7 @@
         "parent": "can.Construct",
         "src": "can/construct/construct.js",
         "line": 22,
-        "id": 2
+        "id": 3
     },
     "can.Construct.newInstance": {
         "type": "function",
@@ -122,7 +130,7 @@
         "comment": " ",
         "src": "can/construct/construct.js",
         "line": 26,
-        "id": 3
+        "id": 4
     },
     "can.Construct.setup": {
         "type": "function",
@@ -169,7 +177,7 @@
         "comment": " ",
         "src": "can/construct/construct.js",
         "line": 94,
-        "id": 4
+        "id": 5
     },
     "can.Construct.static.extend": {
         "type": "function",
@@ -251,7 +259,7 @@
         },
         "src": "can/construct/construct.js",
         "line": 170,
-        "id": 5
+        "id": 6
     },
     "can.Construct.namespace": {
         "name": "can.Construct.namespace",
@@ -266,7 +274,7 @@
         "title": "namespace",
         "src": "can/construct/construct.js",
         "line": 268,
-        "id": 6
+        "id": 7
     },
     "can.Construct.shortName": {
         "name": "can.Construct.shortName",
@@ -281,7 +289,7 @@
         "title": "shortName",
         "src": "can/construct/construct.js",
         "line": 283,
-        "id": 7
+        "id": 8
     },
     "can.Construct.fullName": {
         "name": "can.Construct.fullName",
@@ -296,7 +304,7 @@
         "title": "fullName",
         "src": "can/construct/construct.js",
         "line": 299,
-        "id": 8
+        "id": 9
     },
     "can.Construct.prototype": {
         "type": "prototype",
@@ -306,7 +314,7 @@
         "parent": "can.Construct",
         "src": "can/construct/construct.js",
         "line": 329,
-        "id": 9
+        "id": 10
     },
     "can.Construct.prototype.setup": {
         "body": "<p>If a prototype <code>setup</code> method is provided, it is called when a new \ninstance is created. It is passed the same arguments that were passed\nto the constructor.</p>\n\n<p>Because <code>setup</code> is not defined on <code>can.Construct</code> itself, calling super from\ndirectly-inheriting classes will break. In other words, don't do this:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('Snowflake', {\n    setup: function() {\n        this._super(); // this will break!\n    }\n});</code></pre>\n\n<h2><code>setup</code> vs. <code>init</code></h2>\n\n<p>Usually, you should use [can.Construct::init] to do your class's initialization.\nUse <code>setup</code> instead for:</p>\n\n<ul>\n<li>initialization code that you want to run before the inheriting constructor's \n<code>init</code> method is called.</li>\n<li>initialization code that should run whether or not inheriting constructors\ncall their base's <code>init</code> methods.</li>\n<li>modifying the arguments that will get passed to <code>init</code>.</li>\n</ul>\n\n<h2>Example</h2>\n\n<p>This code is a simplified version of the code in [can.Control]'s setup\nmethod. It converts the first argument to a jQuery collection and\nextends the controller's defaults with the options that were passed.</p>\n\n<pre><code class=\"lang-javascript\">can.Construct(\"can.Control\", {\n    setup: function(domElement, rawOptions) {\n        // set up this.element\n        this.element = $(domElement);\n\n        // set up this.options\n        this.options = can.extend({},\n                                  this.constructor.defaults,\n                                  rawOptions\n                                 );\n\n        // pass this.element and this.options to init.\n        return [this.element, this.options];        \n    }\n});</code></pre>         ",
@@ -341,7 +349,7 @@
         "comment": " ",
         "src": "can/construct/construct.js",
         "line": 333,
-        "id": 10
+        "id": 11
     },
     "can.Construct.prototype.init": {
         "body": "<p>If a prototype <code>init</code> method is provided, it is called when a new Construct is created,\nafter [can.Construct::setup]. The <code>init</code> method is where the bulk of your initialization code\nshould go, and a common thing to do in <code>init</code> is to save the arguments passed into the constructor.</p>\n\n<h2>Examples</h2>\n\n<p>First, we'll make a Person constructor that has a first and last name:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct(\"Person\", {\n    init: function(first, last) {\n        this.first = first;\n        this.last  = last;\n    }\n});\n\nvar justin = new Person(\"Justin\", \"Meyer\");\njustin.first; // \"Justin\"\njustin.last; // \"Meyer\"</code></pre>\n\n<p>Then we'll extend Person into Programmer and add a favorite language:</p>\n\n<pre><code class=\"lang-javascript\">Person(\"Programmer\", {\n    init: function(first, last, language) {\n        // call base's init\n        Person.prototype.init.apply(this, arguments);\n\n        // other initialization code\n        this.language = language;\n    },\n    bio: function() {\n        return 'Hi! I'm ' + this.first + ' ' + this.last +\n            ' and I write ' + this.language + '.';\n    }\n});\n\nvar brian = new Programmer(\"Brian\", \"Moschel\", 'ECMAScript');\nbrian.bio(); // \"Hi! I'm Brian Moschel and I write ECMAScript.\";</code></pre>\n\n<h2>Be Aware</h2>\n\n<p>[can.Construct::setup] is able to modify the arguments passed to <code>init</code>.\nIf you aren't receiving the right arguments to <code>init</code>, check to make sure\nthat they aren't being changed by <code>setup</code> somewhere along the inheritance chain.</p>",
@@ -367,7 +375,7 @@
         "comment": " ",
         "src": "can/construct/construct.js",
         "line": 393,
-        "id": 11
+        "id": 12
     },
     "can.Construct.prototype.constructor": {
         "type": "property",
@@ -389,7 +397,7 @@
         "parent": "can.Construct.prototype",
         "src": "can/construct/construct.js",
         "line": 449,
-        "id": 12
+        "id": 13
     },
     "can/construct/proxy/proxy.md": {
         "type": "script",
@@ -400,8 +408,7 @@
         "name": "proxy",
         "body": "",
         "description": "<p>can.Construct.proxy is a plugin that helps you manage scope when creating\ncallback functions by ensuring that <code>this</code> is set correctly and sensibly\ninside callbacks.</p>",
-        "parent": "can.Construct",
-        "plugin": "can/construct/proxy",
+        "parent": "can.Construct.plugins",
         "test": "can/construct/proxy/qunit.html",
         "download": "http://donejs.com/can/dist/can.construct.proxy.js",
         "signatures": [{
@@ -468,7 +475,7 @@
             }
         ],
         "src": "can/construct/proxy/proxy.md",
-        "id": 13
+        "id": 14
     },
     "can/construct/super/super.md": {
         "type": "script",
@@ -479,7 +486,7 @@
         "name": "super",
         "body": "",
         "description": "<p>can.Construct.super is a plugin that makes it easier to call base\nfunctions from inside inheriting functions.</p>",
-        "parent": "can.Construct",
+        "parent": "can.Construct.plugins",
         "plugin": "can/construct/super",
         "test": "can/construct/super/qunit.html",
         "download": "http://donejs.com/can/dist/can.construct.super.js",
@@ -499,11 +506,19 @@
             }
         ],
         "src": "can/construct/super/super.md",
-        "id": 14
+        "id": 15
     },
     "can/observe/observe.md": {
         "type": "script",
         "name": "can/observe/observe.md"
+    },
+    "can.Observe.plugins": {
+        "name": "can.Observe.plugins",
+        "title": "plugins",
+        "type": "plugins",
+        "parent": "can.Observe",
+        "description": "",
+        "id": 16
     },
     "can.Observe": {
         "type": "constructor",
@@ -539,7 +554,7 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.md",
-        "id": 15
+        "id": 17
     },
     "can/observe/observe.js": {
         "type": "script",
@@ -553,7 +568,7 @@
         "parent": "can.Observe",
         "src": "can/observe/observe.js",
         "line": 122,
-        "id": 16
+        "id": 18
     },
     "can.Observe.startBatch": {
         "type": "function",
@@ -587,7 +602,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 133,
-        "id": 17
+        "id": 19
     },
     "can.Observe.stopBatch": {
         "type": "function",
@@ -624,7 +639,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 233,
-        "id": 18
+        "id": 20
     },
     "can.Observe.triggerBatch": {
         "type": "function",
@@ -675,7 +690,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 304,
-        "id": 19
+        "id": 21
     },
     "can.Observe.keys": {
         "type": "function",
@@ -708,7 +723,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 335,
-        "id": 20
+        "id": 22
     },
     "can.Observe.prototype": {
         "type": "prototype",
@@ -718,7 +733,7 @@
         "parent": "can.Observe",
         "src": "can/observe/observe.js",
         "line": 365,
-        "id": 21
+        "id": 23
     },
     "can.Observe.prototype._cid": {
         "type": "property",
@@ -733,7 +748,7 @@
         "hide": true,
         "src": "can/observe/observe.js",
         "line": 372,
-        "id": 22
+        "id": 24
     },
     "can.Observe.prototype.attr": {
         "type": "function",
@@ -855,7 +870,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 408,
-        "id": 23
+        "id": 25
     },
     "can.Observe.prototype.each": {
         "type": "function",
@@ -895,7 +910,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 555,
-        "id": 24
+        "id": 26
     },
     "can.Observe.prototype.removeAttr": {
         "type": "function",
@@ -928,7 +943,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 595,
-        "id": 25
+        "id": 27
     },
     "can.Observe.prototype.bind": {
         "name": "can.Observe.prototype.bind",
@@ -975,7 +990,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 749,
-        "id": 26
+        "id": 28
     },
     "can.Observe.prototype.unbind": {
         "name": "can.Observe.prototype.unbind",
@@ -1016,7 +1031,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 846,
-        "id": 27
+        "id": 29
     },
     "can.Observe.prototype.serialize": {
         "type": "function",
@@ -1035,7 +1050,7 @@
         },
         "src": "can/observe/observe.js",
         "line": 878,
-        "id": 28
+        "id": 30
     },
     "can.Observe.prototype._attrs": {
         "type": "function",
@@ -1062,7 +1077,7 @@
         "hide": true,
         "src": "can/observe/observe.js",
         "line": 900,
-        "id": 29
+        "id": 31
     },
     "can.Observe.prototype.compute": {
         "type": "function",
@@ -1095,7 +1110,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 952,
-        "id": 30
+        "id": 32
     },
     "can.Observe.List": {
         "name": "can.Observe.List",
@@ -1131,7 +1146,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 984,
-        "id": 31
+        "id": 33
     },
     "can.Observe.List.prototype": {
         "type": "prototype",
@@ -1141,7 +1156,7 @@
         "parent": "can.Observe.List",
         "src": "can/observe/observe.js",
         "line": 1084,
-        "id": 32
+        "id": 34
     },
     "can.Observe.List.prototype.serialize": {
         "type": "function",
@@ -1153,7 +1168,7 @@
         "hide": true,
         "src": "can/observe/observe.js",
         "line": 1138,
-        "id": 33
+        "id": 35
     },
     "can.Observe.List.prototype.each": {
         "body": "<pre><code class=\"lang-javascript\">var i = 0;\nnew can.Observe([1, 10, 100]).each(function(element, index) {\n    i += element;\n});\n\ni; // 111\n\ni = 0;\nnew can.Observe([1, 10, 100]).each(function(element, index) {\n    i += element;\n    if(index >= 1) {\n        return false;\n    }\n});\n\ni; // 11</code></pre>     ",
@@ -1203,7 +1218,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 1145,
-        "id": 34
+        "id": 36
     },
     "can.Observe.List.prototype.splice": {
         "type": "function",
@@ -1251,7 +1266,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 1181,
-        "id": 35
+        "id": 37
     },
     "can.Observe.List.prototype.attr": {
         "type": "function",
@@ -1349,7 +1364,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 1270,
-        "id": 36
+        "id": 38
     },
     "can.Observe.List.prototype.push": {
         "name": "can.Observe.List.prototype.push",
@@ -1382,7 +1397,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 1568,
-        "id": 37
+        "id": 39
     },
     "can.Observe.List.prototype.unshift": {
         "name": "can.Observe.List.prototype.unshift",
@@ -1415,7 +1430,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 1610,
-        "id": 38
+        "id": 40
     },
     "can.Observe.List.prototype.pop": {
         "name": "can.Observe.List.prototype.pop",
@@ -1440,7 +1455,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 1689,
-        "id": 39
+        "id": 41
     },
     "can.Observe.List.prototype.shift": {
         "name": "can.Observe.List.prototype.shift",
@@ -1465,7 +1480,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 1724,
-        "id": 40
+        "id": 42
     },
     "can.Observe.List.prototype.indexOf": {
         "type": "function",
@@ -1498,7 +1513,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 1785,
-        "id": 41
+        "id": 43
     },
     "can.Observe.List.prototype.join": {
         "name": "can.Observe.List.prototype.join",
@@ -1531,7 +1546,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 1816,
-        "id": 42
+        "id": 44
     },
     "can.Observe.List.prototype.reverse": {
         "name": "can.Observe.List.prototype.reverse",
@@ -1556,7 +1571,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 1839,
-        "id": 43
+        "id": 45
     },
     "can.Observe.List.prototype.slice": {
         "type": "function",
@@ -1599,7 +1614,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 1859,
-        "id": 44
+        "id": 46
     },
     "can.Observe.List.prototype.concat": {
         "type": "function",
@@ -1629,7 +1644,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 1895,
-        "id": 45
+        "id": 47
     },
     "can.Observe.List.prototype.forEach": {
         "type": "function",
@@ -1686,7 +1701,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 1925,
-        "id": 46
+        "id": 48
     },
     "can.Observe.List.prototype.replace": {
         "type": "function",
@@ -1716,7 +1731,7 @@
         "comment": " ",
         "src": "can/observe/observe.js",
         "line": 1949,
-        "id": 47
+        "id": 49
     },
     "can/observe/attributes/attributes.md": {
         "type": "script",
@@ -1728,13 +1743,13 @@
         "body": "<p>There are three important static properties to give the class you want to use attributes with:\n- <code>[can.Observe.attributes.attributes attributes]</code> lists the properties that will be normalized\nand the types those properties should be.\n- <code>[can.Observe.attributes.convert convert]</code> lists how to convert and normalize arbitrary values\nto the types this class uses.\n- <code>[can.Observe.attributes.serialize serialize]</code> lists serialization algorithms for the types\nthis class uses.</p>\n\n<p>Together, the functions in <em>convert</em> and <em>serialize</em> make up the type definitions for the class.\nThe attributes plugin comes with three useful predefined types: <code>'date'</code>, <code>'number'</code>, and <code>'boolean'</code>.</p>\n\n<p>Here is a quick example of an Observe-based class using the attributes plugin to convert and normalize\nits data, and then to serialize the instance:</p>\n\n<pre><code class=\"lang-javascript\">can.Observe('Bio', {\n    attributes: {\n        birthday: 'date',\n        weight: 'number'\n    }\n    // Bio only uses built-in types, so no\n    // need to specify serialize or convert.\n}, {});\n\nvar alice = new Bio({\n    birthday: Date.parse('1985-04-01'), // 481161600000\n    weight: '120'\n});\n\nalice.attr();      // { birthday: Date(481161600000), weight: 120 }\nalice.serialize(); // { birthday: 481161600000, weight: 120 }\n</code></pre>\n\n<h3>Demo</h3>\n\n<p>When a user enters a new date in the format of <em>YYYY-DD-MM</em>, the control \nlistens for changes in the input box and updates the Observable using \nthe <code>attr</code> method which then converts the string into a JavaScript date object.  </p>\n\n<p>Additionally, the control also listens for changes on the Observable and \nupdates the age in the page for the new birthdate of the contact.</p>\n\n<div class='demo_wrapper' data-demo-src='can/observe/attributes/attributes.html'></div>\n\n<h3>Reference types</h3>\n\n<p>Types listed in <code>attributes</code> can also be a functions, such as the <code>model</code> or\n<code>models</code> methods of a [can.Model]. When data of this kind of type is set, this\nfunction is used to convert the raw data into an instance of the Model.</p>\n\n<p>This example builds on the previous one to demonstrate these reference types.</p>\n\n<p>can.Observe('Bio', {\n    attributes: {\n        birthday: 'date',\n        weight: 'number'\n    }\n    // Contact only uses built-in types, so you don't have\n    // to specify serialize or convert.\n}, {});</p>\n\n<p>can.Observe('Contact', {\n  attributes: {\n    bio: 'Bio.newInstance'\n  }\n}, {});</p>\n\n<p>var alice = new Contact({\n  first: 'Alice',\n  last: 'Liddell',\n  bio: {\n    birthday: Date.parse('1985-04-01'), // 481161600000\n    weight: 120\n  }\n});</p>\n\n<p>The Attributes plugin provides functionality for converting data attributes from raw types and \nserializing complex types for the server.</p>\n\n<p>Below is an example code of an Observe providing serialization and conversion for dates and numbers.  </p>\n\n<p>When <code>Contact</code> is initialized, the <code>weight</code> attribute is set and converted to a <code>number</code> using the\nconverter we provided.  Next the <code>birthday</code> attribute is set using the <code>attr</code> method and gets converted\nas well.  Lastly, <code>serialize</code> is invoked converting the new attributes to raw types for the server.</p>\n\n<pre><code>var Contact = new can.Observe({\n    attributes: {\n        birthday: 'date'\n        weight: 'number'\n    },\n    serialize : {\n        date : function( val, type ){\n            // returns the string formatted as 'YYYY-DD-MM'\n            return val.getYear() + \n                    \"-\" + (val.getMonth() + 1) + \n                    \"-\" + val.getDate(); \n        },\n        number: (val){\n            return val + '';\n        }\n    },\n    convert: {\n        // converts string to date\n        date: function( date ) {\n            if ( typeof date == 'string' ) {\n                //- Extracts dates formated 'YYYY-DD-MM'\n                var matches = raw.match( /(\\d+)-(\\d+)-(\\d+)/ ); \n\n                //- Parses to date object and returns\n                date = new Date( matches[ 1 ],\n                        ( +matches[ 2 ] ) - 1, \n                        matches[ 3 ] ); \n            }\n\n            return date;\n        },\n\n        // converts string to number\n        number: function(number){\n            if(typeof number === 'string'){\n                number = parseInt(number);\n            }\n            return number;\n        }\n    }\n}, {});\n\nvar brian = new Contact({\n    weight: '300'\n});\n\nvar weight = brian.attr('weight'); //-&gt; 300\n\n//- sets brian's birthday\nbrian.attr('birthday', '11-29-1983');\n\nvar date = brian.attr('birthday'); //-&gt; Date()\n\nvar seralizedObj = brian.serialize();\n//-&gt; { 'birthday': '11-29-1983', 'weight': '300' }\n</code></pre>\n\n<h2>Associations</h2>\n\n<p>Attribute type values can also represent the name of a function. The most common case this is used is for associated data.</p>\n\n<p>For example, a <code>Deliverable</code> might have many tasks and an owner (which is a Person). The attributes property might look like:</p>\n\n<pre><code>var Deliverable = new can.Observe({\n    attributes : {\n        tasks : \"App.Models.Task.models\"\n        owner: \"App.Models.Person.model\"\n    }\n});\n</code></pre>\n\n<p>This points tasks and owner properties to use <em>Task</em> and <em>Person</em> to convert the raw data into an array of Tasks and a Person.</p>\n\n<p>Its important to note that the full names of the models themselves are <em>App.Models.Task</em> and <em>App.Models.Person</em>. The <code>.model</code> \nand <code>.models</code> parts are appended for the benefit of convert to identify the types as models.</p>\n\n<h3>Demo</h3>\n\n<p>Below is a demo that showcases associations between 2 different models to show the tasks\nfor each contact and how much time they have left to complete the task(s) using converters.</p>\n\n<div class='demo_wrapper' data-demo-src='can/observe/attributes/attributes-assocations.html'></div>",
         "description": "<p>can.Observe.attributes is a plugin that helps convert and normalize data being set on an Observe\nand allows you to specify the way complex types get serialized. The attributes plugin is most\nhelpful when used with [can.Model] (because the serialization aids in sending data to a server),\nbut you can use it with any Observe you plan to make instances\nfrom.</p>",
         "title": "attributes",
-        "parent": "can.Observe",
+        "parent": "can.Observe.plugins",
         "plugin": "can/observe/attributes",
         "test": "can/observe/attributes/qunit.html",
         "download": "http://donejs.com/can/dist/can.observe.attributes.js",
         "comment": " ",
         "src": "can/observe/attributes/attributes.md",
-        "id": 48
+        "id": 50
     },
     "can/observe/attributes/attributes.js": {
         "type": "script",
@@ -1749,7 +1764,7 @@
         "title": "attributes",
         "src": "can/observe/attributes/attributes.js",
         "line": 12,
-        "id": 49
+        "id": 51
     },
     "can.Observe.attributes.static.convert": {
         "name": "can.Observe.attributes.static.convert",
@@ -1760,7 +1775,7 @@
         "title": "can.Observe.convert",
         "src": "can/observe/attributes/attributes.js",
         "line": 30,
-        "id": 50
+        "id": 52
     },
     "can.Observe.attributes.static.serialize": {
         "name": "can.Observe.attributes.static.serialize",
@@ -1771,7 +1786,7 @@
         "title": "can.Observe.serialize",
         "src": "can/observe/attributes/attributes.js",
         "line": 191,
-        "id": 51
+        "id": 53
     },
     "can.Observe.setup": {
         "name": "can.Observe.setup",
@@ -1783,7 +1798,7 @@
         "parent": "can.Observe.attributes",
         "src": "can/observe/attributes/attributes.js",
         "line": 237,
-        "id": 52
+        "id": 54
     },
     "can.Observe.prototype.convert": {
         "name": "can.Observe.prototype.convert",
@@ -1795,7 +1810,7 @@
         "parent": "can.Observe.attributes",
         "src": "can/observe/attributes/attributes.js",
         "line": 283,
-        "id": 53
+        "id": 55
     },
     "can.Observe.prototype.attributes.serialize": {
         "type": "function",
@@ -1829,7 +1844,7 @@
         "comment": " ",
         "src": "can/observe/attributes/attributes.js",
         "line": 308,
-        "id": 54
+        "id": 56
     },
     "can/observe/backup/backup.md": {
         "type": "script",
@@ -1841,12 +1856,12 @@
         "body": "",
         "description": "<p>can.Observe.backup is a plugin that provides a dirty bit for properties on an Observe,\nand lets you restore the original values of an Observe's properties after they are changed.</p>\n\n<p>Here is an example showing how to use <code>[can.Observe.prototype.backup backup]</code> to save values,\n<code>[can.Observe.prototype.restore restore]</code> to restore them, and <code>[can.Observe.prototype.isDirty isDirty]</code>\nto check if the Observe has changed:</p>\n\n<pre><code class=\"lang-javascript\">var recipe = new can.Observe({\n  title: 'Pancake Mix',\n  yields: '3 batches',\n  ingredients: [{\n    ingredient: 'flour',\n    quantity: '6 cups'\n  },{\n    ingredient: 'baking soda',\n    quantity: '1 1/2 teaspoons'\n  },{\n    ingredient: 'baking powder',\n    quantity: '3 teaspoons'\n  },{\n    ingredient: 'salt',\n    quantity: '1 tablespoon'\n  },{\n    ingredient: 'sugar',\n    quantity: '2 tablespoons'\n  }]\n});\nrecipe.backup();\n\nrecipe.attr('title', 'Flapjack Mix');\nrecipe.title;     // 'Flapjack Mix'\nrecipe.isDirty(); // true\n\nrecipe.restore();\nrecipe.title;     // 'Pancake Mix'</code></pre>",
         "title": "backup",
-        "parent": "can.Observe",
+        "parent": "can.Observe.plugins",
         "plugin": "can/observe/backup",
         "test": "can/observe/backup/qunit.html",
         "download": "http://donejs.com/can/dist/can.observe.backup.js",
         "src": "can/observe/backup/backup.md",
-        "id": 55
+        "id": 57
     },
     "can/observe/backup/backup.js": {
         "type": "script",
@@ -1875,7 +1890,7 @@
         ],
         "src": "can/observe/backup/backup.js",
         "line": 14,
-        "id": 56
+        "id": 58
     },
     "can.Observe.backup.prototype.isDirty": {
         "type": "function",
@@ -1910,7 +1925,7 @@
         ],
         "src": "can/observe/backup/backup.js",
         "line": 63,
-        "id": 57
+        "id": 59
     },
     "can.Observe.backup.prototype.restore": {
         "type": "function",
@@ -1945,7 +1960,7 @@
         ],
         "src": "can/observe/backup/backup.js",
         "line": 128,
-        "id": 58
+        "id": 60
     },
     "can/observe/delegate/delegate.js": {
         "type": "script",
@@ -2007,7 +2022,7 @@
         },
         "src": "can/observe/delegate/delegate.js",
         "line": 133,
-        "id": 59
+        "id": 61
     },
     "can.Observe.prototype.undelegate": {
         "type": "function",
@@ -2055,7 +2070,7 @@
         },
         "src": "can/observe/delegate/delegate.js",
         "line": 327,
-        "id": 60
+        "id": 62
     },
     "can/observe/delegate/delegate.md": {
         "type": "script",
@@ -2067,12 +2082,12 @@
         "body": "",
         "description": "<p>The <strong>delegate</strong> plugin allows you to listen to more specific event changes on \n[can.Observe Observes].  It allows you to specify:</p>\n\n<ul>\n<li>the <strong>attribute</strong> or <strong>attributes</strong> - that you want to listen to and optionally the <strong>value</strong> you want it to match</li>\n<li>the <strong>type</strong> of event (add,set,remove,change)</li>\n</ul>\n\n<p>Listen to specific event changes with \n<code>[can.Observe::delegate delegate](selector, event, handler(ev,newVal,oldVal,from))</code> :</p>\n\n<pre><code>// create an observable\nvar observe = new can.Observe({\n  name : {\n    first : \"Justin Meyer\"\n  }\n})\n  var handler;\n//listen to changes on a property\nobserve.delegate(\"name.first\",\"set\", \n  handler = function(ev, newVal, oldVal, prop){\n\n  this   //-&gt; \"Justin\"\n  ev.currentTarget //-&gt; observe\n  newVal //-&gt; \"Justin Meyer\"\n  oldVal //-&gt; \"Justin\"\n  prop   //-&gt; \"name.first\"\n});\n\n// change the property\nobserve.attr('name.first',\"Justin\")\n</code></pre>\n\n<p>Delegate will listen on the object until you \ncall <code>[can.Observe::undelegate undelegate](selector, event, handler)</code> to remove the event handler.</p>\n\n<pre><code>observe.undelegate(\"name.first\",\"set\", handler );\n</code></pre>",
         "title": "delegate",
-        "parent": "can.Observe",
+        "parent": "can.Observe.plugins",
         "plugin": "can/observe/delegate",
         "test": "can/observe/delegate/qunit.html",
         "download": "http://donejs.com/can/dist/can.observe.delegate.js",
         "src": "can/observe/delegate/delegate.md",
-        "id": 61
+        "id": 63
     },
     "can/observe/setter/setter.md": {
         "type": "script",
@@ -2084,13 +2099,13 @@
         "body": "<p>The <code>attr</code> function looks for a <code>setATTRNAME</code> function to handle setting \nthe <code>ATTRNAME</code> property.</p>\n\n<p>By providing a function that takes the raw data and returns a form useful for JavaScript, \nwe can make our observes automatically convert data.</p>\n\n<pre><code>var Contact = can.Observe({\n    setBirthday : function(raw){\n        if(typeof raw == 'number'){\n            return new Date( raw )\n        }else if(raw instanceof Date){\n            return raw;\n        }\n    }\n});\n\n// set on init\nvar contact = new Contact({ birthday: 1332777411799 });\n\n// get the contact's birthday via 'attr' method\ncontact.attr('birthday') \n    // -&gt; Mon Mar 26 2012 08:56:51 GMT-0700 (MST)\n\n// set via 'attr' method\ncontact.attr('birthday', new Date('11/11/11').getTime())\n\ncontact.attr('birthday') \n    // -&gt; Fri Nov 11 2011 00:00:00 GMT-0700 (MST)\n\ncontact.attr({\n    'birthday': new Date('03/31/12').getTime()\n});\n\ncontact.attr('birthday') \n    // -&gt; Sat Mar 31 2012 00:00:00 GMT-0700 (MST)\n</code></pre>\n\n<p>If the returned value is <code>undefined</code>, this means the setter is either in an async \nevent or the attribute(s) were not set. </p>\n\n<h2>Differences From <code>attr</code></h2>\n\n<p>The way that return values from setters affect the value of an Observe's property is\ndifferent from [can.Observe::attr attr]'s normal behavior. Specifically, when the \nproperty's current value is an Observe or List, and an Observe or List is returned\nfrom a setter, the effect will not be to merge the values into the current value as\nif the return value was fed straight into <code>attr</code>, but to replace the value with the\nnew Observe or List completely:</p>\n\n<pre><code class=\"lang-javascript\">var Contact = can.Observe({\n    setInfo: function(raw) {\n      return raw;\n    }\n});\n\nvar alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});\nalice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}\nalice.info._cid; // '.observe1'\n\nalice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});\nalice.attr(); // {name: 'Allison Wonderland', 'phone': '888-888-8888'}\nalice.info._cid; // '.observe2'</code></pre>\n\n<p>If you would rather have the new Observe or List merged into the current value, call\n<code>attr</code> inside the setter:</p>\n\n<pre><code class=\"lang-javascript\">var Contact = can.Observe({\n    setInfo: function(raw) {\n      this.info.attr(raw);\n      return this.info;\n    }\n});\n\nvar alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});\nalice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}\nalice.info._cid; // '.observe1'\n\nalice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});\nalice.attr(); // {name: 'Allison Wonderland', email: 'alice@liddell.com', 'phone': '888-888-8888'}\nalice.info._cid; // '.observe1'</code></pre>\n\n<h2>Error Handling</h2>\n\n<p>Setters can trigger errors if values passed didn't meet your defined validation(s).</p>\n\n<p>Below is an example of a <em>School</em> observable that accepts a name property and errors\nwhen no value or a empty string is passed.</p>\n\n<pre><code>var School = can.Observe({\n    setName : function(name, success, error){\n        if(!name){\n            error(\"no name\");\n        }\n        return error;\n    }\n});\n\nvar school = new School();\n\n// bind to error handler\nschool.bind(\"error\", function(ev, attr, error){\n    alert(\"no name\")\n})\n\n// set to empty string\nschool.attr(\"name\",\"\");\n</code></pre>\n\n<h2>Demo</h2>\n\n<p>The example app is a pagination widget that updates\nthe offsets when the <em>Prev</em> or <em>Next</em> button is clicked.</p>\n\n<div class='demo_wrapper' data-demo-src='can/observe/setter/setter-paginate.html'></div>",
         "description": "<p><code>can.Observe.setter(name, success(value), error(errors))</code> extends the Observe object \nto provide convenient helper methods for setting attributes on a observable.</p>",
         "title": "setter",
-        "parent": "can.Observe",
+        "parent": "can.Observe.plugins",
         "plugin": "can/observe/setter",
         "download": "http://donejs.com/can/dist/can.observe.setter.js",
         "test": "can/observe/setter/qunit.html",
         "comment": " ",
         "src": "can/observe/setter/setter.md",
-        "id": 62
+        "id": 64
     },
     "can/observe/setter/setter.js": {
         "type": "script",
@@ -2127,123 +2142,7 @@
         "comment": " ",
         "src": "can/observe/setter/setter.js",
         "line": 2,
-        "id": 63
-    },
-    "can/observe/sort/sort.md": {
-        "type": "script",
-        "name": "can/observe/sort/sort.md"
-    },
-    "sort": {
-        "type": "function",
-        "name": "sort",
-        "body": "",
-        "description": "",
-        "parent": "can/observe/sort/sort.js",
-        "plugin": "can/observe/sort",
-        "download": "http://donejs.com/can/dist/can.observe.sort.js",
-        "test": "can/observe/sort/qunit.html",
-        "src": "can/observe/sort/sort.md",
-        "params": [{
-                "name": "method",
-                "types": [{
-                        "type": "*"
-                    }
-                ]
-            }, {
-                "name": "silent",
-                "types": [{
-                        "type": "*"
-                    }
-                ]
-            }
-        ],
-        "hide": true,
-        "id": 64
-    },
-    "can/observe/sort/sort.js": {
-        "type": "script",
-        "name": "can/observe/sort/sort.js"
-    },
-    "sortedIndex": {
-        "type": "function",
-        "name": "sortedIndex",
-        "params": [{
-                "name": "item",
-                "types": [{
-                        "type": "*"
-                    }
-                ]
-            }
-        ],
-        "parent": "can/observe/sort/sort.js",
-        "body": "",
-        "description": "",
-        "hide": true,
-        "src": "can/observe/sort/sort.js",
-        "line": 11,
         "id": 65
-    },
-    "push": {
-        "name": "push",
-        "type": "function",
-        "parent": "can/observe/sort/sort.js",
-        "body": "",
-        "description": "<p>Add items to the end of the list.</p>\n\n<pre><code>var l = new can.Observe.List([]);\n\nl.bind('change', function(\n    ev,        // the change event\n    attr,      // the attr that was changed, for multiple items, \"*\" is used\n    how,       // \"add\"\n    newVals,   // an array of new values pushed\n    oldVals,   // undefined\n    where      // the location where these items where added\n    ) {\n\n})\n\nl.push('0','1','2');\n</code></pre>",
-        "title": "",
-        "params": [{
-                "variable": true,
-                "types": [{
-                        "type": "*"
-                    }
-                ],
-                "optional": true,
-                "name": "items",
-                "description": "<p>items to add to the end of the list.</p>"
-            }
-        ],
-        "returns": {
-            "types": [{
-                    "type": "Number"
-                }
-            ],
-            "description": "<p>the number of items in the array</p>"
-        },
-        "src": "can/observe/sort/sort.js",
-        "line": 57,
-        "id": 66
-    },
-    "unshift": {
-        "name": "unshift",
-        "type": "function",
-        "parent": "can/observe/sort/sort.js",
-        "body": "",
-        "description": "<p>Add items to the start of the list.  This is very similar to\n[can.Observe.List::push].  Example:</p>\n\n<pre><code>var l = new can.Observe.List([\"a\",\"b\"]);\nl.unshift(1,2,3) //-&gt; 5\nl.attr() //-&gt; [1,2,3,\"a\",\"b\"]\n</code></pre>",
-        "title": "",
-        "params": [{
-                "variable": true,
-                "types": [{
-                        "type": "*"
-                    }
-                ],
-                "optional": true,
-                "name": "items",
-                "description": "<p>items to add to the start of the list.</p>"
-            }
-        ],
-        "returns": {
-            "types": [{
-                    "type": "Number"
-                }
-            ],
-            "description": "<p>the length of the array.</p>"
-        },
-        "src": "can/observe/sort/sort.js",
-        "line": 80,
-        "id": 67
-    },
-    "can/observe/transaction/transaction.js": {
-        "type": "script",
-        "name": "can/observe/transaction/transaction.js"
     },
     "can/observe/validations/validations.md": {
         "type": "script",
@@ -2255,12 +2154,12 @@
         "body": "<div class='demo_wrapper' data-demo-src='can/observe/validations/validations.html'></div>",
         "description": "<p>The <code>can/observe/validations</code> plugin provides validations on observes. Validations\nare set on [can.Observe]'s <strong>static</strong> <code>init</code> function.</p>\n\n<p>The following validates the <code>birthday</code> attribute in Contacts:</p>\n\n<pre><code>Contact = can.Observe({\n    init : function(){\n        // validates that birthday is in the future\n        this.validate(\"birthday\",function(birthday){\n            if(birthday &gt; new Date){\n                return \"your birthday needs to be in the past\"\n            }\n        })\n    }\n},{});\n\nvar contact = new Contact({birthday: new Date(2012,0) })\n</code></pre>\n\n<p>Use [can.Observe::errors errors] <code>( [attrs...], newVal )</code> to read errors\nor to test if setting a value would create an error:</p>\n\n<pre><code>// Check if there are errors on the instance\ncontact.errors() //-&gt; null - there are no errors\n\n// Test if setting birthday to new Date(3013,0) would error\ncontact.errros(\"birthday\", \n               new Date(3013,0) ) \n               //-&gt; [\"your birthday needs to be in the past\"] \n\n// Set birthday anyway\ncontact.attr(\"birthday\", new Date(3013,0) )\n\n// Get all errors\ncontact.errors() \n    //-&gt; {\n    //     birthday: [\"your birthday needs to be in the past\"]\n    //   }\n\n// Get errors for birthday\ncontact.errors(\"birthday\") \n    //-&gt; [\"your birthday needs to be in the past\"]\n</code></pre>\n\n<h2>Validation Methods</h2>\n\n<p>The most basic validate method is [can.Observe.validate validate]<code>()</code>.  </p>\n\n<p>There are several built-in validation methods so you don't have to define your own in all cases like in the birthday example above.</p>\n\n<ul>\n<li>[can.Observe.validate]<code>(attrNames, options, proc)</code> Attributes validated with function.</li>\n<li>[can.Observe.validateFormatOf]<code>(attrNames, regexp, options)</code> Attributes match the regular expression.    </li>\n<li>[can.Observe.validateInclusionOf]<code>( attrNames, inArray, [options] )</code> Attributes are available in a particular array.    </li>\n<li>[can.Observe.validateLengthOf validateLengthOf]<code>(attrNames, min, max, [options])</code> Attributes' lengths are in the given range.    </li>\n<li>[can.Observe.validatePresenceOf validatePresenceOf]<code>( attrNames, [options] )</code> Attributes are not blank.    </li>\n<li>[can.Observe.validateRangeOf validateRangeOf]<code>(attrNames, low, hi, [options])</code> Attributes are in the given numeric range.</li>\n</ul>\n\n<h2>Error Method</h2>\n\n<p><a href=\"\">can.Observe::errors</a> runs the validations on this model. You can also pass it an array \nof attributes to run only those attributes. It returns \nnothing if there are no errors, or an object of errors by attribute.</p>\n\n<p>To use validations, it's required you use the <em>observe/validations</em> plugin.</p>\n\n<pre><code>can.Observe(\"Task\",{\n    init : function(){\n        this.validatePresenceOf(\"dueDate\")\n    }\n},{});\n\nvar task = new Task(),\n    errors = task.errors()\n\nerrors.dueDate[0] //-&gt; \"can't be empty\"\n</code></pre>\n\n<h2>Listening to events</h2>\n\n<p>Use [can.Observe::bind bind] to listen to error messages:</p>\n\n<pre><code>contact.bind(\"error\", function(ev, attr, errors){\n    // attr = \"birthday\"\n    // errors = { birthday: \n    //      [\"your birthday needs to be in the past\"] }\n})\n</code></pre>\n\n<h2>Demo</h2>\n\n<p>Click a person's name to update their birthday.  If you put the date\nin the future, say the year 2525, it will report back an error.</p>",
         "title": "validations",
-        "parent": "can.Observe",
+        "parent": "can.Observe.plugins",
         "plugin": "can/observe/validations",
         "download": "http://donejs.com/can/dist/can.observe.validations.js",
         "test": "can/observe/validations/qunit.html",
         "src": "can/observe/validations/validations.md",
-        "id": 68
+        "id": 66
     },
     "can/observe/validations/validations.js": {
         "type": "script",
@@ -2274,7 +2173,7 @@
         "parent": null,
         "src": "can/observe/validations/validations.js",
         "line": 75,
-        "id": 69
+        "id": 67
     },
     "can.Observe.validations.static.validationMessages": {
         "name": "can.Observe.validations.static.validationMessages",
@@ -2285,7 +2184,7 @@
         "title": "can.Observe.validationMessages",
         "src": "can/observe/validations/validations.js",
         "line": 127,
-        "id": 70
+        "id": 68
     },
     "can.Observe.validations.static.validateFormatOf": {
         "type": "function",
@@ -2327,7 +2226,7 @@
         "title": "can.Observe.validateFormatOf",
         "src": "can/observe/validations/validations.js",
         "line": 161,
-        "id": 71
+        "id": 69
     },
     "can.Observe.validations.static.validateInclusionOf": {
         "type": "function",
@@ -2369,7 +2268,7 @@
         "title": "can.Observe.validateInclusionOf",
         "src": "can/observe/validations/validations.js",
         "line": 188,
-        "id": 72
+        "id": 70
     },
     "can.Observe.validations.static.validateLengthOf": {
         "type": "function",
@@ -2418,7 +2317,7 @@
         "title": "can.Observe.validateLengthOf",
         "src": "can/observe/validations/validations.js",
         "line": 217,
-        "id": 73
+        "id": 71
     },
     "can.Observe.validations.static.validatePresenceOf": {
         "type": "function",
@@ -2453,7 +2352,7 @@
         "title": "can.Observe.validatePresenceOf",
         "src": "can/observe/validations/validations.js",
         "line": 243,
-        "id": 74
+        "id": 72
     },
     "can.Observe.validations.static.validateRangeOf": {
         "type": "function",
@@ -2502,7 +2401,7 @@
         "title": "can.Observe.validateRangeOf",
         "src": "can/observe/validations/validations.js",
         "line": 264,
-        "id": 75
+        "id": 73
     },
     "prototype": {
         "body": "",
@@ -2512,7 +2411,7 @@
         "parent": null,
         "src": "can/observe/validations/validations.js",
         "line": 291,
-        "id": 76
+        "id": 74
     },
     "can/observe/compute/compute.js": {
         "type": "script",
@@ -2563,7 +2462,7 @@
         "comment": " ",
         "src": "can/observe/compute/compute.js",
         "line": 132,
-        "id": 77
+        "id": 75
     },
     "can.compute.isComputed": {
         "name": "can.compute.isComputed",
@@ -2574,7 +2473,7 @@
         "title": "isComputed",
         "src": "can/observe/compute/compute.js",
         "line": 421,
-        "id": 78
+        "id": 76
     },
     "can.compute.bind": {
         "name": "can.compute.bind",
@@ -2641,7 +2540,7 @@
         ],
         "src": "can/observe/compute/compute.js",
         "line": 445,
-        "id": 79
+        "id": 77
     },
     "can.compute.unbind": {
         "name": "can.compute.unbind",
@@ -2681,7 +2580,7 @@
         ],
         "src": "can/observe/compute/compute.js",
         "line": 471,
-        "id": 80
+        "id": 78
     },
     "can/model/model.md": {
         "type": "script",
@@ -2761,7 +2660,7 @@
         ],
         "comment": " ",
         "src": "can/model/model.md",
-        "id": 81
+        "id": 79
     },
     "can/model/model.js": {
         "type": "script",
@@ -2775,7 +2674,7 @@
         "parent": "can.Model",
         "src": "can/model/model.js",
         "line": 118,
-        "id": 82
+        "id": 80
     },
     "can.Model.bind": {
         "body": "<p><code>bind(eventType, handler(event, instance))</code> listens to\n<strong>created</strong>, <strong>updated</strong>, <strong>destroyed</strong> events on all \ninstances of the model.</p>\n\n<pre><code>Task.bind(\"created\", function(ev, createdTask){\n     this //-&gt; Task\n  createdTask.attr(\"name\") //-&gt; \"Dishes\"\n})\n\nnew Task({name: \"Dishes\"}).save();\n</code></pre>",
@@ -2822,7 +2721,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 122,
-        "id": 83
+        "id": 81
     },
     "can.Model.unbind": {
         "body": "<p><code>unbind(eventType, handler)</code> removes a listener\nattached with [can.Model.bind].</p>\n\n<pre><code>var handler = function(ev, createdTask){\n\n}\nTask.bind(\"created\", handler)\nTask.unbind(\"created\", handler)\n</code></pre>\n\n<p>You have to pass the same function to <code>unbind</code> that you\npassed to <code>bind</code>.</p>",
@@ -2869,7 +2768,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 148,
-        "id": 84
+        "id": 82
     },
     "can.Model.id": {
         "body": "",
@@ -2884,7 +2783,7 @@
         "parent": "can.Model.static",
         "src": "can/model/model.js",
         "line": 174,
-        "id": 85
+        "id": 83
     },
     "can.Model.create": {
         "name": "can.Model.create",
@@ -2928,7 +2827,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 209,
-        "id": 86
+        "id": 84
     },
     "can.Model.update": {
         "name": "can.Model.update",
@@ -2979,7 +2878,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 272,
-        "id": 87
+        "id": 85
     },
     "can.Model.destroy": {
         "name": "can.Model.destroy",
@@ -3023,7 +2922,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 364,
-        "id": 88
+        "id": 86
     },
     "can.Model.findAll": {
         "name": "can.Model.findAll",
@@ -3086,7 +2985,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 425,
-        "id": 89
+        "id": 87
     },
     "can.Model.findOne": {
         "name": "can.Model.findOne",
@@ -3149,7 +3048,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 498,
-        "id": 90
+        "id": 88
     },
     "can.Model.models": {
         "type": "function",
@@ -3197,7 +3096,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 655,
-        "id": 91
+        "id": 89
     },
     "can.Model.model": {
         "type": "function",
@@ -3230,7 +3129,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 794,
-        "id": 92
+        "id": 90
     },
     "can.Model.prototype": {
         "type": "prototype",
@@ -3240,7 +3139,7 @@
         "parent": "can.Model",
         "src": "can/model/model.js",
         "line": 875,
-        "id": 93
+        "id": 91
     },
     "can.Model.prototype.isNew": {
         "type": "function",
@@ -3265,7 +3164,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 879,
-        "id": 94
+        "id": 92
     },
     "can.Model.prototype.save": {
         "type": "function",
@@ -3321,7 +3220,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 897,
-        "id": 95
+        "id": 93
     },
     "can.Model.prototype.destroy": {
         "type": "function",
@@ -3377,7 +3276,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 967,
-        "id": 96
+        "id": 94
     },
     "can.Model.prototype.bind": {
         "type": "function",
@@ -3424,7 +3323,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 1013,
-        "id": 97
+        "id": 95
     },
     "can.Model.prototype.unbind": {
         "type": "function",
@@ -3472,7 +3371,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 1076,
-        "id": 98
+        "id": 96
     },
     "can.Model.prototype.created": {
         "type": "function",
@@ -3492,7 +3391,7 @@
         ],
         "src": "can/model/model.js",
         "line": 1135,
-        "id": 99
+        "id": 97
     },
     "can.Model.prototype.updated": {
         "type": "function",
@@ -3512,7 +3411,7 @@
         ],
         "src": "can/model/model.js",
         "line": 1142,
-        "id": 100
+        "id": 98
     },
     "can.Model.prototype.destroyed": {
         "type": "function",
@@ -3523,7 +3422,7 @@
         "hide": true,
         "src": "can/model/model.js",
         "line": 1149,
-        "id": 101
+        "id": 99
     },
     "can.Model.List": {
         "name": "can.Model.List",
@@ -3537,11 +3436,19 @@
         "test": "can/model/qunit.html",
         "src": "can/model/model.js",
         "line": 1185,
-        "id": 102
+        "id": 100
     },
     "can/control/control.md": {
         "type": "script",
         "name": "can/control/control.md"
+    },
+    "can.Control.plugins": {
+        "name": "can.Control.plugins",
+        "title": "plugins",
+        "type": "plugins",
+        "parent": "can.Control",
+        "description": "",
+        "id": 101
     },
     "can.Control": {
         "type": "constructor",
@@ -3554,7 +3461,7 @@
         "test": "can/control/qunit.html",
         "inherits": "can.Construct",
         "src": "can/control/control.md",
-        "id": 103
+        "id": 102
     },
     "can/control/control.js": {
         "type": "script",
@@ -3568,7 +3475,7 @@
         "parent": "can.Control",
         "src": "can/control/control.js",
         "line": 43,
-        "id": 104
+        "id": 103
     },
     "can.Control.static.setup": {
         "type": "function",
@@ -3580,7 +3487,7 @@
         "hide": true,
         "src": "can/control/control.js",
         "line": 48,
-        "id": 105
+        "id": 104
     },
     "can.Control.static._isAction": {
         "type": "function",
@@ -3607,7 +3514,7 @@
         },
         "src": "can/control/control.js",
         "line": 93,
-        "id": 106
+        "id": 105
     },
     "can.Control.static._action": {
         "type": "function",
@@ -3642,7 +3549,7 @@
         },
         "src": "can/control/control.js",
         "line": 112,
-        "id": 107
+        "id": 106
     },
     "can.Control.processors": {
         "name": "can.Control.processors",
@@ -3654,7 +3561,7 @@
         "comment": " ",
         "src": "can/control/control.js",
         "line": 165,
-        "id": 108
+        "id": 107
     },
     "can.Control.defaults": {
         "type": "property",
@@ -3666,7 +3573,7 @@
         "comment": " ",
         "src": "can/control/control.js",
         "line": 264,
-        "id": 109
+        "id": 108
     },
     "can.Control.prototype": {
         "type": "prototype",
@@ -3676,7 +3583,7 @@
         "parent": "can.Control",
         "src": "can/control/control.js",
         "line": 290,
-        "id": 110
+        "id": 109
     },
     "can.Control.prototype.element": {
         "body": "",
@@ -3688,7 +3595,7 @@
         "comment": " ",
         "src": "can/control/control.js",
         "line": 295,
-        "id": 111
+        "id": 110
     },
     "can.Control.prototype.setup": {
         "type": "function",
@@ -3735,7 +3642,7 @@
         "comment": " ",
         "src": "can/control/control.js",
         "line": 311,
-        "id": 112
+        "id": 111
     },
     "can.Control.prototype.options": {
         "name": "can.Control.prototype.options",
@@ -3747,7 +3654,7 @@
         "comment": " ",
         "src": "can/control/control.js",
         "line": 371,
-        "id": 113
+        "id": 112
     },
     "can.Control.prototype.on": {
         "type": "function",
@@ -3829,7 +3736,7 @@
         "comment": " ",
         "src": "can/control/control.js",
         "line": 519,
-        "id": 114
+        "id": 113
     },
     "can.Control.prototype.off": {
         "type": "function",
@@ -3841,7 +3748,7 @@
         "hide": true,
         "src": "can/control/control.js",
         "line": 670,
-        "id": 115
+        "id": 114
     },
     "can.Control.prototype.destroy": {
         "type": "function",
@@ -3859,6 +3766,23 @@
         "comment": " ",
         "src": "can/control/control.js",
         "line": 684,
+        "id": 115
+    },
+    "can/control/route/route.md": {
+        "type": "script",
+        "name": "can/control/route/route.md"
+    },
+    "route": {
+        "type": "page",
+        "name": "route",
+        "body": "<p>The can.Control.route plugin adds a <strong>route</strong> [can.Control.processors processor] to [can.Control].\nThis allows creating routes and binding to [can.route] in a single step by listening to the <em>route</em> event\nand a route part. Route events will be triggered whenever the route changes to the route part\nthe control is listening to. For example:</p>\n\n<pre><code>var Router = can.Control({\n    init : function(el, options) {\n    },\n\n    \":type route\" : function(data) {\n        // the route says anything but todo\n    },\n\n    \"todo/:id route\" : function(data) {\n        // the route says todo/[id]\n        // data.id is the id or default value\n    },\n\n    \"route\" : function(data){\n        // the route is empty\n    }\n});\n\nnew Router(window);\n</code></pre>\n\n<p><code>route</code> without a route part will get called when the route is empty.\nThe data passed to the event handler is the serialized route data without the\n<em>route</em> attribute.</p>\n\n<h2>Demo</h2>\n\n<p>The following demo shows the above control in action.\nYou can edit the hash, follow some example links or directly change the can.route atttributes.\nAt the top it shows the control action being called and the data passed to it:</p>\n\n<div class='iframe_wrapper' data-iframe-src='can/control/route/demo.html' data-iframe-height='700'></div>",
+        "description": "",
+        "parent": "can.Control.plugins",
+        "plugin": "can/control/route",
+        "test": "can/control/view/qunit.html",
+        "download": "http://donejs.com/can/dist/can.control.route.js",
+        "comment": " ",
+        "src": "can/control/route/route.md",
         "id": 116
     },
     "can/control/plugin/plugin.md": {
@@ -3870,8 +3794,8 @@
         "name": "can.Control.plugin",
         "body": "<div class='demo_wrapper' data-demo-src='can/control/plugin/plugin.html'></div>",
         "description": "<p>The <code>can.Control.plugin</code> extension is a plugin for creating and accessing \ncontrols with jQuery helper methods.  It uses the control's [can.Construct.fullName fullName] \nor a static [can.Control.plugin.static.pluginName pluginName] attribute for the name of the control.</p>\n\n<p>For example, the following plugin:</p>\n\n<pre><code>var Tabs = can.Control({\n  pluginName : 'tabs'\n},{\n  init : function(element, options, arg1){ },\n  update : function(options) {}\n})\n</code></pre>\n\n<p>Can now be created directly on the jQuery collection like:</p>\n\n<pre><code>$(\".tabs\").tabs();\n</code></pre>\n\n<p><strong>Note:</strong> This plugin only supports jQuery.</p>\n\n<h2>Invoking Methods</h2>\n\n<p>You can invoke methods on a control instance after its created through a few\ndifferent approaches.  </p>\n\n<p>Once a controller is initialized on a DOM element, you can invoke a method by calling\nthe plugin with the method name followed by the parameters for that method.\nWhen calling a method and it returns a value other than <code>undefined</code>, this value will\nbe returned. Otherwise the method call will return the jQuery object (for chaining).</p>\n\n<pre><code>var MyTodo = can.Control({\n  pluginName : 'my_todo'\n}, {\n  addTask: function(name, task){\n    this.element.append(name + \": \" + task)\n  },\n\n  getTasks : function() {\n    return this.element.text();\n  }\n});\n\n// Initialize MyTodo\n$('.my_todo').my_todo();\n\n// Calls addTask, returns the jQuery element\n$('.my_todo').my_todo(\"addTask\", 'Brian', 'Sweep garage') // -&gt; jQuery\n// Calls getTasks, returns the element text\n$('.my_todo').my_todo(\"getTasks\") // -&gt; Brian: Sweep garage\n</code></pre>\n\n<p>You can also retrieve the control instance and invoke the method directly.</p>\n\n<pre><code>var control = $('.my_todo').control();\ncontrol.addTask('Brian', 'Sweep garage');\n</code></pre>\n\n<p>For more information on this, see [jQuery.fn.control] or [jQuery.fn.controls].</p>\n\n<h2>Demo</h2>\n\n<p>The following demo shows creating a plugin widget and then updating the widget's <code>times</code> variable\nfor each time the button was clicked.</p>",
-        "title": "can.Control.plugin",
-        "parent": "can.Control",
+        "title": "plugin",
+        "parent": "can.Control.plugins",
         "plugin": "can/control/plugin",
         "test": "can/control/plugin/qunit.html",
         "download": "http://donejs.com/can/dist/can.control.plugin.js",
@@ -4007,23 +3931,6 @@
         "line": 172,
         "id": 122
     },
-    "can/control/route/route.md": {
-        "type": "script",
-        "name": "can/control/route/route.md"
-    },
-    "route": {
-        "type": "page",
-        "name": "route",
-        "body": "<p>The can.Control.route plugin adds a <strong>route</strong> [can.Control.processors processor] to [can.Control].\nThis allows creating routes and binding to [can.route] in a single step by listening to the <em>route</em> event\nand a route part. Route events will be triggered whenever the route changes to the route part\nthe control is listening to. For example:</p>\n\n<pre><code>var Router = can.Control({\n    init : function(el, options) {\n    },\n\n    \":type route\" : function(data) {\n        // the route says anything but todo\n    },\n\n    \"todo/:id route\" : function(data) {\n        // the route says todo/[id]\n        // data.id is the id or default value\n    },\n\n    \"route\" : function(data){\n        // the route is empty\n    }\n});\n\nnew Router(window);\n</code></pre>\n\n<p><code>route</code> without a route part will get called when the route is empty.\nThe data passed to the event handler is the serialized route data without the\n<em>route</em> attribute.</p>\n\n<h2>Demo</h2>\n\n<p>The following demo shows the above control in action.\nYou can edit the hash, follow some example links or directly change the can.route atttributes.\nAt the top it shows the control action being called and the data passed to it:</p>\n\n<div class='iframe_wrapper' data-iframe-src='can/control/route/demo.html' data-iframe-height='700'></div>",
-        "description": "",
-        "parent": "can.Control",
-        "plugin": "can/control/route",
-        "test": "can/control/view/qunit.html",
-        "download": "http://donejs.com/can/dist/can.control.route.js",
-        "comment": " ",
-        "src": "can/control/route/route.md",
-        "id": 123
-    },
     "can/route/route.md": {
         "type": "script",
         "name": "can/route/route.md"
@@ -4069,7 +3976,7 @@
         ],
         "comment": " ",
         "src": "can/route/route.md",
-        "id": 124
+        "id": 123
     },
     "can/route/route.js": {
         "type": "script",
@@ -4106,7 +4013,7 @@
         "comment": " ",
         "src": "can/route/route.js",
         "line": 96,
-        "id": 125
+        "id": 124
     },
     "can.route.deparam": {
         "type": "function",
@@ -4139,7 +4046,7 @@
         "comment": " ",
         "src": "can/route/route.js",
         "line": 184,
-        "id": 126
+        "id": 125
     },
     "data": {
         "name": "data",
@@ -4150,7 +4057,7 @@
         "hide": true,
         "src": "can/route/route.js",
         "line": 260,
-        "id": 127
+        "id": 126
     },
     "routes": {
         "name": "routes",
@@ -4166,7 +4073,7 @@
         "hide": true,
         "src": "can/route/route.js",
         "line": 265,
-        "id": 128
+        "id": 127
     },
     "can.route.ready": {
         "type": "function",
@@ -4200,7 +4107,7 @@
         "comment": " ",
         "src": "can/route/route.js",
         "line": 285,
-        "id": 129
+        "id": 128
     },
     "can.route.url": {
         "type": "function",
@@ -4241,7 +4148,7 @@
         "comment": " ",
         "src": "can/route/route.js",
         "line": 312,
-        "id": 130
+        "id": 129
     },
     "can.route.link": {
         "type": "function",
@@ -4295,7 +4202,7 @@
         "comment": " ",
         "src": "can/route/route.js",
         "line": 342,
-        "id": 131
+        "id": 130
     },
     "can.route.current": {
         "type": "function",
@@ -4328,7 +4235,7 @@
         "comment": " ",
         "src": "can/route/route.js",
         "line": 388,
-        "id": 132
+        "id": 131
     },
     "can/view/view.md": {
         "type": "script",
@@ -4397,7 +4304,7 @@
         ],
         "comment": " ",
         "src": "can/view/view.md",
-        "id": 133
+        "id": 132
     },
     "can/view/view.js": {
         "type": "script",
@@ -4460,7 +4367,7 @@
         "comment": " ",
         "src": "can/view/view.js",
         "line": 103,
-        "id": 134
+        "id": 133
     },
     "can.view.mustache": {
         "body": "",
@@ -4518,7 +4425,7 @@
         ],
         "src": "can/view/view.js",
         "line": 140,
-        "id": 135
+        "id": 134
     },
     "hookups": {
         "name": "hookups",
@@ -4530,7 +4437,7 @@
         "hide": true,
         "src": "can/view/view.js",
         "line": 176,
-        "id": 136
+        "id": 135
     },
     "can.view.hook": {
         "type": "function",
@@ -4563,7 +4470,7 @@
         "comment": " ",
         "src": "can/view/view.js",
         "line": 183,
-        "id": 137
+        "id": 136
     },
     "can.view.cached": {
         "name": "can.view.cached",
@@ -4579,7 +4486,7 @@
         "title": "view",
         "src": "can/view/view.js",
         "line": 205,
-        "id": 138
+        "id": 137
     },
     "can.view.cache": {
         "name": "can.view.cache",
@@ -4594,7 +4501,7 @@
         "title": "view",
         "src": "can/view/view.js",
         "line": 215,
-        "id": 139
+        "id": 138
     },
     "can.view.register": {
         "type": "function",
@@ -4664,7 +4571,7 @@
         "comment": " ",
         "src": "can/view/view.js",
         "line": 227,
-        "id": 140
+        "id": 139
     },
     "can.view.ext": {
         "name": "can.view.ext",
@@ -4679,7 +4586,7 @@
         "title": "ext",
         "src": "can/view/view.js",
         "line": 268,
-        "id": 141
+        "id": 140
     },
     "can.view.registerScript": {
         "type": "function",
@@ -4713,7 +4620,7 @@
         "hide": true,
         "src": "can/view/view.js",
         "line": 279,
-        "id": 142
+        "id": 141
     },
     "can.view.preload": {
         "type": "function",
@@ -4747,7 +4654,7 @@
         "hide": true,
         "src": "can/view/view.js",
         "line": 288,
-        "id": 143
+        "id": 142
     },
     "can.view.render": {
         "type": "function",
@@ -4879,7 +4786,7 @@
         "comment": " ",
         "src": "can/view/view.js",
         "line": 297,
-        "id": 144
+        "id": 143
     },
     "can.view.registerView": {
         "type": "function",
@@ -4920,7 +4827,7 @@
         "hide": true,
         "src": "can/view/view.js",
         "line": 449,
-        "id": 145
+        "id": 144
     },
     "can.view.text": {
         "name": "can.view.text",
@@ -4931,7 +4838,7 @@
         "hide": true,
         "src": "can/view/view.js",
         "line": 594,
-        "id": 146
+        "id": 145
     },
     "can/view/ejs/ejs.md": {
         "type": "script",
@@ -4945,7 +4852,7 @@
         "title": "can.EJS",
         "parent": "canjs",
         "src": "can/view/ejs/ejs.md",
-        "id": 147
+        "id": 146
     },
     "can/view/ejs/ejs.js": {
         "type": "script",
@@ -5010,7 +4917,7 @@
         "comment": " ",
         "src": "can/view/ejs/ejs.js",
         "line": 39,
-        "id": 148
+        "id": 147
     },
     "scanner": {
         "name": "scanner",
@@ -5021,7 +4928,7 @@
         "hide": true,
         "src": "can/view/ejs/ejs.js",
         "line": 61,
-        "id": 149
+        "id": 148
     },
     "tokens": {
         "name": "tokens",
@@ -5032,7 +4939,7 @@
         "hide": true,
         "src": "can/view/ejs/ejs.js",
         "line": 66,
-        "id": 150
+        "id": 149
     },
     "can.EJS.Helpers": {
         "name": "can.EJS.Helpers",
@@ -5044,7 +4951,7 @@
         "comment": " ",
         "src": "can/view/ejs/ejs.js",
         "line": 85,
-        "id": 151
+        "id": 150
     },
     "can/view/mustache/doc/acquisition.md": {
         "type": "script",
@@ -5059,7 +4966,7 @@
         "parent": "can.Mustache",
         "order": 3,
         "src": "can/view/mustache/doc/acquisition.md",
-        "id": 152
+        "id": 151
     },
     "can/view/mustache/doc/basics.md": {
         "type": "script",
@@ -5074,7 +4981,7 @@
         "parent": "can.Mustache",
         "order": 0,
         "src": "can/view/mustache/doc/basics.md",
-        "id": 153
+        "id": 152
     },
     "can/view/mustache/doc/helpers.md": {
         "type": "script",
@@ -5089,7 +4996,7 @@
         "parent": "can.Mustache",
         "order": 4,
         "src": "can/view/mustache/doc/helpers.md",
-        "id": 154
+        "id": 153
     },
     "can/view/mustache/doc/livebinding.md": {
         "type": "script",
@@ -5104,7 +5011,7 @@
         "parent": "can.Mustache",
         "order": 5,
         "src": "can/view/mustache/doc/livebinding.md",
-        "id": 155
+        "id": 154
     },
     "can/view/mustache/doc/mustache.md": {
         "type": "script",
@@ -5121,7 +5028,7 @@
         "plugin": "can/view/mustache",
         "download": "http://canjs.us/release/latest/can.view.mustache.js",
         "src": "can/view/mustache/doc/mustache.md",
-        "id": 156
+        "id": 155
     },
     "can/view/mustache/doc/partials.md": {
         "type": "script",
@@ -5137,7 +5044,7 @@
         "order": 2,
         "comment": " ",
         "src": "can/view/mustache/doc/partials.md",
-        "id": 157
+        "id": 156
     },
     "can/view/mustache/doc/sections.md": {
         "type": "script",
@@ -5152,7 +5059,7 @@
         "parent": "can.Mustache",
         "order": 1,
         "src": "can/view/mustache/doc/sections.md",
-        "id": 158
+        "id": 157
     },
     "can/util/util.md": {
         "type": "script",
@@ -5166,7 +5073,7 @@
         "title": "can.util",
         "parent": "canjs",
         "src": "can/util/util.md",
-        "id": 159
+        "id": 158
     },
     "can/util/util.js": {
         "type": "script",
@@ -5203,7 +5110,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 0,
-        "id": 160
+        "id": 159
     },
     "can.trim": {
         "body": "<p><code>can.trim(str)</code> removes leading and trailing whitespace from a string.  It will also\nremove all newlines, spaces including non-breaking, and tabs.  If these occur in the middle\nof the string, then they will be persisted.</p>\n\n<pre><code class=\"lang-javascript\">can.trim(\" foo \") // \"foo\"</code></pre>",
@@ -5236,7 +5143,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 21,
-        "id": 161
+        "id": 160
     },
     "can.makeArray": {
         "body": "<p><code>can.makeArray(arrLike)</code> converts an array-like object into a array.</p>\n\n<pre><code class=\"lang-javascript\">can.makeArray({0 : \"zero\", 1: \"one\", length: 2}); // [\"zero\",\"one\"]</code></pre>",
@@ -5269,7 +5176,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 39,
-        "id": 162
+        "id": 161
     },
     "can.isArray": {
         "body": "<p><code>can.isArray(object)</code> returns if the object is an Array.</p>\n\n<pre><code class=\"lang-javascript\">can.isArray([]);    // true\ncan.isArray(false); // false</code></pre>",
@@ -5302,7 +5209,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 55,
-        "id": 163
+        "id": 162
     },
     "can.each": {
         "body": "<p><code>can.each(collection, callback)</code> iterates through an array or object like\nlike [http://api.jquery.com/jQuery.each/ jQuery.each].</p>\n\n<pre><code class=\"lang-javascript\">can.each([{prop: \"val1\"}, {prop: \"val2\"}],\n function( value, index ) {\n   // function called with\n   // index=0 value={prop: \"val1\"}\n   // index=1 value={prop: \"val2\"}\n }\n);</code></pre>",
@@ -5342,7 +5249,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 72,
-        "id": 164
+        "id": 163
     },
     "can.extend": {
         "body": "<p><code>can.extend(target, objectN)</code> merges the contents of two or more objects together into the first object\nsimilarly to [http://api.jquery.com/jQuery.extend/ jQuery.extend].</p>\n\n<pre><code class=\"lang-javascript\">var first = {},\nsecond = {a: \"b\"},\nthird = {c: \"d\"};\n\ncan.extend(first, second, third); //-> first\n\nfirst  //-> {a: \"b\", c: \"d\"}\nsecond //-> {a: \"b\"}\nthird  //-> {c: \"d\"}</code></pre>",
@@ -5382,7 +5289,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 96,
-        "id": 165
+        "id": 164
     },
     "can.param": {
         "body": "<p>Parameterizes an object into a query string\nlike [http://api.jquery.com/jQuery.param/ jQuery.param].</p>\n\n<pre><code class=\"lang-javascript\">can.param({a: \"b\", c: \"d\"}) //-> \"a=b&c=d\"</code></pre>",
@@ -5415,7 +5322,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 122,
-        "id": 166
+        "id": 165
     },
     "can.isEmptyObject": {
         "body": "<p><code>can.isEmptyObject(obj)</code> returns if an object has no properties similar to\n[http://api.jquery.com/jQuery.isEmptyObject/ jQuery.isEmptyObject].</p>\n\n<pre><code class=\"lang-javascript\">can.isEmptyObject({})      //-> true\ncan.isEmptyObject({a:\"b\"}) //-> false</code></pre>",
@@ -5448,7 +5355,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 139,
-        "id": 167
+        "id": 166
     },
     "can.proxy": {
         "body": "<p><code>can.proxy(fn, context)</code> accepts a function and returns a\nnew one that will always have the context from which it was\ncalled.  This works similar to [http://api.jquery.com/jQuery.proxy/ jQuery.proxy].</p>\n\n<pre><code class=\"lang-javascript\">var func = can.proxy(function(one){\n      return this.a + one\n    }, {a: \"b\"});\nfunc(\"two\") //-> \"btwo\"</code></pre>",
@@ -5502,7 +5409,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 157,
-        "id": 168
+        "id": 167
     },
     "can.isFunction": {
         "body": "<p><code>can.isFunction(object)</code> returns if an object is a function similar to\n[http://api.jquery.com/jQuery.isFunction/ jQuery.isFunction].</p>\n\n<pre><code class=\"lang-javascript\">can.isFunction({})           //-> false\ncan.isFunction(function(){}) //-> true</code></pre>",
@@ -5535,7 +5442,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 179,
-        "id": 169
+        "id": 168
     },
     "can.bind": {
         "body": "<p><code>can.bind(eventName, handler)</code> binds a callback handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n<li>Objects</li>\n<li>Objects with bind / unbind methods</li>\n</ul>\n\n<p>The idea is that bind can be used on anything that produces events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.bind</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.bind</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Binding to an object</strong></p>\n\n<pre><code class=\"lang-javascript\">var obj = {};\ncan.bind.call(obj,\"something\", function(ev, arg1, arg){\n     arg1 // 1\n     arg2 // 2\n   })\ncan.trigger(obj,\"something\",[1,2])</code></pre>\n\n<p><strong>Binding to an HTMLElement</strong></p>\n\n<pre><code class=\"lang-javascript\">var el = document.getElementById('foo')\ncan.bind.call(el, \"click\", function(ev){\n   this // el\n });</code></pre>",
@@ -5589,7 +5496,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 197,
-        "id": 170
+        "id": 169
     },
     "can.unbind": {
         "body": "<p><code>can.unbind(eventName, handler)</code> unbinds a callback handler\nfrom an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n<li>Objects</li>\n<li>Objects with bind / unbind methods</li>\n</ul>\n\n<p>The idea is that unbind can be used on anything that produces events\nand it will figure out the appropriate way to\nunbind to it.  Typically, <code>can.unbind</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.bind</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Binding/unbinding to an object</strong></p>\n\n<pre><code class=\"lang-javascript\">var obj = {},\nhandler = function(ev, arg1, arg){\n       arg1 // 1\n       arg2 // 2\n     };\ncan.bind.call(obj,\"something\", handler)\ncan.trigger(obj,\"something\",[1,2])\ncan.unbind.call(obj,\"something\", handler)</code></pre>\n\n<p><strong>Binding/unbinding to an HTMLElement</strong></p>\n\n<pre><code class=\"lang-javascript\">var el = document.getElementById('foo'),\nhandler = function(ev){\n       this // el\n     };\ncan.bind.call(el, \"click\", handler)\ncan.unbind.call(el, \"click\", handler)</code></pre>",
@@ -5643,7 +5550,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 243,
-        "id": 171
+        "id": 170
     },
     "can.delegate": {
         "body": "<p><code>can.delegate(selector, eventName, handler)</code> binds a delegate handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n</ul>\n\n<p>The idea is that delegate can be used on anything that produces delegate events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.delegate</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.delegate</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Delegate binding to an HTMLElement</strong></p>\n\n<pre><code class=\"lang-javascript\">var el = document.getElementById('foo')\ncan.delegate.call(el, \".selector\", \"click\", function(ev){\n   this // el\n})</code></pre>",
@@ -5704,7 +5611,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 292,
-        "id": 172
+        "id": 171
     },
     "can.undelegate": {
         "body": "",
@@ -5764,7 +5671,7 @@
         ],
         "src": "can/util/util.js",
         "line": 325,
-        "id": 173
+        "id": 172
     },
     "can.trigger": {
         "body": "",
@@ -5811,7 +5718,7 @@
         ],
         "src": "can/util/util.js",
         "line": 359,
-        "id": 174
+        "id": 173
     },
     "can.ajax": {
         "body": "<p><code>can.ajax( settings )</code> is used to make an asynchronous HTTP (Ajax) request\nsimilar to [http://api.jquery.com/jQuery.ajax/ jQuery.ajax].</p>\n\n<pre><code class=\"lang-javascript\">can.ajax({\n  url: 'ajax/farm/animals',\n    success: function(animals) {\n        can.$('.farm').html(animals);\n    }\n});</code></pre>",
@@ -5844,7 +5751,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 371,
-        "id": 175
+        "id": 174
     },
     "can.$": {
         "body": "<p><code>can.$(element)</code> returns the the underlying\nlibrary's NodeList.  It can be passed\na css selector, a HTMLElement or an array of HTMLElements.</p>\n\n<p>The following lists how the NodeList is created by each library:</p>\n\n<ul>\n<li><strong>jQuery</strong> <code>jQuery( HTMLElement )</code></li>\n<li><strong>Zepto</strong> <code>Zepto( HTMLElement )</code></li>\n<li><strong>Dojo</strong> <code>new dojo.NodeList( HTMLElement )</code></li>\n<li><strong>Mootools</strong> <code>$$( HTMLElement )</code></li>\n<li><strong>YUI</strong> <code>Y.all(selector)</code> or <code>Y.NodeList</code></li>\n</ul>",
@@ -5881,7 +5788,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 394,
-        "id": 176
+        "id": 175
     },
     "can.buildFragment": {
         "body": "<p><code>can.buildFragment(html, node)</code> returns a document fragment for the HTML passed.</p>",
@@ -5923,7 +5830,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 417,
-        "id": 177
+        "id": 176
     },
     "can.append": {
         "body": "<p><code>can.append( wrappedNodeList, html )</code> inserts content to the end of each wrapped node list item(s) passed.</p>\n\n<pre><code class=\"lang-javascript\">// Before\n<div id=\"demo\" />\n\ncan.append( can.$('#demo'), 'Demos are fun!' );\n\n// After\n<div id=\"demo\">Demos are fun!</div></code></pre>",
@@ -5956,7 +5863,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 430,
-        "id": 178
+        "id": 177
     },
     "can.remove": {
         "body": "<p><code>can.remove( wrappedNodeList )</code> removes the set of matched element(s) from the DOM.</p>\n\n<pre><code class=\"lang-javascript\"><div id=\"wrap\"/>\ncan.remove(can.$('#wrap')) //-> removes 'wrap'</code></pre>",
@@ -5982,7 +5889,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 452,
-        "id": 179
+        "id": 178
     },
     "can.data": {
         "body": "<p><code>can.data</code> enables the associatation of arbitrary data with DOM nodes and JavaScript objects.</p>\n\n<h3>Setting Data</h3>\n\n<p>can.data( can.$('#elm'), key, value )</p>\n\n<ul>\n<li><strong>wrappedNodeList</strong> node list to associate data to.</li>\n<li><strong>key</strong> string name of the association.</li>\n<li><strong>value</strong> tdata value; it can be any Javascript type including Array or Object.</li>\n</ul>\n\n<h3>Accessing Data</h3>\n\n<p>can.data( can.$('#elm'), key )</p>\n\n<ul>\n<li><strong>wrappedNodeList</strong> node list to retrieve association data from.</li>\n<li><strong>key</strong> string name of the association.</li>\n</ul>\n\n<p>Due to the way browsers security restrictions with plugins and external code,\nthe <em>data</em> method cannot be used on <code>object</code> (unless it's a Flash plugin), <code>applet</code> or <code>embed</code> elements.</p>",
@@ -6048,7 +5955,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 468,
-        "id": 180
+        "id": 179
     },
     "can.addClass": {
         "body": "<p><code>can.addClass( nodelist, className )</code> adds the specified class(es) to\nnodelist's HTMLElements.  It does NOT replace any existing class(es)\nalready defined.</p>\n\n<pre><code class=\"lang-javascript\">// Before\n<div id=\"foo\" class=\"monkey\" />\n\ncan.addClass(can.$(\"#foo\"),\"bar\")\n\n// After\n<div id=\"foo\" class=\"monkey bar\" /></code></pre>\n\n<p>You can also pass multiple class(es) and it will add them to the existing\nset also.</p>\n\n<pre><code class=\"lang-javascript\">// Before\n<div id=\"foo\" class=\"monkey\" />\n\ncan.addClass(can.$(\"#foo\"),\"bar man\")\n\n// After\n<div id=\"foo\" class=\"monkey bar man\" /></code></pre>\n\n<p>This works similarly to [http://api.jquery.com/addClass/ jQuery.fn.addClass].</p>",
@@ -6081,7 +5988,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 504,
-        "id": 181
+        "id": 180
     },
     "can.when": {
         "body": "<p><code>can.when(deferred)</code> provides the ability to execute callback function(s)\ntypically based on a Deferred or AJAX object.</p>\n\n<pre><code class=\"lang-javascript\">can.when( can.ajax('api/farm/animals') ).then(function(animals){\n     alert(animals); //-> alerts the ajax response\n});</code></pre>\n\n<p>You can also use this for regular JavaScript objects.</p>\n\n<pre><code class=\"lang-javascript\">$.when( { animals: [ 'cat' ] } ).done(function(animals){\n    alert(animals[0]); //-> alerts 'cat'\n});</code></pre>",
@@ -6116,7 +6023,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 543,
-        "id": 182
+        "id": 181
     },
     "can.Deferred": {
         "body": "",
@@ -6140,7 +6047,7 @@
         ],
         "src": "can/util/util.js",
         "line": 571,
-        "id": 183
+        "id": 182
     },
     "can.Deferred.prototype": {
         "body": "",
@@ -6150,7 +6057,7 @@
         "parent": "can.Deferred",
         "src": "can/util/util.js",
         "line": 582,
-        "id": 184
+        "id": 183
     },
     "can.Deferred.prototype.pipe": {
         "body": "<p><code>deferred.pipe(doneCallback, failCallback)</code> is a utility to filter Deferred(s).</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred(),\nfiltered = def.pipe(function(val) {\n        return val + \" is awesome!\";\n    });\n\ndef.resolve('Can');\n\nfiltered.done(function(value) {\n    alert(value); // Alerts: 'Can is awesome!'\n});</code></pre>",
@@ -6196,7 +6103,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 586,
-        "id": 185
+        "id": 184
     },
     "can.Deferred.prototype.resolveWith": {
         "body": "<p><code>deferred.resolveWith(context, arguments)</code> resolves a Deferred and calls the <code>doneCallbacks</code> with the given arguments.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.resolveWith(this, { animals: [ 'cows', 'monkey', 'panda' ] })</code></pre>",
@@ -6230,7 +6137,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 610,
-        "id": 186
+        "id": 185
     },
     "can.Deferred.prototype.rejectWith": {
         "body": "<p><code>deferred.rejectWith(context, arguments)</code> rejects a Deferred and calls the <code>failCallbacks</code> with the given arguments.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.rejectWith(this, { error: \"Animals are gone.\" })</code></pre>",
@@ -6264,7 +6171,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 627,
-        "id": 187
+        "id": 186
     },
     "can.Deferred.prototype.done": {
         "body": "<p><code>deferred.done(doneCallback)</code> adds handler(s) to be called when the Deferred object is resolved.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.done(function(){\n    //- Deferred is done.\n});</code></pre>",
@@ -6297,7 +6204,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 644,
-        "id": 188
+        "id": 187
     },
     "can.Deferred.prototype.always": {
         "body": "<p><code>deferred.always( alwaysCallbacks )</code> adds handler(s) to be called when the Deferred object is either resolved or rejected.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.always( function(){\n    //- Called whether the handler fails or is success.\n});</code></pre>",
@@ -6330,7 +6237,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 679,
-        "id": 189
+        "id": 188
     },
     "can.Deferred.prototype.then": {
         "body": "<p><code>deferred.then( doneCallback, failCallback )</code> adds handler(s) to be called when the Deferred object to be called after its resolved.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.then(function(){\n    //- Called when the deferred is resolved.\n}, function(){\n    //- Called when the deferred fails.\n})</code></pre>",
@@ -6378,7 +6285,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 697,
-        "id": 190
+        "id": 189
     },
     "can.Deferred.prototype.isResolved": {
         "body": "<p><code>deferred.isResolved()</code> returns whether a Deferred object has been resolved.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\nvar resolved = def.isResolved();</code></pre>",
@@ -6403,7 +6310,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 718,
-        "id": 191
+        "id": 190
     },
     "can.Deferred.prototype.reject": {
         "body": "<p><code>deferred.reject( args )</code> rejects the Deferred object and calls the fail callbacks with the given arguments.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.reject({ error: 'Thats not an animal.' })</code></pre>",
@@ -6430,7 +6337,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 748,
-        "id": 192
+        "id": 191
     },
     "can.Deferred.prototype.resolve": {
         "type": "function",
@@ -6456,6 +6363,6 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 764,
-        "id": 193
+        "id": 192
     }
 }
