@@ -2,56 +2,54 @@
 	{{#menu.children}}
 	<li {{#active}}class="active"{{/active}}>
 	<a href="{{makeHref name}}">{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}</a>
-	{{#if active}}
+	{{#if children.length}}
+	<ul>
+	{{#children}}
 		{{#if children.length}}
-		<ul>
-		{{#children}}
-			{{#if children.length}}
-				{{#if plugin}}
-				<li {{#active}}class="active"{{/active}}>
-					<a href="{{makeHref name}}">
-						{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
-					</a>
-					<ul>
-						{{#children}}
-						{{^if hide}}
-						<li {{#active}}class="active"{{/active}}>
-							<a href="{{makeHref name}}">
-								{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
-							</a>
-						</li>
-						{{/if}}
-						{{/children}}
-					</ul>
-				</li>
-				{{else}}
-				<li class="heading">
-					<span>{{type}}</span>
-					<ul>
-						{{#children}}
-						{{^if hide}}
-						<li {{#active}}class="active"{{/active}}>
-							<a href="{{makeHref name}}">
-								{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
-							</a>
-						</li>
-						{{/if}}
-						{{/children}}
-					</ul>
-				</li>
-				{{/if}}
-			{{else}}
-				{{^if hide}}
-				<li {{#active}}class="active"{{/active}}>
+			{{#if plugin}}
+			<li {{#active}}class="active"{{/active}}>
 				<a href="{{makeHref name}}">
 					{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
 				</a>
-				</li>
-				{{/if}}
+				<ul>
+					{{#children}}
+					{{^if hide}}
+					<li {{#active}}class="active"{{/active}} data-search="{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}">
+						<a href="{{makeHref name}}">
+							{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
+						</a>
+					</li>
+					{{/if}}
+					{{/children}}
+				</ul>
+			</li>
+			{{else}}
+			<li class="heading">
+				<span>{{type}}</span>
+				<ul>
+					{{#children}}
+					{{^if hide}}
+					<li {{#active}}class="active"{{/active}}>
+						<a href="{{makeHref name}}">
+							{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
+						</a>
+					</li>
+					{{/if}}
+					{{/children}}
+				</ul>
+			</li>
 			{{/if}}
-		{{/children}}
-		</ul>
+		{{else}}
+			{{^if hide}}
+			<li {{#active}}class="active"{{/active}}>
+			<a href="{{makeHref name}}">
+				{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
+			</a>
+			</li>
+			{{/if}}
 		{{/if}}
+	{{/children}}
+	</ul>
 	{{/if}}
 	</li>
 	{{/menu.children}}

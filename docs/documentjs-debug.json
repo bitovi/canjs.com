@@ -1,17 +1,17 @@
 {
-    "can/can.md": {
+    "can/readme.md": {
         "type": "script",
-        "name": "can/can.md"
+        "name": "can/readme.md"
     },
     "canjs": {
         "type": "page",
         "name": "canjs",
         "body": "",
-        "description": "<p>CanJS API Documentation. </p>\n\n<h2>CanJS API Documentation</h2>\n\n<h3>What is CanJS?</h3>\n\n<p>CanJS makes building rich web applications easy. It provides a lightweight inheritance system,\nbookmark and back-button support, a powerful MVC core with live templates, and more &mdash;\nall for about 8k (minified and gzipped).</p>\n\n<p>CanJS is built to work with jQuery, Zepto, Dojo, YUI and Mootools right out of the box.</p>\n\n<p><a href=\"http://canjs.us/\">CanJS.us</a> is an overview and getting started guide to CanJS. Get up to\nspeed on CanJS, then come back here for a more detailed reference.</p>",
+        "description": "<!--\n-->\n\n<p><a href=\"http://canjs.us/\"><img src=\"http://canjs.us/images/canjs_logo_yellow_small.png\" alt=\"CanJS\" title=\"\" /></a></p>\n\n<p><a href=\"https://travis-ci.org/bitovi/canjs\"><img src=\"https://travis-ci.org/bitovi/canjs.png?branch=master\" alt=\"Build Status\" title=\"\" /></a></p>\n\n<p>CanJS is a MIT-licensed, client-side, JavaScript framework that makes building \nrich web applications easy. Use it because it’s:</p>\n\n<ul>\n<li>Smaller </li>\n<li>Faster </li>\n<li>Safer </li>\n<li>Easier </li>\n<li>Library-er</li>\n</ul>\n\n<h3>Demos and Docs</h3>\n\n<p>Go to <a href=\"http://canjs.us/\">http://canjs.us/</a> for docs, downloads, tests, demos, and more.</p>\n\n<h3>Support / Contributing</h3>\n\n<p>Before you make an issue, please read our <a href=\"contributing.md\">Contributing</a> guide.</p>\n\n<p>You can find the core team in <a href=\"irc://irc.freenode.net/#canjs\">#canjs on irc.freenode.net</a>.</p>\n\n<h3>Release History</h3>\n\n<p>See the <a href=\"changelog.md\">Changelog</a>.</p>\n\n<h3>License</h3>\n\n<p>MIT License, see <a href=\"license.md\">License</a>.</p>\n\n<h2>CanJS API Documentation</h2>\n\n<p>CanJS makes building rich web applications easy. It provides a lightweight inheritance system,\nbookmark and back-button support, a powerful MVC core with live templates, and more &mdash;\nall for about 8k (minified and gzipped).</p>\n\n<p>CanJS is built to work with jQuery, Zepto, Dojo, YUI and Mootools right out of the box.</p>\n\n<p><a href=\"http://canjs.us/\">CanJS.us</a> is an overview and getting started guide to CanJS. Get up to\nspeed on CanJS, then come back here for a more detailed reference.</p>",
         "title": "CanJS",
         "parent": "index",
         "order": 0,
-        "src": "can/can.md",
+        "src": "can/readme.md",
         "id": 0
     },
     "can/construct/construct.md": {

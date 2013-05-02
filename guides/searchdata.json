@@ -170,5 +170,12 @@
         "id": 21,
         "title": "Contributing",
         "parent": "guides"
+    },
+    "license": {
+        "name": "license",
+        "type": "page",
+        "id": 22,
+        "title": "License",
+        "parent": "guides"
     }
 }
