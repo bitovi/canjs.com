@@ -295,7 +295,7 @@ li.L1,li.L3,li.L5,li.L7,li.L9{}
 .search{display:block;border:1px solid #d5d5d5;padding:3px 3px 3px 30px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;-moz-box-shadow:inset 2px 2px 4px rgba(0, 0, 0, 0.1);-webkit-box-shadow:inset 2px 2px 4px rgba(0, 0, 0, 0.1);box-shadow:inset 2px 2px 4px rgba(0, 0, 0, 0.1);margin:8px;}.search input[type='text']:focus,.search input[type='text']:enabled{border-color:none;outline:none;}
 .search input[type='text']{display:block;border-style:none;background-color:rgba(255, 255, 254, 0);width:100%;}
 .search:before{font-family:Bitstrap;content:"\e012";display:block;position:absolute;left:17px;color:#fff;text-shadow:0 0 3px rgba(0, 0, 0, 0.49);}
-.title{display:block;border-bottom:1px solid #eae9e9;padding-bottom:20px;}
+.title{display:block;border-bottom:1px solid #eae9e9;padding-bottom:16px;}
 .docs h1{margin:0;display:inline-block;}
 .docs h2{font-size:22px;}
 .docs h3{font-size:16px;}
