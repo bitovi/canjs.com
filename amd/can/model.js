@@ -1,5 +1,5 @@
 /*
-* CanJS - 1.1.2 (2012-11-28)
+* CanJS - 1.1.3 (2012-12-11)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
@@ -318,7 +318,7 @@ define(['can/util/library', 'can/observe'], function (can) {
 			bind: function (eventName) {
 				if (!ignoreHookup.test(eventName)) {
 					if (!this._bindings) {
-						this.constructor.store[getId(this)] = this;
+						this.constructor.store[this.__get(this.constructor.id)] = this;
 						this._bindings = 0;
 					}
 					this._bindings++;

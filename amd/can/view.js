@@ -1,5 +1,5 @@
 /*
-* CanJS - 1.1.2 (2012-11-28)
+* CanJS - 1.1.3 (2012-12-11)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
@@ -14,19 +14,34 @@ define(['can/util/library'], function (can) {
 		hookupId = 1,
 
 		$view = can.view = function (view, data, helpers, callback) {
-			// Get the result.
-			var result = $view.render(view, data, helpers, callback);
+			// If helpers is a `function`, it is actually a callback.
+			if (isFunction(helpers)) {
+				callback = helpers;
+				helpers = undefined;
+			}
+
+			var pipe = function (result) {
+				return $view.frag(result);
+			},
+				// In case we got a callback, we need to convert the can.view.render
+				// result to a document fragment
+				wrapCallback = isFunction(callback) ?
+				function (frag) {
+					callback(pipe(frag));
+				} : null,
+				// Get the result.
+				result = $view.render(view, data, helpers, wrapCallback);
+
 			if (isFunction(result)) {
 				return result;
 			}
+
 			if (can.isDeferred(result)) {
-				return result.pipe(function (result) {
-					return $view.frag(result);
-				});
+				return result.pipe(pipe);
 			}
 
 			// Convert it into a dom frag.
-			return $view.frag(result);
+			return pipe(result);
 		};
 
 	can.extend($view, {
@@ -128,7 +143,8 @@ define(['can/util/library'], function (can) {
 
 			if (deferreds.length) { // Does data contain any deferreds?
 				// The deferred that resolves into the rendered content...
-				var deferred = new can.Deferred();
+				var deferred = new can.Deferred(),
+					dataCopy = can.extend({}, data);
 
 				// Add the view request to the list of deferreds.
 				deferreds.push(get(view, true))
@@ -144,26 +160,26 @@ define(['can/util/library'], function (can) {
 
 					// Make data look like the resolved deferreds.
 					if (can.isDeferred(data)) {
-						data = usefulPart(resolved);
+						dataCopy = usefulPart(resolved);
 					}
 					else {
 						// Go through each prop in data again and
 						// replace the defferreds with what they resolved to.
 						for (var prop in data) {
 							if (can.isDeferred(data[prop])) {
-								data[prop] = usefulPart(objs.shift());
+								dataCopy[prop] = usefulPart(objs.shift());
 							}
 						}
 					}
 
 					// Get the rendered result.
-					result = renderer(data, helpers);
+					result = renderer(dataCopy, helpers);
 
 					// Resolve with the rendered view.
-					deferred.resolve(result);
+					deferred.resolve(result, dataCopy);
 
 					// If there's a `callback`, call it back with the result.
-					callback && callback(result);
+					callback && callback(result, dataCopy);
 				});
 				// Return the deferred...
 				return deferred;
@@ -204,12 +220,12 @@ define(['can/util/library'], function (can) {
 							response = data ? renderer(data, helpers) : renderer;
 						});
 					}
-
 				}
 
 				return response;
 			}
 		},
+
 
 		registerView: function (id, text, type, def) {
 			// Get the renderer function.
@@ -339,35 +355,24 @@ define(['can/util/library'], function (can) {
 		};
 
 
-	if (window.steal) {
-		steal.type("view js", function (options, success, error) {
-			var type = $view.types["." + options.type],
-				id = $view.toId(options.id);
 
-			options.text = "steal('" + (type.plugin || "can/view/" + options.type) + "',function(can){return " + "can.view.preload('" + id + "'," + options.text + ");\n})";
-			success();
-		})
-	}
-
-	//!steal-pluginify-remove-start
 	can.extend($view, {
 		register: function (info) {
 			this.types["." + info.suffix] = info;
 
-			if (window.steal) {
-				steal.type(info.suffix + " view js", function (options, success, error) {
-					var type = $view.types["." + options.type],
-						id = $view.toId(options.id + '');
 
-					options.text = type.script(id, options.text)
-					success();
-				})
-			};
 
 			$view[info.suffix] = function (id, text) {
 				if (!text) {
 					// Return a nameless renderer
-					return info.renderer(null, id);
+					var renderer = function () {
+						return $view.frag(renderer.render.apply(this, arguments));
+					}
+					renderer.render = function () {
+						var renderer = info.renderer(null, id);
+						return renderer.apply(renderer, arguments);
+					}
+					return renderer;
 				}
 
 				$view.preload(id, info.renderer(id, text));
@@ -387,6 +392,6 @@ define(['can/util/library'], function (can) {
 		}
 
 	});
-	//!steal-pluginify-remove-end
+
 	return can;
 });

@@ -1,5 +1,5 @@
 /*
-* CanJS - 1.1.2 (2012-11-28)
+* CanJS - 1.1.3 (2012-12-11)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
@@ -160,12 +160,12 @@
 			// 		user.mustache:
 			// 			<strong>{{name}}</strong>
 			{
-				name: /^>[\s|\w]\w*/,
+				name: /^>[\s]*\w*/,
 				fn: function (content, cmd) {
 					// Get the template name and call back into the render method,
 					// passing the name and the current context.
-					var templateName = can.trim(content.replace(/^>\s?/, ''));
-					return "can.view.render('" + templateName + "', " + CONTEXT_STACK + ".pop())";
+					var templateName = can.trim(content.replace(/^>\s?/, '')).replace(/["|']/g, "");
+					return "can.Mustache.render('" + templateName + "', " + CONTEXT_STACK + ".pop())";
 				}
 			},
 
@@ -178,10 +178,9 @@
 			// then later you can access it like:
 			//		can.$('#nameli').data('name');
 			{
-				name: /^\s?data\s/,
+				name: /^\s*data\s/,
 				fn: function (content, cmd) {
-					var attr = content.replace(/(^\s?data\s)|(["'])/g, '');
-
+					var attr = content.match(/["|'](.*)["|']/)[1];
 					// return a function which calls `can.data` on the element
 					// with the attribute name with the current context.
 					return "can.proxy(function(__){can.data(can.$(__),'" + attr + "', this.pop()); }, " + CONTEXT_STACK + ")";
@@ -433,7 +432,7 @@
 								CONTEXT_STACK +
 								// Flag as a helper method to aid performance, 
 								// if it is a known helper (anything with > 0 arguments).
-								(i == 0 && args.length > 1 ? ',true' : '') + ')');
+								(i == 0 && args.length > 1 ? ',true' : ',false') + (i > 0 ? ',true' : ',false') + ')');
 							}
 						}
 					}
@@ -562,14 +561,19 @@
 	};
 
 
-	Mustache.get = function (ref, contexts, isHelper) {
+	Mustache.get = function (ref, contexts, isHelper, isArgument) {
 		// Split the reference (like `a.b.c`) into an array of key names.
 		var names = ref.split('.'),
+			namesLength = names.length,
 			// Assume the local object is the last context in the stack.
 			obj = contexts[contexts.length - 1],
 			// Assume the parent context is the second to last context in the stack.
 			context = contexts[contexts.length - 2],
-			lastValue, value, name, i, j;
+			lastValue, value, name, i, j,
+			// if we walk up and don't find a property, we default
+			// to listening on an undefined property of the first
+			// context that is an observe
+			defaultObserve, defaultObserveName;
 
 		// Handle `this` references for list iteration: {{.}} or {{this}}
 		if (/^\.|this$/.test(ref)) {
@@ -596,7 +600,7 @@
 
 				// Make sure the context isn't a failed object before diving into it.
 				if (value !== undefined) {
-					for (j = 0; j < names.length; j++) {
+					for (j = 0; j < namesLength; j++) {
 						// Keep running up the tree while there are matches.
 						if (typeof value[names[j]] != 'undefined') {
 							lastValue = value;
@@ -604,8 +608,9 @@
 						}
 						// If it's undefined, still match if the parent is an Observe.
 						else if (isObserve(value)) {
-							lastValue = value;
-							name = names[j];
+							defaultObserve = value;
+							defaultObserveName = names[j];
+							lastValue = value = undefined;
 							break;
 						}
 						else {
@@ -617,8 +622,11 @@
 
 				// Found a matched reference.
 				if (value !== undefined) {
-					// Support functions stored in objects.
-					if (can.isFunction(lastValue[name])) {
+					if (can.isFunction(lastValue[name]) && isArgument && (!lastValue[name].isComputed)) {
+						// Don't execute functions if they are parameters for a helper and are not a can.compute
+						return lastValue[name];
+					} else if (can.isFunction(lastValue[name])) {
+						// Support functions stored in objects.
 						return lastValue[name]();
 					}
 					// Add support for observes
@@ -633,7 +641,9 @@
 				}
 			}
 		}
-
+		if (defaultObserve) {
+			return defaultObserve.attr(defaultObserveName);
+		}
 		// Support helper-like functions as anonymous helpers
 		if (obj !== undefined && can.isFunction(obj[ref])) {
 			return obj[ref];
@@ -663,17 +673,19 @@
 	// * `unless` - Renders a falsey section: `{{#unless var}} render {{/unless}}`
 	// * `each` - Renders an array: `{{#each array}} render {{this}} {{/each}}`
 	// * `with` - Opens a context section: `{{#with var}} render {{/with}}`
+	Mustache._helpers = {};
 
 	Mustache.registerHelper = function (name, fn) {
-		this._helpers.push({
+		this._helpers[name] = {
 			name: name,
 			fn: fn
-		});
+		};
 	};
 
 
 	Mustache.getHelper = function (name) {
-		for (var i = 0, helper; helper = this._helpers[i]; i++) {
+		return this._helpers[name]
+		for (var i = 0, helper; helper = [i]; i++) {
 			// Find the correct helper
 			if (helper.name == name) {
 				return helper;
@@ -682,35 +694,39 @@
 		return null;
 	};
 
+
+	Mustache.render = function (partial, context) {
+		// Make sure the partial being passed in
+		// isn't a variable like { partial: "foo.mustache" }
+		if (!can.view.cached[partial] && context[partial]) {
+			partial = context[partial];
+		}
+
+		// Call into `can.view.render` passing the
+		// partial and context.
+		return can.view.render(partial, context);
+	};
+
 	// The built-in Mustache helpers.
-	Mustache._helpers = [
-	// Implements the `if` built-in helper.
-	{
-		name: 'if',
-		fn: function (expr, options) {
+	can.each({
+		// Implements the `if` built-in helper.
+		'if': function (expr, options) {
 			if ( !! expr) {
 				return options.fn(this);
 			}
 			else {
 				return options.inverse(this);
 			}
-		}
-	},
-
-	// Implements the `unless` built-in helper.
-	{
-		name: 'unless',
-		fn: function (expr, options) {
+		},
+		// Implements the `unless` built-in helper.
+		'unless': function (expr, options) {
 			if (!expr) {
 				return options.fn(this);
 			}
-		}
-	},
+		},
 
-	// Implements the `each` built-in helper.
-	{
-		name: 'each',
-		fn: function (expr, options) {
+		// Implements the `each` built-in helper.
+		'each': function (expr, options) {
 			if ( !! expr && expr.length) {
 				var result = [];
 				for (var i = 0; i < expr.length; i++) {
@@ -718,18 +734,17 @@
 				}
 				return result.join('');
 			}
-		}
-	},
-
-	// Implements the `with` built-in helper.
-	{
-		name: 'with',
-		fn: function (expr, options) {
+		},
+		// Implements the `with` built-in helper.
+		'with': function (expr, options) {
 			if ( !! expr) {
 				return options.fn(expr);
 			}
 		}
-	}];
+
+	}, function (fn, name) {
+		Mustache.registerHelper(name, fn);
+	});
 
 	// ## Registration
 	// Registers Mustache with can.view.

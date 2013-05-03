@@ -1,5 +1,5 @@
 /*
-* CanJS - 1.1.2 (2012-11-28)
+* CanJS - 1.1.3 (2012-12-11)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
@@ -8,7 +8,7 @@ define(['can/view', 'can/util/string'], function (can) {
 	// text node expando test
 	var canExpando = true;
 	try {
-		document.createTextNode()._ = 0;
+		document.createTextNode('')._ = 0;
 	} catch (ex) {
 		canExpando = false;
 	}

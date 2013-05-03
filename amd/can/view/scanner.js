@@ -1,5 +1,5 @@
 /*
-* CanJS - 1.1.2 (2012-11-28)
+* CanJS - 1.1.3 (2012-12-11)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
@@ -19,6 +19,7 @@ define(['can/view'], function (can) {
 			tr: "tbody",
 			option: "select",
 			td: "tr",
+			th: "tr",
 			li: "ul"
 		},
 		// Returns a tagName to use as a temporary placeholder for live content
@@ -356,7 +357,7 @@ define(['can/view'], function (can) {
 							var escaped = startTag === tmap.escapeLeft ? 1 : 0,
 								commands = {
 									insert: insert_cmd,
-									tagName: tagName,
+									tagName: getTag(tagName, tokens, i),
 									status: status()
 								};
 
@@ -368,7 +369,7 @@ define(['can/view'], function (can) {
 									content = helper.fn(content, commands);
 
 									// dont escape partials
-									if (helper.name.source == /^>[\s|\w]\w*/.source) {
+									if (helper.name.source == /^>[\s]*\w*/.source) {
 										escaped = 0;
 									}
 									break;

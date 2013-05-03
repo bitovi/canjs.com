@@ -1,5 +1,5 @@
 /*
-* CanJS - 1.1.2 (2012-11-28)
+* CanJS - 1.1.3 (2012-12-11)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
@@ -198,6 +198,9 @@ define(['can/util/library', 'can/construct'], function (can) {
 				batchNum: ev.batchNum
 			}, [newVal, oldVal]);
 		},
+		_triggerChange: function (attr, how, newVal, oldVal) {
+			Observe.triggerBatch(this, "change", can.makeArray(arguments))
+		},
 
 		attr: function (attr, val) {
 			// This is super obfuscated for space -- basically, we're checking
@@ -241,9 +244,9 @@ define(['can/util/library', 'can/construct'], function (can) {
 						delete this[prop]
 					}
 					// Let others know the number of keys have changed
-					Observe.triggerBatch(this, "__keys", undefined);
-					Observe.triggerBatch(this, "change", [prop, "remove", undefined, current]);
-					Observe.triggerBatch(this, prop, [undefined, current]);
+					Observe.triggerBatch(this, "__keys");
+					this._triggerChange(prop, "remove", undefined, current);
+
 				}
 				return current;
 			}
@@ -290,11 +293,7 @@ define(['can/util/library', 'can/construct'], function (can) {
 				if (this.__convert) {
 					value = this.__convert(prop, value)
 				}
-				// If there is no current value, let others know that
-				// the the number of keys have changed
-				if (!current) {
-					Observe.triggerBatch(this, "__keys", undefined);
-				}
+
 				this.__set(prop, value, current)
 			} else {
 				throw "can.Observe: Object does not exist"
@@ -321,8 +320,15 @@ define(['can/util/library', 'can/construct'], function (can) {
 				// Value is normal.
 				value);
 
+				if (changeType == "add") {
+					// If there is no current value, let others know that
+					// the the number of keys have changed
+					Observe.triggerBatch(this, "__keys", undefined);
+
+				}
 				// `batchTrigger` the change event.
-				Observe.triggerBatch(this, "change", [prop, changeType, value, current]);
+				this._triggerChange(prop, changeType, value, current);
+
 				//Observe.triggerBatch(this, prop, [value, current]);
 				// If we can stop listening to our old value, do it.
 				current && unhookup([current], this._cid);
@@ -353,7 +359,7 @@ define(['can/util/library', 'can/construct'], function (can) {
 				return serialize(this, 'attr', {})
 			}
 
-			props = can.extend(true, {}, props);
+			props = can.extend({}, props);
 			var prop, self = this,
 				newVal;
 			Observe.startBatch();
@@ -392,6 +398,16 @@ define(['can/util/library', 'can/construct'], function (can) {
 			}
 			Observe.stopBatch()
 			return this;
+		},
+
+
+		compute: function (prop) {
+			var self = this,
+				computer = function (val) {
+					return self.attr(prop, val);
+				};
+
+			return can.compute ? can.compute(computer) : computer;
 		}
 	});
 	// Helpers for `observable` lists.
@@ -403,12 +419,14 @@ define(['can/util/library', 'can/construct'], function (can) {
 				this.length = 0;
 				can.cid(this, ".observe")
 				this._init = 1;
-				this.push.apply(this, can.makeArray(instances || []));
+				this.push.apply(this, instances || []);
 				this.bind('change' + this._cid, can.proxy(this._changes, this));
 				can.extend(this, options);
 				delete this._init;
 			},
-			_changes: function (ev, attr, how, newVal, oldVal) {
+			_triggerChange: function (attr, how, newVal, oldVal) {
+
+				Observe.prototype._triggerChange.apply(this, arguments)
 				// `batchTrigger` direct add and remove events...
 				if (!~attr.indexOf('.')) {
 
@@ -423,7 +441,7 @@ define(['can/util/library', 'can/construct'], function (can) {
 					}
 
 				}
-				Observe.prototype._changes.apply(this, arguments)
+
 			},
 			__get: function (attr) {
 				return attr ? this[attr] : this;
@@ -453,13 +471,15 @@ define(['can/util/library', 'can/construct'], function (can) {
 					howMany = args[1] = this.length - index;
 				}
 				var removed = splice.apply(this, args);
+				can.Observe.startBatch()
 				if (howMany > 0) {
-					Observe.triggerBatch(this, "change", ["" + index, "remove", undefined, removed]);
+					this._triggerChange("" + index, "remove", undefined, removed);
 					unhookup(removed, this._cid);
 				}
 				if (args.length > 2) {
-					Observe.triggerBatch(this, "change", ["" + index, "add", args.slice(2), removed]);
+					this._triggerChange("" + index, "add", args.slice(2), removed);
 				}
+				can.Observe.stopBatch();
 				return removed;
 			},
 
@@ -517,25 +537,26 @@ define(['can/util/library', 'can/construct'], function (can) {
 
 
 	function (where, name) {
+		var orig = [][name]
 		list.prototype[name] = function () {
 			// Get the items being added.
-			var args = can.makeArray(arguments),
+			var args = [],
 				// Where we are going to add items.
-				len = where ? this.length : 0;
+				len = where ? this.length : 0,
+				i = arguments.length,
+				res, val, constructor = this.constructor;
 
 			// Go through and convert anything to an `observe` that needs to be converted.
-			for (var i = 0; i < args.length; i++) {
-				var val = args[i];
-				if (canMakeObserve(val)) {
-					args[i] = hookupBubble(val, "*", this, this.constructor.Observe, this.constructor);
-				}
+			while (i--) {
+				val = arguments[i];
+				args[i] = canMakeObserve(val) ? hookupBubble(val, "*", this, this.constructor.Observe, this.constructor) : val;
 			}
 
 			// Call the original method.
-			var res = [][name].apply(this, args);
+			res = orig.apply(this, args);
 
 			if (!this.comparator || !args.length) {
-				Observe.triggerBatch(this, "change", ["" + len, "add", args, undefined])
+				this._triggerChange("" + len, "add", args, undefined);
 			}
 
 			return res;
@@ -565,7 +586,7 @@ define(['can/util/library', 'can/construct'], function (can) {
 			// `undefined` - The new values (there are none).
 			// `res` - The old, removed values (should these be unbound).
 			// `len` - Where these items were removed.
-			Observe.triggerBatch(this, "change", ["" + len, "remove", undefined, [res]])
+			this._triggerChange("" + len, "remove", undefined, [res])
 
 			if (res && res.unbind) {
 				res.unbind("change" + this._cid)
@@ -602,6 +623,17 @@ define(['can/util/library', 'can/construct'], function (can) {
 
 		forEach: function (cb, thisarg) {
 			can.each(this, cb, thisarg || this);
+		},
+
+
+		replace: function (newList) {
+			if (can.isDeferred(newList)) {
+				newList.then(can.proxy(this.replace, this));
+			} else {
+				this.splice.apply(this, [0, this.length].concat(can.makeArray(newList || [])));
+			}
+
+			return this;
 		}
 	});
 

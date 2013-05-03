@@ -1,5 +1,5 @@
 /*
-* CanJS - 1.1.2 (2012-11-28)
+* CanJS - 1.1.3 (2012-12-11)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
@@ -1061,6 +1061,9 @@
 				batchNum: ev.batchNum
 			}, [newVal, oldVal]);
 		},
+		_triggerChange: function (attr, how, newVal, oldVal) {
+			Observe.triggerBatch(this, "change", can.makeArray(arguments))
+		},
 
 		attr: function (attr, val) {
 			// This is super obfuscated for space -- basically, we're checking
@@ -1104,9 +1107,9 @@
 						delete this[prop]
 					}
 					// Let others know the number of keys have changed
-					Observe.triggerBatch(this, "__keys", undefined);
-					Observe.triggerBatch(this, "change", [prop, "remove", undefined, current]);
-					Observe.triggerBatch(this, prop, [undefined, current]);
+					Observe.triggerBatch(this, "__keys");
+					this._triggerChange(prop, "remove", undefined, current);
+
 				}
 				return current;
 			}
@@ -1153,11 +1156,7 @@
 				if (this.__convert) {
 					value = this.__convert(prop, value)
 				}
-				// If there is no current value, let others know that
-				// the the number of keys have changed
-				if (!current) {
-					Observe.triggerBatch(this, "__keys", undefined);
-				}
+
 				this.__set(prop, value, current)
 			} else {
 				throw "can.Observe: Object does not exist"
@@ -1184,8 +1183,15 @@
 				// Value is normal.
 				value);
 
+				if (changeType == "add") {
+					// If there is no current value, let others know that
+					// the the number of keys have changed
+					Observe.triggerBatch(this, "__keys", undefined);
+
+				}
 				// `batchTrigger` the change event.
-				Observe.triggerBatch(this, "change", [prop, changeType, value, current]);
+				this._triggerChange(prop, changeType, value, current);
+
 				//Observe.triggerBatch(this, prop, [value, current]);
 				// If we can stop listening to our old value, do it.
 				current && unhookup([current], this._cid);
@@ -1216,7 +1222,7 @@
 				return serialize(this, 'attr', {})
 			}
 
-			props = can.extend(true, {}, props);
+			props = can.extend({}, props);
 			var prop, self = this,
 				newVal;
 			Observe.startBatch();
@@ -1255,6 +1261,16 @@
 			}
 			Observe.stopBatch()
 			return this;
+		},
+
+
+		compute: function (prop) {
+			var self = this,
+				computer = function (val) {
+					return self.attr(prop, val);
+				};
+
+			return can.compute ? can.compute(computer) : computer;
 		}
 	});
 	// Helpers for `observable` lists.
@@ -1266,12 +1282,14 @@
 				this.length = 0;
 				can.cid(this, ".observe")
 				this._init = 1;
-				this.push.apply(this, can.makeArray(instances || []));
+				this.push.apply(this, instances || []);
 				this.bind('change' + this._cid, can.proxy(this._changes, this));
 				can.extend(this, options);
 				delete this._init;
 			},
-			_changes: function (ev, attr, how, newVal, oldVal) {
+			_triggerChange: function (attr, how, newVal, oldVal) {
+
+				Observe.prototype._triggerChange.apply(this, arguments)
 				// `batchTrigger` direct add and remove events...
 				if (!~attr.indexOf('.')) {
 
@@ -1286,7 +1304,7 @@
 					}
 
 				}
-				Observe.prototype._changes.apply(this, arguments)
+
 			},
 			__get: function (attr) {
 				return attr ? this[attr] : this;
@@ -1316,13 +1334,15 @@
 					howMany = args[1] = this.length - index;
 				}
 				var removed = splice.apply(this, args);
+				can.Observe.startBatch()
 				if (howMany > 0) {
-					Observe.triggerBatch(this, "change", ["" + index, "remove", undefined, removed]);
+					this._triggerChange("" + index, "remove", undefined, removed);
 					unhookup(removed, this._cid);
 				}
 				if (args.length > 2) {
-					Observe.triggerBatch(this, "change", ["" + index, "add", args.slice(2), removed]);
+					this._triggerChange("" + index, "add", args.slice(2), removed);
 				}
+				can.Observe.stopBatch();
 				return removed;
 			},
 
@@ -1380,25 +1400,26 @@
 
 
 	function (where, name) {
+		var orig = [][name]
 		list.prototype[name] = function () {
 			// Get the items being added.
-			var args = can.makeArray(arguments),
+			var args = [],
 				// Where we are going to add items.
-				len = where ? this.length : 0;
+				len = where ? this.length : 0,
+				i = arguments.length,
+				res, val, constructor = this.constructor;
 
 			// Go through and convert anything to an `observe` that needs to be converted.
-			for (var i = 0; i < args.length; i++) {
-				var val = args[i];
-				if (canMakeObserve(val)) {
-					args[i] = hookupBubble(val, "*", this, this.constructor.Observe, this.constructor);
-				}
+			while (i--) {
+				val = arguments[i];
+				args[i] = canMakeObserve(val) ? hookupBubble(val, "*", this, this.constructor.Observe, this.constructor) : val;
 			}
 
 			// Call the original method.
-			var res = [][name].apply(this, args);
+			res = orig.apply(this, args);
 
 			if (!this.comparator || !args.length) {
-				Observe.triggerBatch(this, "change", ["" + len, "add", args, undefined])
+				this._triggerChange("" + len, "add", args, undefined);
 			}
 
 			return res;
@@ -1428,7 +1449,7 @@
 			// `undefined` - The new values (there are none).
 			// `res` - The old, removed values (should these be unbound).
 			// `len` - Where these items were removed.
-			Observe.triggerBatch(this, "change", ["" + len, "remove", undefined, [res]])
+			this._triggerChange("" + len, "remove", undefined, [res])
 
 			if (res && res.unbind) {
 				res.unbind("change" + this._cid)
@@ -1465,6 +1486,17 @@
 
 		forEach: function (cb, thisarg) {
 			can.each(this, cb, thisarg || this);
+		},
+
+
+		replace: function (newList) {
+			if (can.isDeferred(newList)) {
+				newList.then(can.proxy(this.replace, this));
+			} else {
+				this.splice.apply(this, [0, this.length].concat(can.makeArray(newList || [])));
+			}
+
+			return this;
 		}
 	});
 
@@ -1791,7 +1823,7 @@
 			bind: function (eventName) {
 				if (!ignoreHookup.test(eventName)) {
 					if (!this._bindings) {
-						this.constructor.store[getId(this)] = this;
+						this.constructor.store[this.__get(this.constructor.id)] = this;
 						this._bindings = 0;
 					}
 					this._bindings++;
@@ -2249,7 +2281,7 @@
 		each = can.each,
 		slice = [].slice,
 		paramReplacer = /\{([^\}]+)\}/g,
-		special = can.getObject("$.event.special") || {},
+		special = can.getObject("$.event.special", [can]) || {},
 
 		// Binds an element, returns a function that unbinds.
 		delegate = function (el, selector, ev, callback) {
@@ -2531,19 +2563,34 @@
 		hookupId = 1,
 
 		$view = can.view = function (view, data, helpers, callback) {
-			// Get the result.
-			var result = $view.render(view, data, helpers, callback);
+			// If helpers is a `function`, it is actually a callback.
+			if (isFunction(helpers)) {
+				callback = helpers;
+				helpers = undefined;
+			}
+
+			var pipe = function (result) {
+				return $view.frag(result);
+			},
+				// In case we got a callback, we need to convert the can.view.render
+				// result to a document fragment
+				wrapCallback = isFunction(callback) ?
+				function (frag) {
+					callback(pipe(frag));
+				} : null,
+				// Get the result.
+				result = $view.render(view, data, helpers, wrapCallback);
+
 			if (isFunction(result)) {
 				return result;
 			}
+
 			if (can.isDeferred(result)) {
-				return result.pipe(function (result) {
-					return $view.frag(result);
-				});
+				return result.pipe(pipe);
 			}
 
 			// Convert it into a dom frag.
-			return $view.frag(result);
+			return pipe(result);
 		};
 
 	can.extend($view, {
@@ -2645,7 +2692,8 @@
 
 			if (deferreds.length) { // Does data contain any deferreds?
 				// The deferred that resolves into the rendered content...
-				var deferred = new can.Deferred();
+				var deferred = new can.Deferred(),
+					dataCopy = can.extend({}, data);
 
 				// Add the view request to the list of deferreds.
 				deferreds.push(get(view, true))
@@ -2661,26 +2709,26 @@
 
 					// Make data look like the resolved deferreds.
 					if (can.isDeferred(data)) {
-						data = usefulPart(resolved);
+						dataCopy = usefulPart(resolved);
 					}
 					else {
 						// Go through each prop in data again and
 						// replace the defferreds with what they resolved to.
 						for (var prop in data) {
 							if (can.isDeferred(data[prop])) {
-								data[prop] = usefulPart(objs.shift());
+								dataCopy[prop] = usefulPart(objs.shift());
 							}
 						}
 					}
 
 					// Get the rendered result.
-					result = renderer(data, helpers);
+					result = renderer(dataCopy, helpers);
 
 					// Resolve with the rendered view.
-					deferred.resolve(result);
+					deferred.resolve(result, dataCopy);
 
 					// If there's a `callback`, call it back with the result.
-					callback && callback(result);
+					callback && callback(result, dataCopy);
 				});
 				// Return the deferred...
 				return deferred;
@@ -2721,12 +2769,12 @@
 							response = data ? renderer(data, helpers) : renderer;
 						});
 					}
-
 				}
 
 				return response;
 			}
 		},
+
 
 		registerView: function (id, text, type, def) {
 			// Get the renderer function.
@@ -2856,35 +2904,24 @@
 		};
 
 
-	if (window.steal) {
-		steal.type("view js", function (options, success, error) {
-			var type = $view.types["." + options.type],
-				id = $view.toId(options.id);
 
-			options.text = "steal('" + (type.plugin || "can/view/" + options.type) + "',function(can){return " + "can.view.preload('" + id + "'," + options.text + ");\n})";
-			success();
-		})
-	}
-
-	//!steal-pluginify-remove-start
 	can.extend($view, {
 		register: function (info) {
 			this.types["." + info.suffix] = info;
 
-			if (window.steal) {
-				steal.type(info.suffix + " view js", function (options, success, error) {
-					var type = $view.types["." + options.type],
-						id = $view.toId(options.id + '');
 
-					options.text = type.script(id, options.text)
-					success();
-				})
-			};
 
 			$view[info.suffix] = function (id, text) {
 				if (!text) {
 					// Return a nameless renderer
-					return info.renderer(null, id);
+					var renderer = function () {
+						return $view.frag(renderer.render.apply(this, arguments));
+					}
+					renderer.render = function () {
+						var renderer = info.renderer(null, id);
+						return renderer.apply(renderer, arguments);
+					}
+					return renderer;
 				}
 
 				$view.preload(id, info.renderer(id, text));
@@ -2904,7 +2941,7 @@
 		}
 
 	});
-	//!steal-pluginify-remove-end
+
 	// ## can/observe/compute/compute.js
 
 	// returns the
@@ -3121,6 +3158,7 @@
 			tr: "tbody",
 			option: "select",
 			td: "tr",
+			th: "tr",
 			li: "ul"
 		},
 		// Returns a tagName to use as a temporary placeholder for live content
@@ -3458,7 +3496,7 @@
 							var escaped = startTag === tmap.escapeLeft ? 1 : 0,
 								commands = {
 									insert: insert_cmd,
-									tagName: tagName,
+									tagName: getTag(tagName, tokens, i),
 									status: status()
 								};
 
@@ -3470,7 +3508,7 @@
 									content = helper.fn(content, commands);
 
 									// dont escape partials
-									if (helper.name.source == /^>[\s|\w]\w*/.source) {
+									if (helper.name.source == /^>[\s]*\w*/.source) {
 										escaped = 0;
 									}
 									break;
@@ -3537,7 +3575,7 @@
 	// text node expando test
 	var canExpando = true;
 	try {
-		document.createTextNode()._ = 0;
+		document.createTextNode('')._ = 0;
 	} catch (ex) {
 		canExpando = false;
 	}

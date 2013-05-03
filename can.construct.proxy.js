@@ -1,5 +1,5 @@
 /*
-* CanJS - 1.1.2 (2012-11-28)
+* CanJS - 1.1.3 (2012-12-11)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
@@ -57,5 +57,13 @@
 			}
 		}
 		can.Construct.proxy = can.Construct.prototype.proxy = proxy;
+	// this corrects the case where can/control loads after can/construct/proxy, so static props don't have proxy
+	var correctedClasses = [can.Control, can.Model],
+		i = 0;
+	for (; i < correctedClasses.length; i++) {
+		if (correctedClasses[i]) {
+			correctedClasses[i].proxy = proxy;
+		}
+	}
 
 })(can, this);

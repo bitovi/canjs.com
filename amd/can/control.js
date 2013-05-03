@@ -1,5 +1,5 @@
 /*
-* CanJS - 1.1.2 (2012-11-28)
+* CanJS - 1.1.3 (2012-12-11)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
@@ -22,7 +22,7 @@ define(['can/util/library', 'can/construct'], function (can) {
 		each = can.each,
 		slice = [].slice,
 		paramReplacer = /\{([^\}]+)\}/g,
-		special = can.getObject("$.event.special") || {},
+		special = can.getObject("$.event.special", [can]) || {},
 
 		// Binds an element, returns a function that unbinds.
 		delegate = function (el, selector, ev, callback) {
