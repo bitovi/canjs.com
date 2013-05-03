@@ -6836,7 +6836,7 @@ can.Control('CanJSUS.Menu', {
 		} else {
 			this.reset();
 		}
-	},
+	}/*,
 
 	'li.active > a click': function(el, ev) {
 		ev.preventDefault();
@@ -6844,7 +6844,7 @@ can.Control('CanJSUS.Menu', {
 
 	'li.active click': function(el, ev) {
 		el.toggleClass('collapsed');
-	}
+	}*/
 });
 
 CanJSUS.CommunityTab('CanJSUS.PluginsTab', {
