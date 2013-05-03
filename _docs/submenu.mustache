@@ -2,9 +2,8 @@
 <ul>
 	{{#children}}
 	{{^if hide}}
-	<li class="{{#active}}active{{/active}}{{#children.length}} parent expanded{{/children.length}}"
-	    data-search="{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}">
-			<a href="{{makeHref name}}">
+	<li class="search-container{{#children.length}} parent expanded{{/children.length}}{{#active}} active{{/active}}">
+			<a href="{{makeHref name}}" data-search="{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}">
 				{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
 			</a>
 			{{#if children.length}}
@@ -16,8 +15,8 @@
 </ul>
 {{else}}
 {{^if hide}}
-<li {{#active}}class="active"{{/active}} data-search="{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}">
-<a href="{{makeHref name}}">
+<li class="search-container {{#active}}active{{/active}}">
+<a href="{{makeHref name}}" data-search="{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}">
 	{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
 </a>
 </li>

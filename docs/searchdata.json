@@ -812,7 +812,7 @@
         "name": "can.Control.plugin",
         "type": "page",
         "id": 119,
-        "title": "plugin",
+        "title": "jQuery plugin",
         "parent": "can.Control.plugins"
     },
     "can.Control.setup": {

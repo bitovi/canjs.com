@@ -34,7 +34,7 @@
 			'.download .cdn': 'CDNChooser',
 			'.download .customize': 'DownloadCustomizer',
 			'.community .hero': 'CommunityTabs',
-			'.docs .sidebar': 'ApiSearch',
+			'.docs .sidebar': 'Menu',
 			'.docs .signature': 'ApiSignature',
 			'.docs .contents': 'ContentsList'
 		});
