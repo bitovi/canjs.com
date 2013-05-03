@@ -289,4 +289,4 @@
 	"replaceWith", "val"],function(func){
 		convert(func);
 	});
-}( can = {}, this ));
+}( this.can, this, this ));

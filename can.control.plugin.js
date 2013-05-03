@@ -242,4 +242,4 @@ can.Control.prototype.update = function( options ) {
 		this.on();
 };
 
-}( can = {}, this ));
+}( this.can, this, this ));

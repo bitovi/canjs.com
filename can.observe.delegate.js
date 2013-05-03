@@ -356,4 +356,4 @@
 	});
 	// add helpers for testing .. 
 	can.Observe.prototype.delegate.matches = matches;
-}( can = {}, this ));
+}( this.can, this, this ));

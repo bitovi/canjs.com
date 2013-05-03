@@ -365,4 +365,4 @@ var compareMethods = {
 		}
 	   
    })
-}( can = {}, this ));
+}( this.can, this, this ));

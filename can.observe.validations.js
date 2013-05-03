@@ -371,4 +371,4 @@ can.extend(can.Observe.prototype, {
 	
 });
 
-}( can = {}, this ));
+}( this.can, this, this ));

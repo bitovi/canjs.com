@@ -1,5 +1,5 @@
 (function( can, window, undefined ){
-// # CanJS v1.0.2
+// # CanJS v1.0.3
 
 // (c) 2012 Bitovi  
 // MIT license  

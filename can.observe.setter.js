@@ -55,4 +55,4 @@ proto.__set = function(prop, value, current, success, error){
 	return this;
 };
 
-}( can = {}, this ));
+}( this.can, this, this ));
