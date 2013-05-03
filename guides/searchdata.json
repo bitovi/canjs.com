@@ -23,10 +23,18 @@
         "parent": "Tutorial",
         "order": 7
     },
+    "Developing": {
+        "name": "Developing",
+        "type": "page",
+        "id": 3,
+        "title": "Developing CanJS",
+        "parent": "guides",
+        "order": 3
+    },
     "EJS": {
         "name": "EJS",
         "type": "page",
-        "id": 3,
+        "id": 4,
         "title": "EJS",
         "parent": "Tutorial",
         "order": 4
@@ -34,13 +42,13 @@
     "guides": {
         "name": "guides",
         "type": "page",
-        "id": 4,
+        "id": 5,
         "title": "Guides"
     },
     "Models": {
         "name": "Models",
         "type": "page",
-        "id": 5,
+        "id": 6,
         "title": "Models",
         "parent": "Tutorial",
         "order": 2
@@ -48,7 +56,7 @@
     "Mustache": {
         "name": "Mustache",
         "type": "page",
-        "id": 6,
+        "id": 7,
         "title": "Mustache",
         "parent": "Tutorial",
         "order": 5
@@ -56,7 +64,7 @@
     "Observes": {
         "name": "Observes",
         "type": "page",
-        "id": 7,
+        "id": 8,
         "title": "Observes",
         "parent": "Tutorial",
         "order": 1
@@ -64,7 +72,7 @@
     "Recipes": {
         "name": "Recipes",
         "type": "page",
-        "id": 8,
+        "id": 9,
         "title": "CanJS Recipes",
         "parent": "guides",
         "order": 1
@@ -72,7 +80,7 @@
     "RecipesControls": {
         "name": "RecipesControls",
         "type": "page",
-        "id": 9,
+        "id": 10,
         "title": "Controls",
         "parent": "Recipes",
         "order": 0
@@ -80,7 +88,7 @@
     "RecipesEverything": {
         "name": "RecipesEverything",
         "type": "page",
-        "id": 10,
+        "id": 11,
         "title": "Everything Together",
         "parent": "Recipes",
         "order": 4
@@ -88,7 +96,7 @@
     "RecipesLiveBindings": {
         "name": "RecipesLiveBindings",
         "type": "page",
-        "id": 11,
+        "id": 12,
         "title": "Live Bindings",
         "parent": "Recipes",
         "order": 1
@@ -96,7 +104,7 @@
     "RecipesModels": {
         "name": "RecipesModels",
         "type": "page",
-        "id": 12,
+        "id": 13,
         "title": "Models",
         "parent": "Recipes",
         "order": 3
@@ -104,7 +112,7 @@
     "RecipesRouting": {
         "name": "RecipesRouting",
         "type": "page",
-        "id": 13,
+        "id": 14,
         "title": "Routing",
         "parent": "Recipes",
         "order": 2
@@ -112,7 +120,7 @@
     "Routing": {
         "name": "Routing",
         "type": "page",
-        "id": 14,
+        "id": 15,
         "title": "Routing",
         "parent": "Tutorial",
         "order": 8
@@ -120,7 +128,7 @@
     "Tutorial": {
         "name": "Tutorial",
         "type": "page",
-        "id": 15,
+        "id": 16,
         "title": "Get Started with CanJS",
         "parent": "guides",
         "order": 0
@@ -128,7 +136,7 @@
     "Utilities": {
         "name": "Utilities",
         "type": "page",
-        "id": 16,
+        "id": 17,
         "title": "Utilities",
         "parent": "Tutorial",
         "order": 9
@@ -136,7 +144,7 @@
     "Videos": {
         "name": "Videos",
         "type": "page",
-        "id": 17,
+        "id": 18,
         "title": "Videos",
         "parent": "guides",
         "order": 3
@@ -144,7 +152,7 @@
     "Templates": {
         "name": "Templates",
         "type": "page",
-        "id": 18,
+        "id": 19,
         "title": "Templates",
         "parent": "Tutorial",
         "order": 3
@@ -152,7 +160,7 @@
     "Why": {
         "name": "Why",
         "type": "page",
-        "id": 19,
+        "id": 20,
         "title": "Why CanJS?",
         "parent": "guides",
         "order": 2
@@ -160,16 +168,16 @@
     "changelog": {
         "name": "changelog",
         "type": "page",
-        "id": 20
+        "id": 21
     },
     "contributing": {
         "name": "contributing",
         "type": "page",
-        "id": 21
+        "id": 22
     },
     "license": {
         "name": "license",
         "type": "page",
-        "id": 22
+        "id": 23
     }
 }

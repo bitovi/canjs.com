@@ -7,7 +7,7 @@
     "title": "Guides",
     "comment": " ",
     "src": "_guides/guides.md",
-    "id": 4,
+    "id": 5,
     "children": [{
             "active": false,
             "type": "page",
@@ -19,7 +19,7 @@
             "order": 1,
             "comment": " ",
             "src": "_guides/recipes.md",
-            "id": 8,
+            "id": 9,
             "children": [{
                     "active": false,
                     "type": "page",
@@ -31,7 +31,7 @@
                     "order": 0,
                     "comment": " ",
                     "src": "_guides/recipes_controls.md",
-                    "id": 9
+                    "id": 10
                 }, {
                     "active": false,
                     "type": "page",
@@ -43,7 +43,7 @@
                     "order": 1,
                     "comment": " ",
                     "src": "_guides/recipes_livebindings.md",
-                    "id": 11
+                    "id": 12
                 }, {
                     "active": false,
                     "type": "page",
@@ -55,7 +55,7 @@
                     "order": 2,
                     "comment": " ",
                     "src": "_guides/recipes_routing.md",
-                    "id": 13
+                    "id": 14
                 }, {
                     "active": false,
                     "type": "page",
@@ -67,7 +67,7 @@
                     "order": 3,
                     "comment": " ",
                     "src": "_guides/recipes_models.md",
-                    "id": 12
+                    "id": 13
                 }, {
                     "active": false,
                     "type": "page",
@@ -79,9 +79,20 @@
                     "order": 4,
                     "comment": " ",
                     "src": "_guides/recipes_everything.md",
-                    "id": 10
+                    "id": 11
                 }
             ]
+        }, {
+            "active": false,
+            "type": "page",
+            "name": "Developing",
+            "body": "",
+            "description": "<p>To develop CanJS, add features, etc, you first must install DoneJS. DoneJS is the parent project of CanJS. DoneJS is the 4.0 version of JavaSciptMVC. It has DocumentJS and Steal as submodules that are used to generate the documentation and build the CanJS downloads.</p>\n\n<h2>Installing</h2>\n\n<ol>\n<li><p><code>fork</code> CanJS on <a href=\"https://github.com/bitovi/canjs\">GitHub</a>.</p></li>\n<li><p>Clone DoneJS with:</p>\n\n<pre><code>git clone git@github.com:bitovi/donejs\n</code></pre></li>\n<li><p>Open the donejs folder’s .gitmodule file and change the URL of the \"can\" submodule:</p>\n\n<pre><code>url = git://github.com/bitovi/canjs.git\n</code></pre>\n\n<p>to your <code>fork</code>ed URL like</p>\n\n<pre><code>url = git://github.com/justinbmeyer/canjs.git\n</code></pre></li>\n<li><p>Install all submodules by running</p>\n\n<pre><code>cd donejs\ngit submodule update --init --recursive\n</code></pre></li>\n</ol>\n\n<p>Depending on your version of git, you might need to cd into each submodule and run <code>git checkout</code>.</p>\n\n<h2>Developing</h2>\n\n<p>After installing CanJS and DoneJS, you’ll find CanJS’s files in a <code>can</code> folder. Within <code>can</code>, you’ll find a folder for each feature of CanJS: <code>construct</code>, <code>control</code>, <code>model</code>, etc.</p>\n\n<p>Within each feature folder, for example <code>construct</code>, you’ll find a file for:</p>\n\n<ul>\n<li>the implementation of the feature - <code>construct.js</code></li>\n<li>a demo of the feature - <code>construct.html</code></li>\n<li>an overview documentation page - <code>construct.md</code></li>\n<li>the feature’s tests - <code>construct_test.js</code></li>\n<li>a page to run those tests - <code>qunit.html</code></li>\n</ul>\n\n<p>Any plugins for that feature will be folders within the feature’s folder. Ex: <code>proxy</code>, <code>super</code>.</p>\n\n<p>The <code>can/test</code> folder contains:</p>\n\n<ul>\n<li>a <code>test.html</code> page which tests jQuery by default. Load e.g. <code>test.html?library=mootools</code> to test another library.</li>\n<li>a test page that tests all libraries and plugins: <code>index.html</code></li>\n<li>a file that loads all feature tests: <code>can_test.js</code></li>\n<li>a <code>plugin_test.html</code> file that tests all plugins</li>\n</ul>\n\n<p>The <code>can/util</code> folder contains the compatibility layer for each library.</p>\n\n<p>To develop CanJS:</p>\n\n<ol>\n<li>Edit the feature’s file.</li>\n<li>Add tests to the feature’s test file.</li>\n<li>Open the feature’s test page. Make sure it passes.</li>\n<li>Open can/test/index.html in every browser to test everything.</li>\n<li>Submit a pull request!</li>\n</ol>\n\n<h2>Documentation</h2>\n\n<p>To edit the documentation at <a href=\"http://doneJS.com/docs.html\">DoneJS.com</a>:</p>\n\n<ol>\n<li><a href=\"#developing_canjs-installing\">install</a> CanJS and DoneJS.</li>\n<li>Edit the markdown and js files in the <a href=\"https://github.com/bitovi/canjs\">CanJS github repo</a>.  For example, to edit <a href=\"http://donejs.com/docs.html#!can.Control\">can.Control's overview page</a>,\nchange <a href=\"https://github.com/bitovi/canjs/blob/master/control/control.md\">can/control/control.md</a>.  To edit <a href=\"http://donejs.com/docs.html#!can.Control.prototype.destroy\">can.Control's destroy method</a>,\nchange <a href=\"https://github.com/bitovi/canjs/blob/master/control/control.js#L939\">can/control/control.js</a>\nwhere you find the <code>destroy</code> comment.</li>\n<li><p>Generate the docs with:</p>\n\n<pre><code>./js site/scripts/doc.js\n</code></pre>\n\n<p>View them at <code>site/docs.html</code></p></li>\n<li><p>Submit a pull request.</p></li>\n</ol>\n\n<h2>Making a build</h2>\n\n<p>To make the CanJS builds, run:</p>\n\n<pre><code class=\"lang-javascript\">./js can/build/build.js</code></pre>\n\n<p>It puts the downloads in <code>can/dist/edge</code>.</p>\n\n<h2>List of heroes</h2>\n\n<p>The following lists everyone who's contributed something to CanJS.  If we've forgotten you, please add yourself.</p>\n\n<p>First, thanks to everyone who's contributed to <a href=\"https://github.com/bitovi/javascriptmvc/contributors\">JavaScriptMVC</a>\nand <a href=\"https://github.com/jupiterjs/jquerymx/contributors\">jQueryMX</a>, and the people at\n<a href=\"http://bitovi.com/people/\">Bitovi</a>.  You deserve heaps of recognition as CanJS is direcly based\noff JavaScriptMVC.  This page is for contributors after CanJS's launch. Thank you</p>\n\n<ul>\n<li><a href=\"https://github.com/iamnoah\">noah</a>\n(<a href=\"https://github.com/bitovi/canjs/commit/8193e359cde3b77a44c683ca9f8a5268fc9df44b\">1</a>,\n<a href=\"https://github.com/bitovi/canjs/commit/b865588710e7e7dd8a9588ebf8e8c0f4d19fd800\">2</a>,\n<a href=\"https://github.com/bitovi/canjs/commit/83a48e7bcb05ed9f179159f540b181db4dcf6e9c\">3</a>,\n<a href=\"https://github.com/Spredfast/canjs/commit/dc7ddd2dc619619f3955c31be1435c6f927b7a35\">4</a>,\n<a href=\"https://github.com/bitovi/canjs/pull/214\">5</a>, <a href=\"https://github.com/bitovi/canjs/pull/310\">6</a>)</li>\n<li><a href=\"https://github.com/thecountofzero\">thecountofzero</a>\n(<a href=\"https://github.com/bitovi/canjs/commit/e920434fa53975013688d065ce2e304f225fae75\">1</a>,\n<a href=\"https://github.com/bitovi/canjs/commit/8e98186e00b7d6b88869baeb97244877f143034e\">2</a>,\n<a href=\"https://github.com/bitovi/canjs/pull/315\">3</a>)</li>\n<li><a href=\"https://github.com/roissard\">roissard</a> (<a href=\"https://github.com/bitovi/canjs/commit/44bc72063e429bbc3f8a9a696a3ae4a7e57d12c8\">1</a>,\n<a href=\"https://github.com/bitovi/canjs/commit/c711fe05e1cdc99c72df8ac0f415c2ccb536d197\">2</a>)</li>\n<li><a href=\"https://github.com/makebbekus\">Michael Kebbekus</a>\n(<a href=\"https://github.com/bitovi/canjs/commit/d658d4910e8f3f391e9394449efe2f0c67581dbe\">1</a>)</li>\n<li>Daniel Salet (<a href=\"https://github.com/bitovi/canjs/commit/92487178255360d40b75be49681dc65cbfbf3e18\">1</a>)</li>\n<li><a href=\"https://github.com/daniel-franz\">Daniel Franz</a>\n(<a href=\"https://github.com/bitovi/canjs/commit/4aae36eea9d671a12f9c459733c48b6fd1e99af4\">1</a>)</li>\n<li><a href=\"https://github.com/trickeyone\">trickeyone</a>\n(<a href=\"https://github.com/trickeyone/canjs/commit/2c11f56e0a0511749243055276e3b806984b15fa\">1</a>)</li>\n<li><a href=\"https://github.com/rjgotten\">rjgotten</a>\n(<a href=\"https://github.com/bitovi/canjs/commit/92c98e7c80d5fd7357eae69a60313d3d06efbdcb\">1</a>)</li>\n<li>Amy Chen (<a href=\"https://github.com/bitovi/canjs/commit/3eee6ba9c69410ac549b909b1c8f860e6d591612\">1</a>)</li>\n<li><a href=\"https://github.com/ms\">Max Sadrieh</a>\n(<a href=\"https://github.com/bitovi/canjs/commit/06c5a4b3d50d14c5881ee55642fa10f37b71af0b\">1</a>)</li>\n<li><a href=\"https://github.com/dimaf\">dimaf</a>\n(<a href=\"https://github.com/bitovi/canjs/commit/fc8a4d57c99a280025eb7c613cef92de28c3c160\">1</a>,\n<a href=\"https://github.com/bitovi/canjs/pull/145\">2</a>)</li>\n<li><a href=\"https://github.com/yusufsafak\">yusufsafak</a> (<a href=\"https://github.com/bitovi/canjs/pull/30\">1</a>)</li>\n<li><a href=\"https://github.com/verto\">verto</a> (<a href=\"https://github.com/bitovi/canjs/pull/32\">1</a>)</li>\n<li><a href=\"https://github.com/WearyMonkey\">WearyMonkey</a> (<a href=\"https://github.com/bitovi/canjs/issues/27\">1</a>)</li>\n<li><a href=\"https://github.com/cohuman\">cohuman</a>\n(<a href=\"https://github.com/bitovi/canjs/pull/23\">1</a>, <a href=\"https://github.com/bitovi/canjs/pull/26\">2</a>)</li>\n<li><a href=\"https://twitter.com/roelmonnens\">roelmonnens</a></li>\n<li><a href=\"https://github.com/mindscratch\">Craig Wickesser</a> (<a href=\"https://github.com/bitovi/canjs/pull/188\">1</a>)</li>\n<li><a href=\"https://github.com/jeffrose\">Jeff Rose</a> (<a href=\"https://github.com/bitovi/canjs/pull/201\">1</a>)</li>\n<li><a href=\"https://github.com/bmomberger-reciprocity\">Brad Momberger</a> (<a href=\"https://github.com/bitovi/canjs/pull/292\">1</a>)</li>\n<li><a href=\"https://github.com/scorphus\">Pablo Aguiar</a> (<a href=\"https://github.com/bitovi/canjs/pull/303\">1</a>,\n<a href=\"https://github.com/bitovi/canjs/pull/313\">2</a>,\n<a href=\"https://github.com/bitovi/canjs/pull/317\">3</a>)</li>\n<li><a href=\"https://github.com/schovi\">David Schovanec</a> (<a href=\"https://github.com/bitovi/canjs/pull/325\">1</a>,\n<a href=\"https://github.com/bitovi/canjs/pull/332\">2</a>)</li>\n<li><a href=\"https://github.com/onyxrev\">Dan Connor</a> (<a href=\"https://github.com/bitovi/canjs/pull/284\">1</a>)</li>\n<li><a href=\"https://github.com/jebaird\">Jesse Baird</a> (<a href=\"https://github.com/bitovi/canjs/pull/319\">1</a>)</li>\n</ul>\n\n<p>for helping us with new features, bug fixes, and getting this out the door.</p>",
+            "title": "Developing CanJS",
+            "parent": "guides",
+            "order": 3,
+            "src": "_guides/developing.md",
+            "id": 3
         }, {
             "active": false,
             "type": "page",
@@ -93,7 +104,7 @@
             "order": 0,
             "comment": " ",
             "src": "_guides/tutorial.md",
-            "id": 15,
+            "id": 16,
             "children": [{
                     "active": false,
                     "type": "page",
@@ -117,7 +128,7 @@
                     "order": 1,
                     "comment": " ",
                     "src": "_guides/observes.md",
-                    "id": 7
+                    "id": 8
                 }, {
                     "active": false,
                     "type": "page",
@@ -129,7 +140,7 @@
                     "order": 2,
                     "comment": " ",
                     "src": "_guides/models.md",
-                    "id": 5
+                    "id": 6
                 }, {
                     "active": false,
                     "type": "page",
@@ -141,7 +152,7 @@
                     "order": 3,
                     "comment": " ",
                     "src": "_guides/views.md",
-                    "id": 18
+                    "id": 19
                 }, {
                     "active": false,
                     "type": "page",
@@ -153,7 +164,7 @@
                     "order": 4,
                     "comment": " ",
                     "src": "_guides/ejs.md",
-                    "id": 3
+                    "id": 4
                 }, {
                     "active": false,
                     "type": "page",
@@ -165,7 +176,7 @@
                     "order": 5,
                     "comment": " ",
                     "src": "_guides/mustache.md",
-                    "id": 6
+                    "id": 7
                 }, {
                     "active": false,
                     "type": "page",
@@ -200,7 +211,7 @@
                     "parent": "Tutorial",
                     "order": 8,
                     "src": "_guides/route.md",
-                    "id": 14
+                    "id": 15
                 }, {
                     "active": false,
                     "type": "page",
@@ -212,7 +223,7 @@
                     "order": 9,
                     "comment": " ",
                     "src": "_guides/util.md",
-                    "id": 16
+                    "id": 17
                 }
             ]
         }, {
@@ -226,7 +237,7 @@
             "order": 2,
             "comment": " ",
             "src": "_guides/why.md",
-            "id": 19
+            "id": 20
         }, {
             "active": false,
             "type": "page",
@@ -238,7 +249,7 @@
             "order": 3,
             "comment": " ",
             "src": "_guides/videos.md",
-            "id": 17
+            "id": 18
         }
     ]
 }
