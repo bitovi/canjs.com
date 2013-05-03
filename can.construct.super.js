@@ -41,4 +41,4 @@
 		}
 
 
-}( this.can || {}, this ));
+}( can = {}, this ));

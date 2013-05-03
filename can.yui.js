@@ -3314,4 +3314,4 @@ can.dispatch = function(event){
 requires: ["node", "io-base", "querystring", "event-focus", "array-extras"],
  optional: ["selector-css2", "selector-css3"]
 });
-}( this.can || {}, this ));
+}( can = {}, this ));

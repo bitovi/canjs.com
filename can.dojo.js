@@ -3453,4 +3453,4 @@ define("plugd/trigger",["dojo"], function(dojo){
 
 return can;
 });
-}( this.can || {}, this ));
+}( can = {}, this ));

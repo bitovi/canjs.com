@@ -3210,4 +3210,4 @@ can.$ = Zepto
 		window.can = can;
 	}
 
-}( this.can || {}, this ));
+}( can = {}, this ));

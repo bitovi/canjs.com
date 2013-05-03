@@ -1,5 +1,5 @@
 (function( can, window, undefined ){
-// # CanJS v1.0.1
+// # CanJS v1.0.2
 
 // (c) 2012 Bitovi  
 // MIT license  
@@ -2779,4 +2779,4 @@
 		window.can = can;
 	}
 
-}( this.can || {}, this ));
+}( can = {}, this ));

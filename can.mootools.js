@@ -3246,4 +3246,4 @@ can.dispatch = function(event){
 		window.can = can;
 	}
 
-}( this.can || {}, this ));
+}( can = {}, this ));

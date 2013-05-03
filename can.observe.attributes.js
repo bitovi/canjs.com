@@ -290,4 +290,4 @@ can.Observe.prototype.serialize = function(attrName){
 	return attrName != undefined ? where[attrName] : where;
 };
 
-}( this.can || {}, this ));
+}( can = {}, this ));
