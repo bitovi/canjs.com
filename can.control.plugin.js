@@ -1,3 +1,9 @@
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
 (function (window, $, can, undefined) {
 	// ## can/control/plugin/plugin.js
 	//used to determine if a control instance is one of controllers
@@ -10,9 +16,6 @@
 		}
 		return false;
 	},
-		data = function (el, data) {
-			return $el.data('controls');
-		},
 		makeArray = can.makeArray,
 		old = can.Control.setup;
 

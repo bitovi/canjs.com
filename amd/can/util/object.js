@@ -1,4 +1,10 @@
-define(['can/util'], function (can) {
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
+define(['can/util.js'], function (can) {
 
 	var isArray = can.isArray,
 		// essentially returns an object that has all the must have comparisons ...
@@ -19,94 +25,8 @@ define(['can/util'], function (can) {
 			return count;
 		};
 
-	/**
-	 * @class can.Object
-	 * @parent can.util
-	 * 
-	 * Object contains several helper methods that 
-	 * help compare objects.
-	 * 
-	 * ## same
-	 * 
-	 * Returns true if two objects are similar.
-	 * 
-	 *     can.Object.same({foo: "bar"} , {bar: "foo"}) //-> false
-	 *   
-	 * ## subset
-	 * 
-	 * Returns true if an object is a set of another set.
-	 * 
-	 *     can.Object.subset({}, {foo: "bar"} ) //-> true
-	 * 
-	 * ## subsets
-	 * 
-	 * Returns the subsets of an object
-	 * 
-	 *     can.Object.subsets({userId: 20},
-	 *                      [
-	 *                       {userId: 20, limit: 30},
-	 *                       {userId: 5},
-	 *                       {}
-	 *                      ]) 
-	 *              //->    [{userId: 20, limit: 30}]
-	 */
 	can.Object = {};
 
-	/**
-	 * @function same
-	 * Returns if two objects are the same.  It takes an optional compares object that
-	 * can be used to make comparisons.
-	 * 
-	 * This function does not work with objects that create circular references.
-	 * 
-	 * ## Examples
-	 * 
-	 *     can.Object.same({name: "Justin"},
-	 *                   {name: "JUSTIN"}) //-> false
-	 *     
-	 *     // ignore the name property
-	 *     can.Object.same({name: "Brian"},
-	 *                   {name: "JUSTIN"},
-	 *                   {name: null})      //-> true
-	 *     
-	 *     // ignore case
-	 *     can.Object.same({name: "Justin"},
-	 *                   {name: "JUSTIN"},
-	 *                   {name: "i"})      //-> true
-	 *     
-	 *     // deep rule
-	 *     can.Object.same({ person : { name: "Justin" } },
-	 *                   { person : { name: "JUSTIN" } },
-	 *                   { person : { name: "i"      } }) //-> true
-	 *                   
-	 *     // supplied compare function
-	 *     can.Object.same({age: "Thirty"},
-	 *                   {age: 30},
-	 *                   {age: function( a, b ){
-	 *                           if( a == "Thirty" ) { 
-	 *                             a = 30
-	 *                           }
-	 *                           if( b == "Thirty" ) {
-	 *                             b = 30
-	 *                           }
-	 *                           return a === b;
-	 *                         }})      //-> true
-	 * 
-	 * @param {Object} a an object to compare
-	 * @param {Object} b an object to compare
-	 * @param {Object} [compares] an object that indicates how to 
-	 * compare specific properties. 
-	 * Typically this is a name / value pair
-	 * 
-	 *     can.Object.same({name: "Justin"},{name: "JUSTIN"},{name: "i"})
-	 *     
-	 * There are two compare functions that you can specify with a string:
-	 * 
-	 *   - 'i' - ignores case
-	 *   - null - ignores this property
-	 * 
-	 * @param {Object} [deep] used internally
-	 */
 	var same = can.Object.same = function (a, b, compares, aParent, bParent, deep) {
 		var aType = typeof a,
 			aArray = isArray(a),
@@ -165,12 +85,6 @@ define(['can/util'], function (can) {
 		return false;
 	};
 
-	/**
-	 * @function subsets
-	 * Returns the sets in 'sets' that are a subset of checkSet
-	 * @param {Object} checkSet
-	 * @param {Object} sets
-	 */
 	can.Object.subsets = function (checkSet, sets, compares) {
 		var len = sets.length,
 			subsets = [],
@@ -186,14 +100,7 @@ define(['can/util'], function (can) {
 		}
 		return subsets;
 	};
-	/**
-	 * @function subset
-	 * Compares if checkSet is a subset of set
-	 * @param {Object} checkSet
-	 * @param {Object} set
-	 * @param {Object} [compares]
-	 * @param {Object} [checkPropCount]
-	 */
+
 	can.Object.subset = function (subset, set, compares) {
 		// go through set {type: 'folder'} and make sure every property
 		// is in subset {type: 'folder', parentId :5}
@@ -212,7 +119,6 @@ define(['can/util'], function (can) {
 		return true;
 	}
 
-
 	var compareMethods = {
 		"null": function () {
 			return true;
@@ -223,4 +129,5 @@ define(['can/util'], function (can) {
 	}
 
 	return can;
-})
+
+});

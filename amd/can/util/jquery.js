@@ -1,6 +1,12 @@
-define(['jquery', 'can/util/can', 'can/util/array/each'], function ($, can) {
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
+define(['jquery', 'can/util/can.js', 'can/util/array/each.js'], function ($, can) {
 	// _jQuery node list._
-	$.extend(can, jQuery, {
+	$.extend(can, $, {
 		trigger: function (obj, event, args) {
 			if (obj.trigger) {
 				obj.trigger(event, args);
@@ -21,7 +27,7 @@ define(['jquery', 'can/util/can', 'can/util/array/each'], function ($, can) {
 			var ret = $.buildFragment([result], $(element));
 			return ret.cacheable ? $.clone(ret.fragment) : ret.fragment;
 		},
-		$: jQuery,
+		$: $,
 		each: can.each
 	});
 
@@ -54,4 +60,4 @@ define(['jquery', 'can/util/can', 'can/util/array/each'], function ($, can) {
 	};
 
 	return can;
-})
+});

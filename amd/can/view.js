@@ -1,4 +1,10 @@
-define(['can/util'], function (can) {
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
+define(['can/util.js'], function (can) {
 	// ## view.js
 	// `can.view`  
 	// _Templating abstraction._
@@ -6,9 +12,7 @@ define(['can/util'], function (can) {
 		makeArray = can.makeArray,
 		// Used for hookup `id`s.
 		hookupId = 1,
-		/**
-		 * @add can.view
-		 */
+
 		$view = can.view = function (view, data, helpers, callback) {
 			// Get the result.
 			var result = $view.render(view, data, helpers, callback);
@@ -64,6 +68,9 @@ define(['can/util'], function (can) {
 					hookupEls.push(node);
 					hookupEls.push.apply(hookupEls, can.makeArray(node.getElementsByTagName('*')));
 				}
+				else if (node.nodeType === 3 && node.textContent) {
+					node.textContent = node.textContent.replace(/@@!!@@/g, '');
+				}
 			});
 
 			// Filter by `data-view-id` attribute.
@@ -78,168 +85,40 @@ define(['can/util'], function (can) {
 			return fragment;
 		},
 
-		/**
-		 * @attribute hookups
-		 * @hide
-		 * A list of pending 'hookups'
-		 */
+
 		hookups: {},
 
-		/**
-		 * @function hook
-		 * Registers a hookup function that can be called back after the html is 
-		 * put on the page.  Typically this is handled by the template engine.  Currently
-		 * only EJS supports this functionality.
-		 * 
-		 *     var id = can.View.hookup(function(el){
-		 *            //do something with el
-		 *         }),
-		 *         html = "<div data-view-id='"+id+"'>"
-		 *     $('.foo').html(html);
-		 * 
-		 * 
-		 * @param {Function} cb a callback function to be called with the element
-		 * @param {Number} the hookup number
-		 */
+
 		hook: function (cb) {
 			$view.hookups[++hookupId] = cb;
 			return " data-view-id='" + hookupId + "'";
 		},
 
-		/**
-		 * @attribute cached
-		 * @hide
-		 * Cached are put in this object
-		 */
+
 		cached: {},
 
 		cachedRenderers: {},
 
-		/**
-		 * @attribute cache
-		 * By default, views are cached on the client.  If you'd like the
-		 * the views to reload from the server, you can set the `cache` attribute to `false`.
-		 *
-		 * 		//- Forces loads from server
-		 * 		can.view.cache = false; 
-		 *
-		 */
+
 		cache: true,
 
-		/**
-		 * @function register
-		 * Registers a template engine to be used with 
-		 * view helpers and compression.  
-		 * 
-		 * ## Example
-		 * 
-		 * @codestart
-		 * can.View.register({
-		 * 	suffix : "tmpl",
-		 *  plugin : "jquery/view/tmpl",
-		 * 	renderer: function( id, text ) {
-		 * 		return function(data){
-		 * 			return jQuery.render( text, data );
-		 * 		}
-		 * 	},
-		 * 	script: function( id, text ) {
-		 * 		var tmpl = can.tmpl(text).toString();
-		 * 		return "function(data){return ("+
-		 * 		  	tmpl+
-		 * 			").call(jQuery, jQuery, data); }";
-		 * 	}
-		 * })
-		 * @codeend
-		 * Here's what each property does:
-		 * 
-		 *    * plugin - the location of the plugin
-		 *    * suffix - files that use this suffix will be processed by this template engine
-		 *    * renderer - returns a function that will render the template provided by text
-		 *    * script - returns a string form of the processed template function.
-		 * 
-		 * @param {Object} info a object of method and properties 
-		 * 
-		 * that enable template integration:
-		 * <ul>
-		 *   <li>plugin - the location of the plugin.  EX: 'jquery/view/ejs'</li>
-		 *   <li>suffix - the view extension.  EX: 'ejs'</li>
-		 *   <li>script(id, src) - a function that returns a string that when evaluated returns a function that can be 
-		 *    used as the render (i.e. have func.call(data, data, helpers) called on it).</li>
-		 *   <li>renderer(id, text) - a function that takes the id of the template and the text of the template and
-		 *    returns a render function.</li>
-		 * </ul>
-		 */
+
 		register: function (info) {
 			this.types["." + info.suffix] = info;
 		},
 
 		types: {},
 
-		/**
-		 * @attribute ext
-		 * The default suffix to use if none is provided in the view's url.  
-		 * This is set to `.ejs` by default.
-		 *
-		 * 		// Changes view ext to 'txt'
-		 * 		can.view.ext = 'txt';
-		 *
-		 */
+
 		ext: ".ejs",
 
-		/**
-		 * Returns the text that 
-		 * @hide 
-		 * @param {Object} type
-		 * @param {Object} id
-		 * @param {Object} src
-		 */
+
 		registerScript: function () {},
 
-		/**
-		 * @hide
-		 * Called by a production script to pre-load a renderer function
-		 * into the view cache.
-		 * @param {String} id
-		 * @param {Function} renderer
-		 */
+
 		preload: function () {},
 
-		/**
-		 * @function render
-		 * `can.view.render(view, data, [helpers], callback)` returns the rendered markup produced by the corresponding template
-		 * engine as String. If you pass a deferred object in as data, render returns
-		 * a deferred resolving to the rendered markup.
-		 * 
-		 * `can.view.render` is commonly used for sub-templates.
-		 * 
-		 * ## Example
-		 * 
-		 * _welcome.ejs_ looks like:
-		 * 
-		 *     <h1>Hello <%= hello %></h1>
-		 * 
-		 * Render it to a string like:
-		 * 
-		 *     can.view.render("welcome.ejs",{hello: "world"})
-		 *       //-> <h1>Hello world</h1>
-		 * 
-		 * ## Use as a Subtemplate
-		 * 
-		 * If you have a template like:
-		 * 
-		 *     <ul>
-		 *       <% list(items, function(item){ %>
-		 *         <%== can.view.render("item.ejs",item) %>
-		 *       <% }) %>
-		 *     </ul>
-		 * 
-		 * @param {String|Object} view the path of the view template or a view object
-		 * @param {Object} data the object passed to a template
-		 * @param {Object} [helpers] additional helper methods to be passed to the view template
-		 * @param {Function} [callback] function executed after template has been processed
-		 * @param {String|Object} returns a string of processed text or a deferred that resolves to the processed text
-		 * 
-		 */
+
 		render: function (view, data, helpers, callback) {
 			// If helpers is a `function`, it is actually a callback.
 			if (isFunction(helpers)) {
@@ -467,11 +346,7 @@ define(['can/util'], function (can) {
 		steal.type("view js", function (options, success, error) {
 			var type = $view.types["." + options.type],
 				id = $view.toId(options.id);
-			/**
-			 * should return something like steal("dependencies",function(EJS){
-			 * 	 return can.view.preload("ID", options.text)
-			 * })
-			 */
+
 			options.text = "steal('" + (type.plugin || "can/view/" + options.type) + "',function(can){return " + "can.view.preload('" + id + "'," + options.text + ");\n})";
 			success();
 		})
@@ -492,7 +367,13 @@ define(['can/util'], function (can) {
 				})
 			}
 			$view[info.suffix] = function (id, text) {
-				$view.preload(id, info.renderer(id, text))
+				if (!text) {
+					// Return a nameless renderer
+					return info.renderer(null, id);
+				}
+
+				$view.preload(id, info.renderer(id, text));
+				return can.view(id);
 			}
 		},
 		registerScript: function (type, id, src) {
@@ -510,4 +391,4 @@ define(['can/util'], function (can) {
 	});
 	//!steal-pluginify-remove-end
 	return can;
-})
+});

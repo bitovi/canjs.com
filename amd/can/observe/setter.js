@@ -1,10 +1,11 @@
-define(['can/util', 'can/observe/attributes'], function (can) {
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
+define(['can/util.js', 'can/observe/attributes'], function (can) {
 
-	/**
-	 * Like [can.camelize|camelize], but the first part is also capitalized
-	 * @param {String} s
-	 * @return {String} the classized string
-	 */
 	can.classize = function (s, join) {
 		// this can be moved out ..
 		// used for getter setter
@@ -54,5 +55,5 @@ define(['can/util', 'can/observe/attributes'], function (can) {
 
 		return this;
 	};
-	return can;
-})
+	return can.Observe;
+});

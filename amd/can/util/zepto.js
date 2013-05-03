@@ -1,4 +1,46 @@
-define(['can/util/can', 'can/util/zepto/data', 'can/util/event', 'can/util/fragment'], function (can) {
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
+define(['can/util/can.js', 'zepto', 'can/util/event.js', 'can/util/fragment.js'], function (can) {
+	var $ = Zepto;
+	// data.js
+	// ---------
+	// _jQuery-like data methods._
+	var data = {},
+		dataAttr = $.fn.data,
+		uuid = $.uuid = +new Date(),
+		exp = $.expando = 'Zepto' + uuid;
+
+	function getData(node, name) {
+		var id = node[exp],
+			store = id && data[id];
+		return name === undefined ? store || setData(node) : (store && store[name]) || dataAttr.call($(node), name);
+	}
+
+	function setData(node, name, value) {
+		var id = node[exp] || (node[exp] = ++uuid),
+			store = data[id] || (data[id] = {});
+		if (name !== undefined) store[name] = value;
+		return store;
+	};
+
+	$.fn.data = function (name, value) {
+		return value === undefined ? this.length == 0 ? undefined : getData(this[0], name) : this.each(function (idx) {
+			setData(this, name, $.isFunction(value) ? value.call(this, idx, getData(this, name)) : value);
+		});
+	};
+	$.cleanData = function (elems) {
+		for (var i = 0, elem;
+		(elem = elems[i]) !== undefined; i++) {
+			can.trigger(elem, "destroyed", [], false)
+			var id = elem[exp]
+			delete data[id];
+		}
+	}
+
 	// zepto.js
 	// ---------
 	// _Zepto node list._
@@ -78,7 +120,6 @@ define(['can/util/can', 'can/util/zepto/data', 'can/util/event', 'can/util/fragm
 		}
 	})
 
-
 	can.makeArray = function (arr) {
 		var ret = []
 		can.each(arr, function (a, i) {
@@ -142,11 +183,6 @@ define(['can/util/can', 'can/util/zepto/data', 'can/util/event', 'can/util/fragm
 		return d;
 	};
 
-
-
-
-
-
 	// Make destroyed and empty work.
 	$.fn.empty = function () {
 		return this.each(function () {
@@ -166,7 +202,6 @@ define(['can/util/can', 'can/util/zepto/data', 'can/util/event', 'can/util/fragm
 		});
 		return this;
 	}
-
 
 	can.trim = function (str) {
 		return str.trim();
@@ -191,189 +226,5 @@ define(['can/util/can', 'can/util/zepto/data', 'can/util/event', 'can/util/fragm
 		return wrapped[index];
 	}
 
-
-	function (can) {
-
-		// deferred.js
-		// ---------
-		// _Lightweight, jQuery style deferreds._
-		var Deferred = function (func) {
-			if (!(this instanceof Deferred)) return new Deferred();
-
-			this._doneFuncs = [];
-			this._failFuncs = [];
-			this._resultArgs = null;
-			this._status = "";
-
-			// Check for option `function` -- call it with this as context and as first 
-			// parameter, as specified in jQuery API.
-			func && func.call(this, this);
-		};
-		can.Deferred = Deferred;
-		can.when = Deferred.when = function () {
-			var args = can.makeArray(arguments);
-			if (args.length < 2) {
-				var obj = args[0];
-				if (obj && (can.isFunction(obj.isResolved) && can.isFunction(obj.isRejected))) {
-					return obj;
-				} else {
-					return Deferred().resolve(obj);
-				}
-			} else {
-
-				var df = Deferred(),
-					done = 0,
-					// Resolve params -- params of each resolve, we need to track them down 
-					// to be able to pass them in the correct order if the master 
-					// needs to be resolved.
-					rp = [];
-
-				can.each(args, function (arg, j) {
-					arg.done(function () {
-						rp[j] = (arguments.length < 2) ? arguments[0] : arguments;
-						if (++done == args.length) {
-							df.resolve.apply(df, rp);
-						}
-					}).fail(function () {
-						df.reject(arguments);
-					});
-				});
-
-				return df;
-
-			}
-		}
-
-		var resolveFunc = function (type, _status) {
-			return function (context) {
-				var args = this._resultArgs = (arguments.length > 1) ? arguments[1] : [];
-				return this.exec(context, this[type], args, _status);
-			}
-		},
-			doneFunc = function (type, _status) {
-				return function () {
-					var self = this;
-					// In Safari, the properties of the `arguments` object are not enumerable, 
-					// so we have to convert arguments to an `Array` that allows `can.each` to loop over them.
-					can.each(Array.prototype.slice.call(arguments), function (v, i, args) {
-						if (!v) return;
-						if (v.constructor === Array) {
-							args.callee.apply(self, v)
-						} else {
-							// Immediately call the `function` if the deferred has been resolved.
-							if (self._status === _status) v.apply(self, self._resultArgs || []);
-
-							self[type].push(v);
-						}
-					});
-					return this;
-				}
-			};
-
-		can.extend(Deferred.prototype, {
-			pipe: function (done, fail) {
-				var d = can.Deferred();
-				this.done(function () {
-					d.resolve(done.apply(this, arguments));
-				});
-
-				this.fail(function () {
-					if (fail) {
-						d.reject(fail.apply(this, arguments));
-					} else {
-						d.reject.apply(d, arguments);
-					}
-				});
-				return d;
-			},
-			resolveWith: resolveFunc("_doneFuncs", "rs"),
-			rejectWith: resolveFunc("_failFuncs", "rj"),
-			done: doneFunc("_doneFuncs", "rs"),
-			fail: doneFunc("_failFuncs", "rj"),
-			always: function () {
-				var args = can.makeArray(arguments);
-				if (args.length && args[0]) this.done(args[0]).fail(args[0]);
-
-				return this;
-			},
-
-			then: function () {
-				var args = can.makeArray(arguments);
-				// Fail `function`(s)
-				if (args.length > 1 && args[1]) this.fail(args[1]);
-
-				// Done `function`(s)
-				if (args.length && args[0]) this.done(args[0]);
-
-				return this;
-			},
-
-			state: function () {
-				switch (this._status) {
-				case 'rs':
-					return 'resolved';
-				case 'rj':
-					return 'rejected';
-				default:
-					return 'pending';
-				}
-			},
-
-			isResolved: function () {
-				return this._status === "rs";
-			},
-
-			isRejected: function () {
-				return this._status === "rj";
-			},
-
-			reject: function () {
-				return this.rejectWith(this, arguments);
-			},
-
-			resolve: function () {
-				return this.resolveWith(this, arguments);
-			},
-
-			exec: function (context, dst, args, st) {
-				if (this._status !== "") return this;
-
-				this._status = st;
-
-				can.each(dst, function (d) {
-					d.apply(context, args);
-				});
-
-				return this;
-			}
-		});
-
-		function (can) {
-			can.each = function (elements, callback, context) {
-				var i = 0,
-					key;
-				if (elements) {
-					if (typeof elements.length === 'number' && elements.pop) {
-						if (elements.attr) {
-							elements.attr('length');
-						}
-						for (key = elements.length; i < key; i++) {
-							if (callback.call(context || elements[i], elements[i], i, elements) === false) {
-								break;
-							}
-						}
-					} else if (elements.hasOwnProperty) {
-						for (key in elements) {
-							if (elements.hasOwnProperty(key)) {
-								if (callback.call(context || elements[key], elements[key], key, elements) === false) {
-									break;
-								}
-							}
-						}
-					}
-				}
-				return elements;
-			};
-
-			return can;
-		})
+	return can;
+});

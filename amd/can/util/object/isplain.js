@@ -1,4 +1,10 @@
-define(['can/util/can'], function (can) {
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
+define(['can/util/can.js'], function (can) {
 	var core_hasOwn = Object.prototype.hasOwnProperty,
 		isWindow = function (obj) {
 			return obj != null && obj == obj.window;
@@ -31,4 +37,4 @@ define(['can/util/can'], function (can) {
 
 		can.isPlainObject = isPlainObject;
 	return can;
-})
+});

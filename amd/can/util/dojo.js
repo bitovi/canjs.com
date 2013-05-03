@@ -1,4 +1,10 @@
-define(['can/util/dojo/dojo-1.8.1', 'can/util/event', 'can/util/fragment', 'can/util/array/each', 'can/util/object/isplain'], function () {
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
+define(['can/util/can.js', 'dojo', 'can/util/event.js', 'can/util/fragment.js', 'can/util/array/each.js', 'can/util/object/isplain'], function (can) {
 	define("plugd/trigger", ["dojo"], function (dojo) {
 
 		var d = dojo,
@@ -73,56 +79,45 @@ define(['can/util/dojo/dojo-1.8.1', 'can/util/event', 'can/util/fragment', 'can/
 			// summary: 
 			//		Trigger some event. It can be either a Dom Event, Custom Event, 
 			//		or direct function call. 
-			//
 			// description:
 			//		Trigger some event. It can be either a Dom Event, Custom Event, 
 			//		or direct function call. NOTE: This function does not trigger
 			//		default behavior, only triggers bound event listeneres. eg:
 			//		one cannot trigger("anchorNode", "onclick") and expect the browser
 			//		to follow the href="" attribute naturally.
-			//
 			// obj: String|DomNode|Object|Function
 			//		An ID, or DomNode reference, from which to trigger the event.
 			//		If an Object, fire the `event` in the scope of this object,
 			//		similar to calling dojo.hitch(obj, event)(). The return value
 			//		in this case is returned from `dojo.trigger`
-			//	 
 			// event: String|Function
 			//		The name of the event to trigger. can be any DOM level 2 event
 			//		and can be in either form: "onclick" or "click" for instance.
 			//		In the object-firing case, this method can be a function or
 			//		a string version of a member function, just like `dojo.hitch`.
-			//
 			// extraArgs: Object?
 			//		An object to mix into the `event` object passed to any bound 
 			//		listeners. Be careful not to override important members, like
 			//		`type`, or `preventDefault`. It will likely error.
-			//
 			//		Additionally, extraArgs is moot in the object-triggering case,
 			//		as all arguments beyond the `event` are curried onto the triggered
 			//		function.
-			//
 			// example: 
-			//	|	dojo.connect(node, "onclick", function(e){ /* stuff */ });
+			//	|	dojo.connect(node, "onclick", function(e){  });
 			//	|	// later:
 			//	|	dojo.trigger(node, "onclick");
-			//
 			// example:
 			//	|	// or from within dojo.query: (requires dojo.NodeList)
 			//	|	dojo.query("a").onclick(function(){}).trigger("onclick");
-			//
 			// example:
 			//	|	// fire obj.method() in scope of obj
 			//	|	dojo.trigger(obj, "method");
-			//
 			// example:
 			//	|	// fire an anonymous function:
-			//	|	dojo.trigger(d.global, function(){ /* stuff */ });
-			//
+			//	|	dojo.trigger(d.global, function(){  });
 			// example: 
 			//	|	// fire and anonymous function in the scope of obj
 			//	|	dojo.trigger(obj, function(){ this == obj; });
-			//
 			// example:
 			//	|	// with a connected function like:
 			//	|	dojo.connect(dojo.doc, "onclick", function(e){
@@ -132,7 +127,6 @@ define(['can/util/dojo/dojo-1.8.1', 'can/util/event', 'can/util/fragment', 'can/
 			//	|	});
 			//	|	// fire onclick, passing in a custom bit of info
 			//	|	dojo.trigger("someId", "onclick", { manuallydone:true });
-			//
 			// returns: Anything
 			//		Will not return anything in the Dom event case, but will return whatever
 			//		return value is received from the triggered event. 
@@ -148,14 +142,11 @@ define(['can/util/dojo/dojo-1.8.1', 'can/util/event', 'can/util/fragment', 'can/
 					//		Fire some some event originating from this node.
 					//		Only available if both the `dojo.trigger` and `dojo.node` plugin 
 					//		are enabled. Allows chaining as all `dojo._Node` methods do.
-					//
 					// ev: String
 					//		Some string event name to fire. eg: "onclick", "submit"
-					//
 					// data: Object
 					//		Just like `extraArgs` for `dojo.trigger`, additional data
 					//		to mix into the event object.
-					//
 					// example:
 					//	|	// fire onlick orginiating from a node with id="someAnchorId"
 					//	|	dojo.node("someAnchorId").trigger("click");
@@ -172,7 +163,6 @@ define(['can/util/dojo/dojo-1.8.1', 'can/util/event', 'can/util/fragment', 'can/
 	// dojo.js
 	// ---------
 	// _dojo node list._
-	//  
 	// These are pre-loaded by `steal` -> no callback.
 	require(["dojo", "dojo/query", "plugd/trigger", "dojo/NodeList-dom"]);
 
@@ -183,7 +173,7 @@ define(['can/util/dojo/dojo-1.8.1', 'can/util/event', 'can/util/fragment', 'can/
 
 	// Map array helpers.
 	can.makeArray = function (arr) {
-		array = [];
+		var array = [];
 		dojo.forEach(arr, function (item) {
 			array.push(item)
 		});
@@ -210,7 +200,7 @@ define(['can/util/dojo/dojo-1.8.1', 'can/util/event', 'can/util/fragment', 'can/
 		for (prop in object) {
 			break;
 		}
-		return prop === undefined;;
+		return prop === undefined;
 	}
 
 	// Use a version of param similar to jQuery's param that
@@ -247,16 +237,7 @@ define(['can/util/dojo/dojo-1.8.1', 'can/util/event', 'can/util/fragment', 'can/
 	can.isFunction = function (f) {
 		return dojo.isFunction(f);
 	}
-	/**
-	 * EVENTS
-	 * 
-	 * Dojo does not use the callback handler when unbinding.  Instead
-	 * when binding (dojo.connect or dojo.on) an object with a remove
-	 * method is returned.
-	 * 
-	 * Because of this, we have to map each callback to the "remove"
-	 * object to it can be passed to dojo.disconnect.
-	 */
+
 
 	// The id of the `function` to be bound, used as an expando on the `function`
 	// so we can lookup it's `remove` object.
@@ -394,9 +375,6 @@ define(['can/util/dojo/dojo-1.8.1', 'can/util/event', 'can/util/fragment', 'can/
 		}
 
 
-		/**
-		 * Ajax
-		 */
 		var optionsMap = {
 		type: "method",
 		success: undefined,
@@ -413,7 +391,6 @@ define(['can/util/dojo/dojo-1.8.1', 'can/util/event', 'can/util/fragment', 'can/
 			}
 		}
 	}
-
 
 	can.ajax = function (options) {
 		var type = can.capitalize((options.type || "get").toLowerCase()),
@@ -441,7 +418,6 @@ define(['can/util/dojo/dojo-1.8.1', 'can/util/event', 'can/util/fragment', 'can/
 
 		var xhr = def.ioArgs.xhr;
 
-
 		updateDeferred(xhr, d);
 		return d;
 
@@ -464,23 +440,7 @@ define(['can/util/dojo/dojo-1.8.1', 'can/util/event', 'can/util/fragment', 'can/
 		});
 	}
 
-	/**
-	 * can.data
-	 * 
-	 * can.data is used to store arbitrary data on an element.
-	 * Dojo does not support this, so we implement it itself.
-	 * 
-	 * The important part is to call cleanData on any elements 
-	 * that are removed from the DOM.  For this to happen, we
-	 * overwrite 
-	 * 
-	 *   -dojo.empty
-	 *   -dojo.destroy
-	 *   -dojo.place when "replace" is used TODO!!!!
-	 * 
-	 * For can.Control, we also need to trigger a non bubbling event
-	 * when an element is removed.  We do this also in cleanData.
-	 */
+
 	var data = {},
 		uuid = can.uuid = +new Date(),
 		exp = can.expando = 'can' + uuid;
@@ -562,161 +522,5 @@ define(['can/util/dojo/dojo-1.8.1', 'can/util/event', 'can/util/fragment', 'can/
 		}
 	});
 
-	function (can) {
-
-		// deferred.js
-		// ---------
-		// _Lightweight, jQuery style deferreds._
-		var Deferred = function (func) {
-			if (!(this instanceof Deferred)) return new Deferred();
-
-			this._doneFuncs = [];
-			this._failFuncs = [];
-			this._resultArgs = null;
-			this._status = "";
-
-			// Check for option `function` -- call it with this as context and as first 
-			// parameter, as specified in jQuery API.
-			func && func.call(this, this);
-		};
-		can.Deferred = Deferred;
-		can.when = Deferred.when = function () {
-			var args = can.makeArray(arguments);
-			if (args.length < 2) {
-				var obj = args[0];
-				if (obj && (can.isFunction(obj.isResolved) && can.isFunction(obj.isRejected))) {
-					return obj;
-				} else {
-					return Deferred().resolve(obj);
-				}
-			} else {
-
-				var df = Deferred(),
-					done = 0,
-					// Resolve params -- params of each resolve, we need to track them down 
-					// to be able to pass them in the correct order if the master 
-					// needs to be resolved.
-					rp = [];
-
-				can.each(args, function (arg, j) {
-					arg.done(function () {
-						rp[j] = (arguments.length < 2) ? arguments[0] : arguments;
-						if (++done == args.length) {
-							df.resolve.apply(df, rp);
-						}
-					}).fail(function () {
-						df.reject(arguments);
-					});
-				});
-
-				return df;
-
-			}
-		}
-
-		var resolveFunc = function (type, _status) {
-			return function (context) {
-				var args = this._resultArgs = (arguments.length > 1) ? arguments[1] : [];
-				return this.exec(context, this[type], args, _status);
-			}
-		},
-			doneFunc = function (type, _status) {
-				return function () {
-					var self = this;
-					// In Safari, the properties of the `arguments` object are not enumerable, 
-					// so we have to convert arguments to an `Array` that allows `can.each` to loop over them.
-					can.each(Array.prototype.slice.call(arguments), function (v, i, args) {
-						if (!v) return;
-						if (v.constructor === Array) {
-							args.callee.apply(self, v)
-						} else {
-							// Immediately call the `function` if the deferred has been resolved.
-							if (self._status === _status) v.apply(self, self._resultArgs || []);
-
-							self[type].push(v);
-						}
-					});
-					return this;
-				}
-			};
-
-		can.extend(Deferred.prototype, {
-			pipe: function (done, fail) {
-				var d = can.Deferred();
-				this.done(function () {
-					d.resolve(done.apply(this, arguments));
-				});
-
-				this.fail(function () {
-					if (fail) {
-						d.reject(fail.apply(this, arguments));
-					} else {
-						d.reject.apply(d, arguments);
-					}
-				});
-				return d;
-			},
-			resolveWith: resolveFunc("_doneFuncs", "rs"),
-			rejectWith: resolveFunc("_failFuncs", "rj"),
-			done: doneFunc("_doneFuncs", "rs"),
-			fail: doneFunc("_failFuncs", "rj"),
-			always: function () {
-				var args = can.makeArray(arguments);
-				if (args.length && args[0]) this.done(args[0]).fail(args[0]);
-
-				return this;
-			},
-
-			then: function () {
-				var args = can.makeArray(arguments);
-				// Fail `function`(s)
-				if (args.length > 1 && args[1]) this.fail(args[1]);
-
-				// Done `function`(s)
-				if (args.length && args[0]) this.done(args[0]);
-
-				return this;
-			},
-
-			state: function () {
-				switch (this._status) {
-				case 'rs':
-					return 'resolved';
-				case 'rj':
-					return 'rejected';
-				default:
-					return 'pending';
-				}
-			},
-
-			isResolved: function () {
-				return this._status === "rs";
-			},
-
-			isRejected: function () {
-				return this._status === "rj";
-			},
-
-			reject: function () {
-				return this.rejectWith(this, arguments);
-			},
-
-			resolve: function () {
-				return this.resolveWith(this, arguments);
-			},
-
-			exec: function (context, dst, args, st) {
-				if (this._status !== "") return this;
-
-				this._status = st;
-
-				can.each(dst, function (d) {
-					d.apply(context, args);
-				});
-
-				return this;
-			}
-		});
-
-		return can;
-	})
+	return can;
+});

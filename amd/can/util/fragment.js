@@ -1,4 +1,10 @@
-define(['./can'], function (can) {
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
+define(['./can.js'], function (can) {
 
 	// fragment.js
 	// ---------
@@ -50,8 +56,8 @@ define(['./can'], function (can) {
 
 		can.buildFragment = function (html, nodes) {
 			var parts = fragment(html),
-				hasSpecial = html.toString().match(/@@!!@@/g);
-			frag = document.createDocumentFragment();
+				hasSpecial = html.toString().match(/@@!!@@/g),
+				frag = document.createDocumentFragment();
 			hasSpecial = hasSpecial === null ? 0 : hasSpecial.length;
 			can.each(parts, function (part) {
 				frag.appendChild(part);
@@ -65,4 +71,4 @@ define(['./can'], function (can) {
 		};
 
 	return can;
-})
+});

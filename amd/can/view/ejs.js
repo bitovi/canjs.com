@@ -1,5 +1,10 @@
-define(['can/util', 'can/view', 'can/util/string', 'can/observe/compute', 'can/view/scanner', 'can/view/render'], function (can) {
-
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
+define(['can/util.js', 'can/view', 'can/util/string', 'can/observe/compute', 'can/view/scanner.js', 'can/view/render.js'], function (can) {
 	// ## ejs.js
 	// `can.EJS`  
 	// _Embedded JavaScript Templates._
@@ -27,38 +32,21 @@ define(['can/util', 'can/view', 'can/util/string', 'can/observe/compute', 'can/v
 			this.template = this.scanner.scan(this.text, this.name);
 		};
 
+
 	can.EJS = EJS;
 
-	/** 
-	 * @Prototype
-	 */
+
 	EJS.prototype.
-	/**
-	 * Renders an object with view helpers attached to the view.
-	 * 
-	 *     new EJS({text: "<%= message %>"}).render({
-	 *       message: "foo"
-	 *     },{helper: function(){ ... }})
-	 *     
-	 * @param {Object} object data to be rendered
-	 * @param {Object} [extraHelpers] an object with view helpers
-	 * @return {String} returns the result of the string
-	 */
+
 	render = function (object, extraHelpers) {
 		object = object || {};
 		return this.template.fn.call(object, object, new EJS.Helpers(object, extraHelpers || {}));
 	};
 
 	extend(EJS.prototype, {
-		/**
-		 * Singleton scanner instance for parsing templates.
-		 */
+
 		scanner: new can.view.Scanner({
-			/**
-			 * An ordered token registry for the scanner.
-			 * This needs to be ordered by priority to prevent token parsing errors.
-			 * Each token is defined as: ["token-name", "string representation", "optional regexp override"]
-			 */
+
 			tokens: [
 				["templateLeft", "<%%"], // Template
 				["templateRight", "%>"], // Right Template
@@ -72,72 +60,15 @@ define(['can/util', 'can/view', 'can/util/string', 'can/observe/compute', 'can/v
 		})
 	});
 
-	/**
-	 * @Static
-	 */
-	/**
-	 * @class can.EJS.Helpers
-	 * @parent can.EJS
-	 * By adding functions to can.EJS.Helpers.prototype, those functions will be available in the 
-	 * views.
-	 * 
-	 * The following helper converts a given string to upper case:
-	 * 
-	 * 	can.EJS.Helpers.prototype.toUpper = function(params)
-	 * 	{
-	 * 		return params.toUpperCase();
-	 * 	}
-	 * 
-	 * Use it like this in any EJS template:
-	 * 
-	 * 	<%= toUpper('javascriptmvc') %>
-	 * 
-	 * To access the current DOM element return a function that takes the element as a parameter:
-	 * 
-	 * 	can.EJS.Helpers.prototype.upperHtml = function(params)
-	 * 	{
-	 * 		return function(el) {
-	 * 			$(el).html(params.toUpperCase());
-	 * 		}
-	 * 	}
-	 * 
-	 * In your EJS view you can then call the helper on an element tag:
-	 * 
-	 * 	<div <%= upperHtml('javascriptmvc') %>></div>
-	 * 
-	 * 
-	 * @constructor Creates a view helper.  This function 
-	 * is called internally.  You should never call it.
-	 * @param {Object} data The data passed to the 
-	 * view.  Helpers have access to it through this._data
-	 */
+
 	EJS.Helpers = function (data, extras) {
 		this._data = data;
 		this._extras = extras;
 		extend(this, extras);
 	};
 
-	/**
-	 * @prototype
-	 */
 	EJS.Helpers.prototype = {
-		/**
-		 * @function list
-		 * @hide
-		 * 
-		 * `can.EJS.Helpers.list` iterates over an observable list and
-		 * sets up live binding. `list` takes a list of observables and a callback 
-		 * function with the signature `callback( currentItem, index, itemList )`
-		 *
-		 * Typically, this will look like:
-		 *
-		 *     <% list(items, function(item){ %>
-		 *          <li><%= item.attr('name') %></li>
-		 *     <% }) %>
-		 *
-		 * Whenever the list of observables changes, such as when an item is added or removed, 
-		 * the EJS view will redraw the list in the DOM.
-		 */
+
 		// TODO Deprecated!!
 		list: function (list, cb) {
 			can.each(list, function (item, i) {
@@ -165,4 +96,4 @@ define(['can/util', 'can/view', 'can/util/string', 'can/observe/compute', 'can/v
 	});
 
 	return can;
-})
+});

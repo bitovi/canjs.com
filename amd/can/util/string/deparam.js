@@ -1,4 +1,10 @@
-define(['can/util', 'can/util/string'], function (can) {
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
+define(['can/util.js', 'can/util/string'], function (can) {
 
 	// ## deparam.js  
 	// `can.deparam`  
@@ -12,21 +18,7 @@ define(['can/util', 'can/util/string'], function (can) {
 
 
 	can.extend(can, {
-		/**
-		 * @function can.deparam
-		 * @parent can.util
-		 * Takes a string of name value pairs and returns a Object literal that represents those params.
-		 * 
-		 * @param {String} params a string like <code>"foo=bar&person[age]=3"</code>
-		 * @return {Object} A JavaScript Object that represents the params:
-		 * 
-		 *     {
-		 *       foo: "bar",
-		 *       person: {
-		 *         age: "3"
-		 *       }
-		 *     }
-		 */
+
 		deparam: function (params) {
 
 			var data = {},
@@ -40,9 +32,9 @@ define(['can/util', 'can/util/string'], function (can) {
 
 					var parts = pair.split('='),
 						key = prep(parts.shift()),
-						value = prep(parts.join("="));
+						value = prep(parts.join("=")),
+						current = data;
 
-					current = data;
 					parts = key.match(keyBreaker);
 
 					for (var j = 0, l = parts.length - 1; j < l; j++) {
@@ -64,4 +56,4 @@ define(['can/util', 'can/util/string'], function (can) {
 		}
 	});
 	return can;
-})
+});

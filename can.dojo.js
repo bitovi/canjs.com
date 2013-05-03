@@ -1,3 +1,9 @@
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
 (function (window, undefined) { // ## can/util/can.js
 	var can = window.can || {};
 	if (typeof GLOBALCAN === 'undefined' || GLOBALCAN !== false) {
@@ -112,8 +118,8 @@
 
 		can.buildFragment = function (html, nodes) {
 			var parts = fragment(html),
-				hasSpecial = html.toString().match(/@@!!@@/g);
-			frag = document.createDocumentFragment();
+				hasSpecial = html.toString().match(/@@!!@@/g),
+				frag = document.createDocumentFragment();
 			hasSpecial = hasSpecial === null ? 0 : hasSpecial.length;
 			can.each(parts, function (part) {
 				frag.appendChild(part);
@@ -354,7 +360,7 @@
 
 	// Map array helpers.
 	can.makeArray = function (arr) {
-		array = [];
+		var array = [];
 		dojo.forEach(arr, function (item) {
 			array.push(item)
 		});
@@ -1499,7 +1505,7 @@
 			var prop, self = this,
 				newVal;
 			Observe.startBatch();
-			this.each(function (curVal, prop) {
+			this.each(function (curVal, prop, toRemove) {
 				newVal = props[prop];
 
 				// If we are merging...
@@ -1520,7 +1526,7 @@
 						self._set(prop, newVal)
 					}
 					else if (canMakeObserve(curVal) && canMakeObserve(newVal)) {
-						curVal.attr(newVal, remove)
+						curVal.attr(newVal, toRemove)
 					} else if (curVal != newVal) {
 						self._set(prop, newVal)
 					}
@@ -1977,7 +1983,7 @@
 				return arguments[0];
 			},
 
-			models: function (instancesRawData) {
+			models: function (instancesRawData, oldList) {
 
 				if (!instancesRawData) {
 					return;
@@ -1989,7 +1995,8 @@
 
 				// Get the list type.
 				var self = this,
-					res = new(self.List || ML),
+					tmp = [],
+					res = oldList instanceof can.Observe.List ? oldList : new(self.List || ML),
 					// Did we get an `array`?
 					arr = can.isArray(instancesRawData),
 
@@ -2014,9 +2021,16 @@
 
 
 
+				if (res.length > 0) {
+					res.splice(0);
+				}
+
 				can.each(raw, function (rawPart) {
-					res.push(self.model(rawPart));
+					tmp.push(self.model(rawPart));
 				});
+
+				// We only want one change event so push everything at once
+				res.push.apply(res, tmp);
 
 				if (!arr) { // Push other stuff onto `array`.
 					can.each(instancesRawData, function (val, prop) {
@@ -2173,9 +2187,9 @@
 
 					var parts = pair.split('='),
 						key = prep(parts.shift()),
-						value = prep(parts.join("="));
+						value = prep(parts.join("=")),
+						current = data;
 
-					current = data;
 					parts = key.match(keyBreaker);
 
 					for (var j = 0, l = parts.length - 1; j < l; j++) {
@@ -2855,6 +2869,9 @@
 					hookupEls.push(node);
 					hookupEls.push.apply(hookupEls, can.makeArray(node.getElementsByTagName('*')));
 				}
+				else if (node.nodeType === 3 && node.textContent) {
+					node.textContent = node.textContent.replace(/@@!!@@/g, '');
+				}
 			});
 
 			// Filter by `data-view-id` attribute.
@@ -3151,7 +3168,13 @@
 				})
 			}
 			$view[info.suffix] = function (id, text) {
-				$view.preload(id, info.renderer(id, text))
+				if (!text) {
+					// Return a nameless renderer
+					return info.renderer(null, id);
+				}
+
+				$view.preload(id, info.renderer(id, text));
+				return can.view(id);
 			}
 		},
 		registerScript: function (type, id, src) {
@@ -4261,6 +4284,7 @@
 			this.template = this.scanner.scan(this.text, this.name);
 		};
 
+
 	can.EJS = EJS;
 
 
@@ -4289,13 +4313,11 @@
 	});
 
 
-
 	EJS.Helpers = function (data, extras) {
 		this._data = data;
 		this._extras = extras;
 		extend(this, extras);
 	};
-
 
 	EJS.Helpers.prototype = {
 

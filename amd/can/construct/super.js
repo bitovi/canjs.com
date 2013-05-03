@@ -1,4 +1,10 @@
-define(['can/util', 'can/construct'], function (can, Construct) {
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
+define(['can/util.js', 'can/construct'], function (can, Construct) {
 
 	// tests if we can get super in .toString()
 	var isFunction = can.isFunction,
@@ -39,4 +45,4 @@ define(['can/util', 'can/construct'], function (can, Construct) {
 	}
 
 	return can;
-})
+});

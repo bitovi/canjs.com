@@ -4,6 +4,6 @@
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-define(['can/util/jquery'], function (can) {
+define(['can/util.js', 'can/control', 'can/model', 'can/view/ejs', 'can/route'], function (can) {
 	return can;
 });

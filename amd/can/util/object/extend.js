@@ -1,4 +1,10 @@
-define(['can/util/can'], function (can) {
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
+define(['can/util/can.js'], function (can) {
 	// This extend() function is ruthlessly and shamelessly stolen from
 	// jQuery 1.8.2:, lines 291-353.
 	var extend = function () {
@@ -66,4 +72,4 @@ define(['can/util/can'], function (can) {
 
 	can.extend = extend;
 	return can;
-})
+});

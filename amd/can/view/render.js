@@ -1,3 +1,9 @@
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
 define(['can/view'], function (can) {
 	// text node expando test
 	var canExpando = true;
@@ -6,9 +12,7 @@ define(['can/view'], function (can) {
 	} catch (ex) {
 		canExpando = false;
 	}
-	/**
-	 * Helper(s)
-	 */
+
 	var attrMap = {
 		"class": "className",
 		"value": "value",
@@ -181,28 +185,7 @@ define(['can/view'], function (can) {
 			delete nodeListMap[nLId];
 		},
 
-		/**
-		 * @hide
-		 * called to setup unescaped text
-		 * Called to return the content within a magic tag like `<%= %>`.
-		 *
-		 * - escape - if the content returned should be escaped
-		 * - tagName - the tag name the magic tag is within or the one that proceeds the magic tag
-		 * - status - where the tag is in.  The status can be:
-		 *   - _STRING_ - The name of the attribute the magic tag is within
-		 *    - `1` - The magic tag is within a tag like `<div <%= %>>`
-		 *    - `0` - The magic tag is outside (or between) tags like `<div><%= %></div>`
-		 * - self - the `this` the template was called with
-		 * - func - the "wrapping" function.  For example:  `<%= task.attr('name') %>` becomes
-		 *   `(function(){return task.attr('name')})
-		 *
-		 * @param {Number|String} status
-		 *   - "string" - the name of the attribute  <div string="HERE">
-		 *   - 1 - in an html tag <div HERE></div>
-		 *   - 0 - in the content of a tag <div>HERE</div>
-		 * @param {Object} self
-		 * @param {Object} func
-		 */
+
 		txt: function (escape, tagName, status, self, func) {
 			// call the "wrapping" function and get the binding information
 			var binding = can.compute.binder(func, self, function (newVal, oldVal) {
@@ -459,4 +442,4 @@ define(['can/view'], function (can) {
 	});
 
 	return can;
-})
+});

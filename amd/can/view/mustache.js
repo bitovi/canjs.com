@@ -4,8 +4,7 @@
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-(function (can, window, undefined) {
-	// ## can/view/mustache/mustache.js
+define(['can/util.js', 'can/view', 'can/view/scanner.js', 'can/observe/compute', 'can/view/render.js'], function (can) {
 
 	// # mustache.js
 	// `can.Mustache`: The Mustache templating engine.
@@ -754,5 +753,5 @@
 		}
 	});
 
-
-})(can, this);
+	return Mustache;
+});

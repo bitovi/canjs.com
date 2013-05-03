@@ -1,4 +1,10 @@
-define(['can/util', 'can/construct'], function (can, Construct) {
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
+define(['can/util.js', 'can/construct'], function (can, Construct) {
 	var isFunction = can.isFunction,
 		isArray = can.isArray,
 		makeArray = can.makeArray,
@@ -51,4 +57,4 @@ define(['can/util', 'can/construct'], function (can, Construct) {
 		}
 		can.Construct.proxy = can.Construct.prototype.proxy = proxy;
 	return can;
-})
+});

@@ -1,8 +1,11 @@
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
 define(['can/view'], function (can) {
 
-	/**
-	 * Helper(s)
-	 */
 	var newLine = /(\r|\n)+/g,
 		tagToContentPropMap = {
 			option: "textContent",
@@ -81,21 +84,7 @@ define(['can/view'], function (can) {
 		this.tokenComplex = [];
 		this.tokenMap = {};
 		for (var i = 0, token; token = this.tokens[i]; i++) {
-			/**
-			 * Token data structure (complex token and rescan function are optional):
-			 * [
-			 *	"token name",
-			 *	"simple token or abbreviation",
-			 *	/complex token regexp/,
-			 *	function(content) {
-			 *		// Rescan Function
-			 *		return {
-			 *			before: '\n',
-			 *			content: content.trim(),
-			 *			after: '\n'
-			 *		}
-			 * ]
-			 */
+
 
 			// Save complex mappings (custom regexp)
 			if (token[2]) {
@@ -118,16 +107,10 @@ define(['can/view'], function (can) {
 		this.tokenReg = new RegExp("(" + this.tokenReg.slice(0).concat(["<", ">", '"', "'"]).join("|") + ")", "g");
 	};
 
-	/**
-	 * Extend can.View to add scanner support.
-	 */
 	Scanner.prototype = {
 
 		helpers: [
-		/**
-		 * Check if its a func like `()->`.
-		 * @param {String} content
-		 */
+
 		{
 			name: /\s*\(([\$\w]+)\)\s*->([^\n]*)/,
 			fn: function (content) {
@@ -448,5 +431,5 @@ define(['can/view'], function (can) {
 		}
 	};
 
-	return can;
-})
+	return Scanner;
+});

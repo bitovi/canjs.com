@@ -1,4 +1,10 @@
-define(['can/util', 'can/control', 'can/view'], function (can) {
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
+define(['can/util.js', 'can/control', 'can/view'], function (can) {
 	var URI = steal.URI || steal.File;
 
 	can.Control.getFolder = function () {
@@ -84,4 +90,4 @@ define(['can/util', 'can/control', 'can/view'], function (can) {
 	};
 
 	return can;
-})
+});

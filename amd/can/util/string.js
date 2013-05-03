@@ -1,4 +1,10 @@
-define(['can/util'], function (can) {
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
+define(['can/util.js'], function (can) {
 	// ##string.js
 	// _Miscellaneous string utility functions._  
 	// Several of the methods in this plugin use code adapated from Prototype
@@ -27,37 +33,13 @@ define(['can/util'], function (can) {
 
 	can.extend(can, {
 		// Escapes strings for HTML.
-		/**
-		 * @function can.esc
-		 * @parent can.util
-		 *
-		 * `can.esc(string)` escapes a string for insertion into html.
-		 * 
-		 *     can.esc( "<foo>&<bar>" ) //-> "&lt;foo&lt;&amp;&lt;bar&lt;"
-		 */
 		esc: function (content) {
 			// Convert bad values into empty strings
 			var isInvalid = content === null || content === undefined || (isNaN(content) && ("" + content === 'NaN'));
 			return ("" + (isInvalid ? '' : content)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(quote, '&#34;').replace(singleQuote, "&#39;");
 		},
 
-		/**
-		 * @function can.getObject
-		 * @parent can.util
-		 * Gets an object from a string.  It can also modify objects on the
-		 * 'object path' by removing or adding properties.
-		 * 
-		 *     Foo = {Bar: {Zar: {"Ted"}}}
-		 *     can.getObject("Foo.Bar.Zar") //-> "Ted"
-		 * 
-		 * @param {String} name the name of the object to look for
-		 * @param {Array} [roots] an array of root objects to look for the 
-		 *   name.  If roots is not provided, the window is used.
-		 * @param {Boolean} [add] true to add missing objects to 
-		 *  the path. false to remove found properties. undefined to 
-		 *  not modify the root object
-		 * @return {Object} The object.
-		 */
+
 		getObject: function (name, roots, add) {
 
 			// The parts of the name we are looking up  
@@ -104,51 +86,16 @@ define(['can/util'], function (can) {
 			}
 		},
 		// Capitalizes a string.
-		/**
-		 * @function can.capitalize
-		 * @parent can.util
-		 * `can.capitalize(string)` capitalizes the first letter of the string passed.
-		 *
-		 *		can.capitalize('candy is fun!'); //-> Returns: 'Candy is fun!'
-		 *
-		 * @param {String} s the string.
-		 * @return {String} a string with the first character capitalized.
-		 */
 		capitalize: function (s, cache) {
 			// Used to make newId.
 			return s.charAt(0).toUpperCase() + s.slice(1);
 		},
 
 		// Underscores a string.
-		/**
-		 * @function can.underscore
-		 * @parent can.util
-		 * 
-		 * Underscores a string.
-		 * 
-		 *     can.underscore("OneTwo") //-> "one_two"
-		 * 
-		 * @param {String} s
-		 * @return {String} the underscored string
-		 */
 		underscore: function (s) {
 			return s.replace(colons, '/').replace(words, '$1_$2').replace(lowUp, '$1_$2').replace(dash, '_').toLowerCase();
 		},
 		// Micro-templating.
-		/**
-		 * @function can.sub
-		 * @parent can.util
-		 * 
-		 * Returns a string with {param} replaced values from data.
-		 * 
-		 *     can.sub("foo {bar}",{bar: "far"})
-		 *     //-> "foo far"
-		 *     
-		 * @param {String} s The string to replace
-		 * @param {Object} data The data to be used to look for properties.  If it's an array, multiple
-		 * objects can be used.
-		 * @param {Boolean} [remove] if a match is found, remove the property from the object
-		 */
 		sub: function (str, data, remove) {
 
 			var obs = [];
@@ -176,4 +123,4 @@ define(['can/util'], function (can) {
 		undHash: undHash
 	});
 	return can;
-})
+});

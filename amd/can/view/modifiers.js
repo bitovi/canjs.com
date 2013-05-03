@@ -1,3 +1,9 @@
+/*
+* CanJS - 1.1.1 (2012-11-19)
+* http://canjs.us/
+* Copyright (c) 2012 Bitovi
+* Licensed MIT
+*/
 define(['jquery', 'can/view'], function ($, can) {
 	//---- ADD jQUERY HELPERS -----
 	//converts jquery functions to use views	
@@ -123,171 +129,30 @@ define(['jquery', 'can/view'], function ($, can) {
 		return typeof args[3] === 'function' ? 3 : typeof args[2] === 'function' && 2;
 	};
 
-	/**
-	 *  @add jQuery.fn
-	 *  @parent can.View
-	 *  Called on a jQuery collection that was rendered with can.View with pending hookups.  can.View can render a 
-	 *  template with hookups, but not actually perform the hookup, because it returns a string without actual DOM 
-	 *  elements to hook up to.  So hookup performs the hookup and clears the pending hookups, preventing errors in 
-	 *  future templates.
-	 *  
-	 * @codestart
-	 * $(can.View('//views/recipes.ejs',recipeData)).hookup()
-	 * @codeend
-	 */
+
 	$.fn.hookup = function () {
 		can.view.frag(this);
 		return this;
 	};
 
-	/**
-	 *  @add jQuery.fn
-	 */
+
 	can.each([
-	/**
-	 *  @function jQuery.fn.prepend
-	 *  @parent can.view.modifiers
-	 *  
-	 *  Extending the original [http://api.jquery.com/prepend/ jQuery().prepend()]
-	 *  to render [can.view] templates inserted at the beginning of each element in the set of matched elements.
-	 *  
-	 *  	$('#test').prepend('path/to/template.ejs', { name : 'canjs' });
-	 *  
-	 *  @param {String|Object|Function} content A template filename or the id of a view script tag 
-	 *  or a DOM element, array of elements, HTML string, or can object.
-	 *  @param {Object} [data] The data to render the view with.
-	 *  If rendering a view template this parameter always has to be present
-	 *  (use the empty object initializer {} for no data).
-	 *  @param {Function} [callback] A success callback to load the view asynchronously
-	 *
-	 *  @return {jQuery|can.Deferred} The jQuery object or a [can.Deferred] if a deferred has
-	 *  been passed in data.
-	 */
+
 	"prepend",
-	/**
-	 *  @function jQuery.fn.append
-	 *  @parent can.view.modifiers
-	 *  
-	 *  Extending the original [http://api.jquery.com/append/ jQuery().append()]
-	 *  to render [can.view] templates inserted at the end of each element in the set of matched elements.
-	 *  
-	 *  	$('#test').append('path/to/template.ejs', { name : 'canjs' });
-	 *  
-	 *  @param {String|Object|Function} content A template filename or the id of a view script tag 
-	 *  or a DOM element, array of elements, HTML string, or can object.
-	 *  @param {Object} [data] The data to render the view with.
-	 *  If rendering a view template this parameter always has to be present
-	 *  (use the empty object initializer {} for no data).
-	 *  @param {Function} [callback] A success callback to load the view asynchronously
-	 *
-	 *  @return {jQuery|can.Deferred} The jQuery object or a [can.Deferred] if a deferred has
-	 *  been passed in data.
-	 */
+
 	"append",
-	/**
-	 *  @function jQuery.fn.after
-	 *  @parent can.view.modifiers
-	 *  
-	 *  Extending the original [http://api.jquery.com/after/ jQuery().after()]
-	 *  to render [can.view] templates inserted after each element in the set of matched elements.
-	 *  
-	 *  	$('#test').after('path/to/template.ejs', { name : 'canjs' });
-	 *  
-	 *  @param {String|Object|Function} content A template filename or the id of a view script tag 
-	 *  or a DOM element, array of elements, HTML string, or can object.
-	 *  @param {Object} [data] The data to render the view with.
-	 *  If rendering a view template this parameter always has to be present
-	 *  (use the empty object initializer {} for no data).
-	 *  @param {Function} [callback] A success callback to load the view asynchronously
-	 *
-	 *  @return {jQuery|can.Deferred} The jQuery object or a [can.Deferred] if a deferred has
-	 *  been passed in data.
-	 */
+
 	"after",
-	/**
-	 *  @function jQuery.fn.before
-	 *  @parent can.view.modifiers
-	 *  
-	 *  Extending the original [http://api.jquery.com/before/ jQuery().before()]
-	 *  to render [can.view] templates inserted before each element in the set of matched elements.
-	 *  
-	 *  	$('#test').before('path/to/template.ejs', { name : 'canjs' });
-	 *  
-	 *  @param {String|Object|Function} content A template filename or the id of a view script tag 
-	 *  or a DOM element, array of elements, HTML string, or can object.
-	 *  @param {Object} [data] The data to render the view with.
-	 *  If rendering a view template this parameter always has to be present
-	 *  (use the empty object initializer {} for no data).
-	 *  @param {Function} [callback] A success callback to load the view asynchronously
-	 *
-	 *  @return {jQuery|can.Deferred} The jQuery object or a [can.Deferred] if a deferred has
-	 *  been passed in data.
-	 */
+
 	"before",
-	/**
-	 *  @function jQuery.fn.text
-	 *  @parent can.view.modifiers
-	 *  
-	 *  Extending the original [http://api.jquery.com/text/ jQuery().text()]
-	 *  to render [can.View] templates as the content of each matched element.
-	 *  Unlike [jQuery.fn.html] jQuery.fn.text also works with XML, escaping the provided
-	 *  string as necessary.
-	 *  
-	 *  	$('#test').text('path/to/template.ejs', { name : 'canjs' });
-	 *  
-	 *  @param {String|Object|Function} content A template filename or the id of a view script tag 
-	 *  or a DOM element, array of elements, HTML string, or can object.
-	 *  @param {Object} [data] The data to render the view with.
-	 *  If rendering a view template this parameter always has to be present
-	 *  (use the empty object initializer {} for no data).
-	 *  @param {Function} [callback] A success callback to load the view asynchronously
-	 *
-	 *  @return {jQuery|can.Deferred} The jQuery object or a [can.Deferred] if a deferred has
-	 *  been passed in data.
-	 */
+
 	"text",
-	/**
-	 *  @function jQuery.fn.html
-	 *  @parent can.view.modifiers
-	 *  
-	 *  Extending the original [http://api.jquery.com/html/ jQuery().html()]
-	 *  to render [can.view] templates as the content of each matched element.
-	 *  
-	 *  	$('#test').html('path/to/template.ejs', { name : 'canjs' });
-	 *  
-	 *  @param {String|Object|Function} content A template filename or the id of a view script tag 
-	 *  or a DOM element, array of elements, HTML string, or can object.
-	 *  @param {Object} [data] The data to render the view with.
-	 *  If rendering a view template this parameter always has to be present
-	 *  (use the empty object initializer {} for no data).
-	 *  @param {Function} [callback] A success callback to load the view asynchronously
-	 *
-	 *  @return {jQuery|can.Deferred} The jQuery object or a [can.Deferred] if a deferred has
-	 *  been passed in data.
-	 */
+
 	"html",
-	/**
-	 *  @function jQuery.fn.replaceWith
-	 *  @parent can.view.modifiers
-	 *  
-	 *  Extending the original [http://api.jquery.com/replaceWith/ jQuery().replaceWith()]
-	 *  to render [can.view] templates replacing each element in the set of matched elements.
-	 *  
-	 *  	$('#test').replaceWith('path/to/template.ejs', { name : 'canjs' });
-	 *  
-	 *  @param {String|Object|Function} content A template filename or the id of a view script tag 
-	 *  or a DOM element, array of elements, HTML string, or can object.
-	 *  @param {Object} [data] The data to render the view with.
-	 *  If rendering a view template this parameter always has to be present
-	 *  (use the empty object initializer {} for no data).
-	 *  @param {Function} [callback] A success callback to load the view asynchronously
-	 *
-	 *  @return {jQuery|can.Deferred} The jQuery object or a [can.Deferred] if a deferred has
-	 *  been passed in data.
-	 */
+
 	"replaceWith", "val"], function (func) {
 		convert(func);
 	});
 
 	return can;
-})
+});
