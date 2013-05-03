@@ -6923,6 +6923,15 @@ can.view.preload('templates_twitterTab_mustache',can.Mustache(function(_CONTEXT,
 		}
 	};
 
+	window.CanJSUS.redrawFont = function() {
+		var style = $('<style>:before,:after{content:none !important}</style>');
+		$('head').append(style);
+		
+		window.setTimeout(function() {
+			style.remove();
+		}, 0);
+	};
+
 	var initControls = function(mappings) {
 		can.each(mappings, function(name, selector) {
 			$(selector).each(function() {
