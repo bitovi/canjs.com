@@ -6951,7 +6951,7 @@ can.view.preload('templates_twitterTab_mustache',can.Mustache(function(_CONTEXT,
 			'.community .hero': 'CommunityTabs',
 			'.docs .sidebar': 'Menu',
 			'.docs .signature': 'ApiSignature',
-			'.docs .contents': 'ContentsList'
+			'body.docs .contents': 'ContentsList'
 		});
 
 		// Syntax highlighting

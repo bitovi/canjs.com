@@ -45,7 +45,7 @@
 			'.community .hero': 'CommunityTabs',
 			'.docs .sidebar': 'Menu',
 			'.docs .signature': 'ApiSignature',
-			'.docs .contents': 'ContentsList'
+			'body.docs .contents': 'ContentsList'
 		});
 
 		// Syntax highlighting
