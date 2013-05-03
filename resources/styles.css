@@ -385,7 +385,7 @@ input[type='radio']:checked+label.radio:after{content:' ';width:6px;height:6px;b
 .download .download-link{display:block;height:54px;}
 .download button.color,.download button.download{padding-left:80px;padding-right:80px;margin:0 auto;}
 .download button.color{margin:10px auto;font-size:17px;text-transform:uppercase;padding-top:10px;padding-bottom:10px;text-align:center;display:block;}
-.download .button-desc a{color:#fff;}
+.download .button-desc a{color:#fff;text-transform:none;}
 .download .hero{height:270px;border-bottom:none;}
 .download .cdn{width:550px;float:left;position:relative;top:77px;font-size:15px;}.download .cdn h4{display:inline-block;color:#fff;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.5);line-height:40px;position:relative;top:0;}
 .download .cdn .input{display:inline-block;background:#fff;border-radius:2px;-moz-border-radius:2px;-webkit-border-radius:2px;color:#999;border:1px solid #4d4d4d;height:40px;width:470px;-moz-box-shadow:inset 0 0 5px rgba(0, 0, 0, 0.3);-webkit-box-shadow:inset 0 0 5px rgba(0, 0, 0, 0.3);box-shadow:inset 0 0 5px rgba(0, 0, 0, 0.3);}
@@ -440,3 +440,5 @@ input[type='radio']:checked+label.radio:after{content:' ';width:6px;height:6px;b
 .lt-ie9 .community .circle-tabs li a:before{background:url('../img/ie-circle-tabs-80.png') no-repeat left top;}
 .lt-ie9 .circle-tabs li a:hover:before,.lt-ie9 .circle-tabs li.active a:before{background-position-x:right;}
 .lt-ie8 .container ul.nav li,.lt-ie8 .container ul.pullright li,.lt-ie8 .content ul.socialstats li,.lt-ie8 .content ul.carousel li,.lt-ie8 .container ul.circle-tabs li{float:left;}
+.lt-ie8 .nav{top:-30px;}
+.lt-ie8 .dropdown select{background:#fff;width:auto;height:auto;}
