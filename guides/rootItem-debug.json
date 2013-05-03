@@ -6,8 +6,8 @@
     "description": "",
     "title": "Guides",
     "comment": " ",
-    "src": "_guides/guides.md",
-    "id": 4,
+    "src": "_guides/Guides.md",
+    "id": 5,
     "children": [{
             "active": false,
             "type": "page",
@@ -19,7 +19,7 @@
             "order": 1,
             "comment": " ",
             "src": "_guides/recipes.md",
-            "id": 8,
+            "id": 14,
             "children": [{
                     "active": false,
                     "type": "page",
@@ -31,7 +31,7 @@
                     "order": 0,
                     "comment": " ",
                     "src": "_guides/recipes_controls.md",
-                    "id": 9
+                    "id": 15
                 }, {
                     "active": false,
                     "type": "page",
@@ -43,7 +43,7 @@
                     "order": 1,
                     "comment": " ",
                     "src": "_guides/recipes_livebindings.md",
-                    "id": 11
+                    "id": 17
                 }, {
                     "active": false,
                     "type": "page",
@@ -55,7 +55,7 @@
                     "order": 2,
                     "comment": " ",
                     "src": "_guides/recipes_routing.md",
-                    "id": 13
+                    "id": 19
                 }, {
                     "active": false,
                     "type": "page",
@@ -67,7 +67,7 @@
                     "order": 3,
                     "comment": " ",
                     "src": "_guides/recipes_models.md",
-                    "id": 12
+                    "id": 18
                 }, {
                     "active": false,
                     "type": "page",
@@ -79,7 +79,7 @@
                     "order": 4,
                     "comment": " ",
                     "src": "_guides/recipes_everything.md",
-                    "id": 10
+                    "id": 16
                 }
             ]
         }, {
@@ -93,7 +93,7 @@
             "order": 0,
             "comment": " ",
             "src": "_guides/tutorial.md",
-            "id": 15,
+            "id": 21,
             "children": [{
                     "active": false,
                     "type": "page",
@@ -105,7 +105,7 @@
                     "order": 0,
                     "comment": " ",
                     "src": "_guides/constructs.md",
-                    "id": 0
+                    "id": 7
                 }, {
                     "active": false,
                     "type": "page",
@@ -117,7 +117,7 @@
                     "order": 1,
                     "comment": " ",
                     "src": "_guides/observes.md",
-                    "id": 7
+                    "id": 13
                 }, {
                     "active": false,
                     "type": "page",
@@ -129,7 +129,7 @@
                     "order": 2,
                     "comment": " ",
                     "src": "_guides/models.md",
-                    "id": 5
+                    "id": 11
                 }, {
                     "active": false,
                     "type": "page",
@@ -141,7 +141,7 @@
                     "order": 3,
                     "comment": " ",
                     "src": "_guides/views.md",
-                    "id": 18
+                    "id": 24
                 }, {
                     "active": false,
                     "type": "page",
@@ -153,7 +153,7 @@
                     "order": 4,
                     "comment": " ",
                     "src": "_guides/ejs.md",
-                    "id": 3
+                    "id": 10
                 }, {
                     "active": false,
                     "type": "page",
@@ -165,7 +165,7 @@
                     "order": 5,
                     "comment": " ",
                     "src": "_guides/mustache.md",
-                    "id": 6
+                    "id": 12
                 }, {
                     "active": false,
                     "type": "page",
@@ -177,7 +177,7 @@
                     "order": 6,
                     "comment": " ",
                     "src": "_guides/controls.md",
-                    "id": 1
+                    "id": 8
                 }, {
                     "active": false,
                     "type": "page",
@@ -189,7 +189,7 @@
                     "order": 7,
                     "comment": " ",
                     "src": "_guides/deferred.md",
-                    "id": 2
+                    "id": 9
                 }, {
                     "active": false,
                     "type": "page",
@@ -200,7 +200,7 @@
                     "parent": "Tutorial",
                     "order": 8,
                     "src": "_guides/route.md",
-                    "id": 14
+                    "id": 20
                 }, {
                     "active": false,
                     "type": "page",
@@ -212,7 +212,7 @@
                     "order": 9,
                     "comment": " ",
                     "src": "_guides/util.md",
-                    "id": 17
+                    "id": 23
                 }
             ]
         }, {
@@ -226,7 +226,7 @@
             "order": 2,
             "comment": " ",
             "src": "_guides/why.md",
-            "id": 19
+            "id": 25
         }, {
             "active": false,
             "type": "page",
@@ -237,7 +237,7 @@
             "parent": "guides",
             "order": 3,
             "src": "_guides/using.md",
-            "id": 16
+            "id": 22
         }, {
             "active": false,
             "type": "page",
@@ -248,7 +248,7 @@
             "parent": "guides",
             "order": 4,
             "src": "can/contributing.md",
-            "id": 21
+            "id": 27
         }, {
             "active": false,
             "type": "page",
@@ -259,7 +259,7 @@
             "parent": "guides",
             "order": 5,
             "src": "can/changelog.md",
-            "id": 20
+            "id": 26
         }, {
             "active": false,
             "type": "page",
@@ -270,7 +270,7 @@
             "parent": "guides",
             "order": 6,
             "src": "can/license.md",
-            "id": 22
+            "id": 28
         }
     ]
 }
