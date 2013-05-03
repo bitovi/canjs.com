@@ -370,7 +370,7 @@ input[type='radio']:checked+label.radio:after{content:' ';width:6px;height:6px;b
 .inactive,tr.inactive{color:#eee;cursor:default;}.inactive label,tr.inactive label{color:#eee;cursor:default;}
 .inactive .checkbox,tr.inactive .checkbox{background-color:#fff;border-color:#eee;}
 .guides .sidebar{width:255px;float:left;margin-top:20px;margin-bottom:-3000px;padding-bottom:3000px;}
-.guides .content{margin-top:20px;padding:20px;float:left;width:662px;background-color:#fff;border:1px solid #d5d5d5;border-left-style:none;border-bottom-style:none;}
+.guides .content{margin-top:20px;padding:20px;float:left;width:662px;background-color:#fff;border:1px solid #d5d5d5;border-left-style:none;border-bottom-style:none;}.guides .content ul,.guides .content ol:not(.linenums){margin-left:0;font-size:14px;line-height:24px;margin-top:0;margin-bottom:15px;line-height:18px;}
 .guides .container.api{margin-bottom:20px;}
 .customize.container{background-color:#fff;border:solid 1px #ccc;margin-bottom:20px;margin-top:-80px;padding:20px;color:#222121;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;-webkit-font-smoothing:antialiased;}.customize.container h1{color:#fff;background-color:#165489;font-size:17px;text-transform:uppercase;padding:10px;-webkit-font-smoothing:antialiased;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.5);margin:-21px;margin-bottom:21px;}
 .customize.container h1 .pullright{font-size:11px;padding-top:3px;}
