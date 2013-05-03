@@ -1885,7 +1885,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 				deparam: function(params){
 		
 			var data = {},
-				pairs;
+				pairs, lastPart;
 
 			if ( params && paramTest.test( params )) {
 				
@@ -2193,6 +2193,9 @@ define("plugd/trigger",["dojo"], function(dojo){
 	// `onready` event...
 	can.bind.call(document,"ready",can.route.ready);
 
+	(function() {
+	
+
 	// ## control.js
 	// `can.Control`  
 	// _Controller_
@@ -2210,7 +2213,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 		extend = can.extend,
 		each = can.each,
 		slice = [].slice,
-    paramReplacer = /\{([^\}]+)\}/g,
+		paramReplacer = /\{([^\}]+)\}/g,
 		special = can.getObject("$.event.special") || {},
 
 		// Binds an element, returns a function that unbinds.
@@ -2359,7 +2362,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 					actions = cls.actions,
 					element = this.element,
 					destroyCB = shifter(this,"destroy"),
-					funcName;
+					funcName, ready;
 					
 				for ( funcName in actions ) {
 					if ( actions.hasOwnProperty( funcName )) {
@@ -2448,6 +2451,8 @@ define("plugd/trigger",["dojo"], function(dojo){
 		 "focusout", "mouseenter", "mouseleave"], function( v ) {
 		processors[v] = basicProcessor;
 	});
+
+	}());
 
 	
 	// ## control/route.js  
@@ -2864,7 +2869,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 		// Calls `callback(newVal, oldVal)` everytime an observed property
 		// called within `getterSetter` is changed and creates a new result of `getterSetter`.
 		// Also returns an object that can teardown all event handlers.
-		binder = function(getterSetter, context, callback){
+		computeBinder = function(getterSetter, context, callback){
 			// track what we are observing
 			var observing = {},
 				// a flag indicating if this observe/attr pair is already bound
@@ -2989,7 +2994,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 			can.addEvent.apply(computed, arguments);
 			if( bindings === 0 && canbind){
 				// setup live-binding
-				computedData = binder(getterSetter, context || this, function(newValue, oldValue){
+				computedData = computeBinder(getterSetter, context || this, function(newValue, oldValue){
 					can.trigger(computed, "change",[newValue, oldValue])
 				});
 			}
@@ -3005,7 +3010,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 		};
 		return computed;
 	};
-	can.compute.binder = binder;
+	can.compute.binder = computeBinder;
 
 	// ## ejs.js
 	// `can.EJS`  

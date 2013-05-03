@@ -1644,7 +1644,7 @@ can.$ = Zepto
 				deparam: function(params){
 		
 			var data = {},
-				pairs;
+				pairs, lastPart;
 
 			if ( params && paramTest.test( params )) {
 				
@@ -1952,6 +1952,9 @@ can.$ = Zepto
 	// `onready` event...
 	can.bind.call(document,"ready",can.route.ready);
 
+	(function() {
+	
+
 	// ## control.js
 	// `can.Control`  
 	// _Controller_
@@ -1969,7 +1972,7 @@ can.$ = Zepto
 		extend = can.extend,
 		each = can.each,
 		slice = [].slice,
-    paramReplacer = /\{([^\}]+)\}/g,
+		paramReplacer = /\{([^\}]+)\}/g,
 		special = can.getObject("$.event.special") || {},
 
 		// Binds an element, returns a function that unbinds.
@@ -2118,7 +2121,7 @@ can.$ = Zepto
 					actions = cls.actions,
 					element = this.element,
 					destroyCB = shifter(this,"destroy"),
-					funcName;
+					funcName, ready;
 					
 				for ( funcName in actions ) {
 					if ( actions.hasOwnProperty( funcName )) {
@@ -2207,6 +2210,8 @@ can.$ = Zepto
 		 "focusout", "mouseenter", "mouseleave"], function( v ) {
 		processors[v] = basicProcessor;
 	});
+
+	}());
 
 	
 	// ## control/route.js  
@@ -2623,7 +2628,7 @@ can.$ = Zepto
 		// Calls `callback(newVal, oldVal)` everytime an observed property
 		// called within `getterSetter` is changed and creates a new result of `getterSetter`.
 		// Also returns an object that can teardown all event handlers.
-		binder = function(getterSetter, context, callback){
+		computeBinder = function(getterSetter, context, callback){
 			// track what we are observing
 			var observing = {},
 				// a flag indicating if this observe/attr pair is already bound
@@ -2748,7 +2753,7 @@ can.$ = Zepto
 			can.addEvent.apply(computed, arguments);
 			if( bindings === 0 && canbind){
 				// setup live-binding
-				computedData = binder(getterSetter, context || this, function(newValue, oldValue){
+				computedData = computeBinder(getterSetter, context || this, function(newValue, oldValue){
 					can.trigger(computed, "change",[newValue, oldValue])
 				});
 			}
@@ -2764,7 +2769,7 @@ can.$ = Zepto
 		};
 		return computed;
 	};
-	can.compute.binder = binder;
+	can.compute.binder = computeBinder;
 
 	// ## ejs.js
 	// `can.EJS`  
