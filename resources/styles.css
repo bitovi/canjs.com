@@ -334,7 +334,7 @@ li.L1,li.L3,li.L5,li.L7,li.L9{}
 .sidebar .api>li:first-child{margin-top:10px;}
 .sidebar .api .heading span{text-transform:uppercase;font-weight:bold;font-size:12px;color:#959494;line-height:24px;}
 .sidebar .api ul{}
-.sidebar .api .active>ul,.sidebar .api>li:last-child{padding-bottom:10px;}
+.sidebar .api .active>ul{padding-bottom:10px;}
 .sidebar .api li.parent{text-indent:40px;}
 .sidebar .api li.parent li{text-indent:50px;}
 .sidebar .api li.parent:before{content:"";border-color:transparent #636363;border-style:solid;border-width:0.3em 0 0.3em 0.5em;display:block;height:0;width:0;position:absolute;top:10px;left:30px;}
