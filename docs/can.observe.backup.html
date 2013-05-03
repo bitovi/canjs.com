@@ -1,158 +1,386 @@
-<!DOCTYPE html>  <html> <head>   <title>can.observe.backup.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="can.construct.proxy.html">                 can.construct.proxy.js               </a>                                           <a class="source" href="can.construct.super.html">                 can.construct.super.js               </a>                                           <a class="source" href="can.control.plugin.html">                 can.control.plugin.js               </a>                                           <a class="source" href="can.dojo.html">                 can.dojo.js               </a>                                           <a class="source" href="can.fixture.html">                 can.fixture.js               </a>                                           <a class="source" href="can.jquery-all.html">                 can.jquery-all.js               </a>                                           <a class="source" href="can.jquery.html">                 can.jquery.js               </a>                                           <a class="source" href="can.mootools.html">                 can.mootools.js               </a>                                           <a class="source" href="can.observe.attributes.html">                 can.observe.attributes.js               </a>                                           <a class="source" href="can.observe.backup.html">                 can.observe.backup.js               </a>                                           <a class="source" href="can.observe.delegate.html">                 can.observe.delegate.js               </a>                                           <a class="source" href="can.observe.setter.html">                 can.observe.setter.js               </a>                                           <a class="source" href="can.observe.validations.html">                 can.observe.validations.js               </a>                                           <a class="source" href="can.view.modifiers.html">                 can.view.modifiers.js               </a>                                           <a class="source" href="can.view.mustache.html">                 can.view.mustache.js               </a>                                           <a class="source" href="can.yui.html">                 can.yui.js               </a>                                           <a class="source" href="can.zepto.html">                 can.zepto.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               can.observe.backup.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/*!</span>
-<span class="cm">* CanJS - 1.1.4 (2013-02-05)</span>
-<span class="cm">* http://canjs.us/</span>
-<span class="cm">* Copyright (c) 2013 Bitovi</span>
-<span class="cm">* Licensed MIT</span>
-<span class="cm">*/</span>
-<span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">can</span><span class="p">,</span> <span class="nb">window</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h2>can/util/object/object.js</h2>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">isArray</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">isArray</span><span class="p">,</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>essentially returns an object that has all the must have comparisons ...
-must haves, do not return true when provided undefined</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">cleanSet</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">compares</span><span class="p">)</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">copy</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="nx">obj</span><span class="p">);</span>
-      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">prop</span> <span class="k">in</span> <span class="nx">copy</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">compare</span> <span class="o">=</span> <span class="nx">compares</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">?</span> <span class="nx">compares</span><span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">]</span> <span class="o">:</span> <span class="nx">compares</span><span class="p">[</span><span class="nx">prop</span><span class="p">];</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">same</span><span class="p">(</span><span class="nx">copy</span><span class="p">[</span><span class="nx">prop</span><span class="p">],</span> <span class="kc">undefined</span><span class="p">,</span> <span class="nx">compare</span><span class="p">))</span> <span class="p">{</span>
-          <span class="k">delete</span> <span class="nx">copy</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-      <span class="k">return</span> <span class="nx">copy</span><span class="p">;</span>
-    <span class="p">},</span>
-    <span class="nx">propCount</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">prop</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="nx">count</span><span class="o">++</span><span class="p">;</span>
-      <span class="k">return</span> <span class="nx">count</span><span class="p">;</span>
-    <span class="p">};</span>
+<!DOCTYPE html>
 
-  <span class="nx">can</span><span class="p">.</span><span class="nb">Object</span> <span class="o">=</span> <span class="p">{};</span>
+<html>
+<head>
+  <title>can.observe.backup.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="can.construct.proxy.html">
+                can.construct.proxy.js
+              </a>
+            
+              
+              <a class="source" href="can.construct.super.html">
+                can.construct.super.js
+              </a>
+            
+              
+              <a class="source" href="can.control.plugin.html">
+                can.control.plugin.js
+              </a>
+            
+              
+              <a class="source" href="can.dojo.html">
+                can.dojo.js
+              </a>
+            
+              
+              <a class="source" href="can.fixture.html">
+                can.fixture.js
+              </a>
+            
+              
+              <a class="source" href="can.jquery-all.html">
+                can.jquery-all.js
+              </a>
+            
+              
+              <a class="source" href="can.jquery.html">
+                can.jquery.js
+              </a>
+            
+              
+              <a class="source" href="can.model.queue.html">
+                can.model.queue.js
+              </a>
+            
+              
+              <a class="source" href="can.mootools.html">
+                can.mootools.js
+              </a>
+            
+              
+              <a class="source" href="can.observe.attributes.html">
+                can.observe.attributes.js
+              </a>
+            
+              
+              <a class="source" href="can.observe.backup.html">
+                can.observe.backup.js
+              </a>
+            
+              
+              <a class="source" href="can.observe.delegate.html">
+                can.observe.delegate.js
+              </a>
+            
+              
+              <a class="source" href="can.observe.setter.html">
+                can.observe.setter.js
+              </a>
+            
+              
+              <a class="source" href="can.observe.validations.html">
+                can.observe.validations.js
+              </a>
+            
+              
+              <a class="source" href="can.view.modifiers.html">
+                can.view.modifiers.js
+              </a>
+            
+              
+              <a class="source" href="can.view.mustache.html">
+                can.view.mustache.js
+              </a>
+            
+              
+              <a class="source" href="can.yui.html">
+                can.yui.js
+              </a>
+            
+              
+              <a class="source" href="can.zepto.html">
+                can.zepto.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>can.observe.backup.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="comment">/*!
+* CanJS - 1.1.5 (2013-03-27)
+* http://canjs.us/
+* Copyright (c) 2013 Bitovi
+* Licensed MIT
+*/</span>
+(<span class="function"><span class="keyword">function</span> <span class="params">(can, window, undefined)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2>can/util/object/object.js</h2>
 
-  <span class="kd">var</span> <span class="nx">same</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">same</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">compares</span><span class="p">,</span> <span class="nx">aParent</span><span class="p">,</span> <span class="nx">bParent</span><span class="p">,</span> <span class="nx">deep</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">aType</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">a</span><span class="p">,</span>
-      <span class="nx">aArray</span> <span class="o">=</span> <span class="nx">isArray</span><span class="p">(</span><span class="nx">a</span><span class="p">),</span>
-      <span class="nx">comparesType</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">compares</span><span class="p">,</span>
-      <span class="nx">compare</span><span class="p">;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> isArray = can.isArray,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>essentially returns an object that has all the must have comparisons ...
+must haves, do not return true when provided undefined</p>
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">comparesType</span> <span class="o">==</span> <span class="s1">&#39;string&#39;</span> <span class="o">||</span> <span class="nx">compares</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">compares</span> <span class="o">=</span> <span class="nx">compareMethods</span><span class="p">[</span><span class="nx">compares</span><span class="p">];</span>
-      <span class="nx">comparesType</span> <span class="o">=</span> <span class="s1">&#39;function&#39;</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">comparesType</span> <span class="o">==</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">compares</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">aParent</span><span class="p">,</span> <span class="nx">bParent</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="nx">compares</span> <span class="o">=</span> <span class="nx">compares</span> <span class="o">||</span> <span class="p">{};</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        cleanSet = <span class="function"><span class="keyword">function</span> <span class="params">(obj, compares)</span> {</span>
+            <span class="keyword">var</span> copy = can.extend({}, obj);
+            <span class="keyword">for</span> (<span class="keyword">var</span> prop <span class="keyword">in</span> copy) {
+                <span class="keyword">var</span> compare = compares[prop] === <span class="literal">undefined</span> ? compares[<span class="string">"*"</span>] : compares[prop];
+                <span class="keyword">if</span> (same(copy[prop], <span class="literal">undefined</span>, compare)) {
+                    <span class="keyword">delete</span> copy[prop]
+                }
+            }
+            <span class="keyword">return</span> copy;
+        },
+        propCount = <span class="function"><span class="keyword">function</span> <span class="params">(obj)</span> {</span>
+            <span class="keyword">var</span> count = <span class="number">0</span>;
+            <span class="keyword">for</span> (<span class="keyword">var</span> prop <span class="keyword">in</span> obj) count++;
+            <span class="keyword">return</span> count;
+        };
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">a</span> <span class="k">instanceof</span> <span class="nb">Date</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">a</span> <span class="o">===</span> <span class="nx">b</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">deep</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">aType</span> <span class="o">===</span> <span class="s1">&#39;object&#39;</span> <span class="o">||</span> <span class="nx">a</span> <span class="o">===</span> <span class="nx">b</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">aType</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">b</span> <span class="o">||</span> <span class="nx">aArray</span> <span class="o">!==</span> <span class="nx">isArray</span><span class="p">(</span><span class="nx">b</span><span class="p">))</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">a</span> <span class="o">===</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">aArray</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="nx">b</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-      <span class="p">}</span>
-      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">compare</span> <span class="o">=</span> <span class="nx">compares</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">?</span> <span class="nx">compares</span><span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">]</span> <span class="o">:</span> <span class="nx">compares</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">same</span><span class="p">(</span><span class="nx">a</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">b</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">compare</span><span class="p">))</span> <span class="p">{</span>
-          <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="p">}</span>
-      <span class="p">};</span>
-      <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">aType</span> <span class="o">===</span> <span class="s2">&quot;object&quot;</span> <span class="o">||</span> <span class="nx">aType</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">bCopy</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="nx">b</span><span class="p">);</span>
-      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">prop</span> <span class="k">in</span> <span class="nx">a</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">compare</span> <span class="o">=</span> <span class="nx">compares</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">?</span> <span class="nx">compares</span><span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">]</span> <span class="o">:</span> <span class="nx">compares</span><span class="p">[</span><span class="nx">prop</span><span class="p">];</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">same</span><span class="p">(</span><span class="nx">a</span><span class="p">[</span><span class="nx">prop</span><span class="p">],</span> <span class="nx">b</span><span class="p">[</span><span class="nx">prop</span><span class="p">],</span> <span class="nx">compare</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">deep</span> <span class="o">===</span> <span class="kc">false</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="kc">undefined</span><span class="p">))</span> <span class="p">{</span>
-          <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">delete</span> <span class="nx">bCopy</span><span class="p">[</span><span class="nx">prop</span><span class="p">];</span>
-      <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>go through bCopy props ... if there is no compare .. return false</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="k">for</span> <span class="p">(</span><span class="nx">prop</span> <span class="k">in</span> <span class="nx">bCopy</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">compares</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="o">!</span><span class="nx">same</span><span class="p">(</span><span class="kc">undefined</span><span class="p">,</span> <span class="nx">b</span><span class="p">[</span><span class="nx">prop</span><span class="p">],</span> <span class="nx">compares</span><span class="p">[</span><span class="nx">prop</span><span class="p">],</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">deep</span> <span class="o">===</span> <span class="kc">false</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="kc">undefined</span><span class="p">))</span> <span class="p">{</span>
-          <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-      <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="p">};</span>
+    can.Object = {};
 
-  <span class="nx">can</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">subsets</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">checkSet</span><span class="p">,</span> <span class="nx">sets</span><span class="p">,</span> <span class="nx">compares</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">sets</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
-      <span class="nx">subsets</span> <span class="o">=</span> <span class="p">[],</span>
-      <span class="nx">checkPropCount</span> <span class="o">=</span> <span class="nx">propCount</span><span class="p">(</span><span class="nx">checkSet</span><span class="p">),</span>
-      <span class="nx">setLength</span><span class="p">;</span>
+    <span class="keyword">var</span> same = can.Object.same = <span class="function"><span class="keyword">function</span> <span class="params">(a, b, compares, aParent, bParent, deep)</span> {</span>
+        <span class="keyword">var</span> aType = <span class="keyword">typeof</span> a,
+            aArray = isArray(a),
+            comparesType = <span class="keyword">typeof</span> compares,
+            compare;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>check this subset</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="kd">var</span> <span class="nx">set</span> <span class="o">=</span> <span class="nx">sets</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">can</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">subset</span><span class="p">(</span><span class="nx">checkSet</span><span class="p">,</span> <span class="nx">set</span><span class="p">,</span> <span class="nx">compares</span><span class="p">))</span> <span class="p">{</span>
-        <span class="nx">subsets</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">set</span><span class="p">)</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">subsets</span><span class="p">;</span>
-  <span class="p">};</span>
+        <span class="keyword">if</span> (comparesType == <span class="string">'string'</span> || compares === <span class="literal">null</span>) {
+            compares = compareMethods[compares];
+            comparesType = <span class="string">'function'</span>
+        }
+        <span class="keyword">if</span> (comparesType == <span class="string">'function'</span>) {
+            <span class="keyword">return</span> compares(a, b, aParent, bParent)
+        }
+        compares = compares || {};
 
-  <span class="nx">can</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">subset</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">subset</span><span class="p">,</span> <span class="nx">set</span><span class="p">,</span> <span class="nx">compares</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>go through set {type: 'folder'} and make sure every property
-is in subset {type: 'folder', parentId :5}
+        <span class="keyword">if</span> (a <span class="keyword">instanceof</span> Date) {
+            <span class="keyword">return</span> a === b;
+        }
+        <span class="keyword">if</span> (deep === -<span class="number">1</span>) {
+            <span class="keyword">return</span> aType === <span class="string">'object'</span> || a === b;
+        }
+        <span class="keyword">if</span> (aType !== <span class="keyword">typeof</span> b || aArray !== isArray(b)) {
+            <span class="keyword">return</span> <span class="literal">false</span>;
+        }
+        <span class="keyword">if</span> (a === b) {
+            <span class="keyword">return</span> <span class="literal">true</span>;
+        }
+        <span class="keyword">if</span> (aArray) {
+            <span class="keyword">if</span> (a.length !== b.length) {
+                <span class="keyword">return</span> <span class="literal">false</span>;
+            }
+            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; a.length; i++) {
+                compare = compares[i] === <span class="literal">undefined</span> ? compares[<span class="string">"*"</span>] : compares[i]
+                <span class="keyword">if</span> (!same(a[i], b[i], a, b, compare)) {
+                    <span class="keyword">return</span> <span class="literal">false</span>;
+                }
+            };
+            <span class="keyword">return</span> <span class="literal">true</span>;
+        } <span class="keyword">else</span> <span class="keyword">if</span> (aType === <span class="string">"object"</span> || aType === <span class="string">'function'</span>) {
+            <span class="keyword">var</span> bCopy = can.extend({}, b);
+            <span class="keyword">for</span> (<span class="keyword">var</span> prop <span class="keyword">in</span> a) {
+                compare = compares[prop] === <span class="literal">undefined</span> ? compares[<span class="string">"*"</span>] : compares[prop];
+                <span class="keyword">if</span> (!same(a[prop], b[prop], compare, a, b, deep === <span class="literal">false</span> ? -<span class="number">1</span> : <span class="literal">undefined</span>)) {
+                    <span class="keyword">return</span> <span class="literal">false</span>;
+                }
+                <span class="keyword">delete</span> bCopy[prop];
+            }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>go through bCopy props ... if there is no compare .. return false</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">for</span> (prop <span class="keyword">in</span> bCopy) {
+                <span class="keyword">if</span> (compares[prop] === <span class="literal">undefined</span> || !same(<span class="literal">undefined</span>, b[prop], compares[prop], a, b, deep === <span class="literal">false</span> ? -<span class="number">1</span> : <span class="literal">undefined</span>)) {
+                    <span class="keyword">return</span> <span class="literal">false</span>;
+                }
+            }
+            <span class="keyword">return</span> <span class="literal">true</span>;
+        }
+        <span class="keyword">return</span> <span class="literal">false</span>;
+    };
+
+    can.Object.subsets = <span class="function"><span class="keyword">function</span> <span class="params">(checkSet, sets, compares)</span> {</span>
+        <span class="keyword">var</span> len = sets.length,
+            subsets = [],
+            checkPropCount = propCount(checkSet),
+            setLength;
+
+        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; len; i++) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>check this subset</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> set = sets[i];
+            <span class="keyword">if</span> (can.Object.subset(checkSet, set, compares)) {
+                subsets.push(set)
+            }
+        }
+        <span class="keyword">return</span> subsets;
+    };
+
+    can.Object.subset = <span class="function"><span class="keyword">function</span> <span class="params">(subset, set, compares)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>go through set {type: &#39;folder&#39;} and make sure every property
+is in subset {type: &#39;folder&#39;, parentId :5}
 then make sure that set has fewer properties
-make sure we are only checking 'important' properties
-in subset (ones that have to have a value)</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">setPropCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-      <span class="nx">compares</span> <span class="o">=</span> <span class="nx">compares</span> <span class="o">||</span> <span class="p">{};</span>
+make sure we are only checking &#39;important&#39; properties
+in subset (ones that have to have a value)</p>
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">prop</span> <span class="k">in</span> <span class="nx">set</span><span class="p">)</span> <span class="p">{</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> setPropCount = <span class="number">0</span>,
+            compares = compares || {};
 
-      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">same</span><span class="p">(</span><span class="nx">subset</span><span class="p">[</span><span class="nx">prop</span><span class="p">],</span> <span class="nx">set</span><span class="p">[</span><span class="nx">prop</span><span class="p">],</span> <span class="nx">compares</span><span class="p">[</span><span class="nx">prop</span><span class="p">],</span> <span class="nx">subset</span><span class="p">,</span> <span class="nx">set</span><span class="p">))</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-  <span class="p">}</span>
+        <span class="keyword">for</span> (<span class="keyword">var</span> prop <span class="keyword">in</span> set) {
 
-  <span class="kd">var</span> <span class="nx">compareMethods</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;null&quot;</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">},</span>
-    <span class="nx">i</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;&quot;</span> <span class="o">+</span> <span class="nx">a</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">==</span> <span class="p">(</span><span class="s2">&quot;&quot;</span> <span class="o">+</span> <span class="nx">b</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">()</span>
-    <span class="p">}</span>
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <h2>can/observe/backup/backup.js</h2>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">flatProps</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">a</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{};</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">prop</span> <span class="k">in</span> <span class="nx">a</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">a</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">!==</span> <span class="s1">&#39;object&#39;</span> <span class="o">||</span> <span class="nx">a</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">===</span> <span class="kc">null</span> <span class="o">||</span> <span class="nx">a</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="k">instanceof</span> <span class="nb">Date</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">obj</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">=</span> <span class="nx">a</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
-  <span class="p">};</span>
+            <span class="keyword">if</span> (!same(subset[prop], set[prop], compares[prop], subset, set)) {
+                <span class="keyword">return</span> <span class="literal">false</span>;
+            }
+        }
+        <span class="keyword">return</span> <span class="literal">true</span>;
+    }
 
-  <span class="nx">can</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">can</span><span class="p">.</span><span class="nx">Observe</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="p">{</span>
+    <span class="keyword">var</span> compareMethods = {
+        <span class="string">"null"</span>: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+            <span class="keyword">return</span> <span class="literal">true</span>;
+        },
+        i: <span class="function"><span class="keyword">function</span> <span class="params">(a, b)</span> {</span>
+            <span class="keyword">return</span> (<span class="string">""</span> + a).toLowerCase() == (<span class="string">""</span> + b).toLowerCase()
+        }
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <h2>can/observe/backup/backup.js</h2>
 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> flatProps = <span class="function"><span class="keyword">function</span> <span class="params">(a)</span> {</span>
+        <span class="keyword">var</span> obj = {};
+        <span class="keyword">for</span> (<span class="keyword">var</span> prop <span class="keyword">in</span> a) {
+            <span class="keyword">if</span> (<span class="keyword">typeof</span> a[prop] !== <span class="string">'object'</span> || a[prop] === <span class="literal">null</span> || a[prop] <span class="keyword">instanceof</span> Date) {
+                obj[prop] = a[prop]
+            }
+        }
+        <span class="keyword">return</span> obj;
+    };
 
-    <span class="nx">backup</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">_backupStore</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_attrs</span><span class="p">();</span>
-      <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
-    <span class="p">},</span>
-
-
-    <span class="nx">isDirty</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">checkAssociations</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_backupStore</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">can</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">same</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_attrs</span><span class="p">(),</span> <span class="k">this</span><span class="p">.</span><span class="nx">_backupStore</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">,</span> <span class="o">!!</span> <span class="nx">checkAssociations</span><span class="p">);</span>
-    <span class="p">},</span>
-
-
-    <span class="nx">restore</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">restoreAssociations</span><span class="p">)</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">props</span> <span class="o">=</span> <span class="nx">restoreAssociations</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">_backupStore</span> <span class="o">:</span> <span class="nx">flatProps</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_backupStore</span><span class="p">)</span>
-
-      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isDirty</span><span class="p">(</span><span class="nx">restoreAssociations</span><span class="p">))</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">_attrs</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
-      <span class="p">}</span>
-
-      <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
-    <span class="p">}</span>
-
-  <span class="p">})</span>
+    can.extend(can.Observe.prototype, {
 
 
-<span class="p">})(</span><span class="nx">can</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+        backup: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+            <span class="keyword">this</span>._backupStore = <span class="keyword">this</span>._attrs();
+            <span class="keyword">return</span> <span class="keyword">this</span>;
+        },
 
-</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
+
+        isDirty: <span class="function"><span class="keyword">function</span> <span class="params">(checkAssociations)</span> {</span>
+            <span class="keyword">return</span> <span class="keyword">this</span>._backupStore &amp;&amp; !can.Object.same(<span class="keyword">this</span>._attrs(), <span class="keyword">this</span>._backupStore, <span class="literal">undefined</span>, <span class="literal">undefined</span>, <span class="literal">undefined</span>, !! checkAssociations);
+        },
+
+
+        restore: <span class="function"><span class="keyword">function</span> <span class="params">(restoreAssociations)</span> {</span>
+            <span class="keyword">var</span> props = restoreAssociations ? <span class="keyword">this</span>._backupStore : flatProps(<span class="keyword">this</span>._backupStore)
+
+            <span class="keyword">if</span> (<span class="keyword">this</span>.isDirty(restoreAssociations)) {
+                <span class="keyword">this</span>._attrs(props);
+            }
+
+            <span class="keyword">return</span> <span class="keyword">this</span>;
+        }
+
+    })
+
+
+})(can, <span class="keyword">this</span>);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,127 +1,493 @@
-<!DOCTYPE html>  <html> <head>   <title>can.observe.attributes.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="can.construct.proxy.html">                 can.construct.proxy.js               </a>                                           <a class="source" href="can.construct.super.html">                 can.construct.super.js               </a>                                           <a class="source" href="can.control.plugin.html">                 can.control.plugin.js               </a>                                           <a class="source" href="can.dojo.html">                 can.dojo.js               </a>                                           <a class="source" href="can.fixture.html">                 can.fixture.js               </a>                                           <a class="source" href="can.jquery-all.html">                 can.jquery-all.js               </a>                                           <a class="source" href="can.jquery.html">                 can.jquery.js               </a>                                           <a class="source" href="can.mootools.html">                 can.mootools.js               </a>                                           <a class="source" href="can.observe.attributes.html">                 can.observe.attributes.js               </a>                                           <a class="source" href="can.observe.backup.html">                 can.observe.backup.js               </a>                                           <a class="source" href="can.observe.delegate.html">                 can.observe.delegate.js               </a>                                           <a class="source" href="can.observe.setter.html">                 can.observe.setter.js               </a>                                           <a class="source" href="can.observe.validations.html">                 can.observe.validations.js               </a>                                           <a class="source" href="can.view.modifiers.html">                 can.view.modifiers.js               </a>                                           <a class="source" href="can.view.mustache.html">                 can.view.mustache.js               </a>                                           <a class="source" href="can.yui.html">                 can.yui.js               </a>                                           <a class="source" href="can.zepto.html">                 can.zepto.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               can.observe.attributes.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/*!</span>
-<span class="cm">* CanJS - 1.1.4 (2013-02-05)</span>
-<span class="cm">* http://canjs.us/</span>
-<span class="cm">* Copyright (c) 2013 Bitovi</span>
-<span class="cm">* Licensed MIT</span>
-<span class="cm">*/</span>
-<span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">can</span><span class="p">,</span> <span class="nb">window</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h2>can/observe/attributes/attributes.js</h2>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">can</span><span class="p">.</span><span class="nx">each</span><span class="p">([</span><span class="nx">can</span><span class="p">.</span><span class="nx">Observe</span><span class="p">,</span> <span class="nx">can</span><span class="p">.</span><span class="nx">Model</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">clss</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>in some cases model might not be defined quite yet.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="nx">clss</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span><span class="p">;</span>
-    <span class="p">}</span>
+<!DOCTYPE html>
 
-    <span class="nx">can</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">clss</span><span class="p">,</span> <span class="p">{</span>
+<html>
+<head>
+  <title>can.observe.attributes.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="can.construct.proxy.html">
+                can.construct.proxy.js
+              </a>
+            
+              
+              <a class="source" href="can.construct.super.html">
+                can.construct.super.js
+              </a>
+            
+              
+              <a class="source" href="can.control.plugin.html">
+                can.control.plugin.js
+              </a>
+            
+              
+              <a class="source" href="can.dojo.html">
+                can.dojo.js
+              </a>
+            
+              
+              <a class="source" href="can.fixture.html">
+                can.fixture.js
+              </a>
+            
+              
+              <a class="source" href="can.jquery-all.html">
+                can.jquery-all.js
+              </a>
+            
+              
+              <a class="source" href="can.jquery.html">
+                can.jquery.js
+              </a>
+            
+              
+              <a class="source" href="can.model.queue.html">
+                can.model.queue.js
+              </a>
+            
+              
+              <a class="source" href="can.mootools.html">
+                can.mootools.js
+              </a>
+            
+              
+              <a class="source" href="can.observe.attributes.html">
+                can.observe.attributes.js
+              </a>
+            
+              
+              <a class="source" href="can.observe.backup.html">
+                can.observe.backup.js
+              </a>
+            
+              
+              <a class="source" href="can.observe.delegate.html">
+                can.observe.delegate.js
+              </a>
+            
+              
+              <a class="source" href="can.observe.setter.html">
+                can.observe.setter.js
+              </a>
+            
+              
+              <a class="source" href="can.observe.validations.html">
+                can.observe.validations.js
+              </a>
+            
+              
+              <a class="source" href="can.view.modifiers.html">
+                can.view.modifiers.js
+              </a>
+            
+              
+              <a class="source" href="can.view.mustache.html">
+                can.view.mustache.js
+              </a>
+            
+              
+              <a class="source" href="can.yui.html">
+                can.yui.js
+              </a>
+            
+              
+              <a class="source" href="can.zepto.html">
+                can.zepto.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>can.observe.attributes.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="comment">/*!
+* CanJS - 1.1.5 (2013-03-27)
+* http://canjs.us/
+* Copyright (c) 2013 Bitovi
+* Licensed MIT
+*/</span>
+(<span class="function"><span class="keyword">function</span> <span class="params">(can, window, undefined)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2>can/observe/attributes/attributes.js</h2>
 
-      <span class="nx">attributes</span><span class="o">:</span> <span class="p">{},</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    can.each([can.Observe, can.Model], <span class="function"><span class="keyword">function</span> <span class="params">(clss)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>in some cases model might not be defined quite yet.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (clss === <span class="literal">undefined</span>) {
+            <span class="keyword">return</span>;
+        }
+        <span class="keyword">var</span> isObject = <span class="function"><span class="keyword">function</span> <span class="params">(obj)</span> {</span>
+            <span class="keyword">return</span> <span class="keyword">typeof</span> obj === <span class="string">'object'</span> &amp;&amp; obj !== <span class="literal">null</span> &amp;&amp; obj;
+        };
+
+        can.extend(clss, {
+
+            attributes: {},
 
 
-      <span class="nx">convert</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;date&quot;</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
-          <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">str</span><span class="p">;</span>
-          <span class="k">if</span> <span class="p">(</span><span class="nx">type</span> <span class="o">===</span> <span class="s2">&quot;string&quot;</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nb">isNaN</span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">str</span><span class="p">))</span> <span class="o">?</span> <span class="kc">null</span> <span class="o">:</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span>
-          <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;number&#39;</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span>
-          <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">str</span>
-          <span class="p">}</span>
-        <span class="p">},</span>
-        <span class="s2">&quot;number&quot;</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
-          <span class="k">return</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
-        <span class="p">},</span>
-        <span class="s2">&quot;boolean&quot;</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
-          <span class="k">if</span> <span class="p">(</span><span class="nx">val</span> <span class="o">===</span> <span class="s1">&#39;false&#39;</span> <span class="o">||</span> <span class="nx">val</span> <span class="o">===</span> <span class="s1">&#39;0&#39;</span> <span class="o">||</span> <span class="o">!</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-          <span class="p">}</span>
-          <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="p">},</span>
-        <span class="s2">&quot;default&quot;</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">val</span><span class="p">,</span> <span class="nx">oldVal</span><span class="p">,</span> <span class="nx">error</span><span class="p">,</span> <span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
-          <span class="kd">var</span> <span class="nx">construct</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">getObject</span><span class="p">(</span><span class="nx">type</span><span class="p">),</span>
-            <span class="nx">context</span> <span class="o">=</span> <span class="nb">window</span><span class="p">,</span>
-            <span class="nx">realType</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>if type has a . we need to look it up</p>             </td>             <td class="code">               <div class="highlight"><pre>          <span class="k">if</span> <span class="p">(</span><span class="nx">type</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>get everything before the last .</p>             </td>             <td class="code">               <div class="highlight"><pre>            <span class="nx">realType</span> <span class="o">=</span> <span class="nx">type</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">type</span><span class="p">.</span><span class="nx">lastIndexOf</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">));</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>get the object before the last .</p>             </td>             <td class="code">               <div class="highlight"><pre>            <span class="nx">context</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">getObject</span><span class="p">(</span><span class="nx">realType</span><span class="p">);</span>
-          <span class="p">}</span>
-          <span class="k">return</span> <span class="k">typeof</span> <span class="nx">construct</span> <span class="o">==</span> <span class="s2">&quot;function&quot;</span> <span class="o">?</span> <span class="nx">construct</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">val</span><span class="p">,</span> <span class="nx">oldVal</span><span class="p">)</span> <span class="o">:</span> <span class="nx">val</span><span class="p">;</span>
-        <span class="p">}</span>
-      <span class="p">},</span>
+            convert: {
+                <span class="string">"date"</span>: <span class="function"><span class="keyword">function</span> <span class="params">(str)</span> {</span>
+                    <span class="keyword">var</span> type = <span class="keyword">typeof</span> str;
+                    <span class="keyword">if</span> (type === <span class="string">"string"</span>) {
+                        <span class="keyword">return</span> isNaN(Date.parse(str)) ? <span class="literal">null</span> : Date.parse(str)
+                    } <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">'number'</span>) {
+                        <span class="keyword">return</span> <span class="keyword">new</span> Date(str)
+                    } <span class="keyword">else</span> {
+                        <span class="keyword">return</span> str
+                    }
+                },
+                <span class="string">"number"</span>: <span class="function"><span class="keyword">function</span> <span class="params">(val)</span> {</span>
+                    <span class="keyword">return</span> parseFloat(val);
+                },
+                <span class="string">"boolean"</span>: <span class="function"><span class="keyword">function</span> <span class="params">(val)</span> {</span>
+                    <span class="keyword">if</span> (val === <span class="string">'false'</span> || val === <span class="string">'0'</span> || !val) {
+                        <span class="keyword">return</span> <span class="literal">false</span>;
+                    }
+                    <span class="keyword">return</span> <span class="literal">true</span>;
+                },
+                <span class="string">"default"</span>: <span class="function"><span class="keyword">function</span> <span class="params">(val, oldVal, error, type)</span> {</span>
+                    <span class="keyword">var</span> construct = can.getObject(type),
+                        context = window,
+                        realType;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>if type has a . we need to look it up</p>
 
-      <span class="nx">serialize</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;default&quot;</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">val</span><span class="p">,</span> <span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
-          <span class="k">return</span> <span class="nx">isObject</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">val</span><span class="p">.</span><span class="nx">serialize</span> <span class="o">?</span> <span class="nx">val</span><span class="p">.</span><span class="nx">serialize</span><span class="p">()</span> <span class="o">:</span> <span class="nx">val</span><span class="p">;</span>
-        <span class="p">},</span>
-        <span class="s2">&quot;date&quot;</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
-          <span class="k">return</span> <span class="nx">val</span> <span class="o">&amp;&amp;</span> <span class="nx">val</span><span class="p">.</span><span class="nx">getTime</span><span class="p">()</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-    <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>overwrite setup to do this stuff</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">oldSetup</span> <span class="o">=</span> <span class="nx">clss</span><span class="p">.</span><span class="nx">setup</span><span class="p">;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (type.indexOf(<span class="string">"."</span>) &gt;= <span class="number">0</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>get everything before the last .</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                        realType = type.substring(<span class="number">0</span>, type.lastIndexOf(<span class="string">"."</span>));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>get the object before the last .</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                        context = can.getObject(realType);
+                    }
+                    <span class="keyword">return</span> <span class="keyword">typeof</span> construct == <span class="string">"function"</span> ? construct.call(context, val, oldVal) : val;
+                }
+            },
+
+            serialize: {
+                <span class="string">"default"</span>: <span class="function"><span class="keyword">function</span> <span class="params">(val, type)</span> {</span>
+                    <span class="keyword">return</span> isObject(val) &amp;&amp; val.serialize ? val.serialize() : val;
+                },
+                <span class="string">"date"</span>: <span class="function"><span class="keyword">function</span> <span class="params">(val)</span> {</span>
+                    <span class="keyword">return</span> val &amp;&amp; val.getTime()
+                }
+            }
+        });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>overwrite setup to do this stuff</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> oldSetup = clss.setup;
 
 
-    <span class="nx">clss</span><span class="p">.</span><span class="nx">setup</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">superClass</span><span class="p">,</span> <span class="nx">stat</span><span class="p">,</span> <span class="nx">proto</span><span class="p">)</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-      <span class="nx">oldSetup</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">superClass</span><span class="p">,</span> <span class="nx">stat</span><span class="p">,</span> <span class="nx">proto</span><span class="p">);</span>
+        clss.setup = <span class="function"><span class="keyword">function</span> <span class="params">(superClass, stat, proto)</span> {</span>
+            <span class="keyword">var</span> self = <span class="keyword">this</span>;
+            oldSetup.call(self, superClass, stat, proto);
 
-      <span class="nx">can</span><span class="p">.</span><span class="nx">each</span><span class="p">([</span><span class="s2">&quot;attributes&quot;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">self</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">||</span> <span class="nx">superClass</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">===</span> <span class="nx">self</span><span class="p">[</span><span class="nx">name</span><span class="p">])</span> <span class="p">{</span>
-          <span class="nx">self</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{};</span>
-        <span class="p">}</span>
-      <span class="p">});</span>
+            can.each([<span class="string">"attributes"</span>], <span class="function"><span class="keyword">function</span> <span class="params">(name)</span> {</span>
+                <span class="keyword">if</span> (!self[name] || superClass[name] === self[name]) {
+                    self[name] = {};
+                }
+            });
 
-      <span class="nx">can</span><span class="p">.</span><span class="nx">each</span><span class="p">([</span><span class="s2">&quot;convert&quot;</span><span class="p">,</span> <span class="s2">&quot;serialize&quot;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">superClass</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">!=</span> <span class="nx">self</span><span class="p">[</span><span class="nx">name</span><span class="p">])</span> <span class="p">{</span>
-          <span class="nx">self</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="nx">superClass</span><span class="p">[</span><span class="nx">name</span><span class="p">],</span> <span class="nx">self</span><span class="p">[</span><span class="nx">name</span><span class="p">]);</span>
-        <span class="p">}</span>
-      <span class="p">});</span>
-    <span class="p">};</span>
-  <span class="p">});</span>
+            can.each([<span class="string">"convert"</span>, <span class="string">"serialize"</span>], <span class="function"><span class="keyword">function</span> <span class="params">(name)</span> {</span>
+                <span class="keyword">if</span> (superClass[name] != self[name]) {
+                    self[name] = can.extend({}, superClass[name], self[name]);
+                }
+            });
+        };
+    });
 
-  <span class="kd">var</span> <span class="nx">oldSetup</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">Observe</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">setup</span><span class="p">;</span>
+    <span class="keyword">var</span> oldSetup = can.Observe.prototype.setup;
 
-  <span class="nx">can</span><span class="p">.</span><span class="nx">Observe</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">setup</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+    can.Observe.prototype.setup = <span class="function"><span class="keyword">function</span> <span class="params">(obj)</span> {</span>
 
-    <span class="kd">var</span> <span class="nx">diff</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="keyword">var</span> diff = {};
 
-    <span class="nx">oldSetup</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">obj</span><span class="p">);</span>
+        oldSetup.call(<span class="keyword">this</span>, obj);
 
-    <span class="nx">can</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">defaults</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
-        <span class="nx">diff</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
+        can.each(<span class="keyword">this</span>.constructor.defaults, <span class="function"><span class="keyword">function</span> <span class="params">(value, key)</span> {</span>
+            <span class="keyword">if</span> (!<span class="keyword">this</span>.hasOwnProperty(key)) {
+                diff[key] = value;
+            }
+        }, <span class="keyword">this</span>);
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">_init</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="nx">diff</span><span class="p">);</span>
-    <span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_init</span><span class="p">;</span>
-  <span class="p">};</span>
+        <span class="keyword">this</span>._init = <span class="number">1</span>;
+        <span class="keyword">this</span>.attr(diff);
+        <span class="keyword">delete</span> <span class="keyword">this</span>._init;
+    };
 
-  <span class="nx">can</span><span class="p">.</span><span class="nx">Observe</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">__convert</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">prop</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>check if there is a</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">Class</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">constructor</span><span class="p">,</span>
-      <span class="nx">oldVal</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="nx">prop</span><span class="p">),</span>
-      <span class="nx">type</span><span class="p">,</span> <span class="nx">converter</span><span class="p">;</span>
+    can.Observe.prototype.__convert = <span class="function"><span class="keyword">function</span> <span class="params">(prop, value)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>check if there is a</p>
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">Class</span><span class="p">.</span><span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>the type of the attribute</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">type</span> <span class="o">=</span> <span class="nx">Class</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="nx">prop</span><span class="p">];</span>
-      <span class="nx">converter</span> <span class="o">=</span> <span class="nx">Class</span><span class="p">.</span><span class="nx">convert</span><span class="p">[</span><span class="nx">type</span><span class="p">]</span> <span class="o">||</span> <span class="nx">Class</span><span class="p">.</span><span class="nx">convert</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">];</span>
-    <span class="p">}</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> Class = <span class="keyword">this</span>.constructor,
+            oldVal = <span class="keyword">this</span>.attr(prop),
+            type, converter;
 
-    <span class="k">return</span> <span class="nx">value</span> <span class="o">===</span> <span class="kc">null</span> <span class="o">||</span> <span class="o">!</span><span class="nx">type</span> <span class="o">?</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>just use the value</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">value</span> <span class="o">:</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>otherwise, pass to the converter</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">converter</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">Class</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">oldVal</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{},</span> <span class="nx">type</span><span class="p">);</span>
-  <span class="p">};</span>
+        <span class="keyword">if</span> (Class.attributes) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>the type of the attribute</p>
 
-  <span class="nx">can</span><span class="p">.</span><span class="nx">Observe</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">serialize</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">attrName</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">where</span> <span class="o">=</span> <span class="p">{},</span>
-      <span class="nx">Class</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">constructor</span><span class="p">,</span>
-      <span class="nx">attrs</span> <span class="o">=</span> <span class="p">{};</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            type = Class.attributes[prop];
+            converter = Class.convert[type] || Class.convert[<span class="string">'default'</span>];
+        }
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">attrName</span> <span class="o">!=</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">attrs</span><span class="p">[</span><span class="nx">attrName</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">[</span><span class="nx">attrName</span><span class="p">];</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="nx">attrs</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__get</span><span class="p">();</span>
-    <span class="p">}</span>
+        <span class="keyword">return</span> value === <span class="literal">null</span> || !type ?</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>just use the value</p>
 
-    <span class="nx">can</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">attrs</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">val</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">converter</span><span class="p">;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        value :</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>otherwise, pass to the converter</p>
 
-      <span class="nx">type</span> <span class="o">=</span> <span class="nx">Class</span><span class="p">.</span><span class="nx">attributes</span> <span class="o">?</span> <span class="nx">Class</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
-      <span class="nx">converter</span> <span class="o">=</span> <span class="nx">Class</span><span class="p">.</span><span class="nx">serialize</span> <span class="o">?</span> <span class="nx">Class</span><span class="p">.</span><span class="nx">serialize</span><span class="p">[</span><span class="nx">type</span><span class="p">]</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>if the value is an object, and has a attrs or serialize function</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">where</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">val</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nx">val</span><span class="p">.</span><span class="nx">serialize</span> <span class="o">==</span> <span class="s1">&#39;function&#39;</span> <span class="o">?</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>call attrs or serialize to get the original data back</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">val</span><span class="p">.</span><span class="nx">serialize</span><span class="p">()</span> <span class="o">:</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p>otherwise if we have  a converter</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">converter</span> <span class="o">?</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p>use the converter</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">converter</span><span class="p">(</span><span class="nx">val</span><span class="p">,</span> <span class="nx">type</span><span class="p">)</span> <span class="o">:</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <p>or return the val</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">val</span>
-    <span class="p">});</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        converter.call(Class, value, oldVal, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>}, type);
+    };
 
-    <span class="k">return</span> <span class="nx">attrName</span> <span class="o">!=</span> <span class="kc">undefined</span> <span class="o">?</span> <span class="nx">where</span><span class="p">[</span><span class="nx">attrName</span><span class="p">]</span> <span class="o">:</span> <span class="nx">where</span><span class="p">;</span>
-  <span class="p">};</span>
+    can.Observe.prototype.serialize = <span class="function"><span class="keyword">function</span> <span class="params">(attrName)</span> {</span>
+        <span class="keyword">var</span> where = {},
+            Class = <span class="keyword">this</span>.constructor,
+            attrs = {};
 
-<span class="p">})(</span><span class="nx">can</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+        <span class="keyword">if</span> (attrName != <span class="literal">undefined</span>) {
+            attrs[attrName] = <span class="keyword">this</span>[attrName];
+        } <span class="keyword">else</span> {
+            attrs = <span class="keyword">this</span>.__get();
+        }
 
-</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
+        can.each(attrs, <span class="function"><span class="keyword">function</span> <span class="params">(val, name)</span> {</span>
+            <span class="keyword">var</span> type, converter;
+
+            type = Class.attributes ? Class.attributes[name] : <span class="number">0</span>;
+            converter = Class.serialize ? Class.serialize[type] : <span class="number">0</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>if the value is an object, and has a attrs or serialize function</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            where[name] = val &amp;&amp; <span class="keyword">typeof</span> val.serialize == <span class="string">'function'</span> ?</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>call attrs or serialize to get the original data back</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            val.serialize() :</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>otherwise if we have  a converter</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            converter ?</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>use the converter</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            converter(val, type) :</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>or return the val</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            val
+        });
+
+        <span class="keyword">return</span> attrName != <span class="literal">undefined</span> ? where[attrName] : where;
+    };
+
+})(can, <span class="keyword">this</span>);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
