@@ -125,10 +125,18 @@
         "parent": "guides",
         "order": 0
     },
+    "Using": {
+        "name": "Using",
+        "type": "page",
+        "id": 16,
+        "title": "Using CanJS",
+        "parent": "guides",
+        "order": 3
+    },
     "Utilities": {
         "name": "Utilities",
         "type": "page",
-        "id": 16,
+        "id": 17,
         "title": "Utilities",
         "parent": "Tutorial",
         "order": 9
@@ -136,7 +144,7 @@
     "Templates": {
         "name": "Templates",
         "type": "page",
-        "id": 17,
+        "id": 18,
         "title": "Templates",
         "parent": "Tutorial",
         "order": 3
@@ -144,7 +152,7 @@
     "Why": {
         "name": "Why",
         "type": "page",
-        "id": 18,
+        "id": 19,
         "title": "Why CanJS?",
         "parent": "guides",
         "order": 2
@@ -152,25 +160,25 @@
     "changelog": {
         "name": "changelog",
         "type": "page",
-        "id": 19,
+        "id": 20,
         "title": "Changelog",
         "parent": "guides",
-        "order": 4
+        "order": 5
     },
     "contributing": {
         "name": "contributing",
         "type": "page",
-        "id": 20,
+        "id": 21,
         "title": "Contributing to CanJS",
         "parent": "guides",
-        "order": 3
+        "order": 4
     },
     "license": {
         "name": "license",
         "type": "page",
-        "id": 21,
+        "id": 22,
         "title": "License",
         "parent": "guides",
-        "order": 5
+        "order": 6
     }
 }
