@@ -160,16 +160,25 @@
     "changelog": {
         "name": "changelog",
         "type": "page",
-        "id": 20
+        "id": 20,
+        "title": "Changelog",
+        "parent": "guides",
+        "order": 5
     },
     "contributing": {
         "name": "contributing",
         "type": "page",
-        "id": 21
+        "id": 21,
+        "title": "Contributing to CanJS",
+        "parent": "guides",
+        "order": 4
     },
     "license": {
         "name": "license",
         "type": "page",
-        "id": 22
+        "id": 22,
+        "title": "License",
+        "parent": "guides",
+        "order": 6
     }
 }
