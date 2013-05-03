@@ -1,4 +1,4 @@
-(function( can, window, undefined ){
+(function(can, window, undefined){
 	
 var isArray = can.isArray,
 	// essentially returns an object that has all the must have comparisons ...
@@ -300,29 +300,34 @@ var compareMethods = {
 				}
 			}
 		},
-		getResponse = function (s, original, headers) {
-			var response = s.fixture(original, s, headers),
-				next = s.dataTypes ? s.dataTypes[0] : (s.dataType || 'json');
-
-			// normalize the fixture data into a response
-			if (!can.isArray(response)) {
-				var tmp = [
-					{}
-				];
-				tmp[0][next] = response
-				response = tmp;
+		// A helper function that takes what's called with response
+		// and moves some common args around to make it easier to call
+		extractResponse = function(status, statusText, responses, headers) {
+			// if we get response(RESPONSES, HEADERS)
+			if(typeof status != "number"){
+				headers = statusText;
+				responses = status;
+				statusText = "success"
+				status = 200;
 			}
-			if (typeof response[0] != 'number') {
-				response.unshift(200, "success")
+			// if we get response(200, RESPONSES, HEADERS)
+			if(typeof statusText != "string"){
+				headers = responses;
+				responses = statusText;
+				statusText = "success";
 			}
-
-			// make sure we provide a response type that matches the first datatype (typically json)
-			if (!response[2] || !response[2][next]) {
+			return [status, statusText, extractResponses(this, responses), headers];
+		},
+		// If we get data instead of responses,
+		// make sure we provide a response type that matches the first datatype (typically json)
+		extractResponses = function(settings, responses){
+			var next = settings.dataTypes ? settings.dataTypes[0] : (settings.dataType || 'json');
+			if (!responses || !responses[next]) {
 				var tmp = {}
-				tmp[next] = response[2];
-				response[2] = tmp;
+				tmp[next] = responses;
+				responses = tmp;
 			}
-			return response
+			return responses;
 		};
 
 	//used to check urls
@@ -337,19 +342,28 @@ var compareMethods = {
 			s.dataTypes.shift();
 
 			//we'll return the result of the next data type
-			var next = s.dataTypes[0], timeout;
+			var timeout, stopped = false;
 
 			return {
-				send : function (headers, callback) {
-					// callback after a timeout
+				send: function (headers, callback) {
+					// we'll immediately wait the delay time for all fixtures
 					timeout = setTimeout(function () {
-						var response = getResponse(s, original, headers)
-
-						// pass the fixture data back to can.ajax
-						callback.apply(null, response);
+						// if the user wants to call success on their own, we allow it ...
+						var success = function() {
+							if(stopped === false) {
+								callback.apply(null, extractResponse.apply(s, arguments) );
+							}
+						},
+						// get the result form the fixture
+						result = s.fixture(original, success, headers, s);
+						if(result !== undefined) {
+							// make sure the result has the right dataType
+							callback(200, "success", extractResponses(s, result), {});
+						}
 					}, can.fixture.delay);
 				},
-				abort : function () {
+				abort: function () {
+					stopped = true;
 					clearTimeout(timeout)
 				}
 			};
@@ -359,27 +373,43 @@ var compareMethods = {
 		can.ajax = function (settings) {
 			updateSettings(settings, settings);
 			if (settings.fixture) {
+				var timeout, d = new can.Deferred(),
+					stopped = false;
 
-				var d = new can.Deferred();
+				//TODO this should work with response
 				d.getResponseHeader = function () {
 				}
-				d.then(settings.success, settings.fail)
 
+				// call success and fail
+				d.then(settings.success, settings.fail);
+
+				// abort should stop the timeout and calling success
 				d.abort = function () {
 					clearTimeout(timeout);
+					stopped = true;
 					d.reject(d)
 				}
-				var timeout = setTimeout(function () {
-					var response = getResponse(settings, settings, settings.headers);
-					var status = response[0];
-					if (status >= 200 && status < 300 || status === 304) {
-						d.resolve(response[2][settings.dataType], "success", d)
-					} else {
-						d.reject(d);
+				// set a timeout that simulates making a request ....
+				timeout = setTimeout(function () {
+					// if the user wants to call success on their own, we allow it ...
+					var success = function() {
+						var response = extractResponse.apply(settings, arguments),
+							status = response[0];
+
+						if ( (status >= 200 && status < 300 || status === 304) && stopped === false) {
+							d.resolve(response[2][settings.dataType], "success", d)
+						} else {
+							// TODO probably resolve better
+							d.reject(d, 'error', response[1]);
+						}
+					},
+					// get the result form the fixture
+					result = settings.fixture(settings, success, settings.headers, settings);
+					if(result !== undefined) {
+						d.resolve(result, "success", d)
 					}
-
-
-				}, can.fixture.delay)
+				}, can.fixture.delay);
+				
 				return d;
 			} else {
 				return AJAX(settings);
@@ -449,179 +479,11 @@ var compareMethods = {
 		};
 
 	/**
-	 * @function can.util.fixture
 	 * @plugin can/util/fixture
 	 * @test can/util/fixture/qunit.html
-	 * @parent can.util
 	 *
-	 * <code>can.fixture</code> intercepts a AJAX request and simulates
-	 * the response with a file or function. They are a great technique
-	 * when you want to develop JavaScript
-	 * independently of the backend.
-	 *
-	 * ## Types of Fixtures
-	 *
-	 * There are two common ways of using fixtures.  The first is to
-	 * map Ajax requests to another file.  The following
-	 * intercepts requests to <code>/tasks.json</code> and directs them
-	 * to <code>fixtures/tasks.json</code>:
-	 *
-	 *     can.fixture("/tasks.json","fixtures/tasks.json");
-	 *
-	 * The other common option is to generate the Ajax response with
-	 * a function.  The following intercepts updating tasks at
-	 * <code>/tasks/ID.json</code> and responds with updated data:
-	 *
-	 *     can.fixture("PUT /tasks/{id}.json", function(original, settings, headers){
-	 *        return { updatedAt : new Date().getTime() }
-	 *     })
-	 *
-	 * We categorize fixtures into the following types:
-	 *
-	 *   - __Static__ - the response is in a file.
-	 *   - __Dynamic__ - the response is generated by a function.
-	 *
-	 * There are different ways to lookup static and dynamic fixtures.
-	 *
-	 * ## Static Fixtures
-	 *
-	 * Static fixtures use an alternate url as the response of the Ajax request.
-	 *
-	 *     // looks in fixtures/tasks1.json relative to page
-	 *     can.fixture("tasks/1", "fixtures/task1.json");
-	 *
-	 *     can.fixture("tasks/1", "//fixtures/task1.json");
-	 *
-	 * ## Dynamic Fixtures
-	 *
-	 * Dynamic Fixtures are functions that get the details of
-	 * the Ajax request and return the result of the mocked service
-	 * request from your server.
-	 *
-	 * For example, the following returns a successful response
-	 * with JSON data from the server:
-	 *
-	 *     can.fixture("/foobar.json", function(orig, settings, headers){
-	 *       return [200, "success", {json: {foo: "bar" } }, {} ]
-	 *     })
-	 *
-	 * The fixture function has the following signature:
-	 *
-	 *     function( originalOptions, options, headers ) {
-	 *       return [ status, statusText, responses, responseHeaders ]
-	 *     }
-	 *
-	 * where the fixture function is called with:
-	 *
-	 *   - originalOptions - are the options provided to the ajax method, unmodified,
-	 *     and thus, without defaults from ajaxSettings
-	 *   - options - are the request options
-	 *   - headers - a map of key/value request headers
-	 *
-	 * and the fixture function returns an array as arguments for  ajaxTransport's <code>completeCallback</code> with:
-	 *
-	 *   - status - is the HTTP status code of the response.
-	 *   - statusText - the status text of the response
-	 *   - responses - a map of dataType/value that contains the responses for each data format supported
-	 *   - headers - response headers
-	 *
-	 * However, can.fixture handles the
-	 * common case where you want a successful response with JSON data.  The
-	 * previous can be written like:
-	 *
-	 *     can.fixture("/foobar.json", function(orig, settings, headers){
-	 *       return {foo: "bar" };
-	 *     })
-	 *
-	 * If you want to return an array of data, wrap your array in another array:
-	 *
-	 *     can.fixture("/tasks.json", function(orig, settings, headers){
-	 *       return [ [ "first","second","third"] ];
-	 *     })
-	 *
-	 * can.fixture works closesly with jQuery's
-	 * ajaxTransport system.  Understanding it is the key to creating advanced
-	 * fixtures.
-	 *
-	 * ### Templated Urls
-	 *
-	 * Often, you want a dynamic fixture to handle urls
-	 * for multiple resources (for example a REST url scheme). can.fixture's
-	 * templated urls allow you to match urls with a wildcard.
-	 *
-	 * The following example simulates services that get and update 100 todos.
-	 *
-	 *     // create todos
-	 *     var todos = {};
-	 *     for(var i = 0; i < 100; i++) {
-	 *       todos[i] = {
-	 *         id: i,
-	 *         name: "Todo "+i
-	 *       }
-	 *     }
-	 *     can.fixture("GET /todos/{id}", function(orig){
-	 *       // return the JSON data
-	 *       // notice that id is pulled from the url and added to data
-	 *       return todos[orig.data.id]
-	 *     })
-	 *     can.fixture("PUT /todos/{id}", function(orig){
-	 *       // update the todo's data
-	 *       can.extend( todos[orig.data.id], orig.data );
-	 *
-	 *       // return data
-	 *       return {};
-	 *     })
-	 *
-	 * Notice that data found in templated urls (ex: <code>{id}</code>) is added to the original
-	 * data object.
-	 *
-	 * ## Simulating Errors
-	 *
-	 * The following simulates an unauthorized request
-	 * to <code>/foo</code>.
-	 *
-	 *     can.fixture("/foo", function(){
-	 *         return [401,"{type: 'unauthorized'}"]
-	 *        });
-	 *
-	 * This could be received by the following Ajax request:
-	 *
-	 *     can.ajax({
-	 *       url: '/foo',
-	 *       error : function(jqXhr, status, statusText){
-	 *         // status === 'error'
-	 *         // statusText === "{type: 'unauthorized'}"
-	 *       }
-	 *     })
-	 *
-	 * ## Turning off Fixtures
-	 *
-	 * You can remove a fixture by passing <code>null</code> for the fixture option:
-	 *
-	 *     // add a fixture
-	 *     can.fixture("GET todos.json","//fixtures/todos.json");
-	 *
-	 *     // remove the fixture
-	 *     can.fixture("GET todos.json", null)
-	 *
-	 * You can also set [can.util.fixture.on can.fixture.on] to false:
-	 *
-	 *     can.fixture.on = false;
-	 *
-	 * ## Make
-	 *
-	 * [can.util.fixture.make can.fixture.make] makes a CRUD service layer that handles sorting, grouping,
-	 * filtering and more.
-	 *
-	 * ## Testing Performance
-	 *
-	 * Dynamic fixtures are awesome for performance testing.  Want to see what
-	 * 10000 files does to your app's performance?  Make a fixture that returns 10000 items.
-	 *
-	 * What to see what the app feels like when a request takes 5 seconds to return?  Set
-	 * [can.util.fixture.delay] to 5000.
-	 *
-	 * @demo can/util/fixture/fixture.html
+	 * `can.fixture` intercept an AJAX request and simulates the response with a file or function.
+	 * Read more about the usage in the [overview can.fixture].
 	 *
 	 * @param {Object|String} settings Configures the AJAX requests the fixture should
 	 * intercept.  If an __object__ is passed, the object's properties and values
@@ -634,12 +496,13 @@ var compareMethods = {
 	 * request. If a __string__ url is passed, the ajax request is redirected
 	 * to the url. If a __function__ is provided, it looks like:
 	 *
-	 *     fixture( originalSettings, settings, headers    )
+	 *     fixture( originalSettings, settings, callback, headers)
 	 *
 	 * where:
 	 *
 	 *   - originalSettings - the orignal settings passed to can.ajax
 	 *   - settings - the settings after all filters have run
+	 *   - callback - a callback to call with the response if the fixture executes asynchronously
 	 *   - headers - request headers
 	 *
 	 * If __null__ is passed, and there is a fixture at settings, that fixture will be removed,
@@ -674,6 +537,10 @@ var compareMethods = {
 			}
 			settings.fixture = fixture;
 			overwrites.push(settings)
+		} else {
+			can.each(settings, function(fixture, url){
+				$fixture(url, fixture);
+			})
 		}
 	};
 	var replacer = can.replacer;
@@ -713,50 +580,19 @@ var compareMethods = {
 			})
 			return data;
 		},
-		/**
-		 * @hide
-		 * Provides a rest update fixture function
-		 */
-		"-restUpdate" : function (settings) {
-			return [200, "succes", {
-				id : getId(settings)
-			}, {
-				location : settings.url + "/" + getId(settings)
-			}];
-		},
-
-		/**
-		 * @hide
-		 * Provides a rest destroy fixture function
-		 */
-		"-restDestroy" : function (settings, cbType) {
-			return {};
-		},
-
-		/**
-		 * @hide
-		 * Provides a rest create fixture function
-		 */
-		"-restCreate" : function (settings, cbType, nul, id) {
-			var id = id || parseInt(Math.random() * 100000, 10);
-			return [200, "succes", {
-				id : id
-			}, {
-				location : settings.url + "/" + id
-			}];
-		},
 
 		make : function (types, count, make, filter) {
 			/**
-			 * @function can.util.fixture.make
-			 * @parent can.util.fixture
+			 * @function can.fixture.make
+			 * @parent can.fixture
 			 *
-			 * Used to make fixtures for findAll / findOne style requests.
+			 * `can.fixture.make` is used for findAll / findOne style requests.
 			 *
 			 * ## With can.ajax
 			 *
 			 *     //makes a nested list of messages
-			 *     can.fixture.make(["messages","message"],1000, function(i, messages){
+			 *     can.fixture.make(["messages","message"], 1000,
+			 *      function(i, messages){
 			 *       return {
 			 *         subject: "This is message "+i,
 			 *         body: "Here is some text for this message",
@@ -764,10 +600,11 @@ var compareMethods = {
 			 *         parentId : i < 100 ? null : Math.floor(Math.random()*i)
 			 *       }
 			 *     })
-			 *     //uses the message fixture to return messages limited by offset, limit, order, etc.
+			 *     //uses the message fixture to return messages limited by
+			 *     // offset, limit, order, etc.
 			 *     can.ajax({
 			 *       url: "messages",
-			 *       data:{
+			 *       data: {
 			 *          offset: 100,
 			 *          limit: 50,
 			 *          order: ["date ASC"],
@@ -922,27 +759,29 @@ var compareMethods = {
 					}
 
 					//return data spliced with limit and offset
-					return [
-						{
-							"count" : retArr.length,
-							"limit" : settings.data.limit,
-							"offset" : settings.data.offset,
-							"data" : retArr.slice(offset, offset + limit)
-						}
-					];
+					return {
+						"count" : retArr.length,
+						"limit" : settings.data.limit,
+						"offset" : settings.data.offset,
+						"data" : retArr.slice(offset, offset + limit)
+					};
 				},
-				findOne : function (settings) {
-					var item = findOne(getId(settings));
-					return item ? [item] : [];
+				findOne : function (orig, response) {
+					var item = findOne(getId(orig));
+					response(item ? item : undefined);
 				},
-				update : function (settings, cbType) {
-					var id = getId(settings);
+				update : function (orig,response) {
+					var id = getId(orig);
 
 					// TODO: make it work with non-linear ids ..
-					can.extend(findOne(id), settings.data);
-					return can.fixture["-restUpdate"](settings, cbType)
+					can.extend(findOne(id), orig.data);
+					response({
+						id : getId(orig)
+					}, {
+						location : orig.url + "/" + getId(orig)
+					});
 				},
-				destroy : function (settings, cbType) {
+				destroy : function (settings) {
 					var id = getId(settings);
 					for (var i = 0; i < items.length; i++) {
 						if (items[i].id == id) {
@@ -953,9 +792,9 @@ var compareMethods = {
 
 					// TODO: make it work with non-linear ids ..
 					can.extend(findOne(id) || {}, settings.data);
-					return can.fixture["-restDestroy"](settings, cbType)
+					return {};
 				},
-				create : function (settings, cbType) {
+				create : function (settings, response) {
 					var item = make(items.length, items);
 
 					can.extend(item, settings.data);
@@ -965,8 +804,12 @@ var compareMethods = {
 					}
 
 					items.push(item);
-
-					return can.fixture["-restCreate"](settings, cbType, undefined, item.id);
+					var id = item.id || parseInt(Math.random() * 100000, 10);
+					response({
+						id : id
+					}, {
+						location : settings.url + "/" + id
+					})
 				}
 			});
 
@@ -998,10 +841,10 @@ var compareMethods = {
 			}, methods);
 		},
 		/**
-		 * @function can.util.fixture.rand
-		 * @parent can.util.fixture
+		 * @function can.fixture.rand
+		 * @parent can.fixture
 		 *
-		 * Creates random integers or random arrays of
+		 * `can.fixture.rand` creates random integers or random arrays of
 		 * other arrays.
 		 *
 		 * ## Examples
@@ -1066,6 +909,7 @@ var compareMethods = {
 		},
 		/**
 		 * @hide
+		 *
 		 * Use can.fixture.xhr to create an object that looks like an xhr object.
 		 *
 		 * ## Example
@@ -1115,8 +959,10 @@ var compareMethods = {
 			}, xhr);
 		},
 		/**
-		 * @attribute on
-		 * On lets you programatically turn off fixtures.  This is mostly used for testing.
+		 * @attribute can.fixture.on
+		 * @parent can.fixture
+		 *
+		 * `can.fixture.on` lets you programatically turn off fixtures. This is mostly used for testing.
 		 *
 		 *     can.fixture.on = false
 		 *     Task.findAll({}, function(){
@@ -1126,11 +972,13 @@ var compareMethods = {
 		on : true
 	});
 	/**
-	 * @attribute can.util.fixture.delay
-	 * @parent can.util.fixture
-	 * Sets the delay in milliseconds between an ajax request is made and
+	 * @attribute can.fixture.delay
+	 * @parent can.fixture
+	 *
+	 * `can.fixture.delay` indicates the delay in milliseconds between an ajax request is made and
 	 * the success and complete handlers are called.  This only sets
-	 * functional fixtures.  By default, the delay is 200ms.
+	 * functional synchronous fixtures that return a result. By default, the delay is 200ms.
+	 *
 	 * @codestart
 	 * steal('can/util/fixtures').then(function(){
 	 *   can.fixture.delay = 1000;
@@ -1140,10 +988,12 @@ var compareMethods = {
 	can.fixture.delay = 200;
 
 	/**
-	 * @attributes can.util.fixture.rootUrl
-	 * @parent can.util.fixture
+	 * @attribute can.fixture.rootUrl
+	 * @parent can.fixture
 	 *
-	 * Defaults to `steal.root` unless set.
+	 * `can.fixture.rootUrl` contains the root URL for fixtures to use.
+	 * If you are using StealJS it will use the Steal root
+	 * URL by default.
 	 */
 	can.fixture.rootUrl = window.steal ? steal.root : undefined;
 
@@ -1165,67 +1015,6 @@ var compareMethods = {
 		return false;
 	};
 
-
-	/**
-	 * @page can.fixture.Organizing Organizing Fixtures
-	 * @parent can.util.fixture
-	 *
-	 * The __best__ way of organizing fixtures is to have a 'fixtures.js' file that steals
-	 * <code>can/util/fixture</code> and defines all your fixtures.  For example,
-	 * if you have a 'todo' application, you might
-	 * have <code>todo/fixtures/fixtures.js</code> look like:
-	 *
-	 *     steal({
-	 *             path: '//can/util/fixture.js',
-	 *             ignore: true
-	 *           })
-	 *           .then(function(){
-	 *
-	 *       can.fixture({
-	 *           type: 'get',
-	 *           url: '/services/todos.json'
-	 *         },
-	 *         '//todo/fixtures/todos.json');
-	 *
-	 *       can.fixture({
-	 *           type: 'post',
-	 *           url: '/services/todos.json'
-	 *         },
-	 *         function(settings){
-	 *             return {id: Math.random(),
-	 *                  name: settings.data.name}
-	 *         });
-	 *
-	 *     })
-	 *
-	 * __Notice__: We used steal's ignore option to prevent
-	 * loading the fixture plugin in production.
-	 *
-	 * Finally, we steal <code>todo/fixtures/fixtures.js</code> in the
-	 * app file (<code>todo/todo.js</code>) like:
-	 *
-	 *
-	 *     steal({path: '//todo/fixtures/fixtures.js',ignore: true});
-	 *
-	 *     //start of your app's steals
-	 *     steal( ... )
-	 *
-	 * We typically keep it a one liner so it's easy to comment out.
-	 *
-	 * ## Switching Between Sets of Fixtures
-	 *
-	 * If you are using fixtures for testing, you often want to use different
-	 * sets of fixtures.  You can add something like the following to your fixtures.js file:
-	 *
-	 *     if( /fixtureSet1/.test( window.location.search) ){
-	 *       can.fixture("/foo","//foo/fixtures/foo1.json');
-	 *     } else if(/fixtureSet2/.test( window.location.search)){
-	 *       can.fixture("/foo","//foo/fixtures/foo1.json');
-	 *     } else {
-	 *       // default fixtures (maybe no fixtures)
-	 *     }
-	 *
-	 */
-		//Expose this for fixture debugging
+	//Expose this for fixture debugging
 	can.fixture.overwrites = overwrites;
-}( this.can, this ));
+})(this.can, this )
