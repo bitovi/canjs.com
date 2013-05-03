@@ -1,4 +1,4 @@
-(function(can, window, undefined){
+(function( can, window, undefined ){
 YUI().add("can", function(Y) {
 can.Y = Y;
 
@@ -57,16 +57,18 @@ can.dispatch = function(event){
 
 	can.each = function(elements, callback) {
 		var i = 0, key;
-		if (typeof  elements.length == 'number' && elements.pop) {
-			elements.attr && elements.attr('length');
-			for(var len = elements.length; i < len; i++) {
-				if(callback(elements[i], i, elements) === false) return elements;
-			}
-		} else {
-			for(key in elements) {
-				if(callback(elements[key], key) === false) return elements;
-			}
-		}
+    if ( elements ) {
+      if (typeof  elements.length == 'number' && elements.pop) {
+        elements.attr && elements.attr('length');
+        for(var len = elements.length; i < len; i++) {
+          if(callback(elements[i], i, elements) === false) return elements;
+        }
+      } else {
+        for(key in elements) {
+          if(callback(elements[key], key) === false) return elements;
+        }
+      }
+    }
 		return elements;
 	}
 ;
@@ -1393,7 +1395,7 @@ can.dispatch = function(event){
 			arguments[0] = model[func](arguments[0])
 			d.resolve.apply(d, arguments)
 		},function(){
-			d.resolveWith.apply(this,arguments)
+			d.rejectWith.apply(this,arguments)
 		})
 		return d;
 	},
@@ -1472,7 +1474,9 @@ can.dispatch = function(event){
 	//		`type` - The default http request type
 	//		`data` - A method that takes the `arguments` and returns `data` used for ajax.
 		ajaxMethods = {
-				create : {
+				// 
+				// 
+						create : {
 			url : "_shortName",
 			type :"post"
 		},
@@ -1626,15 +1630,13 @@ can.dispatch = function(event){
 			if ( attributes instanceof this ) {
 				attributes = attributes.serialize();
 			}
-			var model = this.store[attributes[this.id]] || new this( attributes );
+			var model = this.store[attributes[this.id]] ? this.store[attributes[this.id]].attr(attributes) : new this( attributes );
 			if(this._reqs){
 				this.store[attributes[this.id]] = model;
 			}
 			return model;
 		}
-				// 
-				// 
-			},
+	},
 		{
 				isNew: function() {
 			var id = getId(this);
@@ -1813,22 +1815,22 @@ can.dispatch = function(event){
 			return count;
 		},
 		onready = !0,
-		boundtohashchange = false,
 		location = window.location,
 		each = can.each,
 		extend = can.extend;
 
 	can.route = function( url, defaults ) {
         defaults = defaults || {}
-        // Extract the variable names and replace with `RegExp` that will match 
+        // Extract the variable names and replace with `RegExp` that will match
 		// an atual URL with values.
 		var names = [],
-			test = url.replace(matcher, function( whole, name ) {
-				names.push(name)
+			test = url.replace(matcher, function( whole, name, i ) {
+				names.push(name);
+				var next = "\\"+( url.substr(i+whole.length,1) || "&" )
 				// a name without a default value HAS to have a value
 				// a name that has a default value can be empty
 				// The `\\` is for string-escaping giving single `\` for `RegExp` escaping.
-				return "([^\\/\\&]"+(defaults[name] ? "*" : "+")+")"  
+				return "([^" +next+"]"+(defaults[name] ? "*" : "+")+")"
 			});
 
 		// Add route in a form that can be easily figured out.
@@ -1861,25 +1863,27 @@ can.dispatch = function(event){
 				propCount = 0;
 				
 			delete data.route;
-			// If we have a route name in our `can.route` data, use it.
-			if ( ! ( routeName && (route = can.route.routes[routeName]))){
-				each(data, function(){propCount++});
-				// Otherwise find route.
-				each(can.route.routes, function(temp, name){
-					// best route is the first with all defaults matching
-					
-					
-					matchCount = matchesData(temp, data);
-					if ( matchCount > matches ) {
-						route = temp;
-						matches = matchCount
-					}
-					if(matchCount >= propCount){
-						return false;
-					}
-				});
+			
+			each(data, function(){propCount++});
+			// Otherwise find route.
+			each(can.route.routes, function(temp, name){
+				// best route is the first with all defaults matching
+				
+				
+				matchCount = matchesData(temp, data);
+				if ( matchCount > matches ) {
+					route = temp;
+					matches = matchCount
+				}
+				if(matchCount >= propCount){
+					return false;
+				}
+			});
+			// If we have a route name in our `can.route` data, and it's
+			// just as good as what currently matches, use that
+			if (can.route.routes[routeName] && matchesData(can.route.routes[routeName], data ) === matches) {
+				route = can.route.routes[routeName];
 			}
-
 			// If this is match...
 			if ( route ) {
 				var cpy = extend({}, data),
@@ -1953,11 +1957,6 @@ can.dispatch = function(event){
 				onready = val;
 			}
 			if( val === true || onready === true ) {
-				if(boundtohashchange === false){ // make double sure this only happens once
-					// If the hash changes, update the `can.route.data`.
-					can.bind.call(window,'hashchange', setState);
-					boundtohashchange = true;
-				}
 				setState();
 			}
 			return can.route;
@@ -2000,6 +1999,9 @@ can.dispatch = function(event){
 			can.route.attr(curParams, true);
 		};
 
+	// If the hash changes, update the `can.route.data`.
+	can.bind.call(window,'hashchange', setState);
+
 	// If the `can.route.data` changes, update the hash.
     // Using `.serialize()` retrieves the raw data contained in the `observable`.
     // This function is ~~throttled~~ debounced so it only updates once even if multiple values changed.
@@ -2007,7 +2009,6 @@ can.dispatch = function(event){
 		clearTimeout( timer );
 		timer = setTimeout(function() {
 			var serialized = can.route.data.serialize();
-			delete serialized.route;
 			location.hash = "#!" + can.route.param(serialized)
 		}, 1);
 	});
@@ -2052,6 +2053,9 @@ can.dispatch = function(event){
 		// Moves `this` to the first argument, wraps it with `jQuery` if it's an element
 		shifter = function shifter(context, name) {
 			var method = typeof name == "string" ? context[name] : name;
+			if(!isFunction(method)){
+				method = context[method];
+			}
 			return function() {
 				context.called = name;
     			return method.apply(context, [this.nodeName ? can.$(this) : this].concat( slice.call(arguments, 0)));
@@ -2077,11 +2081,7 @@ can.dispatch = function(event){
 
 				// Calculate and cache actions.
 				control.actions = {};
-
 				for ( funcName in control.prototype ) {
-					if (funcName == 'constructor' || ! isFunction(control.prototype[funcName]) ) {
-						continue;
-					}
 					if ( control._isAction(funcName) ) {
 						control.actions[funcName] = control._action(funcName);
 					}
@@ -2090,7 +2090,15 @@ can.dispatch = function(event){
 		},
 		// Return `true` if is an action.
 				_isAction: function( methodName ) {
-			return !! ( special[methodName] || processors[methodName] || /[^\w]/.test(methodName) );
+			
+			var val = this.prototype[methodName],
+				type = typeof val;
+			// if not the constructor
+			return (methodName !== 'constructor') &&
+				// and is a function or links to a function
+				( type == "function" || (type == "string" &&  isFunction(this.prototype[val] ) ) ) &&
+				// and is in special, a processor, or has a funny character
+			    !! ( special[methodName] || processors[methodName] || /[^\w]/.test(methodName) );
 		},
 		// Takes a method name and the options passed to a control
 		// and tries to return the data necessary to pass to a processor
@@ -2099,7 +2107,7 @@ can.dispatch = function(event){
 			
 			// If we don't have options (a `control` instance), we'll run this 
 			// later.  
-      paramReplacer.lastIndex = 0;
+      		paramReplacer.lastIndex = 0;
 			if ( options || ! paramReplacer.test( methodName )) {
 				// If we have options, run sub to replace templates `{}` with a
 				// value from the options or the window
@@ -2278,8 +2286,12 @@ can.dispatch = function(event){
 					
 					var d = can.route.attr();
 					delete d.route;
+					if(can.isFunction(controller[funcName])){
+						controller[funcName]( d )
+					}else {
+						controller[controller[funcName]](d)
+					}
 					
-					controller[funcName]( d )
 				}
 			}
 		can.route.bind( 'change', check );
@@ -3302,4 +3314,4 @@ can.dispatch = function(event){
 requires: ["node", "io-base", "querystring", "event-focus", "array-extras"],
  optional: ["selector-css2", "selector-css3"]
 });
-})(can = {}, this )
+}( this.can || {}, this ));
