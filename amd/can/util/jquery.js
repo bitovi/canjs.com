@@ -1,10 +1,10 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-define(['jquery', 'can/util/can.js', 'can/util/array/each.js'], function ($, can) {
+define(['jquery', 'can/util/can', 'can/util/array/each'], function ($, can) {
 	// _jQuery node list._
 	$.extend(can, $, {
 		trigger: function (obj, event, args) {

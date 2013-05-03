@@ -1,10 +1,10 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-define(['can/view'], function (can) {
+define(['can/view', 'can/util/string'], function (can) {
 	// text node expando test
 	var canExpando = true;
 	try {
@@ -45,10 +45,15 @@ define(['can/view'], function (can) {
 			return defaultParentNode && el.parentNode.nodeType === 11 ? defaultParentNode : el.parentNode;
 		},
 		setAttr = function (el, attrName, val) {
+			var tagName = el.nodeName.toString().toLowerCase(),
+				prop = attrMap[attrName];
 			// if this is a special property
-			if (attrMap[attrName]) {
+			if (prop) {
 				// set the value as true / false
-				el[attrMap[attrName]] = can.inArray(attrName, bool) > -1 ? true : val;
+				el[prop] = can.inArray(attrName, bool) > -1 ? true : val;
+				if (prop === "value" && tagName === "input") {
+					el.defaultValue = val;
+				}
 			} else {
 				el.setAttribute(attrName, val);
 			}
@@ -152,6 +157,14 @@ define(['can/view'], function (can) {
 				nodeListIds = nodeMap[id(node)] = [];
 			}
 			nodeListIds.push(nodeListId);
+		},
+		tagChildren = function (tagName) {
+			var newTag = tagMap[tagName] || "span";
+			if (newTag === "span") {
+				//innerHTML in IE doesn't honor leading whitespace after empty elements
+				return "@@!!@@";
+			}
+			return "<" + newTag + ">" + tagChildren(newTag) + "</" + newTag + ">";
 		};
 
 	can.extend(can.view, {
@@ -302,10 +315,9 @@ define(['can/view'], function (can) {
 					// at this point, these nodes could be part of a documentFragment
 					makeAndPut(binding.value, [span]);
 
-
 					setupTeardownOnDestroy(parentNode);
-					//buildFragment, specifically innerHTML, in IE doesn't honor leading whitespace after empty elements
-				}) + ">@@!!@@</" + tag + ">";
+					//children have to be properly nested HTML for buildFragment to work properly
+				}) + ">" + tagChildren(tag) + "</" + tag + ">";
 				// In a tag, but not in an attribute
 			} else if (status === 1) {
 				// remember the old attr name

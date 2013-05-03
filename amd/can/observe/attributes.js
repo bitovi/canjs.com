@@ -1,10 +1,10 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-define(['can/util.js', 'can/observe'], function (can, Observe) {
+define(['can/util/library', 'can/observe'], function (can, Observe) {
 
 	can.each([can.Observe, can.Model], function (clss) {
 		// in some cases model might not be defined quite yet.

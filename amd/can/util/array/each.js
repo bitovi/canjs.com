@@ -1,10 +1,10 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-define(['can/util/can.js'], function (can) {
+define(['can/util/can'], function (can) {
 	can.each = function (elements, callback, context) {
 		var i = 0,
 			key;

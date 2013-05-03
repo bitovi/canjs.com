@@ -1,10 +1,10 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-define(['./can.js'], function (can) {
+define(['can/util/can'], function (can) {
 
 	// fragment.js
 	// ---------
@@ -56,17 +56,11 @@ define(['./can.js'], function (can) {
 
 		can.buildFragment = function (html, nodes) {
 			var parts = fragment(html),
-				hasSpecial = html.toString().match(/@@!!@@/g),
 				frag = document.createDocumentFragment();
-			hasSpecial = hasSpecial === null ? 0 : hasSpecial.length;
+
 			can.each(parts, function (part) {
 				frag.appendChild(part);
 			})
-			//Special character for hookups (@@!!@@) in HTML will be in the last text node of the fragment if the hookup was on a table element
-			//So we remove these special characters from the text node if they exist
-			if (hasSpecial > 0 && frag.lastChild && frag.lastChild.nodeType === 3 && frag.lastChild.textContent && frag.lastChild.textContent.indexOf('@@!!@@') >= 0) {
-				frag.lastChild.textContent = frag.lastChild.textContent.substring(0, frag.lastChild.textContent.length - (6 * frag.lastChild.textContent.length))
-			}
 			return frag;
 		};
 

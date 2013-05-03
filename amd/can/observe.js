@@ -1,10 +1,10 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-define(['can/util.js', 'can/construct'], function (can) {
+define(['can/util/library', 'can/construct'], function (can) {
 	// ## observe.js  
 	// `can.Observe`  
 	// _Provides the observable pattern for JavaScript Objects._  
@@ -183,6 +183,7 @@ define(['can/util.js', 'can/construct'], function (can) {
 		setup: function (obj) {
 			// `_data` is where we keep the properties.
 			this._data = {};
+
 			// The namespace this `object` uses to listen to events.
 			can.cid(this, ".observe");
 			// Sets all `attrs`.
@@ -197,8 +198,6 @@ define(['can/util.js', 'can/construct'], function (can) {
 				batchNum: ev.batchNum
 			}, [newVal, oldVal]);
 		},
-
-
 
 		attr: function (attr, val) {
 			// This is super obfuscated for space -- basically, we're checking
@@ -520,7 +519,7 @@ define(['can/util.js', 'can/construct'], function (can) {
 	function (where, name) {
 		list.prototype[name] = function () {
 			// Get the items being added.
-			var args = getArgs(arguments),
+			var args = can.makeArray(arguments),
 				// Where we are going to add items.
 				len = where ? this.length : 0;
 

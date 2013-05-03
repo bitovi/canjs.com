@@ -1,5 +1,5 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
@@ -191,7 +191,6 @@
 		},
 		// Micro-templating.
 		sub: function (str, data, remove) {
-
 			var obs = [];
 
 			obs.push(str.replace(replacer, function (whole, inside) {
@@ -199,16 +198,21 @@
 				// Convert inside to type.
 				var ob = can.getObject(inside, data, remove === undefined ? remove : !remove);
 
+				if (ob === undefined) {
+					obs = null;
+					return "";
+				}
+
 				// If a container, push into objs (which will return objects found).
-				if (isContainer(ob)) {
+				if (isContainer(ob) && obs) {
 					obs.push(ob);
 					return "";
-				} else {
-					return "" + ob;
 				}
+
+				return "" + ob;
 			}));
 
-			return obs.length <= 1 ? obs[0] : obs;
+			return obs === null ? obs : (obs.length <= 1 ? obs[0] : obs);
 		},
 
 		// These regex's are used throughout the rest of can, so let's make
@@ -564,6 +568,7 @@
 		setup: function (obj) {
 			// `_data` is where we keep the properties.
 			this._data = {};
+
 			// The namespace this `object` uses to listen to events.
 			can.cid(this, ".observe");
 			// Sets all `attrs`.
@@ -578,8 +583,6 @@
 				batchNum: ev.batchNum
 			}, [newVal, oldVal]);
 		},
-
-
 
 		attr: function (attr, val) {
 			// This is super obfuscated for space -- basically, we're checking
@@ -901,7 +904,7 @@
 	function (where, name) {
 		list.prototype[name] = function () {
 			// Get the items being added.
-			var args = getArgs(arguments),
+			var args = can.makeArray(arguments),
 				// Where we are going to add items.
 				len = where ? this.length : 0;
 
@@ -1851,11 +1854,13 @@
 			if (options || !paramReplacer.test(methodName)) {
 				// If we have options, run sub to replace templates `{}` with a
 				// value from the options or the window
-				var convertedName = options ? can.sub(methodName, [options, window]) : methodName,
-
-					// If a `{}` template resolves to an object, `convertedName` will be
-					// an array
-					arr = can.isArray(convertedName),
+				var convertedName = options ? can.sub(methodName, [options, window]) : methodName;
+				if (!convertedName) {
+					return null;
+				}
+				// If a `{}` template resolves to an object, `convertedName` will be
+				// an array
+				var arr = can.isArray(convertedName),
 
 					// Get the name
 					name = arr ? convertedName[1] : convertedName,
@@ -1925,10 +1930,9 @@
 					funcName, ready;
 
 				for (funcName in actions) {
-					if (actions.hasOwnProperty(funcName)) {
-						ready = actions[funcName] || cls._action(funcName, this.options);
-						bindings.push(
-						ready.processor(ready.delegate || element, ready.parts[2], ready.parts[1], funcName, this));
+					// Only push if we have the action and no option is `undefined`
+					if (actions.hasOwnProperty(funcName) && (ready = actions[funcName] || cls._action(funcName, this.options))) {
+						bindings.push(ready.processor(ready.delegate || element, ready.parts[2], ready.parts[1], funcName, this));
 					}
 				}
 
@@ -2102,9 +2106,6 @@
 				if (node.nodeType === 1) {
 					hookupEls.push(node);
 					hookupEls.push.apply(hookupEls, can.makeArray(node.getElementsByTagName('*')));
-				}
-				else if (node.nodeType === 3 && node.textContent) {
-					node.textContent = node.textContent.replace(/@@!!@@/g, '');
 				}
 			});
 
@@ -2400,7 +2401,8 @@
 					options.text = type.script(id, options.text)
 					success();
 				})
-			}
+			};
+
 			$view[info.suffix] = function (id, text) {
 				if (!text) {
 					// Return a nameless renderer
@@ -3094,10 +3096,15 @@
 			return defaultParentNode && el.parentNode.nodeType === 11 ? defaultParentNode : el.parentNode;
 		},
 		setAttr = function (el, attrName, val) {
+			var tagName = el.nodeName.toString().toLowerCase(),
+				prop = attrMap[attrName];
 			// if this is a special property
-			if (attrMap[attrName]) {
+			if (prop) {
 				// set the value as true / false
-				el[attrMap[attrName]] = can.inArray(attrName, bool) > -1 ? true : val;
+				el[prop] = can.inArray(attrName, bool) > -1 ? true : val;
+				if (prop === "value" && tagName === "input") {
+					el.defaultValue = val;
+				}
 			} else {
 				el.setAttribute(attrName, val);
 			}
@@ -3201,6 +3208,14 @@
 				nodeListIds = nodeMap[id(node)] = [];
 			}
 			nodeListIds.push(nodeListId);
+		},
+		tagChildren = function (tagName) {
+			var newTag = tagMap[tagName] || "span";
+			if (newTag === "span") {
+				//innerHTML in IE doesn't honor leading whitespace after empty elements
+				return "@@!!@@";
+			}
+			return "<" + newTag + ">" + tagChildren(newTag) + "</" + newTag + ">";
 		};
 
 	can.extend(can.view, {
@@ -3351,10 +3366,9 @@
 					// at this point, these nodes could be part of a documentFragment
 					makeAndPut(binding.value, [span]);
 
-
 					setupTeardownOnDestroy(parentNode);
-					//buildFragment, specifically innerHTML, in IE doesn't honor leading whitespace after empty elements
-				}) + ">@@!!@@</" + tag + ">";
+					//children have to be properly nested HTML for buildFragment to work properly
+				}) + ">" + tagChildren(tag) + "</" + tag + ">";
 				// In a tag, but not in an attribute
 			} else if (status === 1) {
 				// remember the old attr name

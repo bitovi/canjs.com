@@ -1,5 +1,5 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
@@ -118,17 +118,11 @@
 
 		can.buildFragment = function (html, nodes) {
 			var parts = fragment(html),
-				hasSpecial = html.toString().match(/@@!!@@/g),
 				frag = document.createDocumentFragment();
-			hasSpecial = hasSpecial === null ? 0 : hasSpecial.length;
+
 			can.each(parts, function (part) {
 				frag.appendChild(part);
 			})
-			//Special character for hookups (@@!!@@) in HTML will be in the last text node of the fragment if the hookup was on a table element
-			//So we remove these special characters from the text node if they exist
-			if (hasSpecial > 0 && frag.lastChild && frag.lastChild.nodeType === 3 && frag.lastChild.textContent && frag.lastChild.textContent.indexOf('@@!!@@') >= 0) {
-				frag.lastChild.textContent = frag.lastChild.textContent.substring(0, frag.lastChild.textContent.length - (6 * frag.lastChild.textContent.length))
-			}
 			return frag;
 		};
 
@@ -191,6 +185,171 @@
 		}
 
 		can.isPlainObject = isPlainObject;
+	// ## can/util/deferred.js
+	// deferred.js
+	// ---------
+	// _Lightweight, jQuery style deferreds._
+	// extend is usually provided by the wrapper but to avoid steal.then calls
+	// we define a simple extend here as well
+	var extend = function (target, src) {
+		for (var key in src) {
+			if (src.hasOwnProperty(key)) {
+				target[key] = src[key];
+			}
+		}
+	},
+		Deferred = function (func) {
+			if (!(this instanceof Deferred)) return new Deferred();
+
+			this._doneFuncs = [];
+			this._failFuncs = [];
+			this._resultArgs = null;
+			this._status = "";
+
+			// Check for option `function` -- call it with this as context and as first
+			// parameter, as specified in jQuery API.
+			func && func.call(this, this);
+		};
+
+	can.Deferred = Deferred;
+	can.when = Deferred.when = function () {
+		var args = can.makeArray(arguments);
+		if (args.length < 2) {
+			var obj = args[0];
+			if (obj && (can.isFunction(obj.isResolved) && can.isFunction(obj.isRejected))) {
+				return obj;
+			} else {
+				return Deferred().resolve(obj);
+			}
+		} else {
+
+			var df = Deferred(),
+				done = 0,
+				// Resolve params -- params of each resolve, we need to track them down 
+				// to be able to pass them in the correct order if the master 
+				// needs to be resolved.
+				rp = [];
+
+			can.each(args, function (arg, j) {
+				arg.done(function () {
+					rp[j] = (arguments.length < 2) ? arguments[0] : arguments;
+					if (++done == args.length) {
+						df.resolve.apply(df, rp);
+					}
+				}).fail(function () {
+					df.reject(arguments);
+				});
+			});
+
+			return df;
+
+		}
+	}
+
+	var resolveFunc = function (type, _status) {
+		return function (context) {
+			var args = this._resultArgs = (arguments.length > 1) ? arguments[1] : [];
+			return this.exec(context, this[type], args, _status);
+		}
+	},
+		doneFunc = function (type, _status) {
+			return function () {
+				var self = this;
+				// In Safari, the properties of the `arguments` object are not enumerable, 
+				// so we have to convert arguments to an `Array` that allows `can.each` to loop over them.
+				can.each(Array.prototype.slice.call(arguments), function (v, i, args) {
+					if (!v) return;
+					if (v.constructor === Array) {
+						args.callee.apply(self, v)
+					} else {
+						// Immediately call the `function` if the deferred has been resolved.
+						if (self._status === _status) v.apply(self, self._resultArgs || []);
+
+						self[type].push(v);
+					}
+				});
+				return this;
+			}
+		};
+
+	extend(Deferred.prototype, {
+		pipe: function (done, fail) {
+			var d = can.Deferred();
+			this.done(function () {
+				d.resolve(done.apply(this, arguments));
+			});
+
+			this.fail(function () {
+				if (fail) {
+					d.reject(fail.apply(this, arguments));
+				} else {
+					d.reject.apply(d, arguments);
+				}
+			});
+			return d;
+		},
+		resolveWith: resolveFunc("_doneFuncs", "rs"),
+		rejectWith: resolveFunc("_failFuncs", "rj"),
+		done: doneFunc("_doneFuncs", "rs"),
+		fail: doneFunc("_failFuncs", "rj"),
+		always: function () {
+			var args = can.makeArray(arguments);
+			if (args.length && args[0]) this.done(args[0]).fail(args[0]);
+
+			return this;
+		},
+
+		then: function () {
+			var args = can.makeArray(arguments);
+			// Fail `function`(s)
+			if (args.length > 1 && args[1]) this.fail(args[1]);
+
+			// Done `function`(s)
+			if (args.length && args[0]) this.done(args[0]);
+
+			return this;
+		},
+
+		state: function () {
+			switch (this._status) {
+			case 'rs':
+				return 'resolved';
+			case 'rj':
+				return 'rejected';
+			default:
+				return 'pending';
+			}
+		},
+
+		isResolved: function () {
+			return this._status === "rs";
+		},
+
+		isRejected: function () {
+			return this._status === "rj";
+		},
+
+		reject: function () {
+			return this.rejectWith(this, arguments);
+		},
+
+		resolve: function () {
+			return this.resolveWith(this, arguments);
+		},
+
+		exec: function (context, dst, args, st) {
+			if (this._status !== "") return this;
+
+			this._status = st;
+
+			can.each(dst, function (d) {
+				d.apply(context, args);
+			});
+
+			return this;
+		}
+	});
+
 	// ## can/util/dojo/dojo.js
 	define("plugd/trigger", ["dojo"], function (dojo) {
 
@@ -709,161 +868,6 @@
 		}
 	});
 
-	// ## can/util/deferred.js
-	// deferred.js
-	// ---------
-	// _Lightweight, jQuery style deferreds._
-	var Deferred = function (func) {
-		if (!(this instanceof Deferred)) return new Deferred();
-
-		this._doneFuncs = [];
-		this._failFuncs = [];
-		this._resultArgs = null;
-		this._status = "";
-
-		// Check for option `function` -- call it with this as context and as first 
-		// parameter, as specified in jQuery API.
-		func && func.call(this, this);
-	};
-	can.Deferred = Deferred;
-	can.when = Deferred.when = function () {
-		var args = can.makeArray(arguments);
-		if (args.length < 2) {
-			var obj = args[0];
-			if (obj && (can.isFunction(obj.isResolved) && can.isFunction(obj.isRejected))) {
-				return obj;
-			} else {
-				return Deferred().resolve(obj);
-			}
-		} else {
-
-			var df = Deferred(),
-				done = 0,
-				// Resolve params -- params of each resolve, we need to track them down 
-				// to be able to pass them in the correct order if the master 
-				// needs to be resolved.
-				rp = [];
-
-			can.each(args, function (arg, j) {
-				arg.done(function () {
-					rp[j] = (arguments.length < 2) ? arguments[0] : arguments;
-					if (++done == args.length) {
-						df.resolve.apply(df, rp);
-					}
-				}).fail(function () {
-					df.reject(arguments);
-				});
-			});
-
-			return df;
-
-		}
-	}
-
-	var resolveFunc = function (type, _status) {
-		return function (context) {
-			var args = this._resultArgs = (arguments.length > 1) ? arguments[1] : [];
-			return this.exec(context, this[type], args, _status);
-		}
-	},
-		doneFunc = function (type, _status) {
-			return function () {
-				var self = this;
-				// In Safari, the properties of the `arguments` object are not enumerable, 
-				// so we have to convert arguments to an `Array` that allows `can.each` to loop over them.
-				can.each(Array.prototype.slice.call(arguments), function (v, i, args) {
-					if (!v) return;
-					if (v.constructor === Array) {
-						args.callee.apply(self, v)
-					} else {
-						// Immediately call the `function` if the deferred has been resolved.
-						if (self._status === _status) v.apply(self, self._resultArgs || []);
-
-						self[type].push(v);
-					}
-				});
-				return this;
-			}
-		};
-
-	can.extend(Deferred.prototype, {
-		pipe: function (done, fail) {
-			var d = can.Deferred();
-			this.done(function () {
-				d.resolve(done.apply(this, arguments));
-			});
-
-			this.fail(function () {
-				if (fail) {
-					d.reject(fail.apply(this, arguments));
-				} else {
-					d.reject.apply(d, arguments);
-				}
-			});
-			return d;
-		},
-		resolveWith: resolveFunc("_doneFuncs", "rs"),
-		rejectWith: resolveFunc("_failFuncs", "rj"),
-		done: doneFunc("_doneFuncs", "rs"),
-		fail: doneFunc("_failFuncs", "rj"),
-		always: function () {
-			var args = can.makeArray(arguments);
-			if (args.length && args[0]) this.done(args[0]).fail(args[0]);
-
-			return this;
-		},
-
-		then: function () {
-			var args = can.makeArray(arguments);
-			// Fail `function`(s)
-			if (args.length > 1 && args[1]) this.fail(args[1]);
-
-			// Done `function`(s)
-			if (args.length && args[0]) this.done(args[0]);
-
-			return this;
-		},
-
-		state: function () {
-			switch (this._status) {
-			case 'rs':
-				return 'resolved';
-			case 'rj':
-				return 'rejected';
-			default:
-				return 'pending';
-			}
-		},
-
-		isResolved: function () {
-			return this._status === "rs";
-		},
-
-		isRejected: function () {
-			return this._status === "rj";
-		},
-
-		reject: function () {
-			return this.rejectWith(this, arguments);
-		},
-
-		resolve: function () {
-			return this.resolveWith(this, arguments);
-		},
-
-		exec: function (context, dst, args, st) {
-			if (this._status !== "") return this;
-
-			this._status = st;
-
-			can.each(dst, function (d) {
-				d.apply(context, args);
-			});
-
-			return this;
-		}
-	});
-
 	// ## can/util/string/string.js
 	// ##string.js
 	// _Miscellaneous string utility functions._  
@@ -957,7 +961,6 @@
 		},
 		// Micro-templating.
 		sub: function (str, data, remove) {
-
 			var obs = [];
 
 			obs.push(str.replace(replacer, function (whole, inside) {
@@ -965,16 +968,21 @@
 				// Convert inside to type.
 				var ob = can.getObject(inside, data, remove === undefined ? remove : !remove);
 
+				if (ob === undefined) {
+					obs = null;
+					return "";
+				}
+
 				// If a container, push into objs (which will return objects found).
-				if (isContainer(ob)) {
+				if (isContainer(ob) && obs) {
 					obs.push(ob);
 					return "";
-				} else {
-					return "" + ob;
 				}
+
+				return "" + ob;
 			}));
 
-			return obs.length <= 1 ? obs[0] : obs;
+			return obs === null ? obs : (obs.length <= 1 ? obs[0] : obs);
 		},
 
 		// These regex's are used throughout the rest of can, so let's make
@@ -1330,6 +1338,7 @@
 		setup: function (obj) {
 			// `_data` is where we keep the properties.
 			this._data = {};
+
 			// The namespace this `object` uses to listen to events.
 			can.cid(this, ".observe");
 			// Sets all `attrs`.
@@ -1344,8 +1353,6 @@
 				batchNum: ev.batchNum
 			}, [newVal, oldVal]);
 		},
-
-
 
 		attr: function (attr, val) {
 			// This is super obfuscated for space -- basically, we're checking
@@ -1667,7 +1674,7 @@
 	function (where, name) {
 		list.prototype[name] = function () {
 			// Get the items being added.
-			var args = getArgs(arguments),
+			var args = can.makeArray(arguments),
 				// Where we are going to add items.
 				len = where ? this.length : 0;
 
@@ -2617,11 +2624,13 @@
 			if (options || !paramReplacer.test(methodName)) {
 				// If we have options, run sub to replace templates `{}` with a
 				// value from the options or the window
-				var convertedName = options ? can.sub(methodName, [options, window]) : methodName,
-
-					// If a `{}` template resolves to an object, `convertedName` will be
-					// an array
-					arr = can.isArray(convertedName),
+				var convertedName = options ? can.sub(methodName, [options, window]) : methodName;
+				if (!convertedName) {
+					return null;
+				}
+				// If a `{}` template resolves to an object, `convertedName` will be
+				// an array
+				var arr = can.isArray(convertedName),
 
 					// Get the name
 					name = arr ? convertedName[1] : convertedName,
@@ -2691,10 +2700,9 @@
 					funcName, ready;
 
 				for (funcName in actions) {
-					if (actions.hasOwnProperty(funcName)) {
-						ready = actions[funcName] || cls._action(funcName, this.options);
-						bindings.push(
-						ready.processor(ready.delegate || element, ready.parts[2], ready.parts[1], funcName, this));
+					// Only push if we have the action and no option is `undefined`
+					if (actions.hasOwnProperty(funcName) && (ready = actions[funcName] || cls._action(funcName, this.options))) {
+						bindings.push(ready.processor(ready.delegate || element, ready.parts[2], ready.parts[1], funcName, this));
 					}
 				}
 
@@ -2868,9 +2876,6 @@
 				if (node.nodeType === 1) {
 					hookupEls.push(node);
 					hookupEls.push.apply(hookupEls, can.makeArray(node.getElementsByTagName('*')));
-				}
-				else if (node.nodeType === 3 && node.textContent) {
-					node.textContent = node.textContent.replace(/@@!!@@/g, '');
 				}
 			});
 
@@ -3166,7 +3171,8 @@
 					options.text = type.script(id, options.text)
 					success();
 				})
-			}
+			};
+
 			$view[info.suffix] = function (id, text) {
 				if (!text) {
 					// Return a nameless renderer
@@ -3860,10 +3866,15 @@
 			return defaultParentNode && el.parentNode.nodeType === 11 ? defaultParentNode : el.parentNode;
 		},
 		setAttr = function (el, attrName, val) {
+			var tagName = el.nodeName.toString().toLowerCase(),
+				prop = attrMap[attrName];
 			// if this is a special property
-			if (attrMap[attrName]) {
+			if (prop) {
 				// set the value as true / false
-				el[attrMap[attrName]] = can.inArray(attrName, bool) > -1 ? true : val;
+				el[prop] = can.inArray(attrName, bool) > -1 ? true : val;
+				if (prop === "value" && tagName === "input") {
+					el.defaultValue = val;
+				}
 			} else {
 				el.setAttribute(attrName, val);
 			}
@@ -3967,6 +3978,14 @@
 				nodeListIds = nodeMap[id(node)] = [];
 			}
 			nodeListIds.push(nodeListId);
+		},
+		tagChildren = function (tagName) {
+			var newTag = tagMap[tagName] || "span";
+			if (newTag === "span") {
+				//innerHTML in IE doesn't honor leading whitespace after empty elements
+				return "@@!!@@";
+			}
+			return "<" + newTag + ">" + tagChildren(newTag) + "</" + newTag + ">";
 		};
 
 	can.extend(can.view, {
@@ -4117,10 +4136,9 @@
 					// at this point, these nodes could be part of a documentFragment
 					makeAndPut(binding.value, [span]);
 
-
 					setupTeardownOnDestroy(parentNode);
-					//buildFragment, specifically innerHTML, in IE doesn't honor leading whitespace after empty elements
-				}) + ">@@!!@@</" + tag + ">";
+					//children have to be properly nested HTML for buildFragment to work properly
+				}) + ">" + tagChildren(tag) + "</" + tag + ">";
 				// In a tag, but not in an attribute
 			} else if (status === 1) {
 				// remember the old attr name

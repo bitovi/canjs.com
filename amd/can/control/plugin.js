@@ -1,10 +1,10 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-define(['jquery', 'can/util.js', 'can/control'], function ($, can) {
+define(['jquery', 'can/util/library', 'can/control'], function ($, can) {
 	//used to determine if a control instance is one of controllers
 	//controllers can be strings or classes
 	var i, isAControllerOf = function (instance, controllers) {

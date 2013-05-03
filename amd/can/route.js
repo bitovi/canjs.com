@@ -1,10 +1,10 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-define(['can/util.js', 'can/observe', 'can/util/string/deparam'], function (can) {
+define(['can/util/library', 'can/observe', 'can/util/string/deparam'], function (can) {
 
 	// ## route.js  
 	// `can.route`  

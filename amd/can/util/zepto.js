@@ -1,11 +1,12 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-define(['can/util/can.js', 'zepto', 'can/util/event.js', 'can/util/fragment.js'], function (can) {
+define(['can/util/can', 'zepto', 'can/util/object/isplain', 'can/util/event', 'can/util/fragment', 'can/util/deferred', 'can/util/array/each'], function (can) {
 	var $ = Zepto;
+
 	// data.js
 	// ---------
 	// _jQuery-like data methods._
@@ -44,8 +45,10 @@ define(['can/util/can.js', 'zepto', 'can/util/event.js', 'can/util/fragment.js']
 	// zepto.js
 	// ---------
 	// _Zepto node list._
+	var oldEach = can.each;
 	// Extend what you can out of Zepto.
 	$.extend(can, Zepto);
+	can.each = oldEach;
 
 	var arrHas = function (obj, name) {
 		return obj[0] && obj[0][name] || obj[name]
@@ -75,7 +78,7 @@ define(['can/util/can.js', 'zepto', 'can/util/event.js', 'can/util/fragment.js']
 
 	}
 
-	can.$ = Zepto
+	can.$ = Zepto;
 
 	can.bind = function (ev, cb) {
 		// If we can bind to it...

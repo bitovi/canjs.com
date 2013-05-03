@@ -1,10 +1,10 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-define(['can/util.js'], function (can) {
+define(['can/util/library'], function (can) {
 	// ##string.js
 	// _Miscellaneous string utility functions._  
 	// Several of the methods in this plugin use code adapated from Prototype
@@ -97,7 +97,6 @@ define(['can/util.js'], function (can) {
 		},
 		// Micro-templating.
 		sub: function (str, data, remove) {
-
 			var obs = [];
 
 			obs.push(str.replace(replacer, function (whole, inside) {
@@ -105,16 +104,21 @@ define(['can/util.js'], function (can) {
 				// Convert inside to type.
 				var ob = can.getObject(inside, data, remove === undefined ? remove : !remove);
 
+				if (ob === undefined) {
+					obs = null;
+					return "";
+				}
+
 				// If a container, push into objs (which will return objects found).
-				if (isContainer(ob)) {
+				if (isContainer(ob) && obs) {
 					obs.push(ob);
 					return "";
-				} else {
-					return "" + ob;
 				}
+
+				return "" + ob;
 			}));
 
-			return obs.length <= 1 ? obs[0] : obs;
+			return obs === null ? obs : (obs.length <= 1 ? obs[0] : obs);
 		},
 
 		// These regex's are used throughout the rest of can, so let's make

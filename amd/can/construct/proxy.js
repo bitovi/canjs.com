@@ -1,10 +1,10 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-define(['can/util.js', 'can/construct'], function (can, Construct) {
+define(['can/util/library', 'can/construct'], function (can, Construct) {
 	var isFunction = can.isFunction,
 		isArray = can.isArray,
 		makeArray = can.makeArray,

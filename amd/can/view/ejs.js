@@ -1,10 +1,10 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-define(['can/util.js', 'can/view', 'can/util/string', 'can/observe/compute', 'can/view/scanner.js', 'can/view/render.js'], function (can) {
+define(['can/util/library', 'can/view', 'can/util/string', 'can/observe/compute', 'can/view/scanner', 'can/view/render'], function (can) {
 	// ## ejs.js
 	// `can.EJS`  
 	// _Embedded JavaScript Templates._

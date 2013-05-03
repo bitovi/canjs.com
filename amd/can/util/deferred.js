@@ -1,26 +1,36 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-define(['can/util/can.js'], function (can) {
+define(['can/util/can'], function (can) {
 
 	// deferred.js
 	// ---------
 	// _Lightweight, jQuery style deferreds._
-	var Deferred = function (func) {
-		if (!(this instanceof Deferred)) return new Deferred();
+	// extend is usually provided by the wrapper but to avoid steal.then calls
+	// we define a simple extend here as well
+	var extend = function (target, src) {
+		for (var key in src) {
+			if (src.hasOwnProperty(key)) {
+				target[key] = src[key];
+			}
+		}
+	},
+		Deferred = function (func) {
+			if (!(this instanceof Deferred)) return new Deferred();
 
-		this._doneFuncs = [];
-		this._failFuncs = [];
-		this._resultArgs = null;
-		this._status = "";
+			this._doneFuncs = [];
+			this._failFuncs = [];
+			this._resultArgs = null;
+			this._status = "";
 
-		// Check for option `function` -- call it with this as context and as first 
-		// parameter, as specified in jQuery API.
-		func && func.call(this, this);
-	};
+			// Check for option `function` -- call it with this as context and as first
+			// parameter, as specified in jQuery API.
+			func && func.call(this, this);
+		};
+
 	can.Deferred = Deferred;
 	can.when = Deferred.when = function () {
 		var args = can.makeArray(arguments);
@@ -82,7 +92,7 @@ define(['can/util/can.js'], function (can) {
 			}
 		};
 
-	can.extend(Deferred.prototype, {
+	extend(Deferred.prototype, {
 		pipe: function (done, fail) {
 			var d = can.Deferred();
 			this.done(function () {

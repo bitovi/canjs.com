@@ -1,10 +1,10 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-define(['can/util.js', 'can/construct'], function (can) {
+define(['can/util/library', 'can/construct'], function (can) {
 	// ## control.js
 	// `can.Control`  
 	// _Controller_
@@ -105,11 +105,13 @@ define(['can/util.js', 'can/construct'], function (can) {
 			if (options || !paramReplacer.test(methodName)) {
 				// If we have options, run sub to replace templates `{}` with a
 				// value from the options or the window
-				var convertedName = options ? can.sub(methodName, [options, window]) : methodName,
-
-					// If a `{}` template resolves to an object, `convertedName` will be
-					// an array
-					arr = can.isArray(convertedName),
+				var convertedName = options ? can.sub(methodName, [options, window]) : methodName;
+				if (!convertedName) {
+					return null;
+				}
+				// If a `{}` template resolves to an object, `convertedName` will be
+				// an array
+				var arr = can.isArray(convertedName),
 
 					// Get the name
 					name = arr ? convertedName[1] : convertedName,
@@ -179,10 +181,9 @@ define(['can/util.js', 'can/construct'], function (can) {
 					funcName, ready;
 
 				for (funcName in actions) {
-					if (actions.hasOwnProperty(funcName)) {
-						ready = actions[funcName] || cls._action(funcName, this.options);
-						bindings.push(
-						ready.processor(ready.delegate || element, ready.parts[2], ready.parts[1], funcName, this));
+					// Only push if we have the action and no option is `undefined`
+					if (actions.hasOwnProperty(funcName) && (ready = actions[funcName] || cls._action(funcName, this.options))) {
+						bindings.push(ready.processor(ready.delegate || element, ready.parts[2], ready.parts[1], funcName, this));
 					}
 				}
 

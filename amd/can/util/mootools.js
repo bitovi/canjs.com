@@ -1,10 +1,10 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-define(['can/util/can.js', 'mootools', 'can/util/event.js', 'can/util/fragment.js', 'can/util/array/each.js', 'can/util/object/isplain', 'can/util/object/extend'], function (can) {
+define(['can/util/can', 'mootools', 'can/util/event', 'can/util/fragment', 'can/util/deferred', 'can/util/array/each', 'can/util/object/isplain', 'can/util/object/extend'], function (can) {
 	// mootools.js
 	// ---------
 	// _MooTools node list._
@@ -179,6 +179,7 @@ define(['can/util/can.js', 'mootools', 'can/util/event.js', 'can/util/fragment.j
 		}
 		// Mootools defaults to 'post', but Can expects a default of 'get'
 		requestOptions.method = requestOptions.method || 'get';
+		requestOptions.url = requestOptions.url.toString();
 
 		var success = options.success,
 			error = options.error;

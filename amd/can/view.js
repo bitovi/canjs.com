@@ -1,10 +1,10 @@
 /*
-* CanJS - 1.1.1 (2012-11-19)
+* CanJS - 1.1.2 (2012-11-28)
 * http://canjs.us/
 * Copyright (c) 2012 Bitovi
 * Licensed MIT
 */
-define(['can/util.js'], function (can) {
+define(['can/util/library'], function (can) {
 	// ## view.js
 	// `can.view`  
 	// _Templating abstraction._
@@ -67,9 +67,6 @@ define(['can/util.js'], function (can) {
 				if (node.nodeType === 1) {
 					hookupEls.push(node);
 					hookupEls.push.apply(hookupEls, can.makeArray(node.getElementsByTagName('*')));
-				}
-				else if (node.nodeType === 3 && node.textContent) {
-					node.textContent = node.textContent.replace(/@@!!@@/g, '');
 				}
 			});
 
@@ -365,7 +362,8 @@ define(['can/util.js'], function (can) {
 					options.text = type.script(id, options.text)
 					success();
 				})
-			}
+			};
+
 			$view[info.suffix] = function (id, text) {
 				if (!text) {
 					// Return a nameless renderer
