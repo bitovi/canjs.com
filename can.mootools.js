@@ -41,7 +41,7 @@ can.dispatch = function(event){
 	}
 	
 	var eventName = event.type.split(".")[0],
-		handlers = this.__bindEvents[eventName] || [],
+		handlers = (this.__bindEvents[eventName] || []).slice(0),
 		self= this,
 		args = [event].concat(event.data || []);
 		
@@ -103,20 +103,25 @@ can.dispatch = function(event){
 		return frag;
 	};
 
-	can.each = function(elements, callback) {
-		var i = 0, key;
-    if ( elements ) {
-      if (typeof  elements.length == 'number' && elements.pop) {
-        elements.attr && elements.attr('length');
-        for(var len = elements.length; i < len; i++) {
-          if(callback(elements[i], i, elements) === false) return elements;
-        }
-      } else {
-        for(key in elements) {
-          if(callback(elements[key], key) === false) return elements;
-        }
-      }
-    }
+	can.each = function (elements, callback, context) {
+		var i = 0,
+		    key;
+		if (elements) {
+			if (typeof elements.length == 'number' && elements.pop) {
+				elements.attr && elements.attr('length');
+				for (var len = elements.length; i < len; i++) {
+					if (callback.call(context || elements[i], elements[i], i, elements) === false) {
+						break;
+					}
+				}
+			} else {
+				for (key in elements) {
+					if (callback.call(context || elements[i], elements[key], key, elements) === false) {
+						break;
+					}
+				}
+			}
+		}
 		return elements;
 	}
 ;
@@ -1409,10 +1414,11 @@ can.dispatch = function(event){
 	//		`url` - The default url to use as indicated as a property on the model.
 	//		`type` - The default http request type
 	//		`data` - A method that takes the `arguments` and returns `data` used for ajax.
-		ajaxMethods = {
+		//
 				// 
 				// 
-						create : {
+			ajaxMethods = {
+				create : {
 			url : "_shortName",
 			type :"post"
 		},
@@ -1466,31 +1472,24 @@ can.dispatch = function(event){
 			if(this === can.Model){
 				return;
 			}
-			var self = this;
-			
+			var self = this,
+				clean = can.proxy(this._clean, self);
+				
 			can.each(ajaxMethods, function(method, name){
 				if ( ! can.isFunction( self[name] )) {
 					self[name] = ajaxMaker(method, self[name]);
 				}
+				if (self["make"+can.capitalize(name)]){
+					var newMethod = self["make"+can.capitalize(name)](self[name]);
+					can.Construct._overwrite(self, base, name,function(){
+						this._super;
+						this._reqs++;
+						return newMethod.apply(this, arguments).then(clean, clean);
+					})
+				}
 			});
-			var clean = can.proxy(this._clean, self);
-			can.each({findAll : "models", findOne: "model"}, function(method, name){
-				
-				var old = self[name];
-				can.Construct._overwrite(self, base, name, function(params, success, error){
-					// this._super to trick it to load super
-					this._super;
-					// Increment requests.
-					self._reqs++;
-					// Make the request.
-					return pipe( old.call( this, params ),
-						this, 
-						method ).then(success,error).then(clean, clean);
-				});
-			})
-			// Convert `findAll` and `findOne`.
-			var oldFindAll
-			if(self.fullName == "can.Model"){
+
+			if(!self.fullName || self.fullName == base.fullName){
 				self.fullName = self._shortName = "Model"+(++modelNum);
 			}
 			// Ddd ajax converters.
@@ -1515,9 +1514,9 @@ can.dispatch = function(event){
 				return;
 			}
       
-      if ( instancesRawData instanceof this.List ) {
-        return instancesRawData;
-      }
+			if ( instancesRawData instanceof this.List ) {
+				return instancesRawData;
+			}
 
 			// Get the list type.
 			var self = this,
@@ -1614,6 +1613,19 @@ can.dispatch = function(event){
 		}
 	});
 	
+
+	
+				
+	can.each({makeFindAll : "models", makeFindOne: "model"}, function(method, name){
+		can.Model[name] = function(oldFind){
+			return function(params, success, error){
+				return pipe( oldFind.call( this, params ),
+							this, 
+							method ).then(success,error)
+			}
+		};
+	});
+				
 		can.each([
 		"created",
 		"updated",
@@ -1788,7 +1800,7 @@ can.dispatch = function(event){
 	};
 
 	extend(can.route, {
-				param: function( data ) {
+				param: function( data , _setRoute ) {
 			// Check if the provided data keys match the names in any routes;
 			// Get the one with the most matches.
 			var route,
@@ -1830,16 +1842,21 @@ can.dispatch = function(event){
                         return data[name] === route.defaults[name] ? "" : encodeURIComponent( data[name] );
                     }),
                     after;
-					// Remove matching default values
-					each(route.defaults, function(val,name){
-						if(cpy[name] === val) {
-							delete cpy[name]
-						}
-					})
-					
-					// The remaining elements of data are added as 
-					// `&amp;` separated parameters to the url.
-					after = can.param(cpy);
+				// Remove matching default values
+				each(route.defaults, function(val,name){
+					if(cpy[name] === val) {
+						delete cpy[name]
+					}
+				})
+				
+				// The remaining elements of data are added as 
+				// `&amp;` separated parameters to the url.
+				after = can.param(cpy);
+				// if we are paraming for setting the hash
+				// we also want to make sure the route value is updated
+				if(_setRoute){
+					can.route.attr('route',route.route);
+				}
 				return res + (after ? "&" + after : "")
 			}
             // If no route was found, there is no hash URL, only paramters.
@@ -1930,10 +1947,25 @@ can.dispatch = function(event){
         curParams,
         // Deparameterizes the portion of the hash of interest and assign the
         // values to the `can.route.data` removing existing values no longer in the hash.
+        // setState is called typically by hashchange which fires asynchronously
+        // So it's possible that someone started changing the data before the 
+        // hashchange event fired.  For this reason, it will not set the route data
+        // if the data is changing and the hash already matches the hash that was set.
         setState = function() {
-			curParams = can.route.deparam( location.href.split(/#!?/)[1] || "" );
-			can.route.attr(curParams, true);
-		};
+        	var hash = location.href.split(/#!?/)[1] || ""
+			curParams = can.route.deparam( hash );
+			
+			
+			// if the hash data is currently changing, and
+			// the hash is what we set it to anyway, do NOT change the hash
+			if(!changingData || hash !== lastHash){
+				can.route.attr(curParams, true);
+			}
+		},
+		// The last hash caused by a data change
+		lastHash,
+		// Are data changes pending that haven't yet updated the hash
+		changingData;
 
 	// If the hash changes, update the `can.route.data`.
 	can.bind.call(window,'hashchange', setState);
@@ -1941,11 +1973,16 @@ can.dispatch = function(event){
 	// If the `can.route.data` changes, update the hash.
     // Using `.serialize()` retrieves the raw data contained in the `observable`.
     // This function is ~~throttled~~ debounced so it only updates once even if multiple values changed.
-	can.route.bind("change", function() {
+    // This might be able to use batchNum and avoid this.
+	can.route.bind("change", function(ev, attr) {
+		// indicate that data is changing
+		changingData = 1;
 		clearTimeout( timer );
 		timer = setTimeout(function() {
+			// indicate that the hash is set to look like the data
+			changingData = 0;
 			var serialized = can.route.data.serialize();
-			location.hash = "#!" + can.route.param(serialized)
+			location.hash = "#!" + (lastHash = can.route.param(serialized, true))
 		}, 1);
 	});
 	// `onready` event...
@@ -2259,24 +2296,32 @@ can.dispatch = function(event){
 	};
 
 	can.extend( $view, {
-		frag: function(result){
+		// creates a frag and hooks it up all at once
+		frag: function(result, parentNode ){
+			return $view.hookup( $view.fragment(result), parentNode );
+		},
+		// simply creates a frag
+		// this is used internally to create a frag
+		// insert it
+		// then hook it up
+		fragment: function(result){
 			var frag = can.buildFragment(result,document.body);
 			// If we have an empty frag...
 			if(!frag.childNodes.length) { 
 				frag.appendChild(document.createTextNode(''))
 			}
-			return $view.hookup(frag);
+			return frag;
 		},
     // Convert a path like string into something that's ok for an `element` ID.
     toId : function( src ) {
-      return can.map(src.split(/\/|\./g), function( part ) {
+      return can.map(src.toString().split(/\/|\./g), function( part ) {
         // Dont include empty strings in toId functions
         if ( part ) {
           return part;
         }
       }).join("_");
     },
-		hookup: function(fragment){
+		hookup: function(fragment, parentNode ){
 			var hookupEls = [],
 				id, 
 				func, 
@@ -2294,7 +2339,7 @@ can.dispatch = function(event){
 			for (; el = hookupEls[i++]; ) {
 
 				if ( el.getAttribute && (id = el.getAttribute('data-view-id')) && (func = $view.hookups[id]) ) {
-					func(el, id);
+					func(el, parentNode, id);
 					delete $view.hookups[id];
 					el.removeAttribute('data-view-id');
 				}
@@ -2629,15 +2674,42 @@ can.dispatch = function(event){
 				el.removeAttribute(attrName)
 			}
 		},
+		// a helper to get the parentNode for a given element el
+		// if el is in a documentFragment, it will return defaultParentNode
+		getParentNode = function(el, defaultParentNode){
+			return defaultParentNode && el.parentNode.nodeType === 11 ? defaultParentNode : el.parentNode;
+		},
+		// helper to know if property is not an expando on oldObserved's list of observes
+		// this should probably be removed and oldObserved should just have a
+		// property with observes
+		observeProp = function(name){
+			return name.indexOf("|") >= 0;
+		},
 		// This is used to setup live binding on a list of observe/attribute
 		// pairs for a given element.
 		//  - observed - an array of observe/attribute
 		//  - el - the parent element, if removed, unbinds all observes
 		//  - cb - a callback function that gets called if any observe/attribute changes
 		//  - oldObserve - a mapping of observe/attributes already bound
+		
 		liveBind = function( observed, el, cb, oldObserved ) {
 			// record if this is the first liveBind call for this magic tag
 			var first = oldObserved.matched === undefined;
+			
+			// If there is no element, teardown.
+			// This case happens when a parent block, like an `if(X){}`, replaces
+			// the content of children bindings like `<%= you.attr('name') %>` and
+			// the same property change that cause the parent block change changes
+			// the child bindings.
+			// If the parent block change did not change the child bindings, liveBind would
+			// not be called and the bindings would still be present until the
+			// parentElement `el` is removed from the page.
+			if(el == null){
+				oldObserved.teardown();
+				can.unbind.call(oldObserved.el,'destroyed', oldObserved.teardown)
+				return;
+				
+			}
 			// toggle the 'matched' indicator
 			oldObserved.matched = !oldObserved.matched;
 			
@@ -2658,7 +2730,7 @@ can.dispatch = function(event){
 			// that are no longer being bound and unbind them
 			for ( var name in oldObserved ) {
 				var ob = oldObserved[name];
-				if(name !== "matched" && ob.matched !== oldObserved.matched){
+				if(observeProp(name) && ob.matched !== oldObserved.matched){
 					ob.obj.unbind(ob.attr);
 					delete oldObserved[name];
 				}
@@ -2667,13 +2739,15 @@ can.dispatch = function(event){
 				// If this is the first time binding, listen
 				// for the element to be destroyed and unbind
 				// all event handlers for garbage collection.
-				can.bind.call(el,'destroyed', function(){
-					can.each(oldObserved, function(ob){
-						if(typeof ob !== 'boolean'){
+				oldObserved.el = el;
+				oldObserved.teardown = function(){
+					can.each(oldObserved, function(ob, name){
+						if(observeProp(name)){
 							ob.obj.unbind(ob.attr, cb)
 						}
-					})
-				})
+					});
+				};
+				can.bind.call(el,'destroyed', oldObserved.teardown)
 			}
 
 		},
@@ -2722,9 +2796,15 @@ can.dispatch = function(event){
 		// a magic tag.  For example, `<%= task.attr() %>` becomes
 		// `function(){ return task.attr() }`.  
 		getValueAndObserved = function(func, self){
-			// Set a callback on can.Observe to know
-			// when an attr is read.
+			
+			var oldReading;
 			if (can.Observe) {
+				// Set a callback on can.Observe to know
+				// when an attr is read.
+				// Keep a reference to the old reader
+				// if there is one.  This is used
+				// for nested live binding.
+				oldReading = can.Observe.__reading;
 				can.Observe.__reading = function(obj, attr){
 					// Add the observe and attr that was read
 					// to `observed`
@@ -2742,7 +2822,7 @@ can.dispatch = function(event){
 	
 			// Set back so we are no longer reading.
 			if(can.Observe){
-				delete can.Observe.__reading;
+				can.Observe.__reading = oldReading;
 			}
 			return {
 				value : value,
@@ -2790,6 +2870,7 @@ can.dispatch = function(event){
 		// - func - the "wrapping" function.  For example:  `<%= task.attr('name') %>` becomes
 		//   `(function(){return task.attr('name')})
 				txt : function(escape, tagName, status, self, func){
+			
 			// Get teh value returned by the wrapping function and any observe/attributes read.
 			var res = getValueAndObserved(func, self),
 				observed = res.observed,
@@ -2799,7 +2880,6 @@ can.dispatch = function(event){
 				oldObserved = {},
 				// The tag type to create within the parent tagName
 				tag = (tagMap[tagName] || "span");
-	
 
 			// If we had no observes just return the value returned by func.
 			if(!observed.length){
@@ -2812,13 +2892,13 @@ can.dispatch = function(event){
 				escape ? 
 					// If we are escaping, replace the parentNode with 
 					// a text node who's value is `func`'s return value.
-					function(el){
-						var parent = el.parentNode,
+					function(el, parentNode){
+						var parent = getParentNode(el, parentNode),
 							node = document.createTextNode(value),
 							binder = function(){
 								var res = getValueAndObserved(func, self);
 								node.nodeValue = ""+res.value;
-								liveBind(res.observed, parent, binder,oldObserved);
+								liveBind(res.observed, node.parentNode, binder,oldObserved);
 							};
 						
 						parent.insertBefore(node, el);
@@ -2828,36 +2908,51 @@ can.dispatch = function(event){
 					:
 					// If we are not escaping, replace the parentNode with a
 					// documentFragment created as with `func`'s return value.
-					function(span){
+					function(span, parentNode){
+						parentNode = getParentNode(span, parentNode)
 						// A helper function to manage inserting the contents
 						// and removing the old contents
 						var makeAndPut = function(val, remove){
-							
-								var frag = can.view.frag(val),
+								// create the fragment, but don't hook it up
+								// we need to insert it into the document first
+								
+								var frag = can.view.frag(val, parentNode),
+									// keep a reference to each node
 									nodes = can.map(frag.childNodes,function(node){
 										return node;
 									}),
 									last = remove[remove.length - 1];
 								
-								// Insert it in the `document`.
+								// Insert it in the `document` or `documentFragment`
 								if( last.nextSibling ){
 									last.parentNode.insertBefore(frag, last.nextSibling)
 								} else {
 									last.parentNode.appendChild(frag)
 								}
-								
 								// Remove the old content.
 								can.remove( can.$(remove) );
+								
 								return nodes;
 							},
+							// nodes are the nodes that any updates will replace
+							// at this point, these nodes could be part of a documentFragment
 							nodes = makeAndPut(value, [span]);
-
+						// Anytime a live-bound attribute changes this method gets called
 						var binder = function(){
-							var res = getValueAndObserved(func, self);
-							nodes = makeAndPut(res.value, nodes);
-							liveBind(res.observed, span.parentNode, binder ,oldObserved);
+							
+							// is this still part of the DOM?
+							var attached = nodes[0].parentNode,
+								// get the new value
+								res = getValueAndObserved(func, self);
+							// update the nodes in the DOM with the new rendered value
+							if( attached ) {
+								nodes = makeAndPut(res.value, nodes);
+							}
+							// updating the bindings (some observes may have changed)
+							liveBind(res.observed, nodes[0].parentNode, binder ,oldObserved);
 						}
-						liveBind(observed, span.parentNode, binder ,oldObserved);
+						// setup initial live-binding
+						liveBind(observed, parentNode, binder ,oldObserved);
 				}) + "></" +tag+">";
 			// In a tag, but not in an attribute
 			} else if(status === 1){ 
@@ -3070,7 +3165,13 @@ can.dispatch = function(event){
 						} else {
 							content += token;
 						}
-						
+						// if it's a tag like <input/>
+						if(lastToken.substr(-1) == "/"){
+							// remove the current tag in the stack
+							tagNames.pop();
+							// set the current tag to the previous parent
+							tagName = tagNames[tagNames.length-1];
+						}
 						break;
 					case "'":
 					case '"':
@@ -3122,7 +3223,7 @@ can.dispatch = function(event){
 								
 								endStack.push({
 									before: "",
-									after: finishTxt+"}));"
+									after: finishTxt+"}));\n"
 								})
 							}
 							else {
@@ -3197,6 +3298,7 @@ can.dispatch = function(event){
 				put(content)
 			}
 			buff.push(";")
+			
 			var template = buff.join(''),
 				out = {
 					out: 'with(_VIEW) { with (_CONTEXT) {' + template + " "+finishTxt+"}}"
