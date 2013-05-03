@@ -6,47 +6,14 @@
 	<ul>
 	{{#children}}
 		{{#if children.length}}
-			{{#if plugin}}
-			<li {{#active}}class="active"{{/active}}>
-				<a href="{{makeHref name}}">
-					{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
-				</a>
-				<ul>
-					{{#children}}
-					{{^if hide}}
-					<li {{#active}}class="active"{{/active}} data-search="{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}">
-						<a href="{{makeHref name}}">
-							{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
-						</a>
-					</li>
-					{{/if}}
-					{{/children}}
-				</ul>
-			</li>
-			{{else}}
 			<li class="heading">
 				<span>{{type}}</span>
 				<ul>
-					{{#children}}
-					{{^if hide}}
-					<li {{#active}}class="active"{{/active}}>
-						<a href="{{makeHref name}}">
-							{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
-						</a>
-					</li>
-					{{/if}}
-					{{/children}}
+					{{> submenu.mustache}}
 				</ul>
 			</li>
-			{{/if}}
 		{{else}}
-			{{^if hide}}
-			<li {{#active}}class="active"{{/active}} data-search="{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}">
-			<a href="{{makeHref name}}">
-				{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}
-			</a>
-			</li>
-			{{/if}}
+			{{> submenu.mustache}}
 		{{/if}}
 	{{/children}}
 	</ul>

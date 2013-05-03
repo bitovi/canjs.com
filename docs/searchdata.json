@@ -7,519 +7,521 @@
         "parent": "index",
         "order": 0
     },
+    "can.Construct.plugins": {
+        "name": "can.Construct.plugins",
+        "type": "plugins",
+        "id": 1,
+        "title": "plugins",
+        "parent": "can.Construct"
+    },
     "can.Construct": {
         "name": "can.Construct",
         "type": "constructor",
-        "id": 1,
+        "id": 2,
         "parent": "canjs"
     },
     "can.Construct.static": {
         "name": "can.Construct.static",
         "type": "static",
-        "id": 2,
+        "id": 3,
         "parent": "can.Construct"
     },
     "can.Construct.newInstance": {
         "name": "can.Construct.newInstance",
         "type": "function",
-        "id": 3,
+        "id": 4,
         "title": "newInstance",
         "parent": "can.Construct.static"
     },
     "can.Construct.setup": {
         "name": "can.Construct.setup",
         "type": "function",
-        "id": 4,
+        "id": 5,
         "title": "setup",
         "parent": "can.Construct.static"
     },
     "can.Construct.static.extend": {
         "name": "can.Construct.static.extend",
         "type": "function",
-        "id": 5,
+        "id": 6,
         "hide": true,
         "parent": "can.Construct.static"
     },
     "can.Construct.namespace": {
         "name": "can.Construct.namespace",
         "type": "property",
-        "id": 6,
+        "id": 7,
         "title": "namespace",
         "parent": "can.Construct.static"
     },
     "can.Construct.shortName": {
         "name": "can.Construct.shortName",
         "type": "property",
-        "id": 7,
+        "id": 8,
         "title": "shortName",
         "parent": "can.Construct.static"
     },
     "can.Construct.fullName": {
         "name": "can.Construct.fullName",
         "type": "property",
-        "id": 8,
+        "id": 9,
         "title": "fullName",
         "parent": "can.Construct.static"
     },
     "can.Construct.prototype": {
         "name": "can.Construct.prototype",
         "type": "prototype",
-        "id": 9,
+        "id": 10,
         "parent": "can.Construct"
     },
     "can.Construct.prototype.setup": {
         "name": "can.Construct.prototype.setup",
         "type": "function",
-        "id": 10,
+        "id": 11,
         "title": "setup",
         "parent": "can.Construct.prototype"
     },
     "can.Construct.prototype.init": {
         "name": "can.Construct.prototype.init",
         "type": "function",
-        "id": 11,
+        "id": 12,
         "title": "init",
         "parent": "can.Construct.prototype"
     },
     "can.Construct.prototype.constructor": {
         "name": "can.Construct.prototype.constructor",
         "type": "property",
-        "id": 12,
+        "id": 13,
         "title": "constructor",
         "parent": "can.Construct.prototype"
     },
     "proxy": {
         "name": "proxy",
         "type": "page",
-        "id": 13,
-        "parent": "can.Construct"
+        "id": 14,
+        "parent": "can.Construct.plugins"
     },
     "super": {
         "name": "super",
         "type": "page",
-        "id": 14,
-        "parent": "can.Construct"
+        "id": 15,
+        "parent": "can.Construct.plugins"
+    },
+    "can.Observe.plugins": {
+        "name": "can.Observe.plugins",
+        "type": "plugins",
+        "id": 16,
+        "title": "plugins",
+        "parent": "can.Observe"
     },
     "can.Observe": {
         "name": "can.Observe",
         "type": "constructor",
-        "id": 15,
+        "id": 17,
         "parent": "canjs"
     },
     "can.Observe.static": {
         "name": "can.Observe.static",
         "type": "static",
-        "id": 16,
+        "id": 18,
         "parent": "can.Observe"
     },
     "can.Observe.startBatch": {
         "name": "can.Observe.startBatch",
         "type": "function",
-        "id": 17,
+        "id": 19,
         "title": "startBatch",
         "parent": "can.Observe.static"
     },
     "can.Observe.stopBatch": {
         "name": "can.Observe.stopBatch",
         "type": "function",
-        "id": 18,
+        "id": 20,
         "title": "stopBatch",
         "parent": "can.Observe.static"
     },
     "can.Observe.triggerBatch": {
         "name": "can.Observe.triggerBatch",
         "type": "function",
-        "id": 19,
+        "id": 21,
         "title": "triggerBatch",
         "parent": "can.Observe.static"
     },
     "can.Observe.keys": {
         "name": "can.Observe.keys",
         "type": "function",
-        "id": 20,
+        "id": 22,
         "title": "keys",
         "parent": "can.Observe.static"
     },
     "can.Observe.prototype": {
         "name": "can.Observe.prototype",
         "type": "prototype",
-        "id": 21,
+        "id": 23,
         "parent": "can.Observe"
     },
     "can.Observe.prototype._cid": {
         "name": "can.Observe.prototype._cid",
         "type": "property",
-        "id": 22,
+        "id": 24,
         "hide": true
     },
     "can.Observe.prototype.attr": {
         "name": "can.Observe.prototype.attr",
         "type": "function",
-        "id": 23,
+        "id": 25,
         "title": "attr",
         "parent": "can.Observe.prototype"
     },
     "can.Observe.prototype.each": {
         "name": "can.Observe.prototype.each",
         "type": "function",
-        "id": 24,
+        "id": 26,
         "title": "each",
         "parent": "can.Observe.prototype"
     },
     "can.Observe.prototype.removeAttr": {
         "name": "can.Observe.prototype.removeAttr",
         "type": "function",
-        "id": 25,
+        "id": 27,
         "title": "removeAttr",
         "parent": "can.Observe.prototype"
     },
     "can.Observe.prototype.bind": {
         "name": "can.Observe.prototype.bind",
         "type": "function",
-        "id": 26,
+        "id": 28,
         "title": "bind",
         "parent": "can.Observe.prototype"
     },
     "can.Observe.prototype.unbind": {
         "name": "can.Observe.prototype.unbind",
         "type": "function",
-        "id": 27,
+        "id": 29,
         "title": "unbind",
         "parent": "can.Observe.prototype"
     },
     "can.Observe.prototype.serialize": {
         "name": "can.Observe.prototype.serialize",
         "type": "function",
-        "id": 28,
+        "id": 30,
         "hide": true,
         "parent": "can.Observe.prototype"
     },
     "can.Observe.prototype._attrs": {
         "name": "can.Observe.prototype._attrs",
         "type": "function",
-        "id": 29,
+        "id": 31,
         "hide": true,
         "parent": "can.Observe.prototype"
     },
     "can.Observe.prototype.compute": {
         "name": "can.Observe.prototype.compute",
         "type": "function",
-        "id": 30,
+        "id": 32,
         "title": "compute",
         "parent": "can.Observe.prototype"
     },
     "can.Observe.List": {
         "name": "can.Observe.List",
         "type": "constructor",
-        "id": 31,
+        "id": 33,
         "parent": "canjs"
     },
     "can.Observe.List.prototype": {
         "name": "can.Observe.List.prototype",
         "type": "prototype",
-        "id": 32,
+        "id": 34,
         "parent": "can.Observe.List"
     },
     "can.Observe.List.prototype.serialize": {
         "name": "can.Observe.List.prototype.serialize",
         "type": "function",
-        "id": 33,
+        "id": 35,
         "hide": true,
         "parent": "can.Observe.List.prototype"
     },
     "can.Observe.List.prototype.each": {
         "name": "can.Observe.List.prototype.each",
         "type": "function",
-        "id": 34,
+        "id": 36,
         "title": "each"
     },
     "can.Observe.List.prototype.splice": {
         "name": "can.Observe.List.prototype.splice",
         "type": "function",
-        "id": 35,
+        "id": 37,
         "title": "splice",
         "parent": "can.Observe.List.prototype"
     },
     "can.Observe.List.prototype.attr": {
         "name": "can.Observe.List.prototype.attr",
         "type": "function",
-        "id": 36,
+        "id": 38,
         "title": "attr",
         "parent": "can.Observe.List.prototype"
     },
     "can.Observe.List.prototype.push": {
         "name": "can.Observe.List.prototype.push",
         "type": "function",
-        "id": 37,
+        "id": 39,
         "title": "push",
         "parent": "can.Observe.List.prototype"
     },
     "can.Observe.List.prototype.unshift": {
         "name": "can.Observe.List.prototype.unshift",
         "type": "function",
-        "id": 38,
+        "id": 40,
         "title": "unshift",
         "parent": "can.Observe.List.prototype"
     },
     "can.Observe.List.prototype.pop": {
         "name": "can.Observe.List.prototype.pop",
         "type": "function",
-        "id": 39,
+        "id": 41,
         "title": "pop",
         "parent": "can.Observe.List.prototype"
     },
     "can.Observe.List.prototype.shift": {
         "name": "can.Observe.List.prototype.shift",
         "type": "function",
-        "id": 40,
+        "id": 42,
         "title": "shift",
         "parent": "can.Observe.List.prototype"
     },
     "can.Observe.List.prototype.indexOf": {
         "name": "can.Observe.List.prototype.indexOf",
         "type": "function",
-        "id": 41,
+        "id": 43,
         "title": "indexOf",
         "parent": "can.Observe.List.prototype"
     },
     "can.Observe.List.prototype.join": {
         "name": "can.Observe.List.prototype.join",
         "type": "function",
-        "id": 42,
+        "id": 44,
         "title": "join",
         "parent": "can.Observe.List.prototype"
     },
     "can.Observe.List.prototype.reverse": {
         "name": "can.Observe.List.prototype.reverse",
         "type": "function",
-        "id": 43,
+        "id": 45,
         "title": "reverse",
         "parent": "can.Observe.List.prototype"
     },
     "can.Observe.List.prototype.slice": {
         "name": "can.Observe.List.prototype.slice",
         "type": "function",
-        "id": 44,
+        "id": 46,
         "title": "slice",
         "parent": "can.Observe.List.prototype"
     },
     "can.Observe.List.prototype.concat": {
         "name": "can.Observe.List.prototype.concat",
         "type": "function",
-        "id": 45,
+        "id": 47,
         "title": "concat",
         "parent": "can.Observe.List.prototype"
     },
     "can.Observe.List.prototype.forEach": {
         "name": "can.Observe.List.prototype.forEach",
         "type": "function",
-        "id": 46,
+        "id": 48,
         "title": "forEach",
         "parent": "can.Observe.List.prototype"
     },
     "can.Observe.List.prototype.replace": {
         "name": "can.Observe.List.prototype.replace",
         "type": "function",
-        "id": 47,
+        "id": 49,
         "title": "replace",
         "parent": "can.Observe.List.prototype"
     },
     "can.Observe.attributes": {
         "name": "can.Observe.attributes",
         "type": "page",
-        "id": 48,
+        "id": 50,
         "title": "attributes",
-        "parent": "can.Observe"
+        "parent": "can.Observe.plugins"
     },
     "can.Observe.attributes.static.attributes": {
         "name": "can.Observe.attributes.static.attributes",
         "type": "property",
-        "id": 49,
-        "title": "attributes",
+        "id": 51,
+        "title": "attributes (static)",
         "parent": "can.Observe.attributes"
     },
     "can.Observe.attributes.static.convert": {
         "name": "can.Observe.attributes.static.convert",
         "type": "property",
-        "id": 50,
-        "title": "can.Observe.convert",
+        "id": 52,
+        "title": "convert",
         "parent": "can.Observe.attributes"
     },
     "can.Observe.attributes.static.serialize": {
         "name": "can.Observe.attributes.static.serialize",
         "type": "property",
-        "id": 51,
-        "title": "can.Observe.serialize",
+        "id": 53,
+        "title": "serialize (static)",
         "parent": "can.Observe.attributes"
     },
     "can.Observe.setup": {
         "name": "can.Observe.setup",
         "type": "function",
-        "id": 52,
+        "id": 54,
         "hide": true,
         "parent": "can.Observe.attributes"
     },
     "can.Observe.prototype.convert": {
         "name": "can.Observe.prototype.convert",
         "type": "function",
-        "id": 53,
+        "id": 55,
         "hide": true,
         "parent": "can.Observe.attributes"
     },
     "can.Observe.prototype.attributes.serialize": {
         "name": "can.Observe.prototype.attributes.serialize",
         "type": "function",
-        "id": 54,
-        "title": "serialize",
+        "id": 56,
+        "title": "serialize (prototype)",
         "parent": "can.Observe.attributes"
     },
     "can.Observe.backup": {
         "name": "can.Observe.backup",
         "type": "page",
-        "id": 55,
+        "id": 57,
         "title": "backup",
-        "parent": "can.Observe"
+        "parent": "can.Observe.plugins"
     },
     "can.Observe.backup.prototype.backup": {
         "name": "can.Observe.backup.prototype.backup",
         "type": "function",
-        "id": 56,
+        "id": 58,
         "title": "backup",
         "parent": "can.Observe.backup"
     },
     "can.Observe.backup.prototype.isDirty": {
         "name": "can.Observe.backup.prototype.isDirty",
         "type": "function",
-        "id": 57,
+        "id": 59,
         "title": "isDirty",
         "parent": "can.Observe.backup"
     },
     "can.Observe.backup.prototype.restore": {
         "name": "can.Observe.backup.prototype.restore",
         "type": "function",
-        "id": 58,
+        "id": 60,
         "title": "restore",
         "parent": "can.Observe.backup"
     },
     "can.Observe.prototype.delegate": {
         "name": "can.Observe.prototype.delegate",
         "type": "function",
-        "id": 59,
+        "id": 61,
         "title": "delegate",
         "parent": "can.Observe.delegate"
     },
     "can.Observe.prototype.undelegate": {
         "name": "can.Observe.prototype.undelegate",
         "type": "function",
-        "id": 60,
+        "id": 62,
         "title": "undelegate",
         "parent": "can.Observe.delegate"
     },
     "can.Observe.delegate": {
         "name": "can.Observe.delegate",
         "type": "page",
-        "id": 61,
+        "id": 63,
         "title": "delegate",
-        "parent": "can.Observe"
+        "parent": "can.Observe.plugins"
     },
     "can.Observe.setter": {
         "name": "can.Observe.setter",
         "type": "page",
-        "id": 62,
+        "id": 64,
         "title": "setter",
-        "parent": "can.Observe"
+        "parent": "can.Observe.plugins"
     },
     "can.classize": {
         "name": "can.classize",
         "type": "function",
-        "id": 63,
+        "id": 65,
         "title": "can.classize",
         "parent": "can.Observe.setter"
-    },
-    "sort": {
-        "name": "sort",
-        "type": "function",
-        "id": 64,
-        "hide": true,
-        "parent": "can/observe/sort/sort.js"
-    },
-    "sortedIndex": {
-        "name": "sortedIndex",
-        "type": "function",
-        "id": 65,
-        "hide": true,
-        "parent": "can/observe/sort/sort.js"
-    },
-    "push": {
-        "name": "push",
-        "type": "function",
-        "id": 66,
-        "parent": "can/observe/sort/sort.js"
-    },
-    "unshift": {
-        "name": "unshift",
-        "type": "function",
-        "id": 67,
-        "parent": "can/observe/sort/sort.js"
     },
     "can.Observe.validations": {
         "name": "can.Observe.validations",
         "type": "page",
-        "id": 68,
+        "id": 66,
         "title": "validations",
-        "parent": "can.Observe"
+        "parent": "can.Observe.plugins"
     },
     "static": {
         "name": "static",
         "type": "static",
-        "id": 69
+        "id": 67
+    },
+    "can.Observe.validations.static.validate": {
+        "name": "can.Observe.validations.static.validate",
+        "type": "function",
+        "id": 68,
+        "title": "validate",
+        "parent": "can.Observe.validations"
     },
     "can.Observe.validations.static.validationMessages": {
         "name": "can.Observe.validations.static.validationMessages",
         "type": "property",
-        "id": 70,
-        "title": "can.Observe.validationMessages",
+        "id": 69,
+        "title": "validationMessages",
         "parent": "can.Observe.validations"
     },
     "can.Observe.validations.static.validateFormatOf": {
         "name": "can.Observe.validations.static.validateFormatOf",
         "type": "function",
-        "id": 71,
-        "title": "can.Observe.validateFormatOf",
+        "id": 70,
+        "title": "validateFormatOf",
         "parent": "can.Observe.validations"
     },
     "can.Observe.validations.static.validateInclusionOf": {
         "name": "can.Observe.validations.static.validateInclusionOf",
         "type": "function",
-        "id": 72,
-        "title": "can.Observe.validateInclusionOf",
+        "id": 71,
+        "title": "validateInclusionOf",
         "parent": "can.Observe.validations"
     },
     "can.Observe.validations.static.validateLengthOf": {
         "name": "can.Observe.validations.static.validateLengthOf",
         "type": "function",
-        "id": 73,
-        "title": "can.Observe.validateLengthOf",
+        "id": 72,
+        "title": "validateLengthOf",
         "parent": "can.Observe.validations"
     },
     "can.Observe.validations.static.validatePresenceOf": {
         "name": "can.Observe.validations.static.validatePresenceOf",
         "type": "function",
-        "id": 74,
-        "title": "can.Observe.validatePresenceOf",
+        "id": 73,
+        "title": "validatePresenceOf",
         "parent": "can.Observe.validations"
     },
     "can.Observe.validations.static.validateRangeOf": {
         "name": "can.Observe.validations.static.validateRangeOf",
         "type": "function",
-        "id": 75,
-        "title": "can.Observe.validateRangeOf",
+        "id": 74,
+        "title": "validateRangeOf",
         "parent": "can.Observe.validations"
     },
     "prototype": {
         "name": "prototype",
         "type": "prototype",
-        "id": 76
+        "id": 75
+    },
+    "can.compute.prototype": {
+        "name": "can.compute.prototype",
+        "type": "prototype",
+        "id": 76,
+        "title": "prototype",
+        "parent": "can.compute"
     },
     "can.compute": {
         "name": "can.compute",
@@ -532,21 +534,21 @@
         "type": "property",
         "id": 78,
         "title": "isComputed",
-        "parent": "can.compute"
+        "parent": "can.compute.prototype"
     },
     "can.compute.bind": {
         "name": "can.compute.bind",
         "type": "function",
         "id": 79,
         "title": "bind",
-        "parent": "can.compute"
+        "parent": "can.compute.prototype"
     },
     "can.compute.unbind": {
         "name": "can.compute.unbind",
         "type": "function",
         "id": 80,
         "title": "unbind",
-        "parent": "can.compute"
+        "parent": "can.compute.prototype"
     },
     "can.Model": {
         "name": "can.Model",
@@ -698,240 +700,276 @@
         "id": 102,
         "parent": "canjs"
     },
+    "can.Control.plugins": {
+        "name": "can.Control.plugins",
+        "type": "plugins",
+        "id": 103,
+        "title": "plugins",
+        "parent": "can.Control"
+    },
     "can.Control": {
         "name": "can.Control",
         "type": "constructor",
-        "id": 103,
+        "id": 104,
         "parent": "canjs"
     },
     "can.Control.static": {
         "name": "can.Control.static",
         "type": "static",
-        "id": 104,
+        "id": 105,
         "parent": "can.Control"
     },
     "can.Control.static.setup": {
         "name": "can.Control.static.setup",
         "type": "function",
-        "id": 105,
+        "id": 106,
         "hide": true,
         "parent": "can.Control.static"
     },
     "can.Control.static._isAction": {
         "name": "can.Control.static._isAction",
         "type": "function",
-        "id": 106,
+        "id": 107,
         "hide": true,
         "parent": "can.Control.static"
     },
     "can.Control.static._action": {
         "name": "can.Control.static._action",
         "type": "function",
-        "id": 107,
+        "id": 108,
         "hide": true,
         "parent": "can.Control.static"
     },
     "can.Control.processors": {
         "name": "can.Control.processors",
         "type": "property",
-        "id": 108,
+        "id": 109,
         "title": "processors",
         "parent": "can.Control.static"
     },
     "can.Control.defaults": {
         "name": "can.Control.defaults",
         "type": "property",
-        "id": 109,
+        "id": 110,
         "title": "defaults",
         "parent": "can.Control.static"
     },
     "can.Control.prototype": {
         "name": "can.Control.prototype",
         "type": "prototype",
-        "id": 110,
+        "id": 111,
         "parent": "can.Control"
     },
     "can.Control.prototype.element": {
         "name": "can.Control.prototype.element",
         "type": "property",
-        "id": 111,
+        "id": 112,
         "title": "element",
         "parent": "can.Control.prototype"
     },
     "can.Control.prototype.setup": {
         "name": "can.Control.prototype.setup",
         "type": "function",
-        "id": 112,
+        "id": 113,
         "title": "setup",
         "parent": "can.Control.prototype"
     },
     "can.Control.prototype.options": {
         "name": "can.Control.prototype.options",
         "type": "property",
-        "id": 113,
+        "id": 114,
         "title": "options",
         "parent": "can.Control.prototype"
     },
     "can.Control.prototype.on": {
         "name": "can.Control.prototype.on",
         "type": "function",
-        "id": 114,
+        "id": 115,
         "title": "on",
         "parent": "can.Control.prototype"
     },
     "can.Control.prototype.off": {
         "name": "can.Control.prototype.off",
         "type": "function",
-        "id": 115,
+        "id": 116,
         "hide": true,
         "parent": "can.Control.prototype"
     },
     "can.Control.prototype.destroy": {
         "name": "can.Control.prototype.destroy",
         "type": "function",
-        "id": 116,
+        "id": 117,
         "title": "destroy",
         "parent": "can.Control.prototype"
+    },
+    "route": {
+        "name": "route",
+        "type": "page",
+        "id": 118,
+        "parent": "can.Control.plugins"
     },
     "can.Control.plugin": {
         "name": "can.Control.plugin",
         "type": "page",
-        "id": 117,
-        "title": "can.Control.plugin",
-        "parent": "can.Control"
+        "id": 119,
+        "title": "plugin",
+        "parent": "can.Control.plugins"
     },
     "can.Control.setup": {
         "name": "can.Control.setup",
         "type": "constructor",
-        "id": 118
+        "id": 120
     },
     "can.Control.plugin.static.pluginName": {
         "name": "can.Control.plugin.static.pluginName",
         "type": "property",
-        "id": 119,
-        "title": "can.Control.pluginName",
+        "id": 121,
+        "title": "pluginName",
         "parent": "can.Control.plugin"
     },
     "jQuery.fn.controls": {
         "name": "jQuery.fn.controls",
         "type": "function",
-        "id": 120,
+        "id": 122,
         "title": "jQuery.fn.controls",
         "parent": "can.Control.plugin"
     },
     "jQuery.fn.control": {
         "name": "jQuery.fn.control",
         "type": "function",
-        "id": 121,
+        "id": 123,
         "title": "jQuery.fn.control",
         "parent": "can.Control.plugin"
     },
     "can.Control.plugin.prototype.update": {
         "name": "can.Control.plugin.prototype.update",
         "type": "function",
-        "id": 122,
+        "id": 124,
         "title": "update",
         "parent": "can.Control.plugin"
     },
-    "route": {
-        "name": "route",
-        "type": "page",
-        "id": 123,
-        "parent": "can.Control"
+    "can.route.static": {
+        "name": "can.route.static",
+        "type": "static",
+        "id": 125,
+        "title": "static",
+        "parent": "can.route"
     },
     "can.route": {
         "name": "can.route",
-        "type": "page",
-        "id": 124,
+        "type": "function",
+        "id": 126,
         "title": "can.route",
         "parent": "canjs"
     },
     "can.route.param": {
         "name": "can.route.param",
         "type": "function",
-        "id": 125,
-        "parent": "can.route"
+        "id": 127,
+        "title": "param",
+        "parent": "can.route.static"
     },
     "can.route.deparam": {
         "name": "can.route.deparam",
         "type": "function",
-        "id": 126,
-        "parent": "can.route"
+        "id": 128,
+        "title": "deparam",
+        "parent": "can.route.static"
     },
-    "data": {
-        "name": "data",
+    "static.data": {
+        "name": "static.data",
         "type": "property",
-        "id": 127,
+        "id": 129,
         "hide": true,
-        "parent": "can/route/route.js"
+        "parent": "static"
     },
     "routes": {
         "name": "routes",
         "type": "property",
-        "id": 128,
+        "id": 130,
         "hide": true,
-        "parent": "can/route/route.js"
+        "parent": "static"
     },
     "can.route.ready": {
         "name": "can.route.ready",
         "type": "function",
-        "id": 129,
-        "parent": "can.route"
+        "id": 131,
+        "title": "ready",
+        "parent": "can.route.static"
     },
     "can.route.url": {
         "name": "can.route.url",
         "type": "function",
-        "id": 130,
-        "parent": "can.route"
+        "id": 132,
+        "title": "url",
+        "parent": "can.route.static"
     },
     "can.route.link": {
         "name": "can.route.link",
         "type": "function",
-        "id": 131,
-        "parent": "can.route"
+        "id": 133,
+        "title": "link",
+        "parent": "can.route.static"
     },
     "can.route.current": {
         "name": "can.route.current",
         "type": "function",
-        "id": 132,
-        "parent": "can.route"
+        "id": 134,
+        "title": "current",
+        "parent": "can.route.static"
+    },
+    "can.view.static": {
+        "name": "can.view.static",
+        "type": "static",
+        "id": 135,
+        "title": "static",
+        "parent": "can.view"
+    },
+    "can.view.plugins": {
+        "name": "can.view.plugins",
+        "type": "plugins",
+        "id": 136,
+        "title": "plugins",
+        "parent": "can.view"
     },
     "can.view": {
         "name": "can.view",
         "type": "constructor",
-        "id": 133,
+        "id": 137,
         "parent": "canjs"
     },
     "can.view.ejs": {
         "name": "can.view.ejs",
         "type": "function",
-        "id": 134,
-        "parent": "can.view"
+        "id": 138,
+        "title": "ejs",
+        "parent": "can.view.static"
     },
     "can.view.mustache": {
         "name": "can.view.mustache",
         "type": "function",
-        "id": 135,
-        "parent": "can.view"
+        "id": 139,
+        "title": "mustache",
+        "parent": "can.view.static"
     },
     "hookups": {
         "name": "hookups",
         "type": "property",
-        "id": 136,
+        "id": 140,
         "hide": true,
         "parent": "can.view"
     },
     "can.view.hook": {
         "name": "can.view.hook",
         "type": "function",
-        "id": 137,
+        "id": 141,
         "title": "hook",
-        "parent": "can.view"
+        "parent": "can.view.static"
     },
     "can.view.cached": {
         "name": "can.view.cached",
         "type": "property",
-        "id": 138,
+        "id": 142,
         "title": "view",
         "hide": true,
         "parent": "can.view"
@@ -939,362 +977,551 @@
     "can.view.cache": {
         "name": "can.view.cache",
         "type": "property",
-        "id": 139,
-        "title": "view",
-        "parent": "can.view"
+        "id": 143,
+        "title": "cache",
+        "parent": "can.view.static"
     },
     "can.view.register": {
         "name": "can.view.register",
         "type": "function",
-        "id": 140,
-        "parent": "can.view"
+        "id": 144,
+        "title": "register",
+        "parent": "can.view.static"
     },
     "can.view.ext": {
         "name": "can.view.ext",
         "type": "property",
-        "id": 141,
+        "id": 145,
         "title": "ext",
-        "parent": "can.view"
+        "parent": "can.view.static"
     },
     "can.view.registerScript": {
         "name": "can.view.registerScript",
         "type": "function",
-        "id": 142,
+        "id": 146,
         "hide": true,
         "parent": "can.view"
     },
     "can.view.preload": {
         "name": "can.view.preload",
         "type": "function",
-        "id": 143,
+        "id": 147,
         "hide": true,
         "parent": "can.view"
     },
     "can.view.render": {
         "name": "can.view.render",
         "type": "function",
-        "id": 144,
-        "parent": "can.view"
+        "id": 148,
+        "title": "render",
+        "parent": "can.view.static"
     },
     "can.view.registerView": {
         "name": "can.view.registerView",
         "type": "function",
-        "id": 145,
+        "id": 149,
         "hide": true,
         "parent": "can.view"
     },
     "can.view.text": {
         "name": "can.view.text",
         "type": "property",
-        "id": 146,
+        "id": 150,
         "hide": true,
         "parent": "can.view"
     },
     "can.EJS": {
         "name": "can.EJS",
-        "type": "page",
-        "id": 147,
-        "title": "can.EJS",
+        "type": "constructor",
+        "id": 151,
         "parent": "canjs"
+    },
+    "can.EJS.prototype": {
+        "name": "can.EJS.prototype",
+        "type": "prototype",
+        "id": 152,
+        "parent": "can.EJS"
     },
     "can.EJS.prototype.render": {
         "name": "can.EJS.prototype.render",
         "type": "function",
-        "id": 148,
+        "id": 153,
         "title": "render",
-        "parent": "can.EJS"
+        "parent": "can.EJS.prototype"
     },
-    "scanner": {
-        "name": "scanner",
+    "can.EJS.prototype.scanner": {
+        "name": "can.EJS.prototype.scanner",
         "type": "property",
-        "id": 149,
+        "id": 154,
         "hide": true,
-        "parent": "can.EJS"
+        "parent": "can.EJS.prototype"
     },
-    "tokens": {
-        "name": "tokens",
+    "can.EJS.prototype.tokens": {
+        "name": "can.EJS.prototype.tokens",
         "type": "property",
-        "id": 150,
+        "id": 155,
         "hide": true,
+        "parent": "can.EJS.prototype"
+    },
+    "can.EJS.static": {
+        "name": "can.EJS.static",
+        "type": "constructor",
+        "id": 156,
         "parent": "can.EJS"
     },
     "can.EJS.Helpers": {
         "name": "can.EJS.Helpers",
         "type": "page",
-        "id": 151,
+        "id": 157,
         "title": "Helpers",
-        "parent": "can.EJS"
+        "parent": "can.EJS.static"
     },
     "can.Mustache.Acquisition": {
         "name": "can.Mustache.Acquisition",
         "type": "page",
-        "id": 152,
+        "id": 158,
         "title": "Template Acquisition",
-        "parent": "can.Mustache",
+        "parent": "can.Mustache.pages",
         "order": 3
     },
     "can.Mustache.Basics": {
         "name": "can.Mustache.Basics",
         "type": "page",
-        "id": 153,
+        "id": 159,
         "title": "Basics",
-        "parent": "can.Mustache",
+        "parent": "can.Mustache.pages",
         "order": 0
     },
     "can.Mustache.Helpers": {
         "name": "can.Mustache.Helpers",
         "type": "page",
-        "id": 154,
+        "id": 160,
         "title": "Helpers",
-        "parent": "can.Mustache",
+        "parent": "can.Mustache.pages",
         "order": 4
     },
     "can.Mustache.Binding": {
         "name": "can.Mustache.Binding",
         "type": "page",
-        "id": 155,
+        "id": 161,
         "title": "Live Binding",
-        "parent": "can.Mustache",
+        "parent": "can.Mustache.pages",
         "order": 5
+    },
+    "can.Mustache.pages": {
+        "name": "can.Mustache.pages",
+        "type": "Pages",
+        "id": 162,
+        "title": "Pages",
+        "parent": "can.Mustache"
     },
     "can.Mustache": {
         "name": "can.Mustache",
-        "type": "page",
-        "id": 156,
-        "title": "can.Mustache",
+        "type": "constructor",
+        "id": 163,
         "parent": "canjs"
     },
     "can.Mustache.Partials": {
         "name": "can.Mustache.Partials",
         "type": "page",
-        "id": 157,
+        "id": 164,
         "title": "Partials",
-        "parent": "can.Mustache",
+        "parent": "can.Mustache.pages",
         "order": 2
     },
     "can.Mustache.Sections": {
         "name": "can.Mustache.Sections",
         "type": "page",
-        "id": 158,
+        "id": 165,
         "title": "Sections",
-        "parent": "can.Mustache",
+        "parent": "can.Mustache.pages",
         "order": 1
+    },
+    "isObserve": {
+        "name": "isObserve",
+        "type": "constructor",
+        "id": 166
+    },
+    "isArrayLike": {
+        "name": "isArrayLike",
+        "type": "constructor",
+        "id": 167
+    },
+    "Mustache": {
+        "name": "Mustache",
+        "type": "constructor",
+        "id": 168,
+        "hide": true
+    },
+    "can.Mustache.prototype": {
+        "name": "can.Mustache.prototype",
+        "type": "prototype",
+        "id": 169,
+        "parent": "can.Mustache"
+    },
+    "can.Mustache.prototype.render": {
+        "name": "can.Mustache.prototype.render",
+        "type": "function",
+        "id": 170,
+        "title": "render",
+        "parent": "can.Mustache.prototype"
+    },
+    "can.Mustache.prototype.Mustache.txt": {
+        "name": "can.Mustache.prototype.Mustache.txt",
+        "type": "function",
+        "id": 171,
+        "hide": true,
+        "parent": "can.Mustache.prototype"
+    },
+    "can.Mustache.prototype.Mustache.get": {
+        "name": "can.Mustache.prototype.Mustache.get",
+        "type": "function",
+        "id": 172,
+        "hide": true,
+        "parent": "can.Mustache.prototype"
+    },
+    "can.Mustache.prototype.Mustache.resolve": {
+        "name": "can.Mustache.prototype.Mustache.resolve",
+        "type": "function",
+        "id": 173,
+        "hide": true,
+        "parent": "can.Mustache.prototype"
+    },
+    "can.Mustache.static": {
+        "name": "can.Mustache.static",
+        "type": "static",
+        "id": 174,
+        "parent": "can.Mustache"
+    },
+    "can.Mustache.registerHelper": {
+        "name": "can.Mustache.registerHelper",
+        "type": "function",
+        "id": 175,
+        "title": "registerHelper",
+        "parent": "can.Mustache.static"
+    },
+    "can.Mustache.getHelper": {
+        "name": "can.Mustache.getHelper",
+        "type": "function",
+        "id": 176,
+        "title": "getHelper",
+        "parent": "can.Mustache.static"
+    },
+    "can.Mustache.static.render": {
+        "name": "can.Mustache.static.render",
+        "type": "function",
+        "id": 177,
+        "title": "render",
+        "parent": "can.Mustache.static"
+    },
+    "if": {
+        "name": "if",
+        "type": "function",
+        "id": 178,
+        "parent": "can.Mustache.Helpers"
+    },
+    "unless": {
+        "name": "unless",
+        "type": "function",
+        "id": 179,
+        "parent": "can.Mustache.Helpers"
+    },
+    "each": {
+        "name": "each",
+        "type": "function",
+        "id": 180,
+        "parent": "can.Mustache.Helpers"
+    },
+    "with": {
+        "name": "with",
+        "type": "function",
+        "id": 181,
+        "parent": "can.Mustache.Helpers"
+    },
+    "can.view.modifiers": {
+        "name": "can.view.modifiers",
+        "type": "page",
+        "id": 182,
+        "title": "jQuery modifiers",
+        "parent": "can.view.plugins"
+    },
+    "jQuery.fn.hookup": {
+        "name": "jQuery.fn.hookup",
+        "type": "function",
+        "id": 183,
+        "parent": "can.view.modifiers"
+    },
+    "jQuery.fn.prepend": {
+        "name": "jQuery.fn.prepend",
+        "type": "function",
+        "id": 184,
+        "parent": "can.view.modifiers"
+    },
+    "jQuery.fn.append": {
+        "name": "jQuery.fn.append",
+        "type": "function",
+        "id": 185,
+        "parent": "can.view.modifiers"
+    },
+    "jQuery.fn.after": {
+        "name": "jQuery.fn.after",
+        "type": "function",
+        "id": 186,
+        "parent": "can.view.modifiers"
+    },
+    "jQuery.fn.before": {
+        "name": "jQuery.fn.before",
+        "type": "function",
+        "id": 187,
+        "parent": "can.view.modifiers"
+    },
+    "jQuery.fn.text": {
+        "name": "jQuery.fn.text",
+        "type": "function",
+        "id": 188,
+        "parent": "can.view.modifiers"
+    },
+    "jQuery.fn.html": {
+        "name": "jQuery.fn.html",
+        "type": "function",
+        "id": 189,
+        "parent": "can.view.modifiers"
+    },
+    "jQuery.fn.replaceWith": {
+        "name": "jQuery.fn.replaceWith",
+        "type": "function",
+        "id": 190,
+        "parent": "can.view.modifiers"
+    },
+    "can.util.functions": {
+        "name": "can.util.functions",
+        "type": "functions",
+        "id": 191,
+        "title": "functions",
+        "parent": "can.util"
     },
     "can.util": {
         "name": "can.util",
         "type": "page",
-        "id": 159,
+        "id": 192,
         "title": "can.util",
         "parent": "canjs"
     },
     "can.isDeferred": {
         "name": "can.isDeferred",
         "type": "function",
-        "id": 160,
-        "parent": "can.util"
+        "id": 193,
+        "parent": "can.util.functions"
     },
     "can.trim": {
         "name": "can.trim",
         "type": "function",
-        "id": 161,
-        "parent": "can.util"
+        "id": 194,
+        "parent": "can.util.functions"
     },
     "can.makeArray": {
         "name": "can.makeArray",
         "type": "function",
-        "id": 162,
-        "parent": "can.util"
+        "id": 195,
+        "parent": "can.util.functions"
     },
     "can.isArray": {
         "name": "can.isArray",
         "type": "function",
-        "id": 163,
-        "parent": "can.util"
+        "id": 196,
+        "parent": "can.util.functions"
     },
     "can.each": {
         "name": "can.each",
         "type": "function",
-        "id": 164,
-        "parent": "can.util"
+        "id": 197,
+        "parent": "can.util.functions"
     },
     "can.extend": {
         "name": "can.extend",
         "type": "function",
-        "id": 165,
-        "parent": "can.util"
+        "id": 198,
+        "parent": "can.util.functions"
     },
     "can.param": {
         "name": "can.param",
         "type": "function",
-        "id": 166,
-        "parent": "can.util"
+        "id": 199,
+        "parent": "can.util.functions"
     },
     "can.isEmptyObject": {
         "name": "can.isEmptyObject",
         "type": "function",
-        "id": 167,
-        "parent": "can.util"
+        "id": 200,
+        "parent": "can.util.functions"
     },
     "can.proxy": {
         "name": "can.proxy",
         "type": "function",
-        "id": 168,
-        "parent": "can.util"
+        "id": 201,
+        "parent": "can.util.functions"
     },
     "can.isFunction": {
         "name": "can.isFunction",
         "type": "function",
-        "id": 169,
-        "parent": "can.util"
+        "id": 202,
+        "parent": "can.util.functions"
     },
     "can.bind": {
         "name": "can.bind",
         "type": "function",
-        "id": 170,
-        "parent": "can.util"
+        "id": 203,
+        "parent": "can.util.functions"
     },
     "can.unbind": {
         "name": "can.unbind",
         "type": "function",
-        "id": 171,
-        "parent": "can.util"
+        "id": 204,
+        "parent": "can.util.functions"
     },
     "can.delegate": {
         "name": "can.delegate",
         "type": "function",
-        "id": 172,
-        "parent": "can.util"
+        "id": 205,
+        "parent": "can.util.functions"
     },
     "can.undelegate": {
         "name": "can.undelegate",
         "type": "function",
-        "id": 173,
-        "parent": "can.util"
+        "id": 206,
+        "parent": "can.util.functions"
     },
     "can.trigger": {
         "name": "can.trigger",
         "type": "function",
-        "id": 174,
-        "parent": "can.util"
+        "id": 207,
+        "parent": "can.util.functions"
     },
     "can.ajax": {
         "name": "can.ajax",
         "type": "function",
-        "id": 175,
-        "parent": "can.util"
+        "id": 208,
+        "parent": "can.util.functions"
     },
     "can.$": {
         "name": "can.$",
         "type": "function",
-        "id": 176,
-        "parent": "can.util"
+        "id": 209,
+        "parent": "can.util.functions"
     },
     "can.buildFragment": {
         "name": "can.buildFragment",
         "type": "function",
-        "id": 177,
-        "parent": "can.util"
+        "id": 210,
+        "parent": "can.util.functions"
     },
     "can.append": {
         "name": "can.append",
         "type": "function",
-        "id": 178,
-        "parent": "can.util"
+        "id": 211,
+        "parent": "can.util.functions"
     },
     "can.remove": {
         "name": "can.remove",
         "type": "function",
-        "id": 179,
-        "parent": "can.util"
+        "id": 212,
+        "parent": "can.util.functions"
     },
     "can.data": {
         "name": "can.data",
         "type": "function",
-        "id": 180,
-        "parent": "can.util"
+        "id": 213,
+        "parent": "can.util.functions"
     },
     "can.addClass": {
         "name": "can.addClass",
         "type": "function",
-        "id": 181,
-        "parent": "can.util"
+        "id": 214,
+        "parent": "can.util.functions"
     },
     "can.when": {
         "name": "can.when",
         "type": "function",
-        "id": 182,
-        "parent": "can.util"
+        "id": 215,
+        "parent": "can.util.functions"
     },
     "can.Deferred": {
         "name": "can.Deferred",
         "type": "constructor",
-        "id": 183,
+        "id": 216,
         "parent": "canjs"
     },
     "can.Deferred.prototype": {
         "name": "can.Deferred.prototype",
         "type": "prototype",
-        "id": 184,
+        "id": 217,
         "parent": "can.Deferred"
     },
     "can.Deferred.prototype.pipe": {
         "name": "can.Deferred.prototype.pipe",
         "type": "function",
-        "id": 185
+        "id": 218
     },
     "can.Deferred.prototype.resolveWith": {
         "name": "can.Deferred.prototype.resolveWith",
         "type": "function",
-        "id": 186,
+        "id": 219,
         "title": "resolveWith",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.rejectWith": {
         "name": "can.Deferred.prototype.rejectWith",
         "type": "function",
-        "id": 187,
+        "id": 220,
         "title": "rejectWith",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.done": {
         "name": "can.Deferred.prototype.done",
         "type": "function",
-        "id": 188,
+        "id": 221,
         "title": "done",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.always": {
         "name": "can.Deferred.prototype.always",
         "type": "function",
-        "id": 189,
+        "id": 222,
         "title": "always",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.then": {
         "name": "can.Deferred.prototype.then",
         "type": "function",
-        "id": 190,
+        "id": 223,
         "title": "then",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.isResolved": {
         "name": "can.Deferred.prototype.isResolved",
         "type": "function",
-        "id": 191,
+        "id": 224,
         "title": "isResolved",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.reject": {
         "name": "can.Deferred.prototype.reject",
         "type": "function",
-        "id": 192,
+        "id": 225,
         "title": "reject",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.resolve": {
         "name": "can.Deferred.prototype.resolve",
         "type": "function",
-        "id": 193,
+        "id": 226,
         "title": "resolve"
+    },
+    "can.fixture": {
+        "name": "can.fixture",
+        "type": "page",
+        "id": 227,
+        "title": "can.fixture",
+        "parent": "canjs"
     }
 }
