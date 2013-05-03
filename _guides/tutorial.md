@@ -6,7 +6,7 @@ This tutorial will walk you though the basics of CanJS by building a small
 to-do app with CanJS and jQuery. When you are finished, your app will look
 similar to this:
 
-@iframe /path/to/to-do/demo
+<iframe width="100%" height="350" src="http://www.youtube.com/embed/GdT4Oq6ZQ68" frameborder="0" allowfullscreen></iframe>
 
 To get started, click [Constructs Constructs] in the navigation to the left. Or, if this
 tutorial isn't your thing, you can take a look at some [Videos Videos], see

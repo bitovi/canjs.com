@@ -141,18 +141,10 @@
         "parent": "Tutorial",
         "order": 9
     },
-    "Videos": {
-        "name": "Videos",
-        "type": "page",
-        "id": 18,
-        "title": "Videos",
-        "parent": "guides",
-        "order": 4
-    },
     "Templates": {
         "name": "Templates",
         "type": "page",
-        "id": 19,
+        "id": 18,
         "title": "Templates",
         "parent": "Tutorial",
         "order": 3
@@ -160,7 +152,7 @@
     "Why": {
         "name": "Why",
         "type": "page",
-        "id": 20,
+        "id": 19,
         "title": "Why CanJS?",
         "parent": "guides",
         "order": 2
@@ -168,16 +160,16 @@
     "changelog": {
         "name": "changelog",
         "type": "page",
-        "id": 21
+        "id": 20
     },
     "contributing": {
         "name": "contributing",
         "type": "page",
-        "id": 22
+        "id": 21
     },
     "license": {
         "name": "license",
         "type": "page",
-        "id": 23
+        "id": 22
     }
 }
