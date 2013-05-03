@@ -1,5 +1,5 @@
 @page Videos Videos
-@parent guides 3
+@parent guides 4
 
 @body
 ## Getting started
