@@ -1,7 +1,7 @@
-/*
-* CanJS - 1.1.3 (2012-12-11)
+/*!
+* CanJS - 1.1.4 (2013-02-05)
 * http://canjs.us/
-* Copyright (c) 2012 Bitovi
+* Copyright (c) 2013 Bitovi
 * Licensed MIT
 */
 define(['can/util/library'], function (can) {
@@ -10,14 +10,14 @@ define(['can/util/library'], function (can) {
 	// Several of the methods in this plugin use code adapated from Prototype
 	// Prototype JavaScript framework, version 1.6.0.1.
 	// © 2005-2007 Sam Stephenson
-	var undHash = /_|-/,
-		colons = /\=\=/,
-		words = /([A-Z]+)([A-Z][a-z])/g,
-		lowUp = /([a-z\d])([A-Z])/g,
-		dash = /([a-z\d])([A-Z])/g,
-		replacer = /\{([^\}]+)\}/g,
-		quote = /"/g,
-		singleQuote = /'/g,
+	var strUndHash = /_|-/,
+		strColons = /\=\=/,
+		strWords = /([A-Z]+)([A-Z][a-z])/g,
+		strLowUp = /([a-z\d])([A-Z])/g,
+		strDash = /([a-z\d])([A-Z])/g,
+		strReplacer = /\{([^\}]+)\}/g,
+		strQuote = /"/g,
+		strSingleQuote = /'/g,
 
 		// Returns the `prop` property from `obj`.
 		// If `add` is true and `prop` doesn't exist in `obj`, create it as an 
@@ -36,7 +36,7 @@ define(['can/util/library'], function (can) {
 		esc: function (content) {
 			// Convert bad values into empty strings
 			var isInvalid = content === null || content === undefined || (isNaN(content) && ("" + content === 'NaN'));
-			return ("" + (isInvalid ? '' : content)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(quote, '&#34;').replace(singleQuote, "&#39;");
+			return ("" + (isInvalid ? '' : content)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(strQuote, '&#34;').replace(strSingleQuote, "&#39;");
 		},
 
 
@@ -93,13 +93,13 @@ define(['can/util/library'], function (can) {
 
 		// Underscores a string.
 		underscore: function (s) {
-			return s.replace(colons, '/').replace(words, '$1_$2').replace(lowUp, '$1_$2').replace(dash, '_').toLowerCase();
+			return s.replace(strColons, '/').replace(strWords, '$1_$2').replace(strLowUp, '$1_$2').replace(strDash, '_').toLowerCase();
 		},
 		// Micro-templating.
 		sub: function (str, data, remove) {
 			var obs = [];
 
-			obs.push(str.replace(replacer, function (whole, inside) {
+			obs.push(str.replace(strReplacer, function (whole, inside) {
 
 				// Convert inside to type.
 				var ob = can.getObject(inside, data, remove === undefined ? remove : !remove);
@@ -123,8 +123,8 @@ define(['can/util/library'], function (can) {
 
 		// These regex's are used throughout the rest of can, so let's make
 		// them available.
-		replacer: replacer,
-		undHash: undHash
+		replacer: strReplacer,
+		undHash: strUndHash
 	});
 	return can;
 });

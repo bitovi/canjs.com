@@ -1,7 +1,7 @@
-/*
-* CanJS - 1.1.3 (2012-12-11)
+/*!
+* CanJS - 1.1.4 (2013-02-05)
 * http://canjs.us/
-* Copyright (c) 2012 Bitovi
+* Copyright (c) 2013 Bitovi
 * Licensed MIT
 */
 define(['can/util/library', 'can/util/string', 'can/util/object'], function (can) {
@@ -240,7 +240,7 @@ define(['can/util/library', 'can/util/string', 'can/util/object'], function (can
 			}
 
 		},
-
+		// Makes an attempt to guess where the id is at in the url and returns it.
 		getId = function (settings) {
 			var id = settings.data.id;
 
@@ -270,7 +270,6 @@ define(['can/util/library', 'can/util/string', 'can/util/object'], function (can
 
 			return id;
 		};
-
 
 	var $fixture = can.fixture = function (settings, fixture) {
 		// if we provide a fixture ...
@@ -347,7 +346,7 @@ define(['can/util/library', 'can/util/string', 'can/util/object'], function (can
 			return data;
 		},
 
-		make: function (types, count, make, filter) {
+		store: function (types, count, make, filter) {
 
 			var items = [],
 				// TODO: change this to a hash
@@ -370,13 +369,14 @@ define(['can/util/library', 'can/util/string', 'can/util/object'], function (can
 
 			// make all items
 			can.extend(methods, {
-				findAll: function (settings) {
+
+				findAll: function (request) {
 					//copy array of items
 					var retArr = items.slice(0);
-					settings.data = settings.data || {};
+					request.data = request.data || {};
 					//sort using order
 					//order looks like ["age ASC","gender DESC"]
-					can.each((settings.data.order || []).slice(0).reverse(), function (name) {
+					can.each((request.data.order || []).slice(0).reverse(), function (name) {
 						var split = name.split(" ");
 						retArr = retArr.sort(function (a, b) {
 							if (split[1].toUpperCase() !== "ASC") {
@@ -401,24 +401,24 @@ define(['can/util/library', 'can/util/string', 'can/util/object'], function (can
 					});
 
 					//group is just like a sort
-					can.each((settings.data.group || []).slice(0).reverse(), function (name) {
+					can.each((request.data.group || []).slice(0).reverse(), function (name) {
 						var split = name.split(" ");
 						retArr = retArr.sort(function (a, b) {
 							return a[split[0]] > b[split[0]];
 						});
 					});
 
-					var offset = parseInt(settings.data.offset, 10) || 0,
-						limit = parseInt(settings.data.limit, 10) || (items.length - offset),
+					var offset = parseInt(request.data.offset, 10) || 0,
+						limit = parseInt(request.data.limit, 10) || (items.length - offset),
 						i = 0;
 
 					//filter results if someone added an attr like parentId
-					for (var param in settings.data) {
+					for (var param in request.data) {
 						i = 0;
-						if (settings.data[param] !== undefined && // don't do this if the value of the param is null (ignore it)
+						if (request.data[param] !== undefined && // don't do this if the value of the param is null (ignore it)
 						(param.indexOf("Id") != -1 || param.indexOf("_id") != -1)) {
 							while (i < retArr.length) {
-								if (settings.data[param] != retArr[i][param]) {
+								if (request.data[param] != retArr[i][param]) {
 									retArr.splice(i, 1);
 								} else {
 									i++;
@@ -430,7 +430,7 @@ define(['can/util/library', 'can/util/string', 'can/util/object'], function (can
 					if (filter) {
 						i = 0;
 						while (i < retArr.length) {
-							if (!filter(retArr[i], settings)) {
+							if (!filter(retArr[i], request)) {
 								retArr.splice(i, 1);
 							} else {
 								i++;
@@ -441,28 +441,31 @@ define(['can/util/library', 'can/util/string', 'can/util/object'], function (can
 					//return data spliced with limit and offset
 					return {
 						"count": retArr.length,
-						"limit": settings.data.limit,
-						"offset": settings.data.offset,
+						"limit": request.data.limit,
+						"offset": request.data.offset,
 						"data": retArr.slice(offset, offset + limit)
 					};
 				},
-				findOne: function (orig, response) {
-					var item = findOne(getId(orig));
+
+				findOne: function (request, response) {
+					var item = findOne(getId(request));
 					response(item ? item : undefined);
 				},
-				update: function (orig, response) {
-					var id = getId(orig);
+
+				update: function (request, response) {
+					var id = getId(request);
 
 					// TODO: make it work with non-linear ids ..
-					can.extend(findOne(id), orig.data);
+					can.extend(findOne(id), request.data);
 					response({
-						id: getId(orig)
+						id: getId(request)
 					}, {
-						location: orig.url + "/" + getId(orig)
+						location: request.url || "/" + getId(request)
 					});
 				},
-				destroy: function (settings) {
-					var id = getId(settings);
+
+				destroy: function (request) {
+					var id = getId(request);
 					for (var i = 0; i < items.length; i++) {
 						if (items[i].id == id) {
 							items.splice(i, 1);
@@ -471,9 +474,10 @@ define(['can/util/library', 'can/util/string', 'can/util/object'], function (can
 					}
 
 					// TODO: make it work with non-linear ids ..
-					can.extend(findOne(id) || {}, settings.data);
+					can.extend(findOne(id) || {}, request.data);
 					return {};
 				},
+
 				create: function (settings, response) {
 					var item = make(items.length, items);
 
@@ -493,31 +497,37 @@ define(['can/util/library', 'can/util/string', 'can/util/object'], function (can
 				}
 			});
 
-			for (var i = 0; i < (count); i++) {
-				//call back provided make
-				var item = make(i, items);
+			var reset = function () {
+				items = [];
+				for (var i = 0; i < (count); i++) {
+					//call back provided make
+					var item = make(i, items);
 
-				if (!item.id) {
-					item.id = i;
+					if (!item.id) {
+						item.id = i;
+					}
+					items.push(item);
 				}
-				items.push(item);
+				if (can.isArray(types)) {
+					can.fixture["~" + types[0]] = items;
+					can.fixture["-" + types[0]] = methods.findAll;
+					can.fixture["-" + types[1]] = methods.findOne;
+					can.fixture["-" + types[1] + "Update"] = methods.update;
+					can.fixture["-" + types[1] + "Destroy"] = methods.destroy;
+					can.fixture["-" + types[1] + "Create"] = methods.create;
+				}
 			}
-
+			reset()
 			// if we have types given add them to can.fixture
-			if (can.isArray(types)) {
-				can.fixture["~" + types[0]] = items;
-				can.fixture["-" + types[0]] = methods.findAll;
-				can.fixture["-" + types[1]] = methods.findOne;
-				can.fixture["-" + types[1] + "Update"] = methods.update;
-				can.fixture["-" + types[1] + "Destroy"] = methods.destroy;
-				can.fixture["-" + types[1] + "Create"] = methods.create;
-			}
 
 			return can.extend({
 				getId: getId,
+
 				find: function (settings) {
 					return findOne(getId(settings));
-				}
+				},
+
+				reset: reset
 			}, methods);
 		},
 
@@ -599,5 +609,6 @@ define(['can/util/library', 'can/util/string', 'can/util/object'], function (can
 
 	//Expose this for fixture debugging
 	can.fixture.overwrites = overwrites;
+	can.fixture.make = can.fixture.store;
 	return can.fixture;
 });

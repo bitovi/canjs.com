@@ -1,10 +1,10 @@
-/*
-* CanJS - 1.1.3 (2012-12-11)
+/*!
+* CanJS - 1.1.4 (2013-02-05)
 * http://canjs.us/
-* Copyright (c) 2012 Bitovi
+* Copyright (c) 2013 Bitovi
 * Licensed MIT
 */
-define(['can/util/can', 'dojo', 'can/util/event', 'can/util/fragment', 'can/util/array/each', 'can/util/object/isplain', 'can/util/deferred'], function (can) {
+define(['can/util/can', 'dojo', 'can/util/event', 'can/util/fragment', 'can/util/array/each', 'can/util/object/isplain', 'can/util/deferred', '../hashchange'], function (can) {
 	define("plugd/trigger", ["dojo"], function (dojo) {
 
 		var d = dojo,

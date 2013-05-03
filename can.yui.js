@@ -1,7 +1,7 @@
-/*
-* CanJS - 1.1.3 (2012-12-11)
+/*!
+* CanJS - 1.1.4 (2013-02-05)
 * http://canjs.us/
-* Copyright (c) 2012 Bitovi
+* Copyright (c) 2013 Bitovi
 * Licensed MIT
 */
 (function (window, undefined) { // ## can/util/can.js
@@ -15,6 +15,15 @@
 		// Returns `true` if something looks like a deferred.
 		return obj && isFunction(obj.then) && isFunction(obj.pipe);
 	};
+
+	var cid = 0;
+	can.cid = function (object, name) {
+		if (object._cid) {
+			return object._cid
+		} else {
+			return object._cid = (name || "") + (++cid)
+		}
+	}
 	// ## can/util/event.js
 	// event.js
 	// ---------
@@ -350,6 +359,7 @@
 		}
 	});
 
+	// ## can/util/hashchange.js
 	// ## can/util/yui/yui.js
 	// ---------
 	// _YUI node list._
@@ -736,14 +746,14 @@
 	// Several of the methods in this plugin use code adapated from Prototype
 	// Prototype JavaScript framework, version 1.6.0.1.
 	// © 2005-2007 Sam Stephenson
-	var undHash = /_|-/,
-		colons = /\=\=/,
-		words = /([A-Z]+)([A-Z][a-z])/g,
-		lowUp = /([a-z\d])([A-Z])/g,
-		dash = /([a-z\d])([A-Z])/g,
-		replacer = /\{([^\}]+)\}/g,
-		quote = /"/g,
-		singleQuote = /'/g,
+	var strUndHash = /_|-/,
+		strColons = /\=\=/,
+		strWords = /([A-Z]+)([A-Z][a-z])/g,
+		strLowUp = /([a-z\d])([A-Z])/g,
+		strDash = /([a-z\d])([A-Z])/g,
+		strReplacer = /\{([^\}]+)\}/g,
+		strQuote = /"/g,
+		strSingleQuote = /'/g,
 
 		// Returns the `prop` property from `obj`.
 		// If `add` is true and `prop` doesn't exist in `obj`, create it as an 
@@ -762,7 +772,7 @@
 		esc: function (content) {
 			// Convert bad values into empty strings
 			var isInvalid = content === null || content === undefined || (isNaN(content) && ("" + content === 'NaN'));
-			return ("" + (isInvalid ? '' : content)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(quote, '&#34;').replace(singleQuote, "&#39;");
+			return ("" + (isInvalid ? '' : content)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(strQuote, '&#34;').replace(strSingleQuote, "&#39;");
 		},
 
 
@@ -819,13 +829,13 @@
 
 		// Underscores a string.
 		underscore: function (s) {
-			return s.replace(colons, '/').replace(words, '$1_$2').replace(lowUp, '$1_$2').replace(dash, '_').toLowerCase();
+			return s.replace(strColons, '/').replace(strWords, '$1_$2').replace(strLowUp, '$1_$2').replace(strDash, '_').toLowerCase();
 		},
 		// Micro-templating.
 		sub: function (str, data, remove) {
 			var obs = [];
 
-			obs.push(str.replace(replacer, function (whole, inside) {
+			obs.push(str.replace(strReplacer, function (whole, inside) {
 
 				// Convert inside to type.
 				var ob = can.getObject(inside, data, remove === undefined ? remove : !remove);
@@ -849,8 +859,8 @@
 
 		// These regex's are used throughout the rest of can, so let's make
 		// them available.
-		replacer: replacer,
-		undHash: undHash
+		replacer: strReplacer,
+		undHash: strUndHash
 	});
 	// ## can/construct/construct.js
 	// ## construct.js
@@ -1121,14 +1131,7 @@
 		batchEvents = [],
 		stopCallbacks = [];
 
-	var cid = 0;
-	can.cid = function (object, name) {
-		if (object._cid) {
-			return object._cid
-		} else {
-			return object._cid = (name || "") + (++cid)
-		}
-	}
+
 
 
 	var Observe = can.Observe = can.Construct({
@@ -1310,7 +1313,6 @@
 				if (this.__convert) {
 					value = this.__convert(prop, value)
 				}
-
 				this.__set(prop, value, current)
 			} else {
 				throw "can.Observe: Object does not exist"
@@ -1362,6 +1364,7 @@
 			}
 		},
 
+
 		bind: bind,
 
 		unbind: unbind,
@@ -1380,7 +1383,7 @@
 			var prop, self = this,
 				newVal;
 			Observe.startBatch();
-			this.each(function (curVal, prop, toRemove) {
+			this.each(function (curVal, prop) {
 				newVal = props[prop];
 
 				// If we are merging...
@@ -1388,24 +1391,22 @@
 					remove && self.removeAttr(prop);
 					return;
 				}
+
 				if (self.__convert) {
-					newVal = self.__convert(prop, newVal);
+					newVal = self.__convert(prop, newVal)
 				}
 
-				if (curVal !== newVal) {
-					if (curVal instanceof can.Observe && newVal instanceof can.Observe) {
-						unhookup([curVal], self._cid);
-					}
-
-					if (newVal instanceof can.Observe) {
-						self._set(prop, newVal)
-					}
-					else if (canMakeObserve(curVal) && canMakeObserve(newVal)) {
-						curVal.attr(newVal, toRemove)
-					} else if (curVal != newVal) {
-						self._set(prop, newVal)
-					}
+				// if we're dealing with models, want to call _set to let converter run
+				if (newVal instanceof can.Observe) {
+					self.__set(prop, newVal, curVal)
+					// if its an object, let attr merge
+				} else if (canMakeObserve(curVal) && canMakeObserve(newVal) && curVal.attr) {
+					curVal.attr(newVal, remove)
+					// otherwise just set
+				} else if (curVal != newVal) {
+					self.__set(prop, newVal, curVal)
 				}
+
 				delete props[prop];
 			})
 			// Add remaining props.
@@ -1436,7 +1437,7 @@
 				this.length = 0;
 				can.cid(this, ".observe")
 				this._init = 1;
-				this.push.apply(this, instances || []);
+				this.push.apply(this, can.makeArray(instances || []));
 				this.bind('change' + this._cid, can.proxy(this._changes, this));
 				can.extend(this, options);
 				delete this._init;
@@ -1922,7 +1923,7 @@
 
 
 
-				if (res.length > 0) {
+				if (res.length) {
 					res.splice(0);
 				}
 
@@ -1951,7 +1952,7 @@
 					attributes = attributes.serialize();
 				}
 				var id = attributes[this.id],
-					model = id && this.store[id] ? this.store[id].attr(attributes) : new this(attributes);
+					model = (id || id === 0) && this.store[id] ? this.store[id].attr(attributes, this.removeAttr || false) : new this(attributes);
 				if (this._reqs) {
 					this.store[attributes[this.id]] = model;
 				}
@@ -1971,6 +1972,12 @@
 			},
 
 			destroy: function (success, error) {
+				if (this.isNew()) {
+					var self = this;
+					return can.Deferred().done(function (data) {
+						self.destroyed(data)
+					}).resolve(self);
+				}
 				return makeRequest(this, 'destroy', success, error, 'destroyed');
 			},
 
@@ -2412,6 +2419,12 @@
 	// `onready` event...
 	can.bind.call(document, "ready", can.route.ready);
 
+	// Libraries other than jQuery don't execute the document `ready` listener
+	// if we are already DOM ready
+	if ((document.readyState === 'complete' || document.readyState === "interactive") && onready) {
+		can.route.ready();
+	}
+
 	// extend route to have a similar property 
 	// that is often checked in mustache to determine
 	// an object's observability
@@ -2733,14 +2746,18 @@
 					callback(pipe(frag));
 				} : null,
 				// Get the result.
-				result = $view.render(view, data, helpers, wrapCallback);
+				result = $view.render(view, data, helpers, wrapCallback),
+				deferred = can.Deferred();
 
 			if (isFunction(result)) {
 				return result;
 			}
 
 			if (can.isDeferred(result)) {
-				return result.pipe(pipe);
+				result.done(function (result, data) {
+					deferred.resolve.call(deferred, pipe(result), data);
+				});
+				return deferred;
 			}
 
 			// Convert it into a dom frag.
@@ -3089,9 +3106,13 @@
 			$view.cached[id] = new can.Deferred().resolve(function (data, helpers) {
 				return renderer.call(data, data, helpers);
 			});
-			return function () {
-				return $view.frag(renderer.apply(this, arguments))
-			};
+
+			function frag() {
+				return $view.frag(renderer.apply(this, arguments));
+			}
+			// expose the renderer for mustache
+			frag.render = renderer;
+			return frag;
 		}
 
 	});
@@ -3274,7 +3295,7 @@
 
 			computed.isComputed = true;
 
-
+			can.cid(computed, "compute")
 
 			computed.bind = function (ev, handler) {
 				can.addEvent.apply(computed, arguments);
@@ -3737,11 +3758,12 @@
 	var attrMap = {
 		"class": "className",
 		"value": "value",
+		"innerText": "innerText",
 		"textContent": "textContent"
 	},
 		tagMap = {
 			"": "span",
-			table: "tr",
+			table: "tbody",
 			tr: "td",
 			ol: "li",
 			ul: "li",
@@ -3754,7 +3776,7 @@
 		attributePlaceholder = '__!!__',
 		attributeReplace = /__!!__/g,
 		tagToContentPropMap = {
-			option: "textContent",
+			option: "textContent" in document.createElement("option") ? "textContent" : "innerText",
 			textarea: "value"
 		},
 		bool = can.each(["checked", "disabled", "readonly", "required"], function (n) {
@@ -3772,7 +3794,7 @@
 			if (prop) {
 				// set the value as true / false
 				el[prop] = can.inArray(attrName, bool) > -1 ? true : val;
-				if (prop === "value" && tagName === "input") {
+				if (prop === "value" && (tagName === "input" || tagName === "textarea")) {
 					el.defaultValue = val;
 				}
 			} else {
@@ -4028,8 +4050,15 @@
 							nodeList = nodes;
 							can.view.registerNode(nodes);
 						} else {
-							can.remove(can.$(nodes));
+							// Update node Array's to point to new nodes
+							// and then remove the old nodes.
+							// It has to be in this order for Mootools
+							// and IE because somehow, after an element
+							// is removed from the DOM, it loses its
+							// expando values.
+							var nodesToRemove = can.makeArray(nodes);
 							can.view.replace(nodes, newNodes);
+							can.remove(can.$(nodesToRemove));
 						}
 					};
 					// nodes are the nodes that any updates will replace

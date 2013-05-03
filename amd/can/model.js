@@ -1,7 +1,7 @@
-/*
-* CanJS - 1.1.3 (2012-12-11)
+/*!
+* CanJS - 1.1.4 (2013-02-05)
 * http://canjs.us/
-* Copyright (c) 2012 Bitovi
+* Copyright (c) 2013 Bitovi
 * Licensed MIT
 */
 define(['can/util/library', 'can/observe'], function (can) {
@@ -263,7 +263,7 @@ define(['can/util/library', 'can/observe'], function (can) {
 
 
 
-				if (res.length > 0) {
+				if (res.length) {
 					res.splice(0);
 				}
 
@@ -292,7 +292,7 @@ define(['can/util/library', 'can/observe'], function (can) {
 					attributes = attributes.serialize();
 				}
 				var id = attributes[this.id],
-					model = id && this.store[id] ? this.store[id].attr(attributes) : new this(attributes);
+					model = (id || id === 0) && this.store[id] ? this.store[id].attr(attributes, this.removeAttr || false) : new this(attributes);
 				if (this._reqs) {
 					this.store[attributes[this.id]] = model;
 				}
@@ -312,6 +312,12 @@ define(['can/util/library', 'can/observe'], function (can) {
 			},
 
 			destroy: function (success, error) {
+				if (this.isNew()) {
+					var self = this;
+					return can.Deferred().done(function (data) {
+						self.destroyed(data)
+					}).resolve(self);
+				}
 				return makeRequest(this, 'destroy', success, error, 'destroyed');
 			},
 

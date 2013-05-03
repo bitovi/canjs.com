@@ -1,7 +1,7 @@
-/*
-* CanJS - 1.1.3 (2012-12-11)
+/*!
+* CanJS - 1.1.4 (2013-02-05)
 * http://canjs.us/
-* Copyright (c) 2012 Bitovi
+* Copyright (c) 2013 Bitovi
 * Licensed MIT
 */
 module = {
@@ -29,6 +29,15 @@ module['can/util/can.js'] = (function () {
 		// Returns `true` if something looks like a deferred.
 		return obj && isFunction(obj.then) && isFunction(obj.pipe);
 	};
+
+	var cid = 0;
+	can.cid = function (object, name) {
+		if (object._cid) {
+			return object._cid
+		} else {
+			return object._cid = (name || "") + (++cid)
+		}
+	}
 	return can;
 })(); // ## can/util/array/each.js
 module['can/util/array/each.js'] = (function (can) {
@@ -79,9 +88,19 @@ module['can/util/jquery/jquery.js'] = (function ($, can) {
 			return this;
 		},
 		// jquery caches fragments, we always needs a new one
-		buildFragment: function (result, element) {
-			var ret = $.buildFragment([result], $(element));
-			return ret.cacheable ? $.clone(ret.fragment) : ret.fragment;
+		buildFragment: function (elems, context) {
+			var oldFragment = $.buildFragment,
+				ret;
+
+			elems = [elems];
+			// Set context per 1.8 logic
+			context = context || document;
+			context = !context.nodeType && context[0] || context;
+			context = context.ownerDocument || context;
+
+			ret = oldFragment.call(jQuery, elems, context);
+
+			return ret.cacheable ? $.clone(ret.fragment) : ret.fragment || ret;
 		},
 		$: $,
 		each: can.each
@@ -123,14 +142,14 @@ module['can/util/string/string.js'] = (function (can) {
 	// Several of the methods in this plugin use code adapated from Prototype
 	// Prototype JavaScript framework, version 1.6.0.1.
 	// © 2005-2007 Sam Stephenson
-	var undHash = /_|-/,
-		colons = /\=\=/,
-		words = /([A-Z]+)([A-Z][a-z])/g,
-		lowUp = /([a-z\d])([A-Z])/g,
-		dash = /([a-z\d])([A-Z])/g,
-		replacer = /\{([^\}]+)\}/g,
-		quote = /"/g,
-		singleQuote = /'/g,
+	var strUndHash = /_|-/,
+		strColons = /\=\=/,
+		strWords = /([A-Z]+)([A-Z][a-z])/g,
+		strLowUp = /([a-z\d])([A-Z])/g,
+		strDash = /([a-z\d])([A-Z])/g,
+		strReplacer = /\{([^\}]+)\}/g,
+		strQuote = /"/g,
+		strSingleQuote = /'/g,
 
 		// Returns the `prop` property from `obj`.
 		// If `add` is true and `prop` doesn't exist in `obj`, create it as an 
@@ -149,7 +168,7 @@ module['can/util/string/string.js'] = (function (can) {
 		esc: function (content) {
 			// Convert bad values into empty strings
 			var isInvalid = content === null || content === undefined || (isNaN(content) && ("" + content === 'NaN'));
-			return ("" + (isInvalid ? '' : content)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(quote, '&#34;').replace(singleQuote, "&#39;");
+			return ("" + (isInvalid ? '' : content)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(strQuote, '&#34;').replace(strSingleQuote, "&#39;");
 		},
 
 
@@ -206,13 +225,13 @@ module['can/util/string/string.js'] = (function (can) {
 
 		// Underscores a string.
 		underscore: function (s) {
-			return s.replace(colons, '/').replace(words, '$1_$2').replace(lowUp, '$1_$2').replace(dash, '_').toLowerCase();
+			return s.replace(strColons, '/').replace(strWords, '$1_$2').replace(strLowUp, '$1_$2').replace(strDash, '_').toLowerCase();
 		},
 		// Micro-templating.
 		sub: function (str, data, remove) {
 			var obs = [];
 
-			obs.push(str.replace(replacer, function (whole, inside) {
+			obs.push(str.replace(strReplacer, function (whole, inside) {
 
 				// Convert inside to type.
 				var ob = can.getObject(inside, data, remove === undefined ? remove : !remove);
@@ -236,8 +255,8 @@ module['can/util/string/string.js'] = (function (can) {
 
 		// These regex's are used throughout the rest of can, so let's make
 		// them available.
-		replacer: replacer,
-		undHash: undHash
+		replacer: strReplacer,
+		undHash: strUndHash
 	});
 	return can;
 })(module["can/util/jquery/jquery.js"]); // ## can/construct/construct.js
@@ -466,7 +485,7 @@ module['can/construct/proxy/proxy.js'] = (function (can, Construct) {
 		}
 		can.Construct.proxy = can.Construct.prototype.proxy = proxy;
 	// this corrects the case where can/control loads after can/construct/proxy, so static props don't have proxy
-	var correctedClasses = [can.Control, can.Model],
+	var correctedClasses = [can.Observe, can.Control, can.Model],
 		i = 0;
 	for (; i < correctedClasses.length; i++) {
 		if (correctedClasses[i]) {
@@ -909,14 +928,18 @@ module['can/view/view.js'] = (function (can) {
 					callback(pipe(frag));
 				} : null,
 				// Get the result.
-				result = $view.render(view, data, helpers, wrapCallback);
+				result = $view.render(view, data, helpers, wrapCallback),
+				deferred = can.Deferred();
 
 			if (isFunction(result)) {
 				return result;
 			}
 
 			if (can.isDeferred(result)) {
-				return result.pipe(pipe);
+				result.done(function (result, data) {
+					deferred.resolve.call(deferred, pipe(result), data);
+				});
+				return deferred;
 			}
 
 			// Convert it into a dom frag.
@@ -1265,9 +1288,13 @@ module['can/view/view.js'] = (function (can) {
 			$view.cached[id] = new can.Deferred().resolve(function (data, helpers) {
 				return renderer.call(data, data, helpers);
 			});
-			return function () {
-				return $view.frag(renderer.apply(this, arguments))
-			};
+
+			function frag() {
+				return $view.frag(renderer.apply(this, arguments));
+			}
+			// expose the renderer for mustache
+			frag.render = renderer;
+			return frag;
 		}
 
 	});
@@ -1882,7 +1909,7 @@ module['can/observe/compute/compute.js'] = (function (can) {
 
 			computed.isComputed = true;
 
-
+			can.cid(computed, "compute")
 
 			computed.bind = function (ev, handler) {
 				can.addEvent.apply(computed, arguments);
@@ -1920,11 +1947,12 @@ module['can/view/render.js'] = (function (can) {
 	var attrMap = {
 		"class": "className",
 		"value": "value",
+		"innerText": "innerText",
 		"textContent": "textContent"
 	},
 		tagMap = {
 			"": "span",
-			table: "tr",
+			table: "tbody",
 			tr: "td",
 			ol: "li",
 			ul: "li",
@@ -1937,7 +1965,7 @@ module['can/view/render.js'] = (function (can) {
 		attributePlaceholder = '__!!__',
 		attributeReplace = /__!!__/g,
 		tagToContentPropMap = {
-			option: "textContent",
+			option: "textContent" in document.createElement("option") ? "textContent" : "innerText",
 			textarea: "value"
 		},
 		bool = can.each(["checked", "disabled", "readonly", "required"], function (n) {
@@ -1955,7 +1983,7 @@ module['can/view/render.js'] = (function (can) {
 			if (prop) {
 				// set the value as true / false
 				el[prop] = can.inArray(attrName, bool) > -1 ? true : val;
-				if (prop === "value" && tagName === "input") {
+				if (prop === "value" && (tagName === "input" || tagName === "textarea")) {
 					el.defaultValue = val;
 				}
 			} else {
@@ -2211,8 +2239,15 @@ module['can/view/render.js'] = (function (can) {
 							nodeList = nodes;
 							can.view.registerNode(nodes);
 						} else {
-							can.remove(can.$(nodes));
+							// Update node Array's to point to new nodes
+							// and then remove the old nodes.
+							// It has to be in this order for Mootools
+							// and IE because somehow, after an element
+							// is removed from the DOM, it loses its
+							// expando values.
+							var nodesToRemove = can.makeArray(nodes);
 							can.view.replace(nodes, newNodes);
+							can.remove(can.$(nodesToRemove));
 						}
 					};
 					// nodes are the nodes that any updates will replace
@@ -2381,10 +2416,11 @@ module['can/view/mustache/mustache.js'] = (function (can) {
 		STACK = '___st4ck',
 		// An alias for the most used context stacking call.
 		CONTEXT_STACK = STACK + '(' + CONTEXT + ',this)',
+		CONTEXT_OBJ = '{context:' + CONTEXT_STACK + ',options:options}',
 
 
 		isObserve = function (obj) {
-			return can.isFunction(obj.attr) && obj.constructor && !! obj.constructor.canMakeObserve;
+			return obj !== null && can.isFunction(obj.attr) && obj.constructor && !! obj.constructor.canMakeObserve;
 		},
 
 
@@ -2393,13 +2429,13 @@ module['can/view/mustache/mustache.js'] = (function (can) {
 		},
 
 		// ## Mustache
-		Mustache = function (options) {
+		Mustache = function (options, helpers) {
 			// Support calling Mustache without the constructor.
 			// This returns a function that renders the template.
 			if (this.constructor != Mustache) {
 				var mustache = new Mustache(options);
-				return function (data) {
-					return mustache.render(data);
+				return function (data, options) {
+					return mustache.render(data, options);
 				};
 			}
 
@@ -2424,10 +2460,15 @@ module['can/view/mustache/mustache.js'] = (function (can) {
 
 	Mustache.prototype.
 
-	render = function (object, extraHelpers) {
+	render = function (object, options) {
 		object = object || {};
+		options = options || {};
+		if (!options.helpers && !options.partials) {
+			options.helpers = options;
+		}
 		return this.template.fn.call(object, object, {
-			_data: object
+			_data: object,
+			options: options
 		});
 	};
 
@@ -2438,7 +2479,9 @@ module['can/view/mustache/mustache.js'] = (function (can) {
 			text: {
 				// This is the logic to inject at the beginning of a rendered template. 
 				// This includes initializing the `context` stack.
-				start: 'var ' + CONTEXT + ' = []; ' + CONTEXT + '.' + STACK + ' = true;' + 'var ' + STACK + ' = function(context, self) {' + 'var s;' + 'if (arguments.length == 1 && context) {' + 's = !context.' + STACK + ' ? [context] : context;' + '} else {' + 's = context && context.' + STACK + ' ? context.concat([self]) : ' + STACK + '(context).concat([self]);' + '}' + 'return (s.' + STACK + ' = true) && s;' + '};'
+				start: 'var ' + CONTEXT + ' = this && this.' + STACK + ' ? this : []; ' + CONTEXT + '.' + STACK + ' = true;' + 'var ' + STACK + ' = function(context, self) {' + 'var s;' + 'if (arguments.length == 1 && context) {' + 's = !context.' + STACK + ' ? [context] : context;' +
+				// Handle helpers with custom contexts (#228)
+				'} else if (!context.' + STACK + ') {' + 's = [self, context];' + '} else {' + 's = context && context.' + STACK + ' ? context.concat([self]) : ' + STACK + '(context).concat([self]);' + '}' + 'return (s.' + STACK + ' = true) && s;' + '};'
 			},
 
 			// An ordered token registry for the scanner.
@@ -2519,7 +2562,7 @@ module['can/view/mustache/mustache.js'] = (function (can) {
 					// Get the template name and call back into the render method,
 					// passing the name and the current context.
 					var templateName = can.trim(content.replace(/^>\s?/, '')).replace(/["|']/g, "");
-					return "can.Mustache.render('" + templateName + "', " + CONTEXT_STACK + ".pop())";
+					return "options.partials && options.partials['" + templateName + "'] ? can.Mustache.renderPartial(options.partials['" + templateName + "']," + CONTEXT_STACK + ".pop(),options) : can.Mustache.render('" + templateName + "', " + CONTEXT_STACK + ")";
 				}
 			},
 
@@ -2748,7 +2791,7 @@ module['can/view/mustache/mustache.js'] = (function (can) {
 						});
 
 						// Start the content render block.
-						result.push('can.Mustache.txt(' + CONTEXT_STACK + ',' + (mode ? '"' + mode + '"' : 'null') + ',');
+						result.push('can.Mustache.txt(' + CONTEXT_OBJ + ',' + (mode ? '"' + mode + '"' : 'null') + ',');
 
 						// Iterate through the helper arguments, if there are any.
 						for (; arg = args[i]; i++) {
@@ -2769,7 +2812,7 @@ module['can/view/mustache/mustache.js'] = (function (can) {
 									}
 
 									// Add the key/value.
-									result.push(m[4], ':', m[6] ? m[6] : 'can.Mustache.get("' + m[5].replace(/"/g, '\\"') + '",' + CONTEXT_STACK + ')');
+									result.push(m[4], ':', m[6] ? m[6] : 'can.Mustache.get("' + m[5].replace(/"/g, '\\"') + '",' + CONTEXT_OBJ + ')');
 
 									// Close the hash if this was the last argument.
 									if (i == args.length - 1) {
@@ -2783,7 +2826,7 @@ module['can/view/mustache/mustache.js'] = (function (can) {
 								// Include the reference name.
 								arg.replace(/"/g, '\\"') + '",' +
 								// Then the stack of context.
-								CONTEXT_STACK +
+								CONTEXT_OBJ +
 								// Flag as a helper method to aid performance, 
 								// if it is a known helper (anything with > 0 arguments).
 								(i == 0 && args.length > 1 ? ',true' : ',false') + (i > 0 ? ',true' : ',false') + ')');
@@ -2835,30 +2878,17 @@ module['can/view/mustache/mustache.js'] = (function (can) {
 			options = can.extend.apply(can, [{
 				fn: function () {},
 				inverse: function () {}
-			}].concat(mode ? args.pop() : [])),
-			// An array of arguments to check for truthyness when evaluating sections.
-			validArgs = args.length ? args : [name],
-			// Whether the arguments meet the condition of the section.
-			valid = true,
-			result = [],
-			i, helper;
+			}].concat(mode ? args.pop() : []));
 
-		// Validate the arguments based on the section mode.
-		if (mode) {
-			for (i = 0; i < validArgs.length; i++) {
-				// Array-like objects are falsey if their length = 0.
-				if (isArrayLike(validArgs[i])) {
-					valid = mode == '#' ? valid && !! validArgs[i].length : mode == '^' ? valid && !validArgs[i].length : valid;
-				}
-				// Otherwise just check if it is truthy or not.
-				else {
-					valid = mode == '#' ? valid && !! validArgs[i] : mode == '^' ? valid && !validArgs[i] : valid;
-				}
-			}
+
+		var extra = {};
+		if (context.context) {
+			extra = context.options;
+			context = context.context;
 		}
 
 		// Check for a registered helper or a helper-like function.
-		if (helper = (Mustache.getHelper(name) || (can.isFunction(name) && {
+		if (helper = (Mustache.getHelper(name, extra) || (can.isFunction(name) && !name.isComputed && {
 			fn: name
 		}))) {
 			// Use the most recent context as `this` for the helper.
@@ -2880,6 +2910,40 @@ module['can/view/mustache/mustache.js'] = (function (can) {
 			return helper.fn.apply(context, args) || '';
 		}
 
+		// if a compute, get the value
+		if (can.isFunction(name) && name.isComputed) {
+			name = name();
+		}
+
+		// An array of arguments to check for truthyness when evaluating sections.
+		var validArgs = args.length ? args : [name],
+			// Whether the arguments meet the condition of the section.
+			valid = true,
+			result = [],
+			i, helper, argIsObserve, arg;
+		// Validate the arguments based on the section mode.
+		if (mode) {
+			for (i = 0; i < validArgs.length; i++) {
+				arg = validArgs[i];
+				argIsObserve = typeof arg !== 'undefined' && isObserve(arg);
+				// Array-like objects are falsey if their length = 0.
+				if (isArrayLike(arg)) {
+					// Use .attr to trigger binding on empty lists returned from function
+					if (mode == '#') {
+						valid = valid && !! (argIsObserve ? arg.attr('length') : arg.length);
+					} else if (mode == '^') {
+						valid = valid && !(argIsObserve ? arg.attr('length') : arg.length);
+					}
+				}
+				// Otherwise just check if it is truthy or not.
+				else {
+					valid = mode == '#' ? valid && !! arg : mode == '^' ? valid && !arg : valid;
+				}
+			}
+		}
+
+
+
 		// Otherwise interpolate like normal.
 		if (valid) {
 			switch (mode) {
@@ -2887,8 +2951,14 @@ module['can/view/mustache/mustache.js'] = (function (can) {
 			case '#':
 				// Iterate over arrays
 				if (isArrayLike(name)) {
+					var isObserveList = isObserve(name);
+
+					// Add the reference to the list in the contexts.
 					for (i = 0; i < name.length; i++) {
 						result.push(options.fn.call(name[i] || {}, context) || '');
+
+						// Ensure that live update works on observable lists
+						isObserveList && name.attr('' + i);
 					}
 					return result.join('');
 				}
@@ -2916,6 +2986,8 @@ module['can/view/mustache/mustache.js'] = (function (can) {
 
 
 	Mustache.get = function (ref, contexts, isHelper, isArgument) {
+		var options = contexts.options || {};
+		contexts = contexts.context || contexts;
 		// Split the reference (like `a.b.c`) into an array of key names.
 		var names = ref.split('.'),
 			namesLength = names.length,
@@ -2976,34 +3048,41 @@ module['can/view/mustache/mustache.js'] = (function (can) {
 
 				// Found a matched reference.
 				if (value !== undefined) {
-					if (can.isFunction(lastValue[name]) && isArgument && (!lastValue[name].isComputed)) {
+					if (can.isFunction(lastValue[name]) && isArgument) {
 						// Don't execute functions if they are parameters for a helper and are not a can.compute
-						return lastValue[name];
+						// Need to bind it to the original context so that that information doesn't get lost by the helper
+						return function () {
+							return lastValue[name].apply(lastValue, arguments);
+						};
 					} else if (can.isFunction(lastValue[name])) {
 						// Support functions stored in objects.
 						return lastValue[name]();
 					}
+					// Invoke the length to ensure that Observe.List events fire.
+					else if (isObserve(value) && isArrayLike(value) && value.attr('length')) {
+						return value;
+					}
 					// Add support for observes
 					else if (isObserve(lastValue)) {
-						return lastValue.attr(name);
+						return lastValue.compute(name);
 					}
 					else {
-						// Invoke the length to ensure that Observe.List events fire.
-						isObserve(value) && isArrayLike(value) && value.attr('length');
 						return value;
 					}
 				}
 			}
 		}
-		if (defaultObserve) {
-			return defaultObserve.attr(defaultObserveName);
+		if (defaultObserve &&
+		// if there's not a helper by this name and no attribute with this name
+		!(Mustache.getHelper(ref) && can.inArray(defaultObserveName, can.Observe.keys(defaultObserve)) === -1)) {
+			return defaultObserve.compute(defaultObserveName);
 		}
 		// Support helper-like functions as anonymous helpers
 		if (obj !== undefined && can.isFunction(obj[ref])) {
 			return obj[ref];
 		}
 		// Support helpers without arguments, but only if there wasn't a matching data reference.
-		else if (value = Mustache.getHelper(ref)) {
+		else if (value = Mustache.getHelper(ref, options)) {
 			return ref;
 		}
 
@@ -3037,8 +3116,10 @@ module['can/view/mustache/mustache.js'] = (function (can) {
 	};
 
 
-	Mustache.getHelper = function (name) {
-		return this._helpers[name]
+	Mustache.getHelper = function (name, options) {
+		return options && options.helpers && options.helpers[name] && {
+			fn: options.helpers[name]
+		} || this._helpers[name]
 		for (var i = 0, helper; helper = [i]; i++) {
 			// Find the correct helper
 			if (helper.name == name) {
@@ -3059,6 +3140,10 @@ module['can/view/mustache/mustache.js'] = (function (can) {
 		// Call into `can.view.render` passing the
 		// partial and context.
 		return can.view.render(partial, context);
+	};
+
+	Mustache.renderPartial = function (partial, context, options) {
+		return partial.render ? partial.render(context, options) : partial(context, options);
 	};
 
 	// The built-in Mustache helpers.
@@ -3377,14 +3462,7 @@ module['can/observe/observe.js'] = (function (can) {
 		batchEvents = [],
 		stopCallbacks = [];
 
-	var cid = 0;
-	can.cid = function (object, name) {
-		if (object._cid) {
-			return object._cid
-		} else {
-			return object._cid = (name || "") + (++cid)
-		}
-	}
+
 
 
 	var Observe = can.Observe = can.Construct({
@@ -3566,7 +3644,6 @@ module['can/observe/observe.js'] = (function (can) {
 				if (this.__convert) {
 					value = this.__convert(prop, value)
 				}
-
 				this.__set(prop, value, current)
 			} else {
 				throw "can.Observe: Object does not exist"
@@ -3618,6 +3695,7 @@ module['can/observe/observe.js'] = (function (can) {
 			}
 		},
 
+
 		bind: bind,
 
 		unbind: unbind,
@@ -3636,7 +3714,7 @@ module['can/observe/observe.js'] = (function (can) {
 			var prop, self = this,
 				newVal;
 			Observe.startBatch();
-			this.each(function (curVal, prop, toRemove) {
+			this.each(function (curVal, prop) {
 				newVal = props[prop];
 
 				// If we are merging...
@@ -3644,24 +3722,22 @@ module['can/observe/observe.js'] = (function (can) {
 					remove && self.removeAttr(prop);
 					return;
 				}
+
 				if (self.__convert) {
-					newVal = self.__convert(prop, newVal);
+					newVal = self.__convert(prop, newVal)
 				}
 
-				if (curVal !== newVal) {
-					if (curVal instanceof can.Observe && newVal instanceof can.Observe) {
-						unhookup([curVal], self._cid);
-					}
-
-					if (newVal instanceof can.Observe) {
-						self._set(prop, newVal)
-					}
-					else if (canMakeObserve(curVal) && canMakeObserve(newVal)) {
-						curVal.attr(newVal, toRemove)
-					} else if (curVal != newVal) {
-						self._set(prop, newVal)
-					}
+				// if we're dealing with models, want to call _set to let converter run
+				if (newVal instanceof can.Observe) {
+					self.__set(prop, newVal, curVal)
+					// if its an object, let attr merge
+				} else if (canMakeObserve(curVal) && canMakeObserve(newVal) && curVal.attr) {
+					curVal.attr(newVal, remove)
+					// otherwise just set
+				} else if (curVal != newVal) {
+					self.__set(prop, newVal, curVal)
 				}
+
 				delete props[prop];
 			})
 			// Add remaining props.
@@ -3692,7 +3768,7 @@ module['can/observe/observe.js'] = (function (can) {
 				this.length = 0;
 				can.cid(this, ".observe")
 				this._init = 1;
-				this.push.apply(this, instances || []);
+				this.push.apply(this, can.makeArray(instances || []));
 				this.bind('change' + this._cid, can.proxy(this._changes, this));
 				can.extend(this, options);
 				delete this._init;
@@ -4180,7 +4256,7 @@ module['can/model/model.js'] = (function (can) {
 
 
 
-				if (res.length > 0) {
+				if (res.length) {
 					res.splice(0);
 				}
 
@@ -4209,7 +4285,7 @@ module['can/model/model.js'] = (function (can) {
 					attributes = attributes.serialize();
 				}
 				var id = attributes[this.id],
-					model = id && this.store[id] ? this.store[id].attr(attributes) : new this(attributes);
+					model = (id || id === 0) && this.store[id] ? this.store[id].attr(attributes, this.removeAttr || false) : new this(attributes);
 				if (this._reqs) {
 					this.store[attributes[this.id]] = model;
 				}
@@ -4229,6 +4305,12 @@ module['can/model/model.js'] = (function (can) {
 			},
 
 			destroy: function (success, error) {
+				if (this.isNew()) {
+					var self = this;
+					return can.Deferred().done(function (data) {
+						self.destroyed(data)
+					}).resolve(self);
+				}
 				return makeRequest(this, 'destroy', success, error, 'destroyed');
 			},
 
@@ -4441,7 +4523,10 @@ module['can/observe/attributes/attributes.js'] = (function (can, Observe) {
 					return parseFloat(val);
 				},
 				"boolean": function (val) {
-					return Boolean(val === "false" ? 0 : val);
+					if (val === 'false' || val === '0' || !val) {
+						return false;
+					}
+					return true;
 				},
 				"default": function (val, oldVal, error, type) {
 					var construct = can.getObject(type),
@@ -4801,7 +4886,7 @@ module['can/observe/setter/setter.js'] = (function (can) {
 		// call the setter, if returned value is undefined,
 		// this means the setter is async so we 
 		// do not call update property and return right away
-		(value = this[setName](value, function () {
+		(value = this[setName](value, function (value) {
 			old.call(self, prop, value, current, success, errorCallback)
 		}, errorCallback)) === undefined) {
 			return;
@@ -4904,7 +4989,7 @@ module['can/observe/validations/validations.js'] = (function (can) {
 
 			validateFormatOf: function (attrNames, regexp, options) {
 				validate.call(this, attrNames, options, function (value) {
-					if ((typeof value != 'undefined' && value != '') && String(value).match(regexp) == null) {
+					if ((typeof value !== 'undefined' && value !== null && value !== '') && String(value).match(regexp) == null) {
 						return this.constructor.validationMessages.format;
 					}
 				});
@@ -4928,9 +5013,9 @@ module['can/observe/validations/validations.js'] = (function (can) {
 
 			validateLengthOf: function (attrNames, min, max, options) {
 				validate.call(this, attrNames, options, function (value) {
-					if ((typeof value == 'undefined' && min > 0) || value.length < min) {
+					if (((typeof value === 'undefined' || value === null) && min > 0) || (typeof value !== 'undefined' && value !== null && value.length < min)) {
 						return this.constructor.validationMessages.lengthShort + " (min=" + min + ")";
-					} else if (typeof value != 'undefined' && value.length > max) {
+					} else if (typeof value != 'undefined' && value !== null && value.length > max) {
 						return this.constructor.validationMessages.lengthLong + " (max=" + max + ")";
 					}
 				});
@@ -4948,7 +5033,7 @@ module['can/observe/validations/validations.js'] = (function (can) {
 
 			validateRangeOf: function (attrNames, low, hi, options) {
 				validate.call(this, attrNames, options, function (value) {
-					if (typeof value != 'undefined' && value < low || value > hi) {
+					if (((typeof value == 'undefined' || value === null) && low > 0) || (typeof value !== 'undefined' && value !== null && (value < low || value > hi))) {
 						return this.constructor.validationMessages.range + " [" + low + "," + hi + "]";
 					}
 				});
@@ -4957,7 +5042,6 @@ module['can/observe/validations/validations.js'] = (function (can) {
 	});
 
 	can.extend(can.Observe.prototype, {
-
 
 		errors: function (attrs, newVal) {
 			// convert attrs to an array
@@ -4995,7 +5079,7 @@ module['can/observe/validations/validations.js'] = (function (can) {
 					attr = funcs;
 					funcs = validations[attr];
 				}
-				// add errors to the 
+				// add errors to the
 				addErrors(attr, funcs || []);
 			});
 
@@ -5359,6 +5443,12 @@ module['can/route/route.js'] = (function (can) {
 	});
 	// `onready` event...
 	can.bind.call(document, "ready", can.route.ready);
+
+	// Libraries other than jQuery don't execute the document `ready` listener
+	// if we are already DOM ready
+	if ((document.readyState === 'complete' || document.readyState === "interactive") && onready) {
+		can.route.ready();
+	}
 
 	// extend route to have a similar property 
 	// that is often checked in mustache to determine

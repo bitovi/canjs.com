@@ -1,7 +1,7 @@
-/*
-* CanJS - 1.1.3 (2012-12-11)
+/*!
+* CanJS - 1.1.4 (2013-02-05)
 * http://canjs.us/
-* Copyright (c) 2012 Bitovi
+* Copyright (c) 2013 Bitovi
 * Licensed MIT
 */
 define(['can/view', 'can/util/string'], function (can) {
@@ -16,11 +16,12 @@ define(['can/view', 'can/util/string'], function (can) {
 	var attrMap = {
 		"class": "className",
 		"value": "value",
+		"innerText": "innerText",
 		"textContent": "textContent"
 	},
 		tagMap = {
 			"": "span",
-			table: "tr",
+			table: "tbody",
 			tr: "td",
 			ol: "li",
 			ul: "li",
@@ -33,7 +34,7 @@ define(['can/view', 'can/util/string'], function (can) {
 		attributePlaceholder = '__!!__',
 		attributeReplace = /__!!__/g,
 		tagToContentPropMap = {
-			option: "textContent",
+			option: "textContent" in document.createElement("option") ? "textContent" : "innerText",
 			textarea: "value"
 		},
 		bool = can.each(["checked", "disabled", "readonly", "required"], function (n) {
@@ -51,7 +52,7 @@ define(['can/view', 'can/util/string'], function (can) {
 			if (prop) {
 				// set the value as true / false
 				el[prop] = can.inArray(attrName, bool) > -1 ? true : val;
-				if (prop === "value" && tagName === "input") {
+				if (prop === "value" && (tagName === "input" || tagName === "textarea")) {
 					el.defaultValue = val;
 				}
 			} else {
@@ -307,8 +308,15 @@ define(['can/view', 'can/util/string'], function (can) {
 							nodeList = nodes;
 							can.view.registerNode(nodes);
 						} else {
-							can.remove(can.$(nodes));
+							// Update node Array's to point to new nodes
+							// and then remove the old nodes.
+							// It has to be in this order for Mootools
+							// and IE because somehow, after an element
+							// is removed from the DOM, it loses its
+							// expando values.
+							var nodesToRemove = can.makeArray(nodes);
 							can.view.replace(nodes, newNodes);
+							can.remove(can.$(nodesToRemove));
 						}
 					};
 					// nodes are the nodes that any updates will replace

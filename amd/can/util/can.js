@@ -1,7 +1,7 @@
-/*
-* CanJS - 1.1.3 (2012-12-11)
+/*!
+* CanJS - 1.1.4 (2013-02-05)
 * http://canjs.us/
-* Copyright (c) 2012 Bitovi
+* Copyright (c) 2013 Bitovi
 * Licensed MIT
 */
 define(function () {
@@ -16,5 +16,14 @@ define(function () {
 		// Returns `true` if something looks like a deferred.
 		return obj && isFunction(obj.then) && isFunction(obj.pipe);
 	};
+
+	var cid = 0;
+	can.cid = function (object, name) {
+		if (object._cid) {
+			return object._cid
+		} else {
+			return object._cid = (name || "") + (++cid)
+		}
+	}
 	return can;
 });

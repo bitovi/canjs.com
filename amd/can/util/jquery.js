@@ -1,7 +1,7 @@
-/*
-* CanJS - 1.1.3 (2012-12-11)
+/*!
+* CanJS - 1.1.4 (2013-02-05)
 * http://canjs.us/
-* Copyright (c) 2012 Bitovi
+* Copyright (c) 2013 Bitovi
 * Licensed MIT
 */
 define(['jquery', 'can/util/can', 'can/util/array/each'], function ($, can) {
@@ -23,9 +23,19 @@ define(['jquery', 'can/util/can', 'can/util/array/each'], function ($, can) {
 			return this;
 		},
 		// jquery caches fragments, we always needs a new one
-		buildFragment: function (result, element) {
-			var ret = $.buildFragment([result], $(element));
-			return ret.cacheable ? $.clone(ret.fragment) : ret.fragment;
+		buildFragment: function (elems, context) {
+			var oldFragment = $.buildFragment,
+				ret;
+
+			elems = [elems];
+			// Set context per 1.8 logic
+			context = context || document;
+			context = !context.nodeType && context[0] || context;
+			context = context.ownerDocument || context;
+
+			ret = oldFragment.call(jQuery, elems, context);
+
+			return ret.cacheable ? $.clone(ret.fragment) : ret.fragment || ret;
 		},
 		$: $,
 		each: can.each

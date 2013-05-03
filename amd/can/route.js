@@ -1,7 +1,7 @@
-/*
-* CanJS - 1.1.3 (2012-12-11)
+/*!
+* CanJS - 1.1.4 (2013-02-05)
 * http://canjs.us/
-* Copyright (c) 2012 Bitovi
+* Copyright (c) 2013 Bitovi
 * Licensed MIT
 */
 define(['can/util/library', 'can/observe', 'can/util/string/deparam'], function (can) {
@@ -305,6 +305,12 @@ define(['can/util/library', 'can/observe', 'can/util/string/deparam'], function 
 	});
 	// `onready` event...
 	can.bind.call(document, "ready", can.route.ready);
+
+	// Libraries other than jQuery don't execute the document `ready` listener
+	// if we are already DOM ready
+	if ((document.readyState === 'complete' || document.readyState === "interactive") && onready) {
+		can.route.ready();
+	}
 
 	// extend route to have a similar property 
 	// that is often checked in mustache to determine

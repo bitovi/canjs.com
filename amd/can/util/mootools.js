@@ -1,10 +1,10 @@
-/*
-* CanJS - 1.1.3 (2012-12-11)
+/*!
+* CanJS - 1.1.4 (2013-02-05)
 * http://canjs.us/
-* Copyright (c) 2012 Bitovi
+* Copyright (c) 2013 Bitovi
 * Licensed MIT
 */
-define(['can/util/can', 'mootools', 'can/util/event', 'can/util/fragment', 'can/util/deferred', 'can/util/array/each', 'can/util/object/isplain', 'can/util/object/extend'], function (can) {
+define(['can/util/can', 'mootools', 'can/util/event', 'can/util/fragment', 'can/util/deferred', 'can/util/array/each', 'can/util/object/isplain', '../hashchange'], function (can) {
 	// mootools.js
 	// ---------
 	// _MooTools node list._
@@ -12,6 +12,73 @@ define(['can/util/can', 'mootools', 'can/util/event', 'can/util/fragment', 'can/
 	can.trim = function (s) {
 		return s && s.trim()
 	}
+
+	// This extend() function is ruthlessly and shamelessly stolen from
+	// jQuery 1.8.2:, lines 291-353.
+	var extend = function () {
+		var options, name, src, copy, copyIsArray, clone, target = arguments[0] || {},
+			i = 1,
+			length = arguments.length,
+			deep = false;
+
+		// Handle a deep copy situation
+		if (typeof target === "boolean") {
+			deep = target;
+			target = arguments[1] || {};
+			// skip the boolean and the target
+			i = 2;
+		}
+
+		// Handle case when target is a string or something (possible in deep copy)
+		if (typeof target !== "object" && !can.isFunction(target)) {
+			target = {};
+		}
+
+		// extend jQuery itself if only one argument is passed
+		if (length === i) {
+			target = this;
+			--i;
+		}
+
+		for (; i < length; i++) {
+			// Only deal with non-null/undefined values
+			if ((options = arguments[i]) != null) {
+				// Extend the base object
+				for (name in options) {
+					src = target[name];
+					copy = options[name];
+
+					// Prevent never-ending loop
+					if (target === copy) {
+						continue;
+					}
+
+					// Recurse if we're merging plain objects or arrays
+					if (deep && copy && (can.isPlainObject(copy) || (copyIsArray = can.isArray(copy)))) {
+						if (copyIsArray) {
+							copyIsArray = false;
+							clone = src && can.isArray(src) ? src : [];
+
+						} else {
+							clone = src && can.isPlainObject(src) ? src : {};
+						}
+
+						// Never move original objects, clone them
+						target[name] = can.extend(deep, clone, copy);
+
+						// Don't bring in undefined values
+					} else if (copy !== undefined) {
+						target[name] = copy;
+					}
+				}
+			}
+		}
+
+		// Return the modified object
+		return target;
+	};
+
+	can.extend = extend;
 
 	// Map array helpers.
 	can.makeArray = function (item) {
@@ -62,13 +129,17 @@ define(['can/util/can', 'mootools', 'can/util/event', 'can/util/fragment', 'can/
 	can.isFunction = function (f) {
 		return typeOf(f) == 'function'
 	}
+
 	// Make this object so you can bind on it.
 	can.bind = function (ev, cb) {
+
 		// If we can bind to it...
 		if (this.bind && this.bind !== can.bind) {
 			this.bind(ev, cb)
 		} else if (this.addEvent) {
-			this.addEvent(ev, cb)
+			this.addEvent(ev, cb);
+		} else if (this.nodeName && this.nodeType == 1) {
+			$(this).addEvent(ev, cb)
 		} else {
 			// Make it bind-able...
 			can.addEvent.call(this, ev, cb)
@@ -81,6 +152,9 @@ define(['can/util/can', 'mootools', 'can/util/event', 'can/util/fragment', 'can/
 			this.unbind(ev, cb)
 		} else if (this.removeEvent) {
 			this.removeEvent(ev, cb)
+		}
+		if (this.nodeName && this.nodeType == 1) {
+			$(this).removeEvent(ev, cb)
 		} else {
 			// Make it bind-able...
 			can.removeEvent.call(this, ev, cb)
@@ -116,7 +190,6 @@ define(['can/util/can', 'mootools', 'can/util/event', 'can/util/fragment', 'can/
 				}
 
 			}
-
 
 		} else {
 			if (typeof event === 'string') {
@@ -275,13 +348,12 @@ define(['can/util/can', 'mootools', 'can/util/event', 'can/util/fragment', 'can/
 	// IE barfs if text node.
 	var idOf = Slick.uidOf;
 	Slick.uidOf = function (node) {
-		if (node.nodeType === 1 || node === window) {
+		// for some reason, in IE8, node will be the window but not equal it.
+		if (node.nodeType === 1 || node === window || node.document === document) {
 			return idOf(node);
 		} else {
 			return Math.random();
 		}
-
-
 	}
 
 	return can;

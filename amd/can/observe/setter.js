@@ -1,7 +1,7 @@
-/*
-* CanJS - 1.1.3 (2012-12-11)
+/*!
+* CanJS - 1.1.4 (2013-02-05)
 * http://canjs.us/
-* Copyright (c) 2012 Bitovi
+* Copyright (c) 2013 Bitovi
 * Licensed MIT
 */
 define(['can/util/library', 'can/observe/attributes'], function (can) {
@@ -45,7 +45,7 @@ define(['can/util/library', 'can/observe/attributes'], function (can) {
 		// call the setter, if returned value is undefined,
 		// this means the setter is async so we 
 		// do not call update property and return right away
-		(value = this[setName](value, function () {
+		(value = this[setName](value, function (value) {
 			old.call(self, prop, value, current, success, errorCallback)
 		}, errorCallback)) === undefined) {
 			return;

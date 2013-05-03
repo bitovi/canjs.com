@@ -1,7 +1,7 @@
-/*
-* CanJS - 1.1.3 (2012-12-11)
+/*!
+* CanJS - 1.1.4 (2013-02-05)
 * http://canjs.us/
-* Copyright (c) 2012 Bitovi
+* Copyright (c) 2013 Bitovi
 * Licensed MIT
 */
 define(['can/util/library'], function (can) {
@@ -30,14 +30,18 @@ define(['can/util/library'], function (can) {
 					callback(pipe(frag));
 				} : null,
 				// Get the result.
-				result = $view.render(view, data, helpers, wrapCallback);
+				result = $view.render(view, data, helpers, wrapCallback),
+				deferred = can.Deferred();
 
 			if (isFunction(result)) {
 				return result;
 			}
 
 			if (can.isDeferred(result)) {
-				return result.pipe(pipe);
+				result.done(function (result, data) {
+					deferred.resolve.call(deferred, pipe(result), data);
+				});
+				return deferred;
 			}
 
 			// Convert it into a dom frag.
@@ -386,9 +390,13 @@ define(['can/util/library'], function (can) {
 			$view.cached[id] = new can.Deferred().resolve(function (data, helpers) {
 				return renderer.call(data, data, helpers);
 			});
-			return function () {
-				return $view.frag(renderer.apply(this, arguments))
-			};
+
+			function frag() {
+				return $view.frag(renderer.apply(this, arguments));
+			}
+			// expose the renderer for mustache
+			frag.render = renderer;
+			return frag;
 		}
 
 	});

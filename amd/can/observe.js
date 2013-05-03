@@ -1,7 +1,7 @@
-/*
-* CanJS - 1.1.3 (2012-12-11)
+/*!
+* CanJS - 1.1.4 (2013-02-05)
 * http://canjs.us/
-* Copyright (c) 2012 Bitovi
+* Copyright (c) 2013 Bitovi
 * Licensed MIT
 */
 define(['can/util/library', 'can/construct'], function (can) {
@@ -104,14 +104,7 @@ define(['can/util/library', 'can/construct'], function (can) {
 		batchEvents = [],
 		stopCallbacks = [];
 
-	var cid = 0;
-	can.cid = function (object, name) {
-		if (object._cid) {
-			return object._cid
-		} else {
-			return object._cid = (name || "") + (++cid)
-		}
-	}
+
 
 
 	var Observe = can.Observe = can.Construct({
@@ -293,7 +286,6 @@ define(['can/util/library', 'can/construct'], function (can) {
 				if (this.__convert) {
 					value = this.__convert(prop, value)
 				}
-
 				this.__set(prop, value, current)
 			} else {
 				throw "can.Observe: Object does not exist"
@@ -345,6 +337,7 @@ define(['can/util/library', 'can/construct'], function (can) {
 			}
 		},
 
+
 		bind: bind,
 
 		unbind: unbind,
@@ -363,7 +356,7 @@ define(['can/util/library', 'can/construct'], function (can) {
 			var prop, self = this,
 				newVal;
 			Observe.startBatch();
-			this.each(function (curVal, prop, toRemove) {
+			this.each(function (curVal, prop) {
 				newVal = props[prop];
 
 				// If we are merging...
@@ -371,24 +364,22 @@ define(['can/util/library', 'can/construct'], function (can) {
 					remove && self.removeAttr(prop);
 					return;
 				}
+
 				if (self.__convert) {
-					newVal = self.__convert(prop, newVal);
+					newVal = self.__convert(prop, newVal)
 				}
 
-				if (curVal !== newVal) {
-					if (curVal instanceof can.Observe && newVal instanceof can.Observe) {
-						unhookup([curVal], self._cid);
-					}
-
-					if (newVal instanceof can.Observe) {
-						self._set(prop, newVal)
-					}
-					else if (canMakeObserve(curVal) && canMakeObserve(newVal)) {
-						curVal.attr(newVal, toRemove)
-					} else if (curVal != newVal) {
-						self._set(prop, newVal)
-					}
+				// if we're dealing with models, want to call _set to let converter run
+				if (newVal instanceof can.Observe) {
+					self.__set(prop, newVal, curVal)
+					// if its an object, let attr merge
+				} else if (canMakeObserve(curVal) && canMakeObserve(newVal) && curVal.attr) {
+					curVal.attr(newVal, remove)
+					// otherwise just set
+				} else if (curVal != newVal) {
+					self.__set(prop, newVal, curVal)
 				}
+
 				delete props[prop];
 			})
 			// Add remaining props.
@@ -419,7 +410,7 @@ define(['can/util/library', 'can/construct'], function (can) {
 				this.length = 0;
 				can.cid(this, ".observe")
 				this._init = 1;
-				this.push.apply(this, instances || []);
+				this.push.apply(this, can.makeArray(instances || []));
 				this.bind('change' + this._cid, can.proxy(this._changes, this));
 				can.extend(this, options);
 				delete this._init;

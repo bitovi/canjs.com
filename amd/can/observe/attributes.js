@@ -1,7 +1,7 @@
-/*
-* CanJS - 1.1.3 (2012-12-11)
+/*!
+* CanJS - 1.1.4 (2013-02-05)
 * http://canjs.us/
-* Copyright (c) 2012 Bitovi
+* Copyright (c) 2013 Bitovi
 * Licensed MIT
 */
 define(['can/util/library', 'can/observe'], function (can, Observe) {
@@ -32,7 +32,10 @@ define(['can/util/library', 'can/observe'], function (can, Observe) {
 					return parseFloat(val);
 				},
 				"boolean": function (val) {
-					return Boolean(val === "false" ? 0 : val);
+					if (val === 'false' || val === '0' || !val) {
+						return false;
+					}
+					return true;
 				},
 				"default": function (val, oldVal, error, type) {
 					var construct = can.getObject(type),

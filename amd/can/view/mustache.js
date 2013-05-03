@@ -1,7 +1,7 @@
-/*
-* CanJS - 1.1.3 (2012-12-11)
+/*!
+* CanJS - 1.1.4 (2013-02-05)
 * http://canjs.us/
-* Copyright (c) 2012 Bitovi
+* Copyright (c) 2013 Bitovi
 * Licensed MIT
 */
 define(['can/util/library', 'can/view', 'can/view/scanner', 'can/observe/compute', 'can/view/render'], function (can) {
@@ -26,10 +26,11 @@ define(['can/util/library', 'can/view', 'can/view/scanner', 'can/observe/compute
 		STACK = '___st4ck',
 		// An alias for the most used context stacking call.
 		CONTEXT_STACK = STACK + '(' + CONTEXT + ',this)',
+		CONTEXT_OBJ = '{context:' + CONTEXT_STACK + ',options:options}',
 
 
 		isObserve = function (obj) {
-			return can.isFunction(obj.attr) && obj.constructor && !! obj.constructor.canMakeObserve;
+			return obj !== null && can.isFunction(obj.attr) && obj.constructor && !! obj.constructor.canMakeObserve;
 		},
 
 
@@ -38,13 +39,13 @@ define(['can/util/library', 'can/view', 'can/view/scanner', 'can/observe/compute
 		},
 
 		// ## Mustache
-		Mustache = function (options) {
+		Mustache = function (options, helpers) {
 			// Support calling Mustache without the constructor.
 			// This returns a function that renders the template.
 			if (this.constructor != Mustache) {
 				var mustache = new Mustache(options);
-				return function (data) {
-					return mustache.render(data);
+				return function (data, options) {
+					return mustache.render(data, options);
 				};
 			}
 
@@ -69,10 +70,15 @@ define(['can/util/library', 'can/view', 'can/view/scanner', 'can/observe/compute
 
 	Mustache.prototype.
 
-	render = function (object, extraHelpers) {
+	render = function (object, options) {
 		object = object || {};
+		options = options || {};
+		if (!options.helpers && !options.partials) {
+			options.helpers = options;
+		}
 		return this.template.fn.call(object, object, {
-			_data: object
+			_data: object,
+			options: options
 		});
 	};
 
@@ -83,7 +89,9 @@ define(['can/util/library', 'can/view', 'can/view/scanner', 'can/observe/compute
 			text: {
 				// This is the logic to inject at the beginning of a rendered template. 
 				// This includes initializing the `context` stack.
-				start: 'var ' + CONTEXT + ' = []; ' + CONTEXT + '.' + STACK + ' = true;' + 'var ' + STACK + ' = function(context, self) {' + 'var s;' + 'if (arguments.length == 1 && context) {' + 's = !context.' + STACK + ' ? [context] : context;' + '} else {' + 's = context && context.' + STACK + ' ? context.concat([self]) : ' + STACK + '(context).concat([self]);' + '}' + 'return (s.' + STACK + ' = true) && s;' + '};'
+				start: 'var ' + CONTEXT + ' = this && this.' + STACK + ' ? this : []; ' + CONTEXT + '.' + STACK + ' = true;' + 'var ' + STACK + ' = function(context, self) {' + 'var s;' + 'if (arguments.length == 1 && context) {' + 's = !context.' + STACK + ' ? [context] : context;' +
+				// Handle helpers with custom contexts (#228)
+				'} else if (!context.' + STACK + ') {' + 's = [self, context];' + '} else {' + 's = context && context.' + STACK + ' ? context.concat([self]) : ' + STACK + '(context).concat([self]);' + '}' + 'return (s.' + STACK + ' = true) && s;' + '};'
 			},
 
 			// An ordered token registry for the scanner.
@@ -164,7 +172,7 @@ define(['can/util/library', 'can/view', 'can/view/scanner', 'can/observe/compute
 					// Get the template name and call back into the render method,
 					// passing the name and the current context.
 					var templateName = can.trim(content.replace(/^>\s?/, '')).replace(/["|']/g, "");
-					return "can.Mustache.render('" + templateName + "', " + CONTEXT_STACK + ".pop())";
+					return "options.partials && options.partials['" + templateName + "'] ? can.Mustache.renderPartial(options.partials['" + templateName + "']," + CONTEXT_STACK + ".pop(),options) : can.Mustache.render('" + templateName + "', " + CONTEXT_STACK + ")";
 				}
 			},
 
@@ -393,7 +401,7 @@ define(['can/util/library', 'can/view', 'can/view/scanner', 'can/observe/compute
 						});
 
 						// Start the content render block.
-						result.push('can.Mustache.txt(' + CONTEXT_STACK + ',' + (mode ? '"' + mode + '"' : 'null') + ',');
+						result.push('can.Mustache.txt(' + CONTEXT_OBJ + ',' + (mode ? '"' + mode + '"' : 'null') + ',');
 
 						// Iterate through the helper arguments, if there are any.
 						for (; arg = args[i]; i++) {
@@ -414,7 +422,7 @@ define(['can/util/library', 'can/view', 'can/view/scanner', 'can/observe/compute
 									}
 
 									// Add the key/value.
-									result.push(m[4], ':', m[6] ? m[6] : 'can.Mustache.get("' + m[5].replace(/"/g, '\\"') + '",' + CONTEXT_STACK + ')');
+									result.push(m[4], ':', m[6] ? m[6] : 'can.Mustache.get("' + m[5].replace(/"/g, '\\"') + '",' + CONTEXT_OBJ + ')');
 
 									// Close the hash if this was the last argument.
 									if (i == args.length - 1) {
@@ -428,7 +436,7 @@ define(['can/util/library', 'can/view', 'can/view/scanner', 'can/observe/compute
 								// Include the reference name.
 								arg.replace(/"/g, '\\"') + '",' +
 								// Then the stack of context.
-								CONTEXT_STACK +
+								CONTEXT_OBJ +
 								// Flag as a helper method to aid performance, 
 								// if it is a known helper (anything with > 0 arguments).
 								(i == 0 && args.length > 1 ? ',true' : ',false') + (i > 0 ? ',true' : ',false') + ')');
@@ -480,30 +488,17 @@ define(['can/util/library', 'can/view', 'can/view/scanner', 'can/observe/compute
 			options = can.extend.apply(can, [{
 				fn: function () {},
 				inverse: function () {}
-			}].concat(mode ? args.pop() : [])),
-			// An array of arguments to check for truthyness when evaluating sections.
-			validArgs = args.length ? args : [name],
-			// Whether the arguments meet the condition of the section.
-			valid = true,
-			result = [],
-			i, helper;
+			}].concat(mode ? args.pop() : []));
 
-		// Validate the arguments based on the section mode.
-		if (mode) {
-			for (i = 0; i < validArgs.length; i++) {
-				// Array-like objects are falsey if their length = 0.
-				if (isArrayLike(validArgs[i])) {
-					valid = mode == '#' ? valid && !! validArgs[i].length : mode == '^' ? valid && !validArgs[i].length : valid;
-				}
-				// Otherwise just check if it is truthy or not.
-				else {
-					valid = mode == '#' ? valid && !! validArgs[i] : mode == '^' ? valid && !validArgs[i] : valid;
-				}
-			}
+
+		var extra = {};
+		if (context.context) {
+			extra = context.options;
+			context = context.context;
 		}
 
 		// Check for a registered helper or a helper-like function.
-		if (helper = (Mustache.getHelper(name) || (can.isFunction(name) && {
+		if (helper = (Mustache.getHelper(name, extra) || (can.isFunction(name) && !name.isComputed && {
 			fn: name
 		}))) {
 			// Use the most recent context as `this` for the helper.
@@ -525,6 +520,40 @@ define(['can/util/library', 'can/view', 'can/view/scanner', 'can/observe/compute
 			return helper.fn.apply(context, args) || '';
 		}
 
+		// if a compute, get the value
+		if (can.isFunction(name) && name.isComputed) {
+			name = name();
+		}
+
+		// An array of arguments to check for truthyness when evaluating sections.
+		var validArgs = args.length ? args : [name],
+			// Whether the arguments meet the condition of the section.
+			valid = true,
+			result = [],
+			i, helper, argIsObserve, arg;
+		// Validate the arguments based on the section mode.
+		if (mode) {
+			for (i = 0; i < validArgs.length; i++) {
+				arg = validArgs[i];
+				argIsObserve = typeof arg !== 'undefined' && isObserve(arg);
+				// Array-like objects are falsey if their length = 0.
+				if (isArrayLike(arg)) {
+					// Use .attr to trigger binding on empty lists returned from function
+					if (mode == '#') {
+						valid = valid && !! (argIsObserve ? arg.attr('length') : arg.length);
+					} else if (mode == '^') {
+						valid = valid && !(argIsObserve ? arg.attr('length') : arg.length);
+					}
+				}
+				// Otherwise just check if it is truthy or not.
+				else {
+					valid = mode == '#' ? valid && !! arg : mode == '^' ? valid && !arg : valid;
+				}
+			}
+		}
+
+
+
 		// Otherwise interpolate like normal.
 		if (valid) {
 			switch (mode) {
@@ -532,8 +561,14 @@ define(['can/util/library', 'can/view', 'can/view/scanner', 'can/observe/compute
 			case '#':
 				// Iterate over arrays
 				if (isArrayLike(name)) {
+					var isObserveList = isObserve(name);
+
+					// Add the reference to the list in the contexts.
 					for (i = 0; i < name.length; i++) {
 						result.push(options.fn.call(name[i] || {}, context) || '');
+
+						// Ensure that live update works on observable lists
+						isObserveList && name.attr('' + i);
 					}
 					return result.join('');
 				}
@@ -561,6 +596,8 @@ define(['can/util/library', 'can/view', 'can/view/scanner', 'can/observe/compute
 
 
 	Mustache.get = function (ref, contexts, isHelper, isArgument) {
+		var options = contexts.options || {};
+		contexts = contexts.context || contexts;
 		// Split the reference (like `a.b.c`) into an array of key names.
 		var names = ref.split('.'),
 			namesLength = names.length,
@@ -621,34 +658,41 @@ define(['can/util/library', 'can/view', 'can/view/scanner', 'can/observe/compute
 
 				// Found a matched reference.
 				if (value !== undefined) {
-					if (can.isFunction(lastValue[name]) && isArgument && (!lastValue[name].isComputed)) {
+					if (can.isFunction(lastValue[name]) && isArgument) {
 						// Don't execute functions if they are parameters for a helper and are not a can.compute
-						return lastValue[name];
+						// Need to bind it to the original context so that that information doesn't get lost by the helper
+						return function () {
+							return lastValue[name].apply(lastValue, arguments);
+						};
 					} else if (can.isFunction(lastValue[name])) {
 						// Support functions stored in objects.
 						return lastValue[name]();
 					}
+					// Invoke the length to ensure that Observe.List events fire.
+					else if (isObserve(value) && isArrayLike(value) && value.attr('length')) {
+						return value;
+					}
 					// Add support for observes
 					else if (isObserve(lastValue)) {
-						return lastValue.attr(name);
+						return lastValue.compute(name);
 					}
 					else {
-						// Invoke the length to ensure that Observe.List events fire.
-						isObserve(value) && isArrayLike(value) && value.attr('length');
 						return value;
 					}
 				}
 			}
 		}
-		if (defaultObserve) {
-			return defaultObserve.attr(defaultObserveName);
+		if (defaultObserve &&
+		// if there's not a helper by this name and no attribute with this name
+		!(Mustache.getHelper(ref) && can.inArray(defaultObserveName, can.Observe.keys(defaultObserve)) === -1)) {
+			return defaultObserve.compute(defaultObserveName);
 		}
 		// Support helper-like functions as anonymous helpers
 		if (obj !== undefined && can.isFunction(obj[ref])) {
 			return obj[ref];
 		}
 		// Support helpers without arguments, but only if there wasn't a matching data reference.
-		else if (value = Mustache.getHelper(ref)) {
+		else if (value = Mustache.getHelper(ref, options)) {
 			return ref;
 		}
 
@@ -682,8 +726,10 @@ define(['can/util/library', 'can/view', 'can/view/scanner', 'can/observe/compute
 	};
 
 
-	Mustache.getHelper = function (name) {
-		return this._helpers[name]
+	Mustache.getHelper = function (name, options) {
+		return options && options.helpers && options.helpers[name] && {
+			fn: options.helpers[name]
+		} || this._helpers[name]
 		for (var i = 0, helper; helper = [i]; i++) {
 			// Find the correct helper
 			if (helper.name == name) {
@@ -704,6 +750,10 @@ define(['can/util/library', 'can/view', 'can/view/scanner', 'can/observe/compute
 		// Call into `can.view.render` passing the
 		// partial and context.
 		return can.view.render(partial, context);
+	};
+
+	Mustache.renderPartial = function (partial, context, options) {
+		return partial.render ? partial.render(context, options) : partial(context, options);
 	};
 
 	// The built-in Mustache helpers.

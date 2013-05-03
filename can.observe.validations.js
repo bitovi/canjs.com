@@ -1,7 +1,7 @@
-/*
-* CanJS - 1.1.3 (2012-12-11)
+/*!
+* CanJS - 1.1.4 (2013-02-05)
 * http://canjs.us/
-* Copyright (c) 2012 Bitovi
+* Copyright (c) 2013 Bitovi
 * Licensed MIT
 */
 (function (can, window, undefined) {
@@ -96,7 +96,7 @@
 
 			validateFormatOf: function (attrNames, regexp, options) {
 				validate.call(this, attrNames, options, function (value) {
-					if ((typeof value != 'undefined' && value != '') && String(value).match(regexp) == null) {
+					if ((typeof value !== 'undefined' && value !== null && value !== '') && String(value).match(regexp) == null) {
 						return this.constructor.validationMessages.format;
 					}
 				});
@@ -120,9 +120,9 @@
 
 			validateLengthOf: function (attrNames, min, max, options) {
 				validate.call(this, attrNames, options, function (value) {
-					if ((typeof value == 'undefined' && min > 0) || value.length < min) {
+					if (((typeof value === 'undefined' || value === null) && min > 0) || (typeof value !== 'undefined' && value !== null && value.length < min)) {
 						return this.constructor.validationMessages.lengthShort + " (min=" + min + ")";
-					} else if (typeof value != 'undefined' && value.length > max) {
+					} else if (typeof value != 'undefined' && value !== null && value.length > max) {
 						return this.constructor.validationMessages.lengthLong + " (max=" + max + ")";
 					}
 				});
@@ -140,7 +140,7 @@
 
 			validateRangeOf: function (attrNames, low, hi, options) {
 				validate.call(this, attrNames, options, function (value) {
-					if (typeof value != 'undefined' && value < low || value > hi) {
+					if (((typeof value == 'undefined' || value === null) && low > 0) || (typeof value !== 'undefined' && value !== null && (value < low || value > hi))) {
 						return this.constructor.validationMessages.range + " [" + low + "," + hi + "]";
 					}
 				});
@@ -149,7 +149,6 @@
 	});
 
 	can.extend(can.Observe.prototype, {
-
 
 		errors: function (attrs, newVal) {
 			// convert attrs to an array
@@ -187,7 +186,7 @@
 					attr = funcs;
 					funcs = validations[attr];
 				}
-				// add errors to the 
+				// add errors to the
 				addErrors(attr, funcs || []);
 			});
 
