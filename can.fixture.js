@@ -1228,4 +1228,4 @@ var compareMethods = {
 	 */
 		//Expose this for fixture debugging
 	can.fixture.overwrites = overwrites;
-}( this.can, this, this ));
+}( this.can, this ));

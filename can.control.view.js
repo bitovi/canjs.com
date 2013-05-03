@@ -85,4 +85,4 @@
 		return can.view(view, data, helpers); //what about controllers in other folders?
 	};
 
-}( this.can, this, this ));
+}( this.can, this ));
