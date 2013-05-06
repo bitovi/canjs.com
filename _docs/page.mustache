@@ -1,13 +1,14 @@
 <div class="container api">
 	<nav class="sidebar">
 		{{#if enableSearch}}
-		<div class="search">
-			<input type="text"/>
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
 		</div>
 		{{/if}}
 		{{> menu.mustache}}
 	</nav>
-
 	<article class="content docs">
 		<section class="title">
 			{{> title.mustache}}

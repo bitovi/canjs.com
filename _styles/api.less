@@ -2,13 +2,9 @@
 .docs {
   .sidebar {
     width:  255px;
-    float: left;
     margin-top: 20px;
-    margin-bottom: -9000px;
-    padding-bottom: 9000px;
   }
   .content.docs {
-    float: left;
     width: 662px;
     margin-top: 20px;
     background-color: #fff;
@@ -16,8 +12,6 @@
     padding: 20px;
     border-left-style: none;
     border-bottom-style: none;
-    margin-bottom: -9000px;
-    padding-bottom: 9000px;
     
     ul, ol:not(.linenums) {
     	margin-left: 0;
@@ -30,8 +24,20 @@
   }
 }
 .container.api {
-  overflow: hidden;
+	display: table;
   border-bottom: 1px solid #d5d5d5;
+	padding-top: 20px;
+}
+.container.api > * {
+	display: table-cell !important;
+	vertical-align: top;
+}
+.search-wrapper {
+	position: relative;
+}
+.container.api > * {
+	display: table-cell !important;
+	vertical-align: top;
 }
 .search {
   display: block;
