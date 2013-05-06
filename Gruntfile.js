@@ -85,8 +85,8 @@ module.exports = function (grunt) {
 		generate: {
 			options: {
 				debug: true,
-				layout: '_layouts/page.mustache',
-				docs: '_docs/page.mustache',
+				layout: '_templates/page.mustache',
+				docs: '_templates/docs.mustache',
 				root: '',
 				package: require(__dirname + '/can/package.json'),
 				helpers: {
