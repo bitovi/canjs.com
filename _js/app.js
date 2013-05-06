@@ -40,6 +40,7 @@
 			'.index #hero-download': 'HeroDownloadCustomizer',
 			'.index .benefits': 'Benefits',
 			'.index .social': 'SocialStats',
+			'.index .example': 'LiveExample',
 			'.download .cdn': 'CDNChooser',
 			'.download .customize': 'DownloadCustomizer',
 			'.community .hero': 'CommunityTabs',
