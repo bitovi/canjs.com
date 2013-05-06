@@ -6560,18 +6560,16 @@ can.Control("CanJSUS.ContentsList", {
 
 		this.collectSignatures().each(function(ix) {
 			var h2 = $('h2', this);
-			sections.push({id: 'sig' + ix, text: h2.text()});
 			this.id = 'sig' + ix;
-			//sections.push(h2.text());
 			//this.id = encodeURIComponent(h2.text());
+			sections.push({id: this.id, text: h2.text()});
 		});
 
 		this.collectHeadings().each(function(ix) {
 			var el = $(this);
-			sections.push({id: 'section' + ix, text: el.text()});
 			this.id = 'section' + ix;
-			//sections.push(el.text());
 			//this.id = encodeURIComponent(el.text());
+			sections.push({id: this.id, text: el.text()});
 		});
 
 		this.element.html(can.view(
