@@ -2,7 +2,7 @@
 @parent Tutorial 5
 
 @body
-[Mustache](can.Mustache) provides logic-less templates that will live-bind to
+[Mustache](../docs/can.Mustache.html) provides logic-less templates that will live-bind to
 Observes. You can get Mustache functionality as a [plugin](http://canjs.us/release/latest/can.view.mustache.js)
 for CanJS. Mustach and Handlebar templates are both compatible with CanJS's
 Mustache implementation, so you can reuse any existing templates you have.
@@ -206,7 +206,7 @@ This might be used in a template like this:
 @codeend
 
 If a property of an observe is passed to a helper function, the helper will
-become a `[can.compute](can.compute)`. As an example, if you had this template:
+become a [can.compute](../docs/can.compute.html). As an example, if you had this template:
 
 @codestart
 &lt;script type="text/mustache" id="prefixedName">
@@ -231,7 +231,7 @@ The contents of the &lt;div> would be `Ms. Wonderland`.
 
 ### Global helpers
 
-You can register global helpers using `can.Mustache.registerHelper`:
+You can register global helpers using [can.Mustache.registerHelper](../docs/can.Mustache.registerHelper.html):
 
 @codestart
 can.Mustache.registerHelper('i10n', function(str, options) {

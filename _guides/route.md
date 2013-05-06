@@ -1,7 +1,7 @@
 @page Routing Routing
 @parent Tutorial 8
 
-`can.route` is the core of CanJS's routing functionality. It is a special
+[can.route](../docs/can.route.html) is the core of CanJS's routing functionality. It is a special
 Observe that updates `window.location.hash` when its properties change and
 updates its properties when `window.location.hash` changes. You can give
 `can.route` a template to translate URLs into property values, but if no route

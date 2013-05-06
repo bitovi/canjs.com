@@ -5,7 +5,7 @@ CanJS can be used with jQuery, Dojo, Mootools, YUI and Zepto and as AMD modules 
 
 ## AMD
 
-The [CanJS Download](http://canjs.us/downloads/can.js.{{page.version}}.zip) contains an `amd` folder which allows
+The [CanJS Download](../download.html) contains an `amd` folder which allows
 you to load any CanJS component and plugin using an AMD module loader like [RequireJS](http://requirejs.org/).
 jQuery will be the default library so make sure the `jquery` module id points to the jQuery source.
 Here is an example for jQuery and RequireJS:
@@ -116,9 +116,7 @@ jQuery events, so for those cases, a workaround should be applied:
 
 ## Dojo
 
-CanJS supports Dojo 1.8+ using its new AMD loader in asynchronous or synchronous mode. Everything described in the
-[using CanJS and AMD](#using_canjs-amd) section applies to Dojo as well. An example configuration that uses the AMD files
-from the CanJS CDN can look like this:
+CanJS supports Dojo 1.8+ using its new AMD loader in asynchronous or synchronous mode. Everything described in the [using CanJS and AMD](#AMD) section applies to Dojo as well. An example configuration that uses the AMD files from the CanJS CDN can look like this:
 
 @codestart
 require({

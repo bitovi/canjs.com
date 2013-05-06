@@ -5,7 +5,7 @@
 Observes made with can.Observe will let you set and remove properties like on
 normal objects, but they also emit events when properties change that you can
 listen to. Observes also make it easy to work with nested properties and get the
-events you expect. Both [can.Route] and [Models] are based on can.Observe, but
+events you expect. Both [can.Route](../docs/can.route.html) and [Models](../docs/can.Model.html) are based on can.Observe, but
 Observes are also useful on their own: for example, to maintain client-side
 state like pagination data.
 
@@ -41,7 +41,7 @@ pagination.attr(); // {page: 10, perPage: 50, count: 1388, lastVisited: 1}
 
 It might not make sense to get properties from an Observe using `attr` when you
 can read them directly, but when reading properties for use in a template with
-[can.view Views] or when using a property in a Compute, using `attr` tells the
+[can.view](../docs/can.view.html) or when using a property in a Compute, using `attr` tells the
 template or compute you want to watch that value in case it changes.
 
 Properties can be removed from Observes with `removeAttr`. This is the
@@ -74,7 +74,7 @@ paginate.bind('perPage', function(event, newVal, oldVal) {
 paginate.attr('perPage', 30);
 @codeend
 
-You can similarly stop listening to these events by using [unbind](can.Observe.unbind):
+You can similarly stop listening to these events by using [unbind](../docs/can.Observe.prototype.unbind.html):
 
 @codestart
 var timesChanged = 0,
@@ -112,26 +112,26 @@ can.Observe.List inherits from can.Observe, so a List works much the same way an
 Observe does, with the addition of several methods useful for working with
 arrays:
 
-- [indexOf](can.Observe.List.prototype.indexOf), which looks for an item in a
+- [indexOf](../docs/can.Observe.List.prototype.indexOf.html), which looks for an item in a
 List.
-- [pop](can.Observe.List.prototype.pop), which removes the last item from a
+- [pop](../docs/can.Observe.List.prototype.pop.html), which removes the last item from a
 List.
-- [push](can.Observe.List.prototype.push), which adds an item to the end of a
+- [push](../docs/can.Observe.List.prototype.push.html), which adds an item to the end of a
 List.
-- [shift](can.Observe.List.prototype.shift), which removes the first item from
+- [shift](../docs/can.Observe.List.prototype.shift.html), which removes the first item from
 a List.
-- [unshift](can.Observe.List.prototype.unshift), which adds an item to the front
+- [unshift](../docs/can.Observe.List.prototype.unshift.html), which adds an item to the front
 of a List.
-- [splice](can.Observe.List.prototype.splice), which removes and inserts items
+- [splice](../docs/can.Observe.List.prototype.splice.html), which removes and inserts items
 anywhere in a List.
 
-When these methods are used to modify a List, the appropriate events are emitted. See [the API for Lists](can.Observe.List) for more information on the
+When these methods are used to modify a List, the appropriate events are emitted. See [the API for Lists](../docs/can.Observe.List.html) for more information on the
 arguments passed to those event handlers.
 
 ## Observable values
 
 CanJS also provides a way to make values themselves observable with
-[can.compute](can.compute). A Compute represents a value that can be read, set,
+[can.compute](../docs/can.compute.html). A Compute represents a value that can be read, set,
 and listened to just like an Observe.
 
 ### Static Computes

@@ -8,14 +8,14 @@ class, call `can.Model` and supply it with specific static properties that tell
 it how to interact with the server, along with any instance properties or helper
 methods the Model may need. The important static properties are:
 
-- [findAll](can.Model.static.findAll), which describes how to get a group of
+- [findAll](../docs/can.Model.findAll.html), which describes how to get a group of
 items.
-- [findOne](can.Model.static.findOne), which describes how to get a specific
+- [findOne](../docs/can.Model.findOne.html), which describes how to get a specific
 item.
-- [create](can.Model.static.create), which describes how to save a new item.
-- [update](can.Model.static.update), which describes how to update an
+- [create](../docs/can.Model.create.html), which describes how to save a new item.
+- [update](../docs/can.Model.update.html), which describes how to update an
 existing item.
-- [destroy](can.Model.static.destroy), which describes how to delete an item.
+- [destroy](../docs/can.Model.destroy.html), which describes how to delete an item.
 
 When accessing a straightforward RESTful API, creating a Model class and an
 instance of that Model class might be as simple as this:
@@ -75,7 +75,7 @@ Models), and pass the List to the callback in its second parameter. If there was
 an error, `findAll` will call the callback in its third parameter and pass it the
 XmlHttpRequest object used to make the call.
 
-`findAll` returns a [can.Deferred](can.Deferred) that will resolve to a Model
+`findAll` returns a [can.Deferred](../docs/can.Deferred.html) that will resolve to a Model
 List of items if the call succeeds and rejects to the XmlHttpRequest object if
 there is an error.
 

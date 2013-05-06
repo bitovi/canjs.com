@@ -2,9 +2,9 @@
 @parent Tutorial 3
 
 @body
-`[can.view](can.view)` loads and renders templates with the data you provide, and
+[can.view](../docs/can.view.html) loads and renders templates with the data you provide, and
 returns a documentFragment with the populated template. can.view supports many
-templating languages, but [EJS](can.EJS) and [Mustache](can.Mustache) allow you
+templating languages, but [EJS EJS] and [Mustache Mustache] allow you
 to live-bind Observes into templates.
 
 ## Loading templates

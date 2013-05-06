@@ -5,7 +5,7 @@
 Controls made with can.Control are organized, memory-leak free,
 performant, stateful UI controls. can.Control lets you create controls like
 tabs, grids, context menus, and forms, and helps you organize them into
-higher-order business units, tying them all together with [can.route](can.route).
+higher-order business units, tying them all together with [can.route](../docs/can.route.html).
 Controls fill the traditional MVC controller role, managing data through Models
 made with can.Model and directing it to be displayed through views made with
 can.view.
