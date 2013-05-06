@@ -26,7 +26,7 @@ hobbies[2]; // 'partying'
 ## Getting and setting properties
 
 Though you can read properties from an Observe in the normal way, if you want to
-set the value of a property, you'll need to use `[attr]()`. There are a couple
+set the value of a property, you'll need to use [attr](../docs/can.Observe.prototype.attr.html)(). There are a couple
 ways to use attr to set a property, and it can also be used to get property
 values, or get a regular object back from an Observe:
 
@@ -57,7 +57,7 @@ pagination.attr(); // {page: 10, perPage: 50, lastVisited: 1}
 When a property on an Observe is changed with `attr`, the Observe will emit two
 events: a _change_ event and an event with the same name as the property that
 was changed. You can listen for these events by using
-`[bind](can.Observe.bind)`:
+[bind](../docs/can.Observe.prototype.bind.html):
 
 @codestart
 paginate.bind('change', function(event, attr, how, newVal, oldVal) {

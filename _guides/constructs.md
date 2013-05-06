@@ -2,7 +2,7 @@
 @parent Tutorial 0
 
 @body
-Constructor functions made with [can.Construct] are used to create objects with
+Constructor functions made with [can.Construct](../docs/can.Construct.html) are used to create objects with
 shared properties, and they make managing inheritance in JavaScript much easier.
 [Observes] \(and through Observes, [Models] and [Controls]) are based off of
 Constructs, so learning how they work is fundamental to understanding CanJS.
@@ -54,7 +54,7 @@ p.allowedToEdit({owns: function(){ return false; }}); // false
 ## Initialization
 As you can see above, when a constructor function is called with `new`,
 can.Construct creates a new instance of that class. If you've supplied an
-instance method called `[init]`, can.Construct will call that as well, passing
+instance method called [init](../docs/can.Construct.prototype.init.html), can.Construct will call that as well, passing
 it the arguments you passed to the constructor.
 
 This helps make our Todo a little more configurable:

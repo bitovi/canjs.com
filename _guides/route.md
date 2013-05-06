@@ -106,5 +106,5 @@ var a = can.route.link(
 	{className: 'button'}
 );
 
-a; // <a href="#!todos/7" class="button">Todo 5</a>
+a; // &lt;a href="#!todos/7" class="button">Todo 5&lt;/a>
 @codeend
