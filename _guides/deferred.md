@@ -2,7 +2,7 @@
 @parent Tutorial 7
 
 @body
-Deferreds in CanJS are explained in greater detail in the [API](can.Deferred).
+Deferreds in CanJS are explained in greater detail in the [API](../docs/can.Deferred.html).
 Below is a quick tour through can.Deferred, which should look familiar to you
 if you have experience with the Deferred pattern.
 

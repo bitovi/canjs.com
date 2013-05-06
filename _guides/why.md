@@ -24,7 +24,7 @@ These plugins have forced the core to be quite extendable, making 3rd party plug
 
 ### Engineered limber
 
-CanJS’s tools are designed to work under almost every situation. Your server sends back XML with strange urls? That’s ok, overwrite [can.Model.findAll](../docs/can.Model.static.findAll.html) or [can.Model.models](../docs/can.Model.static.models.html). Want some special teardown code for a control? Overwrite [can.Control:destroy](../docs/can.Model.prototype.destroy.html).
+CanJS’s tools are designed to work under almost every situation. Your server sends back XML with strange urls? That’s ok, overwrite [can.Model.findAll](../docs/can.Model.static.findAll.html) or [can.Model.models](../docs/can.Model.static.models.html). Want some special teardown code for a control? Overwrite [can.Control:destroy](../docs/can.Control.prototype.destroy.html).
 
 But our favorite bit of flexibility is how [can.Observe](../docs/can.Observe.html) works with nested data. It converts nested objects into observes automatically. For example:
 
@@ -76,7 +76,7 @@ var tooltipElement = $( '&lt;div>INFO&lt;/div>' ).appendTo( el )
 var tooltipInstance = new Tooltip( tooltipElement );
 @codeend
 
-`window` now has a reference to the control which keeps the `tooltipInstance` and everything the tooltip instance might reference in memory. CanJS overwrites each library’s element remove functionality to [destroy](http://canjs.com/#can_control-destroy) controls. Destroying a control unbinds all of its event handlers, removing any memory leaks auto-magically.
+`window` now has a reference to the control which keeps the `tooltipInstance` and everything the tooltip instance might reference in memory. CanJS overwrites each library’s element remove functionality to [destroy](../docs/can.Control.prototype.destroy.html) controls. Destroying a control unbinds all of its event handlers, removing any memory leaks auto-magically.
 
 #### A model store that does not leak
 

@@ -6,7 +6,7 @@ The following recipes show a bunch of functionality working together.
 
 ### Basic Todo
 
-This recipe demonstrates the very basic todo app covered on [http://canjs.us]. You
+This recipe demonstrates the very basic todo app covered in the [Tutorial tutorial]. You
 can select a todo and edit it's text.  You can also delete a todo.  The app is
 also history enabled, letting you move forward and back through different todos.
 

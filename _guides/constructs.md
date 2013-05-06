@@ -29,7 +29,7 @@ t.allowedToEdit(); // true
 @codeend
 
 There are a few other ways to create classes with  `can.Construct`; see
-[the API] for all the details.
+[the API](../docs) for all the details.
 
 ## Inheritance
 can.Construct sets up the prototype chain so that Constructs are easy to

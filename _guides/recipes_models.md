@@ -40,7 +40,7 @@ Model keeps an internal, non-leaking, store of instances your app loads.  When
 `Task.findAll({type: "critical"})` and `Task.findAll({due: "today"})` get their
 raw JSON data from the server, they convert it to instances.  But before they create
 a new instance, they check if the same instance, matched by 
-the [id](http://donejs.com/docs.html#!can.Model.static.id) property already exists.  If it
+the [id](../docs/can.Model.id.html) property already exists.  If it
 does, it uses that instance. 
 
 This means that the `criticalTasks` list and `todaysTasks` list both point to the 

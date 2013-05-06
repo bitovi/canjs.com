@@ -360,7 +360,7 @@
 
 		
 		<section class="comment">
-			<p>Deferreds in CanJS are explained in greater detail in the <a href="can.Deferred">API</a>.
+			<p>Deferreds in CanJS are explained in greater detail in the <a href="../docs/can.Deferred.html">API</a>.
 Below is a quick tour through can.Deferred, which should look familiar to you
 if you have experience with the Deferred pattern.</p>
 
@@ -409,7 +409,7 @@ dfd.reject('bar');</code></pre>
 	var docData = {
     "type": "page",
     "name": "Deferreds",
-    "body": "<p>Deferreds in CanJS are explained in greater detail in the <a href=\"can.Deferred\">API</a>.\nBelow is a quick tour through can.Deferred, which should look familiar to you\nif you have experience with the Deferred pattern.</p>\n\n<pre><code class=\"lang-javascript\">// Create a new Deferred:\nvar dfd = new can.Deferred();\n\n// Add a done callback:\ndfd.done(function(foo) {\n    console.log('Resolved!');\n});\n// Add a fail callback:\ndfd.fail(function(bar) {\n    console.log('Rejected!');\n});\n// Add a callback that fires whether the\n// Deferred is resolve or rejected.\ndfd.always(function(obj) {\n    console.log('Apathetic!');\n});\n\nvar dfd2 = new can.Deferred();\n// Add done and fail callbacks:\ndfd2.then(functon(foo) {\n    console.log('Also resolved.');\n}, function(bar) {\n    console.log('Also rejected.');\n});\n\n// Create a Deferred that resolves when\n// all passed Deferreds resolve:\nvar endDfd = can.when(dfd, dfd2).then(function() {\n    console.log('I open at the close.');\n});\n\n// Resolve a Deferred (and call all its done callbacks):\ndfd.resolve('foo');\n\n// Reject a Deferred (and call all its fail callbacks):\ndfd.reject('bar');</code></pre>",
+    "body": "<p>Deferreds in CanJS are explained in greater detail in the <a href=\"../docs/can.Deferred.html\">API</a>.\nBelow is a quick tour through can.Deferred, which should look familiar to you\nif you have experience with the Deferred pattern.</p>\n\n<pre><code class=\"lang-javascript\">// Create a new Deferred:\nvar dfd = new can.Deferred();\n\n// Add a done callback:\ndfd.done(function(foo) {\n    console.log('Resolved!');\n});\n// Add a fail callback:\ndfd.fail(function(bar) {\n    console.log('Rejected!');\n});\n// Add a callback that fires whether the\n// Deferred is resolve or rejected.\ndfd.always(function(obj) {\n    console.log('Apathetic!');\n});\n\nvar dfd2 = new can.Deferred();\n// Add done and fail callbacks:\ndfd2.then(functon(foo) {\n    console.log('Also resolved.');\n}, function(bar) {\n    console.log('Also rejected.');\n});\n\n// Create a Deferred that resolves when\n// all passed Deferreds resolve:\nvar endDfd = can.when(dfd, dfd2).then(function() {\n    console.log('I open at the close.');\n});\n\n// Resolve a Deferred (and call all its done callbacks):\ndfd.resolve('foo');\n\n// Reject a Deferred (and call all its fail callbacks):\ndfd.reject('bar');</code></pre>",
     "description": "",
     "title": "Deferreds",
     "parent": "Tutorial",
