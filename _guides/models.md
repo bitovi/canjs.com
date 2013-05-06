@@ -103,7 +103,7 @@ rejects to the XmlHttpRequest object if there is an error.
 
 ### Modifying items
 
-You can call `[save](can.Model.prototype.save)` on a Model instance to save it
+You can call [save](../docs/can.Model.prototype.save.html) on a Model instance to save it
 back to the server. If the Model has an __id__, it will be updated using the
 function specified under `update`. Otherwise, can.Model assumes the Model is new
 and creates the item on the server using the function in `create`.

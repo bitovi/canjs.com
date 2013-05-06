@@ -11,7 +11,7 @@ state like pagination data.
 
 To create an Observe, call `new can.Observe(obj)`. This will give you an Observe
 with the same properties and values as _obj_. can.Observe also provides
-[observable arrays called Lists](can.Observe.List). To create a List, call `new
+[observable arrays called Lists](../docs/can.Observe.List.html). To create a List, call `new
 can.Observe.List(array)`, which will give you a List with the same elements as
 _array_.
 
