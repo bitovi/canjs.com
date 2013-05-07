@@ -2943,6 +2943,9 @@ tr.inactive .checkbox {
 .ie .download .hero .cdn h4 {
   top: -14px;
 }
+.ie ul.wizard {
+  background: url(../img/wizard-bkg.png) no-repeat center center !important;
+}
 .lt-ie9 .hero {
   background: #797977 url(../img/hero-ribbons.png) no-repeat center center;
 }
@@ -2996,9 +2999,6 @@ tr.inactive .checkbox {
 .lt-ie8 .content ul.carousel li,
 .lt-ie8 .container ul.circle-tabs li {
   float: left;
-}
-.lt-ie8 ul.wizard {
-  background: url(../img/wizard-bkg.png) no-repeat center center !important;
 }
 .lt-ie8 .nav {
   top: -30px;
