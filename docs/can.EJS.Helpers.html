@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/view/ejs/ejs.js">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>Helpers</h1> 
+<h1>
 
+	Helpers
+	
+		<span class="module">can.EJS.Helpers</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2085,23 +2094,6 @@ views.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "name": "can.EJS.Helpers",
-    "type": "page",
-    "parent": "can.EJS.static",
-    "body": "<p>By adding functions to can.EJS.Helpers.prototype, those functions will be available in the\nviews.</p>\n\n<p>The following helper converts a given string to upper case:</p>\n\n<pre><code>can.EJS.Helpers.prototype.toUpper = function(params)\n{\n    return params.toUpperCase();\n}\n</code></pre>\n\n<p>Use it like this in any EJS template:</p>\n\n<pre><code>&lt;%= toUpper('javascriptmvc') %&gt;\n</code></pre>\n\n<p>To access the current DOM element return a function that takes the element as a parameter:</p>\n\n<pre><code>can.EJS.Helpers.prototype.upperHtml = function(params)\n{\n    return function(el) {\n        $(el).html(params.toUpperCase());\n    }\n}\n</code></pre>\n\n<p>In your EJS view you can then call the helper on an element tag:</p>\n\n<pre><code>&lt;div &lt;%= upperHtml('javascriptmvc') %&gt;&gt;&lt;/div&gt;\n</code></pre>",
-    "description": "",
-    "title": "Helpers",
-    "comment": " ",
-    "src": "can/view/ejs/ejs.js",
-    "line": 94,
-    "id": 157
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2118,7 +2110,7 @@ views.</p>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

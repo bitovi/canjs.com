@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/observe/observe.js#L595">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>removeAttr</h1> 
+<h1>
 
+	removeAttr
+	
+		<span class="module">can.Observe.prototype.removeAttr</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2098,44 +2107,6 @@ under <code><a href="can.Observe.prototype.attr.html">attr</a></code>.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.Observe.prototype.removeAttr",
-    "parent": "can.Observe.prototype",
-    "body": "<p><code>removeAttr</code> removes a property by name from an Observe.</p>\n\n<pre><code class=\"lang-javascript\">var people = new can.Observe({a: 'Alice', b: 'Bob', e: 'Eve'});\n\npeople.removeAttr('b'); // 'Bob'\npeople.attr();          // {a: 'Alice', e: 'Eve'}</code></pre>\n\n<p>Removing an attribute will cause a <em>change</em> event to fire with <code>'remove'</code>\npassed as the <em>how</em> parameter and <code>undefined</code> passed as the <em>newVal</em> to\nhandlers. It will also cause a <em>property name</em> event to fire with <code>undefined</code>\npassed as <em>newVal</em>. An in-depth description at these events can be found\nunder <code>[can.Observe.prototype.attr attr]</code>.</p>",
-    "description": "<p>Remove a property from an Observe. </p>",
-    "title": "removeAttr",
-    "signatures": [{
-            "code": "removeAttr(attrName)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "String"
-                        }
-                    ],
-                    "name": "attrName",
-                    "description": "<p>the name of the property to remove</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "*"
-                    }
-                ],
-                "description": "<p>the value of the property that was removed</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/observe/observe.js",
-    "line": 595,
-    "id": 27
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2152,7 +2123,7 @@ under <code><a href="can.Observe.prototype.attr.html">attr</a></code>.</p>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

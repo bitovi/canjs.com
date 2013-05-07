@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/observe/observe.js#L1785">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>indexOf</h1> 
+<h1>
 
+	indexOf
+	
+		<span class="module">can.Observe.List.prototype.indexOf</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2095,44 +2104,6 @@ list.indexOf('Charlie'); // -1</code></pre>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.Observe.List.prototype.indexOf",
-    "parent": "can.Observe.List.prototype",
-    "body": "<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nlist.indexOf('Alice');   // 0\nlist.indexOf('Charlie'); // -1</code></pre>\n\n<p>It is trivial to make a <code>contains</code>-type function using <code>indexOf</code>:</p>\n\n<pre><code class=\"lang-javascript\">function(list, item) {\n    return list.indexOf(item) >= 0;\n}</code></pre>     ",
-    "description": "<p>Look for an item in a List. </p>",
-    "title": "indexOf",
-    "signatures": [{
-            "code": "indexOf(item)",
-            "description": "<p><code>indexOf</code> finds the position of a given item in the List.</p>",
-            "params": [{
-                    "types": [{
-                            "type": "*"
-                        }
-                    ],
-                    "name": "item",
-                    "description": "<p>the item to find</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "Number"
-                    }
-                ],
-                "description": "<p>the position of the item in the List, or -1 if the item is not found.</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/observe/observe.js",
-    "line": 1785,
-    "id": 43
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2149,7 +2120,7 @@ list.indexOf('Charlie'); // -1</code></pre>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

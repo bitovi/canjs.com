@@ -2028,12 +2028,18 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/util/util.js#L468">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>can.data</h1>
+<h1>
 
+	can.data
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2162,77 +2168,6 @@ the <em>data</em> method cannot be used on <code>object</code> (unless it's a Fl
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "body": "<p><code>can.data</code> enables the associatation of arbitrary data with DOM nodes and JavaScript objects.</p>\n\n<h3>Setting Data</h3>\n\n<p>can.data( can.$('#elm'), key, value )</p>\n\n<ul>\n<li><strong>wrappedNodeList</strong> node list to associate data to.</li>\n<li><strong>key</strong> string name of the association.</li>\n<li><strong>value</strong> tdata value; it can be any Javascript type including Array or Object.</li>\n</ul>\n\n<h3>Accessing Data</h3>\n\n<p>can.data( can.$('#elm'), key )</p>\n\n<ul>\n<li><strong>wrappedNodeList</strong> node list to retrieve association data from.</li>\n<li><strong>key</strong> string name of the association.</li>\n</ul>\n\n<p>Due to the way browsers security restrictions with plugins and external code,\nthe <em>data</em> method cannot be used on <code>object</code> (unless it's a Flash plugin), <code>applet</code> or <code>embed</code> elements.</p>",
-    "description": "<p>Associate data with or retrieve data from DOM nodes. </p>",
-    "title": "",
-    "name": "can.data",
-    "type": "function",
-    "parent": "can.util.functions",
-    "signatures": [{
-            "code": "can.data(nodeList, key, value)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "NodeList"
-                        }
-                    ],
-                    "name": "nodeList",
-                    "description": "<p>The list of nodes to add this data to.</p>"
-                }, {
-                    "types": [{
-                            "type": "String"
-                        }
-                    ],
-                    "name": "key",
-                    "description": "<p>The key to store this data under.</p>"
-                }, {
-                    "types": [{
-                            "type": "*"
-                        }
-                    ],
-                    "name": "value",
-                    "description": "<p>The data to store.</p>"
-                }
-            ]
-        }, {
-            "code": "can.data(nodeList, key)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "NodeList"
-                        }
-                    ],
-                    "name": "nodeList",
-                    "description": "<p>The list of nodes data was stored under.</p>"
-                }, {
-                    "types": [{
-                            "type": "String"
-                        }
-                    ],
-                    "name": "key",
-                    "description": "<p>The key to retrieve.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "*"
-                    }
-                ],
-                "description": "<p>The data stored under <strong>key</strong>.</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/util/util.js",
-    "line": 468,
-    "id": 213
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2249,7 +2184,7 @@ the <em>data</em> method cannot be used on <code>object</code> (unless it's a Fl
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

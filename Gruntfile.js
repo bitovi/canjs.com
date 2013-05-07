@@ -85,7 +85,7 @@ module.exports = function (grunt) {
 		},
 		generate: {
 			options: {
-				debug: true,
+				debug: false,
 				layout: '_templates/page.mustache',
 				docs: '_templates/docs.mustache',
 				root: '',
@@ -101,14 +101,17 @@ module.exports = function (grunt) {
 							return '';
 						}
 					},
-					downloadUrl: function(download) {
+					downloadUrl: function(download, isPlugin) {
+						if(isPlugin) {
+							download = 'plugins=' + download;
+						}
 						// TOOO make builder URL configurable
-						return 'http://bitbuilder.herokuapp.com/can.custom.js?plugins=' + download;
+						return 'http://bitbuilder.herokuapp.com/can.custom.js?' + download;
 					},
 					sourceUrl: function(src, type, line) {
 						var pkg = grunt.config('can.pkg'),
 							relative = path.relative(grunt.config('can.path'), src),
-							hash = type !== 'page' && type !== 'constructor' ? '#L' + line : '';
+							hash = type !== 'page' && type !== 'constructor' && line ? '#L' + line : '';
 						return pkg.repository.github + '/tree/v' + pkg.version + '/' + relative + hash;
 					},
 					testUrl: function(test) {

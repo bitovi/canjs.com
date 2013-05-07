@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/observe/observe.js#L1925">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>forEach</h1> 
+<h1>
 
+	forEach
+	
+		<span class="module">can.Observe.List.prototype.forEach</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2097,68 +2106,6 @@ list.attr(); // [1, 4, 9]</code></pre>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.Observe.List.prototype.forEach",
-    "parent": "can.Observe.List.prototype",
-    "body": "<p><code>forEach</code> calls a callback for each element in the List.</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List([1, 2, 3]);\nlist.forEach(function(element, index, list) {\n    list.attr(index, element * element);\n});\nlist.attr(); // [1, 4, 9]</code></pre>     ",
-    "description": "<p>Call a function for each element of a List. </p>",
-    "title": "forEach",
-    "signatures": [{
-            "code": "forEach(callback[, thisArg])",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": [{
-                                    "types": [{
-                                            "type": "element"
-                                        }
-                                    ]
-                                }, {
-                                    "types": [{
-                                            "type": "index"
-                                        }
-                                    ]
-                                }, {
-                                    "types": [{
-                                            "type": "list"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ],
-                    "name": "callback",
-                    "description": "<p>a function to call with each element of the List\nThe three parameters that <em>callback</em> gets passed are <em>element</em>, the element at <em>index</em>, <em>index</em> the\ncurrent element of the list, and <em>list</em> the List the elements are coming from.</p>"
-                }, {
-                    "types": [{
-                            "type": "Object"
-                        }
-                    ],
-                    "optional": true,
-                    "name": "thisArg",
-                    "description": "<p>the object to use as <code>this</code> inside the callback</p>"
-                }
-            ]
-        }
-    ],
-    "comment": " ",
-    "src": "can/observe/observe.js",
-    "line": 1925,
-    "id": 48
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2175,7 +2122,7 @@ list.attr(); // [1, 4, 9]</code></pre>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

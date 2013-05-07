@@ -2028,16 +2028,22 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/view/mustache/doc/mustache.md">source</a></li>
 		
 		
-			<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=http://canjs.us/release/latest/can.view.mustache.js">download</a></li>
+			
+			<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/view/mustache">download</a></li>
+			
 		
 		
-			<li><a href="../can/view/mustache/test/qunit.html">tests</a></li>
+			<li><a href="../can/view/mustache/test.html">tests</a></li>
 		
 	</ul>
 </div>
 
-	<h1>can.Mustache</h1>
+<h1>
 
+	can.Mustache
+
+<span class="module">can/view/mustache</span>
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2124,24 +2130,6 @@ can.$(document.body).append(template);
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "constructor",
-    "name": "can.Mustache",
-    "body": "",
-    "description": "<p>can.Mustache provides logic-less templates with live binding \nwhen used with <a href=\"#can_observe\">can.Observes</a>. It currently ships as a plugin,\nand you can view the <a href=\"http://canjs.us/release/latest/docs/can.view.mustache.html\">annotated source</a>.</p>\n\n<p><a href=\"https://github.com/janl/mustache.js/\">Mustache</a> and <a href=\"http://handlebarsjs.com/\">Handlebar</a> \ntemplates are compatible with can.Mustache, so you can import existing templates.</p>\n\n<h2>Getting Started</h2>\n\n<p>Mustache templates looks similar to normal HTML except\nthey contain contain keys for inserting data into the template\nand <a href=\"#Sections\">sections</a> to enumerate and/or filter the enclosed template blocks.</p>\n\n<p>For example, the following renders a welcome header for\na user and displays the number of messages.</p>\n\n<p><strong>Mustache Template</strong></p>\n\n<pre><code>&lt;script id=\"template\" type=\"text/mustache\"&gt;\n    &lt;h1&gt;Welcome {{user}}!&lt;/h1&gt;\n    &lt;p&gt;You have {{messages}} messages.&lt;/p&gt;\n&lt;/script&gt;\n</code></pre>\n\n<p>The Mustache sytax is the <code>{{  }}</code> magic tags above.</p>\n\n<p><strong>JavaScript</strong></p>\n\n<pre><code>var data = new can.Observe({\n    user: 'Tina Fey',\n    messages: 0\n});\n\nvar template = can.view(\"#template\", data)\ncan.$(document.body).append(template);\n</code></pre>\n\n<p><strong>HTML</strong></p>\n\n<pre><code>&lt;h1&gt;Welcome Tina Fey!&lt;/h1&gt;\n&lt;p&gt;You have 0 messages.&lt;/p&gt;\n</code></pre>\n\n<p>To update your template using live-binding:</p>\n\n<pre><code>data.attr('message', 5)\n</code></pre>\n\n<p>which will re-render the paragraph tag to say:</p>\n\n<pre><code>&lt;p&gt;You have 5 messages.&lt;/p&gt;\n</code></pre>\n\n<p>can.Mustache provides a lot more functionality such as:</p>\n\n<ul>\n<li><a href=\"#Basics\">Context and Path Basics</a></li>\n<li><a href=\"#Sections\">Sections</a></li>\n<li><a href=\"#Partials\">Partials</a></li>\n<li><a href=\"#Acquisition\">Acquiring Templates</a></li>\n<li><a href=\"#Helpers\">Helpers</a></li>\n<li><a href=\"#Binding\">Live Binding</a></li>\n</ul>\n\n<h2>Demos</h2>\n\n<ul>\n<li><a href=\"http://addyosmani.github.com/todomvc/architecture-examples/canjs/\">TodoMVC</a> is a project which offers the same Todo application implemented using MV* concepts in most of the popular JavaScript MV* frameworks of today. <a href=\"https://github.com/addyosmani/todomvc/tree/gh-pages/architecture-examples/canjs\">Source Code</a></li>\n</ul>",
-    "title": "",
-    "parent": "canjs",
-    "test": "can/view/mustache/test/qunit.html",
-    "plugin": "can/view/mustache",
-    "download": "http://canjs.us/release/latest/can.view.mustache.js",
-    "src": "can/view/mustache/doc/mustache.md",
-    "id": 163
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2158,7 +2146,7 @@ can.$(document.body).append(template);
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

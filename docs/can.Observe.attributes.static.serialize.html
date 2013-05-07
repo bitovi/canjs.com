@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/observe/attributes/attributes.js#L191">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>serialize (static)</h1> 
+<h1>
 
+	serialize (static)
+	
+		<span class="module">can.Observe.attributes.static.serialize</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2079,22 +2088,6 @@ or it will call the "serialize" method if the property holds an object with the 
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "name": "can.Observe.attributes.static.serialize",
-    "type": "property",
-    "parent": "can.Observe.attributes",
-    "body": "",
-    "description": "<p><code>can.Observe.serialize</code> is an object of name-function pairs that are used to \nserialize attributes.</p>\n\n<p>Similar to [can.Observe.convert], in that the keys of this object correspond to \nthe types specified in [can.Observe.attributes].</p>\n\n<p>By default every attribute will be passed through the 'default' serialization method \nthat will return the value if the property holds a primitive value (string, number, ...), \nor it will call the \"serialize\" method if the property holds an object with the \"serialize\" method set.</p>\n\n<p>For example, to serialize all dates to ISO format:</p>\n\n<pre><code>    var Contact = can.Observe({\n        attributes : {\n            birthday : 'date'\n        },\n        serialize : {\n            date : function(val, type){\n                return new Date(val).toISOString();\n            }\n        }\n    },{});\n\n    var contact = new Contact({ \n        birthday: new Date(\"Oct 25, 1973\") \n    }).serialize();\n    //-&gt; { \"birthday\" : \"1973-10-25T05:00:00.000Z\" }\n</code></pre>",
-    "title": "serialize (static)",
-    "src": "can/observe/attributes/attributes.js",
-    "line": 191,
-    "id": 53
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2111,7 +2104,7 @@ or it will call the "serialize" method if the property holds an object with the 
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

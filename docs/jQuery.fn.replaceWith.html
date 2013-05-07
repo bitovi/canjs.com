@@ -2028,12 +2028,18 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/view/modifiers/modifiers.js#L265">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>jQuery.fn.replaceWith</h1>
+<h1>
 
+	jQuery.fn.replaceWith
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2056,74 +2062,6 @@ to render <a href="can.view.html">can.view</a> templates replacing each element 
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "body": "",
-    "description": "<p>Extending the original [http://api.jquery.com/replaceWith/ jQuery().replaceWith()]\nto render [can.view] templates replacing each element in the set of matched elements.</p>\n\n<pre><code>$('#test').replaceWith('path/to/template.ejs', { name : 'canjs' });\n</code></pre>",
-    "title": "",
-    "name": "jQuery.fn.replaceWith",
-    "parent": "can.view.modifiers",
-    "params": [{
-            "types": [{
-                    "type": "String"
-                }, {
-                    "type": "Object"
-                }, {
-                    "type": "function",
-                    "returns": {
-                        "types": [{
-                                "type": "undefined"
-                            }
-                        ]
-                    },
-                    "params": []
-                }
-            ],
-            "name": "content",
-            "description": "<p>A template filename or the id of a view script tag \nor a DOM element, array of elements, HTML string, or can object.</p>"
-        }, {
-            "types": [{
-                    "type": "Object"
-                }
-            ],
-            "optional": true,
-            "name": "data",
-            "description": "<p>The data to render the view with.\nIf rendering a view template this parameter always has to be present\n(use the empty object initializer {} for no data).</p>"
-        }, {
-            "types": [{
-                    "type": "function",
-                    "returns": {
-                        "types": [{
-                                "type": "undefined"
-                            }
-                        ]
-                    },
-                    "params": []
-                }
-            ],
-            "optional": true,
-            "name": "callback",
-            "description": "<p>A success callback to load the view asynchronously</p>"
-        }
-    ],
-    "returns": {
-        "types": [{
-                "type": "jQuery"
-            }, {
-                "type": "can.Deferred"
-            }
-        ],
-        "description": "<p>The jQuery object or a [can.Deferred] if a deferred has\nbeen passed in data.</p>"
-    },
-    "src": "can/view/modifiers/modifiers.js",
-    "line": 265,
-    "id": 190
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2140,7 +2078,7 @@ to render <a href="can.view.html">can.view</a> templates replacing each element 
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

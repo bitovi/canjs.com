@@ -338,12 +338,18 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/../_guides/Alternate-Template-Syntax.md">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>Alternate-Template-Syntax</h1>
+<h1>
 
+	Alternate-Template-Syntax
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -542,19 +548,6 @@ if( showNavigation ){
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "page",
-    "name": "Alternate-Template-Syntax",
-    "body": "",
-    "description": "<p>The \"perfect\" live-binding template syntax would be:</p>\n\n<ul>\n<li>easy to make syntactically correct (meaning your code-editor probably supports its syntax)</li>\n<li>works when syntactically correct (meaning if your code-editor says it looks ok, the template works as expected)</li>\n<li>lends itself to a lightweight implementation</li>\n</ul>\n\n<p>Things a live-template should be able to do:</p>\n\n<ul>\n<li>conditional blocks - if/else</li>\n<li>looping</li>\n<li>live-bind innerHTML, text, attribute values, attributes themselves (select)</li>\n<li>hook up widgets/controls in the template</li>\n<li>plugins for common use</li>\n</ul>\n\n<h2>Magic Tag but JS performs control / looping blocks ( EJS/ ERB )</h2>\n\n```\n<% if( showNavigation ) { %>\n\n  <ul class=\"nav nav-list\">\n    <li class=\"nav-header\">Categories</li>\n    <li>\n        <a href=\"javascript://\" data-category=\"all\">All (<%= contacts.count('all') %>)</a>\n    </li>\n    <% categories.each(function(category){ %>\n        <li <%= (el)-> el.widget() %> >\n            <a href=\"javascript://\" data-category=\"<%= category.data %>\">\n                <%= category.name %> (<%= contacts.count(category.data) %>)\n            </a>\n        </li>\n    <% }) %>\n  </ul>\n<% } %>\n\n<p>```</p>\n\n<p>Positives:\n - lightweight (not much parsing)\n - flexible (works with almost any JS), making plugins stupidly easy to write.\n - ERB, so many IDEs support this syntax</p>\n\n<p>Negatives:\n - easy to make a syntax error</p>\n\n<h2>Magic Tags and special control magic tags (Handlebars)</h2>\n\n<p><code>\n{{#if showNavigation}}\n  &lt;ul class=\"nav nav-list\"&gt;\n    &lt;li class=\"nav-header\"&gt;Categories&lt;/li&gt;\n    &lt;li&gt;\n        &lt;a href=\"javascript://\" data-category=\"all\"&gt;All ({{contacts.count('all')}})&lt;/a&gt;\n    &lt;/li&gt;\n    {{#each categories}}\n        &lt;li&gt;\n            &lt;a href=\"javascript://\" data-category=\"{{data}}\"&gt;\n                {{name}} ({{ contacts.count(data) }})\n            &lt;/a&gt;\n        &lt;/li&gt;\n    {{/each}}\n  &lt;/ul&gt;\n{{/if}}\n</code>\nPositives:\n - simple, few control structures\nNegatives\n - helpers (like the number contacts for a given filter) will not work\n - needs \"computed\" properties</p>\n\n<p>More discussion <a href=\"https://gist.github.com/292840\">here</a>.</p>\n\n<h2>Pipes (alternative to ERB/EJS)</h2>\n\n<p>```\n| if( showNavigation ) { |</p>\n\n<ul class=\"nav nav-list\">\n    <li class=\"nav-header\">Categories</li>\n    <li>\n        <a href=\"javascript://\" data-category=\"all\">All (|= contacts.count('all') |)</a>\n    </li>\n    | categories.each(function(category){ |\n        <li |= (el) -> el.widget() |>\n            <a href=\"javascript://\" data-category=\"|= category.data |\">\n                |= category.name | (|= contacts.count(category.data) |)\n            </a>\n        </li>\n    | }) |\n</ul>\n\n<p>| } |\n```</p>\n\n<p>Positives / Negatives - Same as EJS, but a little lighter feeling. <code>|</code> doesn't conflict with html's <code>&lt;</code> as much.</p>\n\n<h2>CSS + Indent</h2>\n\n<p><code>\nif showNavigation\n  ul.nav.nav-list\n   li.nav-header Categories\n   li\n     a[href=javascript://][data-category=all] All ({{ contacts.count('all') }})\n   [categories category]\n     li|li.widget()|\n       a[href=javascript://][data-category={{ category.data }}]\n         {{ category.name }} ({{ contacts.count('all') }})\n</code></p>\n\n<p>Positives\n - very terse syntax\n - less likely to make mistakes?</p>\n\n<p>Negatives\n - harder to parse, making template engine likely bigger\n - less flexible syntax</p>\n\n<h2>Valid HTML (basically knockout)</h2>\n\n<p>```</p>\n\n<ul class=\"nav nav-list\" data-bind=\"if: showNavigation\">\n    <li class=\"nav-header\">Categories</li>\n    <li>\n        <a href=\"javascript://\" data-category=\"all\">All (<span data-bind=\"html: contacts.count('all')\"></span>)</a>\n    </li>\n        <!-- ko foreach: categories -->\n        <li data-bind=\"widget: widget\">\n            <a href=\"javascript://\" data-bind=\"attr: {data-category: category.data}\">\n                <span data-bind=\"text: name\"></span>\n                                (<span data-bind=\"text: data\"></span>)\n            </a>\n        </li>\n    <!-- /ko -->\n</ul>\n\n<p>```</p>\n\n<p>Positives\n - valid html</p>\n\n<p>Negatives\n - likely bigger (because everything else is bigger than EJS that has live-binding)\n - less flexible syntax? </p>\n\n<h2>JAML Style</h2>\n\n<p><code>javascript\nif( showNavigation ){\n  ul( {className: \"nav nav-list\"},\n    li( {className: \"nav-header\"} ),\n    li(\n      a( { href: \"javascript://\", \"data-category\": \"all\"},\n         \"(\", span( contacts.count('all') ), \")\"\n      )\n    ),\n    categories.map(function(category){\n      return li(\n        function(el){ new widget(el) },\n        a({href: \"javascript://\", attr: category.data},\n          span( category.name ),\n          \"(\",category.data,\")\"\n        )\n      )\n    }) \n    })\n  )\n}\n</code></p>\n\n<p>Positives\n - can probably be done very lightweight if it can be done w/o parsing\n - valid JS\n - easy on the eyes</p>\n\n<p>Negatives\n - I'm not sure how to make this do live-binding without parsing.</p>",
-    "src": "_guides/Alternate-Template-Syntax.md",
-    "id": 1
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -571,7 +564,7 @@ if( showNavigation ){
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

@@ -338,12 +338,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/../_guides/recipes_models.md">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>Models</h1> 
+<h1>
 
+	Models
+	
+		<span class="module">RecipesModels</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -460,23 +469,6 @@ from the server, with no extra effort.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "page",
-    "name": "RecipesModels",
-    "body": "<p>The following recipes show how to use <code>can.Model</code> (and often the <code>can.fixture</code> plugin).</p>\n\n<h3>Showing the same data in 2 places</h3>\n\n<p>The following recipe shows how <code>can.Model</code>'s internal store and <code>can.view</code>'s live-binding\ncan easily solve the editing-data-that-is-represented-two-places problem.  It \nshows two task lists of overlaping data.  Notice how the <strong>\"do dishes\"</strong> is listed \ntwice. But if you click one \"do dishes\" checkbox, it updates the other.</p>\n\n<iframe style=\"width: 100%; height: 300px\"\n        src=\"http://jsfiddle.net/moschel/pCtxs/15/embedded/result,html,js,css\" \n        allowfullscreen=\"allowfullscreen\" \n        frameborder=\"0\">JSFiddle</iframe>\n\n<h4>How it works</h4>\n\n<p>The code first sets up a <code>can.fixture</code> to return different, but overlapping lists of \ntasks from the server.  The fixture returns data from the following calls:</p>\n\n<ul>\n<li><code>/tasks?due=today</code></li>\n<li><code>/tasks?type=critical</code></li>\n</ul>\n\n<p>You'll notice \"do dishes\" in both lists.</p>\n\n<p>The code then creates a <code>Task</code> model that maps findAll to <code>/tasks</code>.  It then uses\n<code>can.view</code> to render the retrieved tasks with the <code>tasksEJS</code> template. </p>\n\n<p>Finally, it listens when an <code>input</code> element's value changes.  When it does,\nit gets the task model instance from the <code>li</code> element's <code>$.data</code> and \nupdates it's \"complete\" property.</p>\n\n<p><strong><em>The Secret Sauce</em></strong></p>\n\n<p>Model keeps an internal, non-leaking, store of instances your app loads.  When\n<code>Task.findAll({type: \"critical\"})</code> and <code>Task.findAll({due: \"today\"})</code> get their\nraw JSON data from the server, they convert it to instances.  But before they create\na new instance, they check if the same instance, matched by \nthe <a href=\"../docs/can.Model.id.html\">id</a> property already exists.  If it\ndoes, it uses that instance. </p>\n\n<p>This means that the <code>criticalTasks</code> list and <code>todaysTasks</code> list both point to the \nsame instance. When <code>can.EJS</code> does it's live binding on <code>&lt;%= task.attr(\"complete\") ? \"checked\" : \"\" %&gt;</code>\nit's actually binding on the same \"do dishes\" intance once.  So updating \"do dishes\" updates\nthe DOM in two places!</p>\n\n<h3>Caching Data in Local Storage</h3>\n\n<p>The following recipe shows how <code>can.Model</code> can be used to create an ORM-like \nmodel layer for keeping a local copy of a restful API. This type of base model\nis perfect for situations where you want a responsive UI, but may not want to \nwait for updates from the server before displaying data, or you need to make \nyour data persist offline. Storing your responses in <code>localStorage</code> allows you \nto get data to the view as quickly as possible.</p>\n\n<iframe style=\"width: 100%; height: 300px\" \n        src=\"http://jsfiddle.net/moschel/73Xuk/14/embedded/result%2Cjs/\" \n        allowfullscreen=\"allowfullscreen\" \n        frameborder=\"0\">JSFiddle</iframe>\n\n<h4>How it works</h4>\n\n<p>When creating your base model for other models to extend from, you can prefix \nstatic service methods with <code>make</code>, to allow the base model to define how the \nextending model's method will behave. In this example, our base model implements\na static method called <code>makeFindOne</code>. This method acts as a hook to define the \nextending model's <code>findOne</code> method. Using this, we can create a middleware-like\nlayer between the extending model and the base model that loads and saves model\ndata to <code>localStorage</code>, while still requesting out to the restful API to get \nupdates.</p>\n\n<p><strong><em>The Secret Sauce</em></strong></p>\n\n<p>The secret sauce for this example is the static <code>makeFindOne</code> method along with\nEJS's live binding. Because the live binding will automatically update the view when the \nbound model gets updated, we can write our code as usual and allow the base model\nto deliver <code>localStorage</code> data instantly, while automatically upating with responses\nfrom the server, with no extra effort.</p>\n\n<h3>Real Time Chat</h3>\n\n<p>Type a message in one page, it instantly shows up in the other.</p>\n\n<iframe style=\"width: 100%; height: 300px\" \n        src=\"http://jsfiddle.net/fbasrawala/yRMSa/embedded/result%2Cjs/\" \n        allowfullscreen=\"allowfullscreen\" \n        frameborder=\"0\">JSFiddle</iframe>\n\n<iframe style=\"width: 100%; height: 300px\" \n        src=\"http://jsfiddle.net/fbasrawala/yRMSa/embedded/result%2Cjs/\" \n        allowfullscreen=\"allowfullscreen\" \n        frameborder=\"0\">JSFiddle</iframe>\n\n<p><a href=\"http://bitovi.com/blog/2013/02/weekly-widget-chat.html\">How it works</a></p>",
-    "description": "",
-    "title": "Models",
-    "parent": "Recipes",
-    "order": 3,
-    "comment": " ",
-    "src": "_guides/recipes_models.md",
-    "id": 18
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -493,7 +485,7 @@ from the server, with no extra effort.</p>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

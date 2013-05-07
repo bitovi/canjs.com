@@ -2028,12 +2028,18 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/observe/compute/compute.js">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>can.compute</h1>
+<h1>
 
+	can.compute
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2213,58 +2219,6 @@ which is used in the last line of the example above.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "name": "can.compute",
-    "type": "constructor",
-    "body": "<p><code>can.compute</code> lets you make observable values. A compute is actually a function that returns\nthe computed value, but you can also use the compute to set the value and you can use\n<code>bind</code> to listen to changes in the compute's return value. In this way, computes are similar\nto [can.Observe Observes], but they represent a single value rather than a collection of values.</p>\n\n<h2>Working with computes</h2>\n\n<p>The simplest way to use a compute is to have it store a single value, and to set it when\nthat value needs to change:</p>\n\n<pre><code class=\"lang-javascript\">var tally = can.compute(12);\ntally(); // 12\n\ntally(13);\ntally(); // 13</code></pre>\n\n<p>This is useful for making observable values, but the real power of <code>can.compute</code> reveals\nitself when you combine it with <code>[can.Observe]</code>. If you use a compute that derives its\nvalue from properties of an Observe, the compute will listen for changes in those\nproperties and automatically recalculate itself, emitting a <em>change</em> event if its value\nchanges.</p>\n\n<p>As this example shows, this kind of compute rarely has need to be set directly:</p>\n\n<pre><code class=\"lang-javascript\">var person = new can.Observe({\n    firstName: 'Alice',\n    lastName: 'Liddell'\n});\n\nvar fullName = can.compute(function() {\n    return person.attr('firstName') + ' ' + person.attr('lastName');\n});\nfullName.bind('change', function(ev, newVal, oldVal) {\n    console.log(\"This person's full name is now \" + newVal + '.');\n});\n\nperson.attr('firstName', 'Allison'); // The log reads:\n                                     // \"This person's full name is now Allison Liddell.\"</code></pre>\n\n<p>Take special notice of how the definition of the compute uses <code>[can.Observe.prototype.attr attr]</code>\nto read the values of the properties of <code>person</code>. This is how the compute knows to listen\nfor changes. and is similar to the need to use <code>attr</code> when live-binding properties of Observes into\n<code>[can.EJS EJS]</code> templates.</p>\n\n<p>A specific use for bound computes like this is to provide a way to work with values of Observable\nproperties in different units:</p>\n\n<pre><code class=\"lang-javascript\">var wall = new can.Observe({\n    material: 'brick',\n    length: 10 // in feet\n});\n\nvar wallLengthInMeters = can.compute(function(lengthInM) {\n    if(lengthInM !== undefined) {\n        wall.attr('length', lengthInM / 3.28084);\n    } else {\n        return wall.attr('length') * 3.28084;\n    }\n});\n\nwallLengthInMeters(); // 3.048\n\n// When you set the compute...\nwallLengthInMeters(5);\nwallLengthInMeters(); // 5\n// ...the original Observe changes too.\nwall.length;          // 16.4042</code></pre>\n\n<h2>Events</h2>\n\n<p>When a compute's value is changed, it emits a <em>change</em> event. You can listen for this change\nevent by using <code>[can.compute.bind bind]</code> to bind an event handler to the compute:</p>\n\n<pre><code class=\"lang-javascript\">var tally = can.compute(0);\ntally.bind('change', function(ev, newVal, oldVal) {\n    console.log('The tally is now at ' + newVal + '.');\n});\n\ntally(tally() + 5); // The log reads:\n                    // 'The tally is now at 5.'</code></pre>\n\n<h2>Using computes to build Controls</h2>\n\n<p>It's a piece of cake to build a <code>[can.Control]</code> off of the value of a compute. And since computes\nare observable, it means that the view of that Control will update itself whenever the value\nof the compute updates. Here's a simple slider that works off of a compute:</p>\n\n<pre><code class=\"lang-javascript\">var project = new Observe({\n    name: 'A Very Important Project',\n    percentDone: .35\n});\n\ncan.Control('SimpleSlider', { }, {\n    init: function() {\n        this.element.html(can.view(this.options.view, this.options));\n    },\n    '.handle dragend': function(el, ev) {\n        var percent = this.calculateSliderPercent();\n        // set the compute's value\n        this.options.percentDone(percent);\n    },\n    '{percentDone} change': function(ev, newVal, oldVal) {\n       // react to the percentage changing some other way\n        this.moveSliderTo(newVal);\n    }\n    // Implementing calculateSliderPercent and moveSliderTo\n    // has been left as an exercise for the reader.\n});\n\nnew SimpleSlider('#slider', {percentDone: project.compute('percentDone')});</code></pre>\n\n<p>Now that's some delicious cake. More information on Controls can be found under <code>[can.Control]</code>.\nThere is also a full explanation of can.Observe's <code>[can.Observe.prototype.compute compute]</code>,\nwhich is used in the last line of the example above.</p>",
-    "description": "",
-    "parent": "canjs",
-    "signatures": [{
-            "code": "can.compute(getterSetter[, context])",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
-                        }
-                    ],
-                    "name": "getterSetter",
-                    "description": "<p>A function that gets and optionally sets the value of the compute.\nWhen called with no parameters, <em>getterSetter</em> should return the current value of the compute. When\ncalled with a single parameter, <em>getterSetter</em> should arrange things so that the next read of the compute\nproduces that value.</p>"
-                }, {
-                    "types": [{
-                            "type": "Object"
-                        }
-                    ],
-                    "optional": true,
-                    "name": "context",
-                    "description": "<p>The context to use when evaluating the compute.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "can.compute"
-                    }
-                ],
-                "description": "<p>A new compute.</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/observe/compute/compute.js",
-    "line": 132,
-    "id": 77
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2281,7 +2235,7 @@ which is used in the last line of the example above.</p>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

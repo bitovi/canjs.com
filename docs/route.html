@@ -2028,16 +2028,22 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/control/route/route.md">source</a></li>
 		
 		
-			<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=http://donejs.com/can/dist/can.control.route.js">download</a></li>
+			
+			<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/control/route">download</a></li>
+			
 		
 		
-			<li><a href="../can/control/view/qunit.html">tests</a></li>
+			<li><a href="../can/control/test.html">tests</a></li>
 		
 	</ul>
 </div>
 
-	<h1>route</h1>
+<h1>
 
+	route
+
+<span class="module">can/control/route</span>
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2096,24 +2102,6 @@ At the top it shows the control action being called and the data passed to it:</
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "page",
-    "name": "route",
-    "body": "<p>The can.Control.route plugin adds a <strong>route</strong> [can.Control.processors processor] to [can.Control].\nThis allows creating routes and binding to [can.route] in a single step by listening to the <em>route</em> event\nand a route part. Route events will be triggered whenever the route changes to the route part\nthe control is listening to. For example:</p>\n\n<pre><code>var Router = can.Control({\n    init : function(el, options) {\n    },\n\n    \":type route\" : function(data) {\n        // the route says anything but todo\n    },\n\n    \"todo/:id route\" : function(data) {\n        // the route says todo/[id]\n        // data.id is the id or default value\n    },\n\n    \"route\" : function(data){\n        // the route is empty\n    }\n});\n\nnew Router(window);\n</code></pre>\n\n<p><code>route</code> without a route part will get called when the route is empty.\nThe data passed to the event handler is the serialized route data without the\n<em>route</em> attribute.</p>\n\n<h2>Demo</h2>\n\n<p>The following demo shows the above control in action.\nYou can edit the hash, follow some example links or directly change the can.route atttributes.\nAt the top it shows the control action being called and the data passed to it:</p>\n\n<div class='iframe_wrapper' data-iframe-src='can/control/route/demo.html' data-iframe-height='700'></div>",
-    "description": "",
-    "parent": "can.Control.plugins",
-    "plugin": "can/control/route",
-    "test": "can/control/view/qunit.html",
-    "download": "http://donejs.com/can/dist/can.control.route.js",
-    "comment": " ",
-    "src": "can/control/route/route.md",
-    "id": 118
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2130,7 +2118,7 @@ At the top it shows the control action being called and the data passed to it:</
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

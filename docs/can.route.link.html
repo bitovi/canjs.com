@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/route/route.js#L345">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>link</h1> 
+<h1>
 
+	link
+	
+		<span class="module">can.route.link</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2145,65 +2154,6 @@ can.route.link( "The zoo", { id: 5 }, true )
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.route.link",
-    "parent": "can.route.static",
-    "body": "<p>Creates and returns an anchor tag with an href of the route \nattributes passed into it, as well as any properies desired\nfor the tag.</p>\n\n<pre><code>can.route.link( \"My videos\", { type: \"videos\" }, {}, false )\n     // -&gt; &lt;a href=\"#!type=videos\"&gt;My videos&lt;/a&gt;\n</code></pre>\n\n<p>Other attributes besides href can be added to the anchor tag\nby passing in a data object with the attributes desired.</p>\n\n<pre><code>can.route.link( \"My videos\", { type: \"videos\" }, \n  { className: \"new\" }, false ) \n     // -&gt; &lt;a href=\"#!type=videos\" class=\"new\"&gt;My Videos&lt;/a&gt;\n</code></pre>\n\n<p>It is possible to utilize the current route options when making anchor\ntags in order to make your code more reusable. If merge is set to true,\nthe route options passed into <code>can.route.link</code> will be passed into the\ncurrent ones.</p>\n\n<pre><code>location.hash = \"#!type=videos\" \ncan.route.link( \"The zoo\", { id: 5 }, true )\n     // -&gt; &lt;a href=\"#!type=videos&amp;id=5\"&gt;The zoo&lt;/true&gt;\n\nlocation.hash = \"#!type=pictures\" \ncan.route.link( \"The zoo\", { id: 5 }, true )\n     // -&gt; &lt;a href=\"#!type=pictures&amp;id=5\"&gt;The zoo&lt;/true&gt;\n</code></pre>",
-    "description": "",
-    "title": "link",
-    "signatures": [{
-            "description": "<p>`link(innerText, options, props[, merge])</p>",
-            "params": [{
-                    "types": [{
-                            "type": "Object"
-                        }
-                    ],
-                    "name": "innerText",
-                    "description": "<p>The text inside the link.</p>"
-                }, {
-                    "types": [{
-                            "type": "Object"
-                        }
-                    ],
-                    "name": "options",
-                    "description": "<p>The data to populate the route with.</p>"
-                }, {
-                    "types": [{
-                            "type": "Object"
-                        }
-                    ],
-                    "name": "props",
-                    "description": "<p>Properties for the anchor other than <code>href</code>.</p>"
-                }, {
-                    "types": [{
-                            "type": "Boolean"
-                        }
-                    ],
-                    "optional": true,
-                    "name": "merge",
-                    "description": "<p>Whether the given options should be merged into the current state of the route.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "String"
-                    }
-                ],
-                "description": "<p>A string with an anchor tag that points to the populated route.</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/route/route.js",
-    "line": 345,
-    "id": 133
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2220,7 +2170,7 @@ can.route.link( "The zoo", { id: 5 }, true )
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

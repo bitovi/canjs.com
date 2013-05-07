@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/observe/validations/validations.js#L161">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>validateFormatOf</h1> 
+<h1>
 
+	validateFormatOf
+	
+		<span class="module">can.Observe.validations.static.validateFormatOf</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2061,53 +2070,6 @@ matching it against the regular expression provided.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.Observe.validations.static.validateFormatOf",
-    "params": [{
-            "types": [{
-                    "type": "Array",
-                    "template": [{
-                            "types": [{
-                                    "type": "String"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ],
-            "name": "attrNames",
-            "description": "<p>Attribute name(s) to to validate</p>"
-        }, {
-            "types": [{
-                    "type": "RegExp"
-                }
-            ],
-            "name": "regexp",
-            "description": "<p>Regular expression used to match for validation</p>"
-        }, {
-            "types": [{
-                    "type": "Object"
-                }
-            ],
-            "optional": true,
-            "name": "options",
-            "description": "<p>Options for the validations.  Valid options include 'message' and 'testIf'.</p>"
-        }
-    ],
-    "parent": "can.Observe.validations",
-    "body": "",
-    "description": "<p><code>validateFormatOf(attrNames, regexp, options)</code> validates where the values of\nspecified attributes are of the correct form by\nmatching it against the regular expression provided.</p>\n\n<pre><code>init : function(){\n     this.validateFormatOf([\"email\"],/[\\w\\.]+@]w+\\.\\w+/,{\n       message : \"invalid email\"\n  })\n}\n</code></pre>",
-    "title": "validateFormatOf",
-    "src": "can/observe/validations/validations.js",
-    "line": 161,
-    "id": 70
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2124,7 +2086,7 @@ matching it against the regular expression provided.</p>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/view/view.js#L228">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>register</h1> 
+<h1>
 
+	register
+	
+		<span class="module">can.view.register</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2132,81 +2141,6 @@ view helpers and compression.  </p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.view.register",
-    "parent": "can.view.static",
-    "body": "<p>Registers a template engine to be used with \nview helpers and compression.  </p>\n\n<h2>Example</h2>\n\n<pre><code class=\"lang-javascript\">can.View.register({\n    suffix : \"tmpl\",\n plugin : \"jquery/view/tmpl\",\n    renderer: function( id, text ) {\n        return function(data){\n            return jQuery.render( text, data );\n        }\n    },\n    script: function( id, text ) {\n        var tmpl = can.tmpl(text).toString();\n        return \"function(data){return (\"+\n            tmpl+\n            \").call(jQuery, jQuery, data); }\";\n    }\n})</code></pre>     ",
-    "description": "<p>Register a templating language. </p>",
-    "title": "register",
-    "signatures": [{
-            "code": "can.view.register(info)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "Object",
-                            "options": [{
-                                    "name": "plugin",
-                                    "description": "The location of the templating language's plugin.",
-                                    "types": [{
-                                            "type": "String"
-                                        }
-                                    ]
-                                }, {
-                                    "name": "suffix",
-                                    "description": "Files with this suffix will use this templating language's plugin by default.",
-                                    "types": [{
-                                            "type": "String"
-                                        }
-                                    ]
-                                }, {
-                                    "name": "renderer",
-                                    "description": "A function that returns a function that, given data, will render the template with that data.\nThe __renderer__ function receives the id of the template and the text of the template.",
-                                    "types": [{
-                                            "type": "function",
-                                            "returns": {
-                                                "types": [{
-                                                        "type": "undefined"
-                                                    }
-                                                ]
-                                            },
-                                            "params": []
-                                        }
-                                    ]
-                                }, {
-                                    "name": "script",
-                                    "description": "A function that returns the string form of the processed template.\n",
-                                    "types": [{
-                                            "type": "function",
-                                            "returns": {
-                                                "types": [{
-                                                        "type": "undefined"
-                                                    }
-                                                ]
-                                            },
-                                            "params": []
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ],
-                    "name": "info",
-                    "description": "<p>Information about the templating language.</p>"
-                }
-            ]
-        }
-    ],
-    "comment": " ",
-    "src": "can/view/view.js",
-    "line": 228,
-    "id": 144
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2223,7 +2157,7 @@ view helpers and compression.  </p>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

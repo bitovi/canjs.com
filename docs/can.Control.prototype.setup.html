@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/control/control.js#L311">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>setup</h1> 
+<h1>
 
+	setup
+	
+		<span class="module">can.Control.prototype.setup</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2133,58 +2142,6 @@ so that users can change them.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.Control.prototype.setup",
-    "parent": "can.Control.prototype",
-    "body": "<p>Setup is where most of control's magic happens.  It does the following:</p>\n\n<h3>Sets this.element</h3>\n\n<p>The first parameter passed to new Control( el, options ) is expected to be \nan element.  This gets converted to a Wrapped NodeList element and set as\n[can.Control.prototype.element this.element].</p>\n\n<h3>Adds the control's name to the element's className</h3>\n\n<p>Control adds it's plugin name to the element's className for easier \ndebugging.  For example, if your Control is named \"Foo.Bar\", it adds\n\"foo_bar\" to the className.</p>\n\n<h3>Saves the control in $.data</h3>\n\n<p>A reference to the control instance is saved in $.data.  You can find \ninstances of \"Foo.Bar\" like: </p>\n\n<pre><code>$( '#el' ).data( 'controls' )[ 'foo_bar' ]\n</code></pre>\n\n<h3>Merges Options</h3>\n\n<p>Merges the default options with optional user-supplied ones.\nAdditionally, default values are exposed in the static [can.Control.static.defaults defaults] \nso that users can change them.</p>\n\n<h3>Binds event handlers</h3>\n\n<p>Setup does the event binding described in [can.Control].</p>",
-    "description": "<p>Perform pre-initialization logic. </p>",
-    "title": "setup",
-    "signatures": [{
-            "code": "setup(element, options)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "HTMLElement"
-                        }, {
-                            "type": "NodeList"
-                        }, {
-                            "type": "String"
-                        }
-                    ],
-                    "name": "element",
-                    "description": "<p>The element as passed to the constructor.</p>"
-                }, {
-                    "types": [{
-                            "type": "Object"
-                        }
-                    ],
-                    "optional": true,
-                    "name": "options",
-                    "description": "<p>option values for the control.  These get added to\nthis.options and merged with [can.Control.static.defaults defaults].</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "undefined"
-                    }, {
-                        "type": "Array"
-                    }
-                ],
-                "description": "<p>return an array if you want to change what init is called with. By\ndefault it is called with the element and options passed to the control.</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/control/control.js",
-    "line": 311,
-    "id": 113
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2201,7 +2158,7 @@ so that users can change them.</p>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

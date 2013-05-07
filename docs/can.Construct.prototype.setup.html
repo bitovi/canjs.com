@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/construct/construct.js#L333">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>setup</h1> 
+<h1>
 
+	setup
+	
+		<span class="module">can.Construct.prototype.setup</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2135,46 +2144,6 @@ extends the controller's defaults with the options that were passed.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "body": "<p>If a prototype <code>setup</code> method is provided, it is called when a new \ninstance is created. It is passed the same arguments that were passed\nto the constructor.</p>\n\n<p>Because <code>setup</code> is not defined on <code>can.Construct</code> itself, calling super from\ndirectly-inheriting classes will break. In other words, don't do this:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('Snowflake', {\n    setup: function() {\n        this._super(); // this will break!\n    }\n});</code></pre>\n\n<h2><code>setup</code> vs. <code>init</code></h2>\n\n<p>Usually, you should use [can.Construct::init] to do your class's initialization.\nUse <code>setup</code> instead for:</p>\n\n<ul>\n<li>initialization code that you want to run before the inheriting constructor's \n<code>init</code> method is called.</li>\n<li>initialization code that should run whether or not inheriting constructors\ncall their base's <code>init</code> methods.</li>\n<li>modifying the arguments that will get passed to <code>init</code>.</li>\n</ul>\n\n<h2>Example</h2>\n\n<p>This code is a simplified version of the code in [can.Control]'s setup\nmethod. It converts the first argument to a jQuery collection and\nextends the controller's defaults with the options that were passed.</p>\n\n<pre><code class=\"lang-javascript\">can.Construct(\"can.Control\", {\n    setup: function(domElement, rawOptions) {\n        // set up this.element\n        this.element = $(domElement);\n\n        // set up this.options\n        this.options = can.extend({},\n                                  this.constructor.defaults,\n                                  rawOptions\n                                 );\n\n        // pass this.element and this.options to init.\n        return [this.element, this.options];        \n    }\n});</code></pre>         ",
-    "description": "",
-    "title": "setup",
-    "name": "can.Construct.prototype.setup",
-    "type": "function",
-    "parent": "can.Construct.prototype",
-    "signatures": [{
-            "code": "setup(...args)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "*"
-                        }
-                    ],
-                    "name": "args",
-                    "description": "<p>the arguments passed to the constructor.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "Array"
-                    }, {
-                        "type": "undefined"
-                    }
-                ],
-                "description": "<p>if an array is returned, the elements of that array are passed as\narguments to [can.Construct::init]. Otherwise, the arguments to the\nconstructor are passed to [can.Construct::init] and the return value of <code>setup</code> is discarded.</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/construct/construct.js",
-    "line": 333,
-    "id": 11
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2191,7 +2160,7 @@ extends the controller's defaults with the options that were passed.</p>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

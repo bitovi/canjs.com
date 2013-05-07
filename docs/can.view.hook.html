@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/view/view.js#L183">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>hook</h1> 
+<h1>
 
+	hook
+	
+		<span class="module">can.view.hook</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2088,44 +2097,6 @@ $('.foo').html(html);
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.view.hook",
-    "parent": "can.view.static",
-    "body": "<p>Registers a hookup function that can be called back after the html is \nput on the page.  Typically this is handled by the template engine.  Currently\nonly EJS supports this functionality.</p>\n\n<pre><code>var id = can.view.hook(function(el){\n       //do something with el\n    }),\n    html = \"&lt;div data-view-id='\"+id+\"'&gt;\"\n$('.foo').html(html);\n</code></pre>",
-    "description": "<p>Create a hookup to insert into templates. </p>",
-    "title": "hook",
-    "signatures": [{
-            "code": "can.view.hook(callback)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
-                        }
-                    ],
-                    "name": "callback",
-                    "description": "<p>A callback function to be called with the element.</p>"
-                }
-            ]
-        }
-    ],
-    "comment": " ",
-    "src": "can/view/view.js",
-    "line": 183,
-    "id": 141
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2142,7 +2113,7 @@ $('.foo').html(html);
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

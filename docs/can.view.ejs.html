@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/view/view.js#L103">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>ejs</h1> 
+<h1>
 
+	ejs
+	
+		<span class="module">can.view.ejs</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2142,70 +2151,6 @@ documentFragment.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "body": "<p><code>can.view.ejs([id,] template)</code> registers an EJS template string\nfor a given id programatically. The following\nregisters <code>myViewEJS</code> and renders it into a documentFragment.</p>\n\n<pre><code> can.view.ejs('myViewEJS', '&lt;h2&gt;&lt;%= message %&gt;&lt;/h2&gt;');\n\n var frag = can.view('myViewEJS', {\n     message : 'Hello there!'\n });\n\n frag // -&gt; &lt;h2&gt;Hello there!&lt;/h2&gt;\n</code></pre>\n\n<p>To convert the template into a render function, just pass\nthe template. Call the render function with the data\nyou want to pass to the template and it returns the\ndocumentFragment.</p>\n\n<pre><code> var renderer = can.view.ejs('&lt;div&gt;&lt;%= message %&gt;&lt;/div&gt;');\n renderer({\n     message : 'EJS'\n }); // -&gt; &lt;div&gt;EJS&lt;/div&gt;\n</code></pre>",
-    "description": "<p>Register an EJS template string or create a renderer function. </p>",
-    "title": "ejs",
-    "name": "can.view.ejs",
-    "type": "function",
-    "parent": "can.view.static",
-    "signatures": [{
-            "code": "can.view.ejs(id, template)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "String"
-                        }
-                    ],
-                    "name": "id",
-                    "description": "<p>An ID for the template.</p>"
-                }, {
-                    "types": [{
-                            "type": "String"
-                        }
-                    ],
-                    "name": "template",
-                    "description": "<p>An EJS template in string form.</p>"
-                }
-            ]
-        }, {
-            "code": "can.view.ejs(template)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "String"
-                        }
-                    ],
-                    "name": "template",
-                    "description": "<p>An EJS template in string form.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "function",
-                        "returns": {
-                            "types": [{
-                                    "type": "undefined"
-                                }
-                            ]
-                        },
-                        "params": []
-                    }
-                ],
-                "description": "<p>A renderer function that takes data and helpers.</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/view/view.js",
-    "line": 103,
-    "id": 138
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2222,7 +2167,7 @@ documentFragment.</p>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

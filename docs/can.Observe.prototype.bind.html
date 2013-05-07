@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/observe/observe.js#L749">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>bind</h1> 
+<h1>
 
+	bind
+	
+		<span class="module">can.Observe.prototype.bind</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2178,58 +2187,6 @@ o.removeAttr('a');     // [object Object], undefined, Alice</code></pre>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "name": "can.Observe.prototype.bind",
-    "type": "function",
-    "parent": "can.Observe.prototype",
-    "body": "<p><code>bind</code> binds event handlers to property changes on <code>can.Observe</code>s. When you change\na property using <code>attr</code>, two events are fired on the Observe, allowing other parts\nof your application to observe the changes to the object.</p>\n\n<h2>The <em>change</em> event</h2>\n\n<p>The first event that is fired is the <em>change</em> event. The <em>change</em> event is useful\nif you want to react to all changes on an Observe.</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.bind('change', function(ev, attr, how, newVal, oldVal) {\n    console.log('Something changed.');\n});</code></pre>\n\n<p>The parameters of the event handler for the <em>change</em> event are:</p>\n\n<ul>\n<li><em>ev</em> The event object.</li>\n<li><em>attr</em> Which property changed.</li>\n<li><em>how</em> Whether the property was added, removed, or set. Possible values are <code>'add'</code>, <code>'remove'</code>, or <code>'set'</code>.</li>\n<li><em>newVal</em> The value of the property after the change. <code>newVal</code> will be <code>undefined</code> if the property was removed.</li>\n<li><em>oldVal</em> Thishe value of the property before the change. <code>oldVal</code> will be <code>undefined</code> if the property was added.</li>\n</ul>\n\n<p>Here is a concrete tour through the <em>change</em> event handler's arguments:</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.bind('change', function(ev, attr, how, newVal, oldVal) {\n    console.log(ev + ', ' + attr + ', ' + how + ', ' + newVal + ', ' + oldVal);\n});\n\no.attr('a', 'Alexis'); // [object Object], a, add, Alexis, undefined\no.attr('a', 'Adam');   // [object Object], a, set, Adam, Alexis\no.attr({\n    'a': 'Alice',      // [object Object], a, set, Alice, Adam\n    'b': 'Bob'         // [object Object], b, add, Bob, undefined\n});\no.removeAttr('a');     // [object Object], a, remove, undefined, Alice</code></pre>\n\n<p>(See also <code>[can.Observe::removeAttr removeAttr]</code>, which removes properties).</p>\n\n<h2>The <em>property name</em> event</h2>\n\n<p>The second event that is fired is an event whose type is the same as the changed\nproperty's name. This event is useful for noticing changes to a specific property.</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.bind('a', function(ev, newVal, oldVal) {\n    console.log('The value of a changed.');\n});</code></pre>\n\n<p>The parameters of the event handler for the <em>property name</em> event are:</p>\n\n<ul>\n<li><em>ev</em> The event object.</li>\n<li><em>newVal</em> The value of the property after the change. <code>newVal</code> will be <code>undefined</code> if the property was removed.</li>\n<li><em>oldVal</em> The value of the property before the change. <code>oldVal</code> will be <code>undefined</code> if the property was added.</li>\n</ul>\n\n<p>Here is a concrete tour through the <em>property name</em> event handler's arguments:</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.bind('a', function(ev, newVal, oldVal) {\n    console.log(ev + ', ' + newVal + ', ' + oldVal);\n});\n\no.attr('a', 'Alexis'); // [object Object], Alexis, undefined\no.attr('a', 'Adam');   // [object Object], Adam, Alexis\no.attr({\n    'a': 'Alice',      // [object Object], Alice, Adam\n    'b': 'Bob' \n});\no.removeAttr('a');     // [object Object], undefined, Alice</code></pre>\n\n<h2>See also</h2>\n\n<p>More information about changing properties on Observes can be found under\n[can.Observe.prototype.attr attr].</p>\n\n<p>For a more specific way to changes on Observes, see the [can.Observe.delegate] plugin.</p>",
-    "description": "<p>Bind event handlers to an Observe. </p>",
-    "title": "bind",
-    "signatures": [{
-            "code": "bind(eventType, handler)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "String"
-                        }
-                    ],
-                    "name": "eventType",
-                    "description": "<p>the type of event to bind this handler to</p>"
-                }, {
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
-                        }
-                    ],
-                    "name": "handler",
-                    "description": "<p>the handler to be called when this type of event fires\nThe signature of the handler depends on the type of event being bound. See below\nfor details.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "can.Observe"
-                    }
-                ],
-                "description": "<p>this Observe, for chaining</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/observe/observe.js",
-    "line": 749,
-    "id": 28
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2246,7 +2203,7 @@ o.removeAttr('a');     // [object Object], undefined, Alice</code></pre>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

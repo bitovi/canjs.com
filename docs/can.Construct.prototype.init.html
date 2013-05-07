@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/construct/construct.js#L393">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>init</h1> 
+<h1>
 
+	init
+	
+		<span class="module">can.Construct.prototype.init</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2121,37 +2130,6 @@ that they aren't being changed by <code>setup</code> somewhere along the inherit
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "body": "<p>If a prototype <code>init</code> method is provided, it is called when a new Construct is created,\nafter [can.Construct::setup]. The <code>init</code> method is where the bulk of your initialization code\nshould go, and a common thing to do in <code>init</code> is to save the arguments passed into the constructor.</p>\n\n<h2>Examples</h2>\n\n<p>First, we'll make a Person constructor that has a first and last name:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct(\"Person\", {\n    init: function(first, last) {\n        this.first = first;\n        this.last  = last;\n    }\n});\n\nvar justin = new Person(\"Justin\", \"Meyer\");\njustin.first; // \"Justin\"\njustin.last; // \"Meyer\"</code></pre>\n\n<p>Then we'll extend Person into Programmer and add a favorite language:</p>\n\n<pre><code class=\"lang-javascript\">Person(\"Programmer\", {\n    init: function(first, last, language) {\n        // call base's init\n        Person.prototype.init.apply(this, arguments);\n\n        // other initialization code\n        this.language = language;\n    },\n    bio: function() {\n        return 'Hi! I'm ' + this.first + ' ' + this.last +\n            ' and I write ' + this.language + '.';\n    }\n});\n\nvar brian = new Programmer(\"Brian\", \"Moschel\", 'ECMAScript');\nbrian.bio(); // \"Hi! I'm Brian Moschel and I write ECMAScript.\";</code></pre>\n\n<h2>Be Aware</h2>\n\n<p>[can.Construct::setup] is able to modify the arguments passed to <code>init</code>.\nIf you aren't receiving the right arguments to <code>init</code>, check to make sure\nthat they aren't being changed by <code>setup</code> somewhere along the inheritance chain.</p>",
-    "description": "",
-    "title": "init",
-    "name": "can.Construct.prototype.init",
-    "type": "function",
-    "parent": "can.Construct.prototype",
-    "signatures": [{
-            "code": "init(...args)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "*"
-                        }
-                    ],
-                    "name": "args",
-                    "description": "<p>the arguments passed to the constructor (or the elements of the array returned from [can.Construct::setup])</p>"
-                }
-            ]
-        }
-    ],
-    "comment": " ",
-    "src": "can/construct/construct.js",
-    "line": 393,
-    "id": 12
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2168,7 +2146,7 @@ that they aren't being changed by <code>setup</code> somewhere along the inherit
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/control/plugin/plugin.js#L172">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>update</h1> 
+<h1>
 
+	update
+	
+		<span class="module">can.Control.plugin.prototype.update</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2150,44 +2159,6 @@ $('#control').html();
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.Control.plugin.prototype.update",
-    "parent": "can.Control.plugin",
-    "body": "<p>Update extends [can.Control.prototype.options options] \nwith the <code>options</code> argument and rebinds all events.  It \nre-configures the control.</p>\n\n<p>For example, the following control wraps a recipe form. When the form\nis submitted, it creates the recipe on the server.  When the recipe\nis <code>created</code>, it resets the form with a new instance.</p>\n\n<pre><code>var Creator = can.Control({\n  \"{recipe} created\" : function(){\n    this.update({recipe : new Recipe()});\n    this.element[0].reset();\n    this.element.find(\"[type=submit]\").val(\"Create Recipe\")\n  },\n  \"submit\" : function(el, ev){\n    ev.preventDefault();\n    var recipe = this.options.recipe;\n    recipe.attrs( this.element.formParams() );\n    this.element.find(\"[type=submit]\").val(\"Saving...\")\n    recipe.save();\n  }\n});\n\n$('#createRecipes').creator({ recipe : new Recipe() })\n</code></pre>\n\n<p><em>Update</em> is called if a control's plugin helper is called with the plugin options on an element\nthat already has a control instance of the same type. If you want to implement your\nown update method make sure to call the old one either using the [can.Construct.super super] plugin or\nby calling <code>can.Control.prototype.update.apply(this, arguments);</code>.\nFor example, you can change the content of the control element every time the options change:</p>\n\n<pre><code>var Plugin = can.Control({\n    pluginName: 'myPlugin'\n  }, {\n    init : function(el, options) {\n      this.updateCount = 0;\n      this.update({\n        text : 'Initialized'\n      });\n    },\n    update : function(options) {\n      // Call the can.Control update first.\n      // Use this._super when using can/construct/super\n      can.Control.prototype.update.call(this, options);\n      this.element.html(this.options.text + ' ' +\n        (++this.updateCount) + ' times');\n    }\n});\n\n$('#control').myPlugin();\n$('#control').html();\n// Initialized. Updated 1 times\n\n$('#control').myPlugin({ text : 'Calling update. Updated' });\n$('#control').html();\n// Calling update. Updated 2 times\n</code></pre>\n\n<div class='demo_wrapper' data-demo-src='can/control/plugin/demo-update.html'></div>",
-    "description": "<p>Reconfigure a control. </p>",
-    "title": "update",
-    "signatures": [{
-            "code": "update(newOptions)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "Object"
-                        }
-                    ],
-                    "name": "newOptions",
-                    "description": "<p>Options to merge into the current options.</p>"
-                }, {
-                    "types": [{
-                            "type": "Object"
-                        }
-                    ],
-                    "name": "options",
-                    "description": "<p>A list of options to merge with \n[can.Control.prototype.options this.options].  Often this method\nis called by the [can.Control.plugin jQuery helper function].</p>"
-                }
-            ]
-        }
-    ],
-    "comment": " ",
-    "src": "can/control/plugin/plugin.js",
-    "line": 172,
-    "id": 124
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2204,7 +2175,7 @@ $('#control').html();
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/observe/observe.js#L1689">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>pop</h1> 
+<h1>
 
+	pop
+	
+		<span class="module">can.Observe.List.prototype.pop</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2091,36 +2100,6 @@ looking for [can.Observe.List.unshift unshift] and its counterpart [can.Observe.
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "name": "can.Observe.List.prototype.pop",
-    "type": "function",
-    "parent": "can.Observe.List.prototype",
-    "body": "<p><code>pop</code> is the opposite action from <code>[can.Observe.List.push push]</code>:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice']);\n\nlist.push('Bob', 'Eve');\nlist.attr(); // ['Alice', 'Bob', 'Eve']\n\nlist.pop(); // 'Eve'\nlist.pop(); // 'Bob'\nlist.pop(); // 'Alice'\nlist.pop(); // undefined</code></pre>\n\n<h2>Events</h2>\n\n<p><code>pop</code> causes <em>change</em>, <em>remove</em>, and <em>length</em> events to be fired if the List is not empty\nwhen it is called.</p>\n\n<h2>See also</h2>\n\n<p><code>pop</code> has its counterpart in [can.Observe.List.push push], or you may be\nlooking for [can.Observe.List.unshift unshift] and its counterpart [can.Observe.List.shift shift].</p>",
-    "description": "<p>Remove an element from the end of a List. </p>",
-    "title": "pop",
-    "signatures": [{
-            "code": "pop()",
-            "description": "<p><code>push</code> removes an element from the end of a List.</p>",
-            "params": [],
-            "returns": {
-                "types": [{
-                        "type": "*"
-                    }
-                ],
-                "description": "<p>the element just popped off the List, or <code>undefined</code> if the List was empty</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/observe/observe.js",
-    "line": 1689,
-    "id": 41
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2137,7 +2116,7 @@ looking for [can.Observe.List.unshift unshift] and its counterpart [can.Observe.
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

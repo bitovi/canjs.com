@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/observe/validations/validations.js#L78">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>validate</h1> 
+<h1>
 
+	validate
+	
+		<span class="module">can.Observe.validations.static.validate</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2084,73 +2093,6 @@ the error message.  Validations should be set in the Constructor's static init m
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "name": "can.Observe.validations.static.validate",
-    "type": "function",
-    "parent": "can.Observe.validations",
-    "body": "",
-    "description": "<p><code>validate(attrNames, [options,] validateProc(value, attrName) )</code> validates each of the\nspecified attributes with the given <code>validateProc</code> function.  The function\nshould return a value if there is an error.  By default, the return value is\nthe error message.  Validations should be set in the Constructor's static init method.</p>\n\n<p>The following example validates that a person's age is a number:</p>\n\n<pre><code>Person = can.Observe({\n    init : function(){\n      this.validate([\"age\"], function(val){\n        if( typeof val === 'number' ){\n          return \"must be a number\"\n        }\n      })\n    }\n},{})\n</code></pre>\n\n<p>The error message can be overwritten with <code>options</code> <strong>message</strong> property:</p>\n\n<pre><code>Person = can.Observe({\n    init : function(){\n      this.validate(\n        \"age\",\n      {message: \"must be a number\"},\n      function(val){\n          if( typeof val === 'number' ){\n            return true\n          }\n      })\n  }\n},{})\n</code></pre>",
-    "title": "validate",
-    "params": [{
-            "types": [{
-                    "type": "Array",
-                    "template": [{
-                            "types": [{
-                                    "type": "String"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ],
-            "name": "attrNames",
-            "description": "<p>Attribute name(s) to to validate</p>"
-        }, {
-            "types": [{
-                    "type": "Object"
-                }
-            ],
-            "optional": true,
-            "name": "options",
-            "description": "<p>Options for the\nvalidations.  Valid options include 'message' and 'testIf'.</p>"
-        }, {
-            "types": [{
-                    "type": "function",
-                    "returns": {
-                        "types": [{
-                                "type": "undefined"
-                            }
-                        ]
-                    },
-                    "params": [{
-                            "types": [{
-                                    "type": "*"
-                                }
-                            ],
-                            "name": "value"
-                        }, {
-                            "types": [{
-                                    "type": "String"
-                                }
-                            ],
-                            "name": "attrName"
-                        }
-                    ]
-                }
-            ],
-            "name": "validateProc",
-            "description": "<p>Function used to validate each\ngiven attribute. Returns nothing if valid and an error message\notherwise. Function is called in the instance context and takes the\n<code>value</code> and <code>attrName</code> to validate.</p>"
-        }
-    ],
-    "src": "can/observe/validations/validations.js",
-    "line": 78,
-    "id": 68
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2167,7 +2109,7 @@ the error message.  Validations should be set in the Constructor's static init m
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

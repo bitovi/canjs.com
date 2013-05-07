@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/control/control.js#L264">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>defaults</h1> 
+<h1>
 
+	defaults
+	
+		<span class="module">can.Control.defaults</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2073,23 +2082,6 @@ new Message( "#el12", { message: "hi" } ); //writes hi
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "property",
-    "body": "<p><code>defaults</code> provides default values for a Control's options.\nOptions passed into the constructor function will be shallowly merged\ninto the values from defaults in [can.Control::setup], and\nthe result will be stored in <code>[can.Control::options this.options]</code>.</p>\n\n<pre><code>Message = can.Control({\n  defaults: {\n    message: \"Hello World\"\n  }\n}, {\n  init: function(){\n    this.element.text( this.options.message );\n  }\n});\n\nnew Message( \"#el1\" ); //writes \"Hello World\"\nnew Message( \"#el12\", { message: \"hi\" } ); //writes hi\n</code></pre>",
-    "description": "<p>Default values for the Control's options. </p>",
-    "title": "defaults",
-    "name": "can.Control.defaults",
-    "parent": "can.Control.static",
-    "comment": " ",
-    "src": "can/control/control.js",
-    "line": 264,
-    "id": 110
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2106,7 +2098,7 @@ new Message( "#el12", { message: "hi" } ); //writes hi
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

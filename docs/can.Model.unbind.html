@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/model/model.js#L148">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>unbind</h1> 
+<h1>
 
+	unbind
+	
+		<span class="module">can.Model.unbind</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2110,58 +2119,6 @@ passed to <code>bind</code>.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "body": "<p><code>unbind(eventType, handler)</code> removes a listener\nattached with [can.Model.bind].</p>\n\n<pre><code>var handler = function(ev, createdTask){\n\n}\nTask.bind(\"created\", handler)\nTask.unbind(\"created\", handler)\n</code></pre>\n\n<p>You have to pass the same function to <code>unbind</code> that you\npassed to <code>bind</code>.</p>",
-    "description": "<p>Stop listening for events on a Model class. </p>",
-    "title": "unbind",
-    "name": "can.Model.unbind",
-    "type": "function",
-    "parent": "can.Model.static",
-    "signatures": [{
-            "code": "unbind(eventType, handler)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "String"
-                        }
-                    ],
-                    "name": "eventType",
-                    "description": "<p>The type of event. It must be\n<code>\"created\"</code>, <code>\"udpated\"</code>, <code>\"destroyed\"</code>.</p>"
-                }, {
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
-                        }
-                    ],
-                    "name": "handler",
-                    "description": "<p>A callback function\nthat was passed to <code>bind</code>.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "can.Model"
-                    }
-                ],
-                "description": "<p>The model constructor function.</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/model/model.js",
-    "line": 148,
-    "id": 84
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2178,7 +2135,7 @@ passed to <code>bind</code>.</p>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

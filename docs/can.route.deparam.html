@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/route/route.js#L187">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>deparam</h1> 
+<h1>
 
+	deparam
+	
+		<span class="module">can.route.deparam</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2112,44 +2121,6 @@ can.route.deparam("videos/5");
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.route.deparam",
-    "parent": "can.route.static",
-    "body": "<p>Creates a data object based on the query string passed into it. This is \nuseful to create an object based on the <code>location.hash</code>.</p>\n\n<pre><code>can.route.deparam(\"id=5&amp;type=videos\") \n     // -&gt; { id: 5, type: \"videos\" }\n</code></pre>\n\n<p>It's important to make sure the hash or exclamantion point is not passed\nto <code>can.route.deparam</code> otherwise it will be included in the first property's\nname.</p>\n\n<pre><code>can.route.attr(\"id\", 5) // location.hash -&gt; #!id=5\ncan.route.attr(\"type\", \"videos\") \n     // location.hash -&gt; #!id=5&amp;type=videos\ncan.route.deparam(location.hash) \n     // -&gt; { #!id: 5, type: \"videos\" }\n</code></pre>\n\n<p><code>can.route.deparam</code> will try and find a matching route and, if it does,\nwill deconstruct the URL and parse our the key/value parameters into the data object.</p>\n\n<pre><code>can.route(\":type/:id\")\n\ncan.route.deparam(\"videos/5\");\n     // -&gt; { id: 5, route: \":type/:id\", type: \"videos\" }\n</code></pre>",
-    "description": "<p>Extract data from a route URL. </p>",
-    "title": "deparam",
-    "signatures": [{
-            "code": "deparam(url)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "String"
-                        }
-                    ],
-                    "name": "url",
-                    "description": "<p>A URL to extract data from.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "Object"
-                    }
-                ],
-                "description": "<p>An object containing the extracted data.</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/route/route.js",
-    "line": 187,
-    "id": 128
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2166,7 +2137,7 @@ can.route.deparam("videos/5");
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

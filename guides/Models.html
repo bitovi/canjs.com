@@ -338,12 +338,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/../_guides/models.md">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>Models</h1> 
+<h1>
 
+	Models
+	
+		<span class="module">Models</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -541,23 +550,6 @@ the list.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "page",
-    "name": "Models",
-    "body": "<p>Models are Observes that connect to a RESTful interface. They come with a set of\nmethods designed to make it easy to manage changes remotely. To create a Model\nclass, call <code>can.Model</code> and supply it with specific static properties that tell\nit how to interact with the server, along with any instance properties or helper\nmethods the Model may need. The important static properties are:</p>\n\n<ul>\n<li><a href=\"../docs/can.Model.findAll.html\">findAll</a>, which describes how to get a group of\nitems.</li>\n<li><a href=\"../docs/can.Model.findOne.html\">findOne</a>, which describes how to get a specific\nitem.</li>\n<li><a href=\"../docs/can.Model.create.html\">create</a>, which describes how to save a new item.</li>\n<li><a href=\"../docs/can.Model.update.html\">update</a>, which describes how to update an\nexisting item.</li>\n<li><a href=\"../docs/can.Model.destroy.html\">destroy</a>, which describes how to delete an item.</li>\n</ul>\n\n<p>When accessing a straightforward RESTful API, creating a Model class and an\ninstance of that Model class might be as simple as this:</p>\n\n<pre><code class=\"lang-javascript\">var Todo = can.Model({\n    findAll: 'GET /todos',\n    findOne: 'GET /todos/{id}',\n    create:  'POST /todos',\n    update:  'PUT /todos/{id}',\n    destroy: 'DELETE /todos/{id}'\n}, {});\n\nvar dishesTask = new Todo({description: 'Do the dishes.'});</code></pre>\n\n<p>Because Models are Observes, don't forget to set all your properties with <code>attr</code>.</p>\n\n<h2>Talking to the server</h2>\n\n<p>By supplying the <code>findAll</code>, <code>findOne</code>, <code>create</code>, <code>update</code>, and <code>destroy</code>\nproperties, you show a Model class how to communicate with the server. You can\ncall <code>findAll</code> and <code>findOne</code> on the Model class to retrieve Models and <code>save</code>\nand <code>destroy</code> on Models to create, update, and delete them.</p>\n\n<h3>Retrieving items from a server</h3>\n\n<p><code>can.Model.findAll</code> retrieves a group of Models by making a call to a server.\nHere's how you call <code>findAll</code> on our Todo class above:</p>\n\n<pre><code class=\"lang-javascript\">Todo.findAll({}, function(todos) {\n    // todos is a can.Model.List of Todo Models.\n}, function(xhr) {\n    // handle errors\n});</code></pre>\n\n<p>This will make a <code>GET</code> request to <code>/todos</code>, which should return JSON that looks\nsimilar to:</p>\n\n<pre><code class=\"lang-javascript\">{\n    \"data\": [\n        {\"id\":1, \"description\":\"Do the dishes.\"},\n        {\"id\":2, \"description\":\"Mow the lawn.\"},\n        {\"id\":3, \"description\":\"Finish the laundry.\"}\n    ]\n}</code></pre>\n\n<p>(<code>findAll</code> will also accept an array from the service, but <a href=\"http://haacked.com/archive/2008/11/20/anatomy-of-a-subtle-json-vulnerability.aspx\">you probably should not be returning an array from a JSON service</a>.)</p>\n\n<p>When the service has returned, <code>findAll</code> will massage the data into Model\ninstances, put them in a can.Model.List (which is like a can.Observe.List for\nModels), and pass the List to the callback in its second parameter. If there was\nan error, <code>findAll</code> will call the callback in its third parameter and pass it the\nXmlHttpRequest object used to make the call.</p>\n\n<p><code>findAll</code> returns a <a href=\"../docs/can.Deferred.html\">can.Deferred</a> that will resolve to a Model\nList of items if the call succeeds and rejects to the XmlHttpRequest object if\nthere is an error.</p>\n\n<p><code>can.Model.findOne</code> works similarly to <code>findAll</code>, except that it retrieves a\nsingle Model from a server:</p>\n\n<pre><code class=\"lang-javascript\">Todo.findOne({id: 1}, function(todo) {\n    // todo is an instance of Todo\n});</code></pre>\n\n<p>This makes a <code>GET</code> request to <code>/todos/1</code>, which should return JSON that looks\nsimilar to:</p>\n\n<pre><code class=\"lang-javascript\">{\n    \"id\":1,\n    \"description\":\"Do the dishes\"\n}</code></pre>\n\n<p><code>findOne</code> returns a Deferred that resolves to the Todo if the call succeeds and\nrejects to the XmlHttpRequest object if there is an error.</p>\n\n<h3>Modifying items</h3>\n\n<p>You can call <a href=\"../docs/can.Model.prototype.save.html\">save</a> on a Model instance to save it\nback to the server. If the Model has an <strong>id</strong>, it will be updated using the\nfunction specified under <code>update</code>. Otherwise, can.Model assumes the Model is new\nand creates the item on the server using the function in <code>create</code>.</p>\n\n<p>Either way, the callback in the first parameter will be called on a successful\nsave with the updated Model; if an error occurs, the callback in the second\nparameter will be called with the XmlHttpRequest object. Like <code>findAll</code>, <code>save</code>\nreturns a Deferred that resolves to the updated Model on success and rejects to\nthe XmlHttpRequest object on failure.</p>\n\n<pre><code class=\"lang-javascript\">var shopping = new Todo({description: \"Go grocery shopping.\"});\nshopping.save(function(saved) {\n    // saved is the saved Todo\n    saved.attr('description', 'Remember the milk.');\n    saved.save();\n});</code></pre>\n\n<p>In the code above, the first time <code>shopping.save()</code> is called, can.Model will\nmake a <code>POST</code> request to <code>/todos</code> with a request body of <code>description=Go\ngrocery shopping.</code>. When the response comes back, it should have an <strong>id</strong>\n(say, 5) and that <strong>id</strong> property will be reflected in <code>todo</code>.</p>\n\n<p>The second time <code>saved.save()</code> is called, <code>saved</code> has an <strong>id</strong>, so can.Model\nwill make a <code>PUT</code> request to <code>/todos/5</code> with a request body of\n<code>description=Remember the milk.</code>.</p>\n\n<h3>Deleting items</h3>\n\n<p>When you need to delete a Model's counterpart on the server, just call <code>destroy</code>\non the Model, passing it success and error handlers just like <code>save</code>, except\nthat the success handler will be passed the Model that has been deleted.\n<code>destroy</code> also retuns a Deferred, which resolves to the deleted Model and\nrejects to the XmlHttpRequest object.</p>\n\n<pre><code class=\"lang-javascript\">var cats = new Todo({description: \"Feed the cats.\"});\ncats.save(function(saved) {\n    saved.destroy(function(destroyed) {\n        // destroyed is the Todo that was destroyed\n    });\n});</code></pre>\n\n<p>When <code>destroy</code> is called in the above code, can.Model makes a <code>DELETE</code> request\nto <code>/todos/6</code>.</p>\n\n<h2>Listening to events</h2>\n\n<p>Because Models are Observes, you can bind to the same events as on any other\nObserve. In addition to those events, Models emit three new kinds of events:</p>\n\n<ul>\n<li><em>created</em>, when an instance is created on the server.</li>\n<li><em>updated</em>, when an instance is updated on the server.</li>\n<li><em>destroyed</em>, when an instance is destroyed on the server.</li>\n</ul>\n\n<p>For example, here is how you listen for an instance being created on the server:</p>\n\n<pre><code class=\"lang-javascript\">var mop = new Todo({description: 'Mop the floor.'});\nmop.bind('created', function(ev, created) {\n    // created is the created Todo\n});\nmop.save();</code></pre>\n\n<p>You can also bind directly onto the Model class to listen for any time <strong>any</strong>\ninstance is created, updated, or destroyed:</p>\n\n<pre><code class=\"lang-javascript\">Todo.bind('created', function(ev, created) {\n    // created is the created Todo\n});</code></pre>\n\n<h2>Model Lists</h2>\n\n<p>Model Lists (provided by <code>can.Model.List</code>) are Lists whose items are Models.\nWhen one of a Model List's elements are destroyed, that element is removed from\nthe list.</p>\n\n<pre><code class=\"lang-javascript\">Todo.findAll({}, function(todos) {\n    todos.length; // 5\n    todos[0].destroy(function() {\n        todos.length; // 4\n    }\n});</code></pre>",
-    "description": "",
-    "title": "Models",
-    "parent": "Tutorial",
-    "order": 2,
-    "comment": " ",
-    "src": "_guides/models.md",
-    "id": 11
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -574,7 +566,7 @@ the list.</p>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

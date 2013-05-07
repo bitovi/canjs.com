@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/route/route.js#L391">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>current</h1> 
+<h1>
 
+	current
+	
+		<span class="module">can.route.current</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2099,44 +2108,6 @@ can.route.current({ id: 5, type: 'videos' }) // -&gt; true
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.route.current",
-    "parent": "can.route.static",
-    "body": "<p>Checks the page's current URL to see if the route represents the options passed \ninto the function.</p>\n\n<p>Returns true if the options respresent the current URL.</p>\n\n<pre><code>can.route.attr('id', 5) // location.hash -&gt; \"#!id=5\"\ncan.route.current({ id: 5 }) // -&gt; true\ncan.route.current({ id: 5, type: 'videos' }) // -&gt; false\n\ncan.route.attr('type', 'videos') \n       // location.hash -&gt; #!id=5&amp;type=videos\ncan.route.current({ id: 5, type: 'videos' }) // -&gt; true\n</code></pre>",
-    "description": "",
-    "title": "current",
-    "signatures": [{
-            "code": "current(options)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "Object"
-                        }
-                    ],
-                    "name": "options",
-                    "description": "<p>Data to check agains the current route.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "Boolean"
-                    }
-                ],
-                "description": "<p>Whether the data matches the current URL.</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/route/route.js",
-    "line": 391,
-    "id": 134
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2153,7 +2124,7 @@ can.route.current({ id: 5, type: 'videos' }) // -&gt; true
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

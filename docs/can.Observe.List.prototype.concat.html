@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/observe/observe.js#L1895">source</a></li>
 		
 		
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>concat</h1> 
+<h1>
 
+	concat
+	
+		<span class="module">can.Observe.List.prototype.concat</span>
+	
+
+
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2094,41 +2103,6 @@ newList.attr(); // ['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve', {f: 'Francis'}]<
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.Observe.List.prototype.concat",
-    "parent": "can.Observe.List.prototype",
-    "body": "<p><code>concat</code> makes a new List with the elements of the List followed by the elements of the parameters.</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List();\nvar newList = list.concat(\n    'Alice',\n    ['Bob', 'Charlie']),\n    new can.Observe.List(['Daniel', 'Eve']),\n    {f: 'Francis'}\n);\nnewList.attr(); // ['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve', {f: 'Francis'}]</code></pre>     ",
-    "description": "<p>Merge many collections together into a List. </p>",
-    "title": "concat",
-    "signatures": [{
-            "code": "concat(...args)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "Array"
-                        }, {
-                            "type": "can.Observe.List"
-                        }, {
-                            "type": "*"
-                        }
-                    ],
-                    "name": "args",
-                    "description": "<p>Any number of arrays, Lists, or values to add in\nFor each parameter given, if it is an Array or a List, each of its elements will be added to\nthe end of the concatenated List. Otherwise, the parameter itself will be added.</p>"
-                }
-            ]
-        }
-    ],
-    "comment": " ",
-    "src": "can/observe/observe.js",
-    "line": 1895,
-    "id": 47
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2145,7 +2119,7 @@ newList.attr(); // ['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve', {f: 'Francis'}]<
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

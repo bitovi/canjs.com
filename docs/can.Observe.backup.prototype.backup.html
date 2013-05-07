@@ -2028,12 +2028,21 @@
 			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/observe/backup/backup.js#L14">source</a></li>
 		
 		
+			
+			<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/observe/backup">download</a></li>
+			
+		
 		
 	</ul>
 </div>
 
-	<h1>backup</h1> <span class="module">can/observe/backup</span>
+<h1>
 
+	backup
+	
+
+<span class="module">can/observe/backup</span>
+</h1>
 
 <span class="inherits">&nbsp;</span>
 
@@ -2099,36 +2108,6 @@ recipe.title;     // 'Pancake Mix'</code></pre>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.Observe.backup.prototype.backup",
-    "parent": "can.Observe.backup",
-    "body": "",
-    "description": "<p>Save the values of the properties of an Observe. </p>",
-    "title": "backup",
-    "plugin": "can/observe/backup",
-    "signatures": [{
-            "code": "backup()",
-            "description": "",
-            "params": [],
-            "returns": {
-                "types": [{
-                        "type": "can.Observe"
-                    }
-                ],
-                "description": "<p>The Observe, for chaining.</p>\n\n<p><code>backup</code> backs up the current state of the properties of an Observe and marks\nthe Observe as clean. If any of the properties change value, the original\nvalues can be restored with <code>[can.Observe.prototype.restore]</code>:</p>\n\n<pre><code class=\"lang-javascript\">var recipe = new can.Observe({\n  title: 'Pancake Mix',\n  yields: '3 batches',\n  ingredients: [{\n    ingredient: 'flour',\n    quantity: '6 cups'\n  },{\n    ingredient: 'baking soda',\n    quantity: '1 1/2 teaspoons'\n  },{\n    ingredient: 'baking powder',\n    quantity: '3 teaspoons'\n  },{\n    ingredient: 'salt',\n    quantity: '1 tablespoon'\n  },{\n    ingredient: 'sugar',\n    quantity: '2 tablespoons'\n  }]\n});\nrecipe.backup();\n\nrecipe.attr('title', 'Flapjack Mix');\nrecipe.title;     // 'Flapjack Mix'\n\nrecipe.restore();\nrecipe.title;     // 'Pancake Mix'</code></pre>"
-            }
-        }
-    ],
-    "src": "can/observe/backup/backup.js",
-    "line": 14,
-    "id": 58
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2145,7 +2124,7 @@ recipe.title;     // 'Pancake Mix'</code></pre>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.js"></script>
+	<script type="text/javascript" src="../resources/production.min.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">
