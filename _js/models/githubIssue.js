@@ -3,7 +3,7 @@ can.Model("CanJSUS.GithubIssue", {
 		return {
 			actor: data.actor,
 			actorID: data._author,
-			picture: ''/*data.source_data.org.avatar_url*/,
+			picture: data.source_data.org.avatar_url,
 			title: data.title,
 			body: data.body,
 

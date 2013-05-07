@@ -2,8 +2,8 @@ can.Model("CanJSUS.Tweet", {
 	model: function(data) {
 		return {
 			handle: data.actor,
-			realName: ''/*data.source_data.user.name*/,
-			picture: ''/*data.source_data.user.profile_image_url*/,
+			realName: data.source_data.user.name,
+			picture: data.source_data.user.profile_image_url,
 			body: data.title,
 
 			feed: data.feed,
