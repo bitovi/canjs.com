@@ -61,9 +61,15 @@
 		prettyPrint();
 	});
 
-	// this needs to wait until everything is loaded.
-	$(window).load(function() {
-		// Grayscaling for our featured apps.
-		Grayscale($('.carousel img'), 300);
-	});
+	// feature-test for canvas
+	var canvas = !!((document.createElement('canvas')).getContext);
+
+	if(canvas) {
+		// this needs to wait until everything is loaded.
+		$(window).load(function() {
+
+			// Grayscaling for our featured apps.
+			Grayscale($('.carousel img'), 300);
+		});
+	}
 })(jQuery);

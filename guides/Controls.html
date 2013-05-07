@@ -654,7 +654,9 @@ up all the data it uses by calling <code>$(document.body).empty()</code>.</p>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">
-   	CanJSUS.redrawFont();
+   	$(function() {
+   		CanJSUS.redrawFont();
+   	});
    	</script>
     <!--<![endif]-->
 </body>

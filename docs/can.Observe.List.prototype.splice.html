@@ -2225,7 +2225,9 @@ list.splice(2, 1, 'Alice', 'Bob'); // change: 2, 'remove', undefined, ['c']
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">
-   	CanJSUS.redrawFont();
+   	$(function() {
+   		CanJSUS.redrawFont();
+   	});
    	</script>
     <!--<![endif]-->
 </body>

@@ -2144,7 +2144,9 @@ to render <a href="can.view.html">can.view</a> templates replacing each element 
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">
-   	CanJSUS.redrawFont();
+   	$(function() {
+   		CanJSUS.redrawFont();
+   	});
    	</script>
     <!--<![endif]-->
 </body>

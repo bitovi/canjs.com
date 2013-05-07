@@ -2197,7 +2197,9 @@ rather than a pound. If the value referenced is falsey, the section will render.
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">
-   	CanJSUS.redrawFont();
+   	$(function() {
+   		CanJSUS.redrawFont();
+   	});
    	</script>
     <!--<![endif]-->
 </body>

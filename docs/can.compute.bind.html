@@ -2196,7 +2196,9 @@ tally(tally() + 5); // The log reads:
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">
-   	CanJSUS.redrawFont();
+   	$(function() {
+   		CanJSUS.redrawFont();
+   	});
    	</script>
     <!--<![endif]-->
 </body>

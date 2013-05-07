@@ -640,7 +640,9 @@ to <strong>zepto.js</strong> when using Zepto 0.8.</p>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">
-   	CanJSUS.redrawFont();
+   	$(function() {
+   		CanJSUS.redrawFont();
+   	});
    	</script>
     <!--<![endif]-->
 </body>

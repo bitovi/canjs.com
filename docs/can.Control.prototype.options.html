@@ -2127,7 +2127,9 @@ new Tabs( $( "#tabs2" ), { activeClass : 'active' } ); // adds 'active'
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">
-   	CanJSUS.redrawFont();
+   	$(function() {
+   		CanJSUS.redrawFont();
+   	});
    	</script>
     <!--<![endif]-->
 </body>
