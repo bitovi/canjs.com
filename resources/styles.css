@@ -2911,6 +2911,14 @@ tr.inactive .checkbox {
     top: -14px;
   }
 }
+.ie .search:before {
+  font-family: Bitstrap;
+  content: "\e012";
+  display: block;
+  position: absolute;
+  left: 17px;
+  color: #ccc;
+}
 .ie .sidebar .api li li.active > a,
 .ie .sidebar .api li li.active > a:hover,
 .ie .sidebar .api li li.active > a:before,
