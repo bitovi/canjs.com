@@ -2,7 +2,7 @@
 @parent guides 2
 
 @body
-## Flexible
+<h2 id="Flexible">Flexible</h2>
 
 Your library should not break-down as your application and organization grow and technologies change. CanJS’s flexibility will keep it valuable to you far into the future.
 
@@ -51,7 +51,7 @@ person.bind( 'change', function( ev, attr, how, newVal, oldVal ) {
 person.attr( 'name.last', 'Meyer' );
 @codeend
 
-## Powerful
+<h2 id="Powerful">Powerful</h2>
 
 ### Safety
 
@@ -129,7 +129,7 @@ This site highlights the most important features of CanJS. The library comes wit
 
 CanJS is also supported by [Bitovi](http://bitovi.com/). We are extremely active on the [forums](https://forum.javascriptmvc.com/#Forum/canjs). And should the need arise, we provide support, training, and development.
 
-## Fast
+<h2 id="Fast">Fast</h2>
 
 ### Size
 

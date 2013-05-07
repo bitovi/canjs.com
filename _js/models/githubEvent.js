@@ -3,14 +3,14 @@ can.Model("CanJSUS.GithubEvent", {
 		return {
 			actor: data.actor,
 			actorID: data._author,
-			picture: ''/*data.source_data.org.avatar_url*/,
+			picture: data.source_data.org.avatar_url,
 			title: data.title,
-			commits: []/*data.source_data.payload.commits.map(function(el) {
+			commits: data.source_data.payload.commits.map(function(el) {
 				return {
 					hash: el.sha,
 					message: el.message
 				}
-			})*/,
+			}),
 
 			feed: data.feed,
 			category: data.category,
