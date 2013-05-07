@@ -259,10 +259,10 @@ div.light:after{top:auto;bottom:-19px;background-position-y:bottom;}
 .carousel li div{margin-top:4px;}
 .index .carousel li a{width:163px;}
 .example{position:relative;margin-top:20px;clear:both;}.example h2{text-transform:uppercase;}
-.example>div,.example>textarea{float:left;display:block;height:315px;border-radius:2px;-moz-border-radius:2px;-webkit-border-radius:2px;border:1px solid #797979;background-color:#ffffff;text-align:left;margin-top:20px;margin-bottom:40px;font-family:Courier New, Courier, mono;font-size:12px;color:#666;}.example>div pre,.example>textarea pre{display:block;height:100%;border:0px solid transparent;}
+.example>div,.example>textarea{float:left;display:block;height:380px;border-radius:2px;-moz-border-radius:2px;-webkit-border-radius:2px;border:1px solid #797979;background-color:#ffffff;text-align:left;margin-top:20px;margin-bottom:40px;font-family:Courier New, Courier, mono;font-size:12px;color:#666;}.example>div pre,.example>textarea pre{display:block;height:100%;border:0px solid transparent;}
 .example>.code,.example>.template{display:block;width:350px;margin-right:10px;}
 .example>.template{width:300px;}
-.example>.result{width:248px;padding:12px 12px 0px;height:303px;}.example>.result ul{margin-left:0px;}
+.example>.result{width:248px;padding:12px 12px 0px;height:374px;}.example>.result ul{margin-left:0px;}
 .example button.color{text-transform:uppercase;font-size:12px;position:absolute;right:3px;padding:3px 20px;top:50px;}
 .has-tip{background-color:rgba(238, 168, 30, 0.2);cursor:pointer;position:relative;display:inline-block;}
 .has-tip .tooltip{position:absolute;display:block;top:0;}
@@ -428,6 +428,7 @@ input[type='radio']:checked+label.radio:after{content:' ';width:6px;height:6px;b
 .ie .download .cdn span{top:-14px;}
 .ie .download .cdn .dropdown select{padding:8px 0px 6px 8px;}
 .ie .download .hero .cdn h4{top:-14px;}
+.lt-ie9 .brand:before{content:"\e004";font-size:180px;top:0px;left:0px;}
 .lt-ie9 .hero{background:#797977 url(../img/hero-ribbons.png) no-repeat center center;}.lt-ie9 .hero .pull-right{width:360px;}
 .lt-ie9 input.all,.lt-ie9 input.module,.lt-ie9 input#minify,.lt-ie9 input#minified,.lt-ie9 input#dojo,.lt-ie9 input#yui,.lt-ie9 input#mootools,.lt-ie9 input#zepto,.lt-ie9 input#jquery{display:inline-block;}
 .lt-ie9 label.checkbox,.lt-ie9 label.radio{display:none;}
