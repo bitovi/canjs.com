@@ -2989,8 +2989,8 @@ tr.inactive .checkbox {
 .lt-ie8 .container ul.circle-tabs li {
   float: left;
 }
-.lt-ie8 .wizard {
-  background: url(../img/wizard-bkg.png) no-repeat center center;
+.lt-ie8 ul.wizard {
+  background: url(../img/wizard-bkg.png) no-repeat center center !important;
 }
 .lt-ie8 .nav {
   top: -30px;
