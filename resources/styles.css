@@ -1418,8 +1418,7 @@ div.light:after {
   text-align: center;
   padding: 0;
   margin: 10px auto;
-}
-.index .wizard {
+  background: url(../img/wizard-bkg.svg) no-repeat center center;
   margin-top: 30px;
 }
 .wizard li {
@@ -1451,14 +1450,17 @@ div.light:after {
   text-shadow: 0 1px 8px #000000;
   color: rgba(255, 255, 255, 0.9);
 }
-.wizard li.download a,
+.wizard .download a,
 .wizard .guide a,
 .wizard .video a {
   padding-left: 80px;
   position: relative;
   overflow: visible;
 }
-.wizard li.download a:before,
+.wizard .guide a {
+  left: 15px;
+}
+.wizard .download a:before,
 .wizard .guide a:before,
 .wizard .video a:before {
   display: inline;
@@ -1479,25 +1481,6 @@ div.light:after {
 }
 .wizard .video a:before {
   content: "\e046";
-}
-.wizard li:before {
-  text-decoration: none;
-  speak: none;
-  position: absolute;
-  font: normal normal normal 380px/0px Bitstrap;
-  z-index: 0;
-  left: 0;
-  text-shadow: none;
-  -webkit-font-smoothing: antialiased;
-  color: #165489;
-  content: '\e048';
-  top: -15px;
-}
-.wizard li:first-child:before {
-  content: '\e047';
-}
-.wizard li:last-child:before {
-  content: '\e049';
 }
 .carousel {
   list-style-type: none;
@@ -3005,6 +2988,9 @@ tr.inactive .checkbox {
 .lt-ie8 .content ul.carousel li,
 .lt-ie8 .container ul.circle-tabs li {
   float: left;
+}
+.lt-ie8 .wizard {
+  background: url(../img/wizard-bkg.png) no-repeat center center;
 }
 .lt-ie8 .nav {
   top: -30px;
