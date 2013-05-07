@@ -10,27 +10,42 @@ can.Control('CanJSUS.LiveExample', {
 \n\
 var TodoList = can.Control({\n\
   init: function() {\n\
-    var todos = ['a', 'b', 'c'];\n\
     this.element.html(can.view(\n\
       'todoList',\n\
-      {todos: todos}\n\
+      {todos: this.options.todos}\n\
     ));\n\
   }\n\
 });\n\
 \n\
-new TodoList('#todos');",
+new TodoList('#todos', {todos: Todo.findAll()});",
 		template: "{{! in a script tag with id 'todoList'}}\n\
 <h3>Today's To-dos</h3>\n\
 <ul>\n\
 {{#todos}}\n\
-  <li>{{.}}</li>\n\
+  <li>{{description}}</li>\n\
 {{/todos}}\n\
-</ul>"
+</ul>",
+		todos: [
+			'Wash the dishes',
+			'Spring cleaning',
+			'Wash the car',
+			'Go grocery shopping',
+			'Balance checkbook',
+			'Clear inbox',
+			'Build perpetual motion device',
+			'Harness cold fusion',
+			'Mow the lawn',
+			'Do the laundry',
+			'Renew library books',
+			'Pay bills'
+		]
 	}
 }, {
 	init: function() {
 		$('.code', this.element).val(this.options.code);
 		$('.template', this.element).val(this.options.template);
+
+		this.registerFixtures();
 	},
 	'.execute click': 'runExample',
 	runExample: function(el, ev) {
@@ -47,5 +62,30 @@ new TodoList('#todos');",
 			//call the code
 			(new Function(code))();
 		} catch (e) { }
+	},
+	registerFixtures: function() {
+		/*var randomInt = function(min, max) {
+			return Math.round((Math.random() * (max - min)) + min);
+		};
+
+		can.fixture("GET /todos", can.proxy(function(original, respondWith, settings) {
+			var start = randomInt(0, this.options.todos.length - 1),
+				end = randomInt(start + 1, this.options.todos.length);
+			respondWith(this.options.todos.slice(start, end));
+		}, this));
+
+		can.fixture("GET /todos/{id}", can.proxy(function(original, respondWith, settings) {
+			respondWith(this.options.todos[randomInt(0, this.options.todos.length - 1)]);
+		}, this));
+*/
+		var store = can.fixture.store(this.options.todos.length, can.proxy(function(ix) {
+			return {
+				id: ix+1,
+				description: this.options.todos[ix]
+			};
+		}, this));
+
+		can.fixture('GET /todos', store.findAll);
+		can.fixture('GET /todos/{id}', store.findOne);
 	}
 });

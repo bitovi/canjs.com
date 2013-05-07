@@ -23,9 +23,10 @@ module.exports = function (grunt) {
 				stripBanners: true
 			},
 			dist: {
-				src: [ '_js/lib/can.custom.js', '_js/lib/grayscale.js',
-					'_js/lib/moment.js', '_js/lib/prettify.js', '_js/models/*.js',
-					'_js/controls/*.js', '_js/views.production.js', '_js/app.js' ],
+				src: [ '_js/lib/can.custom.js', '_js/lib/can.object.js', '_js/lib/can.fixture.js',
+					   '_js/lib/grayscale.js', '_js/lib/moment.js', '_js/lib/prettify.js',
+					   '_js/models/*.js', '_js/controls/*.js',
+					   '_js/views.production.js', '_js/app.js' ],
 				dest: 'resources/production.js'
 			}
 		},
@@ -41,7 +42,7 @@ module.exports = function (grunt) {
 		less: {
 			development: {
 				options: {
-					compress: false
+					compress: true
 				},
 				files: {
 					"resources/styles.css": "_styles/styles.less"
