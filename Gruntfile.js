@@ -1,7 +1,37 @@
-var path = require('path');
-
 /*global module:false*/
 module.exports = function (grunt) {
+	var _ = grunt.util._;
+	var path = require('path');
+	var handlebarsHelpers = {
+		makeTypesString: function (types) {
+			if (types.length) {
+				// turns [{type: 'Object'}, {type: 'String'}] into '{Object | String}'
+				return '{' + types.map(function (t) {
+					return t.type;
+				}).join(' | ') + '}';
+			} else {
+				return '';
+			}
+		},
+		downloadUrl: function(download, isPlugin) {
+			if(isPlugin) {
+				download = 'plugins=' + download;
+			}
+			// TOOO make builder URL configurable
+			return 'http://bitbuilder.herokuapp.com/can.custom.js?' + download;
+		},
+		sourceUrl: function(src, type, line) {
+			var pkg = grunt.config('can.pkg'),
+				relative = path.relative(grunt.config('can.path'), src),
+				hash = type !== 'page' && type !== 'constructor' && line ? '#L' + line : '';
+			return pkg.repository.github + '/tree/v' + pkg.version + '/' + relative + hash;
+		},
+		testUrl: function(test) {
+			// TODO we know we're in the docs/ folder for test links but there might
+			// be a more flexible way for doing this
+			return '../' + test;
+		}
+	}
 
 	// Project configuration.
 	grunt.initConfig({
@@ -90,43 +120,21 @@ module.exports = function (grunt) {
 				docs: '_templates/docs.mustache',
 				root: '',
 				package: require(__dirname + '/can/package.json'),
-				helpers: {
-					makeTypesString: function (types) {
-						if (types.length) {
-							// turns [{type: 'Object'}, {type: 'String'}] into '{Object | String}'
-							return '{' + types.map(function (t) {
-								return t.type;
-							}).join(' | ') + '}';
-						} else {
-							return '';
-						}
-					},
-					downloadUrl: function(download, isPlugin) {
-						if(isPlugin) {
-							download = 'plugins=' + download;
-						}
-						// TOOO make builder URL configurable
-						return 'http://bitbuilder.herokuapp.com/can.custom.js?' + download;
-					},
-					sourceUrl: function(src, type, line) {
-						var pkg = grunt.config('can.pkg'),
-							relative = path.relative(grunt.config('can.path'), src),
-							hash = type !== 'page' && type !== 'constructor' && line ? '#L' + line : '';
-						return pkg.repository.github + '/tree/v' + pkg.version + '/' + relative + hash;
-					},
-					testUrl: function(test) {
-						// TODO we know we're in the docs/ folder for test links but there might
-						// be a more flexible way for doing this
-						return '../' + test;
-					}
-				}
+				helpers: handlebarsHelpers
 			},
 			guides: {
 				options: {
 					root: '../',
 					parent: 'guides',
 					page: 'guides',
-					enableSearch: false
+					enableSearch: false,
+					helpers: _.extend({}, handlebarsHelpers, {
+						sourceUrl: function(src) {
+							var pkg = grunt.config('can.pkg');
+
+							return pkg.repository.github + '/wiki/' + path.basename(src, '.md');
+						}
+					})
 				},
 				src: ['_guides/*.md', 'can/changelog.md', 'can/contributing.md', 'can/license.md'],
 				dest: 'guides/'
