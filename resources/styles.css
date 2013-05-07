@@ -486,6 +486,8 @@ a.next:after {
 }
 .icon-bits:before {
   content: "\e002";
+  position: relative;
+  left: -5px;
 }
 .icon-twitter:before {
   content: "\e003";
@@ -774,6 +776,9 @@ header .bitovi.icon-bits {
   text-align: center;
   width: 50px;
   height: 54px;
+}
+header .bitovi.icon-bits:before {
+  right: 10px;
 }
 header .bitovi-menu:hover .bitovi.icon-bits,
 header .logo-menu:hover .brand.canjs {
