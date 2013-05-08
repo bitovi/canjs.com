@@ -127,14 +127,7 @@ module.exports = function (grunt) {
 					root: '../',
 					parent: 'guides',
 					page: 'guides',
-					enableSearch: false,
-					helpers: _.extend({}, handlebarsHelpers, {
-						sourceUrl: function(src) {
-							var pkg = grunt.config('can.pkg');
-
-							return pkg.repository.github + '/wiki/' + path.basename(src, '.md');
-						}
-					})
+					enableSearch: false
 				},
 				src: ['_guides/*.md', 'can/changelog.md', 'can/contributing.md', 'can/license.md'],
 				dest: 'guides/'
