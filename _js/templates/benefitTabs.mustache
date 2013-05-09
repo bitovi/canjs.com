@@ -1,6 +1,8 @@
   <ul class="circle-tabs">
-    <li class="flexible" data-benefit="flexible"><a href="guides/Why.html#Flexible">Flexible</a></li>
-    <li class="powerful" data-benefit="powerful"><a href="guides/Why.html#Powerful">Powerful</a></li>
-    <li class="fast" data-benefit="fast"><a href="guides/Why.html#Fast">Fast</a></li>
-  </ul>
-  <div class="tab-description {{selectedTab}}">{{tagline}}</div>
+ 	{{#makeTabs tabs}}
+ 	<li class="{{className}}" data-benefit="{{className}}"><a href="{{link}}">{{title}}</a></li>
+ 	{{/makeTabs}}
+ </ul>
+ {{#with selectedTab}}
+ <div class="tab-description {{className}}">{{tagline}} <a href="{{link}}">&#x2192;</a></div>
+ {{/with}}
