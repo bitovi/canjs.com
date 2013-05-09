@@ -1,9 +1,9 @@
 @page Using Using CanJS
 @parent guides 2
 
-CanJS can be used with jQuery, Dojo, Mootools, YUI and Zepto and as AMD modules with any of these libraries.
+CanJS can be used with [jQuery](#jQuery), [Dojo](#Dojo), [Mootools](#Mootools), [YUI](#YUI) and [Zepto](#Zepto). You can either include it normally, or load it as an [AMD](#AMD) module with any of these libraries.
 
-## AMD
+<h2 id="AMD">AMD</h2>
 
 The [CanJS Download](../download.html) contains an `amd` folder which allows
 you to load any CanJS component and plugin using an AMD module loader like [RequireJS](http://requirejs.org/).
@@ -52,7 +52,7 @@ require.config({
 });
 @codeend
 
-## jQuery
+<h2 id="jQuery">jQuery</h2>
 
 CanJS supports jQuery 1.8+. Include a copy of jQuery along with CanJS to get started.
 
@@ -114,7 +114,7 @@ jQuery events, so for those cases, a workaround should be applied:
 &lt;/script>
 @codeend
 
-## Dojo
+<h2 id="Dojo">Dojo</h2>
 
 CanJS supports Dojo 1.8+ using its new AMD loader in asynchronous or synchronous mode. Everything described in the [using CanJS and AMD](#AMD) section applies to Dojo as well. An example configuration that uses the AMD files from the CanJS CDN can look like this:
 
@@ -131,7 +131,7 @@ require(['can/control'], function(Control) {
 });
 @codeend
 
-## Mootools
+<h2 id="Mootools">Mootools</h2>
 
 CanJS supports Mootools 1.4+. Include a copy of Mootools Core along with CanJS to get started.
 
@@ -152,7 +152,7 @@ mootools.js">&lt;/script>
 &lt;/script>
 @codeend
 
-## YUI
+<h2 id="YUI">YUI</h2>
 
 CanJS supports YUI 3.4+ with both dynamically or statically loaded modules.
 CanJS depends on the following YUI modules: __node__, __io-base__, __querystring__, __event-focus__, and __array-extras__. The __selector-css2__ and __selector-css3__ YUI modules are optional, but necessary for IE7 and other browsers that don't support __querySelectorAll__.
@@ -246,7 +246,7 @@ YUI().use('can', 'calendar', function(Y) {
 });
 @codeend
 
-## Zepto
+<h2 id="Zepto">Zepto</h2>
 
 CanJS supports Zepto 0.8+. Include a copy of Zepto along with CanJS to get started.
 

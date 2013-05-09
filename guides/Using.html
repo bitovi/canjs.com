@@ -362,9 +362,9 @@
 		</section>
 
 		<section class="description">
-			<p>CanJS can be used with jQuery, Dojo, Mootools, YUI and Zepto and as AMD modules with any of these libraries.</p>
+			<p>CanJS can be used with <a href="#jQuery">jQuery</a>, <a href="#Dojo">Dojo</a>, <a href="#Mootools">Mootools</a>, <a href="#YUI">YUI</a> and <a href="#Zepto">Zepto</a>. You can either include it normally, or load it as an <a href="#AMD">AMD</a> module with any of these libraries.</p>
 
-<h2>AMD</h2>
+<h2 id="AMD">AMD</h2>
 
 <p>The <a href="../download.html">CanJS Download</a> contains an <code>amd</code> folder which allows
 you to load any CanJS component and plugin using an AMD module loader like <a href="http://requirejs.org/">RequireJS</a>.
@@ -407,7 +407,7 @@ and returns the <code>can</code> namespace.</p>
   }
 });</code></pre>
 
-<h2>jQuery</h2>
+<h2 id="jQuery">jQuery</h2>
 
 <p>CanJS supports jQuery 1.8+. Include a copy of jQuery along with CanJS to get started.</p>
 
@@ -465,7 +465,7 @@ jQuery events, so for those cases, a workaround should be applied:</p>
   });
 &lt;/script></code></pre>
 
-<h2>Dojo</h2>
+<h2 id="Dojo">Dojo</h2>
 
 <p>CanJS supports Dojo 1.8+ using its new AMD loader in asynchronous or synchronous mode. Everything described in the <a href="#AMD">using CanJS and AMD</a> section applies to Dojo as well. An example configuration that uses the AMD files from the CanJS CDN can look like this:</p>
 
@@ -480,7 +480,7 @@ require(['can/control'], function(Control) {
   // Use Control
 });</code></pre>
 
-<h2>Mootools</h2>
+<h2 id="Mootools">Mootools</h2>
 
 <p>CanJS supports Mootools 1.4+. Include a copy of Mootools Core along with CanJS to get started.</p>
 
@@ -499,7 +499,7 @@ mootools.js">&lt;/script>
   });
 &lt;/script></code></pre>
 
-<h2>YUI</h2>
+<h2 id="YUI">YUI</h2>
 
 <p>CanJS supports YUI 3.4+ with both dynamically or statically loaded modules.
 CanJS depends on the following YUI modules: <strong>node</strong>, <strong>io-base</strong>, <strong>querystring</strong>, <strong>event-focus</strong>, and <strong>array-extras</strong>. The <strong>selector-css2</strong> and <strong>selector-css3</strong> YUI modules are optional, but necessary for IE7 and other browsers that don't support <strong>querySelectorAll</strong>.</p>
@@ -587,7 +587,7 @@ bind to the <strong>selectionChange</strong> event for a YUI Calendar widget:</p
   });
 });</code></pre>
 
-<h2>Zepto</h2>
+<h2 id="Zepto">Zepto</h2>
 
 <p>CanJS supports Zepto 0.8+. Include a copy of Zepto along with CanJS to get started.</p>
 
