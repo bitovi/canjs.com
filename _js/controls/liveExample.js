@@ -55,7 +55,7 @@ new TodoList('#todos', {todos: []});",
         $('.template', this.element).val(this.options.template);
 
         this.registerFixtures();
-        //this.runExample();
+        this.runExample();
     },
     '.execute click': 'runExample',
     runExample: function(el, ev) {

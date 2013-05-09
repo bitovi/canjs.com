@@ -1,4 +1,4 @@
-@page Constructs Constructs
+@page Constructs Constructor Functions
 @parent Tutorial 0
 
 @body

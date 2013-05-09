@@ -1,5 +1,5 @@
-@page Tutorial Get Started with CanJS
-@parent guides 0
+@page Tutorial Geting Started
+@parent guides 1
 
 @body
 This tutorial will walk you though the basics of CanJS by building a small

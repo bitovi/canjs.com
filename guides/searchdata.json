@@ -39,7 +39,7 @@
         "name": "Constructs",
         "type": "page",
         "id": 7,
-        "title": "Constructs",
+        "title": "Constructor Functions",
         "parent": "Tutorial",
         "order": 0
     },
@@ -71,7 +71,7 @@
         "name": "Models",
         "type": "page",
         "id": 11,
-        "title": "Models",
+        "title": "Models & Retrieving Data",
         "parent": "Tutorial",
         "order": 2
     },
@@ -87,7 +87,7 @@
         "name": "Observes",
         "type": "page",
         "id": 13,
-        "title": "Observes",
+        "title": "Observable Objects",
         "parent": "Tutorial",
         "order": 1
     },
@@ -95,9 +95,9 @@
         "name": "Recipes",
         "type": "page",
         "id": 14,
-        "title": "CanJS Recipes",
+        "title": "Recipes",
         "parent": "guides",
-        "order": 1
+        "order": 4
     },
     "RecipesControls": {
         "name": "RecipesControls",
@@ -151,9 +151,9 @@
         "name": "Tutorial",
         "type": "page",
         "id": 21,
-        "title": "Get Started with CanJS",
+        "title": "Geting Started",
         "parent": "guides",
-        "order": 0
+        "order": 1
     },
     "Using": {
         "name": "Using",
@@ -161,13 +161,13 @@
         "id": 22,
         "title": "Using CanJS",
         "parent": "guides",
-        "order": 3
+        "order": 2
     },
     "Utilities": {
         "name": "Utilities",
         "type": "page",
         "id": 23,
-        "title": "Utilities",
+        "title": "Utility Functions",
         "parent": "Tutorial",
         "order": 9
     },
@@ -185,7 +185,7 @@
         "id": 25,
         "title": "Why CanJS?",
         "parent": "guides",
-        "order": 2
+        "order": 3
     },
     "changelog": {
         "name": "changelog",
@@ -199,7 +199,7 @@
         "name": "contributing",
         "type": "page",
         "id": 27,
-        "title": "Contributing to CanJS",
+        "title": "How to Contribute",
         "parent": "guides",
         "order": 4
     },

@@ -1,4 +1,4 @@
-@page Utilities Utilities
+@page Utilities Utility Functions
 @parent Tutorial 9
 
 @body

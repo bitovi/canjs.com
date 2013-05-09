@@ -1,5 +1,5 @@
 @page Using Using CanJS
-@parent guides 3
+@parent guides 2
 
 CanJS can be used with jQuery, Dojo, Mootools, YUI and Zepto and as AMD modules with any of these libraries.
 

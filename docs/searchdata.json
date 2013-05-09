@@ -349,7 +349,7 @@
         "name": "can.Observe.attributes.static.attributes",
         "type": "property",
         "id": 51,
-        "title": "attributes",
+        "title": "attributes (static)",
         "parent": "can.Observe.attributes"
     },
     "can.Observe.attributes.static.convert": {
@@ -363,7 +363,7 @@
         "name": "can.Observe.attributes.static.serialize",
         "type": "property",
         "id": 53,
-        "title": "serialize",
+        "title": "serialize (static)",
         "parent": "can.Observe.attributes"
     },
     "can.Observe.setup": {
@@ -384,7 +384,7 @@
         "name": "can.Observe.prototype.attributes.serialize",
         "type": "function",
         "id": 56,
-        "title": "serialize",
+        "title": "serialize (prototype)",
         "parent": "can.Observe.attributes"
     },
     "can.Observe.backup": {

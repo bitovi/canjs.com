@@ -1,4 +1,4 @@
-@page Observes Observes
+@page Observes Observable Objects
 @parent Tutorial 1
 
 @body
