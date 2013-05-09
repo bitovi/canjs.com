@@ -19,7 +19,11 @@ can.Control('CanJSUS.DownloadCustomizer', {
 			});
 		});
 
-		this.element.html(can.view(this.options.view, this.options));
+		this.element.html(can.view(this.options.view, this.options, {
+			versionNumber: function(version) {
+				return version() ? version() : '';
+			}
+		}));
 	},
 	_collectDependedOn: function(config) {
 		var isDependedOnBy = {};
