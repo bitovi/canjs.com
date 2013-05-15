@@ -509,6 +509,8 @@
 	
 	
 	
+	
+	
 </ul>
 
 
@@ -1132,6 +1134,15 @@
 	<li class="search-container">
 			<a class="function" href="can.Observe.validations.static.validateRangeOf.html" data-search="validateRangeOf">
 				validateRangeOf
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.Observe.validations.static.validatesNumericalityOf.html" data-search="validatesNumericalityOf">
+				validatesNumericalityOf
 			</a>
 			
 	</li>
@@ -2049,27 +2060,6 @@
 			
 		
 			
-				
-
-
-
-			
-		
-			
-				
-
-
-
-			
-		
-			
-				
-
-
-
-			
-		
-			
 				<li class="heading search-container">
 					<span>static</span>
 					
@@ -2158,6 +2148,27 @@
 
 			
 		
+			
+				
+
+
+
+			
+		
+			
+				
+
+
+
+			
+		
+			
+				
+
+
+
+			
+		
 		</ul>
 	
 	</li>
@@ -2168,7 +2179,7 @@
 		<section class="title">
 			<div class="pull-right">
 	<ul class="tags">
-		<li>constructor</li>
+		<li>function</li>
 	</ul>
 	<ul class="links">
 		
@@ -2196,7 +2207,17 @@
 		</section>
 
 		<section class="description">
-			
+			<p>A JavaScript template framework. 
+<code>can.view</code> is a JavaScript template framework that provides:</p>
+
+<ul>
+<li>template loading from html elements or external files</li>
+<li>synchronous and asynchronous template loading</li>
+<li>deferred support</li>
+<li>callbacks on elements for functionality like live live-binding</li>
+</ul>
+
+<p>can.view supports other templating languages, but using <a href="can.EJS.html">can.EJS</a> is highly encouraged.</p>
 		</section>
 
 		
@@ -2253,15 +2274,185 @@
 		
 
 		
+		<section class="comment">
+			<h2>Use</h2>
+
+<p><code>can.view( idOrUrl, data, helpers )</code> loads template content from an element, a url or a string, renders
+it with data, and converts it to a documentFragment so it can be easily and 
+efficiently inserted into the DOM.</p>
+
+<pre><code>document.getElementById('person')
+  .appendChild( can.view('person.ejs', {name: "Justin" } ) )
+</code></pre>
+
+<p>This code:</p>
+
+<ol>
+<li><p>Loads the template a 'mytemplate.ejs'. It might look like:
+<pre><code>&lt;h2>&lt;%= name %>&lt;/h2></pre></code></p></li>
+<li><p>Renders it with {message: 'hello world'}, resulting in:
+<pre><code>&lt;div id='foo'>"&lt;h2>Justin&lt;/h2>&lt;/div></pre></code></p></li>
+<li><p>Inserts the result into the foo element. Foo might look like:
+<pre><code>&lt;div id='person'>&lt;h2>Justin&lt;/h2>&lt;/div></pre></code></p></li>
+</ol>
+
+<h2>Loading Templates</h2>
+
+<p><code>can.view</code> can load templates from a url or from a script.</p>
+
+<h3>Loading templates from a script tag</h3>
+
+<p>To load from a script tag, create a script tag with:</p>
+
+<ul>
+<li>the template contents within the script tag</li>
+<li>an id</li>
+<li><p>a type attribute that specifies the type of template</p>
+
+<script type='text/ejs' id='recipesEJS'>
+<% for(var i=0; i < recipes.length; i++){ %>
+  <li><%=recipes[i].name %></li>
+<%} %>
+</script></li>
+</ul>
+
+<p>Render with this template like:</p>
+
+<pre><code>document.getElementById('recipes')
+  .appendChild( can.view('recipesEJS', recipeData ) )
+</code></pre>
+
+<p>Notice we passed the id of the element we want to render.</p>
+
+<h3>Loading templates from a url</h3>
+
+<p>To load from a url, simply pass the location of the template
+to <code>can.view</code>.  The location of the template needs an extension that
+matches the type of template:</p>
+
+<pre><code>document.getElementById('recipes')
+  .appendChild( can.view('templates/recipes.ejs', recipeData ) )
+</code></pre>
+
+<h3>Creating templates from strings</h3>
+
+<p>You can also register a view string for a given id programmatically for any registered template engine using
+<code>can.view.&lt;engine&gt;(id, template)</code>:</p>
+
+<pre><code>can.view.ejs('myViewEJS', '&lt;h2&gt;&lt;%= message %&gt;&lt;/h2&gt;');
+can.view('myView', { message : 'Hello EJS' });
+// -&gt; &lt;h2&gt;Hello EJS&lt;/h2&gt;
+</code></pre>
+
+<h3>Renderer functions</h3>
+
+<p>Additionally to rendering a template immediately it is also possible to retrieve a renderer function by just passing
+the view name. The renderer function can be called with the template data at a later point in time:</p>
+
+<pre><code>var renderer = can.view('templates/recipes.ejs');
+// Do some things
+document.getElementById('recipes')
+  .appendChild( renderer(recipeData ) )
+</code></pre>
+
+<p>It is also possible to get a nameless renderer function when creating a template from a string:</p>
+
+<pre><code>var renderer = can.view.ejs('&lt;strong&gt;&lt;%= message %&gt;&lt;/strong&gt;');
+renderer({
+  message : 'Message form EJS'
+}); // -&gt; &lt;strong&gt;Message from EJS&lt;/strong&gt;
+
+renderer = can.view.mustache('&lt;strong&gt;{{message}}&lt;/strong&gt;');
+renderer({
+  message : 'Message form Mustache'
+}); // -&gt; &lt;strong&gt;Message from Mustache&lt;/strong&gt;
+</code></pre>
+
+<h2>Supported Template Engines</h2>
+
+<p>CanJS supports the following template languages:</p>
+
+<ul>
+<li><p>EmbeddedJS (ejs)</p>
+
+<pre><code>&lt;h2>&lt;%= message %>&lt;/h2></code></pre></li>
+<li><p>Mustache (mustache)</p>
+
+<pre><code>&lt;h2{{message}}&lt/h2></code></pre></li>
+<li><p>JAML (jaml)</p>
+
+<pre><code>h2(data.message);</code></pre></li>
+<li><p>Micro (micro)</p>
+
+<pre><code>&lt;h2>{%= message %}&lt;/h2></code></pre></li>
+<li><p>jQuery.Tmpl (tmpl)</p>
+
+<pre><code>&lt;h2>${message}&lt;/h2></code></pre></li>
+</ul>
+
+<h2>Rendering to strings and sub-templates</h2>
+
+<p>To render to a string, use <code>can.view.render(idOrUrl, data)</code> like:</p>
+
+<pre><code>can.view.render("/templates/recipe.ejs",{recipe: recipe})
+</code></pre>
+
+<p>To render a sub-template within another template, use render like:</p>
+
+<pre><code>&lt;% $.each(recipes, function(i, recipe){ %&gt;
+  &lt;li&gt;&lt;%== can.view.render("/templates/recipe.ejs",{
+             recipe: recipe
+            }) %&gt;
+  &lt;/li&gt;
+&lt;% }) %&gt;
+</code></pre>
+
+<h2>Asynchronous Loading</h2>
+
+<p>By default, retrieving templates is done synchronously. This 
+is fine because StealJS packages view templates with your 
+JS download.</p>
+
+<p>However, some people might not be using StealJS or want to 
+delay loading templates until necessary. If you have the need, 
+you can provide a callback paramter like:</p>
+
+<pre><code>can.view('recipes',recipeData, function(frag){
+  document.getElementById('recipes')
+    .appendChild(frag)
+});
+</code></pre>
+
+<p>The callback function will be called with the result of 
+the rendered template.</p>
+
+<h2>Deferreds</h2>
+
+<p>If you pass deferreds to can.view it 
+will wait until all deferreds resolve before rendering 
+the view. This makes it a one-liner to make a request and use the 
+result to render a template.</p>
+
+<p>The following makes a request for todos in parallel with the 
+todos.ejs template. Once todos and template have been loaded, 
+it with render the view with the todos.</p>
+
+<pre><code>can.view('recipes', Todo.findAll() , function(frag){
+  document.getElementById('recipes')
+    .appendChild(frag)
+})
+</code></pre>
+		</section>
+		
 	</article>
 </div>
 
 <script type="text/javascript">
 	var docData = {
-    "type": "constructor",
+    "type": "function",
     "name": "can.view",
-    "body": "",
-    "description": "",
+    "body": "<h2>Use</h2>\n\n<p><code>can.view( idOrUrl, data, helpers )</code> loads template content from an element, a url or a string, renders\nit with data, and converts it to a documentFragment so it can be easily and \nefficiently inserted into the DOM.</p>\n\n<pre><code>document.getElementById('person')\n  .appendChild( can.view('person.ejs', {name: \"Justin\" } ) )\n</code></pre>\n\n<p>This code:</p>\n\n<ol>\n<li><p>Loads the template a 'mytemplate.ejs'. It might look like:\n<pre><code>&lt;h2>&lt;%= name %>&lt;/h2></pre></code></p></li>\n<li><p>Renders it with {message: 'hello world'}, resulting in:\n<pre><code>&lt;div id='foo'>\"&lt;h2>Justin&lt;/h2>&lt;/div></pre></code></p></li>\n<li><p>Inserts the result into the foo element. Foo might look like:\n<pre><code>&lt;div id='person'>&lt;h2>Justin&lt;/h2>&lt;/div></pre></code></p></li>\n</ol>\n\n<h2>Loading Templates</h2>\n\n<p><code>can.view</code> can load templates from a url or from a script.</p>\n\n<h3>Loading templates from a script tag</h3>\n\n<p>To load from a script tag, create a script tag with:</p>\n\n<ul>\n<li>the template contents within the script tag</li>\n<li>an id</li>\n<li><p>a type attribute that specifies the type of template</p>\n\n<script type='text/ejs' id='recipesEJS'>\n<% for(var i=0; i < recipes.length; i++){ %>\n  <li><%=recipes[i].name %></li>\n<%} %>\n</script></li>\n</ul>\n\n<p>Render with this template like:</p>\n\n<pre><code>document.getElementById('recipes')\n  .appendChild( can.view('recipesEJS', recipeData ) )\n</code></pre>\n\n<p>Notice we passed the id of the element we want to render.</p>\n\n<h3>Loading templates from a url</h3>\n\n<p>To load from a url, simply pass the location of the template\nto <code>can.view</code>.  The location of the template needs an extension that\nmatches the type of template:</p>\n\n<pre><code>document.getElementById('recipes')\n  .appendChild( can.view('templates/recipes.ejs', recipeData ) )\n</code></pre>\n\n<h3>Creating templates from strings</h3>\n\n<p>You can also register a view string for a given id programmatically for any registered template engine using\n<code>can.view.&lt;engine&gt;(id, template)</code>:</p>\n\n<pre><code>can.view.ejs('myViewEJS', '&lt;h2&gt;&lt;%= message %&gt;&lt;/h2&gt;');\ncan.view('myView', { message : 'Hello EJS' });\n// -&gt; &lt;h2&gt;Hello EJS&lt;/h2&gt;\n</code></pre>\n\n<h3>Renderer functions</h3>\n\n<p>Additionally to rendering a template immediately it is also possible to retrieve a renderer function by just passing\nthe view name. The renderer function can be called with the template data at a later point in time:</p>\n\n<pre><code>var renderer = can.view('templates/recipes.ejs');\n// Do some things\ndocument.getElementById('recipes')\n  .appendChild( renderer(recipeData ) )\n</code></pre>\n\n<p>It is also possible to get a nameless renderer function when creating a template from a string:</p>\n\n<pre><code>var renderer = can.view.ejs('&lt;strong&gt;&lt;%= message %&gt;&lt;/strong&gt;');\nrenderer({\n  message : 'Message form EJS'\n}); // -&gt; &lt;strong&gt;Message from EJS&lt;/strong&gt;\n\nrenderer = can.view.mustache('&lt;strong&gt;{{message}}&lt;/strong&gt;');\nrenderer({\n  message : 'Message form Mustache'\n}); // -&gt; &lt;strong&gt;Message from Mustache&lt;/strong&gt;\n</code></pre>\n\n<h2>Supported Template Engines</h2>\n\n<p>CanJS supports the following template languages:</p>\n\n<ul>\n<li><p>EmbeddedJS (ejs)</p>\n\n<pre><code>&lt;h2>&lt;%= message %>&lt;/h2></code></pre></li>\n<li><p>Mustache (mustache)</p>\n\n<pre><code>&lt;h2{{message}}&lt/h2></code></pre></li>\n<li><p>JAML (jaml)</p>\n\n<pre><code>h2(data.message);</code></pre></li>\n<li><p>Micro (micro)</p>\n\n<pre><code>&lt;h2>{%= message %}&lt;/h2></code></pre></li>\n<li><p>jQuery.Tmpl (tmpl)</p>\n\n<pre><code>&lt;h2>${message}&lt;/h2></code></pre></li>\n</ul>\n\n<h2>Rendering to strings and sub-templates</h2>\n\n<p>To render to a string, use <code>can.view.render(idOrUrl, data)</code> like:</p>\n\n<pre><code>can.view.render(\"/templates/recipe.ejs\",{recipe: recipe})\n</code></pre>\n\n<p>To render a sub-template within another template, use render like:</p>\n\n<pre><code>&lt;% $.each(recipes, function(i, recipe){ %&gt;\n  &lt;li&gt;&lt;%== can.view.render(\"/templates/recipe.ejs\",{\n             recipe: recipe\n            }) %&gt;\n  &lt;/li&gt;\n&lt;% }) %&gt;\n</code></pre>\n\n<h2>Asynchronous Loading</h2>\n\n<p>By default, retrieving templates is done synchronously. This \nis fine because StealJS packages view templates with your \nJS download.</p>\n\n<p>However, some people might not be using StealJS or want to \ndelay loading templates until necessary. If you have the need, \nyou can provide a callback paramter like:</p>\n\n<pre><code>can.view('recipes',recipeData, function(frag){\n  document.getElementById('recipes')\n    .appendChild(frag)\n});\n</code></pre>\n\n<p>The callback function will be called with the result of \nthe rendered template.</p>\n\n<h2>Deferreds</h2>\n\n<p>If you pass deferreds to can.view it \nwill wait until all deferreds resolve before rendering \nthe view. This makes it a one-liner to make a request and use the \nresult to render a template.</p>\n\n<p>The following makes a request for todos in parallel with the \ntodos.ejs template. Once todos and template have been loaded, \nit with render the view with the todos.</p>\n\n<pre><code>can.view('recipes', Todo.findAll() , function(frag){\n  document.getElementById('recipes')\n    .appendChild(frag)\n})\n</code></pre>",
+    "description": "<p>A JavaScript template framework. \n<code>can.view</code> is a JavaScript template framework that provides:</p>\n\n<ul>\n<li>template loading from html elements or external files</li>\n<li>synchronous and asynchronous template loading</li>\n<li>deferred support</li>\n<li>callbacks on elements for functionality like live live-binding</li>\n</ul>\n\n<p>can.view supports other templating languages, but using [can.EJS] is highly encouraged.</p>",
     "title": "",
     "parent": "canjs",
     "signatures": [{
@@ -2320,7 +2511,7 @@
     ],
     "comment": " ",
     "src": "can/view/view.md",
-    "id": 137
+    "id": 139
 };
 
 	console.log(docData);

@@ -560,6 +560,16 @@
         "type": "script",
         "name": "can/observe/observe.js"
     },
+    "Observe": {
+        "name": "Observe",
+        "type": "property",
+        "parent": "can/observe/observe.js",
+        "body": "",
+        "description": "",
+        "src": "can/observe/observe.js",
+        "line": 117,
+        "id": 18
+    },
     "can.Observe.static": {
         "type": "static",
         "body": "",
@@ -567,8 +577,8 @@
         "name": "can.Observe.static",
         "parent": "can.Observe",
         "src": "can/observe/observe.js",
-        "line": 122,
-        "id": 18
+        "line": 121,
+        "id": 19
     },
     "can.Observe.startBatch": {
         "type": "function",
@@ -601,8 +611,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 133,
-        "id": 19
+        "line": 132,
+        "id": 20
     },
     "can.Observe.stopBatch": {
         "type": "function",
@@ -638,8 +648,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 233,
-        "id": 20
+        "line": 232,
+        "id": 21
     },
     "can.Observe.triggerBatch": {
         "type": "function",
@@ -689,8 +699,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 304,
-        "id": 21
+        "line": 303,
+        "id": 22
     },
     "can.Observe.keys": {
         "type": "function",
@@ -722,8 +732,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 335,
-        "id": 22
+        "line": 334,
+        "id": 23
     },
     "can.Observe.prototype": {
         "type": "prototype",
@@ -732,8 +742,8 @@
         "name": "can.Observe.prototype",
         "parent": "can.Observe",
         "src": "can/observe/observe.js",
-        "line": 365,
-        "id": 23
+        "line": 364,
+        "id": 24
     },
     "can.Observe.prototype._cid": {
         "type": "property",
@@ -747,8 +757,8 @@
         "name": "can.Observe.prototype._cid",
         "hide": true,
         "src": "can/observe/observe.js",
-        "line": 372,
-        "id": 24
+        "line": 371,
+        "id": 25
     },
     "can.Observe.prototype.attr": {
         "type": "function",
@@ -869,8 +879,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 408,
-        "id": 25
+        "line": 407,
+        "id": 26
     },
     "can.Observe.prototype.each": {
         "type": "function",
@@ -909,8 +919,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 555,
-        "id": 26
+        "line": 554,
+        "id": 27
     },
     "can.Observe.prototype.removeAttr": {
         "type": "function",
@@ -942,8 +952,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 595,
-        "id": 27
+        "line": 594,
+        "id": 28
     },
     "can.Observe.prototype.bind": {
         "name": "can.Observe.prototype.bind",
@@ -989,8 +999,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 749,
-        "id": 28
+        "line": 748,
+        "id": 29
     },
     "can.Observe.prototype.unbind": {
         "name": "can.Observe.prototype.unbind",
@@ -1030,8 +1040,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 846,
-        "id": 29
+        "line": 845,
+        "id": 30
     },
     "can.Observe.prototype.serialize": {
         "type": "function",
@@ -1049,8 +1059,8 @@
             "description": "<p>a JavaScript Object that can be \nserialized with <code>JSON.stringify</code> or other methods. </p>"
         },
         "src": "can/observe/observe.js",
-        "line": 878,
-        "id": 30
+        "line": 877,
+        "id": 31
     },
     "can.Observe.prototype._attrs": {
         "type": "function",
@@ -1076,8 +1086,8 @@
         "description": "<p>Set multiple properties on the observable</p>",
         "hide": true,
         "src": "can/observe/observe.js",
-        "line": 900,
-        "id": 31
+        "line": 899,
+        "id": 32
     },
     "can.Observe.prototype.compute": {
         "type": "function",
@@ -1109,8 +1119,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 952,
-        "id": 32
+        "line": 951,
+        "id": 33
     },
     "can.Observe.List": {
         "name": "can.Observe.List",
@@ -1145,8 +1155,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 984,
-        "id": 33
+        "line": 983,
+        "id": 34
     },
     "can.Observe.List.prototype": {
         "type": "prototype",
@@ -1155,8 +1165,8 @@
         "name": "can.Observe.List.prototype",
         "parent": "can.Observe.List",
         "src": "can/observe/observe.js",
-        "line": 1084,
-        "id": 34
+        "line": 1083,
+        "id": 35
     },
     "can.Observe.List.prototype.serialize": {
         "type": "function",
@@ -1167,8 +1177,8 @@
         "description": "<p>Returns the serialized form of this list.</p>",
         "hide": true,
         "src": "can/observe/observe.js",
-        "line": 1138,
-        "id": 35
+        "line": 1137,
+        "id": 36
     },
     "can.Observe.List.prototype.each": {
         "body": "<pre><code class=\"lang-javascript\">var i = 0;\nnew can.Observe([1, 10, 100]).each(function(element, index) {\n    i += element;\n});\n\ni; // 111\n\ni = 0;\nnew can.Observe([1, 10, 100]).each(function(element, index) {\n    i += element;\n    if(index >= 1) {\n        return false;\n    }\n});\n\ni; // 11</code></pre>     ",
@@ -1217,8 +1227,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1145,
-        "id": 36
+        "line": 1144,
+        "id": 37
     },
     "can.Observe.List.prototype.splice": {
         "type": "function",
@@ -1265,8 +1275,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1181,
-        "id": 37
+        "line": 1180,
+        "id": 38
     },
     "can.Observe.List.prototype.attr": {
         "type": "function",
@@ -1363,8 +1373,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1270,
-        "id": 38
+        "line": 1269,
+        "id": 39
     },
     "can.Observe.List.prototype.push": {
         "name": "can.Observe.List.prototype.push",
@@ -1396,8 +1406,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1568,
-        "id": 39
+        "line": 1567,
+        "id": 40
     },
     "can.Observe.List.prototype.unshift": {
         "name": "can.Observe.List.prototype.unshift",
@@ -1429,8 +1439,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1610,
-        "id": 40
+        "line": 1609,
+        "id": 41
     },
     "can.Observe.List.prototype.pop": {
         "name": "can.Observe.List.prototype.pop",
@@ -1454,8 +1464,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1689,
-        "id": 41
+        "line": 1688,
+        "id": 42
     },
     "can.Observe.List.prototype.shift": {
         "name": "can.Observe.List.prototype.shift",
@@ -1479,8 +1489,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1724,
-        "id": 42
+        "line": 1723,
+        "id": 43
     },
     "can.Observe.List.prototype.indexOf": {
         "type": "function",
@@ -1512,8 +1522,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1785,
-        "id": 43
+        "line": 1784,
+        "id": 44
     },
     "can.Observe.List.prototype.join": {
         "name": "can.Observe.List.prototype.join",
@@ -1545,8 +1555,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1816,
-        "id": 44
+        "line": 1815,
+        "id": 45
     },
     "can.Observe.List.prototype.reverse": {
         "name": "can.Observe.List.prototype.reverse",
@@ -1570,8 +1580,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1839,
-        "id": 45
+        "line": 1838,
+        "id": 46
     },
     "can.Observe.List.prototype.slice": {
         "type": "function",
@@ -1613,8 +1623,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1859,
-        "id": 46
+        "line": 1858,
+        "id": 47
     },
     "can.Observe.List.prototype.concat": {
         "type": "function",
@@ -1643,8 +1653,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1895,
-        "id": 47
+        "line": 1894,
+        "id": 48
     },
     "can.Observe.List.prototype.forEach": {
         "type": "function",
@@ -1700,8 +1710,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1925,
-        "id": 48
+        "line": 1924,
+        "id": 49
     },
     "can.Observe.List.prototype.replace": {
         "type": "function",
@@ -1730,8 +1740,8 @@
         ],
         "comment": " ",
         "src": "can/observe/observe.js",
-        "line": 1949,
-        "id": 49
+        "line": 1948,
+        "id": 50
     },
     "can/observe/attributes/attributes.md": {
         "type": "script",
@@ -1749,7 +1759,7 @@
         "download": "http://donejs.com/can/dist/can.observe.attributes.js",
         "comment": " ",
         "src": "can/observe/attributes/attributes.md",
-        "id": 50
+        "id": 51
     },
     "can/observe/attributes/attributes.js": {
         "type": "script",
@@ -1764,7 +1774,7 @@
         "title": "attributes (static)",
         "src": "can/observe/attributes/attributes.js",
         "line": 12,
-        "id": 51
+        "id": 52
     },
     "can.Observe.attributes.static.convert": {
         "name": "can.Observe.attributes.static.convert",
@@ -1775,7 +1785,7 @@
         "title": "convert",
         "src": "can/observe/attributes/attributes.js",
         "line": 30,
-        "id": 52
+        "id": 53
     },
     "can.Observe.attributes.static.serialize": {
         "name": "can.Observe.attributes.static.serialize",
@@ -1786,7 +1796,7 @@
         "title": "serialize (static)",
         "src": "can/observe/attributes/attributes.js",
         "line": 191,
-        "id": 53
+        "id": 54
     },
     "can.Observe.setup": {
         "name": "can.Observe.setup",
@@ -1798,7 +1808,7 @@
         "parent": "can.Observe.attributes",
         "src": "can/observe/attributes/attributes.js",
         "line": 237,
-        "id": 54
+        "id": 55
     },
     "can.Observe.prototype.convert": {
         "name": "can.Observe.prototype.convert",
@@ -1810,7 +1820,7 @@
         "parent": "can.Observe.attributes",
         "src": "can/observe/attributes/attributes.js",
         "line": 283,
-        "id": 55
+        "id": 56
     },
     "can.Observe.prototype.attributes.serialize": {
         "type": "function",
@@ -1844,7 +1854,7 @@
         "comment": " ",
         "src": "can/observe/attributes/attributes.js",
         "line": 308,
-        "id": 56
+        "id": 57
     },
     "can/observe/backup/backup.md": {
         "type": "script",
@@ -1861,7 +1871,7 @@
         "test": "can/observe/backup/qunit.html",
         "download": "http://donejs.com/can/dist/can.observe.backup.js",
         "src": "can/observe/backup/backup.md",
-        "id": 57
+        "id": 58
     },
     "can/observe/backup/backup.js": {
         "type": "script",
@@ -1890,7 +1900,7 @@
         ],
         "src": "can/observe/backup/backup.js",
         "line": 14,
-        "id": 58
+        "id": 59
     },
     "can.Observe.backup.prototype.isDirty": {
         "type": "function",
@@ -1925,7 +1935,7 @@
         ],
         "src": "can/observe/backup/backup.js",
         "line": 63,
-        "id": 59
+        "id": 60
     },
     "can.Observe.backup.prototype.restore": {
         "type": "function",
@@ -1960,7 +1970,7 @@
         ],
         "src": "can/observe/backup/backup.js",
         "line": 128,
-        "id": 60
+        "id": 61
     },
     "can/observe/delegate/delegate.js": {
         "type": "script",
@@ -2022,7 +2032,7 @@
         },
         "src": "can/observe/delegate/delegate.js",
         "line": 133,
-        "id": 61
+        "id": 62
     },
     "can.Observe.prototype.undelegate": {
         "type": "function",
@@ -2070,7 +2080,7 @@
         },
         "src": "can/observe/delegate/delegate.js",
         "line": 327,
-        "id": 62
+        "id": 63
     },
     "can/observe/delegate/delegate.md": {
         "type": "script",
@@ -2087,7 +2097,7 @@
         "test": "can/observe/delegate/qunit.html",
         "download": "http://donejs.com/can/dist/can.observe.delegate.js",
         "src": "can/observe/delegate/delegate.md",
-        "id": 63
+        "id": 64
     },
     "can/observe/setter/setter.md": {
         "type": "script",
@@ -2105,7 +2115,7 @@
         "test": "can/observe/setter/qunit.html",
         "comment": " ",
         "src": "can/observe/setter/setter.md",
-        "id": 64
+        "id": 65
     },
     "can/observe/setter/setter.js": {
         "type": "script",
@@ -2142,7 +2152,7 @@
         "comment": " ",
         "src": "can/observe/setter/setter.js",
         "line": 2,
-        "id": 65
+        "id": 66
     },
     "can/observe/validations/validations.md": {
         "type": "script",
@@ -2159,7 +2169,7 @@
         "download": "http://donejs.com/can/dist/can.observe.validations.js",
         "test": "can/observe/validations/qunit.html",
         "src": "can/observe/validations/validations.md",
-        "id": 66
+        "id": 67
     },
     "can/observe/validations/validations.js": {
         "type": "script",
@@ -2173,7 +2183,7 @@
         "parent": null,
         "src": "can/observe/validations/validations.js",
         "line": 68,
-        "id": 67
+        "id": 68
     },
     "can.Observe.validations.static.validate": {
         "name": "can.Observe.validations.static.validate",
@@ -2235,7 +2245,7 @@
         ],
         "src": "can/observe/validations/validations.js",
         "line": 78,
-        "id": 68
+        "id": 69
     },
     "can.Observe.validations.static.validationMessages": {
         "name": "can.Observe.validations.static.validationMessages",
@@ -2246,7 +2256,7 @@
         "title": "validationMessages",
         "src": "can/observe/validations/validations.js",
         "line": 127,
-        "id": 69
+        "id": 70
     },
     "can.Observe.validations.static.validateFormatOf": {
         "type": "function",
@@ -2287,8 +2297,8 @@
         "description": "<p><code>validateFormatOf(attrNames, regexp, options)</code> validates where the values of\nspecified attributes are of the correct form by\nmatching it against the regular expression provided.</p>\n\n<pre><code>init : function(){\n     this.validateFormatOf([\"email\"],/[\\w\\.]+@]w+\\.\\w+/,{\n       message : \"invalid email\"\n  })\n}\n</code></pre>",
         "title": "validateFormatOf",
         "src": "can/observe/validations/validations.js",
-        "line": 161,
-        "id": 70
+        "line": 162,
+        "id": 71
     },
     "can.Observe.validations.static.validateInclusionOf": {
         "type": "function",
@@ -2329,8 +2339,8 @@
         "description": "<p>Validates whether the values of the specified attributes are available in a particular\narray.</p>\n\n<pre><code>init : function(){\n  this.validateInclusionOf([\"salutation\"],[\"Mr.\",\"Mrs.\",\"Dr.\"])\n}\n</code></pre>",
         "title": "validateInclusionOf",
         "src": "can/observe/validations/validations.js",
-        "line": 188,
-        "id": 71
+        "line": 189,
+        "id": 72
     },
     "can.Observe.validations.static.validateLengthOf": {
         "type": "function",
@@ -2378,8 +2388,8 @@
         "description": "<p>Validates that the specified attributes' lengths are in the given range.</p>\n\n<pre><code>init : function(){\n  this.validateInclusionOf([\"suffix\"],3,5)\n}\n</code></pre>",
         "title": "validateLengthOf",
         "src": "can/observe/validations/validations.js",
-        "line": 217,
-        "id": 72
+        "line": 218,
+        "id": 73
     },
     "can.Observe.validations.static.validatePresenceOf": {
         "type": "function",
@@ -2413,8 +2423,8 @@
         "description": "<p>Validates that the specified attributes are not blank.</p>\n\n<pre><code>init : function(){\n  this.validatePresenceOf([\"name\"])\n}\n</code></pre>",
         "title": "validatePresenceOf",
         "src": "can/observe/validations/validations.js",
-        "line": 243,
-        "id": 73
+        "line": 244,
+        "id": 74
     },
     "can.Observe.validations.static.validateRangeOf": {
         "type": "function",
@@ -2462,8 +2472,30 @@
         "description": "<p>Validates that the specified attributes are in the given numeric range.</p>\n\n<pre><code>init : function(){\n  this.validateRangeOf([\"age\"],21, 130);\n}\n</code></pre>",
         "title": "validateRangeOf",
         "src": "can/observe/validations/validations.js",
-        "line": 264,
-        "id": 74
+        "line": 265,
+        "id": 75
+    },
+    "can.Observe.validations.static.validatesNumericalityOf": {
+        "type": "function",
+        "name": "can.Observe.validations.static.validatesNumericalityOf",
+        "params": [{
+                "types": [{
+                        "type": "Array"
+                    }, {
+                        "type": "String"
+                    }
+                ],
+                "name": "attrNames",
+                "description": "<p>Attribute name(s) to to validate</p>"
+            }
+        ],
+        "parent": "can.Observe.validations",
+        "body": "",
+        "description": "<p>Validates that the specified attributes is a valid Number.</p>\n\n<pre><code>init : function(){\n  this.validatesNumericalityOf([\"age\"]);\n}\n</code></pre>",
+        "title": "validatesNumericalityOf",
+        "src": "can/observe/validations/validations.js",
+        "line": 289,
+        "id": 76
     },
     "prototype": {
         "body": "",
@@ -2472,8 +2504,8 @@
         "name": "prototype",
         "parent": null,
         "src": "can/observe/validations/validations.js",
-        "line": 291,
-        "id": 75
+        "line": 313,
+        "id": 77
     },
     "can/observe/compute/compute.js": {
         "type": "script",
@@ -2485,7 +2517,7 @@
         "type": "prototype",
         "parent": "can.compute",
         "description": "",
-        "id": 76
+        "id": 78
     },
     "can.compute": {
         "name": "can.compute",
@@ -2532,7 +2564,7 @@
         "comment": " ",
         "src": "can/observe/compute/compute.js",
         "line": 132,
-        "id": 77
+        "id": 79
     },
     "can.compute.isComputed": {
         "name": "can.compute.isComputed",
@@ -2542,8 +2574,8 @@
         "description": "<p>Whether the value of the compute has been computed yet.</p>",
         "title": "isComputed",
         "src": "can/observe/compute/compute.js",
-        "line": 422,
-        "id": 78
+        "line": 425,
+        "id": 80
     },
     "can.compute.bind": {
         "name": "can.compute.bind",
@@ -2609,8 +2641,8 @@
             }
         ],
         "src": "can/observe/compute/compute.js",
-        "line": 447,
-        "id": 79
+        "line": 450,
+        "id": 81
     },
     "can.compute.unbind": {
         "name": "can.compute.unbind",
@@ -2649,8 +2681,8 @@
             }
         ],
         "src": "can/observe/compute/compute.js",
-        "line": 474,
-        "id": 80
+        "line": 477,
+        "id": 82
     },
     "can/model/model.md": {
         "type": "script",
@@ -2730,7 +2762,7 @@
         ],
         "comment": " ",
         "src": "can/model/model.md",
-        "id": 81
+        "id": 83
     },
     "can/model/model.js": {
         "type": "script",
@@ -2744,7 +2776,7 @@
         "parent": "can.Model",
         "src": "can/model/model.js",
         "line": 118,
-        "id": 82
+        "id": 84
     },
     "can.Model.bind": {
         "body": "<p><code>bind(eventType, handler(event, instance))</code> listens to\n<strong>created</strong>, <strong>updated</strong>, <strong>destroyed</strong> events on all \ninstances of the model.</p>\n\n<pre><code>Task.bind(\"created\", function(ev, createdTask){\n     this //-&gt; Task\n  createdTask.attr(\"name\") //-&gt; \"Dishes\"\n})\n\nnew Task({name: \"Dishes\"}).save();\n</code></pre>",
@@ -2791,7 +2823,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 122,
-        "id": 83
+        "id": 85
     },
     "can.Model.unbind": {
         "body": "<p><code>unbind(eventType, handler)</code> removes a listener\nattached with [can.Model.bind].</p>\n\n<pre><code>var handler = function(ev, createdTask){\n\n}\nTask.bind(\"created\", handler)\nTask.unbind(\"created\", handler)\n</code></pre>\n\n<p>You have to pass the same function to <code>unbind</code> that you\npassed to <code>bind</code>.</p>",
@@ -2838,7 +2870,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 148,
-        "id": 84
+        "id": 86
     },
     "can.Model.id": {
         "body": "",
@@ -2853,7 +2885,7 @@
         "parent": "can.Model.static",
         "src": "can/model/model.js",
         "line": 174,
-        "id": 85
+        "id": 87
     },
     "can.Model.create": {
         "name": "can.Model.create",
@@ -2897,7 +2929,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 209,
-        "id": 86
+        "id": 88
     },
     "can.Model.update": {
         "name": "can.Model.update",
@@ -2948,7 +2980,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 272,
-        "id": 87
+        "id": 89
     },
     "can.Model.destroy": {
         "name": "can.Model.destroy",
@@ -2992,7 +3024,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 364,
-        "id": 88
+        "id": 90
     },
     "can.Model.findAll": {
         "name": "can.Model.findAll",
@@ -3055,7 +3087,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 425,
-        "id": 89
+        "id": 91
     },
     "can.Model.findOne": {
         "name": "can.Model.findOne",
@@ -3118,7 +3150,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 498,
-        "id": 90
+        "id": 92
     },
     "can.Model.models": {
         "type": "function",
@@ -3166,7 +3198,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 655,
-        "id": 91
+        "id": 93
     },
     "can.Model.model": {
         "type": "function",
@@ -3199,7 +3231,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 794,
-        "id": 92
+        "id": 94
     },
     "can.Model.prototype": {
         "type": "prototype",
@@ -3209,7 +3241,7 @@
         "parent": "can.Model",
         "src": "can/model/model.js",
         "line": 875,
-        "id": 93
+        "id": 95
     },
     "can.Model.prototype.isNew": {
         "type": "function",
@@ -3234,7 +3266,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 879,
-        "id": 94
+        "id": 96
     },
     "can.Model.prototype.save": {
         "type": "function",
@@ -3290,7 +3322,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 897,
-        "id": 95
+        "id": 97
     },
     "can.Model.prototype.destroy": {
         "type": "function",
@@ -3346,7 +3378,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 967,
-        "id": 96
+        "id": 98
     },
     "can.Model.prototype.bind": {
         "type": "function",
@@ -3393,7 +3425,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 1013,
-        "id": 97
+        "id": 99
     },
     "can.Model.prototype.unbind": {
         "type": "function",
@@ -3441,7 +3473,7 @@
         "comment": " ",
         "src": "can/model/model.js",
         "line": 1076,
-        "id": 98
+        "id": 100
     },
     "can.Model.prototype.created": {
         "type": "function",
@@ -3461,7 +3493,7 @@
         ],
         "src": "can/model/model.js",
         "line": 1135,
-        "id": 99
+        "id": 101
     },
     "can.Model.prototype.updated": {
         "type": "function",
@@ -3481,7 +3513,7 @@
         ],
         "src": "can/model/model.js",
         "line": 1142,
-        "id": 100
+        "id": 102
     },
     "can.Model.prototype.destroyed": {
         "type": "function",
@@ -3492,7 +3524,7 @@
         "hide": true,
         "src": "can/model/model.js",
         "line": 1149,
-        "id": 101
+        "id": 103
     },
     "can.Model.List": {
         "name": "can.Model.List",
@@ -3505,8 +3537,8 @@
         "download": "can/model",
         "test": "can/model/qunit.html",
         "src": "can/model/model.js",
-        "line": 1185,
-        "id": 102
+        "line": 1182,
+        "id": 104
     },
     "can/control/control.md": {
         "type": "script",
@@ -3518,7 +3550,7 @@
         "type": "plugins",
         "parent": "can.Control",
         "description": "",
-        "id": 103
+        "id": 105
     },
     "can.Control": {
         "type": "constructor",
@@ -3531,7 +3563,7 @@
         "test": "can/control/qunit.html",
         "inherits": "can.Construct",
         "src": "can/control/control.md",
-        "id": 104
+        "id": 106
     },
     "can/control/control.js": {
         "type": "script",
@@ -3545,7 +3577,7 @@
         "parent": "can.Control",
         "src": "can/control/control.js",
         "line": 43,
-        "id": 105
+        "id": 107
     },
     "can.Control.static.setup": {
         "type": "function",
@@ -3557,7 +3589,7 @@
         "hide": true,
         "src": "can/control/control.js",
         "line": 48,
-        "id": 106
+        "id": 108
     },
     "can.Control.static._isAction": {
         "type": "function",
@@ -3584,7 +3616,7 @@
         },
         "src": "can/control/control.js",
         "line": 93,
-        "id": 107
+        "id": 109
     },
     "can.Control.static._action": {
         "type": "function",
@@ -3619,7 +3651,7 @@
         },
         "src": "can/control/control.js",
         "line": 112,
-        "id": 108
+        "id": 110
     },
     "can.Control.processors": {
         "name": "can.Control.processors",
@@ -3631,7 +3663,7 @@
         "comment": " ",
         "src": "can/control/control.js",
         "line": 165,
-        "id": 109
+        "id": 111
     },
     "can.Control.defaults": {
         "type": "property",
@@ -3643,7 +3675,7 @@
         "comment": " ",
         "src": "can/control/control.js",
         "line": 264,
-        "id": 110
+        "id": 112
     },
     "can.Control.prototype": {
         "type": "prototype",
@@ -3653,7 +3685,7 @@
         "parent": "can.Control",
         "src": "can/control/control.js",
         "line": 290,
-        "id": 111
+        "id": 113
     },
     "can.Control.prototype.element": {
         "body": "",
@@ -3665,7 +3697,7 @@
         "comment": " ",
         "src": "can/control/control.js",
         "line": 295,
-        "id": 112
+        "id": 114
     },
     "can.Control.prototype.setup": {
         "type": "function",
@@ -3712,7 +3744,7 @@
         "comment": " ",
         "src": "can/control/control.js",
         "line": 311,
-        "id": 113
+        "id": 115
     },
     "can.Control.prototype.options": {
         "name": "can.Control.prototype.options",
@@ -3724,7 +3756,7 @@
         "comment": " ",
         "src": "can/control/control.js",
         "line": 371,
-        "id": 114
+        "id": 116
     },
     "can.Control.prototype.on": {
         "type": "function",
@@ -3806,7 +3838,7 @@
         "comment": " ",
         "src": "can/control/control.js",
         "line": 519,
-        "id": 115
+        "id": 117
     },
     "can.Control.prototype.off": {
         "type": "function",
@@ -3818,7 +3850,7 @@
         "hide": true,
         "src": "can/control/control.js",
         "line": 670,
-        "id": 116
+        "id": 118
     },
     "can.Control.prototype.destroy": {
         "type": "function",
@@ -3836,7 +3868,7 @@
         "comment": " ",
         "src": "can/control/control.js",
         "line": 684,
-        "id": 117
+        "id": 119
     },
     "can/control/route/route.md": {
         "type": "script",
@@ -3853,7 +3885,7 @@
         "download": "http://donejs.com/can/dist/can.control.route.js",
         "comment": " ",
         "src": "can/control/route/route.md",
-        "id": 118
+        "id": 120
     },
     "can/control/plugin/plugin.md": {
         "type": "script",
@@ -3870,7 +3902,7 @@
         "test": "can/control/plugin/qunit.html",
         "download": "http://donejs.com/can/dist/can.control.plugin.js",
         "src": "can/control/plugin/plugin.md",
-        "id": 119
+        "id": 121
     },
     "can/control/plugin/plugin.js": {
         "type": "script",
@@ -3883,7 +3915,7 @@
         "description": "<p>static</p>",
         "src": "can/control/plugin/plugin.js",
         "line": 15,
-        "id": 120
+        "id": 122
     },
     "can.Control.plugin.static.pluginName": {
         "name": "can.Control.plugin.static.pluginName",
@@ -3894,7 +3926,7 @@
         "title": "pluginName",
         "src": "can/control/plugin/plugin.js",
         "line": 22,
-        "id": 121
+        "id": 123
     },
     "jQuery.fn.controls": {
         "type": "function",
@@ -3930,7 +3962,7 @@
         "comment": " ",
         "src": "can/control/plugin/plugin.js",
         "line": 58,
-        "id": 122
+        "id": 124
     },
     "jQuery.fn.control": {
         "type": "function",
@@ -3966,7 +3998,7 @@
         "comment": " ",
         "src": "can/control/plugin/plugin.js",
         "line": 115,
-        "id": 123
+        "id": 125
     },
     "can.Control.plugin.prototype.update": {
         "type": "function",
@@ -3999,7 +4031,7 @@
         "comment": " ",
         "src": "can/control/plugin/plugin.js",
         "line": 172,
-        "id": 124
+        "id": 126
     },
     "can/route/route.md": {
         "type": "script",
@@ -4011,7 +4043,7 @@
         "type": "static",
         "parent": "can.route",
         "description": "",
-        "id": 125
+        "id": 127
     },
     "can.route": {
         "type": "function",
@@ -4054,7 +4086,7 @@
         ],
         "comment": " ",
         "src": "can/route/route.md",
-        "id": 126
+        "id": 128
     },
     "can/route/route.js": {
         "type": "script",
@@ -4091,7 +4123,7 @@
         "comment": " ",
         "src": "can/route/route.js",
         "line": 99,
-        "id": 127
+        "id": 129
     },
     "can.route.deparam": {
         "type": "function",
@@ -4124,7 +4156,7 @@
         "comment": " ",
         "src": "can/route/route.js",
         "line": 187,
-        "id": 128
+        "id": 130
     },
     "static.data": {
         "name": "static.data",
@@ -4135,7 +4167,7 @@
         "hide": true,
         "src": "can/route/route.js",
         "line": 263,
-        "id": 129
+        "id": 131
     },
     "routes": {
         "name": "routes",
@@ -4151,7 +4183,7 @@
         "hide": true,
         "src": "can/route/route.js",
         "line": 268,
-        "id": 130
+        "id": 132
     },
     "can.route.ready": {
         "type": "function",
@@ -4185,7 +4217,7 @@
         "comment": " ",
         "src": "can/route/route.js",
         "line": 288,
-        "id": 131
+        "id": 133
     },
     "can.route.url": {
         "type": "function",
@@ -4226,7 +4258,7 @@
         "comment": " ",
         "src": "can/route/route.js",
         "line": 315,
-        "id": 132
+        "id": 134
     },
     "can.route.link": {
         "type": "function",
@@ -4280,7 +4312,7 @@
         "comment": " ",
         "src": "can/route/route.js",
         "line": 345,
-        "id": 133
+        "id": 135
     },
     "can.route.current": {
         "type": "function",
@@ -4313,7 +4345,7 @@
         "comment": " ",
         "src": "can/route/route.js",
         "line": 391,
-        "id": 134
+        "id": 136
     },
     "can/view/view.md": {
         "type": "script",
@@ -4325,7 +4357,7 @@
         "type": "static",
         "parent": "can.view",
         "description": "",
-        "id": 135
+        "id": 137
     },
     "can.view.plugins": {
         "name": "can.view.plugins",
@@ -4333,13 +4365,13 @@
         "type": "plugins",
         "parent": "can.view",
         "description": "",
-        "id": 136
+        "id": 138
     },
     "can.view": {
-        "type": "constructor",
+        "type": "function",
         "name": "can.view",
-        "body": "",
-        "description": "",
+        "body": "<h2>Use</h2>\n\n<p><code>can.view( idOrUrl, data, helpers )</code> loads template content from an element, a url or a string, renders\nit with data, and converts it to a documentFragment so it can be easily and \nefficiently inserted into the DOM.</p>\n\n<pre><code>document.getElementById('person')\n  .appendChild( can.view('person.ejs', {name: \"Justin\" } ) )\n</code></pre>\n\n<p>This code:</p>\n\n<ol>\n<li><p>Loads the template a 'mytemplate.ejs'. It might look like:\n<pre><code>&lt;h2>&lt;%= name %>&lt;/h2></pre></code></p></li>\n<li><p>Renders it with {message: 'hello world'}, resulting in:\n<pre><code>&lt;div id='foo'>\"&lt;h2>Justin&lt;/h2>&lt;/div></pre></code></p></li>\n<li><p>Inserts the result into the foo element. Foo might look like:\n<pre><code>&lt;div id='person'>&lt;h2>Justin&lt;/h2>&lt;/div></pre></code></p></li>\n</ol>\n\n<h2>Loading Templates</h2>\n\n<p><code>can.view</code> can load templates from a url or from a script.</p>\n\n<h3>Loading templates from a script tag</h3>\n\n<p>To load from a script tag, create a script tag with:</p>\n\n<ul>\n<li>the template contents within the script tag</li>\n<li>an id</li>\n<li><p>a type attribute that specifies the type of template</p>\n\n<script type='text/ejs' id='recipesEJS'>\n<% for(var i=0; i < recipes.length; i++){ %>\n  <li><%=recipes[i].name %></li>\n<%} %>\n</script></li>\n</ul>\n\n<p>Render with this template like:</p>\n\n<pre><code>document.getElementById('recipes')\n  .appendChild( can.view('recipesEJS', recipeData ) )\n</code></pre>\n\n<p>Notice we passed the id of the element we want to render.</p>\n\n<h3>Loading templates from a url</h3>\n\n<p>To load from a url, simply pass the location of the template\nto <code>can.view</code>.  The location of the template needs an extension that\nmatches the type of template:</p>\n\n<pre><code>document.getElementById('recipes')\n  .appendChild( can.view('templates/recipes.ejs', recipeData ) )\n</code></pre>\n\n<h3>Creating templates from strings</h3>\n\n<p>You can also register a view string for a given id programmatically for any registered template engine using\n<code>can.view.&lt;engine&gt;(id, template)</code>:</p>\n\n<pre><code>can.view.ejs('myViewEJS', '&lt;h2&gt;&lt;%= message %&gt;&lt;/h2&gt;');\ncan.view('myView', { message : 'Hello EJS' });\n// -&gt; &lt;h2&gt;Hello EJS&lt;/h2&gt;\n</code></pre>\n\n<h3>Renderer functions</h3>\n\n<p>Additionally to rendering a template immediately it is also possible to retrieve a renderer function by just passing\nthe view name. The renderer function can be called with the template data at a later point in time:</p>\n\n<pre><code>var renderer = can.view('templates/recipes.ejs');\n// Do some things\ndocument.getElementById('recipes')\n  .appendChild( renderer(recipeData ) )\n</code></pre>\n\n<p>It is also possible to get a nameless renderer function when creating a template from a string:</p>\n\n<pre><code>var renderer = can.view.ejs('&lt;strong&gt;&lt;%= message %&gt;&lt;/strong&gt;');\nrenderer({\n  message : 'Message form EJS'\n}); // -&gt; &lt;strong&gt;Message from EJS&lt;/strong&gt;\n\nrenderer = can.view.mustache('&lt;strong&gt;{{message}}&lt;/strong&gt;');\nrenderer({\n  message : 'Message form Mustache'\n}); // -&gt; &lt;strong&gt;Message from Mustache&lt;/strong&gt;\n</code></pre>\n\n<h2>Supported Template Engines</h2>\n\n<p>CanJS supports the following template languages:</p>\n\n<ul>\n<li><p>EmbeddedJS (ejs)</p>\n\n<pre><code>&lt;h2>&lt;%= message %>&lt;/h2></code></pre></li>\n<li><p>Mustache (mustache)</p>\n\n<pre><code>&lt;h2{{message}}&lt/h2></code></pre></li>\n<li><p>JAML (jaml)</p>\n\n<pre><code>h2(data.message);</code></pre></li>\n<li><p>Micro (micro)</p>\n\n<pre><code>&lt;h2>{%= message %}&lt;/h2></code></pre></li>\n<li><p>jQuery.Tmpl (tmpl)</p>\n\n<pre><code>&lt;h2>${message}&lt;/h2></code></pre></li>\n</ul>\n\n<h2>Rendering to strings and sub-templates</h2>\n\n<p>To render to a string, use <code>can.view.render(idOrUrl, data)</code> like:</p>\n\n<pre><code>can.view.render(\"/templates/recipe.ejs\",{recipe: recipe})\n</code></pre>\n\n<p>To render a sub-template within another template, use render like:</p>\n\n<pre><code>&lt;% $.each(recipes, function(i, recipe){ %&gt;\n  &lt;li&gt;&lt;%== can.view.render(\"/templates/recipe.ejs\",{\n             recipe: recipe\n            }) %&gt;\n  &lt;/li&gt;\n&lt;% }) %&gt;\n</code></pre>\n\n<h2>Asynchronous Loading</h2>\n\n<p>By default, retrieving templates is done synchronously. This \nis fine because StealJS packages view templates with your \nJS download.</p>\n\n<p>However, some people might not be using StealJS or want to \ndelay loading templates until necessary. If you have the need, \nyou can provide a callback paramter like:</p>\n\n<pre><code>can.view('recipes',recipeData, function(frag){\n  document.getElementById('recipes')\n    .appendChild(frag)\n});\n</code></pre>\n\n<p>The callback function will be called with the result of \nthe rendered template.</p>\n\n<h2>Deferreds</h2>\n\n<p>If you pass deferreds to can.view it \nwill wait until all deferreds resolve before rendering \nthe view. This makes it a one-liner to make a request and use the \nresult to render a template.</p>\n\n<p>The following makes a request for todos in parallel with the \ntodos.ejs template. Once todos and template have been loaded, \nit with render the view with the todos.</p>\n\n<pre><code>can.view('recipes', Todo.findAll() , function(frag){\n  document.getElementById('recipes')\n    .appendChild(frag)\n})\n</code></pre>",
+        "description": "<p>A JavaScript template framework. \n<code>can.view</code> is a JavaScript template framework that provides:</p>\n\n<ul>\n<li>template loading from html elements or external files</li>\n<li>synchronous and asynchronous template loading</li>\n<li>deferred support</li>\n<li>callbacks on elements for functionality like live live-binding</li>\n</ul>\n\n<p>can.view supports other templating languages, but using [can.EJS] is highly encouraged.</p>",
         "title": "",
         "parent": "canjs",
         "signatures": [{
@@ -4398,11 +4430,20 @@
         ],
         "comment": " ",
         "src": "can/view/view.md",
-        "id": 137
+        "id": 139
     },
     "can/view/view.js": {
         "type": "script",
         "name": "can/view/view.js"
+    },
+    "can.template": {
+        "name": "can.template",
+        "type": "constructor",
+        "body": "",
+        "description": "",
+        "src": "can/view/view.js",
+        "line": 9,
+        "id": 140
     },
     "can.view.ejs": {
         "body": "<p><code>can.view.ejs([id,] template)</code> registers an EJS template string\nfor a given id programatically. The following\nregisters <code>myViewEJS</code> and renders it into a documentFragment.</p>\n\n<pre><code> can.view.ejs('myViewEJS', '&lt;h2&gt;&lt;%= message %&gt;&lt;/h2&gt;');\n\n var frag = can.view('myViewEJS', {\n     message : 'Hello there!'\n });\n\n frag // -&gt; &lt;h2&gt;Hello there!&lt;/h2&gt;\n</code></pre>\n\n<p>To convert the template into a render function, just pass\nthe template. Call the render function with the data\nyou want to pass to the template and it returns the\ndocumentFragment.</p>\n\n<pre><code> var renderer = can.view.ejs('&lt;div&gt;&lt;%= message %&gt;&lt;/div&gt;');\n renderer({\n     message : 'EJS'\n }); // -&gt; &lt;div&gt;EJS&lt;/div&gt;\n</code></pre>",
@@ -4461,7 +4502,7 @@
         "comment": " ",
         "src": "can/view/view.js",
         "line": 103,
-        "id": 138
+        "id": 141
     },
     "can.view.mustache": {
         "body": "",
@@ -4519,7 +4560,7 @@
         ],
         "src": "can/view/view.js",
         "line": 140,
-        "id": 139
+        "id": 142
     },
     "hookups": {
         "name": "hookups",
@@ -4531,7 +4572,7 @@
         "hide": true,
         "src": "can/view/view.js",
         "line": 176,
-        "id": 140
+        "id": 143
     },
     "can.view.hook": {
         "type": "function",
@@ -4564,7 +4605,7 @@
         "comment": " ",
         "src": "can/view/view.js",
         "line": 183,
-        "id": 141
+        "id": 144
     },
     "can.view.cached": {
         "name": "can.view.cached",
@@ -4580,7 +4621,7 @@
         "title": "view",
         "src": "can/view/view.js",
         "line": 206,
-        "id": 142
+        "id": 145
     },
     "can.view.cache": {
         "name": "can.view.cache",
@@ -4595,7 +4636,7 @@
         "title": "cache",
         "src": "can/view/view.js",
         "line": 216,
-        "id": 143
+        "id": 146
     },
     "can.view.register": {
         "type": "function",
@@ -4665,7 +4706,7 @@
         "comment": " ",
         "src": "can/view/view.js",
         "line": 228,
-        "id": 144
+        "id": 147
     },
     "can.view.ext": {
         "name": "can.view.ext",
@@ -4680,11 +4721,11 @@
         "title": "ext",
         "src": "can/view/view.js",
         "line": 270,
-        "id": 145
+        "id": 148
     },
-    "can.view.registerScript": {
+    "registerScript": {
         "type": "function",
-        "name": "can.view.registerScript",
+        "name": "registerScript",
         "params": [{
                 "types": [{
                         "type": "Object"
@@ -4714,11 +4755,11 @@
         "hide": true,
         "src": "can/view/view.js",
         "line": 282,
-        "id": 146
+        "id": 149
     },
-    "can.view.preload": {
+    "preload": {
         "type": "function",
-        "name": "can.view.preload",
+        "name": "preload",
         "params": [{
                 "types": [{
                         "type": "String"
@@ -4748,7 +4789,7 @@
         "hide": true,
         "src": "can/view/view.js",
         "line": 291,
-        "id": 147
+        "id": 150
     },
     "can.view.render": {
         "type": "function",
@@ -4880,11 +4921,11 @@
         "comment": " ",
         "src": "can/view/view.js",
         "line": 300,
-        "id": 148
+        "id": 151
     },
-    "can.view.registerView": {
+    "registerView": {
         "type": "function",
-        "name": "can.view.registerView",
+        "name": "registerView",
         "params": [{
                 "types": [{
                         "type": "String"
@@ -4921,7 +4962,7 @@
         "hide": true,
         "src": "can/view/view.js",
         "line": 453,
-        "id": 149
+        "id": 152
     },
     "can.view.text": {
         "name": "can.view.text",
@@ -4932,7 +4973,7 @@
         "hide": true,
         "src": "can/view/view.js",
         "line": 598,
-        "id": 150
+        "id": 153
     },
     "can/view/ejs/ejs.md": {
         "type": "script",
@@ -4946,7 +4987,7 @@
         "title": "",
         "parent": "canjs",
         "src": "can/view/ejs/ejs.md",
-        "id": 151
+        "id": 154
     },
     "can/view/ejs/ejs.js": {
         "type": "script",
@@ -4960,7 +5001,7 @@
         "parent": "can.EJS",
         "src": "can/view/ejs/ejs.js",
         "line": 31,
-        "id": 152
+        "id": 155
     },
     "can.EJS.prototype.render": {
         "type": "function",
@@ -5021,7 +5062,7 @@
         "comment": " ",
         "src": "can/view/ejs/ejs.js",
         "line": 36,
-        "id": 153
+        "id": 156
     },
     "can.EJS.prototype.scanner": {
         "name": "can.EJS.prototype.scanner",
@@ -5032,7 +5073,7 @@
         "hide": true,
         "src": "can/view/ejs/ejs.js",
         "line": 58,
-        "id": 154
+        "id": 157
     },
     "can.EJS.prototype.tokens": {
         "name": "can.EJS.prototype.tokens",
@@ -5043,7 +5084,26 @@
         "hide": true,
         "src": "can/view/ejs/ejs.js",
         "line": 63,
-        "id": 155
+        "id": 158
+    },
+    "can.EJS.prototype.transform": {
+        "type": "function",
+        "name": "can.EJS.prototype.transform",
+        "params": [{
+                "name": "source",
+                "types": [{
+                        "type": "*"
+                    }
+                ]
+            }
+        ],
+        "parent": "can.EJS.prototype",
+        "body": "",
+        "description": "<p>Transforms the EJS template to add support for shared blocks.\nEssentially, this breaks up EJS tags into multiple EJS tags \nif they contained unmatched brackets.</p>\n\n<p>For example, this doesn't work:\n    &lt;% if (1) { %>&lt;% if (1) { %> hi &lt;% } } %>\n...without isolated EJS blocks:\n    &lt;% if (1) { %>&lt;% if (1) { %> hi &lt;% } %>&lt;% } %> \nThe result of transforming:\n    &lt;% if (1) { %>&lt;% %>&lt;% if (1) { %>&lt;% %> hi &lt;% } %>&lt;% } %> </p>",
+        "hide": true,
+        "src": "can/view/ejs/ejs.js",
+        "line": 80,
+        "id": 159
     },
     "can.EJS.static": {
         "type": "constructor",
@@ -5060,8 +5120,8 @@
         "body": "",
         "description": "",
         "src": "can/view/ejs/ejs.js",
-        "line": 82,
-        "id": 156
+        "line": 143,
+        "id": 160
     },
     "can.EJS.Helpers": {
         "name": "can.EJS.Helpers",
@@ -5072,8 +5132,8 @@
         "title": "Helpers",
         "comment": " ",
         "src": "can/view/ejs/ejs.js",
-        "line": 94,
-        "id": 157
+        "line": 155,
+        "id": 161
     },
     "can/view/mustache/doc/acquisition.md": {
         "type": "script",
@@ -5088,7 +5148,7 @@
         "parent": "can.Mustache.pages",
         "order": 3,
         "src": "can/view/mustache/doc/acquisition.md",
-        "id": 158
+        "id": 162
     },
     "can/view/mustache/doc/basics.md": {
         "type": "script",
@@ -5103,7 +5163,7 @@
         "parent": "can.Mustache.pages",
         "order": 0,
         "src": "can/view/mustache/doc/basics.md",
-        "id": 159
+        "id": 163
     },
     "can/view/mustache/doc/helpers.md": {
         "type": "script",
@@ -5118,7 +5178,7 @@
         "parent": "can.Mustache.pages",
         "order": 4,
         "src": "can/view/mustache/doc/helpers.md",
-        "id": 160
+        "id": 164
     },
     "can/view/mustache/doc/livebinding.md": {
         "type": "script",
@@ -5133,7 +5193,7 @@
         "parent": "can.Mustache.pages",
         "order": 5,
         "src": "can/view/mustache/doc/livebinding.md",
-        "id": 161
+        "id": 165
     },
     "can/view/mustache/doc/mustache.md": {
         "type": "script",
@@ -5145,7 +5205,7 @@
         "type": "Pages",
         "parent": "can.Mustache",
         "description": "",
-        "id": 162
+        "id": 166
     },
     "can.Mustache": {
         "type": "constructor",
@@ -5158,7 +5218,7 @@
         "plugin": "can/view/mustache",
         "download": "http://canjs.us/release/latest/can.view.mustache.js",
         "src": "can/view/mustache/doc/mustache.md",
-        "id": 163
+        "id": 167
     },
     "can/view/mustache/doc/partials.md": {
         "type": "script",
@@ -5174,7 +5234,7 @@
         "order": 2,
         "comment": " ",
         "src": "can/view/mustache/doc/partials.md",
-        "id": 164
+        "id": 168
     },
     "can/view/mustache/doc/sections.md": {
         "type": "script",
@@ -5189,7 +5249,7 @@
         "parent": "can.Mustache.pages",
         "order": 1,
         "src": "can/view/mustache/doc/sections.md",
-        "id": 165
+        "id": 169
     },
     "can/view/mustache/mustache.js": {
         "type": "script",
@@ -5218,7 +5278,7 @@
         },
         "src": "can/view/mustache/mustache.js",
         "line": 34,
-        "id": 166
+        "id": 170
     },
     "isArrayLike": {
         "name": "isArrayLike",
@@ -5243,7 +5303,7 @@
         },
         "src": "can/view/mustache/mustache.js",
         "line": 43,
-        "id": 167
+        "id": 171
     },
     "Mustache": {
         "name": "Mustache",
@@ -5262,7 +5322,7 @@
         ],
         "src": "can/view/mustache/mustache.js",
         "line": 53,
-        "id": 168
+        "id": 172
     },
     "can.Mustache.prototype": {
         "type": "prototype",
@@ -5272,7 +5332,7 @@
         "parent": "can.Mustache",
         "src": "can/view/mustache/mustache.js",
         "line": 88,
-        "id": 169
+        "id": 173
     },
     "can.Mustache.prototype.render": {
         "type": "function",
@@ -5305,7 +5365,7 @@
         "comment": " ",
         "src": "can/view/mustache/mustache.js",
         "line": 92,
-        "id": 170
+        "id": 174
     },
     "can.Mustache.prototype.Mustache.txt": {
         "type": "function",
@@ -5343,7 +5403,7 @@
         "hide": true,
         "src": "can/view/mustache/mustache.js",
         "line": 603,
-        "id": 171
+        "id": 175
     },
     "can.Mustache.prototype.Mustache.get": {
         "type": "function",
@@ -5397,7 +5457,7 @@
         "hide": true,
         "src": "can/view/mustache/mustache.js",
         "line": 727,
-        "id": 172
+        "id": 176
     },
     "can.Mustache.prototype.Mustache.resolve": {
         "type": "function",
@@ -5448,7 +5508,7 @@
         },
         "src": "can/view/mustache/mustache.js",
         "line": 855,
-        "id": 173
+        "id": 177
     },
     "can.Mustache.static": {
         "type": "static",
@@ -5458,7 +5518,7 @@
         "parent": "can.Mustache",
         "src": "can/view/mustache/mustache.js",
         "line": 896,
-        "id": 174
+        "id": 178
     },
     "can.Mustache.registerHelper": {
         "type": "function",
@@ -5498,7 +5558,7 @@
         "comment": " ",
         "src": "can/view/mustache/mustache.js",
         "line": 920,
-        "id": 175
+        "id": 179
     },
     "can.Mustache.getHelper": {
         "type": "function",
@@ -5540,7 +5600,7 @@
         "comment": " ",
         "src": "can/view/mustache/mustache.js",
         "line": 937,
-        "id": 176
+        "id": 180
     },
     "can.Mustache.static.render": {
         "type": "function",
@@ -5573,7 +5633,7 @@
         "comment": " ",
         "src": "can/view/mustache/mustache.js",
         "line": 961,
-        "id": 177
+        "id": 181
     },
     "if": {
         "type": "function",
@@ -5598,7 +5658,7 @@
         "title": "",
         "src": "can/view/mustache/mustache.js",
         "line": 1003,
-        "id": 178
+        "id": 182
     },
     "unless": {
         "type": "function",
@@ -5623,7 +5683,7 @@
         "title": "",
         "src": "can/view/mustache/mustache.js",
         "line": 1024,
-        "id": 179
+        "id": 183
     },
     "each": {
         "type": "function",
@@ -5648,7 +5708,7 @@
         "title": "",
         "src": "can/view/mustache/mustache.js",
         "line": 1042,
-        "id": 180
+        "id": 184
     },
     "with": {
         "type": "function",
@@ -5673,7 +5733,7 @@
         "title": "",
         "src": "can/view/mustache/mustache.js",
         "line": 1071,
-        "id": 181
+        "id": 185
     },
     "can/view/modifiers/modifiers.md": {
         "type": "script",
@@ -5689,7 +5749,7 @@
         "plugin": "can/view/modifiers",
         "test": "can/view/modifiers/qunit.html",
         "src": "can/view/modifiers/modifiers.md",
-        "id": 182
+        "id": 186
     },
     "can/view/modifiers/modifiers.js": {
         "type": "script",
@@ -5705,7 +5765,7 @@
         "title": "",
         "src": "can/view/modifiers/modifiers.js",
         "line": 125,
-        "id": 183
+        "id": 187
     },
     "jQuery.fn.prepend": {
         "type": "function",
@@ -5768,7 +5828,7 @@
         },
         "src": "can/view/modifiers/modifiers.js",
         "line": 143,
-        "id": 184
+        "id": 188
     },
     "jQuery.fn.append": {
         "type": "function",
@@ -5831,7 +5891,7 @@
         },
         "src": "can/view/modifiers/modifiers.js",
         "line": 163,
-        "id": 185
+        "id": 189
     },
     "jQuery.fn.after": {
         "type": "function",
@@ -5894,7 +5954,7 @@
         },
         "src": "can/view/modifiers/modifiers.js",
         "line": 183,
-        "id": 186
+        "id": 190
     },
     "jQuery.fn.before": {
         "type": "function",
@@ -5957,7 +6017,7 @@
         },
         "src": "can/view/modifiers/modifiers.js",
         "line": 203,
-        "id": 187
+        "id": 191
     },
     "jQuery.fn.text": {
         "type": "function",
@@ -6020,7 +6080,7 @@
         },
         "src": "can/view/modifiers/modifiers.js",
         "line": 223,
-        "id": 188
+        "id": 192
     },
     "jQuery.fn.html": {
         "type": "function",
@@ -6083,7 +6143,7 @@
         },
         "src": "can/view/modifiers/modifiers.js",
         "line": 245,
-        "id": 189
+        "id": 193
     },
     "jQuery.fn.replaceWith": {
         "type": "function",
@@ -6146,7 +6206,7 @@
         },
         "src": "can/view/modifiers/modifiers.js",
         "line": 265,
-        "id": 190
+        "id": 194
     },
     "can/util/util.md": {
         "type": "script",
@@ -6158,7 +6218,7 @@
         "type": "functions",
         "parent": "can.util",
         "description": "",
-        "id": 191
+        "id": 195
     },
     "can.util": {
         "type": "page",
@@ -6168,7 +6228,7 @@
         "title": "can.util",
         "parent": "canjs",
         "src": "can/util/util.md",
-        "id": 192
+        "id": 196
     },
     "can/util/util.js": {
         "type": "script",
@@ -6205,7 +6265,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 0,
-        "id": 193
+        "id": 197
     },
     "can.trim": {
         "body": "<p><code>can.trim(str)</code> removes leading and trailing whitespace from a string.  It will also\nremove all newlines, spaces including non-breaking, and tabs.  If these occur in the middle\nof the string, then they will be persisted.</p>\n\n<pre><code class=\"lang-javascript\">can.trim(\" foo \") // \"foo\"</code></pre>",
@@ -6238,7 +6298,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 21,
-        "id": 194
+        "id": 198
     },
     "can.makeArray": {
         "body": "<p><code>can.makeArray(arrLike)</code> converts an array-like object into a array.</p>\n\n<pre><code class=\"lang-javascript\">can.makeArray({0 : \"zero\", 1: \"one\", length: 2}); // [\"zero\",\"one\"]</code></pre>",
@@ -6271,7 +6331,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 39,
-        "id": 195
+        "id": 199
     },
     "can.isArray": {
         "body": "<p><code>can.isArray(object)</code> returns if the object is an Array.</p>\n\n<pre><code class=\"lang-javascript\">can.isArray([]);    // true\ncan.isArray(false); // false</code></pre>",
@@ -6304,7 +6364,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 55,
-        "id": 196
+        "id": 200
     },
     "can.each": {
         "body": "<p><code>can.each(collection, callback)</code> iterates through an array or object like\nlike [http://api.jquery.com/jQuery.each/ jQuery.each].</p>\n\n<pre><code class=\"lang-javascript\">can.each([{prop: \"val1\"}, {prop: \"val2\"}],\n function( value, index ) {\n   // function called with\n   // index=0 value={prop: \"val1\"}\n   // index=1 value={prop: \"val2\"}\n }\n);</code></pre>",
@@ -6344,7 +6404,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 72,
-        "id": 197
+        "id": 201
     },
     "can.extend": {
         "body": "<p><code>can.extend(target, objectN)</code> merges the contents of two or more objects together into the first object\nsimilarly to [http://api.jquery.com/jQuery.extend/ jQuery.extend].</p>\n\n<pre><code class=\"lang-javascript\">var first = {},\nsecond = {a: \"b\"},\nthird = {c: \"d\"};\n\ncan.extend(first, second, third); //-> first\n\nfirst  //-> {a: \"b\", c: \"d\"}\nsecond //-> {a: \"b\"}\nthird  //-> {c: \"d\"}</code></pre>",
@@ -6384,7 +6444,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 96,
-        "id": 198
+        "id": 202
     },
     "can.param": {
         "body": "<p>Parameterizes an object into a query string\nlike [http://api.jquery.com/jQuery.param/ jQuery.param].</p>\n\n<pre><code class=\"lang-javascript\">can.param({a: \"b\", c: \"d\"}) //-> \"a=b&c=d\"</code></pre>",
@@ -6417,7 +6477,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 122,
-        "id": 199
+        "id": 203
     },
     "can.isEmptyObject": {
         "body": "<p><code>can.isEmptyObject(obj)</code> returns if an object has no properties similar to\n[http://api.jquery.com/jQuery.isEmptyObject/ jQuery.isEmptyObject].</p>\n\n<pre><code class=\"lang-javascript\">can.isEmptyObject({})      //-> true\ncan.isEmptyObject({a:\"b\"}) //-> false</code></pre>",
@@ -6450,7 +6510,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 139,
-        "id": 200
+        "id": 204
     },
     "can.proxy": {
         "body": "<p><code>can.proxy(fn, context)</code> accepts a function and returns a\nnew one that will always have the context from which it was\ncalled.  This works similar to [http://api.jquery.com/jQuery.proxy/ jQuery.proxy].</p>\n\n<pre><code class=\"lang-javascript\">var func = can.proxy(function(one){\n      return this.a + one\n    }, {a: \"b\"});\nfunc(\"two\") //-> \"btwo\"</code></pre>",
@@ -6504,7 +6564,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 157,
-        "id": 201
+        "id": 205
     },
     "can.isFunction": {
         "body": "<p><code>can.isFunction(object)</code> returns if an object is a function similar to\n[http://api.jquery.com/jQuery.isFunction/ jQuery.isFunction].</p>\n\n<pre><code class=\"lang-javascript\">can.isFunction({})           //-> false\ncan.isFunction(function(){}) //-> true</code></pre>",
@@ -6537,7 +6597,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 179,
-        "id": 202
+        "id": 206
     },
     "can.bind": {
         "body": "<p><code>can.bind(eventName, handler)</code> binds a callback handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n<li>Objects</li>\n<li>Objects with bind / unbind methods</li>\n</ul>\n\n<p>The idea is that bind can be used on anything that produces events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.bind</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.bind</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Binding to an object</strong></p>\n\n<pre><code class=\"lang-javascript\">var obj = {};\ncan.bind.call(obj,\"something\", function(ev, arg1, arg){\n     arg1 // 1\n     arg2 // 2\n   })\ncan.trigger(obj,\"something\",[1,2])</code></pre>\n\n<p><strong>Binding to an HTMLElement</strong></p>\n\n<pre><code class=\"lang-javascript\">var el = document.getElementById('foo')\ncan.bind.call(el, \"click\", function(ev){\n   this // el\n });</code></pre>",
@@ -6591,7 +6651,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 197,
-        "id": 203
+        "id": 207
     },
     "can.unbind": {
         "body": "<p><code>can.unbind(eventName, handler)</code> unbinds a callback handler\nfrom an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n<li>Objects</li>\n<li>Objects with bind / unbind methods</li>\n</ul>\n\n<p>The idea is that unbind can be used on anything that produces events\nand it will figure out the appropriate way to\nunbind to it.  Typically, <code>can.unbind</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.bind</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Binding/unbinding to an object</strong></p>\n\n<pre><code class=\"lang-javascript\">var obj = {},\nhandler = function(ev, arg1, arg){\n       arg1 // 1\n       arg2 // 2\n     };\ncan.bind.call(obj,\"something\", handler)\ncan.trigger(obj,\"something\",[1,2])\ncan.unbind.call(obj,\"something\", handler)</code></pre>\n\n<p><strong>Binding/unbinding to an HTMLElement</strong></p>\n\n<pre><code class=\"lang-javascript\">var el = document.getElementById('foo'),\nhandler = function(ev){\n       this // el\n     };\ncan.bind.call(el, \"click\", handler)\ncan.unbind.call(el, \"click\", handler)</code></pre>",
@@ -6645,7 +6705,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 243,
-        "id": 204
+        "id": 208
     },
     "can.delegate": {
         "body": "<p><code>can.delegate(selector, eventName, handler)</code> binds a delegate handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n</ul>\n\n<p>The idea is that delegate can be used on anything that produces delegate events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.delegate</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.delegate</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Delegate binding to an HTMLElement</strong></p>\n\n<pre><code class=\"lang-javascript\">var el = document.getElementById('foo')\ncan.delegate.call(el, \".selector\", \"click\", function(ev){\n   this // el\n})</code></pre>",
@@ -6706,7 +6766,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 292,
-        "id": 205
+        "id": 209
     },
     "can.undelegate": {
         "body": "",
@@ -6766,7 +6826,7 @@
         ],
         "src": "can/util/util.js",
         "line": 325,
-        "id": 206
+        "id": 210
     },
     "can.trigger": {
         "body": "",
@@ -6813,7 +6873,7 @@
         ],
         "src": "can/util/util.js",
         "line": 359,
-        "id": 207
+        "id": 211
     },
     "can.ajax": {
         "body": "<p><code>can.ajax( settings )</code> is used to make an asynchronous HTTP (Ajax) request\nsimilar to [http://api.jquery.com/jQuery.ajax/ jQuery.ajax].</p>\n\n<pre><code class=\"lang-javascript\">can.ajax({\n  url: 'ajax/farm/animals',\n    success: function(animals) {\n        can.$('.farm').html(animals);\n    }\n});</code></pre>",
@@ -6846,7 +6906,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 371,
-        "id": 208
+        "id": 212
     },
     "can.$": {
         "body": "<p><code>can.$(element)</code> returns the the underlying\nlibrary's NodeList.  It can be passed\na css selector, a HTMLElement or an array of HTMLElements.</p>\n\n<p>The following lists how the NodeList is created by each library:</p>\n\n<ul>\n<li><strong>jQuery</strong> <code>jQuery( HTMLElement )</code></li>\n<li><strong>Zepto</strong> <code>Zepto( HTMLElement )</code></li>\n<li><strong>Dojo</strong> <code>new dojo.NodeList( HTMLElement )</code></li>\n<li><strong>Mootools</strong> <code>$$( HTMLElement )</code></li>\n<li><strong>YUI</strong> <code>Y.all(selector)</code> or <code>Y.NodeList</code></li>\n</ul>",
@@ -6883,7 +6943,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 394,
-        "id": 209
+        "id": 213
     },
     "can.buildFragment": {
         "body": "<p><code>can.buildFragment(html, node)</code> returns a document fragment for the HTML passed.</p>",
@@ -6925,7 +6985,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 417,
-        "id": 210
+        "id": 214
     },
     "can.append": {
         "body": "<p><code>can.append( wrappedNodeList, html )</code> inserts content to the end of each wrapped node list item(s) passed.</p>\n\n<pre><code class=\"lang-javascript\">// Before\n<div id=\"demo\" />\n\ncan.append( can.$('#demo'), 'Demos are fun!' );\n\n// After\n<div id=\"demo\">Demos are fun!</div></code></pre>",
@@ -6958,7 +7018,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 430,
-        "id": 211
+        "id": 215
     },
     "can.remove": {
         "body": "<p><code>can.remove( wrappedNodeList )</code> removes the set of matched element(s) from the DOM.</p>\n\n<pre><code class=\"lang-javascript\"><div id=\"wrap\"/>\ncan.remove(can.$('#wrap')) //-> removes 'wrap'</code></pre>",
@@ -6984,7 +7044,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 452,
-        "id": 212
+        "id": 216
     },
     "can.data": {
         "body": "<p><code>can.data</code> enables the associatation of arbitrary data with DOM nodes and JavaScript objects.</p>\n\n<h3>Setting Data</h3>\n\n<p>can.data( can.$('#elm'), key, value )</p>\n\n<ul>\n<li><strong>wrappedNodeList</strong> node list to associate data to.</li>\n<li><strong>key</strong> string name of the association.</li>\n<li><strong>value</strong> tdata value; it can be any Javascript type including Array or Object.</li>\n</ul>\n\n<h3>Accessing Data</h3>\n\n<p>can.data( can.$('#elm'), key )</p>\n\n<ul>\n<li><strong>wrappedNodeList</strong> node list to retrieve association data from.</li>\n<li><strong>key</strong> string name of the association.</li>\n</ul>\n\n<p>Due to the way browsers security restrictions with plugins and external code,\nthe <em>data</em> method cannot be used on <code>object</code> (unless it's a Flash plugin), <code>applet</code> or <code>embed</code> elements.</p>",
@@ -7050,7 +7110,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 468,
-        "id": 213
+        "id": 217
     },
     "can.addClass": {
         "body": "<p><code>can.addClass( nodelist, className )</code> adds the specified class(es) to\nnodelist's HTMLElements.  It does NOT replace any existing class(es)\nalready defined.</p>\n\n<pre><code class=\"lang-javascript\">// Before\n<div id=\"foo\" class=\"monkey\" />\n\ncan.addClass(can.$(\"#foo\"),\"bar\")\n\n// After\n<div id=\"foo\" class=\"monkey bar\" /></code></pre>\n\n<p>You can also pass multiple class(es) and it will add them to the existing\nset also.</p>\n\n<pre><code class=\"lang-javascript\">// Before\n<div id=\"foo\" class=\"monkey\" />\n\ncan.addClass(can.$(\"#foo\"),\"bar man\")\n\n// After\n<div id=\"foo\" class=\"monkey bar man\" /></code></pre>\n\n<p>This works similarly to [http://api.jquery.com/addClass/ jQuery.fn.addClass].</p>",
@@ -7083,7 +7143,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 504,
-        "id": 214
+        "id": 218
     },
     "can.when": {
         "body": "<p><code>can.when(deferred)</code> provides the ability to execute callback function(s)\ntypically based on a Deferred or AJAX object.</p>\n\n<pre><code class=\"lang-javascript\">can.when( can.ajax('api/farm/animals') ).then(function(animals){\n     alert(animals); //-> alerts the ajax response\n});</code></pre>\n\n<p>You can also use this for regular JavaScript objects.</p>\n\n<pre><code class=\"lang-javascript\">$.when( { animals: [ 'cat' ] } ).done(function(animals){\n    alert(animals[0]); //-> alerts 'cat'\n});</code></pre>",
@@ -7118,7 +7178,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 543,
-        "id": 215
+        "id": 219
     },
     "can.Deferred": {
         "body": "",
@@ -7142,7 +7202,7 @@
         ],
         "src": "can/util/util.js",
         "line": 571,
-        "id": 216
+        "id": 220
     },
     "can.Deferred.prototype": {
         "body": "",
@@ -7152,7 +7212,7 @@
         "parent": "can.Deferred",
         "src": "can/util/util.js",
         "line": 582,
-        "id": 217
+        "id": 221
     },
     "can.Deferred.prototype.pipe": {
         "body": "<p><code>deferred.pipe(doneCallback, failCallback)</code> is a utility to filter Deferred(s).</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred(),\nfiltered = def.pipe(function(val) {\n        return val + \" is awesome!\";\n    });\n\ndef.resolve('Can');\n\nfiltered.done(function(value) {\n    alert(value); // Alerts: 'Can is awesome!'\n});</code></pre>",
@@ -7198,7 +7258,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 586,
-        "id": 218
+        "id": 222
     },
     "can.Deferred.prototype.resolveWith": {
         "body": "<p><code>deferred.resolveWith(context, arguments)</code> resolves a Deferred and calls the <code>doneCallbacks</code> with the given arguments.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.resolveWith(this, { animals: [ 'cows', 'monkey', 'panda' ] })</code></pre>",
@@ -7232,7 +7292,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 610,
-        "id": 219
+        "id": 223
     },
     "can.Deferred.prototype.rejectWith": {
         "body": "<p><code>deferred.rejectWith(context, arguments)</code> rejects a Deferred and calls the <code>failCallbacks</code> with the given arguments.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.rejectWith(this, { error: \"Animals are gone.\" })</code></pre>",
@@ -7266,7 +7326,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 627,
-        "id": 220
+        "id": 224
     },
     "can.Deferred.prototype.done": {
         "body": "<p><code>deferred.done(doneCallback)</code> adds handler(s) to be called when the Deferred object is resolved.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.done(function(){\n    //- Deferred is done.\n});</code></pre>",
@@ -7299,7 +7359,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 644,
-        "id": 221
+        "id": 225
     },
     "can.Deferred.prototype.always": {
         "body": "<p><code>deferred.always( alwaysCallbacks )</code> adds handler(s) to be called when the Deferred object is either resolved or rejected.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.always( function(){\n    //- Called whether the handler fails or is success.\n});</code></pre>",
@@ -7332,7 +7392,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 679,
-        "id": 222
+        "id": 226
     },
     "can.Deferred.prototype.then": {
         "body": "<p><code>deferred.then( doneCallback, failCallback )</code> adds handler(s) to be called when the Deferred object to be called after its resolved.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.then(function(){\n    //- Called when the deferred is resolved.\n}, function(){\n    //- Called when the deferred fails.\n})</code></pre>",
@@ -7380,7 +7440,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 697,
-        "id": 223
+        "id": 227
     },
     "can.Deferred.prototype.isResolved": {
         "body": "<p><code>deferred.isResolved()</code> returns whether a Deferred object has been resolved.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\nvar resolved = def.isResolved();</code></pre>",
@@ -7405,7 +7465,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 718,
-        "id": 224
+        "id": 228
     },
     "can.Deferred.prototype.reject": {
         "body": "<p><code>deferred.reject( args )</code> rejects the Deferred object and calls the fail callbacks with the given arguments.</p>\n\n<pre><code class=\"lang-javascript\">var def = can.Deferred();\ndef.reject({ error: 'Thats not an animal.' })</code></pre>",
@@ -7432,7 +7492,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 748,
-        "id": 225
+        "id": 229
     },
     "can.Deferred.prototype.resolve": {
         "type": "function",
@@ -7458,7 +7518,7 @@
         "comment": " ",
         "src": "can/util/util.js",
         "line": 764,
-        "id": 226
+        "id": 230
     },
     "can/util/fixture/fixture.md": {
         "type": "script",
@@ -7470,7 +7530,7 @@
         "type": "plugins",
         "parent": "can.fixture",
         "description": "",
-        "id": 227
+        "id": 231
     },
     "can.fixture": {
         "type": "page",
@@ -7481,7 +7541,7 @@
         "parent": "canjs",
         "test": "can/util/fixture/qunit.html",
         "src": "can/util/fixture/fixture.md",
-        "id": 228
+        "id": 232
     },
     "can/util/fixture/fixture.js": {
         "type": "script",
@@ -7495,7 +7555,7 @@
         "description": "<p>Check for id in params(if query string)\nIf this is just a string representation of an id, parse\nif(id === undefined &amp;&amp; typeof settings.data === \"string\") {\nid = settings.data;\n}\n//</p>",
         "src": "can/util/fixture/fixture.js",
         "line": 249,
-        "id": 229
+        "id": 233
     },
     "can.fixture.store": {
         "name": "can.fixture.store",
@@ -7567,7 +7627,7 @@
         "comment": " ",
         "src": "can/util/fixture/fixture.js",
         "line": 353,
-        "id": 230
+        "id": 234
     },
     "can.fixture.store.findAll": {
         "type": "function",
@@ -7636,7 +7696,7 @@
         ],
         "src": "can/util/fixture/fixture.js",
         "line": 501,
-        "id": 231
+        "id": 235
     },
     "can.fixture.store.findOne": {
         "type": "function",
@@ -7676,7 +7736,7 @@
         "comment": " ",
         "src": "can/util/fixture/fixture.js",
         "line": 625,
-        "id": 232
+        "id": 236
     },
     "can.fixture.store.update": {
         "type": "function",
@@ -7716,7 +7776,7 @@
         "comment": " ",
         "src": "can/util/fixture/fixture.js",
         "line": 648,
-        "id": 233
+        "id": 237
     },
     "can.fixture.store.destroy": {
         "type": "function",
@@ -7756,7 +7816,7 @@
         "comment": " ",
         "src": "can/util/fixture/fixture.js",
         "line": 678,
-        "id": 234
+        "id": 238
     },
     "can.fixture.store.create": {
         "type": "function",
@@ -7796,7 +7856,7 @@
         "comment": " ",
         "src": "can/util/fixture/fixture.js",
         "line": 709,
-        "id": 235
+        "id": 239
     },
     "can.fixture.store.find": {
         "type": "function",
@@ -7822,7 +7882,7 @@
         "comment": " ",
         "src": "can/util/fixture/fixture.js",
         "line": 765,
-        "id": 236
+        "id": 240
     },
     "can.fixture.store.reset": {
         "name": "can.fixture.store.reset",
@@ -7840,7 +7900,7 @@
         "comment": " ",
         "src": "can/util/fixture/fixture.js",
         "line": 779,
-        "id": 237
+        "id": 241
     },
     "can.fixture.rand": {
         "type": "function",
@@ -7917,7 +7977,7 @@
         "comment": " ",
         "src": "can/util/fixture/fixture.js",
         "line": 807,
-        "id": 238
+        "id": 242
     },
     "xhr": {
         "type": "function",
@@ -7945,7 +8005,7 @@
         },
         "src": "can/util/fixture/fixture.js",
         "line": 876,
-        "id": 239
+        "id": 243
     },
     "can.fixture.on": {
         "name": "can.fixture.on",
@@ -7960,7 +8020,7 @@
         "title": "on",
         "src": "can/util/fixture/fixture.js",
         "line": 927,
-        "id": 240
+        "id": 244
     },
     "can.fixture.delay": {
         "name": "can.fixture.delay",
@@ -7975,7 +8035,7 @@
         "title": "delay",
         "src": "can/util/fixture/fixture.js",
         "line": 940,
-        "id": 241
+        "id": 245
     },
     "can.fixture.rootUrl": {
         "name": "can.fixture.rootUrl",
@@ -7990,6 +8050,6 @@
         "title": "rootUrl",
         "src": "can/util/fixture/fixture.js",
         "line": 956,
-        "id": 242
+        "id": 246
     }
 }
