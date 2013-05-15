@@ -1478,6 +1478,153 @@
 			can.fixture
 		</a>
 		
+		<ul class="search-container">
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.delay.html" data-search="delay">
+	delay
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.on.html" data-search="on">
+	on
+</a>
+</li>
+
+
+
+			
+		
+			
+				<li class="heading search-container">
+					<span>plugins</span>
+					
+<ul>
+	
+	
+	<li class="search-container parent expanded">
+			<a class="function" href="can.fixture.store.html" data-search="store">
+				store
+			</a>
+			
+				
+<ul>
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.create.html" data-search="can.fixture.store.create">
+				can.fixture.store.create
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.destroy.html" data-search="can.fixture.store.destroy">
+				can.fixture.store.destroy
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.find.html" data-search="can.fixture.store.find">
+				can.fixture.store.find
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findAll.html" data-search="can.fixture.store.findAll">
+				can.fixture.store.findAll
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findOne.html" data-search="can.fixture.store.findOne">
+				can.fixture.store.findOne
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.reset.html" data-search="can.fixture.store.reset">
+				can.fixture.store.reset
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.update.html" data-search="can.fixture.store.update">
+				can.fixture.store.update
+			</a>
+			
+	</li>
+	
+	
+</ul>
+
+
+			
+	</li>
+	
+	
+</ul>
+
+
+				</li>
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rand.html" data-search="rand">
+	rand
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rootUrl.html" data-search="rootUrl">
+	rootUrl
+</a>
+</li>
+
+
+
+			
+		
+		</ul>
+	
 	</li>
 	
 	<li class="search-container active">
@@ -2121,6 +2268,52 @@ can.route.url( { type: "video", id: 5, isNew: false } )
 	</article>
 </div>
 
+<script type="text/javascript">
+	var docData = {
+    "type": "function",
+    "name": "can.route.url",
+    "parent": "can.route.static",
+    "body": "<p>Similar to [can.route.link], but instead of creating an anchor tag, <code>can.route.url</code> creates \nonly the URL based on the route options passed into it.</p>\n\n<pre><code>can.route.url( { type: \"videos\", id: 5 } ) \n     // -&gt; \"#!type=videos&amp;id=5\"\n</code></pre>\n\n<p>If a route matching the provided data is found the URL is built from the data. Any remaining\ndata is added at the end of the URL as &amp; separated key/value parameters.</p>\n\n<pre><code>can.route(\":type/:id\")\n\ncan.route.url( { type: \"videos\", id: 5 } ) // -&gt; \"#!videos/5\"\ncan.route.url( { type: \"video\", id: 5, isNew: false } ) \n     // -&gt; \"#!video/5&amp;isNew=false\"\n</code></pre>",
+    "description": "",
+    "title": "url",
+    "signatures": [{
+            "code": "url(options[, merge])",
+            "description": "",
+            "params": [{
+                    "types": [{
+                            "type": "Object"
+                        }
+                    ],
+                    "name": "options",
+                    "description": "<p>The data to populate the route with.</p>"
+                }, {
+                    "types": [{
+                            "type": "Boolean"
+                        }
+                    ],
+                    "optional": true,
+                    "name": "merge",
+                    "description": "<p>Whether the given options should be merged into the current state of the route.</p>"
+                }
+            ],
+            "returns": {
+                "types": [{
+                        "type": "String"
+                    }
+                ],
+                "description": "<p>The route URL and query string.</p>"
+            }
+        }
+    ],
+    "comment": " ",
+    "src": "can/route/route.js",
+    "line": 315,
+    "id": 132
+};
+
+	console.log(docData);
+</script>
+
 
 
 	<footer>
@@ -2137,7 +2330,7 @@ can.route.url( { type: "video", id: 5, isNew: false } )
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.min.js"></script>
+	<script type="text/javascript" src="../resources/production.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

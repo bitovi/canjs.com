@@ -1517,11 +1517,108 @@
         "id": 226,
         "title": "resolve"
     },
+    "can.fixture.plugins": {
+        "name": "can.fixture.plugins",
+        "type": "plugins",
+        "id": 227,
+        "title": "plugins",
+        "parent": "can.fixture"
+    },
     "can.fixture": {
         "name": "can.fixture",
         "type": "page",
-        "id": 227,
+        "id": 228,
         "title": "can.fixture",
         "parent": "canjs"
+    },
+    "id": {
+        "name": "id",
+        "type": "property",
+        "id": 229,
+        "parent": "can/util/fixture/fixture.js"
+    },
+    "can.fixture.store": {
+        "name": "can.fixture.store",
+        "type": "function",
+        "id": 230,
+        "title": "store",
+        "parent": "can.fixture.plugins"
+    },
+    "can.fixture.store.findAll": {
+        "name": "can.fixture.store.findAll",
+        "type": "function",
+        "id": 231,
+        "parent": "can.fixture.store"
+    },
+    "can.fixture.store.findOne": {
+        "name": "can.fixture.store.findOne",
+        "type": "function",
+        "id": 232,
+        "parent": "can.fixture.store"
+    },
+    "can.fixture.store.update": {
+        "name": "can.fixture.store.update",
+        "type": "function",
+        "id": 233,
+        "parent": "can.fixture.store"
+    },
+    "can.fixture.store.destroy": {
+        "name": "can.fixture.store.destroy",
+        "type": "function",
+        "id": 234,
+        "parent": "can.fixture.store"
+    },
+    "can.fixture.store.create": {
+        "name": "can.fixture.store.create",
+        "type": "function",
+        "id": 235,
+        "parent": "can.fixture.store"
+    },
+    "can.fixture.store.find": {
+        "name": "can.fixture.store.find",
+        "type": "function",
+        "id": 236,
+        "parent": "can.fixture.store"
+    },
+    "can.fixture.store.reset": {
+        "name": "can.fixture.store.reset",
+        "type": "function",
+        "id": 237,
+        "parent": "can.fixture.store"
+    },
+    "can.fixture.rand": {
+        "name": "can.fixture.rand",
+        "type": "function",
+        "id": 238,
+        "title": "rand",
+        "parent": "can.fixture"
+    },
+    "xhr": {
+        "name": "xhr",
+        "type": "function",
+        "id": 239,
+        "hide": true,
+        "parent": "can/util/fixture/fixture.js"
+    },
+    "can.fixture.on": {
+        "name": "can.fixture.on",
+        "type": "property",
+        "id": 240,
+        "title": "on",
+        "parent": "can.fixture"
+    },
+    "can.fixture.delay": {
+        "name": "can.fixture.delay",
+        "type": "property",
+        "id": 241,
+        "title": "delay",
+        "parent": "can.fixture"
+    },
+    "can.fixture.rootUrl": {
+        "name": "can.fixture.rootUrl",
+        "type": "property",
+        "id": 242,
+        "title": "rootUrl",
+        "parent": "can.fixture"
     }
 }

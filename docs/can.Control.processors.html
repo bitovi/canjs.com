@@ -1478,6 +1478,153 @@
 			can.fixture
 		</a>
 		
+		<ul class="search-container">
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.delay.html" data-search="delay">
+	delay
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.on.html" data-search="on">
+	on
+</a>
+</li>
+
+
+
+			
+		
+			
+				<li class="heading search-container">
+					<span>plugins</span>
+					
+<ul>
+	
+	
+	<li class="search-container parent expanded">
+			<a class="function" href="can.fixture.store.html" data-search="store">
+				store
+			</a>
+			
+				
+<ul>
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.create.html" data-search="can.fixture.store.create">
+				can.fixture.store.create
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.destroy.html" data-search="can.fixture.store.destroy">
+				can.fixture.store.destroy
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.find.html" data-search="can.fixture.store.find">
+				can.fixture.store.find
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findAll.html" data-search="can.fixture.store.findAll">
+				can.fixture.store.findAll
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findOne.html" data-search="can.fixture.store.findOne">
+				can.fixture.store.findOne
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.reset.html" data-search="can.fixture.store.reset">
+				can.fixture.store.reset
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.update.html" data-search="can.fixture.store.update">
+				can.fixture.store.update
+			</a>
+			
+	</li>
+	
+	
+</ul>
+
+
+			
+	</li>
+	
+	
+</ul>
+
+
+				</li>
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rand.html" data-search="rand">
+	rand
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rootUrl.html" data-search="rootUrl">
+	rootUrl
+</a>
+</li>
+
+
+
+			
+		
+		</ul>
+	
 	</li>
 	
 	<li class="search-container">
@@ -2158,6 +2305,23 @@ definition.</li>
 	</article>
 </div>
 
+<script type="text/javascript">
+	var docData = {
+    "name": "can.Control.processors",
+    "type": "property",
+    "parent": "can.Control.static",
+    "body": "<p><code>processors</code> is an object that allows you to add new events to bind\nto on a control, or to change how existent events are bound. Each\nkey-value pair of <code>processors</code> is a specification that pertains to\nan event where the key is the name of the event, and the value is\na function that processes calls to bind to the event.</p>\n\n<p>The processor function takes five arguments:</p>\n\n<ul>\n<li><em>el</em>: The Control's element.</li>\n<li><em>event</em>: The event type.</li>\n<li><em>selector</em>: The selector preceding the event in the binding used on the Control.</li>\n<li><em>callback</em>: The callback function being bound.</li>\n<li><em>control</em>: The Control the event is bound on.</li>\n</ul>\n\n<p>Inside your processor function, you should bind <em>callback</em> to the event, and\nreturn a function for can.Control to call when <em>callback</em> needs to be unbound.\n(If <em>selector</em> is defined, you will likely want to use some form of delegation\nto bind the event.)</p>\n\n<p>Here is a Control with a custom event processor set and two callbacks bound\nto that event:</p>\n\n<pre><code class=\"lang-javascript\">can.Control.processors.birthday = function(el, ev, selector, callback, control) {\n  if(selector) {\n    myFramework.delegate(ev, el, selector, callback);\n    return function() { myFramework.undelegate(ev, el, selector, callback); };\n  } else {\n    myFramework.bind(ev, el, callback);\n    return function() { myFramework.unbind(ev, el, callback); };  \n  }\n};\n\ncan.Control(\"EventTarget\", { }, {\n  'birthday': function(el, ev) {\n    // do something appropriate for the occasion\n  },\n  '.grandchild birthday': function(el, ev) {\n    // do something appropriate for the occasion\n  }\n});\n\nvar target = new EventTarget('#person');</code></pre>\n\n<p>When <code>target</code> is initialized, can.Control will call <code>can.Control.processors.birthday</code>\ntwice (because there are two event hookups for the <em>birthday</em> event). The first\ntime it's called, the arguments will be:</p>\n\n<ul>\n<li><em>el</em>: A NodeList that wraps the element with id 'person'.</li>\n<li><em>ev</em>: <code>'birthday'</code></li>\n<li><em>selector</em>: <code>''</code></li>\n<li><em>callback</em>: The function assigned to <code>' birthday'</code> in the prototype section of <code>EventTarget</code>'s\ndefinition.</li>\n<li><em>control</em>: <code>target</code> itself.</li>\n</ul>\n\n<p>The second time, the arguments are slightly different:</p>\n\n<ul>\n<li><em>el</em>: A NodeList that wraps the element with id 'person'.</li>\n<li><em>ev</em>: <code>'birthday'</code></li>\n<li><em>selector</em>: <code>'.grandchild'</code></li>\n<li><em>callback</em>: The function assigned to <code>'.grandchild birthday'</code> in the prototype section of <code>EventTarget</code>'s\ndefinition.</li>\n<li><em>control</em>: <code>target</code> itself.</li>\n</ul>\n\n<p>can.Control already has processors for these events:</p>\n\n<ul>\n<li>change </li>\n<li>click </li>\n<li>contextmenu </li>\n<li>dblclick </li>\n<li>focusin</li>\n<li>focusout</li>\n<li>keydown </li>\n<li>keyup </li>\n<li>keypress </li>\n<li>mousedown </li>\n<li>mouseenter</li>\n<li>mouseleave</li>\n<li>mousemove </li>\n<li>mouseout </li>\n<li>mouseover </li>\n<li>mouseup </li>\n<li>reset </li>\n<li>resize </li>\n<li>scroll </li>\n<li>select </li>\n<li>submit  </li>\n</ul>",
+    "description": "<p>A collection of hookups for custom events on Controls. </p>",
+    "title": "processors",
+    "comment": " ",
+    "src": "can/control/control.js",
+    "line": 165,
+    "id": 109
+};
+
+	console.log(docData);
+</script>
+
 
 
 	<footer>
@@ -2174,7 +2338,7 @@ definition.</li>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.min.js"></script>
+	<script type="text/javascript" src="../resources/production.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

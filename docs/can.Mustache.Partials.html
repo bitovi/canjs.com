@@ -1478,6 +1478,153 @@
 			can.fixture
 		</a>
 		
+		<ul class="search-container">
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.delay.html" data-search="delay">
+	delay
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.on.html" data-search="on">
+	on
+</a>
+</li>
+
+
+
+			
+		
+			
+				<li class="heading search-container">
+					<span>plugins</span>
+					
+<ul>
+	
+	
+	<li class="search-container parent expanded">
+			<a class="function" href="can.fixture.store.html" data-search="store">
+				store
+			</a>
+			
+				
+<ul>
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.create.html" data-search="can.fixture.store.create">
+				can.fixture.store.create
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.destroy.html" data-search="can.fixture.store.destroy">
+				can.fixture.store.destroy
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.find.html" data-search="can.fixture.store.find">
+				can.fixture.store.find
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findAll.html" data-search="can.fixture.store.findAll">
+				can.fixture.store.findAll
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findOne.html" data-search="can.fixture.store.findOne">
+				can.fixture.store.findOne
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.reset.html" data-search="can.fixture.store.reset">
+				can.fixture.store.reset
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.update.html" data-search="can.fixture.store.update">
+				can.fixture.store.update
+			</a>
+			
+	</li>
+	
+	
+</ul>
+
+
+			
+	</li>
+	
+	
+</ul>
+
+
+				</li>
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rand.html" data-search="rand">
+	rand
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rootUrl.html" data-search="rootUrl">
+	rootUrl
+</a>
+</li>
+
+
+
+			
+		
+		</ul>
+	
 	</li>
 	
 	<li class="search-container">
@@ -2153,6 +2300,23 @@ can.$(document.body).append(template);</code></pre>
 	</article>
 </div>
 
+<script type="text/javascript">
+	var docData = {
+    "type": "page",
+    "name": "can.Mustache.Partials",
+    "body": "<p>Partials are templates embedded in other templates.  Partials begin with a greater than sign, like <code>{{&gt;my_partial}}</code>.  Partials inherit the calling context.  </p>\n\n<p>Partials render at runtime, so recursive partials are possible but make sure you avoid infinite loops.</p>\n\n<p>For example, this template and partial:</p>\n\n<p><strong>base.mustache</strong></p>\n\n<pre><code class=\"lang-javascript\">&lt;h2>Names&lt;/h2>\n{{#names}}\n    {{>user.mustache}}\n{{/names}}</code></pre>\n\n<p><strong>user.mustache</strong></p>\n\n<pre><code class=\"lang-javascript\">&lt;strong>{{name}}&lt;/strong></code></pre>\n\n<p>The resulting expanded template at render time would look like:</p>\n\n<pre><code class=\"lang-javascript\">&lt;h2>Names&lt;/h2>\n{{#names}}\n    &lt;strong>{{name}}&lt;/strong>\n{{/names}}</code></pre>\n\n<h2>Acquiring Partials</h2>\n\n<p><strong>Referencing Files</strong></p>\n\n<p>Partials can reference a file path and file name in the template.</p>\n\n<p>The following template uses a relative path (relative to the current page):</p>\n\n<pre><code class=\"lang-javascript\">&lt;script id=\"template\" type=\"text/mustache\">\n    {{>views/test_template.mustache}}\n&lt;/script></code></pre>\n\n<p>The following template uses an absolute path (rooted to steal's root directory):</p>\n\n<pre><code class=\"lang-javascript\">&lt;script id=\"template\" type=\"text/mustache\">\n    {{>//myapp/accordion/views/test_template.mustache}}\n&lt;/script></code></pre>\n\n<p><strong>Referencing by ID</strong></p>\n\n<p>Partials can reference templates that exist in script tags on the page by \nreferencing the <code>id</code> of the partial in the template.  For example:</p>\n\n<pre><code class=\"lang-javascript\">&lt;script id=\"mytemplate\" type=\"text/mustache\">\n    {{>mypartial}}\n&lt;/script></code></pre>\n\n<pre><code class=\"lang-javascript\">&lt;script id=\"mypartial\" type=\"text/mustache\">\n       I am a partial.\n&lt;/script></code></pre>\n\n<pre><code class=\"lang-javascript\">var template = can.view(\"#mytemplate\", {});</code></pre>\n\n<p><strong>Manually Registering</strong></p>\n\n<p>Partials can be manually registered by calling <code>can.view.registerView</code> \nand passing an identifier and content.  For example:</p>\n\n<pre><code class=\"lang-javascript\">can.view.registerView('myTemplate', \"My body lies over {{.}}\")</code></pre>\n\n<p>in the template, you reference the template by the identifer you registered:</p>\n\n<pre><code class=\"lang-javascript\">{{>myTemplate}}</code></pre>\n\n<p>resulting in the template rendering with the current context applied to the partial.</p>\n\n<h2>Passing Partials in Options</h2>\n\n<p>Partials can resolve the context object that contain partial identifiers in them.\nFor example:</p>\n\n<pre><code class=\"lang-javascript\">var template = can.view(\"#template\", { \n    items: []\n    itemsTemplate: \"test_template.mustache\" \n});\n\ncan.$(document.body).append(template);</code></pre>\n\n<p>then reference the partial in the template just like:</p>\n\n<pre><code class=\"lang-javascript\">&lt;ul>\n{{#items}}\n    &lt;li>{{>itemsTemplate}}&lt;/li>\n{{/items}}\n&lt;/ul></code></pre>",
+    "description": "",
+    "title": "Partials",
+    "parent": "can.Mustache.pages",
+    "order": 2,
+    "comment": " ",
+    "src": "can/view/mustache/doc/partials.md",
+    "id": 164
+};
+
+	console.log(docData);
+</script>
+
 
 
 	<footer>
@@ -2169,7 +2333,7 @@ can.$(document.body).append(template);</code></pre>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.min.js"></script>
+	<script type="text/javascript" src="../resources/production.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

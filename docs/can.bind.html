@@ -1478,6 +1478,153 @@
 			can.fixture
 		</a>
 		
+		<ul class="search-container">
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.delay.html" data-search="delay">
+	delay
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.on.html" data-search="on">
+	on
+</a>
+</li>
+
+
+
+			
+		
+			
+				<li class="heading search-container">
+					<span>plugins</span>
+					
+<ul>
+	
+	
+	<li class="search-container parent expanded">
+			<a class="function" href="can.fixture.store.html" data-search="store">
+				store
+			</a>
+			
+				
+<ul>
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.create.html" data-search="can.fixture.store.create">
+				can.fixture.store.create
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.destroy.html" data-search="can.fixture.store.destroy">
+				can.fixture.store.destroy
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.find.html" data-search="can.fixture.store.find">
+				can.fixture.store.find
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findAll.html" data-search="can.fixture.store.findAll">
+				can.fixture.store.findAll
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findOne.html" data-search="can.fixture.store.findOne">
+				can.fixture.store.findOne
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.reset.html" data-search="can.fixture.store.reset">
+				can.fixture.store.reset
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.update.html" data-search="can.fixture.store.update">
+				can.fixture.store.update
+			</a>
+			
+	</li>
+	
+	
+</ul>
+
+
+			
+	</li>
+	
+	
+</ul>
+
+
+				</li>
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rand.html" data-search="rand">
+	rand
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rootUrl.html" data-search="rootUrl">
+	rootUrl
+</a>
+</li>
+
+
+
+			
+		
+		</ul>
+	
 	</li>
 	
 	<li class="search-container">
@@ -2142,6 +2289,65 @@ can.bind.call(el, "click", function(ev){
 	</article>
 </div>
 
+<script type="text/javascript">
+	var docData = {
+    "body": "<p><code>can.bind(eventName, handler)</code> binds a callback handler\non an object for a given event.  It works on:</p>\n\n<ul>\n<li>HTML elements and the window</li>\n<li>Objects</li>\n<li>Objects with bind / unbind methods</li>\n</ul>\n\n<p>The idea is that bind can be used on anything that produces events\nand it will figure out the appropriate way to\nbind to it.  Typically, <code>can.bind</code> is only used internally to\nCanJS; however, if you are making libraries or extensions, use\n<code>can.bind</code> to listen to events independent of the underlying library.</p>\n\n<p><strong>Binding to an object</strong></p>\n\n<pre><code class=\"lang-javascript\">var obj = {};\ncan.bind.call(obj,\"something\", function(ev, arg1, arg){\n     arg1 // 1\n     arg2 // 2\n   })\ncan.trigger(obj,\"something\",[1,2])</code></pre>\n\n<p><strong>Binding to an HTMLElement</strong></p>\n\n<pre><code class=\"lang-javascript\">var el = document.getElementById('foo')\ncan.bind.call(el, \"click\", function(ev){\n   this // el\n });</code></pre>",
+    "description": "<p>Listen for events on an object. </p>",
+    "title": "",
+    "name": "can.bind",
+    "type": "function",
+    "parent": "can.util.functions",
+    "signatures": [{
+            "code": "can.bind.call(target, eventName, handler)",
+            "description": "",
+            "params": [{
+                    "types": [{
+                            "type": "Object"
+                        }
+                    ],
+                    "name": "target",
+                    "description": "<p>The object that emits events.</p>"
+                }, {
+                    "types": [{
+                            "type": "String"
+                        }
+                    ],
+                    "name": "eventName",
+                    "description": "<p>The name of the event to listen for.</p>"
+                }, {
+                    "types": [{
+                            "type": "function",
+                            "returns": {
+                                "types": [{
+                                        "type": "undefined"
+                                    }
+                                ]
+                            },
+                            "params": []
+                        }
+                    ],
+                    "name": "handler",
+                    "description": "<p>The function to execute when the event occurs.</p>"
+                }
+            ],
+            "returns": {
+                "types": [{
+                        "type": "Object"
+                    }
+                ],
+                "description": "<p>The <strong>target</strong>.</p>"
+            }
+        }
+    ],
+    "comment": " ",
+    "src": "can/util/util.js",
+    "line": 197,
+    "id": 203
+};
+
+	console.log(docData);
+</script>
+
 
 
 	<footer>
@@ -2158,7 +2364,7 @@ can.bind.call(el, "click", function(ev){
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.min.js"></script>
+	<script type="text/javascript" src="../resources/production.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

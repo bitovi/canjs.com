@@ -1478,6 +1478,153 @@
 			can.fixture
 		</a>
 		
+		<ul class="search-container">
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.delay.html" data-search="delay">
+	delay
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.on.html" data-search="on">
+	on
+</a>
+</li>
+
+
+
+			
+		
+			
+				<li class="heading search-container">
+					<span>plugins</span>
+					
+<ul>
+	
+	
+	<li class="search-container parent expanded">
+			<a class="function" href="can.fixture.store.html" data-search="store">
+				store
+			</a>
+			
+				
+<ul>
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.create.html" data-search="can.fixture.store.create">
+				can.fixture.store.create
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.destroy.html" data-search="can.fixture.store.destroy">
+				can.fixture.store.destroy
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.find.html" data-search="can.fixture.store.find">
+				can.fixture.store.find
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findAll.html" data-search="can.fixture.store.findAll">
+				can.fixture.store.findAll
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findOne.html" data-search="can.fixture.store.findOne">
+				can.fixture.store.findOne
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.reset.html" data-search="can.fixture.store.reset">
+				can.fixture.store.reset
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.update.html" data-search="can.fixture.store.update">
+				can.fixture.store.update
+			</a>
+			
+	</li>
+	
+	
+</ul>
+
+
+			
+	</li>
+	
+	
+</ul>
+
+
+				</li>
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rand.html" data-search="rand">
+	rand
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rootUrl.html" data-search="rootUrl">
+	rootUrl
+</a>
+</li>
+
+
+
+			
+		
+		</ul>
+	
 	</li>
 	
 	<li class="search-container">
@@ -2099,6 +2246,23 @@ new Tabs( $( "#tabs2" ), { activeClass : 'active' } ); // adds 'active'
 	</article>
 </div>
 
+<script type="text/javascript">
+	var docData = {
+    "name": "can.Control.prototype.options",
+    "type": "property",
+    "parent": "can.Control.prototype",
+    "body": "<p>Options are used to configure a control.  They are\nthe 2nd argument\npassed to a control (or the first argument passed to the \n[can.Control.plugin control]'s jQuery plugin).</p>\n\n<p>For example:</p>\n\n<pre><code>can.Control('Hello')\n\nvar h1 = new Hello( $( '#content1' ), { message: 'World' } );\nequal( h1.options.message , \"World\" );\n\nvar h2 = $( '#content2' ).hello({ message: 'There' })\n                         .control();\nequal( h2.options.message , \"There\" );\n</code></pre>\n\n<p>Options are merged with [can.Control.static.defaults defaults] in\n[can.Control.prototype.setup setup].</p>\n\n<p>For example:</p>\n\n<pre><code>Tabs = can.Control({\n   defaults: {\n     activeClass: \"ui-active-state\"\n   }\n}, {\n   init: function(){\n     this.element.addClass( this.options.activeClass );\n   }\n});\n\nnew Tabs( $( \"#tabs1\" ) ); // adds 'ui-active-state'\nnew Tabs( $( \"#tabs2\" ), { activeClass : 'active' } ); // adds 'active'\n</code></pre>",
+    "description": "",
+    "title": "options",
+    "comment": " ",
+    "src": "can/control/control.js",
+    "line": 371,
+    "id": 114
+};
+
+	console.log(docData);
+</script>
+
 
 
 	<footer>
@@ -2115,7 +2279,7 @@ new Tabs( $( "#tabs2" ), { activeClass : 'active' } ); // adds 'active'
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.min.js"></script>
+	<script type="text/javascript" src="../resources/production.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

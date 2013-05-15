@@ -1478,6 +1478,153 @@
 			can.fixture
 		</a>
 		
+		<ul class="search-container">
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.delay.html" data-search="delay">
+	delay
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.on.html" data-search="on">
+	on
+</a>
+</li>
+
+
+
+			
+		
+			
+				<li class="heading search-container">
+					<span>plugins</span>
+					
+<ul>
+	
+	
+	<li class="search-container parent expanded">
+			<a class="function" href="can.fixture.store.html" data-search="store">
+				store
+			</a>
+			
+				
+<ul>
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.create.html" data-search="can.fixture.store.create">
+				can.fixture.store.create
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.destroy.html" data-search="can.fixture.store.destroy">
+				can.fixture.store.destroy
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.find.html" data-search="can.fixture.store.find">
+				can.fixture.store.find
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findAll.html" data-search="can.fixture.store.findAll">
+				can.fixture.store.findAll
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findOne.html" data-search="can.fixture.store.findOne">
+				can.fixture.store.findOne
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.reset.html" data-search="can.fixture.store.reset">
+				can.fixture.store.reset
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.update.html" data-search="can.fixture.store.update">
+				can.fixture.store.update
+			</a>
+			
+	</li>
+	
+	
+</ul>
+
+
+			
+	</li>
+	
+	
+</ul>
+
+
+				</li>
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rand.html" data-search="rand">
+	rand
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rootUrl.html" data-search="rootUrl">
+	rootUrl
+</a>
+</li>
+
+
+
+			
+		
+		</ul>
+	
 	</li>
 	
 	<li class="search-container">
@@ -2168,6 +2315,77 @@ the <em>data</em> method cannot be used on <code>object</code> (unless it's a Fl
 	</article>
 </div>
 
+<script type="text/javascript">
+	var docData = {
+    "body": "<p><code>can.data</code> enables the associatation of arbitrary data with DOM nodes and JavaScript objects.</p>\n\n<h3>Setting Data</h3>\n\n<p>can.data( can.$('#elm'), key, value )</p>\n\n<ul>\n<li><strong>wrappedNodeList</strong> node list to associate data to.</li>\n<li><strong>key</strong> string name of the association.</li>\n<li><strong>value</strong> tdata value; it can be any Javascript type including Array or Object.</li>\n</ul>\n\n<h3>Accessing Data</h3>\n\n<p>can.data( can.$('#elm'), key )</p>\n\n<ul>\n<li><strong>wrappedNodeList</strong> node list to retrieve association data from.</li>\n<li><strong>key</strong> string name of the association.</li>\n</ul>\n\n<p>Due to the way browsers security restrictions with plugins and external code,\nthe <em>data</em> method cannot be used on <code>object</code> (unless it's a Flash plugin), <code>applet</code> or <code>embed</code> elements.</p>",
+    "description": "<p>Associate data with or retrieve data from DOM nodes. </p>",
+    "title": "",
+    "name": "can.data",
+    "type": "function",
+    "parent": "can.util.functions",
+    "signatures": [{
+            "code": "can.data(nodeList, key, value)",
+            "description": "",
+            "params": [{
+                    "types": [{
+                            "type": "NodeList"
+                        }
+                    ],
+                    "name": "nodeList",
+                    "description": "<p>The list of nodes to add this data to.</p>"
+                }, {
+                    "types": [{
+                            "type": "String"
+                        }
+                    ],
+                    "name": "key",
+                    "description": "<p>The key to store this data under.</p>"
+                }, {
+                    "types": [{
+                            "type": "*"
+                        }
+                    ],
+                    "name": "value",
+                    "description": "<p>The data to store.</p>"
+                }
+            ]
+        }, {
+            "code": "can.data(nodeList, key)",
+            "description": "",
+            "params": [{
+                    "types": [{
+                            "type": "NodeList"
+                        }
+                    ],
+                    "name": "nodeList",
+                    "description": "<p>The list of nodes data was stored under.</p>"
+                }, {
+                    "types": [{
+                            "type": "String"
+                        }
+                    ],
+                    "name": "key",
+                    "description": "<p>The key to retrieve.</p>"
+                }
+            ],
+            "returns": {
+                "types": [{
+                        "type": "*"
+                    }
+                ],
+                "description": "<p>The data stored under <strong>key</strong>.</p>"
+            }
+        }
+    ],
+    "comment": " ",
+    "src": "can/util/util.js",
+    "line": 468,
+    "id": 213
+};
+
+	console.log(docData);
+</script>
+
 
 
 	<footer>
@@ -2184,7 +2402,7 @@ the <em>data</em> method cannot be used on <code>object</code> (unless it's a Fl
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.min.js"></script>
+	<script type="text/javascript" src="../resources/production.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

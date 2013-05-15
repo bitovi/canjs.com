@@ -1478,6 +1478,153 @@
 			can.fixture
 		</a>
 		
+		<ul class="search-container">
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.delay.html" data-search="delay">
+	delay
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.on.html" data-search="on">
+	on
+</a>
+</li>
+
+
+
+			
+		
+			
+				<li class="heading search-container">
+					<span>plugins</span>
+					
+<ul>
+	
+	
+	<li class="search-container parent expanded">
+			<a class="function" href="can.fixture.store.html" data-search="store">
+				store
+			</a>
+			
+				
+<ul>
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.create.html" data-search="can.fixture.store.create">
+				can.fixture.store.create
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.destroy.html" data-search="can.fixture.store.destroy">
+				can.fixture.store.destroy
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.find.html" data-search="can.fixture.store.find">
+				can.fixture.store.find
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findAll.html" data-search="can.fixture.store.findAll">
+				can.fixture.store.findAll
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findOne.html" data-search="can.fixture.store.findOne">
+				can.fixture.store.findOne
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.reset.html" data-search="can.fixture.store.reset">
+				can.fixture.store.reset
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.update.html" data-search="can.fixture.store.update">
+				can.fixture.store.update
+			</a>
+			
+	</li>
+	
+	
+</ul>
+
+
+			
+	</li>
+	
+	
+</ul>
+
+
+				</li>
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rand.html" data-search="rand">
+	rand
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rootUrl.html" data-search="rootUrl">
+	rootUrl
+</a>
+</li>
+
+
+
+			
+		
+		</ul>
+	
 	</li>
 	
 	<li class="search-container">
@@ -2109,6 +2256,22 @@ update the paragraph tag to reflect the new value.</p>
 	</article>
 </div>
 
+<script type="text/javascript">
+	var docData = {
+    "type": "page",
+    "name": "can.Mustache.Binding",
+    "body": "",
+    "description": "<p>Live binding is templates that update themselves as the data \nused in the magic tags change.</p>\n\n<p>It's very common as the page is interacted with that the underlying \ndata represented in the page changes.  Typically, you have callbacks \nin your AJAX methods or events and then update the content of your \ncontrols manually.</p>\n\n<p>In this example, we have a simple user welcome screen.</p>\n\n<pre><code>&lt;h1&gt;Welcome {{user}}!&lt;/h1&gt;\n&lt;p&gt;\n    {{#if messages}}\n        You have {{messages}} new messages.\n    {{else}}\n        You no messages.\n    {{/messages}}\n&lt;/p&gt;\n\nvar data = new can.Observe({\n    user: 'Tina Fey',\n    messages: 0\n});\n\nvar template = can.view(\"#template\", data);\n</code></pre>\n\n<p>The template evaluates the <code>messages</code> and adds the hooks for living-binding automatically. <br />\nSince we have no message it will render:</p>\n\n<pre><code>&lt;h1&gt;Welcome Tina Fey!&lt;/h1&gt;\n&lt;p&gt;You no messages.&lt;/p&gt;\n</code></pre>\n\n<p>Now say we have a request that updates\nthe <code>messages</code> attribute to have <code>5</code> messages.  We \ncall the <a href=\"can.Observe.prototype.attr\">attr</a> method on the <a href=\"can.Observe\">can.Observe</a> to update\nthe attribute to the new value.</p>\n\n<pre><code>data.attr('message', 5)\n</code></pre>\n\n<p>After <a href=\"can.Observe\">can.Observe</a> recieves this update, it will automatically\nupdate the paragraph tag to reflect the new value.</p>\n\n<pre><code>&lt;p&gt;You have 5 new message.&lt;/p&gt;\n</code></pre>\n\n<p>For more information visit the <a href=\"can.Observe\">can.Observe</a>.</p>",
+    "title": "Live Binding",
+    "parent": "can.Mustache.pages",
+    "order": 5,
+    "src": "can/view/mustache/doc/livebinding.md",
+    "id": 161
+};
+
+	console.log(docData);
+</script>
+
 
 
 	<footer>
@@ -2125,7 +2288,7 @@ update the paragraph tag to reflect the new value.</p>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.min.js"></script>
+	<script type="text/javascript" src="../resources/production.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

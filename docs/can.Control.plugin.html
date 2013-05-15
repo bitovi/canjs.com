@@ -1478,6 +1478,153 @@
 			can.fixture
 		</a>
 		
+		<ul class="search-container">
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.delay.html" data-search="delay">
+	delay
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.on.html" data-search="on">
+	on
+</a>
+</li>
+
+
+
+			
+		
+			
+				<li class="heading search-container">
+					<span>plugins</span>
+					
+<ul>
+	
+	
+	<li class="search-container parent expanded">
+			<a class="function" href="can.fixture.store.html" data-search="store">
+				store
+			</a>
+			
+				
+<ul>
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.create.html" data-search="can.fixture.store.create">
+				can.fixture.store.create
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.destroy.html" data-search="can.fixture.store.destroy">
+				can.fixture.store.destroy
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.find.html" data-search="can.fixture.store.find">
+				can.fixture.store.find
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findAll.html" data-search="can.fixture.store.findAll">
+				can.fixture.store.findAll
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findOne.html" data-search="can.fixture.store.findOne">
+				can.fixture.store.findOne
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.reset.html" data-search="can.fixture.store.reset">
+				can.fixture.store.reset
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.update.html" data-search="can.fixture.store.update">
+				can.fixture.store.update
+			</a>
+			
+	</li>
+	
+	
+</ul>
+
+
+			
+	</li>
+	
+	
+</ul>
+
+
+				</li>
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rand.html" data-search="rand">
+	rand
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rootUrl.html" data-search="rootUrl">
+	rootUrl
+</a>
+</li>
+
+
+
+			
+		
+		</ul>
+	
 	</li>
 	
 	<li class="search-container">
@@ -2128,6 +2275,24 @@ for each time the button was clicked.</p>
 	</article>
 </div>
 
+<script type="text/javascript">
+	var docData = {
+    "type": "page",
+    "name": "can.Control.plugin",
+    "body": "<div class='demo_wrapper' data-demo-src='can/control/plugin/plugin.html'></div>",
+    "description": "<p>The <code>can.Control.plugin</code> extension is a plugin for creating and accessing \ncontrols with jQuery helper methods.  It uses the control's [can.Construct.fullName fullName] \nor a static [can.Control.plugin.static.pluginName pluginName] attribute for the name of the control.</p>\n\n<p>For example, the following plugin:</p>\n\n<pre><code>var Tabs = can.Control({\n  pluginName : 'tabs'\n},{\n  init : function(element, options, arg1){ },\n  update : function(options) {}\n})\n</code></pre>\n\n<p>Can now be created directly on the jQuery collection like:</p>\n\n<pre><code>$(\".tabs\").tabs();\n</code></pre>\n\n<p><strong>Note:</strong> This plugin only supports jQuery.</p>\n\n<h2>Invoking Methods</h2>\n\n<p>You can invoke methods on a control instance after its created through a few\ndifferent approaches.  </p>\n\n<p>Once a controller is initialized on a DOM element, you can invoke a method by calling\nthe plugin with the method name followed by the parameters for that method.\nWhen calling a method and it returns a value other than <code>undefined</code>, this value will\nbe returned. Otherwise the method call will return the jQuery object (for chaining).</p>\n\n<pre><code>var MyTodo = can.Control({\n  pluginName : 'my_todo'\n}, {\n  addTask: function(name, task){\n    this.element.append(name + \": \" + task)\n  },\n\n  getTasks : function() {\n    return this.element.text();\n  }\n});\n\n// Initialize MyTodo\n$('.my_todo').my_todo();\n\n// Calls addTask, returns the jQuery element\n$('.my_todo').my_todo(\"addTask\", 'Brian', 'Sweep garage') // -&gt; jQuery\n// Calls getTasks, returns the element text\n$('.my_todo').my_todo(\"getTasks\") // -&gt; Brian: Sweep garage\n</code></pre>\n\n<p>You can also retrieve the control instance and invoke the method directly.</p>\n\n<pre><code>var control = $('.my_todo').control();\ncontrol.addTask('Brian', 'Sweep garage');\n</code></pre>\n\n<p>For more information on this, see [jQuery.fn.control] or [jQuery.fn.controls].</p>\n\n<h2>Demo</h2>\n\n<p>The following demo shows creating a plugin widget and then updating the widget's <code>times</code> variable\nfor each time the button was clicked.</p>",
+    "title": "jQuery plugin",
+    "parent": "can.Control.plugins",
+    "plugin": "can/control/plugin",
+    "test": "can/control/plugin/qunit.html",
+    "download": "http://donejs.com/can/dist/can.control.plugin.js",
+    "src": "can/control/plugin/plugin.md",
+    "id": 119
+};
+
+	console.log(docData);
+</script>
+
 
 
 	<footer>
@@ -2144,7 +2309,7 @@ for each time the button was clicked.</p>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.min.js"></script>
+	<script type="text/javascript" src="../resources/production.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

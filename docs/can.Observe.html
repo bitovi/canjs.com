@@ -1478,6 +1478,153 @@
 			can.fixture
 		</a>
 		
+		<ul class="search-container">
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.delay.html" data-search="delay">
+	delay
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.on.html" data-search="on">
+	on
+</a>
+</li>
+
+
+
+			
+		
+			
+				<li class="heading search-container">
+					<span>plugins</span>
+					
+<ul>
+	
+	
+	<li class="search-container parent expanded">
+			<a class="function" href="can.fixture.store.html" data-search="store">
+				store
+			</a>
+			
+				
+<ul>
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.create.html" data-search="can.fixture.store.create">
+				can.fixture.store.create
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.destroy.html" data-search="can.fixture.store.destroy">
+				can.fixture.store.destroy
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.find.html" data-search="can.fixture.store.find">
+				can.fixture.store.find
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findAll.html" data-search="can.fixture.store.findAll">
+				can.fixture.store.findAll
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findOne.html" data-search="can.fixture.store.findOne">
+				can.fixture.store.findOne
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.reset.html" data-search="can.fixture.store.reset">
+				can.fixture.store.reset
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.update.html" data-search="can.fixture.store.update">
+				can.fixture.store.update
+			</a>
+			
+	</li>
+	
+	
+</ul>
+
+
+			
+	</li>
+	
+	
+</ul>
+
+
+				</li>
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rand.html" data-search="rand">
+	rand
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rootUrl.html" data-search="rootUrl">
+	rootUrl
+</a>
+</li>
+
+
+
+			
+		
+		</ul>
+	
 	</li>
 	
 	<li class="search-container">
@@ -2190,6 +2337,47 @@ o.removeAttr('a'); // 'a was removed.'
 	</article>
 </div>
 
+<script type="text/javascript">
+	var docData = {
+    "type": "constructor",
+    "name": "can.Observe",
+    "body": "<h2>Working with Observes</h2>\n\n<p>To create an Observe, use <code>new can.Observe([props])</code>. This will return a\ncopy of <code>props</code> that emits events when its properties are changed with\n<code>[can.Observe.prototype.attr attr]</code>.</p>\n\n<p>You can read the values of properties on Observes directly, but you should\nnever set them directly. You can also read property values using <code>attr</code>.\nUsually, you will want to do this when creating a <code>[can.compute]</code> or when\nlive-binding properties in an [can.EJS EJS] template. (If you are using\n[can.Mustache Mustache], you don't need to use <code>attr</code>.)</p>\n\n<pre><code class=\"lang-javascript\">var aName = {a: 'Alexis'},\n    observe = can.Observe(aName);\n\n// Observes are copies of data:\naName === observe; // false\n\n// reading from an Observe:\nobserve.attr();    // {a: 'Alexis'}\nobserve.a;         // 'Alexis'\nobserve.attr('a'); // 'Alexis'\n\n// setting an Observe's property:\nobserve.attr('a, 'Alice');\nobserve.a; // Alice\n\n// removing an Observe's property;\nobserve.removeAttr('a');\nobserve.attr(); // {}\n\n// Don't do this!\nobserve.a = 'Adam'; // wrong!</code></pre>\n\n<p>Find out more about manipulating properties of Observes under\n[can.Observe.protoype.attr attr] and [can.Observe.protoype.removeAtt removeAttr].</p>\n\n<h2>Listening to changes</h2>\n\n<p>The real power of observable objects comes from being able to react to\nproperties being added, set, and removed. Observes emit events when\nproperties are changed that you can bind to.</p>\n\n<p><code>can.Observe</code> has two types of events that fire due to changes on an Observe:\n- the <em>change</em> event fires on every change to an Observe.\n- an event named after the property name fires on every change to that property.</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.bind('change', function(ev, attr, how, newVal, oldVal) {\n    console.log('Something on o changed.');\n});\no.bind('a', function(ev, newVal, oldVal) {\n    console.log('a was changed.');\n});\n\no.attr('a', 'Alexis'); // 'Something on o changed.'\n                       // 'a was changed.'\no.attr({\n    'a': 'Alice',      // 'Something on o changed.' (for a's change)\n    'b': 'Bob'         // 'Something on o changed.' (for b's change)\n});                    // 'a was changed.'\n\no.removeAttr('a');     // 'Something on o changed.'\n                       // 'a was changed.'</code></pre>\n\n<p>For more detail on how to use these events, see [can.Observe.prototype.bind bind] and\n[can.Observe.prototype.unbind unbind]. There is also a plugin called [can.Observe.delegate]\nthat makes binding to specific types of events easier:</p>\n\n<pre><code class=\"lang-javascript\">var o = new can.Observe({});\no.delegate('a', 'add' function(ev, newVal, oldVal) {\n    console.log('a was added.');\n});\no.delegate('a', 'set' function(ev, newVal, oldVal) {\n    console.log('a was set.');\n});\no.delegate('a', 'remove' function(ev, newVal, oldVal) {\n    console.log('a was removed.');\n});\no.delegate('a', 'change' function(ev, newVal, oldVal) {\n    console.log('a was changed.');\n});\n\no.attr('a', 'Alexis'); // 'a was added.'\n                       // 'a was changed.'\n\no.attr('a', 'Alice'); // 'a was set.'\n                      // 'a was changed.'\n\n\no.removeAttr('a'); // 'a was removed.'\n                   // 'a was changed.'</code></pre>",
+    "description": "<p><code>can.Observe</code> provides a way for you to listen for and keep track of changes\nto objects. When you use the getters and setters provided by <code>can.Observe</code>,\nevents are fired that you can react to. <code>can.Observe</code> also has support for\nworking with deep properties. Observable arrays are also available with\n<code>[can.Observe.List]</code>, which is based on <code>can.Observe</code>.</p>",
+    "title": "",
+    "inherits": "can.Construct",
+    "parent": "canjs",
+    "test": "can/observe/qunit.html",
+    "download": "can/observe",
+    "signatures": [{
+            "code": "can.Observe([props])",
+            "description": "",
+            "params": [{
+                    "types": [{
+                            "type": "Object"
+                        }
+                    ],
+                    "optional": true,
+                    "name": "props",
+                    "description": "<p>properties and values to seed the Observe with</p>"
+                }
+            ],
+            "returns": {
+                "types": [{
+                        "type": "can.Observe"
+                    }
+                ],
+                "description": "<p>an instance of <code>can.Observe</code> with the properties from <em>props</em></p>"
+            }
+        }
+    ],
+    "comment": " ",
+    "src": "can/observe/observe.md",
+    "id": 17
+};
+
+	console.log(docData);
+</script>
+
 
 
 	<footer>
@@ -2206,7 +2394,7 @@ o.removeAttr('a'); // 'a was removed.'
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.min.js"></script>
+	<script type="text/javascript" src="../resources/production.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

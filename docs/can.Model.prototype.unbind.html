@@ -1478,6 +1478,153 @@
 			can.fixture
 		</a>
 		
+		<ul class="search-container">
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.delay.html" data-search="delay">
+	delay
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.on.html" data-search="on">
+	on
+</a>
+</li>
+
+
+
+			
+		
+			
+				<li class="heading search-container">
+					<span>plugins</span>
+					
+<ul>
+	
+	
+	<li class="search-container parent expanded">
+			<a class="function" href="can.fixture.store.html" data-search="store">
+				store
+			</a>
+			
+				
+<ul>
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.create.html" data-search="can.fixture.store.create">
+				can.fixture.store.create
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.destroy.html" data-search="can.fixture.store.destroy">
+				can.fixture.store.destroy
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.find.html" data-search="can.fixture.store.find">
+				can.fixture.store.find
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findAll.html" data-search="can.fixture.store.findAll">
+				can.fixture.store.findAll
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findOne.html" data-search="can.fixture.store.findOne">
+				can.fixture.store.findOne
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.reset.html" data-search="can.fixture.store.reset">
+				can.fixture.store.reset
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.update.html" data-search="can.fixture.store.update">
+				can.fixture.store.update
+			</a>
+			
+	</li>
+	
+	
+</ul>
+
+
+			
+	</li>
+	
+	
+</ul>
+
+
+				</li>
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rand.html" data-search="rand">
+	rand
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rootUrl.html" data-search="rootUrl">
+	rootUrl
+</a>
+</li>
+
+
+
+			
+		
+		</ul>
+	
 	</li>
 	
 	<li class="search-container">
@@ -2122,6 +2269,59 @@ if there are no other listeners.</p>
 	</article>
 </div>
 
+<script type="text/javascript">
+	var docData = {
+    "type": "function",
+    "name": "can.Model.prototype.unbind",
+    "parent": "can.Model.prototype",
+    "body": "<p><code>unbind(eventName, handler)</code> removes a listener\nattached with [can.Model::bind].</p>\n\n<pre><code>var handler = function(ev, createdTask){\n\n}\ntask.bind(\"created\", handler)\ntask.unbind(\"created\", handler)\n</code></pre>\n\n<p>You have to pass the same function to <code>unbind</code> that you\npassed to <code>bind</code>.</p>\n\n<p>Unbind will also remove the instance from the store\nif there are no other listeners.</p>",
+    "description": "<p>Stop listening to events on this Model. </p>",
+    "title": "unbind",
+    "signatures": [{
+            "code": "unbind(eventName[, handler])",
+            "description": "",
+            "params": [{
+                    "types": [{
+                            "type": "String"
+                        }
+                    ],
+                    "name": "eventName",
+                    "description": "<p>The event to unbind from.</p>"
+                }, {
+                    "types": [{
+                            "type": "function",
+                            "returns": {
+                                "types": [{
+                                        "type": "undefined"
+                                    }
+                                ]
+                            },
+                            "params": []
+                        }
+                    ],
+                    "optional": true,
+                    "name": "handler",
+                    "description": "<p>A handler previously bound with <code>bind</code>.\nIf <strong>handler</strong> is not passed, <code>unbind</code> will remove all handlers\nfor the given event.</p>"
+                }
+            ],
+            "returns": {
+                "types": [{
+                        "type": "can.Model"
+                    }
+                ],
+                "description": "<p>The Model, for chaining.</p>"
+            }
+        }
+    ],
+    "comment": " ",
+    "src": "can/model/model.js",
+    "line": 1076,
+    "id": 98
+};
+
+	console.log(docData);
+</script>
+
 
 
 	<footer>
@@ -2138,7 +2338,7 @@ if there are no other listeners.</p>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.min.js"></script>
+	<script type="text/javascript" src="../resources/production.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

@@ -1478,6 +1478,153 @@
 			can.fixture
 		</a>
 		
+		<ul class="search-container">
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.delay.html" data-search="delay">
+	delay
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.on.html" data-search="on">
+	on
+</a>
+</li>
+
+
+
+			
+		
+			
+				<li class="heading search-container">
+					<span>plugins</span>
+					
+<ul>
+	
+	
+	<li class="search-container parent expanded">
+			<a class="function" href="can.fixture.store.html" data-search="store">
+				store
+			</a>
+			
+				
+<ul>
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.create.html" data-search="can.fixture.store.create">
+				can.fixture.store.create
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.destroy.html" data-search="can.fixture.store.destroy">
+				can.fixture.store.destroy
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.find.html" data-search="can.fixture.store.find">
+				can.fixture.store.find
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findAll.html" data-search="can.fixture.store.findAll">
+				can.fixture.store.findAll
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findOne.html" data-search="can.fixture.store.findOne">
+				can.fixture.store.findOne
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.reset.html" data-search="can.fixture.store.reset">
+				can.fixture.store.reset
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.update.html" data-search="can.fixture.store.update">
+				can.fixture.store.update
+			</a>
+			
+	</li>
+	
+	
+</ul>
+
+
+			
+	</li>
+	
+	
+</ul>
+
+
+				</li>
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rand.html" data-search="rand">
+	rand
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rootUrl.html" data-search="rootUrl">
+	rootUrl
+</a>
+</li>
+
+
+
+			
+		
+		</ul>
+	
 	</li>
 	
 	<li class="search-container">
@@ -2372,6 +2519,22 @@ you can set a custom context by passing the object instead of <code>this</code>.
 	</article>
 </div>
 
+<script type="text/javascript">
+	var docData = {
+    "type": "page",
+    "name": "can.Mustache.Helpers",
+    "body": "",
+    "description": "<h1>Helpers</h1>\n\n<p>Helpers allow you to register functions that can be called \nfrom any context in a template. </p>\n\n<p>Mustache includes a number of built-in helpers that are listed below\nbut you can register your own helper too.</p>\n\n<h2>if</h2>\n\n<p>In addition to truthy/falsey evaluation with <a href=\"#Sections\">sections</a>, you can use an \nexplicit <code>if</code> condition to render a block.</p>\n\n<pre><code>{\n    friends: true\n}\n\n{{#if friends}}\n    I have friends!\n{{/if}}\n</code></pre>\n\n<p>would render:</p>\n\n<pre><code>I have friends!\n</code></pre>\n\n<p><code>if</code> acts similarly to a truthy <code>{{#section}}</code>.</p>\n\n<h2>else</h2>\n\n<p>When using <code>if</code> or a custom helper, you can specify the inverse\nof the evaluation by using the <code>else</code> helper.</p>\n\n<pre><code>{\n    friend: false\n}\n\n&lt;ul&gt;\n    {{#if friends}}\n        &lt;/li&gt;{{name}}&lt;/li&gt;\n    {{else}}\n        &lt;li&gt;No friends.&lt;/li&gt;\n    {{/if}}\n&lt;/ul&gt;\n</code></pre>\n\n<p>would render:</p>\n\n<pre><code>&lt;ul&gt;\n    &lt;li&gt;No friends.&lt;/li&gt;\n&lt;/ul&gt;\n</code></pre>\n\n<p><code>else</code> acts similarly to a falsey <code>{{^inverse}}</code>, but only applies when used within another helper.</p>\n\n<p>In this case, using the <code>if</code>/<code>else</code> helpers simplify your template by not requiring extra <a href=\"#Sections\">sections</a> to be specified.</p>\n\n<h2>unless</h2>\n\n<p>The <code>unless</code> helper evaluates the inverse of the value of the key and renders \nthe block between the helper and the slash.</p>\n\n<pre><code>{\n    friends: []\n}\n\n{{#unless friends}}\n    You don't have any friends!\n{{/unless}}\n</code></pre>\n\n<p>would render:</p>\n\n<pre><code>You don't have any friends!\n</code></pre>\n\n<p><code>unless</code> acts similarly to a falsey <code>{{^inverse}}</code>.</p>\n\n<h2>each</h2>\n\n<p>The<code>each</code> helper explicitly iterates over an array of items and\nrenders the block.</p>\n\n<p>Like <a href=\"#Sections\">sections</a>, it will reset the current context to the value for which its iterating.\nSee the <a href=\"#Basics\">basics of contexts</a> for more information.</p>\n\n<pre><code>{ \n    friends: [ \n        { name: \"Austin\" }, \n        { name: \"Justin\" } \n    ] \n}\n\n&lt;ul&gt;\n    {{#each friends}}\n        &lt;li&gt;{{name}}&lt;/li&gt;\n    {{/each}}\n&lt;/ul&gt;\n</code></pre>\n\n<p>would render:</p>\n\n<pre><code>&lt;ul&gt;\n    &lt;li&gt;Austin&lt;/li&gt;\n    &lt;li&gt;Justin&lt;/li&gt;\n&lt;/ul&gt;\n</code></pre>\n\n<h2>with</h2>\n\n<p>Mustache typically applies the context passed in the <a href=\"#Sections\">sections</a> at runtime.  However,\nyou can override this context by using the <code>with</code> helper.</p>\n\n<p>For example, using the <code>with</code> helper Mustache shifts the context to the friends object.</p>\n\n<pre><code>{\n    name: \"Austin\"\n    friends: 1\n}\n\n\n&lt;h1&gt;Hi {{name}}&lt;/h1&gt;\n{{#with friends}}\n    &lt;p&gt;You have {{.}} new friend!&lt;/p&gt;\n{{/with}}\n</code></pre>\n\n<p>would render:</p>\n\n<pre><code>&lt;h1&gt;Hi Austin&lt;/h1&gt;\n&lt;p&gt;You have 1 new friend!&lt;/p&gt;\n</code></pre>\n\n<h2>Element Callbacks</h2>\n\n<p>When rendering HTML with views, you often want to call some JavaScript\nsuch as intializing a jQuery plugin on the new HTML.</p>\n\n<p>Mustache makes it easy to define this code in the markup.  Using the\n<a href=\"http://wiki.ecmascript.org/doku.php?id=strawman:arrow_function_syntax\">ES5 Arrow Syntax</a> \nits easy to define the element for which is passed followed by the arrow\nand the function to execute on the element.</p>\n\n<pre><code>&lt;div class=\"tabs\" {{(el) -&gt; el.jquery_tabs()}}&gt;&lt;/div&gt;\n</code></pre>\n\n<p>After rendering the HTML, <code>jquery_tabs</code> will be called on the tabs div.</p>\n\n<h2>Data Associations</h2>\n\n<p>Attaching data to an element is done by calling the <code>data</code> helper\nfollowed by the attribute name you want to attach it as.</p>\n\n<pre><code>{\n    name: 'Austin'\n}\n\n&lt;ul&gt;\n    &lt;li id=\"personli\" {{data 'person'}}&gt;{{name}}&lt;/li&gt;\n&lt;/ul&gt;\n</code></pre>\n\n<p>Now the data can be access by doing:</p>\n\n<pre><code>var nameObject = can.data(can.$('#personli'), 'person');\n</code></pre>\n\n<p>It automatically attaches the data to the\nelement using [can.data] and the implied context of <code>this</code>.</p>\n\n<h2>Registering Helpers</h2>\n\n<p>You can register your own global helper with the <code>Mustache.registerHelper</code> method, or \na local helper (just accessible by the template you're rendering) by passing in an object containing helper functions to can.view.</p>\n\n<p>Localization is a good example of a custom helper you might implement\nin your application. The below example takes a given key and \nreturns the localized value using \n<a href=\"https://github.com/jquery/globalize\">jQuery Globalize</a>.</p>\n\n<pre><code>Mustache.registerHelper('l10n', function(str, options){\n    return Globalize != undefined \n        ? Globalize.localize(str) \n        : str;\n});\n</code></pre>\n\n<p>Or another way to do this:</p>\n\n<pre><code>can.view(\"//path/to/template.mustache\", data, {\n    l10n: function(str, options){\n        return Globalize != undefined \n            ? Globalize.localize(str) \n            : str;\n    }\n})\n</code></pre>\n\n<p>In the template, invoke the helper by calling the helper\nname followed by any additional arguments.</p>\n\n<pre><code>&lt;span&gt;{{l10n 'mystring'}}&lt;/span&gt;\n</code></pre>\n\n<p>will render:</p>\n\n<pre><code>&lt;span&gt;my string localized&lt;/span&gt;\n</code></pre>\n\n<p><strong>Helpers with can.Observe attributes</strong></p>\n\n<p>If a can.Observe attribute is passed as an argument to a helper, it is converted to a can.compute getter/setter function.  This is to allow creating 2-way binding type functionality between a can.Observe attribute and a form element. For example in your template:</p>\n\n<pre><code>&lt;div&gt;{{addPrefix name}}&lt;/div&gt;\n</code></pre>\n\n<p>Your helper would look like:</p>\n\n<pre><code>var item = new can.Observe({name: \"Brian\"}),\n    frag = can.view(\"#template\", item, {\n      addPrefix: function(name){\n        return \"Mr.\" + name()\n      }\n    });\n</code></pre>\n\n<p>Note we're calling <code>name()</code> in order to read its contents.</p>\n\n<p><strong>Multiple Arguments</strong></p>\n\n<p>You can pass multiple arguments just by putting a space between\nthat and the previous argument like so:</p>\n\n<pre><code>{{helper 'cat' 'hat'}}\n\nMustache.registerHelper('helper', function(arg1, arg2, options){\n    // arg1 -&gt; 'cat'\n    // arg2 -&gt; 'hat'\n});\n</code></pre>\n\n<p><strong>Evaluating Helpers</strong></p>\n\n<p>If you want to use a helper with as a <a href=\"#Sections\">section</a>, you need to call \n<code>options.fn(context)</code> in your return statement. This will return a \nstring with the resulting evaluated <a href=\"#Sections\">section</a>.</p>\n\n<p>Similarly, you can call <code>options.inverse(context)</code> to evaluate the \ntemplate between an <code>{{else}}</code> magic tag and the closing magic tag.</p>\n\n<p>For example, when a route matches the string passed to our\nrouting helper it will show/hide the text.</p>\n\n<pre><code>Mustache.registerHelper('routing', function(str, options){\n    if (can.route.attr('filter') === str)\n        return options.fn(this);\n    }\n});\n\n{{#routing 'advanced'}}\n    You have applied the advanced filter.\n{{/routing}}\n</code></pre>\n\n<p><strong>Advanced Helpers</strong></p>\n\n<p>Helpers can be passed normal objects, native objects like numbers and strings, \nas well as a hash object. The hash object will be an object literal containing \nall ending arguments using the <code>key=value</code> syntax. The hash object will be provided \nto the helper as <code>options.hash</code>. Additionally, when using <a href=\"#Sections\">section</a> with the helper, \nyou can set a custom context by passing the object instead of <code>this</code>.</p>\n\n<pre><code>Mustache.registerHelper('exercise', function(group, action, \n                                        num, options){\n    if (group &amp;&amp; group.length &gt; 0 &amp;&amp; action &amp;&amp; num &gt; 0) {\n        return options.fn({\n            group: group,\n            action: action,\n            where: options.hash.where,\n            when: options.hash.when,\n            num: num\n        });\n    }\n    else {\n        return options.inverse(this);\n    }\n});\n\n{{#exercise pets 'walked' 3 where='around the block' when=time}}\n    Along with the {{#group}}{{.}}, {{/group}}\n    we {{action}} {{where}} {{num}} times {{when}}.\n{{else}}\n    We were lazy today.\n{{/exercise}}\n\n{\n    pets: ['cat', 'dog', 'parrot'],\n    time: 'this morning'\n}\n</code></pre>\n\n<p>This would output:</p>\n\n<pre><code>Along with the cat, dog, parrot, we walked around the block \n3 times this morning.\n</code></pre>\n\n<p>Whereas, an empty data object would output:</p>\n\n<pre><code>We were lazy today.\n</code></pre>",
+    "title": "Helpers",
+    "parent": "can.Mustache.pages",
+    "order": 4,
+    "src": "can/view/mustache/doc/helpers.md",
+    "id": 160
+};
+
+	console.log(docData);
+</script>
+
 
 
 	<footer>
@@ -2388,7 +2551,7 @@ you can set a custom context by passing the object instead of <code>this</code>.
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.min.js"></script>
+	<script type="text/javascript" src="../resources/production.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">

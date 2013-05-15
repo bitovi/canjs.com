@@ -115,7 +115,7 @@ module.exports = function (grunt) {
 		},
 		generate: {
 			options: {
-				debug: false,
+				debug: true,
 				layout: '_templates/page.mustache',
 				docs: '_templates/docs.mustache',
 				root: '',
@@ -178,7 +178,7 @@ module.exports = function (grunt) {
 					'can/util/util.md',
 					'can/util/util.js',
 					'can/util/fixture/fixture.md',
-					'can/util/fixture.js'
+					'can/util/fixture/fixture.js'
 				],
 				dest: 'docs/'
 			},

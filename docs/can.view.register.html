@@ -1478,6 +1478,153 @@
 			can.fixture
 		</a>
 		
+		<ul class="search-container">
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.delay.html" data-search="delay">
+	delay
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.on.html" data-search="on">
+	on
+</a>
+</li>
+
+
+
+			
+		
+			
+				<li class="heading search-container">
+					<span>plugins</span>
+					
+<ul>
+	
+	
+	<li class="search-container parent expanded">
+			<a class="function" href="can.fixture.store.html" data-search="store">
+				store
+			</a>
+			
+				
+<ul>
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.create.html" data-search="can.fixture.store.create">
+				can.fixture.store.create
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.destroy.html" data-search="can.fixture.store.destroy">
+				can.fixture.store.destroy
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.find.html" data-search="can.fixture.store.find">
+				can.fixture.store.find
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findAll.html" data-search="can.fixture.store.findAll">
+				can.fixture.store.findAll
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.findOne.html" data-search="can.fixture.store.findOne">
+				can.fixture.store.findOne
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.reset.html" data-search="can.fixture.store.reset">
+				can.fixture.store.reset
+			</a>
+			
+	</li>
+	
+	
+	
+	<li class="search-container">
+			<a class="function" href="can.fixture.store.update.html" data-search="can.fixture.store.update">
+				can.fixture.store.update
+			</a>
+			
+	</li>
+	
+	
+</ul>
+
+
+			
+	</li>
+	
+	
+</ul>
+
+
+				</li>
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rand.html" data-search="rand">
+	rand
+</a>
+</li>
+
+
+
+			
+		
+			
+				
+
+<li class="search-container ">
+<a href="can.fixture.rootUrl.html" data-search="rootUrl">
+	rootUrl
+</a>
+</li>
+
+
+
+			
+		
+		</ul>
+	
 	</li>
 	
 	<li class="search-container">
@@ -2141,6 +2288,81 @@ view helpers and compression.  </p>
 	</article>
 </div>
 
+<script type="text/javascript">
+	var docData = {
+    "type": "function",
+    "name": "can.view.register",
+    "parent": "can.view.static",
+    "body": "<p>Registers a template engine to be used with \nview helpers and compression.  </p>\n\n<h2>Example</h2>\n\n<pre><code class=\"lang-javascript\">can.View.register({\n    suffix : \"tmpl\",\n plugin : \"jquery/view/tmpl\",\n    renderer: function( id, text ) {\n        return function(data){\n            return jQuery.render( text, data );\n        }\n    },\n    script: function( id, text ) {\n        var tmpl = can.tmpl(text).toString();\n        return \"function(data){return (\"+\n            tmpl+\n            \").call(jQuery, jQuery, data); }\";\n    }\n})</code></pre>     ",
+    "description": "<p>Register a templating language. </p>",
+    "title": "register",
+    "signatures": [{
+            "code": "can.view.register(info)",
+            "description": "",
+            "params": [{
+                    "types": [{
+                            "type": "Object",
+                            "options": [{
+                                    "name": "plugin",
+                                    "description": "The location of the templating language's plugin.",
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ]
+                                }, {
+                                    "name": "suffix",
+                                    "description": "Files with this suffix will use this templating language's plugin by default.",
+                                    "types": [{
+                                            "type": "String"
+                                        }
+                                    ]
+                                }, {
+                                    "name": "renderer",
+                                    "description": "A function that returns a function that, given data, will render the template with that data.\nThe __renderer__ function receives the id of the template and the text of the template.",
+                                    "types": [{
+                                            "type": "function",
+                                            "returns": {
+                                                "types": [{
+                                                        "type": "undefined"
+                                                    }
+                                                ]
+                                            },
+                                            "params": []
+                                        }
+                                    ]
+                                }, {
+                                    "name": "script",
+                                    "description": "A function that returns the string form of the processed template.\n",
+                                    "types": [{
+                                            "type": "function",
+                                            "returns": {
+                                                "types": [{
+                                                        "type": "undefined"
+                                                    }
+                                                ]
+                                            },
+                                            "params": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "name": "info",
+                    "description": "<p>Information about the templating language.</p>"
+                }
+            ]
+        }
+    ],
+    "comment": " ",
+    "src": "can/view/view.js",
+    "line": 228,
+    "id": 144
+};
+
+	console.log(docData);
+</script>
+
 
 
 	<footer>
@@ -2157,7 +2379,7 @@ view helpers and compression.  </p>
 	</footer>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" src="../resources/production.min.js"></script>
+	<script type="text/javascript" src="../resources/production.js"></script>
 	
 	<!--[if lt IE 9]>
    	<script type="text/javascript">
