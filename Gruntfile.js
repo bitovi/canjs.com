@@ -120,6 +120,7 @@ module.exports = function (grunt) {
 				docs: '_templates/docs.mustache',
 				root: '',
 				package: require(__dirname + '/can/package.json'),
+				self: require(__dirname + '/package.json'),
 				helpers: handlebarsHelpers
 			},
 			guides: {
