@@ -1,4 +1,4 @@
-/*! canjs.us - v0.2.0 - 2013-05-20
+/*! canjs.us - v0.2.0 - 2013-05-21
 * https://github.com/bitovi/canjs.us
 * Copyright (c) 2013 Bitovi; Licensed MIT */
 /*!
