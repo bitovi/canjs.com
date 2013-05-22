@@ -7428,10 +7428,10 @@ $(function() {
 		{h:m,c:d,j:u,i:o};K(r)}}}i<p.length?setTimeout(g,250):"function"===typeof a&&a()}for(var b=d||document.body,s=b.ownerDocument||document,b=[b.getElementsByTagName("pre"),b.getElementsByTagName("code"),b.getElementsByTagName("xmp")],p=[],m=0;m<b.length;++m)for(var j=0,k=b[m].length;j<k;++j)p.push(b[m][j]);var b=q,c=Date;c.now||(c={now:function(){return+new Date}});var i=0,r,n=/\blang(?:uage)?-([\w.]+)(?!\S)/,e=/\bprettyprint\b/,v=/\bprettyprinted\b/,w=/pre|xmp/i,t=/^code$/i,f=/^(?:pre|code|xmp)$/i,
 			h={};g()}};typeof define==="function"&&define.amd&&define("google-code-prettify",[],function(){return Y})})();}()
 
-can.Model("CanJSUS.ChatLine", {
+can.Model("Bitovi.OSS.ChatLine", {
 	models: function(list) {
 		var models = list.data.map(function(el) {
-			return CanJSUS.ChatLine.model(el);
+			return Bitovi.OSS.ChatLine.model(el);
 		});
 
 		return new can.Observe.List(models).reverse();
@@ -7445,24 +7445,24 @@ can.Model("CanJSUS.ChatLine", {
 		};
 	},
 	findAll: {
-		url: 'http://api.bithub.com/api/events/?category=chat&order=origin_ts:desc&limit={limit}',
+		url: Bitovi.URL.BITHUB + '?category=chat&order=origin_ts:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });
 
-can.Model('CanJSUS.Configuration', {
+can.Model('Bitovi.OSS.Configuration', {
 	configuration: null,
 	// the configuration is not going to change,
 	// and it's pretty much a singleton, so:
 	findOne: function() {
-		if(CanJSUS.Configuration.configuration === null) {
-			CanJSUS.Configuration.configuration = $.ajax({
-				url: 'http://bitbuilder.herokuapp.com/canjs',
+		if(Bitovi.OSS.Configuration.configuration === null) {
+			Bitovi.OSS.Configuration.configuration = $.ajax({
+				url: Bitovi.URL.BUILDER_DATA,
 				dataType: 'jsonp'
 			});
 		}
 
-		return CanJSUS.Configuration.configuration;
+		return Bitovi.OSS.Configuration.configuration;
 	},
 	model: function(data) {
 		var libraries = [];
@@ -7481,7 +7481,7 @@ can.Model('CanJSUS.Configuration', {
 		});
 
 		can.each(data.modules, function(module, path) {
-			module.id = CanJSUS.Configuration.pathToID(path);
+			module.id = Bitovi.OSS.Configuration.pathToID(path);
 			module.path = path;
 			types[module.type].modules.push(module);
 		});
@@ -7502,7 +7502,7 @@ can.Model('CanJSUS.Configuration', {
 		return id.split('_').join('.').split('/').join('/');
 	}
 }, { });
-can.Model("CanJSUS.ForumPost", {
+can.Model("Bitovi.OSS.ForumPost", {
 	model: function(data) {
 		return {
 			actor: data.actor,
@@ -7516,11 +7516,11 @@ can.Model("CanJSUS.ForumPost", {
 		};
 	},
 	findAll: {
-		url: 'http://api.bithub.com/api/events/?feed=forums&order=origin_ts:desc&limit={limit}',
+		url: Bitovi.URL.BITHUB + '?feed=forums&order=origin_ts:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });
-can.Model("CanJSUS.GithubEvent", {
+can.Model("Bitovi.OSS.GithubEvent", {
 	model: function(data) {
 		return {
 			actor: data.actor,
@@ -7542,11 +7542,11 @@ can.Model("CanJSUS.GithubEvent", {
 		};
 	},
 	findAll: {
-		url: 'http://api.bithub.com/api/events/?category=code&also=source_data&order=origin_ts:desc&limit={limit}',
+		url: Bitovi.URL.BITHUB + '?category=code&also=source_data&order=origin_ts:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });
-can.Model("CanJSUS.GithubIssue", {
+can.Model("Bitovi.OSS.GithubIssue", {
 	model: function(data) {
 		return {
 			actor: data.actor,
@@ -7563,11 +7563,11 @@ can.Model("CanJSUS.GithubIssue", {
 		};
 	},
 	findAll: {
-		url: 'http://api.bithub.com/api/events/?category=bug&also=source_data&order=upvotes&limit={limit}',
+		url: Bitovi.URL.BITHUB +  '?category=bug&also=source_data&order=upvotes&limit={limit}',
 		dataType: 'json'
 	}
 }, { });
-can.Model("CanJSUS.Plugin", {
+can.Model("Bitovi.OSS.Plugin", {
 	model: function(data) {
 		// The API's not returning plugins and apps yet, so this may
 		// end up being innacurate.
@@ -7583,11 +7583,11 @@ can.Model("CanJSUS.Plugin", {
 		};
 	},
 	findAll: {
-		url: 'http://api.bithub.com/api/events/?category=article|app|plugin&order=upvotes:desc&limit={limit}',
+		url: Bitovi.URL.BITHUB + '?category=article|app|plugin&order=upvotes:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });
-can.Model("CanJSUS.Tweet", {
+can.Model("Bitovi.OSS.Tweet", {
 	model: function(data) {
 		return {
 			handle: data.actor,
@@ -7602,16 +7602,16 @@ can.Model("CanJSUS.Tweet", {
 		};
 	},
 	findAll: {
-		url: 'http://api.bithub.com/api/events/?feed=twitter&order=origin_ts:desc&limit={limit}',
+		url: Bitovi.URL.BITHUB + '?feed=twitter&order=origin_ts:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });
-can.Control('CanJSUS.ApiSignature', {}, {
+can.Control('Bitovi.OSS.ApiSignature', {}, {
 	'h2 click': function(el, ev) {
 		this.element.toggleClass('collapsed');
 	}
 });
-can.Control('CanJSUS.Benefits', {
+can.Control('Bitovi.OSS.Benefits', {
 	defaults: {
 		tabs: {
 			flexible: {
@@ -7649,7 +7649,6 @@ can.Control('CanJSUS.Benefits', {
 		this._switchBenefit('powerful');
 	},
 	'li mouseover': function(el, ev) {
-		console.log(el.data('benefit'));
 		this._switchBenefit(el.data('benefit'));
 	},
 	_switchBenefit: function(benefit) {
@@ -7660,18 +7659,19 @@ can.Control('CanJSUS.Benefits', {
 
 	}
 });
-can.Control('CanJSUS.CDNChooser', {
+can.Control('Bitovi.OSS.CDNChooser', {
 	defaults: {
 		version: '',
 		libraries: [],
-		selectedLibrary: ''
+		selectedLibrary: '',
+		cdn: Bitovi.URL.CDN
 	}
 }, {
 	init: function() {
 		this.options = new can.Observe(this.options);
 		
 		var self = this;
-		CanJSUS.Configuration.findOne().done(function(config) {
+		Bitovi.OSS.Configuration.findOne().done(function(config) {
 			self.options.libraries.attr(config.libraries);
 			self.options.attr('version', config.version);
 			self.element.find('select').change();
@@ -7700,7 +7700,7 @@ can.Control('CanJSUS.CDNChooser', {
 		this.options.attr('selectedLibrary', el.val());
 	}
 });
-can.Control('CanJSUS.CommunityTab', {
+can.Control('Bitovi.OSS.CommunityTab', {
 	defaults: {
 		view: ''
 	}
@@ -7713,7 +7713,7 @@ can.Control('CanJSUS.CommunityTab', {
 		this.element.html(can.view(this.options.view, this.options.state));
 	}
 });
-can.Control('CanJSUS.CommunityTabs', {
+can.Control('Bitovi.OSS.CommunityTabs', {
 	defaults: {
 		tabControls: {
 			'forums': 'ForumsTab',
@@ -7731,24 +7731,24 @@ can.Control('CanJSUS.CommunityTabs', {
 		this.state = new can.Observe({});
 		var self = this;
 
-		CanJSUS.ForumPost.findAll({limit: 3}).done(function(posts) {
+		Bitovi.OSS.ForumPost.findAll({limit: 3}).done(function(posts) {
 			self.state.attr('forumPosts', posts);
 		});
 		// Missing counts for forum categories
-		CanJSUS.ChatLine.findAll({limit: 30}).done(function(lines) {
+		Bitovi.OSS.ChatLine.findAll({limit: 30}).done(function(lines) {
 			self.state.attr('lines', lines);
 		});
-		CanJSUS.Plugin.findAll({limit: 3}).done(function(plugins) {
+		Bitovi.OSS.Plugin.findAll({limit: 3}).done(function(plugins) {
 			self.state.attr('plugins', plugins);
 		});
 		// Missing counts for plugins/apps/articles
-		CanJSUS.Tweet.findAll({limit: 3}).done(function(tweets) {
+		Bitovi.OSS.Tweet.findAll({limit: 3}).done(function(tweets) {
 			self.state.attr('tweets', tweets);
 		});
-		CanJSUS.GithubIssue.findAll({limit: 3}).done(function(issues) {
+		Bitovi.OSS.GithubIssue.findAll({limit: 3}).done(function(issues) {
 			self.state.attr('issues', issues);
 		});
-		CanJSUS.GithubEvent.findAll({limit: 3}).done(function(commits) {
+		Bitovi.OSS.GithubEvent.findAll({limit: 3}).done(function(commits) {
 			self.state.attr('commits', commits);
 		});
 		// Missing follower counts for github
@@ -7767,10 +7767,10 @@ can.Control('CanJSUS.CommunityTabs', {
 			.find('li').removeClass('active')
 			.filter('.' + selectedTab).addClass('active');
 		var tabControl = this.options.tabControls[selectedTab];
-		new CanJSUS[tabControl]($('.content > .container'), {state: this.state});
+		new Bitovi.OSS[tabControl]($('.content > .container'), {state: this.state});
 	}
 });
-can.Control("CanJSUS.ContentsList", {
+can.Control("Bitovi.OSS.ContentsList", {
 	init: function() {
 		var sections = [];
 
@@ -7808,7 +7808,7 @@ can.Control("CanJSUS.ContentsList", {
 		return $('.content .comment h2');
 	}
 });
-can.Control('CanJSUS.DownloadCustomizer', {
+can.Control('Bitovi.OSS.DownloadCustomizer', {
 	defaults: {
 		minified: false,
 		configuration: null,
@@ -7821,7 +7821,7 @@ can.Control('CanJSUS.DownloadCustomizer', {
 		this.checkAlls = {};
 		
 		var self = this;
-		CanJSUS.Configuration.findOne().done(function(config) {
+		Bitovi.OSS.Configuration.findOne().done(function(config) {
 			self.isDependedOnBy = self._collectDependedOn(config);
 			self.options.attr('configuration', config);
 			can.each(config.types, function(obj, type) {
@@ -7853,7 +7853,7 @@ can.Control('CanJSUS.DownloadCustomizer', {
 		if(el.prop('checked')) {
 			// also check dependencies
 			can.each(can.data(el, 'module').dependencies, function(dependency) {
-				$('#' + CanJSUS.Configuration.pathToID(dependency)).prop('checked', true).change();
+				$('#' + Bitovi.OSS.Configuration.pathToID(dependency)).prop('checked', true).change();
 			});
 
 			if(! $('[name=' + el.prop('name') + ']:checkbox:enabled:not(:checked)').length) {
@@ -7866,7 +7866,7 @@ can.Control('CanJSUS.DownloadCustomizer', {
 			if(this.isDependedOnBy[el.val()]) {
 				// uncheck depended-on-cies
 				can.each(this.isDependedOnBy[el.val()], function(dependedOn) {
-					$('#' + CanJSUS.Configuration.pathToID(dependedOn)).prop('checked', false).change();
+					$('#' + Bitovi.OSS.Configuration.pathToID(dependedOn)).prop('checked', false).change();
 				});
 			}
 		}
@@ -7875,7 +7875,7 @@ can.Control('CanJSUS.DownloadCustomizer', {
 		this.checkAlls[can.data(el, 'type')] = el.prop('checked');
 
 		can.each(this.options.configuration.types[can.data(el, 'type')].modules, function(module) {
-			var check = $('#' + CanJSUS.Configuration.pathToID(module.id))
+			var check = $('#' + Bitovi.OSS.Configuration.pathToID(module.id))
 			if(! check.prop('disabled')) {
 				check.prop('checked', el.prop('checked')).change();
 			}
@@ -7902,7 +7902,7 @@ can.Control('CanJSUS.DownloadCustomizer', {
 	}
 
 });
-CanJSUS.CommunityTab('CanJSUS.ForumsTab', {
+Bitovi.OSS.CommunityTab('Bitovi.OSS.ForumsTab', {
 	defaults: {
 		view: 'templates/forumsTab.mustache'
 	}
@@ -7931,7 +7931,7 @@ CanJSUS.CommunityTab('CanJSUS.ForumsTab', {
 		}
 	}
 });
-CanJSUS.CommunityTab('CanJSUS.GithubTab', {
+Bitovi.OSS.CommunityTab('Bitovi.OSS.GithubTab', {
 	defaults: {
 		view: 'templates/githubTab.mustache'
 	}
@@ -7944,7 +7944,7 @@ CanJSUS.CommunityTab('CanJSUS.GithubTab', {
 		});
 	}
 });
-CanJSUS.DownloadCustomizer('CanJSUS.HeroDownloadCustomizer', {
+Bitovi.OSS.DownloadCustomizer('Bitovi.OSS.HeroDownloadCustomizer', {
 	defaults: {
 		view: 'templates/heroDownloadCustomizer.mustache'
 	}
@@ -7995,7 +7995,7 @@ CanJSUS.DownloadCustomizer('CanJSUS.HeroDownloadCustomizer', {
 		}
 	}
 });
-CanJSUS.CommunityTab('CanJSUS.IRCTab', {
+Bitovi.OSS.CommunityTab('Bitovi.OSS.IRCTab', {
 	defaults: {
 		view: 'templates/ircTab.mustache'
 	}
@@ -8013,7 +8013,7 @@ CanJSUS.CommunityTab('CanJSUS.IRCTab', {
 		window.setTimeout(can.proxy(this.scrollToBottom, this), 0);
 	}
 });
-CanJSUS.CommunityTab('CanJSUS.IssuesTab', {
+Bitovi.OSS.CommunityTab('Bitovi.OSS.IssuesTab', {
 	defaults: {
 		view: 'templates/issuesTab.mustache'
 	}
@@ -8022,7 +8022,7 @@ CanJSUS.CommunityTab('CanJSUS.IssuesTab', {
 		this._super();
 	}
 });
-can.Control('CanJSUS.LiveExample', {
+can.Control('Bitovi.OSS.LiveExample', {
     defaults: {
         code: "var Todo = can.Model({\n\
   findAll: 'GET /todos',\n\
@@ -8115,7 +8115,7 @@ can.Mustache.registerHelper('makeHref', function(src) {
 		.replace(/\//g, "|") + '.html';
 });
 
-can.Control('CanJSUS.Menu', {
+can.Control('Bitovi.OSS.Menu', {
 	defaults: {
 		emptyText: 'Nothing found...'
 	}
@@ -8161,7 +8161,7 @@ can.Control('CanJSUS.Menu', {
 	}*/
 });
 
-CanJSUS.CommunityTab('CanJSUS.PluginsTab', {
+Bitovi.OSS.CommunityTab('Bitovi.OSS.PluginsTab', {
 	defaults: {
 		view: 'templates/pluginsTab.mustache'
 	}
@@ -8170,7 +8170,7 @@ CanJSUS.CommunityTab('CanJSUS.PluginsTab', {
 		this._super();
 	}
 });
-can.Control('CanJSUS.SocialStats', {
+can.Control('Bitovi.OSS.SocialStats', {
 	defaults: {	}
 }, {
 	init: function() {
@@ -8187,7 +8187,7 @@ can.Control('CanJSUS.SocialStats', {
 		// TODO: create helper so that plurals are correct.
 	}
 });
-CanJSUS.CommunityTab('CanJSUS.TwitterTab', {
+Bitovi.OSS.CommunityTab('Bitovi.OSS.TwitterTab', {
 	defaults: {
 		view: 'templates/twitterTab.mustache'
 	}
@@ -8198,11 +8198,11 @@ CanJSUS.CommunityTab('CanJSUS.TwitterTab', {
 });
 (function(window) {
 can.view.preload('templates_benefitTabs_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("  <ul class=\"circle-tabs\">");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'ul',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("makeTabs",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("tabs",{context:___st4ck(___c0nt3xt,this),options:options},false,true),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push(" \t<li class=\"");___v1ew.push(can.view.txt(1,'li','class',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("className",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" data-benefit=\"");___v1ew.push(can.view.txt(1,'li','data-benefit',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("className",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push("<a href=\"");___v1ew.push(can.view.txt(1,'a','href',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("link",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'a',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("title",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</a></li>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push(" </ul>");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("with",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("selectedTab",{context:___st4ck(___c0nt3xt,this),options:options},false,true),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push(" <div class=\"tab-description ");___v1ew.push(can.view.txt(1,'div','class',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("className",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("tagline",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push(" <a href=\"");___v1ew.push(can.view.txt(1,'a','href',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("link",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push("more</a></div>");return ___v1ew.join("");}}])}));; return ___v1ew.join('')}} }));
-can.view.preload('templates_cdnChooser_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<h4>CDN:</h4>\n<div class=\"input\">\n\t<div class=\"dropdown\">\n\t  <select>");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'select',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("libraries",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t    <option value=\"");___v1ew.push(can.view.txt(1,'option','value',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'option',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("description",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</option>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("\t  </select>\n  </div>\n  <span class=\"cdn-link\">http://canjs.com/release/");___v1ew.push(can.view.txt(1,'span',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("version",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("/can.");___v1ew.push(can.view.txt(1,'span',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("selectedLibrary",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push(".js</span>\n</div>");; return ___v1ew.join('')}} }));
+can.view.preload('templates_cdnChooser_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<h4>CDN:</h4>\n<div class=\"input\">\n\t<div class=\"dropdown\">\n\t  <select>");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'select',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("libraries",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t    <option value=\"");___v1ew.push(can.view.txt(1,'option','value',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'option',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("description",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</option>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("\t  </select>\n  </div>\n  <span class=\"cdn-link\">");___v1ew.push(can.view.txt(1,'span',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("cdn",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("/");___v1ew.push(can.view.txt(1,'span',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("version",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("/can.");___v1ew.push(can.view.txt(1,'span',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("selectedLibrary",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push(".js</span>\n</div>");; return ___v1ew.join('')}} }));
 can.view.preload('templates_chat_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<div class=\"irc-chat-container\">");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("lines",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t<div><span class=\"username\">");___v1ew.push(can.view.txt(1,'span',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("actor",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</span>: ");___v1ew.push(can.view.txt(1,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("body",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</div>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("</div>");; return ___v1ew.join('')}} }));
 can.view.preload('templates_communityTabs_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<ul class=\"circle-tabs\">\n   <li class=\"forums\"><a>Forums</a></li>\n   <li class=\"irc\"><a>IRC</a></li>\n   <li class=\"plugins\"><a>Apps & Plugins</a></li>\n   <li class=\"twitter\"><a>Twitter</a></li>\n   <li class=\"issues\"><a>Issues</a></li>\n   <li class=\"github\"><a>Github</a></li>\n</ul>");; return ___v1ew.join('')}} }));
 can.view.preload('templates_contentsList_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<ul>");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'ul',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("sections",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t<li><a href=\"#");___v1ew.push(can.view.txt(1,'a','href',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'a',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("text",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</a></li>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("</ul>");; return ___v1ew.join('')}} }));
-can.view.preload('templates_downloadCustomizer_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<h1>Customize<span class=\"pullright\">version ");___v1ew.push(can.view.txt(1,'span',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("versionNumber",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("configuration.version",{context:___st4ck(___c0nt3xt,this),options:options},false,true));}));___v1ew.push("</span></h1>\n<form method=\"get\" action=\"http://bitbuilder.herokuapp.com/can.custom.js\">\n  <div class=\"libraries\">Library:");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("configuration.libraries",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("    <input type=\"radio\" id=\"");___v1ew.push(can.view.txt(1,'input','id',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" name=\"configuration\" value=\"");___v1ew.push(can.view.txt(1,'input','value',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("name",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" ");___v1ew.push(can.view.txt(0,'input',1,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("isDefault",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("checked");return ___v1ew.join("");}}])}));___v1ew.push("",can.view.pending(),">");___v1ew.push("<label for=\"");___v1ew.push(can.view.txt(1,'label','for',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" class=\"radio\"",can.view.pending(),">");___v1ew.push("</label>\n    <label for=\"");___v1ew.push(can.view.txt(1,'label','for',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'label',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("description",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</label>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("    \n    <span class=\"pullright\">\n      <input id=\"minify\" type=\"checkbox\" name=\"minify\" value=\"true\" ");___v1ew.push(can.view.txt(0,'input',1,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("minified",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("checked");return ___v1ew.join("");}}])}));___v1ew.push("",can.view.pending(),">");___v1ew.push("<label for=\"minify\" class=\"checkbox\"></label><label for=\"minify\">Minified</label>\n    </span>\n  </div>\n  \n  <table class=\"options\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n    <tr>\n      <th width=\"40\" align=\"center\" valign=\"top\"><input type=\"checkbox\" class=\"all\" id=\"core\" data-type=\"core\"/><label for=\"core\" class=\"checkbox\"></label></th>\n      <th colspan=\"2\" align=\"center\" valign=\"middle\"><label for=\"core\">Core</label></th>\n    </tr>");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'table',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("configuration.types.core.modules",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("    <tr>\n      <td width=\"40\" align=\"center\" valign=\"top\"><input type=\"checkbox\" id=\"");___v1ew.push(can.view.txt(1,'input','id',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" class=\"module\" name=\"plugins\" value=\"");___v1ew.push(can.view.txt(1,'input','value',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("path",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" ");___v1ew.push(can.view.txt(0,'input',1,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("isDefault",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("checked");return ___v1ew.join("");}}])}));___v1ew.push(" ");___v1ew.push(can.view.txt(1,'input',1,this,function(){ return can.proxy(function(__){can.data(can.$(__),'module', this.pop()); }, ___st4ck(___c0nt3xt,this))}));___v1ew.push("",can.view.pending(),"/>");___v1ew.push("<label for=\"");___v1ew.push(can.view.txt(1,'label','for',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" class=\"checkbox\"",can.view.pending(),">");___v1ew.push("</label></td>\n      <td width=\"175\" align=\"left\" valign=\"top\"><label for=\"");___v1ew.push(can.view.txt(1,'label','for',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'label',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("name",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</label></td>\n      <td align=\"left\" valign=\"top\">");___v1ew.push(can.view.txt(1,'td',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("description",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</td>\n    </tr>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("    </tr>\n  </table>\n  <table class=\"options\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n    <tr>\n      <th width=\"40\" align=\"center\" valign=\"top\"><input type=\"checkbox\" class=\"all checkbox\" id=\"plugin\" data-type=\"plugin\"/><label for=\"plugin\" class=\"checkbox\"></label></th>\n      <th colspan=\"2\" align=\"center\" valign=\"middle\"><label for=\"plugin\">Plugins</label></th>\n    </tr>");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'table',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("configuration.types.plugin.modules",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("    <tr>\n      <td width=\"40\" align=\"center\" valign=\"top\"><input type=\"checkbox\" id=\"");___v1ew.push(can.view.txt(1,'input','id',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" class=\"module\" name=\"plugins\" value=\"");___v1ew.push(can.view.txt(1,'input','value',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("path",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" ");___v1ew.push(can.view.txt(0,'input',1,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("isDefault",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("checked");return ___v1ew.join("");}}])}));___v1ew.push(" ");___v1ew.push(can.view.txt(1,'input',1,this,function(){ return can.proxy(function(__){can.data(can.$(__),'module', this.pop()); }, ___st4ck(___c0nt3xt,this))}));___v1ew.push("",can.view.pending(),"/>");___v1ew.push("<label for=\"");___v1ew.push(can.view.txt(1,'label','for',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" class=\"checkbox\"",can.view.pending(),">");___v1ew.push("</label></td>\n      <td width=\"175\" align=\"left\" valign=\"top\"><label for=\"");___v1ew.push(can.view.txt(1,'label','for',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'label',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("name",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</label></td>\n      <td align=\"left\" valign=\"top\">");___v1ew.push(can.view.txt(1,'td',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("description",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</td>\n    </tr>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("    </tr>\n  </table>\n  \n  <br />\n  <div class=\"download-button\">\n    <button class=\"color\" type=\"submit\">Customize & Download</button>\n  </div>\n</form>");; return ___v1ew.join('')}} }));
+can.view.preload('templates_downloadCustomizer_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<h1>Customize<span class=\"pullright\">version ");___v1ew.push(can.view.txt(1,'span',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("versionNumber",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("configuration.version",{context:___st4ck(___c0nt3xt,this),options:options},false,true));}));___v1ew.push("</span></h1>\n<form method=\"get\" action=\"http://bitbuilder.herokuapp.com/can.custom.js\">");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'form',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"^",can.Mustache.get("configuration",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{inverse:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t<div class=\"loading\"/>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("  ");___v1ew.push(can.view.txt(0,'form',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("if",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("configuration",{context:___st4ck(___c0nt3xt,this),options:options},false,true),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\n  <div class=\"libraries\">Library:");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("configuration.libraries",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("    <input type=\"radio\" id=\"");___v1ew.push(can.view.txt(1,'input','id',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" name=\"configuration\" value=\"");___v1ew.push(can.view.txt(1,'input','value',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("name",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" ");___v1ew.push(can.view.txt(0,'input',1,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("isDefault",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("checked");return ___v1ew.join("");}}])}));___v1ew.push("",can.view.pending(),">");___v1ew.push("<label for=\"");___v1ew.push(can.view.txt(1,'label','for',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" class=\"radio\"",can.view.pending(),">");___v1ew.push("</label>\n    <label for=\"");___v1ew.push(can.view.txt(1,'label','for',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'label',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("description",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</label>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("    <span class=\"pullright\">\n      <input id=\"minify\" type=\"checkbox\" name=\"minify\" value=\"true\" ");___v1ew.push(can.view.txt(0,'input',1,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("minified",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("checked");return ___v1ew.join("");}}])}));___v1ew.push("",can.view.pending(),">");___v1ew.push("<label for=\"minify\" class=\"checkbox\"></label><label for=\"minify\">Minified</label>\n    </span>\n  </div>\n  <table class=\"options\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n    <tr>\n      <th width=\"40\" align=\"center\" valign=\"top\"><input type=\"checkbox\" class=\"all\" id=\"core\" data-type=\"core\"/><label for=\"core\" class=\"checkbox\"></label></th>\n      <th colspan=\"2\" align=\"center\" valign=\"middle\"><label for=\"core\">Core</label></th>\n    </tr>");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'table',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("configuration.types.core.modules",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("    <tr>\n      <td width=\"40\" align=\"center\" valign=\"top\"><input type=\"checkbox\" id=\"");___v1ew.push(can.view.txt(1,'input','id',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" class=\"module\" name=\"plugins\" value=\"");___v1ew.push(can.view.txt(1,'input','value',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("path",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" ");___v1ew.push(can.view.txt(0,'input',1,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("isDefault",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("checked");return ___v1ew.join("");}}])}));___v1ew.push(" ");___v1ew.push(can.view.txt(1,'input',1,this,function(){ return can.proxy(function(__){can.data(can.$(__),'module', this.pop()); }, ___st4ck(___c0nt3xt,this))}));___v1ew.push("",can.view.pending(),"/>");___v1ew.push("<label for=\"");___v1ew.push(can.view.txt(1,'label','for',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" class=\"checkbox\"",can.view.pending(),">");___v1ew.push("</label></td>\n      <td width=\"175\" align=\"left\" valign=\"top\"><label for=\"");___v1ew.push(can.view.txt(1,'label','for',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'label',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("name",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</label></td>\n      <td align=\"left\" valign=\"top\">");___v1ew.push(can.view.txt(1,'td',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("description",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</td>\n    </tr>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("    </tr>\n  </table>\n  <table class=\"options\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n    <tr>\n      <th width=\"40\" align=\"center\" valign=\"top\"><input type=\"checkbox\" class=\"all checkbox\" id=\"plugin\" data-type=\"plugin\"/><label for=\"plugin\" class=\"checkbox\"></label></th>\n      <th colspan=\"2\" align=\"center\" valign=\"middle\"><label for=\"plugin\">Plugins</label></th>\n    </tr>");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'table',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("configuration.types.plugin.modules",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("    <tr>\n      <td width=\"40\" align=\"center\" valign=\"top\"><input type=\"checkbox\" id=\"");___v1ew.push(can.view.txt(1,'input','id',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" class=\"module\" name=\"plugins\" value=\"");___v1ew.push(can.view.txt(1,'input','value',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("path",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" ");___v1ew.push(can.view.txt(0,'input',1,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("isDefault",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("checked");return ___v1ew.join("");}}])}));___v1ew.push(" ");___v1ew.push(can.view.txt(1,'input',1,this,function(){ return can.proxy(function(__){can.data(can.$(__),'module', this.pop()); }, ___st4ck(___c0nt3xt,this))}));___v1ew.push("",can.view.pending(),"/>");___v1ew.push("<label for=\"");___v1ew.push(can.view.txt(1,'label','for',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\" class=\"checkbox\"",can.view.pending(),">");___v1ew.push("</label></td>\n      <td width=\"175\" align=\"left\" valign=\"top\"><label for=\"");___v1ew.push(can.view.txt(1,'label','for',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("id",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'label',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("name",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</label></td>\n      <td align=\"left\" valign=\"top\">");___v1ew.push(can.view.txt(1,'td',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("description",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</td>\n    </tr>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("    </tr>\n  </table>\n  <br />\n  <div class=\"download-button\">\n    <button class=\"color\" type=\"submit\">Customize & Download</button>\n  </div>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("</form>");; return ___v1ew.join('')}} }));
 can.view.preload('templates_forumPost_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<div class=\"bithub-post\">\n\t<!-- Commented out b/c it doesn't make sense without the ability to vote up, which we can't do yet. //TG -->\n\t<!-- <div class=\"pull-left score\">");___v1ew.push(can.view.txt(1,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("points",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</div> --> \n\t\n\t<h5><a href=\"");___v1ew.push(can.view.txt(1,'a','href',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("link",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'a',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("title",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</a></h5>\n\t<p>");___v1ew.push(can.view.txt(1,'p',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("truncatePost",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("body",{context:___st4ck(___c0nt3xt,this),options:options},false,true));}));___v1ew.push(" <a href=\"");___v1ew.push(can.view.txt(1,'a','href',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("link",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push("+</a></p>\n\t<div class=\"bithub-footer\">");___v1ew.push(can.view.txt(1,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("actor",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push(" / ");___v1ew.push(can.view.txt(1,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("formatDate",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("date",{context:___st4ck(___c0nt3xt,this),options:options},false,true));}));___v1ew.push(" via <a href=\"");___v1ew.push(can.view.txt(1,'a','href',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("link",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'a',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("feed",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</a></div>\n</div>");; return ___v1ew.join('')}} }));
 can.view.preload('templates_forumsTab_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<div class=\"tab-description forums\">\n\t<form id=\"forumSearch\">\n\t\t<input type=\"search\" placeholder=\"Search the forums...\" />\n\t\t<button type=\"button\">Go</button>\n\t</form>\n\t<div class=\"posts\">\n\t\t<h1>Recent Posts</h1>\n\t\t<div class=\"bithub-content\">");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("forumPosts",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t\t");___v1ew.push(can.view.txt(0,'div',0,this,function(){ return options.partials && options.partials['templates/forumPost.mustache'] ? can.Mustache.renderPartial(options.partials['templates/forumPost.mustache'],___st4ck(___c0nt3xt,this).pop(),options) : can.Mustache.render('templates/forumPost.mustache', ___st4ck(___c0nt3xt,this))}));___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("\t\t");___v1ew.push(can.view.txt(0,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"^",can.Mustache.get("forumPosts",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{inverse:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\n\t\t<div class=\"loading\"/>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("\t\t</div>\n\t</div>\n\t<div class=\"pull-right categories\">\n\t\t<ul>\n\t\t\t<li><a href=\"https://forum.javascriptmvc.com/#filter/discussions\">Discussions</a></li>\n\t\t\t<li><a href=\"https://forum.javascriptmvc.com/#filter/announcement\">Announcements</a></li>\n\t\t\t<li><a href=\"https://forum.javascriptmvc.com/#filter/questions\">Questions</a></li>\n\t\t\t<li><a href=\"https://forum.javascriptmvc.com/#filter/ideas\">Ideas</a></li>\n\t\t\t<li><a href=\"https://forum.javascriptmvc.com/#filter/problems\">Problems</a></li>\n\t\t</ul>\n\t\t<!--<ul>\n\t\t\t<li><a href=\"#\">Today</a></li>\n\t\t\t<li><a href=\"#\">This Week</a></li>\n\t\t\t<li><a href=\"#\">This Month</a></li>\n\t\t\t<li><a href=\"#\">This Year</a></li>\n\t\t</ul>-->\n\t</div>\n</div><!-- .tab-description -->");; return ___v1ew.join('')}} }));
 can.view.preload('templates_githubEvent_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<div class=\"bithub-post\">\n\t<!-- Commented out b/c it doesn't make sense without the ability to vote up, which we can't do yet. //TG -->\n\t<!-- <div class=\"pull-left score\">");___v1ew.push(can.view.txt(1,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("points",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</div> --> \n\t\n\t<h2><a href=\"");___v1ew.push(can.view.txt(1,'a','href',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("link",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'a',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("actor",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push(" ");___v1ew.push(can.view.txt(1,'a',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("title",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</a></h2>");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("commits",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t<p>- ");___v1ew.push(can.view.txt(1,'p',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("truncateHash",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("hash",{context:___st4ck(___c0nt3xt,this),options:options},false,true));}));___v1ew.push(" ");___v1ew.push(can.view.txt(1,'p',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("message",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</p>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("\t<div class=\"bithub-footer\"><a href=\"http://bithub.com/users/");___v1ew.push(can.view.txt(1,'a','href',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("actorID",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'a',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("actor",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</a> / ");___v1ew.push(can.view.txt(1,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("formatDate",{context:___st4ck(___c0nt3xt,this),options:options},true,false),can.Mustache.get("date",{context:___st4ck(___c0nt3xt,this),options:options},false,true));}));___v1ew.push(" via <a href=\"");___v1ew.push(can.view.txt(1,'a','href',this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("link",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("\"",can.view.pending(),">");___v1ew.push(can.view.txt(1,'a',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},null,can.Mustache.get("feed",{context:___st4ck(___c0nt3xt,this),options:options},false,false));}));___v1ew.push("</a></div>\n</div>");; return ___v1ew.join('')}} }));
@@ -8219,9 +8219,7 @@ can.view.preload('templates_tweet_mustache',can.Mustache(function(_CONTEXT,_VIEW
 can.view.preload('templates_twitterTab_mustache',can.Mustache(function(_CONTEXT,_VIEW) { with(_VIEW) { with (_CONTEXT) {var ___v1ew = [];var ___c0nt3xt = this && this.___st4ck3d ? this : [];___c0nt3xt.___st4ck3d = true;var ___st4ck = function(context, self) {var s;if (arguments.length == 1 && context) {s = !context.___st4ck3d ? [context] : context;} else if (!context.___st4ck3d) {s = [self, context];} else if (context && context === self && context.___st4ck3d) {s = context.slice(0);} else {s = context && context.___st4ck3d ? context.concat([self]) : ___st4ck(context).concat([self]);}return (s.___st4ck3d = true) && s;};___v1ew.push("<div class=\"tab-description twitter\">\n\t<div class=\"pull-right categories\">\n\t\t<a href=\"http://twitter.com/canjs\" class=\"button\"><span class=\"icon-twitter\"></span> Follow on Twitter</a>\n\t</div><!-- categories -->\n\t<div class=\"posts\">\n\t\t<h1>Recent CanJS Tweets</h1>\n\t\t<div class=\"bithub-content\">");___v1ew.push("\n");___v1ew.push(can.view.txt(0,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"#",can.Mustache.get("tweets",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{fn:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\t\t\t");___v1ew.push(can.view.txt(0,'div',0,this,function(){ return options.partials && options.partials['templates/tweet.mustache'] ? can.Mustache.renderPartial(options.partials['templates/tweet.mustache'],___st4ck(___c0nt3xt,this).pop(),options) : can.Mustache.render('templates/tweet.mustache', ___st4ck(___c0nt3xt,this))}));___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("\t\t\t");___v1ew.push(can.view.txt(0,'div',0,this,function(){ return can.Mustache.txt({context:___st4ck(___c0nt3xt,this),options:options},"^",can.Mustache.get("tweets",{context:___st4ck(___c0nt3xt,this),options:options},false,false),[{_:function(){return ___v1ew.join("");}},{inverse:function(___c0nt3xt){var ___v1ew = [];___v1ew.push("\n\t\t\t<div class=\"loading\"/>");___v1ew.push("\n");return ___v1ew.join("");}}])}));___v1ew.push("\t\t</div>\n\t</div>\n</div>");; return ___v1ew.join('')}} }));
 })(this);
 (function($) {
-	window.CanJSUS = window.CanJSUS || {};
-
-	window.CanJSUS.initTwitterWidgets = function() {
+	Bitovi.OSS.initTwitterWidgets = function() {
 		if($('.twitter-follow-button').length) {
 			// replace the "Follow @canjs!" link with a little wiget with follower count.
 			$('#twitter-wjs').remove();
@@ -8237,10 +8235,10 @@ can.view.preload('templates_twitterTab_mustache',can.Mustache(function(_CONTEXT,
 		}
 	};
 
-	window.CanJSUS.redrawFont = function() {
+	Bitovi.OSS.redrawFont = function() {
 		var style = $('<style>:before,:after{content:none !important}</style>');
 		$('head').append(style);
-		
+
 		window.setTimeout(function() {
 			style.remove();
 		}, 0);
@@ -8249,13 +8247,13 @@ can.view.preload('templates_twitterTab_mustache',can.Mustache(function(_CONTEXT,
 	var initControls = function(mappings) {
 		can.each(mappings, function(name, selector) {
 			$(selector).each(function() {
-				new CanJSUS[name]($(this));
+				new Bitovi.OSS[name]($(this));
 			});
 		});
 	}
 
 	$(function() {
-		CanJSUS.initTwitterWidgets();
+		Bitovi.OSS.initTwitterWidgets();
 		initControls({
 			'.index #hero-download': 'HeroDownloadCustomizer',
 			'.index .benefits': 'Benefits',

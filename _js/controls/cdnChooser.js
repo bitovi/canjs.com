@@ -1,15 +1,16 @@
-can.Control('CanJSUS.CDNChooser', {
+can.Control('Bitovi.OSS.CDNChooser', {
 	defaults: {
 		version: '',
 		libraries: [],
-		selectedLibrary: ''
+		selectedLibrary: '',
+		cdn: Bitovi.URL.CDN
 	}
 }, {
 	init: function() {
 		this.options = new can.Observe(this.options);
 		
 		var self = this;
-		CanJSUS.Configuration.findOne().done(function(config) {
+		Bitovi.OSS.Configuration.findOne().done(function(config) {
 			self.options.libraries.attr(config.libraries);
 			self.options.attr('version', config.version);
 			self.element.find('select').change();

@@ -1,4 +1,4 @@
-can.Model("CanJSUS.Tweet", {
+can.Model("Bitovi.OSS.Tweet", {
 	model: function(data) {
 		return {
 			handle: data.actor,
@@ -13,7 +13,7 @@ can.Model("CanJSUS.Tweet", {
 		};
 	},
 	findAll: {
-		url: 'http://api.bithub.com/api/events/?feed=twitter&order=origin_ts:desc&limit={limit}',
+		url: Bitovi.URL.BITHUB + '?feed=twitter&order=origin_ts:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });

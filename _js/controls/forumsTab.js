@@ -1,4 +1,4 @@
-CanJSUS.CommunityTab('CanJSUS.ForumsTab', {
+Bitovi.OSS.CommunityTab('Bitovi.OSS.ForumsTab', {
 	defaults: {
 		view: 'templates/forumsTab.mustache'
 	}

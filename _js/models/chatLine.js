@@ -1,7 +1,7 @@
-can.Model("CanJSUS.ChatLine", {
+can.Model("Bitovi.OSS.ChatLine", {
 	models: function(list) {
 		var models = list.data.map(function(el) {
-			return CanJSUS.ChatLine.model(el);
+			return Bitovi.OSS.ChatLine.model(el);
 		});
 
 		return new can.Observe.List(models).reverse();
@@ -15,7 +15,7 @@ can.Model("CanJSUS.ChatLine", {
 		};
 	},
 	findAll: {
-		url: 'http://api.bithub.com/api/events/?category=chat&order=origin_ts:desc&limit={limit}',
+		url: Bitovi.URL.BITHUB + '?category=chat&order=origin_ts:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });

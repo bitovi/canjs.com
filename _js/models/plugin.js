@@ -1,4 +1,4 @@
-can.Model("CanJSUS.Plugin", {
+can.Model("Bitovi.OSS.Plugin", {
 	model: function(data) {
 		// The API's not returning plugins and apps yet, so this may
 		// end up being innacurate.
@@ -14,7 +14,7 @@ can.Model("CanJSUS.Plugin", {
 		};
 	},
 	findAll: {
-		url: 'http://api.bithub.com/api/events/?category=article|app|plugin&order=upvotes:desc&limit={limit}',
+		url: Bitovi.URL.BITHUB + '?category=article|app|plugin&order=upvotes:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });

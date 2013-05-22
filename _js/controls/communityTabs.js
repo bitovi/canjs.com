@@ -1,4 +1,4 @@
-can.Control('CanJSUS.CommunityTabs', {
+can.Control('Bitovi.OSS.CommunityTabs', {
 	defaults: {
 		tabControls: {
 			'forums': 'ForumsTab',
@@ -16,24 +16,24 @@ can.Control('CanJSUS.CommunityTabs', {
 		this.state = new can.Observe({});
 		var self = this;
 
-		CanJSUS.ForumPost.findAll({limit: 3}).done(function(posts) {
+		Bitovi.OSS.ForumPost.findAll({limit: 3}).done(function(posts) {
 			self.state.attr('forumPosts', posts);
 		});
 		// Missing counts for forum categories
-		CanJSUS.ChatLine.findAll({limit: 30}).done(function(lines) {
+		Bitovi.OSS.ChatLine.findAll({limit: 30}).done(function(lines) {
 			self.state.attr('lines', lines);
 		});
-		CanJSUS.Plugin.findAll({limit: 3}).done(function(plugins) {
+		Bitovi.OSS.Plugin.findAll({limit: 3}).done(function(plugins) {
 			self.state.attr('plugins', plugins);
 		});
 		// Missing counts for plugins/apps/articles
-		CanJSUS.Tweet.findAll({limit: 3}).done(function(tweets) {
+		Bitovi.OSS.Tweet.findAll({limit: 3}).done(function(tweets) {
 			self.state.attr('tweets', tweets);
 		});
-		CanJSUS.GithubIssue.findAll({limit: 3}).done(function(issues) {
+		Bitovi.OSS.GithubIssue.findAll({limit: 3}).done(function(issues) {
 			self.state.attr('issues', issues);
 		});
-		CanJSUS.GithubEvent.findAll({limit: 3}).done(function(commits) {
+		Bitovi.OSS.GithubEvent.findAll({limit: 3}).done(function(commits) {
 			self.state.attr('commits', commits);
 		});
 		// Missing follower counts for github
@@ -52,6 +52,6 @@ can.Control('CanJSUS.CommunityTabs', {
 			.find('li').removeClass('active')
 			.filter('.' + selectedTab).addClass('active');
 		var tabControl = this.options.tabControls[selectedTab];
-		new CanJSUS[tabControl]($('.content > .container'), {state: this.state});
+		new Bitovi.OSS[tabControl]($('.content > .container'), {state: this.state});
 	}
 });

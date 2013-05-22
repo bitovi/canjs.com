@@ -1,17 +1,22 @@
 <h1>Customize<span class="pullright">version {{versionNumber configuration.version}}</span></h1>
 <form method="get" action="http://bitbuilder.herokuapp.com/can.custom.js">
 
+  {{^configuration}}
+	<div class="loading"/>
+  {{/configuration}}
+
+  {{#if configuration}}
   <div class="libraries">Library:
     {{#configuration.libraries}}
     <input type="radio" id="{{id}}" name="configuration" value="{{name}}" {{#isDefault}}checked{{/isDefault}}><label for="{{id}}" class="radio"></label>
     <label for="{{id}}">{{description}}</label>
     {{/configuration.libraries}}
-    
+
     <span class="pullright">
       <input id="minify" type="checkbox" name="minify" value="true" {{#minified}}checked{{/minified}}><label for="minify" class="checkbox"></label><label for="minify">Minified</label>
     </span>
   </div>
-  
+
   <table class="options" width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <th width="40" align="center" valign="top"><input type="checkbox" class="all" id="core" data-type="core"/><label for="core" class="checkbox"></label></th>
@@ -41,9 +46,10 @@
     {{/configuration.types.plugin.modules}}
     </tr>
   </table>
-  
+
   <br />
   <div class="download-button">
     <button class="color" type="submit">Customize & Download</button>
   </div>
+  {{/if}}
 </form>

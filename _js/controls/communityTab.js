@@ -1,4 +1,4 @@
-can.Control('CanJSUS.CommunityTab', {
+can.Control('Bitovi.OSS.CommunityTab', {
 	defaults: {
 		view: ''
 	}

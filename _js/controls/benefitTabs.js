@@ -1,4 +1,4 @@
-can.Control('CanJSUS.Benefits', {
+can.Control('Bitovi.OSS.Benefits', {
 	defaults: {
 		tabs: {
 			flexible: {
@@ -36,7 +36,6 @@ can.Control('CanJSUS.Benefits', {
 		this._switchBenefit('powerful');
 	},
 	'li mouseover': function(el, ev) {
-		console.log(el.data('benefit'));
 		this._switchBenefit(el.data('benefit'));
 	},
 	_switchBenefit: function(benefit) {

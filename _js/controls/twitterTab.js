@@ -1,4 +1,4 @@
-CanJSUS.CommunityTab('CanJSUS.TwitterTab', {
+Bitovi.OSS.CommunityTab('Bitovi.OSS.TwitterTab', {
 	defaults: {
 		view: 'templates/twitterTab.mustache'
 	}

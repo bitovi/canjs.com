@@ -1,4 +1,4 @@
-can.Control("CanJSUS.ContentsList", {
+can.Control("Bitovi.OSS.ContentsList", {
 	init: function() {
 		var sections = [];
 

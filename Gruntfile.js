@@ -121,7 +121,13 @@ module.exports = function (grunt) {
 				root: '',
 				package: require(__dirname + '/can/package.json'),
 				self: require(__dirname + '/package.json'),
-				helpers: handlebarsHelpers
+				helpers: handlebarsHelpers,
+				url: {
+					builderData: 'http://bitbuilder.herokuapp.com/canjs',
+					builder: 'http://bitbuilder.herokuapp.com/can.custom.js',
+					bithub: 'http://api.bithub.com/api/events/',
+					cdn: '//canjs.com/release/'
+				}
 			},
 			guides: {
 				options: {

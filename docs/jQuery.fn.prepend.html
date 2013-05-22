@@ -2302,6 +2302,16 @@ to render <a href="can.view.html">can.view</a> templates inserted at the beginni
 			</ul>
 		</nav>
 	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: 'http://bitbuilder.herokuapp.com/can.custom.js',
+				BUILDER_DATA: 'http://bitbuilder.herokuapp.com/canjs',
+				BITHUB: 'http://api.bithub.com/api/events/',
+				CDN: '//canjs.com/release/'
+			}
+		}
+	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/production.js"></script>
@@ -2309,7 +2319,7 @@ to render <a href="can.view.html">can.view</a> templates inserted at the beginni
 	<!--[if lt IE 9]>
    	<script type="text/javascript">
    	$(function() {
-   		CanJSUS.redrawFont();
+   		Bitovi.OSS.redrawFont();
    	});
    	</script>
     <!--<![endif]-->

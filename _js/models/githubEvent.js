@@ -1,4 +1,4 @@
-can.Model("CanJSUS.GithubEvent", {
+can.Model("Bitovi.OSS.GithubEvent", {
 	model: function(data) {
 		return {
 			actor: data.actor,
@@ -20,7 +20,7 @@ can.Model("CanJSUS.GithubEvent", {
 		};
 	},
 	findAll: {
-		url: 'http://api.bithub.com/api/events/?category=code&also=source_data&order=origin_ts:desc&limit={limit}',
+		url: Bitovi.URL.BITHUB + '?category=code&also=source_data&order=origin_ts:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });

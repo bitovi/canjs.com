@@ -1,4 +1,4 @@
-CanJSUS.CommunityTab('CanJSUS.PluginsTab', {
+Bitovi.OSS.CommunityTab('Bitovi.OSS.PluginsTab', {
 	defaults: {
 		view: 'templates/pluginsTab.mustache'
 	}

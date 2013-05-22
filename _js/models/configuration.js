@@ -1,16 +1,16 @@
-can.Model('CanJSUS.Configuration', {
+can.Model('Bitovi.OSS.Configuration', {
 	configuration: null,
 	// the configuration is not going to change,
 	// and it's pretty much a singleton, so:
 	findOne: function() {
-		if(CanJSUS.Configuration.configuration === null) {
-			CanJSUS.Configuration.configuration = $.ajax({
-				url: 'http://bitbuilder.herokuapp.com/canjs',
+		if(Bitovi.OSS.Configuration.configuration === null) {
+			Bitovi.OSS.Configuration.configuration = $.ajax({
+				url: Bitovi.URL.BUILDER_DATA,
 				dataType: 'jsonp'
 			});
 		}
 
-		return CanJSUS.Configuration.configuration;
+		return Bitovi.OSS.Configuration.configuration;
 	},
 	model: function(data) {
 		var libraries = [];
@@ -29,7 +29,7 @@ can.Model('CanJSUS.Configuration', {
 		});
 
 		can.each(data.modules, function(module, path) {
-			module.id = CanJSUS.Configuration.pathToID(path);
+			module.id = Bitovi.OSS.Configuration.pathToID(path);
 			module.path = path;
 			types[module.type].modules.push(module);
 		});

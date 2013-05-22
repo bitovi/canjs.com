@@ -1,4 +1,4 @@
-can.Model("CanJSUS.ForumPost", {
+can.Model("Bitovi.OSS.ForumPost", {
 	model: function(data) {
 		return {
 			actor: data.actor,
@@ -12,7 +12,7 @@ can.Model("CanJSUS.ForumPost", {
 		};
 	},
 	findAll: {
-		url: 'http://api.bithub.com/api/events/?feed=forums&order=origin_ts:desc&limit={limit}',
+		url: Bitovi.URL.BITHUB + '?feed=forums&order=origin_ts:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });

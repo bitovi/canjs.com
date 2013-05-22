@@ -1,4 +1,4 @@
-can.Control('CanJSUS.SocialStats', {
+can.Control('Bitovi.OSS.SocialStats', {
 	defaults: {	}
 }, {
 	init: function() {

@@ -1,4 +1,4 @@
-can.Control('CanJSUS.LiveExample', {
+can.Control('Bitovi.OSS.LiveExample', {
     defaults: {
         code: "var Todo = can.Model({\n\
   findAll: 'GET /todos',\n\

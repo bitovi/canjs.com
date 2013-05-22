@@ -1,4 +1,4 @@
-can.Control('CanJSUS.DownloadCustomizer', {
+can.Control('Bitovi.OSS.DownloadCustomizer', {
 	defaults: {
 		minified: false,
 		configuration: null,
@@ -11,7 +11,7 @@ can.Control('CanJSUS.DownloadCustomizer', {
 		this.checkAlls = {};
 		
 		var self = this;
-		CanJSUS.Configuration.findOne().done(function(config) {
+		Bitovi.OSS.Configuration.findOne().done(function(config) {
 			self.isDependedOnBy = self._collectDependedOn(config);
 			self.options.attr('configuration', config);
 			can.each(config.types, function(obj, type) {
@@ -43,7 +43,7 @@ can.Control('CanJSUS.DownloadCustomizer', {
 		if(el.prop('checked')) {
 			// also check dependencies
 			can.each(can.data(el, 'module').dependencies, function(dependency) {
-				$('#' + CanJSUS.Configuration.pathToID(dependency)).prop('checked', true).change();
+				$('#' + Bitovi.OSS.Configuration.pathToID(dependency)).prop('checked', true).change();
 			});
 
 			if(! $('[name=' + el.prop('name') + ']:checkbox:enabled:not(:checked)').length) {
@@ -56,7 +56,7 @@ can.Control('CanJSUS.DownloadCustomizer', {
 			if(this.isDependedOnBy[el.val()]) {
 				// uncheck depended-on-cies
 				can.each(this.isDependedOnBy[el.val()], function(dependedOn) {
-					$('#' + CanJSUS.Configuration.pathToID(dependedOn)).prop('checked', false).change();
+					$('#' + Bitovi.OSS.Configuration.pathToID(dependedOn)).prop('checked', false).change();
 				});
 			}
 		}
@@ -65,7 +65,7 @@ can.Control('CanJSUS.DownloadCustomizer', {
 		this.checkAlls[can.data(el, 'type')] = el.prop('checked');
 
 		can.each(this.options.configuration.types[can.data(el, 'type')].modules, function(module) {
-			var check = $('#' + CanJSUS.Configuration.pathToID(module.id))
+			var check = $('#' + Bitovi.OSS.Configuration.pathToID(module.id))
 			if(! check.prop('disabled')) {
 				check.prop('checked', el.prop('checked')).change();
 			}

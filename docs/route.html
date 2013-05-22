@@ -2290,6 +2290,16 @@ At the top it shows the control action being called and the data passed to it:</
 			</ul>
 		</nav>
 	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: 'http://bitbuilder.herokuapp.com/can.custom.js',
+				BUILDER_DATA: 'http://bitbuilder.herokuapp.com/canjs',
+				BITHUB: 'http://api.bithub.com/api/events/',
+				CDN: '//canjs.com/release/'
+			}
+		}
+	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/production.js"></script>
@@ -2297,7 +2307,7 @@ At the top it shows the control action being called and the data passed to it:</
 	<!--[if lt IE 9]>
    	<script type="text/javascript">
    	$(function() {
-   		CanJSUS.redrawFont();
+   		Bitovi.OSS.redrawFont();
    	});
    	</script>
     <!--<![endif]-->

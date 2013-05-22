@@ -1,4 +1,4 @@
-CanJSUS.CommunityTab('CanJSUS.IRCTab', {
+Bitovi.OSS.CommunityTab('Bitovi.OSS.IRCTab', {
 	defaults: {
 		view: 'templates/ircTab.mustache'
 	}

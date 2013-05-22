@@ -6,7 +6,7 @@ can.Mustache.registerHelper('makeHref', function(src) {
 		.replace(/\//g, "|") + '.html';
 });
 
-can.Control('CanJSUS.Menu', {
+can.Control('Bitovi.OSS.Menu', {
 	defaults: {
 		emptyText: 'Nothing found...'
 	}

@@ -1,4 +1,4 @@
-CanJSUS.DownloadCustomizer('CanJSUS.HeroDownloadCustomizer', {
+Bitovi.OSS.DownloadCustomizer('Bitovi.OSS.HeroDownloadCustomizer', {
 	defaults: {
 		view: 'templates/heroDownloadCustomizer.mustache'
 	}
