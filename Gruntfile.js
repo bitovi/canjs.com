@@ -41,34 +41,6 @@ module.exports = function (grunt) {
 			pkg: grunt.file.readJSON('can/package.json'),
 			path: 'can/'
 		},
-		banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-			'<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-			'<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
-			'* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-			' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
-		// Task configuration.
-		concat: {
-			options: {
-				banner: '<%= banner %>',
-				stripBanners: true
-			},
-			dist: {
-				src: [ '_js/lib/can.custom.js', '_js/lib/can.object.js', '_js/lib/can.fixture.js',
-					   '_js/lib/grayscale.js', '_js/lib/moment.js', '_js/lib/prettify.js',
-					   '_js/models/*.js', '_js/controls/*.js',
-					   '_js/views.production.js', '_js/app.js' ],
-				dest: 'resources/production.js'
-			}
-		},
-		uglify: {
-			options: {
-				banner: '<%= banner %>'
-			},
-			dist: {
-				src: '<%= concat.dist.dest %>',
-				dest: 'resources/production.min.js'
-			}
-		},
 		less: {
 			development: {
 				options: {
@@ -77,12 +49,6 @@ module.exports = function (grunt) {
 				files: {
 					"resources/styles.css": "_styles/styles.less"
 				}
-			}
-		},
-		cancompile: {
-			dist: {
-				src: ['_js/templates/*.mustache'],
-				out: '_js/views.production.js'
 			}
 		},
 		watch: {
@@ -94,10 +60,6 @@ module.exports = function (grunt) {
 				files: '<%= generate.docs.src %>',
 				tasks: ['docs']
 			},
-			js: {
-				files: ['_js/**/*.js', '_js/**/*.mustache'],
-				tasks: ['js']
-			},
 			pages: {
 				files: ['<%= generate.docs.src %>', '_pages/*.mustache', '_layouts/*.mustache', '_docs/*.mustache'],
 				tasks: ['docs']
@@ -105,19 +67,13 @@ module.exports = function (grunt) {
 			guides: {
 				files: ['_guides/*.md'],
 				tasks: ['docs']
-			},
-			all: {
-				files: ['_pages/*.mustache', '_layouts/*.mustache',
-					'_docs/*.mustache', '_js/**/*.js', '_js/**/*.mustache',
-					'<%= generate.docs.src %>', '_styles/*.less'],
-				tasks: ['default']
 			}
 		},
 		generate: {
 			options: {
 				debug: true,
-				layout: '_templates/page.mustache',
-				docs: '_templates/docs.mustache',
+				layout: 'shared/_templates/page.mustache',
+				docs: 'shared/_templates/docs.mustache',
 				root: '',
 				package: require(__dirname + '/can/package.json'),
 				self: require(__dirname + '/package.json'),
@@ -202,20 +158,16 @@ module.exports = function (grunt) {
 	});
 
 	// These plugins provide necessary tasks.
-	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('can-compile');
 	grunt.loadNpmTasks('documentjs');
 
-	grunt.registerTask('js', [ 'cancompile', 'concat', 'uglify' ]);
 	grunt.registerTask('development', ['watch:all']);
 	grunt.registerTask('docs', ['clean', 'generate']);
 
 	// Default task.
-	grunt.registerTask('default', [ 'cancompile', 'concat', 'uglify', 'less', 'clean', 'generate' ]);
+	grunt.registerTask('default', [ 'less', 'clean', 'generate' ]);
 
 };
