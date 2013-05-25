@@ -53,7 +53,7 @@ module.exports = function (grunt) {
 		},
 		watch: {
 			less: {
-				files: ['_styles/*.less'],
+				files: ['_styles/*.less', 'shared/_styles/*.less'],
 				tasks: ['less']
 			},
 			docs: {
@@ -161,7 +161,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-clean');
-	grunt.loadNpmTasks('can-compile');
 	grunt.loadNpmTasks('documentjs');
 
 	grunt.registerTask('development', ['watch:all']);
