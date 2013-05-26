@@ -151,7 +151,7 @@
         "name": "Tutorial",
         "type": "page",
         "id": 21,
-        "title": "Geting Started",
+        "title": "Getting Started",
         "parent": "guides",
         "order": 1
     },
