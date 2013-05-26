@@ -273,6 +273,7 @@ code{background-color:#fdf2dc;}
 pre,code,pre *,code *{font-family:"Courier New",Courier,mono;font-style:normal;font-weight:normal;}
 pre{background-color:#fff;border:1px solid #ccc;border:1px solid rgba(0, 0, 0, 0.15);margin:0;margin-bottom:20px;vertical-align:top;overflow:auto;padding:0px 20px;border-radius:2px;-moz-border-radius:2px;-webkit-border-radius:2px;}pre code{font-size:14px;line-height:16px;letter-spacing:0px;background-color:rgba(0, 0, 0, 0);}
 pre ol{margin:0 0 0 40px;padding:0;}pre ol li{text-indent:0;color:#333;background-color:#fff;margin:0;}
+h2 code{background-color:none !important;}
 .pln{color:#4d4d4c;}
 @media screen{.str{color:#718c00;} .kwd{color:#8959a8;} .com{color:#8e908c;} .typ{color:#4271ae;} .lit{color:#f5871f;} .pun{color:#4d4d4c;} .opn{color:#4d4d4c;} .clo{color:#4d4d4c;} .tag{color:#c82829;} .atn{color:#f5871f;} .atv{color:#3e999f;} .dec{color:#f5871f;} .var{color:#c82829;} .fun{color:#4271ae;}}@media print,projection{.str{color:#006600;} .kwd{color:#006;font-weight:bold;} .com{color:#600;font-style:italic;} .typ{color:#404;font-weight:bold;} .lit{color:#004444;} .pun,.opn,.clo{color:#444400;} .tag{color:#006;font-weight:bold;} .atn{color:#440044;} .atv{color:#006600;}}.docs pre.prettyprint{background:white;font-family:Menlo,"Bitstream Vera Sans Mono","DejaVu Sans Mono",Monaco,Consolas,monospace;font-size:12px;line-height:1.5;border:1px solid #d6d6d6;padding:10px;}
 .docs pre.prettyprint ol{font-size:12px;line-height:1.5;margin-bottom:0px;}
@@ -302,6 +303,7 @@ li.L1,li.L3,li.L5,li.L7,li.L9{}
 .docs .contents li{line-height:24px;list-style-type:square;}
 .docs .signature.collapsed :not(h2){display:none;}
 .docs .signature h2{background-color:#165489;color:#fff;font-size:18px;line-height:24px;-webkit-border-top-left-radius:3px;-webkit-border-top-right-radius:3px;-moz-border-radius-topleft:3px;-moz-border-radius-topright:3px;border-top-left-radius:3px;border-top-right-radius:3px;padding:3px 10px;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.5);}.docs .signature h2 span{font-size:10px;font-weight:normal;font-style:normal;float:right;}
+.docs .signature h2 code{background-color:none;}
 .docs .parameters,.docs .returns{list-style-type:none;margin:0 0 15px;border:1px solid #eeeeee;background-color:#fff;padding:10px 10px 5px;}
 .docs .parameters h4,.docs .returns h4{background-color:#767676;padding:3px 10px;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.5);color:#fff;margin:-11px -11px 5px;}
 .docs .parameters h5,.docs .returns h5{font-size:14px;margin:0 0 5px;color:#000;}
@@ -396,7 +398,7 @@ input[type='radio']:checked+label.radio:after{content:' ';width:6px;height:6px;b
 .community [class^="icon-"],.community [class*=" icon-"]{font-size:25px;-webkit-font-smoothing:antialiased;line-height:10px;margin-right:5px;}.community [class^="icon-"]:before,.community [class*=" icon-"]:before{position:relative;top:-4px;}
 .community .irc .irc-chat-container{margin-top:20px;overflow:scroll;}.community .irc .irc-chat-container .username{font-weight:bold;}
 .community .container.bithub{text-align:right;margin-top:-20px;margin-bottom:40px;}
-.community .tab-description{margin-top:-80px;text-align:left;}.community .tab-description:before{left:74px;}
+.community .tab-description{margin-top:-80px;min-height:360px;text-align:left;}.community .tab-description:before{left:74px;}
 .community .tab-description h1{padding:0;font-family:LatoLight,sans-serif;}
 .community .tab-description .bithub-post{float:left;clear:both;width:100%;}.community .tab-description .bithub-post h2{color:#000;text-transform:none;font-weight:bold;font-size:14px;}.community .tab-description .bithub-post h2 a{text-decoration:none;color:inherit;font-weight:inherit;font-size:inherit;}
 .community .tab-description .bithub-post.tweet .handle{color:#999;text-decoration:none;font-weight:normal;}
