@@ -189,7 +189,7 @@ footer .brand:hover:before{color:#929191;}
 .circle-tabs li a{text-transform:uppercase;font-size:20px;text-decoration:none;color:#165489;text-shadow:0 -1px 0 rgba(255, 255, 255, 0.48);position:relative;width:140px;display:block;text-align:center;}.circle-tabs li a:before{content:'';background-color:#ffffff;border:1px solid #d9d9d9;color:#efa81e;font:110px/110px Bitstrap;display:inline-block;bottom:40px;left:-2px;text-align:center;border-radius:160px;-moz-border-radius:160px;-webkit-border-radius:160px;margin:0 auto;position:absolute;width:138px;height:138px;}
 .index .circle-tabs li a{padding-top:170px;}
 .community .circle-tabs li a{font-size:13px;padding-top:140px;width:105px;color:#fff;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.5);}.community .circle-tabs li a:before{font-size:80px;line-height:60px;bottom:25px;width:85px;height:85px;text-shadow:none;left:10px;}
-.circle-tabs li a:hover:before,.circle-tabs li.active a:before{color:#ffffff;background-color:#efa81e;border-color:#ffffff;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.2);}
+.circle-tabs li a:hover:before,.circle-tabs li.active a:before{color:#ffffff;background-color:#efa81e;border-color:#cc8b0e;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.2);}
 .circle-tabs .powerful a:before{content:"\e011";}
 .circle-tabs .fast a:before{content:"\e013";}
 .circle-tabs .flexible a:before{content:"\e042";}
