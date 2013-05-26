@@ -201,6 +201,7 @@ footer .brand:hover:before{color:#929191;}
 .circle-tabs .github a:before{content:"\e014";}
 .index .circle-tabs{margin-top:-97px;margin-bottom:30px;}
 .tab-description{background-color:#ffffff;padding:20px;font-family:'LatoLight',sans-serif;font-size:22px;border:1px solid #dedbdb;color:#1d1c1c;margin-bottom:20px;position:relative;z-index:1;text-align:center;}.tab-description:before{position:absolute;content:'';height:20px;width:20px;background:#ffffff;-moz-transform:rotateZ(-45deg) skewY(5deg) skewX(5deg);-o-transform:rotateZ(-45deg) skewY(5deg) skewX(5deg);-webkit-transform:rotateZ(-45deg) skewY(5deg) skewX(5deg);-ms-transform:rotate(-45deg);transform:rotateZ(-45deg) skewY(5deg) skewX(5deg);border:1px solid #dedbdb;top:-11px;z-index:-1;display:block;left:125px;border-left-style:none;border-bottom-style:none;}
+.tab-description .readmore{font-family:'LatoLight',sans-serif;font-size:12px;margin-left:3px;position:relative;top:-2px;text-transform:uppercase;}
 .index .tab-description.flexible:before{left:125px;}
 .index .tab-description.powerful:before{left:470px;}
 .index .tab-description.fast:before{left:815px;}
