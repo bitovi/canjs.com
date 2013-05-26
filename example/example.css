@@ -1,13 +1,18 @@
-body {
-    font-family: Arial;
+/* @override 
+	http://beta.canjs.com/example/example.css */
+
+* {
+    font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
 }
 
 #content {
     max-width: 450px;
+    background-color: #ffffff;
 }
 
 h2 {
     margin: 0 0 8px 2px;
+	font-size: 18px;
 }
 
 #editor {
@@ -50,6 +55,7 @@ li {
     position: relative;
     padding: 2px 0;
     height: 24px;
+	font-size: 14px;
 }
 li:hover {
     background-color: #eeeeee;
