@@ -1,0 +1,40 @@
+<html>
+<body>
+<div id="content">
+	<h2>Today's to-dos</h2>
+	<div id="editor"></div>
+	<div id="board"></div>
+</div>
+
+<link rel="stylesheet" href="example.css"/>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://canjs.com/release/latest/can.jquery.js"></script>
+<script src="http://canjs.com/release/latest/can.view.mustache.js"></script>
+<script src="http://canjs.com/release/latest/can.fixture.js"></script>
+
+<script type="text/mustache" id="todoBoard">
+{{#if length}}
+<ul>
+{{#this}}
+    <li {{data 'todo'}}><input type="checkbox" {{#if done}}checked="checked"{{/if}}/><span class="description{{#if done}} done{{/if}}">{{description}}</span><span class="delete">&times;</span></li>
+{{/this}}
+</ul>
+{{else}}
+<div class="no-todos">No to-dos today. You're free!</div>
+{{/if}}
+</script>  
+<script type="text/mustache" id="todoEditor">
+    <input type="text" value="{{description}}"/>
+    <img class="spinner hidden" src="spinny.gif"/>
+</script>
+<script src="todo-fixtures.js"></script>
+<script src="todo.js"></script>
+<script>
+$(function() {
+	// Kick the entire thing off by instantiating the
+	// Routing controller.
+	new Routing(document.body);
+});
+</script>
+</html>
