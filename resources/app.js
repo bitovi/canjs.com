@@ -10,14 +10,16 @@
 	$(function() {
 		Bitovi.OSS.initTwitterWidgets();
 		initControls({
-			'.index #hero-download': 'HeroDownloadCustomizer',
-			'.index .benefits': 'Benefits',
-			'.index .social': 'SocialStats',
-			'.download .cdn': 'CDNChooser',
-			'.download .customize': 'DownloadCustomizer',
-			'.community .hero': 'CommunityTabs',
-			'.docs .sidebar': 'Menu',
-			'.docs .signature': 'ApiSignature',
+			'body.index #hero-download': 'HeroDownloadCustomizer',
+			'body.index .benefits': 'Benefits',
+			'body.index .social': 'SocialStats',
+			'body.download .cdn': 'CDNChooser',
+			'body.download .customize': 'DownloadCustomizer',
+			'body.community .hero': 'CommunityTabs',
+			'body.docs .sidebar': 'Menu',
+			'body.docs .signature': 'ApiSignature',
+			'body.docs': 'FrameHelper',
+			'body.guides': 'FrameHelper',
 			'body.docs .contents': 'ContentsList'
 		});
 

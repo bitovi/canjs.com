@@ -2183,7 +2183,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/view/mustache/doc/basics.md">source</a></li>
+			<li><a href="undefined/tree/v1.1.6-pre/view/mustache/doc/basics.md">source</a></li>
 		
 		
 			
@@ -2299,6 +2299,17 @@ properties nested below the current context.  For example:</p>
 {{book.publisher}}
 </code></pre>
 
+<p>For keys containing periods, the period should be escaped with <code>\.</code>:</p>
+
+<pre><code>{
+    localization: {
+        "hello.world": "Hello World!"
+    }
+}
+
+{{localization.hello\.world}}
+</code></pre>
+
 <p><strong>Context Jumping</strong></p>
 
 <p>Internally, Mustache keeps a stack of contexts as the template dives
@@ -2349,12 +2360,12 @@ it jumps up to the family object and resolves sisters there.</p>
     "type": "page",
     "name": "can.Mustache.Basics",
     "body": "",
-    "description": "<h2>Keys</h2>\n\n<p>Keys insert data into the template.  They reference variables\nwithin the current context.  For example:</p>\n\n<pre><code>{\n        name: \"Austin\"\n}\n\n{{name}}\n</code></pre>\n\n<p>would render:</p>\n\n<pre><code>\"Austin\"\n</code></pre>\n\n<h2>Escaping Values</h2>\n\n<p>Mustache will escape values enclosed in a <code>{{  }}</code> expression.  For example:</p>\n\n<pre><code>{\n    friend: \"&lt;strong&gt;Justin&lt;/strong&gt;\"\n}\n\n{{friend}}\n</code></pre>\n\n<p>would return:</p>\n\n<pre><code>&amp;lt;strong&amp;gt;Justin&amp;lt;/strong&amp;gt;\n</code></pre>\n\n<p>If you would like Mustache to return the value without \nescaping, use the <code>{{{  }}}</code> expression.  For example:</p>\n\n<pre><code>{{{friend}}}\n</code></pre>\n\n<p>would return:</p>\n\n<pre><code>&lt;strong&gt;Justin&lt;/strong&gt;\n</code></pre>\n\n<h2>Paths and Context</h2>\n\n<p>When Mustache is resolving a object in a <a href=\"#Sections\">section</a>, the current\ncontext is the value that its iterating. For example:</p>\n\n<pre><code>{\n    friends: [ 'Austin' ]\n}\n\n{{#friends}}\n    {{this}}\n{{/friends}}\n</code></pre>\n\n<p><strong>Dot Notation</strong></p>\n\n<p>The dot notation lets the template reference the current context implicitly.  So taking the above example\nwe could do:</p>\n\n<pre><code>{{#friends}}\n    {{.}}\n{{/friends}}\n</code></pre>\n\n<p>and the <code>.</code> would represent the 'Austin' value in the array similar to <code>this</code> does too.</p>\n\n<p><strong>Nested Paths</strong></p>\n\n<p>Mustache supports nested paths, making it possible to look up \nproperties nested below the current context.  For example:</p>\n\n<pre><code>{ \n    book: {\n        author: \"James Cameron\",\n        publisher: \"Cengage\"\n    }\n}\n</code></pre>\n\n<p>then we could reference <code>author</code> and <code>publisher</code> like so:</p>\n\n<pre><code>{{book.author}}\n{{book.publisher}}\n</code></pre>\n\n<p><strong>Context Jumping</strong></p>\n\n<p>Internally, Mustache keeps a stack of contexts as the template dives\ndeeper into nested <a href=\"#Sections\">sections</a> and <a href=\"#Helpers\">helpers</a>.  If a key is not found within \nthe current context, Mustache will look for the key in the parent context\nand so on until it resolves the object or reaches the parent most object. <br />\nFor example:</p>\n\n<pre><code>{\n    family: [\n        {\n            name: 'Austin',\n            sisters: [\n                {\n                    name: 'Katherine'\n                }\n            ],\n            brothers: [\n                {\n                    name: 'Justin'\n                }\n            ]\n        }\n    ]\n}\n\n{{#family}\n    {{#brothers}}\n        {{#sisters}}\n            {{name}}\n        {{/sisters}}\n    {{/brothers}}\n{{/family}}\n</code></pre>\n\n<p>Since <code>sisters</code> isn't in the context of the brothers array,\nit jumps up to the family object and resolves sisters there.</p>",
+    "description": "<h2>Keys</h2>\n\n<p>Keys insert data into the template.  They reference variables\nwithin the current context.  For example:</p>\n\n<pre><code>{\n        name: \"Austin\"\n}\n\n{{name}}\n</code></pre>\n\n<p>would render:</p>\n\n<pre><code>\"Austin\"\n</code></pre>\n\n<h2>Escaping Values</h2>\n\n<p>Mustache will escape values enclosed in a <code>{{  }}</code> expression.  For example:</p>\n\n<pre><code>{\n    friend: \"&lt;strong&gt;Justin&lt;/strong&gt;\"\n}\n\n{{friend}}\n</code></pre>\n\n<p>would return:</p>\n\n<pre><code>&amp;lt;strong&amp;gt;Justin&amp;lt;/strong&amp;gt;\n</code></pre>\n\n<p>If you would like Mustache to return the value without \nescaping, use the <code>{{{  }}}</code> expression.  For example:</p>\n\n<pre><code>{{{friend}}}\n</code></pre>\n\n<p>would return:</p>\n\n<pre><code>&lt;strong&gt;Justin&lt;/strong&gt;\n</code></pre>\n\n<h2>Paths and Context</h2>\n\n<p>When Mustache is resolving a object in a <a href=\"#Sections\">section</a>, the current\ncontext is the value that its iterating. For example:</p>\n\n<pre><code>{\n    friends: [ 'Austin' ]\n}\n\n{{#friends}}\n    {{this}}\n{{/friends}}\n</code></pre>\n\n<p><strong>Dot Notation</strong></p>\n\n<p>The dot notation lets the template reference the current context implicitly.  So taking the above example\nwe could do:</p>\n\n<pre><code>{{#friends}}\n    {{.}}\n{{/friends}}\n</code></pre>\n\n<p>and the <code>.</code> would represent the 'Austin' value in the array similar to <code>this</code> does too.</p>\n\n<p><strong>Nested Paths</strong></p>\n\n<p>Mustache supports nested paths, making it possible to look up \nproperties nested below the current context.  For example:</p>\n\n<pre><code>{ \n    book: {\n        author: \"James Cameron\",\n        publisher: \"Cengage\"\n    }\n}\n</code></pre>\n\n<p>then we could reference <code>author</code> and <code>publisher</code> like so:</p>\n\n<pre><code>{{book.author}}\n{{book.publisher}}\n</code></pre>\n\n<p>For keys containing periods, the period should be escaped with <code>\\.</code>:</p>\n\n<pre><code>{\n    localization: {\n        \"hello.world\": \"Hello World!\"\n    }\n}\n\n{{localization.hello\\.world}}\n</code></pre>\n\n<p><strong>Context Jumping</strong></p>\n\n<p>Internally, Mustache keeps a stack of contexts as the template dives\ndeeper into nested <a href=\"#Sections\">sections</a> and <a href=\"#Helpers\">helpers</a>.  If a key is not found within \nthe current context, Mustache will look for the key in the parent context\nand so on until it resolves the object or reaches the parent most object. <br />\nFor example:</p>\n\n<pre><code>{\n    family: [\n        {\n            name: 'Austin',\n            sisters: [\n                {\n                    name: 'Katherine'\n                }\n            ],\n            brothers: [\n                {\n                    name: 'Justin'\n                }\n            ]\n        }\n    ]\n}\n\n{{#family}\n    {{#brothers}}\n        {{#sisters}}\n            {{name}}\n        {{/sisters}}\n    {{/brothers}}\n{{/family}}\n</code></pre>\n\n<p>Since <code>sisters</code> isn't in the context of the brothers array,\nit jumps up to the family object and resolves sisters there.</p>",
     "title": "Basics",
     "parent": "can.Mustache.pages",
     "order": 0,
     "src": "can/view/mustache/doc/basics.md",
-    "id": 163
+    "id": 162
 };
 
 	console.log(docData);

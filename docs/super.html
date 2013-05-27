@@ -2183,7 +2183,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/construct/super/super.md">source</a></li>
+			<li><a href="undefined/tree/v1.1.6-pre/construct/super/super.md">source</a></li>
 		
 		
 			<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=http://donejs.com/can/dist/can.construct.super.js">download</a></li>
@@ -2225,9 +2225,22 @@ functions from inside inheriting functions.</p>
 		<li class="parameter">
 			<h4>args <code>{[}</code></h4>
 			<div class="description">
-				<p><p>parameters to pass to the base function</p>
+				<p><p>parameters to pass to the base function</p></p>
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
 
-<p>With this plugin, functions that are inheriting from base functions
+
+		</section>
+		
+
+		
+		<section class="comment">
+			<p>With this plugin, functions that are inheriting from base functions
 are provided with a specialized <code>this._super</code> reference to the base
 function from which they inherit.</p>
 
@@ -2306,19 +2319,8 @@ Squarer('Cuber', {
     raise: function(n) {
         return n * this_super(n);
     }
-}, {});</code></pre></p>
-			</div>
-			
-			
-			
-		</li>
-		
-	</ol>
-
-
+}, {});</code></pre>
 		</section>
-		
-
 		
 	</article>
 </div>
@@ -2327,7 +2329,7 @@ Squarer('Cuber', {
 	var docData = {
     "type": "page",
     "name": "super",
-    "body": "",
+    "body": "<p>With this plugin, functions that are inheriting from base functions\nare provided with a specialized <code>this._super</code> reference to the base\nfunction from which they inherit.</p>\n\n<p>This is especially useful for calling base classes' <code>[can.Construct::init init]</code> and <code>[can.Construct::setup ssetup]</code>, but it can be used in any inheriting function.</p>\n\n<p>The <code>Person</code> and <code>Programmer</code> examples from <code>[can.Construct::init init]</code> demonstrate <code>_super</code>'s use.\nHere's how those classes look without can.Construct.super:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct(\"Person\", {\n    init: function(first, last) {\n        this.first = first;\n        this.last  = last;\n    }\n});\n\nPerson(\"Programmer\", {\n    init: function(first, last, language) {\n        // call base's init\n        Person.prototype.init.apply(this, arguments);\n\n        // other initialization code\n        this.language = language;\n    },\n    bio: function() {\n        return 'Hi! I'm ' + this.first + ' ' + this.last +\n            ' and I write ' + this.language + '.';\n    }\n});</code></pre>\n\n<p>And here's how <code>Programmer</code> works using <code>_super</code>:</p>\n\n<pre><code class=\"lang-javascript\">Person(\"Programmer\", {\n    init: function(first, last, language) {\n        // call base's init\n        this._super(first, last);\n\n        // other initialization code\n        this.language = language;\n    },\n    bio: function() {\n        return 'Hi! I'm ' + this.first + ' ' + this.last +\n            ' and I write ' + this.language + '.';\n    }\n});</code></pre>\n\n<p>If you want to pass an array of arguments (or an arguments object) to <code>_super</code>, use <a href=\"https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/apply\">apply</a>:</p>\n\n<pre><code class=\"lang-javascript\">Person(\"Programmer\", {\n    init: function(first, last, language) {\n        // call base's init\n        this._super.apply(this, arguments);\n\n        // other initialization code\n        this.language = language;\n    },\n    bio: function() {\n        return 'Hi! I'm ' + this.first + ' ' + this.last +\n            ' and I write ' + this.language + '.';\n    }\n});</code></pre>\n\n<h2><code>_super</code> on constructors</h2>\n\n<p>can.Construct.super also adds <code>super</code> to the constructor, so you\ncan use it in static functions.</p>\n\n<p>Here is a base class that has a method that squares numbers and an inherited class that has a method that cubes numbers:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('Squarer', {\n    raise: function(n) {\n        return n*n;\n    }\n}, {});\n\nSquarer('Cuber', {\n    raise: function(n) {\n        return n * this_super(n);\n    }\n}, {});</code></pre>",
     "description": "<p>can.Construct.super is a plugin that makes it easier to call base\nfunctions from inside inheriting functions.</p>",
     "parent": "can.Construct.plugins",
     "plugin": "can/construct/super",
@@ -2343,11 +2345,12 @@ Squarer('Cuber', {
                         }
                     ],
                     "name": "args",
-                    "description": "<p>parameters to pass to the base function</p>\n\n<p>With this plugin, functions that are inheriting from base functions\nare provided with a specialized <code>this._super</code> reference to the base\nfunction from which they inherit.</p>\n\n<p>This is especially useful for calling base classes' <code>[can.Construct::init init]</code> and <code>[can.Construct::setup ssetup]</code>, but it can be used in any inheriting function.</p>\n\n<p>The <code>Person</code> and <code>Programmer</code> examples from <code>[can.Construct::init init]</code> demonstrate <code>_super</code>'s use.\nHere's how those classes look without can.Construct.super:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct(\"Person\", {\n    init: function(first, last) {\n        this.first = first;\n        this.last  = last;\n    }\n});\n\nPerson(\"Programmer\", {\n    init: function(first, last, language) {\n        // call base's init\n        Person.prototype.init.apply(this, arguments);\n\n        // other initialization code\n        this.language = language;\n    },\n    bio: function() {\n        return 'Hi! I'm ' + this.first + ' ' + this.last +\n            ' and I write ' + this.language + '.';\n    }\n});</code></pre>\n\n<p>And here's how <code>Programmer</code> works using <code>_super</code>:</p>\n\n<pre><code class=\"lang-javascript\">Person(\"Programmer\", {\n    init: function(first, last, language) {\n        // call base's init\n        this._super(first, last);\n\n        // other initialization code\n        this.language = language;\n    },\n    bio: function() {\n        return 'Hi! I'm ' + this.first + ' ' + this.last +\n            ' and I write ' + this.language + '.';\n    }\n});</code></pre>\n\n<p>If you want to pass an array of arguments (or an arguments object) to <code>_super</code>, use <a href=\"https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/apply\">apply</a>:</p>\n\n<pre><code class=\"lang-javascript\">Person(\"Programmer\", {\n    init: function(first, last, language) {\n        // call base's init\n        this._super.apply(this, arguments);\n\n        // other initialization code\n        this.language = language;\n    },\n    bio: function() {\n        return 'Hi! I'm ' + this.first + ' ' + this.last +\n            ' and I write ' + this.language + '.';\n    }\n});</code></pre>\n\n<h2><code>_super</code> on constructors</h2>\n\n<p>can.Construct.super also adds <code>super</code> to the constructor, so you\ncan use it in static functions.</p>\n\n<p>Here is a base class that has a method that squares numbers and an inherited class that has a method that cubes numbers:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('Squarer', {\n    raise: function(n) {\n        return n*n;\n    }\n}, {});\n\nSquarer('Cuber', {\n    raise: function(n) {\n        return n * this_super(n);\n    }\n}, {});</code></pre>"
+                    "description": "<p>parameters to pass to the base function</p>"
                 }
             ]
         }
     ],
+    "comment": " ",
     "src": "can/construct/super/super.md",
     "id": 15
 };

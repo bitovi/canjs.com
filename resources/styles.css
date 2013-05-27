@@ -280,6 +280,7 @@ li.L0,li.L1,li.L2,li.L3,li.L4,li.L5,li.L6,li.L7,li.L8,li.L9{}
 li.L1,li.L3,li.L5,li.L7,li.L9{}
 .docs .sidebar{width:255px;margin-top:20px;}
 .docs .content.docs{width:662px;margin-top:20px;background-color:#fff;border:1px solid #d5d5d5;padding:20px;border-left-style:none;border-bottom-style:none;}.docs .content.docs ul,.docs .content.docs ol:not(.linenums){margin-left:0;font-size:14px;line-height:24px;margin-top:0;margin-bottom:15px;line-height:18px;}
+.docs .content.docs .iframe_wrapper iframe{width:100%;}
 .docs footer{margin-top:20px;}
 .container.api{display:table;table-layout:fixed;border-bottom:1px solid #d5d5d5;padding-top:20px;}
 .container.api>*{display:table-cell !important;vertical-align:top;}
@@ -289,7 +290,7 @@ li.L1,li.L3,li.L5,li.L7,li.L9{}
 .search input[type='text']{display:block;border-style:none;background-color:rgba(255, 255, 254, 0);width:100%;}
 .search:before{font-family:Bitstrap;content:"\e012";display:block;position:absolute;left:17px;color:#fff;text-shadow:0 0 3px rgba(0, 0, 0, 0.49);}
 .title{display:block;border-bottom:1px solid #eae9e9;padding-bottom:16px;}
-.docs h1{margin:0;display:inline-block;}
+.docs{}.docs h1{margin:0;display:inline-block;}
 .docs h2{font-size:22px;}
 .docs h3{font-size:16px;}
 .docs .module,.docs .inherits,.docs .title .links li{font-size:14px;color:#999999;}
@@ -307,6 +308,11 @@ li.L1,li.L3,li.L5,li.L7,li.L9{}
 .docs .parameters h5,.docs .returns h5{font-size:14px;margin:0 0 5px;color:#000;}
 .docs .parameters h4 code,.docs .returns h4 code{font-style:italic;font-weight:normal;margin-left:3px;background:none;background-color:none;}
 .docs .parameters .options,.docs .returns .options,.docs .parameters .options .option,.docs .returns .options .option{margin:0 -10px 15px;border-top:1px solid #eeeeee;list-style-type:none;padding-left:25px;padding-top:5px;}
+.docs .demo ul{list-style:none;padding:0;}
+.docs .demo li.tab{display:block;float:left;padding:4px 8px;}
+.docs .demo li.tab.active{color:#fff;font-weight:bold;background-color:#165489;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.5);}
+.docs .demo div.tab-content{clear:both;}
+.docs .demo iframe{width:100%;border:1px solid #d6d6d6;}
 .docs .parameters ul.options:last-child,.docs .returns ul.options:last-child{margin-bottom:0;}
 .docs .parameters .description,.docs .returns .description{margin-left:15px;padding-bottom:15px;font-size:14px;line-height:24px;margin-top:0;margin-bottom:15px;}
 .docs .parameters :last-child .description,.docs .returns :last-child .description,.docs .parameters .description *:last-child,.docs .returns .description *:last-child{margin-bottom:0px;padding-bottom:0px;}

@@ -2183,7 +2183,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6-pre/construct/proxy/proxy.md">source</a></li>
+			<li><a href="undefined/tree/v1.1.6-pre/construct/proxy/proxy.md">source</a></li>
 		
 		
 			<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=http://donejs.com/can/dist/can.construct.proxy.js">download</a></li>
@@ -2255,8 +2255,15 @@ inside callbacks.</p>
 		<h4><code>{function}</code></h4>
 		<div class="description">
 			<p>a function that calls <code>callback</code> with the same context as the current context</p>
+		</div>
+	</div>
 
-<p><code>can.Construct.prototype.proxy</code> takes a function and returns a new function that, when invoked,
+		</section>
+		
+
+		
+		<section class="comment">
+			<p><code>can.Construct.prototype.proxy</code> takes a function and returns a new function that, when invoked,
 calls the given function with the same <code>this</code> as <code>proxy</code> was called with.</p>
 
 <p>Here is a counter that increments its count after a second:</p>
@@ -2368,12 +2375,7 @@ DelayedStaticCounter.incrementSoon();</code></pre>
 <h2>See also</h2>
 
 <p><a href="can.proxy.html">can.proxy</a> is a way to proxy callbacks outside of <code>can.Construct</code>s.</p>
-		</div>
-	</div>
-
 		</section>
-		
-
 		
 	</article>
 </div>
@@ -2382,7 +2384,7 @@ DelayedStaticCounter.incrementSoon();</code></pre>
 	var docData = {
     "type": "page",
     "name": "proxy",
-    "body": "",
+    "body": "<p><code>can.Construct.prototype.proxy</code> takes a function and returns a new function that, when invoked,\ncalls the given function with the same <code>this</code> as <code>proxy</code> was called with.</p>\n\n<p>Here is a counter that increments its count after a second:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('DelayedCounter', {\n    init: function() {\n        this.count = 0;\n        setTimeout(this.proxy(function() {\n            this.count++;\n        }), 1000);\n    }\n});\n\nvar counter = new DelayedCounter();\n// check counter's value later\nsetTimeout(function() {\n    counter.count; // 1\n}, 5000);</code></pre>\n\n<p>(Recall that setTimeout executes its callback in the global scope.)</p>\n\n<p>If you pass the name of a function on the <code>this</code> that <code>proxy</code> is called with,\n<code>proxy</code> will use that function. Here's how you write the previous example using\nthis technique:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('DelayedCounter', {\n    init: function() {\n        this.count = 0;\n        setTimeout(this.proxy('increment'), 1000);\n    },\n    increment: function() {\n        this.count++;\n    }\n});\n\nvar counter = new DelayedCounter();\n// check counter's value later\nsetTimeout(function() {\n    counter.count; // 1\n}, 5000);</code></pre>\n\n<h2>Currying arguments</h2>\n\n<p>If you pass more than one parameter to <code>proxy</code>, the additional parameters will\nbe passed as parameters to the callback before any parameters passed to the\nproxied function.</p>\n\n<p>Here's a delayed counter that increments by a given amount:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('IncrementalCounter', {\n    init: function(amount) {\n        this.count = 0;\n        setTimeout(this.proxy(function(amount) {\n            this.count += amount;\n        }, amount), 1000);\n    }\n});\n\nvar counter = new IncrementalCounter(5);\n// check counter's value later\nsetTimeout(function() { \n    counter.count; // 5\n}, 5000);</code></pre>\n\n<h2>Piping callbacks</h2>\n\n<p>If you pass an array of functions and strings as the first parameter to <code>proxy</code>,\n<code>proxy</code> will call the callbacks in sequence, passing the return value of each\nas a parameter to the next. This is useful to avoid having to curry callbacks.</p>\n\n<p>Here's a delayed counter that takes a callback to call after incrementing by a given amount:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('IncrementalCounter', {\n    init: function(amount, callback) {\n        this.count = 0;\n        setTimeout(this.proxy([function(amount) {\n            this.count += amount;\n            return this.count;\n        }, callback], amount), 1000);\n    }\n});\n\nvar counter = new IncrementalCounter(5, function(count) {\n    console.log('The count is ' + count + '.');\n});\n\n// after 1 second, the log says \"The count is 5.\"</code></pre>\n\n<h2><code>proxy</code> on constructors</h2>\n\n<p>can.Construct.proxy also adds <code>proxy</code> to the constructor, so you can use it\nin static functions with the constructor as <code>this</code>.</p>\n\n<p>Here's a counter construct that keeps its count staticly and increments after one second:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('DelayedStaticCounter', {\n    setup: function() {\n        this.count = 0;\n    }\n    incrementSoon: function() {\n        setTimeout(this.proxy(function() {\n            this.count++;\n        }), 1000);\n    }\n}, {});\n\nDelayedStaticCounter.incrementSoon();</code></pre>\n\n<h2>See also</h2>\n\n<p>[can.proxy] is a way to proxy callbacks outside of <code>can.Construct</code>s.</p>",
     "description": "<p>can.Construct.proxy is a plugin that helps you manage scope when creating\ncallback functions by ensuring that <code>this</code> is set correctly and sensibly\ninside callbacks.</p>",
     "parent": "can.Construct.plugins",
     "test": "can/construct/proxy/qunit.html",
@@ -2446,10 +2448,11 @@ DelayedStaticCounter.incrementSoon();</code></pre>
                         "params": []
                     }
                 ],
-                "description": "<p>a function that calls <code>callback</code> with the same context as the current context</p>\n\n<p><code>can.Construct.prototype.proxy</code> takes a function and returns a new function that, when invoked,\ncalls the given function with the same <code>this</code> as <code>proxy</code> was called with.</p>\n\n<p>Here is a counter that increments its count after a second:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('DelayedCounter', {\n    init: function() {\n        this.count = 0;\n        setTimeout(this.proxy(function() {\n            this.count++;\n        }), 1000);\n    }\n});\n\nvar counter = new DelayedCounter();\n// check counter's value later\nsetTimeout(function() {\n    counter.count; // 1\n}, 5000);</code></pre>\n\n<p>(Recall that setTimeout executes its callback in the global scope.)</p>\n\n<p>If you pass the name of a function on the <code>this</code> that <code>proxy</code> is called with,\n<code>proxy</code> will use that function. Here's how you write the previous example using\nthis technique:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('DelayedCounter', {\n    init: function() {\n        this.count = 0;\n        setTimeout(this.proxy('increment'), 1000);\n    },\n    increment: function() {\n        this.count++;\n    }\n});\n\nvar counter = new DelayedCounter();\n// check counter's value later\nsetTimeout(function() {\n    counter.count; // 1\n}, 5000);</code></pre>\n\n<h2>Currying arguments</h2>\n\n<p>If you pass more than one parameter to <code>proxy</code>, the additional parameters will\nbe passed as parameters to the callback before any parameters passed to the\nproxied function.</p>\n\n<p>Here's a delayed counter that increments by a given amount:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('IncrementalCounter', {\n    init: function(amount) {\n        this.count = 0;\n        setTimeout(this.proxy(function(amount) {\n            this.count += amount;\n        }, amount), 1000);\n    }\n});\n\nvar counter = new IncrementalCounter(5);\n// check counter's value later\nsetTimeout(function() { \n    counter.count; // 5\n}, 5000);</code></pre>\n\n<h2>Piping callbacks</h2>\n\n<p>If you pass an array of functions and strings as the first parameter to <code>proxy</code>,\n<code>proxy</code> will call the callbacks in sequence, passing the return value of each\nas a parameter to the next. This is useful to avoid having to curry callbacks.</p>\n\n<p>Here's a delayed counter that takes a callback to call after incrementing by a given amount:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('IncrementalCounter', {\n    init: function(amount, callback) {\n        this.count = 0;\n        setTimeout(this.proxy([function(amount) {\n            this.count += amount;\n            return this.count;\n        }, callback], amount), 1000);\n    }\n});\n\nvar counter = new IncrementalCounter(5, function(count) {\n    console.log('The count is ' + count + '.');\n});\n\n// after 1 second, the log says \"The count is 5.\"</code></pre>\n\n<h2><code>proxy</code> on constructors</h2>\n\n<p>can.Construct.proxy also adds <code>proxy</code> to the constructor, so you can use it\nin static functions with the constructor as <code>this</code>.</p>\n\n<p>Here's a counter construct that keeps its count staticly and increments after one second:</p>\n\n<pre><code class=\"lang-javascript\">can.Construct('DelayedStaticCounter', {\n    setup: function() {\n        this.count = 0;\n    }\n    incrementSoon: function() {\n        setTimeout(this.proxy(function() {\n            this.count++;\n        }), 1000);\n    }\n}, {});\n\nDelayedStaticCounter.incrementSoon();</code></pre>\n\n<h2>See also</h2>\n\n<p>[can.proxy] is a way to proxy callbacks outside of <code>can.Construct</code>s.</p>"
+                "description": "<p>a function that calls <code>callback</code> with the same context as the current context</p>"
             }
         }
     ],
+    "comment": " ",
     "src": "can/construct/proxy/proxy.md",
     "id": 14
 };
