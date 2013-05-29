@@ -1970,44 +1970,6 @@ $('.foo').html(html);
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.view.hook",
-    "parent": "can.view.static",
-    "body": "<p>Registers a hookup function that can be called back after the html is \nput on the page.  Typically this is handled by the template engine.  Currently\nonly EJS supports this functionality.</p>\n\n<pre><code>var id = can.view.hook(function(el){\n       //do something with el\n    }),\n    html = \"&lt;div data-view-id='\"+id+\"'&gt;\"\n$('.foo').html(html);\n</code></pre>",
-    "description": "<p>Create a hookup to insert into templates. </p>",
-    "title": "hook",
-    "signatures": [{
-            "code": "can.view.hook(callback)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
-                        }
-                    ],
-                    "name": "callback",
-                    "description": "<p>A callback function to be called with the element.</p>"
-                }
-            ]
-        }
-    ],
-    "comment": " ",
-    "src": "can/view/view.js",
-    "line": 183,
-    "id": 146
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2034,7 +1996,7 @@ $('.foo').html(html);
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

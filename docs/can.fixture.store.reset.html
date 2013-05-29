@@ -1959,29 +1959,6 @@ tasks created by <code>can.fixture.store</code>. Reset the task store with:</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "name": "can.fixture.store.reset",
-    "type": "function",
-    "parent": "can.fixture.store",
-    "body": "<p><code>store.reset()</code> resets the store to contain its \noriginal data. This is useful for making tests that\noperate independently.</p>\n\n<h2>Basic Example</h2>\n\n<p>After creating a <code>taskStore</code> and hooking it up to a \n<code>task</code> model in the \"Basic Example\" in [can.fixture.store store's docs],\na test might create several tasks like:</p>\n\n<pre><code>new Task({name: \"Take out trash\", ownerId: 5}).save();\n</code></pre>\n\n<p>But, another test might need to operate on the original set of\ntasks created by <code>can.fixture.store</code>. Reset the task store with:</p>\n\n<pre><code>taskStore.reset()\n</code></pre>",
-    "description": "<p>Reset the fixture store. </p>",
-    "title": "",
-    "signatures": [{
-            "code": "can.fixture.store.reset()",
-            "description": "",
-            "params": []
-        }
-    ],
-    "comment": " ",
-    "src": "can/util/fixture/fixture.js",
-    "line": 778,
-    "id": 207
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2008,7 +1985,7 @@ tasks created by <code>can.fixture.store</code>. Reset the task store with:</p>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

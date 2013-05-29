@@ -1992,58 +1992,6 @@ new Task({name: "Dishes"}).save();
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "body": "<p><code>bind(eventType, handler(event, instance))</code> listens to\n<strong>created</strong>, <strong>updated</strong>, <strong>destroyed</strong> events on all \ninstances of the model.</p>\n\n<pre><code>Task.bind(\"created\", function(ev, createdTask){\n     this //-&gt; Task\n  createdTask.attr(\"name\") //-&gt; \"Dishes\"\n})\n\nnew Task({name: \"Dishes\"}).save();\n</code></pre>",
-    "description": "<p>Listen for events on a Model class. </p>",
-    "title": "bind",
-    "name": "can.Model.bind",
-    "type": "function",
-    "parent": "can.Model.static",
-    "signatures": [{
-            "code": "bind(eventType, handler)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "String"
-                        }
-                    ],
-                    "name": "eventType",
-                    "description": "<p>The type of event.  It must be\n<code>\"created\"</code>, <code>\"udpated\"</code>, <code>\"destroyed\"</code>.</p>"
-                }, {
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
-                        }
-                    ],
-                    "name": "handler",
-                    "description": "<p>A callback function\nthat gets called with the event and instance that was\ncreated, destroyed, or updated.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "can.Model"
-                    }
-                ],
-                "description": "<p>The model constructor function.</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/model/model.js",
-    "line": 122,
-    "id": 87
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2070,7 +2018,7 @@ new Task({name: "Dishes"}).save();
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

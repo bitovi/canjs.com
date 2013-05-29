@@ -2117,83 +2117,6 @@ Consider a model like this:</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "name": "can.fixture.store",
-    "type": "function",
-    "parent": "can.fixture.plugins",
-    "body": "<p><code>can.fixture.store(count, generator(index,items))</code> is used\nto create a store of items that can simulate a full CRUD service. Furthermore,\nthe store can do filtering, grouping, sorting, and paging.</p>\n\n<h2>Basic Example</h2>\n\n<p>The following creates a store for 100 todos:</p>\n\n<pre><code>var todoStore = can.fixture.store(100, function(i){\n  return {\n       id: i,\n    name: \"todo number \"+i,\n    description: \"a description of some todo\",\n    ownerId: can.fixture.rand(10)\n  }\n})\n</code></pre>\n\n<p><code>todoStore</code>'s methods can be used for the response to a REST service like:</p>\n\n<pre><code> can.fixture({\n      'GET /todos':         todoStore.findAll,\n   'GET /todos/{id}':    todoStore.findOne,\n   'POST /todos':        todoStore.create,\n   'PUT /todos/{id}':    todoStore.update,\n   'DELETE /todos/{id}': todoStore.destroy\n });\n</code></pre>\n\n<p>These fixtures, combined with a [can.Model] that connects to these services like:</p>\n\n<pre><code> var Todo = can.Model({\n     findAll : 'GET /todos',\n     findOne : 'GET /todos/{id}',\n     create  : 'POST /todos',\n     update  : 'PUT /todos/{id}',\n     destroy : 'DELETE /todos/{id}'\n }, {});\n</code></pre>\n\n<p>... allows you to simulate requests for all of owner 5's todos like:</p>\n\n<pre><code>Todo.findAll({ownerId: 5}, function(todos){\n\n})\n</code></pre>\n\n<h2>Simulated Service</h2>\n\n<p><code>can.fixture.store</code>'s [can.fixture.store.findAll findAll],\n[can.fixture.store.findOne findOne],\n[can.fixture.store.findOne create],\n[can.fixture.store.findOne update], and\n[can.fixture.store.findOne destroy] methods are used to\nsimulate a REST service that </p>\n\n<h2>With can.ajax</h2>\n\n<pre><code>//makes a nested list of messages\ncan.fixture.store([\"messages\",\"message\"], 1000,\n function(i, messages){\n  return {\n    subject: \"This is message \"+i,\n    body: \"Here is some text for this message\",\n    date: Math.floor( new Date().getTime() ),\n    parentId : i &lt; 100 ? null : Math.floor(Math.random()*i)\n  }\n})\n//uses the message fixture to return messages limited by\n// offset, limit, order, etc.\ncan.ajax({\n  url: \"messages\",\n  data: {\n     offset: 100,\n     limit: 50,\n     order: [\"date ASC\"],\n     parentId: 5},\n   },\n   fixture: \"-messages\",\n   success: function( messages ) {  ... }\n});\n</code></pre>\n\n<h2>With can.Model</h2>\n\n<p><code>can.fixture.make</code> returns a model store that offers <code>findAll</code>, <code>findOne</code>, <code>create</code>,\n<code>update</code> and <code>destroy</code> fixture functions you can map to a [can.Model] Ajax request.\nConsider a model like this:</p>\n\n<p>And an unnamed generated fixture like this:</p>\n\n<pre><code> var store = can.fixture.make(100, function(i) {\n     return {\n         id : i,\n         name : 'Todo ' + i\n     }\n });\n</code></pre>\n\n<p>You can map can.Model requests using the return value of <code>can.fixture.make</code>:</p>",
-    "description": "<p>Make a store of objects to use when making requests against fixtures. </p>",
-    "title": "store",
-    "signatures": [{
-            "code": "can.fixture.store([types,] count, make[, filter])",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "Array"
-                        }, {
-                            "type": "String"
-                        }
-                    ],
-                    "optional": true,
-                    "name": "types",
-                    "description": "<p>An array of the fixture names or the singular fixture name.\nIf an array, the first item is the plural fixture name (prefixed with -) and the second\nitem is the singular name.  If a string, it's assumed to be the singular fixture name.  Make\nwill simply add s to the end of it for the plural name. If this parameter is not an array\nor a String the fixture won't be added and only return the generator object.</p>"
-                }, {
-                    "types": [{
-                            "type": "Number"
-                        }
-                    ],
-                    "name": "count",
-                    "description": "<p>The number of items to create.</p>"
-                }, {
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
-                        }
-                    ],
-                    "name": "make",
-                    "description": "<p>A function that will return the JavaScript object. The\nmake function is called back with the id and the current array of items.</p>"
-                }, {
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
-                        }
-                    ],
-                    "optional": true,
-                    "name": "filter",
-                    "description": "<p>A function used to further filter results. Used for to simulate\nserver params like searchText or startDate.\nThe function should return true if the item passes the filter,\nfalse otherwise. For example:</p>\n\n<pre><code>function(item, settings){\n  if(settings.data.searchText){\n       var regex = new RegExp(\"^\"+settings.data.searchText)\n      return regex.test(item.name);\n  }\n}\n</code></pre>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "Object"
-                    }
-                ],
-                "description": "<p>A generator object providing fixture functions for <em>findAll</em>, <em>findOne</em>, <em>create</em>,\n<em>update</em> and <em>destroy</em>.</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/util/fixture/fixture.js",
-    "line": 349,
-    "id": 200
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2220,7 +2143,7 @@ Consider a model like this:</p>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

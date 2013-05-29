@@ -71,7 +71,6 @@ module.exports = function (grunt) {
 		},
 		generate: {
 			options: {
-				debug: true,
 				layout: 'shared/_templates/page.mustache',
 				docs: 'shared/_templates/docs.mustache',
 				root: '',

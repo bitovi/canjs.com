@@ -2054,22 +2054,6 @@ call serialize on those models.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "name": "can.Observe.attributes.static.convert",
-    "type": "property",
-    "parent": "can.Observe.attributes.static",
-    "body": "",
-    "description": "<p>You often want to convert from what the observe sends you to a form more useful to JavaScript. \nFor example, contacts might be returned from the server with dates that look like: \"1982-10-20\". \nWe can observe to convert it to something closer to <code>new Date(1982,10,20)</code>.</p>\n\n<p>Convert comes with the following types:</p>\n\n<ul>\n<li><strong>date</strong> Converts to a JS date. Accepts integers or strings that work with Date.parse</li>\n<li><strong>number</strong> An integer or number that can be passed to parseFloat</li>\n<li><strong>boolean</strong> Converts \"false\" to false, and puts everything else through Boolean()</li>\n</ul>\n\n<p>The following sets the birthday attribute to \"date\" and provides a date conversion function:</p>\n\n<pre><code>var Contact = can.Observe({\n    attributes : {\n        birthday : 'date'\n    },\n    convert : {\n        date : function(raw){\n            if(typeof raw == 'string'){\n                //- Extracts dates formated 'YYYY-DD-MM'\n                var matches = raw.match(/(\\d+)-(\\d+)-(\\d+)/);\n\n                //- Parses to date object and returns\n                return new Date(matches[1], \n                                (+matches[2])-1, \n                                matches[3]);\n\n            }else if(raw instanceof Date){\n                return raw;\n            }\n        }\n    }\n},{});\n\nvar contact = new Contact();\n\n//- calls convert on attribute set\ncontact.attr('birthday', '4-26-2012') \n\ncontact.attr('birthday'); //-&gt; Date\n</code></pre>\n\n<p>If a property is set with an object as a value, the corresponding converter is called with the unmerged data (the raw object)\nas the first argument, and the old value (a can.Observe) as the second:</p>\n\n<pre><code>    var MyObserve = can.Observe({\n    attributes: {\n          nested: \"nested\"\n    },\n    convert: {\n        nested: function(data, oldVal) {\n            if(oldVal instanceof MyObserve) {\n                return oldVal.attr(data);\n            }\n            return new MyObserve(data);\n        }\n    }\n},{});\n</code></pre>\n\n<h2>Differences From <code>attr</code></h2>\n\n<p>The way that return values from convertors affect the value of an Observe's property is\ndifferent from [can.Observe::attr attr]'s normal behavior. Specifically, when the \nproperty's current value is an Observe or List, and an Observe or List is returned\nfrom a convertor, the effect will not be to merge the values into the current value as\nif the return value was fed straight into <code>attr</code>, but to replace the value with the\nnew Observe or List completely. Because of this, any bindings you have on the previous\nobservable object will break.</p>\n\n<p>If you would rather have the new Observe or List merged into the current value, call\n<code>attr</code> directly on the property instead of on the Observe:</p>\n\n<pre><code class=\"lang-javascript\">var Contact = can.Observe({\n  attributes: {\n    info: 'info'\n  },\n  convert: {\n    'info': function(data, oldVal) {\n      return data;\n    }\n  }\n}, {}));\n\nvar alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});\nalice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}\nalice.info._cid; // '.observe1'\n\nalice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});\nalice.attr(); // {name: 'Allison Wonderland', 'phone': '888-888-8888'}\nalice.info._cid; // '.observe2'\n\nalice.info.attr({email: 'alice@wonderland.com', phone: '000-000-0000'});\nalice.attr(); // {name: 'Allison Wonderland', email: 'alice@wonderland.com', 'phone': '000-000-0000'}\nalice.info._cid; // '.observe2'</code></pre>\n\n<h2>Assocations and Convert</h2>\n\n<p>If you have assocations defined within your model(s), you can use convert to automatically\ncall serialize on those models.</p>\n\n<pre><code>    can.Model(\"Contact\",{\n        attributes : {\n            tasks: \"Task.models\"\n        }\n    }, {});\n\n    can.Model(\"Task\",{\n        attributes : {\n            due : 'date'\n        }\n    },{});\n\n    var contact = new Contact({\n        tasks: [ new Task({\n            due: new Date()\n        }) ]\n    });\n\n    contact.seralize(); \n    //-&gt; { tasks: [ { due: 1333219754627 } ] }\n</code></pre>",
-    "title": "",
-    "src": "can/observe/attributes/attributes.js",
-    "line": 30,
-    "id": 54
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2096,7 +2080,7 @@ call serialize on those models.</p>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

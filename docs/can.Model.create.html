@@ -2030,55 +2030,6 @@ something that looks like:</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "name": "can.Model.create",
-    "type": "function",
-    "parent": "can.Model.static",
-    "body": "<p><code>create(attributes) -&gt; Deferred</code> is used by [can.Model::save save] to create a \nmodel instance on the server. </p>\n\n<h2>Implement with a URL</h2>\n\n<p>The easiest way to implement create is to give it the url \nto post data to:</p>\n\n<pre><code>var Recipe = can.Model({\n  create: \"/recipes\"\n},{})\n</code></pre>\n\n<p>This lets you create a recipe like:</p>\n\n<pre><code>new Recipe({name: \"hot dog\"}).save();\n</code></pre>\n\n<h2>Implement with a Function</h2>\n\n<p>You can also implement create by yourself. Create gets called \nwith <code>attrs</code>, which are the [can.Observe::serialize serialized] model \nattributes.  Create returns a <code>Deferred</code> \nthat contains the id of the new instance and any other \nproperties that should be set on the instance.</p>\n\n<p>For example, the following code makes a request \nto <code>POST /recipes.json {'name': 'hot+dog'}</code> and gets back\nsomething that looks like:</p>\n\n<pre><code>{ \n  \"id\": 5,\n  \"createdAt\": 2234234329\n}\n</code></pre>\n\n<p>The code looks like:</p>\n\n<pre><code>can.Model(\"Recipe\", {\n  create : function( attrs ){\n    return $.post(\"/recipes.json\",attrs, undefined ,\"json\");\n  }\n},{})\n</code></pre>",
-    "description": "<p>Create a new resource on the server. </p>",
-    "title": "create",
-    "signatures": [{
-            "code": "[METHOD] /path/to/resource",
-            "description": "<p>If you provide a URL, the Model will send a request to that URL using\nthe method specified (or POST if none is specified) when saving a\nnew instance on the server. (See below for more details.)</p>",
-            "params": [],
-            "returns": {
-                "types": [{
-                        "type": "can.Deferred"
-                    }
-                ],
-                "description": "<p>A Deferred that resolves to the created model.</p>"
-            }
-        }, {
-            "code": "function(serialized)",
-            "description": "<p>If you provide a function, the Model will expect you to do your own AJAX requests.</p>",
-            "params": [{
-                    "types": [{
-                            "type": "Object"
-                        }
-                    ],
-                    "name": "serialized",
-                    "description": "<p>The [can.Observe::serialize serialized] properties of\nthe model to create.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "can.Deferred"
-                    }
-                ],
-                "description": "<p>A Deferred that resolves to the created model.</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/model/model.js",
-    "line": 209,
-    "id": 90
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2105,7 +2056,7 @@ something that looks like:</p>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

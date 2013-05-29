@@ -2035,80 +2035,6 @@ before limit and offset is taken into account</li>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.fixture.store.findAll",
-    "parent": "can.fixture.store",
-    "body": "",
-    "description": "<p>Simulate a findAll to a fixture. </p>",
-    "title": "",
-    "signatures": [{
-            "code": "findAll(request)",
-            "description": "<p><code>store.findAll(request)</code> simulates a request to \nget a list items from the server. It supports the\nfollowing params:</p>\n\n<ul>\n<li>order - <code>order=name ASC</code> </li>\n<li>group - <code>group=name</code></li>\n<li>limit - <code>limit=20</code></li>\n<li>offset - <code>offset=60</code></li>\n<li>id filtering - <code>ownerId=5</code></li>\n</ul>",
-            "params": [{
-                    "types": [{
-                            "type": "Object",
-                            "options": [{
-                                    "name": "order",
-                                    "description": "The order of the results.\n`order: 'name ASC'`",
-                                    "types": [{
-                                            "type": "String"
-                                        }
-                                    ]
-                                }, {
-                                    "name": "group",
-                                    "description": "How to group the results.\n`group: 'name'`",
-                                    "types": [{
-                                            "type": "String"
-                                        }
-                                    ]
-                                }, {
-                                    "name": "limit",
-                                    "description": "A limit on the number to retrieve.\n`limit: 20`",
-                                    "types": [{
-                                            "type": "String"
-                                        }
-                                    ]
-                                }, {
-                                    "name": "offset",
-                                    "description": "The offset of the results.\n`offset: 60`",
-                                    "types": [{
-                                            "type": "String"
-                                        }
-                                    ]
-                                }, {
-                                    "name": "id",
-                                    "description": "Filtering by ID.\n`id: 5`\n",
-                                    "types": [{
-                                            "type": "String"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ],
-                    "name": "request",
-                    "description": "<p>The ajax request object. The available parameters are:</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "Object"
-                    }
-                ],
-                "description": "<p>a response object like:</p>\n\n<pre><code>{\n  count: 1000,\n  limit: 20,\n  offset: 60,\n  data: [item1, item2, ...]\n}\n</code></pre>\n\n<p>where:</p>\n\n<ul>\n<li>count - the number of items that match any filtering \nbefore limit and offset is taken into account</li>\n<li>offset - the offset passed</li>\n<li>limit - the limit passed</li>\n<li>data - an array of JS objects with each item's properties</li>\n</ul>"
-            }
-        }
-    ],
-    "src": "can/util/fixture/fixture.js",
-    "line": 498,
-    "id": 201
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2135,7 +2061,7 @@ before limit and offset is taken into account</li>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

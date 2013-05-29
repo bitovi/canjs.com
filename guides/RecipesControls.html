@@ -443,23 +443,6 @@ in a smart way to manage the state of the widget.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "page",
-    "name": "RecipesControls",
-    "body": "<p>The following recipes explore making UI widgets with <code>can.control</code>.</p>\n\n<h3>Tabs</h3>\n\n<p>The following recipes builds a simple tabs widget.</p>\n\n<iframe style=\"width: 100%; height: 300px\" \n        src=\"http://jsfiddle.net/wSaGm/1/embedded/result,html,js,css\" \n        allowfullscreen=\"allowfullscreen\" \n        frameborder=\"0\">JSFiddle</iframe>\n\n<h4>How it works</h4>\n\n<p>It creates a <code>Tabs</code> constructor function that shows and hides tabs\nwhen it's <code>&lt;li&gt;</code>'s are clicked.</p>\n\n<p>When <code>new Tabs()</code> is called, it adds <code>active</code> to the first <code>&lt;li&gt;</code>'s \nclassName. Then, using the <code>tab</code> helper function, it hides the content for \nall the other tab buttons.</p>\n\n<pre><code class=\"lang-javascript\">&lt;li>&lt;a href=\"#model\">Model&lt;/a>&lt;/li></code></pre>\n\n<p>Then gets it's <code>&lt;a&gt;</code> element, and then uses it's href (<code>#model</code>) to get the\ncontent div for that button.</p>\n\n<p>When a button is clicked, <code>Tabs</code> listens to it with:</p>\n\n<pre><code class=\"lang-javascript\">\"li click\" : function( el, ev ) { ... }</code></pre>\n\n<p>This function, using the <code>tab</code> helper deactivates the active tab button and hides its content, \nthen it activates and shows the new tab button and tab content.</p>\n\n<h3>Tooltip</h3>\n\n<p>The following recipe builds a simple tooltip.  It shows templated event binding and we will\nexplain how it keeps memory leaks from happening. Click on one of the items\nto see a tooltip, click somewhere else to remove it.</p>\n\n<iframe style=\"width: 100%; height: 300px\" \n        src=\"http://jsfiddle.net/imjoshdean/2VQSb/embedded/result,html,js,css\" \n        allowfullscreen=\"allowfullscreen\" \n        frameborder=\"0\">JSFiddle</iframe>\n\n<h4>How it works</h4>\n\n<p>This creates a <code>Tooltip</code> control that when created shows a tooltip.  When a <code>Tooltip</code> control\nis created, it positions the <code>Tooltip</code> element relative to the <code>relativeTo</code> option and \nsets its inner html to the <code>html</code> option.</p>\n\n<p>The tooltip also listens to clicks on the window.  If the user clicked on something other than the\n<code>relativeTo</code> element and the tooltip element, it will remove the tooltip from the document.</p>\n\n<p>When an element is removed from the DOM with any controls on it, the control's event handlers\nare automatically removed.  Templated event binding lets us listen to events outside \nthe element.  <code>\"{window} click\"</code> is a templated event binding.</p>\n\n<p>Events outside an element would normally not be removed, but they are with <code>can.Control</code>.</p>\n\n<h3>TreeCombo</h3>\n\n<p>Select multiple items in a tree-like structure. This control uses <code>can.Observe.List</code> and <code>can.compute</code>\nin a smart way to manage the state of the widget.</p>\n\n<iframe style=\"width: 100%; height: 300px\" \n        src=\"http://jsfiddle.net/sTLhX/35/embedded/result,html,js,css\" \n        allowfullscreen=\"allowfullscreen\" \n        frameborder=\"0\">JSFiddle</iframe>\n\n<p><a href=\"http://bitovi.com/blog/2013/01/weekly-widget-tree-combo.html\">How it works</a></p>",
-    "description": "",
-    "title": "Controls",
-    "parent": "Recipes",
-    "order": 0,
-    "comment": " ",
-    "src": "_guides/recipes_controls.md",
-    "id": 15
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -486,7 +469,7 @@ in a smart way to manage the state of the widget.</p>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

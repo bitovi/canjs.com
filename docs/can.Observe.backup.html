@@ -1968,24 +1968,6 @@ recipe.title;     // 'Pancake Mix'</code></pre>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "page",
-    "name": "can.Observe.backup",
-    "body": "",
-    "description": "<p>can.Observe.backup is a plugin that provides a dirty bit for properties on an Observe,\nand lets you restore the original values of an Observe's properties after they are changed.</p>\n\n<p>Here is an example showing how to use <code>[can.Observe.prototype.backup backup]</code> to save values,\n<code>[can.Observe.prototype.restore restore]</code> to restore them, and <code>[can.Observe.prototype.isDirty isDirty]</code>\nto check if the Observe has changed:</p>\n\n<pre><code class=\"lang-javascript\">var recipe = new can.Observe({\n  title: 'Pancake Mix',\n  yields: '3 batches',\n  ingredients: [{\n    ingredient: 'flour',\n    quantity: '6 cups'\n  },{\n    ingredient: 'baking soda',\n    quantity: '1 1/2 teaspoons'\n  },{\n    ingredient: 'baking powder',\n    quantity: '3 teaspoons'\n  },{\n    ingredient: 'salt',\n    quantity: '1 tablespoon'\n  },{\n    ingredient: 'sugar',\n    quantity: '2 tablespoons'\n  }]\n});\nrecipe.backup();\n\nrecipe.attr('title', 'Flapjack Mix');\nrecipe.title;     // 'Flapjack Mix'\nrecipe.isDirty(); // true\n\nrecipe.restore();\nrecipe.title;     // 'Pancake Mix'</code></pre>",
-    "title": "backup",
-    "parent": "can.Observe.plugins",
-    "plugin": "can/observe/backup",
-    "test": "can/observe/backup/qunit.html",
-    "download": "http://donejs.com/can/dist/can.observe.backup.js",
-    "src": "can/observe/backup/backup.md",
-    "id": 59
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2012,7 +1994,7 @@ recipe.title;     // 'Pancake Mix'</code></pre>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

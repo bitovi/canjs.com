@@ -406,23 +406,6 @@ input.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "page",
-    "name": "RecipesLiveBindings",
-    "body": "<p>The following recipes show how to use <code>can.EJS</code>'s live binding.</p>\n\n<h3>Updating timestamps</h3>\n\n<p>The following shows how to create an automatically updating <code>prettyDate</code>\nhelper for EJS that can be used like:</p>\n\n<pre><code class=\"lang-javascript\">&lt;%= prettyDate( new Date() ) %></code></pre>\n\n<p>Notice how the <em>created</em> value changes every couple min or \nso. </p>\n\n<p>The <code>prettyDate</code> method works with or without live-binding.  It doesn't need to take\nan observe, just a date.  Code with EJS becomes live naturally ... amazing.</p>\n\n<iframe style=\"width: 100%; height: 300px\" \n        src=\"http://jsfiddle.net/qYdwR/36/embedded/result,html,js,css\" \n        allowfullscreen=\"allowfullscreen\" \n        frameborder=\"0\">JSFiddle</iframe>\n\n<h3>2-way binding Mustache helpers</h3>\n\n<p>Learn how to make 2-way binding mustache helpers.  When you change the value of an input, it automatically\nchanges the value of an observe.  When you change the value of the observe, it changes the value of the \ninput.</p>\n\n<iframe style=\"width: 100%; height: 300px\" \n        src=\"http://jsfiddle.net/ztWS5/5/embedded/result,html,js,css\" \n        allowfullscreen=\"allowfullscreen\" \n        frameborder=\"0\">JSFiddle</iframe>\n\n<p><a href=\"http://bitovi.com/blog/2013/01/weekly-widget-two-way-mustache-helpers.html\">How it works</a></p>",
-    "description": "",
-    "title": "Live Bindings",
-    "parent": "Recipes",
-    "order": 1,
-    "comment": " ",
-    "src": "_guides/recipes_livebindings.md",
-    "id": 17
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -449,7 +432,7 @@ input.</p>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

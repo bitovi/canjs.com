@@ -1994,52 +1994,6 @@ can.route.url( { type: "video", id: 5, isNew: false } )
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.route.url",
-    "parent": "can.route.static",
-    "body": "<p>Similar to [can.route.link], but instead of creating an anchor tag, <code>can.route.url</code> creates \nonly the URL based on the route options passed into it.</p>\n\n<pre><code>can.route.url( { type: \"videos\", id: 5 } ) \n     // -&gt; \"#!type=videos&amp;id=5\"\n</code></pre>\n\n<p>If a route matching the provided data is found the URL is built from the data. Any remaining\ndata is added at the end of the URL as &amp; separated key/value parameters.</p>\n\n<pre><code>can.route(\":type/:id\")\n\ncan.route.url( { type: \"videos\", id: 5 } ) // -&gt; \"#!videos/5\"\ncan.route.url( { type: \"video\", id: 5, isNew: false } ) \n     // -&gt; \"#!video/5&amp;isNew=false\"\n</code></pre>",
-    "description": "",
-    "title": "url",
-    "signatures": [{
-            "code": "url(options[, merge])",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "Object"
-                        }
-                    ],
-                    "name": "options",
-                    "description": "<p>The data to populate the route with.</p>"
-                }, {
-                    "types": [{
-                            "type": "Boolean"
-                        }
-                    ],
-                    "optional": true,
-                    "name": "merge",
-                    "description": "<p>Whether the given options should be merged into the current state of the route.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "String"
-                    }
-                ],
-                "description": "<p>The route URL and query string.</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/route/route.js",
-    "line": 315,
-    "id": 136
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2066,7 +2020,7 @@ can.route.url( { type: "video", id: 5, isNew: false } )
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

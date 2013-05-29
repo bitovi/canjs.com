@@ -1995,45 +1995,6 @@ the <code>birthday</code> attribute only.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.Observe.prototype.attributes.serialize",
-    "parent": "can.Observe.attributes.prototype",
-    "body": "<p>You can set the serialization methods similar to the convert methods:</p>\n\n<pre><code>var Contact = can.Observe({\n    attributes : { \n        birthday : 'date'\n    },\n    serialize : {\n        date : function( val, type ){\n            return val.getYear() + \n                \"-\" + (val.getMonth() + 1) + \n                \"-\" + val.getDate(); \n        }\n    }\n},{})\n\nvar contact = new Contact();\ncontact.attr('birthday', new Date());\ncontact.serialize()\n//-&gt; { birthday: 'YYYY-MM-DD' }\n</code></pre>\n\n<p>You can also get and serialize an individual property by passing the attribute\nname to the <code>serialize</code> function.  Building on the above demo, we can serialize\nthe <code>birthday</code> attribute only.</p>\n\n<pre><code>contact.serialize('birthday') //-&gt; 'YYYY-MM-DD'\n</code></pre>",
-    "description": "<p><code>can.Observe.prototype.serialize</code> serializes an object for the object.  Serialized data is typically used to send back to a server.</p>",
-    "title": "serialize",
-    "signatures": [{
-            "code": "serialize([attrName])",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "String"
-                        }
-                    ],
-                    "optional": true,
-                    "name": "attrName",
-                    "description": "<p>If passed, returns only a serialization of the named attribute.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "String"
-                    }
-                ],
-                "description": "<p>A serialization of this Observe.</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/observe/attributes/attributes.js",
-    "line": 308,
-    "id": 58
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2060,7 +2021,7 @@ the <code>birthday</code> attribute only.</p>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

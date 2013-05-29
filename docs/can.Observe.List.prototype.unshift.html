@@ -1992,44 +1992,6 @@ looking for [can.Observe.List.push push] and its counterpart [can.Observe.List.p
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "name": "can.Observe.List.prototype.unshift",
-    "type": "function",
-    "parent": "can.Observe.List.prototype",
-    "body": "<p><code>unshift</code> adds elements to the front of the list in bulk in the order specified:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice']);\n\nlist.unshift('Bob', 'Eve');\nlist.attr(); // ['Bob', 'Eve', 'Alice']</code></pre>\n\n<p>If you have an array you want to concatenate to the beginning\nof the List, you can use <code>apply</code>:</p>\n\n<pre><code class=\"lang-javascript\">var names = ['Bob', 'Eve'],\n    list = new can.Observe.List(['Alice']);\n\nlist.push.apply(list, names);\nlist.attr(); // ['Bob', 'Eve', 'Alice']</code></pre>\n\n<h2>Events</h2>\n\n<p><code>unshift</code> causes <em>change</em>, <em>add</em>, and <em>length</em> events to be fired.</p>\n\n<h2>See also</h2>\n\n<p><code>unshift</code> has a counterpart in [can.Observe.List.shift shift], or you may be\nlooking for [can.Observe.List.push push] and its counterpart [can.Observe.List.pop pop].</p>",
-    "description": "<p>Add elements to the beginning of a List. </p>",
-    "title": "unshift",
-    "signatures": [{
-            "code": "unshift(...elements)",
-            "description": "<p><code>unshift</code> adds elements onto the beginning of a List.</p>",
-            "params": [{
-                    "types": [{
-                            "type": "*"
-                        }
-                    ],
-                    "name": "elements",
-                    "description": "<p>the elements to add to the List</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "Number"
-                    }
-                ],
-                "description": "<p>the new length of the List</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/observe/observe.js",
-    "line": 1610,
-    "id": 40
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2056,7 +2018,7 @@ looking for [can.Observe.List.push push] and its counterpart [can.Observe.List.p
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

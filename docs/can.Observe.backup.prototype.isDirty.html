@@ -2007,46 +2007,6 @@ recipe.isDirty(true); // false</code></pre>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.Observe.backup.prototype.isDirty",
-    "parent": "can.Observe.backup",
-    "body": "",
-    "description": "<p>Check whether an Observe has changed since the last time it was backed up. </p>",
-    "title": "isDirty",
-    "plugin": "can/observe/backup",
-    "signatures": [{
-            "code": "isDirty([deep])",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "bool"
-                        }
-                    ],
-                    "optional": true,
-                    "name": "deep",
-                    "defaultValue": "false",
-                    "description": "<p>whether to check nested Observes</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "bool"
-                    }
-                ],
-                "description": "<p>Whether the Observe has changed since the last time it was [can.Observe.prototype.backup backed up].\nIf the Observe has never been backed up, <code>isDirty</code> returns <code>undefined</code>.</p>\n\n<p><code>isDirty</code> checks whether any properties have changed value or whether any properties have\nbeen added or removed since the last time the Observe was backed up. If <em>deep</em> is <code>true</code>,\n<code>isDirty</code> will include nested Observes in its checks.</p>\n\n<pre><code class=\"lang-javascript\">var recipe = new can.Observe({\n  title: 'Pancake Mix',\n  yields: '3 batches',\n  ingredients: [{\n    ingredient: 'flour',\n    quantity: '6 cups'\n  },{\n    ingredient: 'baking soda',\n    quantity: '1 1/2 teaspoons'\n  },{\n    ingredient: 'baking powder',\n    quantity: '3 teaspoons'\n  },{\n    ingredient: 'salt',\n    quantity: '1 tablespoon'\n  },{\n    ingredient: 'sugar',\n    quantity: '2 tablespoons'\n  }]\n});\n\nrecipe.isDirty();     // false\nrecipe.backup();\n\nrecipe.attr('title', 'Flapjack Mix');\nrecipe.isDirty();     // true\nrecipe.restore();\n* recipe.isDirty();   // false\n\nrecipe.attr('ingredients.0.quantity', '7 cups');\nrecipe.isDirty();     // false\nrecipe.isDirty(true); // true\n\nrecipe.backup();\nrecipe.isDirty();     // false\nrecipe.isDirty(true); // false</code></pre>"
-            }
-        }
-    ],
-    "src": "can/observe/backup/backup.js",
-    "line": 63,
-    "id": 61
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2073,7 +2033,7 @@ recipe.isDirty(true); // false</code></pre>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

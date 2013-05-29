@@ -1977,51 +1977,6 @@ a request to update an items properties on a server.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.fixture.store.update",
-    "parent": "can.fixture.store",
-    "body": "<p><code>store.update(request, response(props,headers))</code> simulates\na request to update an items properties on a server.</p>\n\n<pre><code>todosStore.update({\n  url: \"/todos/5\"\n}, function(props, headers){\n  props.id //-&gt; 5\n  headers.location // \"todos/5\"\n});\n</code></pre>",
-    "description": "<p>Simulate an update on a fixture. </p>",
-    "title": "",
-    "signatures": [{
-            "code": "update(request, callback)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "Object"
-                        }
-                    ],
-                    "name": "request",
-                    "description": "<p>Parameters for the request.</p>"
-                }, {
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
-                        }
-                    ],
-                    "name": "callback",
-                    "description": "<p>A function to call with the updated item and headers.</p>"
-                }
-            ]
-        }
-    ],
-    "comment": " ",
-    "src": "can/util/fixture/fixture.js",
-    "line": 646,
-    "id": 203
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2048,7 +2003,7 @@ a request to update an items properties on a server.</p>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

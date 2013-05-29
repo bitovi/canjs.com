@@ -2022,69 +2022,6 @@ documentFragment.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "body": "",
-    "description": "<p>Register a Mustache template string or create a renderer function. </p>",
-    "title": "mustache",
-    "name": "can.view.mustache",
-    "type": "function",
-    "parent": "can.view.static",
-    "signatures": [{
-            "code": "can.view.mustache(id, template)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "String"
-                        }
-                    ],
-                    "name": "id",
-                    "description": "<p>An ID for the template.</p>"
-                }, {
-                    "types": [{
-                            "type": "String"
-                        }
-                    ],
-                    "name": "template",
-                    "description": "<p>A Mustache template in string form.</p>"
-                }
-            ]
-        }, {
-            "code": "can.view.mustache(template)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "String"
-                        }
-                    ],
-                    "name": "template",
-                    "description": "<p>A Mustache template in string form.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "function",
-                        "returns": {
-                            "types": [{
-                                    "type": "undefined"
-                                }
-                            ]
-                        },
-                        "params": []
-                    }
-                ],
-                "description": "<p>A renderer function that takes data and helpers.</p>\n\n<p><code>can.view.mustache([id,] template)</code> registers an Mustache template string \nfor a given id programatically. The following\nregisters <code>myStache</code> and renders it into a documentFragment.</p>\n\n<pre><code> can.view.ejs('myStache', '&lt;h2&gt;{{message}}&lt;/h2&gt;');\n\n var frag = can.view('myStache', {\n     message : 'Hello there!'\n });\n\n frag // -&gt; &lt;h2&gt;Hello there!&lt;/h2&gt;\n</code></pre>\n\n<p>To convert the template into a render function, just pass \nthe template. Call the render function with the data\nyou want to pass to the template and it returns the \ndocumentFragment.</p>\n\n<pre><code> var renderer = can.view.mustache('&lt;div&gt;{{message}}&lt;/div&gt;');\n renderer({\n     message : 'Mustache'\n }); // -&gt; &lt;div&gt;Mustache&lt;/div&gt;\n</code></pre>"
-            }
-        }
-    ],
-    "src": "can/view/view.js",
-    "line": 140,
-    "id": 144
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2111,7 +2048,7 @@ documentFragment.</p>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

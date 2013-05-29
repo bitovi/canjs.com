@@ -512,23 +512,6 @@ call has returned.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "page",
-    "name": "Utilities",
-    "body": "<p>CanJS provides a plethora of utility methods. These methods are usually mapped\nto similar methods in the library that underlies CanJS, but for libraries that\ndo not have the given methods, CanJS provides them for you. This way, you can\ncreate plugins for CanJS that work no matter what library someone else is using.</p>\n\n<h2>String utilities</h2>\n\n<p><code>can.trim</code> removes leading and trailing whitespace.</p>\n\n<pre><code class=\"lang-javascript\">can.trim(' foo '); // 'foo'</code></pre>\n\n<p><code>can.esc</code> escapes HTML code.</p>\n\n<pre><code class=\"lang-javascript\">can.esc('&lt;foo>&lt;bar>'); // '&amp;lt;foo&amp;gt;&amp;&amp;lt;bar&amp;gt;'</code></pre>\n\n<p><code>can.getObject</code> looks up an object by path.</p>\n\n<pre><code class=\"lang-javascript\">can.('foo.bar', [{foo: {bar: 'baz'}}]); // 'baz'</code></pre>\n\n<p><code>can.capitalize</code> capitalizes a string.</p>\n\n<pre><code class=\"lang-javascript\">can.('fooBar'); // 'FooBar'</code></pre>\n\n<p><code>can.sub</code> allows micro-templating.</p>\n\n<pre><code class=\"lang-javascript\">can.sub('{greet}, world!', {greet: 'Hello'}); // 'Hello, world!'</code></pre>\n\n<p><code>can.deparam</code> transforms a form-encoded string into an object..</p>\n\n<pre><code class=\"lang-javascript\">can.deparam('foo=bar&hello=world'); // {foo: 'bar', hello: 'world'}</code></pre>\n\n<h2>Array utilities</h2>\n\n<p><code>can.makeArray</code> converts array-like objects into real Arrays.</p>\n\n<pre><code class=\"lang-javascript\">can.makeArray({0: 'foo', 1: 'bar', length: 2}); // ['foo', 'bar']</code></pre>\n\n<p><code>can.isArray</code> checks if an object is an Array.</p>\n\n<pre><code class=\"lang-javascript\">can.isArray([]); // true</code></pre>\n\n<p><code>can.map</code> converts an array into another array using a callback.</p>\n\n<pre><code class=\"lang-javascript\">can.map(['foo', 'bar'], function(element, index) {\n    return el.toUppercase();\n}); // ['FOO', 'BAR']</code></pre>\n\n<p><code>can.each</code> iterates through an array.</p>\n\n<pre><code class=\"lang-javascript\">can.each([{prop: 'foo'}, {prop: 'bar'}], function(element, index) {\n    // this callback will be called with:\n    // element = {prop: 'foo'}, index = 0\n    // element = {prop: 'bar'}, index = 1\n});</code></pre>\n\n<h2>Object utilites</h2>\n\n<p><code>can.extend</code> extends one object with the properties of another.</p>\n\n<pre><code class=\"lang-javascript\">var first  = {},\n    second = {a: 'b', c: 'd'},\n    third  = {c: 'e'};\n\nvar extended = can.extend(first, second, third);\nextended === first; // true\nfirst;  // {a: 'b', c: 'e'}\nsecond; // {a: 'b', c: 'd'}\nthird;  // {c: 'e'}</code></pre>\n\n<p><code>can.param</code> turns an object into a query string.</p>\n\n<pre><code class=\"lang-javascript\">can.param({a: 'b', c: 'd'}); // 'a=b&c=d'</code></pre>\n\n<p><code>can.isEmptyObject</code> checks whether an object is empty.</p>\n\n<pre><code class=\"lang-javascript\">can.isEmptyObject({});           // true\ncan.isEmptyObject({foo: 'bar'}); // false</code></pre>\n\n<h2>Function utilites</h2>\n\n<p><code>can.proxy</code> returns a function that calls another function with a set context.</p>\n\n<pre><code class=\"lang-javascript\">var f = can.proxy(function(str) {\n    return this.a + str;\n}, {a: 'b'});\nf('bar'); // 'bbar'</code></pre>\n\n<p><code>can.isFunction</code> checks whether an object is a function.</p>\n\n<pre><code class=\"lang-javascript\">can.isFunction({});             // false\ncan.isFunction(function() { }); // true</code></pre>\n\n<h2>Event utilities</h2>\n\n<p><code>can.bind</code> binds a callback to an event on an object.</p>\n\n<pre><code class=\"lang-javascript\">can.bind(obj, eventName, handler); // Binds handler on obj's eventName event.</code></pre>\n\n<p><code>can.unbind</code> unbinds a callback from an event on an object.</p>\n\n<pre><code class=\"lang-javascript\">can.unbind(obj, eventName, handler); // Unbinds handler from obj's eventName event.</code></pre>\n\n<p><code>can.delegate</code> binds a callback to an event on an all elements that match a selector.</p>\n\n<pre><code class=\"lang-javascript\">can.delegate(obj, eventName, handler); // Binds handler on eventName events from all elements under obj that match selector.</code></pre>\n\n<p><code>can.undelegate</code> unbinds a callback from an event on an all elements that\nmatch a selector.</p>\n\n<pre><code class=\"lang-javascript\">can.undelegate(obj, eventName, handler); // Unbinds handler from eventName events from all elements under obj that match selector.</code></pre>\n\n<p><code>can.trigger</code> triggers an event on an object.</p>\n\n<pre><code class=\"lang-javascript\">can.trigger(obj, eventName, args); // Executes all handlers attached to obj for eventName with args as additional arguments.</code></pre>\n\n<h2>AJAX utilites</h2>\n\n<p><code>can.ajax</code> will make an AJAX call and return a Deferred that resolves when the\ncall has returned.</p>\n\n<pre><code class=\"lang-javascript\">can.ajax({\n    url: '/path/to/url',\n    type: 'GET',\n    async: true,\n    dataType: 'json',\n    success: function(json) { },\n    error: function(xhr) { }\n});</code></pre>\n\n<h2>Element utilities</h2>\n\n<p><code>can.$</code> creates a library-wrapped NodeList.</p>\n\n<pre><code class=\"lang-javascript\">can.$(div.bar); // (in jQuery, a jQuery.fn object)</code></pre>\n\n<p><code>can.append</code> appends elements to the elements in a NodeList.</p>\n\n<pre><code class=\"lang-javascript\">can.append(nodelist, content); // Appends content to each element in nodelist.</code></pre>",
-    "description": "",
-    "title": "Utility Functions",
-    "parent": "Tutorial",
-    "order": 9,
-    "comment": " ",
-    "src": "_guides/util.md",
-    "id": 23
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -555,7 +538,7 @@ call has returned.</p>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

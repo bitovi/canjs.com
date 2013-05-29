@@ -1990,52 +1990,6 @@ i; // 8</code></pre>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "name": "can.Observe.prototype.unbind",
-    "type": "function",
-    "parent": "can.Observe.prototype",
-    "body": "<p><code>unbind</code> unbinds event handlers previously bound with [can.Observe.prototype.bind|<code>bind</code>].\nIf no <em>handler</em> is passed, all handlers for the given event type will be unbound.</p>\n\n<pre><code class=\"lang-javascript\">var i = 0,\n    increaseBy2 = function() { i += 2; },\n    increaseBy3 = function() { i += 3; },\n    o = new can.Observe();\n\no.bind('change', increaseBy2);\no.bind('change', increaseBy3);\no.attr('a', 'Alice');\ni; // 5\n\no.unbind('change', increaseBy2);\no.attr('b', 'Bob');\ni; // 8\n\no.unbind('change');\no.attr('e', 'Eve');\ni; // 8</code></pre>     ",
-    "description": "<p>Unbind event handlers from an Observe. </p>",
-    "title": "unbind",
-    "signatures": [{
-            "code": "unbind(eventType[, handler])",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "String"
-                        }
-                    ],
-                    "name": "eventType",
-                    "description": "<p>the type of event to unbind, exactly as passed to <code>bind</code></p>"
-                }, {
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
-                        }
-                    ],
-                    "optional": true,
-                    "name": "handler",
-                    "description": "<p>the handler to unbind</p>"
-                }
-            ]
-        }
-    ],
-    "comment": " ",
-    "src": "can/observe/observe.js",
-    "line": 846,
-    "id": 29
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2062,7 +2016,7 @@ i; // 8</code></pre>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

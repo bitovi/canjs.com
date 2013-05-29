@@ -2053,74 +2053,6 @@ like:</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "name": "can.Model.findOne",
-    "type": "function",
-    "parent": "can.Model.static",
-    "body": "<p><code>findOne( params, success(instance), error(xhr) ) -&gt; Deferred</code> is used to retrieve a model \ninstance from the server. Before you can use <code>findOne</code>, you must implement it.</p>\n\n<h2>Implement with a URL</h2>\n\n<p>Implement findAll with a url like:</p>\n\n<pre><code>Recipe = can.Model({\n  findOne : \"/recipes/{id}.json\"\n},{});\n</code></pre>\n\n<p>If <code>findOne</code> is called like:</p>\n\n<pre><code>Recipe.findOne({id: 57});\n</code></pre>\n\n<p>The server should return data that looks like:</p>\n\n<pre><code>{\"id\" : 57, \"name\": \"Ice Water\"}\n</code></pre>\n\n<h2>Implement with an Object</h2>\n\n<p>Implement <code>findOne</code> with an object that specifies the parameters to\n<code>can.ajax</code> (jQuery.ajax) like:</p>\n\n<pre><code>Recipe = can.Model({\n  findOne : {\n    url: \"/recipes/{id}.xml\",\n    dataType: \"xml\"\n  }\n},{})\n</code></pre>\n\n<h2>Implement with a Function</h2>\n\n<p>To implement with a function, <code>findOne</code> is passed <strong>params</strong> to specify\nthe instance retrieved from the server and it should return a\ndeferred that resolves to the model data.  Also notice that you now need to\nbuild the URL manually. For example:</p>\n\n<pre><code>Recipe = can.Model({\n  findOne : function(params){\n    return $.ajax({\n      url: '/recipes/' + params.id,\n      type: 'get',\n      dataType: 'json'})\n  }\n},{})\n</code></pre>\n\n<h2>Use</h2>\n\n<p>After implementing <code>findOne</code>, you can use it to retrieve an instance of the model\nlike:</p>\n\n<pre><code>Recipe.findOne({id: 57}, function(recipe){\n     recipe.attr('name') //-&gt; \"Ice Water\"\n}, function( xhr ){\n     // called if an error\n}) //-&gt; Deferred\n</code></pre>",
-    "description": "<p>Retrieve a resource from a server. </p>",
-    "title": "findOne",
-    "signatures": [{
-            "code": "findOne(params[, success[, error]])",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "Object"
-                        }
-                    ],
-                    "name": "params",
-                    "description": "<p>Values to filter the request or results with.</p>"
-                }, {
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
-                        }
-                    ],
-                    "optional": true,
-                    "name": "success",
-                    "description": "<p>A callback to call on successful retrieval. The callback recieves\nthe retrieved resource as a can.Model.</p>"
-                }, {
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
-                        }
-                    ],
-                    "optional": true,
-                    "name": "error",
-                    "description": "<p>A callback to call when an error occurs. The callback receives the\nXmlHttpRequest object.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "can.Deferred"
-                    }
-                ],
-                "description": "<p>A deferred that resolves to a [can.Model.List] of retrieved models.</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/model/model.js",
-    "line": 498,
-    "id": 94
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2147,7 +2079,7 @@ like:</p>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

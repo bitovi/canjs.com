@@ -2032,58 +2032,6 @@ Child.base; // Parent</code></pre>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.Construct.setup",
-    "parent": "can.Construct.static",
-    "body": "<p>The static <code>setup</code> method is called immediately after a constructor function is created and \nset to inherit from its base constructor. It is useful for setting up additional inheritance work.\nDo not confuse this with the prototype <code>[can.Construct::setup]</code> method.</p>\n\n<h2>Setup Extends Defaults</h2>\n\n<p>Setup deeply extends the static <code>defaults</code> property of the base constructor with \nproperties of the inheriting constructor.  For example:</p>\n\n<pre><code class=\"lang-javascript\">Parent = can.Construct({\n  defaults : {\n    parentProp: 'foo'\n  }\n},{})\n\nChild = Parent({\n  defaults : {\n    childProp : 'bar'\n  }\n},{}\n\nChild.defaults // {parentProp: 'foo', 'childProp': 'bar'}</code></pre>\n\n<h2>Example</h2>\n\n<p>This <code>Parent</code> class adds a reference to its base class to itself, and\nso do all the classes that inherit from it.</p>\n\n<pre><code class=\"lang-javascript\">Parent = can.Construct({\n  setup : function(base, fullName, staticProps, protoProps){\n    this.base = base;\n\n    // call base functionality\n    can.Construct.setup.apply(this, arguments)\n  }\n},{});\n\nParent.base; // can.Construct\n\nChild = Parent({});\n\nChild.base; // Parent</code></pre>     ",
-    "description": "<p>Perform initialization logic for a constructor function. </p>",
-    "title": "setup",
-    "signatures": [{
-            "code": "setup(base, fullName, staticProps, protoProps)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "constructor"
-                        }
-                    ],
-                    "name": "base",
-                    "description": "<p>The base constructor that is being inherited from.</p>"
-                }, {
-                    "types": [{
-                            "type": "String"
-                        }
-                    ],
-                    "name": "fullName",
-                    "description": "<p>The name of the new constructor.</p>"
-                }, {
-                    "types": [{
-                            "type": "Object"
-                        }
-                    ],
-                    "name": "staticProps",
-                    "description": "<p>The static properties of the new constructor.</p>"
-                }, {
-                    "types": [{
-                            "type": "Object"
-                        }
-                    ],
-                    "name": "protoProps",
-                    "description": "<p>The prototype properties of the new constructor.</p>"
-                }
-            ]
-        }
-    ],
-    "comment": " ",
-    "src": "can/construct/construct.js",
-    "line": 94,
-    "id": 5
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2110,7 +2058,7 @@ Child.base; // Parent</code></pre>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

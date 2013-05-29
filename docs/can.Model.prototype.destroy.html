@@ -2007,67 +2007,6 @@ Recipe.findOne({id: 5}, function(recipe){
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.Model.prototype.destroy",
-    "parent": "can.Model.prototype",
-    "body": "<p>Destroys the instance by calling \n[Can.Model.destroy] with the id of the instance.</p>\n\n<pre><code>recipe.destroy(success, error);\n</code></pre>\n\n<p>This triggers \"destroyed\" events on the instance and the \nModel constructor function which can be listened to with\n[can.Model::bind] and [can.Model.bind]. </p>\n\n<pre><code>Recipe = can.Model({\n  destroy : \"DELETE /services/recipes/{id}\",\n  findOne : \"/services/recipes/{id}\"\n},{})\n\nRecipe.bind(\"destroyed\", function(){\n  console.log(\"a recipe destroyed\");    \n});\n\n// get a recipe\nRecipe.findOne({id: 5}, function(recipe){\n  recipe.bind(\"destroyed\", function(){\n    console.log(\"this recipe destroyed\")    \n  })\n  recipe.destroy();\n})\n</code></pre>",
-    "description": "<p>Destroy a Model on the server. </p>",
-    "title": "destroy",
-    "signatures": [{
-            "code": "destroy([success[, error]])",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
-                        }
-                    ],
-                    "optional": true,
-                    "name": "success",
-                    "description": "<p>A callback to call on successful destruction. The callback recieves\nthe can.Model as it was just prior to destruction.</p>"
-                }, {
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
-                        }
-                    ],
-                    "optional": true,
-                    "name": "error",
-                    "description": "<p>A callback to call when an error occurs. The callback receives the\nXmlHttpRequest object.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "can.Deferred"
-                    }
-                ],
-                "description": "<p>A Deferred that resolves to the Model as it was before destruction.</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/model/model.js",
-    "line": 973,
-    "id": 100
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2094,7 +2033,7 @@ Recipe.findOne({id: 5}, function(recipe){
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

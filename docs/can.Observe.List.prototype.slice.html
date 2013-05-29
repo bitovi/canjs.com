@@ -1990,54 +1990,6 @@ list === copy; // false</code></pre>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.Observe.List.prototype.slice",
-    "parent": "can.Observe.List.prototype",
-    "body": "<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve']);\nvar newList = list.slice(1, 4);\nnewList.attr(); // ['Bob', 'Charlie', 'Daniel']</code></pre>\n\n<p><code>slice</code> is the simplest way to copy a List:</p>\n\n<pre><code class=\"lang-javascript\">var list = new can.Observe.List(['Alice', 'Bob', 'Eve']);\nvar copy = list.slice();\n\ncopy.attr();   // ['Alice', 'Bob', 'Eve']\nlist === copy; // false</code></pre>     ",
-    "description": "<p>Make a copy of a part of a List. </p>",
-    "title": "slice",
-    "signatures": [{
-            "code": "slice([start[, end]])",
-            "description": "<p><code>slice</code> creates a copy of a portion of the List.</p>",
-            "params": [{
-                    "types": [{
-                            "type": "Number"
-                        }
-                    ],
-                    "optional": true,
-                    "name": "start",
-                    "defaultValue": "0",
-                    "description": "<p>the index to start copying from</p>"
-                }, {
-                    "types": [{
-                            "type": "Number"
-                        }
-                    ],
-                    "optional": true,
-                    "name": "end",
-                    "description": "<p>the first index not to include in the copy\nIf <em>end</em> is not supplied, <code>slice</code> will copy until the end of the list.</p>"
-                }
-            ],
-            "returns": {
-                "types": [{
-                        "type": "can.Observe.List"
-                    }
-                ],
-                "description": "<p>a new <code>can.Observe.List</code> with the extracted elements</p>"
-            }
-        }
-    ],
-    "comment": " ",
-    "src": "can/observe/observe.js",
-    "line": 1859,
-    "id": 46
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2064,7 +2016,7 @@ list === copy; // false</code></pre>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

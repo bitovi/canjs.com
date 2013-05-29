@@ -499,23 +499,6 @@ issue in the list like:</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "page",
-    "name": "RecipesRouting",
-    "body": "<p>The following recipes explore using <code>can.route</code>.</p>\n\n<h3>History Tabs</h3>\n\n<p>This recipe shows how to make a history-based tabs widget and have routes\nconfigured independently by can.route.</p>\n\n<iframe style=\"width: 100%; height: 300px\" \n        src=\"http://jsfiddle.net/Z9Cv5/2/embedded/result,html,js,css\" \n        allowfullscreen=\"allowfullscreen\" \n        frameborder=\"0\">JSFiddle</iframe>\n\n<h4>How it works</h4>\n\n<p>The HTML is structured such that each tab button has an <code>&lt;a&gt;</code> element with an \nhref property that matches the <code>id</code> attribute of the tab content \npanel it should show.  This means that even if JavaScript was disabled,\nclicking a button would send the user to the tab panel (even though\nHistoryTabs overwrites this behavior).</p>\n\n<p>For example:</p>\n\n<pre><code class=\"lang-javascript\">&lt;li>&lt;a href=\"#model\">can.Model&lt;/a>&lt;/li></code></pre>\n\n<p>references:</p>\n\n<pre><code class=\"lang-javascript\">&lt;div id=\"model\" class=\"tab\"></code></pre>\n\n<p>The JavaScript code begins by creating a <code>HistoryTabs</code> \ncontrol.  When a new <code>HistoryTabs</code> instance is created, it gets\nan <strong>attr</strong> option like:</p>\n\n<pre><code class=\"lang-javascript\">new HistoryTabs( '#components',{attr: 'component'});</code></pre>\n\n<p>The <strong>attr</strong> method is used to configure which part of <code>can.route</code>'s data the \nhistory tab will be listening to.  </p>\n\n<p>When <code>init</code> is called, it hides each tab button's content div, looking up\nthe content div with the <code>tab</code> helper method.  It then reads the current \nactive tab with:</p>\n\n<pre><code class=\"lang-javascript\">var active = can.route.attr(this.options.attr);</code></pre>\n\n<p>It passes that value to the <code>active</code> helper which will hide the old active\ncontent (if <code>oldActive</code> is passed) and activate the new active button and\nshow it's content.</p>\n\n<p><code>HistoryTab</code> updates the active tab by listening when a tab button is clicked with\n<code>\"li click\"</code>.  It prevents the default behavior (which is changing the hash) and\nupdates it's route data attribute with the select tab's id:</p>\n\n<pre><code class=\"lang-javascript\">can.route.attr(this.options.attr, this.tab(el)[0].id)</code></pre>\n\n<p><code>HistoryTabs</code> listens to these route changes with <code>\"{can.route} {attr}\"</code> and activates\nthe new tab.</p>\n\n<p><strong>Configuring Routes</strong></p>\n\n<p>The code ends by configuring the routes and creating the <code>HistoryTabs</code>.  Here's what each\nroute rule means:</p>\n\n<pre><code class=\"lang-javascript\">can.route(\":component\",{\n  component: \"model\",\n  person: \"mihael\"\n});</code></pre>\n\n<p>This matches the empty routes <code>(\"\",\"#\",\"#!\")</code>, and a single \"word\" route.  If the route\nis one of the empty routes, the route data will look \nlike: <code>{component: \"modal\", person: \"mihael\"}</code>.  If it is a single \"word\" route like\n<code>\"#!view\"</code>, the data will look like:  <code>{component: \"view\", person: \"mihael\"}</code>.</p>\n\n<pre><code class=\"lang-javascript\">can.route(\":component/:person\",{\n  component: \"model\",\n  person: \"mihael\"\n});</code></pre>\n\n<p>This matches two-word routes seperated by a slash (\"/\").  Each word can be empty. If both\nwords are empty \"#!/\", the data will look \nlike: <code>{component: \"model\", person: \"mihael\"}</code>.  If the words are non-empty, that word\nwill replace the default value.</p>\n\n<h3>Observe Backed Routes</h3>\n\n<p>This recipe shows how to have multiple widgets listening on \noverlapping parts of the route. The app lets the user select a type of issue, show issues for that type,\nand select a issue and see details about that issue.</p>\n\n<iframe style=\"width: 100%; height: 300px\" \n        src=\"http://jsfiddle.net/2UL6R/1/embedded/result,html,js,css\" \n        allowfullscreen=\"allowfullscreen\" \n        frameborder=\"0\">JSFiddle</iframe>\n\n<h4>How it works</h4>\n\n<p>This functionality is broken down \ninto <strong>Nav</strong>, <strong>Issues</strong>, and <strong>Details</strong> can.controls.  Here's how\neach part works:</p>\n\n<p><code>Nav</code> creates links using <code>can.route.link</code> that update the hash like:</p>\n\n<pre><code class=\"lang-javascript\">&lt;%== can.route.link(\"Critical\",{filter: \"critical\"}) %></code></pre>\n\n<p>When these are clicked on, they update the route's filter data.  </p>\n\n<p><code>Issues</code> listens to filter changes like:</p>\n\n<pre><code class=\"lang-javascript\">\"{can.route} filter\" : function(route, ev, filter){ ... }</code></pre>\n\n<p>It then retrieve's issue with <code>Issue.findAll</code> and renders \nthem into the <code>#issues</code> element.</p>\n\n<p>When an issue is clicked, <code>Issues</code> updates the route's issue data like:</p>\n\n<pre><code class=\"lang-javascript\">can.route.attr(\"issue\", issue.id)</code></pre>\n\n<p>It listens to changes in <code>issue</code> data and highlights the corresponding\nissue in the list like:</p>\n\n<pre><code class=\"lang-javascript\">\"{can.route} issue\" : function(route, ev, issue){ ... }</code></pre>\n\n<p><code>Details</code> listens to issue chagnes like:</p>\n\n<pre><code class=\"lang-javascript\">\"{can.route} issue\" : function(route, ev, issue){ ... }</code></pre>\n\n<p>And updates the details panel.</p>",
-    "description": "",
-    "title": "Routing",
-    "parent": "Recipes",
-    "order": 2,
-    "comment": " ",
-    "src": "_guides/recipes_routing.md",
-    "id": 19
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -542,7 +525,7 @@ issue in the list like:</p>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>

@@ -1976,51 +1976,6 @@ get a single item from the server by id.</p>
 	</article>
 </div>
 
-<script type="text/javascript">
-	var docData = {
-    "type": "function",
-    "name": "can.fixture.store.findOne",
-    "parent": "can.fixture.store",
-    "body": "<p><code>store.findOne(request, response(item))</code> simulates a request to \nget a single item from the server by id.</p>\n\n<pre><code>todosStore.findOne({\n  url: \"/todos/5\"\n}, function(todo){\n\n});\n</code></pre>",
-    "description": "<p>Simulate a findOne request on a fixture. </p>",
-    "title": "",
-    "signatures": [{
-            "code": "findOne(request, callback)",
-            "description": "",
-            "params": [{
-                    "types": [{
-                            "type": "Object"
-                        }
-                    ],
-                    "name": "request",
-                    "description": "<p>Parameters for the request.</p>"
-                }, {
-                    "types": [{
-                            "type": "function",
-                            "returns": {
-                                "types": [{
-                                        "type": "undefined"
-                                    }
-                                ]
-                            },
-                            "params": []
-                        }
-                    ],
-                    "name": "callback",
-                    "description": "<p>A function to call with the retrieved item.</p>"
-                }
-            ]
-        }
-    ],
-    "comment": " ",
-    "src": "can/util/fixture/fixture.js",
-    "line": 623,
-    "id": 202
-};
-
-	console.log(docData);
-</script>
-
 
 
 	<footer>
@@ -2047,7 +2002,7 @@ get a single item from the server by id.</p>
 	</script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-		<script type="text/javascript" src="../shared/resources/shared.js"></script>
+		<script type="text/javascript" src="../shared/resources/shared.min.js"></script>
 	
 	<script type="text/javascript" src="../resources/app.js"></script>
 	<!--[if lt IE 9]>
