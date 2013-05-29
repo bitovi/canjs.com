@@ -37,3 +37,4 @@ repository back to `gh-pages`.
 - Always keep submodule references up to date
 - Only push to gh-pages for a new release, it will update the homepage right away
 - *Do not modify any HTML and CSS files directly. They are generated when running the Grunt tasks.*
+
