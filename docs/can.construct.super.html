@@ -19,11 +19,6 @@
           <div id="jump_page">
             
               
-              <a class="source" href="can.construct.proxy.html">
-                can.construct.proxy.js
-              </a>
-            
-              
               <a class="source" href="can.construct.super.html">
                 can.construct.super.js
               </a>
@@ -39,18 +34,23 @@
               </a>
             
               
+              <a class="source" href="can.dojo.min.html">
+                can.dojo.min.js
+              </a>
+            
+              
               <a class="source" href="can.fixture.html">
                 can.fixture.js
               </a>
             
               
-              <a class="source" href="can.jquery-all.html">
-                can.jquery-all.js
+              <a class="source" href="can.jquery.html">
+                can.jquery.js
               </a>
             
               
-              <a class="source" href="can.jquery.html">
-                can.jquery.js
+              <a class="source" href="can.jquery.min.html">
+                can.jquery.min.js
               </a>
             
               
@@ -61,6 +61,16 @@
               
               <a class="source" href="can.mootools.html">
                 can.mootools.js
+              </a>
+            
+              
+              <a class="source" href="can.mootools.min.html">
+                can.mootools.min.js
+              </a>
+            
+              
+              <a class="source" href="can.object.html">
+                can.object.js
               </a>
             
               
@@ -89,6 +99,11 @@
               </a>
             
               
+              <a class="source" href="can.util.string.html">
+                can.util.string.js
+              </a>
+            
+              
               <a class="source" href="can.view.modifiers.html">
                 can.view.modifiers.js
               </a>
@@ -104,8 +119,18 @@
               </a>
             
               
+              <a class="source" href="can.yui.min.html">
+                can.yui.min.js
+              </a>
+            
+              
               <a class="source" href="can.zepto.html">
                 can.zepto.js
+              </a>
+            
+              
+              <a class="source" href="can.zepto.min.html">
+                can.zepto.min.js
               </a>
             
           </div>
@@ -132,12 +157,15 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="comment">/*!
-* CanJS - 1.1.5 (2013-03-27)
-* http://canjs.us/
-* Copyright (c) 2013 Bitovi
-* Licensed MIT
-*/</span>
-(<span class="function"><span class="keyword">function</span> <span class="params">(can, window, undefined)</span> {</span></pre></div></div>
+ * CanJS - 1.1.6
+ * http://canjs.us/
+ * Copyright (c) 2013 Bitovi
+ * Wed, 29 May 2013 18:59:28 GMT
+ * Licensed MIT
+ * Includes: can/construct/super
+ * Download from: http://canjs.com
+ */</span>
+(<span class="keyword">function</span>(can, Construct) {</pre></div></div>
             
         </li>
         
@@ -145,19 +173,18 @@
         <li id="section-2">
             <div class="annotation">
               
-              <div class="pilwrap for-h2">
+              <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <h2>can/construct/super/super.js</h2>
-<p>tests if we can get super in .toString()</p>
+              <p>tests if we can get super in .toString()</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> isFunction = can.isFunction,
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> isFunction = can.isFunction,
 
-        fnTest = <span class="regexp">/xyz/</span>.test(<span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
-            xyz;
-        }) ? <span class="regexp">/\b_super\b/</span> : <span class="regexp">/.*/</span>;</pre></div></div>
+            fnTest = <span class="regexp">/xyz/</span>.test(<span class="keyword">function</span>() {
+                    xyz;
+                }) ? <span class="regexp">/\b_super\b/</span> : <span class="regexp">/.*/</span>;</pre></div></div>
             
         </li>
         
@@ -172,7 +199,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    can.Construct._overwrite = <span class="function"><span class="keyword">function</span> <span class="params">(addTo, base, name, val)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>        can.Construct._overwrite = <span class="keyword">function</span>(addTo, base, name, val) {</pre></div></div>
             
         </li>
         
@@ -187,10 +214,12 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        addTo[name] = isFunction(val) &amp;&amp; isFunction(base[name]) &amp;&amp; fnTest.test(val) ? (<span class="function"><span class="keyword">function</span> <span class="params">(name, fn)</span> {</span>
-            <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
-                <span class="keyword">var</span> tmp = <span class="keyword">this</span>._super,
-                    ret;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            addTo[name] = isFunction(val) &amp;&amp;
+                isFunction(base[name]) &amp;&amp;
+                fnTest.test(val) ? (<span class="keyword">function</span>(name, fn) {
+                    <span class="keyword">return</span> <span class="keyword">function</span>() {
+                        <span class="keyword">var</span> tmp = <span class="keyword">this</span>._super,
+                            ret;</pre></div></div>
             
         </li>
         
@@ -206,7 +235,7 @@ but on the super-class</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">this</span>._super = base[name];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        <span class="keyword">this</span>._super = base[name];</pre></div></div>
             
         </li>
         
@@ -222,12 +251,12 @@ remove it when we&#39;re done executing</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                ret = fn.apply(<span class="keyword">this</span>, arguments);
-                <span class="keyword">this</span>._super = tmp;
-                <span class="keyword">return</span> ret;
-            };
-        })(name, val) : val;
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        ret = fn.apply(<span class="keyword">this</span>, arguments);
+                        <span class="keyword">this</span>._super = tmp;
+                        <span class="keyword">return</span> ret;
+                    };
+                })(name, val) : val;
+        }</pre></div></div>
             
         </li>
         
@@ -245,15 +274,15 @@ remove it when we&#39;re done executing</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    can.Construct._inherit = <span class="function"><span class="keyword">function</span> <span class="params">(newProps, oldProps, addTo)</span> {</span>
-        addTo = addTo || newProps
-        <span class="keyword">for</span> (<span class="keyword">var</span> name <span class="keyword">in</span> newProps) {
-            can.Construct._overwrite(addTo, oldProps, name, newProps[name]);
+            <div class="content"><div class='highlight'><pre>        can.Construct._inherit = <span class="keyword">function</span>(newProps, oldProps, addTo) {
+            addTo = addTo || newProps
+            <span class="keyword">for</span> (<span class="keyword">var</span> name <span class="keyword">in</span> newProps) {
+                can.Construct._overwrite(addTo, oldProps, name, newProps[name]);
+            }
         }
-    }
 
-
-})(can, <span class="keyword">this</span>);</pre></div></div>
+        <span class="keyword">return</span> can;
+    })(can);</pre></div></div>
             
         </li>
         

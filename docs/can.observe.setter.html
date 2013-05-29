@@ -19,11 +19,6 @@
           <div id="jump_page">
             
               
-              <a class="source" href="can.construct.proxy.html">
-                can.construct.proxy.js
-              </a>
-            
-              
               <a class="source" href="can.construct.super.html">
                 can.construct.super.js
               </a>
@@ -39,18 +34,23 @@
               </a>
             
               
+              <a class="source" href="can.dojo.min.html">
+                can.dojo.min.js
+              </a>
+            
+              
               <a class="source" href="can.fixture.html">
                 can.fixture.js
               </a>
             
               
-              <a class="source" href="can.jquery-all.html">
-                can.jquery-all.js
+              <a class="source" href="can.jquery.html">
+                can.jquery.js
               </a>
             
               
-              <a class="source" href="can.jquery.html">
-                can.jquery.js
+              <a class="source" href="can.jquery.min.html">
+                can.jquery.min.js
               </a>
             
               
@@ -61,6 +61,16 @@
               
               <a class="source" href="can.mootools.html">
                 can.mootools.js
+              </a>
+            
+              
+              <a class="source" href="can.mootools.min.html">
+                can.mootools.min.js
+              </a>
+            
+              
+              <a class="source" href="can.object.html">
+                can.object.js
               </a>
             
               
@@ -89,6 +99,11 @@
               </a>
             
               
+              <a class="source" href="can.util.string.html">
+                can.util.string.js
+              </a>
+            
+              
               <a class="source" href="can.view.modifiers.html">
                 can.view.modifiers.js
               </a>
@@ -104,8 +119,18 @@
               </a>
             
               
+              <a class="source" href="can.yui.min.html">
+                can.yui.min.js
+              </a>
+            
+              
               <a class="source" href="can.zepto.html">
                 can.zepto.js
+              </a>
+            
+              
+              <a class="source" href="can.zepto.min.html">
+                can.zepto.min.js
               </a>
             
           </div>
@@ -132,12 +157,17 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="comment">/*!
-* CanJS - 1.1.5 (2013-03-27)
-* http://canjs.us/
-* Copyright (c) 2013 Bitovi
-* Licensed MIT
-*/</span>
-(<span class="function"><span class="keyword">function</span> <span class="params">(can, window, undefined)</span> {</span></pre></div></div>
+ * CanJS - 1.1.6
+ * http://canjs.us/
+ * Copyright (c) 2013 Bitovi
+ * Wed, 29 May 2013 18:59:29 GMT
+ * Licensed MIT
+ * Includes: can/observe/setter
+ * Download from: http://canjs.com
+ */</span>
+(<span class="keyword">function</span>(can) {
+
+        can.classize = <span class="keyword">function</span>(s, join) {</pre></div></div>
             
         </li>
         
@@ -145,14 +175,28 @@
         <li id="section-2">
             <div class="annotation">
               
-              <div class="pilwrap for-h2">
+              <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <h2>can/observe/setter/setter.js</h2>
+              <p>this can be moved out ..
+used for getter setter</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    can.classize = <span class="function"><span class="keyword">function</span> <span class="params">(s, join)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> parts = s.split(can.undHash),
+                i = <span class="number">0</span>;
+            <span class="keyword">for</span> (; i &lt; parts.length; i++) {
+                parts[i] = can.capitalize(parts[i]);
+            }
+
+            <span class="keyword">return</span> parts.join(join || <span class="string">''</span>);
+        }
+
+        <span class="keyword">var</span> classize = can.classize,
+            proto = can.Observe.prototype,
+            old = proto.__set;
+
+        proto.__set = <span class="keyword">function</span>(prop, value, current, success, error) {</pre></div></div>
             
         </li>
         
@@ -163,25 +207,14 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>this can be moved out ..
-used for getter setter</p>
+              <p>check if there&#39;s a setter</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> parts = s.split(can.undHash),
-            i = <span class="number">0</span>;
-        <span class="keyword">for</span> (; i &lt; parts.length; i++) {
-            parts[i] = can.capitalize(parts[i]);
-        }
-
-        <span class="keyword">return</span> parts.join(join || <span class="string">''</span>);
-    }
-
-    <span class="keyword">var</span> classize = can.classize,
-        proto = can.Observe.prototype,
-        old = proto.__set;
-
-    proto.__set = <span class="function"><span class="keyword">function</span> <span class="params">(prop, value, current, success, error)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> cap = classize(prop),
+                setName = <span class="string">"set"</span> + cap,
+                errorCallback = <span class="keyword">function</span>(errors) {
+                    <span class="keyword">var</span> stub = error &amp;&amp; error.call(self, errors);</pre></div></div>
             
         </li>
         
@@ -192,14 +225,19 @@ used for getter setter</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>check if there&#39;s a setter</p>
+              <p>if &#39;setter&#39; is on the page it will trigger
+the error itself and we dont want to trigger
+the event twice. :)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> cap = classize(prop),
-            setName = <span class="string">"set"</span> + cap,
-            errorCallback = <span class="function"><span class="keyword">function</span> <span class="params">(errors)</span> {</span>
-                <span class="keyword">var</span> stub = error &amp;&amp; error.call(self, errors);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (stub !== <span class="literal">false</span>) {
+                        can.trigger(self, <span class="string">"error"</span>, [prop, errors], <span class="literal">true</span>);
+                    }
+
+                    <span class="keyword">return</span> <span class="literal">false</span>;
+                },
+                self = <span class="keyword">this</span>;</pre></div></div>
             
         </li>
         
@@ -210,19 +248,11 @@ used for getter setter</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>if &#39;setter&#39; is on the page it will trigger
-the error itself and we dont want to trigger
-the event twice. :)</p>
+              <p>if we have a setter</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (stub !== <span class="literal">false</span>) {
-                    can.trigger(self, <span class="string">"error"</span>, [prop, errors], <span class="literal">true</span>);
-                }
-
-                <span class="keyword">return</span> <span class="literal">false</span>;
-            },
-            self = <span class="keyword">this</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (<span class="keyword">this</span>[setName] &amp;&amp;</pre></div></div>
             
         </li>
         
@@ -233,39 +263,25 @@ the event twice. :)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>if we have a setter</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (<span class="keyword">this</span>[setName] &amp;&amp;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
               <p>call the setter, if returned value is undefined,
 this means the setter is async so we 
 do not call update property and return right away</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        (value = <span class="keyword">this</span>[setName](value, <span class="function"><span class="keyword">function</span> <span class="params">(value)</span> {</span>
-            old.call(self, prop, value, current, success, errorCallback)
-        }, errorCallback)) === <span class="literal">undefined</span>) {
-            <span class="keyword">return</span>;
-        }
+            <div class="content"><div class='highlight'><pre>                (value = <span class="keyword">this</span>[setName](value, <span class="keyword">function</span>(value) {
+                            old.call(self, prop, value, current, success, errorCallback)
+                        },
+                        errorCallback)) === <span class="literal">undefined</span>) {
+                <span class="keyword">return</span>;
+            }
 
-        old.call(self, prop, value, current, success, errorCallback);
+            old.call(self, prop, value, current, success, errorCallback);
 
-        <span class="keyword">return</span> <span class="keyword">this</span>;
-    };
-
-})(can, <span class="keyword">this</span>);</pre></div></div>
+            <span class="keyword">return</span> <span class="keyword">this</span>;
+        };
+        <span class="keyword">return</span> can.Observe;
+    })(can);</pre></div></div>
             
         </li>
         

@@ -19,11 +19,6 @@
           <div id="jump_page">
             
               
-              <a class="source" href="can.construct.proxy.html">
-                can.construct.proxy.js
-              </a>
-            
-              
               <a class="source" href="can.construct.super.html">
                 can.construct.super.js
               </a>
@@ -39,18 +34,23 @@
               </a>
             
               
+              <a class="source" href="can.dojo.min.html">
+                can.dojo.min.js
+              </a>
+            
+              
               <a class="source" href="can.fixture.html">
                 can.fixture.js
               </a>
             
               
-              <a class="source" href="can.jquery-all.html">
-                can.jquery-all.js
+              <a class="source" href="can.jquery.html">
+                can.jquery.js
               </a>
             
               
-              <a class="source" href="can.jquery.html">
-                can.jquery.js
+              <a class="source" href="can.jquery.min.html">
+                can.jquery.min.js
               </a>
             
               
@@ -61,6 +61,16 @@
               
               <a class="source" href="can.mootools.html">
                 can.mootools.js
+              </a>
+            
+              
+              <a class="source" href="can.mootools.min.html">
+                can.mootools.min.js
+              </a>
+            
+              
+              <a class="source" href="can.object.html">
+                can.object.js
               </a>
             
               
@@ -89,6 +99,11 @@
               </a>
             
               
+              <a class="source" href="can.util.string.html">
+                can.util.string.js
+              </a>
+            
+              
               <a class="source" href="can.view.modifiers.html">
                 can.view.modifiers.js
               </a>
@@ -104,8 +119,18 @@
               </a>
             
               
+              <a class="source" href="can.yui.min.html">
+                can.yui.min.js
+              </a>
+            
+              
               <a class="source" href="can.zepto.html">
                 can.zepto.js
+              </a>
+            
+              
+              <a class="source" href="can.zepto.min.html">
+                can.zepto.min.js
               </a>
             
           </div>
@@ -132,12 +157,15 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="comment">/*!
-* CanJS - 1.1.5 (2013-03-27)
-* http://canjs.us/
-* Copyright (c) 2013 Bitovi
-* Licensed MIT
-*/</span>
-(<span class="function"><span class="keyword">function</span> <span class="params">(can, window, undefined)</span> {</span></pre></div></div>
+ * CanJS - 1.1.6
+ * http://canjs.us/
+ * Copyright (c) 2013 Bitovi
+ * Wed, 29 May 2013 18:59:28 GMT
+ * Licensed MIT
+ * Includes: can/view/mustache
+ * Download from: http://canjs.com
+ */</span>
+(<span class="keyword">function</span>(can) {</pre></div></div>
             
         </li>
         
@@ -145,11 +173,10 @@
         <li id="section-2">
             <div class="annotation">
               
-              <div class="pilwrap for-h2">
+              <div class="pilwrap for-h1">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <h2>can/view/mustache/mustache.js</h2>
-<h1>mustache.js</h1>
+              <h1>mustache.js</h1>
 <p><code>can.Mustache</code>: The Mustache templating engine.
 See the <a href="#section-29">Transformation</a> section within <em>Scanning Helpers</em> for a detailed explanation 
 of the runtime render code design. The majority of the Mustache engine implementation 
@@ -159,7 +186,7 @@ occurs within the <em>Transformation</em> scanning helper.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    can.view.ext = <span class="string">".mustache"</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        can.view.ext = <span class="string">".mustache"</span>;</pre></div></div>
             
         </li>
         
@@ -176,7 +203,7 @@ This is also used for passing to helper functions to maintain proper context.</p
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> CONTEXT = <span class="string">'___c0nt3xt'</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> CONTEXT = <span class="string">'___c0nt3xt'</span>,</pre></div></div>
             
         </li>
         
@@ -192,7 +219,7 @@ to helpers via <code>options.hash</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        HASH = <span class="string">'___h4sh'</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            HASH = <span class="string">'___h4sh'</span>,</pre></div></div>
             
         </li>
         
@@ -207,8 +234,8 @@ to helpers via <code>options.hash</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        STACK = <span class="string">'___st4ck'</span>,
-        STACKED = <span class="string">'___st4ck3d'</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            STACK = <span class="string">'___st4ck'</span>,
+            STACKED = <span class="string">'___st4ck3d'</span>,</pre></div></div>
             
         </li>
         
@@ -223,18 +250,18 @@ to helpers via <code>options.hash</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        CONTEXT_STACK = STACK + <span class="string">'('</span> + CONTEXT + <span class="string">',this)'</span>,
-        CONTEXT_OBJ = <span class="string">'{context:'</span> + CONTEXT_STACK + <span class="string">',options:options}'</span>,
+            <div class="content"><div class='highlight'><pre>            CONTEXT_STACK = STACK + <span class="string">'('</span> + CONTEXT + <span class="string">',this)'</span>,
+            CONTEXT_OBJ = <span class="string">'{context:'</span> + CONTEXT_STACK + <span class="string">',options:options}'</span>,
 
 
-        isObserve = <span class="function"><span class="keyword">function</span> <span class="params">(obj)</span> {</span>
-            <span class="keyword">return</span> obj !== <span class="literal">null</span> &amp;&amp; can.isFunction(obj.attr) &amp;&amp; obj.constructor &amp;&amp; !! obj.constructor.canMakeObserve;
-        },
+            isObserve = <span class="keyword">function</span>(obj) {
+                <span class="keyword">return</span> obj !== <span class="literal">null</span> &amp;&amp; can.isFunction(obj.attr) &amp;&amp; obj.constructor &amp;&amp; !! obj.constructor.canMakeObserve;
+            },
 
 
-        isArrayLike = <span class="function"><span class="keyword">function</span> <span class="params">(obj)</span> {</span>
-            <span class="keyword">return</span> obj &amp;&amp; obj.splice &amp;&amp; <span class="keyword">typeof</span> obj.length == <span class="string">'number'</span>;
-        },</pre></div></div>
+            isArrayLike = <span class="keyword">function</span>(obj) {
+                <span class="keyword">return</span> obj &amp;&amp; obj.splice &amp;&amp; <span class="keyword">typeof</span> obj.length == <span class="string">'number'</span>;
+            },</pre></div></div>
             
         </li>
         
@@ -249,7 +276,7 @@ to helpers via <code>options.hash</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        Mustache = <span class="function"><span class="keyword">function</span> <span class="params">(options, helpers)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>            Mustache = <span class="keyword">function</span>(options, helpers) {</pre></div></div>
             
         </li>
         
@@ -265,12 +292,12 @@ This returns a function that renders the template.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (<span class="keyword">this</span>.constructor != Mustache) {
-                <span class="keyword">var</span> mustache = <span class="keyword">new</span> Mustache(options);
-                <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">(data, options)</span> {</span>
-                    <span class="keyword">return</span> mustache.render(data, options);
-                };
-            }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (<span class="keyword">this</span>.constructor != Mustache) {
+                    <span class="keyword">var</span> mustache = <span class="keyword">new</span> Mustache(options);
+                    <span class="keyword">return</span> <span class="keyword">function</span>(data, options) {
+                        <span class="keyword">return</span> mustache.render(data, options);
+                    };
+                }</pre></div></div>
             
         </li>
         
@@ -286,12 +313,12 @@ a <code>steal</code>-packaged view.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (<span class="keyword">typeof</span> options == <span class="string">"function"</span>) {
-                <span class="keyword">this</span>.template = {
-                    fn: options
-                };
-                <span class="keyword">return</span>;
-            }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (<span class="keyword">typeof</span> options == <span class="string">"function"</span>) {
+                    <span class="keyword">this</span>.template = {
+                        fn: options
+                    };
+                    <span class="keyword">return</span>;
+                }</pre></div></div>
             
         </li>
         
@@ -306,9 +333,9 @@ a <code>steal</code>-packaged view.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            can.extend(<span class="keyword">this</span>, options);
-            <span class="keyword">this</span>.template = <span class="keyword">this</span>.scanner.scan(<span class="keyword">this</span>.text, <span class="keyword">this</span>.name);
-        };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                can.extend(<span class="keyword">this</span>, options);
+                <span class="keyword">this</span>.template = <span class="keyword">this</span>.scanner.scan(<span class="keyword">this</span>.text, <span class="keyword">this</span>.name);
+            };</pre></div></div>
             
         </li>
         
@@ -323,24 +350,24 @@ a <code>steal</code>-packaged view.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    can.Mustache = window.Mustache = Mustache;
+            <div class="content"><div class='highlight'><pre>        can.Mustache = window.Mustache = Mustache;
 
 
-    Mustache.prototype.
+        Mustache.prototype.
 
-    render = <span class="function"><span class="keyword">function</span> <span class="params">(object, options)</span> {</span>
-        object = object || {};
-        options = options || {};
-        <span class="keyword">if</span> (!options.helpers &amp;&amp; !options.partials) {
-            options.helpers = options;
-        }
-        <span class="keyword">return</span> <span class="keyword">this</span>.template.fn.call(object, object, {
-            _data: object,
-            options: options
-        });
-    };
+        render = <span class="keyword">function</span>(object, options) {
+            object = object || {};
+            options = options || {};
+            <span class="keyword">if</span> (!options.helpers &amp;&amp; !options.partials) {
+                options.helpers = options;
+            }
+            <span class="keyword">return</span> <span class="keyword">this</span>.template.fn.call(object, object, {
+                    _data: object,
+                    options: options
+                });
+        };
 
-    can.extend(Mustache.prototype, {</pre></div></div>
+        can.extend(Mustache.prototype, {</pre></div></div>
             
         </li>
         
@@ -355,7 +382,7 @@ a <code>steal</code>-packaged view.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        scanner: <span class="keyword">new</span> can.view.Scanner({</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                scanner: <span class="keyword">new</span> can.view.Scanner({</pre></div></div>
             
         </li>
         
@@ -370,7 +397,7 @@ a <code>steal</code>-packaged view.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            text: {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        text: {</pre></div></div>
             
         </li>
         
@@ -386,7 +413,7 @@ This includes initializing the <code>context</code> stack.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                start: <span class="string">'var '</span> + CONTEXT + <span class="string">' = this &amp;&amp; this.'</span> + STACKED + <span class="string">' ? this : [];'</span> + CONTEXT + <span class="string">'.'</span> + STACKED + <span class="string">' = true;'</span> + <span class="string">'var '</span> + STACK + <span class="string">' = function(context, self) {'</span> + <span class="string">'var s;'</span> + <span class="string">'if (arguments.length == 1 &amp;&amp; context) {'</span> + <span class="string">'s = !context.'</span> + STACKED + <span class="string">' ? [context] : context;'</span> +</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            start: <span class="string">'var '</span> + CONTEXT + <span class="string">' = this &amp;&amp; this.'</span> + STACKED + <span class="string">' ? this : [];'</span> + CONTEXT + <span class="string">'.'</span> + STACKED + <span class="string">' = true;'</span> + <span class="string">'var '</span> + STACK + <span class="string">' = function(context, self) {'</span> + <span class="string">'var s;'</span> + <span class="string">'if (arguments.length == 1 &amp;&amp; context) {'</span> + <span class="string">'s = !context.'</span> + STACKED + <span class="string">' ? [context] : context;'</span> +</pre></div></div>
             
         </li>
         
@@ -401,8 +428,8 @@ This includes initializing the <code>context</code> stack.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="string">'} else if (!context.'</span> + STACKED + <span class="string">') {'</span> + <span class="string">'s = [self, context];'</span> + <span class="string">'} else if (context &amp;&amp; context === self &amp;&amp; context.'</span> + STACKED + <span class="string">') {'</span> + <span class="string">'s = context.slice(0);'</span> + <span class="string">'} else {'</span> + <span class="string">'s = context &amp;&amp; context.'</span> + STACKED + <span class="string">' ? context.concat([self]) : '</span> + STACK + <span class="string">'(context).concat([self]);'</span> + <span class="string">'}'</span> + <span class="string">'return (s.'</span> + STACKED + <span class="string">' = true) &amp;&amp; s;'</span> + <span class="string">'};'</span>
-            },</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            <span class="string">'} else if (!context.'</span> + STACKED + <span class="string">') {'</span> + <span class="string">'s = [self, context];'</span> + <span class="string">'} else if (context &amp;&amp; context === self &amp;&amp; context.'</span> + STACKED + <span class="string">') {'</span> + <span class="string">'s = context.slice(0);'</span> + <span class="string">'} else {'</span> + <span class="string">'s = context &amp;&amp; context.'</span> + STACKED + <span class="string">' ? context.concat([self]) : '</span> + STACK + <span class="string">'(context).concat([self]);'</span> + <span class="string">'}'</span> + <span class="string">'return (s.'</span> + STACKED + <span class="string">' = true) &amp;&amp; s;'</span> + <span class="string">'};'</span>
+                        },</pre></div></div>
             
         </li>
         
@@ -433,7 +460,7 @@ Each token follows the following structure:
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            tokens: [</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        tokens: [</pre></div></div>
             
         </li>
         
@@ -448,7 +475,7 @@ Each token follows the following structure:
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            [<span class="string">"returnLeft"</span>, <span class="string">"{{{"</span>, <span class="string">"{{[{&amp;]"</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            [<span class="string">"returnLeft"</span>, <span class="string">"{{{"</span>, <span class="string">"{{[{&amp;]"</span>],</pre></div></div>
             
         </li>
         
@@ -463,7 +490,7 @@ Each token follows the following structure:
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            [<span class="string">"commentFull"</span>, <span class="string">"{{!}}"</span>, <span class="string">"^[\\s\\t]*{{!.+?}}\\n"</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            [<span class="string">"commentFull"</span>, <span class="string">"{{!}}"</span>, <span class="string">"^[\\s\\t]*{{!.+?}}\\n"</span>],</pre></div></div>
             
         </li>
         
@@ -478,7 +505,7 @@ Each token follows the following structure:
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            [<span class="string">"commentLeft"</span>, <span class="string">"{{!"</span>, <span class="string">"(\\n[\\s\\t]*{{!|{{!)"</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            [<span class="string">"commentLeft"</span>, <span class="string">"{{!"</span>, <span class="string">"(\\n[\\s\\t]*{{!|{{!)"</span>],</pre></div></div>
             
         </li>
         
@@ -494,12 +521,14 @@ This is used for detecting lines with only whitespace and an escaped tag</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            [<span class="string">"escapeFull"</span>, <span class="string">"{{}}"</span>, <span class="string">"(^[\\s\\t]*{{[#/^][^}]+?}}\\n|\\n[\\s\\t]*{{[#/^][^}]+?}}\\n|\\n[\\s\\t]*{{[#/^][^}]+?}}$)"</span>, <span class="function"><span class="keyword">function</span> <span class="params">(content)</span> {</span>
-                <span class="keyword">return</span> {
-                    before: <span class="regexp">/^\n.+?\n$/</span>.test(content) ? <span class="string">'\n'</span> : <span class="string">''</span>,
-                    content: content.match(<span class="regexp">/\{\{(.+?)\}\}/</span>)[<span class="number">1</span>] || <span class="string">''</span>
-                };
-            }],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            [<span class="string">"escapeFull"</span>, <span class="string">"{{}}"</span>, <span class="string">"(^[\\s\\t]*{{[#/^][^}]+?}}\\n|\\n[\\s\\t]*{{[#/^][^}]+?}}\\n|\\n[\\s\\t]*{{[#/^][^}]+?}}$)"</span>,
+                                <span class="keyword">function</span>(content) {
+                                    <span class="keyword">return</span> {
+                                        before: <span class="regexp">/^\n.+?\n$/</span>.test(content) ? <span class="string">'\n'</span> : <span class="string">''</span>,
+                                        content: content.match(<span class="regexp">/\{\{(.+?)\}\}/</span>)[<span class="number">1</span>] || <span class="string">''</span>
+                                    };
+                                }
+                            ],</pre></div></div>
             
         </li>
         
@@ -514,7 +543,7 @@ This is used for detecting lines with only whitespace and an escaped tag</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            [<span class="string">"escapeLeft"</span>, <span class="string">"{{"</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            [<span class="string">"escapeLeft"</span>, <span class="string">"{{"</span>],</pre></div></div>
             
         </li>
         
@@ -529,7 +558,7 @@ This is used for detecting lines with only whitespace and an escaped tag</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            [<span class="string">"returnRight"</span>, <span class="string">"}}}"</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            [<span class="string">"returnRight"</span>, <span class="string">"}}}"</span>],</pre></div></div>
             
         </li>
         
@@ -544,7 +573,8 @@ This is used for detecting lines with only whitespace and an escaped tag</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            [<span class="string">"right"</span>, <span class="string">"}}"</span>]],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            [<span class="string">"right"</span>, <span class="string">"}}"</span>]
+                        ],</pre></div></div>
             
         </li>
         
@@ -577,7 +607,7 @@ This is used for detecting lines with only whitespace and an escaped tag</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            helpers: [</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        helpers: [</pre></div></div>
             
         </li>
         
@@ -603,9 +633,9 @@ For example, this template and partial:
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            {
-                name: <span class="regexp">/^&gt;[\s]*\w*/</span>,
-                fn: <span class="function"><span class="keyword">function</span> <span class="params">(content, cmd)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            {
+                                name: <span class="regexp">/^&gt;[\s]*\w*/</span>,
+                                fn: <span class="keyword">function</span>(content, cmd) {</pre></div></div>
             
         </li>
         
@@ -621,10 +651,11 @@ passing the name and the current context.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">var</span> templateName = can.trim(content.replace(<span class="regexp">/^&gt;\s?/</span>, <span class="string">''</span>)).replace(<span class="regexp">/["|']/g</span>, <span class="string">""</span>);
-                    <span class="keyword">return</span> <span class="string">"options.partials &amp;&amp; options.partials['"</span> + templateName + <span class="string">"'] ? can.Mustache.renderPartial(options.partials['"</span> + templateName + <span class="string">"'],"</span> + CONTEXT_STACK + <span class="string">".pop(),options) : can.Mustache.render('"</span> + templateName + <span class="string">"', "</span> + CONTEXT_STACK + <span class="string">")"</span>;
-                }
-            },</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                    <span class="keyword">var</span> templateName = can.trim(content.replace(<span class="regexp">/^&gt;\s?/</span>, <span class="string">''</span>)).replace(<span class="regexp">/["|']/g</span>, <span class="string">""</span>);
+                                    <span class="keyword">return</span> <span class="string">"options.partials &amp;&amp; options.partials['"</span> + templateName + <span class="string">"'] ? can.Mustache.renderPartial(options.partials['"</span> + templateName + <span class="string">"'],"</span> +
+                                        CONTEXT_STACK + <span class="string">",options) : can.Mustache.render('"</span> + templateName + <span class="string">"', "</span> + CONTEXT_STACK + <span class="string">")"</span>;
+                                }
+                            },</pre></div></div>
             
         </li>
         
@@ -646,10 +677,10 @@ then later you can access it like:
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            {
-                name: <span class="regexp">/^\s*data\s/</span>,
-                fn: <span class="function"><span class="keyword">function</span> <span class="params">(content, cmd)</span> {</span>
-                    <span class="keyword">var</span> attr = content.match(<span class="regexp">/["|'](.*)["|']/</span>)[<span class="number">1</span>];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            {
+                                name: <span class="regexp">/^\s*data\s/</span>,
+                                fn: <span class="keyword">function</span>(content, cmd) {
+                                    <span class="keyword">var</span> attr = content.match(<span class="regexp">/["|'](.*)["|']/</span>)[<span class="number">1</span>];</pre></div></div>
             
         </li>
         
@@ -665,7 +696,7 @@ with the attribute name with the current context.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">return</span> <span class="string">"can.proxy(function(__){"</span> +</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                    <span class="keyword">return</span> <span class="string">"can.proxy(function(__){"</span> +</pre></div></div>
             
         </li>
         
@@ -677,13 +708,13 @@ with the attribute name with the current context.</p>
                 <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>&quot;var context = this[this.length-1];&quot; +
-&quot;context = context.&quot; + STACKED + &quot; ? context[context.length-2] : context; console.warn(this, context);&quot; +</p>
+&quot;context = context.&quot; + STACKED + &quot; ? context[context.length-2] : context;&quot; +</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="string">"can.data(can.$(__),'"</span> + attr + <span class="string">"', this.pop()); }, "</span> + CONTEXT_STACK + <span class="string">")"</span>;
-                }
-            },</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                    <span class="string">"can.data(can.$(__),'"</span> + attr + <span class="string">"', this.pop()); }, "</span> + CONTEXT_STACK + <span class="string">")"</span>;
+                                }
+                            },</pre></div></div>
             
         </li>
         
@@ -829,11 +860,11 @@ All of these nested sections will combine to return a compiled string that funct
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            {
-                name: <span class="regexp">/^.*$/</span>,
-                fn: <span class="function"><span class="keyword">function</span> <span class="params">(content, cmd)</span> {</span>
-                    <span class="keyword">var</span> mode = <span class="literal">false</span>,
-                        result = [];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            {
+                                name: <span class="regexp">/^.*$/</span>,
+                                fn: <span class="keyword">function</span>(content, cmd) {
+                                    <span class="keyword">var</span> mode = <span class="literal">false</span>,
+                                        result = [];</pre></div></div>
             
         </li>
         
@@ -848,7 +879,7 @@ All of these nested sections will combine to return a compiled string that funct
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    content = can.trim(content);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                    content = can.trim(content);</pre></div></div>
             
         </li>
         
@@ -867,9 +898,9 @@ All of these nested sections will combine to return a compiled string that funct
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (content.length &amp;&amp; (mode = content.match(<span class="regexp">/^([#^/</span>]|<span class="keyword">else</span>$)/))) {
-                        mode = mode[<span class="number">0</span>];
-                        <span class="keyword">switch</span> (mode) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                    <span class="keyword">if</span> (content.length &amp;&amp; (mode = content.match(<span class="regexp">/^([#^/</span>]|<span class="keyword">else</span>$)/))) {
+                                        mode = mode[<span class="number">0</span>];
+                                        <span class="keyword">switch</span> (mode) {</pre></div></div>
             
         </li>
         
@@ -884,10 +915,10 @@ All of these nested sections will combine to return a compiled string that funct
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        <span class="keyword">case</span> <span class="string">'#'</span>:
-                        <span class="keyword">case</span> <span class="string">'^'</span>:
-                            result.push(cmd.insert + <span class="string">'can.view.txt(0,\''</span> + cmd.tagName + <span class="string">'\','</span> + cmd.status + <span class="string">',this,function(){ return '</span>);
-                            <span class="keyword">break</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                            <span class="keyword">case</span> <span class="string">'#'</span>:
+                                            <span class="keyword">case</span> <span class="string">'^'</span>:
+                                                result.push(cmd.insert + <span class="string">'can.view.txt(0,\''</span> + cmd.tagName + <span class="string">'\','</span> + cmd.status + <span class="string">',this,function(){ return '</span>);
+                                                <span class="keyword">break</span>;</pre></div></div>
             
         </li>
         
@@ -902,12 +933,12 @@ All of these nested sections will combine to return a compiled string that funct
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        <span class="keyword">case</span> <span class="string">'/'</span>:
-                            <span class="keyword">return</span> {
-                                raw: <span class="string">'return ___v1ew.join("");}}])}));'</span>
-                            };
-                            <span class="keyword">break</span>;
-                        }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                            <span class="keyword">case</span> <span class="string">'/'</span>:
+                                                <span class="keyword">return</span> {
+                                                    raw: <span class="string">'return ___v1ew.join("");}}])}));'</span>
+                                                };
+                                                <span class="keyword">break</span>;
+                                        }</pre></div></div>
             
         </li>
         
@@ -922,8 +953,8 @@ All of these nested sections will combine to return a compiled string that funct
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        content = content.substring(<span class="number">1</span>);
-                    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                        content = content.substring(<span class="number">1</span>);
+                                    }</pre></div></div>
             
         </li>
         
@@ -939,11 +970,11 @@ have any logic aside from kicking off an <code>inverse</code> function.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (mode != <span class="string">'else'</span>) {
-                        <span class="keyword">var</span> args = [],
-                            i = <span class="number">0</span>,
-                            hashing = <span class="literal">false</span>,
-                            arg, split, m;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                    <span class="keyword">if</span> (mode != <span class="string">'else'</span>) {
+                                        <span class="keyword">var</span> args = [],
+                                            i = <span class="number">0</span>,
+                                            hashing = <span class="literal">false</span>,
+                                            arg, split, m;</pre></div></div>
             
         </li>
         
@@ -960,9 +991,9 @@ strings with spaces can be correctly parsed.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        (can.trim(content) + <span class="string">' '</span>).replace(<span class="regexp">/((([^\s]+?=)?('.*?'|".*?"))|.*?)\s/g</span>, <span class="function"><span class="keyword">function</span> <span class="params">(whole, part)</span> {</span>
-                            args.push(part);
-                        });</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                        (can.trim(content) + <span class="string">' '</span>).replace(<span class="regexp">/((([^\s]+?=)?('.*?'|".*?"))|.*?)\s/g</span>, <span class="keyword">function</span>(whole, part) {
+                                                args.push(part);
+                                            });</pre></div></div>
             
         </li>
         
@@ -977,7 +1008,7 @@ strings with spaces can be correctly parsed.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        result.push(<span class="string">'can.Mustache.txt('</span> + CONTEXT_OBJ + <span class="string">','</span> + (mode ? <span class="string">'"'</span> + mode + <span class="string">'"'</span> : <span class="string">'null'</span>) + <span class="string">','</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                        result.push(<span class="string">'can.Mustache.txt('</span> + CONTEXT_OBJ + <span class="string">','</span> + (mode ? <span class="string">'"'</span> + mode + <span class="string">'"'</span> : <span class="string">'null'</span>) + <span class="string">','</span>);</pre></div></div>
             
         </li>
         
@@ -992,8 +1023,8 @@ strings with spaces can be correctly parsed.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        <span class="keyword">for</span> (; arg = args[i]; i++) {
-                            i &amp;&amp; result.push(<span class="string">','</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                        <span class="keyword">for</span> (; arg = args[i]; i++) {
+                                            i &amp;&amp; result.push(<span class="string">','</span>);</pre></div></div>
             
         </li>
         
@@ -1008,7 +1039,7 @@ strings with spaces can be correctly parsed.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                            <span class="keyword">if</span> (i &amp;&amp; (m = arg.match(<span class="regexp">/^(('.*?'|".*?"|[0-9.]+|true|false)|((.+?)=(('.*?'|".*?"|[0-9.]+|true|false)|(.+))))$/</span>))) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                            <span class="keyword">if</span> (i &amp;&amp; (m = arg.match(<span class="regexp">/^(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false)|((.+?)=(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false)|(.+))))$/</span>))) {</pre></div></div>
             
         </li>
         
@@ -1023,9 +1054,9 @@ strings with spaces can be correctly parsed.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                <span class="keyword">if</span> (m[<span class="number">2</span>]) {
-                                    result.push(m[<span class="number">0</span>]);
-                                }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                                <span class="keyword">if</span> (m[<span class="number">2</span>]) {
+                                                    result.push(m[<span class="number">0</span>]);
+                                                }</pre></div></div>
             
         </li>
         
@@ -1040,7 +1071,7 @@ strings with spaces can be correctly parsed.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                <span class="keyword">else</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                                <span class="keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -1055,10 +1086,10 @@ strings with spaces can be correctly parsed.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                    <span class="keyword">if</span> (!hashing) {
-                                        hashing = <span class="literal">true</span>;
-                                        result.push(<span class="string">'{'</span> + HASH + <span class="string">':{'</span>);
-                                    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                                    <span class="keyword">if</span> (!hashing) {
+                                                        hashing = <span class="literal">true</span>;
+                                                        result.push(<span class="string">'{'</span> + HASH + <span class="string">':{'</span>);
+                                                    }</pre></div></div>
             
         </li>
         
@@ -1073,7 +1104,7 @@ strings with spaces can be correctly parsed.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                    result.push(m[<span class="number">4</span>], <span class="string">':'</span>, m[<span class="number">6</span>] ? m[<span class="number">6</span>] : <span class="string">'can.Mustache.get("'</span> + m[<span class="number">5</span>].replace(<span class="regexp">/"/g</span>, <span class="string">'\\"'</span>) + <span class="string">'",'</span> + CONTEXT_OBJ + <span class="string">')'</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                                    result.push(m[<span class="number">4</span>], <span class="string">':'</span>, m[<span class="number">6</span>] ? m[<span class="number">6</span>] : <span class="string">'can.Mustache.get("'</span> + m[<span class="number">5</span>].replace(<span class="regexp">/"/g</span>, <span class="string">'\\"'</span>) + <span class="string">'",'</span> + CONTEXT_OBJ + <span class="string">')'</span>);</pre></div></div>
             
         </li>
         
@@ -1088,11 +1119,11 @@ strings with spaces can be correctly parsed.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                    <span class="keyword">if</span> (i == args.length - <span class="number">1</span>) {
-                                        result.push(<span class="string">'}}'</span>);
-                                    }
-                                }
-                            }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                                    <span class="keyword">if</span> (i == args.length - <span class="number">1</span>) {
+                                                        result.push(<span class="string">'}}'</span>);
+                                                    }
+                                                }
+                                            }</pre></div></div>
             
         </li>
         
@@ -1107,8 +1138,8 @@ strings with spaces can be correctly parsed.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                            <span class="keyword">else</span> {
-                                result.push(<span class="string">'can.Mustache.get("'</span> +</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                            <span class="keyword">else</span> {
+                                                result.push(<span class="string">'can.Mustache.get("'</span> +</pre></div></div>
             
         </li>
         
@@ -1123,7 +1154,7 @@ strings with spaces can be correctly parsed.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                arg.replace(<span class="regexp">/"/g</span>, <span class="string">'\\"'</span>) + <span class="string">'",'</span> +</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                                    arg.replace(<span class="regexp">/"/g</span>, <span class="string">'\\"'</span>) + <span class="string">'",'</span> +</pre></div></div>
             
         </li>
         
@@ -1138,7 +1169,7 @@ strings with spaces can be correctly parsed.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                CONTEXT_OBJ +</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                                    CONTEXT_OBJ +</pre></div></div>
             
         </li>
         
@@ -1154,10 +1185,12 @@ if it is a known helper (anything with &gt; 0 arguments).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                (i == <span class="number">0</span> &amp;&amp; args.length &gt; <span class="number">1</span> ? <span class="string">',true'</span> : <span class="string">',false'</span>) + (i &gt; <span class="number">0</span> ? <span class="string">',true'</span> : <span class="string">',false'</span>) + <span class="string">')'</span>);
-                            }
-                        }
-                    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                                    (i == <span class="number">0</span> &amp;&amp; args.length &gt; <span class="number">1</span> ? <span class="string">',true'</span> : <span class="string">',false'</span>) +
+                                                    (i &gt; <span class="number">0</span> ? <span class="string">',true'</span> : <span class="string">',false'</span>) +
+                                                    <span class="string">')'</span>);
+                                            }
+                                        }
+                                    }</pre></div></div>
             
         </li>
         
@@ -1172,8 +1205,8 @@ if it is a known helper (anything with &gt; 0 arguments).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    mode &amp;&amp; mode != <span class="string">'else'</span> &amp;&amp; result.push(<span class="string">',[{_:function(){'</span>);
-                    <span class="keyword">switch</span> (mode) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                    mode &amp;&amp; mode != <span class="string">'else'</span> &amp;&amp; result.push(<span class="string">',[{_:function(){'</span>);
+                                    <span class="keyword">switch</span> (mode) {</pre></div></div>
             
         </li>
         
@@ -1188,9 +1221,9 @@ if it is a known helper (anything with &gt; 0 arguments).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">case</span> <span class="string">'#'</span>:
-                        result.push(<span class="string">'return ___v1ew.join("");}},{fn:function('</span> + CONTEXT + <span class="string">'){var ___v1ew = [];'</span>);
-                        <span class="keyword">break</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                        <span class="keyword">case</span> <span class="string">'#'</span>:
+                                            result.push(<span class="string">'return ___v1ew.join("");}},{fn:function('</span> + CONTEXT + <span class="string">'){var ___v1ew = [];'</span>);
+                                            <span class="keyword">break</span>;</pre></div></div>
             
         </li>
         
@@ -1206,10 +1239,10 @@ Falsey section</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">case</span> <span class="string">'else'</span>:
-                    <span class="keyword">case</span> <span class="string">'^'</span>:
-                        result.push(<span class="string">'return ___v1ew.join("");}},{inverse:function('</span> + CONTEXT + <span class="string">'){var ___v1ew = [];'</span>);
-                        <span class="keyword">break</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                        <span class="keyword">case</span> <span class="string">'else'</span>:
+                                        <span class="keyword">case</span> <span class="string">'^'</span>:
+                                            result.push(<span class="string">'return ___v1ew.join("");}},{inverse:function('</span> + CONTEXT + <span class="string">'){var ___v1ew = [];'</span>);
+                                            <span class="keyword">break</span>;</pre></div></div>
             
         </li>
         
@@ -1224,10 +1257,10 @@ Falsey section</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">default</span>:
-                        result.push(<span class="string">');'</span>);
-                        <span class="keyword">break</span>;
-                    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                        <span class="keyword">default</span>:
+                                            result.push(<span class="string">');'</span>);
+                                            <span class="keyword">break</span>;
+                                    }</pre></div></div>
             
         </li>
         
@@ -1242,14 +1275,15 @@ Falsey section</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    result = result.join(<span class="string">''</span>);
-                    <span class="keyword">return</span> mode ? {
-                        raw: result
-                    } : result;
-                }
-            }]
-        })
-    });</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                    result = result.join(<span class="string">''</span>);
+                                    <span class="keyword">return</span> mode ? {
+                                        raw: result
+                                    } : result;
+                                }
+                            }
+                        ]
+                    })
+            });</pre></div></div>
             
         </li>
         
@@ -1265,13 +1299,13 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> helpers = can.view.Scanner.prototype.helpers;
-    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; helpers.length; i++) {
-        Mustache.prototype.scanner.helpers.unshift(helpers[i]);
-    };
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> helpers = can.view.Scanner.prototype.helpers;
+        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; helpers.length; i++) {
+            Mustache.prototype.scanner.helpers.unshift(helpers[i]);
+        };
 
 
-    Mustache.txt = <span class="function"><span class="keyword">function</span> <span class="params">(context, mode, name)</span> {</span></pre></div></div>
+        Mustache.txt = <span class="keyword">function</span>(context, mode, name) {</pre></div></div>
             
         </li>
         
@@ -1286,7 +1320,7 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> args = Array.prototype.slice.call(arguments, <span class="number">3</span>),</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> args = Array.prototype.slice.call(arguments, <span class="number">3</span>),</pre></div></div>
             
         </li>
         
@@ -1301,17 +1335,18 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            options = can.extend.apply(can, [{
-                fn: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>},
-                inverse: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>}
-            }].concat(mode ? args.pop() : []));
+            <div class="content"><div class='highlight'><pre>                options = can.extend.apply(can, [{
+                            fn: <span class="keyword">function</span>() {},
+                            inverse: <span class="keyword">function</span>() {}
+                        }
+                    ].concat(mode ? args.pop() : []));
 
 
-        <span class="keyword">var</span> extra = {};
-        <span class="keyword">if</span> (context.context) {
-            extra = context.options;
-            context = context.context;
-        }</pre></div></div>
+            <span class="keyword">var</span> extra = {};
+            <span class="keyword">if</span> (context.context) {
+                extra = context.options;
+                context = context.context;
+            }</pre></div></div>
             
         </li>
         
@@ -1326,9 +1361,9 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (helper = (Mustache.getHelper(name, extra) || (can.isFunction(name) &amp;&amp; !name.isComputed &amp;&amp; {
-            fn: name
-        }))) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (helper = (Mustache.getHelper(name, extra) || (can.isFunction(name) &amp;&amp; !name.isComputed &amp;&amp; {
+                            fn: name
+                        }))) {</pre></div></div>
             
         </li>
         
@@ -1343,8 +1378,8 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> stack = context[STACKED] &amp;&amp; context,
-                context = (stack &amp;&amp; context[context.length - <span class="number">1</span>]) || context,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">var</span> stack = context[STACKED] &amp;&amp; context,
+                    context = (stack &amp;&amp; context[context.length - <span class="number">1</span>]) || context,</pre></div></div>
             
         </li>
         
@@ -1359,11 +1394,11 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                opts = {
-                    fn: can.proxy(options.fn, context),
-                    inverse: can.proxy(options.inverse, context)
-                },
-                lastArg = args[args.length - <span class="number">1</span>];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    opts = {
+                        fn: can.proxy(options.fn, context),
+                        inverse: can.proxy(options.inverse, context)
+                    },
+                    lastArg = args[args.length - <span class="number">1</span>];</pre></div></div>
             
         </li>
         
@@ -1378,9 +1413,9 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (stack) {
-                opts.contexts = stack;
-            }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (stack) {
+                    opts.contexts = stack;
+                }</pre></div></div>
             
         </li>
         
@@ -1395,10 +1430,10 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (lastArg &amp;&amp; lastArg[HASH]) {
-                opts.hash = args.pop()[HASH];
-            }
-            args.push(opts);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (lastArg &amp;&amp; lastArg[HASH]) {
+                    opts.hash = args.pop()[HASH];
+                }
+                args.push(opts);</pre></div></div>
             
         </li>
         
@@ -1413,8 +1448,8 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">return</span> helper.fn.apply(context, args) || <span class="string">''</span>;
-        }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">return</span> helper.fn.apply(context, args) || <span class="string">''</span>;
+            }</pre></div></div>
             
         </li>
         
@@ -1429,9 +1464,9 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (can.isFunction(name) &amp;&amp; name.isComputed) {
-            name = name();
-        }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (can.isFunction(name) &amp;&amp; name.isComputed) {
+                name = name();
+            }</pre></div></div>
             
         </li>
         
@@ -1446,7 +1481,7 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> validArgs = args.length ? args : [name],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> validArgs = args.length ? args : [name],</pre></div></div>
             
         </li>
         
@@ -1461,9 +1496,9 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            valid = <span class="literal">true</span>,
-            result = [],
-            i, helper, argIsObserve, arg;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                valid = <span class="literal">true</span>,
+                result = [],
+                i, helper, argIsObserve, arg;</pre></div></div>
             
         </li>
         
@@ -1478,10 +1513,10 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (mode) {
-            <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; validArgs.length; i++) {
-                arg = validArgs[i];
-                argIsObserve = <span class="keyword">typeof</span> arg !== <span class="string">'undefined'</span> &amp;&amp; isObserve(arg);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (mode) {
+                <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; validArgs.length; i++) {
+                    arg = validArgs[i];
+                    argIsObserve = <span class="keyword">typeof</span> arg !== <span class="string">'undefined'</span> &amp;&amp; isObserve(arg);</pre></div></div>
             
         </li>
         
@@ -1496,7 +1531,7 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (isArrayLike(arg)) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (isArrayLike(arg)) {</pre></div></div>
             
         </li>
         
@@ -1511,12 +1546,12 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (mode == <span class="string">'#'</span>) {
-                        valid = valid &amp;&amp; !! (argIsObserve ? arg.attr(<span class="string">'length'</span>) : arg.length);
-                    } <span class="keyword">else</span> <span class="keyword">if</span> (mode == <span class="string">'^'</span>) {
-                        valid = valid &amp;&amp; !(argIsObserve ? arg.attr(<span class="string">'length'</span>) : arg.length);
-                    }
-                }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        <span class="keyword">if</span> (mode == <span class="string">'#'</span>) {
+                            valid = valid &amp;&amp; !! (argIsObserve ? arg.attr(<span class="string">'length'</span>) : arg.length);
+                        } <span class="keyword">else</span> <span class="keyword">if</span> (mode == <span class="string">'^'</span>) {
+                            valid = valid &amp;&amp; !(argIsObserve ? arg.attr(<span class="string">'length'</span>) : arg.length);
+                        }
+                    }</pre></div></div>
             
         </li>
         
@@ -1531,11 +1566,11 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">else</span> {
-                    valid = mode == <span class="string">'#'</span> ? valid &amp;&amp; !! arg : mode == <span class="string">'^'</span> ? valid &amp;&amp; !arg : valid;
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">else</span> {
+                        valid = mode == <span class="string">'#'</span> ? valid &amp;&amp; !! arg : mode == <span class="string">'^'</span> ? valid &amp;&amp; !arg : valid;
+                    }
                 }
-            }
-        }</pre></div></div>
+            }</pre></div></div>
             
         </li>
         
@@ -1550,8 +1585,8 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (valid) {
-            <span class="keyword">switch</span> (mode) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (valid) {
+                <span class="keyword">switch</span> (mode) {</pre></div></div>
             
         </li>
         
@@ -1566,7 +1601,7 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">case</span> <span class="string">'#'</span>:</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">case</span> <span class="string">'#'</span>:</pre></div></div>
             
         </li>
         
@@ -1581,8 +1616,8 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (isArrayLike(name)) {
-                    <span class="keyword">var</span> isObserveList = isObserve(name);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        <span class="keyword">if</span> (isArrayLike(name)) {
+                            <span class="keyword">var</span> isObserveList = isObserve(name);</pre></div></div>
             
         </li>
         
@@ -1597,8 +1632,8 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; name.length; i++) {
-                        result.push(options.fn.call(name[i], context) || <span class="string">''</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; name.length; i++) {
+                                result.push(options.fn.call(name[i], context) || <span class="string">''</span>);</pre></div></div>
             
         </li>
         
@@ -1613,10 +1648,10 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        isObserveList &amp;&amp; name.attr(<span class="string">''</span> + i);
-                    }
-                    <span class="keyword">return</span> result.join(<span class="string">''</span>);
-                }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                isObserveList &amp;&amp; name.attr(<span class="string">''</span> + i);
+                            }
+                            <span class="keyword">return</span> result.join(<span class="string">''</span>);
+                        }</pre></div></div>
             
         </li>
         
@@ -1631,10 +1666,10 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">else</span> {
-                    <span class="keyword">return</span> options.fn.call(name || {}, context) || <span class="string">''</span>;
-                }
-                <span class="keyword">break</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        <span class="keyword">else</span> {
+                            <span class="keyword">return</span> options.fn.call(name || {}, context) || <span class="string">''</span>;
+                        }
+                        <span class="keyword">break</span>;</pre></div></div>
             
         </li>
         
@@ -1649,10 +1684,10 @@ We could probably do this differently if we didn&#39;t &#39;break&#39; on every 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">case</span> <span class="string">'^'</span>:
-                <span class="keyword">return</span> options.inverse.call(name || {}, context) || <span class="string">''</span>;
-                <span class="keyword">break</span>;
-            <span class="keyword">default</span>:</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">case</span> <span class="string">'^'</span>:
+                        <span class="keyword">return</span> options.inverse.call(name || {}, context) || <span class="string">''</span>;
+                        <span class="keyword">break</span>;
+                    <span class="keyword">default</span>:</pre></div></div>
             
         </li>
         
@@ -1670,18 +1705,18 @@ common case.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">return</span> <span class="string">''</span> + (name !== <span class="literal">undefined</span> ? name : <span class="string">''</span>);
-                <span class="keyword">break</span>;
+            <div class="content"><div class='highlight'><pre>                        <span class="keyword">return</span> <span class="string">''</span> + (name !== <span class="literal">undefined</span> ? name : <span class="string">''</span>);
+                        <span class="keyword">break</span>;
+                }
             }
-        }
 
-        <span class="keyword">return</span> <span class="string">''</span>;
-    };
+            <span class="keyword">return</span> <span class="string">''</span>;
+        };
 
 
-    Mustache.get = <span class="function"><span class="keyword">function</span> <span class="params">(ref, contexts, isHelper, isArgument)</span> {</span>
-        <span class="keyword">var</span> options = contexts.options || {};
-        contexts = contexts.context || contexts;</pre></div></div>
+        Mustache.get = <span class="keyword">function</span>(ref, contexts, isHelper, isArgument) {
+            <span class="keyword">var</span> options = contexts.options || {};
+            contexts = contexts.context || contexts;</pre></div></div>
             
         </li>
         
@@ -1696,7 +1731,7 @@ common case.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> obj = contexts[contexts.length - <span class="number">1</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> obj = contexts[contexts.length - <span class="number">1</span>],</pre></div></div>
             
         </li>
         
@@ -1711,7 +1746,7 @@ common case.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            context = contexts[contexts.length - <span class="number">2</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                context = contexts[contexts.length - <span class="number">2</span>],</pre></div></div>
             
         </li>
         
@@ -1726,9 +1761,7 @@ common case.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            names = ref.split(<span class="string">'.'</span>),
-            namesLength = names.length,
-            value, lastValue, name, i, j,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                names = ref.indexOf(<span class="string">'\\.'</span>) == -<span class="number">1</span></pre></div></div>
             
         </li>
         
@@ -1739,13 +1772,11 @@ common case.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-82">&#182;</a>
               </div>
-              <p>if we walk up and don&#39;t find a property, we default
-to listening on an undefined property of the first
-context that is an observe</p>
+              <p>Reference doesn&#39;t contain escaped periods</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            defaultObserve, defaultObserveName;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                ? ref.split(<span class="string">'.'</span>)</pre></div></div>
             
         </li>
         
@@ -1756,11 +1787,24 @@ context that is an observe</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-83">&#182;</a>
               </div>
-              <p>Handle <code>this</code> references for list iteration: {{.}} or {{this}}</p>
+              <p>Reference contains escaped periods (<code>a.b\c.foo</code> == `a[&quot;b.c&quot;].foo)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (<span class="regexp">/^\.|this$/</span>.test(ref)) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                : (<span class="keyword">function</span>() {
+                        <span class="keyword">var</span> names = [],
+                            last = <span class="number">0</span>;
+                        ref.replace(<span class="regexp">/(\\)?\./g</span>, <span class="keyword">function</span>($<span class="number">0</span>, $<span class="number">1</span>, index) {
+                                <span class="keyword">if</span> (!$<span class="number">1</span>) {
+                                    names.push(ref.slice(last, index).replace(<span class="regexp">/\\\./g</span>, <span class="string">'.'</span>));
+                                    last = index + $<span class="number">0.</span>length;
+                                }
+                            });
+                        names.push(ref.slice(last).replace(<span class="regexp">/\\\./g</span>, <span class="string">'.'</span>));
+                        <span class="keyword">return</span> names;
+                    })(),
+                namesLength = names.length,
+                value, lastValue, name, i, j,</pre></div></div>
             
         </li>
         
@@ -1771,13 +1815,14 @@ context that is an observe</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-84">&#182;</a>
               </div>
-              <p>If context isn&#39;t an object, then it was a value passed by a helper so use it as an override.</p>
+              <p>if we walk up and don&#39;t find a property, we default
+to listening on an undefined property of the first
+context that is an observe</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (!<span class="regexp">/^object|undefined$/</span>.test(<span class="keyword">typeof</span> context)) {
-                <span class="keyword">return</span> context || <span class="string">''</span>;
-            }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                defaultObserve,
+                defaultObserveName;</pre></div></div>
             
         </li>
         
@@ -1788,19 +1833,11 @@ context that is an observe</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-85">&#182;</a>
               </div>
-              <p>Otherwise just return the closest object.</p>
+              <p>Handle <code>this</code> references for list iteration: {{.}} or {{this}}</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">else</span> {
-                <span class="keyword">while</span> (value = contexts.pop()) {
-                    <span class="keyword">if</span> (<span class="keyword">typeof</span> value !== <span class="string">'undefined'</span>) {
-                        <span class="keyword">return</span> value;
-                    }
-                }
-                <span class="keyword">return</span> <span class="string">''</span>;
-            }
-        }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (<span class="regexp">/^\.|this$/</span>.test(ref)) {</pre></div></div>
             
         </li>
         
@@ -1811,11 +1848,13 @@ context that is an observe</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-86">&#182;</a>
               </div>
-              <p>Handle object resolution (like <code>a.b.c</code>).</p>
+              <p>If context isn&#39;t an object, then it was a value passed by a helper so use it as an override.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">else</span> <span class="keyword">if</span> (!isHelper) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (!<span class="regexp">/^object|undefined$/</span>.test(<span class="keyword">typeof</span> context)) {
+                    <span class="keyword">return</span> context || <span class="string">''</span>;
+                }</pre></div></div>
             
         </li>
         
@@ -1826,11 +1865,19 @@ context that is an observe</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-87">&#182;</a>
               </div>
-              <p>Reverse iterate through the contexts (last in, first out).</p>
+              <p>Otherwise just return the closest object.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">for</span> (i = contexts.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">else</span> {
+                    <span class="keyword">while</span> (value = contexts.pop()) {
+                        <span class="keyword">if</span> (<span class="keyword">typeof</span> value !== <span class="string">'undefined'</span>) {
+                            <span class="keyword">return</span> value;
+                        }
+                    }
+                    <span class="keyword">return</span> <span class="string">''</span>;
+                }
+            }</pre></div></div>
             
         </li>
         
@@ -1841,11 +1888,11 @@ context that is an observe</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-88">&#182;</a>
               </div>
-              <p>Check the context for the reference</p>
+              <p>Handle object resolution (like <code>a.b.c</code>).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                value = contexts[i];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">else</span> <span class="keyword">if</span> (!isHelper) {</pre></div></div>
             
         </li>
         
@@ -1856,13 +1903,11 @@ context that is an observe</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-89">&#182;</a>
               </div>
-              <p>Is the value a compute?</p>
+              <p>Reverse iterate through the contexts (last in, first out).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (can.isFunction(value) &amp;&amp; value.isComputed) {
-                    value = value();
-                }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">for</span> (i = contexts.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) {</pre></div></div>
             
         </li>
         
@@ -1873,13 +1918,11 @@ context that is an observe</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-90">&#182;</a>
               </div>
-              <p>Make sure the context isn&#39;t a failed object before diving into it.</p>
+              <p>Check the context for the reference</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (<span class="keyword">typeof</span> value !== <span class="string">'undefined'</span> &amp;&amp; value !== <span class="literal">null</span>) {
-                    <span class="keyword">var</span> isHelper = Mustache.getHelper(ref, options);
-                    <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; namesLength; j++) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    value = contexts[i];</pre></div></div>
             
         </li>
         
@@ -1890,14 +1933,13 @@ context that is an observe</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-91">&#182;</a>
               </div>
-              <p>Keep running up the tree while there are matches.</p>
+              <p>Is the value a compute?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        <span class="keyword">if</span> (<span class="keyword">typeof</span> value[names[j]] !== <span class="string">'undefined'</span> &amp;&amp; value[names[j]] !== <span class="literal">null</span>) {
-                            lastValue = value;
-                            value = value[name = names[j]];
-                        }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (can.isFunction(value) &amp;&amp; value.isComputed) {
+                        value = value();
+                    }</pre></div></div>
             
         </li>
         
@@ -1908,14 +1950,13 @@ context that is an observe</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-92">&#182;</a>
               </div>
-              <p>if there&#39;s a name conflict between property and helper
-property wins</p>
+              <p>Make sure the context isn&#39;t a failed object before diving into it.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        <span class="keyword">else</span> <span class="keyword">if</span> (isHelper) {
-                            <span class="keyword">return</span> ref;
-                        }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (<span class="keyword">typeof</span> value !== <span class="string">'undefined'</span> &amp;&amp; value !== <span class="literal">null</span>) {
+                        <span class="keyword">var</span> isHelper = Mustache.getHelper(ref, options);
+                        <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; namesLength; j++) {</pre></div></div>
             
         </li>
         
@@ -1926,22 +1967,14 @@ property wins</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-93">&#182;</a>
               </div>
-              <p>If it&#39;s undefined, still match if the parent is an Observe.</p>
+              <p>Keep running up the tree while there are matches.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        <span class="keyword">else</span> <span class="keyword">if</span> (isObserve(value)) {
-                            defaultObserve = value;
-                            defaultObserveName = names[j];
-                            lastValue = value = <span class="literal">undefined</span>;
-                            <span class="keyword">break</span>;
-                        }
-                        <span class="keyword">else</span> {
-                            lastValue = value = <span class="literal">undefined</span>;
-                            <span class="keyword">break</span>;
-                        }
-                    }
-                }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            <span class="keyword">if</span> (<span class="keyword">typeof</span> value[names[j]] !== <span class="string">'undefined'</span> &amp;&amp; value[names[j]] !== <span class="literal">null</span>) {
+                                lastValue = value;
+                                value = value[name = names[j]];
+                            }</pre></div></div>
             
         </li>
         
@@ -1952,17 +1985,14 @@ property wins</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-94">&#182;</a>
               </div>
-              <p>Found a matched reference.</p>
+              <p>if there&#39;s a name conflict between property and helper
+property wins</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (value !== <span class="literal">undefined</span>) {
-                    <span class="keyword">return</span> Mustache.resolve(value, lastValue, name, isArgument);
-                }
-            }
-        }
-
-        <span class="keyword">if</span> (defaultObserve &amp;&amp;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            <span class="keyword">else</span> <span class="keyword">if</span> (isHelper) {
+                                <span class="keyword">return</span> ref;
+                            }</pre></div></div>
             
         </li>
         
@@ -1973,13 +2003,21 @@ property wins</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-95">&#182;</a>
               </div>
-              <p>if there&#39;s not a helper by this name and no attribute with this name</p>
+              <p>If it&#39;s undefined, still match if the parent is an Observe.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        !(Mustache.getHelper(ref) &amp;&amp; can.inArray(defaultObserveName, can.Observe.keys(defaultObserve)) === -<span class="number">1</span>)) {
-            <span class="keyword">return</span> defaultObserve.compute(defaultObserveName);
-        }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            <span class="keyword">else</span> <span class="keyword">if</span> (isObserve(value)) {
+                                defaultObserve = value;
+                                defaultObserveName = names[j];
+                                lastValue = value = <span class="literal">undefined</span>;
+                                <span class="keyword">break</span>;
+                            } <span class="keyword">else</span> {
+                                lastValue = value = <span class="literal">undefined</span>;
+                                <span class="keyword">break</span>;
+                            }
+                        }
+                    }</pre></div></div>
             
         </li>
         
@@ -1990,14 +2028,17 @@ property wins</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-96">&#182;</a>
               </div>
-              <p>Support helpers without arguments, but only if there wasn&#39;t a matching data reference.
-Helpers have priority over local function, see <a href="https://github.com/bitovi/canjs/issues/258">https://github.com/bitovi/canjs/issues/258</a></p>
+              <p>Found a matched reference.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (value = Mustache.getHelper(ref, options)) {
-            <span class="keyword">return</span> ref;
-        } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> obj !== <span class="string">'undefined'</span> &amp;&amp; obj !== <span class="literal">null</span> &amp;&amp; can.isFunction(obj[ref])) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (value !== <span class="literal">undefined</span>) {
+                        <span class="keyword">return</span> Mustache.resolve(value, lastValue, name, isArgument);
+                    }
+                }
+            }
+
+            <span class="keyword">if</span> (defaultObserve &amp;&amp;</pre></div></div>
             
         </li>
         
@@ -2008,21 +2049,13 @@ Helpers have priority over local function, see <a href="https://github.com/bitov
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-97">&#182;</a>
               </div>
-              <p>Support helper-like functions as anonymous helpers</p>
+              <p>if there&#39;s not a helper by this name and no attribute with this name</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">return</span> obj[ref];
-        }
-
-        <span class="keyword">return</span> <span class="string">''</span>;
-    };
-
-
-    Mustache.resolve = <span class="function"><span class="keyword">function</span> <span class="params">(value, lastValue, name, isArgument)</span> {</span>
-        <span class="keyword">if</span> (lastValue &amp;&amp; can.isFunction(lastValue[name]) &amp;&amp; isArgument) {
-            <span class="keyword">if</span> (lastValue[name].isComputed) {
-                <span class="keyword">return</span> lastValue[name];
+            <div class="content"><div class='highlight'><pre>                !(Mustache.getHelper(ref) &amp;&amp;
+                    can.inArray(defaultObserveName, can.Observe.keys(defaultObserve)) === -<span class="number">1</span>)) {
+                <span class="keyword">return</span> defaultObserve.compute(defaultObserveName);
             }</pre></div></div>
             
         </li>
@@ -2034,15 +2067,14 @@ Helpers have priority over local function, see <a href="https://github.com/bitov
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-98">&#182;</a>
               </div>
-              <p>Don&#39;t execute functions if they are parameters for a helper and are not a can.compute
-Need to bind it to the original context so that that information doesn&#39;t get lost by the helper</p>
+              <p>Support helpers without arguments, but only if there wasn&#39;t a matching data reference.
+Helpers have priority over local function, see <a href="https://github.com/bitovi/canjs/issues/258">https://github.com/bitovi/canjs/issues/258</a></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
-                <span class="keyword">return</span> lastValue[name].apply(lastValue, arguments);
-            };
-        } <span class="keyword">else</span> <span class="keyword">if</span> (lastValue &amp;&amp; can.isFunction(lastValue[name])) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (value = Mustache.getHelper(ref, options)) {
+                <span class="keyword">return</span> ref;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> obj !== <span class="string">'undefined'</span> &amp;&amp; obj !== <span class="literal">null</span> &amp;&amp; can.isFunction(obj[ref])) {</pre></div></div>
             
         </li>
         
@@ -2053,12 +2085,22 @@ Need to bind it to the original context so that that information doesn&#39;t get
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-99">&#182;</a>
               </div>
-              <p>Support functions stored in objects.</p>
+              <p>Support helper-like functions as anonymous helpers</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">return</span> lastValue[name]();
-        }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">return</span> obj[ref];
+            }
+
+            <span class="keyword">return</span> <span class="string">''</span>;
+        };
+
+
+        Mustache.resolve = <span class="keyword">function</span>(value, lastValue, name, isArgument) {
+            <span class="keyword">if</span> (lastValue &amp;&amp; can.isFunction(lastValue[name]) &amp;&amp; isArgument) {
+                <span class="keyword">if</span> (lastValue[name].isComputed) {
+                    <span class="keyword">return</span> lastValue[name];
+                }</pre></div></div>
             
         </li>
         
@@ -2069,13 +2111,15 @@ Need to bind it to the original context so that that information doesn&#39;t get
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-100">&#182;</a>
               </div>
-              <p>Invoke the length to ensure that Observe.List events fire.</p>
+              <p>Don&#39;t execute functions if they are parameters for a helper and are not a can.compute
+Need to bind it to the original context so that that information doesn&#39;t get lost by the helper</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">else</span> <span class="keyword">if</span> (isObserve(value) &amp;&amp; isArrayLike(value) &amp;&amp; value.attr(<span class="string">'length'</span>)) {
-            <span class="keyword">return</span> value;
-        }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">return</span> <span class="keyword">function</span>() {
+                    <span class="keyword">return</span> lastValue[name].apply(lastValue, arguments);
+                };
+            }</pre></div></div>
             
         </li>
         
@@ -2086,20 +2130,13 @@ Need to bind it to the original context so that that information doesn&#39;t get
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-101">&#182;</a>
               </div>
-              <p>Add support for observes</p>
+              <p>Support attributes on compute objects</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">else</span> <span class="keyword">if</span> (lastValue &amp;&amp; isObserve(lastValue)) {
-            <span class="keyword">return</span> lastValue.compute(name);
-        }
-        <span class="keyword">else</span> <span class="keyword">if</span> (can.isFunction(value)) {
-            <span class="keyword">return</span> value();
-        }
-        <span class="keyword">else</span> {
-            <span class="keyword">return</span> value;
-        }
-    };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">else</span> <span class="keyword">if</span> (lastValue &amp;&amp; can.isFunction(lastValue) &amp;&amp; lastValue.isComputed) {
+                <span class="keyword">return</span> lastValue()[name];
+            }</pre></div></div>
             
         </li>
         
@@ -2107,8 +2144,64 @@ Need to bind it to the original context so that that information doesn&#39;t get
         <li id="section-102">
             <div class="annotation">
               
-              <div class="pilwrap for-h2">
+              <div class="pilwrap ">
                 <a class="pilcrow" href="#section-102">&#182;</a>
+              </div>
+              <p>Support functions stored in objects.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">else</span> <span class="keyword">if</span> (lastValue &amp;&amp; can.isFunction(lastValue[name])) {
+                <span class="keyword">return</span> lastValue[name]();
+            }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-103">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-103">&#182;</a>
+              </div>
+              <p>Invoke the length to ensure that Observe.List events fire.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">else</span> <span class="keyword">if</span> (isObserve(value) &amp;&amp; isArrayLike(value) &amp;&amp; value.attr(<span class="string">'length'</span>)) {
+                <span class="keyword">return</span> value;
+            }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-104">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-104">&#182;</a>
+              </div>
+              <p>Add support for observes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">else</span> <span class="keyword">if</span> (lastValue &amp;&amp; isObserve(lastValue)) {
+                <span class="keyword">return</span> lastValue.compute(name);
+            } <span class="keyword">else</span> <span class="keyword">if</span> (can.isFunction(value)) {
+                <span class="keyword">return</span> value();
+            } <span class="keyword">else</span> {
+                <span class="keyword">return</span> value;
+            }
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-105">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-105">&#182;</a>
               </div>
               <h2>Helpers</h2>
 <p>Helpers are functions that can be called from within a template.
@@ -2129,83 +2222,21 @@ Built-in helpers:
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    Mustache._helpers = {};
+            <div class="content"><div class='highlight'><pre>        Mustache._helpers = {};
 
-    Mustache.registerHelper = <span class="function"><span class="keyword">function</span> <span class="params">(name, fn)</span> {</span>
-        <span class="keyword">this</span>._helpers[name] = {
-            name: name,
-            fn: fn
+        Mustache.registerHelper = <span class="keyword">function</span>(name, fn) {
+            <span class="keyword">this</span>._helpers[name] = {
+                name: name,
+                fn: fn
+            };
         };
-    };
 
 
-    Mustache.getHelper = <span class="function"><span class="keyword">function</span> <span class="params">(name, options)</span> {</span>
-        <span class="keyword">return</span> options &amp;&amp; options.helpers &amp;&amp; options.helpers[name] &amp;&amp; {
-            fn: options.helpers[name]
-        } || <span class="keyword">this</span>._helpers[name]
-        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, helper; helper = [i]; i++) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-103">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-103">&#182;</a>
-              </div>
-              <p>Find the correct helper</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (helper.name == name) {
-                <span class="keyword">return</span> helper;
-            }
-        }
-        <span class="keyword">return</span> <span class="literal">null</span>;
-    };
-
-
-    Mustache.render = <span class="function"><span class="keyword">function</span> <span class="params">(partial, context)</span> {</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-104">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-104">&#182;</a>
-              </div>
-              <p>Make sure the partial being passed in
-isn&#39;t a variable like { partial: &quot;foo.mustache&quot; }</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (!can.view.cached[partial] &amp;&amp; context[partial]) {
-            partial = context[partial];
-        }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-105">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-105">&#182;</a>
-              </div>
-              <p>Call into <code>can.view.render</code> passing the
-partial and context.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">return</span> can.view.render(partial, context);
-    };
-
-    Mustache.renderPartial = <span class="function"><span class="keyword">function</span> <span class="params">(partial, context, options)</span> {</span>
-        <span class="keyword">return</span> partial.render ? partial.render(context, options) : partial(context, options);
-    };</pre></div></div>
+        Mustache.getHelper = <span class="keyword">function</span>(name, options) {
+            <span class="keyword">return</span> options &amp;&amp; options.helpers &amp;&amp; options.helpers[name] &amp;&amp; {
+                fn: options.helpers[name]
+            } || <span class="keyword">this</span>._helpers[name]
+            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, helper; helper = [i]; i++) {</pre></div></div>
             
         </li>
         
@@ -2216,11 +2247,19 @@ partial and context.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-106">&#182;</a>
               </div>
-              <p>The built-in Mustache helpers.</p>
+              <p>Find the correct helper</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    can.each({</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (helper.name == name) {
+                    <span class="keyword">return</span> helper;
+                }
+            }
+            <span class="keyword">return</span> <span class="literal">null</span>;
+        };
+
+
+        Mustache.render = <span class="keyword">function</span>(partial, context) {</pre></div></div>
             
         </li>
         
@@ -2231,18 +2270,14 @@ partial and context.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-107">&#182;</a>
               </div>
-              <p>Implements the <code>if</code> built-in helper.</p>
+              <p>Make sure the partial being passed in
+isn&#39;t a variable like { partial: &quot;foo.mustache&quot; }</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="string">'if'</span>: <span class="function"><span class="keyword">function</span> <span class="params">(expr, options)</span> {</span>
-            <span class="keyword">if</span> ( !! Mustache.resolve(expr)) {
-                <span class="keyword">return</span> options.fn(options.contexts || <span class="keyword">this</span>);
-            }
-            <span class="keyword">else</span> {
-                <span class="keyword">return</span> options.inverse(options.contexts || <span class="keyword">this</span>);
-            }
-        },</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (!can.view.cached[partial] &amp;&amp; context[partial]) {
+                partial = context[partial];
+            }</pre></div></div>
             
         </li>
         
@@ -2253,15 +2288,18 @@ partial and context.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-108">&#182;</a>
               </div>
-              <p>Implements the <code>unless</code> built-in helper.</p>
+              <p>Call into <code>can.view.render</code> passing the
+partial and context.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="string">'unless'</span>: <span class="function"><span class="keyword">function</span> <span class="params">(expr, options)</span> {</span>
-            <span class="keyword">if</span> (!Mustache.resolve(expr)) {
-                <span class="keyword">return</span> options.fn(options.contexts || <span class="keyword">this</span>);
-            }
-        },</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">return</span> can.view.render(partial, context);
+        };
+
+        Mustache.renderPartial = <span class="keyword">function</span>(partial, context, options) {
+            <span class="keyword">return</span> partial.render ? partial.render(context, options) :
+                partial(context, options);
+        };</pre></div></div>
             
         </li>
         
@@ -2272,20 +2310,11 @@ partial and context.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-109">&#182;</a>
               </div>
-              <p>Implements the <code>each</code> built-in helper.</p>
+              <p>The built-in Mustache helpers.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="string">'each'</span>: <span class="function"><span class="keyword">function</span> <span class="params">(expr, options)</span> {</span>
-            expr = Mustache.resolve(expr);
-            <span class="keyword">if</span> ( !! expr &amp;&amp; expr.length) {
-                <span class="keyword">var</span> result = [];
-                <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; expr.length; i++) {
-                    result.push(options.fn(expr[i]));
-                }
-                <span class="keyword">return</span> result.join(<span class="string">''</span>);
-            }
-        },</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        can.each({</pre></div></div>
             
         </li>
         
@@ -2296,21 +2325,17 @@ partial and context.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-110">&#182;</a>
               </div>
-              <p>Implements the <code>with</code> built-in helper.</p>
+              <p>Implements the <code>if</code> built-in helper.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="string">'with'</span>: <span class="function"><span class="keyword">function</span> <span class="params">(expr, options)</span> {</span>
-            <span class="keyword">var</span> ctx = expr;
-            expr = Mustache.resolve(expr);
-            <span class="keyword">if</span> ( !! expr) {
-                <span class="keyword">return</span> options.fn(ctx);
-            }
-        }
-
-    }, <span class="function"><span class="keyword">function</span> <span class="params">(fn, name)</span> {</span>
-        Mustache.registerHelper(name, fn);
-    });</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="string">'if'</span>: <span class="keyword">function</span>(expr, options) {
+                    <span class="keyword">if</span> ( !! Mustache.resolve(expr)) {
+                        <span class="keyword">return</span> options.fn(options.contexts || <span class="keyword">this</span>);
+                    } <span class="keyword">else</span> {
+                        <span class="keyword">return</span> options.inverse(options.contexts || <span class="keyword">this</span>);
+                    }
+                },</pre></div></div>
             
         </li>
         
@@ -2318,18 +2343,18 @@ partial and context.</p>
         <li id="section-111">
             <div class="annotation">
               
-              <div class="pilwrap for-h2">
+              <div class="pilwrap ">
                 <a class="pilcrow" href="#section-111">&#182;</a>
               </div>
-              <h2>Registration</h2>
-<p>Registers Mustache with can.view.</p>
+              <p>Implements the <code>unless</code> built-in helper.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    can.view.register({
-        suffix: <span class="string">"mustache"</span>,
-
-        contentType: <span class="string">"x-mustache-template"</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="string">'unless'</span>: <span class="keyword">function</span>(expr, options) {
+                    <span class="keyword">if</span> (!Mustache.resolve(expr)) {
+                        <span class="keyword">return</span> options.fn(options.contexts || <span class="keyword">this</span>);
+                    }
+                },</pre></div></div>
             
         </li>
         
@@ -2340,27 +2365,101 @@ partial and context.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-112">&#182;</a>
               </div>
+              <p>Implements the <code>each</code> built-in helper.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="string">'each'</span>: <span class="keyword">function</span>(expr, options) {
+                    expr = Mustache.resolve(expr);
+                    <span class="keyword">if</span> ( !! expr &amp;&amp; isArrayLike(expr)) {
+                        <span class="keyword">if</span> (isObserve(expr) &amp;&amp; expr.attr(<span class="string">'length'</span>)) {
+                            <span class="keyword">return</span> can.view.lists &amp;&amp; can.view.lists(expr, <span class="keyword">function</span>(item) {
+                                    <span class="keyword">return</span> options.fn(item);
+                                });
+                        } <span class="keyword">else</span> {
+                            <span class="keyword">var</span> result = [];
+                            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; expr.length; i++) {
+                                result.push(options.fn(expr[i]));
+                            }
+                            <span class="keyword">return</span> result.join(<span class="string">''</span>);
+                        }
+                    }
+                },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-113">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-113">&#182;</a>
+              </div>
+              <p>Implements the <code>with</code> built-in helper.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="string">'with'</span>: <span class="keyword">function</span>(expr, options) {
+                    <span class="keyword">var</span> ctx = expr;
+                    expr = Mustache.resolve(expr);
+                    <span class="keyword">if</span> ( !! expr) {
+                        <span class="keyword">return</span> options.fn(ctx);
+                    }
+                }
+
+            }, <span class="keyword">function</span>(fn, name) {
+                Mustache.registerHelper(name, fn);
+            });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-114">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-114">&#182;</a>
+              </div>
+              <h2>Registration</h2>
+<p>Registers Mustache with can.view.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        can.view.register({
+                suffix: <span class="string">"mustache"</span>,
+
+                contentType: <span class="string">"x-mustache-template"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-115">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-115">&#182;</a>
+              </div>
               <p>Returns a <code>function</code> that renders the view.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        script: <span class="function"><span class="keyword">function</span> <span class="params">(id, src)</span> {</span>
-            <span class="keyword">return</span> <span class="string">"can.Mustache(function(_CONTEXT,_VIEW) { "</span> + <span class="keyword">new</span> Mustache({
-                text: src,
-                name: id
-            }).template.out + <span class="string">" })"</span>;
-        },
+            <div class="content"><div class='highlight'><pre>                script: <span class="keyword">function</span>(id, src) {
+                    <span class="keyword">return</span> <span class="string">"can.Mustache(function(_CONTEXT,_VIEW) { "</span> + <span class="keyword">new</span> Mustache({
+                            text: src,
+                            name: id
+                        }).template.out + <span class="string">" })"</span>;
+                },
 
-        renderer: <span class="function"><span class="keyword">function</span> <span class="params">(id, text)</span> {</span>
-            <span class="keyword">return</span> Mustache({
-                text: text,
-                name: id
+                renderer: <span class="keyword">function</span>(id, text) {
+                    <span class="keyword">return</span> Mustache({
+                            text: text,
+                            name: id
+                        });
+                }
             });
-        }
-    });
 
-
-})(can, <span class="keyword">this</span>);</pre></div></div>
+        <span class="keyword">return</span> can;
+    })(can);</pre></div></div>
             
         </li>
         

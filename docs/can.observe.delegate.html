@@ -19,11 +19,6 @@
           <div id="jump_page">
             
               
-              <a class="source" href="can.construct.proxy.html">
-                can.construct.proxy.js
-              </a>
-            
-              
               <a class="source" href="can.construct.super.html">
                 can.construct.super.js
               </a>
@@ -39,18 +34,23 @@
               </a>
             
               
+              <a class="source" href="can.dojo.min.html">
+                can.dojo.min.js
+              </a>
+            
+              
               <a class="source" href="can.fixture.html">
                 can.fixture.js
               </a>
             
               
-              <a class="source" href="can.jquery-all.html">
-                can.jquery-all.js
+              <a class="source" href="can.jquery.html">
+                can.jquery.js
               </a>
             
               
-              <a class="source" href="can.jquery.html">
-                can.jquery.js
+              <a class="source" href="can.jquery.min.html">
+                can.jquery.min.js
               </a>
             
               
@@ -61,6 +61,16 @@
               
               <a class="source" href="can.mootools.html">
                 can.mootools.js
+              </a>
+            
+              
+              <a class="source" href="can.mootools.min.html">
+                can.mootools.min.js
+              </a>
+            
+              
+              <a class="source" href="can.object.html">
+                can.object.js
               </a>
             
               
@@ -89,6 +99,11 @@
               </a>
             
               
+              <a class="source" href="can.util.string.html">
+                can.util.string.js
+              </a>
+            
+              
               <a class="source" href="can.view.modifiers.html">
                 can.view.modifiers.js
               </a>
@@ -104,8 +119,18 @@
               </a>
             
               
+              <a class="source" href="can.yui.min.html">
+                can.yui.min.js
+              </a>
+            
+              
               <a class="source" href="can.zepto.html">
                 can.zepto.js
+              </a>
+            
+              
+              <a class="source" href="can.zepto.min.html">
+                can.zepto.min.js
               </a>
             
           </div>
@@ -132,12 +157,15 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="comment">/*!
-* CanJS - 1.1.5 (2013-03-27)
-* http://canjs.us/
-* Copyright (c) 2013 Bitovi
-* Licensed MIT
-*/</span>
-(<span class="function"><span class="keyword">function</span> <span class="params">(can, window, undefined)</span> {</span></pre></div></div>
+ * CanJS - 1.1.6
+ * http://canjs.us/
+ * Copyright (c) 2013 Bitovi
+ * Wed, 29 May 2013 18:59:29 GMT
+ * Licensed MIT
+ * Includes: can/observe/delegate
+ * Download from: http://canjs.com
+ */</span>
+(<span class="keyword">function</span>(can) {</pre></div></div>
             
         </li>
         
@@ -145,14 +173,13 @@
         <li id="section-2">
             <div class="annotation">
               
-              <div class="pilwrap for-h2">
+              <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <h2>can/observe/delegate/delegate.js</h2>
-<p><em>* - &#39;this&#39; will be the deepest item changed
+              <p><em>* - &#39;this&#39; will be the deepest item changed
 </em> - &#39;this&#39; will be any changes within <em>, but </em> will be the 
-    this returned
-tells if the parts part of a delegate matches the broken up props of the event
+    this returned</p>
+<p>tells if the parts part of a delegate matches the broken up props of the event
 gives the prop to use as &#39;this&#39;
 - parts - the attribute name of the delegate split in parts [&#39;foo&#39;,&#39;*&#39;]
 - props - the split props of the event that happened [&#39;foo&#39;,&#39;bar&#39;,&#39;0&#39;]
@@ -160,7 +187,7 @@ gives the prop to use as &#39;this&#39;
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> delegateMatches = <span class="function"><span class="keyword">function</span> <span class="params">(parts, props)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> delegateMatches = <span class="keyword">function</span>(parts, props) {</pre></div></div>
             
         </li>
         
@@ -175,8 +202,8 @@ gives the prop to use as &#39;this&#39;
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> len = parts.length,
-            i = <span class="number">0</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> len = parts.length,
+                i = <span class="number">0</span>,</pre></div></div>
             
         </li>
         
@@ -191,8 +218,8 @@ gives the prop to use as &#39;this&#39;
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            matchedProps = [],
-            prop;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                matchedProps = [],
+                prop;</pre></div></div>
             
         </li>
         
@@ -207,8 +234,8 @@ gives the prop to use as &#39;this&#39;
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">for</span> (i; i &lt; len; i++) {
-            prop = props[i]</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">for</span> (i; i &lt; len; i++) {
+                prop = props[i]</pre></div></div>
             
         </li>
         
@@ -224,9 +251,9 @@ return null</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (<span class="keyword">typeof</span> prop !== <span class="string">'string'</span>) {
-                <span class="keyword">return</span> <span class="literal">null</span>;
-            } <span class="keyword">else</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (<span class="keyword">typeof</span> prop !== <span class="string">'string'</span>) {
+                    <span class="keyword">return</span> <span class="literal">null</span>;
+                } <span class="keyword">else</span></pre></div></div>
             
         </li>
         
@@ -241,9 +268,9 @@ return null</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (parts[i] == <span class="string">"**"</span>) {
-                <span class="keyword">return</span> props.join(<span class="string">"."</span>);
-            } <span class="keyword">else</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (parts[i] == <span class="string">"**"</span>) {
+                    <span class="keyword">return</span> props.join(<span class="string">"."</span>);
+                } <span class="keyword">else</span></pre></div></div>
             
         </li>
         
@@ -258,7 +285,7 @@ return null</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (parts[i] == <span class="string">"*"</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (parts[i] == <span class="string">"*"</span>) {</pre></div></div>
             
         </li>
         
@@ -273,16 +300,15 @@ return null</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                matchedProps.push(prop);
+            <div class="content"><div class='highlight'><pre>                    matchedProps.push(prop);
+                } <span class="keyword">else</span> <span class="keyword">if</span> (prop === parts[i]) {
+                    matchedProps.push(prop);
+                } <span class="keyword">else</span> {
+                    <span class="keyword">return</span> <span class="literal">null</span>;
+                }
             }
-            <span class="keyword">else</span> <span class="keyword">if</span> (prop === parts[i]) {
-                matchedProps.push(prop);
-            } <span class="keyword">else</span> {
-                <span class="keyword">return</span> <span class="literal">null</span>;
-            }
-        }
-        <span class="keyword">return</span> matchedProps.join(<span class="string">"."</span>);
-    },</pre></div></div>
+            <span class="keyword">return</span> matchedProps.join(<span class="string">"."</span>);
+        },</pre></div></div>
             
         </li>
         
@@ -298,7 +324,7 @@ delegates to call</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        delegateHandler = <span class="function"><span class="keyword">function</span> <span class="params">(event, prop, how, newVal, oldVal)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>            delegateHandler = <span class="keyword">function</span>(event, prop, how, newVal, oldVal) {</pre></div></div>
             
         </li>
         
@@ -313,11 +339,15 @@ delegates to call</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> props = prop.split(<span class="string">"."</span>),
-                delegates = (<span class="keyword">this</span>._observe_delegates || []).slice(<span class="number">0</span>),
-                delegate, attr, matchedAttr, hasMatch, valuesEqual;
-            event.attr = prop;
-            event.lastAttr = props[props.length - <span class="number">1</span>];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">var</span> props = prop.split(<span class="string">"."</span>),
+                    delegates = (<span class="keyword">this</span>._observe_delegates || []).slice(<span class="number">0</span>),
+                    delegate,
+                    attr,
+                    matchedAttr,
+                    hasMatch,
+                    valuesEqual;
+                event.attr = prop;
+                event.lastAttr = props[props.length - <span class="number">1</span>];</pre></div></div>
             
         </li>
         
@@ -332,7 +362,7 @@ delegates to call</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; delegate = delegates[i++];) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; delegate = delegates[i++];) {</pre></div></div>
             
         </li>
         
@@ -351,9 +381,9 @@ setting the batchNum happens later</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> ((event.batchNum &amp;&amp; delegate.batchNum === event.batchNum) || delegate.undelegated) {
-                    <span class="keyword">continue</span>;
-                }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> ((event.batchNum &amp;&amp; delegate.batchNum === event.batchNum) || delegate.undelegated) {
+                        <span class="keyword">continue</span>;
+                    }</pre></div></div>
             
         </li>
         
@@ -368,8 +398,8 @@ setting the batchNum happens later</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                hasMatch = <span class="literal">undefined</span>;
-                valuesEqual = <span class="literal">true</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    hasMatch = <span class="literal">undefined</span>;
+                    valuesEqual = <span class="literal">true</span>;</pre></div></div>
             
         </li>
         
@@ -380,14 +410,14 @@ setting the batchNum happens later</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>yeah, all this under here has to be redone v
-for each attr in a delegate</p>
+              <p>yeah, all this under here has to be redone v</p>
+<p>for each attr in a delegate</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">for</span> (<span class="keyword">var</span> a = <span class="number">0</span>; a &lt; delegate.attrs.length; a++) {
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">for</span> (<span class="keyword">var</span> a = <span class="number">0</span>; a &lt; delegate.attrs.length; a++) {
 
-                    attr = delegate.attrs[a];</pre></div></div>
+                        attr = delegate.attrs[a];</pre></div></div>
             
         </li>
         
@@ -402,9 +432,9 @@ for each attr in a delegate</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (matchedAttr = delegateMatches(attr.parts, props)) {
-                        hasMatch = matchedAttr;
-                    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        <span class="keyword">if</span> (matchedAttr = delegateMatches(attr.parts, props)) {
+                            hasMatch = matchedAttr;
+                        }</pre></div></div>
             
         </li>
         
@@ -421,9 +451,9 @@ value no matter what</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (attr.value &amp;&amp; valuesEqual) {
-                        valuesEqual = attr.value === <span class="string">""</span> + <span class="keyword">this</span>.attr(attr.attr)
-                    } <span class="keyword">else</span> <span class="keyword">if</span> (valuesEqual &amp;&amp; delegate.attrs.length &gt; <span class="number">1</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        <span class="keyword">if</span> (attr.value &amp;&amp; valuesEqual) {
+                            valuesEqual = attr.value === <span class="string">""</span> + <span class="keyword">this</span>.attr(attr.attr)
+                        } <span class="keyword">else</span> <span class="keyword">if</span> (valuesEqual &amp;&amp; delegate.attrs.length &gt; <span class="number">1</span>) {</pre></div></div>
             
         </li>
         
@@ -439,9 +469,9 @@ least have some value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        valuesEqual = <span class="keyword">this</span>.attr(attr.attr) !== <span class="literal">undefined</span>
-                    }
-                }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            valuesEqual = <span class="keyword">this</span>.attr(attr.attr) !== <span class="literal">undefined</span>
+                        }
+                    }</pre></div></div>
             
         </li>
         
@@ -456,7 +486,7 @@ least have some value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (hasMatch &amp;&amp; valuesEqual) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (hasMatch &amp;&amp; valuesEqual) {</pre></div></div>
             
         </li>
         
@@ -471,7 +501,7 @@ least have some value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">var</span> from = prop.replace(hasMatch + <span class="string">"."</span>, <span class="string">""</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        <span class="keyword">var</span> from = prop.replace(hasMatch + <span class="string">"."</span>, <span class="string">""</span>);</pre></div></div>
             
         </li>
         
@@ -487,9 +517,9 @@ to only send one event</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (event.batchNum) {
-                        delegate.batchNum = event.batchNum
-                    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        <span class="keyword">if</span> (event.batchNum) {
+                            delegate.batchNum = event.batchNum
+                        }</pre></div></div>
             
         </li>
         
@@ -505,11 +535,11 @@ TODO: the attrs should probably be using from</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (delegate.event === <span class="string">'change'</span>) {
-                        arguments[<span class="number">1</span>] = from;
-                        event.curAttr = hasMatch;
-                        delegate.callback.apply(<span class="keyword">this</span>.attr(hasMatch), can.makeArray(arguments));
-                    } <span class="keyword">else</span> <span class="keyword">if</span> (delegate.event === how) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        <span class="keyword">if</span> (delegate.event === <span class="string">'change'</span>) {
+                            arguments[<span class="number">1</span>] = from;
+                            event.curAttr = hasMatch;
+                            delegate.callback.apply(<span class="keyword">this</span>.attr(hasMatch), can.makeArray(arguments));
+                        } <span class="keyword">else</span> <span class="keyword">if</span> (delegate.event === how) {</pre></div></div>
             
         </li>
         
@@ -524,8 +554,9 @@ TODO: the attrs should probably be using from</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        delegate.callback.apply(<span class="keyword">this</span>.attr(hasMatch), [event, newVal, oldVal, from]);
-                    } <span class="keyword">else</span> <span class="keyword">if</span> (delegate.event === <span class="string">'set'</span> &amp;&amp; how == <span class="string">'add'</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            delegate.callback.apply(<span class="keyword">this</span>.attr(hasMatch), [event, newVal, oldVal, from]);
+                        } <span class="keyword">else</span> <span class="keyword">if</span> (delegate.event === <span class="string">'set'</span> &amp;&amp;
+                            how == <span class="string">'add'</span>) {</pre></div></div>
             
         </li>
         
@@ -540,21 +571,21 @@ TODO: the attrs should probably be using from</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        delegate.callback.apply(<span class="keyword">this</span>.attr(hasMatch), [event, newVal, oldVal, from]);
+            <div class="content"><div class='highlight'><pre>                            delegate.callback.apply(<span class="keyword">this</span>.attr(hasMatch), [event, newVal, oldVal, from]);
+                        }
                     }
+
                 }
+            };
 
-            }
-        };
+        can.extend(can.Observe.prototype, {
 
-    can.extend(can.Observe.prototype, {
-
-        delegate: <span class="function"><span class="keyword">function</span> <span class="params">(selector, event, handler)</span> {</span>
-            selector = can.trim(selector);
-            <span class="keyword">var</span> delegates = <span class="keyword">this</span>._observe_delegates || (<span class="keyword">this</span>._observe_delegates = []),
-                attrs = [],
-                selectorRegex = <span class="regexp">/([^\s=,]+)(?:=("[^",]*"|'[^',]*'|[^\s"',]*))?(,?)\s*/g</span>,
-                matches;</pre></div></div>
+                delegate: <span class="keyword">function</span>(selector, event, handler) {
+                    selector = can.trim(selector);
+                    <span class="keyword">var</span> delegates = <span class="keyword">this</span>._observe_delegates || (<span class="keyword">this</span>._observe_delegates = []),
+                        attrs = [],
+                        selectorRegex = <span class="regexp">/([^\s=,]+)(?:=("[^",]*"|'[^',]*'|[^\s"',]*))?(,?)\s*/g</span>,
+                        matches;</pre></div></div>
             
         </li>
         
@@ -569,7 +600,7 @@ TODO: the attrs should probably be using from</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">while</span> (matches = selectorRegex.exec(selector)) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">while</span> (matches = selectorRegex.exec(selector)) {</pre></div></div>
             
         </li>
         
@@ -584,11 +615,11 @@ TODO: the attrs should probably be using from</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (matches[<span class="number">2</span>] &amp;&amp; $.inArray(matches[<span class="number">2</span>].substr(<span class="number">0</span>, <span class="number">1</span>), [<span class="string">'"'</span>, <span class="string">"'"</span>]) &gt;= <span class="number">0</span>) {
-                    matches[<span class="number">2</span>] = matches[<span class="number">2</span>].substr(<span class="number">1</span>, -<span class="number">1</span>);
-                }
+            <div class="content"><div class='highlight'><pre>                        <span class="keyword">if</span> (matches[<span class="number">2</span>] &amp;&amp; can.inArray(matches[<span class="number">2</span>].substr(<span class="number">0</span>, <span class="number">1</span>), [<span class="string">'"'</span>, <span class="string">"'"</span>]) &gt;= <span class="number">0</span>) {
+                            matches[<span class="number">2</span>] = matches[<span class="number">2</span>].substr(<span class="number">1</span>, -<span class="number">1</span>);
+                        }
 
-                attrs.push({</pre></div></div>
+                        attrs.push({</pre></div></div>
             
         </li>
         
@@ -603,7 +634,7 @@ TODO: the attrs should probably be using from</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    attr: matches[<span class="number">1</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                attr: matches[<span class="number">1</span>],</pre></div></div>
             
         </li>
         
@@ -618,7 +649,7 @@ TODO: the attrs should probably be using from</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    parts: matches[<span class="number">1</span>].split(<span class="string">'.'</span>),</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                parts: matches[<span class="number">1</span>].split(<span class="string">'.'</span>),</pre></div></div>
             
         </li>
         
@@ -633,7 +664,7 @@ TODO: the attrs should probably be using from</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    value: matches[<span class="number">2</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                value: matches[<span class="number">2</span>],</pre></div></div>
             
         </li>
         
@@ -648,9 +679,9 @@ TODO: the attrs should probably be using from</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    or: matches[<span class="number">3</span>] === <span class="string">','</span>
-                });
-            }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                                or: matches[<span class="number">3</span>] === <span class="string">','</span>
+                            });
+                    }</pre></div></div>
             
         </li>
         
@@ -665,7 +696,7 @@ TODO: the attrs should probably be using from</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            delegates.push({</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    delegates.push({</pre></div></div>
             
         </li>
         
@@ -680,7 +711,7 @@ TODO: the attrs should probably be using from</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                selector: selector,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            selector: selector,</pre></div></div>
             
         </li>
         
@@ -696,33 +727,34 @@ undefined means a value was not defined</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                attrs: attrs,
-                callback: handler,
-                event: event
-            });
-            <span class="keyword">if</span> (delegates.length === <span class="number">1</span>) {
-                <span class="keyword">this</span>.bind(<span class="string">"change"</span>, delegateHandler)
-            }
-            <span class="keyword">return</span> <span class="keyword">this</span>;
-        },
-
-        undelegate: <span class="function"><span class="keyword">function</span> <span class="params">(selector, event, handler)</span> {</span>
-            selector = can.trim(selector);
-
-            <span class="keyword">var</span> i = <span class="number">0</span>,
-                delegates = <span class="keyword">this</span>._observe_delegates || [],
-                delegateOb;
-            <span class="keyword">if</span> (selector) {
-                <span class="keyword">while</span> (i &lt; delegates.length) {
-                    delegateOb = delegates[i];
-                    <span class="keyword">if</span> (delegateOb.callback === handler || (!handler &amp;&amp; delegateOb.selector === selector)) {
-                        delegateOb.undelegated = <span class="literal">true</span>;
-                        delegates.splice(i, <span class="number">1</span>)
-                    } <span class="keyword">else</span> {
-                        i++;
+            <div class="content"><div class='highlight'><pre>                            attrs: attrs,
+                            callback: handler,
+                            event: event
+                        });
+                    <span class="keyword">if</span> (delegates.length === <span class="number">1</span>) {
+                        <span class="keyword">this</span>.bind(<span class="string">"change"</span>, delegateHandler)
                     }
-                }
-            } <span class="keyword">else</span> {</pre></div></div>
+                    <span class="keyword">return</span> <span class="keyword">this</span>;
+                },
+
+                undelegate: <span class="keyword">function</span>(selector, event, handler) {
+                    selector = selector &amp;&amp; can.trim(selector);
+
+                    <span class="keyword">var</span> i = <span class="number">0</span>,
+                        delegates = <span class="keyword">this</span>._observe_delegates || [],
+                        delegateOb;
+                    <span class="keyword">if</span> (selector) {
+                        <span class="keyword">while</span> (i &lt; delegates.length) {
+                            delegateOb = delegates[i];
+                            <span class="keyword">if</span> (delegateOb.callback === handler ||
+                                (!handler &amp;&amp; delegateOb.selector === selector)) {
+                                delegateOb.undelegated = <span class="literal">true</span>;
+                                delegates.splice(i, <span class="number">1</span>)
+                            } <span class="keyword">else</span> {
+                                i++;
+                            }
+                        }
+                    } <span class="keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -737,9 +769,9 @@ undefined means a value was not defined</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                delegates = [];
-            }
-            <span class="keyword">if</span> (!delegates.length) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        delegates = [];
+                    }
+                    <span class="keyword">if</span> (!delegates.length) {</pre></div></div>
             
         </li>
         
@@ -754,11 +786,11 @@ undefined means a value was not defined</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">this</span>.unbind(<span class="string">"change"</span>, delegateHandler)
-            }
-            <span class="keyword">return</span> <span class="keyword">this</span>;
-        }
-    });</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        <span class="keyword">this</span>.unbind(<span class="string">"change"</span>, delegateHandler)
+                    }
+                    <span class="keyword">return</span> <span class="keyword">this</span>;
+                }
+            });</pre></div></div>
             
         </li>
         
@@ -773,9 +805,9 @@ undefined means a value was not defined</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    can.Observe.prototype.delegate.matches = delegateMatches;
-
-})(can, <span class="keyword">this</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        can.Observe.prototype.delegate.matches = delegateMatches;
+        <span class="keyword">return</span> can.Observe;
+    })(can);</pre></div></div>
             
         </li>
         
