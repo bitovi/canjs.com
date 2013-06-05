@@ -1,3 +1,12 @@
+/*!
+ * CanJS - 1.1.6
+ * http://canjs.us/
+ * Copyright (c) 2013 Bitovi
+ * Wed, 05 Jun 2013 18:02:51 GMT
+ * Licensed MIT
+ * Includes: CanJS default build
+ * Download from: http://canjs.us/
+ */
 define(["can/util/library", "can/util/bind", "can/construct"], function(can, bind) {
 	// ## observe.js  
 	// `can.Observe`  
@@ -542,7 +551,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 			var type = typeof attr;
 			if ( type !== "string" && type !== "number" ) {
 				return this._attrs(attr, val)
-			} else if ( val === undefined ) {// If we are getting a value.
+			} else if ( arguments.length === 1 ) {// If we are getting a value.
 				// Let people know we are reading.
 				Observe.__reading && Observe.__reading(this, attr)
 				return this._get(attr)

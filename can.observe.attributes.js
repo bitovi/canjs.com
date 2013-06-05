@@ -2,173 +2,174 @@
  * CanJS - 1.1.6
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 29 May 2013 18:59:29 GMT
+ * Wed, 05 Jun 2013 18:03:00 GMT
  * Licensed MIT
  * Includes: can/observe/attributes
  * Download from: http://canjs.com
  */
 (function(can, Observe) {
 
-        can.each([can.Observe, can.Model], function(clss) {
-                // in some cases model might not be defined quite yet.
-                if (clss === undefined) {
-                    return;
-                }
-                var isObject = function(obj) {
-                    return typeof obj === 'object' && obj !== null && obj;
-                };
+    can.each([can.Observe, can.Model], function(clss) {
+        // in some cases model might not be defined quite yet.
+        if (clss === undefined) {
+            return;
+        }
+        var isObject = function(obj) {
+            return typeof obj === 'object' && obj !== null && obj;
+        };
 
-                can.extend(clss, {
+        can.extend(clss, {
 
-                        attributes: {},
+                attributes: {},
 
 
-                        convert: {
-                            "date": function(str) {
-                                var type = typeof str;
-                                if (type === "string") {
-                                    return isNaN(Date.parse(str)) ? null : Date.parse(str)
-                                } else if (type === 'number') {
-                                    return new Date(str)
-                                } else {
-                                    return str
-                                }
-                            },
-                            "number": function(val) {
-                                return parseFloat(val);
-                            },
-                            "boolean": function(val) {
-                                if (val === 'false' || val === '0' || !val) {
-                                    return false;
-                                }
-                                return true;
-                            },
-                            "default": function(val, oldVal, error, type) {
-                                var construct = can.getObject(type),
-                                    context = window,
-                                    realType;
-                                // if type has a . we need to look it up
-                                if (type.indexOf(".") >= 0) {
-                                    // get everything before the last .
-                                    realType = type.substring(0, type.lastIndexOf("."));
-                                    // get the object before the last .
-                                    context = can.getObject(realType);
-                                }
-                                return typeof construct == "function" ? construct.call(context, val, oldVal) : val;
-                            }
-                        },
-
-                        serialize: {
-                            "default": function(val, type) {
-                                return isObject(val) && val.serialize ? val.serialize() : val;
-                            },
-                            "date": function(val) {
-                                return val && val.getTime()
-                            }
+                convert: {
+                    "date": function(str) {
+                        var type = typeof str;
+                        if (type === "string") {
+                            str = Date.parse(str);
+                            return isNaN(str) ? null : new Date(str);
+                        } else if (type === 'number') {
+                            return new Date(str)
+                        } else {
+                            return str
                         }
-                    });
+                    },
+                    "number": function(val) {
+                        return parseFloat(val);
+                    },
+                    "boolean": function(val) {
+                        if (val === 'false' || val === '0' || !val) {
+                            return false;
+                        }
+                        return true;
+                    },
+                    "default": function(val, oldVal, error, type) {
+                        var construct = can.getObject(type),
+                            context = window,
+                            realType;
+                        // if type has a . we need to look it up
+                        if (type.indexOf(".") >= 0) {
+                            // get everything before the last .
+                            realType = type.substring(0, type.lastIndexOf("."));
+                            // get the object before the last .
+                            context = can.getObject(realType);
+                        }
+                        return typeof construct == "function" ? construct.call(context, val, oldVal) : val;
+                    }
+                },
 
-                // overwrite setup to do this stuff
-                var oldSetup = clss.setup;
-
-
-                clss.setup = function(superClass, stat, proto) {
-                    var self = this;
-                    oldSetup.call(self, superClass, stat, proto);
-
-                    can.each(["attributes"], function(name) {
-                            if (!self[name] || superClass[name] === self[name]) {
-                                self[name] = {};
-                            }
-                        });
-
-                    can.each(["convert", "serialize"], function(name) {
-                            if (superClass[name] != self[name]) {
-                                self[name] = can.extend({}, superClass[name], self[name]);
-                            }
-                        });
-                };
+                serialize: {
+                    "default": function(val, type) {
+                        return isObject(val) && val.serialize ? val.serialize() : val;
+                    },
+                    "date": function(val) {
+                        return val && val.getTime()
+                    }
+                }
             });
 
-        var oldSetup = can.Observe.prototype.setup;
+        // overwrite setup to do this stuff
+        var oldSetup = clss.setup;
 
-        can.Observe.prototype.setup = function(obj) {
 
-            var diff = {};
+        clss.setup = function(superClass, stat, proto) {
+            var self = this;
+            oldSetup.call(self, superClass, stat, proto);
 
-            oldSetup.call(this, obj);
+            can.each(["attributes"], function(name) {
+                if (!self[name] || superClass[name] === self[name]) {
+                    self[name] = {};
+                }
+            });
 
-            can.each(this.constructor.defaults, function(value, key) {
-                    if (!this.hasOwnProperty(key)) {
-                        diff[key] = value;
-                    }
-                }, this);
-
-            this._init = 1;
-            this.attr(diff);
-            delete this._init;
+            can.each(["convert", "serialize"], function(name) {
+                if (superClass[name] != self[name]) {
+                    self[name] = can.extend({}, superClass[name], self[name]);
+                }
+            });
         };
+    });
 
-        can.Observe.prototype.__convert = function(prop, value) {
-            // check if there is a
+    var oldSetup = can.Observe.prototype.setup;
 
-            var Class = this.constructor,
-                oldVal = this.attr(prop),
-                type, converter;
+    can.Observe.prototype.setup = function(obj) {
 
-            if (Class.attributes) {
-                // the type of the attribute
-                type = Class.attributes[prop];
-                converter = Class.convert[type] || Class.convert['default'];
+        var diff = {};
+
+        oldSetup.call(this, obj);
+
+        can.each(this.constructor.defaults, function(value, key) {
+            if (!this.hasOwnProperty(key)) {
+                diff[key] = value;
             }
+        }, this);
 
-            return value === null || !type ?
-            // just use the value
-            value :
-            // otherwise, pass to the converter
-            converter.call(Class, value, oldVal, function() {}, type);
-        };
+        this._init = 1;
+        this.attr(diff);
+        delete this._init;
+    };
 
-        can.Observe.prototype.serialize = function(attrName, stack) {
-            var where = {},
-                Class = this.constructor,
-                attrs = {};
+    can.Observe.prototype.__convert = function(prop, value) {
+        // check if there is a
 
-            stack = can.isArray(stack) ? stack : [];
-            stack.push(this._cid);
+        var Class = this.constructor,
+            oldVal = this.attr(prop),
+            type, converter;
 
-            if (attrName !== undefined) {
-                attrs[attrName] = this[attrName];
+        if (Class.attributes) {
+            // the type of the attribute
+            type = Class.attributes[prop];
+            converter = Class.convert[type] || Class.convert['default'];
+        }
+
+        return value === null || !type ?
+        // just use the value
+        value :
+        // otherwise, pass to the converter
+        converter.call(Class, value, oldVal, function() {}, type);
+    };
+
+    can.Observe.prototype.serialize = function(attrName, stack) {
+        var where = {},
+            Class = this.constructor,
+            attrs = {};
+
+        stack = can.isArray(stack) ? stack : [];
+        stack.push(this._cid);
+
+        if (attrName !== undefined) {
+            attrs[attrName] = this[attrName];
+        } else {
+            attrs = this.__get();
+        }
+
+        can.each(attrs, function(val, name) {
+            var type, converter;
+
+            // If this is an observe, check that it wasn't serialized earlier in the stack.
+            if (val instanceof can.Observe && can.inArray(val._cid, stack) > -1) {
+                // Since this object has already been serialized once,
+                // just reference the id (or undefined if it doesn't exist).
+                where[name] = val.attr('id');
             } else {
-                attrs = this.__get();
+                type = Class.attributes ? Class.attributes[name] : 0;
+                converter = Class.serialize ? Class.serialize[type] : 0;
+
+                // if the value is an object, and has a attrs or serialize function
+                where[name] = val && typeof val.serialize == 'function' ?
+                // call attrs or serialize to get the original data back
+                val.serialize(undefined, stack) :
+                // otherwise if we have  a converter
+                converter ?
+                // use the converter
+                converter(val, type) :
+                // or return the val
+                val;
             }
+        });
 
-            can.each(attrs, function(val, name) {
-                    var type, converter;
-
-                    // If this is an observe, check that it wasn't serialized earlier in the stack.
-                    if (val instanceof can.Observe && can.inArray(val._cid, stack) > -1) {
-                        // Since this object has already been serialized once,
-                        // just reference the id (or undefined if it doesn't exist).
-                        where[name] = val.attr('id');
-                    } else {
-                        type = Class.attributes ? Class.attributes[name] : 0;
-                        converter = Class.serialize ? Class.serialize[type] : 0;
-
-                        // if the value is an object, and has a attrs or serialize function
-                        where[name] = val && typeof val.serialize == 'function' ?
-                        // call attrs or serialize to get the original data back
-                        val.serialize(undefined, stack) :
-                        // otherwise if we have  a converter
-                        converter ?
-                        // use the converter
-                        converter(val, type) :
-                        // or return the val
-                        val;
-                    }
-                });
-
-            return attrName != undefined ? where[attrName] : where;
-        };
-        return can.Observe;
-    })(can);
+        return attrName != undefined ? where[attrName] : where;
+    };
+    return can.Observe;
+})(can);

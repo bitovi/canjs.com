@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>can.construct.super.js</title>
+  <title>can.construct.proxy.js</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -146,7 +146,7 @@
         
           <li id="title">
               <div class="annotation">
-                  <h1>can.construct.super.js</h1>
+                  <h1>can.construct.proxy.js</h1>
               </div>
           </li>
         
@@ -165,12 +165,17 @@
  * CanJS - 1.1.6
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 05 Jun 2013 18:02:59 GMT
+ * Wed, 05 Jun 2013 18:03:00 GMT
  * Licensed MIT
- * Includes: can/construct/super
+ * Includes: can/construct/proxy
  * Download from: http://canjs.com
  */</span>
-(<span class="keyword">function</span>(can, Construct) {</pre></div></div>
+(<span class="keyword">function</span>(can, Construct) {
+    <span class="keyword">var</span> isFunction = can.isFunction,
+        isArray = can.isArray,
+        makeArray = can.makeArray,
+
+        proxy = <span class="keyword">function</span>(funcs) {</pre></div></div>
             
         </li>
         
@@ -181,15 +186,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>tests if we can get super in .toString()</p>
+              <p>args that should be curried</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> isFunction = can.isFunction,
-
-        fnTest = <span class="regexp">/xyz/</span>.test(<span class="keyword">function</span>() {
-            xyz;
-        }) ? <span class="regexp">/\b_super\b/</span> : <span class="regexp">/.*/</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> args = makeArray(arguments),
+                self;</pre></div></div>
             
         </li>
         
@@ -200,11 +202,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>overwrites a single property so it can still call super</p>
+              <p>get the functions to callback</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    can.Construct._overwrite = <span class="keyword">function</span>(addTo, base, name, val) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            funcs = args.shift();</pre></div></div>
             
         </li>
         
@@ -215,16 +217,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Check if we&#39;re overwriting an existing function</p>
+              <p>if there is only one function, make funcs into an array</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        addTo[name] = isFunction(val) &amp;&amp;
-            isFunction(base[name]) &amp;&amp;
-            fnTest.test(val) ? (<span class="keyword">function</span>(name, fn) {
-                <span class="keyword">return</span> <span class="keyword">function</span>() {
-                    <span class="keyword">var</span> tmp = <span class="keyword">this</span>._super,
-                        ret;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (!isArray(funcs)) {
+                funcs = [funcs];
+            }</pre></div></div>
             
         </li>
         
@@ -235,12 +234,14 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Add a new ._super() method that is the same method
-but on the super-class</p>
+              <p>keep a reference to us in self</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">this</span>._super = base[name];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            self = <span class="keyword">this</span>;
+
+
+            <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">class_cb</span><span class="params">()</span> {</span></pre></div></div>
             
         </li>
         
@@ -251,17 +252,15 @@ but on the super-class</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>The method only need to be bound temporarily, so we
-remove it when we&#39;re done executing</p>
+              <p>add the arguments after the curried args</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    ret = fn.apply(<span class="keyword">this</span>, arguments);
-                    <span class="keyword">this</span>._super = tmp;
-                    <span class="keyword">return</span> ret;
-                };
-            })(name, val) : val;
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">var</span> cur = args.concat(makeArray(arguments)),
+                    isString,
+                    length = funcs.length,
+                    f = <span class="number">0</span>,
+                    func;</pre></div></div>
             
         </li>
         
@@ -272,20 +271,88 @@ remove it when we&#39;re done executing</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>overwrites an object with methods, sets up _super
-  newProps - new properties
-  oldProps - where the old properties might be
-  addTo - what we are adding to</p>
+              <p>go through each function to call back</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    can.Construct._inherit = <span class="keyword">function</span>(newProps, oldProps, addTo) {
-        addTo = addTo || newProps
-        <span class="keyword">for</span> (<span class="keyword">var</span> name <span class="keyword">in</span> newProps) {
-            can.Construct._overwrite(addTo, oldProps, name, newProps[name]);
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">for</span> (; f &lt; length; f++) {
+                    func = funcs[f];
+                    <span class="keyword">if</span> (!func) {
+                        <span class="keyword">continue</span>;
+                    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>set called with the name of the function on self (this is how this.view works)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    isString = <span class="keyword">typeof</span> func == <span class="string">"string"</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>call the function</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    cur = (isString ? self[func] : func).apply(self, cur || []);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>pass the result to the next function (if there is a next function)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (f &lt; length - <span class="number">1</span>) {
+                        cur = !isArray(cur) || cur._use_call ? [cur] : cur
+                    }
+                }
+                <span class="keyword">return</span> cur;
+            }
+        }
+    can.Construct.proxy = can.Construct.prototype.proxy = proxy;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>this corrects the case where can/control loads after can/construct/proxy, so static props don&#39;t have proxy</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> correctedClasses = [can.Observe, can.Control, can.Model],
+        i = <span class="number">0</span>;
+    <span class="keyword">for</span> (; i &lt; correctedClasses.length; i++) {
+        <span class="keyword">if</span> (correctedClasses[i]) {
+            correctedClasses[i].proxy = proxy;
         }
     }
-
     <span class="keyword">return</span> can;
 })(can);</pre></div></div>
             

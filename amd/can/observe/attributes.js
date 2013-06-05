@@ -1,3 +1,12 @@
+/*!
+ * CanJS - 1.1.6
+ * http://canjs.us/
+ * Copyright (c) 2013 Bitovi
+ * Wed, 05 Jun 2013 18:02:51 GMT
+ * Licensed MIT
+ * Includes: CanJS default build
+ * Download from: http://canjs.us/
+ */
 define(["can/util/library", "can/observe"], function(can, Observe) {
 
 can.each([ can.Observe, can.Model ], function(clss){
@@ -159,7 +168,8 @@ can.each([ can.Observe, can.Model ], function(clss){
 			"date": function( str ) {
 				var type = typeof str;
 				if ( type === "string" ) {
-					return isNaN(Date.parse(str)) ? null : Date.parse(str)
+					str = Date.parse(str);
+					return isNaN(str) ? null : new Date(str);
 				} else if ( type === 'number' ) {
 					return new Date(str)
 				} else {
