@@ -138,7 +138,7 @@ module.exports = function (grunt) {
 					'can/view/modifiers/modifiers.md',
 					'can/view/modifiers/modifiers.js',
 					'can/util/util.md',
-					'can/util/util.js',
+					'can/util/func.js',
 					'can/util/fixture/fixture.md',
 					'can/util/fixture/fixture.js'
 				],
