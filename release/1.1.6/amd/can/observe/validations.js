@@ -1,3 +1,12 @@
+/*!
+ * CanJS - 1.1.6
+ * http://canjs.us/
+ * Copyright (c) 2013 Bitovi
+ * Wed, 05 Jun 2013 18:02:51 GMT
+ * Licensed MIT
+ * Includes: CanJS default build
+ * Download from: http://canjs.us/
+ */
 define(["can/util/library", "can/observe/attributes"], function (can) {
 //validations object is by property.  You can have validations that
 //span properties, but this way we know which ones to run.
