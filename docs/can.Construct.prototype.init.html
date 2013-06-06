@@ -973,8 +973,8 @@
 	
 	
 	<li class="search-container">
-			<a class="property" href="can.Observe.attributes.static.convert.html" data-search="can.Observe.attributes.static.convert">
-				can.Observe.attributes.static.convert
+			<a class="property" href="can.Observe.attributes.static.convert.html" data-search="convert">
+				convert
 			</a>
 			
 	</li>
@@ -2296,7 +2296,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="undefined/tree/v1.1.6/construct/construct.js#L397">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6/construct/construct.js#L397">source</a></li>
 		
 		
 			
@@ -2338,7 +2338,7 @@
 		<li class="parameter">
 			<h4>args <code>{*}</code></h4>
 			<div class="description">
-				<p><p>the arguments passed to the constructor (or the elements of the array returned from <a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a>)</p></p>
+				<p><p>the arguments passed to the constructor (or the elements of the array returned from [can.Construct::setup])</p></p>
 			</div>
 			
 			
@@ -2354,7 +2354,7 @@
 		
 		<section class="comment">
 			<p>If a prototype <code>init</code> method is provided, it is called when a new Construct is created,
-after <a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a>. The <code>init</code> method is where the bulk of your initialization code
+after [can.Construct::setup]. The <code>init</code> method is where the bulk of your initialization code
 should go, and a common thing to do in <code>init</code> is to save the arguments passed into the constructor.</p>
 
 <h2>Examples</h2>
@@ -2393,7 +2393,7 @@ brian.bio(); // "Hi! I'm Brian Moschel and I write ECMAScript.";</code></pre>
 
 <h2>Be Aware</h2>
 
-<p><a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a> is able to modify the arguments passed to <code>init</code>.
+<p>[can.Construct::setup] is able to modify the arguments passed to <code>init</code>.
 If you aren't receiving the right arguments to <code>init</code>, check to make sure
 that they aren't being changed by <code>setup</code> somewhere along the inheritance chain.</p>
 		</section>

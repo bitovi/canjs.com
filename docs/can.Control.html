@@ -973,8 +973,8 @@
 	
 	
 	<li class="search-container">
-			<a class="property" href="can.Observe.attributes.static.convert.html" data-search="can.Observe.attributes.static.convert">
-				can.Observe.attributes.static.convert
+			<a class="property" href="can.Observe.attributes.static.convert.html" data-search="convert">
+				convert
 			</a>
 			
 	</li>
@@ -2296,13 +2296,13 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="undefined/tree/v1.1.6/control/control.md">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6/control/control.md">source</a></li>
 		
 		
 			<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/route">download</a></li>
 		
 		
-			<li><a href="../can/control/qunit.html">tests</a></li>
+			<li><a href="../can/control/test.html">tests</a></li>
 		
 	</ul>
 </div>
@@ -2407,7 +2407,7 @@ new Todos( $( '#todos' ), { template: 'specialTodos.ejs' } );
 
 <h2>element <code>this.element</code></h2>
 
-<p><a href="can.Control.prototype.element.html">can.Control.prototype.element</a> is the 
+<p>[can.Control::element] is the 
 NodeList consisting of the element the control is created on. </p>
 
 <pre><code>var todosControl = new Todos( document.body.firstElementChild );
@@ -2419,7 +2419,7 @@ the element is wrapped with <code>jQuery( element )</code>.</p>
 
 <h2>options <code>this.options</code></h2>
 
-<p><a href="can.Control.prototype.options.html">can.Control.prototype.options</a> is the second argument passed to 
+<p>[can.Control::options] is the second argument passed to 
 <code>new can.Control()</code>, merged with the control's static <strong>defaults</strong> property.</p>
 
 <h2>Listening to events</h2>
@@ -2607,7 +2607,7 @@ new Todos( '#todos' );
 
 <h2>destroy <code>control.destroy()</code></h2>
 
-<p><a href="can.Control.prototype.destroy.html">can.Control.prototype.destroy</a> unbinds a control's
+<p>[can.Control::destroy] unbinds a control's
 event handlers and releases its element, but does not remove 
 the element from the page. </p>
 
@@ -2635,7 +2635,7 @@ data by calling <code>$(document.body).empty()</code>.</em></p>
 
 <h2>on <code>control.on()</code></h2>
 
-<p><a href="can.Control.prototype.on.html">can.Control.prototype.on</a> rebinds a control's event handlers. This is useful when you want
+<p>[can.Control::on] rebinds a control's event handlers. This is useful when you want
 to listen to a specific model and change it:</p>
 
 <pre><code>var Editor = can.Control({

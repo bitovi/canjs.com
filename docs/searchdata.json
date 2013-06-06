@@ -370,6 +370,7 @@
         "name": "can.Observe.attributes.static.convert",
         "type": "property",
         "id": 54,
+        "title": "convert",
         "parent": "can.Observe.attributes.static"
     },
     "can.Observe.attributes.static.serialize": {
