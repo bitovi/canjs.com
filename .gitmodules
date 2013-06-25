@@ -7,3 +7,9 @@
 [submodule "shared"]
 	path = shared
 	url = git://github.com/bitovi/shared-web.git
+[submodule "documentjs"]
+	path = documentjs
+	url = git://github.com/bitovi/documentjs.git
+[submodule "steal"]
+	path = steal
+	url = git://github.com/bitovi/steal.git
