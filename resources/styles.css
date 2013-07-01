@@ -138,7 +138,7 @@ a.next:after{content:'\e015';text-decoration:inherit;display:inline;font:normal 
 .arrow.right:before{border-color:transparent #636363 ;border-width:5px 0 5px 5px;}
 .arrow.up:before{border-color:#636363 transparent;border-width:0 5px 5px 5px;}
 .arrow.down:before{border-color:#636363 transparent;border-width:5px 5px 0 5px;}
-@font-face{font-family:'Lato';src:url('../shared/fonts/lato-reg.eot');src:url('../shared/fonts/lato-reg.eot?#iefix') format('embedded-opentype'),url('../shared/fonts/lato-reg.woff') format('woff'),url('../shared/fonts/lato-reg.ttf') format('truetype');font-weight:normal;font-style:normal;}@font-face{font-family:'LatoBold';src:url('../shared/fonts/lato-bol.eot');src:url('../shared/fonts/lato-bol.eot?#iefix') format('embedded-opentype'),url('../shared/fonts/lato-bol.woff') format('woff'),url('../shared/fonts/lato-bol.ttf') format('truetype');font-weight:normal;font-style:normal;}@font-face{font-family:'LatoLight';src:url('../shared/fonts/lato-lig.eot');src:url('../shared/fonts/lato-lig.eot?#iefix') format('embedded-opentype'),url('../shared/fonts/lato-lig.woff') format('woff'),url('../shared/fonts/lato-lig.ttf') format('truetype');font-weight:normal;font-style:normal;}*{font-family:'Lato',sans-serif;}
+@font-face{font-family:'Lato';src:url('../shared/fonts/lato-regular.eot');src:url('../shared/fonts/lato-regular.eot?#iefix') format('embedded-opentype'),url('../shared/fonts/lato-regular.woff') format('woff'),url('../shared/fonts/lato-regular.ttf') format('truetype');font-weight:normal;font-style:normal;}@font-face{font-family:'LatoBold';src:url('../shared/fonts/lato-bold.eot');src:url('../shared/fonts/lato-bold.eot?#iefix') format('embedded-opentype'),url('../shared/fonts/lato-bold.woff') format('woff'),url('../shared/fonts/lato-bold.ttf') format('truetype');font-weight:normal;font-style:normal;}@font-face{font-family:'LatoLight';src:url('../shared/fonts/lato-light.eot');src:url('../shared/fonts/lato-light.eot?#iefix') format('embedded-opentype'),url('../shared/fonts/lato-light.woff') format('woff'),url('../shared/fonts/lato-light.ttf') format('truetype');font-weight:normal;font-style:normal;}*{font-family:'Lato',sans-serif;}
 body{background:url(../img/bkg-dots.png) repeat #ffffff;}
 .brand{color:#fff;border-left:1px solid rgba(255, 255, 255, 0);border-right:1px solid rgba(255, 255, 255, 0);display:block;line-height:54px;text-indent:-9999px;height:54px;width:130px;text-align:left;background-image:none;text-decoration:none;position:relative;top:0;left:0;}.brand:before{text-decoration:none;content:"\e051";speak:none;color:#ffffff;line-height:20px;font-family:Bitstrap;font-size:74px;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.5);position:absolute;top:7px;left:30px;width:130px;text-indent:0px;}
 header{display:block;background-color:#165489;color:#fff;position:relative;z-index:2;}header .container{position:relative;height:54px;text-align:left;}
@@ -258,9 +258,9 @@ div.light:after{top:auto;bottom:-19px;background-position-y:bottom;}
 .carousel li div{margin-top:4px;}
 .index .carousel li a{width:163px;}
 .example{position:relative;margin-top:20px;clear:both;}.example h2{text-transform:uppercase;}
-.example>pre,.example>iframe{float:left;display:block;height:380px;width:300px;border-radius:2px;-moz-border-radius:2px;-webkit-border-radius:2px;border:1px solid #797979;margin-top:20px;margin-bottom:40px;}
+.example>pre,.example>iframe{float:left;display:block;height:380px;width:316px;border-radius:2px;-moz-border-radius:2px;-webkit-border-radius:2px;border:1px solid #797979;margin-top:20px;margin-bottom:40px;cursor:default;}
 .example>pre{background-color:#ffffff;text-align:left;font-family:Courier New, Courier, mono;font-size:12px;color:#666;margin-right:10px;overflow:scroll;padding:0 4px;}
-.example>.code{width:378px;}
+.example>.code{width:362px;}
 .example>.result{width:240px;background-color:#ffffff;}
 .example button.color{text-transform:uppercase;font-size:12px;position:absolute;right:3px;padding:3px 20px;top:50px;}
 .has-tip{background-color:rgba(238, 168, 30, 0.2);cursor:pointer;position:relative;display:inline-block;}
@@ -279,7 +279,7 @@ ol.linenums{margin-top:0;margin-bottom:0;}
 li.L0,li.L1,li.L2,li.L3,li.L4,li.L5,li.L6,li.L7,li.L8,li.L9{}
 li.L1,li.L3,li.L5,li.L7,li.L9{}
 .docs .sidebar{width:255px;margin-top:20px;}
-.docs .content.docs{width:662px;margin-top:20px;background-color:#fff;border:1px solid #d5d5d5;padding:20px;border-left-style:none;border-bottom-style:none;}.docs .content.docs ul,.docs .content.docs ol:not(.linenums){margin-left:0;font-size:14px;line-height:24px;margin-top:0;margin-bottom:15px;line-height:18px;}
+.docs .content.docs{width:662px;margin-top:20px;background-color:#fff;border:1px solid #d5d5d5;padding:20px;border-left-style:none;border-bottom-style:none;font-family:Arial,Helvetica,Geneva,sans-serif;}.docs .content.docs ul,.docs .content.docs ol:not(.linenums){margin-left:0;font-size:14px;line-height:24px;margin-top:0;margin-bottom:15px;line-height:18px;}
 .docs .content.docs .iframe_wrapper iframe{width:100%;}
 .docs footer{margin-top:20px;}
 .container.api{display:table;table-layout:fixed;border-bottom:1px solid #d5d5d5;padding-top:20px;}
