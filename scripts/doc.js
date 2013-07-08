@@ -23,6 +23,9 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 		},
 		// TODO move out (possibly make a flag or something)
 		"layout": "shared/_templates/page.mustache",
-		"docs": "shared/_templates/docs.mustache"
+		"docs": "shared/_templates/docs.mustache",
+		"static" : "scripts/static",
+		"templates": "scripts/templates",
+		statics: {src: "_pages"}
 	});
 });
