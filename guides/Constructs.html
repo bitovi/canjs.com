@@ -74,8 +74,8 @@
 		<ul class="api">
 	
 	<li class="search-container active">
-		<a href="Tutorial.html" data-search="Geting Started">
-			Geting Started
+		<a href="Tutorial.html" data-search="Getting Started">
+			Getting Started
 		</a>
 		
 		<ul class="search-container">
@@ -443,7 +443,7 @@ base's <code>init</code> method inside the child's <code>init</code>:</p>
 
 <pre><code class="lang-javascript">var PrivateTodo = can.Construct({
     init: function(options) {
-        this.
+        can.Construct.prototype.init.apply(this, arguments);
     }
 });</code></pre>
 		</section>

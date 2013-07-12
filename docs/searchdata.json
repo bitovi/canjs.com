@@ -1529,292 +1529,334 @@
         "id": 223,
         "parent": "can.util"
     },
+    "can.deparam": {
+        "name": "can.deparam",
+        "type": "function",
+        "id": 224,
+        "parent": "can.util"
+    },
     "can.isEmptyObject": {
         "name": "can.isEmptyObject",
         "type": "function",
-        "id": 224,
+        "id": 225,
         "parent": "can.util"
     },
     "can.proxy": {
         "name": "can.proxy",
         "type": "function",
-        "id": 225,
+        "id": 226,
         "parent": "can.util"
     },
     "can.isFunction": {
         "name": "can.isFunction",
         "type": "function",
-        "id": 226,
+        "id": 227,
         "parent": "can.util"
     },
     "can.bind": {
         "name": "can.bind",
         "type": "function",
-        "id": 227,
+        "id": 228,
         "parent": "can.util"
     },
     "can.unbind": {
         "name": "can.unbind",
         "type": "function",
-        "id": 228,
+        "id": 229,
         "parent": "can.util"
     },
     "can.delegate": {
         "name": "can.delegate",
         "type": "function",
-        "id": 229,
+        "id": 230,
         "parent": "can.util"
     },
     "can.undelegate": {
         "name": "can.undelegate",
         "type": "function",
-        "id": 230,
+        "id": 231,
         "parent": "can.util"
     },
     "can.trigger": {
         "name": "can.trigger",
         "type": "function",
-        "id": 231,
+        "id": 232,
         "parent": "can.util"
     },
     "can.ajax": {
         "name": "can.ajax",
         "type": "function",
-        "id": 232,
+        "id": 233,
         "parent": "can.util"
     },
     "can.$": {
         "name": "can.$",
         "type": "function",
-        "id": 233,
+        "id": 234,
         "parent": "can.util"
     },
     "can.buildFragment": {
         "name": "can.buildFragment",
         "type": "function",
-        "id": 234,
+        "id": 235,
         "parent": "can.util"
     },
     "can.append": {
         "name": "can.append",
         "type": "function",
-        "id": 235,
+        "id": 236,
         "parent": "can.util"
     },
     "can.remove": {
         "name": "can.remove",
         "type": "function",
-        "id": 236,
+        "id": 237,
         "parent": "can.util"
     },
     "can.data": {
         "name": "can.data",
         "type": "function",
-        "id": 237,
+        "id": 238,
         "parent": "can.util"
     },
     "can.addClass": {
         "name": "can.addClass",
         "type": "function",
-        "id": 238,
+        "id": 239,
         "parent": "can.util"
     },
     "can.when": {
         "name": "can.when",
         "type": "function",
-        "id": 239,
+        "id": 240,
         "parent": "can.util"
     },
     "can.Deferred": {
         "name": "can.Deferred",
         "type": "constructor",
-        "id": 240,
+        "id": 241,
         "parent": "can.util"
     },
     "can.Deferred.prototype": {
         "name": "can.Deferred.prototype",
         "type": "prototype",
-        "id": 241,
+        "id": 242,
         "parent": "can.Deferred"
     },
     "can.Deferred.prototype.pipe": {
         "name": "can.Deferred.prototype.pipe",
         "type": "function",
-        "id": 242
+        "id": 243
     },
     "can.Deferred.prototype.resolveWith": {
         "name": "can.Deferred.prototype.resolveWith",
         "type": "function",
-        "id": 243,
+        "id": 244,
         "title": "resolveWith",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.rejectWith": {
         "name": "can.Deferred.prototype.rejectWith",
         "type": "function",
-        "id": 244,
+        "id": 245,
         "title": "rejectWith",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.done": {
         "name": "can.Deferred.prototype.done",
         "type": "function",
-        "id": 245,
+        "id": 246,
         "title": "done",
+        "parent": "can.Deferred.prototype"
+    },
+    "can.Deferred.prototype.fail": {
+        "name": "can.Deferred.prototype.fail",
+        "type": "function",
+        "id": 247,
+        "title": "fail",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.always": {
         "name": "can.Deferred.prototype.always",
         "type": "function",
-        "id": 246,
+        "id": 248,
         "title": "always",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.then": {
         "name": "can.Deferred.prototype.then",
         "type": "function",
-        "id": 247,
+        "id": 249,
         "title": "then",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.isResolved": {
         "name": "can.Deferred.prototype.isResolved",
         "type": "function",
-        "id": 248,
+        "id": 250,
         "title": "isResolved",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.reject": {
         "name": "can.Deferred.prototype.reject",
         "type": "function",
-        "id": 249,
+        "id": 251,
         "title": "reject",
         "parent": "can.Deferred.prototype"
     },
     "can.Deferred.prototype.resolve": {
         "name": "can.Deferred.prototype.resolve",
         "type": "function",
-        "id": 250,
-        "title": "resolve",
-        "parent": "can.Deferred.prototype"
+        "id": 252,
+        "title": "resolve"
+    },
+    "can.capitalize": {
+        "name": "can.capitalize",
+        "type": "function",
+        "id": 253,
+        "parent": "can.util"
+    },
+    "can.sub": {
+        "name": "can.sub",
+        "type": "function",
+        "id": 254,
+        "parent": "can.util"
+    },
+    "can.underscore": {
+        "name": "can.underscore",
+        "type": "function",
+        "id": 255,
+        "parent": "can.util"
+    },
+    "can.esc": {
+        "name": "can.esc",
+        "type": "function",
+        "id": 256,
+        "parent": "can.util"
+    },
+    "can.getObject": {
+        "name": "can.getObject",
+        "type": "function",
+        "id": 257,
+        "parent": "can.util"
     },
     "can.NodeList": {
         "name": "can.NodeList",
         "type": "typedef",
-        "id": 251,
+        "id": 258,
         "title": "NodeList"
     },
     "CSSSelectorString": {
         "name": "CSSSelectorString",
         "type": "typedef",
-        "id": 252
+        "id": 259
     },
     "HttpMethod": {
         "name": "HttpMethod",
         "type": "typedef",
-        "id": 253
+        "id": 260
     },
     "can.fixture.types": {
         "name": "can.fixture.types",
         "type": "Types",
-        "id": 254,
+        "id": 261,
         "title": "Types",
         "parent": "can.fixture"
     },
     "can.fixture": {
         "name": "can.fixture",
         "type": "function",
-        "id": 255,
+        "id": 262,
         "title": "can.fixture",
         "parent": "canjs"
     },
     "id": {
         "name": "id",
         "type": "property",
-        "id": 256,
+        "id": 263,
         "parent": "can/util/fixture/fixture.js"
     },
     "can.fixture.store": {
         "name": "can.fixture.store",
         "type": "function",
-        "id": 257,
+        "id": 264,
         "title": "store",
         "parent": "can.fixture"
     },
     "can.fixture.types.Store.findAll": {
         "name": "can.fixture.types.Store.findAll",
         "type": "function",
-        "id": 258,
+        "id": 265,
         "parent": "can.fixture.types.Store"
     },
     "can.fixture.types.Store.findOne": {
         "name": "can.fixture.types.Store.findOne",
         "type": "function",
-        "id": 259,
+        "id": 266,
         "parent": "can.fixture.types.Store"
     },
     "can.fixture.types.Store.update": {
         "name": "can.fixture.types.Store.update",
         "type": "function",
-        "id": 260,
+        "id": 267,
         "parent": "can.fixture.types.Store"
     },
     "can.fixture.types.Store.destroy": {
         "name": "can.fixture.types.Store.destroy",
         "type": "function",
-        "id": 261,
+        "id": 268,
         "parent": "can.fixture.types.Store"
     },
     "can.fixture.types.Store.create": {
         "name": "can.fixture.types.Store.create",
         "type": "function",
-        "id": 262,
+        "id": 269,
         "parent": "can.fixture.types.Store"
     },
     "can.fixture.types.Store.find": {
         "name": "can.fixture.types.Store.find",
         "type": "function",
-        "id": 263,
+        "id": 270,
         "parent": "can.fixture.types.Store"
     },
     "can.fixture.types.Store.reset": {
         "name": "can.fixture.types.Store.reset",
         "type": "function",
-        "id": 264,
+        "id": 271,
         "parent": "can.fixture.types.Store"
     },
     "can.fixture.rand": {
         "name": "can.fixture.rand",
         "type": "function",
-        "id": 265,
+        "id": 272,
         "title": "rand",
         "parent": "can.fixture"
     },
     "xhr": {
         "name": "xhr",
         "type": "function",
-        "id": 266,
+        "id": 273,
         "hide": true,
         "parent": "can/util/fixture/fixture.js"
     },
     "can.fixture.on": {
         "name": "can.fixture.on",
         "type": "property",
-        "id": 267,
+        "id": 274,
         "title": "on",
         "parent": "can.fixture"
     },
     "can.fixture.delay": {
         "name": "can.fixture.delay",
         "type": "property",
-        "id": 268,
+        "id": 275,
         "title": "delay",
         "parent": "can.fixture"
     },
     "can.fixture.rootUrl": {
         "name": "can.fixture.rootUrl",
         "type": "property",
-        "id": 269,
+        "id": 276,
         "title": "rootUrl",
         "parent": "can.fixture"
     }
