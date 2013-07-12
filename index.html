@@ -194,8 +194,10 @@ var Routing = can.Control.extend({
   &lt;li {{data 'todo'}}&gt;
     &lt;input type="checkbox"
       {{#if done}}checked="checked"{{/if}}/&gt;
-    &lt;span class="description{{#if done}}
-      done{{/if}}"&gt;{{description}}&lt;/span&gt;
+    &lt;span class="description
+        {{#if done}}done{{/if}}"&gt;
+      {{description}}
+    &lt;/span&gt;
     &lt;span class="delete"&gt;&times;&lt;/span&gt;
   &lt;/li&gt;
 {{/this}}
