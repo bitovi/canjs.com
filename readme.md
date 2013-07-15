@@ -5,8 +5,8 @@
 Clone the repository and install all the dependencies and submodules (you need [GruntJS](http://gruntjs.com) installed
 globally):
 
-    git clone git@github.com:bitovi/canjs.us.git
-    cd canjs.us
+    git clone git@github.com:bitovi/canjs.com.git
+    cd canjs.com
     git submodule update --init --recursive
     npm install
 
