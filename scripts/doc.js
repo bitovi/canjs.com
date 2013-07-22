@@ -26,6 +26,8 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 		"docs": "shared/_templates/docs.mustache",
 		"static" : "scripts/static",
 		"templates": "scripts/templates",
-		statics: {src: "_pages"}
+		statics: {
+			src: "_pages"
+		}
 	});
 });
