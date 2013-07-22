@@ -1,17 +1,28 @@
 # CanJS.com - The CanJS website
 
-## Installation
+## Setup
 
-Clone the repository and install all the dependencies and submodules (you need [GruntJS](http://gruntjs.com) installed
-globally):
+Clone the repository and install all submodules.
 
-    git clone git@github.com:bitovi/canjs.us.git
-    cd canjs.us
-    git submodule update --init --recursive
-    npm install
+To generate the site, run:
 
-Now you can run `grunt` to generate the entire page (needs to run after every change) or the more convenient
-`grunt watch:all` to watch for any file changes.
+    ./js scripts/doc.js
+
+To adjust __styles__, change what you 
+find in `scripts/static/styles`. Don't change documentjs unless you want those changes to be 
+applied to everything.  What you find in `scripts/static` overwrites what's in `documentjs/site/defaults/static`.
+
+To adjust __JS__, copy  `documentjs/site/defaults/static/static.js` to `scripts/static/static.js`. 
+Add other scripts to `scripts/static/`. Steal those scripts within `static.js`.  Make sure you use relative paths (`"./path/to.js"`).
+
+To adjust __HTML__, change scripts/templates/ or _pages.
+
+After updating static content or templates, delete `scripts/static/dist/production.css` and run:
+
+    ./js scripts/doc.js
+
+If you are having trouble building, open `/documentjs/site/static/build/build.html` in your 
+browser. This page attempts to load all the static content of the site with steal.
 
 ## Folder structure
 
@@ -19,13 +30,13 @@ Folders starting with `_` won't show up on the Homepage (Jekyll).
 
 - `_guides` - Submodule for the [CanJS Wiki](https://github.com/bitovi/canjs/wiki) GIT repository
 - `_pages` - Mustache templates which will be rendered as their HTML equivalents in the root folder
-- `_styles` - Additional Less/CSS stylesheets for this project (e.g. setting color configurations before including the shared styles)
 - `can` - The [CanJS repository](https://github.com/bitovi/canjs) submodule
 - `docs` - The generated documentation (from the `can` folder) - *Do not modify files in this folder*
 - `guides` - The generated guides (from the `_guides` markdown files) - *Do not modify files in this folder*
-- `img` - Image resources
-- `resource` - Other resources like generated CSS and additional JavaScript
-- `shared` - The [shared-web](https://github.com/bitovi/shared-web) submodule
+- `img` - Image resources. This should be moved to `scripts/static/img`
+- `resources` - Other resources like generated CSS and additional JavaScript. This should also be removed.
+- `scripts` - Contains the documentjs configuration code, including custom css, js, templates and specifies the scripts
+  that comprise CanJS.
 
 ## Deploy
 
