@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	<title>CanJS - unbind </title>
+	<title>CanJS - fail </title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -468,7 +468,7 @@
 	
 	</li>
 	
-	<li class="search-container active">
+	<li class="search-container">
 		<a href="can.Model.html" data-search="can.Model">
 			can.Model
 		</a>
@@ -518,7 +518,7 @@
 	
 	
 	
-	<li class="search-container active">
+	<li class="search-container">
 			<a class="function" href="can.Model.prototype.unbind.html" data-search="unbind">
 				unbind
 			</a>
@@ -1707,7 +1707,7 @@
 	
 	</li>
 	
-	<li class="search-container">
+	<li class="search-container active">
 		<a href="can.util.html" data-search="can.util">
 			can.util
 		</a>
@@ -1734,7 +1734,7 @@
 <ul>
 	
 	
-	<li class="search-container parent expanded">
+	<li class="search-container parent expanded active">
 			<a class="prototype" href="can.Deferred.prototype.html" data-search="can.Deferred.prototype">
 				can.Deferred.prototype
 			</a>
@@ -1761,7 +1761,7 @@
 	
 	
 	
-	<li class="search-container">
+	<li class="search-container active">
 			<a class="function" href="can.Deferred.prototype.fail.html" data-search="fail">
 				fail
 			</a>
@@ -2442,7 +2442,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6/model/model.js#L1244">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6/util/func.js#L681">source</a></li>
 		
 		
 			
@@ -2453,9 +2453,9 @@
 
 <h1>
 
-	unbind
+	fail
 	
-		<span class="module">can.Model.prototype.unbind</span>
+		<span class="module">can.Deferred.prototype.fail</span>
 	
 
 
@@ -2469,12 +2469,12 @@
 		</section>
 
 		<section class="description">
-			<p>Stop listening to events on this Model. </p>
+			<p>Add a callback to be called when a Deferred is rejected. </p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>model.unbind(eventName[, handler])</h2>
+			<h2>deferred.fail(failCallback)</h2>
 
 
 	<h3>Parameters</h3>
@@ -2482,21 +2482,9 @@
 	<ol class="parameters">
 		
 		<li class="parameter">
-			<h4>eventName <code>{String}</code></h4>
+			<h4>failCallback <code>{function}</code></h4>
 			<div class="description">
-				<p><p>The event to unbind from.</p></p>
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>handler <code>{function}</code></h4>
-			<div class="description">
-				<p><p>A handler previously bound with <code>bind</code>.
-If <strong>handler</strong> is not passed, <code>unbind</code> will remove all handlers
-for the given event.</p></p>
+				<p><p>A callback to be called when the Deferred is rejected.</p></p>
 			</div>
 			
 			
@@ -2506,34 +2494,17 @@ for the given event.</p></p>
 	</ol>
 
 
-	<h3>Returns</h3>
-	<div class="returns">
-		<h4><code>{can.Model}</code></h4>
-		<div class="description">
-			<p>The Model, for chaining.</p>
-		</div>
-	</div>
-
 		</section>
 		
 
 		
 		<section class="comment">
-			<p><code>unbind(eventName, handler)</code> removes a listener
-attached with [can.Model::bind].</p>
+			<p><code>deferred.fail(failCallback)</code> adds handler(s) to be called when the Deferred object is rejected.</p>
 
-<pre><code>var handler = function(ev, createdTask){
-
-}
-task.bind("created", handler)
-task.unbind("created", handler)
-</code></pre>
-
-<p>You have to pass the same function to <code>unbind</code> that you
-passed to <code>bind</code>.</p>
-
-<p>Unbind will also remove the instance from the store
-if there are no other listeners.</p>
+<pre><code class="lang-javascript">var def = can.Deferred();
+def.fail(function(){
+  //- Deferred got rejected.
+});</code></pre>
 		</section>
 		
 	</article>

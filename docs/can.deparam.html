@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	<title>CanJS - unbind </title>
+	<title>CanJS  - can.deparam</title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -468,7 +468,7 @@
 	
 	</li>
 	
-	<li class="search-container active">
+	<li class="search-container">
 		<a href="can.Model.html" data-search="can.Model">
 			can.Model
 		</a>
@@ -518,7 +518,7 @@
 	
 	
 	
-	<li class="search-container active">
+	<li class="search-container">
 			<a class="function" href="can.Model.prototype.unbind.html" data-search="unbind">
 				unbind
 			</a>
@@ -1707,7 +1707,7 @@
 	
 	</li>
 	
-	<li class="search-container">
+	<li class="search-container active">
 		<a href="can.util.html" data-search="can.util">
 			can.util
 		</a>
@@ -1934,7 +1934,7 @@
 			
 				
 
-<li class="search-container ">
+<li class="search-container active">
 <a href="can.deparam.html" data-search="can.deparam">
 	can.deparam
 </a>
@@ -2442,7 +2442,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6/model/model.js#L1244">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.6/util/func.js#L139">source</a></li>
 		
 		
 			
@@ -2453,10 +2453,7 @@
 
 <h1>
 
-	unbind
-	
-		<span class="module">can.Model.prototype.unbind</span>
-	
+	can.deparam
 
 
 </h1>
@@ -2469,12 +2466,12 @@
 		</section>
 
 		<section class="description">
-			<p>Stop listening to events on this Model. </p>
+			<p>Takes a string of name value pairs and returns a Object literal that represents those params. </p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>model.unbind(eventName[, handler])</h2>
+			<h2>can.param(params)</h2>
 
 
 	<h3>Parameters</h3>
@@ -2482,21 +2479,9 @@
 	<ol class="parameters">
 		
 		<li class="parameter">
-			<h4>eventName <code>{String}</code></h4>
+			<h4>params <code>{String}</code></h4>
 			<div class="description">
-				<p><p>The event to unbind from.</p></p>
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>handler <code>{function}</code></h4>
-			<div class="description">
-				<p><p>A handler previously bound with <code>bind</code>.
-If <strong>handler</strong> is not passed, <code>unbind</code> will remove all handlers
-for the given event.</p></p>
+				<p><p>a string like <code>"foo=bar&amp;person[age]=3"</code></p></p>
 			</div>
 			
 			
@@ -2508,33 +2493,22 @@ for the given event.</p></p>
 
 	<h3>Returns</h3>
 	<div class="returns">
-		<h4><code>{can.Model}</code></h4>
+		<h4><code>{Object}</code></h4>
 		<div class="description">
-			<p>The Model, for chaining.</p>
+			<p>A JavaScript Object that represents the params:</p>
+
+<pre><code class="lang-javascript">{
+  foo: "bar",
+  person: {
+    age: "3"
+  }
+}</code></pre>
 		</div>
 	</div>
 
 		</section>
 		
 
-		
-		<section class="comment">
-			<p><code>unbind(eventName, handler)</code> removes a listener
-attached with [can.Model::bind].</p>
-
-<pre><code>var handler = function(ev, createdTask){
-
-}
-task.bind("created", handler)
-task.unbind("created", handler)
-</code></pre>
-
-<p>You have to pass the same function to <code>unbind</code> that you
-passed to <code>bind</code>.</p>
-
-<p>Unbind will also remove the instance from the store
-if there are no other listeners.</p>
-		</section>
 		
 	</article>
 </div>
