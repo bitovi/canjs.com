@@ -20,11 +20,18 @@ module.exports = function (grunt) {
 			// TOOO make builder URL configurable
 			return 'http://bitbuilder.herokuapp.com/can.custom.js?' + download;
 		},
-		sourceUrl: function(src, type, line) {
-			var pkg = grunt.config('can.pkg'),
+		sourceUrl: function(src, type, line, page) {
+			var subPath, 
+				pkg = grunt.config('can.pkg'),
 				relative = path.relative(grunt.config('can.path'), src),
 				hash = type !== 'page' && type !== 'constructor' && line ? '#L' + line : '';
-			return pkg.repository.github + '/tree/v' + pkg.version + '/' + relative + hash;
+			if(type === 'page' && page === 'guides') {
+				subPath = '/wiki/' + path.basename(relative, '.md');
+			} else {
+				subPath = '/tree/v' + pkg.version + '/' + relative + hash;
+			}
+			return pkg.repository.github + subPath;
+
 		},
 		testUrl: function(test) {
 			// TODO we know we're in the docs/ folder for test links but there might
