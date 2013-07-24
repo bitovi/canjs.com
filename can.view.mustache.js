@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 05 Jun 2013 18:02:59 GMT
+ * Wed, 24 Jul 2013 00:23:53 GMT
  * Licensed MIT
  * Includes: can/view/mustache
  * Download from: http://canjs.com
@@ -119,12 +119,14 @@
                     //			}
                     //		]
                     tokens: [
+
                         // Return unescaped
                         ["returnLeft", "{{{", "{{[{&]"],
                         // Full line comments
                         ["commentFull", "{{!}}", "^[\\s\\t]*{{!.+?}}\\n"],
                         // Inline comments
                         ["commentLeft", "{{!", "(\\n[\\s\\t]*{{!|{{!)"],
+
                         // Full line escapes
                         // This is used for detecting lines with only whitespace and an escaped tag
                         ["escapeFull", "{{}}", "(^[\\s\\t]*{{[#/^][^}]+?}}\\n|\\n[\\s\\t]*{{[#/^][^}]+?}}\\n|\\n[\\s\\t]*{{[#/^][^}]+?}}$)",
@@ -194,6 +196,7 @@
                         //		<li id="nameli" {{ data 'name' }}></li>
                         // then later you can access it like:
                         //		can.$('#nameli').data('name');
+
                         {
                             name: /^\s*data\s/,
                             fn: function(content, cmd) {
@@ -381,12 +384,15 @@
                                 if (content.length && (mode = content.match(/^([#^/]|else$)/))) {
                                     mode = mode[0];
                                     switch (mode) {
+
                                         // Open a new section.
                                         case '#':
+
                                         case '^':
                                             result.push(cmd.insert + 'can.view.txt(0,\'' + cmd.tagName + '\',' + cmd.status + ',this,function(){ return ');
                                             break;
                                             // Close the prior section.
+
                                         case '/':
                                             return {
                                                 raw: 'return ___v1ew.join("");}}])}));'
@@ -468,6 +474,7 @@
                                         break;
                                         // If/else section
                                         // Falsey section
+
                                     case 'else':
                                     case '^':
                                         result.push('return ___v1ew.join("");}},{inverse:function(' + CONTEXT + '){var ___v1ew = [];');
@@ -843,7 +850,7 @@
             'each': function(expr, options) {
                 expr = Mustache.resolve(expr);
                 if ( !! expr && isArrayLike(expr)) {
-                    if (isObserve(expr) && expr.attr('length')) {
+                    if (isObserve(expr) && typeof expr.attr('length') !== 'undefined') {
                         return can.view.lists && can.view.lists(expr, function(item) {
                             return options.fn(item);
                         });
@@ -865,6 +872,7 @@
                     return options.fn(ctx);
                 }
             }
+
 
         }, function(fn, name) {
             Mustache.registerHelper(name, fn);

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 05 Jun 2013 18:02:51 GMT
+ * Wed, 24 Jul 2013 00:23:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -47,7 +47,7 @@ define(["can/util/library", "can/view", "can/util/string", "can/observe/compute"
 	 * @function can.EJS.prototype.render render
 	 * @parent can.EJS.prototype
 	 * @description Render a view object with data and helpers.
-	 * @signature `render(data[, helpers])`
+	 * @signature `ejs.render(data[, helpers])`
 	 * @param {Object} [data] The data to populate the template with.
 	 * @param {Object.<String, function>} [helpers] Helper methods referenced in the template.
 	 * @return {String} The template with interpolated data.

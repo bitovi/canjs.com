@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 05 Jun 2013 18:02:51 GMT
+ * Wed, 24 Jul 2013 00:23:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -38,7 +38,7 @@ can.each([ can.Observe, can.Model ], function(clss){
 		attributes : {},
 		
 		/**
-		 * @property can.Observe.attributes.static.convert
+		 * @property can.Observe.attributes.static.convert convert
 		 * @parent can.Observe.attributes.static
 		 *
 		 * You often want to convert from what the observe sends you to a form more useful to JavaScript. 
@@ -320,10 +320,10 @@ can.Observe.prototype.__convert = function(prop, value){
  * @function can.Observe.prototype.attributes.serialize serialize
  * @parent can.Observe.attributes.prototype
  *
- * @description `can.Observe.prototype.serialize` serializes an object for the object. 
- * Serialized data is typically used to send back to a server.
+ * @description Serializes the observe's properties using 
+ * the [can.Observe.attributes attribute plugin].
  *
- * @signature `serialize([attrName])`
+ * @signature `observe.serialize([attrName])`
  * @param {String} [attrName] If passed, returns only a serialization of the named attribute.
  * @return {String} A serialization of this Observe.
  *

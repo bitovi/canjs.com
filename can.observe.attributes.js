@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 05 Jun 2013 18:03:00 GMT
+ * Wed, 24 Jul 2013 00:23:54 GMT
  * Licensed MIT
  * Includes: can/observe/attributes
  * Download from: http://canjs.com

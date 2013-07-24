@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 05 Jun 2013 18:02:58 GMT
+ * Wed, 24 Jul 2013 00:23:52 GMT
  * Licensed MIT
  * Includes: can/construct,can/observe,can/observe/compute,can/model,can/view,can/view/ejs,can/control,can/route,can/control/route
  * Download from: http://canjs.com
@@ -1072,7 +1072,7 @@
                                 // Convert inside to type.
                                 var ob = can.getObject(inside, data, remove === true ? false : undefined);
 
-                                if (ob === undefined) {
+                                if (ob === undefined || ob === null) {
                                     obs = null;
                                     return "";
                                 }
@@ -1119,6 +1119,8 @@
 
 
         can.extend(can.Construct, {
+
+                constructorExtends: true,
 
                 newInstance: function() {
                     // Get a raw instance object (`init` is not called).
@@ -1205,11 +1207,11 @@
                     function Constructor() {
                         // All construction is actually done in the init method.
                         if (!initializing) {
-                            return this.constructor !== Constructor && arguments.length ?
+                            return this.constructor !== Constructor && arguments.length && Constructor.constructorExtends ?
                             // We are being called without `new` or we are extending.
                             arguments.callee.extend.apply(arguments.callee, arguments) :
                             // We are being called with `new`.
-                            this.constructor.newInstance.apply(this.constructor, arguments);
+                            Constructor.newInstance.apply(Constructor, arguments);
                         }
                     }
 
@@ -1271,9 +1273,17 @@
 
                     return Constructor;
 
+
+
                 }
 
             });
+
+        can.Construct.prototype.setup = function() {};
+
+        can.Construct.prototype.init = function() {};
+
+
         return can.Construct;
     })(__m2);
 
@@ -1388,49 +1398,49 @@
                     // send modified attr event to parent
                     //can.trigger(parent, args[0], args);
                 });
-            }
+            },
             // An `id` to track events for a given observe.
-        observeId = 0,
-        // A helper used to serialize an `Observe` or `Observe.List`.  
-        // `observe` - The observable.  
-        // `how` - To serialize with `attr` or `serialize`.  
-        // `where` - To put properties, in an `{}` or `[]`.
-        serialize = function(observe, how, where) {
-            // Go through each property.
-            observe.each(function(val, name) {
-                // If the value is an `object`, and has an `attrs` or `serialize` function.
-                where[name] = canMakeObserve(val) && can.isFunction(val[how]) ?
-                // Call `attrs` or `serialize` to get the original data back.
-                val[how]() :
-                // Otherwise return the value.
-                val;
-            });
-            return where;
-        },
-        attrParts = function(attr, keepKey) {
-            if (keepKey) {
-                return [attr];
-            }
-            return can.isArray(attr) ? attr : ("" + attr).split(".");
-        },
-        // Which batch of events this is for -- might not want to send multiple
-        // messages on the same batch.  This is mostly for event delegation.
-        batchNum = 1,
-        // how many times has start been called without a stop
-        transactions = 0,
-        // an array of events within a transaction
-        batchEvents = [],
-        stopCallbacks = [],
-        makeBindSetup = function(wildcard) {
-            return function() {
-                var parent = this;
-                this._each(function(child, prop) {
-                    if (child && child.bind) {
-                        bindToChildAndBubbleToParent(child, wildcard || prop, parent)
-                    }
-                })
+            observeId = 0,
+            // A helper used to serialize an `Observe` or `Observe.List`.  
+            // `observe` - The observable.  
+            // `how` - To serialize with `attr` or `serialize`.  
+            // `where` - To put properties, in an `{}` or `[]`.
+            serialize = function(observe, how, where) {
+                // Go through each property.
+                observe.each(function(val, name) {
+                    // If the value is an `object`, and has an `attrs` or `serialize` function.
+                    where[name] = canMakeObserve(val) && can.isFunction(val[how]) ?
+                    // Call `attrs` or `serialize` to get the original data back.
+                    val[how]() :
+                    // Otherwise return the value.
+                    val;
+                });
+                return where;
+            },
+            attrParts = function(attr, keepKey) {
+                if (keepKey) {
+                    return [attr];
+                }
+                return can.isArray(attr) ? attr : ("" + attr).split(".");
+            },
+            // Which batch of events this is for -- might not want to send multiple
+            // messages on the same batch.  This is mostly for event delegation.
+            batchNum = 1,
+            // how many times has start been called without a stop
+            transactions = 0,
+            // an array of events within a transaction
+            batchEvents = [],
+            stopCallbacks = [],
+            makeBindSetup = function(wildcard) {
+                return function() {
+                    var parent = this;
+                    this._each(function(child, prop) {
+                        if (child && child.bind) {
+                            bindToChildAndBubbleToParent(child, wildcard || prop, parent)
+                        }
+                    })
+                };
             };
-        };
 
 
         var Observe = can.Map = can.Observe = can.Construct({
@@ -2213,7 +2223,7 @@
                     return value;
                 } else {
                     // Let others know to listen to changes in this compute
-                    if (can.Observe.__reading && canReadForChangeEvent) {
+                    if (can.Observe && can.Observe.__reading && canReadForChangeEvent) {
                         can.Observe.__reading(computed, 'change');
                     }
                     // if we are bound, use the cached value
@@ -2235,7 +2245,7 @@
                     value = computedData.value;
                 }
                 off = function() {
-                    computedData.teardown();
+                    computedData && computedData.teardown();
                 }
             } else if (context) {
 
@@ -2343,8 +2353,12 @@
             var d = new can.Deferred();
             def.then(function() {
                 var args = can.makeArray(arguments);
-                args[0] = model[func](args[0]);
-                d.resolveWith(d, args);
+                try {
+                    args[0] = model[func](args[0]);
+                    d.resolveWith(d, args);
+                } catch (e) {
+                    d.rejectWith(d, [e].concat(args));
+                }
             }, function() {
                 d.rejectWith(this, arguments);
             });
@@ -2504,6 +2518,7 @@
         can.Model = can.Observe({
                 fullName: "can.Model",
                 _reqs: 0,
+
                 setup: function(base) {
                     // create store here if someone wants to use model without inheriting from it
                     this.store = {};
@@ -2607,6 +2622,10 @@
                             instancesRawData.data),
                         i = 0;
 
+                    if (typeof raw === 'undefined') {
+                        throw new Error('Could not get any raw data while converting using .models');
+                    }
+
 
 
                     if (res.length) {
@@ -2636,7 +2655,7 @@
                     if (!attributes) {
                         return;
                     }
-                    if (attributes instanceof this) {
+                    if (typeof attributes.serialize === 'function') {
                         attributes = attributes.serialize();
                     }
                     var id = attributes[this.id],
@@ -2693,7 +2712,9 @@
             });
 
         can.each({
+
                 makeFindAll: "models",
+
                 makeFindOne: "model",
                 makeCreate: "model",
                 makeUpdate: "model"
@@ -2812,6 +2833,7 @@
 
         can.extend($view, {
                 // creates a frag and hooks it up all at once
+
                 frag: function(result, parentNode) {
                     return $view.hookup($view.fragment(result), parentNode);
                 },
@@ -2864,6 +2886,10 @@
                     return fragment;
                 },
 
+
+                // auj
+
+                // heir
 
                 hookups: {},
 
@@ -3172,7 +3198,7 @@
                     return "can.view.preload('" + id + "'," + $view.types["." + type].script(id, src) + ");";
                 },
                 preload: function(id, renderer) {
-                    $view.cached[id] = new can.Deferred().resolve(function(data, helpers) {
+                    var def = $view.cached[id] = new can.Deferred().resolve(function(data, helpers) {
                         return renderer.call(data, data, helpers);
                     });
 
@@ -3181,6 +3207,11 @@
                     }
                     // expose the renderer for mustache
                     frag.render = renderer;
+
+                    // set cache references (otherwise preloaded recursive views won't recurse properly)
+                    def.__view_id = id;
+                    $view.cachedRenderers[id] = renderer;
+
                     return frag;
                 }
 
@@ -4524,7 +4555,6 @@
                         }
                     }
                 },
-
                 // Moves `this` to the first argument, wraps it with `jQuery` if it's an element
                 _shifter: function(context, name) {
 

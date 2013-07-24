@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 05 Jun 2013 18:02:51 GMT
+ * Wed, 24 Jul 2013 00:23:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -139,144 +139,7 @@ define(["can/util/library", "can/util/bind"], function(can, bind) {
 		}
 	
 	// if no one is listening ... we can not calculate every time
-	/**
-	 * @page can.compute
-	 * @parent canjs
-	 * @group can.compute.prototype prototype
-	 * @signature `can.compute(getterSetter[, context])`
-	 * @param {Function} getterSetter A function that gets and optionally sets the value of the compute.
-	 * When called with no parameters, _getterSetter_ should return the current value of the compute. When
-	 * called with a single parameter, _getterSetter_ should arrange things so that the next read of the compute
-	 * produces that value.
-	 * @param {Object} [context] The context to use when evaluating the compute.
-	 * @return {can.compute} A new compute.
-	 *
-	 * @body
-	 * `can.compute` lets you make observable values. A compute is actually a function that returns
-	 * the computed value, but you can also use the compute to set the value and you can use
-	 * `bind` to listen to changes in the compute's return value. In this way, computes are similar
-	 * to [can.Observe Observes], but they represent a single value rather than a collection of values.
-	 *
-	 * ## Working with computes
-	 *
-	 * The simplest way to use a compute is to have it store a single value, and to set it when
-	 * that value needs to change:
-	 *
-	 * @codestart
-	 * var tally = can.compute(12);
-	 * tally(); // 12
-	 *
-	 * tally(13);
-	 * tally(); // 13
-	 * @codeend
-	 *
-	 * This is useful for making observable values, but the real power of `can.compute` reveals
-	 * itself when you combine it with `[can.Observe]`. If you use a compute that derives its
-	 * value from properties of an Observe, the compute will listen for changes in those
-	 * properties and automatically recalculate itself, emitting a _change_ event if its value
-	 * changes.
-	 *
-	 * As this example shows, this kind of compute rarely has need to be set directly:
-	 *
-	 * @codestart
-	 * var person = new can.Observe({
-	 *     firstName: 'Alice',
-	 *     lastName: 'Liddell'
-	 * });
-	 *
-	 * var fullName = can.compute(function() {
-	 *     return person.attr('firstName') + ' ' + person.attr('lastName');
-	 * });
-	 * fullName.bind('change', function(ev, newVal, oldVal) {
-	 *     console.log("This person's full name is now " + newVal + '.');
-	 * });
-	 *
-	 * person.attr('firstName', 'Allison'); // The log reads:
-	 *                                      // "This person's full name is now Allison Liddell."
-	 * @codeend
-	 *
-	 * Take special notice of how the definition of the compute uses `[can.Observe.prototype.attr attr]`
-	 * to read the values of the properties of `person`. This is how the compute knows to listen
-	 * for changes. and is similar to the need to use `attr` when live-binding properties of Observes into
-	 * `[can.EJS EJS]` templates.
-	 *
-	 * A specific use for bound computes like this is to provide a way to work with values of Observable
-	 * properties in different units:
-	 *
-	 * @codestart
-	 * var wall = new can.Observe({
-	 *     material: 'brick',
-	 *     length: 10 // in feet
-	 * });
-	 *
-	 * var wallLengthInMeters = can.compute(function(lengthInM) {
-	 *     if(lengthInM !== undefined) {
-	 *         wall.attr('length', lengthInM / 3.28084);
-	 *     } else {
-	 *         return wall.attr('length') * 3.28084;
-	 *     }
-	 * });
-	 *
-	 * wallLengthInMeters(); // 3.048
-	 *
-	 * // When you set the compute...
-	 * wallLengthInMeters(5);
-	 * wallLengthInMeters(); // 5
-	 * // ...the original Observe changes too.
-	 * wall.length;          // 16.4042
-	 * @codeend
-	 *
-	 * ## Events
-	 * 
-	 * When a compute's value is changed, it emits a _change_ event. You can listen for this change
-	 * event by using `[can.compute.bind bind]` to bind an event handler to the compute:
-	 *
-	 * @codestart
-	 * var tally = can.compute(0);
-	 * tally.bind('change', function(ev, newVal, oldVal) {
-	 *     console.log('The tally is now at ' + newVal + '.');
-	 * });
-	 *
-	 * tally(tally() + 5); // The log reads:
-	 *                     // 'The tally is now at 5.'
-	 * @codeend
-	 * 
-	 * ## Using computes to build Controls
-	 *
-	 * It's a piece of cake to build a `[can.Control]` off of the value of a compute. And since computes
-	 * are observable, it means that the view of that Control will update itself whenever the value
-	 * of the compute updates. Here's a simple slider that works off of a compute:
-	 *
-	 * @codestart
-	 * var project = new Observe({
-	 *     name: 'A Very Important Project',
-	 *     percentDone: .35
-	 * });
-	 * 
-	 * can.Control('SimpleSlider', { }, {
-	 *     init: function() {
-	 *         this.element.html(can.view(this.options.view, this.options));
-	 *     },
-	 *     '.handle dragend': function(el, ev) {
-	 *         var percent = this.calculateSliderPercent();
-	 *         // set the compute's value
-	 *         this.options.percentDone(percent);
-	 *     },
-	 *     '{percentDone} change': function(ev, newVal, oldVal) {
-	 *	       // react to the percentage changing some other way
-	 *         this.moveSliderTo(newVal);
-	 *     }
-	 *     // Implementing calculateSliderPercent and moveSliderTo
-	 *     // has been left as an exercise for the reader.
-	 * });
-	 * 
-	 * new SimpleSlider('#slider', {percentDone: project.compute('percentDone')});
-	 * @codeend
-	 *
-	 * Now that's some delicious cake. More information on Controls can be found under `[can.Control]`.
-	 * There is also a full explanation of can.Observe's `[can.Observe.prototype.compute compute]`,
-	 * which is used in the last line of the example above.
-	 */
+
 	can.compute = function(getterSetter, context, eventName){
 		if(getterSetter && getterSetter.isComputed){
 			return getterSetter;
@@ -344,7 +207,7 @@ define(["can/util/library", "can/util/bind"], function(can, bind) {
 				return value;
 			} else {
 				// Let others know to listen to changes in this compute
-				if( can.Observe.__reading && canReadForChangeEvent) {
+				if(can.Observe && can.Observe.__reading && canReadForChangeEvent) {
 					can.Observe.__reading(computed,'change');
 				}
 				// if we are bound, use the cached value
@@ -366,7 +229,7 @@ define(["can/util/library", "can/util/bind"], function(can, bind) {
 				value = computedData.value;
 			}
 			off = function(){
-				computedData.teardown();
+				computedData && computedData.teardown();
 			}
 		} else if(context) {
 			
@@ -433,8 +296,8 @@ define(["can/util/library", "can/util/bind"], function(can, bind) {
 			value = getterSetter;
 		}
 		/**
-		 * @property can.compute.isComputed isComputed
-		 * @parent can.compute.prototype
+		 * @property {Boolean} can.computed.isComputed compute.isComputed
+		 * @parent can.compute
 		 * Whether the value of the compute has been computed yet.
 		 */
 		computed.isComputed = true;
@@ -458,10 +321,10 @@ define(["can/util/library", "can/util/bind"], function(can, bind) {
 				computeState.bound = false;
 			},
 			/**
-			 * @function can.compute.bind bind
-			 * @parent can.compute.prototype
+			 * @function can.computed.bind compute.bind
+			 * @parent can.compute
 			 * @description Bind an event handler to a compute.
-			 * @signature `bind(eventType, handler)`
+			 * @signature `compute.bind(eventType, handler)`
 			 * @param {String} eventType The event to bind this handler to.
 			 * The only event type that computes emit is _change_.
 			 * @param {function({Object},{*},{*})} handler The handler to call when the event happens.
@@ -485,10 +348,10 @@ define(["can/util/library", "can/util/bind"], function(can, bind) {
 			 */
 			bind: can.bindAndSetup,
 			/**
-			 * @function can.compute.unbind unbind
-			 * @parent can.compute.prototype
+			 * @function computed.unbind compute.unbind
+			 * @parent can.compute
 			 * @description Unbind an event handler from a compute.
-			 * @signature `unbind(eventType[, handler])`
+			 * @signature `compute.unbind(eventType[, handler])`
 			 * @param {String} eventType The type of event to unbind.
 			 * The only event type available for computes is _change_.
 			 * @param {function} [handler] If given, the handler to unbind.

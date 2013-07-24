@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 05 Jun 2013 18:02:51 GMT
+ * Wed, 24 Jul 2013 00:23:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -132,7 +132,7 @@ define(["can/util/library"], function (can) {
 		// Capitalizes a string.
 		/**
 		 * @function can.capitalize
-		 * @parent can.util.
+		 * @parent can.util
 		 * @description Capitalize the first letter of a string.
 		 * @signature `can.capitalize(str)`
 		 * @param {String} str The string to capitalize.
@@ -180,7 +180,7 @@ define(["can/util/library"], function (can) {
 		 * @param {Object} data The data to be used to look for properties.  If it's an array, multiple
 		 * objects can be used.
 		 * @param {Boolean} [remove] if a match is found, remove the property from the object
-		 * @return {String} The converted string or `null` if any data to render are `undefined`
+		 * @return {String} The converted string or `null` if any data to render are `undefined` or `null`
 		 */
 		sub: function (str, data, remove) {
 			var obs = [];
@@ -192,7 +192,7 @@ define(["can/util/library"], function (can) {
 				// Convert inside to type.
 				var ob = can.getObject(inside, data, remove === true ? false : undefined);
 
-				if (ob === undefined) {
+				if (ob === undefined || ob === null) {
 					obs = null;
 					return "";
 				}

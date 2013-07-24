@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 05 Jun 2013 18:02:59 GMT
+ * Wed, 24 Jul 2013 00:23:53 GMT
  * Licensed MIT
  * Includes: can/construct/super
  * Download from: http://canjs.com

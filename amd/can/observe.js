@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 05 Jun 2013 18:02:51 GMT
+ * Wed, 24 Jul 2013 00:23:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -79,7 +79,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 				// send modified attr event to parent
 				//can.trigger(parent, args[0], args);
 			});
-		}
+		},
 		// An `id` to track events for a given observe.
 		observeId = 0,
 		// A helper used to serialize an `Observe` or `Observe.List`.  
@@ -143,7 +143,9 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		 * @function can.Observe.startBatch startBatch
 		 * @parent can.Observe.static
 		 * @description Begin an event batch.
-		 * @signature `startBatch([batchStopHandler])`
+		 * 
+		 * @signature `can.Observe.startBatch([batchStopHandler])`
+		 * 
 		 * @param {Function} [batchStopHandler] a callback that gets called after all batched events have been called
 		 *
 		 * @body
@@ -243,7 +245,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		 * @function can.Observe.stopBatch stopBatch
 		 * @parent can.Observe.static
 		 * @description End an event batch.
-		 * @signature `stopBatch([force[, callStart]])`
+		 * @signature `can.Observe.stopBatch([force[, callStart]])`
 		 * @param {bool} [force=false] whether to stop batching events immediately
 		 * @param {bool} [callStart=false] whether to call `[can.Observe.startBatch startBatch]` after firing batched events
 		 * 
@@ -417,20 +419,20 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.prototype.attr attr
 		 * @description Get or set properties on an Observe.
-		 * @signature `attr()`
+		 * @signature `observe.attr()`
 		 * 
 		 * Gets a collection of all the properties in this `can.Observe`.
 		 * 
 		 * @return {Object<String, *>} an object with all the properties in this `can.Observe`.
 		 * 
-		 * @signature `attr(key)`
+		 * @signature `observe.attr(key)`
 		 * 
 		 * Reads a property from this `can.Observe`.
 		 * 
 		 * @param {String} key the property to read
 		 * @return {*} the value assigned to _key_.
 		 *
-		 * @signature `attr(key, value)`
+		 * @signature `observe.attr(key, value)`
 		 * 
 		 * Assigns _value_ to a property on this `can.Observe` called _key_.
 		 * 
@@ -438,7 +440,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		 * @param {*} the value to assign to _key_.
 		 * @return {can.Observe} this Observe, for chaining
 		 * 
-		 * @signature `attr(obj[, removeOthers])`
+		 * @signature `observe.attr(obj[, removeOthers])`
 		 * 
 		 * Assigns each value in _obj_ to a property on this `can.Observe` named after the
 		 * corresponding key in _obj_, effectively merging _obj_ into the Observe.
@@ -564,12 +566,12 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.prototype.each each
 		 * @description Call a function on each property of an Observe.
-		 * @signature `each(callback)`
+		 * @signature `observe.each( callback(item, propName ) )`
 		 * 
 		 * `each` iterates through the Observe, calling a function
 		 * for each property value and key.
 		 * 
-		 * @param {function} callback the function to call for each property
+		 * @param {function(*,String)} callback(item,propName) the function to call for each property
 		 * The value and key of each property will be passed as the first and second
 		 * arguments, respectively, to the callback. If the callback returns false,
 		 * the loop will stop.
@@ -604,7 +606,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.prototype.removeAttr removeAttr
 		 * @description Remove a property from an Observe.
-		 * @signature `removeAttr(attrName)`
+		 * @signature `observe.removeAttr(attrName)`
 		 * @param {String} attrName the name of the property to remove
 		 * @return {*} the value of the property that was removed
 		 * 
@@ -758,7 +760,9 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.prototype.bind bind
 		 * @description Bind event handlers to an Observe.
-		 * @signature `bind(eventType, handler)`
+		 * 
+		 * @signature `observe.bind(eventType, handler)`
+		 * 
 		 * @param {String} eventType the type of event to bind this handler to
 		 * @param {Function} handler the handler to be called when this type of event fires
 		 * The signature of the handler depends on the type of event being bound. See below
@@ -855,7 +859,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.prototype.unbind unbind
 		 * @description Unbind event handlers from an Observe.
-		 * @signature `unbind(eventType[, handler])`
+		 * @signature `observe.unbind(eventType[, handler])`
 		 * @param {String} eventType the type of event to unbind, exactly as passed to `bind`
 		 * @param {Function} [handler] the handler to unbind
 		 *
@@ -885,7 +889,12 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		 */
 		unbind: can.unbindAndTeardown,
 		/**
-		 * @hide
+		 * @function can.Observe.prototype.serialize serialize
+		 * @description Serialize this object to something that
+		 * can be passed to `JSON.stringify`.
+		 * @signature `observe.serialize()`
+		 * 
+		 * 
 		 * Get the serialized Object form of the observe.  Serialized
 		 * data is typically used to send back to a server.
 		 * 
@@ -961,7 +970,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.prototype.compute compute
 		 * @description Make a can.compute from an observable property.
-		 * @signature `compute(attrName)`
+		 * @signature `observe.compute(attrName)`
 		 * @param {String} attrName the property to bind to
 		 * @return {can.compute} a [can.compute] bound to _attrName_
 		 *
@@ -991,23 +1000,31 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 	// Helpers for `observable` lists.
 	var splice = [].splice,
 		/**
-		 * @page can.Observe.List
+		 * @constructor can.Observe.List
 		 * @inherits can.Observe
 		 * @download can/observe
 		 * @test can/observe/qunit.html
 		 * @parent canjs
-		 *
-		 * `can.Observe.List` provides a way for you to use `can.Observe`s with arrays. Much like `can.Observe`,
-		 * when you use the getters and setters on `can.Observe.List`, events are fired that you can listen for
-		 * and react to.
-		 *
-		 * @function can.Observe.List
-		 * @constructor
-		 * @signature `can.Observe.List([elements])`
-		 * @param {Array} [elements] elements to seed the List with
-		 * @return {can.Observe.List} an instance of `can.Observe.List` with the elements from _elements_
-		 *
+		 * 
+		 * Use for observable array-like objects.
+		 * 
+		 * @signature `new can.Observe.List([array])`
+		 * 
+		 * Create an observable array-like object.
+		 * 
+		 * @param {Array} [array] items to seed the List with
+		 * @return {can.Observe.List} an instance of `can.Observe.List` with the elements from _array_
+		 * 
+		 * @signature `can.Observe.List([name,] [staticProperties,] instanceProperties)`
+		 * 
+		 * Creates a new extended constructor function. 
+		 *     
+		 * This is deprecated. In CanJS 1.2, by default, calling the constructor function
+		 * without `new` will create a `new` instance. Use [can.Construct.extend can.Observe.extend] 
+		 * instead of calling the constructor to extend.
+		 * 
 		 * @body
+		 * 
 		 * ## Working with Lists
 		 *
 		 * `can.Observe.List` extends `[can.Observe]`, so all the ways that you're used to working with
@@ -1154,7 +1171,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.List.prototype.each each
 		 * @description Call a function on each element of a List.
-		 * @signature `each(callback)`
+		 * @signature `list.each( callback(item, index) )`
 		 * 
 		 * `each` iterates through the Observe, calling a function
 		 * for each element.
@@ -1190,7 +1207,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.List.prototype.splice splice
 		 * @description Insert and remove elements from a List.
-		 * @signature `splice(index[, howMany[, ...newElements]])`
+		 * @signature `list.splice(index[, howMany[, ...newElements]])`
 		 * @param {Number} index where to start removing or inserting elements
 		 * 
 		 * @param {Number} [howMany] the number of elements to remove
@@ -1279,20 +1296,20 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @description Get or set elements in a List.
 		 * @function can.Observe.List.prototype.attr attr
-		 * @signature `attr()`
+		 * @signature `list.attr()`
 		 * 
 		 * Gets a collection of all the elements in this `can.Observe.List`.
 		 * 
 		 * @return {Array} array with all the elements in this List.
 		 * 
-		 * @signature `attr(index)`
+		 * @signature `list.attr(index)`
 		 * 
 		 * Reads a element from this `can.Observe.List`.
 		 * 
 		 * @param {Number} index the element to read
 		 * @return {*} the value at _index_.
 		 *
-		 * @signature `attr(index, value)`
+		 * @signature `list.attr(index, value)`
 		 * 
 		 * Assigns _value_ to the index _index_ on this `can.Observe.List`, expanding the list if necessary.
 		 * 
@@ -1300,7 +1317,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		 * @param {*} the value to assign at _index_
 		 * @return {can.Observe.List} this List, for chaining
 		 * 
-		 * @signature `attr(elements[, replaceCompletely])`
+		 * @signature `list.attr(elements[, replaceCompletely])`
 		 * 
 		 * Merges the members of _elements_ into this List, replacing each from the beginning in order. If
 		 * _elements_ is longer than the current List, the current List will be expanded. If _elements_
@@ -1577,7 +1594,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.List.prototype.push push
 		 * @description Add elements to the end of a list.
-		 * @signature `push(...elements)`
+		 * @signature `list.push(...elements)`
 		 *
 		 * `push` adds elements onto the end of a List.]
 		 * 
@@ -1619,7 +1636,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.List.prototype.unshift unshift
 		 * @description Add elements to the beginning of a List.
-		 * @signature `unshift(...elements)`
+		 * @signature `list.unshift(...elements)`
 		 *
 		 * `unshift` adds elements onto the beginning of a List.
 		 * 
@@ -1698,7 +1715,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.List.prototype.pop pop
 		 * @description Remove an element from the end of a List.
-		 * @signature `pop()`
+		 * @signature `list.pop()`
 		 *
 		 * `push` removes an element from the end of a List.
 		 * 
@@ -1733,7 +1750,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.List.prototype.shift shift
 		 * @description Remove en element from the front of a list.
-		 * @signature `shift()`
+		 * @signature `list.shift()`
 		 *
 		 * `shift` removes an element from the beginning of a List.
 		 *
@@ -1794,7 +1811,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.List.prototype.indexOf indexOf
 		 * @description Look for an item in a List.
-		 * @signature `indexOf(item)`
+		 * @signature `list.indexOf(item)`
 		 *
 		 * `indexOf` finds the position of a given item in the List.
 		 *
@@ -1825,7 +1842,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.List.prototype.join join
 		 * @description Join a List's elements into a string.
-		 * @signature `join(separator)`
+		 * @signature `list.join(separator)`
 		 *
 		 * `join` turns a List into a string by inserting _separator_ between the string representations
 		 * of all the elements of the List.
@@ -1848,7 +1865,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.List.prototype.reverse reverse
 		 * @description Reverse the order of a List.
-		 * @signature `reverse()`
+		 * @signature `list.reverse()`
 		 *
 		 * `reverse` reverses the elements of the List in place.
 		 *
@@ -1868,7 +1885,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.List.prototype.slice slice
 		 * @description Make a copy of a part of a List.
-		 * @signature `slice([start[, end]])`
+		 * @signature `list.slice([start[, end]])`
 		 *
 		 * `slice` creates a copy of a portion of the List.
 		 *
@@ -1904,7 +1921,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.List.prototype.concat concat
 		 * @description Merge many collections together into a List.
-		 * @signature `concat(...args)`
+		 * @signature `list.concat(...args)`
 		 * @param {Array|can.Observe.List|*} args Any number of arrays, Lists, or values to add in
 		 * For each parameter given, if it is an Array or a List, each of its elements will be added to
 		 * the end of the concatenated List. Otherwise, the parameter itself will be added.
@@ -1934,7 +1951,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.List.prototype.forEach forEach
 		 * @description Call a function for each element of a List.
-		 * @signature `forEach(callback[, thisArg])`
+		 * @signature `list.forEach(callback[, thisArg])`
 		 * @param {function(element, index, list)} callback a function to call with each element of the List
 		 * The three parameters that _callback_ gets passed are _element_, the element at _index_, _index_ the
 		 * current element of the list, and _list_ the List the elements are coming from.
@@ -1958,7 +1975,7 @@ define(["can/util/library", "can/util/bind", "can/construct"], function(can, bin
 		/**
 		 * @function can.Observe.List.prototype.replace replace
 		 * @description Replace all the elements of a List.
-		 * @signature `replace(collection)`
+		 * @signature `list.replace(collection)`
 		 * @param {Array|can.Observe.List|can.Deferred} collection the collection of new elements to use
 		 * If a [can.Deferred] is passed, it must resolve to an `Array` or `can.Observe.List`.
 		 * The elements of the list are not actually removed until the Deferred resolves.

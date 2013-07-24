@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 05 Jun 2013 18:02:51 GMT
+ * Wed, 24 Jul 2013 00:23:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -109,8 +109,8 @@ define(["can/util/library", "can/observe", "can/util/string/deparam"], function(
 		/**
 		 * @function can.route.param param
 		 * @parent can.route.static
-		 * @description Get a route URL from given data.
-		 * @signature `param(data)`
+		 * @description Get a route path from given data.
+		 * @signature `can.route.param( data )`
 		 * @param {data} object The data to populate the route with.
 		 * @return {String} The route, with the data populated in it.
 		 *
@@ -197,9 +197,9 @@ define(["can/util/library", "can/observe", "can/util/string/deparam"], function(
 		/**
 		 * @function can.route.deparam deparam
 		 * @parent can.route.static
-		 * @description Extract data from a route URL.
-		 * @signature `deparam(url)`
-		 * @param {String} url A URL to extract data from.
+		 * @description Extract data from a route path.
+		 * @signature `can.route.deparam( url )`
+		 * @param {String} url A route fragment to extract data from.
 		 * @return {Object} An object containing the extracted data.
 		 * 
 		 * @body
@@ -298,7 +298,11 @@ define(["can/util/library", "can/observe", "can/util/string/deparam"], function(
 		/**
 		 * @function can.route.ready ready
 		 * @parent can.route.static
-		 * @signature `ready(readyYet)`
+		 * 
+		 * @signature `can.route.ready( readyYet )`
+		 * 
+		 * Pause and resume the initialization of can.route.
+		 * 
 		 * @param {Boolean} [readyYet] Whether the ready event should be fired yet.
 		 * @return {can.route} The `can.route` object.
 		 *
@@ -325,8 +329,12 @@ define(["can/util/library", "can/observe", "can/util/string/deparam"], function(
 		/**
 		 * @function can.route.url url
 		 * @parent can.route.static
-		 * @signature `url(options[, merge])`
-		 * @param {Object} options The data to populate the route with.
+		 * @signature `can.route.url( data [, merge] )`
+		 * 
+		 * Make a URL fragment that when set to window.location.hash will update can.route's properties
+		 * to match those in `data`.
+		 * 
+		 * @param {Object} data The data to populate the route with.
 		 * @param {Boolean} [merge] Whether the given options should be merged into the current state of the route.
 		 * @return {String} The route URL and query string.
 		 *
@@ -355,9 +363,13 @@ define(["can/util/library", "can/observe", "can/util/string/deparam"], function(
 		/**
 		 * @function can.route.link link
 		 * @parent can.route.static
-		 * @signature `link(innerText, options, props[, merge])`
+		 * @signature `can.route.link( innerText, data, props [, merge] )`
+		 * 
+		 * Make an anchor tag (`<A>`) that when clicked on will update can.route's properties
+		 * to match those in `data`.
+		 * 
 		 * @param {Object} innerText The text inside the link.
-		 * @param {Object} options The data to populate the route with.
+		 * @param {Object} data The data to populate the route with.
 		 * @param {Object} props Properties for the anchor other than `href`.
 		 * @param {Boolean} [merge] Whether the given options should be merged into the current state of the route.
 		 * @return {String} A string with an anchor tag that points to the populated route.
@@ -401,8 +413,11 @@ define(["can/util/library", "can/observe", "can/util/string/deparam"], function(
 		/**
 		 * @function can.route.current current
 		 * @parent can.route.static
-		 * @signature `current(options)`
-		 * @param {Object} options Data to check agains the current route.
+		 * @signature `can.route.current( data )`
+		 * 
+		 * Check if data represents the current route.
+		 * 
+		 * @param {Object} data Data to check agains the current route.
          * @return {Boolean} Whether the data matches the current URL.
 		 * 
 		 * @body
