@@ -1,0 +1,9 @@
+<div class="container">
+  <ul class="social-stats">
+    {{#if articles}}<li class="irc"><a href="http://bithub.com/#!/greatest/canjs/article">{{articles}} {{plural 'article' articles}}</a></li>{{/if}}
+    {{#if apps}}<li class="apps"><a href="http://bithub.com/#!/greatest/canjs/app">{{apps}} {{plural 'app' apps}} submitted</a></li>{{/if}}
+  	{{#if plugins}}<li class="plugins"><a href="http://bithub.com/#!/greatest/canjs/plugin">{{plugins}} {{plural 'plugin' plugins}} submitted</a></li>{{/if}}
+    {{#if posts}}<li class="forums"><a href="http://bithub.com/#!/greatest/canjs/question">{{posts}} forum {{plural 'post' posts}}</a></li>{{/if}}
+  	{{#if commits}}<li class="commits"><a href="http://bithub.com/#!/greatest/canjs/code">{{commits}} {{plural 'commit' commits}}</a></li>{{/if}}
+  </ul>
+</div><!-- .container -->
