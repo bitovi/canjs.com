@@ -1,209 +1,179 @@
 <div class="hero">
-	<div class="container">
+  <div class="container">
 
-		<h1>We can<br/>do JavaScript better.</h1>
+    <h1>We can<br/>do JavaScript better.</h1>
 
-		<div id="hero-download" class="pull-right">
-			<a href="{{self.repository.github}}/archive/v{{package.version}}.zip">
-				<button class="download">Download {{package.version}}<span>(One file. Everything you need.)</span></button>
-			</a>
-			{{! heroDownloadContainer.mustache}}
-		</div>
+    <div id="hero-download" class="pull-right">
+      <a href="{{self.repository.github}}/archive/v{{package.version}}.zip">
+        <button class="download">Download {{package.version}}<span>(One file. Everything you need.)</span></button>
+      </a>
+      {{! heroDownloadContainer.mustache}}
+    </div>
 
-	</div>
+  </div>
 </div>
 
 <div class="content">
 
-	<div class="container benefits">
-	{{! benefitTabs.mustache}}
-	</div>
+  <div class="container benefits">
+  {{! benefitTabs.mustache}}
+  </div>
 
-	<div class="container twitter">
+  <div class="container twitter">
 
-		<a href="https://twitter.com/canjs" class="twitter-follow-button" data-show-count="true" data-dnt="true">Follow @canjs</a>
+    <a href="https://twitter.com/canjs" class="twitter-follow-button" data-show-count="true" data-dnt="true">Follow @canjs</a>
 
-		<iframe src="http://ghbtns.com/github-btn.html?user=bitovi&repo=canjs&type=watch&count=true"
-		        allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+    <iframe src="http://ghbtns.com/github-btn.html?user=bitovi&repo=canjs&type=watch&count=true"
+            allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
 
-		<iframe src="http://ghbtns.com/github-btn.html?user=bitovi&repo=canjs&type=fork&count=true"
-		        allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20"></iframe>
+    <iframe src="http://ghbtns.com/github-btn.html?user=bitovi&repo=canjs&type=fork&count=true"
+            allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20"></iframe>
 
-	</div>
+  </div>
 
-	<div class="dark social">
-		<div class="container">
-			<!--<ul class="social-stats">
-				<li class="apps"><a href="#community%2Fforums">0 apps submitted</a></li>
-				<li class="commits"><a href="#community%2Fgithub">0 recent commits</a></li>
-				<li class="forums"><a href="#community%2Fforums">0 new forum posts</a></li>
-				<li class="irc"><a href="#community%2Firc">0 people on IRC</a></li>
-				<li class="plugins"><a href="#community%2Fplugins">0 plugins submitted</a></li>
-			</ul>-->
-		</div>
-	</div>
+  <div class="dark social">
+    <div class="container">
+      <!--<ul class="social-stats">
+        <li class="apps"><a href="#community%2Fforums">0 apps submitted</a></li>
+        <li class="commits"><a href="#community%2Fgithub">0 recent commits</a></li>
+        <li class="forums"><a href="#community%2Fforums">0 new forum posts</a></li>
+        <li class="irc"><a href="#community%2Firc">0 people on IRC</a></li>
+        <li class="plugins"><a href="#community%2Fplugins">0 plugins submitted</a></li>
+      </ul>-->
+    </div>
+  </div>
 
-	<div class="container example">
-		<h1>Simple To Use</h1>
-		<h2>Observables and live binding do the work for you.</h2>
+  <div class="container example">
+    <h1>Simple To Use</h1>
+    <h2>Observables and live binding do the work for you.</h2>
 
-		<a href="http://jsfiddle.net/xKc3H/13/" target="_blank"><button class="color">Edit</button></a>
-		<pre class="code prettyprint lang-js">
-// Here's where we get, save, and delete to-dos.
-// (Yep, this is all we need to access the Todo
-// REST endpoints!)
-var Todo = can.Model({
+    <a href="http://jsfiddle.net/xKc3H/13/" target="_blank"><button class="color">Edit</button></a>
+    <pre class="code prettyprint lang-js" style="overflow-x: hidden;">
+var Todo = can.Model.extend({
   findAll: 'GET /todos',
   findOne: 'GET /todos/{id}',
   update: 'PUT /todos/{id}',
   destroy: 'DELETE /todos/{id}'
 }, {});
 
-// This controller manages our to-do list. It will
-// instantiate the view and respond to events that are
-// triggered in the element the control is bound to.
-var TodoBoard = can.Control({
+var TodoBoard = can.Control.extend({
   init: function() {
-    var el = this.element;
-    // Go get all the to-dos and
-    // feed them to our template.
-    // (See the script tag with id="todoList"
-    // for the mustache template being used.)
-    this.element.html(can.view('todoBoard', new Todo.List({})));
+    this.element.html(can.view('todoBoard',
+      new Todo.List({})));
   },
-  // When a checkbox's value changes...
   'input[type=checkbox] change': function(el, ev) {
-    // ...update the 'done' property on the
-    // corresponding to-do and save to the server.
-    el.parent().data('todo').attr('done', el.prop('checked')).save();
+    el.parent().data('todo').attr('done',
+      el.prop('checked')).save();
   },
-  // When the delete button is clicked...
   '.delete click': function(el, ev) {
-    // ...destroy the corresponding to-do on the server.
-    // The template will re-render itself and the
-    // deleted to-do will be removed.
     el.parent().data('todo').destroy();
   },
-  // When the description is clicked...
   '.description click': function(el, ev) {
-    // Change the page state (we're using the route)
-    // to indicate that we're editing that to-do.
-    can.route.attr('id', el.parent().data('todo').id);
+    can.route.attr('id',
+      el.parent().data('todo').id);
   }
 });
 
-var TodoEditor = can.Control({
-  loadTodo: function(todo) {
+var TodoEditor = can.Control.extend({
+  setTodo: function(todo) {
     this.options.todo = todo;
-    // The to-do we're editing has changed, and
-    // there are events bound on the to-do, so we
-    // need to re-bind those events to the new to-do.
     this.on();
-    // Load up the editor with the to-do
-    // that was passed in.
-    // (See the script tag with id="todoEditor"
-    // for the mustache template being used.)
-    this.element.html(can.view('todoEditor', this.options.todo));
+    this.element.html(can.view('todoEditor',
+      this.options.todo));
    },
-  // When the input changes...
   'input change': function(el, ev) {
-    this.element.find('.spinner').removeClass('hidden');
-    // ...save the new description to the server...
-    this.options.todo.attr('description', el.val()).save();
+    this.element.find('.spinner')
+      .removeClass('hidden');
+    this.options.todo.attr('description',
+      el.val()).save();
   },
   '{todo} updated': function() {
-    // Remove the spinner when the todo is updated.
-    this.element.find('.spinner').addClass('hidden');
+    this.element.find('.spinner')
+      .addClass('hidden');
   },
-  // If the todo we're editing is removed...
   '{todo} destroyed': function() {
-    // ...change the page state (here, the route)
-    // to indicate that we are no longer editing.
     can.route.removeAttr('id');
   }
 });
 
-// Routing pulls the editor and the to-do board together
-// and takes care of routing as well.
-var Routing = can.Control({
+var Routing = can.Control.extend({
   init: function() {
-    // Declare what our routes will look like.
     can.route('todos/:id');
-    // Fire up the to-do board.
     new TodoBoard($('#board'));
-    // Also prepare our editor.
     this.editor = new TodoEditor($('#editor'));
     $('#editor').hide();
   },
-  // When the route changes...
   'todos/:id route': function(data) {
     if(data.id) {
-      // ...if we're editing, go find that to-do and
-      // load it into the editor.
       var editor = this.editor;
-      Todo.findOne({id: data.id}).done(function(todo) {
-        editor.loadTodo(todo);
+      Todo.findOne({id: data.id}, function(todo) {
+        editor.setTodo(todo);
         editor.element.show();
       });
     } else {
-      // ...if we're not editing,
-      // hide the editor.
       $('#editor').hide();
     }
   }
 });
-		</pre>
-		<pre class="template prettyprint lang-html">
+    </pre>
+    <pre class="template prettyprint lang-html" style="overflow: hidden;">
 &lt;script type="text/mustache" id="todoBoard"&gt;
 \{{#if length}}
 &lt;ul&gt;
 \{{#this}}
-    &lt;li \{{data 'todo'}}&gt;
-    	&lt;input type="checkbox" \{{#if done}}checked="checked"\{{/if}}/&gt;
-    	&lt;span class="description\{{#if done}} done\{{/if}}"&gt;\{{description}}&lt;/span&gt;
-    	&lt;span class="delete"&gt;&times;&lt;/span&gt;
-    &lt;/li&gt;
+  &lt;li \{{data 'todo'}}&gt;
+    &lt;input type="checkbox"
+      \{{#if done}}checked="checked"\{{/if}}/&gt;
+    &lt;span class="description
+        \{{#if done}}done\{{/if}}"&gt;
+      \{{description}}
+    &lt;/span&gt;
+    &lt;span class="delete"&gt;&times;&lt;/span&gt;
+  &lt;/li&gt;
 \{{/this}}
 &lt;/ul&gt;
 \{{else}}
-&lt;div class="no-todos"&gt;No to-dos today. You're free!&lt;/div&gt;
+&lt;div class="no-todos"&gt;No to-dos today.
+  You're free!&lt;/div&gt;
 \{{/if}}
 &lt;/script&gt;  
 &lt;script type="text/mustache" id="todoEditor"&gt;
-    &lt;input type="text" value="\{{description}}"/&gt;
-    &lt;img class="spinner hidden" src="spinny.gif"/&gt;
+  &lt;input type="text"
+    value="\{{description}}"/&gt;
+  &lt;img class="spinner hidden"
+    src="spinny.gif"/&gt;
 &lt;/script&gt;
-		</pre>
-		<iframe class="result" src="example/example.html"></iframe>
-		<br/>
-	</div>
+    </pre>
+    <iframe class="result" src="example/example.html"></iframe>
+    <br/>
+  </div>
 
-	<div class="container projects">
-		<h1>Used In These Projects</h1>
-	</div>
+  <div class="container projects">
+    <h1>Used In These Projects</h1>
+  </div>
 
-	<div class="light">
-		<div class="container projects">
-			<ul class="carousel">
-				<li><a href="http://www.mindjet.com/products/mindjet-for-web/?lang=en"><img src="{{root}}img/home-carousel/mindjet.jpg"/><div>Mindjet Web App</div></a></li>
-				<li><a href="http://snowhit.com/"><img src="{{root}}img/home-carousel/snowhit.jpg"/><div>Snowhit</div></a></li>
-				<li><a href="http://global.laureate.net/"><img src="{{root}}img/home-carousel/laureate.jpg"/><div>Laureate.net</div></a></li>
-				<li><a href="https://jumbo.iskon.hr"><img src="{{root}}img/home-carousel/iskonjumbo.jpg"/><div>Iskon Jumbo</div></a></li>
-				<li><a href="http://bootswatchr.com/"><img src="{{root}}img/home-carousel/bootswatchr.jpg"/><div>Bootswatchr</div></a></li>
-			</ul>
-		</div>
-	</div>
+  <div class="light">
+    <div class="container projects">
+      <ul class="carousel">
+        <li><a href="http://www.mindjet.com/products/mindjet-for-web/?lang=en"><img src="{{root}}img/home-carousel/mindjet.jpg"/><div>Mindjet Web App</div></a></li>
+        <li><a href="http://snowhit.com/"><img src="{{root}}img/home-carousel/snowhit.jpg"/><div>Snowhit</div></a></li>
+        <li><a href="http://global.laureate.net/"><img src="{{root}}img/home-carousel/laureate.jpg"/><div>Laureate.net</div></a></li>
+        <li><a href="https://jumbo.iskon.hr"><img src="{{root}}img/home-carousel/iskonjumbo.jpg"/><div>Iskon Jumbo</div></a></li>
+        <li><a href="http://bootswatchr.com/"><img src="{{root}}img/home-carousel/bootswatchr.jpg"/><div>Bootswatchr</div></a></li>
+      </ul>
+    </div>
+  </div>
 
-	<div class="color get-started">
-		<div class="container">
-			<h1>Get Started</h1>
+  <div class="color get-started">
+    <div class="container">
+      <h1>Get Started</h1>
 
-			<h2>You'll be up and running in no time</h2>
-			<ul class="wizard">
-				<li class="download"><a href="download.html">Download</a></li>
-				<li class="guide"><a href="guides/index.html">Read the Guide</a></li>
-				<li class="video"><a href="http://youtu.be/GdT4Oq6ZQ68">Watch this Video</a></li>
-			</ul>
-		</div>
-	</div>
+      <h2>You'll be up and running in no time</h2>
+      <ul class="wizard">
+        <li class="download"><a href="download.html">Download</a></li>
+        <li class="guide"><a href="guides/index.html">Read the Guide</a></li>
+        <li class="video"><a href="http://youtu.be/GdT4Oq6ZQ68">Watch this Video</a></li>
+      </ul>
+    </div>
+  </div>
 </div>

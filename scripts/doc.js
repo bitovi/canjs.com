@@ -36,7 +36,7 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 	var builder = JSON.parse(readFile('./can/builder.json'));
 
 	DocumentJS('_guides',{
-		"markdown": [ '_guides' ],
+		"markdown": [ '_guides', 'can/changelog.md', 'can/contributing.md', 'can/license.md' ],
 		"out": "guides",
 		"parent": "guides",
 		// "static": "documentjs/site/static",
