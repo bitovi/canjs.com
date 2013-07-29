@@ -1,6 +1,6 @@
 Bitovi.OSS.CommunityTab('Bitovi.OSS.ForumsTab', {
 	defaults: {
-		view: 'templates/forumsTab.mustache'
+		view: 'docs/static/templates/forumsTab.mustache'
 	}
 }, {
 	init: function() {

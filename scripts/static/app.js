@@ -42,8 +42,8 @@ steal("jquery","can","can/construct/super").then("./lib/lib.js","./models/models
 			'.benefits': 'Benefits',
 			'.social': 'SocialStats',
 			'.cdn': 'CDNChooser',
-			'.customize': 'DownloadCustomizer',
-			'.hero': 'CommunityTabs',
+			'.download .customize': 'DownloadCustomizer',
+			'.communityTabs': 'CommunityTabs',
 			'.sidebar': 'Menu'
 		});
 

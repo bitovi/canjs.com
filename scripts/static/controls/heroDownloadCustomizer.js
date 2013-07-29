@@ -1,6 +1,6 @@
 Bitovi.OSS.DownloadCustomizer('Bitovi.OSS.HeroDownloadCustomizer', {
 	defaults: {
-		view: 'templates/heroDownloadCustomizer.mustache'
+		view: 'docs/static/templates/heroDownloadCustomizer.mustache'
 	}
 }, {
 	init: function() {

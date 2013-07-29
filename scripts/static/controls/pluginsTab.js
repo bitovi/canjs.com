@@ -1,6 +1,6 @@
 Bitovi.OSS.CommunityTab('Bitovi.OSS.PluginsTab', {
 	defaults: {
-		view: 'templates/pluginsTab.mustache'
+		view: 'docs/static/templates/pluginsTab.mustache'
 	}
 }, {
 	init: function() {

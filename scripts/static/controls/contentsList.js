@@ -17,7 +17,7 @@ can.Control("Bitovi.OSS.ContentsList", {
 		});
 
 		this.element.html(can.view(
-			'templates/contentsList.mustache',
+			'docs/static/templates/contentsList.mustache',
 			{sections: sections},
 			{encode: function() { return encodeURIComponent(this); }}
 		));

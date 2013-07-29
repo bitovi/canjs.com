@@ -2,7 +2,7 @@ can.Control('Bitovi.OSS.DownloadCustomizer', {
 	defaults: {
 		minified: false,
 		configuration: null,
-		view: 'templates/downloadCustomizer.mustache'
+		view: 'docs/static/templates/downloadCustomizer.mustache'
 	}
 }, {
 	init: function() {

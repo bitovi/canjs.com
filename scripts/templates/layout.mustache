@@ -25,7 +25,7 @@
 		{{#staticLocation}}
 			href="{{.}}production.css"
 		{{else}}
-			href="{{url 'static/production.css'}}"
+			href='./static/production.css'
 		{{/staticLocation}} />
 	<!--[if lt IE 9]>
    <script type="text/javascript" src="{{url 'static/html5shiv.js'}}"></script>
@@ -92,7 +92,6 @@
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<p>{{staticLocation}}</p>
 	<script 
 	{{#staticLocation}}
 		src="{{.}}steal.production.js"

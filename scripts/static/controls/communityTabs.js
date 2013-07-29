@@ -38,7 +38,7 @@ can.Control('Bitovi.OSS.CommunityTabs', {
 		});
 		// Missing follower counts for github
 
-		this.element.html(can.view('templates/communityTabs.mustache', {}));
+		this.element.html(can.view('docs/static/templates/communityTabs.mustache', {}));
 	},
 	//'li mouseenter': '_switchTab',
 	'li click': function(el, ev) {

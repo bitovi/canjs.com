@@ -16,7 +16,7 @@ can.Control('Bitovi.OSS.CDNChooser', {
 			self.element.find('select').change();
 		});
 
-		this.element.html(can.view('templates/cdnChooser.mustache', this.options));
+		this.element.html(can.view('docs/static/templates/cdnChooser.mustache', this.options));
 	},
 	// function adapted from http://stackoverflow.com/questions/11128130/select-text-in-javascript
 	selectText: function(element) {

@@ -1,6 +1,6 @@
 Bitovi.OSS.CommunityTab('Bitovi.OSS.TwitterTab', {
 	defaults: {
-		view: 'templates/twitterTab.mustache'
+		view: 'docs/static/templates/twitterTab.mustache'
 	}
 }, {
 	init: function() {

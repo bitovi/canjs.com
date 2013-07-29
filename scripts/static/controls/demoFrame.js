@@ -1,7 +1,7 @@
 can.Control('Bitovi.OSS.DemoFrame', {
 	init: function() {
 		// Render out the demo container.
-		this.element.html(can.view('templates/demoFrame.mustache', {demoSrc: '../' + this.element.data('demoSrc')}));
+		this.element.html(can.view('docs/static/templates/demoFrame.mustache', {demoSrc: '../' + this.element.data('demoSrc')}));
 
 		// Start with the demo tab showing.
 		this.showTab('html');

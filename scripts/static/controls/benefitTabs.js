@@ -24,7 +24,7 @@ can.Control('Bitovi.OSS.Benefits', {
 }, {
 	init: function() {
 		this.state = new can.Observe({tabs: this.options.tabs, selectedTab: this.options.tabs.powerful});
-		this.element.html(can.view('templates/benefitTabs.mustache', this.state, {
+		this.element.html(can.view('docs/static/templates/benefitTabs.mustache', this.state, {
 			makeTabs: function(tabs, options) {
 				var out = '';
 				can.each(tabs().attr(), function(val, key) {

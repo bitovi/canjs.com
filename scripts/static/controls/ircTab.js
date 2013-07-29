@@ -1,6 +1,6 @@
 Bitovi.OSS.CommunityTab('Bitovi.OSS.IRCTab', {
 	defaults: {
-		view: 'templates/ircTab.mustache'
+		view: 'docs/static/templates/ircTab.mustache'
 	}
 }, {
 	init: function() {
