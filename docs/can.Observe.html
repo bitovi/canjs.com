@@ -123,13 +123,6 @@
 			
 	   </li>
 	
-	   <li class="search-container">
-	   		<a href="can.Object.html" data-search="can.Object">
-				can.Object
-			</a>
-			
-	   </li>
-	
 	   <li class="search-container active">
 	   		<a href="can.Observe.html" data-search="can.Observe">
 				can.Observe
@@ -503,15 +496,15 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/observe/observe.md">source</a></li>
 		
 		
 			
-			<li><a href="">download</a></li>
+			<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/observe">download</a></li>
 			
 		
 		
-			<li><a href="">tests</a></li>
+			<li><a href="../can/observe/test.html">tests</a></li>
 		
 	</ul>
 </div>
@@ -609,7 +602,7 @@ live-binding properties in an <a href="can.EJS.html">EJS</a> template. (If you a
 <a href="can.Mustache.html">Mustache</a>, you don't need to use <code>attr</code>.)</p>
 
 <pre><code class="lang-javascript">var aName = {a: 'Alexis'},
-    observe = can.Observe(aName);
+    observe = new can.Observe(aName);
 
 // Observes are copies of data:
 aName === observe; // false

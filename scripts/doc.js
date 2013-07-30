@@ -44,6 +44,7 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 		"package": pkg,
 		"self": self,
 		"builder": builder,
+		"page": "guides", 
 		// helpers: handlebarsHelpers,
 		"url": {
 			builderData: 'http://bitbuilder.herokuapp.com/canjs',

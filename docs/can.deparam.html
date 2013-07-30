@@ -124,13 +124,6 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.Object.html" data-search="can.Object">
-				can.Object
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.Observe.html" data-search="can.Observe">
 				can.Observe
 			</a>
@@ -189,7 +182,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L139">source</a></li>
 		
 		
 			
@@ -212,9 +205,52 @@ can.deparam
 		</section>
 
 		<section class="description">
-			
+			<p>Takes a string of name value pairs and returns a Object literal that represents those params. </p>
 		</section>
 
+		
+		<section class="signature">
+			<h2>can.param(params)</h2>
+<div class="signature-wrapper">
+
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>params
+				<code>{String}</code></h4>
+			<div class="description">
+				<p>a string like <code>"foo=bar&amp;person[age]=3"</code></p>
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{Object}</code></h4>
+		<div class="description">
+			<p>A JavaScript Object that represents the params:</p>
+
+<pre><code class="lang-javascript">{
+  foo: "bar",
+  person: {
+    age: "3"
+  }
+}</code></pre>
+		</div>
+	</div>
+
+
+</div>
+
+		</section>
 		
 
 		
