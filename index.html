@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC  </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="guides/static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="index">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand canjs" href="index.html">CanJS</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!FuncUnit">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
+				</ul>
+			</div>
+			<ul class="nav">
+				<li class="active"><a href="index.html">Home</a></li>
+				<li class=""><a href="guides/index.html">Guides</a></li>
+				<li class=""><a href="docs/index.html">Api</a></li>
+				<li class=""><a href="community.html#!forums">Community</a></li>
+				<li class=""><a href="download.html">Download</a></li>
+			</ul>
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="hero">
+  <div class="container">
+
+    <h1>We can<br/>do JavaScript better.</h1>
+
+    <div id="hero-download" class="pull-right">
+      <a href="https://github.com/bitovi/canjs.com/archive/v1.1.7.zip">
+        <button class="download">Download 1.1.7<span>(One file. Everything you need.)</span></button>
+      </a>
+      
+    </div>
+
+  </div>
+</div>
+
+<div class="content">
+
+  <div class="container benefits">
+  
+  </div>
+
+  <div class="container twitter">
+
+    <a href="https://twitter.com/canjs" class="twitter-follow-button" data-show-count="true" data-dnt="true">Follow @canjs</a>
+
+    <iframe src="http://ghbtns.com/github-btn.html?user=bitovi&repo=canjs&type=watch&count=true"
+            allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+
+    <iframe src="http://ghbtns.com/github-btn.html?user=bitovi&repo=canjs&type=fork&count=true"
+            allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20"></iframe>
+
+  </div>
+
+  <div class="dark social">
+    <div class="container">
+      <!--<ul class="social-stats">
+        <li class="apps"><a href="#community%2Fforums">0 apps submitted</a></li>
+        <li class="commits"><a href="#community%2Fgithub">0 recent commits</a></li>
+        <li class="forums"><a href="#community%2Fforums">0 new forum posts</a></li>
+        <li class="irc"><a href="#community%2Firc">0 people on IRC</a></li>
+        <li class="plugins"><a href="#community%2Fplugins">0 plugins submitted</a></li>
+      </ul>-->
+    </div>
+  </div>
+
+  <div class="container example">
+    <h1>Simple To Use</h1>
+    <h2>Observables and live binding do the work for you.</h2>
+
+    <a href="http://jsfiddle.net/xKc3H/13/" target="_blank"><button class="color">Edit</button></a>
+    <pre class="code prettyprint lang-js" style="overflow-x: hidden;">
+var Todo = can.Model.extend({
+  findAll: 'GET /todos',
+  findOne: 'GET /todos/{id}',
+  update: 'PUT /todos/{id}',
+  destroy: 'DELETE /todos/{id}'
+}, {});
+
+var TodoBoard = can.Control.extend({
+  init: function() {
+    this.element.html(can.view('todoBoard',
+      new Todo.List({})));
+  },
+  'input[type=checkbox] change': function(el, ev) {
+    el.parent().data('todo').attr('done',
+      el.prop('checked')).save();
+  },
+  '.delete click': function(el, ev) {
+    el.parent().data('todo').destroy();
+  },
+  '.description click': function(el, ev) {
+    can.route.attr('id',
+      el.parent().data('todo').id);
+  }
+});
+
+var TodoEditor = can.Control.extend({
+  setTodo: function(todo) {
+    this.options.todo = todo;
+    this.on();
+    this.element.html(can.view('todoEditor',
+      this.options.todo));
+   },
+  'input change': function(el, ev) {
+    this.element.find('.spinner')
+      .removeClass('hidden');
+    this.options.todo.attr('description',
+      el.val()).save();
+  },
+  '{todo} updated': function() {
+    this.element.find('.spinner')
+      .addClass('hidden');
+  },
+  '{todo} destroyed': function() {
+    can.route.removeAttr('id');
+  }
+});
+
+var Routing = can.Control.extend({
+  init: function() {
+    can.route('todos/:id');
+    new TodoBoard($('#board'));
+    this.editor = new TodoEditor($('#editor'));
+    $('#editor').hide();
+  },
+  'todos/:id route': function(data) {
+    if(data.id) {
+      var editor = this.editor;
+      Todo.findOne({id: data.id}, function(todo) {
+        editor.setTodo(todo);
+        editor.element.show();
+      });
+    } else {
+      $('#editor').hide();
+    }
+  }
+});
+    </pre>
+    <pre class="template prettyprint lang-html" style="overflow: hidden;">
+&lt;script type="text/mustache" id="todoBoard"&gt;
+{{#if length}}
+&lt;ul&gt;
+{{#this}}
+  &lt;li {{data 'todo'}}&gt;
+    &lt;input type="checkbox"
+      {{#if done}}checked="checked"{{/if}}/&gt;
+    &lt;span class="description
+        {{#if done}}done{{/if}}"&gt;
+      {{description}}
+    &lt;/span&gt;
+    &lt;span class="delete"&gt;&times;&lt;/span&gt;
+  &lt;/li&gt;
+{{/this}}
+&lt;/ul&gt;
+{{else}}
+&lt;div class="no-todos"&gt;No to-dos today.
+  You're free!&lt;/div&gt;
+{{/if}}
+&lt;/script&gt;  
+&lt;script type="text/mustache" id="todoEditor"&gt;
+  &lt;input type="text"
+    value="{{description}}"/&gt;
+  &lt;img class="spinner hidden"
+    src="spinny.gif"/&gt;
+&lt;/script&gt;
+    </pre>
+    <iframe class="result" src="example/example.html"></iframe>
+    <br/>
+  </div>
+
+  <div class="container projects">
+    <h1>Used In These Projects</h1>
+  </div>
+
+  <div class="light">
+    <div class="container projects">
+      <ul class="carousel">
+        <li><a href="http://www.mindjet.com/products/mindjet-for-web/?lang=en"><img src="img/home-carousel/mindjet.jpg"/><div>Mindjet Web App</div></a></li>
+        <li><a href="http://snowhit.com/"><img src="img/home-carousel/snowhit.jpg"/><div>Snowhit</div></a></li>
+        <li><a href="http://global.laureate.net/"><img src="img/home-carousel/laureate.jpg"/><div>Laureate.net</div></a></li>
+        <li><a href="https://jumbo.iskon.hr"><img src="img/home-carousel/iskonjumbo.jpg"/><div>Iskon Jumbo</div></a></li>
+        <li><a href="http://bootswatchr.com/"><img src="img/home-carousel/bootswatchr.jpg"/><div>Bootswatchr</div></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="color get-started">
+    <div class="container">
+      <h1>Get Started</h1>
+
+      <h2>You'll be up and running in no time</h2>
+      <ul class="wizard">
+        <li class="download"><a href="download.html">Download</a></li>
+        <li class="guide"><a href="guides/index.html">Read the Guide</a></li>
+        <li class="video"><a href="http://youtu.be/GdT4Oq6ZQ68">Watch this Video</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: 'http://bitbuilder.herokuapp.com/can.custom.js',
+				BUILDER_DATA: 'http://bitbuilder.herokuapp.com/canjs',
+				BITHUB: 'http://api.bithub.com/api/events/',
+				CDN: '//canjs.com/release/'
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script 
+	
+		src="guides/static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>
