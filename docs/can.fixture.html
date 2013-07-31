@@ -354,12 +354,12 @@ can.fixture
 		</section>
 
 		<section class="description">
-			
+			<p>Simulate AJAX requests. </p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>can.fixture(fromUrl, toUrl)</h2>
+			<h2>can.fixture( url, toUrl )</h2>
 <div class="signature-wrapper">
 <p>Trap requests from one url and redirect them from another.</p>
 
@@ -368,7 +368,7 @@ can.fixture
 	<ol class="parameters">
 		
 		<li class="parameter">
-			<h4>fromUrl
+			<h4>url
 				<code>{String}</code></h4>
 			<div class="description">
 				<p>Trap requests made by <a href="can.ajax.html">can.ajax</a> to this url.</p>
@@ -380,10 +380,13 @@ can.fixture
 		
 		<li class="parameter">
 			<h4>toUrl
-				<code>{String}</code></h4>
+				<code>{String | null}</code></h4>
 			<div class="description">
-				<p>Redirect requests to this url.</p>
+				<p>Redirect requests to this url. If <code>null</code> is provided,
+this removes a the fixture at <code>url</code>.</p>
 			</div>
+			
+			
 			
 			
 			
@@ -398,7 +401,7 @@ can.fixture
 		</section>
 		
 		<section class="signature">
-			<h2>can.fixture(url, handler(request, response))</h2>
+			<h2>can.fixture( url, handler(request, response, requestHeaders) )</h2>
 <div class="signature-wrapper">
 <p>Trap requests to a url and provide the response with a
 callback function.</p>
@@ -425,7 +428,7 @@ values get added to the <code>handler</code>'s request object's data.</p>
 		
 		<li class="parameter">
 			<h4>handler
-				<code>{<a href="can.fixture.types.requestHandler.html" >requestHandler</a>(<a href="can.AjaxSettings.html" >request</a>, <a href="can.fixture.types.responseHandler.html" >response</a>)}</code></h4>
+				<code>{<a href="can.fixture.types.requestHandler.html" >requestHandler</a>(<a href="can.AjaxSettings.html" >request</a>, <a href="can.fixture.types.responseHandler.html" >response</a>, requestHeaders)}</code></h4>
 			<div class="description">
 				<p>Specifies the response of the fixture. <code>handler</code> gets called with
 the <a href="can.ajax.html">can.ajax</a> <a href="can.AjaxSettings.html">settings object</a> and a <a href="can.fixture.types.responseHandler.html">response handler</a>
@@ -455,7 +458,7 @@ that is used to specify the response.</p>
 		
 		<li class="parameter">
 			<h4>fixtures
-				<code>{Object&lt;url,<a href="can.fixture.types.requestHandler.html" >requestHandler</a>(<a href="can.AjaxSettings.html" >request</a>, <a href="can.fixture.types.responseHandler.html" >response</a>) | String&gt;}</code></h4>
+				<code>{Object&lt;url,<a href="can.fixture.types.requestHandler.html" >requestHandler</a>(<a href="can.AjaxSettings.html" >request</a>, <a href="can.fixture.types.responseHandler.html" >response</a>, requestHeaders) | String&gt;}</code></h4>
 			<div class="description">
 				<p>An mapping of templated urls to redirect urls 
 or <a href="can.fixture.types.requestHandler.html">request handler functions</a>.</p>
@@ -486,14 +489,30 @@ or <a href="can.fixture.types.requestHandler.html">request handler functions</a>
 
 		
 		<section class="comment">
-			<p>Simulate AJAX requests.</p>
+			<h2>Use</h2>
 
 <p><code>can.fixture</code> intercepts an AJAX request and simulates
-the response with a file or function. They are a great technique
-when you want to develop JavaScript
-independently of the backend.</p>
+the response with a file or function. Use them to develop 
+JavaScript independently of the backend services.</p>
 
-<h2>Types of Fixtures</h2>
+<p>The following simulates a <code>GET</code> request to <code>/recipes</code>:</p>
+
+<pre><code>can.fixture("GET /recipes",function(){
+  return [
+    {id: 1, name: "omelette"},
+    {id: 2, name: "hot dog"}
+  ];
+});
+</code></pre>
+
+<p>Requests made to <code>GET /recipes</code> with <a href="can.ajax.html">can.ajax</a>, <a href="http://api.jquery.com/jQuery.ajax/">jQuery.ajax</a>,or
+<a href="http://api.jquery.com/jQuery.get/">jQuery.get</a> will receive the data
+returned by the fixture function above:</p>
+
+<pre><code>$.get("/recipes",function(data){
+  assertEqual( data.length, 2 )
+})
+</code></pre>
 
 <p>There are two common ways of using fixtures.  The first is to
 map Ajax requests to another file.  The following
@@ -504,116 +523,30 @@ to <code>fixtures/tasks.json</code>:</p>
 </code></pre>
 
 <p>The other common option is to generate the Ajax response with
-a function.  The following intercepts updating tasks at
+a <a href="can.fixture.types.requestHandler.html">can.fixture.types.requestHandler</a> function.  The following intercepts updating tasks at
 <code>/tasks/ID.json</code> and responds with updated data:</p>
 
 <pre><code>can.fixture("GET /tasks/{id}",function(request,response){
-  response(200,"success",{id: request.data.id, name: "fix tires."})
+  return {id: request.data.id, name: "fix tires."}
 })
 </code></pre>
 
-<p>We categorize fixtures into the following types:</p>
+<p>A <a href="can.fixture.types.requestHandler.html">requestHandler</a> function's <a href="can.fixture.types.responseHandler.html">response</a>
+argument can be used to specify even more details of the Ajax response:</p>
 
-<ul>
-<li><strong>Static</strong> - the response is in a file.</li>
-<li><strong>Dynamic</strong> - the response is generated by a function.</li>
-</ul>
-
-<p>There are different ways to lookup static and dynamic fixtures.</p>
-
-<h2>Static Fixtures</h2>
-
-<p>Static fixtures use an alternate url as the response of the Ajax request.</p>
-
-<pre><code>// looks in fixtures/tasks1.json relative to page
-can.fixture("tasks", "fixtures/tasks.json");
-
-// looks absolute to the page
-can.fixture("tasks", "//fixtures/tasks.json");
-</code></pre>
-
-<p>Static fixtures can also be templated, which means that parameters will be
-used in the fixture filename:</p>
-
-<pre><code>// looks in fixtures/tasks1.json relative to page
-can.fixture("tasks/{id}", "fixtures/tasks.{id}.json");
-</code></pre>
-
-<p>A request to <code>tasks/42</code> will look for a <code>fixtures/tasks.42.json</code> file.</p>
-
-<h2>Dynamic Fixtures</h2>
-
-<p>Dynamic Fixtures are functions that get the details of the Ajax request and return the result of the mocked service
-request from your server.</p>
-
-<p>For example, the following returns a successful response with JSON data from the server:</p>
-
-<pre><code>can.fixture("/foobar.json",
-  function(original, response){
-    response(200, "success", { json: {foo: "bar" } }, {})
-  })
-</code></pre>
-
-<p>The fixture function has the following signature:</p>
-
-<pre><code>function( originalOptions, response) {
-  response(status, statusText, responses, responseHeaders);
-}
-</code></pre>
-
-<p>where the fixture function is called with:</p>
-
-<ul>
-<li><code>originalOptions</code> - are the options provided to the ajax method, unmodified,
-and thus, without defaults from ajaxSettings</li>
-<li><code>response</code> - the response callback. It can be called with:
-<ul><li><code>status</code> - the HTTP status code of the response.</li>
-<li><code>statusText</code> - the status text of the response</li>
-<li><code>responses</code> - a map of dataType/value that contains the responses for each data format supported</li>
-<li><code>responseHeaders</code> - response headers</li></ul></li>
-<li><code>options</code> - are the request options</li>
-<li><code>headers</code> - a map of key/value request headers</li>
-</ul>
-
-<p>However, can.fixture handles the common case where you want a successful response with JSON data.
-The previous can be written like:</p>
-
-<pre><code>can.fixture("/foobar.json",
-  function(original, response){
-    response({ foo: "bar" });
-  })
-</code></pre>
-
-<p>Since <code>response</code> is called asynchronously you can also set a custom fixture timeout like this:</p>
-
-<pre><code>can.fixture("/foobar.json",
-function(original, response){
-    setTimeout(function() {
-      response({ foo: "bar" });
-    }, 1000);
-  })
-</code></pre>
-
-<p>If you want to return an array of data respond like this:</p>
-
-<pre><code>can.fixture("/tasks.json",
-  function(original, response){
-    response([ "first", "second", "third"]);
-  })
-</code></pre>
-
-<p><strong>Note:</strong> A fixture function can also return its response directly like this:</p>
-
-<pre><code>can.fixture("/foobar.json", function() {
-  return { foo: "bar" };
+<pre><code>can.fixture("GET /tasks/{id}",function(request,response){
+  response(
+    200,
+    "success",
+    {id: request.data.id, name: "fix tires."},
+    {location: "/tasks/"+request.data.id})
 })
 </code></pre>
 
-<p>This is kept for backwards compatibility and should not be used.</p>
+<p>Read more about <a href="can.fixture.types.requestHandler.html">requestHandler</a> and its
+<a href="can.fixture.types.responseHandler.html">response</a> argument on their own documentation pages.</p>
 
-<p>can.fixture works closesly with <a href="http://api.jquery.com/extending-ajax/">jQuery's ajaxTransport</a> system.</p>
-
-<h3>Templated Urls</h3>
+<h2>Templated Urls</h2>
 
 <p>Often, you want a dynamic fixture to handle urls for multiple resources (for example a REST url scheme).
 can.fixture's templated urls allow you to match urls with a wildcard.</p>
@@ -629,21 +562,21 @@ for(var i = 0; i &lt; 100; i++) {
   }
 }
 can.fixture("GET /todos/{id}",
-  function(original, response, settings){
+  function(request, response, headers){
     // return the JSON data
     // notice that id is pulled from the url and added to data
     response(todos[orig.data.id]);
   })
 
 can.fixture("PUT /todos/{id}",
-  function(original, response, settings){
+  function(request, response, headers){
     // update the todo's data
     can.extend(todos[orig.data.id], orig.data );
     response({});
   })
 </code></pre>
 
-<p>Notice that data found in templated urls (ex: <code>{id}</code>) is added to the original data object.</p>
+<p>Notice that data found in templated urls (ex: <code>{id}</code>) is added to the request's data object.</p>
 
 <h2>Simulating Errors</h2>
 
@@ -651,7 +584,7 @@ can.fixture("PUT /todos/{id}",
 to <code>/foo</code>.</p>
 
 <pre><code>can.fixture("/foo",
-  function(original, response) {
+  function(request, response) {
     response(401,"{type: 'unauthorized'}");
   });
 </code></pre>
@@ -718,6 +651,15 @@ can.fixture('DELETE /todos/{id}', store.destroy);
 <p>What to see what the app feels like when a request takes 5 seconds to return?  Set
 <a href="can.fixture.delay.html">can.fixture.delay</a> to 5000.</p>
 
+<p>Since <code>response</code> is called asynchronously you can also set a custom fixture timeout like this:</p>
+
+<pre><code>can.fixture( "/foobar.json", function(request, response){
+  setTimeout(function() {
+    response({ foo: "bar" });
+  }, 1000);
+})
+</code></pre>
+
 <h2>Organizing fixtures</h2>
 
 <p>The <strong>best</strong> way of organizing fixtures is to have a 'fixtures.js' file that steals
@@ -741,7 +683,7 @@ have <code>todo/fixtures/fixtures.js</code> look like:</p>
       type: 'post',
       url: '/services/todos.json'
     },
-    function(original, response, settings){
+    function(request, response, settings){
         response({
             id: Math.random(),
             name: settings.data.name

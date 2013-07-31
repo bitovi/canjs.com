@@ -360,13 +360,13 @@ requestHandler
 		
 
 		
-		<div class='primary-options'>
+		<section class='primary-options'>
 			<h2>
 	
 	
 	   Type Definition:
 	
-	<code>{function(<a href="can.AjaxSettings.html" >request</a>, <a href="can.fixture.types.responseHandler.html" >response</a>)}</code>
+	<code>{function(<a href="can.AjaxSettings.html" >request</a>, <a href="can.fixture.types.responseHandler.html" >response</a>, requestHeaders)}</code>
 </h2>
 
 
@@ -388,17 +388,15 @@ was passed to <a href="can.ajax.html">can.ajax</a> or a jQuery ajax method.  Any
 portions of the url passed to <a href="can.fixture.html">can.fixture</a> are added as
 data to <code>request.data</code>.  For example, calling:</p>
 
-<pre><code>GET /todos/5
+<pre><code>$.get("/todos/5");
 </code></pre>
 
 <p>With the following fixture:</p>
 
-<pre><code>can.fixture("/todos/:id",function(request, response){
-
-})
+<pre><code>can.fixture("/todos/:id", function(request, response){ })
 </code></pre>
 
-<p><code>request.data.id</code> will be `5.</p>
+<p><code>request.data.id</code> will be <code>5</code>.</p>
 			</div>
 			
 			
@@ -407,9 +405,20 @@ data to <code>request.data</code>.  For example, calling:</p>
 		
 		<li class="parameter">
 			<h4>response
-				<code>{<a href="can.fixture.types.responseHandler.html" >responseHandler</a>()}</code><span class="pull-right optional">Optional</span></h4>
+				<code>{<a href="can.fixture.types.responseHandler.html" >responseHandler</a>(status, statusText, responses, headers)}</code><span class="pull-right optional">Optional</span></h4>
 			<div class="description">
 				<p>Optionally called to specify the response of the fixture.</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>requestHeaders
+				<code>{Object&lt;String,String&gt;}</code></h4>
+			<div class="description">
+				<p>A map of request headers specified by <a href="can.ajax.html">can.ajax</a>'s headers property.</p>
 			</div>
 			
 			
@@ -436,9 +445,84 @@ was used.</p>
 
 
 
-		</div>
+		</section>
 		
 
+		
+		<section class="comment">
+			<h2>Use</h2>
+
+<p><code>requestHandler</code> functions are passed to <a href="can.fixture.html">can.fixture</a> like:</p>
+
+<pre><code>can.fixture("GET /something", function(request, response, headers){ })
+</code></pre>
+
+<p>These functions are called with:</p>
+
+<ul>
+<li><code>request</code> - The options provided to the ajax method, unmodified,
+and thus, without defaults from ajaxSettings.</li>
+<li><code>response</code> - The response callback.</li>
+<li><code>headers</code> - A map of key/value request headers.</li>
+</ul>
+
+<p>Specify the result of the Ajax request by either returning the result 
+within the <code>requestHandler</code> or calling <a href="can.fixture.types.responseHandler.html">response</a>.</p>
+
+<h3>Returning the result directly</h3>
+
+<p>Return the data result of an Ajax request directly within
+a <code>requestHandler</code>.  For example:</p>
+
+<pre><code>can.fixture("GET /something", function() {
+  return { foo: "bar" };
+})
+
+// example code that uses the previous fixture
+$.get("GET /something",function(data){
+  data.foo //-&gt; "bar"
+})
+</code></pre>
+
+<h3>Calling response to specify the result</h3>
+
+<p>The <a href="can.fixture.types.responseHandler.html">response</a> callback passed to a <code>requestHandler</code>
+can be used to specify all values in a response. For example:</p>
+
+<pre><code>can.fixture("GET /something", function( request, response ) {
+  response(
+    200,
+    "success",
+    { json: {foo: "bar"} },
+    {
+      location: "foo/bar"
+    })
+})
+
+// example code that uses the previous fixture
+$.get("GET /something",function(data, textStatus, jqXHR){
+  data.foo   //-&gt; "bar"
+  textStatus //-&gt; "success"
+  jqXHR.getResponseHeader("location") //-&gt; "foo/bar"
+})
+</code></pre>
+
+<p>The <a href="can.fixture.types.responseHandler.html">response</a> callback can also be called with just 
+a single JSON object for the common case where you want a successful response with JSON data:</p>
+
+<pre><code>can.fixture("/foobar.json", function(request, response){
+  response({ foo: "bar" });
+})
+</code></pre>
+
+<p>If you want to return an array of data respond like this:</p>
+
+<pre><code>can.fixture("/tasks.json",
+  function(request, response){
+    response([ "first", "second", "third"]);
+  })
+</code></pre>
+		</section>
 		
 
 		
