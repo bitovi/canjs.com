@@ -3,18 +3,6 @@
 		float: left;
 		width: 640px;
 	}
-	[class^="icon-"],
-	[class*=" icon-"] {
-		font-size: 25px;
-		.font-smoothing;
-		line-height: 10px;
-		margin-right: 5px;
-		
-		&:before {
-			position: relative;
-			top: -4px;
-		}
-	}
 	.irc {
 		.irc-chat-container {
 			margin-top: 20px;
@@ -37,6 +25,18 @@
 		text-align: left;
 		&:before {  
 			left: 74px;
+		}
+		[class^="icon-"],
+		[class*=" icon-"] {
+			font-size: 25px;
+			.font-smoothing;
+			line-height: 10px;
+			margin-right: 5px;
+			
+			&:before {
+				position: relative;
+				top: -4px;
+			}
 		}
 		h1 {
 			padding: 0;
