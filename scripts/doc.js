@@ -11,7 +11,7 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 		}
 		
 		if(this.page !== "guides" && this.page !== "docs"){
-			return cap(this.page)+" - CanJS"
+			return cap(this.page)+" - CanJS1"
 		}
 		
 		var title = this.title || this.name;
@@ -21,7 +21,11 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 			} else if(title === "CanJS"){
 				return "API - CanJS"
 			}
-			return this.title+" - CanJS "+cap(this.page)	
+			if(this.page === "docs"){
+				return (this.name || this.title) + " - CanJS API"
+			} else {
+				return title+" - CanJS "+cap(this.page)
+			}
 		}
 		return "CanJS"
 	}
