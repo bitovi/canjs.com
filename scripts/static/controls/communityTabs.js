@@ -16,14 +16,14 @@ can.Control('Bitovi.OSS.CommunityTabs', {
 		this.state = new can.Observe({});
 		var self = this;
 
-		Bitovi.OSS.ForumPost.findAll({limit: 3}).done(function(posts) {
+		Bitovi.OSS.ForumPost.findAll({limit: 6}).done(function(posts) {
 			self.state.attr('forumPosts', posts);
 		});
 		// Missing counts for forum categories
 		Bitovi.OSS.ChatLine.findAll({limit: 30}).done(function(lines) {
 			self.state.attr('lines', lines);
 		});
-		Bitovi.OSS.Plugin.findAll({limit: 3}).done(function(plugins) {
+		Bitovi.OSS.Plugin.findAll({limit: 6}).done(function(plugins) {
 			self.state.attr('plugins', plugins);
 		});
 		// Missing counts for plugins/apps/articles
