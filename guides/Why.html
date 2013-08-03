@@ -235,7 +235,7 @@ person.attr( 'name.last', 'Meyer' );</code></pre>
 
 <p>Using templated event binding, Controls can listen to events on objects other than their element. For example, a tooltip listening to the window looks like:</p>
 
-<pre><code class="lang-javascript">var Tooltip = can.Control({
+<pre><code class="lang-javascript">var Tooltip = can.Control.extend({
   '{window} click': function( el, ev ) {
     // hide only if we clicked outside the tooltip
     if (!this.element.has( ev.target ) {

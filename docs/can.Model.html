@@ -624,7 +624,7 @@ really easy.  The following models <code>todos</code> by
 describing the services that can create, retrieve,
 update, and delete todos. </p>
 
-<pre><code>Todo = can.Model({
+<pre><code>Todo = can.Model.extend({
   findAll: 'GET /todos.json',
   findOne: 'GET /todos/{id}.json',
   create:  'POST /todos.json',
