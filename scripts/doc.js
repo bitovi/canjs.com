@@ -53,7 +53,14 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 			cdn: '//canjs.com/release/'
 		},
 		"static" : "scripts/static",
-		"templates": "scripts/templates"
+		"templates": "scripts/templates",
+		helpers: function(data, config, getCurrent, oldHelpers){
+			return {
+				sourceUrl: function(src){
+					return "https://github.com/bitovi/canjs/wiki/"+src.replace(".md","").replace("_guides/","")
+				}
+			}
+		}
 	});
 	
 });
