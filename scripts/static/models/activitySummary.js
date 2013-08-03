@@ -18,12 +18,14 @@ can.Model('Bitovi.OSS.ActivitySummary', {
 	model: function(data) {
 		//{"data":{"app":23,"article":30,"plugin":7,"code":1041,"chat":5578,"twitter":1510,"issues_event":247,"github":2547}}
 		data = data.data;
+		// it's very strange that it's doing this.  Why not forward the data directly and change the template
 		return {
 			apps: data.app,
 			commits: data.code,
 			posts: data.posts,
 			articles: data.article,
-			plugins: data.plugin
+			plugins: data.plugin,
+			question: data.question
 		};
 	}
 }, { });
