@@ -1,6 +1,31 @@
 load('steal/rhino/rhino.js');
 
 steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
+
+	var cap = function(str){
+		return str.substr(0,1).toUpperCase()+str.substr(1)
+	}
+	var documentTitle = function(){
+		if(this.page.toLowerCase() == "index"){
+			return "CanJS"
+		}
+		
+		if(this.page !== "guides" && this.page !== "docs"){
+			return cap(this.page)+" - CanJS"
+		}
+		
+		var title = this.title || this.name;
+		if(title){
+			if(title === "Guides"){
+				return cap(this.page)+ " - CanJS"
+			} else if(title === "CanJS"){
+				return "API - CanJS"
+			}
+			return this.title+" - CanJS "+cap(this.page)	
+		}
+		return "CanJS"
+	}
+
 	var pkg = JSON.parse(readFile('./can/package.json'));
 	var self = JSON.parse(readFile('./package.json'));
 	var builder = JSON.parse(readFile('./can/builder.json'));
@@ -28,7 +53,13 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 		"templates": "scripts/templates",
 		statics: {
 			src: "_pages"
+		},
+		helpers: function(data, config, getCurrent, oldHelpers){
+			return {
+				documentTitle: documentTitle
+			}
 		}
+		
 	});
 	
 	var pkg = JSON.parse(readFile('./can/package.json'));
@@ -58,7 +89,8 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 			return {
 				sourceUrl: function(src){
 					return "https://github.com/bitovi/canjs/wiki/"+src.replace(".md","").replace("_guides/","")
-				}
+				},
+				documentTitle: documentTitle
 			}
 		}
 	});
