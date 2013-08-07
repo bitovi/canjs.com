@@ -1,6 +1,7 @@
 .hero {
 	background: url(../img/hero-ribbons.png) no-repeat center center, url(../img/bkg-dots-dark.png) #797977;
 	border-bottom: 20px solid @color;
+	height: 242px;
 	height: 300px;
 	overflow: visible;
 	
@@ -16,13 +17,14 @@
 		display: block;
 		width: 500px;
 		float: left;
-		margin-top: 70px;
+		margin-top: 65px;
 		letter-spacing: -1px;
+		font-weight: normal;
+		font-style: normal;
 	}
 	
 	.pull-right {
-		margin-top: 90px;
-		
+		margin-top: 65px;
 		text-align: center;
 	}
 	
@@ -326,6 +328,73 @@
 		text-transform: uppercase;
 	}
 }
+.benefit-tabs {
+	list-style: none;
+	list-style-type: none;
+	margin: 0 0 30px;
+	padding: 0;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	margin-top: -83px;
+	
+	> p {
+		font-size: 17px;
+		line-height: 30px;
+		margin-bottom: 15px;
+	}
+	li {
+		width: 33.3333333333%;
+		box-sizing: border-box;
+		display: inline-block;
+		vertical-align: top;
+		margin: 0;
+		margin-right: 0;
+		a {
+			text-decoration: none;
+			position: relative;
+			padding-top: 20px;
+			padding-bottom: 20px;
+			padding-left: 120px;
+			padding-right: 10px;
+			display: block;
+			border-left: 1px solid #eee;
+			&:hover {
+				background: #eee;
+			}
+			h3 {
+				text-transform: uppercase;
+				font-size: 18px;
+			}
+			p {
+				color: #8d8a8a;
+				font-size: 14px;
+				line-height: 16px;
+			}
+			&:before {
+				font-family: Bitstrap;
+				font-size: 94px;
+				color: @color;
+				text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+				position: absolute;
+				left: 35px;
+				top: 0;
+			}
+			
+		}
+		&:first-child a {
+			border-left: none;
+		}
+	}
+	.powerful a:before {
+		content: "\e011";
+	}
+	.fast a:before {
+		content: "\e013";
+	}
+	.flexible a:before {
+		content: "\e042";
+	}
+}
 .index {
 	.tab-description {
 		&.flexible:before {
@@ -371,4 +440,7 @@
 #hero-download .customize-box label {
 	line-height: 11px;
 	vertical-align: middle;
+}
+.index2 .hero {
+	height: 242px;
 }
