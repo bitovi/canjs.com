@@ -11,7 +11,7 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 		}
 		
 		if(this.page !== "guides" && this.page !== "docs"){
-			return cap(this.page)+" - CanJS1"
+			return cap(this.page)+" - CanJS"
 		}
 		
 		var title = this.title || this.name;
