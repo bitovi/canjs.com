@@ -17,7 +17,7 @@ Add other scripts to `scripts/static/`. Steal those scripts within `static.js`. 
 
 To adjust __HTML__, change scripts/templates/ or _pages.
 
-After updating static content or templates, delete `scripts/static/dist/production.css` and run:
+After updating static content or templates, delete `documentjs/site/static/dist/production.css` and `docs/static/production.css` and run:
 
     ./js scripts/doc.js
 
