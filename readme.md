@@ -10,9 +10,9 @@ To generate the site, run:
 
 To adjust __styles__, change what you 
 find in `scripts/static/styles`. Don't change documentjs unless you want those changes to be 
-applied to everything.  What you find in `scripts/static` overwrites what's in `documentjs/site/defaults/static`.
+applied to everything.  What you find in `scripts/static` overwrites what's in `documentjs/site/default/static`.
 
-To adjust __JS__, copy  `documentjs/site/defaults/static/static.js` to `scripts/static/static.js`. 
+To adjust __JS__, copy  `documentjs/site/default/static/static.js` to `scripts/static/static.js`. 
 Add other scripts to `scripts/static/`. Steal those scripts within `static.js`.  Make sure you use relative paths (`"./path/to.js"`).
 
 To adjust __HTML__, change scripts/templates/ or _pages.
