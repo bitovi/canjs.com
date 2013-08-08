@@ -2,7 +2,6 @@
 	background: url(../img/hero-ribbons.png) no-repeat center center, url(../img/bkg-dots-dark.png) #797977;
 	border-bottom: 20px solid @color;
 	height: 242px;
-	height: 300px;
 	overflow: visible;
 	
 	.button-desc {
@@ -335,7 +334,6 @@
 	padding: 0;
 	background-color: #fff;
 	border: 1px solid #ccc;
-	margin-top: -83px;
 	
 	> p {
 		font-size: 17px;
@@ -349,6 +347,7 @@
 		vertical-align: top;
 		margin: 0;
 		margin-right: 0;
+		
 		a {
 			text-decoration: none;
 			position: relative;
@@ -361,6 +360,7 @@
 			&:hover {
 				background: #eee;
 			}
+			
 			h3 {
 				text-transform: uppercase;
 				font-size: 18px;
@@ -381,6 +381,19 @@
 			}
 			
 		}
+		/*
+		&.active a {
+			background: @color;
+			
+			p, h3 {
+				color: #000;
+			}
+			&:before {
+				color: @light;
+				text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+			}
+		}
+		*/
 		&:first-child a {
 			border-left: none;
 		}
@@ -394,6 +407,9 @@
 	.flexible a:before {
 		content: "\e042";
 	}
+}
+.container.benefits .benefit-tabs {
+	margin-top: -83px;
 }
 .index {
 	.tab-description {
@@ -440,7 +456,4 @@
 #hero-download .customize-box label {
 	line-height: 11px;
 	vertical-align: middle;
-}
-.index2 .hero {
-	height: 242px;
 }
