@@ -405,7 +405,7 @@
 			
 				
 				
-					<li class="search-container  ">
+					<li class="search-container parent ">
 						<a 	class="page" 
 							href="can.Observe.setter.html" 
 							data-search="setter">
@@ -525,21 +525,22 @@ Batch Events
 		</section>
 
 		<section class="description">
-			
+			<p><a href="can.Observe.startBatch.html"><code>can.Observe.startBatch( batchStopHandler )</code></a> and
+<a href="can.Observe.stopBatch.html"><code>can.Observe.stopBatch( force, callStart )</code></a>
+are used to specify atomic operations. <code>startBatch</code>
+prevents change events from being fired until <code>stopBatch</code> is called.</p>
 		</section>
 
 		
 
 		
+		
+		
+		
 
 		
 		<section class="comment">
-			<p><code>can.Observe.startBatch( batchStopHandler )</code> and
-<code>can.Observe.stopBatch( force, callStart )</code>
-are used to specify atomic operations. <code>startBatch</code>
-prevents change events from being fired until <code>stopBatch</code> is called.</p>
-
-<p>The following listens to changes on a <code>player</code>:</p>
+			<p>The following listens to changes on a <code>player</code>:</p>
 
 <pre><code>var player = new can.Observe({
   tvshow: "The Simpsons"
@@ -572,7 +573,7 @@ state. For example, the previous <code>player</code> should have
 a <code>tvshow</code> or <code>song</code> property, but not both. Event listeners should 
 never be called in an intermediate state.  We can make this happen 
 with <code>startBatch</code>, <code>stopBatch</code> and
-the <code>can/observe/setter</code> plugin as follows:</p>
+the <a href="can.Observe.setter.html"><code>can/observe/setter</code></a> plugin as follows:</p>
 
 <pre><code>// Selection constructor function inherits from Observe
 Player = can.Observe({
@@ -597,15 +598,15 @@ Player = can.Observe({
 var player =   new Player({song: "Amish Paradise"});
 
 player.bind("change", function( ev, attr, how, newVal, oldVal ){
-  console.log("changed", attr, how, s.attr() );
+  console.log("changed", attr, how, player.attr() );
 });
 
 console.log("start")
-s.attr("tvshow","Breaking Bad");
+player.attr("tvshow","Breaking Bad");
 console.log("end")
 </code></pre>
 
-<p>Use <code>statBatch</code> and <code>stopBatch</code> to make sure events 
+<p>Use <code>startBatch</code> and <code>stopBatch</code> to make sure events 
 are triggered when an observe is in a valid state. </p>
 
 <h2>Performance</h2>
@@ -681,7 +682,7 @@ setTimeout(function(){
 </code></pre>
 
 <p>This batches everything that happens within the same thread of execution
-and/or within 10 ms of ech other. </p>
+and/or within 10 ms of each other. </p>
 		</section>
 		
 

@@ -456,7 +456,7 @@
 			
 				
 				
-					<li class="search-container  ">
+					<li class="search-container parent ">
 						<a 	class="page" 
 							href="can.Observe.setter.html" 
 							data-search="setter">
@@ -549,7 +549,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/observe/backup/backup.js#L128">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/observe/backup/backup.js#L129">source</a></li>
 		
 		
 			
@@ -583,7 +583,12 @@ restore
 		<section class="signature">
 			<h2>observe.restore( [deep] )</h2>
 <div class="signature-wrapper">
+<p><code>restore</code> sets the properties of an Observe back to what they were the last time 
+<a href="can.Observe.backup.prototype.backup.html">backup</a> was called. If <em>deep</em> is <code>true</code>,
+<code>restore</code> will also restore the properties of nested Observes.</p>
 
+<p><code>restore</code> will not remove properties that were added since the last backup, but it
+will re-add properties that have been removed.</p>
 
 	<h3>Parameters</h3>
 
@@ -608,13 +613,6 @@ restore
 		<h4><code>{<a href="can.Observe.html" >can.Observe</a>}</code></h4>
 		<div class="description">
 			<p>The Observe, for chaining.</p>
-
-<p><code>restore</code> sets the properties of an Observe back to what they were the last time 
-[can.Observe.prototype.backup backup] was called. If <em>deep</em> is <code>true</code>,
-<code>restore</code> will also restore the properties of nested Observes.</p>
-
-<p><code>restore</code> will not remove properties that were added since the last backup, but it
-will re-add properties that have been removed.</p>
 
 <pre><code class="lang-javascript">var recipe = new can.Observe({
   title: 'Pancake Mix',
@@ -652,7 +650,7 @@ recipe.attr('ingredients.0.quantity'); // '6 cups'</code></pre>
 <h2>Events</h2>
 
 <p>When <code>restore</code> sets values or re-adds properties, the same events will be fired (including
-<em>change</em>, <em>add</em>, and <em>set</em>) as if the values of the properties had been set using <code>[can.Observe.attr attr]</code>.</p>
+<em>change</em>, <em>add</em>, and <em>set</em>) as if the values of the properties had been set using <code><a href="can.Observe.prototype.attr.html">attr</a></code>.</p>
 		</div>
 	</div>
 
@@ -662,6 +660,9 @@ recipe.attr('ingredients.0.quantity'); // '6 cups'</code></pre>
 		</section>
 		
 
+		
+		
+		
 		
 
 		

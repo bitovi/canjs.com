@@ -95,8 +95,8 @@
 					<li class="search-container  ">
 						<a 	class="page" 
 							href="Constructs.html" 
-							data-search="Constructor Functions">
-							Constructor Functions
+							data-search="Constructor Classes">
+							Constructor Classes
 						</a>
 						
 					</li>
@@ -331,14 +331,18 @@ Models &amp; Retrieving Data
 		
 
 		
+		
+		
+		
 
 		
 		<section class="comment">
-			<p>Models are Observes that connect to a RESTful interface. They come with a set of
-methods designed to make it easy to manage changes remotely. To create a Model
-class, call <code>can.Model</code> and supply it with specific static properties that tell
-it how to interact with the server, along with any instance properties or helper
-methods the Model may need. The important static properties are:</p>
+			<p>Models are special Observes that connect to RESTful services. They come with a
+set of methods designed to make it easy to manage changes remotely. To create
+a Model class, call <code>can.Model</code> and supply it with specific static properties
+that tell it how to interact with the server, along with any prototype
+properties or helper methods the Model may need. The important static
+properties are:</p>
 
 <ul>
 <li><a href="../docs/can.Model.findAll.html">findAll</a>, which describes how to get a group of
@@ -364,7 +368,7 @@ instance of that Model class might be as simple as this:</p>
 
 var dishesTask = new Todo({description: 'Do the dishes.'});</code></pre>
 
-<p>Because Models are Observes, don't forget to set all your properties with <code>attr</code>.</p>
+<p>Because Models are Observes, don't forget to set all your properties using <code>attr</code>.</p>
 
 <h2>Talking to the server</h2>
 
@@ -395,20 +399,21 @@ similar to:</p>
     ]
 }</code></pre>
 
-<p>(<code>findAll</code> will also accept an array from the service, but <a href="http://haacked.com/archive/2008/11/20/anatomy-of-a-subtle-json-vulnerability.aspx">you probably should not be returning an array from a JSON service</a>.)</p>
+<p><code>findAll</code> will also accept an array from the service, but <a href="http://haacked.com/archive/2008/11/20/anatomy-of-a-subtle-json-vulnerability.aspx">you probably should not be returning an array from a JSON service</a>.</p>
 
 <p>When the service has returned, <code>findAll</code> will massage the data into Model
-instances, put them in a can.Model.List (which is like a can.Observe.List for
-Models), and pass the List to the callback in its second parameter. If there was
-an error, <code>findAll</code> will call the callback in its third parameter and pass it the
-XmlHttpRequest object used to make the call.</p>
+instances and put them in a can.Model.List (which is like a can.Observe.List
+for Models). The resulting List will be passed to the success callback in its
+second parameter. If there was an error, <code>findAll</code> will call the error
+callback in its third parameter and pass it the XmlHttpRequest object used to
+make the call.</p>
 
 <p><code>findAll</code> returns a <a href="../docs/can.Deferred.html">can.Deferred</a> that will resolve to a Model
 List of items if the call succeeds and rejects to the XmlHttpRequest object if
 there is an error.</p>
 
 <p><code>can.Model.findOne</code> works similarly to <code>findAll</code>, except that it retrieves a
-single Model from a server:</p>
+single Model from a service:</p>
 
 <pre><code class="lang-javascript">Todo.findOne({id: 1}, function(todo) {
     // todo is an instance of Todo
@@ -432,11 +437,11 @@ back to the server. If the Model has an <strong>id</strong>, it will be updated 
 function specified under <code>update</code>. Otherwise, can.Model assumes the Model is new
 and creates the item on the server using the function in <code>create</code>.</p>
 
-<p>Either way, the callback in the first parameter will be called on a successful
-save with the updated Model; if an error occurs, the callback in the second
-parameter will be called with the XmlHttpRequest object. Like <code>findAll</code>, <code>save</code>
-returns a Deferred that resolves to the updated Model on success and rejects to
-the XmlHttpRequest object on failure.</p>
+<p>Either way, the success callback in the first parameter will be called on a
+successful save with the updated Model; if an error occurs, the error callback
+in the second parameter will be called with the XmlHttpRequest object. Like
+<code>findAll</code>, <code>save</code> returns a Deferred that resolves to the updated Model on
+success and rejects to the XmlHttpRequest object on failure.</p>
 
 <pre><code class="lang-javascript">var shopping = new Todo({description: "Go grocery shopping."});
 shopping.save(function(saved) {

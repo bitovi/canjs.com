@@ -368,6 +368,21 @@
 				
 					<li class="search-container  ">
 						<a 	class="function" 
+							href="can.deparam.html" 
+							data-search="can.deparam">
+							can.deparam
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
 							href="can.each.html" 
 							data-search="can.each">
 							can.each
@@ -672,7 +687,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L862">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L809">source</a></li>
 		
 		
 			
@@ -695,15 +710,13 @@ can.getObject
 		</section>
 
 		<section class="description">
-			<p>Gets an object from a string.  It can also modify objects on the 'object path' by removing or adding properties. </p>
-
-<pre><code class="lang-javascript">Foo = {Bar: {Zar: {"Ted"}}}
-can.getObject("Foo.Bar.Zar") //-> "Ted"</code></pre>
+			<p>Gets an object from a string.  It can also modify objects on the
+'object path' by removing or adding properties.</p>
 		</section>
 
 		
 		<section class="signature">
-			<h2></h2>
+			<h2>(name, roots, add)</h2>
 <div class="signature-wrapper">
 <p>can.getObject(name, roots, add)</p>
 
@@ -762,13 +775,75 @@ can.getObject("Foo.Bar.Zar") //-> "Ted"</code></pre>
 		
 
 		
+		
+		
+			<section class="signature">
+				<h2>.util.getObject(name, roots, add)</h2>
+<div class="signature-wrapper">
+<p>Gets an object from a string.  It can also modify objects on the
+'object path' by removing or adding properties.</p>
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>name
+				<code>{String}</code></h4>
+			<div class="description">
+				<p>the name of the object to look for</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>roots
+				<code>{Array}</code><span class="pull-right optional">Optional</span></h4>
+			<div class="description">
+				<p>an array of root objects to look for the
+  name.  If roots is not provided, the window is used.</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>add
+				<code>{Boolean}</code><span class="pull-right optional">Optional</span></h4>
+			<div class="description">
+				<p>true to add missing objects to
+ the path. false to remove found properties. undefined to
+ not modify the root object</p>
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{Object}</code></h4>
+		<div class="description">
+			<p>The object.</p>
+		</div>
+	</div>
+
+
+</div>
+
+			</section>
+		
+		
 
 		
 		<section class="comment">
-			<p>Gets an object from a string.  It can also modify objects on the
-'object path' by removing or adding properties.</p>
-
-<pre><code>Foo = {Bar: {Zar: {"Ted"}}}
+			<pre><code>Foo = {Bar: {Zar: {"Ted"}}}
 can.getObject("Foo.Bar.Zar") //-&gt; "Ted"
 </code></pre>
 		</section>

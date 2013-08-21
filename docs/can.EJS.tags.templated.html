@@ -369,7 +369,9 @@
 		<section class="signature">
 			<h2>&lt;%% CODE %&gt;</h2>
 <div class="signature-wrapper">
-<p>Writes &lt;% CODE %> to the result of the template.  This is useful for generators.</p>
+<p>Renders &lt;% CODE %> as text in result of the template rather than running CODE itself. This is useful for generators.</p>
+
+<p>The following results in "&lt;%= 'hello world' %>" rather than the string "hello world."</p>
 
 <pre><code>     &lt;%%= 'hello world' %&gt;
 </code></pre>
@@ -381,6 +383,9 @@
 		</section>
 		
 
+		
+		
+		
 		
 
 		

@@ -403,7 +403,7 @@
 			
 				
 				
-					<li class="search-container  ">
+					<li class="search-container parent ">
 						<a 	class="page" 
 							href="can.Observe.setter.html" 
 							data-search="setter">
@@ -530,7 +530,7 @@ can.Observe
 		<section class="signature">
 			<h2>new can.Observe([props])</h2>
 <div class="signature-wrapper">
-
+<p>Creates a new instance of can.Observe.</p>
 
 	<h3>Parameters</h3>
 
@@ -580,6 +580,9 @@ instead of calling the constructor to extend.</p>
 		
 
 		
+		
+		
+		
 
 		
 		<section class="comment">
@@ -613,7 +616,7 @@ observe.a;         // 'Alexis'
 observe.attr('a'); // 'Alexis'
 
 // setting an Observe's property:
-observe.attr('a, 'Alice');
+observe.attr('a', 'Alice');
 observe.a; // Alice
 
 // removing an Observe's property;
@@ -624,7 +627,7 @@ observe.attr(); // {}
 observe.a = 'Adam'; // wrong!</code></pre>
 
 <p>Find out more about manipulating properties of Observes under
-[can.Observe.protoype.attr attr] and [can.Observe.protoype.removeAtt removeAttr].</p>
+<a href="can.Observe.prototype.attr.html">attr</a> and <a href="can.Observe.prototype.removeAttr.html">removeAttr</a>.</p>
 
 <h2>Listening to changes</h2>
 
@@ -659,16 +662,16 @@ o.removeAttr('a');     // 'Something on o changed.'
 that makes binding to specific types of events easier:</p>
 
 <pre><code class="lang-javascript">var o = new can.Observe({});
-o.delegate('a', 'add' function(ev, newVal, oldVal) {
+o.delegate('a', 'add', function(ev, newVal, oldVal) {
     console.log('a was added.');
 });
-o.delegate('a', 'set' function(ev, newVal, oldVal) {
+o.delegate('a', 'set', function(ev, newVal, oldVal) {
     console.log('a was set.');
 });
-o.delegate('a', 'remove' function(ev, newVal, oldVal) {
+o.delegate('a', 'remove', function(ev, newVal, oldVal) {
     console.log('a was removed.');
 });
-o.delegate('a', 'change' function(ev, newVal, oldVal) {
+o.delegate('a', 'change', function(ev, newVal, oldVal) {
     console.log('a was changed.');
 });
 

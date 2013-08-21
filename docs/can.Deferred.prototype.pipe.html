@@ -182,7 +182,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L605">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L580">source</a></li>
 		
 		
 			
@@ -250,21 +250,25 @@ can.Deferred.prototype.pipe
 		
 
 		
+		
+		
+		
 
 		
 		<section class="comment">
 			<p><code>deferred.pipe(doneCallback, failCallback)</code> is a utility to filter Deferred(s).</p>
 
-<pre><code class="lang-javascript">var def = can.Deferred(),
+<pre><code>var def = can.Deferred(),
 filtered = def.pipe(function(val) {
-        return val + " is awesome!";
-    });
+    return val + " is awesome!";
+});
 
 def.resolve('Can');
 
 filtered.done(function(value) {
     alert(value); // Alerts: 'Can is awesome!'
-});</code></pre>
+});
+</code></pre>
 		</section>
 		
 

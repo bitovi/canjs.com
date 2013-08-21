@@ -368,6 +368,21 @@
 				
 					<li class="search-container  ">
 						<a 	class="function" 
+							href="can.deparam.html" 
+							data-search="can.deparam">
+							can.deparam
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
 							href="can.each.html" 
 							data-search="can.each">
 							can.each
@@ -672,7 +687,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L262">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L245">source</a></li>
 		
 		
 			
@@ -759,6 +774,9 @@ can.unbind
 		
 
 		
+		
+		
+		
 
 		
 		<section class="comment">
@@ -779,23 +797,25 @@ CanJS; however, if you are making libraries or extensions, use
 
 <p><strong>Binding/unbinding to an object</strong></p>
 
-<pre><code class="lang-javascript">var obj = {},
-handler = function(ev, arg1, arg){
-       arg1 // 1
-       arg2 // 2
-     };
+<pre><code>var obj = {},
+handler = function(ev, arg1, arg) {
+    arg1 // 1
+    arg2 // 2
+};
 can.bind.call(obj,"something", handler)
 can.trigger(obj,"something",[1,2])
-can.unbind.call(obj,"something", handler)</code></pre>
+can.unbind.call(obj,"something", handler)
+</code></pre>
 
 <p><strong>Binding/unbinding to an HTMLElement</strong></p>
 
-<pre><code class="lang-javascript">var el = document.getElementById('foo'),
+<pre><code>var el = document.getElementById('foo'),
 handler = function(ev){
-       this // el
-     };
+    this // el
+};
 can.bind.call(el, "click", handler)
-can.unbind.call(el, "click", handler)</code></pre>
+can.unbind.call(el, "click", handler)
+</code></pre>
 		</section>
 		
 

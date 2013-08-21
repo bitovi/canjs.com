@@ -174,18 +174,6 @@
 	<ul class="primary-grouping">
 		
 			
-		
-			
-		
-			
-		
-			
-		
-			
-		
-			
-		
-			
 				
 					
 					<li class="heading search-container">
@@ -346,6 +334,8 @@
 			
 		
 			
+		
+			
 				
 					
 					<li class="heading search-container">
@@ -482,6 +472,16 @@
 			
 			
 		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
 	</ul>
 
 			
@@ -520,19 +520,87 @@ jQuery.fn.after
 		</section>
 
 		<section class="description">
-			
+			<p>Extending the original <a href="http://api.jquery.com/after/">jQuery().after()</a>
+to render <a href="can.view.html">can.view</a> templates inserted after each element in the set of matched elements.</p>
 		</section>
 
 		
 
 		
+		
+		
+			<section class="signature">
+				<h2>.modifiers.after(content, data, callback)</h2>
+<div class="signature-wrapper">
+<p>Extending the original <a href="http://api.jquery.com/after/">jQuery().after()</a>
+to render <a href="can.view.html">can.view</a> templates inserted after each element in the set of matched elements.</p>
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>content
+				<code>{String | Object | function()}</code></h4>
+			<div class="description">
+				<p>A template filename or the id of a view script tag 
+or a DOM element, array of elements, HTML string, or can object.</p>
+			</div>
+			
+			
+			
+			
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>data
+				<code>{Object}</code><span class="pull-right optional">Optional</span></h4>
+			<div class="description">
+				<p>The data to render the view with.
+If rendering a view template this parameter always has to be present
+(use the empty object initializer {} for no data).</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>callback
+				<code>{function()}</code><span class="pull-right optional">Optional</span></h4>
+			<div class="description">
+				<p>A success callback to load the view asynchronously</p>
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{jQuery | <a href="can.Deferred.html" >can.Deferred</a>}</code></h4>
+		<div class="description">
+			<p>The jQuery object or a <a href="can.Deferred.html">can.Deferred</a> if a deferred has
+been passed in data.</p>
+		</div>
+	</div>
+
+
+</div>
+
+			</section>
+		
+		
 
 		
 		<section class="comment">
-			<p>Extending the original <a href="http://api.jquery.com/after/">jQuery().after()</a>
-to render <a href="can.view.html">can.view</a> templates inserted after each element in the set of matched elements.</p>
-
-<pre><code>$('#test').after('path/to/template.ejs', { name : 'canjs' });
+			<pre><code>$('#test').after('path/to/template.ejs', { name : 'canjs' });
 </code></pre>
 		</section>
 		

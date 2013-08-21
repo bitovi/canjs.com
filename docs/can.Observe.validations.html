@@ -403,7 +403,7 @@
 			
 				
 				
-					<li class="search-container  ">
+					<li class="search-container parent ">
 						<a 	class="page" 
 							href="can.Observe.setter.html" 
 							data-search="setter">
@@ -427,6 +427,21 @@
 						
 							
 	<ul >
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.Observe.validations.prototype.errors.html" 
+							data-search="errors">
+							errors
+						</a>
+						
+					</li>
+				
+			
+			
 		
 			
 				
@@ -651,19 +666,20 @@ validations
 		</section>
 
 		<section class="description">
-			
+			<p>The <code>can/observe/validations</code> plugin provides validations on observes. Validations
+are set on <a href="can.Observe.html">can.Observe</a>'s <strong>static</strong> <code>init</code> function.</p>
 		</section>
 
 		
 
 		
+		
+		
+		
 
 		
 		<section class="comment">
-			<p>The <code>can/observe/validations</code> plugin provides validations on observes. Validations
-are set on <a href="can.Observe.html">can.Observe</a>'s <strong>static</strong> <code>init</code> function.</p>
-
-<p>The following validates the <code>birthday</code> attribute in Contacts:</p>
+			<p>The following validates the <code>birthday</code> attribute in Contacts:</p>
 
 <pre><code>Contact = can.Observe({
     init : function(){
@@ -679,7 +695,7 @@ are set on <a href="can.Observe.html">can.Observe</a>'s <strong>static</strong> 
 var contact = new Contact({birthday: new Date(2012,0) })
 </code></pre>
 
-<p>Use [can.Observe::errors errors] <code>( [attrs...], newVal )</code> to read errors
+<p>Use <a href="can.Observe.validations.prototype.errors.html">errors</a> <code>( [attrs...], newVal )</code> to read errors
 or to test if setting a value would create an error:</p>
 
 <pre><code>// Check if there are errors on the instance
@@ -706,22 +722,22 @@ contact.errors("birthday")
 
 <h2>Validation Methods</h2>
 
-<p>The most basic validate method is [can.Observe.validate validate]<code>()</code>.  </p>
+<p>The most basic validate method is <a href="can.Observe.validations.static.validate.html">validate</a><code>()</code>.  </p>
 
 <p>There are several built-in validation methods so you don't have to define your own in all cases like in the birthday example above.</p>
 
 <ul>
-<li>[can.Observe.validate]<code>(attrNames, options, proc)</code> Attributes validated with function.</li>
-<li>[can.Observe.validateFormatOf]<code>(attrNames, regexp, options)</code> Attributes match the regular expression.    </li>
-<li>[can.Observe.validateInclusionOf]<code>( attrNames, inArray, [options] )</code> Attributes are available in a particular array.    </li>
-<li>[can.Observe.validateLengthOf validateLengthOf]<code>(attrNames, min, max, [options])</code> Attributes' lengths are in the given range.    </li>
-<li>[can.Observe.validatePresenceOf validatePresenceOf]<code>( attrNames, [options] )</code> Attributes are not blank.    </li>
-<li>[can.Observe.validateRangeOf validateRangeOf]<code>(attrNames, low, hi, [options])</code> Attributes are in the given numeric range.</li>
+<li><a href="can.Observe.validations.static.validate.html">can.Observe.validate</a><code>(attrNames, options, proc)</code> Attributes validated with function.</li>
+<li><a href="can.Observe.validations.static.validateFormatOf.html">can.Observe.validateFormatOf</a><code>(attrNames, regexp, options)</code> Attributes match the regular expression.    </li>
+<li><a href="can.Observe.validations.static.validateInclusionOf.html">can.Observe.validateInclusionOf</a><code>( attrNames, inArray, [options] )</code> Attributes are available in a particular array.    </li>
+<li><a href="can.Observe.validations.static.validateLengthOf.html">can.Observe.validateLengthOf</a><code>(attrNames, min, max, [options])</code> Attributes' lengths are in the given range.    </li>
+<li><a href="can.Observe.validations.static.validatePresenceOf.html">can.Observe.validatePrese</a><code>( attrNames, [options] )</code> Attributes are not blank.    </li>
+<li><a href="can.Observe.validations.static.validateRangeOf.html">can.Observe.validateRangeOf</a><code>(attrNames, low, hi, [options])</code> Attributes are in the given numeric range.</li>
 </ul>
 
 <h2>Error Method</h2>
 
-<p><a href="">can.Observe::errors</a> runs the validations on this model. You can also pass it an array 
+<p><a href="can.Observe.validations.prototype.errors.html">can.Observe.errors</a><code>()</code> runs the validations on this model. You can also pass it an array 
 of attributes to run only those attributes. It returns 
 nothing if there are no errors, or an object of errors by attribute.</p>
 

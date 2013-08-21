@@ -509,7 +509,7 @@
 			
 				
 				
-					<li class="search-container  ">
+					<li class="search-container parent ">
 						<a 	class="page" 
 							href="can.Observe.setter.html" 
 							data-search="setter">
@@ -629,19 +629,20 @@ attributes
 		</section>
 
 		<section class="description">
-			
+			<p><code>can.Observe.attributes</code> is a property that contains key/value pair(s) of an attribute's name and its
+respective type for using in <a href="can.Observe.attributes.static.convert.html">convert</a> and <a href="can.Observe.prototype.serialize.html">serialize</a>.</p>
 		</section>
 
 		
 
 		
+		
+		
+		
 
 		
 		<section class="comment">
-			<p><code>can.Observe.attributes</code> is a property that contains key/value pair(s) of an attribute's name and its
-respective type for using in <a href="can.Observe.attributes.static.convert.html">convert</a> and <a href="can.Observe.prototype.serialize.html">serialize</a>.</p>
-
-<pre><code>var Contact = can.Observe({
+			<pre><code>var Contact = can.Observe({
     attributes : {
         birthday : 'date',
         age: 'number',

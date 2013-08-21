@@ -456,7 +456,7 @@
 			
 				
 				
-					<li class="search-container  ">
+					<li class="search-container parent ">
 						<a 	class="page" 
 							href="can.Observe.setter.html" 
 							data-search="setter">
@@ -549,7 +549,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/observe/backup/backup.js#L63">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/observe/backup/backup.js#L64">source</a></li>
 		
 		
 			
@@ -583,7 +583,10 @@ isDirty
 		<section class="signature">
 			<h2>observe.isDirty([deep])</h2>
 <div class="signature-wrapper">
-
+<p><code>isDirty</code> checks whether any properties have changed value or whether any properties have
+been added or removed since the last time the Observe was backed up. If <em>deep</em> is <code>true</code>,
+If the Observe has never been backed up, <code>isDirty</code> returns <code>undefined</code>.
+<code>isDirty</code> will include nested Observes in its checks.</p>
 
 	<h3>Parameters</h3>
 
@@ -607,12 +610,7 @@ isDirty
 	<div class="returns">
 		<h4><code>{bool}</code></h4>
 		<div class="description">
-			<p>Whether the Observe has changed since the last time it was [can.Observe.prototype.backup backed up].
-If the Observe has never been backed up, <code>isDirty</code> returns <code>undefined</code>.</p>
-
-<p><code>isDirty</code> checks whether any properties have changed value or whether any properties have
-been added or removed since the last time the Observe was backed up. If <em>deep</em> is <code>true</code>,
-<code>isDirty</code> will include nested Observes in its checks.</p>
+			<p>Whether the Observe has changed since the last time it was <a href="can.Observe.backup.prototype.backup.html">backed up</a>.</p>
 
 <pre><code class="lang-javascript">var recipe = new can.Observe({
   title: 'Pancake Mix',
@@ -641,7 +639,7 @@ recipe.backup();
 recipe.attr('title', 'Flapjack Mix');
 recipe.isDirty();     // true
 recipe.restore();
-* recipe.isDirty();   // false
+recipe.isDirty();   // false
 
 recipe.attr('ingredients.0.quantity', '7 cups');
 recipe.isDirty();     // false
@@ -659,6 +657,9 @@ recipe.isDirty(true); // false</code></pre>
 		</section>
 		
 
+		
+		
+		
 		
 
 		

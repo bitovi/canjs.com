@@ -456,7 +456,7 @@
 			
 				
 				
-					<li class="search-container  ">
+					<li class="search-container parent ">
 						<a 	class="page" 
 							href="can.Observe.setter.html" 
 							data-search="setter">
@@ -583,7 +583,9 @@ backup
 		<section class="signature">
 			<h2>observe.backup()</h2>
 <div class="signature-wrapper">
-
+<p><code>backup</code> backs up the current state of the properties of an Observe and marks
+the Observe as clean. If any of the properties change value, the original
+values can be restored with <code><a href="can.Observe.backup.prototype.restore.html">can.Observe.prototype.restore</a></code>:</p>
 
 
 	<h3>Returns</h3>
@@ -591,10 +593,6 @@ backup
 		<h4><code>{<a href="can.Observe.html" >can.Observe</a>}</code></h4>
 		<div class="description">
 			<p>The Observe, for chaining.</p>
-
-<p><code>backup</code> backs up the current state of the properties of an Observe and marks
-the Observe as clean. If any of the properties change value, the original
-values can be restored with <code>[can.Observe.prototype.restore]</code>:</p>
 
 <pre><code class="lang-javascript">var recipe = new can.Observe({
   title: 'Pancake Mix',
@@ -632,6 +630,9 @@ recipe.title;     // 'Pancake Mix'</code></pre>
 		</section>
 		
 
+		
+		
+		
 		
 
 		

@@ -368,6 +368,21 @@
 				
 					<li class="search-container  ">
 						<a 	class="function" 
+							href="can.deparam.html" 
+							data-search="can.deparam">
+							can.deparam
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
 							href="can.each.html" 
 							data-search="can.each">
 							can.each
@@ -672,7 +687,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L344">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L322">source</a></li>
 		
 		
 			
@@ -776,12 +791,13 @@ CanJS; however, if you are making libraries or extensions, use
 
 <p><strong>Delegate/undelegate binding to an HTMLElement</strong></p>
 
-<pre><code class="lang-javascript">var el = document.getElementById('foo'),
+<pre><code>var el = document.getElementById('foo'),
 handler = function(ev){
-  this // el
+    this // el
 };
 can.delegate.call(el, ".selector", "click", handler)
-can.undelegate.call(el, ".selector", "click", handler)</code></pre>
+can.undelegate.call(el, ".selector", "click", handler)
+</code></pre>
 		</div>
 	</div>
 
@@ -791,6 +807,9 @@ can.undelegate.call(el, ".selector", "click", handler)</code></pre>
 		</section>
 		
 
+		
+		
+		
 		
 
 		

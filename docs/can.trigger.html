@@ -368,6 +368,21 @@
 				
 					<li class="search-container  ">
 						<a 	class="function" 
+							href="can.deparam.html" 
+							data-search="can.deparam">
+							can.deparam
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
 							href="can.each.html" 
 							data-search="can.each">
 							can.each
@@ -672,7 +687,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L378">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L354">source</a></li>
 		
 		
 			
@@ -695,7 +710,7 @@ can.trigger
 		</section>
 
 		<section class="description">
-			<p>Trigger an event. </p>
+			<p>Trigger an event on an object. </p>
 		</section>
 
 		
@@ -735,8 +750,6 @@ can.trigger
 				<code>{Array&lt;*&gt;}</code><span class="pull-right optional">Optional</span></h4>
 			<div class="description">
 				<p>The event data.</p>
-
-<p>Trigger an event on an element or object.</p>
 			</div>
 			
 			
@@ -753,7 +766,25 @@ can.trigger
 		
 
 		
+		
+		
+		
 
+		
+		<section class="comment">
+			<p><code>can.trigger(target, eventName)</code> triggers an artificial event on an object and fires all
+associated callback handlers <a href="can.bind.html">that were bound to it.</a> This is exceptionally handly
+for simulating events. Such as the following:</p>
+
+<pre><code>var button = document.createElement('button');
+
+can.bind.call(button, 'click', function() {
+    console.log('I have been clicked');
+})
+
+can.trigger(button, 'click');
+</code></pre>
+		</section>
 		
 
 		
