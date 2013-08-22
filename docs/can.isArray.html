@@ -368,6 +368,21 @@
 				
 					<li class="search-container  ">
 						<a 	class="function" 
+							href="can.deparam.html" 
+							data-search="can.deparam">
+							can.deparam
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
 							href="can.each.html" 
 							data-search="can.each">
 							can.each
@@ -672,7 +687,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L55">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L49">source</a></li>
 		
 		
 			
@@ -737,13 +752,22 @@ can.isArray
 		
 
 		
+		
+		
+		
 
 		
 		<section class="comment">
-			<p><code>can.isArray(object)</code> returns if the object is an Array.</p>
+			<p><code>can.isArray(object)</code> returns if the object is an explicitly an Array. If <code>can.isArray</code> 
+is passed an array-like object, it will return <code>false</code>.</p>
 
-<pre><code class="lang-javascript">can.isArray([]);    // true
-can.isArray(false); // false</code></pre>
+<pre><code>can.isArray([]);    // true
+can.isArray([1, 2, 3]);    // true
+can.isArray(can.makeArray({0: "foo", 1: "bar"})); // true
+(function() { return can.isArray(arguments); })(); // false
+can.isArray(document.querySelectorAll("p")); // false
+can.isArray(true); // false
+</code></pre>
 		</section>
 		
 

@@ -370,6 +370,21 @@
 				
 					<li class="search-container  ">
 						<a 	class="function" 
+							href="can.deparam.html" 
+							data-search="can.deparam">
+							can.deparam
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
 							href="can.each.html" 
 							data-search="can.each">
 							can.each
@@ -672,7 +687,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L216">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L203">source</a></li>
 		
 		
 			
@@ -759,6 +774,9 @@ can.bind
 		
 
 		
+		
+		
+		
 
 		
 		<section class="comment">
@@ -779,19 +797,21 @@ CanJS; however, if you are making libraries or extensions, use
 
 <p><strong>Binding to an object</strong></p>
 
-<pre><code class="lang-javascript">var obj = {};
+<pre><code>var obj = {};
 can.bind.call(obj,"something", function(ev, arg1, arg){
-     arg1 // 1
-     arg2 // 2
-   })
-can.trigger(obj,"something",[1,2])</code></pre>
+    arg1 // 1
+    arg2 // 2
+})
+can.trigger(obj,"something",[1,2])
+</code></pre>
 
 <p><strong>Binding to an HTMLElement</strong></p>
 
-<pre><code class="lang-javascript">var el = document.getElementById('foo')
+<pre><code>var el = document.getElementById('foo')
 can.bind.call(el, "click", function(ev){
-   this // el
- });</code></pre>
+    this // el
+});
+</code></pre>
 		</section>
 		
 

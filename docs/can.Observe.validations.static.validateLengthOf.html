@@ -403,7 +403,7 @@
 			
 				
 				
-					<li class="search-container  ">
+					<li class="search-container parent ">
 						<a 	class="page" 
 							href="can.Observe.setter.html" 
 							data-search="setter">
@@ -427,6 +427,21 @@
 						
 							
 	<ul >
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.Observe.validations.prototype.errors.html" 
+							data-search="errors">
+							errors
+						</a>
+						
+					</li>
+				
+			
+			
 		
 			
 				
@@ -624,7 +639,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/observe/validations/validations.js#L220">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/observe/validations/validations.js#L230">source</a></li>
 		
 		
 			
@@ -655,18 +670,78 @@ validateLengthOf
 		</section>
 
 		
-
-		
-
-		
-		<section class="comment">
-			<p>Validates that the specified attributes' lengths are in the given range.</p>
+		<section class="signature">
+			<h2>observe.validateLengthOf(attrNames, min, max, options)</h2>
+<div class="signature-wrapper">
+<p>Validates that the specified attributes' lengths are in the given range.</p>
 
 <pre><code>init : function(){
   this.validateInclusionOf(["suffix"],3,5)
 }
 </code></pre>
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>attrNames
+				<code>{Array&lt;String&gt;}</code></h4>
+			<div class="description">
+				<p>Attribute name(s) to to validate</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>min
+				<code>{Number}</code></h4>
+			<div class="description">
+				<p>Minimum length (inclusive)</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>max
+				<code>{Number}</code></h4>
+			<div class="description">
+				<p>Maximum length (inclusive)</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>options
+				<code>{Object}</code><span class="pull-right optional">Optional</span></h4>
+			<div class="description">
+				<p>Options for the validations.  Valid options include 'message' and 'testIf'.</p>
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+
+</div>
+
 		</section>
+		
+
+		
+		
+		
+		
+
 		
 
 		

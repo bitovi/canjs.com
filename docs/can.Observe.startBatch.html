@@ -405,7 +405,7 @@
 			
 				
 				
-					<li class="search-container  ">
+					<li class="search-container parent ">
 						<a 	class="page" 
 							href="can.Observe.setter.html" 
 							data-search="setter">
@@ -559,10 +559,13 @@ startBatch
 		
 
 		
+		
+		
+		
 
 		
 		<section class="comment">
-			<p><code>startBatch</code> causes can.Observe to begin an event batch. Until <code><a href="can.Observe.stopBatch.html">can.Observe.stopBatch</a></code> is called, any
+			<p><code>startBatch</code> causes <a href="can.Observe.html">can.Observe</a> to begin an event batch. Until <code><a href="can.Observe.stopBatch.html">can.Observe.stopBatch</a></code> is called, any
 events that would result from calls to <code><a href="can.Observe.prototype.attr.html">attr</a></code> are held back from firing. If you have
 lots of changes to make to can.Observes, batching them together can help performance &emdash; especially if
 those can.Observes are live-bound to the DOM.</p>
@@ -576,7 +579,7 @@ are not called) until <code>stopBatch</code> is called.</p>
 });
 
 person.bind('first', function() {
-    console.log("First name changed."");
+    console.log("First name changed.");
 }).bind('change', function() {
     console.log("Something changed.");
 });

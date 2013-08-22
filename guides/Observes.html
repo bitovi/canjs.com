@@ -95,8 +95,8 @@
 					<li class="search-container  ">
 						<a 	class="page" 
 							href="Constructs.html" 
-							data-search="Constructor Functions">
-							Constructor Functions
+							data-search="Constructor Classes">
+							Constructor Classes
 						</a>
 						
 					</li>
@@ -331,15 +331,18 @@ Observable Objects
 		
 
 		
+		
+		
+		
 
 		
 		<section class="comment">
-			<p>Observes made with can.Observe will let you set and remove properties like on
-normal objects, but they also emit events when properties change that you can
-listen to. Observes also make it easy to work with nested properties and get the
-events you expect. Both <a href="../docs/can.route.html">can.Route</a> and <a href="../docs/can.Model.html">Models</a> are based on can.Observe, but
-Observes are also useful on their own: for example, to maintain client-side
-state like pagination data.</p>
+			<p>Observes are an enhanced version of basic objects, adding the ability to
+easily manipulate properties as well as listen for when they change. Observes
+also make it easy to work with nested properties. Both
+<a href="../docs/can.route.html">can.Route</a> and <a href="../docs/can.Model.html">Models</a> are
+based on can.Observe, but Observes are also useful on their own such as for
+maintaining client-side state like pagination data.</p>
 
 <p>To create an Observe, call <code>new can.Observe(obj)</code>. This will give you an Observe
 with the same properties and values as <em>obj</em>. can.Observe also provides
@@ -353,12 +356,18 @@ pagination.perPage; // 25
 var hobbies = new can.Observe.List(['programming', 'basketball', 'partying']);
 hobbies[2]; // 'partying'</code></pre>
 
-<h2>Getting and setting properties</h2>
+<h2>Manipulating properties</h2>
 
-<p>Though you can read properties from an Observe in the normal way, if you want to
-set the value of a property, you'll need to use <a href="../docs/can.Observe.prototype.attr.html">attr</a>(). There are a couple
-ways to use attr to set a property, and it can also be used to get property
-values, or get a regular object back from an Observe:</p>
+<p>While you can read properties from an Observe instance the normal way
+(observe.property), you'll need to set the values of properties using
+<a href="../docs/can.Observe.prototype.attr.html">attr</a>. The <code>attr</code> method can also be
+used to read properties or get a basic object back from an Observe. </p>
+
+<p>It might not make sense to read properties from an Observe using <code>attr</code> when
+you can read them directly, but the act of using <code>attr</code> in your
+<a href="../docs/can.view.html">can.view</a> templates or within Computes provides
+hinting to the underlying engine that you want the template or Compute to
+update itself when the values of those properties change.</p>
 
 <pre><code class="lang-javascript">pagination.attr('perPage');     // 25
 pagination.attr('perPage', 50);
@@ -367,13 +376,8 @@ pagination.perPage;             // 50
 pagination.attr({page: 10, lastVisited: 1});
 pagination.attr(); // {page: 10, perPage: 50, count: 1388, lastVisited: 1}</code></pre>
 
-<p>It might not make sense to get properties from an Observe using <code>attr</code> when you
-can read them directly, but when reading properties for use in a template with
-<a href="../docs/can.view.html">can.view</a> or when using a property in a Compute, using <code>attr</code> tells the
-template or compute you want to watch that value in case it changes.</p>
-
-<p>Properties can be removed from Observes with <code>removeAttr</code>. This is the
-equivalent of the <code>delete</code> keyword:</p>
+<p>Properties can be removed from Observes with <code>removeAttr</code>, which is equivalent
+to the <code>delete</code> keyword:</p>
 
 <pre><code class="lang-javascript">pagination.removeAttr('count');
 pagination.attr(); // {page: 10, perPage: 50, lastVisited: 1}</code></pre>
@@ -381,7 +385,7 @@ pagination.attr(); // {page: 10, perPage: 50, lastVisited: 1}</code></pre>
 <h2>Listening to events</h2>
 
 <p>When a property on an Observe is changed with <code>attr</code>, the Observe will emit two
-events: a <em>change</em> event and an event with the same name as the property that
+events: A <em>change</em> event and an event with the same name as the property that
 was changed. You can listen for these events by using
 <a href="../docs/can.Observe.prototype.bind.html">bind</a>:</p>
 
@@ -398,7 +402,8 @@ paginate.bind('perPage', function(event, newVal, oldVal) {
 
 paginate.attr('perPage', 30);</code></pre>
 
-<p>You can similarly stop listening to these events by using <a href="../docs/can.Observe.prototype.unbind.html">unbind</a>:</p>
+<p>You can similarly stop listening to these events by using
+<a href="../docs/can.Observe.prototype.unbind.html">unbind</a>:</p>
 
 <pre><code class="lang-javascript">var timesChanged = 0,
     changeHandler = function() { timesChanged++; },
@@ -447,18 +452,19 @@ of a List.</li>
 anywhere in a List.</li>
 </ul>
 
-<p>When these methods are used to modify a List, the appropriate events are emitted. See <a href="../docs/can.Observe.List.html">the API for Lists</a> for more information on the
-arguments passed to those event handlers.</p>
+<p>When these methods are used to modify a List, the appropriate events are
+emitted. See <a href="../docs/can.Observe.List.html">the API for Lists</a> for more
+information on the arguments passed to those event handlers.</p>
 
-<h2>Observable values</h2>
+<h2>Computed values</h2>
 
 <p>CanJS also provides a way to make values themselves observable with
-<a href="../docs/can.compute.html">can.compute</a>. A Compute represents a value that can be read, set,
-and listened to just like an Observe.</p>
+<a href="../docs/can.compute.html">can.compute</a>. A Compute represents a dynamic value
+that can be read, set, and listened to just like an Observe.</p>
 
 <h3>Static Computes</h3>
 
-<p>A simple Compute contains a single value, and is created by calling
+<p>A simple static Compute contains a single value, and is created by calling
 <code>can.compute(value)</code>. This value can be read, set, and listened to:</p>
 
 <pre><code class="lang-javascript">// create a Compute
@@ -481,9 +487,10 @@ previousAge; // 25</code></pre>
 
 <h3>Composite Computes</h3>
 
-<p>Computes can also get values derived from other observable values. This type of
-Compute is created by calling <code>can.compute(getterFunction)</code>. When the values
-the Compute is derived from changes, the value of the Compute changes:</p>
+<p>Computes can also be used to generate a unique value based on values derived
+from other Observe properties. This type of Compute is created by calling
+<code>can.compute(getterFunction)</code>. When the Observe properties that the Compute is
+derived from change, the value of the Compute changes:</p>
 
 <pre><code class="lang-javascript">var name = new can.Observe({
     first: 'Alice',
@@ -509,13 +516,14 @@ name.attr({
 fullname();   // 'Allison Wonderland'
 previousName; // 'Alice Liddell'</code></pre>
 
-<p>Since the value of the Compute is cached any time a constituent value is
+<p>Since the value of the Compute is cached any time a derived value is
 changed, reading the value is fast.</p>
 
 <h3>Converted Computes</h3>
 
-<p>Computes are useful for creating a link to a property in an Observe, and one of
-the most frequent examples of this is when converting from one unit to another.</p>
+<p>Computes are also useful for creating links to properties within Observes. One
+of the most frequent examples of this is when converting from one unit to
+another.</p>
 
 <pre><code class="lang-javascript">// progress ranges from 0 to 1.
 var project = new can.Observe({ progress: 0.3 });

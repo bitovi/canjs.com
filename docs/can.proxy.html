@@ -368,6 +368,21 @@
 				
 					<li class="search-container  ">
 						<a 	class="function" 
+							href="can.deparam.html" 
+							data-search="can.deparam">
+							can.deparam
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
 							href="can.each.html" 
 							data-search="can.each">
 							can.each
@@ -672,7 +687,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L176">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L166">source</a></li>
 		
 		
 			
@@ -748,6 +763,9 @@ can.proxy
 		
 
 		
+		
+		
+		
 
 		
 		<section class="comment">
@@ -755,10 +773,12 @@ can.proxy
 new one that will always have the context from which it was
 called.  This works similar to <a href="http://api.jquery.com/jQuery.proxy/">jQuery.proxy</a>.</p>
 
-<pre><code class="lang-javascript">var func = can.proxy(function(one){
-      return this.a + one
-    }, {a: "b"});
-func("two") //-> "btwo"</code></pre>
+<pre><code>var func = can.proxy(function(one){
+    return this.a + one
+}, {a: "b"});
+
+func("two") //-&gt; "btwo"
+</code></pre>
 		</section>
 		
 

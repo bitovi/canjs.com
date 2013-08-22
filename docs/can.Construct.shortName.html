@@ -448,7 +448,8 @@ shortName
 		</section>
 
 		<section class="description">
-			
+			<p>If you pass a name when creating a Construct, the <code>shortName</code> property will be set to the
+name you passed without the <a href="can.Construct.namespace.html">namespace</a>.</p>
 		</section>
 
 		
@@ -470,13 +471,13 @@ shortName
 
 		</section>
 		
+		
+		
+		
 
 		
 		<section class="comment">
-			<p>If you pass a name when creating a Construct, the <code>shortName</code> property will be set to the
-name you passed without the <a href="can.Construct.namespace.html">namespace</a>.</p>
-
-<pre><code class="lang-javascript">can.Construct("MyApplication.MyConstructor",{},{});
+			<pre><code class="lang-javascript">can.Construct("MyApplication.MyConstructor",{},{});
 MyApplication.MyConstructor.namespace // "MyApplication"
 MyApplication.MyConstructor.shortName // "MyConstructor"
 MyApplication.MyConstructor.fullName  // "MyApplication.MyConstructor"</code></pre>             

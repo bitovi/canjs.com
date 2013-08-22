@@ -95,8 +95,8 @@
 					<li class="search-container  ">
 						<a 	class="page" 
 							href="Constructs.html" 
-							data-search="Constructor Functions">
-							Constructor Functions
+							data-search="Constructor Classes">
+							Constructor Classes
 						</a>
 						
 					</li>
@@ -331,17 +331,22 @@ Templates
 		
 
 		
+		
+		
+		
 
 		
 		<section class="comment">
-			<p><a href="../docs/can.view.html">can.view</a> loads and renders templates with the data you provide, and
-returns a documentFragment with the populated template. can.view supports many
-templating languages, but <a href="EJS.html">EJS</a> and <a href="Mustache.html">Mustache</a> allow you
-to live-bind Observes into templates.</p>
+			<p><a href="../docs/can.view.html">can.view</a> loads and renders templates with the data
+you provide, and returns a documentFragment with the populated template.
+can.view supports many templating languages, but <a href="EJS.html">EJS</a> and [Mustache
+Mustache] allow you to live bind to Observes within templates. Live binding
+will dynamically update your template in the DOM automatically whenever the
+properties within Observes change.</p>
 
 <h2>Loading templates</h2>
 
-<p>You can load templates from a URL or directly from an existent script tag. To
+<p>You can load templates from a URL or directly from an existing script tag. To
 load from a script tag, pass <code>can.view</code> the tag's ID as the first parameter. To
 load from a URL, pass the URL as the first parameter. Use the second parameter to
 pass the data to populate the template with.</p>
@@ -352,7 +357,7 @@ content of the template inside:</p>
 
 <pre><code class="lang-javascript">&lt;script type="text/ejs" id="todoList">
 <% can.each(this, function(val, key) { %>
-    &lt;li><%= val.description %>&lt;/li>
+    &lt;li><%= val.attr('description') %>&lt;/li>
 <% }); %>
 &lt;/script></code></pre>
 
@@ -375,9 +380,9 @@ page) by giving the URL to <code>can.view</code>:</p>
 instead return a Deferred that resolves to the documentFragment containing the
 populated template after all the deferreds have resolved.</p>
 
-<p>This aspect is most useful because <code>can.Model.findAll</code> returns a Deferred, which
-means it's easy to lead a template, retrieve one or more Models, and render the
-resulting documentFragment when everything has been loaded:</p>
+<p>This aspect is most useful because [Model] methods like <code>findAll</code> return a
+Deferred. This allows you to load a template, retrieve one or more Models, and
+then render the resulting documentFragment after everything has been loaded:</p>
 
 <pre><code class="lang-javascript">can.view('todos.ejs', {
     todos: Todo.findAll().
@@ -389,7 +394,7 @@ resulting documentFragment when everything has been loaded:</p>
 <h2>Rendering to string</h2>
 
 <p>To render to a string instead of a documentFragment, use <code>can.view.render</code>. This
-is mainly used to include templates inside of other templates:</p>
+is mainly used to nest templates inside of other templates:</p>
 
 <pre><code class="lang-javascript"><% can.each(todos, function(todo, key) { %>
     &lt;li><%== can.view.render('todos.ejs', todo); %>&lt;/li>

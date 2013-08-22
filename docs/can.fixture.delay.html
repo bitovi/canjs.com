@@ -171,66 +171,6 @@
 		
 			
 				
-				
-					<li class="search-container  ">
-						<a 	class="property" 
-							href="can.fixture.on.html" 
-							data-search="on">
-							on
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.fixture.rand.html" 
-							data-search="rand">
-							rand
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="property" 
-							href="can.fixture.rootUrl.html" 
-							data-search="rootUrl">
-							rootUrl
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.fixture.store.html" 
-							data-search="store">
-							store
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
 					
 					<li class="heading search-container">
 						<span>Types</span>
@@ -287,6 +227,66 @@
 					</li>
 					
 				
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.fixture.rand.html" 
+							data-search="rand">
+							rand
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="property" 
+							href="can.fixture.on.html" 
+							data-search="on">
+							on
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="property" 
+							href="can.fixture.rootUrl.html" 
+							data-search="rootUrl">
+							rootUrl
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.fixture.store.html" 
+							data-search="store">
+							store
+						</a>
+						
+					</li>
 				
 			
 			
@@ -354,7 +354,9 @@ delay
 		</section>
 
 		<section class="description">
-			
+			<p><code>can.fixture.delay</code> indicates the delay in milliseconds between an ajax request is made and
+the success and complete handlers are called.  This only sets
+functional synchronous fixtures that return a result. By default, the delay is 200ms.</p>
 		</section>
 
 		
@@ -376,14 +378,13 @@ delay
 
 		</section>
 		
+		
+		
+		
 
 		
 		<section class="comment">
-			<p><code>can.fixture.delay</code> indicates the delay in milliseconds between an ajax request is made and
-the success and complete handlers are called.  This only sets
-functional synchronous fixtures that return a result. By default, the delay is 200ms.</p>
-
-<pre><code class="lang-javascript">steal('can/util/fixtures').then(function(){
+			<pre><code class="lang-javascript">steal('can/util/fixtures').then(function(){
   can.fixture.delay = 1000;
 })</code></pre> 
 		</section>

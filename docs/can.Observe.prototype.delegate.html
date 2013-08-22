@@ -441,7 +441,7 @@
 			
 				
 				
-					<li class="search-container  ">
+					<li class="search-container parent ">
 						<a 	class="page" 
 							href="can.Observe.setter.html" 
 							data-search="setter">
@@ -565,12 +565,10 @@ delegate
 		</section>
 
 		
-
-		
-
-		
-		<section class="comment">
-			<p><code>delegate( selector, event, handler(ev,newVal,oldVal,from) )</code> listen for changes 
+		<section class="signature">
+			<h2>observe.delegate( selector, event, handler )</h2>
+<div class="signature-wrapper">
+<p><code>delegate( selector, event, handler(ev,newVal,oldVal,from) )</code> listen for changes 
 in a child attribute from the parent. The child attribute
 does not have to exist.</p>
 
@@ -591,117 +589,83 @@ observe.delegate("foo.bar","change", function(ev, prop, how, newVal, oldVal){
 observe.attr('foo.bar',"Goodbye Cruel World")
 </code></pre>
 
-<h2>Types of events</h2>
+	<h3>Parameters</h3>
 
-<p>Delegate lets you listen to add, set, remove, and change events on property.</p>
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>selector
+				<code>{String}</code></h4>
+			<div class="description">
+				<p>The attributes you want to listen for changes in.</p>
 
-<p><strong>add</strong></p>
+<p>Selector should be the property or 
+  property names of the element you are searching.  Examples:</p>
 
-<p>An add event is fired when a new property has been added.</p>
-
-<pre><code>var o = new can.Control({});
-o.delegate("name","add", function(ev, value){
-  // called once
-  can.$('#name').show()
-})
-o.attr('name',"Justin")
-o.attr('name',"Brian");
+<pre><code>"name" - listens to the "name" property changing
+"name, address" - listens to "name" or "address" changing
+"name address" - listens to "name" or "address" changing
+"address.*" - listens to property directly in address
+"address.**" - listens to any property change in address
+"foo=bar" - listens when foo is "bar"
 </code></pre>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>event
+				<code>{String}</code></h4>
+			<div class="description">
+				<p>The event name.  One of ("set","add","remove","change")</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>handler
+				<code>{function(ev, newVal, oldVal, prop)}</code></h4>
+			<div class="description">
+				<p>The callback handler 
+called with:</p>
 
-<p>Listening to add events is useful for 'setup' functionality (in this case
-showing the <code>#name</code> element.</p>
+<ul>
+<li>newVal - the new value set on the observe</li>
+<li>oldVal - the old value set on the observe</li>
+<li>prop - the prop name that was changed</li>
+</ul>
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
 
-<p><strong>set</strong></p>
 
-<p>Set events are fired when a property takes on a new value.  set events are
-always fired after an add.</p>
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{<a href="can.Observe.html" >can.Observe</a>}</code></h4>
+		<div class="description">
+			<p>the observe for chaining</p>
+		</div>
+	</div>
 
-<pre><code>o.delegate("name","set", function(ev, value){
-  // called twice
-  can.$('#name').text(value)
-})
-o.attr('name',"Justin")
-o.attr('name',"Brian");
-</code></pre>
 
-<p><strong>remove</strong></p>
+</div>
 
-<p>Remove events are fired after a property is removed.</p>
-
-<pre><code>o.delegate("name","remove", function(ev){
-  // called once
-  $('#name').text(value)
-})
-o.attr('name',"Justin");
-o.removeAttr('name');
-</code></pre>
-
-<h2>Wildcards - matching multiple properties</h2>
-
-<p>Sometimes, you want to know when any property within some part 
-of an observe has changed. Delegate lets you use wildcards to 
-match any property name.  The following listens for any change
-on an attribute of the params attribute:</p>
-
-<pre><code>var o = can.Control({
-  options : {
-    limit : 100,
-    offset: 0,
-    params : {
-      parentId: 5
-    }
-  }
-})
-o.delegate('options.*','change', function(){
-  alert('1');
-})
-o.delegate('options.**','change', function(){
-  alert('2');
-})
-
-// alerts 1
-// alerts 2
-o.attr('options.offset',100)
-
-// alerts 2
-o.attr('options.params.parentId',6);
-</code></pre>
-
-<p>Using a single wildcard (<code><em></code>) matches single level
-properties.  Using a double wildcard (<code></em>*</code>) matches
-any deep property.</p>
-
-<h2>Listening on multiple properties and values</h2>
-
-<p>Delegate lets you listen on multiple values at once.  The following listens
-for first and last name changes:</p>
-
-<pre><code>var o = new can.Observe({
-  name : {first: "Justin", last: "Meyer"}
-})
-
-o.bind("name.first,name.last", 
-       "set",
-       function(ev,newVal,oldVal,from){
-
-})
-</code></pre>
-
-<h2>Listening when properties are a particular value</h2>
-
-<p>Delegate lets you listen when a property is <strong>set</strong> to a specific value:</p>
-
-<pre><code>var o = new can.Observe({
-  name : "Justin"
-})
-
-o.bind("name=Brian", 
-       "set",
-       function(ev,newVal,oldVal,from){
-
-})
-</code></pre>
 		</section>
+		
+
+		
+		
+		
+		
+
 		
 
 		

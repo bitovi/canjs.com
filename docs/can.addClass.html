@@ -370,6 +370,21 @@
 				
 					<li class="search-container  ">
 						<a 	class="function" 
+							href="can.deparam.html" 
+							data-search="can.deparam">
+							can.deparam
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
 							href="can.each.html" 
 							data-search="can.each">
 							can.each
@@ -672,7 +687,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L523">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L506">source</a></li>
 		
 		
 			
@@ -740,6 +755,9 @@ can.addClass
 		
 
 		
+		
+		
+		
 
 		
 		<section class="comment">
@@ -747,24 +765,26 @@ can.addClass
 nodelist's HTMLElements.  It does NOT replace any existing class(es)
 already defined.</p>
 
-<pre><code class="lang-javascript">// Before
-<div id="foo" class="monkey" />
+<pre><code>// Before
+&lt;div id="foo" class="monkey" /&gt;
 
 can.addClass(can.$("#foo"),"bar")
 
 // After
-<div id="foo" class="monkey bar" /></code></pre>
+&lt;div id="foo" class="monkey bar" /&gt;
+</code></pre>
 
 <p>You can also pass multiple class(es) and it will add them to the existing
 set also.</p>
 
-<pre><code class="lang-javascript">// Before
-<div id="foo" class="monkey" />
+<pre><code>// Before
+&lt;div id="foo" class="monkey" /&gt;
 
 can.addClass(can.$("#foo"),"bar man")
 
 // After
-<div id="foo" class="monkey bar man" /></code></pre>
+&lt;div id="foo" class="monkey bar man" /&gt;
+</code></pre>
 
 <p>This works similarly to <a href="http://api.jquery.com/addClass/">jQuery.fn.addClass</a>.</p>
 		</section>

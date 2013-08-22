@@ -448,7 +448,9 @@ namespace
 		</section>
 
 		<section class="description">
-			
+			<p>The <code>namespace</code> property returns the namespace your constructor is in.
+This provides a way organize code and ensure globally unique types. The
+<code>namespace</code> is the <a href="can.Construct.fullName.html">fullName</a> you passed without the <a href="can.Construct.shortName.html">shortName</a>.</p>
 		</section>
 
 		
@@ -470,14 +472,13 @@ namespace
 
 		</section>
 		
+		
+		
+		
 
 		
 		<section class="comment">
-			<p>The <code>namespace</code> property returns the namespace your constructor is in.
-This provides a way organize code and ensure globally unique types. The
-<code>namespace</code> is the <a href="can.Construct.fullName.html">fullName</a> you passed without the <a href="can.Construct.shortName.html">shortName</a>.</p>
-
-<pre><code class="lang-javascript">can.Construct("MyApplication.MyConstructor",{},{});
+			<pre><code class="lang-javascript">can.Construct("MyApplication.MyConstructor",{},{});
 MyApplication.MyConstructor.namespace // "MyApplication"
 MyApplication.MyConstructor.shortName // "MyConstructor"
 MyApplication.MyConstructor.fullName  // "MyApplication.MyConstructor"</code></pre>             

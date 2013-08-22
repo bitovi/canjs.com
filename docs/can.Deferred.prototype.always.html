@@ -299,6 +299,21 @@
 				
 					<li class="search-container  ">
 						<a 	class="function" 
+							href="can.Deferred.prototype.resolve.html" 
+							data-search="resolve">
+							resolve
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
 							href="can.Deferred.prototype.resolveWith.html" 
 							data-search="resolveWith">
 							resolveWith
@@ -501,6 +516,21 @@
 							href="can.delegate.html" 
 							data-search="can.delegate">
 							can.delegate
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.deparam.html" 
+							data-search="can.deparam">
+							can.deparam
 						</a>
 						
 					</li>
@@ -815,7 +845,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L699">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L664">source</a></li>
 		
 		
 			
@@ -842,12 +872,12 @@ always
 		</section>
 
 		<section class="description">
-			<p>Add a callback to be unconditionally called. </p>
+			<p>Add one or more callbacks to be unconditionally called when a Deferred is resolved or rejected. </p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>deferred.always(alwaysCallback)</h2>
+			<h2>deferred.always(alwaysCallbacks)</h2>
 <div class="signature-wrapper">
 
 
@@ -856,10 +886,10 @@ always
 	<ol class="parameters">
 		
 		<li class="parameter">
-			<h4>alwaysCallback
+			<h4>alwaysCallbacks
 				<code>{function()}</code></h4>
 			<div class="description">
-				<p>A callback to be called whether the Deferred is resolved or rejected.</p>
+				<p>A function, or an array of functions, to be called whether the Deferred is resolved or rejected.</p>
 			</div>
 			
 			
@@ -876,15 +906,19 @@ always
 		
 
 		
+		
+		
+		
 
 		
 		<section class="comment">
-			<p><code>deferred.always( alwaysCallbacks )</code> adds handler(s) to be called when the Deferred object is either resolved or rejected.</p>
+			<p><code>deferred.always( alwaysCallbacks )</code> adds one or more functions to be called when the Deferred object is either resolved or rejected.</p>
 
-<pre><code class="lang-javascript">var def = can.Deferred();
+<pre><code>var def = can.Deferred();
 def.always( function(){
     //- Called whether the handler fails or is success.
-});</code></pre>
+});
+</code></pre>
 		</section>
 		
 

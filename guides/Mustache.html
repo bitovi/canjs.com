@@ -95,8 +95,8 @@
 					<li class="search-container  ">
 						<a 	class="page" 
 							href="Constructs.html" 
-							data-search="Constructor Functions">
-							Constructor Functions
+							data-search="Constructor Classes">
+							Constructor Classes
 						</a>
 						
 					</li>
@@ -331,17 +331,22 @@ Mustache
 		
 
 		
+		
+		
+		
 
 		
 		<section class="comment">
-			<p><a href="../docs/can.Mustache.html">Mustache</a> provides logic-less templates that will live-bind to
-Observes. You can get Mustache functionality as a <a href="http://canjs.us/release/latest/can.view.mustache.js">plugin</a>
-for CanJS. Mustach and Handlebar templates are both compatible with CanJS's
-Mustache implementation, so you can reuse any existing templates you have.</p>
+			<p><a href="../docs/can.Mustache.html">Mustache</a> is a logic-less templating languages
+[which provide live binding when used with Observes. CanJS's Mustache
+implementation supports both <a href="http://mustache.github.io/">normal Mustache templates</a> 
+as well as the Handlebars extensions, allowing you to easily reuse
+templates that you've already written.</p>
 
-<p>Mustache is easy to get started with. Templates look like normal HTML, except
-they contain special tags for inserting data into the template, iterating
-through lists, and filtering blocks.</p>
+<p>Mustache templates are essentially straight HTML, except that they contain
+special tags used for injecting your data into the HTML. The number of ways
+you can inject data is limited by design for simplicity and maintainability,
+but can be enhanced through the use of helpers.</p>
 
 <p>Here's an example of a template that might render a list of Todos:</p>
 
@@ -351,7 +356,7 @@ through lists, and filtering blocks.</p>
 {{/todos}}
 &lt;/script></code></pre>
 
-<p>And you can use <code>can.view</code> to render the template:</p>
+<p>You can use <code>can.view</code> to render the template:</p>
 
 <pre><code class="lang-javascript">Todo.findAll({}, function(todos) {
     document.getElementById('list')
@@ -365,14 +370,14 @@ through lists, and filtering blocks.</p>
 <ul>
 <li><code>{{ }}</code> will HTML-escape the value enclosed inside the tags and write it to
 the template.</li>
-<li><code>{{{ }}}</code> will write the value enclosed inside the tags and write it directly
+<li><code>{{{ }}}</code> will write the value enclosed inside the tags directly
 to the template without escaping it.</li>
-<li><code>{{! }}</code> will write nothing to the template and is mostly used for comments.</li>
+<li><code>{{! }}</code> is a comment that writes nothing to the template.</li>
 </ul>
 
-<h3>Keys</h3>
+<h3>Variables</h3>
 
-<p>Keys insert data into the template. They reference variables in the current
+<p>Variable tags insert data into the template. They reference variables in the current
 context.</p>
 
 <p>This template:</p>
@@ -383,15 +388,15 @@ context.</p>
 
 <pre><code class="lang-javascript">{name: 'Alice'}</code></pre>
 
-<p>will render thusly:</p>
+<p>will render the following:</p>
 
 <pre><code class="lang-javascript">Name: Alice</code></pre>
 
 <h3>Sections</h3>
 
-<p>Sections contain text blocks and are conditionally rendered based on the value
-enclosed in the opening tag. They also change the context inside them to the
-key referenced in the opening tag.</p>
+<p>Sections contain text blocks and are conditionally rendered based on the
+variable enclosed in the opening tag. They also change the active context
+inside them to that of the variable referenced in the opening tag.</p>
 
 <p>For the following examples, we will assume the template is being populated with
 this set of data:</p>
@@ -403,7 +408,7 @@ this set of data:</p>
     enemies: []
 }</code></pre>
 
-<p>If the key is <code>undefined</code>, <code>null</code>, <code>false</code>, <code>''</code>, or <code>[]</code>, it is considered
+<p>If the variable is <code>undefined</code>, <code>null</code>, <code>false</code>, <code>''</code>, or <code>[]</code>, it is considered
 a falsey value and the section is not rendered at all. Neither of these sections
 will render:</p>
 
@@ -413,7 +418,7 @@ will render:</p>
 
 <pre><code class="lang-javascript">{{#nickname}}{{.}}{{/nickname}}</code></pre>
 
-<p>If the key is a non-empty array, the section will be rendered once for each
+<p>If the variable is a non-empty array, the section will be rendered once for each
 element in the array. If it is truthy but not an array, the section is rendered
 once.</p>
 
@@ -434,7 +439,7 @@ once.</p>
     &lt;li>Eve&lt;/li>
 &lt;/ul></code></pre>
 
-<p>You can also make inverted sections that render if the key referenced in the
+<p>You can also make inverted sections that render if the variable referenced in the
 opening tag is falsey:</p>
 
 <pre><code class="lang-javascript">&lt;ul>
@@ -449,14 +454,14 @@ opening tag is falsey:</p>
 <h3>Context</h3>
 
 <p>When Mustache is resolving an object in a section, it sets the current context
-to the object value for which it is iterating. (If the key in the opening tag
-of a section was not an array, it sets the context to the value of that key.)
+to the object value for which it is iterating. (If the variable in the opening tag
+of a section was not an array, it sets the context to the value of that variable.)
 You can reference the current context as <code>.</code>.</p>
 
 <p>Internally, Mustache keeps a stack of contexts as the template enters nested
-sections and helpers. If a key is not found in the current context, Mustache
+sections and helpers. If a variable is not found in the current context, Mustache
 will look for the the in each successive parent context until it resolves the
-key or runs out of parent contexts.</p>
+variable or runs out of parent contexts.</p>
 
 <p>For example, with this data:</p>
 
@@ -480,14 +485,15 @@ Eve
 Alice
 Eve</code></pre>
 
-<p>Since there is no <code>sisters</code> key in the context of the elements of the <code>brothers</code>
+<p>Since there is no <code>sisters</code> variable in the context of the elements of the <code>brothers</code>
 array, Mustache jumps up to the parent context and resolves <code>sisters</code> there.</p>
 
 <h2>Helpers</h2>
 
-<p>Mustache lets you register functions to be called from inside the template called
-helpers. Since Mustache template are logic-less, all your view logic will be
-inside helpers.</p>
+<p>Mustache lets you register functions to be called from inside the template
+called helpers. Since Mustache templates are logic-less, all of your view
+logic will either be manipulated outside of the template or it will be inside
+a helper.</p>
 
 <p>To use a helper that is local to the template you're rendering, pass it as the
 third argument to <code>can.view</code> in an object where the key is the name of the helper
@@ -538,7 +544,7 @@ name.attr({firstName: 'Allison', lastName: 'Wonderland'});</code></pre>
 <h3>Data helpers</h3>
 
 <p>You can use the <code>data</code> helper in Mustache to associate data to an element. This
-helper will associate the current context (<code>.</code>) with a key you pass to the
+helper will associate the current context (<code>.</code>) with a variable you pass to the
 helper.</p>
 
 <p>For example, this template:</p>
@@ -559,8 +565,8 @@ obj; // { firstName: 'Alice', lastName: 'Liddell'}</code></pre>
 
 <h2>Partials</h2>
 
-<p>You can embed templates in other templates by using partials. Partials inherit
-the context where they are called. They are evaluated at render time, so you
+<p>You can nest templates in other templates by using partials. Partials inherit
+the context from which they are called. They are evaluated at render time, so you
 should be careful to avoid infinite loops. To include a partial, put its URL or
 ID inside <code>{{&gt; }}</code>.</p>
 

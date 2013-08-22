@@ -441,7 +441,7 @@
 			
 				
 				
-					<li class="search-container  ">
+					<li class="search-container parent ">
 						<a 	class="page" 
 							href="can.Observe.setter.html" 
 							data-search="setter">
@@ -534,9 +534,11 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/observe/delegate/delegate.js#L327">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/observe/delegate/delegate.js#L224">source</a></li>
 		
 		
+			
+			<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/observe/delegate">download</a></li>
 			
 		
 		
@@ -547,10 +549,8 @@
 undelegate
 
 	
-		<span class="module">can.Observe.prototype.undelegate</span>
-	
 
-
+<span class="module">can/observe/delegate</span>
 </h1>
 
 <span class="inherits">&nbsp;</span>
@@ -565,16 +565,73 @@ undelegate
 		</section>
 
 		
-
-		
-
-		
-		<section class="comment">
-			<p><code>undelegate( selector, event, handler )</code> removes a delegated event handler from an observe.</p>
+		<section class="signature">
+			<h2>observe.undelegate( selector, event, handler )</h2>
+<div class="signature-wrapper">
+<p><code>undelegate( selector, event, handler )</code> removes a delegated event handler from an observe.</p>
 
 <pre><code>observe.undelegate("name","set", handler )
 </code></pre>
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>selector
+				<code>{String}</code></h4>
+			<div class="description">
+				<p>the attribute name of the object you want to undelegate from.</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>event
+				<code>{String}</code></h4>
+			<div class="description">
+				<p>the event name</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>handler
+				<code>{function()}</code></h4>
+			<div class="description">
+				<p>the callback handler</p>
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{<a href="can.Observe.html" >can.Observe</a>}</code></h4>
+		<div class="description">
+			<p>the observe for chaining</p>
+		</div>
+	</div>
+
+
+</div>
+
 		</section>
+		
+
+		
+		
+		
+		
+
 		
 
 		
