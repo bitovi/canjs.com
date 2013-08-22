@@ -1,29 +1,33 @@
 // Adapted from http://webdesignerwall.com/tutorials/html5-grayscale-image-hover
 
-var grayscale = function(src) {
+var grayscale = function(img) {
 	var canvas = document.createElement('canvas'),
 		ctx = canvas.getContext('2d'),
-		imgObj = new Image();
+		imgObj = new Image(),
+		src = img.src;
 	
+	imgObj.crossOrigin = 'Anonymous';
 	imgObj.src = src;
-	canvas.width = imgObj.width;
-	canvas.height = imgObj.height; 
-	
-	ctx.drawImage(imgObj, 0, 0); 
-	var imgPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+	imgObj.onload = function() {
+		canvas.width = imgObj.width;
+		canvas.height = imgObj.height; 
+		
+		ctx.drawImage(imgObj, 0, 0); 
+		var imgPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-	for(var y = 0; y < imgPixels.height; y++){
-		for(var x = 0; x < imgPixels.width; x++){
-			var i = (y * 4) * imgPixels.width + x * 4;
-			var avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
-			imgPixels.data[i] = avg; 
-			imgPixels.data[i + 1] = avg; 
-			imgPixels.data[i + 2] = avg;
+		for(var y = 0; y < imgPixels.height; y++){
+			for(var x = 0; x < imgPixels.width; x++){
+				var i = (y * 4) * imgPixels.width + x * 4;
+				var avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
+				imgPixels.data[i] = avg; 
+				imgPixels.data[i + 1] = avg; 
+				imgPixels.data[i + 2] = avg;
+			}
 		}
+		
+		ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height);	
+		img.src = canvas.toDataURL();
 	}
-	
-	ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height);
-	return canvas.toDataURL();
 };
 
 window.Grayscale = function(elements, fadeDuration) {
@@ -43,14 +47,14 @@ window.Grayscale = function(elements, fadeDuration) {
 		  .insertBefore(el)
 		  .queue(function(){
 			el.parent().css({
-				'width': this.width,
-				'height': this.height
+				'width': el.width(),
+				'height': el.height()
 			}).end()
 			.dequeue();
 		});
 
 		// replace the original with a greyscale version
-		this.src = grayscale(this.src);
+		grayscale(this);
 	});
 
 	elements.parent().mouseover(function() {

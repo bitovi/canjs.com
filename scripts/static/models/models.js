@@ -1,4 +1,5 @@
-steal("./activitySummary.js",
+steal("./app.js",
+  "./activitySummary.js",
 	"./chatLine.js",
 	"./configuration.js",
 	"./forumPost.js",

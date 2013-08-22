@@ -13,5 +13,6 @@ steal("./downloadCustomizer.js").then(
 	"./liveExample.js",
 	"./menu.js",
 	"./pluginsTab.js",
+	"./projectCarousel.js",
 	"./socialStats.js",
 	"./twitterTab.js")

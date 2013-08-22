@@ -44,7 +44,8 @@ steal("jquery","can","can/construct/super").then("./lib/lib.js","./models/models
 			'.cdn': 'CDNChooser',
 			'.download .customize': 'DownloadCustomizer',
 			'.communityTabs': 'CommunityTabs',
-			'.sidebar': 'Menu'
+			'.sidebar': 'Menu',
+			'.project-carousel': 'ProjectCarousel'
 		});
 
 		// Syntax highlighting
@@ -58,16 +59,4 @@ steal("jquery","can","can/construct/super").then("./lib/lib.js","./models/models
 
 		prettyPrint();
 	});
-
-	// feature-test for canvas
-	var canvas = !!((document.createElement('canvas')).getContext);
-
-	if(canvas) {
-		// this needs to wait until everything is loaded.
-		$(window).load(function() {
-
-			// Grayscaling for our featured apps.
-			Grayscale($('.carousel img'), 300);
-		});
-	}
 });

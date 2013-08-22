@@ -1,1 +1,1 @@
-steal("./grayscale.js","./moment.js")
+steal("./grayscale.js","./moment.js", "./scrollbox.js")

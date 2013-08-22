@@ -1,0 +1,12 @@
+<div class="carousel">
+  <ul class="list">
+    {{#each apps}}
+    <li {{data 'project'}}><a href="{{link}}"><img src="{{picture}}" height="110" width="158"></a></li>
+    {{/each}}
+  </ul>
+</div>
+<div class="content">
+<h2>{{current.title}}</h2>
+{{{current.body}}}
+<a class="button" href="{{current.link}}">{{current.title}}</a>
+</div>
