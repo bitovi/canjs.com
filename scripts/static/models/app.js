@@ -28,6 +28,12 @@ can.Model("Bitovi.OSS.App", {
         "url": "http://snowhit.com"
       },
       {
+        "title": "Spins.FM",
+        "image_url": "img/home-carousel/spinsfm.jpg",
+        "body": "<p>A CanJS application that allows fans to request their favorite artist on the radio, via Facebook and Twitter.</p>",
+        "url": "http://spins.fm"
+      },
+      {
         "title": "Laureate.net",
         "image_url": "img/home-carousel/laureate.jpg",
         "body": "<p>A leading international network of quality, innovative institutions of higher education. Laureate International Universities wrote their portal page with CanJS.</p>",
@@ -38,12 +44,6 @@ can.Model("Bitovi.OSS.App", {
         "image_url": "img/home-carousel/bootswatchr.jpg",
         "body": "<p>ThemeRoller for Twitter Bootstrap built on CanJS.</p>",
         "url": "http://bootswatchr.com"
-      },
-      {
-        "title": "Laureate.net",
-        "image_url": "img/home-carousel/laureate.jpg",
-        "body": "<p>Some body.</p>",
-        "url": "http://global.laureate.net"
       }/*,
       {
         "title": "Bootswatchr",

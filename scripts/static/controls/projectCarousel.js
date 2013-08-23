@@ -39,8 +39,8 @@ can.Control('Bitovi.OSS.ProjectCarousel', {
     }, this));
   },
 
-  '.carousel move': function(el, ev) {
-    this.showProject(el.find('li:first'), ev);
+  '.carousel moving': function(el, ev) {
+    this.showProject(el.find('li:eq(1)'), ev);
   },
 
 //  'li mouseenter': 'showProject',
