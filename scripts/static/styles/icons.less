@@ -1,20 +1,22 @@
 @font-face {
-	font-family: 'Bitstrap';
-	src: url("../fonts/bitstrapregular.eot");
-	font-weight: normal;
-	font-style: normal;
-}
-@font-face {
   font-family: 'Bitstrap';
-  src: url("../fonts/bitstrapregular.eot"),
-         url("../fonts/bitstrapregular.eot?#iefix") format("embedded-opentype"),
-         url("../fonts/bitstrapregular.ttf") format("truetype"), 
-         url("../fonts/Bitstrap-Regular.otf") format("otf");
+  src: url("../fonts/bitstrapregular.eot");
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+    font-family: 'Bitstrap';
+    src: url('../fonts/bitstrapregular.eot');
+    src: url('../fonts/bitstrapregular.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/bitstrapregular.ttf') format('truetype'),
+         url("../fonts/Bitstrap-Regular.otf") format("otf");
+    font-weight: normal;
+    font-style: normal;
+
+}
 [class^="icon-"],
-[class*=" icon-"] {
+[class*=" icon-"],
+.icon-font {
   font-family: Bitstrap;
   font-weight: normal;
   font-style: normal;
@@ -37,7 +39,7 @@
 
 .icon-breakout:before                { content: "\e000"; }
 .icon-menudown:before                { content: "\e001"; }
-.icon-bits:before                { content: "\e002"; }
+.icon-bits:before                { content: "\e002"; position:relative; left: -5px; }
 .icon-twitter:before               { content: "\e003"; }
 .icon-canjs:before               { content: "\e004"; }
 .icon-app:before               { content: "\e005"; }
@@ -82,7 +84,14 @@
 .icon-download:before               { content: "\e044"; }
 .icon-list:before               { content: "\e045"; }
 .icon-play:before               { content: "\e046"; }
-
+.icon-wizard-first:before               { content: "\e047"; }
+.icon-wizard:before               { content: "\e048"; }
+.icon-wizard-last:before               { content: "\e049"; }
+.icon-check:before               { content: "\e050"; }
+.icon-jmvc:before               { content: "\e052"; }
+.icon-funcunit:before               { content: "\e053"; }
+.icon-browsertest:before               { content: "\e054"; }
+.icon-arrow:before               { content: "\e055"; }
 
 /* Default */
 .arrow:before { 

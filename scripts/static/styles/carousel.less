@@ -1,32 +1,83 @@
-.projects .button {
-	margin-top: 10px;
-}
-.carousel {
-	overflow: hidden;
+.projects.header {
 	position: relative;
 }
-.carousel .list {
-	height: 130px;
-	margin: 0;
-	list-style-type: none;
-	padding: 0;
-	text-align: left;
-	width: 2000px;
+.project-carousel.projects {
+	.button {
+		margin-top: 10px;
+	}
+	.content {
+		text-align: left;
+		min-height: 125px;
+		
+		.center {
+			text-align: center;
+			margin: 0;
+		}
+		
+		h2 {
+			font: 30px/33px LatoBold;
+			text-align: left;
+			text-transform: none;
+			color: @colorLinks;
+		}
+		p {
+			text-align: left;
+		}
+		.button {
+			background-color: @color;
+			border-color: darken(@color, 10%);
+			text-transform: uppercase;
+
+			&:hover {
+				background-color: darken(@color, 10%);
+			}
+			.icon-arrow {
+				font-size: 140%;
+				margin-left: 5px;
+				line-height: 14px;
+			}
+		}
+	}
+	.carousel {
+		overflow: hidden;
+		position: relative;
+		
+		.list {
+			height: 130px;
+			margin: 0;
+			list-style-type: none;
+			padding: 0;
+			text-align: left;
+			width: 2000px;
+		}
+		li {
+			display: inline-block;
+			margin-left: 30px;
+			
+			&:first-child {
+				margin-left: 0px;
+			}
+			a {
+				font-size: 18px;
+				line-height: 24px;
+				text-decoration: none;
+				display: block;
+				width: 200px;
+			}
+			div {
+				margin-top: 4px;
+			}
+		}
+		
+	}
+	
 }
-.carousel li {
-	display: inline-block;
-	margin-left: 30px;
+.button.add-your-app {
+	position: absolute;
+	top: 10px;
+	right: 0;
 }
-.carousel li:first-child {
-	margin-left: 0px;
-}
-.carousel li a {
-	font-size: 18px;
-	line-height: 24px;
-	text-decoration: none;
-	display: block;
-	width: 200px;
-}
+
 .carousel li img, .carousel li a canvas.gsCanvas {
 	display: block;
 	border: 3px solid @color;
@@ -43,9 +94,7 @@
 .gsWrapper, .carousel li a canvas.gsCanvas {
 	display: block;
 }
-.carousel li div {
-	margin-top: 4px;
-}
-.index .carousel li a {
+ 
+.index .project-carousel.projects .carousel li a {
 	width: 163px;
 }
