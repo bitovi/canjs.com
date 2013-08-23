@@ -38,13 +38,13 @@ can.Model("Bitovi.OSS.App", {
         "image_url": "img/home-carousel/bootswatchr.jpg",
         "body": "<p>ThemeRoller for Twitter Bootstrap built on CanJS.</p>",
         "url": "http://bootswatchr.com"
-      }/*,
+      },
       {
         "title": "Laureate.net",
         "image_url": "img/home-carousel/laureate.jpg",
         "body": "<p>Some body.</p>",
         "url": "http://global.laureate.net"
-      },
+      }/*,
       {
         "title": "Bootswatchr",
         "image_url": "img/home-carousel/bootswatchr.jpg",
@@ -59,7 +59,7 @@ can.Model("Bitovi.OSS.App", {
     return dfd;
   }
   // findAll: {
-  //   url: './models/data/app.json',
-  //   dataType: 'json'
+  // url: Bitovi.URL.BITHUB + '?category=app&order=upvotes:desc&limit={limit}',
+  // dataType: 'json'
   // }
 }, { });

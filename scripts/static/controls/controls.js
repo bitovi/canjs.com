@@ -15,4 +15,9 @@ steal("./downloadCustomizer.js").then(
 	"./pluginsTab.js",
 	"./projectCarousel.js",
 	"./socialStats.js",
+	"./thinCommunityTabs.js",
+	"./thinArticlesTab.js",
+	"./thinPluginsTab.js",
+	"./thinForumsTab.js",
+	"./thinGithubTab.js",
 	"./twitterTab.js")

@@ -8,7 +8,7 @@ can.Model("Bitovi.OSS.Plugin", {
 		return data;
 	},
 	findAll: {
-		url: Bitovi.URL.BITHUB + '?category=article|app|plugin&order=upvotes:desc&limit={limit}',
+		url: Bitovi.URL.BITHUB + '?category={category}&order=upvotes:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });

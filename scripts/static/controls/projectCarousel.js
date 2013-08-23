@@ -26,10 +26,7 @@ can.Control('Bitovi.OSS.ProjectCarousel', {
         link: apps[0].link
       });
 
-      this.element.html(can.view(this.options.view, {
-        apps: this.state.attr('apps'),
-        current: this.state.attr('current')
-      }));
+      this.element.html(can.view(this.options.view, this.state));
 
       this.element.find('.carousel').scrollbox({
         direction: 'h',
@@ -46,19 +43,27 @@ can.Control('Bitovi.OSS.ProjectCarousel', {
     this.showProject(el.find('li:first'), ev);
   },
 
-  'li mouseenter': 'showProject',
+//  'li mouseenter': 'showProject',
+
+  'a click': function(el, ev) {
+    el = el.closest('li');
+    this.showProject(el, ev);
+    return false;
+  },
 
   showProject: function(el, ev) {
     var project = el.data('project'),
       self = this;
 
-    this.element.find('.content').fadeOut(function() {
-      self.current.removeClass('current');
-      self.current = el.addClass('current');
-      self.state.attr('current.title', project.title);
-      self.state.attr('current.body', project.body);
-      self.state.attr('current.link', project.link);
-      $(this).fadeIn();
-    });
+    if(!el.hasClass('current')) {
+      this.element.find('.content').fadeOut(function() {
+        self.current.removeClass('current');
+        self.current = el.addClass('current');
+        self.state.attr('current.title', project.title);
+        self.state.attr('current.body', project.body);
+        self.state.attr('current.link', project.link);
+        $(this).fadeIn();
+      });
+    }
   }
 })

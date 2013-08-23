@@ -1,5 +1,6 @@
 steal("./app.js",
   "./activitySummary.js",
+  "./article.js",
 	"./chatLine.js",
 	"./configuration.js",
 	"./forumPost.js",

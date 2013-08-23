@@ -46,6 +46,7 @@ $.fn.scrollbox = function(config) {
       container.hover(function() {
         paused = true;
       }, function() {
+        resetClock();
         paused = false;
       })
     }

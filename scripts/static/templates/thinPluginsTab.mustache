@@ -1,0 +1,16 @@
+<div class="tab-description plugins">
+  <div class="pull-right">
+    <a href="http://bithub.com/plugin/" class="button">+ New Plugin</a>
+  </div><!-- categories -->
+  <div class="posts">
+    <div class="bithub-content">
+      {{#plugins}}
+        <div>
+        <h2><a href={{link}}>{{title}}</a></h2>
+        {{{body}}}
+        </div>
+      {{/plugins}}
+    </div>
+  </div>
+  <br class="clear" />
+</div>

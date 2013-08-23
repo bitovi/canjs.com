@@ -1,0 +1,16 @@
+<div class="tab-description articles">
+  <div class="pull-right">
+    <a href="http://bithub.com/article/" class="button">+ New Article</a>
+  </div><!-- categories -->
+  <div class="posts">
+    <div class="bithub-content">
+      {{#articles}}
+        <div>
+        <h2><a href={{link}}>{{title}}</a></h2>
+        {{{body}}}
+        </div>
+      {{/articles}}
+    </div>
+  </div>
+  <br class="clear" />
+</div>

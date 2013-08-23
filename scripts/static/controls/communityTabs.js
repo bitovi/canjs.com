@@ -23,7 +23,7 @@ can.Control('Bitovi.OSS.CommunityTabs', {
 		Bitovi.OSS.ChatLine.findAll({limit: 30}).done(function(lines) {
 			self.state.attr('lines', lines);
 		});
-		Bitovi.OSS.Plugin.findAll({limit: 6}).done(function(plugins) {
+		Bitovi.OSS.Plugin.findAll({category: 'article|app|plugin', limit: 6}).done(function(plugins) {
 			self.state.attr('plugins', plugins);
 		});
 		// Missing counts for plugins/apps/articles
