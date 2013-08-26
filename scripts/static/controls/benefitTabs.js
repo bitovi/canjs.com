@@ -25,7 +25,7 @@ can.Control('Bitovi.OSS.Benefits', {
 	init: function() {
 		this.active = this.element.find("li.active")
 	},
-	'li mouseover': function(el, ev) {
+	'li mouseenter': function(el, ev) {
 		// hide old
 		var name = this.active.removeClass("active").data("benefit");
 		this.element.find("div."+name).hide();
@@ -33,5 +33,8 @@ can.Control('Bitovi.OSS.Benefits', {
 		name = el.addClass("active").data("benefit")
 		this.element.find("div."+name).show();
 		this.active = el;
+	},
+	'li mouseleave': function(el, ev) {
+		this.active.removeClass("active");
 	}
 });
