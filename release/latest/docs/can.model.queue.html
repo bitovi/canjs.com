@@ -19,6 +19,11 @@
           <div id="jump_page">
             
               
+              <a class="source" href="can.construct.proxy.html">
+                can.construct.proxy.js
+              </a>
+            
+              
               <a class="source" href="can.construct.super.html">
                 can.construct.super.js
               </a>
@@ -157,20 +162,20 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="comment">/*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 29 May 2013 18:59:28 GMT
+ * Wed, 24 Jul 2013 00:23:53 GMT
  * Licensed MIT
  * Includes: can/model/queue
  * Download from: http://canjs.com
  */</span>
 (<span class="keyword">function</span>(can) {
 
-        <span class="keyword">var</span> cleanAttrs = <span class="keyword">function</span>(changedAttrs, attrs) {
-            <span class="keyword">var</span> newAttrs = can.extend(<span class="literal">true</span>, {}, attrs),
-                attr, current, path;
-            <span class="keyword">if</span> (changedAttrs) {</pre></div></div>
+    <span class="keyword">var</span> cleanAttrs = <span class="keyword">function</span>(changedAttrs, attrs) {
+        <span class="keyword">var</span> newAttrs = can.extend(<span class="literal">true</span>, {}, attrs),
+            attr, current, path;
+        <span class="keyword">if</span> (changedAttrs) {</pre></div></div>
             
         </li>
         
@@ -187,28 +192,28 @@ request batch</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; changedAttrs.length; i++) {
-                    current = newAttrs;
-                    path = changedAttrs[i].split(<span class="string">'.'</span>);
-                    <span class="keyword">while</span> (path.length &gt; <span class="number">1</span>) {
-                        current = current &amp;&amp; current[path.shift()];
-                    }
-                    current &amp;&amp; <span class="keyword">delete</span> current[path.shift()];
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; changedAttrs.length; i++) {
+                current = newAttrs;
+                path = changedAttrs[i].split(<span class="string">'.'</span>);
+                <span class="keyword">while</span> (path.length &gt; <span class="number">1</span>) {
+                    current = current &amp;&amp; current[path.shift()];
                 }
+                current &amp;&amp; <span class="keyword">delete</span> current[path.shift()];
             }
-            <span class="keyword">return</span> newAttrs;
-        },
-            queueRequests = <span class="keyword">function</span>(success, error, method, callback) {
-                <span class="keyword">this</span>._changedAttrs = <span class="keyword">this</span>._changedAttrs || [];
+        }
+        <span class="keyword">return</span> newAttrs;
+    },
+        queueRequests = <span class="keyword">function</span>(success, error, method, callback) {
+            <span class="keyword">this</span>._changedAttrs = <span class="keyword">this</span>._changedAttrs || [];
 
-                <span class="keyword">var</span> def = <span class="keyword">new</span> can.Deferred,
-                    self = <span class="keyword">this</span>,
-                    attrs = <span class="keyword">this</span>.attr(),
-                    queue = <span class="keyword">this</span>._requestQueue,
-                    changedAttrs = <span class="keyword">this</span>._changedAttrs,
-                    reqFn, index;
+            <span class="keyword">var</span> def = <span class="keyword">new</span> can.Deferred,
+                self = <span class="keyword">this</span>,
+                attrs = <span class="keyword">this</span>.attr(),
+                queue = <span class="keyword">this</span>._requestQueue,
+                changedAttrs = <span class="keyword">this</span>._changedAttrs,
+                reqFn, index;
 
-                reqFn = (<span class="keyword">function</span>(self, type, success, error) {</pre></div></div>
+            reqFn = (<span class="keyword">function</span>(self, type, success, error) {</pre></div></div>
             
         </li>
         
@@ -223,7 +228,7 @@ request batch</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        <span class="keyword">return</span> <span class="keyword">function</span>() {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">return</span> <span class="keyword">function</span>() {</pre></div></div>
             
         </li>
         
@@ -240,9 +245,9 @@ when request is ran</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                            <span class="keyword">return</span> self.constructor._makeRequest([self, attrs], type || (self.isNew() ? <span class="string">'create'</span> : <span class="string">'update'</span>), success, error, callback)
-                        }
-                    })(<span class="keyword">this</span>, method, <span class="keyword">function</span>() {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">return</span> self.constructor._makeRequest([self, attrs], type || (self.isNew() ? <span class="string">'create'</span> : <span class="string">'update'</span>), success, error, callback)
+                }
+            })(<span class="keyword">this</span>, method, <span class="keyword">function</span>() {</pre></div></div>
             
         </li>
         
@@ -257,7 +262,7 @@ when request is ran</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        def.resolveWith(self, arguments);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                def.resolveWith(self, arguments);</pre></div></div>
             
         </li>
         
@@ -272,8 +277,8 @@ when request is ran</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        queue.splice(<span class="number">0</span>, <span class="number">1</span>);
-                        <span class="keyword">if</span> (queue.length &gt; <span class="number">0</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                queue.splice(<span class="number">0</span>, <span class="number">1</span>);
+                <span class="keyword">if</span> (queue.length &gt; <span class="number">0</span>) {</pre></div></div>
             
         </li>
         
@@ -290,8 +295,8 @@ can access it&#39;s <code>abort</code> function</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                            queue[<span class="number">0</span>] = queue[<span class="number">0</span>]();
-                        } <span class="keyword">else</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    queue[<span class="number">0</span>] = queue[<span class="number">0</span>]();
+                } <span class="keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -306,10 +311,10 @@ can access it&#39;s <code>abort</code> function</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                            changedAttrs.splice(<span class="number">0</span>);
-                        }
+            <div class="content"><div class='highlight'><pre>                    changedAttrs.splice(<span class="number">0</span>);
+                }
 
-                    }, <span class="keyword">function</span>() {</pre></div></div>
+            }, <span class="keyword">function</span>() {</pre></div></div>
             
         </li>
         
@@ -324,7 +329,7 @@ can access it&#39;s <code>abort</code> function</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        def.rejectWith(self, arguments);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                def.rejectWith(self, arguments);</pre></div></div>
             
         </li>
         
@@ -339,7 +344,7 @@ can access it&#39;s <code>abort</code> function</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        queue.splice(<span class="number">0</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                queue.splice(<span class="number">0</span>);</pre></div></div>
             
         </li>
         
@@ -354,8 +359,8 @@ can access it&#39;s <code>abort</code> function</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        changedAttrs.splice(<span class="number">0</span>);
-                    })</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                changedAttrs.splice(<span class="number">0</span>);
+            })</pre></div></div>
             
         </li>
         
@@ -370,7 +375,7 @@ can access it&#39;s <code>abort</code> function</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                index = queue.push(reqFn) - <span class="number">1</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            index = queue.push(reqFn) - <span class="number">1</span>;</pre></div></div>
             
         </li>
         
@@ -386,7 +391,7 @@ it immediately.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (queue.length === <span class="number">1</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (queue.length === <span class="number">1</span>) {</pre></div></div>
             
         </li>
         
@@ -403,11 +408,11 @@ can access it&#39;s <code>abort</code> function</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    queue[<span class="number">0</span>] = queue[<span class="number">0</span>]();
-                }
+            <div class="content"><div class='highlight'><pre>                queue[<span class="number">0</span>] = queue[<span class="number">0</span>]();
+            }
 
-                def.abort = <span class="keyword">function</span>() {
-                    <span class="keyword">var</span> abort;</pre></div></div>
+            def.abort = <span class="keyword">function</span>() {
+                <span class="keyword">var</span> abort;</pre></div></div>
             
         </li>
         
@@ -424,7 +429,7 @@ also all subsequent requests should be removed too</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    abort = queue[index].abort &amp;&amp; queue[index].abort();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                abort = queue[index].abort &amp;&amp; queue[index].abort();</pre></div></div>
             
         </li>
         
@@ -439,7 +444,7 @@ also all subsequent requests should be removed too</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    queue.splice(index);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                queue.splice(index);</pre></div></div>
             
         </li>
         
@@ -455,11 +460,11 @@ the changed attributes array</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (queue.length === <span class="number">0</span>) {
-                        changedAttrs.splice(<span class="number">0</span>);
-                    }
-                    <span class="keyword">return</span> abort;
-                }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (queue.length === <span class="number">0</span>) {
+                    changedAttrs.splice(<span class="number">0</span>);
+                }
+                <span class="keyword">return</span> abort;
+            }</pre></div></div>
             
         </li>
         
@@ -475,20 +480,20 @@ error functions</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                def.then(success, error);
+            <div class="content"><div class='highlight'><pre>            def.then(success, error);
 
-                <span class="keyword">return</span> def;
-            },
-            _changes = can.Model.prototype._changes,
-            destroyFn = can.Model.prototype.destroy,
-            setupFn = can.Model.prototype.setup;
+            <span class="keyword">return</span> def;
+        },
+        _changes = can.Model.prototype._changes,
+        destroyFn = can.Model.prototype.destroy,
+        setupFn = can.Model.prototype.setup;
 
-        can.each([<span class="string">"created"</span>, <span class="string">"updated"</span>, <span class="string">"destroyed"</span>], <span class="keyword">function</span>(fn) {
-                <span class="keyword">var</span> prototypeFn = can.Model.prototype[fn];
+    can.each([<span class="string">"created"</span>, <span class="string">"updated"</span>, <span class="string">"destroyed"</span>], <span class="keyword">function</span>(fn) {
+        <span class="keyword">var</span> prototypeFn = can.Model.prototype[fn];
 
-                can.Model.prototype[fn] = <span class="keyword">function</span>(attrs) {
-                    <span class="keyword">if</span> (attrs &amp;&amp; <span class="keyword">typeof</span> attrs == <span class="string">'object'</span>) {
-                        attrs = attrs.attr ? attrs.attr() : attrs;</pre></div></div>
+        can.Model.prototype[fn] = <span class="keyword">function</span>(attrs) {
+            <span class="keyword">if</span> (attrs &amp;&amp; <span class="keyword">typeof</span> attrs == <span class="string">'object'</span>) {
+                attrs = attrs.attr ? attrs.attr() : attrs;</pre></div></div>
             
         </li>
         
@@ -505,9 +510,9 @@ if API returns error</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        <span class="keyword">this</span>._backupStore = attrs;
-                        attrs = cleanAttrs(<span class="keyword">this</span>._changedAttrs || [], attrs);
-                    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">this</span>._backupStore = attrs;
+                attrs = cleanAttrs(<span class="keyword">this</span>._changedAttrs || [], attrs);
+            }</pre></div></div>
             
         </li>
         
@@ -522,16 +527,16 @@ if API returns error</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    prototypeFn.call(<span class="keyword">this</span>, attrs);
-                }
-            })
+            <div class="content"><div class='highlight'><pre>            prototypeFn.call(<span class="keyword">this</span>, attrs);
+        }
+    })
 
-        can.extend(can.Model.prototype, {
-                setup: <span class="keyword">function</span>() {
-                    setupFn.apply(<span class="keyword">this</span>, arguments);
-                    <span class="keyword">this</span>._requestQueue = <span class="keyword">new</span> can.Observe.List;
-                },
-                _changes: <span class="keyword">function</span>(ev, attr, how, newVal, oldVal) {</pre></div></div>
+    can.extend(can.Model.prototype, {
+            setup: <span class="keyword">function</span>() {
+                setupFn.apply(<span class="keyword">this</span>, arguments);
+                <span class="keyword">this</span>._requestQueue = <span class="keyword">new</span> can.Observe.List;
+            },
+            _changes: <span class="keyword">function</span>(ev, attr, how, newVal, oldVal) {</pre></div></div>
             
         </li>
         
@@ -546,12 +551,12 @@ if API returns error</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">this</span>._changedAttrs &amp;&amp; <span class="keyword">this</span>._changedAttrs.push(attr);
-                    _changes.apply(<span class="keyword">this</span>, arguments);
-                },
-                hasQueuedRequests: <span class="keyword">function</span>() {
-                    <span class="keyword">return</span> <span class="keyword">this</span>._requestQueue.attr(<span class="string">'length'</span>) &gt; <span class="number">1</span>;
-                },</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">this</span>._changedAttrs &amp;&amp; <span class="keyword">this</span>._changedAttrs.push(attr);
+                _changes.apply(<span class="keyword">this</span>, arguments);
+            },
+            hasQueuedRequests: <span class="keyword">function</span>() {
+                <span class="keyword">return</span> <span class="keyword">this</span>._requestQueue.attr(<span class="string">'length'</span>) &gt; <span class="number">1</span>;
+            },</pre></div></div>
             
         </li>
         
@@ -566,11 +571,11 @@ if API returns error</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                save: <span class="keyword">function</span>() {
-                    <span class="keyword">return</span> queueRequests.apply(<span class="keyword">this</span>, arguments);
-                },
-                destroy: <span class="keyword">function</span>(success, error) {
-                    <span class="keyword">if</span> (<span class="keyword">this</span>.isNew()) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            save: <span class="keyword">function</span>() {
+                <span class="keyword">return</span> queueRequests.apply(<span class="keyword">this</span>, arguments);
+            },
+            destroy: <span class="keyword">function</span>(success, error) {
+                <span class="keyword">if</span> (<span class="keyword">this</span>.isNew()) {</pre></div></div>
             
         </li>
         
@@ -585,14 +590,14 @@ if API returns error</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        <span class="keyword">return</span> destroyFn.call(<span class="keyword">this</span>, success, error);
-                    }
-                    <span class="keyword">return</span> queueRequests.call(<span class="keyword">this</span>, success, error, <span class="string">'destroy'</span>, <span class="string">'destroyed'</span>);
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">return</span> destroyFn.call(<span class="keyword">this</span>, success, error);
                 }
-            })
+                <span class="keyword">return</span> queueRequests.call(<span class="keyword">this</span>, success, error, <span class="string">'destroy'</span>, <span class="string">'destroyed'</span>);
+            }
+        })
 
-        <span class="keyword">return</span> can;
-    })(can);</pre></div></div>
+    <span class="keyword">return</span> can;
+})(can);</pre></div></div>
             
         </li>
         

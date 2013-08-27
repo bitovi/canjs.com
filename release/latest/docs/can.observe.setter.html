@@ -19,6 +19,11 @@
           <div id="jump_page">
             
               
+              <a class="source" href="can.construct.proxy.html">
+                can.construct.proxy.js
+              </a>
+            
+              
               <a class="source" href="can.construct.super.html">
                 can.construct.super.js
               </a>
@@ -157,17 +162,17 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="comment">/*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 29 May 2013 18:59:29 GMT
+ * Wed, 24 Jul 2013 00:23:54 GMT
  * Licensed MIT
  * Includes: can/observe/setter
  * Download from: http://canjs.com
  */</span>
 (<span class="keyword">function</span>(can) {
 
-        can.classize = <span class="keyword">function</span>(s, join) {</pre></div></div>
+    can.classize = <span class="keyword">function</span>(s, join) {</pre></div></div>
             
         </li>
         
@@ -183,20 +188,20 @@ used for getter setter</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> parts = s.split(can.undHash),
-                i = <span class="number">0</span>;
-            <span class="keyword">for</span> (; i &lt; parts.length; i++) {
-                parts[i] = can.capitalize(parts[i]);
-            }
-
-            <span class="keyword">return</span> parts.join(join || <span class="string">''</span>);
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> parts = s.split(can.undHash),
+            i = <span class="number">0</span>;
+        <span class="keyword">for</span> (; i &lt; parts.length; i++) {
+            parts[i] = can.capitalize(parts[i]);
         }
 
-        <span class="keyword">var</span> classize = can.classize,
-            proto = can.Observe.prototype,
-            old = proto.__set;
+        <span class="keyword">return</span> parts.join(join || <span class="string">''</span>);
+    }
 
-        proto.__set = <span class="keyword">function</span>(prop, value, current, success, error) {</pre></div></div>
+    <span class="keyword">var</span> classize = can.classize,
+        proto = can.Observe.prototype,
+        old = proto.__set;
+
+    proto.__set = <span class="keyword">function</span>(prop, value, current, success, error) {</pre></div></div>
             
         </li>
         
@@ -211,10 +216,10 @@ used for getter setter</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> cap = classize(prop),
-                setName = <span class="string">"set"</span> + cap,
-                errorCallback = <span class="keyword">function</span>(errors) {
-                    <span class="keyword">var</span> stub = error &amp;&amp; error.call(self, errors);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> cap = classize(prop),
+            setName = <span class="string">"set"</span> + cap,
+            errorCallback = <span class="keyword">function</span>(errors) {
+                <span class="keyword">var</span> stub = error &amp;&amp; error.call(self, errors);</pre></div></div>
             
         </li>
         
@@ -231,13 +236,13 @@ the event twice. :)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (stub !== <span class="literal">false</span>) {
-                        can.trigger(self, <span class="string">"error"</span>, [prop, errors], <span class="literal">true</span>);
-                    }
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (stub !== <span class="literal">false</span>) {
+                    can.trigger(self, <span class="string">"error"</span>, [prop, errors], <span class="literal">true</span>);
+                }
 
-                    <span class="keyword">return</span> <span class="literal">false</span>;
-                },
-                self = <span class="keyword">this</span>;</pre></div></div>
+                <span class="keyword">return</span> <span class="literal">false</span>;
+            },
+            self = <span class="keyword">this</span>;</pre></div></div>
             
         </li>
         
@@ -252,7 +257,7 @@ the event twice. :)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (<span class="keyword">this</span>[setName] &amp;&amp;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (<span class="keyword">this</span>[setName] &amp;&amp;</pre></div></div>
             
         </li>
         
@@ -269,19 +274,19 @@ do not call update property and return right away</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                (value = <span class="keyword">this</span>[setName](value, <span class="keyword">function</span>(value) {
-                            old.call(self, prop, value, current, success, errorCallback)
-                        },
-                        errorCallback)) === <span class="literal">undefined</span>) {
-                <span class="keyword">return</span>;
-            }
+            <div class="content"><div class='highlight'><pre>            (value = <span class="keyword">this</span>[setName](value, <span class="keyword">function</span>(value) {
+                        old.call(self, prop, value, current, success, errorCallback)
+                    },
+                    errorCallback)) === <span class="literal">undefined</span>) {
+            <span class="keyword">return</span>;
+        }
 
-            old.call(self, prop, value, current, success, errorCallback);
+        old.call(self, prop, value, current, success, errorCallback);
 
-            <span class="keyword">return</span> <span class="keyword">this</span>;
-        };
-        <span class="keyword">return</span> can.Observe;
-    })(can);</pre></div></div>
+        <span class="keyword">return</span> <span class="keyword">this</span>;
+    };
+    <span class="keyword">return</span> can.Observe;
+})(can);</pre></div></div>
             
         </li>
         

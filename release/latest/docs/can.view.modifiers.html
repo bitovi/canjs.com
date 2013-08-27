@@ -19,6 +19,11 @@
           <div id="jump_page">
             
               
+              <a class="source" href="can.construct.proxy.html">
+                can.construct.proxy.js
+              </a>
+            
+              
               <a class="source" href="can.construct.super.html">
                 can.construct.super.js
               </a>
@@ -157,10 +162,10 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="comment">/*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 29 May 2013 18:59:29 GMT
+ * Wed, 24 Jul 2013 00:23:54 GMT
  * Licensed MIT
  * Includes: can/view/modifiers
  * Download from: http://canjs.com
@@ -181,7 +186,7 @@ converts jquery functions to use views    </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> convert, modify, isTemplate, isHTML, isDOM, getCallback,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> convert, modify, isTemplate, isHTML, isDOM, getCallback,</pre></div></div>
             
         </li>
         
@@ -196,12 +201,12 @@ converts jquery functions to use views    </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            noHookup = {
-                <span class="string">'val'</span>: <span class="literal">true</span>,
-                <span class="string">'text'</span>: <span class="literal">true</span>
-            };
+            <div class="content"><div class='highlight'><pre>        noHookup = {
+            <span class="string">'val'</span>: <span class="literal">true</span>,
+            <span class="string">'text'</span>: <span class="literal">true</span>
+        };
 
-        convert = <span class="keyword">function</span>(func_name) {</pre></div></div>
+    convert = <span class="keyword">function</span>(func_name) {</pre></div></div>
             
         </li>
         
@@ -216,7 +221,7 @@ converts jquery functions to use views    </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> old = $.fn[func_name];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> old = $.fn[func_name];</pre></div></div>
             
         </li>
         
@@ -231,13 +236,13 @@ converts jquery functions to use views    </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            $.fn[func_name] = <span class="keyword">function</span>() {
+            <div class="content"><div class='highlight'><pre>        $.fn[func_name] = <span class="keyword">function</span>() {
 
-                <span class="keyword">var</span> args = can.makeArray(arguments),
-                    callbackNum,
-                    callback,
-                    self = <span class="keyword">this</span>,
-                    result;</pre></div></div>
+            <span class="keyword">var</span> args = can.makeArray(arguments),
+                callbackNum,
+                callback,
+                self = <span class="keyword">this</span>,
+                result;</pre></div></div>
             
         </li>
         
@@ -254,12 +259,12 @@ modify with the result</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (can.isDeferred(args[<span class="number">0</span>])) {
-                    args[<span class="number">0</span>].done(<span class="keyword">function</span>(res) {
-                            modify.call(self, [res], old);
-                        })
-                    <span class="keyword">return</span> <span class="keyword">this</span>;
-                }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (can.isDeferred(args[<span class="number">0</span>])) {
+                args[<span class="number">0</span>].done(<span class="keyword">function</span>(res) {
+                    modify.call(self, [res], old);
+                })
+                <span class="keyword">return</span> <span class="keyword">this</span>;
+            }</pre></div></div>
             
         </li>
         
@@ -274,7 +279,7 @@ modify with the result</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">else</span> <span class="keyword">if</span> (isTemplate(args)) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">else</span> <span class="keyword">if</span> (isTemplate(args)) {</pre></div></div>
             
         </li>
         
@@ -289,15 +294,15 @@ modify with the result</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> ((callbackNum = getCallback(args))) {
-                        callback = args[callbackNum];
-                        args[callbackNum] = <span class="keyword">function</span>(result) {
-                            modify.call(self, [result], old);
-                            callback.call(self, result);
-                        };
-                        can.view.apply(can.view, args);
-                        <span class="keyword">return</span> <span class="keyword">this</span>;
-                    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> ((callbackNum = getCallback(args))) {
+                    callback = args[callbackNum];
+                    args[callbackNum] = <span class="keyword">function</span>(result) {
+                        modify.call(self, [result], old);
+                        callback.call(self, result);
+                    };
+                    can.view.apply(can.view, args);
+                    <span class="keyword">return</span> <span class="keyword">this</span>;
+                }</pre></div></div>
             
         </li>
         
@@ -312,7 +317,7 @@ modify with the result</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    result = can.view.apply(can.view, args);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                result = can.view.apply(can.view, args);</pre></div></div>
             
         </li>
         
@@ -327,7 +332,7 @@ modify with the result</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (!can.isDeferred(result)) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (!can.isDeferred(result)) {</pre></div></div>
             
         </li>
         
@@ -342,8 +347,8 @@ modify with the result</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        args = [result];
-                    } <span class="keyword">else</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    args = [result];
+                } <span class="keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -358,16 +363,16 @@ modify with the result</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        result.done(<span class="keyword">function</span>(res) {
-                                modify.call(self, [res], old);
-                            })
-                        <span class="keyword">return</span> <span class="keyword">this</span>;
-                    }
+            <div class="content"><div class='highlight'><pre>                    result.done(<span class="keyword">function</span>(res) {
+                        modify.call(self, [res], old);
+                    })
+                    <span class="keyword">return</span> <span class="keyword">this</span>;
                 }
-                <span class="keyword">return</span> noHookup[func_name] ? old.apply(<span class="keyword">this</span>, args) :
-                    modify.call(<span class="keyword">this</span>, args, old);
-            };
-        };</pre></div></div>
+            }
+            <span class="keyword">return</span> noHookup[func_name] ? old.apply(<span class="keyword">this</span>, args) :
+                modify.call(<span class="keyword">this</span>, args, old);
+        };
+    };</pre></div></div>
             
         </li>
         
@@ -383,8 +388,8 @@ but also will run any hookup</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        modify = <span class="keyword">function</span>(args, old) {
-            <span class="keyword">var</span> res, stub, hooks;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    modify = <span class="keyword">function</span>(args, old) {
+        <span class="keyword">var</span> res, stub, hooks;</pre></div></div>
             
         </li>
         
@@ -399,9 +404,9 @@ but also will run any hookup</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">for</span> (<span class="keyword">var</span> hasHookups <span class="keyword">in</span> can.view.hookups) {
-                <span class="keyword">break</span>;
-            }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">for</span> (<span class="keyword">var</span> hasHookups <span class="keyword">in</span> can.view.hookups) {
+            <span class="keyword">break</span>;
+        }</pre></div></div>
             
         </li>
         
@@ -419,9 +424,9 @@ before insterion</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (hasHookups &amp;&amp; args[<span class="number">0</span>] &amp;&amp; isHTML(args[<span class="number">0</span>])) {
-                args[<span class="number">0</span>] = can.view.frag(args[<span class="number">0</span>]).childNodes;
-            }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (hasHookups &amp;&amp; args[<span class="number">0</span>] &amp;&amp; isHTML(args[<span class="number">0</span>])) {
+            args[<span class="number">0</span>] = can.view.frag(args[<span class="number">0</span>]).childNodes;
+        }</pre></div></div>
             
         </li>
         
@@ -436,10 +441,10 @@ before insterion</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            res = old.apply(<span class="keyword">this</span>, args);
+            <div class="content"><div class='highlight'><pre>        res = old.apply(<span class="keyword">this</span>, args);
 
-            <span class="keyword">return</span> res;
-        };</pre></div></div>
+        <span class="keyword">return</span> res;
+    };</pre></div></div>
             
         </li>
         
@@ -457,7 +462,7 @@ and the second arg is data</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        isTemplate = <span class="keyword">function</span>(args) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    isTemplate = <span class="keyword">function</span>(args) {</pre></div></div>
             
         </li>
         
@@ -472,7 +477,7 @@ and the second arg is data</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> secArgType = <span class="keyword">typeof</span> args[<span class="number">1</span>];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> secArgType = <span class="keyword">typeof</span> args[<span class="number">1</span>];</pre></div></div>
             
         </li>
         
@@ -487,7 +492,7 @@ and the second arg is data</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">return</span> <span class="keyword">typeof</span> args[<span class="number">0</span>] == <span class="string">"string"</span> &amp;&amp;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">return</span> <span class="keyword">typeof</span> args[<span class="number">0</span>] == <span class="string">"string"</span> &amp;&amp;</pre></div></div>
             
         </li>
         
@@ -502,7 +507,7 @@ and the second arg is data</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            (secArgType == <span class="string">'object'</span> || secArgType == <span class="string">'function'</span>) &amp;&amp;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        (secArgType == <span class="string">'object'</span> || secArgType == <span class="string">'function'</span>) &amp;&amp;</pre></div></div>
             
         </li>
         
@@ -517,8 +522,8 @@ and the second arg is data</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            !isDOM(args[<span class="number">1</span>]);
-        };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        !isDOM(args[<span class="number">1</span>]);
+    };</pre></div></div>
             
         </li>
         
@@ -533,9 +538,9 @@ and the second arg is data</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        isDOM = <span class="keyword">function</span>(arg) {
-            <span class="keyword">return</span> arg.nodeType || (arg[<span class="number">0</span>] &amp;&amp; arg[<span class="number">0</span>].nodeType)
-        };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    isDOM = <span class="keyword">function</span>(arg) {
+        <span class="keyword">return</span> arg.nodeType || (arg[<span class="number">0</span>] &amp;&amp; arg[<span class="number">0</span>].nodeType)
+    };</pre></div></div>
             
         </li>
         
@@ -550,8 +555,8 @@ and the second arg is data</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        isHTML = <span class="keyword">function</span>(arg) {
-            <span class="keyword">if</span> (isDOM(arg)) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    isHTML = <span class="keyword">function</span>(arg) {
+        <span class="keyword">if</span> (isDOM(arg)) {</pre></div></div>
             
         </li>
         
@@ -566,8 +571,8 @@ and the second arg is data</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">return</span> <span class="literal">true</span>;
-            } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> arg === <span class="string">"string"</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">return</span> <span class="literal">true</span>;
+        } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> arg === <span class="string">"string"</span>) {</pre></div></div>
             
         </li>
         
@@ -582,9 +587,9 @@ and the second arg is data</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                arg = can.trim(arg);
-                <span class="keyword">return</span> arg.substr(<span class="number">0</span>, <span class="number">1</span>) === <span class="string">"&lt;"</span> &amp;&amp; arg.substr(arg.length - <span class="number">1</span>, <span class="number">1</span>) === <span class="string">"&gt;"</span> &amp;&amp; arg.length &gt;= <span class="number">3</span>;
-            } <span class="keyword">else</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            arg = can.trim(arg);
+            <span class="keyword">return</span> arg.substr(<span class="number">0</span>, <span class="number">1</span>) === <span class="string">"&lt;"</span> &amp;&amp; arg.substr(arg.length - <span class="number">1</span>, <span class="number">1</span>) === <span class="string">"&gt;"</span> &amp;&amp; arg.length &gt;= <span class="number">3</span>;
+        } <span class="keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -599,9 +604,9 @@ and the second arg is data</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">return</span> <span class="literal">false</span>;
-            }
-        };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">return</span> <span class="literal">false</span>;
+        }
+    };</pre></div></div>
             
         </li>
         
@@ -616,37 +621,37 @@ and the second arg is data</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        getCallback = <span class="keyword">function</span>(args) {
-            <span class="keyword">return</span> <span class="keyword">typeof</span> args[<span class="number">3</span>] === <span class="string">'function'</span> ? <span class="number">3</span> : <span class="keyword">typeof</span> args[<span class="number">2</span>] === <span class="string">'function'</span> &amp;&amp; <span class="number">2</span>;
-        };
+            <div class="content"><div class='highlight'><pre>    getCallback = <span class="keyword">function</span>(args) {
+        <span class="keyword">return</span> <span class="keyword">typeof</span> args[<span class="number">3</span>] === <span class="string">'function'</span> ? <span class="number">3</span> : <span class="keyword">typeof</span> args[<span class="number">2</span>] === <span class="string">'function'</span> &amp;&amp; <span class="number">2</span>;
+    };
 
 
-        $.fn.hookup = <span class="keyword">function</span>() {
-            can.view.frag(<span class="keyword">this</span>);
-            <span class="keyword">return</span> <span class="keyword">this</span>;
-        };
+    $.fn.hookup = <span class="keyword">function</span>() {
+        can.view.frag(<span class="keyword">this</span>);
+        <span class="keyword">return</span> <span class="keyword">this</span>;
+    };
 
-        can.each([
+    can.each([
 
-                <span class="string">"prepend"</span>,
+            <span class="string">"prepend"</span>,
 
-                <span class="string">"append"</span>,
+            <span class="string">"append"</span>,
 
-                <span class="string">"after"</span>,
+            <span class="string">"after"</span>,
 
-                <span class="string">"before"</span>,
+            <span class="string">"before"</span>,
 
-                <span class="string">"text"</span>,
+            <span class="string">"text"</span>,
 
-                <span class="string">"html"</span>,
+            <span class="string">"html"</span>,
 
-                <span class="string">"replaceWith"</span>, <span class="string">"val"</span>
-            ], <span class="keyword">function</span>(func) {
-                convert(func);
-            });
+            <span class="string">"replaceWith"</span>, <span class="string">"val"</span>
+        ], <span class="keyword">function</span>(func) {
+            convert(func);
+        });
 
-        <span class="keyword">return</span> can;
-    })(jQuery, can);</pre></div></div>
+    <span class="keyword">return</span> can;
+})(jQuery, can);</pre></div></div>
             
         </li>
         

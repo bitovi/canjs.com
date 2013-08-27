@@ -19,6 +19,11 @@
           <div id="jump_page">
             
               
+              <a class="source" href="can.construct.proxy.html">
+                can.construct.proxy.js
+              </a>
+            
+              
               <a class="source" href="can.construct.super.html">
                 can.construct.super.js
               </a>
@@ -157,10 +162,10 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="comment">/*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 29 May 2013 18:59:29 GMT
+ * Wed, 24 Jul 2013 00:23:54 GMT
  * Licensed MIT
  * Includes: can/observe/validations
  * Download from: http://canjs.com
@@ -182,7 +187,7 @@ span properties, but this way we know which ones to run.
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> validate = <span class="keyword">function</span>(attrNames, options, proc) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> validate = <span class="keyword">function</span>(attrNames, options, proc) {</pre></div></div>
             
         </li>
         
@@ -197,13 +202,13 @@ span properties, but this way we know which ones to run.
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (!proc) {
-                proc = options;
-                options = {};
-            }
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (!proc) {
+            proc = options;
+            options = {};
+        }
 
-            options = options || {};
-            attrNames = <span class="keyword">typeof</span> attrNames == <span class="string">'string'</span> ? [attrNames] : can.makeArray(attrNames);</pre></div></div>
+        options = options || {};
+        attrNames = <span class="keyword">typeof</span> attrNames == <span class="string">'string'</span> ? [attrNames] : can.makeArray(attrNames);</pre></div></div>
             
         </li>
         
@@ -218,12 +223,12 @@ span properties, but this way we know which ones to run.
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (options.testIf &amp;&amp; !options.testIf.call(<span class="keyword">this</span>)) {
-                <span class="keyword">return</span>;
-            }
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (options.testIf &amp;&amp; !options.testIf.call(<span class="keyword">this</span>)) {
+            <span class="keyword">return</span>;
+        }
 
-            <span class="keyword">var</span> self = <span class="keyword">this</span>;
-            can.each(attrNames, <span class="keyword">function</span>(attrName) {</pre></div></div>
+        <span class="keyword">var</span> self = <span class="keyword">this</span>;
+        can.each(attrNames, <span class="keyword">function</span>(attrName) {</pre></div></div>
             
         </li>
         
@@ -238,11 +243,11 @@ span properties, but this way we know which ones to run.
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (!self.validations[attrName]) {
-                        self.validations[attrName] = [];
-                    }
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (!self.validations[attrName]) {
+                self.validations[attrName] = [];
+            }
 
-                    self.validations[attrName].push(<span class="keyword">function</span>(newVal) {</pre></div></div>
+            self.validations[attrName].push(<span class="keyword">function</span>(newVal) {</pre></div></div>
             
         </li>
         
@@ -257,18 +262,18 @@ span properties, but this way we know which ones to run.
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                            <span class="keyword">var</span> res = proc.call(<span class="keyword">this</span>, newVal, attrName);
-                            <span class="keyword">return</span> res === <span class="literal">undefined</span> ? <span class="literal">undefined</span> : (options.message || res);
-                        })
-                });
-        };
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">var</span> res = proc.call(<span class="keyword">this</span>, newVal, attrName);
+                <span class="keyword">return</span> res === <span class="literal">undefined</span> ? <span class="literal">undefined</span> : (options.message || res);
+            })
+        });
+    };
 
-        <span class="keyword">var</span> old = can.Observe.prototype.__set;
-        can.Observe.prototype.__set = <span class="keyword">function</span>(prop, value, current, success, error) {
-            <span class="keyword">var</span> self = <span class="keyword">this</span>,
-                validations = self.constructor.validations,
-                errorCallback = <span class="keyword">function</span>(errors) {
-                    <span class="keyword">var</span> stub = error &amp;&amp; error.call(self, errors);</pre></div></div>
+    <span class="keyword">var</span> old = can.Observe.prototype.__set;
+    can.Observe.prototype.__set = <span class="keyword">function</span>(prop, value, current, success, error) {
+        <span class="keyword">var</span> self = <span class="keyword">this</span>,
+            validations = self.constructor.validations,
+            errorCallback = <span class="keyword">function</span>(errors) {
+                <span class="keyword">var</span> stub = error &amp;&amp; error.call(self, errors);</pre></div></div>
             
         </li>
         
@@ -285,24 +290,24 @@ the event twice. :)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (stub !== <span class="literal">false</span>) {
-                        can.trigger(self, <span class="string">"error"</span>, [prop, errors], <span class="literal">true</span>);
-                    }
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (stub !== <span class="literal">false</span>) {
+                    can.trigger(self, <span class="string">"error"</span>, [prop, errors], <span class="literal">true</span>);
+                }
 
-                    <span class="keyword">return</span> <span class="literal">false</span>;
-                };
+                <span class="keyword">return</span> <span class="literal">false</span>;
+            };
 
-            old.call(self, prop, value, current, success, errorCallback);
+        old.call(self, prop, value, current, success, errorCallback);
 
-            <span class="keyword">if</span> (validations &amp;&amp; validations[prop]) {
-                <span class="keyword">var</span> errors = self.errors(prop);
-                errors &amp;&amp; errorCallback(errors)
-            }
-
-            <span class="keyword">return</span> <span class="keyword">this</span>;
+        <span class="keyword">if</span> (validations &amp;&amp; validations[prop]) {
+            <span class="keyword">var</span> errors = self.errors(prop);
+            errors &amp;&amp; errorCallback(errors)
         }
 
-        can.each([can.Observe, can.Model], <span class="keyword">function</span>(clss) {</pre></div></div>
+        <span class="keyword">return</span> <span class="keyword">this</span>;
+    }
+
+    can.each([can.Observe, can.Model], <span class="keyword">function</span>(clss) {</pre></div></div>
             
         </li>
         
@@ -317,106 +322,106 @@ the event twice. :)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (clss === <span class="literal">undefined</span>) {
-                    <span class="keyword">return</span>;
-                }
-                <span class="keyword">var</span> oldSetup = clss.setup;
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (clss === <span class="literal">undefined</span>) {
+            <span class="keyword">return</span>;
+        }
+        <span class="keyword">var</span> oldSetup = clss.setup;
 
 
-                can.extend(clss, {
-                        setup: <span class="keyword">function</span>(superClass) {
-                            oldSetup.apply(<span class="keyword">this</span>, arguments);
-                            <span class="keyword">if</span> (!<span class="keyword">this</span>.validations || superClass.validations === <span class="keyword">this</span>.validations) {
-                                <span class="keyword">this</span>.validations = {};
-                            }
-                        },
+        can.extend(clss, {
+                setup: <span class="keyword">function</span>(superClass) {
+                    oldSetup.apply(<span class="keyword">this</span>, arguments);
+                    <span class="keyword">if</span> (!<span class="keyword">this</span>.validations || superClass.validations === <span class="keyword">this</span>.validations) {
+                        <span class="keyword">this</span>.validations = {};
+                    }
+                },
 
-                        validate: validate,
-
-
-                        validationMessages: {
-                            format: <span class="string">"is invalid"</span>,
-                            inclusion: <span class="string">"is not a valid option (perhaps out of range)"</span>,
-                            lengthShort: <span class="string">"is too short"</span>,
-                            lengthLong: <span class="string">"is too long"</span>,
-                            presence: <span class="string">"can't be empty"</span>,
-                            range: <span class="string">"is out of range"</span>,
-                            numericality: <span class="string">"must be a number"</span>
-                        },
+                validate: validate,
 
 
-                        validateFormatOf: <span class="keyword">function</span>(attrNames, regexp, options) {
-                            validate.call(<span class="keyword">this</span>, attrNames, options, <span class="keyword">function</span>(value) {
-                                    <span class="keyword">if</span> ((<span class="keyword">typeof</span> value !== <span class="string">'undefined'</span> &amp;&amp; value !== <span class="literal">null</span> &amp;&amp; value !== <span class="string">''</span>) &amp;&amp; String(value).match(regexp) == <span class="literal">null</span>) {
-                                        <span class="keyword">return</span> <span class="keyword">this</span>.constructor.validationMessages.format;
-                                    }
-                                });
-                        },
+                validationMessages: {
+                    format: <span class="string">"is invalid"</span>,
+                    inclusion: <span class="string">"is not a valid option (perhaps out of range)"</span>,
+                    lengthShort: <span class="string">"is too short"</span>,
+                    lengthLong: <span class="string">"is too long"</span>,
+                    presence: <span class="string">"can't be empty"</span>,
+                    range: <span class="string">"is out of range"</span>,
+                    numericality: <span class="string">"must be a number"</span>
+                },
 
 
-                        validateInclusionOf: <span class="keyword">function</span>(attrNames, inArray, options) {
-                            validate.call(<span class="keyword">this</span>, attrNames, options, <span class="keyword">function</span>(value) {
-                                    <span class="keyword">if</span> (<span class="keyword">typeof</span> value == <span class="string">'undefined'</span>) {
-                                        <span class="keyword">return</span>;
-                                    }
-
-                                    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; inArray.length; i++) {
-                                        <span class="keyword">if</span> (inArray[i] == value) {
-                                            <span class="keyword">return</span>;
-                                        }
-                                    }
-
-                                    <span class="keyword">return</span> <span class="keyword">this</span>.constructor.validationMessages.inclusion;
-                                });
-                        },
-
-
-                        validateLengthOf: <span class="keyword">function</span>(attrNames, min, max, options) {
-                            validate.call(<span class="keyword">this</span>, attrNames, options, <span class="keyword">function</span>(value) {
-                                    <span class="keyword">if</span> (((<span class="keyword">typeof</span> value === <span class="string">'undefined'</span> || value === <span class="literal">null</span>) &amp;&amp; min &gt; <span class="number">0</span>) ||
-                                        (<span class="keyword">typeof</span> value !== <span class="string">'undefined'</span> &amp;&amp; value !== <span class="literal">null</span> &amp;&amp; value.length &lt; min)) {
-                                        <span class="keyword">return</span> <span class="keyword">this</span>.constructor.validationMessages.lengthShort + <span class="string">" (min="</span> + min + <span class="string">")"</span>;
-                                    } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> value != <span class="string">'undefined'</span> &amp;&amp; value !== <span class="literal">null</span> &amp;&amp; value.length &gt; max) {
-                                        <span class="keyword">return</span> <span class="keyword">this</span>.constructor.validationMessages.lengthLong + <span class="string">" (max="</span> + max + <span class="string">")"</span>;
-                                    }
-                                });
-                        },
-
-
-                        validatePresenceOf: <span class="keyword">function</span>(attrNames, options) {
-                            validate.call(<span class="keyword">this</span>, attrNames, options, <span class="keyword">function</span>(value) {
-                                    <span class="keyword">if</span> (<span class="keyword">typeof</span> value == <span class="string">'undefined'</span> || value === <span class="string">""</span> || value === <span class="literal">null</span>) {
-                                        <span class="keyword">return</span> <span class="keyword">this</span>.constructor.validationMessages.presence;
-                                    }
-                                });
-                        },
-
-
-                        validateRangeOf: <span class="keyword">function</span>(attrNames, low, hi, options) {
-                            validate.call(<span class="keyword">this</span>, attrNames, options, <span class="keyword">function</span>(value) {
-                                    <span class="keyword">if</span> (((<span class="keyword">typeof</span> value == <span class="string">'undefined'</span> || value === <span class="literal">null</span>) &amp;&amp; low &gt; <span class="number">0</span>) ||
-                                        (<span class="keyword">typeof</span> value !== <span class="string">'undefined'</span> &amp;&amp; value !== <span class="literal">null</span> &amp;&amp; (value &lt; low || value &gt; hi))) {
-                                        <span class="keyword">return</span> <span class="keyword">this</span>.constructor.validationMessages.range + <span class="string">" ["</span> + low + <span class="string">","</span> + hi + <span class="string">"]"</span>;
-                                    }
-                                });
-                        },
-
-
-                        validatesNumericalityOf: <span class="keyword">function</span>(attrNames) {
-                            validate.call(<span class="keyword">this</span>, attrNames, <span class="keyword">function</span>(value) {
-                                    <span class="keyword">var</span> res = !isNaN(parseFloat(value)) &amp;&amp; isFinite(value);
-                                    <span class="keyword">if</span> (!res) {
-                                        <span class="keyword">return</span> <span class="keyword">this</span>.constructor.validationMessages.numericality;
-                                    }
-                                });
+                validateFormatOf: <span class="keyword">function</span>(attrNames, regexp, options) {
+                    validate.call(<span class="keyword">this</span>, attrNames, options, <span class="keyword">function</span>(value) {
+                        <span class="keyword">if</span> ((<span class="keyword">typeof</span> value !== <span class="string">'undefined'</span> &amp;&amp; value !== <span class="literal">null</span> &amp;&amp; value !== <span class="string">''</span>) &amp;&amp; String(value).match(regexp) == <span class="literal">null</span>) {
+                            <span class="keyword">return</span> <span class="keyword">this</span>.constructor.validationMessages.format;
                         }
                     });
+                },
+
+
+                validateInclusionOf: <span class="keyword">function</span>(attrNames, inArray, options) {
+                    validate.call(<span class="keyword">this</span>, attrNames, options, <span class="keyword">function</span>(value) {
+                        <span class="keyword">if</span> (<span class="keyword">typeof</span> value == <span class="string">'undefined'</span>) {
+                            <span class="keyword">return</span>;
+                        }
+
+                        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; inArray.length; i++) {
+                            <span class="keyword">if</span> (inArray[i] == value) {
+                                <span class="keyword">return</span>;
+                            }
+                        }
+
+                        <span class="keyword">return</span> <span class="keyword">this</span>.constructor.validationMessages.inclusion;
+                    });
+                },
+
+
+                validateLengthOf: <span class="keyword">function</span>(attrNames, min, max, options) {
+                    validate.call(<span class="keyword">this</span>, attrNames, options, <span class="keyword">function</span>(value) {
+                        <span class="keyword">if</span> (((<span class="keyword">typeof</span> value === <span class="string">'undefined'</span> || value === <span class="literal">null</span>) &amp;&amp; min &gt; <span class="number">0</span>) ||
+                            (<span class="keyword">typeof</span> value !== <span class="string">'undefined'</span> &amp;&amp; value !== <span class="literal">null</span> &amp;&amp; value.length &lt; min)) {
+                            <span class="keyword">return</span> <span class="keyword">this</span>.constructor.validationMessages.lengthShort + <span class="string">" (min="</span> + min + <span class="string">")"</span>;
+                        } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> value != <span class="string">'undefined'</span> &amp;&amp; value !== <span class="literal">null</span> &amp;&amp; value.length &gt; max) {
+                            <span class="keyword">return</span> <span class="keyword">this</span>.constructor.validationMessages.lengthLong + <span class="string">" (max="</span> + max + <span class="string">")"</span>;
+                        }
+                    });
+                },
+
+
+                validatePresenceOf: <span class="keyword">function</span>(attrNames, options) {
+                    validate.call(<span class="keyword">this</span>, attrNames, options, <span class="keyword">function</span>(value) {
+                        <span class="keyword">if</span> (<span class="keyword">typeof</span> value == <span class="string">'undefined'</span> || value === <span class="string">""</span> || value === <span class="literal">null</span>) {
+                            <span class="keyword">return</span> <span class="keyword">this</span>.constructor.validationMessages.presence;
+                        }
+                    });
+                },
+
+
+                validateRangeOf: <span class="keyword">function</span>(attrNames, low, hi, options) {
+                    validate.call(<span class="keyword">this</span>, attrNames, options, <span class="keyword">function</span>(value) {
+                        <span class="keyword">if</span> (((<span class="keyword">typeof</span> value == <span class="string">'undefined'</span> || value === <span class="literal">null</span>) &amp;&amp; low &gt; <span class="number">0</span>) ||
+                            (<span class="keyword">typeof</span> value !== <span class="string">'undefined'</span> &amp;&amp; value !== <span class="literal">null</span> &amp;&amp; (value &lt; low || value &gt; hi))) {
+                            <span class="keyword">return</span> <span class="keyword">this</span>.constructor.validationMessages.range + <span class="string">" ["</span> + low + <span class="string">","</span> + hi + <span class="string">"]"</span>;
+                        }
+                    });
+                },
+
+
+                validatesNumericalityOf: <span class="keyword">function</span>(attrNames) {
+                    validate.call(<span class="keyword">this</span>, attrNames, <span class="keyword">function</span>(value) {
+                        <span class="keyword">var</span> res = !isNaN(parseFloat(value)) &amp;&amp; isFinite(value);
+                        <span class="keyword">if</span> (!res) {
+                            <span class="keyword">return</span> <span class="keyword">this</span>.constructor.validationMessages.numericality;
+                        }
+                    });
+                }
             });
+    });
 
-        can.extend(can.Observe.prototype, {
+    can.extend(can.Observe.prototype, {
 
 
-                errors: <span class="keyword">function</span>(attrs, newVal) {</pre></div></div>
+            errors: <span class="keyword">function</span>(attrs, newVal) {</pre></div></div>
             
         </li>
         
@@ -431,13 +436,13 @@ the event twice. :)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (attrs) {
-                        attrs = can.isArray(attrs) ? attrs : [attrs];
-                    }
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (attrs) {
+                    attrs = can.isArray(attrs) ? attrs : [attrs];
+                }
 
-                    <span class="keyword">var</span> errors = {},
-                        self = <span class="keyword">this</span>,
-                        attr,</pre></div></div>
+                <span class="keyword">var</span> errors = {},
+                    self = <span class="keyword">this</span>,
+                    attr,</pre></div></div>
             
         </li>
         
@@ -454,22 +459,22 @@ funcs - the validation functions</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        addErrors = <span class="keyword">function</span>(attr, funcs) {
-                            can.each(funcs, <span class="keyword">function</span>(func) {
-                                    <span class="keyword">var</span> res = func.call(self, isTest ? (self.__convert ?
-                                            self.__convert(attr, newVal) :
-                                            newVal) : self[attr]);
-                                    <span class="keyword">if</span> (res) {
-                                        <span class="keyword">if</span> (!errors[attr]) {
-                                            errors[attr] = [];
-                                        }
-                                        errors[attr].push(res);
-                                    }
+            <div class="content"><div class='highlight'><pre>                    addErrors = <span class="keyword">function</span>(attr, funcs) {
+                        can.each(funcs, <span class="keyword">function</span>(func) {
+                            <span class="keyword">var</span> res = func.call(self, isTest ? (self.__convert ?
+                                    self.__convert(attr, newVal) :
+                                    newVal) : self.attr(attr));
+                            <span class="keyword">if</span> (res) {
+                                <span class="keyword">if</span> (!errors[attr]) {
+                                    errors[attr] = [];
+                                }
+                                errors[attr].push(res);
+                            }
 
-                                });
-                        },
-                        validations = <span class="keyword">this</span>.constructor.validations,
-                        isTest = attrs &amp;&amp; attrs.length === <span class="number">1</span> &amp;&amp; arguments.length === <span class="number">2</span>;</pre></div></div>
+                        });
+                    },
+                    validations = <span class="keyword">this</span>.constructor.validations,
+                    isTest = attrs &amp;&amp; attrs.length === <span class="number">1</span> &amp;&amp; arguments.length === <span class="number">2</span>;</pre></div></div>
             
         </li>
         
@@ -485,7 +490,7 @@ add any errors</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    can.each(attrs || validations || {}, <span class="keyword">function</span>(funcs, attr) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                can.each(attrs || validations || {}, <span class="keyword">function</span>(funcs, attr) {</pre></div></div>
             
         </li>
         
@@ -501,10 +506,10 @@ as the attr name</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                            <span class="keyword">if</span> (<span class="keyword">typeof</span> attr == <span class="string">'number'</span>) {
-                                attr = funcs;
-                                funcs = validations[attr];
-                            }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (<span class="keyword">typeof</span> attr == <span class="string">'number'</span>) {
+                        attr = funcs;
+                        funcs = validations[attr];
+                    }</pre></div></div>
             
         </li>
         
@@ -519,8 +524,8 @@ as the attr name</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                            addErrors(attr, funcs || []);
-                        });</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    addErrors(attr, funcs || []);
+                });</pre></div></div>
             
         </li>
         
@@ -535,11 +540,11 @@ as the attr name</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">return</span> can.isEmptyObject(errors) ? <span class="literal">null</span> : isTest ? errors[attrs[<span class="number">0</span>]] : errors;
-                }
-            });
-        <span class="keyword">return</span> can.Observe;
-    })(can);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">return</span> can.isEmptyObject(errors) ? <span class="literal">null</span> : isTest ? errors[attrs[<span class="number">0</span>]] : errors;
+            }
+        });
+    <span class="keyword">return</span> can.Observe;
+})(can);</pre></div></div>
             
         </li>
         

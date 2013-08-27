@@ -19,6 +19,11 @@
           <div id="jump_page">
             
               
+              <a class="source" href="can.construct.proxy.html">
+                can.construct.proxy.js
+              </a>
+            
+              
               <a class="source" href="can.construct.super.html">
                 can.construct.super.js
               </a>
@@ -157,10 +162,10 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="comment">/*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 29 May 2013 18:59:28 GMT
+ * Wed, 24 Jul 2013 00:23:53 GMT
  * Licensed MIT
  * Includes: can/construct/super
  * Download from: http://canjs.com
@@ -180,11 +185,11 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> isFunction = can.isFunction,
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> isFunction = can.isFunction,
 
-            fnTest = <span class="regexp">/xyz/</span>.test(<span class="keyword">function</span>() {
-                    xyz;
-                }) ? <span class="regexp">/\b_super\b/</span> : <span class="regexp">/.*/</span>;</pre></div></div>
+        fnTest = <span class="regexp">/xyz/</span>.test(<span class="keyword">function</span>() {
+            xyz;
+        }) ? <span class="regexp">/\b_super\b/</span> : <span class="regexp">/.*/</span>;</pre></div></div>
             
         </li>
         
@@ -199,7 +204,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        can.Construct._overwrite = <span class="keyword">function</span>(addTo, base, name, val) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    can.Construct._overwrite = <span class="keyword">function</span>(addTo, base, name, val) {</pre></div></div>
             
         </li>
         
@@ -214,12 +219,12 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            addTo[name] = isFunction(val) &amp;&amp;
-                isFunction(base[name]) &amp;&amp;
-                fnTest.test(val) ? (<span class="keyword">function</span>(name, fn) {
-                    <span class="keyword">return</span> <span class="keyword">function</span>() {
-                        <span class="keyword">var</span> tmp = <span class="keyword">this</span>._super,
-                            ret;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        addTo[name] = isFunction(val) &amp;&amp;
+            isFunction(base[name]) &amp;&amp;
+            fnTest.test(val) ? (<span class="keyword">function</span>(name, fn) {
+                <span class="keyword">return</span> <span class="keyword">function</span>() {
+                    <span class="keyword">var</span> tmp = <span class="keyword">this</span>._super,
+                        ret;</pre></div></div>
             
         </li>
         
@@ -235,7 +240,7 @@ but on the super-class</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        <span class="keyword">this</span>._super = base[name];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">this</span>._super = base[name];</pre></div></div>
             
         </li>
         
@@ -251,12 +256,12 @@ remove it when we&#39;re done executing</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        ret = fn.apply(<span class="keyword">this</span>, arguments);
-                        <span class="keyword">this</span>._super = tmp;
-                        <span class="keyword">return</span> ret;
-                    };
-                })(name, val) : val;
-        }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    ret = fn.apply(<span class="keyword">this</span>, arguments);
+                    <span class="keyword">this</span>._super = tmp;
+                    <span class="keyword">return</span> ret;
+                };
+            })(name, val) : val;
+    }</pre></div></div>
             
         </li>
         
@@ -274,15 +279,15 @@ remove it when we&#39;re done executing</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        can.Construct._inherit = <span class="keyword">function</span>(newProps, oldProps, addTo) {
-            addTo = addTo || newProps
-            <span class="keyword">for</span> (<span class="keyword">var</span> name <span class="keyword">in</span> newProps) {
-                can.Construct._overwrite(addTo, oldProps, name, newProps[name]);
-            }
+            <div class="content"><div class='highlight'><pre>    can.Construct._inherit = <span class="keyword">function</span>(newProps, oldProps, addTo) {
+        addTo = addTo || newProps
+        <span class="keyword">for</span> (<span class="keyword">var</span> name <span class="keyword">in</span> newProps) {
+            can.Construct._overwrite(addTo, oldProps, name, newProps[name]);
         }
+    }
 
-        <span class="keyword">return</span> can;
-    })(can);</pre></div></div>
+    <span class="keyword">return</span> can;
+})(can);</pre></div></div>
             
         </li>
         

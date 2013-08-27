@@ -19,6 +19,11 @@
           <div id="jump_page">
             
               
+              <a class="source" href="can.construct.proxy.html">
+                can.construct.proxy.js
+              </a>
+            
+              
               <a class="source" href="can.construct.super.html">
                 can.construct.super.js
               </a>
@@ -157,57 +162,57 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="comment">/*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 29 May 2013 18:59:29 GMT
+ * Wed, 24 Jul 2013 00:23:54 GMT
  * Licensed MIT
  * Includes: can/observe/backup
  * Download from: http://canjs.com
  */</span>
 (<span class="keyword">function</span>(can) {
-        <span class="keyword">var</span> flatProps = <span class="keyword">function</span>(a) {
-            <span class="keyword">var</span> obj = {};
-            <span class="keyword">for</span> (<span class="keyword">var</span> prop <span class="keyword">in</span> a) {
-                <span class="keyword">if</span> (<span class="keyword">typeof</span> a[prop] !== <span class="string">'object'</span> || a[prop] === <span class="literal">null</span> || a[prop] <span class="keyword">instanceof</span> Date) {
-                    obj[prop] = a[prop]
-                }
+    <span class="keyword">var</span> flatProps = <span class="keyword">function</span>(a) {
+        <span class="keyword">var</span> obj = {};
+        <span class="keyword">for</span> (<span class="keyword">var</span> prop <span class="keyword">in</span> a) {
+            <span class="keyword">if</span> (<span class="keyword">typeof</span> a[prop] !== <span class="string">'object'</span> || a[prop] === <span class="literal">null</span> || a[prop] <span class="keyword">instanceof</span> Date) {
+                obj[prop] = a[prop]
             }
-            <span class="keyword">return</span> obj;
-        };
+        }
+        <span class="keyword">return</span> obj;
+    };
 
-        can.extend(can.Observe.prototype, {
-
-
-                backup: <span class="keyword">function</span>() {
-                    <span class="keyword">this</span>._backupStore = <span class="keyword">this</span>._attrs();
-                    <span class="keyword">return</span> <span class="keyword">this</span>;
-                },
+    can.extend(can.Observe.prototype, {
 
 
-                isDirty: <span class="keyword">function</span>(checkAssociations) {
-                    <span class="keyword">return</span> <span class="keyword">this</span>._backupStore &amp;&amp; !can.Object.same(<span class="keyword">this</span>._attrs(),
-                        <span class="keyword">this</span>._backupStore,
-                        <span class="literal">undefined</span>,
-                        <span class="literal">undefined</span>,
-                        <span class="literal">undefined</span>, !! checkAssociations);
-                },
+            backup: <span class="keyword">function</span>() {
+                <span class="keyword">this</span>._backupStore = <span class="keyword">this</span>._attrs();
+                <span class="keyword">return</span> <span class="keyword">this</span>;
+            },
 
 
-                restore: <span class="keyword">function</span>(restoreAssociations) {
-                    <span class="keyword">var</span> props = restoreAssociations ? <span class="keyword">this</span>._backupStore : flatProps(<span class="keyword">this</span>._backupStore)
+            isDirty: <span class="keyword">function</span>(checkAssociations) {
+                <span class="keyword">return</span> <span class="keyword">this</span>._backupStore &amp;&amp; !can.Object.same(<span class="keyword">this</span>._attrs(),
+                    <span class="keyword">this</span>._backupStore,
+                    <span class="literal">undefined</span>,
+                    <span class="literal">undefined</span>,
+                    <span class="literal">undefined</span>, !! checkAssociations);
+            },
 
-                    <span class="keyword">if</span> (<span class="keyword">this</span>.isDirty(restoreAssociations)) {
-                        <span class="keyword">this</span>._attrs(props);
-                    }
 
-                    <span class="keyword">return</span> <span class="keyword">this</span>;
+            restore: <span class="keyword">function</span>(restoreAssociations) {
+                <span class="keyword">var</span> props = restoreAssociations ? <span class="keyword">this</span>._backupStore : flatProps(<span class="keyword">this</span>._backupStore)
+
+                <span class="keyword">if</span> (<span class="keyword">this</span>.isDirty(restoreAssociations)) {
+                    <span class="keyword">this</span>._attrs(props);
                 }
 
-            })
+                <span class="keyword">return</span> <span class="keyword">this</span>;
+            }
 
-        <span class="keyword">return</span> can.Observe;
-    })(can);</pre></div></div>
+        })
+
+    <span class="keyword">return</span> can.Observe;
+})(can);</pre></div></div>
             
         </li>
         

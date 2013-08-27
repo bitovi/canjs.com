@@ -19,6 +19,11 @@
           <div id="jump_page">
             
               
+              <a class="source" href="can.construct.proxy.html">
+                can.construct.proxy.js
+              </a>
+            
+              
               <a class="source" href="can.construct.super.html">
                 can.construct.super.js
               </a>
@@ -157,10 +162,10 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="comment">/*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 29 May 2013 18:59:29 GMT
+ * Wed, 24 Jul 2013 00:23:54 GMT
  * Licensed MIT
  * Includes: can/control/plugin
  * Download from: http://canjs.com
@@ -181,19 +186,19 @@ controllers can be strings or classes</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> i,
-            isAControllerOf = <span class="keyword">function</span>(instance, controllers) {
-                <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; controllers.length; i++) {
-                    <span class="keyword">if</span> (<span class="keyword">typeof</span> controllers[i] == <span class="string">'string'</span> ? instance.constructor._shortName == controllers[i] : instance <span class="keyword">instanceof</span> controllers[i]) {
-                        <span class="keyword">return</span> <span class="literal">true</span>;
-                    }
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> i,
+        isAControllerOf = <span class="keyword">function</span>(instance, controllers) {
+            <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; controllers.length; i++) {
+                <span class="keyword">if</span> (<span class="keyword">typeof</span> controllers[i] == <span class="string">'string'</span> ? instance.constructor._shortName == controllers[i] : instance <span class="keyword">instanceof</span> controllers[i]) {
+                    <span class="keyword">return</span> <span class="literal">true</span>;
                 }
-                <span class="keyword">return</span> <span class="literal">false</span>;
-            },
-            makeArray = can.makeArray,
-            old = can.Control.setup;
+            }
+            <span class="keyword">return</span> <span class="literal">false</span>;
+        },
+        makeArray = can.makeArray,
+        old = can.Control.setup;
 
-        can.Control.setup = <span class="keyword">function</span>() {</pre></div></div>
+    can.Control.setup = <span class="keyword">function</span>() {</pre></div></div>
             
         </li>
         
@@ -208,10 +213,10 @@ controllers can be strings or classes</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (<span class="keyword">this</span> !== can.Control) {
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (<span class="keyword">this</span> !== can.Control) {
 
 
-                <span class="keyword">var</span> pluginName = <span class="keyword">this</span>.pluginName || <span class="keyword">this</span>._fullName;</pre></div></div>
+            <span class="keyword">var</span> pluginName = <span class="keyword">this</span>.pluginName || <span class="keyword">this</span>._fullName;</pre></div></div>
             
         </li>
         
@@ -226,21 +231,21 @@ controllers can be strings or classes</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (pluginName !== <span class="string">'can_control'</span>) {
-                    <span class="keyword">this</span>.plugin(pluginName);
-                }
-
-                old.apply(<span class="keyword">this</span>, arguments);
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (pluginName !== <span class="string">'can_control'</span>) {
+                <span class="keyword">this</span>.plugin(pluginName);
             }
-        };
 
-        $.fn.extend({
+            old.apply(<span class="keyword">this</span>, arguments);
+        }
+    };
+
+    $.fn.extend({
 
 
-                controls: <span class="keyword">function</span>() {
-                    <span class="keyword">var</span> controllerNames = makeArray(arguments),
-                        instances = [],
-                        controls, c, cname;</pre></div></div>
+            controls: <span class="keyword">function</span>() {
+                <span class="keyword">var</span> controllerNames = makeArray(arguments),
+                    instances = [],
+                    controls, c, cname;</pre></div></div>
             
         </li>
         
@@ -255,39 +260,39 @@ controllers can be strings or classes</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">this</span>.each(<span class="keyword">function</span>() {
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">this</span>.each(<span class="keyword">function</span>() {
 
-                            controls = can.$(<span class="keyword">this</span>).data(<span class="string">"controls"</span>);
-                            <span class="keyword">if</span> (!controls) {
-                                <span class="keyword">return</span>;
-                            }
-                            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; controls.length; i++) {
-                                c = controls[i];
-                                <span class="keyword">if</span> (!controllerNames.length || isAControllerOf(c, controllerNames)) {
-                                    instances.push(c);
-                                }
-                            }
-                        });
-                    <span class="keyword">return</span> instances;
-                },
+                    controls = can.$(<span class="keyword">this</span>).data(<span class="string">"controls"</span>);
+                    <span class="keyword">if</span> (!controls) {
+                        <span class="keyword">return</span>;
+                    }
+                    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; controls.length; i++) {
+                        c = controls[i];
+                        <span class="keyword">if</span> (!controllerNames.length || isAControllerOf(c, controllerNames)) {
+                            instances.push(c);
+                        }
+                    }
+                });
+                <span class="keyword">return</span> instances;
+            },
 
 
-                control: <span class="keyword">function</span>(control) {
-                    <span class="keyword">return</span> <span class="keyword">this</span>.controls.apply(<span class="keyword">this</span>, arguments)[<span class="number">0</span>];
-                }
-            });
+            control: <span class="keyword">function</span>(control) {
+                <span class="keyword">return</span> <span class="keyword">this</span>.controls.apply(<span class="keyword">this</span>, arguments)[<span class="number">0</span>];
+            }
+        });
 
-        can.Control.plugin = <span class="keyword">function</span>(pluginname) {
-            <span class="keyword">var</span> control = <span class="keyword">this</span>;
+    can.Control.plugin = <span class="keyword">function</span>(pluginname) {
+        <span class="keyword">var</span> control = <span class="keyword">this</span>;
 
-            <span class="keyword">if</span> (!$.fn[pluginname]) {
-                $.fn[pluginname] = <span class="keyword">function</span>(options) {
+        <span class="keyword">if</span> (!$.fn[pluginname]) {
+            $.fn[pluginname] = <span class="keyword">function</span>(options) {
 
-                    <span class="keyword">var</span> args = makeArray(arguments), <span class="comment">//if the arg is a method on this control</span>
-                        isMethod = <span class="keyword">typeof</span> options == <span class="string">"string"</span> &amp;&amp; $.isFunction(control.prototype[options]),
-                        meth = args[<span class="number">0</span>],
-                        returns;
-                    <span class="keyword">this</span>.each(<span class="keyword">function</span>() {</pre></div></div>
+                <span class="keyword">var</span> args = makeArray(arguments), <span class="comment">//if the arg is a method on this control</span>
+                    isMethod = <span class="keyword">typeof</span> options == <span class="string">"string"</span> &amp;&amp; $.isFunction(control.prototype[options]),
+                    meth = args[<span class="number">0</span>],
+                    returns;
+                <span class="keyword">this</span>.each(<span class="keyword">function</span>() {</pre></div></div>
             
         </li>
         
@@ -302,10 +307,10 @@ controllers can be strings or classes</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                            <span class="keyword">var</span> plugin = can.$(<span class="keyword">this</span>).control(control);
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">var</span> plugin = can.$(<span class="keyword">this</span>).control(control);
 
-                            <span class="keyword">if</span> (plugin) {
-                                <span class="keyword">if</span> (isMethod) {</pre></div></div>
+                    <span class="keyword">if</span> (plugin) {
+                        <span class="keyword">if</span> (isMethod) {</pre></div></div>
             
         </li>
         
@@ -320,8 +325,8 @@ controllers can be strings or classes</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                    returns = plugin[meth].apply(plugin, args.slice(<span class="number">1</span>));
-                                } <span class="keyword">else</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            returns = plugin[meth].apply(plugin, args.slice(<span class="number">1</span>));
+                        } <span class="keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -336,9 +341,9 @@ controllers can be strings or classes</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                    plugin.update.apply(plugin, args);
-                                }
-                            } <span class="keyword">else</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            plugin.update.apply(plugin, args);
+                        }
+                    } <span class="keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -353,21 +358,21 @@ controllers can be strings or classes</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                control.newInstance.apply(control, [<span class="keyword">this</span>].concat(args));
-                            }
-                        });
-                    <span class="keyword">return</span> returns !== <span class="literal">undefined</span> ? returns : <span class="keyword">this</span>;
-                };
-            }
+            <div class="content"><div class='highlight'><pre>                        control.newInstance.apply(control, [<span class="keyword">this</span>].concat(args));
+                    }
+                });
+                <span class="keyword">return</span> returns !== <span class="literal">undefined</span> ? returns : <span class="keyword">this</span>;
+            };
         }
+    }
 
-        can.Control.prototype.update = <span class="keyword">function</span>(options) {
-            can.extend(<span class="keyword">this</span>.options, options);
-            <span class="keyword">this</span>.on();
-        };
+    can.Control.prototype.update = <span class="keyword">function</span>(options) {
+        can.extend(<span class="keyword">this</span>.options, options);
+        <span class="keyword">this</span>.on();
+    };
 
-        <span class="keyword">return</span> can;
-    })(jQuery, can);</pre></div></div>
+    <span class="keyword">return</span> can;
+})(jQuery, can);</pre></div></div>
             
         </li>
         

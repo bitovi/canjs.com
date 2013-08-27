@@ -19,6 +19,11 @@
           <div id="jump_page">
             
               
+              <a class="source" href="can.construct.proxy.html">
+                can.construct.proxy.js
+              </a>
+            
+              
               <a class="source" href="can.construct.super.html">
                 can.construct.super.js
               </a>
@@ -157,17 +162,17 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="comment">/*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 29 May 2013 18:59:29 GMT
+ * Wed, 24 Jul 2013 00:23:54 GMT
  * Licensed MIT
  * Includes: can/observe/attributes
  * Download from: http://canjs.com
  */</span>
 (<span class="keyword">function</span>(can, Observe) {
 
-        can.each([can.Observe, can.Model], <span class="keyword">function</span>(clss) {</pre></div></div>
+    can.each([can.Observe, can.Model], <span class="keyword">function</span>(clss) {</pre></div></div>
             
         </li>
         
@@ -182,42 +187,43 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (clss === <span class="literal">undefined</span>) {
-                    <span class="keyword">return</span>;
-                }
-                <span class="keyword">var</span> isObject = <span class="keyword">function</span>(obj) {
-                    <span class="keyword">return</span> <span class="keyword">typeof</span> obj === <span class="string">'object'</span> &amp;&amp; obj !== <span class="literal">null</span> &amp;&amp; obj;
-                };
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (clss === <span class="literal">undefined</span>) {
+            <span class="keyword">return</span>;
+        }
+        <span class="keyword">var</span> isObject = <span class="keyword">function</span>(obj) {
+            <span class="keyword">return</span> <span class="keyword">typeof</span> obj === <span class="string">'object'</span> &amp;&amp; obj !== <span class="literal">null</span> &amp;&amp; obj;
+        };
 
-                can.extend(clss, {
+        can.extend(clss, {
 
-                        attributes: {},
+                attributes: {},
 
 
-                        convert: {
-                            <span class="string">"date"</span>: <span class="keyword">function</span>(str) {
-                                <span class="keyword">var</span> type = <span class="keyword">typeof</span> str;
-                                <span class="keyword">if</span> (type === <span class="string">"string"</span>) {
-                                    <span class="keyword">return</span> isNaN(Date.parse(str)) ? <span class="literal">null</span> : Date.parse(str)
-                                } <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">'number'</span>) {
-                                    <span class="keyword">return</span> <span class="keyword">new</span> Date(str)
-                                } <span class="keyword">else</span> {
-                                    <span class="keyword">return</span> str
-                                }
-                            },
-                            <span class="string">"number"</span>: <span class="keyword">function</span>(val) {
-                                <span class="keyword">return</span> parseFloat(val);
-                            },
-                            <span class="string">"boolean"</span>: <span class="keyword">function</span>(val) {
-                                <span class="keyword">if</span> (val === <span class="string">'false'</span> || val === <span class="string">'0'</span> || !val) {
-                                    <span class="keyword">return</span> <span class="literal">false</span>;
-                                }
-                                <span class="keyword">return</span> <span class="literal">true</span>;
-                            },
-                            <span class="string">"default"</span>: <span class="keyword">function</span>(val, oldVal, error, type) {
-                                <span class="keyword">var</span> construct = can.getObject(type),
-                                    context = window,
-                                    realType;</pre></div></div>
+                convert: {
+                    <span class="string">"date"</span>: <span class="keyword">function</span>(str) {
+                        <span class="keyword">var</span> type = <span class="keyword">typeof</span> str;
+                        <span class="keyword">if</span> (type === <span class="string">"string"</span>) {
+                            str = Date.parse(str);
+                            <span class="keyword">return</span> isNaN(str) ? <span class="literal">null</span> : <span class="keyword">new</span> Date(str);
+                        } <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">'number'</span>) {
+                            <span class="keyword">return</span> <span class="keyword">new</span> Date(str)
+                        } <span class="keyword">else</span> {
+                            <span class="keyword">return</span> str
+                        }
+                    },
+                    <span class="string">"number"</span>: <span class="keyword">function</span>(val) {
+                        <span class="keyword">return</span> parseFloat(val);
+                    },
+                    <span class="string">"boolean"</span>: <span class="keyword">function</span>(val) {
+                        <span class="keyword">if</span> (val === <span class="string">'false'</span> || val === <span class="string">'0'</span> || !val) {
+                            <span class="keyword">return</span> <span class="literal">false</span>;
+                        }
+                        <span class="keyword">return</span> <span class="literal">true</span>;
+                    },
+                    <span class="string">"default"</span>: <span class="keyword">function</span>(val, oldVal, error, type) {
+                        <span class="keyword">var</span> construct = can.getObject(type),
+                            context = window,
+                            realType;</pre></div></div>
             
         </li>
         
@@ -232,7 +238,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                <span class="keyword">if</span> (type.indexOf(<span class="string">"."</span>) &gt;= <span class="number">0</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        <span class="keyword">if</span> (type.indexOf(<span class="string">"."</span>) &gt;= <span class="number">0</span>) {</pre></div></div>
             
         </li>
         
@@ -247,7 +253,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                    realType = type.substring(<span class="number">0</span>, type.lastIndexOf(<span class="string">"."</span>));</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            realType = type.substring(<span class="number">0</span>, type.lastIndexOf(<span class="string">"."</span>));</pre></div></div>
             
         </li>
         
@@ -262,21 +268,21 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                    context = can.getObject(realType);
-                                }
-                                <span class="keyword">return</span> <span class="keyword">typeof</span> construct == <span class="string">"function"</span> ? construct.call(context, val, oldVal) : val;
-                            }
-                        },
-
-                        serialize: {
-                            <span class="string">"default"</span>: <span class="keyword">function</span>(val, type) {
-                                <span class="keyword">return</span> isObject(val) &amp;&amp; val.serialize ? val.serialize() : val;
-                            },
-                            <span class="string">"date"</span>: <span class="keyword">function</span>(val) {
-                                <span class="keyword">return</span> val &amp;&amp; val.getTime()
-                            }
+            <div class="content"><div class='highlight'><pre>                            context = can.getObject(realType);
                         }
-                    });</pre></div></div>
+                        <span class="keyword">return</span> <span class="keyword">typeof</span> construct == <span class="string">"function"</span> ? construct.call(context, val, oldVal) : val;
+                    }
+                },
+
+                serialize: {
+                    <span class="string">"default"</span>: <span class="keyword">function</span>(val, type) {
+                        <span class="keyword">return</span> isObject(val) &amp;&amp; val.serialize ? val.serialize() : val;
+                    },
+                    <span class="string">"date"</span>: <span class="keyword">function</span>(val) {
+                        <span class="keyword">return</span> val &amp;&amp; val.getTime()
+                    }
+                }
+            });</pre></div></div>
             
         </li>
         
@@ -291,47 +297,47 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">var</span> oldSetup = clss.setup;
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> oldSetup = clss.setup;
 
 
-                clss.setup = <span class="keyword">function</span>(superClass, stat, proto) {
-                    <span class="keyword">var</span> self = <span class="keyword">this</span>;
-                    oldSetup.call(self, superClass, stat, proto);
+        clss.setup = <span class="keyword">function</span>(superClass, stat, proto) {
+            <span class="keyword">var</span> self = <span class="keyword">this</span>;
+            oldSetup.call(self, superClass, stat, proto);
 
-                    can.each([<span class="string">"attributes"</span>], <span class="keyword">function</span>(name) {
-                            <span class="keyword">if</span> (!self[name] || superClass[name] === self[name]) {
-                                self[name] = {};
-                            }
-                        });
-
-                    can.each([<span class="string">"convert"</span>, <span class="string">"serialize"</span>], <span class="keyword">function</span>(name) {
-                            <span class="keyword">if</span> (superClass[name] != self[name]) {
-                                self[name] = can.extend({}, superClass[name], self[name]);
-                            }
-                        });
-                };
+            can.each([<span class="string">"attributes"</span>], <span class="keyword">function</span>(name) {
+                <span class="keyword">if</span> (!self[name] || superClass[name] === self[name]) {
+                    self[name] = {};
+                }
             });
 
-        <span class="keyword">var</span> oldSetup = can.Observe.prototype.setup;
-
-        can.Observe.prototype.setup = <span class="keyword">function</span>(obj) {
-
-            <span class="keyword">var</span> diff = {};
-
-            oldSetup.call(<span class="keyword">this</span>, obj);
-
-            can.each(<span class="keyword">this</span>.constructor.defaults, <span class="keyword">function</span>(value, key) {
-                    <span class="keyword">if</span> (!<span class="keyword">this</span>.hasOwnProperty(key)) {
-                        diff[key] = value;
-                    }
-                }, <span class="keyword">this</span>);
-
-            <span class="keyword">this</span>._init = <span class="number">1</span>;
-            <span class="keyword">this</span>.attr(diff);
-            <span class="keyword">delete</span> <span class="keyword">this</span>._init;
+            can.each([<span class="string">"convert"</span>, <span class="string">"serialize"</span>], <span class="keyword">function</span>(name) {
+                <span class="keyword">if</span> (superClass[name] != self[name]) {
+                    self[name] = can.extend({}, superClass[name], self[name]);
+                }
+            });
         };
+    });
 
-        can.Observe.prototype.__convert = <span class="keyword">function</span>(prop, value) {</pre></div></div>
+    <span class="keyword">var</span> oldSetup = can.Observe.prototype.setup;
+
+    can.Observe.prototype.setup = <span class="keyword">function</span>(obj) {
+
+        <span class="keyword">var</span> diff = {};
+
+        oldSetup.call(<span class="keyword">this</span>, obj);
+
+        can.each(<span class="keyword">this</span>.constructor.defaults, <span class="keyword">function</span>(value, key) {
+            <span class="keyword">if</span> (!<span class="keyword">this</span>.hasOwnProperty(key)) {
+                diff[key] = value;
+            }
+        }, <span class="keyword">this</span>);
+
+        <span class="keyword">this</span>._init = <span class="number">1</span>;
+        <span class="keyword">this</span>.attr(diff);
+        <span class="keyword">delete</span> <span class="keyword">this</span>._init;
+    };
+
+    can.Observe.prototype.__convert = <span class="keyword">function</span>(prop, value) {</pre></div></div>
             
         </li>
         
@@ -346,11 +352,11 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> Class = <span class="keyword">this</span>.constructor,
-                oldVal = <span class="keyword">this</span>.attr(prop),
-                type, converter;
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> Class = <span class="keyword">this</span>.constructor,
+            oldVal = <span class="keyword">this</span>.attr(prop),
+            type, converter;
 
-            <span class="keyword">if</span> (Class.attributes) {</pre></div></div>
+        <span class="keyword">if</span> (Class.attributes) {</pre></div></div>
             
         </li>
         
@@ -365,11 +371,11 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                type = Class.attributes[prop];
-                converter = Class.convert[type] || Class.convert[<span class="string">'default'</span>];
-            }
+            <div class="content"><div class='highlight'><pre>            type = Class.attributes[prop];
+            converter = Class.convert[type] || Class.convert[<span class="string">'default'</span>];
+        }
 
-            <span class="keyword">return</span> value === <span class="literal">null</span> || !type ?</pre></div></div>
+        <span class="keyword">return</span> value === <span class="literal">null</span> || !type ?</pre></div></div>
             
         </li>
         
@@ -384,7 +390,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            value :</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        value :</pre></div></div>
             
         </li>
         
@@ -399,25 +405,25 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            converter.call(Class, value, oldVal, <span class="keyword">function</span>() {}, type);
-        };
+            <div class="content"><div class='highlight'><pre>        converter.call(Class, value, oldVal, <span class="keyword">function</span>() {}, type);
+    };
 
-        can.Observe.prototype.serialize = <span class="keyword">function</span>(attrName, stack) {
-            <span class="keyword">var</span> where = {},
-                Class = <span class="keyword">this</span>.constructor,
-                attrs = {};
+    can.Observe.prototype.serialize = <span class="keyword">function</span>(attrName, stack) {
+        <span class="keyword">var</span> where = {},
+            Class = <span class="keyword">this</span>.constructor,
+            attrs = {};
 
-            stack = can.isArray(stack) ? stack : [];
-            stack.push(<span class="keyword">this</span>._cid);
+        stack = can.isArray(stack) ? stack : [];
+        stack.push(<span class="keyword">this</span>._cid);
 
-            <span class="keyword">if</span> (attrName !== <span class="literal">undefined</span>) {
-                attrs[attrName] = <span class="keyword">this</span>[attrName];
-            } <span class="keyword">else</span> {
-                attrs = <span class="keyword">this</span>.__get();
-            }
+        <span class="keyword">if</span> (attrName !== <span class="literal">undefined</span>) {
+            attrs[attrName] = <span class="keyword">this</span>[attrName];
+        } <span class="keyword">else</span> {
+            attrs = <span class="keyword">this</span>.__get();
+        }
 
-            can.each(attrs, <span class="keyword">function</span>(val, name) {
-                    <span class="keyword">var</span> type, converter;</pre></div></div>
+        can.each(attrs, <span class="keyword">function</span>(val, name) {
+            <span class="keyword">var</span> type, converter;</pre></div></div>
             
         </li>
         
@@ -432,7 +438,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (val <span class="keyword">instanceof</span> can.Observe &amp;&amp; can.inArray(val._cid, stack) &gt; -<span class="number">1</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (val <span class="keyword">instanceof</span> can.Observe &amp;&amp; can.inArray(val._cid, stack) &gt; -<span class="number">1</span>) {</pre></div></div>
             
         </li>
         
@@ -448,10 +454,10 @@ just reference the id (or undefined if it doesn&#39;t exist).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        where[name] = val.attr(<span class="string">'id'</span>);
-                    } <span class="keyword">else</span> {
-                        type = Class.attributes ? Class.attributes[name] : <span class="number">0</span>;
-                        converter = Class.serialize ? Class.serialize[type] : <span class="number">0</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                where[name] = val.attr(<span class="string">'id'</span>);
+            } <span class="keyword">else</span> {
+                type = Class.attributes ? Class.attributes[name] : <span class="number">0</span>;
+                converter = Class.serialize ? Class.serialize[type] : <span class="number">0</span>;</pre></div></div>
             
         </li>
         
@@ -466,7 +472,7 @@ just reference the id (or undefined if it doesn&#39;t exist).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        where[name] = val &amp;&amp; <span class="keyword">typeof</span> val.serialize == <span class="string">'function'</span> ?</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                where[name] = val &amp;&amp; <span class="keyword">typeof</span> val.serialize == <span class="string">'function'</span> ?</pre></div></div>
             
         </li>
         
@@ -481,7 +487,7 @@ just reference the id (or undefined if it doesn&#39;t exist).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        val.serialize(<span class="literal">undefined</span>, stack) :</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                val.serialize(<span class="literal">undefined</span>, stack) :</pre></div></div>
             
         </li>
         
@@ -496,7 +502,7 @@ just reference the id (or undefined if it doesn&#39;t exist).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        converter ?</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                converter ?</pre></div></div>
             
         </li>
         
@@ -511,7 +517,7 @@ just reference the id (or undefined if it doesn&#39;t exist).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        converter(val, type) :</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                converter(val, type) :</pre></div></div>
             
         </li>
         
@@ -526,14 +532,14 @@ just reference the id (or undefined if it doesn&#39;t exist).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        val;
-                    }
-                });
+            <div class="content"><div class='highlight'><pre>                val;
+            }
+        });
 
-            <span class="keyword">return</span> attrName != <span class="literal">undefined</span> ? where[attrName] : where;
-        };
-        <span class="keyword">return</span> can.Observe;
-    })(can);</pre></div></div>
+        <span class="keyword">return</span> attrName != <span class="literal">undefined</span> ? where[attrName] : where;
+    };
+    <span class="keyword">return</span> can.Observe;
+})(can);</pre></div></div>
             
         </li>
         

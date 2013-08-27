@@ -19,6 +19,11 @@
           <div id="jump_page">
             
               
+              <a class="source" href="can.construct.proxy.html">
+                can.construct.proxy.js
+              </a>
+            
+              
               <a class="source" href="can.construct.super.html">
                 can.construct.super.js
               </a>
@@ -157,10 +162,10 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="comment">/*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 29 May 2013 18:59:29 GMT
+ * Wed, 24 Jul 2013 00:23:55 GMT
  * Licensed MIT
  * Includes: can/util/string
  * Download from: http://canjs.com
@@ -184,14 +189,14 @@ Prototype JavaScript framework, version 1.6.0.1.
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> strUndHash = <span class="regexp">/_|-/</span>,
-            strColons = <span class="regexp">/\=\=/</span>,
-            strWords = <span class="regexp">/([A-Z]+)([A-Z][a-z])/g</span>,
-            strLowUp = <span class="regexp">/([a-z\d])([A-Z])/g</span>,
-            strDash = <span class="regexp">/([a-z\d])([A-Z])/g</span>,
-            strReplacer = <span class="regexp">/\{([^\}]+)\}/g</span>,
-            strQuote = <span class="regexp">/"/g</span>,
-            strSingleQuote = <span class="regexp">/'/g</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> strUndHash = <span class="regexp">/_|-/</span>,
+        strColons = <span class="regexp">/\=\=/</span>,
+        strWords = <span class="regexp">/([A-Z]+)([A-Z][a-z])/g</span>,
+        strLowUp = <span class="regexp">/([a-z\d])([A-Z])/g</span>,
+        strDash = <span class="regexp">/([a-z\d])([A-Z])/g</span>,
+        strReplacer = <span class="regexp">/\{([^\}]+)\}/g</span>,
+        strQuote = <span class="regexp">/"/g</span>,
+        strSingleQuote = <span class="regexp">/'/g</span>,</pre></div></div>
             
         </li>
         
@@ -208,14 +213,14 @@ empty object.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            getNext = <span class="keyword">function</span>(obj, prop, add) {
-                <span class="keyword">var</span> result = obj[prop];
+            <div class="content"><div class='highlight'><pre>        getNext = <span class="keyword">function</span>(obj, prop, add) {
+            <span class="keyword">var</span> result = obj[prop];
 
-                <span class="keyword">if</span> (result === <span class="literal">undefined</span> &amp;&amp; add === <span class="literal">true</span>) {
-                    result = obj[prop] = {}
-                }
-                <span class="keyword">return</span> result
-            },</pre></div></div>
+            <span class="keyword">if</span> (result === <span class="literal">undefined</span> &amp;&amp; add === <span class="literal">true</span>) {
+                result = obj[prop] = {}
+            }
+            <span class="keyword">return</span> result
+        },</pre></div></div>
             
         </li>
         
@@ -230,11 +235,11 @@ empty object.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            isContainer = <span class="keyword">function</span>(current) {
-                <span class="keyword">return</span> (<span class="regexp">/^f|^o/</span>).test(<span class="keyword">typeof</span> current);
-            };
+            <div class="content"><div class='highlight'><pre>        isContainer = <span class="keyword">function</span>(current) {
+            <span class="keyword">return</span> (<span class="regexp">/^f|^o/</span>).test(<span class="keyword">typeof</span> current);
+        };
 
-        can.extend(can, {</pre></div></div>
+    can.extend(can, {</pre></div></div>
             
         </li>
         
@@ -249,7 +254,7 @@ empty object.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                esc: <span class="keyword">function</span>(content) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            esc: <span class="keyword">function</span>(content) {</pre></div></div>
             
         </li>
         
@@ -264,17 +269,17 @@ empty object.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">var</span> isInvalid = content === <span class="literal">null</span> || content === <span class="literal">undefined</span> || (isNaN(content) &amp;&amp; (<span class="string">""</span> + content === <span class="string">'NaN'</span>));
-                    <span class="keyword">return</span> (<span class="string">""</span> + (isInvalid ? <span class="string">''</span> : content))
-                        .replace(<span class="regexp">/&amp;/g</span>, <span class="string">'&amp;amp;'</span>)
-                        .replace(<span class="regexp">/&lt;/g</span>, <span class="string">'&amp;lt;'</span>)
-                        .replace(<span class="regexp">/&gt;/g</span>, <span class="string">'&amp;gt;'</span>)
-                        .replace(strQuote, <span class="string">'&amp;#34;'</span>)
-                        .replace(strSingleQuote, <span class="string">"&amp;#39;"</span>);
-                },
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">var</span> isInvalid = content === <span class="literal">null</span> || content === <span class="literal">undefined</span> || (isNaN(content) &amp;&amp; (<span class="string">""</span> + content === <span class="string">'NaN'</span>));
+                <span class="keyword">return</span> (<span class="string">""</span> + (isInvalid ? <span class="string">''</span> : content))
+                    .replace(<span class="regexp">/&amp;/g</span>, <span class="string">'&amp;amp;'</span>)
+                    .replace(<span class="regexp">/&lt;/g</span>, <span class="string">'&amp;lt;'</span>)
+                    .replace(<span class="regexp">/&gt;/g</span>, <span class="string">'&amp;gt;'</span>)
+                    .replace(strQuote, <span class="string">'&amp;#34;'</span>)
+                    .replace(strSingleQuote, <span class="string">"&amp;#39;"</span>);
+            },
 
 
-                getObject: <span class="keyword">function</span>(name, roots, add) {</pre></div></div>
+            getObject: <span class="keyword">function</span>(name, roots, add) {</pre></div></div>
             
         </li>
         
@@ -290,11 +295,11 @@ empty object.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">var</span> parts = name ? name.split(<span class="string">'.'</span>) : [],
-                        length = parts.length,
-                        current,
-                        r = <span class="number">0</span>,
-                        i, container, rootsLength;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">var</span> parts = name ? name.split(<span class="string">'.'</span>) : [],
+                    length = parts.length,
+                    current,
+                    r = <span class="number">0</span>,
+                    i, container, rootsLength;</pre></div></div>
             
         </li>
         
@@ -309,13 +314,13 @@ empty object.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    roots = can.isArray(roots) ? roots : [roots || window];
+            <div class="content"><div class='highlight'><pre>                roots = can.isArray(roots) ? roots : [roots || window];
 
-                    rootsLength = roots.length
+                rootsLength = roots.length
 
-                    <span class="keyword">if</span> (!length) {
-                        <span class="keyword">return</span> roots[<span class="number">0</span>];
-                    }</pre></div></div>
+                <span class="keyword">if</span> (!length) {
+                    <span class="keyword">return</span> roots[<span class="number">0</span>];
+                }</pre></div></div>
             
         </li>
         
@@ -330,9 +335,9 @@ empty object.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">for</span> (r; r &lt; rootsLength; r++) {
-                        current = roots[r];
-                        container = <span class="literal">undefined</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">for</span> (r; r &lt; rootsLength; r++) {
+                    current = roots[r];
+                    container = <span class="literal">undefined</span>;</pre></div></div>
             
         </li>
         
@@ -348,10 +353,10 @@ is not a container.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; length &amp;&amp; isContainer(current); i++) {
-                            container = current;
-                            current = getNext(container, parts[i]);
-                        }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; length &amp;&amp; isContainer(current); i++) {
+                        container = current;
+                        current = getNext(container, parts[i]);
+                    }</pre></div></div>
             
         </li>
         
@@ -366,10 +371,10 @@ is not a container.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        <span class="keyword">if</span> (container !== <span class="literal">undefined</span> &amp;&amp; current !== <span class="literal">undefined</span>) {
-                            <span class="keyword">break</span>
-                        }
-                    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (container !== <span class="literal">undefined</span> &amp;&amp; current !== <span class="literal">undefined</span>) {
+                        <span class="keyword">break</span>
+                    }
+                }</pre></div></div>
             
         </li>
         
@@ -384,9 +389,9 @@ is not a container.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (add === <span class="literal">false</span> &amp;&amp; current !== <span class="literal">undefined</span>) {
-                        <span class="keyword">delete</span> container[parts[i - <span class="number">1</span>]]
-                    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (add === <span class="literal">false</span> &amp;&amp; current !== <span class="literal">undefined</span>) {
+                    <span class="keyword">delete</span> container[parts[i - <span class="number">1</span>]]
+                }</pre></div></div>
             
         </li>
         
@@ -401,16 +406,16 @@ is not a container.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (add === <span class="literal">true</span> &amp;&amp; current === <span class="literal">undefined</span>) {
-                        current = roots[<span class="number">0</span>]
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (add === <span class="literal">true</span> &amp;&amp; current === <span class="literal">undefined</span>) {
+                    current = roots[<span class="number">0</span>]
 
-                        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; length &amp;&amp; isContainer(current); i++) {
-                            current = getNext(current, parts[i], <span class="literal">true</span>);
-                        }
+                    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; length &amp;&amp; isContainer(current); i++) {
+                        current = getNext(current, parts[i], <span class="literal">true</span>);
                     }
+                }
 
-                    <span class="keyword">return</span> current;
-                },</pre></div></div>
+                <span class="keyword">return</span> current;
+            },</pre></div></div>
             
         </li>
         
@@ -425,7 +430,7 @@ is not a container.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                capitalize: <span class="keyword">function</span>(s, cache) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            capitalize: <span class="keyword">function</span>(s, cache) {</pre></div></div>
             
         </li>
         
@@ -440,8 +445,8 @@ is not a container.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">return</span> s.charAt(<span class="number">0</span>).toUpperCase() + s.slice(<span class="number">1</span>);
-                },</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">return</span> s.charAt(<span class="number">0</span>).toUpperCase() + s.slice(<span class="number">1</span>);
+            },</pre></div></div>
             
         </li>
         
@@ -456,14 +461,14 @@ is not a container.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                underscore: <span class="keyword">function</span>(s) {
-                    <span class="keyword">return</span> s
-                        .replace(strColons, <span class="string">'/'</span>)
-                        .replace(strWords, <span class="string">'$1_$2'</span>)
-                        .replace(strLowUp, <span class="string">'$1_$2'</span>)
-                        .replace(strDash, <span class="string">'_'</span>)
-                        .toLowerCase();
-                },</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            underscore: <span class="keyword">function</span>(s) {
+                <span class="keyword">return</span> s
+                    .replace(strColons, <span class="string">'/'</span>)
+                    .replace(strWords, <span class="string">'$1_$2'</span>)
+                    .replace(strLowUp, <span class="string">'$1_$2'</span>)
+                    .replace(strDash, <span class="string">'_'</span>)
+                    .toLowerCase();
+            },</pre></div></div>
             
         </li>
         
@@ -478,12 +483,12 @@ is not a container.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                sub: <span class="keyword">function</span>(str, data, remove) {
-                    <span class="keyword">var</span> obs = [];
+            <div class="content"><div class='highlight'><pre>            sub: <span class="keyword">function</span>(str, data, remove) {
+                <span class="keyword">var</span> obs = [];
 
-                    str = str || <span class="string">''</span>;
+                str = str || <span class="string">''</span>;
 
-                    obs.push(str.replace(strReplacer, <span class="keyword">function</span>(whole, inside) {</pre></div></div>
+                obs.push(str.replace(strReplacer, <span class="keyword">function</span>(whole, inside) {</pre></div></div>
             
         </li>
         
@@ -498,12 +503,12 @@ is not a container.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                <span class="keyword">var</span> ob = can.getObject(inside, data, remove === <span class="literal">true</span> ? <span class="literal">false</span> : <span class="literal">undefined</span>);
+            <div class="content"><div class='highlight'><pre>                            <span class="keyword">var</span> ob = can.getObject(inside, data, remove === <span class="literal">true</span> ? <span class="literal">false</span> : <span class="literal">undefined</span>);
 
-                                <span class="keyword">if</span> (ob === <span class="literal">undefined</span>) {
-                                    obs = <span class="literal">null</span>;
-                                    <span class="keyword">return</span> <span class="string">""</span>;
-                                }</pre></div></div>
+                            <span class="keyword">if</span> (ob === <span class="literal">undefined</span> || ob === <span class="literal">null</span>) {
+                                obs = <span class="literal">null</span>;
+                                <span class="keyword">return</span> <span class="string">""</span>;
+                            }</pre></div></div>
             
         </li>
         
@@ -518,16 +523,16 @@ is not a container.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                <span class="keyword">if</span> (isContainer(ob) &amp;&amp; obs) {
-                                    obs.push(ob);
-                                    <span class="keyword">return</span> <span class="string">""</span>;
-                                }
+            <div class="content"><div class='highlight'><pre>                            <span class="keyword">if</span> (isContainer(ob) &amp;&amp; obs) {
+                                obs.push(ob);
+                                <span class="keyword">return</span> <span class="string">""</span>;
+                            }
 
-                                <span class="keyword">return</span> <span class="string">""</span> + ob;
-                            }));
+                            <span class="keyword">return</span> <span class="string">""</span> + ob;
+                        }));
 
-                    <span class="keyword">return</span> obs === <span class="literal">null</span> ? obs : (obs.length &lt;= <span class="number">1</span> ? obs[<span class="number">0</span>] : obs);
-                },</pre></div></div>
+                <span class="keyword">return</span> obs === <span class="literal">null</span> ? obs : (obs.length &lt;= <span class="number">1</span> ? obs[<span class="number">0</span>] : obs);
+            },</pre></div></div>
             
         </li>
         
@@ -543,11 +548,11 @@ them available.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                replacer: strReplacer,
-                undHash: strUndHash
-            });
-        <span class="keyword">return</span> can;
-    })(can);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            replacer: strReplacer,
+            undHash: strUndHash
+        });
+    <span class="keyword">return</span> can;
+})(can);</pre></div></div>
             
         </li>
         

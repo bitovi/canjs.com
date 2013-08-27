@@ -19,6 +19,11 @@
           <div id="jump_page">
             
               
+              <a class="source" href="can.construct.proxy.html">
+                can.construct.proxy.js
+              </a>
+            
+              
               <a class="source" href="can.construct.super.html">
                 can.construct.super.js
               </a>
@@ -157,10 +162,10 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="comment">/*!
- * CanJS - 1.1.6
+ * CanJS - 1.1.7
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 29 May 2013 18:59:29 GMT
+ * Wed, 24 Jul 2013 00:23:55 GMT
  * Licensed MIT
  * Includes: can/util/fixture
  * Download from: http://canjs.com
@@ -180,20 +185,20 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> getUrl = <span class="keyword">function</span>(url) {
-            <span class="keyword">if</span> (<span class="keyword">typeof</span> steal !== <span class="string">'undefined'</span>) {
-                <span class="keyword">if</span> (can.isFunction(steal.config)) {
-                    <span class="keyword">return</span> steal.config().root.mapJoin(url).toString();
-                }
-                <span class="keyword">return</span> steal.root.join(url).toString();
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> getUrl = <span class="keyword">function</span>(url) {
+        <span class="keyword">if</span> (<span class="keyword">typeof</span> steal !== <span class="string">'undefined'</span>) {
+            <span class="keyword">if</span> (can.isFunction(steal.config)) {
+                <span class="keyword">return</span> steal.config().root.mapJoin(url).toString();
             }
-            <span class="keyword">return</span> (can.fixture.rootUrl || <span class="string">''</span>) + url;
+            <span class="keyword">return</span> steal.root.join(url).toString();
         }
+        <span class="keyword">return</span> (can.fixture.rootUrl || <span class="string">''</span>) + url;
+    }
 
-        <span class="keyword">var</span> updateSettings = <span class="keyword">function</span>(settings, originalOptions) {
-            <span class="keyword">if</span> (!can.fixture.on) {
-                <span class="keyword">return</span>;
-            }</pre></div></div>
+    <span class="keyword">var</span> updateSettings = <span class="keyword">function</span>(settings, originalOptions) {
+        <span class="keyword">if</span> (!can.fixture.on) {
+            <span class="keyword">return</span>;
+        }</pre></div></div>
             
         </li>
         
@@ -208,9 +213,9 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> _logger = <span class="keyword">function</span>(type, arr) {
-                <span class="keyword">if</span> (console.log.apply) {
-                    Function.prototype.call.apply(console[type], [console].concat(arr));</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> _logger = <span class="keyword">function</span>(type, arr) {
+            <span class="keyword">if</span> (console.log.apply) {
+                Function.prototype.call.apply(console[type], [console].concat(arr));</pre></div></div>
             
         </li>
         
@@ -225,15 +230,15 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                } <span class="keyword">else</span> {
-                    console[type](arr)
+            <div class="content"><div class='highlight'><pre>            } <span class="keyword">else</span> {
+                console[type](arr)
+            }
+        },
+            log = <span class="keyword">function</span>() {
+                <span class="keyword">if</span> (<span class="keyword">typeof</span> steal !== <span class="string">'undefined'</span> &amp;&amp; steal.dev) {
+                    steal.dev.log(<span class="string">'fixture INFO: '</span> + Array.prototype.slice.call(arguments).join(<span class="string">' '</span>));
                 }
-            },
-                log = <span class="keyword">function</span>() {
-                    <span class="keyword">if</span> (<span class="keyword">typeof</span> steal !== <span class="string">'undefined'</span> &amp;&amp; steal.dev) {
-                        steal.dev.log(<span class="string">'fixture INFO: '</span> + Array.prototype.slice.call(arguments).join(<span class="string">' '</span>));
-                    }
-                }</pre></div></div>
+            }</pre></div></div>
             
         </li>
         
@@ -248,7 +253,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            settings.type = settings.type || settings.method || <span class="string">'GET'</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        settings.type = settings.type || settings.method || <span class="string">'GET'</span>;</pre></div></div>
             
         </li>
         
@@ -263,7 +268,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> data = overwrite(settings);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> data = overwrite(settings);</pre></div></div>
             
         </li>
         
@@ -278,12 +283,12 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (!settings.fixture) {
-                <span class="keyword">if</span> (window.location.protocol === <span class="string">"file:"</span>) {
-                    log(<span class="string">"ajax request to "</span> + settings.url + <span class="string">", no fixture found"</span>);
-                }
-                <span class="keyword">return</span>;
-            }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (!settings.fixture) {
+            <span class="keyword">if</span> (window.location.protocol === <span class="string">"file:"</span>) {
+                log(<span class="string">"ajax request to "</span> + settings.url + <span class="string">", no fixture found"</span>);
+            }
+            <span class="keyword">return</span>;
+        }</pre></div></div>
             
         </li>
         
@@ -298,9 +303,9 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (<span class="keyword">typeof</span> settings.fixture === <span class="string">"string"</span> &amp;&amp; can.fixture[settings.fixture]) {
-                settings.fixture = can.fixture[settings.fixture];
-            }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (<span class="keyword">typeof</span> settings.fixture === <span class="string">"string"</span> &amp;&amp; can.fixture[settings.fixture]) {
+            settings.fixture = can.fixture[settings.fixture];
+        }</pre></div></div>
             
         </li>
         
@@ -315,10 +320,10 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (<span class="keyword">typeof</span> settings.fixture == <span class="string">"string"</span>) {
-                <span class="keyword">var</span> url = settings.fixture;
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (<span class="keyword">typeof</span> settings.fixture == <span class="string">"string"</span>) {
+            <span class="keyword">var</span> url = settings.fixture;
 
-                <span class="keyword">if</span> (<span class="regexp">/^\/\//</span>.test(url)) {</pre></div></div>
+            <span class="keyword">if</span> (<span class="regexp">/^\/\//</span>.test(url)) {</pre></div></div>
             
         </li>
         
@@ -333,10 +338,10 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    url = getUrl(settings.fixture.substr(<span class="number">2</span>));
-                }
+            <div class="content"><div class='highlight'><pre>                url = getUrl(settings.fixture.substr(<span class="number">2</span>));
+            }
 
-                <span class="keyword">if</span> (data) {</pre></div></div>
+            <span class="keyword">if</span> (data) {</pre></div></div>
             
         </li>
         
@@ -351,22 +356,22 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    url = can.sub(url, data);
-                }
+            <div class="content"><div class='highlight'><pre>                url = can.sub(url, data);
+            }
 
-                <span class="keyword">delete</span> settings.fixture;
+            <span class="keyword">delete</span> settings.fixture;
 
 
 
-                settings.url = url;
-                settings.data = <span class="literal">null</span>;
-                settings.type = <span class="string">"GET"</span>;
-                <span class="keyword">if</span> (!settings.error) {
-                    settings.error = <span class="keyword">function</span>(xhr, error, message) {
-                        <span class="keyword">throw</span> <span class="string">"fixtures.js Error "</span> + error + <span class="string">" "</span> + message;
-                    };
-                }
-            } <span class="keyword">else</span> {</pre></div></div>
+            settings.url = url;
+            settings.data = <span class="literal">null</span>;
+            settings.type = <span class="string">"GET"</span>;
+            <span class="keyword">if</span> (!settings.error) {
+                settings.error = <span class="keyword">function</span>(xhr, error, message) {
+                    <span class="keyword">throw</span> <span class="string">"fixtures.js Error "</span> + error + <span class="string">" "</span> + message;
+                };
+            }
+        } <span class="keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -383,13 +388,13 @@ add to settings data from fixture ...</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                settings.dataTypes &amp;&amp; settings.dataTypes.splice(<span class="number">0</span>, <span class="number">0</span>, <span class="string">"fixture"</span>);
+            <div class="content"><div class='highlight'><pre>            settings.dataTypes &amp;&amp; settings.dataTypes.splice(<span class="number">0</span>, <span class="number">0</span>, <span class="string">"fixture"</span>);
 
-                <span class="keyword">if</span> (data &amp;&amp; originalOptions) {
-                    can.extend(originalOptions.data, data)
-                }
+            <span class="keyword">if</span> (data &amp;&amp; originalOptions) {
+                can.extend(originalOptions.data, data)
             }
-        },</pre></div></div>
+        }
+    },</pre></div></div>
             
         </li>
         
@@ -405,7 +410,7 @@ and moves some common args around to make it easier to call</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            extractResponse = <span class="keyword">function</span>(status, statusText, responses, headers) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        extractResponse = <span class="keyword">function</span>(status, statusText, responses, headers) {</pre></div></div>
             
         </li>
         
@@ -420,12 +425,12 @@ and moves some common args around to make it easier to call</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (<span class="keyword">typeof</span> status != <span class="string">"number"</span>) {
-                    headers = statusText;
-                    responses = status;
-                    statusText = <span class="string">"success"</span>
-                    status = <span class="number">200</span>;
-                }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (<span class="keyword">typeof</span> status != <span class="string">"number"</span>) {
+                headers = statusText;
+                responses = status;
+                statusText = <span class="string">"success"</span>
+                status = <span class="number">200</span>;
+            }</pre></div></div>
             
         </li>
         
@@ -440,16 +445,16 @@ and moves some common args around to make it easier to call</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (<span class="keyword">typeof</span> statusText != <span class="string">"string"</span>) {
-                    headers = responses;
-                    responses = statusText;
-                    statusText = <span class="string">"success"</span>;
-                }
-                <span class="keyword">if</span> (status &gt;= <span class="number">400</span> &amp;&amp; status &lt;= <span class="number">599</span>) {
-                    <span class="keyword">this</span>.dataType = <span class="string">"text"</span>
-                }
-                <span class="keyword">return</span> [status, statusText, extractResponses(<span class="keyword">this</span>, responses), headers];
-            },</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (<span class="keyword">typeof</span> statusText != <span class="string">"string"</span>) {
+                headers = responses;
+                responses = statusText;
+                statusText = <span class="string">"success"</span>;
+            }
+            <span class="keyword">if</span> (status &gt;= <span class="number">400</span> &amp;&amp; status &lt;= <span class="number">599</span>) {
+                <span class="keyword">this</span>.dataType = <span class="string">"text"</span>
+            }
+            <span class="keyword">return</span> [status, statusText, extractResponses(<span class="keyword">this</span>, responses), headers];
+        },</pre></div></div>
             
         </li>
         
@@ -465,15 +470,15 @@ make sure we provide a response type that matches the first datatype (typically 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            extractResponses = <span class="keyword">function</span>(settings, responses) {
-                <span class="keyword">var</span> next = settings.dataTypes ? settings.dataTypes[<span class="number">0</span>] : (settings.dataType || <span class="string">'json'</span>);
-                <span class="keyword">if</span> (!responses || !responses[next]) {
-                    <span class="keyword">var</span> tmp = {}
-                    tmp[next] = responses;
-                    responses = tmp;
-                }
-                <span class="keyword">return</span> responses;
-            };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        extractResponses = <span class="keyword">function</span>(settings, responses) {
+            <span class="keyword">var</span> next = settings.dataTypes ? settings.dataTypes[<span class="number">0</span>] : (settings.dataType || <span class="string">'json'</span>);
+            <span class="keyword">if</span> (!responses || !responses[next]) {
+                <span class="keyword">var</span> tmp = {}
+                tmp[next] = responses;
+                responses = tmp;
+            }
+            <span class="keyword">return</span> responses;
+        };</pre></div></div>
             
         </li>
         
@@ -489,7 +494,7 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (can.ajaxPrefilter &amp;&amp; can.ajaxTransport) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (can.ajaxPrefilter &amp;&amp; can.ajaxTransport) {</pre></div></div>
             
         </li>
         
@@ -504,9 +509,9 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            can.ajaxPrefilter(updateSettings);
+            <div class="content"><div class='highlight'><pre>        can.ajaxPrefilter(updateSettings);
 
-            can.ajaxTransport(<span class="string">"fixture"</span>, <span class="keyword">function</span>(s, original) {</pre></div></div>
+        can.ajaxTransport(<span class="string">"fixture"</span>, <span class="keyword">function</span>(s, original) {</pre></div></div>
             
         </li>
         
@@ -521,7 +526,7 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    s.dataTypes.shift();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            s.dataTypes.shift();</pre></div></div>
             
         </li>
         
@@ -536,10 +541,10 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">var</span> timeout, stopped = <span class="literal">false</span>;
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> timeout, stopped = <span class="literal">false</span>;
 
-                    <span class="keyword">return</span> {
-                        send: <span class="keyword">function</span>(headers, callback) {</pre></div></div>
+            <span class="keyword">return</span> {
+                send: <span class="keyword">function</span>(headers, callback) {</pre></div></div>
             
         </li>
         
@@ -554,7 +559,7 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                            timeout = setTimeout(<span class="keyword">function</span>() {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    timeout = setTimeout(<span class="keyword">function</span>() {</pre></div></div>
             
         </li>
         
@@ -569,11 +574,11 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                    <span class="keyword">var</span> success = <span class="keyword">function</span>() {
-                                        <span class="keyword">if</span> (stopped === <span class="literal">false</span>) {
-                                            callback.apply(<span class="literal">null</span>, extractResponse.apply(s, arguments));
-                                        }
-                                    },</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        <span class="keyword">var</span> success = <span class="keyword">function</span>() {
+                            <span class="keyword">if</span> (stopped === <span class="literal">false</span>) {
+                                callback.apply(<span class="literal">null</span>, extractResponse.apply(s, arguments));
+                            }
+                        },</pre></div></div>
             
         </li>
         
@@ -588,8 +593,8 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                        result = s.fixture(original, success, headers, s);
-                                    <span class="keyword">if</span> (result !== <span class="literal">undefined</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            result = s.fixture(original, success, headers, s);
+                        <span class="keyword">if</span> (result !== <span class="literal">undefined</span>) {</pre></div></div>
             
         </li>
         
@@ -604,23 +609,23 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                        callback(<span class="number">200</span>, <span class="string">"success"</span>, extractResponses(s, result), {});
-                                    }
-                                }, can.fixture.delay);
-                        },
-                        abort: <span class="keyword">function</span>() {
-                            stopped = <span class="literal">true</span>;
-                            clearTimeout(timeout)
+            <div class="content"><div class='highlight'><pre>                            callback(<span class="number">200</span>, <span class="string">"success"</span>, extractResponses(s, result), {});
                         }
-                    };
-                });
-        } <span class="keyword">else</span> {
-            <span class="keyword">var</span> AJAX = can.ajax;
-            can.ajax = <span class="keyword">function</span>(settings) {
-                updateSettings(settings, settings);
-                <span class="keyword">if</span> (settings.fixture) {
-                    <span class="keyword">var</span> timeout, d = <span class="keyword">new</span> can.Deferred(),
-                        stopped = <span class="literal">false</span>;</pre></div></div>
+                    }, can.fixture.delay);
+                },
+                abort: <span class="keyword">function</span>() {
+                    stopped = <span class="literal">true</span>;
+                    clearTimeout(timeout)
+                }
+            };
+        });
+    } <span class="keyword">else</span> {
+        <span class="keyword">var</span> AJAX = can.ajax;
+        can.ajax = <span class="keyword">function</span>(settings) {
+            updateSettings(settings, settings);
+            <span class="keyword">if</span> (settings.fixture) {
+                <span class="keyword">var</span> timeout, d = <span class="keyword">new</span> can.Deferred(),
+                    stopped = <span class="literal">false</span>;</pre></div></div>
             
         </li>
         
@@ -635,7 +640,7 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    d.getResponseHeader = <span class="keyword">function</span>() {}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                d.getResponseHeader = <span class="keyword">function</span>() {}</pre></div></div>
             
         </li>
         
@@ -650,7 +655,7 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    d.then(settings.success, settings.fail);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                d.then(settings.success, settings.fail);</pre></div></div>
             
         </li>
         
@@ -665,11 +670,11 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    d.abort = <span class="keyword">function</span>() {
-                        clearTimeout(timeout);
-                        stopped = <span class="literal">true</span>;
-                        d.reject(d)
-                    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                d.abort = <span class="keyword">function</span>() {
+                    clearTimeout(timeout);
+                    stopped = <span class="literal">true</span>;
+                    d.reject(d)
+                }</pre></div></div>
             
         </li>
         
@@ -684,7 +689,7 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    timeout = setTimeout(<span class="keyword">function</span>() {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                timeout = setTimeout(<span class="keyword">function</span>() {</pre></div></div>
             
         </li>
         
@@ -699,13 +704,13 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                            <span class="keyword">var</span> success = <span class="keyword">function</span>() {
-                                <span class="keyword">var</span> response = extractResponse.apply(settings, arguments),
-                                    status = response[<span class="number">0</span>];
+            <div class="content"><div class='highlight'><pre>                    <span class="keyword">var</span> success = <span class="keyword">function</span>() {
+                        <span class="keyword">var</span> response = extractResponse.apply(settings, arguments),
+                            status = response[<span class="number">0</span>];
 
-                                <span class="keyword">if</span> ((status &gt;= <span class="number">200</span> &amp;&amp; status &lt; <span class="number">300</span> || status === <span class="number">304</span>) &amp;&amp; stopped === <span class="literal">false</span>) {
-                                    d.resolve(response[<span class="number">2</span>][settings.dataType])
-                                } <span class="keyword">else</span> {</pre></div></div>
+                        <span class="keyword">if</span> ((status &gt;= <span class="number">200</span> &amp;&amp; status &lt; <span class="number">300</span> || status === <span class="number">304</span>) &amp;&amp; stopped === <span class="literal">false</span>) {
+                            d.resolve(response[<span class="number">2</span>][settings.dataType])
+                        } <span class="keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -720,9 +725,9 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                    d.reject(d, <span class="string">'error'</span>, response[<span class="number">1</span>]);
-                                }
-                            },</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            d.reject(d, <span class="string">'error'</span>, response[<span class="number">1</span>]);
+                        }
+                    },</pre></div></div>
             
         </li>
         
@@ -737,20 +742,20 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                result = settings.fixture(settings, success, settings.headers, settings);
-                            <span class="keyword">if</span> (result !== <span class="literal">undefined</span>) {
-                                d.resolve(result)
-                            }
-                        }, can.fixture.delay);
+            <div class="content"><div class='highlight'><pre>                        result = settings.fixture(settings, success, settings.headers, settings);
+                    <span class="keyword">if</span> (result !== <span class="literal">undefined</span>) {
+                        d.resolve(result)
+                    }
+                }, can.fixture.delay);
 
-                    <span class="keyword">return</span> d;
-                } <span class="keyword">else</span> {
-                    <span class="keyword">return</span> AJAX(settings);
-                }
+                <span class="keyword">return</span> d;
+            } <span class="keyword">else</span> {
+                <span class="keyword">return</span> AJAX(settings);
             }
         }
+    }
 
-        <span class="keyword">var</span> typeTest = <span class="regexp">/^(script|json|text|jsonp)$/</span>,</pre></div></div>
+    <span class="keyword">var</span> typeTest = <span class="regexp">/^(script|json|text|jsonp)$/</span>,</pre></div></div>
             
         </li>
         
@@ -765,7 +770,7 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            overwrites = [],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        overwrites = [],</pre></div></div>
             
         </li>
         
@@ -780,14 +785,14 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            find = <span class="keyword">function</span>(settings, exact) {
-                <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; overwrites.length; i++) {
-                    <span class="keyword">if</span> ($fixture._similar(settings, overwrites[i], exact)) {
-                        <span class="keyword">return</span> i;
-                    }
+            <div class="content"><div class='highlight'><pre>        find = <span class="keyword">function</span>(settings, exact) {
+            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; overwrites.length; i++) {
+                <span class="keyword">if</span> ($fixture._similar(settings, overwrites[i], exact)) {
+                    <span class="keyword">return</span> i;
                 }
-                <span class="keyword">return</span> -<span class="number">1</span>;
-            },</pre></div></div>
+            }
+            <span class="keyword">return</span> -<span class="number">1</span>;
+        },</pre></div></div>
             
         </li>
         
@@ -802,14 +807,14 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            overwrite = <span class="keyword">function</span>(settings) {
-                <span class="keyword">var</span> index = find(settings);
-                <span class="keyword">if</span> (index &gt; -<span class="number">1</span>) {
-                    settings.fixture = overwrites[index].fixture;
-                    <span class="keyword">return</span> $fixture._getData(overwrites[index].url, settings.url)
-                }
+            <div class="content"><div class='highlight'><pre>        overwrite = <span class="keyword">function</span>(settings) {
+            <span class="keyword">var</span> index = find(settings);
+            <span class="keyword">if</span> (index &gt; -<span class="number">1</span>) {
+                settings.fixture = overwrites[index].fixture;
+                <span class="keyword">return</span> $fixture._getData(overwrites[index].url, settings.url)
+            }
 
-            },</pre></div></div>
+        },</pre></div></div>
             
         </li>
         
@@ -824,37 +829,37 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            getId = <span class="keyword">function</span>(settings) {
-                <span class="keyword">var</span> id = settings.data.id;
+            <div class="content"><div class='highlight'><pre>        getId = <span class="keyword">function</span>(settings) {
+            <span class="keyword">var</span> id = settings.data.id;
 
-                <span class="keyword">if</span> (id === <span class="literal">undefined</span> &amp;&amp; <span class="keyword">typeof</span> settings.data === <span class="string">"number"</span>) {
-                    id = settings.data;
-                }
+            <span class="keyword">if</span> (id === <span class="literal">undefined</span> &amp;&amp; <span class="keyword">typeof</span> settings.data === <span class="string">"number"</span>) {
+                id = settings.data;
+            }
 
 
 
-                <span class="keyword">if</span> (id === <span class="literal">undefined</span>) {
-                    settings.url.replace(<span class="regexp">/\/(\d+)(\/|$|\.)/g</span>, <span class="keyword">function</span>(all, num) {
-                            id = num;
-                        });
-                }
+            <span class="keyword">if</span> (id === <span class="literal">undefined</span>) {
+                settings.url.replace(<span class="regexp">/\/(\d+)(\/|$|\.)/g</span>, <span class="keyword">function</span>(all, num) {
+                    id = num;
+                });
+            }
 
-                <span class="keyword">if</span> (id === <span class="literal">undefined</span>) {
-                    id = settings.url.replace(<span class="regexp">/\/(\w+)(\/|$|\.)/g</span>, <span class="keyword">function</span>(all, num) {
-                            <span class="keyword">if</span> (num != <span class="string">'update'</span>) {
-                                id = num;
-                            }
-                        })
-                }
+            <span class="keyword">if</span> (id === <span class="literal">undefined</span>) {
+                id = settings.url.replace(<span class="regexp">/\/(\w+)(\/|$|\.)/g</span>, <span class="keyword">function</span>(all, num) {
+                    <span class="keyword">if</span> (num != <span class="string">'update'</span>) {
+                        id = num;
+                    }
+                })
+            }
 
-                <span class="keyword">if</span> (id === <span class="literal">undefined</span>) { <span class="comment">// if still not set, guess a random number</span>
-                    id = Math.round(Math.random() * <span class="number">1000</span>)
-                }
+            <span class="keyword">if</span> (id === <span class="literal">undefined</span>) { <span class="comment">// if still not set, guess a random number</span>
+                id = Math.round(Math.random() * <span class="number">1000</span>)
+            }
 
-                <span class="keyword">return</span> id;
-            };
+            <span class="keyword">return</span> id;
+        };
 
-        <span class="keyword">var</span> $fixture = can.fixture = <span class="keyword">function</span>(settings, fixture) {</pre></div></div>
+    <span class="keyword">var</span> $fixture = can.fixture = <span class="keyword">function</span>(settings, fixture) {</pre></div></div>
             
         </li>
         
@@ -869,8 +874,8 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (fixture !== <span class="literal">undefined</span>) {
-                <span class="keyword">if</span> (<span class="keyword">typeof</span> settings == <span class="string">'string'</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (fixture !== <span class="literal">undefined</span>) {
+            <span class="keyword">if</span> (<span class="keyword">typeof</span> settings == <span class="string">'string'</span>) {</pre></div></div>
             
         </li>
         
@@ -885,19 +890,19 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">var</span> matches = settings.match(<span class="regexp">/(GET|POST|PUT|DELETE) (.+)/i</span>);
-                    <span class="keyword">if</span> (!matches) {
-                        settings = {
-                            url: settings
-                        };
-                    } <span class="keyword">else</span> {
-                        settings = {
-                            url: matches[<span class="number">2</span>],
-                            type: matches[<span class="number">1</span>]
-                        };
-                    }
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">var</span> matches = settings.match(<span class="regexp">/(GET|POST|PUT|DELETE) (.+)/i</span>);
+                <span class="keyword">if</span> (!matches) {
+                    settings = {
+                        url: settings
+                    };
+                } <span class="keyword">else</span> {
+                    settings = {
+                        url: matches[<span class="number">2</span>],
+                        type: matches[<span class="number">1</span>]
+                    };
+                }
 
-                }</pre></div></div>
+            }</pre></div></div>
             
         </li>
         
@@ -912,24 +917,24 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">var</span> index = find(settings, !! fixture);
-                <span class="keyword">if</span> (index &gt; -<span class="number">1</span>) {
-                    overwrites.splice(index, <span class="number">1</span>)
-                }
-                <span class="keyword">if</span> (fixture == <span class="literal">null</span>) {
-                    <span class="keyword">return</span>
-                }
-                settings.fixture = fixture;
-                overwrites.push(settings)
-            } <span class="keyword">else</span> {
-                can.each(settings, <span class="keyword">function</span>(fixture, url) {
-                        $fixture(url, fixture);
-                    })
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">var</span> index = find(settings, !! fixture);
+            <span class="keyword">if</span> (index &gt; -<span class="number">1</span>) {
+                overwrites.splice(index, <span class="number">1</span>)
             }
-        };
-        <span class="keyword">var</span> replacer = can.replacer;
+            <span class="keyword">if</span> (fixture == <span class="literal">null</span>) {
+                <span class="keyword">return</span>
+            }
+            settings.fixture = fixture;
+            overwrites.push(settings)
+        } <span class="keyword">else</span> {
+            can.each(settings, <span class="keyword">function</span>(fixture, url) {
+                $fixture(url, fixture);
+            })
+        }
+    };
+    <span class="keyword">var</span> replacer = can.replacer;
 
-        can.extend(can.fixture, {</pre></div></div>
+    can.extend(can.fixture, {</pre></div></div>
             
         </li>
         
@@ -944,22 +949,22 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                _similar: <span class="keyword">function</span>(settings, overwrite, exact) {
-                    <span class="keyword">if</span> (exact) {
-                        <span class="keyword">return</span> can.Object.same(settings, overwrite, {
-                                fixture: <span class="literal">null</span>
-                            })
-                    } <span class="keyword">else</span> {
-                        <span class="keyword">return</span> can.Object.subset(settings, overwrite, can.fixture._compare)
-                    }
+            <div class="content"><div class='highlight'><pre>            _similar: <span class="keyword">function</span>(settings, overwrite, exact) {
+                <span class="keyword">if</span> (exact) {
+                    <span class="keyword">return</span> can.Object.same(settings, overwrite, {
+                            fixture: <span class="literal">null</span>
+                        })
+                } <span class="keyword">else</span> {
+                    <span class="keyword">return</span> can.Object.subset(settings, overwrite, can.fixture._compare)
+                }
+            },
+            _compare: {
+                url: <span class="keyword">function</span>(a, b) {
+                    <span class="keyword">return</span> !!$fixture._getData(b, a)
                 },
-                _compare: {
-                    url: <span class="keyword">function</span>(a, b) {
-                        <span class="keyword">return</span> !!$fixture._getData(b, a)
-                    },
-                    fixture: <span class="literal">null</span>,
-                    type: <span class="string">"i"</span>
-                },</pre></div></div>
+                fixture: <span class="literal">null</span>,
+                type: <span class="string">"i"</span>
+            },</pre></div></div>
             
         </li>
         
@@ -974,45 +979,45 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                _getData: <span class="keyword">function</span>(fixtureUrl, url) {
-                    <span class="keyword">var</span> order = [],
-                        fixtureUrlAdjusted = fixtureUrl.replace(<span class="string">'.'</span>, <span class="string">'\\.'</span>).replace(<span class="string">'?'</span>, <span class="string">'\\?'</span>),
-                        res = <span class="keyword">new</span> RegExp(fixtureUrlAdjusted.replace(replacer, <span class="keyword">function</span>(whole, part) {
-                                    order.push(part)
-                                    <span class="keyword">return</span> <span class="string">"([^\/]+)"</span>
-                                }) + <span class="string">"$"</span>).exec(url),
-                        data = {};
+            <div class="content"><div class='highlight'><pre>            _getData: <span class="keyword">function</span>(fixtureUrl, url) {
+                <span class="keyword">var</span> order = [],
+                    fixtureUrlAdjusted = fixtureUrl.replace(<span class="string">'.'</span>, <span class="string">'\\.'</span>).replace(<span class="string">'?'</span>, <span class="string">'\\?'</span>),
+                    res = <span class="keyword">new</span> RegExp(fixtureUrlAdjusted.replace(replacer, <span class="keyword">function</span>(whole, part) {
+                                order.push(part)
+                                <span class="keyword">return</span> <span class="string">"([^\/]+)"</span>
+                            }) + <span class="string">"$"</span>).exec(url),
+                    data = {};
 
-                    <span class="keyword">if</span> (!res) {
-                        <span class="keyword">return</span> <span class="literal">null</span>;
-                    }
-                    res.shift();
-                    can.each(order, <span class="keyword">function</span>(name) {
-                            data[name] = res.shift()
-                        })
-                    <span class="keyword">return</span> data;
-                },
+                <span class="keyword">if</span> (!res) {
+                    <span class="keyword">return</span> <span class="literal">null</span>;
+                }
+                res.shift();
+                can.each(order, <span class="keyword">function</span>(name) {
+                    data[name] = res.shift()
+                })
+                <span class="keyword">return</span> data;
+            },
 
-                store: <span class="keyword">function</span>(types, count, make, filter) {
+            store: <span class="keyword">function</span>(types, count, make, filter) {
 
-                    <span class="keyword">var</span> items = [], <span class="comment">// TODO: change this to a hash</span>
-                        currentId = <span class="number">0</span>,
-                        findOne = <span class="keyword">function</span>(id) {
-                            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; items.length; i++) {
-                                <span class="keyword">if</span> (id == items[i].id) {
-                                    <span class="keyword">return</span> items[i];
-                                }
+                <span class="keyword">var</span> items = [], <span class="comment">// TODO: change this to a hash</span>
+                    currentId = <span class="number">0</span>,
+                    findOne = <span class="keyword">function</span>(id) {
+                        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; items.length; i++) {
+                            <span class="keyword">if</span> (id == items[i].id) {
+                                <span class="keyword">return</span> items[i];
                             }
-                        },
-                        methods = {};
+                        }
+                    },
+                    methods = {};
 
-                    <span class="keyword">if</span> (<span class="keyword">typeof</span> types === <span class="string">"string"</span>) {
-                        types = [types + <span class="string">"s"</span>, types]
-                    } <span class="keyword">else</span> <span class="keyword">if</span> (!can.isArray(types)) {
-                        filter = make;
-                        make = count;
-                        count = types;
-                    }</pre></div></div>
+                <span class="keyword">if</span> (<span class="keyword">typeof</span> types === <span class="string">"string"</span>) {
+                    types = [types + <span class="string">"s"</span>, types]
+                } <span class="keyword">else</span> <span class="keyword">if</span> (!can.isArray(types)) {
+                    filter = make;
+                    make = count;
+                    count = types;
+                }</pre></div></div>
             
         </li>
         
@@ -1027,10 +1032,10 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    can.extend(methods, {
+            <div class="content"><div class='highlight'><pre>                can.extend(methods, {
 
-                            findAll: <span class="keyword">function</span>(request) {
-                                request = request || {}</pre></div></div>
+                        findAll: <span class="keyword">function</span>(request) {
+                            request = request || {}</pre></div></div>
             
         </li>
         
@@ -1045,8 +1050,8 @@ check if jQuery</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                <span class="keyword">var</span> retArr = items.slice(<span class="number">0</span>);
-                                request.data = request.data || {};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            <span class="keyword">var</span> retArr = items.slice(<span class="number">0</span>);
+                            request.data = request.data || {};</pre></div></div>
             
         </li>
         
@@ -1062,28 +1067,28 @@ order looks like [&quot;age ASC&quot;,&quot;gender DESC&quot;]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                can.each((request.data.order || []).slice(<span class="number">0</span>).reverse(), <span class="keyword">function</span>(name) {
-                                        <span class="keyword">var</span> split = name.split(<span class="string">" "</span>);
-                                        retArr = retArr.sort(<span class="keyword">function</span>(a, b) {
-                                                <span class="keyword">if</span> (split[<span class="number">1</span>].toUpperCase() !== <span class="string">"ASC"</span>) {
-                                                    <span class="keyword">if</span> (a[split[<span class="number">0</span>]] &lt; b[split[<span class="number">0</span>]]) {
-                                                        <span class="keyword">return</span> <span class="number">1</span>;
-                                                    } <span class="keyword">else</span> <span class="keyword">if</span> (a[split[<span class="number">0</span>]] == b[split[<span class="number">0</span>]]) {
-                                                        <span class="keyword">return</span> <span class="number">0</span>
-                                                    } <span class="keyword">else</span> {
-                                                        <span class="keyword">return</span> -<span class="number">1</span>;
-                                                    }
-                                                } <span class="keyword">else</span> {
-                                                    <span class="keyword">if</span> (a[split[<span class="number">0</span>]] &lt; b[split[<span class="number">0</span>]]) {
-                                                        <span class="keyword">return</span> -<span class="number">1</span>;
-                                                    } <span class="keyword">else</span> <span class="keyword">if</span> (a[split[<span class="number">0</span>]] == b[split[<span class="number">0</span>]]) {
-                                                        <span class="keyword">return</span> <span class="number">0</span>
-                                                    } <span class="keyword">else</span> {
-                                                        <span class="keyword">return</span> <span class="number">1</span>;
-                                                    }
-                                                }
-                                            });
-                                    });</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                            can.each((request.data.order || []).slice(<span class="number">0</span>).reverse(), <span class="keyword">function</span>(name) {
+                                <span class="keyword">var</span> split = name.split(<span class="string">" "</span>);
+                                retArr = retArr.sort(<span class="keyword">function</span>(a, b) {
+                                    <span class="keyword">if</span> (split[<span class="number">1</span>].toUpperCase() !== <span class="string">"ASC"</span>) {
+                                        <span class="keyword">if</span> (a[split[<span class="number">0</span>]] &lt; b[split[<span class="number">0</span>]]) {
+                                            <span class="keyword">return</span> <span class="number">1</span>;
+                                        } <span class="keyword">else</span> <span class="keyword">if</span> (a[split[<span class="number">0</span>]] == b[split[<span class="number">0</span>]]) {
+                                            <span class="keyword">return</span> <span class="number">0</span>
+                                        } <span class="keyword">else</span> {
+                                            <span class="keyword">return</span> -<span class="number">1</span>;
+                                        }
+                                    } <span class="keyword">else</span> {
+                                        <span class="keyword">if</span> (a[split[<span class="number">0</span>]] &lt; b[split[<span class="number">0</span>]]) {
+                                            <span class="keyword">return</span> -<span class="number">1</span>;
+                                        } <span class="keyword">else</span> <span class="keyword">if</span> (a[split[<span class="number">0</span>]] == b[split[<span class="number">0</span>]]) {
+                                            <span class="keyword">return</span> <span class="number">0</span>
+                                        } <span class="keyword">else</span> {
+                                            <span class="keyword">return</span> <span class="number">1</span>;
+                                        }
+                                    }
+                                });
+                            });</pre></div></div>
             
         </li>
         
@@ -1098,16 +1103,16 @@ order looks like [&quot;age ASC&quot;,&quot;gender DESC&quot;]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                can.each((request.data.group || []).slice(<span class="number">0</span>).reverse(), <span class="keyword">function</span>(name) {
-                                        <span class="keyword">var</span> split = name.split(<span class="string">" "</span>);
-                                        retArr = retArr.sort(<span class="keyword">function</span>(a, b) {
-                                                <span class="keyword">return</span> a[split[<span class="number">0</span>]] &gt; b[split[<span class="number">0</span>]];
-                                            });
-                                    });
+            <div class="content"><div class='highlight'><pre>                            can.each((request.data.group || []).slice(<span class="number">0</span>).reverse(), <span class="keyword">function</span>(name) {
+                                <span class="keyword">var</span> split = name.split(<span class="string">" "</span>);
+                                retArr = retArr.sort(<span class="keyword">function</span>(a, b) {
+                                    <span class="keyword">return</span> a[split[<span class="number">0</span>]] &gt; b[split[<span class="number">0</span>]];
+                                });
+                            });
 
-                                <span class="keyword">var</span> offset = parseInt(request.data.offset, <span class="number">10</span>) || <span class="number">0</span>,
-                                    limit = parseInt(request.data.limit, <span class="number">10</span>) || (items.length - offset),
-                                    i = <span class="number">0</span>;</pre></div></div>
+                            <span class="keyword">var</span> offset = parseInt(request.data.offset, <span class="number">10</span>) || <span class="number">0</span>,
+                                limit = parseInt(request.data.limit, <span class="number">10</span>) || (items.length - offset),
+                                i = <span class="number">0</span>;</pre></div></div>
             
         </li>
         
@@ -1122,30 +1127,30 @@ order looks like [&quot;age ASC&quot;,&quot;gender DESC&quot;]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                <span class="keyword">for</span> (<span class="keyword">var</span> param <span class="keyword">in</span> request.data) {
-                                    i = <span class="number">0</span>;
-                                    <span class="keyword">if</span> (request.data[param] !== <span class="literal">undefined</span> &amp;&amp; <span class="comment">// don't do this if the value of the param is null (ignore it)</span>
-                                        (param.indexOf(<span class="string">"Id"</span>) != -<span class="number">1</span> || param.indexOf(<span class="string">"_id"</span>) != -<span class="number">1</span>)) {
-                                        <span class="keyword">while</span> (i &lt; retArr.length) {
-                                            <span class="keyword">if</span> (request.data[param] != retArr[i][param]) {
-                                                retArr.splice(i, <span class="number">1</span>);
-                                            } <span class="keyword">else</span> {
-                                                i++;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                <span class="keyword">if</span> (filter) {
-                                    i = <span class="number">0</span>;
+            <div class="content"><div class='highlight'><pre>                            <span class="keyword">for</span> (<span class="keyword">var</span> param <span class="keyword">in</span> request.data) {
+                                i = <span class="number">0</span>;
+                                <span class="keyword">if</span> (request.data[param] !== <span class="literal">undefined</span> &amp;&amp; <span class="comment">// don't do this if the value of the param is null (ignore it)</span>
+                                    (param.indexOf(<span class="string">"Id"</span>) != -<span class="number">1</span> || param.indexOf(<span class="string">"_id"</span>) != -<span class="number">1</span>)) {
                                     <span class="keyword">while</span> (i &lt; retArr.length) {
-                                        <span class="keyword">if</span> (!filter(retArr[i], request)) {
+                                        <span class="keyword">if</span> (request.data[param] != retArr[i][param]) {
                                             retArr.splice(i, <span class="number">1</span>);
                                         } <span class="keyword">else</span> {
                                             i++;
                                         }
                                     }
-                                }</pre></div></div>
+                                }
+                            }
+
+                            <span class="keyword">if</span> (filter) {
+                                i = <span class="number">0</span>;
+                                <span class="keyword">while</span> (i &lt; retArr.length) {
+                                    <span class="keyword">if</span> (!filter(retArr[i], request)) {
+                                        retArr.splice(i, <span class="number">1</span>);
+                                    } <span class="keyword">else</span> {
+                                        i++;
+                                    }
+                                }
+                            }</pre></div></div>
             
         </li>
         
@@ -1160,21 +1165,21 @@ order looks like [&quot;age ASC&quot;,&quot;gender DESC&quot;]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                <span class="keyword">return</span> {
-                                    <span class="string">"count"</span>: retArr.length,
-                                    <span class="string">"limit"</span>: request.data.limit,
-                                    <span class="string">"offset"</span>: request.data.offset,
-                                    <span class="string">"data"</span>: retArr.slice(offset, offset + limit)
-                                };
-                            },
+            <div class="content"><div class='highlight'><pre>                            <span class="keyword">return</span> {
+                                <span class="string">"count"</span>: retArr.length,
+                                <span class="string">"limit"</span>: request.data.limit,
+                                <span class="string">"offset"</span>: request.data.offset,
+                                <span class="string">"data"</span>: retArr.slice(offset, offset + limit)
+                            };
+                        },
 
-                            findOne: <span class="keyword">function</span>(request, response) {
-                                <span class="keyword">var</span> item = findOne(getId(request));
-                                response(item ? item : <span class="literal">undefined</span>);
-                            },
+                        findOne: <span class="keyword">function</span>(request, response) {
+                            <span class="keyword">var</span> item = findOne(getId(request));
+                            response(item ? item : <span class="literal">undefined</span>);
+                        },
 
-                            update: <span class="keyword">function</span>(request, response) {
-                                <span class="keyword">var</span> id = getId(request);</pre></div></div>
+                        update: <span class="keyword">function</span>(request, response) {
+                            <span class="keyword">var</span> id = getId(request);</pre></div></div>
             
         </li>
         
@@ -1189,22 +1194,22 @@ order looks like [&quot;age ASC&quot;,&quot;gender DESC&quot;]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                can.extend(findOne(id), request.data);
-                                response({
-                                        id: getId(request)
-                                    }, {
-                                        location: request.url || <span class="string">"/"</span> + getId(request)
-                                    });
-                            },
+            <div class="content"><div class='highlight'><pre>                            can.extend(findOne(id), request.data);
+                            response({
+                                    id: getId(request)
+                                }, {
+                                    location: request.url || <span class="string">"/"</span> + getId(request)
+                                });
+                        },
 
-                            destroy: <span class="keyword">function</span>(request) {
-                                <span class="keyword">var</span> id = getId(request);
-                                <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; items.length; i++) {
-                                    <span class="keyword">if</span> (items[i].id == id) {
-                                        items.splice(i, <span class="number">1</span>);
-                                        <span class="keyword">break</span>;
-                                    }
-                                }</pre></div></div>
+                        destroy: <span class="keyword">function</span>(request) {
+                            <span class="keyword">var</span> id = getId(request);
+                            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; items.length; i++) {
+                                <span class="keyword">if</span> (items[i].id == id) {
+                                    items.splice(i, <span class="number">1</span>);
+                                    <span class="keyword">break</span>;
+                                }
+                            }</pre></div></div>
             
         </li>
         
@@ -1219,31 +1224,31 @@ order looks like [&quot;age ASC&quot;,&quot;gender DESC&quot;]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                                can.extend(findOne(id) || {}, request.data);
-                                <span class="keyword">return</span> {};
-                            },
+            <div class="content"><div class='highlight'><pre>                            can.extend(findOne(id) || {}, request.data);
+                            <span class="keyword">return</span> {};
+                        },
 
-                            create: <span class="keyword">function</span>(settings, response) {
-                                <span class="keyword">var</span> item = make(items.length, items);
+                        create: <span class="keyword">function</span>(settings, response) {
+                            <span class="keyword">var</span> item = make(items.length, items);
 
-                                can.extend(item, settings.data);
+                            can.extend(item, settings.data);
 
-                                <span class="keyword">if</span> (!item.id) {
-                                    item.id = currentId++;
-                                }
-
-                                items.push(item);
-                                response({
-                                        id: item.id
-                                    }, {
-                                        location: settings.url + <span class="string">"/"</span> + item.id
-                                    })
+                            <span class="keyword">if</span> (!item.id) {
+                                item.id = currentId++;
                             }
-                        });
 
-                    <span class="keyword">var</span> reset = <span class="keyword">function</span>() {
-                        items = [];
-                        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; (count); i++) {</pre></div></div>
+                            items.push(item);
+                            response({
+                                    id: item.id
+                                }, {
+                                    location: settings.url + <span class="string">"/"</span> + item.id
+                                })
+                        }
+                    });
+
+                <span class="keyword">var</span> reset = <span class="keyword">function</span>() {
+                    items = [];
+                    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; (count); i++) {</pre></div></div>
             
         </li>
         
@@ -1258,25 +1263,25 @@ order looks like [&quot;age ASC&quot;,&quot;gender DESC&quot;]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                            <span class="keyword">var</span> item = make(i, items);
+            <div class="content"><div class='highlight'><pre>                        <span class="keyword">var</span> item = make(i, items);
 
-                            <span class="keyword">if</span> (!item.id) {
-                                item.id = i;
-                            }
-                            currentId = Math.max(item.id + <span class="number">1</span>, currentId + <span class="number">1</span>) || items.length;
-                            items.push(item);
+                        <span class="keyword">if</span> (!item.id) {
+                            item.id = i;
                         }
-                        <span class="keyword">if</span> (can.isArray(types)) {
-                            can.fixture[<span class="string">"~"</span> + types[<span class="number">0</span>]] = items;
-                            can.fixture[<span class="string">"-"</span> + types[<span class="number">0</span>]] = methods.findAll;
-                            can.fixture[<span class="string">"-"</span> + types[<span class="number">1</span>]] = methods.findOne;
-                            can.fixture[<span class="string">"-"</span> + types[<span class="number">1</span>] + <span class="string">"Update"</span>] = methods.update;
-                            can.fixture[<span class="string">"-"</span> + types[<span class="number">1</span>] + <span class="string">"Destroy"</span>] = methods.destroy;
-                            can.fixture[<span class="string">"-"</span> + types[<span class="number">1</span>] + <span class="string">"Create"</span>] = methods.create;
-                        }
-
+                        currentId = Math.max(item.id + <span class="number">1</span>, currentId + <span class="number">1</span>) || items.length;
+                        items.push(item);
                     }
-                    reset()</pre></div></div>
+                    <span class="keyword">if</span> (can.isArray(types)) {
+                        can.fixture[<span class="string">"~"</span> + types[<span class="number">0</span>]] = items;
+                        can.fixture[<span class="string">"-"</span> + types[<span class="number">0</span>]] = methods.findAll;
+                        can.fixture[<span class="string">"-"</span> + types[<span class="number">1</span>]] = methods.findOne;
+                        can.fixture[<span class="string">"-"</span> + types[<span class="number">1</span>] + <span class="string">"Update"</span>] = methods.update;
+                        can.fixture[<span class="string">"-"</span> + types[<span class="number">1</span>] + <span class="string">"Destroy"</span>] = methods.destroy;
+                        can.fixture[<span class="string">"-"</span> + types[<span class="number">1</span>] + <span class="string">"Create"</span>] = methods.create;
+                    }
+
+                }
+                reset()</pre></div></div>
             
         </li>
         
@@ -1291,27 +1296,27 @@ order looks like [&quot;age ASC&quot;,&quot;gender DESC&quot;]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">return</span> can.extend({
-                            getId: getId,
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">return</span> can.extend({
+                        getId: getId,
 
-                            find: <span class="keyword">function</span>(settings) {
-                                <span class="keyword">return</span> findOne(getId(settings));
-                            },
+                        find: <span class="keyword">function</span>(settings) {
+                            <span class="keyword">return</span> findOne(getId(settings));
+                        },
 
-                            reset: reset
-                        }, methods);
-                },
+                        reset: reset
+                    }, methods);
+            },
 
-                rand: <span class="keyword">function</span>(arr, min, max) {
-                    <span class="keyword">if</span> (<span class="keyword">typeof</span> arr == <span class="string">'number'</span>) {
-                        <span class="keyword">if</span> (<span class="keyword">typeof</span> min == <span class="string">'number'</span>) {
-                            <span class="keyword">return</span> arr + Math.floor(Math.random() * (min - arr));
-                        } <span class="keyword">else</span> {
-                            <span class="keyword">return</span> Math.floor(Math.random() * arr);
-                        }
-
+            rand: <span class="keyword">function</span>(arr, min, max) {
+                <span class="keyword">if</span> (<span class="keyword">typeof</span> arr == <span class="string">'number'</span>) {
+                    <span class="keyword">if</span> (<span class="keyword">typeof</span> min == <span class="string">'number'</span>) {
+                        <span class="keyword">return</span> arr + Math.floor(Math.random() * (min - arr));
+                    } <span class="keyword">else</span> {
+                        <span class="keyword">return</span> Math.floor(Math.random() * arr);
                     }
-                    <span class="keyword">var</span> rand = arguments.callee;</pre></div></div>
+
+                }
+                <span class="keyword">var</span> rand = arguments.callee;</pre></div></div>
             
         </li>
         
@@ -1326,9 +1331,9 @@ order looks like [&quot;age ASC&quot;,&quot;gender DESC&quot;]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (min === <span class="literal">undefined</span>) {
-                        <span class="keyword">return</span> rand(arr, rand(arr.length + <span class="number">1</span>))
-                    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (min === <span class="literal">undefined</span>) {
+                    <span class="keyword">return</span> rand(arr, rand(arr.length + <span class="number">1</span>))
+                }</pre></div></div>
             
         </li>
         
@@ -1343,8 +1348,8 @@ order looks like [&quot;age ASC&quot;,&quot;gender DESC&quot;]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">var</span> res = [];
-                    arr = arr.slice(<span class="number">0</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">var</span> res = [];
+                arr = arr.slice(<span class="number">0</span>);</pre></div></div>
             
         </li>
         
@@ -1359,9 +1364,9 @@ order looks like [&quot;age ASC&quot;,&quot;gender DESC&quot;]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    <span class="keyword">if</span> (!max) {
-                        max = min;
-                    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (!max) {
+                    max = min;
+                }</pre></div></div>
             
         </li>
         
@@ -1376,59 +1381,59 @@ order looks like [&quot;age ASC&quot;,&quot;gender DESC&quot;]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    max = min + Math.round(rand(max - min))
-                    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; max; i++) {
-                        res.push(arr.splice(rand(arr.length), <span class="number">1</span>)[<span class="number">0</span>])
-                    }
-                    <span class="keyword">return</span> res;
-                },
+            <div class="content"><div class='highlight'><pre>                max = min + Math.round(rand(max - min))
+                <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; max; i++) {
+                    res.push(arr.splice(rand(arr.length), <span class="number">1</span>)[<span class="number">0</span>])
+                }
+                <span class="keyword">return</span> res;
+            },
 
-                xhr: <span class="keyword">function</span>(xhr) {
-                    <span class="keyword">return</span> can.extend({}, {
-                            abort: can.noop,
-                            getAllResponseHeaders: <span class="keyword">function</span>() {
-                                <span class="keyword">return</span> <span class="string">""</span>;
-                            },
-                            getResponseHeader: <span class="keyword">function</span>() {
-                                <span class="keyword">return</span> <span class="string">""</span>;
-                            },
-                            open: can.noop,
-                            overrideMimeType: can.noop,
-                            readyState: <span class="number">4</span>,
-                            responseText: <span class="string">""</span>,
-                            responseXML: <span class="literal">null</span>,
-                            send: can.noop,
-                            setRequestHeader: can.noop,
-                            status: <span class="number">200</span>,
-                            statusText: <span class="string">"OK"</span>
-                        }, xhr);
-                },
+            xhr: <span class="keyword">function</span>(xhr) {
+                <span class="keyword">return</span> can.extend({}, {
+                        abort: can.noop,
+                        getAllResponseHeaders: <span class="keyword">function</span>() {
+                            <span class="keyword">return</span> <span class="string">""</span>;
+                        },
+                        getResponseHeader: <span class="keyword">function</span>() {
+                            <span class="keyword">return</span> <span class="string">""</span>;
+                        },
+                        open: can.noop,
+                        overrideMimeType: can.noop,
+                        readyState: <span class="number">4</span>,
+                        responseText: <span class="string">""</span>,
+                        responseXML: <span class="literal">null</span>,
+                        send: can.noop,
+                        setRequestHeader: can.noop,
+                        status: <span class="number">200</span>,
+                        statusText: <span class="string">"OK"</span>
+                    }, xhr);
+            },
 
-                on: <span class="literal">true</span>
-            });
+            on: <span class="literal">true</span>
+        });
 
-        can.fixture.delay = <span class="number">200</span>;
+    can.fixture.delay = <span class="number">200</span>;
 
 
-        can.fixture.rootUrl = getUrl(<span class="string">''</span>);
+    can.fixture.rootUrl = getUrl(<span class="string">''</span>);
 
-        can.fixture[<span class="string">"-handleFunction"</span>] = <span class="keyword">function</span>(settings) {
-            <span class="keyword">if</span> (<span class="keyword">typeof</span> settings.fixture === <span class="string">"string"</span> &amp;&amp; can.fixture[settings.fixture]) {
-                settings.fixture = can.fixture[settings.fixture];
-            }
-            <span class="keyword">if</span> (<span class="keyword">typeof</span> settings.fixture == <span class="string">"function"</span>) {
-                setTimeout(<span class="keyword">function</span>() {
-                        <span class="keyword">if</span> (settings.success) {
-                            settings.success.apply(<span class="literal">null</span>, settings.fixture(settings, <span class="string">"success"</span>));
-                        }
-                        <span class="keyword">if</span> (settings.complete) {
-                            settings.complete.apply(<span class="literal">null</span>, settings.fixture(settings, <span class="string">"complete"</span>));
-                        }
-                    }, can.fixture.delay);
-                <span class="keyword">return</span> <span class="literal">true</span>;
-            }
-            <span class="keyword">return</span> <span class="literal">false</span>;
-        };</pre></div></div>
+    can.fixture[<span class="string">"-handleFunction"</span>] = <span class="keyword">function</span>(settings) {
+        <span class="keyword">if</span> (<span class="keyword">typeof</span> settings.fixture === <span class="string">"string"</span> &amp;&amp; can.fixture[settings.fixture]) {
+            settings.fixture = can.fixture[settings.fixture];
+        }
+        <span class="keyword">if</span> (<span class="keyword">typeof</span> settings.fixture == <span class="string">"function"</span>) {
+            setTimeout(<span class="keyword">function</span>() {
+                <span class="keyword">if</span> (settings.success) {
+                    settings.success.apply(<span class="literal">null</span>, settings.fixture(settings, <span class="string">"success"</span>));
+                }
+                <span class="keyword">if</span> (settings.complete) {
+                    settings.complete.apply(<span class="literal">null</span>, settings.fixture(settings, <span class="string">"complete"</span>));
+                }
+            }, can.fixture.delay);
+            <span class="keyword">return</span> <span class="literal">true</span>;
+        }
+        <span class="keyword">return</span> <span class="literal">false</span>;
+    };</pre></div></div>
             
         </li>
         
@@ -1443,10 +1448,10 @@ order looks like [&quot;age ASC&quot;,&quot;gender DESC&quot;]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        can.fixture.overwrites = overwrites;
-        can.fixture.make = can.fixture.store;
-        <span class="keyword">return</span> can.fixture;
-    })(can);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    can.fixture.overwrites = overwrites;
+    can.fixture.make = can.fixture.store;
+    <span class="keyword">return</span> can.fixture;
+})(can);</pre></div></div>
             
         </li>
         
