@@ -1,0 +1,11 @@
+<div class="tooltip articles">
+  <div class="bithub-content">
+  {{#articles}}
+  {{>docs/static/templates/plugin.mustache}}
+  {{/articles}}
+  {{^articles}}
+  <div class="loading"/>
+  {{/articles}}
+  </div>
+  <a href="http://bithub.com/article/" class="button">More articles...</a>
+</div>

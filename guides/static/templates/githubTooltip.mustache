@@ -1,0 +1,9 @@
+<div class="tooltip github">
+  {{#commits}}
+  {{>docs/static/templates/githubEvent.mustache}}
+  {{/commits}}
+  {{^commits}}
+  <div class="loading"/>
+  {{/commits}}
+  <a href="#" class="button">More commits...</a>
+</div>

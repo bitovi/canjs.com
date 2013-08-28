@@ -1,0 +1,9 @@
+<div class="tooltip forumPosts">
+  {{#forumPosts}}
+  {{>docs/static/templates/forumPost.mustache}}
+  {{/forumPosts}}
+  {{^forumPosts}}
+  <div class="loading"/>
+  {{/forumPosts}}
+  <a href="#" class="button">More forum posts...</a>
+</div>
