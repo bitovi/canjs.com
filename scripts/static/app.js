@@ -1,4 +1,4 @@
-steal("jquery","can","can/construct/super").then("./lib/lib.js","./models/models.js","./controls/controls.js")
+steal("jquery","can","can/construct/super", "can/util/function").then("./lib/lib.js","./models/models.js","./controls/controls.js")
 .then(function() {
 	Bitovi.OSS.initTwitterWidgets = function() {
 		if($('.twitter-follow-button').length) {
@@ -45,8 +45,7 @@ steal("jquery","can","can/construct/super").then("./lib/lib.js","./models/models
 			'.download .customize': 'DownloadCustomizer',
 			'.communityTabs': 'CommunityTabs',
 			'.sidebar': 'Menu',
-			'.project-carousel': 'ProjectCarousel',
-			'.thinTabs': 'ThinCommunityTabs'
+			'.project-carousel': 'ProjectCarousel'
 		});
 
 		// Syntax highlighting

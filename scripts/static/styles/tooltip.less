@@ -10,28 +10,28 @@
 	top: 0;
 }
 .has-tip .tooltip:before {
-	position:absolute;
-	content : '';
-	height : 10px;
-	width: 10px;
-	background: @dark;
-	-moz-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
-	-o-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
-	-webkit-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
-	-ms-transform : rotate(-45deg);
-	transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
-	border: 1px solid #fff;
-	top: 7px;
+  position:absolute;
+  content : '';
+  height : 20px;
+  width: 20px;
+  background: @light;
+  -moz-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
+  -o-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
+  -webkit-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
+  -ms-transform: rotate(-45deg);
+  transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
+  border: 1px solid #dedbdb;
+	top: -11px;
 	z-index: -1;
 	display: block;
-	left: -6px;
-	border-right-style: none;
+	left: 125px;
+	border-left-style: none;
 	border-bottom-style: none;
 }
 .tooltip {
 	padding: 5px 10px;
-	background-color: @dark;
-	color: #fff;
+	background-color: @light;
+	color: @dark;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
 	border: 1px solid #fff;
 	-moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);

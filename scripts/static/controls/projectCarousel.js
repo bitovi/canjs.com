@@ -51,6 +51,14 @@ can.Control('Bitovi.OSS.ProjectCarousel', {
     return false;
   },
 
+  '.prev click' : function(el, ev) {
+    this.element.find('.carousel').trigger('backward');
+  },
+
+  '.next click' : function(el, ev) {
+    this.element.find('.carousel').trigger('forward');
+  },
+
   showProject: function(el, ev) {
     var project = el.data('project'),
       self = this;
