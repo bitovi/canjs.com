@@ -72,7 +72,36 @@
 	}
 	
 }
-
+.carousel-wrapper {
+	position: relative;
+}
+.carousel-nav {
+	background: none;
+	border: none;
+	color: #ccc;
+	text-shadow: none;
+	position: absolute;
+	top: 42px;
+	width: 35px;
+	height: 35px;
+	display: block;
+	font-size: 35px;
+	line-height: 35px;
+	padding: 0;
+	
+	&:hover {
+		color: #222;
+		border: none;
+		background: none;
+	}
+	
+	&.next {
+		right: -35px;
+	}
+	&.prev {
+		left: -45px;
+	}
+}
 .articles.header {
 	position: relative;
 }
