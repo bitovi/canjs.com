@@ -8,7 +8,6 @@ can.Control('Bitovi.OSS.ArticleCarousel', {
     this.state = new can.Observe({});
 
     Bitovi.OSS.Article.findAll({limit: 6}).done(can.proxy(function(articles) {
-      console.log(articles);
       this.state.attr('articles', articles);
       this.state.attr('current', {
         title: articles[0].title,

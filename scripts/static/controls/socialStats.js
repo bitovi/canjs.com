@@ -36,11 +36,16 @@ can.Control('Bitovi.OSS.SocialStats', {}, {
 
 	'a click': function(el, ev) {
 		var tooltip = el.data('tooltip');
-		console.log(this.tooltip);
 		if(this.tooltip && this.tooltip.element) {
 			this.tooltip.element.remove();
 		}
+		el.parent().addClass('active');
 		this.tooltip = new Bitovi.OSS[tooltip + 'Tooltip']('<div>', {state: this.modelState, relativeTo: el.parent()});	
+
+		this.tooltip.on('destroyed', can.proxy(function() {
+			this.element.find('.active').removeClass('active');
+		}, this));
+		
 		return false;
 	}
 });

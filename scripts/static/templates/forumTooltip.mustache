@@ -1,9 +1,13 @@
 <div class="tooltip forumPosts">
   {{#forumPosts}}
-  {{>docs/static/templates/forumPost.mustache}}
+  <div class="bithub-post">
+    <h5><a href="{{link}}">{{title}}</a></h5>
+    <p>{{truncatePost body}}</p>
+    <div class="bithub-footer">{{actor}} / {{formatDate date}} via <a href="{{link}}">{{feed}}</a></div>
+  </div>
   {{/forumPosts}}
   {{^forumPosts}}
   <div class="loading"/>
   {{/forumPosts}}
-  <a href="https://forum.javascriptmvc.com/canjs" class="button">More forum posts...</a>
+  <a href="https://forum.javascriptmvc.com/canjs" class="button">More Forum Posts <span class="icon-arrow"></span></a>
 </div>
