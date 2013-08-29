@@ -1,6 +1,44 @@
 .projects.header {
 	position: relative;
 }
+.carousel {
+	.button-nav {
+			float:left;
+			width:100%;
+			overflow:hidden;
+			position:relative;
+		ul.buttons {
+			list-style-type: none;
+			list-style: none;
+				clear:left;
+				float:left;
+				margin:0;
+				padding:0;
+				position:relative;
+				left:50%;
+				text-align:center;
+			
+			li {
+				color: @dark;
+				font-size: 25px;
+				cursor: pointer;
+				
+					display:block;
+					float:left;
+					list-style:none;
+					margin:0;
+					padding:0;
+					position:relative;
+					right:50%;
+				margin-left: 5px;
+				
+				&.current {
+					color: @color;
+				}
+			}
+		}
+	}
+}
 .project-carousel.projects {
 	.button {
 		margin-top: 10px;
@@ -102,13 +140,24 @@
 		left: -45px;
 	}
 }
+
+
+.articles.container, .article-carousel.articles {
+	width: 700px;
+}
+
 .articles.header {
 	position: relative;
 }
+
+
 .article-carousel.articles {
+	margin-bottom: 30px;
+	
 	.button {
 		margin-top: 10px;
 	}
+
 	.content {
 		text-align: left;
 		min-height: 125px;
@@ -116,9 +165,10 @@
 	.carousel {
 		overflow: hidden;
 		position: relative;
-
+		margin-top: 20px;
+		
 		.list {
-			height: 260px;
+			height: 160px;
 			margin: 0;
 			list-style-type: none;
 			overflow: hidden;
@@ -129,13 +179,41 @@
 		
 			li {
 				display: inline-block;
-				width: 960px;
-
-				a {
-					font-size: 18px;
+				width: 700px;
+				vertical-align: top;
+				
+				h2 {
+					text-shadow: none;
+					font-weight: normal;
+					font-style: normal;
+					font: 28px Lato, "Lucida Grande", Lucida, Verdana, sans-serif;
+					text-transform: none;
+					color: @dark;
+					text-decoration: underline;
+				}
+				img {
+					width: 90px;
+					border: solid 2px @color;
+					margin-right: 20px;
+					margin-top: 10px;
+					float: left;
+				}
+				p {
+					color: #333;
 					line-height: 24px;
+					font-size: 18px;
+					margin-bottom: 0;
 					text-decoration: none;
-					display: block;
+					
+					&.footer {
+						color: #ccc;
+						text-align: right;
+						display: block;
+						font-size: 14px;
+					}
+					a {
+						text-decoration: underline;
+					}	
 				}
 				div {
 					margin-top: 4px;
