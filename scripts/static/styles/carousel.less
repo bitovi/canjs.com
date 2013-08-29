@@ -72,7 +72,55 @@
 	}
 	
 }
-.button.add-your-app {
+
+.articles.header {
+	position: relative;
+}
+.article-carousel.articles {
+	.button {
+		margin-top: 10px;
+	}
+	.content {
+		text-align: left;
+		min-height: 125px;
+	}
+	.carousel {
+		overflow: hidden;
+		position: relative;
+
+		.list {
+			height: 260px;
+			margin: 0;
+			list-style-type: none;
+			overflow: hidden;
+			position: relative;
+			padding: 0;
+			text-align: left;
+			width: 6000px;
+		
+			li {
+				display: inline-block;
+				width: 960px;
+
+				a {
+					font-size: 18px;
+					line-height: 24px;
+					text-decoration: none;
+					display: block;
+				}
+				div {
+					margin-top: 4px;
+				}
+			}
+		}
+	}
+	.buttons {
+		float: left;
+		margin-right: 20px;
+	}
+}
+
+.button.add-your-app, .button.add-your-article {
 	position: absolute;
 	top: 10px;
 	right: 0;

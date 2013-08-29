@@ -1,0 +1,23 @@
+<div class="carousel">
+  <ul class="list">
+    {{#articles}}
+    <li class="item" {{data 'article'}}>
+      <a href="{{link}}">
+        {{#if image_url}}
+        <img src="{{image_url}}" />
+        {{/if}}
+        <div>
+          <h2>{{title}}</h2>
+          {{{body}}}
+          <p>Posted by {{author.name}} on {{formatDate date}} via <a href="{{link}}">{{feed}}</a></p>
+        </div>
+      </a>
+    </li>
+    {{/articles}}
+  </ul>
+  <ul class="buttons">
+    {{#articles}}
+    <li>&#9679;</li>
+    {{/articles}}
+  </ul>
+</div>
