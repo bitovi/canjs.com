@@ -10,38 +10,84 @@
 	top: 0;
 }
 .has-tip .tooltip:before {
-  position:absolute;
-  content : '';
-  height : 20px;
-  width: 20px;
-  background: @light;
-  -moz-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
-  -o-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
-  -webkit-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
-  -ms-transform: rotate(-45deg);
-  transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
-  border: 1px solid #dedbdb;
+	position:absolute;
+	content : '';
+	height : 20px;
+	width: 20px;
+	background: @light;
+	-moz-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
+	-o-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
+	-webkit-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
+	-ms-transform: rotate(-45deg);
+	transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
+	border: 1px solid #dedbdb;
 	top: -11px;
-	z-index: -1;
+	z-index: 90;
 	display: block;
-	left: 125px;
+	left: 40px;
 	border-left-style: none;
 	border-bottom-style: none;
 }
 .tooltip {
-	padding: 5px 10px;
+	padding: 5px 20px;
 	background-color: @light;
 	color: @dark;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
-	border: 1px solid #fff;
+	border: 1px solid #dedbdb;
 	-moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
 	-webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
-	.border-radius(4px);
 	cursor: default;
 	display: inline-block;
 	position: relative;
-	z-index: 0;
+	z-index: 100;
+	width: 450px;
+	font-family: Lato, "Lucida Grande", Lucida, Verdana, sans-serif;
+	padding-bottom: 15px; 
+	
+	* {
+		text-shadow: none;
+	}
+	p, .bithub-post {
+		color: #333;
+		line-height: 20px;
+		font-size: 14px;
+		margin-bottom: 0;
+	}
+	img {
+		border: 2px solid @color;
+	}
+	h2, h5 {
+		margin-bottom: 3px;
+		margin-top: 3px;
+		
+		a {
+			text-shadow: none;
+			font-weight: normal;
+			font-style: normal;
+			font: 18px Lato, "Lucida Grande", Lucida, Verdana, sans-serif;
+		}
+	}
+	.button {
+		background-color: @color;
+		border-color: darken(@color, 10%); 
+		text-shadow: 0 -1px darken(@color, 10%);
+		margin: 0 auto;
+		text-align: center;
+		display: block;
+		width: 150px;
+	}
+	.bithub-footer {
+		color: #999;
+		font-size: 12px;
+		text-align: right;
+		display: block;
+		line-height: 14px;
+		
+		a {
+			color: #999;
+		}
+	}
 }
 .index .example .has-tip .tooltip {
 	width: 250px;
