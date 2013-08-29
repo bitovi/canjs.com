@@ -1,12 +1,18 @@
-<button class="carousel-nav prev">Prev</button>
+
+<div class="carousel-wrapper">
+<button class="carousel-nav prev">&lsaquo;</button>
+
 <div class="carousel">
   <ul class="list">
     {{#each apps}}
     <li {{data 'project'}}><a href="{{link}}"><img src="{{picture}}" height="110" width="158"></a></li>
     {{/each}}
   </ul>
+ </div>
+ 
+  <button class="carousel-nav next">&rsaquo;</button>
 </div>
-<button class="carousel-nav next">Next</button>
+
 <div class="content">
 <h2>{{current.title}}</h2>
 {{{current.body}}}
