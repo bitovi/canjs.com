@@ -4,7 +4,6 @@ can.Control('Bitovi.OSS.ProjectCarousel', {
   }
 }, {
   init: function(el, options) {
-    var canvas = !!((document.createElement('canvas')).getContext);
     this.state = new can.Observe({});
 
     // can.Mustache.registerHelper('grayscale', function() {

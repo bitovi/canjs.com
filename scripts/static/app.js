@@ -45,7 +45,8 @@ steal("jquery","can","can/construct/super", "can/util/function").then("./lib/lib
 			'.download .customize': 'DownloadCustomizer',
 			'.communityTabs': 'CommunityTabs',
 			'.sidebar': 'Menu',
-			'.project-carousel': 'ProjectCarousel'
+			'.project-carousel': 'ProjectCarousel',
+			'.article-carousel': 'ArticleCarousel'
 		});
 
 		// Syntax highlighting

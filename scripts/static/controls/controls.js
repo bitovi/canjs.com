@@ -1,5 +1,6 @@
 steal("./downloadCustomizer.js").then(
 	"./apiSignature.js",
+	"./articleCarousel.js",
 	"./benefitTabs.js",
 	"./cdnChooser.js",
 	"./communityTab.js",
