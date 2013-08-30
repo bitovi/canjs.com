@@ -6,18 +6,16 @@ can.Control('Bitovi.OSS.ProjectCarousel', {
   init: function(el, options) {
     this.state = new can.Observe({});
 
-    // can.Mustache.registerHelper('grayscale', function() {
-    //   return function(el) {
-    //     el = $(el);
-    //     if(canvas) {
-    //       el.one('load', function() {
-    //         Grayscale(el, 300);
-    //       }) 
-    //     }
-    //   }
-    // });
 
-    Bitovi.OSS.App.findAll().done(can.proxy(function(apps) {
+    can.Mustache.registerHelper('truncatePost', function(post) {
+      var div = $('<div></div>').html(post()),
+        text = div.text();
+
+      return text.substr(0, 400) + (text.length > 400 ? '...' : '');
+    });
+
+    Bitovi.OSS.App.findAll({limit: 10, size: 'canjscom'}).done(can.proxy(function(apps) {
+      console.log(apps);
       this.state.attr('apps', apps);
       this.state.attr('current', {
         title: apps[0].title,
@@ -38,8 +36,10 @@ can.Control('Bitovi.OSS.ProjectCarousel', {
     }, this));
   },
 
-  '.carousel moving': function(el, ev) {
-    this.showProject(el.find('li:eq(1)'), ev);
+  '.carousel moving': function(el, ev, direction) {
+    var index = direction == 'forward' ? 1 : 0;
+
+    this.showProject(el.find('li:eq(' + index + ')'), ev);
   },
 
 //  'li mouseenter': 'showProject',

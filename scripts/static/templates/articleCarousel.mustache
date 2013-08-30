@@ -9,7 +9,7 @@
         <div>
           <h2><a href="{{link}}">{{title}}</a></h2>
           {{{body}}}
-          <p class="footer">Posted by {{author.name}} on {{formatDate date}} via <a href="{{link}}">{{feed}}</a></p>
+          <p class="footer">Posted {{#if author.name}}by {{/if}}{{author.name}} on {{formatDate date}} via <a href="{{link}}">{{feed}}</a></p>
         </div>
       
     </li>

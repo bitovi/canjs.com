@@ -1,18 +1,10 @@
 can.Control('Bitovi.OSS.Tooltip', {
   defaults: {
-    view: ''
+    view: '',
+    placement: 'left'
   }
 }, {
   init: function(el, options) {
-    can.Mustache.registerHelper('truncatePost', function(post) {
-      var div = $('<div></div>').html(post()),
-        text = div.text();
-      /* Here's the 'smart' (ish?) way, but that's not how Bithub does it.
-      return div[0].childNodes[0].nodeValue || div.children().first().text();
-      */
-      return text.substr(0, 200) + (text.length > 200 ? '...' : '');
-    });
-
     var offset = this.options.relativeTo.offset();
     this.element.html(can.view(this.options.view, this.options.state))
       .addClass('has-tip')
@@ -34,9 +26,17 @@ can.Control('Bitovi.OSS.Tooltip', {
 
   updateOffset: function() {
     var offset = this.options.relativeTo.offset();
-    this.element.offset({
-      left: offset.left,// + (this.options.relativeTo.width() / 2),
-      top: offset.top + this.options.relativeTo.height() + 15
-    });
+    if(this.options.placement == 'left') {
+      this.element.offset({
+        left: offset.left,// + (this.options.relativeTo.width() / 2),
+        top: offset.top + this.options.relativeTo.height() + 15
+      });
+    }
+    else {
+      this.element.offset({
+        left: offset.left - this.element.children('.tooltip').width() + this.options.relativeTo.outerWidth() - 40,
+        top: offset.top + this.options.relativeTo.height() + 15
+      });
+    }
   }
 });

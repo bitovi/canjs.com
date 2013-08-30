@@ -62,7 +62,7 @@ $.fn.scrollbox = function(config) {
           scrollDistance,
           theStep;
 
-      container.trigger('moving');
+      container.trigger('moving', 'forward');
       curLi = containerUL.children('li:first-child');
 
       scrollDistance = config.distance !== 'auto' ? config.distance :
@@ -109,7 +109,7 @@ $.fn.scrollbox = function(config) {
           scrollDistance,
           theStep;
 
-      container.trigger('moving');
+      container.trigger('moving', 'backward');
       // init
       if (container[0][config.scrollOffset] === 0) {
         liLen = containerUL.children('li').length;

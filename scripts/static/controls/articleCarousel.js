@@ -7,6 +7,11 @@ can.Control('Bitovi.OSS.ArticleCarousel', {
   init: function(el, options) {
     this.state = new can.Observe({});
 
+    
+    can.Mustache.registerHelper('formatDate', function(date) {
+      return moment(date()).calendar();
+    });
+
     Bitovi.OSS.Article.findAll({limit: 6}).done(can.proxy(function(articles) {
       this.state.attr('articles', articles);
       this.state.attr('current', {
@@ -17,8 +22,8 @@ can.Control('Bitovi.OSS.ArticleCarousel', {
 
       this.element.html(can.view(this.options.view, this.state));
 
-      this.current = this.element.find('.item').eq(this.options.index);
-
+      this.current = this.element.find('.item').hide().eq(this.options.index).show();
+      this.slideTo(this.options.index);
       this.cycle();
     }, this));
   },
@@ -53,18 +58,23 @@ can.Control('Bitovi.OSS.ArticleCarousel', {
       buttons = this.element.find('.buttons li');
 
 
-    if(this.sliding) {
+    if(this.animating) {
       return;
     }
 
     this.sliding = true;
     buttons.removeClass('current').eq(index).addClass('current');
-    this.element.find('.list').animate({
-      left: position
-    }, 500, can.proxy(function() {
-      this.current = this.element.find('.list li').eq(index);
-      this.sliding = false;
-    }, this));
+    this.current.fadeOut(can.proxy(function() {
+      this.current = this.element.find('.list li').eq(index).fadeIn(can.proxy(function() {
+        this.animating = false;
+      }, this));
+    }, this))
+    // this.element.find('.list').animate({
+    //   left: position
+    // }, 500, can.proxy(function() {
+    //   this.current = this.element.find('.list li').eq(index);
+    //   this.animating = false;
+    // }, this));
 
     this.cycle();
   },

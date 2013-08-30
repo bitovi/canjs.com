@@ -13,23 +13,23 @@ can.Control('Bitovi.OSS.SocialStats', {}, {
 			this.state.attr(summary);
 		}, this));
 
-		Bitovi.OSS.Plugin.findAll({category: 'article', limit: 10}).done(can.proxy(function(articles) {
+		Bitovi.OSS.Plugin.findAll({category: 'article', limit: 6}).done(can.proxy(function(articles) {
 			this.modelState.attr('articles', articles);
 		}, this));
 
-		Bitovi.OSS.Plugin.findAll({category: 'app', limit: 10}).done(can.proxy(function(apps) {
+		Bitovi.OSS.Plugin.findAll({category: 'app', limit: 6}).done(can.proxy(function(apps) {
 			this.modelState.attr('apps', apps);
 		}, this));
 
-		Bitovi.OSS.Plugin.findAll({category: 'plugin', limit: 10}).done(can.proxy(function(plugins) {
+		Bitovi.OSS.Plugin.findAll({category: 'plugin', limit: 6}).done(can.proxy(function(plugins) {
 			this.modelState.attr('plugins', plugins);
 		}, this));
 
-		Bitovi.OSS.ForumPost.findAll({limit: 10}).done(can.proxy(function(posts) {
+		Bitovi.OSS.ForumPost.findAll({limit: 6}).done(can.proxy(function(posts) {
 			this.modelState.attr('forumPosts', posts);
 		}, this));
 
-		Bitovi.OSS.GithubEvent.findAll({limit: 10}).done(can.proxy(function(commits) {
+		Bitovi.OSS.GithubEvent.findAll({limit: 6}).done(can.proxy(function(commits) {
 			this.modelState.attr('commits', commits);
 		}, this));
 	},

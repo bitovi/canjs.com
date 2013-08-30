@@ -17,12 +17,15 @@ Bitovi.OSS.CommunityTab('Bitovi.OSS.ForumsTab', {
 	},
 	'#forumSearch button click': function(el, ev) {
 		var terms = $('input[type=search]').val();
-		window.location.href = 'https://forum.javascriptmvc.com/#Search/' + terms;
+		var terms = el.val();
+		if($.trim(terms)) {
+			window.location.href = 'https://forum.javascriptmvc.com/#Search/' + terms;	
+		}
 	},
 	'#forumSearch input[type=search] keypress': function(el, ev) {
-		if(ev.which === 13/* Return */) {
+		var terms = el.val();
+		if(ev.which === 13/* Return */ && $.trim(terms)) {
 			ev.preventDefault();
-			var terms = el.val();
 			window.location.href = 'https://forum.javascriptmvc.com/#Search/' + terms;
 		}
 	}

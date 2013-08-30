@@ -1,6 +1,7 @@
 Bitovi.OSS.Tooltip('Bitovi.OSS.GithubTooltip', {
   defaults: {
-    view: 'guides/static/templates/githubTooltip.mustache'
+    view: 'guides/static/templates/githubTooltip.mustache',
+    placement: 'right'
   }
 }, {
   init: function(el, options) {
