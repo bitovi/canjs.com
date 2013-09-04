@@ -20,8 +20,8 @@ can.Control('Bitovi.OSS.Tooltip', {
     this.updateOffset();
   }, 100),
 
-  '{relativeTo} click': function(el, ev) {
-    return false;
+  'mouseleave' : function(el, ev) {
+    this.element.remove();
   },
 
   updateOffset: function() {

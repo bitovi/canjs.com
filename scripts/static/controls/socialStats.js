@@ -34,7 +34,7 @@ can.Control('Bitovi.OSS.SocialStats', {}, {
 		}, this));
 	},
 
-	'a click': function(el, ev) {
+	'a mouseenter': function(el, ev) {
 		var tooltip = el.data('tooltip');
 		if(this.tooltip && this.tooltip.element) {
 			this.tooltip.element.remove();

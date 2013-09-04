@@ -15,7 +15,6 @@ can.Control('Bitovi.OSS.ProjectCarousel', {
     });
 
     Bitovi.OSS.App.findAll({limit: 10, size: 'canjscom'}).done(can.proxy(function(apps) {
-      console.log(apps);
       this.state.attr('apps', apps);
       this.state.attr('current', {
         title: apps[0].title,
@@ -29,7 +28,7 @@ can.Control('Bitovi.OSS.ProjectCarousel', {
         direction: 'h',
         switchItems: 1,
         distance: 200,
-        delay: 5
+        delay: 10
       });
 
       this.current = this.element.find('li:first').addClass('current');
