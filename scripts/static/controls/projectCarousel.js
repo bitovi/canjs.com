@@ -43,7 +43,7 @@ can.Control('Bitovi.OSS.ProjectCarousel', {
 
 //  'li mouseenter': 'showProject',
 
-  'a click': function(el, ev) {
+  'a:not(.button) click': function(el, ev) {
     el = el.closest('li');
     this.showProject(el, ev);
     return false;
