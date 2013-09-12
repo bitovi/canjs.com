@@ -1,0 +1,13 @@
+<div class="tooltip plugins">
+  <ul>
+  {{#plugins}}
+  <li>
+    <a href="{{link}}">
+      <h2>{{title}}</h2>
+    </a>
+    <div class="bithub-footer">{{author.name}} on {{formatDate date}} via <a href="{{link}}">{{feed}}</a></div>
+  </li>
+  {{/plugins}}
+  </ul>
+  <a href="#" class="button">More plugins...</a>
+</div>

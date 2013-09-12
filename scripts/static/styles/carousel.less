@@ -1,6 +1,74 @@
-.projects.header {
-	position: relative;
+.project-carousel {
+	.header, .carousel-wrapper {
+		position: relative;
+		margin-top: 20px;
+	}
+
+	.carousel-wrapper {
+		height: 380px;
+		width: 1200px;
+
+		.carousel {
+			overflow: hidden;
+			position: relative;
+			width: 1200px;
+
+			.list {
+				height: 210px;
+      	list-style-type: none;
+      	margin: 0;
+      	position: relative;
+      	left: -190px;
+      	width: 5000px;
+
+      	li {
+      		display: inline-block;
+      		margin-right: 10px;
+      		vertical-align: top;
+      		width: 232px;
+      	}
+      	a {
+      		text-decoration: none;
+      	}
+      	h3 {
+      		font-size: 14px;
+      	}
+      	img {
+      		padding: 0;
+      	}
+			}
+		}
+	}
+
+	button {
+    background: none;
+    border: none;
+    text-transform: uppercase;
+		color: #ccc;
+		text-shadow: none;
+		position: absolute;
+		top: 180px;
+		width: 35px;
+		height: 35px;
+		display: block;
+		font-size: 35px;
+		line-height: 35px;
+		padding: 0;
+		
+		&:hover {
+			color: #222;
+		}
+		
+		&.next {
+			right: -10px;
+		}
+		&.prev {
+			left: -10px;
+		}
+	}
 }
+
+
 .carousel {
 	.button-nav {
 			float:left;
@@ -37,113 +105,6 @@
 				}
 			}
 		}
-	}
-}
-.project-carousel.projects {
-
-	height: 300px;
-	width: 1000px;
-
-	.button {
-		margin-top: 10px;
-	}
-	.content {
-		text-align: left;
-		min-height: 125px;
-		
-		.center {
-			text-align: center;
-			margin: 0;
-		}
-		
-		h2 {
-			font: 30px/33px LatoBold;
-			text-align: left;
-			text-transform: none;
-			color: @colorLinks;
-		}
-		p {
-			text-align: left;
-		}
-		.button {
-			background-color: @color;
-			border-color: darken(@color, 10%);
-			text-transform: uppercase;
-
-			&:hover {
-				background-color: darken(@color, 10%);
-			}
-			.icon-arrow {
-				font-size: 140%;
-				margin-left: 5px;
-				line-height: 14px;
-			}
-		}
-	}
-	.carousel {
-		overflow: hidden;
-		position: relative;
-		margin-left: 25px;
-		width: 960px;
-		
-		.list {
-			height: 130px;
-			margin: 0;
-			list-style-type: none;
-			padding: 0;
-			text-align: left;
-			width: 1200px;
-		}
-		li {
-			display: inline-block;
-			margin-left: 30px;
-			
-			&:first-child {
-				margin-left: 0px;
-			}
-			a {
-				font-size: 18px;
-				line-height: 24px;
-				text-decoration: none;
-				display: block;
-				width: 200px;
-			}
-			div {
-				margin-top: 4px;
-			}
-		}
-		
-	}
-	
-}
-.carousel-wrapper {
-	position: relative;
-}
-.carousel-nav {
-	background: none;
-	border: none;
-	color: #ccc;
-	text-shadow: none;
-	position: absolute;
-	top: 42px;
-	width: 35px;
-	height: 35px;
-	display: block;
-	font-size: 35px;
-	line-height: 35px;
-	padding: 0;
-	
-	&:hover {
-		color: #222;
-		border: none;
-		background: none;
-	}
-	
-	&.next {
-		right: -10px;
-	}
-	&.prev {
-		left: -10px;
 	}
 }
 
@@ -243,21 +204,6 @@
 	position: absolute;
 	top: 10px;
 	right: 0;
-}
-
-.carousel li img {
-	display: block;
-	border: 3px solid @color;
-	.border-radius(@borderRadius);
-
-	filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */ 
-  filter: gray; /* IE6-9 */
-  -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
-}
-.carousel li a:hover img, .carousel li.current a img {
-	border-color: @dark;
-	filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0\'/></filter></svg>#grayscale");
-    -webkit-filter: grayscale(0%);
 }
  
 .index .project-carousel.projects .carousel li a {

@@ -1,15 +1,20 @@
+
+<div class="carousel-wrapper">
+<button class="carousel-nav prev">&lsaquo;</button>
+
 <div class="carousel">
   <ul class="list">
     {{#each apps}}
-    <li {{data 'project'}}><a href="#"><img {{grayscale}} src="{{picture}}" height="110" width="158"></a></li>
-    {{/each}}
-    {{#each apps}}
-    <li {{data 'project'}}><a href="#"><img {{grayscale}} src="{{picture}}" height="110" width="158"></a></li>
+    <li {{data 'project'}}><a href="{{link}}"><img src="{{picture}}" height="110" width="158"></a></li>
     {{/each}}
   </ul>
+ </div>
+ 
+  <button class="carousel-nav next">&rsaquo;</button>
 </div>
+
 <div class="content">
 <h2>{{current.title}}</h2>
-{{{current.body}}}
-<a href="{{current.link}}">{{current.title}}</a>
+<p>{{truncatePost current.body}}</p>
+<p class="center"><a class="button" href="{{current.link}}">{{current.title}} <span class="icon-arrow"></span></a></p>
 </div>
