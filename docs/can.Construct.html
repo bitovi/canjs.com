@@ -92,6 +92,13 @@
 		<ul class="api">
 	<!-- First Level -->
 	
+	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
 	   <li class="search-container active">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
@@ -351,6 +358,20 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Model.html" data-search="can.Model">
 				can.Model
 			</a>
@@ -367,20 +388,6 @@
 	   <li class="search-container">
 	   		<a href="can.Mustache.html" data-search="can.Mustache">
 				can.Mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
 			</a>
 			
 	   </li>
@@ -424,31 +431,33 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>can.Construct</h1>
 	<ul class="tags">
 		<li>constructor</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/construct/construct.md">source</a></li>
-		
-		
-			<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/construct">download</a></li>
-		
-		
-			<li><a href="../can/construct/test.html">tests</a></li>
-		
-	</ul>
+	
+	
+	
 </div>
 
-<h1>
-can.Construct
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/construct/construct.md">source</a></li>
+	
+	
+		<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/construct">download</a></li>
+	
+	
+		<li><a href="../can/construct/test.html">tests</a></li>
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -579,7 +588,7 @@ panther instanceof Animal; // true
 with the new function's static and instance properties. For example, we want our <code>Snake</code> to
 be an <code>Animal</code>, but there are some differences:</p>
 
-<pre><code>Snake = Animal({
+<pre><code>Snake = Animal.extend({
     legs: 0
 }, {
     init: function() {
@@ -603,21 +612,21 @@ baslisk instanceof Animal; // true
 constructor, allowing you to imitate static properties and functions. You can access these
 properties through the <code><a href="can.Construct.prototype.constructor.html">this.constructor</a></code> property.</p>
 
-<p>Static properties can get overridden through inheritance just like instance properties. Let's see
-how this works with <code>Animal</code> and <code>Snake</code>:</p>
+<p>Static properties can get overridden through inheritance just like instance properties. In the example below,
+we override both the legs static property as well as the the init function for each instance:</p>
 
-<pre><code class="lang-javascript">can.Construct('Animal', {
+<pre><code class="lang-javascript">var Animal = can.Construct.extend({
     legs: 4
 }, {
     init: function(sound) {
         this.sound = sound;
-    }
+    },
     speak: function() {
         console.log(this.sound);
     }
 });
 
-Animal('Snake', {
+var Snake = Animal.extend({
     legs: 0
 }, {
     init: function() {
@@ -629,19 +638,32 @@ Animal('Snake', {
 });
 
 Animal.legs; // 4
-Snake.legs; // 0</code></pre>
+Snake.legs; // 0
+var dog = new Animal('woof');
+var blackMamba = new Snake();
+dog.speak(); // 'woof'
+blackMamba.speak(); // 'ssssss'</code></pre>
 
 <h2>Plugins</h2>
 
-<p>There are two plugins available to help make using <code>can.Construct</code> even simpler.
-* <a href="can.Construct.super.html">can.Construct.super</a> allows you to easily call base methods by making <code>this._super</code> available in inherited methods.
-* <a href="can.Construct.proxy.html">can.Construct.proxy</a> helps you keep your scope straight when creating callbacks inside constructors.</p>
+<p>There are two plugins available to help make using <code>can.Construct</code> even simpler.</p>
+
+<ul>
+<li><a href="can.Construct.super.html">can.Construct.super</a> allows you to easily call base methods by making <code>this._super</code> available in inherited methods.</li>
+<li><a href="can.Construct.proxy.html">can.Construct.proxy</a> helps you keep your scope straight when creating callbacks inside constructors.</li>
+</ul>
 		</section>
 		
 
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"constructor","name":"can.Construct","description":"<p>Provides a way to easily use the power of prototypal inheritance \nwithout worrying about hooking up all the particulars yourself. Use\n[can.Construct.extend can.Construct.extend] to create a inheritable\nconstructor function of your own.</p>","title":"","download":"can/construct","test":"can/construct/test.html","parent":"canjs","signatures":[{"code":"new can.Construct([args..])","description":"<p>Create a new instance of a constructor function. <code>new</code> is not\nused with <code>can.Construct</code> directly. Instead, it is used with a constructor \nfunction returned by [can.Construct.extend can.Construct.extend]. For\nexample:</p>\n\n<pre><code>Animal = can.Construct.extend({\n  sayHi: function(){\n    console.log(\"hi\")\n  }\n})\nvar animal = new Animal()\nanimal.sayHi();\n</code></pre>\n\n<p>Any arguments passed to the construction function are passed \nto [can.Construct.prototype.setup setup] and [can.Construct.prototype.init init].</p>","params":[]},{"code":"can.Construct([name,] [staticProperties,] instanceProperties)","description":"<p>Creates a new extended constructor function. Example:</p>\n\n<pre><code>Animal = can.Construct({\n  sayHi: function(){\n    console.log(\"hi\")\n  }\n})\n</code></pre>\n\n<p>This is deprecated. In CanJS 1.2, by default, calling the constructor function\nwithout <code>new</code> will create a <code>new</code> instance.  This behavior is controlled\nby the [can.Construct.constructorExtends constructorExtends] property.</p>\n\n<p>Use [can.Construct.extend can.Construct.extend] \ninstead of calling the constructor to extend.</p>","params":[]},{"code":"can.Construct([args...])","description":"<p>Create a new instance of a constructor function if\n[can.Construct.constructorExtends constructorExtends] is \nfalse. <code>can.Construct([args...])</code> is not used with <code>can.Construct</code>\ndirectly. Instead it is used on constructor functions\nextended from [can.Construct].</p>\n\n<pre><code>Animal = can.Construct.extend({\n   constructorExtends: false\n},{\n  sayHi: function(){\n    console.log(\"hi\")\n  }\n})\nvar animal = Animal();\n</code></pre>\n\n<p>This will be the default behavior in CanJS 1.2.</p>","params":[]}],"comment":" ","src":"can/construct/construct.md","id":12,"children":[{"type":"prototype","description":"","name":"can.Construct.prototype","parent":"can.Construct","src":"can/construct/construct.js","line":420,"id":97,"children":[{"description":"<p>A reference to the constructor function that created the instance. This allows you to access\nthe constructor's static properties from an instance.</p>","types":[{"type":"Object","options":[]}],"title":"constructor","name":"can.Construct.prototype.constructor","type":"property","parent":"can.Construct.prototype","src":"can/construct/construct.js","line":428,"id":98},{"type":"function","name":"can.Construct.prototype.init","parent":"can.Construct.prototype","description":"<p>Called when a new instance of a can.Construct is created. </p>","title":"init","signatures":[{"code":"construct.init(...args)","description":"","params":[{"types":[{"type":"*"}],"name":"args","description":"<p>the arguments passed to the constructor (or the items of the array returned from [can.Construct::setup])</p>"}]}],"comment":" ","src":"can/construct/construct.js","line":523,"id":100},{"type":"function","name":"can.Construct.prototype.setup","parent":"can.Construct.prototype","description":"","title":"setup","signatures":[{"code":"construct.setup(...args)","description":"<p>A setup function for the instantiation of a constructor function.</p>","params":[{"types":[{"type":"*"}],"name":"args","description":"<p>The arguments passed to the constructor.</p>"}],"returns":{"types":[{"type":"Array"},{"type":"undefined"}],"description":"<p>If an array is returned, the array's items are passed as\narguments to [can.Construct::init init]. The following example always makes \nsure that init is called with a jQuery wrapped element:</p>\n\n<pre><code>WidgetFactory = can.Construct.extend({\n    setup: function(element){\n        return [$(element)]\n    }\n})\n\nMyWidget = WidgetFactory.extend({\n    init: function($el){\n        $el.html(\"My Widget!!\")\n    }\n})\n</code></pre>\n\n<p>Otherwise, the arguments to the\nconstructor are passed to [can.Construct::init] and the return value of <code>setup</code> is discarded.</p>"}}],"comment":" ","src":"can/construct/construct.js","line":455,"id":99}]},{"type":"static","description":"","name":"can.Construct.static","parent":"can.Construct","src":"can/construct/construct.js","line":22,"id":89,"children":[{"name":"can.Construct.constructorExtends","type":"property","parent":"can.Construct.static","description":"<p>Toggles the behavior of a constructor function called\nwithout <code>new</code> to extend the constructor function or\ncreate a new instance.</p>","types":[{"type":"Boolean"}],"title":"constructorExtends","comment":" ","src":"can/construct/construct.js","line":26,"id":90},{"type":"function","name":"can.Construct.extend","parent":"can.Construct.static","description":"","title":"extend","signatures":[{"code":"can.Construct.extend([name,] [staticProperties,] instanceProperties)","description":"<p>Extends <code>can.Construct</code>, or constructor functions derived from <code>can.Construct</code>, \nto create a new constructor function. Example:</p>\n\n<pre><code>Animal = can.Construct.extend({\n  sayHi: function(){\n    console.log(\"hi\")\n  }\n})\nvar animal = new Animal()\nanimal.sayHi();\n</code></pre>","params":[{"types":[{"type":"String"}],"optional":true,"name":"name","description":"<p>Creates the necessary properties and \nobjects that point from the <code>window</code> to the created constructor function. The following:</p>\n\n<pre><code>can.Construct.extend(\"company.project.Constructor\",{})\n</code></pre>\n\n<p>creates a <code>company</code> object on window if it does not find one, a \n<code>project</code> object on <code>company</code> if it does not find one, and it will set the\n<code>Constructor</code> property on the <code>project</code> object to point to the constructor function.</p>\n\n<p>Finally, it sets \"company.project.Constructor\" as [can.Construct.fullName fullName]\nand \"Constructor\" as [can.Construct.shortName shortName].</p>"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"staticProperties","description":"<p>Properties that are added the constructor \nfunction directly. For example:</p>\n\n<pre><code>Animal = can.Construct.extend({\n  findAll: function(){\n    return can.ajax({url: \"/animals\"})\n  }\n},{});\n\nAnimal.findAll().then(function(json){ ... })\n</code></pre>\n\n<p>The [can.Construct.setup static setup] method can be used to \nspecify inheritable behavior when a Constructor function is created.</p>"},{"types":[{"type":"Object","options":[]}],"name":"instanceProperties","description":"<p>Properties that belong to \ninstances made with the constructor. These properties are added to the\nconstructor's <code>prototype</code> object. Example:</p>\n\n<pre><code>Animal = can.Construct.extend({\n  init: function(name){\n    this.name = name;\n  },\n  sayHi: function(){\n    console.log(this.name,\"says hi\")\n  }\n})\nvar animal = new Animal()\nanimal.sayHi();\n</code></pre>\n\n<p>The [can.Construct::init init] and [can.Construct::setup setup] properties\nare used for initialization.</p>"}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"<p>The constructor function.</p>"}}],"src":"can/construct/construct.js","line":219,"id":93},{"name":"can.Construct.fullName","type":"property","parent":"can.Construct.static","description":"<p>If you pass a name when creating a Construct, the <code>fullName</code> property will be set to\nthe name you passed. The <code>fullName</code> consists of the [can.Construct.namespace namespace] and \nthe [can.Construct.shortName shortName].</p>","types":[{"type":"String"}],"title":"fullName","src":"can/construct/construct.js","line":384,"id":96},{"name":"can.Construct.namespace","type":"property","parent":"can.Construct.static","description":"<p>The <code>namespace</code> property returns the namespace your constructor is in.\nThis provides a way organize code and ensure globally unique types. The\n<code>namespace</code> is the [can.Construct.fullName fullName] you passed without the [can.Construct.shortName shortName].</p>","types":[{"type":"String"}],"title":"namespace","src":"can/construct/construct.js","line":353,"id":94},{"type":"function","name":"can.Construct.newInstance","parent":"can.Construct.static","description":"<p>Returns an instance of <code>can.Construct</code>. This method can be overridden to return a cached instance.</p>","title":"newInstance","signatures":[{"code":"can.Construct.newInstance([...args])","description":"","params":[{"types":[{"type":"*"}],"optional":true,"name":"args","description":"<p>arguments that get passed to [can.Construct::setup] and [can.Construct::init]. Note\nthat if [can.Construct::setup] returns an array, those arguments will be passed to [can.Construct::init]\ninstead.</p>"}],"returns":{"types":[{"type":"class"}],"description":"<p>instance of the class</p>"}}],"comment":" ","src":"can/construct/construct.js","line":47,"id":91},{"type":"function","name":"can.Construct.setup","parent":"can.Construct.static","description":"<p>Perform initialization logic for a constructor function. </p>","title":"setup","signatures":[{"code":"can.Construct.setup(base, fullName, staticProps, protoProps)","description":"<p>A static <code>setup</code> method provides inheritable setup functionality\nfor a Constructor function. The following example\ncreates a Group constructor function.  Any constructor\nfunctions that inherit from Group will be added to \n<code>Group.childGroups</code>.</p>\n\n<pre><code>Group = can.Construct.extend({\n  setup: function(Construct, fullName, staticProps, protoProps){\n    this.childGroups = [];\n    if(Construct !== can.Construct){\n      this.childGroups(Construct)\n    }\n    Construct.setup.apply(this, arguments)\n  }   \n},{})\nvar Flock = Group.extend(...)\nGroup.childGroups[0] //-&gt; Flock\n</code></pre>","params":[{"types":[{"type":"constructor"}],"name":"base","description":"<p>The base constructor that is being inherited from.</p>"},{"types":[{"type":"String"}],"name":"fullName","description":"<p>The name of the new constructor.</p>"},{"types":[{"type":"Object","options":[]}],"name":"staticProps","description":"<p>The static properties of the new constructor.</p>"},{"types":[{"type":"Object","options":[]}],"name":"protoProps","description":"<p>The prototype properties of the new constructor.</p>"}]}],"comment":" ","src":"can/construct/construct.js","line":119,"id":92},{"name":"can.Construct.shortName","type":"property","parent":"can.Construct.static","description":"<p>If you pass a name when creating a Construct, the <code>shortName</code> property will be set to the\nname you passed without the [can.Construct.namespace namespace].</p>","types":[{"type":"String"}],"title":"shortName","src":"can/construct/construct.js","line":369,"id":95}]},{"name":"can.Construct.plugins","title":"plugins","type":"group","parent":"can.Construct","description":"","order":0,"id":11,"children":[{"type":"page","name":"can.Construct.proxy","description":"<p>Creates callback functions that have <code>this</code> set correctly. </p>","parent":"can.Construct.plugins","test":"can/construct/proxy/test.html","download":"http://donejs.com/can/dist/can.construct.proxy.js","signatures":[{"code":"can.Construct.proxy(callback, [...args])","description":"<p>Creates a static callback function that has <code>this</code> set to the constructor\nfunction.</p>","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"},{"type":"Array","template":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"}]}]}],"name":"callback","description":"<p>the function or functions to proxy</p>"},{"variable":true,"types":[{"type":"["}],"name":"args","description":"<p>parameters to curry into the proxied functions</p>"}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"<p>a function that calls <code>callback</code> with the same context as the current context</p>"}},{"code":"construct.proxy(callback, [...args])","description":"<p>Creates a static callback function that has <code>this</code> set to an instance of the constructor\nfunction.</p>","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"},{"type":"Array","template":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"}]}]}],"name":"callback","description":"<p>the function or functions to proxy.</p>"},{"variable":true,"types":[{"type":"["}],"name":"args","description":"<p>parameters to curry into the proxied functions</p>"}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"<p>a function that calls <code>callback</code> with the same context as the current context</p>"}}],"comment":" ","src":"can/construct/proxy/proxy.md","id":13},{"type":"page","name":"can.Construct.super","description":"<p>can.Construct.super is a plugin that makes it easier to call base\nfunctions from inside inheriting functions.</p>","parent":"can.Construct.plugins","plugin":"can/construct/super","test":"can/construct/super/test.html","download":"http://donejs.com/can/dist/can.construct.super.js","signatures":[{"code":"construct._super([...args])","description":"<p>Calls the base constructor function's method.</p>","params":[{"variable":true,"types":[{"type":"["}],"name":"args","description":"<p>parameters to pass to the base function</p>"}]}],"comment":" ","src":"can/construct/super/super.md","id":14}]}]};
+
+	console.log(docData);
+</script>
 
 
 

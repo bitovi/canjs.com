@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -109,6 +116,20 @@
 	   <li class="search-container">
 	   		<a href="can.EJS.html" data-search="can.EJS">
 				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
 			</a>
 			
 	   </li>
@@ -434,20 +455,6 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
 			</a>
@@ -486,33 +493,35 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>bind</h1>
 	<ul class="tags">
 		<li>function</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/model/model.js#L1189">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
-</div>
-
-<h1>
-bind
-
+	
+	
 	
 		<span class="module">can.Model.prototype.bind</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/model/model.js#L1193">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -565,7 +574,10 @@ Model instance.</p>
 		<div class="description">
 			<p>The Model, for chaining.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -589,7 +601,7 @@ task.bind("name", function(ev, newVal, oldVal){})
 </code></pre>
 
 <p>Use <code>bind</code> the
-same as <a href="can.Observe.prototype.bind.html">can.Observe.prototype.bind</a> which should be used as
+same as <a href="can.Map.prototype.bind.html">can.Map.prototype.bind</a> which should be used as
 a reference for listening to property changes.</p>
 
 <p>Bind on model can be used to listen to when 
@@ -626,7 +638,7 @@ task.save(function(){
 </code></pre>
 
 <p><code>bind</code> also extends the inherited 
-behavior of <a href="can.Observe.prototype.bind.html">can.Observe.prototype.bind</a> to track the number
+behavior of <a href="can.Map.prototype.bind.html">can.Map.prototype.bind</a> to track the number
 of event bindings on this object which is used to store
 the model instance.  When there are no bindings, the 
 model instance is removed from the store, freeing memory.  </p>
@@ -636,6 +648,12 @@ model instance is removed from the store, freeing memory.  </p>
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"function","name":"can.Model.prototype.bind","parent":"can.Model.prototype","description":"<p>Listen to events on this Model. </p>","title":"bind","signatures":[{"code":"model.bind(eventName, handler)","description":"","params":[{"types":[{"type":"String"}],"name":"eventName","description":"<p>The event to bind to.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"handler","description":"<p>The function to call when the\nevent occurs. <strong>handler</strong> is passed the event and the\nModel instance.</p>"}],"returns":{"types":[{"type":"can.Model"}],"description":"<p>The Model, for chaining.</p>"}}],"comment":" ","src":"can/model/model.js","line":1193,"id":136};
+
+	console.log(docData);
+</script>
 
 
 

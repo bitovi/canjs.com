@@ -92,6 +92,13 @@
 		<ul class="api">
 	<!-- First Level -->
 	
+	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
 	   <li class="search-container active">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
@@ -351,6 +358,20 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Model.html" data-search="can.Model">
 				can.Model
 			</a>
@@ -367,20 +388,6 @@
 	   <li class="search-container">
 	   		<a href="can.Mustache.html" data-search="can.Mustache">
 				can.Mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
 			</a>
 			
 	   </li>
@@ -424,31 +431,33 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>plugins</h1>
 	<ul class="tags">
 		<li>group</li>
 	</ul>
-	<ul class="links">
-		
-		
-			
-		
-		
-	</ul>
-</div>
-
-<h1>
-plugins
-
+	
+	
 	
 		<span class="module">can.Construct.plugins</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -470,6 +479,12 @@ plugins
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"name":"can.Construct.plugins","title":"plugins","type":"group","parent":"can.Construct","description":"","order":0,"id":11,"children":[{"type":"page","name":"can.Construct.proxy","description":"<p>Creates callback functions that have <code>this</code> set correctly. </p>","parent":"can.Construct.plugins","test":"can/construct/proxy/test.html","download":"http://donejs.com/can/dist/can.construct.proxy.js","signatures":[{"code":"can.Construct.proxy(callback, [...args])","description":"<p>Creates a static callback function that has <code>this</code> set to the constructor\nfunction.</p>","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"},{"type":"Array","template":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"}]}]}],"name":"callback","description":"<p>the function or functions to proxy</p>"},{"variable":true,"types":[{"type":"["}],"name":"args","description":"<p>parameters to curry into the proxied functions</p>"}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"<p>a function that calls <code>callback</code> with the same context as the current context</p>"}},{"code":"construct.proxy(callback, [...args])","description":"<p>Creates a static callback function that has <code>this</code> set to an instance of the constructor\nfunction.</p>","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"},{"type":"Array","template":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"}]}]}],"name":"callback","description":"<p>the function or functions to proxy.</p>"},{"variable":true,"types":[{"type":"["}],"name":"args","description":"<p>parameters to curry into the proxied functions</p>"}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"<p>a function that calls <code>callback</code> with the same context as the current context</p>"}}],"comment":" ","src":"can/construct/proxy/proxy.md","id":13},{"type":"page","name":"can.Construct.super","description":"<p>can.Construct.super is a plugin that makes it easier to call base\nfunctions from inside inheriting functions.</p>","parent":"can.Construct.plugins","plugin":"can/construct/super","test":"can/construct/super/test.html","download":"http://donejs.com/can/dist/can.construct.super.js","signatures":[{"code":"construct._super([...args])","description":"<p>Calls the base constructor function's method.</p>","params":[{"variable":true,"types":[{"type":"["}],"name":"args","description":"<p>parameters to pass to the base function</p>"}]}],"comment":" ","src":"can/construct/super/super.md","id":14}]};
+
+	console.log(docData);
+</script>
 
 
 

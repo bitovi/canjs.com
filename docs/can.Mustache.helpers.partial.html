@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -109,6 +116,20 @@
 	   <li class="search-container">
 	   		<a href="can.EJS.html" data-search="can.EJS">
 				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
 			</a>
 			
 	   </li>
@@ -662,20 +683,6 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
 			</a>
@@ -714,33 +721,35 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>{{&gt;key}}</h1>
 	<ul class="tags">
 		<li>function</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/view/mustache/doc/partials.md">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
-</div>
-
-<h1>
-{{&gt;key}}
-
+	
+	
 	
 		<span class="module">can.Mustache.helpers.partial</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/view/mustache/doc/partials.md">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -800,7 +809,10 @@ look up a template using <a href="can.view.html">can.view</a>.</p></li>
 			<p>The value of the rendered template is inserted into
 the page.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -887,7 +899,7 @@ and passing an identifier and content.  For example:</p>
 
 <h2>Passing Partials in Options</h2>
 
-<p>Partials can resolve the context object that contain partial identifiers in them.
+<p>Partials can resolve the context object that contains partial identifiers.
 For example:</p>
 
 <pre><code class="lang-javascript">var template = can.view("#template", { 
@@ -910,6 +922,12 @@ can.$(document.body).append(template);</code></pre>
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"function","name":"can.Mustache.helpers.partial","description":"","title":"{{>key}}","parent":"can.Mustache.tags","order":6,"signatures":[{"code":"{{>key}}","description":"<p>Render another template within the current template.</p>","params":[{"types":[{"type":"can.Mustache.key"}],"name":"key","description":"<p>A key that references a value within the current or parent \n[can.Mustache.context context]. If the value is a function or [can.compute], the \nfunction's return value is used.</p>\n\n<p>If the key value is:</p>\n\n<ul>\n<li><p><code>undefined</code> - the key's name (ex: user.mustache in <code>{{&gt;user.mustache}}</code>) is used to\nlook up a template using [can.view].</p></li>\n<li><p><code>string</code> - the string value is used to lookup a view in [can.view].</p></li>\n<li><p><code>function</code> - the function is called with the current scope.</p></li>\n</ul>\n\n<p>[can.view] looks for a template in the following places:</p>\n\n<ol>\n<li>A registered view</li>\n<li>An id of an element</li>\n<li>A url to load the template.</li>\n</ol>"}],"returns":{"types":[{"type":"String"}],"description":"<p>The value of the rendered template is inserted into\nthe page.</p>"}}],"comment":" ","src":"can/view/mustache/doc/partials.md","id":75};
+
+	console.log(docData);
+</script>
 
 
 

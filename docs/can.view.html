@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -114,6 +121,20 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Model.html" data-search="can.Model">
 				can.Model
 			</a>
@@ -130,20 +151,6 @@
 	   <li class="search-container">
 	   		<a href="can.Mustache.html" data-search="can.Mustache">
 				can.Mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
 			</a>
 			
 	   </li>
@@ -191,6 +198,21 @@
 						<span>plugins</span>
 						
 	<ul >
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="can.view.bindings.html" 
+							data-search="can.view.bindings">
+							bindings
+						</a>
+						
+					</li>
+				
+			
+			
 		
 			
 				
@@ -374,29 +396,31 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>can.view</h1>
 	<ul class="tags">
 		<li>function</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/view/view.md">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
+	
+	
+	
 </div>
 
-<h1>
-can.view
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/view/view.md">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -473,7 +497,10 @@ document.getElementById('contacts').appendChild(frag)
 			<p>The rendered result of the template converted to 
 html elements within a <a href="https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment">documentFragment</a>.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -523,7 +550,10 @@ document.getElementById('contacts').appendChild(frag)
 		<div class="description">
 			<p>A renderer function that can render the template into a documentFragment.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -696,6 +726,12 @@ it with render the view with the todos.</p>
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"function","name":"can.view","description":"<p>Utilities for  loading, processing, rendering, and live-updating of templates.</p>","title":"","parent":"canjs","signatures":[{"code":"can.view( idOrUrl, data[, helpers] )","description":"<p>Loads a template, renders it with data and helper functions and returns \nthe HTML of the template within \na [https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment documentFragment].</p>\n\n<pre><code>var frag = can.view(\n    \"/contact.ejs\",\n    {first: \"Justin\", last: \"Meyer\"},\n    {\n        fullName: function(first, last){\n            return first +\" \"+ last\n        }\n    });\n\ndocument.getElementById('contacts').appendChild(frag)\n</code></pre>","params":[{"types":[{"type":"String"}],"name":"idOrUrl","description":"<p>The URL of a template or the id of a template embedded in a script tag.</p>"},{"types":[{"type":"Object","options":[]}],"name":"data","description":"<p>Data to render the template with.</p>"},{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]}]}],"name":"helpers","description":"<p>An object of named local helper functions.</p>"}],"returns":{"types":[{"type":"documentFragment"}],"description":"<p>The rendered result of the template converted to \nhtml elements within a [https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment documentFragment].</p>"}},{"code":"can.view( idOrUrl )","description":"<p>Registers or loads a template and returns a [can.view.renderer renderer] function that can be used to\nrender the template with <code>data</code> and <code>helpers</code>.</p>\n\n<pre><code>var renderer = can.view(\"/contact.ejs\");\n\nvar frag = renderer(\n    {first: \"Justin\", last: \"Meyer\"},\n    {\n        fullName: function(first, last){\n            return first +\" \"+ last\n        }\n    })\n\ndocument.getElementById('contacts').appendChild(frag)\n</code></pre>","params":[{"types":[{"type":"String"}],"name":"idOrUrl","description":"<p>The URL of a template or the id of a template embedded in a script tag.</p>"}],"returns":{"types":[{"type":"can.view.renderer"}],"description":"<p>A renderer function that can render the template into a documentFragment.</p>"}}],"comment":" ","src":"can/view/view.md","id":82,"children":[{"name":"can.view.cached","type":"property","parent":"can.view","description":"<p>Cached are put in this object</p>","hide":true,"types":[{"type":"Object","options":[]}],"title":"view","src":"can/view/view.js","line":226,"id":317},{"name":"can.view.plugins","title":"plugins","type":"group","parent":"can.view","description":"","order":0,"id":81,"children":[{"type":"page","name":"can.view.bindings","description":"<p>Hello there!</p>","parent":"can.view.plugins","src":"can/view/bindings/bindings.md","id":53},{"type":"page","name":"can.view.modifiers","description":"<p>The can/view/modifiers plugin extends the jQuery view modifiers</p>","title":"jQuery modifiers","parent":"can.view.plugins","plugin":"can/view/modifiers","test":"can/view/modifiers/test.html","src":"can/view/modifiers/modifiers.md","id":61,"children":[{"type":"function","description":"<p>Extending the original [http://api.jquery.com/after/ jQuery().after()]\nto render [can.view] templates inserted after each element in the set of matched elements.</p>","title":"","name":"jQuery.fn.after","parent":"can.view.modifiers","params":[{"types":[{"type":"String"},{"type":"Object"},{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"content","description":"<p>A template filename or the id of a view script tag \nor a DOM element, array of elements, HTML string, or can object.</p>"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"data","description":"<p>The data to render the view with.\nIf rendering a view template this parameter always has to be present\n(use the empty object initializer {} for no data).</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"callback","description":"<p>A success callback to load the view asynchronously</p>"}],"returns":{"types":[{"type":"jQuery"},{"type":"can.Deferred"}],"description":"<p>The jQuery object or a [can.Deferred] if a deferred has\nbeen passed in data.</p>"},"src":"can/view/modifiers/modifiers.js","line":183,"id":198},{"type":"function","description":"<p>Extending the original [http://api.jquery.com/append/ jQuery().append()]\nto render [can.view] templates inserted at the end of each element in the set of matched elements.</p>","title":"","name":"jQuery.fn.append","parent":"can.view.modifiers","params":[{"types":[{"type":"String"},{"type":"Object"},{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"content","description":"<p>A template filename or the id of a view script tag \nor a DOM element, array of elements, HTML string, or can object.</p>"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"data","description":"<p>The data to render the view with.\nIf rendering a view template this parameter always has to be present\n(use the empty object initializer {} for no data).</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"callback","description":"<p>A success callback to load the view asynchronously</p>"}],"returns":{"types":[{"type":"jQuery"},{"type":"can.Deferred"}],"description":"<p>The jQuery object or a [can.Deferred] if a deferred has\nbeen passed in data.</p>"},"src":"can/view/modifiers/modifiers.js","line":163,"id":197},{"type":"function","description":"<p>Extending the original [http://api.jquery.com/before/ jQuery().before()]\nto render [can.view] templates inserted before each element in the set of matched elements.</p>","title":"","name":"jQuery.fn.before","parent":"can.view.modifiers","params":[{"types":[{"type":"String"},{"type":"Object"},{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"content","description":"<p>A template filename or the id of a view script tag \nor a DOM element, array of elements, HTML string, or can object.</p>"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"data","description":"<p>The data to render the view with.\nIf rendering a view template this parameter always has to be present\n(use the empty object initializer {} for no data).</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"callback","description":"<p>A success callback to load the view asynchronously</p>"}],"returns":{"types":[{"type":"jQuery"},{"type":"can.Deferred"}],"description":"<p>The jQuery object or a [can.Deferred] if a deferred has\nbeen passed in data.</p>"},"src":"can/view/modifiers/modifiers.js","line":203,"id":199},{"type":"function","name":"jQuery.fn.hookup","params":[],"parent":"can.view.modifiers","description":"<p>Called on a jQuery collection that was rendered with can.View with pending hookups.  can.View can render a </p>","title":"","src":"can/view/modifiers/modifiers.js","line":125,"id":195},{"type":"function","description":"<p>Extending the original [http://api.jquery.com/html/ jQuery().html()]\nto render [can.view] templates as the content of each matched element.</p>","title":"","name":"jQuery.fn.html","parent":"can.view.modifiers","params":[{"types":[{"type":"String"},{"type":"Object"},{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"content","description":"<p>A template filename or the id of a view script tag \nor a DOM element, array of elements, HTML string, or can object.</p>"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"data","description":"<p>The data to render the view with.\nIf rendering a view template this parameter always has to be present\n(use the empty object initializer {} for no data).</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"callback","description":"<p>A success callback to load the view asynchronously</p>"}],"returns":{"types":[{"type":"jQuery"},{"type":"can.Deferred"}],"description":"<p>The jQuery object or a [can.Deferred] if a deferred has\nbeen passed in data.</p>"},"src":"can/view/modifiers/modifiers.js","line":245,"id":201},{"type":"function","description":"<p>Extending the original [http://api.jquery.com/prepend/ jQuery().prepend()]\nto render [can.view] templates inserted at the beginning of each element in the set of matched elements.</p>","title":"","name":"jQuery.fn.prepend","parent":"can.view.modifiers","params":[{"types":[{"type":"String"},{"type":"Object"},{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"content","description":"<p>A template filename or the id of a view script tag \nor a DOM element, array of elements, HTML string, or can object.</p>"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"data","description":"<p>The data to render the view with.\nIf rendering a view template this parameter always has to be present\n(use the empty object initializer {} for no data).</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"callback","description":"<p>A success callback to load the view asynchronously</p>"}],"returns":{"types":[{"type":"jQuery"},{"type":"can.Deferred"}],"description":"<p>The jQuery object or a [can.Deferred] if a deferred has\nbeen passed in data.</p>"},"src":"can/view/modifiers/modifiers.js","line":143,"id":196},{"type":"function","description":"<p>Extending the original [http://api.jquery.com/replaceWith/ jQuery().replaceWith()]\nto render [can.view] templates replacing each element in the set of matched elements.</p>","title":"","name":"jQuery.fn.replaceWith","parent":"can.view.modifiers","params":[{"types":[{"type":"String"},{"type":"Object"},{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"content","description":"<p>A template filename or the id of a view script tag \nor a DOM element, array of elements, HTML string, or can object.</p>"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"data","description":"<p>The data to render the view with.\nIf rendering a view template this parameter always has to be present\n(use the empty object initializer {} for no data).</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"callback","description":"<p>A success callback to load the view asynchronously</p>"}],"returns":{"types":[{"type":"jQuery"},{"type":"can.Deferred"}],"description":"<p>The jQuery object or a [can.Deferred] if a deferred has\nbeen passed in data.</p>"},"src":"can/view/modifiers/modifiers.js","line":265,"id":202},{"type":"function","description":"<p>Extending the original [http://api.jquery.com/text/ jQuery().text()]\nto render [can.View] templates as the content of each matched element.\nUnlike [jQuery.fn.html] jQuery.fn.text also works with XML, escaping the provided\nstring as necessary.</p>","title":"","name":"jQuery.fn.text","parent":"can.view.modifiers","params":[{"types":[{"type":"String"},{"type":"Object"},{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"content","description":"<p>A template filename or the id of a view script tag \nor a DOM element, array of elements, HTML string, or can object.</p>"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"data","description":"<p>The data to render the view with.\nIf rendering a view template this parameter always has to be present\n(use the empty object initializer {} for no data).</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"callback","description":"<p>A success callback to load the view asynchronously</p>"}],"returns":{"types":[{"type":"jQuery"},{"type":"can.Deferred"}],"description":"<p>The jQuery object or a [can.Deferred] if a deferred has\nbeen passed in data.</p>"},"src":"can/view/modifiers/modifiers.js","line":223,"id":200}]}]},{"name":"can.view.text","type":"property","parent":"can.view","description":"<p>should return something like steal(\"dependencies\",function(EJS){</p>","hide":true,"src":"can/view/view.js","line":629,"id":325},{"name":"hookups","type":"property","parent":"can.view","description":"<p>A list of pending 'hookups'</p>","title":"","hide":true,"src":"can/view/view.js","line":196,"id":315},{"name":"can.view.static","title":"static","type":"group","parent":"can.view","description":"","order":0,"id":80,"children":[{"name":"can.view.cache","type":"property","parent":"can.view.static","description":"<p>By default, views are cached on the client.  If you'd like the\nthe views to reload from the server, you can set the <code>cache</code> attribute to <code>false</code>.</p>","types":[{"type":"Boolean"}],"title":"cache","src":"can/view/view.js","line":236,"id":318},{"type":"function","description":"","title":"ejs","name":"can.view.ejs","parent":"can.view.static","signatures":[{"code":"can.view.ejs( [id,] template )","description":"<p>Register an EJS template string and create a renderer function.</p>\n\n<pre><code>var renderer = can.view.ejs(\"&lt;h1&gt;&lt;%= message %&gt;&lt;/h1&gt;\");\nrenderer({message: \"Hello\"}) //-&gt; docFrag[ &lt;h1&gt;Hello&lt;/h1&gt; ]\n</code></pre>","params":[{"types":[{"type":"String"}],"optional":true,"name":"id","description":"<p>An optional ID to register the template.</p>\n\n<pre><code>can.view.ejs(\"greet\",\"&lt;h1&gt;&lt;%= message %&gt;&lt;/h1&gt;\");\ncan.view(\"greet\",{message: \"Hello\"}) //-&gt; docFrag[&lt;h1&gt;Hello&lt;/h1&gt;]\n</code></pre>"},{"types":[{"type":"String"}],"name":"template","description":"<p>An EJS template in string form.</p>"}],"returns":{"types":[{"type":"can.view.renderer"}],"description":"<p>A renderer function that takes data and helpers.</p>"}}],"comment":" ","src":"can/view/view.js","line":107,"id":313},{"name":"can.view.ext","type":"property","parent":"can.view.static","description":"<p>The default suffix to use if none is provided in the view's url. <br />\nThis is set to <code>.ejs</code> by default.</p>","types":[{"type":"String"}],"title":"ext","src":"can/view/view.js","line":290,"id":320},{"type":"function","name":"can.view.frag","params":[{"name":"result","types":[{"type":"*"}]},{"name":"parentNode","types":[{"type":"*"}]}],"parent":"can.view.static","description":"","title":"frag","src":"can/view/view.js","line":50,"id":312},{"type":"function","name":"can.view.hook","parent":"can.view.static","description":"<p>Create a hookup to insert into templates. </p>","title":"hook","signatures":[{"code":"can.view.hook(callback)","description":"","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"callback","description":"<p>A callback function to be called with the element.</p>"}]}],"comment":" ","src":"can/view/view.js","line":203,"id":316},{"type":"function","description":"","title":"mustache","name":"can.view.mustache","parent":"can.view.static","signatures":[{"code":"can.view.mustache( [id,] template )","description":"<p>Register a Mustache template string and create a renderer function.</p>\n\n<pre><code>var renderer = can.view.mustache(\"&lt;h1&gt;{{message}}&lt;/h1&gt;\");\nrenderer({message: \"Hello\"}) //-&gt; docFrag[ &lt;h1&gt;Hello&lt;/h1&gt; ]\n</code></pre>","params":[{"types":[{"type":"String"}],"optional":true,"name":"id","description":"<p>An optional ID for the template.</p>\n\n<pre><code>can.view.ejs(\"greet\",\"&lt;h1&gt;{{message}}&lt;/h1&gt;\");\ncan.view(\"greet\",{message: \"Hello\"}) //-&gt; docFrag[&lt;h1&gt;Hello&lt;/h1&gt;]\n</code></pre>"},{"types":[{"type":"String"}],"name":"template","description":"<p>A Mustache template in string form.</p>"}],"returns":{"types":[{"type":"can.view.renderer"}],"description":"<p>A renderer function that takes data and helpers.</p>"}}],"comment":" ","src":"can/view/view.js","line":151,"id":314},{"type":"function","name":"can.view.register","parent":"can.view.static","description":"<p>Register a templating language. </p>","title":"register","signatures":[{"code":"can.view.register(info)","description":"","params":[{"types":[{"type":"Object","options":[{"name":"plugin","description":"<p>The location of the templating language's plugin.</p>","types":[{"type":"String"}]},{"name":"suffix","description":"<p>Files with this suffix will use this templating language's plugin by default.</p>","types":[{"type":"String"}]},{"name":"renderer","description":"<p>A function that returns a function that, given data, will render the template with that data.\nThe <strong>renderer</strong> function receives the id of the template and the text of the template.</p>","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]},{"name":"script","description":"<p>A function that returns the string form of the processed template.</p>","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]}]}],"name":"info","description":"<p>Information about the templating language.</p>"}]}],"types":[],"comment":" ","src":"can/view/view.js","line":248,"id":319},{"type":"function","name":"can.view.render","parent":"can.view.static","description":"<p>Render a template. </p>","title":"render","signatures":[{"code":"can.view.render(template[, callback])","description":"","params":[{"types":[{"type":"String"},{"type":"Object","options":[]}],"name":"view","description":"<p>The path of the view template or a view object.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"callback","description":"<p>A function executed after the template has been processed.</p>"}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"can.Deferred"}],"description":"<p>A renderer function to be called with data and helpers\nor a Deferred that resolves to a renderer function.</p>"}},{"code":"can.view.render(template, data[, [helpers,] callback])","description":"","params":[{"types":[{"type":"String"},{"type":"Object","options":[]}],"name":"view","description":"<p>The path of the view template or a view object.</p>"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"data","description":"<p>The data to populate the template with.</p>"},{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]}]}],"optional":true,"name":"helpers","description":"<p>Helper methods referenced in the template.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"callback","description":"<p>A function executed after the template has been processed.</p>"}],"returns":{"types":[{"type":"String"},{"type":"can.Deferred"}],"description":"<p>The template with interpolated data in string form\nor a Deferred that resolves to the template with interpolated data.</p>"}}],"comment":" ","src":"can/view/view.js","line":320,"id":323}]},{"type":"function","name":"preload","params":[{"types":[{"type":"String"}],"name":"id","description":""},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"renderer","description":""}],"parent":"can.view","description":"<p>Called by a production script to pre-load a renderer function\ninto the view cache.</p>","hide":true,"src":"can/view/view.js","line":311,"id":322},{"type":"function","name":"registerScript","params":[{"types":[{"type":"Object","options":[]}],"name":"type","description":""},{"types":[{"type":"Object","options":[]}],"name":"id","description":""},{"types":[{"type":"Object","options":[]}],"name":"src","description":""}],"parent":"can.view","description":"<p>Returns the text that </p>","hide":true,"src":"can/view/view.js","line":302,"id":321},{"type":"function","name":"registerView","params":[{"types":[{"type":"String"}],"name":"id","description":""},{"types":[{"type":"String"}],"name":"text","description":""},{"types":[{"type":"String"}],"name":"type","description":""},{"types":[{"type":"can.Deferred"}],"name":"def","description":""}],"parent":"can.view","description":"<p>Registers a view with <code>cached</code> object.  This is used\ninternally by this class and Mustache to hookup views.</p>","hide":true,"src":"can/view/view.js","line":484,"id":324}]};
+
+	console.log(docData);
+</script>
 
 
 

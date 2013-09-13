@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -109,6 +116,20 @@
 	   <li class="search-container">
 	   		<a href="can.EJS.html" data-search="can.EJS">
 				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
 			</a>
 			
 	   </li>
@@ -662,20 +683,6 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
 			</a>
@@ -714,29 +721,33 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>helper</h1>
 	<ul class="tags">
 		<li>typedef</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/view/mustache/doc/helper.md">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
+	
+	
+	
 </div>
 
-<h1>
-helper
+<div class="sub-heading">
+	
+	<h2><code>{function(arg, <a href="can.Mustache.helperOptions.html" >options</a>)}</code></h2>
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/view/mustache/doc/helper.md">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -750,17 +761,9 @@ helper
 
 		
 		<section class='primary-options'>
-			<h2>
-	
-	
-	   Type Definition:
-	
-	<code>{function(arg, <a href="can.Mustache.helperOptions.html" >options</a>)}</code>
-</h2>
+			
 
-
-
-  <h2>(arg, &lt;a href=&quot;can.Mustache.helperOptions.html&quot; &gt;options&lt;/a&gt;)</h2>
+  <h2>function(arg, <a href="can.Mustache.helperOptions.html" >options</a>)</h2>
 <div class="signature-wrapper">
 
 
@@ -796,11 +799,31 @@ strings are passed as arguments. </p>
 });
 </code></pre>
 
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+
+<h1>If a <a href="can.Mustache.key.html">can.Mustache.key</a> represents a <a href="can.Map.html">can.Map</a> attribute,</h1>
+
 <p>While keys are normally resolved as basic objects like strings or numbers, there are some special cases where they act differently than a normal tag. Whenever a <a href="can.compute.html">can.compute</a> or function object is an argument for a helper, the original object is used as the argument instead of the value that the function returns.</p>
 
-<p>If a <a href="can.Mustache.key.html">can.Mustache.key</a> represents a <a href="can.Observe.html">can.Observe</a> attribute,
-it is converted to a <a href="can.compute.html">can.compute</a> getter/setter 
-function. This enables 2-way binding helpers.  </p>
+<p>If a <a href="can.Mustache.key.html">can.Mustache.key</a> represents a <a href="can.Map.html">can.Map</a> attribute,</p>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>master
+              it is converted to a <a href="can.compute.html">can.compute</a> getter/setter 
+              function. This enables 2-way binding helpers.  </p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
 
 <p>For example, the following helper two-way binds an input element's
 value to a <a href="can.compute.html">can.compute</a>:</p>
@@ -811,11 +834,11 @@ value to a <a href="can.compute.html">can.compute</a>:</p>
         el.value = newVal;
       })
       el.onchange = function(){
-        value(this.value)
+        value(this.value);
       }
-      el.value = value()
+      el.value = value();
     }
-})
+});
 </code></pre>
 
 <p>And used by the following template:</p>
@@ -825,7 +848,7 @@ value to a <a href="can.compute.html">can.compute</a>:</p>
 
 <p>And rendered with:</p>
 
-<pre><code>{me: new can.Observe({name: "Payal"})}
+<pre><code>{me: new can.Map({name: "Payal"})}
 </code></pre>
 			</div>
 			
@@ -860,7 +883,10 @@ that gets populated with optional:</p>
 			<p>The content to be inserted into
 the template.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 	<h3>This</h3>
@@ -874,9 +900,8 @@ called within.</p>
 
 </div>
 
-
-
-
+  
+  
 
 		</section>
 		
@@ -901,9 +926,9 @@ be used to create mustache tags that have rich behavior. </p>
 
 <pre><code>can.Mustache.registerHelper("sortable",function(){
   return function(el){
-    $(el).slider()
+    $(el).slider();
   }
-})
+});
 </code></pre>
 
 <p>If the helper is called <strong>between tags</strong> like:</p>
@@ -912,23 +937,29 @@ be used to create mustache tags that have rich behavior. </p>
 </code></pre>
 
 <p>The returned function is called with a temporary element. The 
-following helper would be called with a temporary <code>&lt;LI&gt;</code> element:</p>
+following helper would be called with a temporary <code>&lt;li&gt;</code> element:</p>
 
 <pre><code>can.Mustache.registerHelper("items",function(){
   return function(li){
 
   }
-})
+});
 </code></pre>
 
 <p>The temporary element depends on the parent element. The default temporary element
-is a <code>&lt;SPAN&gt;</code> element.</p>
+is a <code>&lt;span&gt;</code> element.</p>
 		</section>
 		
 
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"typedef","name":"can.Mustache.helper","description":"<p>A helper function passed to [can.Mustache.registerHelper]. </p>","title":"","types":[{"type":"function","returns":{"types":[{"type":"String"},{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"HTMLElement"}]}]}],"description":"<p>The content to be inserted into\nthe template.</p>"},"params":[{"variable":true,"types":[{"type":"*"}],"optional":true,"name":"arg","description":"<p>Arguments passed from the tag. After the helper\nname, any space seperated [can.Mustache.key keys], numbers or \nstrings are passed as arguments. </p>\n\n<p>The following template:</p>\n\n<pre><code>&lt;p&gt;{{madLib \"Lebron James\" verb 4}}&lt;/p&gt;\n</code></pre>\n\n<p>Rendered with</p>\n\n<pre><code>{verb: \"swept\"}\n</code></pre>\n\n<p>Will call a <code>madLib</code> helper with the following arguements.</p>\n\n<pre><code>can.Mustache.registerHelper('madLib', \n  function(subject, verb, number){\n    // subject -&gt; \"Lebron James\"\n    // verb -&gt; \"swept\"\n    // number -&gt; 4\n});\n</code></pre>\n\n<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>\n\n<h1>If a [can.Mustache.key] represents a [can.Map] attribute,</h1>\n\n<p>While keys are normally resolved as basic objects like strings or numbers, there are some special cases where they act differently than a normal tag. Whenever a [can.compute] or function object is an argument for a helper, the original object is used as the argument instead of the value that the function returns.</p>\n\n<p>If a [can.Mustache.key] represents a [can.Map] attribute,</p>\n\n<blockquote>\n  <blockquote>\n    <blockquote>\n      <blockquote>\n        <blockquote>\n          <blockquote>\n            <blockquote>\n              <p>master\n              it is converted to a [can.compute] getter/setter \n              function. This enables 2-way binding helpers.  </p>\n            </blockquote>\n          </blockquote>\n        </blockquote>\n      </blockquote>\n    </blockquote>\n  </blockquote>\n</blockquote>\n\n<p>For example, the following helper two-way binds an input element's\nvalue to a [can.compute]:</p>\n\n<pre><code>can.Mustache.registerHelper('value',function(value){\n    return function(el){\n      value.bind(\"change\",function(ev, newVal){\n        el.value = newVal;\n      })\n      el.onchange = function(){\n        value(this.value);\n      }\n      el.value = value();\n    }\n});\n</code></pre>\n\n<p>And used by the following template:</p>\n\n<pre><code>&lt;input type=\"text\" {{me.value name}}/&gt;\n</code></pre>\n\n<p>And rendered with:</p>\n\n<pre><code>{me: new can.Map({name: \"Payal\"})}\n</code></pre>"},{"types":[{"type":"can.Mustache.helperOptions"}],"name":"options","description":"<p>An options object\nthat gets populated with optional:</p>\n\n<ul>\n<li><code>fn</code> and <code>inverse</code> section rendering functions </li>\n<li>a <code>hash</code> object of the maps passed to the helper</li>\n</ul>"}],"context":{"types":[{"type":"can.Mustache.context"}],"description":"<p>The context the helper was \ncalled within.</p>"}}],"parent":"can.Mustache.types","comment":" ","src":"can/view/mustache/doc/helper.md","id":65};
+
+	console.log(docData);
+</script>
 
 
 

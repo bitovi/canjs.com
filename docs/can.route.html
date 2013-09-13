@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -114,6 +121,20 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Model.html" data-search="can.Model">
 				can.Model
 			</a>
@@ -130,20 +151,6 @@
 	   <li class="search-container">
 	   		<a href="can.Mustache.html" data-search="can.Mustache">
 				can.Mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
 			</a>
 			
 	   </li>
@@ -300,35 +307,37 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>can.route</h1>
 	<ul class="tags">
 		<li>function</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/route/route.md">source</a></li>
-		
-		
-			<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/route">download</a></li>
-		
-		
-			<li><a href="../can/route/test.html">tests</a></li>
-		
-	</ul>
-</div>
-
-<h1>
-can.route
-
+	
+	
 	
 		<span class="module">can.route</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<span class="inherits">inherits: <a href="can.Map.html">can.Map</a></span>
+</div>
 
-</h1>
-
-<span class="inherits">inherits: <a href="can.Observe.html">can.Observe</a></span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/route/route.md">source</a></li>
+	
+	
+		<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/route">download</a></li>
+	
+	
+		<li><a href="../can/route/test.html">tests</a></li>
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -336,7 +345,7 @@ can.route
 
 		<section class="description">
 			<p>Manage browser history and client state by synchronizing the window.location.hash with
-an <a href="can.Observe.html">can.Observe</a>.</p>
+an <a href="can.Map.html">can.Map</a>.</p>
 		</section>
 
 		
@@ -385,7 +394,10 @@ can.route("foo/:bar")
 		<div class="description">
 			
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -422,7 +434,7 @@ create history enabled Ajax websites.  However,
 
 <h2>How it works</h2>
 
-<p><code>can.route</code> is a <a href="can.Observe.html">can.Observe</a> that represents the
+<p><code>can.route</code> is a <a href="can.Map.html">can.Map</a> that represents the
 <code>window.location.hash</code> as an 
 object.  For example, if the hash looks like:</p>
 
@@ -437,19 +449,19 @@ object.  For example, if the hash looks like:</p>
 <p><code>can.route</code> keeps the state of the hash in-sync with the <code>data</code> contained within 
 <code>can.route</code>.</p>
 
-<h2>can.Observe</h2>
+<h2>can.Map</h2>
 
-<p><code>can.route</code> is a <a href="can.Observe.html">can.Observe</a>. Understanding
-<code>can.Observe</code> is essential for using <code>can.route</code> correctly.</p>
+<p><code>can.route</code> is a <a href="can.Map.html">can.Map</a>. Understanding
+<code>can.Map</code> is essential for using <code>can.route</code> correctly.</p>
 
 <p>You can listen to changes in an Observe with <code>bind(eventName, handler(ev, args...))</code> and
 change can.route's properties with 
-<a href="can.Observe.prototype.attr.html">attr</a>.</p>
+<a href="can.Map.prototype.attr.html">attr</a>.</p>
 
 <h3>Listening to changes in an Observable</h3>
 
 <p>Listen to changes in history 
-by <a href="can.Observe.prototype.bind.html">bind</a>ing to
+by <a href="can.Map.prototype.bind.html">bind</a>ing to
 changes in <code>can.route</code> like:</p>
 
 <pre><code>can.route.bind('change', function(ev, attr, how, newVal, oldVal) {
@@ -464,7 +476,7 @@ changes in <code>can.route</code> like:</p>
 </ul>
 
 <p>You can also listen to specific changes 
-with <a href="can.Observe.delegate.html">delegate</a>:</p>
+with <a href="can.Map.delegate.html">delegate</a>:</p>
 
 <pre><code>can.route.delegate('id','change', function(){ ... })
 </code></pre>
@@ -483,7 +495,7 @@ behavior, <code>remove</code> is useful for teardown.</p>
 
 <h3>Updating an observable</h3>
 
-<p>Create changes in the route data with <a href="can.Observe.prototype.attr.html">attr</a> like:</p>
+<p>Create changes in the route data with <a href="can.Map.prototype.attr.html">attr</a> like:</p>
 
 <pre><code>can.route.attr('type','images');
 </code></pre>
@@ -504,7 +516,7 @@ an object (that is the can.route's state).
 In order to map to a specific properties in the url,
 prepend a colon to the name of the property like:</p>
 
-<pre><code>can.route( "!#content/:type" )
+<pre><code>can.route( "#!content/:type" )
 </code></pre>
 
 <p>If no routes are added, or no route is matched, 
@@ -519,7 +531,7 @@ hash.</p>
 can.route looks for matching routes and uses them
 to update can.route's data.</p>
 
-<pre><code>can.route( "!#content/:type" );
+<pre><code>can.route( "#!content/:type" );
 location.hash = "#!content/images";
 // can.route -&gt; {type : "images"}
 can.route.attr( "type", "songs" )
@@ -581,7 +593,7 @@ are editable so experiment!</p>
 Even Internet Explorer 8 running in IE7 compatibility mode reports <code>true</code> 
 for <code>onhashchange</code> in window, even though the event isn't supported.</p>
 
-<p>If you are using jQuery, you can include Ben Alman's [HashChange Plugin http://benalman.com/projects/jquery-hashchange-plugin/]
+<p>If you are using jQuery, you can include Ben Alman's <a href="http://benalman.com/projects/jquery-hashchange-plugin/">HashChange Plugin</a>
 to support the event in the unsupported browser(s).</p>
 
 <h2>Using routes with <code>can.Control</code></h2>
@@ -592,7 +604,7 @@ control to listen to and make changes whenever the route is modified,
 even outside of the control itself.</p>
 
 <pre><code>// create the route
-can.route("!#content/:type")
+can.route("#!content/:type")
 
 // the route has changed
 "{can.route} change": function(ev, attr, how, newVal, oldVal) {
@@ -624,11 +636,11 @@ in a control:</p>
 }
 </code></pre>
 
-<h3>Getting more specific with the <code>can.Observe.delegate</code> plugin</h3>
+<h3>Getting more specific with the <code>can.Map.delegate</code> plugin</h3>
 
 <p>Sometimes, you might only want to trigger a function when the route changes
 only once, even if the route change gets called multiple times. By using the 
-<a href="can.Observe.delegate.html">can.Observe.delegate</a> plugin, this is extremely easy. This plugin allows you to 
+<a href="can.Map.delegate.html">can.Map.delegate</a> plugin, this is extremely easy. This plugin allows you to 
 listen to change, set, add, and remove on <code>can.route</code>.</p>
 
 <p>If you wanted to, say, show a list of recipes when  <strong>type</strong> was set to recipe
@@ -652,6 +664,12 @@ would not very efficient.</p>
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"function","name":"can.route","description":"<p>Manage browser history and client state by synchronizing the window.location.hash with\nan [can.Map].</p>","title":"can.route","inherits":"can.Map","download":"can/route","test":"can/route/test.html","parent":"canjs","signatures":[{"code":"can.route( template [, defaults] )","description":"<p>Create a route matching rule.</p>","params":[{"types":[{"type":"String"}],"name":"template","description":"<p>the fragment identifier to match.  The fragment identifier\nshould start with either a character (a-Z) or colon (:).  Examples:</p>\n\n<pre><code>can.route(\":foo\")\ncan.route(\"foo/:bar\")\n</code></pre>"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"defaults","description":"<p>an object of default values</p>"}],"returns":{"types":[{"type":"can.route"}],"description":""}}],"comment":" ","src":"can/route/route.md","id":45,"children":[{"name":"can.route.static","title":"static","type":"group","parent":"can.route","description":"","order":0,"id":44,"children":[{"type":"function","name":"can.route.current","parent":"can.route.static","description":"","title":"current","signatures":[{"code":"can.route.current( data )","description":"<p>Check if data represents the current route.</p>","params":[{"types":[{"type":"Object","options":[]}],"name":"data","description":"<p>Data to check agains the current route.</p>"}],"returns":{"types":[{"type":"Boolean"}],"description":"<p>Whether the data matches the current URL.</p>"}}],"comment":" ","src":"can/route/route.js","line":403,"id":174},{"type":"function","name":"can.route.deparam","parent":"can.route.static","description":"<p>Extract data from a route path. </p>","title":"deparam","signatures":[{"code":"can.route.deparam( url )","description":"","params":[{"types":[{"type":"String"}],"name":"url","description":"<p>A route fragment to extract data from.</p>"}],"returns":{"types":[{"type":"Object","options":[]}],"description":"<p>An object containing the extracted data.</p>"}}],"comment":" ","src":"can/route/route.js","line":187,"id":168},{"type":"function","name":"can.route.link","parent":"can.route.static","description":"","title":"link","signatures":[{"code":"can.route.link( innerText, data, props [, merge] )","description":"<p>Make an anchor tag (<code>&lt;A&gt;</code>) that when clicked on will update can.route's properties\nto match those in <code>data</code>.</p>","params":[{"types":[{"type":"Object","options":[]}],"name":"innerText","description":"<p>The text inside the link.</p>"},{"types":[{"type":"Object","options":[]}],"name":"data","description":"<p>The data to populate the route with.</p>"},{"types":[{"type":"Object","options":[]}],"name":"props","description":"<p>Properties for the anchor other than <code>href</code>.</p>"},{"types":[{"type":"Boolean"}],"optional":true,"name":"merge","description":"<p>Whether the given options should be merged into the current state of the route.</p>"}],"returns":{"types":[{"type":"String"}],"description":"<p>A string with an anchor tag that points to the populated route.</p>"}}],"comment":" ","src":"can/route/route.js","line":353,"id":173},{"type":"function","name":"can.route.param","parent":"can.route.static","description":"<p>Get a route path from given data. </p>","title":"param","signatures":[{"code":"can.route.param( data )","description":"","params":[{"types":[{"type":"data"}],"name":"object","description":"<p>The data to populate the route with.</p>"}],"returns":{"types":[{"type":"String"}],"description":"<p>The route, with the data populated in it.</p>"}}],"comment":" ","src":"can/route/route.js","line":99,"id":167},{"type":"function","name":"can.route.ready","parent":"can.route.static","description":"","title":"ready","signatures":[{"code":"can.route.ready( readyYet )","description":"<p>Pause and resume the initialization of can.route.</p>","params":[{"types":[{"type":"Boolean"}],"optional":true,"name":"readyYet","description":"<p>Whether the ready event should be fired yet.</p>"}],"returns":{"types":[{"type":"can.route"}],"description":"<p>The <code>can.route</code> object.</p>"}}],"comment":" ","src":"can/route/route.js","line":288,"id":171},{"type":"function","name":"can.route.url","parent":"can.route.static","description":"","title":"url","signatures":[{"code":"can.route.url( data [, merge] )","description":"<p>Make a URL fragment that when set to window.location.hash will update can.route's properties\nto match those in <code>data</code>.</p>","params":[{"types":[{"type":"Object","options":[]}],"name":"data","description":"<p>The data to populate the route with.</p>"},{"types":[{"type":"Boolean"}],"optional":true,"name":"merge","description":"<p>Whether the given options should be merged into the current state of the route.</p>"}],"returns":{"types":[{"type":"String"}],"description":"<p>The route URL and query string.</p>"}}],"comment":" ","src":"can/route/route.js","line":319,"id":172}]}]};
+
+	console.log(docData);
+</script>
 
 
 

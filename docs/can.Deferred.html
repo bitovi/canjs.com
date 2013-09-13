@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -114,6 +121,20 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Model.html" data-search="can.Model">
 				can.Model
 			</a>
@@ -130,20 +151,6 @@
 	   <li class="search-container">
 	   		<a href="can.Mustache.html" data-search="can.Mustache">
 				can.Mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
 			</a>
 			
 	   </li>
@@ -848,29 +855,31 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>can.Deferred</h1>
 	<ul class="tags">
 		<li>constructor</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
+	
+	
+	
 </div>
 
-<h1>
-can.Deferred
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -893,7 +902,10 @@ can.Deferred
 		<div class="description">
 			<p>A new Deferred object.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -911,6 +923,12 @@ can.Deferred
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"description":"<p><code>can.Deferred</code> is a object that allows users to assign and chain callback function(s) for the success or failure state of both asynchronous and synchronous function(s).</p>","type":"constructor","name":"can.Deferred","title":"","parent":"can.util","signatures":[{"code":"can.Deferred()","description":"","params":[],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A new Deferred object.</p>"}}],"src":"can/util/func.js","line":565,"id":255,"children":[{"description":"","type":"prototype","name":"can.Deferred.prototype","parent":"can.Deferred","src":"can/util/func.js","line":576,"id":256,"children":[{"description":"<p>Add one or more callbacks to be unconditionally called when a Deferred is resolved or rejected. </p>","title":"always","name":"can.Deferred.prototype.always","type":"function","parent":"can.Deferred.prototype","signatures":[{"code":"deferred.always(alwaysCallbacks)","description":"","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"alwaysCallbacks","description":"<p>A function, or an array of functions, to be called whether the Deferred is resolved or rejected.</p>"}]}],"comment":" ","src":"can/util/func.js","line":664,"id":262},{"description":"<p>Add one or more callbacks to be called when a Deferred is resolved. </p>","title":"done","name":"can.Deferred.prototype.done","type":"function","parent":"can.Deferred.prototype","signatures":[{"code":"deferred.done(doneCallbacks)","description":"","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"doneCallbacks","description":"<p>A function, or an array of functions, to be called when the Deferred is resolved.</p>"}]}],"comment":" ","src":"can/util/func.js","line":632,"id":260},{"description":"<p>Add a callback to be called when a Deferred is rejected. </p>","title":"fail","name":"can.Deferred.prototype.fail","type":"function","parent":"can.Deferred.prototype","signatures":[{"code":"deferred.fail(failCallbacks)","description":"","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"failCallbacks","description":"<p>A function, or an array of functions, to be called when the Deferred is rejected.</p>"}]}],"comment":" ","src":"can/util/func.js","line":648,"id":261},{"description":"<p>Determine whether a Deferred has been resolved. </p>","title":"isResolved","name":"can.Deferred.prototype.isResolved","type":"function","parent":"can.Deferred.prototype","signatures":[{"code":"deferred.isResolved()","description":"","params":[],"returns":{"types":[{"type":"Boolean"}],"description":"<p>Whether this Boolean has been resolved.</p>"}}],"comment":" ","src":"can/util/func.js","line":699,"id":264},{"description":"<p>Reject a Deferred. </p>","title":"reject","name":"can.Deferred.prototype.reject","type":"function","parent":"can.Deferred.prototype","signatures":[{"code":"deferred.reject([argument])","description":"","params":[{"types":[{"type":"Object","options":[]}],"optional":true,"name":"argument","description":"<p>The argument to call the <code>failCallback</code> with.</p>"}]}],"comment":" ","src":"can/util/func.js","line":726,"id":265},{"description":"<p>Reject a Deferred in a particular context. </p>","title":"rejectWith","name":"can.Deferred.prototype.rejectWith","type":"function","parent":"can.Deferred.prototype","signatures":[{"code":"deferred.rejectWith(context[, arguments])","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"context","description":"<p>Context passed to the <code>failCallbacks</code> as the <code>this</code> object.</p>"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"arguments","description":"<p>Array of arguments that are passed to the <code>failCallbacks</code>.</p>"}]}],"comment":" ","src":"can/util/func.js","line":617,"id":259},{"description":"<p>Resolve a Deferred. </p>","title":"resolve","name":"can.Deferred.prototype.resolve","type":"function","parent":"can.Deferred.prototype","signatures":[{"code":"deferred.resolve([argument])","description":"","params":[{"types":[{"type":"Object","options":[]}],"optional":true,"name":"argument","description":"<p>The argument to call the <code>doneCallback</code> with.</p>"}]}],"comment":" ","src":"can/util/func.js","line":740,"id":266},{"description":"<p>Resolve a Deferred in a particular context. </p>","title":"resolveWith","name":"can.Deferred.prototype.resolveWith","type":"function","parent":"can.Deferred.prototype","signatures":[{"code":"deferred.resolveWith(context[, arguments])","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"context","description":"<p>Context passed to the <code>doneCallbacks</code> as the <code>this</code> object.</p>"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"arguments","description":"<p>Array of arguments that are passed to the <code>doneCallbacks</code>.</p>"}]}],"comment":" ","src":"can/util/func.js","line":602,"id":258},{"description":"<p>Add callbacks to a Deferred. </p>","title":"then","name":"can.Deferred.prototype.then","type":"function","parent":"can.Deferred.prototype","signatures":[{"code":"deferred.then(doneCallback[, failCallback])","description":"","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"doneCallback","description":"<p>A function called when the Deferred is resolved.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"failCallback","description":"<p>A function called when the Deferred is rejected.</p>"}]}],"comment":" ","src":"can/util/func.js","line":680,"id":263}]}]};
+
+	console.log(docData);
+</script>
 
 
 

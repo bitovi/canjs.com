@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -109,6 +116,20 @@
 	   <li class="search-container">
 	   		<a href="can.EJS.html" data-search="can.EJS">
 				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
 			</a>
 			
 	   </li>
@@ -662,20 +683,6 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
 			</a>
@@ -714,33 +721,35 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>{{#helper args hashes}}</h1>
 	<ul class="tags">
 		<li>function</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/view/mustache/mustache.js#L943">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
-</div>
-
-<h1>
-{{#helper args hashes}}
-
+	
+	
 	
 		<span class="module">can.Mustache.helpers.sectionHelper</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/view/mustache/mustache.js#L967">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -810,7 +819,7 @@ current or parent <a href="can.Mustache.context.html">context</a>.</p>
 that get passed to the helper function as arguments. If the key's value is a:</p>
 
 <ul>
-<li><a href="can.Observe.html">can.Observe</a> - A getter/setter <a href="can.compute.html">can.compute</a> is passed.</li>
+<li><a href="can.Map.html">can.Map</a> - A getter/setter <a href="can.compute.html">can.compute</a> is passed.</li>
 <li><a href="can.compute.html">can.compute</a> - The can.compute is passed.</li>
 <li><code>function</code> - The function's return value is passed.</li>
 </ul>
@@ -938,7 +947,7 @@ current or parent <a href="can.Mustache.context.html">context</a>.</p>
 that get passed to the helper function as arguments. If the key's value is a:</p>
 
 <ul>
-<li><a href="can.Observe.html">can.Observe</a> - A getter/setter <a href="can.compute.html">can.compute</a> is passed.</li>
+<li><a href="can.Map.html">can.Map</a> - A getter/setter <a href="can.compute.html">can.compute</a> is passed.</li>
 <li><a href="can.compute.html">can.compute</a> - The can.compute is passed.</li>
 <li><code>function</code> - The function's return value is passed.</li>
 </ul>
@@ -1041,6 +1050,12 @@ be used for rich behavior like 2-way binding.</p>
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"function","description":"<p>Calls a mustache helper function with a block, and optional inverse \nblock.</p>","title":"{{#helper args hashes}}","name":"can.Mustache.helpers.sectionHelper","parent":"can.Mustache.htags","order":1,"signatures":[{"code":"{{#helper [args...] [hashName=hashValue...]}}BLOCK{{/helper}}","description":"<p>Calls a mustache helper function or a function with a block to \nrender.</p>\n\n<p>The template:</p>\n\n<pre><code>&lt;p&gt;{{countTo number}}{{num}}{{/countTo}}&lt;/p&gt;\n</code></pre>\n\n<p>Rendered with:</p>\n\n<pre><code>{number: 5}\n</code></pre>\n\n<p>Will call the <code>countTo</code> helper:</p>\n\n<pre><code>can.Mustache.registerHelper('madLib', \n  function(number, options){\n       var out = []\n    for(var i =0; i &lt; number; i++){\n      out.push( options.fn({num: i+1}) )\n    }\n    return out.join(\" \")\n});\n</code></pre>\n\n<p>Results in:</p>\n\n<pre><code>&lt;p&gt;1 2 3 4 5&lt;/p&gt;\n</code></pre>","params":[{"types":[{"type":"can.Mustache.key"}],"name":"helper","description":"<p>A key that finds a [can.Mustache.helper helper function]\nthat is either [can.Mustache.registerHelper registered] or found within the\ncurrent or parent [can.Mustache.context context].</p>"},{"variable":true,"types":[{"type":"can.Mustache.key"},{"type":"String"},{"type":"Number"}],"optional":true,"name":"args","description":"<p>Space seperated arguments\nthat get passed to the helper function as arguments. If the key's value is a:</p>\n\n<ul>\n<li>[can.Map] - A getter/setter [can.compute] is passed.</li>\n<li>[can.compute] - The can.compute is passed.</li>\n<li><code>function</code> - The function's return value is passed.</li>\n</ul>"},{"types":[{"type":"String"}],"name":"hashProperty","description":"<p>A property name that gets added to a [can.Mustache.helperOptions helper options]'s \nhash object.</p>"},{"variable":true,"types":[{"type":"can.Mustache.key"},{"type":"String"},{"type":"Number"}],"name":"hashValue","description":"<p>A value that gets \nset as a property value of the [can.Mustache.helperOptions helper option argument]'s \nhash object.</p>"},{"types":[{"type":"mustache"}],"name":"BLOCK","description":"<p>A mustache template that gets compiled and\npassed to the helper function as the [can.Mustache.helperOptions options argument's] <code>fn</code>\nproperty.</p>"}]},{"code":"{{#helper [args...] [hashName=hashValue...]}}BLOCK{{else}}INVERSE{{/helper}}","description":"<p>Calls a mustache helper function or a function with a <code>fn</code> and <code>inverse</code> block to\nrender.</p>\n\n<p>The template:</p>\n\n<pre><code>&lt;p&gt;The bed is \n   {{isJustRight firmness}}\n      pefect!\n   {{else}}\n      uncomfortable.\n   {{/justRight}}&lt;/p&gt;\n</code></pre>\n\n<p>Rendered with:</p>\n\n<pre><code>{firmness: 45}\n</code></pre>\n\n<p>Will call the <code>isJustRight</code> helper:</p>\n\n<pre><code>can.Mustache.registerHelper('isJustRight', \n  function(number, options){\n       if(number &gt; 50){\n      return options.fn(this)  \n    } else {\n      return options.inverse(this)  \n    }\n    return out.join(\" \")\n});\n</code></pre>\n\n<p>Results in:</p>\n\n<pre><code>&lt;p&gt;The bed is uncomfortable.&lt;/p&gt;\n</code></pre>","params":[{"types":[{"type":"can.Mustache.key"}],"name":"helper","description":"<p>A key that finds a [can.Mustache.helper helper function]\nthat is either [can.Mustache.registerHelper registered] or found within the\ncurrent or parent [can.Mustache.context context].</p>"},{"variable":true,"types":[{"type":"can.Mustache.key"},{"type":"String"},{"type":"Number"}],"optional":true,"name":"args","description":"<p>Space seperated arguments\nthat get passed to the helper function as arguments. If the key's value is a:</p>\n\n<ul>\n<li>[can.Map] - A getter/setter [can.compute] is passed.</li>\n<li>[can.compute] - The can.compute is passed.</li>\n<li><code>function</code> - The function's return value is passed.</li>\n</ul>"},{"types":[{"type":"String"}],"name":"hashProperty","description":"<p>A property name that gets added to a [can.Mustache.helperOptions helper options]'s \nhash object.</p>"},{"variable":true,"types":[{"type":"can.Mustache.key"},{"type":"String"},{"type":"Number"}],"name":"hashValue","description":"<p>A value that gets \nset as a property value of the [can.Mustache.helperOptions helper option argument]'s \nhash object.</p>"},{"types":[{"type":"mustache"}],"name":"BLOCK","description":"<p>A mustache template that gets compiled and\npassed to the helper function as the [can.Mustache.helperOptions options argument's] <code>fn</code>\nproperty.</p>"},{"types":[{"type":"mustache"}],"name":"INVERSE","description":"<p>A mustache template that gets compiled and\npassed to the helper function as the [can.Mustache.helperOptions options argument's] <code>inverse</code>\nproperty.</p>"}]}],"comment":" ","src":"can/view/mustache/mustache.js","line":967,"id":215};
+
+	console.log(docData);
+</script>
 
 
 

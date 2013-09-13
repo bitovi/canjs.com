@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -114,6 +121,20 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Model.html" data-search="can.Model">
 				can.Model
 			</a>
@@ -130,20 +151,6 @@
 	   <li class="search-container">
 	   		<a href="can.Mustache.html" data-search="can.Mustache">
 				can.Mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
 			</a>
 			
 	   </li>
@@ -332,33 +339,37 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>requestHandler</h1>
 	<ul class="tags">
 		<li>typedef</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/fixture/requestHandler.md">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
-</div>
-
-<h1>
-requestHandler
-
+	
+	
 	
 		<span class="module">can.fixture.types.requestHandler</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<h2><code>{function(<a href="can.AjaxSettings.html" >request</a>, <a href="can.fixture.types.responseHandler.html" >response</a>, requestHeaders)}</code></h2>
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/fixture/requestHandler.md">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -372,17 +383,9 @@ requestHandler
 
 		
 		<section class='primary-options'>
-			<h2>
-	
-	
-	   Type Definition:
-	
-	<code>{function(<a href="can.AjaxSettings.html" >request</a>, <a href="can.fixture.types.responseHandler.html" >response</a>, requestHeaders)}</code>
-</h2>
+			
 
-
-
-  <h2>(&lt;a href=&quot;can.AjaxSettings.html&quot; &gt;request&lt;/a&gt;, &lt;a href=&quot;can.fixture.types.responseHandler.html&quot; &gt;response&lt;/a&gt;, requestHeaders)</h2>
+  <h2>function(<a href="can.AjaxSettings.html" >request</a>, <a href="can.fixture.types.responseHandler.html" >response</a>, requestHeaders)</h2>
 <div class="signature-wrapper">
 
 
@@ -447,14 +450,16 @@ data to <code>request.data</code>.  For example, calling:</p>
 response body. If nothing is returned, it's expected that <code>responseHandler</code>
 was used.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
 
-
-
-
+  
+  
 
 		</section>
 		
@@ -542,6 +547,12 @@ a single JSON object for the common case where you want a successful response wi
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"typedef","name":"can.fixture.types.requestHandler","description":"<p>Specifies the response of a fixture. Used in [can.fixture]. </p>","title":"requestHandler","types":[{"type":"function","returns":{"types":[{"type":"*"},{"type":"undefined"}],"description":"<p>If a value is returned, it is used as a JSON\nresponse body. If nothing is returned, it's expected that <code>responseHandler</code>\nwas used.</p>"},"params":[{"types":[{"type":"can.AjaxSettings"}],"name":"request","description":"<p>The ajax settings object that\nwas passed to [can.ajax] or a jQuery ajax method.  Any templated\nportions of the url passed to [can.fixture] are added as\ndata to <code>request.data</code>.  For example, calling:</p>\n\n<pre><code>$.get(\"/todos/5\");\n</code></pre>\n\n<p>With the following fixture:</p>\n\n<pre><code>can.fixture(\"/todos/:id\", function(request, response){ })\n</code></pre>\n\n<p><code>request.data.id</code> will be <code>5</code>.</p>"},{"types":[{"type":"can.fixture.types.responseHandler"}],"optional":true,"name":"response","description":"<p>Optionally called to specify the response of the fixture.</p>"},{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"String"}]}]}],"name":"requestHeaders","description":"<p>A map of request headers specified by [can.ajax]'s headers property.</p>"}]}],"parent":"can.fixture.types","comment":" ","src":"can/util/fixture/requestHandler.md","id":48};
+
+	console.log(docData);
+</script>
 
 
 

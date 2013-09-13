@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -109,6 +116,20 @@
 	   <li class="search-container">
 	   		<a href="can.EJS.html" data-search="can.EJS">
 				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
 			</a>
 			
 	   </li>
@@ -662,20 +683,6 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
 			</a>
@@ -714,33 +721,35 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>{{key}}</h1>
 	<ul class="tags">
 		<li>function</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/view/mustache/mustache.js#L166">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
-</div>
-
-<h1>
-{{key}}
-
+	
+	
 	
 		<span class="module">can.Mustache.tags.escaped</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/view/mustache/mustache.js#L182">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -796,7 +805,10 @@ argument. There, if the value is a:</p>
 will be called back with the DOM element after it is created.</li>
 </ul>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -889,6 +901,12 @@ in parent contexts. For example:</p>
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"function","description":"<p>Insert the value of the [can.Mustache.key key] into the  output of the template.</p>","title":"{{key}}","name":"can.Mustache.tags.escaped","parent":"can.Mustache.tags","order":0,"signatures":[{"code":"{{key}}","description":"","params":[{"types":[{"type":"can.Mustache.key"}],"name":"key","description":"<p>A key that references one of the following:</p>\n\n<ul>\n<li>A [can.Mustache.registerHelper registered helper].</li>\n<li>A value within the current or parent \n[can.Mustache.context context]. If the value is a function or [can.compute], the \nfunction's return value is used.</li>\n</ul>"}],"returns":{"types":[{"type":"String"},{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"*"}],"description":"<p>After the key's value is found (and set to any function's return value), \nit is passed to [can.view.txt] as the result of a call to its <code>func</code> \nargument. There, if the value is a:</p>\n\n<ul>\n<li><code>null</code> or <code>undefined</code> - an empty string is inserted into the rendered template result.</li>\n<li><code>String</code> or <code>Number</code> - the value is inserted into the rendered template result.</li>\n<li><code>Function</code> - A [can.view.hook hookup] attribute or element is inserted so this function\nwill be called back with the DOM element after it is created.</li>\n</ul>"}}],"comment":" ","src":"can/view/mustache/mustache.js","line":182,"id":208};
+
+	console.log(docData);
+</script>
 
 
 

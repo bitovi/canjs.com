@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -265,6 +272,20 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Model.html" data-search="can.Model">
 				can.Model
 			</a>
@@ -281,20 +302,6 @@
 	   <li class="search-container">
 	   		<a href="can.Mustache.html" data-search="can.Mustache">
 				can.Mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
 			</a>
 			
 	   </li>
@@ -338,31 +345,33 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>Tags</h1>
 	<ul class="tags">
 		<li>group</li>
 	</ul>
-	<ul class="links">
-		
-		
-			
-		
-		
-	</ul>
-</div>
-
-<h1>
-Tags
-
+	
+	
 	
 		<span class="module">can.EJS.tags</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -384,6 +393,12 @@ Tags
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"name":"can.EJS.tags","title":"Tags","type":"group","parent":"can.EJS","description":"","order":0,"id":54,"children":[{"type":"function","name":"can.EJS.tags.scriptlet","description":"","title":"<% CODE %>","parent":"can.EJS.tags","order":0,"signatures":[{"code":"<% CODE %>","description":"<p>Runs JavaScript Code.</p>\n\n<p>This type of magic tag does not modify the template but is used for JS control statements \nlike for-loops, if/else, switch, etc.  An example:</p>\n\n<pre><code>&lt;% if( items.attr('length') === 0 ) { %&gt;\n    &lt;tr&gt;&lt;td&gt;You have no items&lt;/td&gt;&lt;/tr&gt;\n&lt;% } else { %&gt;\n    &lt;% items.each(function(item){ %&gt;\n      &lt;tr&gt; .... &lt;/tr&gt;\n    &lt;% }) %&gt;\n&lt;% } %&gt;\n</code></pre>\n\n<p>Variable declarations and control blocks should always be defined in \ntheir own dedicated tags. Live binding leverages this hinting to ensure that logic is declared and executed at its intended scope.</p>\n\n<pre><code>&lt;!-- Each statement has its own dedicated EJS tag --&gt;\n&lt;% var address = person.attr('address') %&gt;\n&lt;% items.each(function(item){ %&gt;\n    &lt;tr&gt; .... &lt;/tr&gt;\n&lt;% }) %&gt;\n&lt;span&gt;&lt;%= address.attr('street') %&gt;&lt;span&gt;\n\n&lt;!-- This won't work! --&gt;\n&lt;%\n  var address = person.attr('address');\n  items.each(function(item) {\n%&gt;\n    &lt;tr&gt; .... &lt;/tr&gt;\n&lt;% }) %&gt;\n&lt;span&gt;&lt;%= address.attr('street') %&gt;&lt;span&gt;\n</code></pre>","params":[]}],"src":"can/view/ejs/tags.scriptlet.md","id":58},{"type":"function","name":"can.EJS.tags.escaped","description":"","title":"<%= CODE %>","parent":"can.EJS.tags","order":1,"signatures":[{"code":"<%= CODE %>","description":"<p>Runs JS Code and writes the <em>escaped</em> result into the result of the template. This is useful for when you want to show code in your page.</p>\n\n<p>The following results in the user seeing \"my favorite element is &lt;blink>BLINK&lt;blink>\" and not\n<blink>BLINK</blink>.</p>\n\n<pre><code> &lt;div&gt;my favorite element is &lt;%= '&lt;blink&gt;BLINK&lt;/blink&gt;' %&gt;.&lt;/div&gt;\n</code></pre>","params":[]}],"src":"can/view/ejs/tags.escaped.md","id":57},{"type":"function","name":"can.EJS.tags.unescaped","description":"","title":"<%== CODE %>","parent":"can.EJS.tags","order":2,"signatures":[{"code":"<%== CODE %>","description":"<p>Runs JS Code and writes the <em>unescaped</em> result into the result of the template.</p>\n\n<p>The following results in \"my favorite element is <B>B</B>.\". Using <code>&lt;%==</code> is useful\nfor sub-templates.</p>\n\n<pre><code>     &lt;div&gt;my favorite element is &lt;%== '&lt;B&gt;B&lt;/B&gt;' %&gt;.&lt;/div&gt;\n</code></pre>","params":[]}],"src":"can/view/ejs/tags.unescaped.md","id":60},{"type":"function","name":"can.EJS.tags.templated","description":"","title":"<%% CODE %>","parent":"can.EJS.tags","order":3,"signatures":[{"code":"<%% CODE %>","description":"<p>Renders &lt;% CODE %> as text in result of the template rather than running CODE itself. This is useful for generators.</p>\n\n<p>The following results in \"&lt;%= 'hello world' %>\" rather than the string \"hello world.\"</p>\n\n<pre><code>     &lt;%%= 'hello world' %&gt;\n</code></pre>","params":[]}],"src":"can/view/ejs/tags.templated.md","id":59},{"type":"function","name":"can.EJS.tags.comment","description":"","title":"<%# CODE %>","parent":"can.EJS.tags","order":4,"signatures":[{"code":"<%# CODE %>","description":"<p>Used for explicitly for comments.  This will not render anything.</p>\n\n<pre><code>     &lt;%# 'hello world' %&gt;\n</code></pre>","params":[]}],"src":"can/view/ejs/tags.comment.md","id":56}]};
+
+	console.log(docData);
+</script>
 
 
 

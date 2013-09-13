@@ -1,87 +1,78 @@
-@page Constructs Constructor Classes
+@page Constructs Constructor Functions
 @parent Tutorial 0
 
 @body  
 
-Constructor classes are CanJS's basic prototypal inheritance style
-classes.  These classes can be created by using
+Constructor functions are used by JavaScript to create objects with shared properties.  It's
+similar in concept to a [class](http://en.wikipedia.org/wiki/Class_(computer_programming)).  Constructor
+functions can be created by using
 [can.Construct](../docs/can.Construct.html). Constructs are used to create
 instantiable objects with shared properties and help make managing inheritance
-in JavaScript easier. [Observes], [Models] and
+in JavaScript easier. [Observables], [Models] and
 [Controls] are based off of Constructs, so learning how they work is
 fundamental to understanding CanJS.
 
-To create a Construct of your own, call `can.Construct.extend` with an object of static
+To create a Construct of your own, call [can.Construct.extend](../docs/can.Construct.extend.html) with an object of static
 properties (which will be attached directly to the constructor object) along
 with an object of instance properties (which will be attached to the
 constructor's prototype):
 
-@codestart
-var Todo = can.Construct.extend({}, {
-	description: 'Something to do.',
-	author: 'Unknown',
-	allowedToEdit: function() {
-		return true;
-	}
-});
+    var Todo = can.Construct.extend({}, {
+    
+      isSecret: function(){
+        return false;
+      }
+	  allowedToEdit: function() {
+		return ! this.isSecret();
+      }
+    });
 
-var t = new Todo();
-
-t.description; // 'Something to do.'
-t.author; // 'Unknown'
-t.allowedToEdit(); // true
-@codeend
-
-_Please note, that starting in CanJS 1.2 releases, you will not be able to create a class simply by using `can.Construct`, as that will instead try to create a new instance of a class._ There are a few other ways to create classes with  `can.Construct`; see
-[the API](../docs) for all of the details.
+    var t = new Todo();
+    t.allowedToEdit(); // true
 
 ## Inheritance 
 
 can.Construct automatically sets up the prototype chain so that
-Constructs are easy to subclass. To subclass one of your Constructs, call the
-constructor function, passing it the same arguments that you would pass to
-`can.Construct`:
+Constructs are easy to extend (similar to sub classing). To extend one 
+of your Constructs, call the constructor's [extend](../docs/can.Construct.extend.html) method, passing it the same arguments that you would pass to
+`can.Construct.extend`:
 
-@codestart
-// If only one argument is passed, they are considered prototype properties.
-var PrivateTodo = Todo.extend({
-	description: 'Something secret!',
-	allowedToEdit: function(account) {
-		return account.owns(this);
-	}
-});
 
-var p = new PrivateTodo();
-p.author; // 'Unknown'
-p.description; // 'Something secret!'
-p.allowedToEdit({owns: function(){ return false; }}); // false
-@codeend
+    // If only one argument is passed, they are considered prototype properties.
+    var PrivateTodo = Todo.extend({},{
+	
+	  isSecret: function() {
+		return true;
+	  }
+    });
+
+    var p = new PrivateTodo();
+    p.allowedToEdit(); // false
+
 
 ## Initialization 
 
-As you can see above, when a constructor function is called
+When a constructor function is called
 with `new`, can.Construct creates a new instance of that class. If you've
 supplied an prototype method called
 [init](../docs/can.Construct.prototype.init.html), can.Construct will
-initialize the class using that method along with the arguments passed to the
+call init with `this` as the new instance and the arguments passed to the
 constructor.
 
-This helps make our Todo a little more configurable:
+This helps make our Todo configurable:
 
 @codestart
 var Todo = can.Construct.extend({
-	description: 'Something to do.',
-	author: 'Unknown',
-
-	init: function(options) {
-		this.author = options.author || this.author;
-		this.description = options.description || this.description;
-	}
+  init: function(owner) {
+    this.owner = owner;
+  },
+  allowedToEdit: function() {
+    return true;
+  }
 });
 
-var t = new Todo({author: 'Me!'});
-t.author; // 'Me!'
-t.description; // 'Something to do.'
+var t = new Todo("me");
+t.owner; // 'me'
 @codeend
 
 If you're extending a Construct, you probably want to make sure you call the
@@ -89,8 +80,14 @@ base's `init` method inside the child's `init`:
 
 @codestart
 var PrivateTodo = can.Construct.extend({
-	init: function(options) {
-		can.Construct.prototype.init.apply(this, arguments);
-	}
+  init: function(owner, isShared) {
+    can.Construct.prototype.init.apply(this, arguments);
+    this.isShared = isShared;
+  },
+  allowedToEdit: function(){
+    return this.owner === "me" || this.isShared;
+  }
 });
 @codeend
+
+If you find yourself using inheritence a lot, checkout can.Construct's [super plugin](../docs/can.Construct.super.html).
