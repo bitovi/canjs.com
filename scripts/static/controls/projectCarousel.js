@@ -33,17 +33,26 @@ can.Control('Bitovi.OSS.ProjectCarousel', {
   },
 
   'a:not(.button) click': function(el, ev) {
-    return false;
     el = el.closest('li');
-    this.showProject(el, ev);
+
+    if(this.tooltip && this.tooltip.element) {
+      this.tooltip.element.remove();
+    }
+    
+    this.tooltip = new Bitovi.OSS.ProjectTooltip('<div>', { 
+      state: el.data('project'), 
+      relativeTo: el
+    });
+
+    return false;
   },
 
   '.prev click' : function(el, ev) {
-    this.move('right');
+    this.move('left');
   },
 
   '.next click' : function(el, ev) {
-    this.move('left');
+    this.move('right');
   },
 
   move: function(direction) {

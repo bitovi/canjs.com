@@ -3,6 +3,7 @@
 	cursor: pointer;
 	position: relative;
 	display: inline-block;
+	width: 450px;
 }
 .has-tip .tooltip {
 	position: absolute;
@@ -27,6 +28,27 @@
 	left: 40px;
 	border-left-style: none;
 	border-bottom-style: none;
+}
+
+.has-tip .tooltip.left:before {
+	-moz-transform : rotateZ(-135deg) skewY(5deg) skewX(5deg);
+	-o-transform : rotateZ(-135deg) skewY(5deg) skewX(5deg);
+	-webkit-transform : rotateZ(-135deg) skewY(5deg) skewX(5deg);
+	-ms-transform: rotate(-135deg);
+	transform : rotateZ(-135deg) skewY(5deg) skewX(5deg);
+	top: 20px;
+	left: -11px;
+}
+
+.has-tip .tooltip.right:before {
+	-moz-transform : rotateZ(45deg) skewY(5deg) skewX(5deg);
+	-o-transform : rotateZ(45deg) skewY(5deg) skewX(5deg);
+	-webkit-transform : rotateZ(45deg) skewY(5deg) skewX(5deg);
+	-ms-transform: rotate(45deg);
+	transform : rotateZ(45deg) skewY(5deg) skewX(5deg);
+	top: 20px;
+	left: inherit;
+	right: -11px;
 }
 
 .has-tip .tooltip.forumPosts:before, .has-tip .tooltip.github:before {

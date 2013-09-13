@@ -1,4 +1,4 @@
-steal("jquery","can","can/construct/super", "can/util/function").then("./lib/lib.js","./models/models.js","./controls/controls.js")
+steal("jquery","jquery-ui.js", "can","can/construct/super", "can/util/function").then("./lib/lib.js","./models/models.js","./controls/controls.js")
 .then(function() {
 	Bitovi.OSS.initTwitterWidgets = function() {
 		if($('.twitter-follow-button').length) {
