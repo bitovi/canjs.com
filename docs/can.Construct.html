@@ -579,7 +579,7 @@ panther instanceof Animal; // true
 with the new function's static and instance properties. For example, we want our <code>Snake</code> to
 be an <code>Animal</code>, but there are some differences:</p>
 
-<pre><code>Snake = Animal.extend({
+<pre><code>Snake = Animal({
     legs: 0
 }, {
     init: function() {
@@ -603,21 +603,21 @@ baslisk instanceof Animal; // true
 constructor, allowing you to imitate static properties and functions. You can access these
 properties through the <code><a href="can.Construct.prototype.constructor.html">this.constructor</a></code> property.</p>
 
-<p>Static properties can get overridden through inheritance just like instance properties. In the example below,
-we override both the legs static property as well as the the init function for each instance:</p>
+<p>Static properties can get overridden through inheritance just like instance properties. Let's see
+how this works with <code>Animal</code> and <code>Snake</code>:</p>
 
-<pre><code class="lang-javascript">var Animal = can.Construct.extend({
+<pre><code class="lang-javascript">can.Construct('Animal', {
     legs: 4
 }, {
     init: function(sound) {
         this.sound = sound;
-    },
+    }
     speak: function() {
         console.log(this.sound);
     }
 });
 
-var Snake = Animal.extend({
+Animal('Snake', {
     legs: 0
 }, {
     init: function() {
@@ -629,20 +629,13 @@ var Snake = Animal.extend({
 });
 
 Animal.legs; // 4
-Snake.legs; // 0
-var dog = new Animal('woof');
-var blackMamba = new Snake();
-dog.speak(); // 'woof'
-blackMamba.speak(); // 'ssssss'</code></pre>
+Snake.legs; // 0</code></pre>
 
 <h2>Plugins</h2>
 
-<p>There are two plugins available to help make using <code>can.Construct</code> even simpler.</p>
-
-<ul>
-<li><a href="can.Construct.super.html">can.Construct.super</a> allows you to easily call base methods by making <code>this._super</code> available in inherited methods.</li>
-<li><a href="can.Construct.proxy.html">can.Construct.proxy</a> helps you keep your scope straight when creating callbacks inside constructors.</li>
-</ul>
+<p>There are two plugins available to help make using <code>can.Construct</code> even simpler.
+* <a href="can.Construct.super.html">can.Construct.super</a> allows you to easily call base methods by making <code>this._super</code> available in inherited methods.
+* <a href="can.Construct.proxy.html">can.Construct.proxy</a> helps you keep your scope straight when creating callbacks inside constructors.</p>
 		</section>
 		
 

@@ -518,7 +518,7 @@ with arbitrary parameters. Typically, however, you will simply want to call the 
 <p>The following creates a <code>Person</code> Construct and then creates a new instance of Person,
 using <code>apply</code> on newInstance to pass arbitrary parameters.</p>
 
-<pre><code class="lang-javascript">var Person = can.Construct.extend({
+<pre><code class="lang-javascript">var Person = can.Construct({
   init : function(first, middle, last) {
     this.first = first;
     this.middle = middle;

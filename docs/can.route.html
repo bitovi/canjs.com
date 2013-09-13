@@ -504,7 +504,7 @@ an object (that is the can.route's state).
 In order to map to a specific properties in the url,
 prepend a colon to the name of the property like:</p>
 
-<pre><code>can.route( "#!content/:type" )
+<pre><code>can.route( "!#content/:type" )
 </code></pre>
 
 <p>If no routes are added, or no route is matched, 
@@ -519,7 +519,7 @@ hash.</p>
 can.route looks for matching routes and uses them
 to update can.route's data.</p>
 
-<pre><code>can.route( "#!content/:type" );
+<pre><code>can.route( "!#content/:type" );
 location.hash = "#!content/images";
 // can.route -&gt; {type : "images"}
 can.route.attr( "type", "songs" )
@@ -592,7 +592,7 @@ control to listen to and make changes whenever the route is modified,
 even outside of the control itself.</p>
 
 <pre><code>// create the route
-can.route("#!content/:type")
+can.route("!#content/:type")
 
 // the route has changed
 "{can.route} change": function(ev, attr, how, newVal, oldVal) {

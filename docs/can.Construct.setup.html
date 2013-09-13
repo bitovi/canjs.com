@@ -560,13 +560,13 @@ Do not confuse this with the prototype <code><a href="can.Construct.prototype.se
 <p>Setup deeply extends the static <code>defaults</code> property of the base constructor with 
 properties of the inheriting constructor.  For example:</p>
 
-<pre><code class="lang-javascript">Parent = can.Construct.extend({
+<pre><code class="lang-javascript">Parent = can.Construct({
   defaults : {
     parentProp: 'foo'
   }
 },{})
 
-Child = Parent.extend({
+Child = Parent({
   defaults : {
     childProp : 'bar'
   }
@@ -579,7 +579,7 @@ Child.defaults // {parentProp: 'foo', 'childProp': 'bar'}</code></pre>
 <p>This <code>Parent</code> class adds a reference to its base class to itself, and
 so do all the classes that inherit from it.</p>
 
-<pre><code class="lang-javascript">Parent = can.Construct.extend({
+<pre><code class="lang-javascript">Parent = can.Construct({
   setup : function(base, fullName, staticProps, protoProps){
     this.base = base;
 

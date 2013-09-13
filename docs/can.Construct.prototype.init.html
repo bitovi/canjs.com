@@ -476,7 +476,7 @@ init
 			<h4>args
 				<code>{*}</code></h4>
 			<div class="description">
-				<p>the arguments passed to the constructor (or the items of the array returned from <a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a>)</p>
+				<p>the arguments passed to the constructor (or the elements of the array returned from <a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a>)</p>
 			</div>
 			
 			
@@ -507,7 +507,7 @@ should go, and a common thing to do in <code>init</code> is to save the argument
 
 <p>First, we'll make a Person constructor that has a first and last name:</p>
 
-<pre><code class="lang-javascript">var Person = can.Construct.extend({
+<pre><code class="lang-javascript">can.Construct("Person", {
     init: function(first, last) {
         this.first = first;
         this.last  = last;
@@ -520,7 +520,7 @@ justin.last; // "Meyer"</code></pre>
 
 <p>Then we'll extend Person into Programmer and add a favorite language:</p>
 
-<pre><code class="lang-javascript">var Programmer = Person.extend({
+<pre><code class="lang-javascript">Person("Programmer", {
     init: function(first, last, language) {
         // call base's init
         Person.prototype.init.apply(this, arguments);
@@ -529,20 +529,19 @@ justin.last; // "Meyer"</code></pre>
         this.language = language;
     },
     bio: function() {
-        return "Hi! I'm "" + this.first + " " + this.last +
-            " and I write " + this.language + ".";
+        return 'Hi! I'm ' + this.first + ' ' + this.last +
+            ' and I write ' + this.language + '.';
     }
 });
 
 var brian = new Programmer("Brian", "Moschel", 'ECMAScript');
 brian.bio(); // "Hi! I'm Brian Moschel and I write ECMAScript.";</code></pre>
 
-<h2>Modified Arguments</h2>
+<h2>Be Aware</h2>
 
 <p><a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a> is able to modify the arguments passed to <code>init</code>.
-If you aren't receiving the exact arguments as those passed to <code>new Construct(args)</code>,
-check to make sure that they aren't being changed by <code>setup</code> somewhere along 
-the inheritance chain.</p>
+If you aren't receiving the right arguments to <code>init</code>, check to make sure
+that they aren't being changed by <code>setup</code> somewhere along the inheritance chain.</p>
 		</section>
 		
 

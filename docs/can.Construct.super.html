@@ -507,14 +507,14 @@ function from which they inherit.</p>
 <p>The <code>Person</code> and <code>Programmer</code> examples from <code><a href="can.Construct.prototype.init.html">init</a></code> demonstrate <code>_super</code>'s use.
 Here's how those classes look without can.Construct.super:</p>
 
-<pre><code class="lang-javascript">var Person = can.Construct.extend({
+<pre><code class="lang-javascript">can.Construct("Person", {
     init: function(first, last) {
         this.first = first;
         this.last  = last;
     }
 });
 
-var Programmer = Person.extend({
+Person("Programmer", {
     init: function(first, last, language) {
         // call base's init
         Person.prototype.init.apply(this, arguments);
@@ -523,14 +523,14 @@ var Programmer = Person.extend({
         this.language = language;
     },
     bio: function() {
-        return "Hi! I'm " + this.first + " " + this.last +
-            " and I write " + this.language + ".";
+        return 'Hi! I'm ' + this.first + ' ' + this.last +
+            ' and I write ' + this.language + '.';
     }
 });</code></pre>
 
 <p>And here's how <code>Programmer</code> works using <code>_super</code>:</p>
 
-<pre><code class="lang-javascript">var Programmer = Person.extend({
+<pre><code class="lang-javascript">Person("Programmer", {
     init: function(first, last, language) {
         // call base's init
         this._super(first, last);
@@ -539,14 +539,14 @@ var Programmer = Person.extend({
         this.language = language;
     },
     bio: function() {
-        return "Hi! I'm " + this.first + " " + this.last +
-            " and I write " + this.language + ".";
+        return 'Hi! I'm ' + this.first + ' ' + this.last +
+            ' and I write ' + this.language + '.';
     }
 });</code></pre>
 
 <p>If you want to pass an array of arguments (or an arguments object) to <code>_super</code>, use <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/apply">apply</a>:</p>
 
-<pre><code class="lang-javascript">var Programmer = Person.extend({
+<pre><code class="lang-javascript">Person("Programmer", {
     init: function(first, last, language) {
         // call base's init
         this._super.apply(this, arguments);
@@ -555,8 +555,8 @@ var Programmer = Person.extend({
         this.language = language;
     },
     bio: function() {
-        return "Hi! I'm " + this.first + " " + this.last +
-            " and I write " + this.language + ".";
+        return 'Hi! I'm ' + this.first + ' ' + this.last +
+            ' and I write ' + this.language + '.';
     }
 });</code></pre>
 
@@ -567,13 +567,13 @@ can use it in static functions.</p>
 
 <p>Here is a base class that has a method that squares numbers and an inherited class that has a method that cubes numbers:</p>
 
-<pre><code class="lang-javascript">var Squarer = can.Construct.extend({
+<pre><code class="lang-javascript">can.Construct('Squarer', {
     raise: function(n) {
         return n*n;
     }
 }, {});
 
-var Cuber = Squarer.extend({
+Squarer('Cuber', {
     raise: function(n) {
         return n * this_super(n);
     }

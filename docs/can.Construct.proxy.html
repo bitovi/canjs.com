@@ -578,7 +578,7 @@ calls the given function with the same <code>this</code> as <code>proxy</code> w
 
 <p>Here is a counter that increments its count after a second:</p>
 
-<pre><code class="lang-javascript">var DelayedCounter = can.Construct.extend({
+<pre><code class="lang-javascript">can.Construct('DelayedCounter', {
     init: function() {
         this.count = 0;
         setTimeout(this.proxy(function() {
@@ -599,7 +599,7 @@ setTimeout(function() {
 <code>proxy</code> will use that function. Here's how you write the previous example using
 this technique:</p>
 
-<pre><code class="lang-javascript">var DelayedCounter = can.Construct.extend({
+<pre><code class="lang-javascript">can.Construct('DelayedCounter', {
     init: function() {
         this.count = 0;
         setTimeout(this.proxy('increment'), 1000);
@@ -623,7 +623,7 @@ proxied function.</p>
 
 <p>Here's a delayed counter that increments by a given amount:</p>
 
-<pre><code class="lang-javascript">var IncrementalCounter = can.Construct.extend({
+<pre><code class="lang-javascript">can.Construct('IncrementalCounter', {
     init: function(amount) {
         this.count = 0;
         setTimeout(this.proxy(function(amount) {
@@ -646,7 +646,7 @@ as a parameter to the next. This is useful to avoid having to curry callbacks.</
 
 <p>Here's a delayed counter that takes a callback to call after incrementing by a given amount:</p>
 
-<pre><code class="lang-javascript">var IncrementalCounter = can.Construct.extend({
+<pre><code class="lang-javascript">can.Construct('IncrementalCounter', {
     init: function(amount, callback) {
         this.count = 0;
         setTimeout(this.proxy([function(amount) {
@@ -669,7 +669,7 @@ in static functions with the constructor as <code>this</code>.</p>
 
 <p>Here's a counter construct that keeps its count staticly and increments after one second:</p>
 
-<pre><code class="lang-javascript">var DelayedStaticCounter = can.Construct.extend({
+<pre><code class="lang-javascript">can.Construct('DelayedStaticCounter', {
     setup: function() {
         this.count = 0;
     }

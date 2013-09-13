@@ -472,9 +472,26 @@ the constructor's static properties from an instance.</p>
 	   Property Type:
 	
 	
-	<code>{Object}</code>
+	<code>{function()}</code>
 </h2>
 
+
+
+  <h2>()</h2>
+<div class="signature-wrapper">
+
+
+
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{undefined}</code></h4>
+		<div class="description">
+			
+		</div>
+	</div>
+
+
+</div>
 
 
 
@@ -490,9 +507,9 @@ the constructor's static properties from an instance.</p>
 		<section class="comment">
 			<h2>Example</h2>
 
-<p>This can.Construct has a static counter that counts how many instances have been created:</p>
+<p>This class has a static counter that counts how mane instances have been created:</p>
 
-<pre><code class="lang-javascript">can.Construct.extend("Counter", {
+<pre><code class="lang-javascript">can.Construct("Counter", {
     count: 0
 }, {
     init: function() {
