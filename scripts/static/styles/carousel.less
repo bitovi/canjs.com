@@ -12,27 +12,34 @@
 			overflow: hidden;
 			position: relative;
 			width: 1200px;
+			padding-bottom: 25px;
 
 			.list {
 				height: 210px;
 		      	list-style-type: none;
 		      	margin: 0;
 		      	position: relative;
-		      	left: -190px;
+		      	left: -165px;
 		      	width: 5000px;
 
 		      	li {
 		      		display: inline-block;
-		      		margin-right: 10px;
+		      		margin-right: 8px;
 		      		vertical-align: top;
 		      		width: 232px;
 		      	}
 		      	a {
 		      		text-decoration: none;
-		      		
-		      		&:hover {
-		      			border-color: @color;
+		      		img {
+		      			width: 232px;
+		      			background: #eee;
+		      			height: 147px;
+		      			
+		      			&:hover {
+		      				border-color: @color;
+		      			}
 		      		}
+
 		      	}
 		      	h3 {
 		      		font-size: 14px;
@@ -46,6 +53,7 @@
 
 	button {
 		background: none;
+		border: 1px solid @color;
 		border: none;
 		color: @dark;
 		text-shadow: none;
@@ -54,8 +62,8 @@
 		line-height: 75px;
 		padding: 0;
 		
-		height: 100%;
-		width: 150px;
+		height: 102%;
+		width: 120px;
 		top: 0;
 		font-size: 75px;
 		z-index: 100;
@@ -74,10 +82,10 @@
 		}
 		
 		&.next {
-			right: -10px;
+			right: 0px;
 		}
 		&.prev {
-			left: -10px;
+			left: 0px;
 			
 			background: -moz-linear-gradient(left,  rgba(255,255,255,1) 0%, rgba(255,255,255,0.5) 93%, rgba(255,255,255,0) 100%);
 			background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,1)), color-stop(93%,rgba(255,255,255,0.5)), color-stop(100%,rgba(255,255,255,0)));
@@ -125,6 +133,10 @@
 				
 				&.current {
 					color: @color;
+				}
+				
+				&:hover {
+					border-color: @color;
 				}
 			}
 		}
@@ -231,4 +243,31 @@
  
 .index .project-carousel.projects .carousel li a {
 	width: 163px;
+}
+
+.bitovi_oss_project_tooltip {
+	.tooltip {
+		.bithub-content {
+			h2 {
+				font-size: 18px;
+				line-height: 24px;
+				a {
+					text-decoration: underline;
+				}
+			}
+			p {
+				font-size: 14px;
+				line-height: 18px;
+				
+				.button {
+					margin-top: 10px;
+				}
+			}
+			
+		}
+	}
+}
+.light.project-carousel.bitovi_oss_project_carousel {
+	padding-bottom: 70px;
+	margin-top: 40px;
 }
