@@ -664,7 +664,7 @@ We can observe to convert it to something closer to <code>new Date(1982,10,20)</
 
 <p>The following sets the birthday attribute to "date" and provides a date conversion function:</p>
 
-<pre><code>var Contact = can.Observe({
+<pre><code>var Contact = can.Observe.extend({
     attributes : {
         birthday : 'date'
     },
@@ -697,8 +697,8 @@ contact.attr('birthday'); //-&gt; Date
 <p>If a property is set with an object as a value, the corresponding converter is called with the unmerged data (the raw object)
 as the first argument, and the old value (a can.Observe) as the second:</p>
 
-<pre><code>    var MyObserve = can.Observe({
-    attributes: {
+<pre><code>var MyObserve = can.Observe.extend({
+ attributes: {
           nested: "nested"
     },
     convert: {
@@ -725,7 +725,7 @@ observable object will break.</p>
 <p>If you would rather have the new Observe or List merged into the current value, call
 <code>attr</code> directly on the property instead of on the Observe:</p>
 
-<pre><code class="lang-javascript">var Contact = can.Observe({
+<pre><code class="lang-javascript">var Contact = can.Observe.extend({
   attributes: {
     info: 'info'
   },
@@ -753,27 +753,26 @@ alice.info._cid; // '.observe2'</code></pre>
 <p>If you have assocations defined within your model(s), you can use convert to automatically
 call serialize on those models.</p>
 
-<pre><code>    can.Model("Contact",{
-        attributes : {
-            tasks: "Task.models"
-        }
-    }, {});
+<pre><code class="lang-javascript">var Contact = can.Model.extend({
+  attributes : {
+    tasks: "Task.models"
+  }
+}, {});
 
-    can.Model("Task",{
-        attributes : {
-            due : 'date'
-        }
-    },{});
+var Task = can.Model.extend({
+  attributes : {
+    due : 'date'
+  }
+},{});
 
-    var contact = new Contact({
-        tasks: [ new Task({
-            due: new Date()
-        }) ]
-    });
+var contact = new Contact({
+  tasks: [ new Task({
+    due: new Date()
+  }) ]
+});
 
-    contact.serialize(); 
-    //-&gt; { tasks: [ { due: 1333219754627 } ] }
-</code></pre>
+contact.serialize(); 
+//-> { tasks: [ { due: 1333219754627 } ] }</code></pre>     
 		</section>
 		
 

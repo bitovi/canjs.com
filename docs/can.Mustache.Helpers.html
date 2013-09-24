@@ -785,7 +785,7 @@ Result:
     I have friends!
 </code></pre>
 
-<p>When using the <code><a href="can.Mustache.helpers.section.html">{{#if key}}</a></code> helper, or any other helper for that matter, 
+<p>When using the <code><a href="can.Mustache.helpers.if.html">{{#if key}}</a></code> helper, or any other helper for that matter, 
 the special <code><a href="can.Mustache.helpers.else.html">{{else}}</a> helper becomes available.</code>{{else}}` is equivalent to 
 an <a href="can.Mustache.helpers.inverse.html">{{^key}}</a> inverse section (rendering <strong>falsey</strong> data), except that it 
 only uses a single tag and exists inside 
@@ -972,9 +972,9 @@ Mustache.registerHelper('helper', function(arg1, arg2, options){
 
 <p><strong>Evaluating Helpers</strong></p>
 
-<p>If you want to use a helper with a <a href="#Sections">section</a>, you need to call
+<p>If you want to use a helper with a <a href="can.Mustache.Sections.html">section</a>, you need to call
 <code>options.fn(context)</code> in your return statement. This will return a 
-string with the resulting evaluated <a href="#Sections">section</a>.</p>
+string with the resulting evaluated <a href="can.Mustache.Sections.html">section</a>.</p>
 
 <p>Similarly, you can call <code>options.inverse(context)</code> to evaluate the 
 template between an <code>{{else}}</code> tag and the closing tag.</p>
@@ -998,7 +998,7 @@ routing helper it will show/hide the text.</p>
 <p>Helpers can be passed normal objects, native objects like numbers and strings, 
 as well as a hash object. The hash object will be an object literal containing 
 all ending arguments using the <code>key=value</code> syntax. The hash object will be provided 
-to the helper as <code>options.hash</code>. Additionally, when using <a href="#Sections">section</a> with the helper, 
+to the helper as <code>options.hash</code>. Additionally, when using <a href="can.Mustache.Sections.html">section</a> with the helper, 
 you can set a custom context by passing the object instead of <code>this</code>.</p>
 
 <pre><code>Mustache.registerHelper('exercise', function(group, action, 

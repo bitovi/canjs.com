@@ -613,7 +613,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/observe/attributes/attributes.js#L192">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/observe/attributes/attributes.js#L193">source</a></li>
 		
 		
 			
@@ -653,7 +653,7 @@ serialize attributes.</p>
 
 		
 		<section class="comment">
-			<p>Similar to [can.Observe.convert], in that the keys of this object correspond to 
+			<p>Similar to <a href="can.Observe.attributes.static.convert.html">can.Observe.attributes.convert</a>, in that the keys of this object correspond to 
 the types specified in <a href="can.Observe.attributes.html">can.Observe.attributes</a>.</p>
 
 <p>By default every attribute will be passed through the 'default' serialization method 
@@ -662,22 +662,21 @@ or it will call the "serialize" method if the property holds an object with the 
 
 <p>For example, to serialize all dates to ISO format:</p>
 
-<pre><code>    var Contact = can.Observe({
-        attributes : {
-            birthday : 'date'
-        },
-        serialize : {
-            date : function(val, type){
-                return new Date(val).toISOString();
-            }
-        }
-    },{});
+<pre><code class="lang-javascript">var Contact = can.Observe.extend({
+  attributes : {
+    birthday : 'date'
+  },
+  serialize : {
+    date : function(val, type){
+      return new Date(val).toISOString();
+    }
+  }
+},{});
 
-    var contact = new Contact({ 
-        birthday: new Date("Oct 25, 1973") 
-    }).serialize();
-    //-&gt; { "birthday" : "1973-10-25T05:00:00.000Z" }
-</code></pre>
+var contact = new Contact({ 
+  birthday: new Date("Oct 25, 1973") 
+}).serialize();
+//-> { "birthday" : "1973-10-25T05:00:00.000Z" }</code></pre>
 		</section>
 		
 

@@ -759,7 +759,7 @@ of errors by attribute.</p>
 <p>To use validations, it's suggested you use the
 observe/validations plugin.</p>
 
-<pre><code>can.Observe("Task",{
+<pre><code>Task = can.Observe.extend({
   init : function(){
     this.validatePresenceOf("dueDate")
   }

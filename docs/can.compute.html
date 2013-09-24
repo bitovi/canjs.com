@@ -282,7 +282,16 @@ can.compute
 		</section>
 
 		<section class="description">
-			<p>Create an observable value. </p>
+			<p>Create an observable value. 
+of the compute.</p>
+
+<p>A function that is called when a compute is called with an argument. The function is passed
+the first argumented passed to <a href="can.computed.html">compute</a> and the current value. If
+<code>set</code> returns a value, it is used to compare to the current value of the compute. Otherwise,
+<code>get</code> is called to get the current value of the compute and that value is used
+to determine if the compute has changed values.</p>
+
+<p>when the computes value needs to be updated.</p>
 		</section>
 
 		
@@ -399,40 +408,34 @@ var value = can.compute("",{
 						<code>{function()}</code>
 					</h5>
 					<div class="description">
-						<p>A function that retrieves and returns the current value
-of the compute.</p>
+						
 					</div>
 				</li>
 				
 				<li class="option">
 					<h5>set 
-						<code>{function(newVal, oldVal)}</code>
+						<code>{function()}</code>
 					</h5>
 					<div class="description">
-						<p>A function that is called when a compute is called with an argument. The function is passed
-the first argumented passed to <a href="can.computed.html">compute</a> and the current value. If
-<code>set</code> returns a value, it is used to compare to the current value of the compute. Otherwise,
-<code>get</code> is called to get the current value of the compute and that value is used
-to determine if the compute has changed values.</p>
+						
 					</div>
 				</li>
 				
 				<li class="option">
 					<h5>on 
-						<code>{function(updated)}</code>
+						<code>{function()}</code>
 					</h5>
 					<div class="description">
-						<p>Called to setup binding to dependency events. Call updated
-when the computes value needs to be updated.</p>
+						
 					</div>
 				</li>
 				
 				<li class="option">
 					<h5>off 
-						<code>{function(function)}</code>
+						<code>{function()}</code>
 					</h5>
 					<div class="description">
-						<p>Called to teardown binding.</p>
+						
 					</div>
 				</li>
 				
@@ -742,7 +745,7 @@ of the compute updates. Here's a simple slider that works off of a compute:</p>
     percentDone: .35
 });
 
-can.Control('SimpleSlider', { }, {
+SimpleSlider = can.Control.extend({ }, {
     init: function() {
         this.element.html(can.view(this.options.view, this.options));
     },

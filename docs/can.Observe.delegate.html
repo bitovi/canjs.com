@@ -623,9 +623,9 @@ observe.attr('name.first',"Justin")
 
 <p>An add event is fired when a new property has been added.</p>
 
-<pre><code>var o = new can.Control({});
+<pre><code>var o = new can.Observe({});
 o.delegate("name","add", function(ev, value){
-  // called once
+  // will be called once
   can.$('#name').show()
 })
 o.attr('name',"Justin")
@@ -641,7 +641,7 @@ showing the <code>#name</code> element.</p>
 always fired after an add.</p>
 
 <pre><code>o.delegate("name","set", function(ev, value){
-  // called twice
+  // will be called twice
   can.$('#name').text(value)
 })
 o.attr('name',"Justin")
@@ -653,7 +653,7 @@ o.attr('name',"Brian");
 <p>Remove events are fired after a property is removed.</p>
 
 <pre><code>o.delegate("name","remove", function(ev){
-  // called once
+  // will be called once
   $('#name').text(value)
 })
 o.attr('name',"Justin");
@@ -667,7 +667,7 @@ of an observe has changed. Delegate lets you use wildcards to
 match any property name.  The following listens for any change
 on an attribute of the params attribute:</p>
 
-<pre><code>var o = can.Control({
+<pre><code>var o = new can.Observe({
   options : {
     limit : 100,
     offset: 0,

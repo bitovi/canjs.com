@@ -759,7 +759,7 @@ helperOptions
 	
 	   Type Definition:
 	
-	<code>{Object}</code>
+	<code>{Object&lt;String,* | String | Number&gt;}</code>
 </h2>
 
 
@@ -788,19 +788,9 @@ render the INVERSE with the specified <code>context</code>.</p>
 	</li>
 	
 	<li class="option">
-		<h5>hash <code>{Object&lt;String,* | String | Number&gt;}</code></h5>
+		<h5>hash <code>{Object}</code></h5>
 		<div class="description">
-			<p>An object containing all of the final 
-arguments listed as <code>name=value</code> pairs for the helper.</p>
-
-<pre><code>{{helper arg1 arg2 name=value other=3 position="top"}}
-
-options.hash = {
-    name: &lt;context_lookup&gt;.value,
-    other: 3,
-    position: "top"
-}
-</code></pre>
+			
 		</div>
 	</li>
 	

@@ -357,7 +357,7 @@ behavior.</p>
 
 <pre><code class="lang-javascript">&lt;script type="text/ejs" id="todoList">
 <% for(var i = 0; i < todos.length; ++i) { %>
-    &lt;li><%= this[i].attr('description') &lt;/li>
+    &lt;li><%= todos[i].attr('description') &lt;/li>
 <% } %>
 &lt;/script></code></pre>
 
@@ -374,7 +374,7 @@ of the <code>this</code> object without having to prefix it with <code>this.</co
 <pre><code class="lang-javascript">&lt;script type="text/ejs" id="todosAndUser">
 &lt;h2> <%= user.attr('name') %>&lt;/h2>
 <% for(var i = 0; i < todos.length; ++i) { %>
-    &lt;li><%= this[i].attr('description') &lt;/li>
+    &lt;li><%= todos[i].attr('description') &lt;/li>
 <% } %>
 &lt;/script></code></pre>
 

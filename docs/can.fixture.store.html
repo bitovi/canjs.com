@@ -489,7 +489,7 @@ the store can do filtering, grouping, sorting, and paging.</p>
 
 <p>These fixtures, combined with a <a href="can.Model.html">can.Model</a> that connects to these services like:</p>
 
-<pre><code> var Todo = can.Model({
+<pre><code> var Todo = can.Model.extend({
      findAll : 'GET /todos',
      findOne : 'GET /todos/{id}',
      create  : 'POST /todos',

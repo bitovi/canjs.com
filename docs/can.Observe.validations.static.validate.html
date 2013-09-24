@@ -750,7 +750,7 @@ the error message.  Validations should be set in the Constructor's static init m
 		<section class="comment">
 			<p>The following example validates that a person's age is a number:</p>
 
-<pre><code>Person = can.Observe({
+<pre><code>Person = can.Observe.extend({
     init : function(){
       this.validate(["age"], function(val){
         if( typeof val === 'number' ){
@@ -763,7 +763,7 @@ the error message.  Validations should be set in the Constructor's static init m
 
 <p>The error message can be overwritten with <code>options</code> <strong>message</strong> property:</p>
 
-<pre><code>Person = can.Observe({
+<pre><code>Person = can.Observe.extend({
     init : function(){
       this.validate(
         "age",

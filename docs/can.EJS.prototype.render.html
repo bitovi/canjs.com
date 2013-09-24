@@ -434,9 +434,11 @@ render
 		<section class="comment">
 			<p>Renders an object with view helpers attached to the view.</p>
 
-<pre><code>new can.EJS({text: "&lt;%= message %&gt;"}).render({
+<pre><code>var rendered = new can.EJS({text: "&lt;h1&gt;&lt;%= message %&gt;"&lt;/h1&gt;}).render({
   message: "foo"
 },{helper: function(){ ... }})
+
+console.log(rendered); // "&lt;h1&gt;foo&lt;/h1&gt;"
 </code></pre>
 		</section>
 		

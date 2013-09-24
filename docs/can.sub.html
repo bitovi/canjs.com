@@ -721,7 +721,7 @@ can.sub
 		</section>
 
 		<section class="description">
-			<p>Returns a string with {param} replaced values from data.</p>
+			<p>Returns a string with {param} replaced values from data. </p>
 		</section>
 
 		
@@ -798,82 +798,13 @@ can.sub
 		
 		
 		
-			<section class="signature">
-				<h2>.util.sub(str, data, remove, s)</h2>
-<div class="signature-wrapper">
-<p>Returns a string with {param} replaced values from data.</p>
-
-	<h3>Parameters</h3>
-
-	<ol class="parameters">
-		
-		<li class="parameter">
-			<h4>str
-				<code>{*}</code></h4>
-			<div class="description">
-				
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>data
-				<code>{Object}</code></h4>
-			<div class="description">
-				<p>The data to be used to look for properties.  If it's an array, multiple
-objects can be used.</p>
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>remove
-				<code>{Boolean}</code><span class="pull-right optional">Optional</span></h4>
-			<div class="description">
-				<p>if a match is found, remove the property from the object</p>
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>s
-				<code>{String}</code></h4>
-			<div class="description">
-				<p>The string to replace</p>
-			</div>
-			
-			
-			
-		</li>
-		
-	</ol>
-
-
-	<h3>Returns</h3>
-	<div class="returns">
-		<h4><code>{String}</code></h4>
-		<div class="description">
-			<p>The converted string or <code>null</code> if any data to render are <code>undefined</code> or <code>null</code></p>
-		</div>
-	</div>
-
-
-</div>
-
-			</section>
-		
 		
 
 		
 		<section class="comment">
-			<pre><code>can.sub("foo {bar}",{bar: "far"})
-//-&gt; "foo far"
+			<p><code>can.sub</code> returns a string with {param} replaced values from data, where <code>param</code> is the name of an object property.</p>
+
+<pre><code>can.sub("foo {bar}", {bar: "far"}) //-&gt; "foo far"
 </code></pre>
 		</section>
 		

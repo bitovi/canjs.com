@@ -759,7 +759,7 @@ todo.bind('name', function(ev){  })
 
 <p>You should be using can.Control to listen to model changes like:</p>
 
-<pre><code>Todos = can.Control({
+<pre><code>Todos = can.Control.extend({
   "{Todo} updated" : function(Todo, ev, todo) {...}
 })
 </code></pre>

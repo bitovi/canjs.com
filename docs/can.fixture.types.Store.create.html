@@ -523,7 +523,12 @@ create
 
 		
 		<section class="comment">
-			<p><code>store.create(request, response)</code></p>
+			<p><code>store.destroy(request, callback)</code> simulates
+a request to destroy an item from the server.</p>
+
+<pre><code class="lang-javascript">todosStore.create({
+  url: "/todos"
+}, function(){});</code></pre>             
 		</section>
 		
 

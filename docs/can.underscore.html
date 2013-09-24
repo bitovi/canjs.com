@@ -698,7 +698,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L782">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L788">source</a></li>
 		
 		
 			
@@ -721,7 +721,7 @@ can.underscore
 		</section>
 
 		<section class="description">
-			<p>Underscores a string.</p>
+			<p>Takes a CamelCase or mixedCase string and underscores the string on the capital letter. </p>
 		</section>
 
 		
@@ -765,47 +765,14 @@ can.underscore
 		
 		
 		
-			<section class="signature">
-				<h2>.util.underscore(s)</h2>
-<div class="signature-wrapper">
-<p>Underscores a string.</p>
-
-	<h3>Parameters</h3>
-
-	<ol class="parameters">
-		
-		<li class="parameter">
-			<h4>s
-				<code>{String}</code></h4>
-			<div class="description">
-				
-			</div>
-			
-			
-			
-		</li>
-		
-	</ol>
-
-
-	<h3>Returns</h3>
-	<div class="returns">
-		<h4><code>{String}</code></h4>
-		<div class="description">
-			<p>the underscored string</p>
-		</div>
-	</div>
-
-
-</div>
-
-			</section>
-		
 		
 
 		
 		<section class="comment">
-			<pre><code>can.underscore("OneTwo") //-&gt; "one_two"
+			<p><code>can.underscore</code> takes a CamelCase or mixedCase string and underscores the string on the capital letter. If parts of the string are not CamelCase or mixedCase, it will not change them. <code>can.underscore</code> will lower case the entire string as well.</p>
+
+<pre><code>can.underscore("OneTwo") //-&gt; "one_two"
+can.underscore("OneTwo threeFour") //-&gt; "one_two three_four"
 </code></pre>
 		</section>
 		

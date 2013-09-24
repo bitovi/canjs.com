@@ -388,7 +388,7 @@ like for-loops, if/else, switch, etc.  An example:</p>
 <pre><code>&lt;% if( items.attr('length') === 0 ) { %&gt;
     &lt;tr&gt;&lt;td&gt;You have no items&lt;/td&gt;&lt;/tr&gt;
 &lt;% } else { %&gt;
-    &lt;% list(items, function(){ %&gt;
+    &lt;% items.each(function(item){ %&gt;
       &lt;tr&gt; .... &lt;/tr&gt;
     &lt;% }) %&gt;
 &lt;% } %&gt;
@@ -399,7 +399,7 @@ their own dedicated tags. Live binding leverages this hinting to ensure that log
 
 <pre><code>&lt;!-- Each statement has its own dedicated EJS tag --&gt;
 &lt;% var address = person.attr('address') %&gt;
-&lt;% list(items, function() { %&gt;
+&lt;% items.each(function(item){ %&gt;
     &lt;tr&gt; .... &lt;/tr&gt;
 &lt;% }) %&gt;
 &lt;span&gt;&lt;%= address.attr('street') %&gt;&lt;span&gt;
@@ -407,7 +407,7 @@ their own dedicated tags. Live binding leverages this hinting to ensure that log
 &lt;!-- This won't work! --&gt;
 &lt;%
   var address = person.attr('address');
-  list(items, function() {
+  items.each(function(item) {
 %&gt;
     &lt;tr&gt; .... &lt;/tr&gt;
 &lt;% }) %&gt;

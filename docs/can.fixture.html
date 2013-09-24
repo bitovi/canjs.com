@@ -635,7 +635,7 @@ can.fixture("GET todos.json", null)
 <p><a href="can.fixture.store.html">can.fixture.store</a> makes a CRUD service layer that handles sorting, grouping, filtering and more. Use
 it with a <a href="can.Model.html">can.Model</a> like this:</p>
 
-<pre><code>var Todo = can.Model({
+<pre><code>var Todo = can.Model.extend({
   findAll : 'GET /todos',
   findOne : 'GET /todos/{id}',
   create  : 'POST /todos',

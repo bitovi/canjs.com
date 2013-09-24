@@ -492,7 +492,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/model/model.js#L820">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/model/model.js#L824">source</a></li>
 		
 		
 			
@@ -596,7 +596,7 @@ overwriting <code>can.Model.models</code> is the best way to normalize it.</p>
 <p>The following uses models to convert to a <a href="can.Model.List.html">can.Model.List</a> of model
 instances.</p>
 
-<pre><code>Task = can.Model.extend({},{})
+<pre><code>Task = can.Model.extend()
 var tasks = Task.models([
   {id: 1, name : "dishes", complete : false},
   {id: 2, name: "laundry", compelte: true}

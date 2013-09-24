@@ -692,7 +692,7 @@ are set on <a href="can.Observe.html">can.Observe</a>'s <strong>static</strong> 
 		<section class="comment">
 			<p>The following validates the <code>birthday</code> attribute in Contacts:</p>
 
-<pre><code>Contact = can.Observe({
+<pre><code>Contact = can.Observe.extend({
     init : function(){
         // validates that birthday is in the future
         this.validate("birthday",function(birthday){
@@ -754,7 +754,7 @@ nothing if there are no errors, or an object of errors by attribute.</p>
 
 <p>To use validations, it's required you use the <em>observe/validations</em> plugin.</p>
 
-<pre><code>can.Observe("Task",{
+<pre><code>Task = can.Observe.extend({
     init : function(){
         this.validatePresenceOf("dueDate")
     }

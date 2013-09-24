@@ -760,7 +760,7 @@ helper
 
 
 
-  <h2>(arg, &lt;a href=&quot;can.Mustache.helperOptions.html&quot; &gt;options&lt;/a&gt;)</h2>
+  <h2>function(arg, &lt;a href=&quot;can.Mustache.helperOptions.html&quot; &gt;options&lt;/a&gt;)</h2>
 <div class="signature-wrapper">
 
 
@@ -811,11 +811,11 @@ value to a <a href="can.compute.html">can.compute</a>:</p>
         el.value = newVal;
       })
       el.onchange = function(){
-        value(this.value)
+        value(this.value);
       }
-      el.value = value()
+      el.value = value();
     }
-})
+});
 </code></pre>
 
 <p>And used by the following template:</p>
@@ -901,9 +901,9 @@ be used to create mustache tags that have rich behavior. </p>
 
 <pre><code>can.Mustache.registerHelper("sortable",function(){
   return function(el){
-    $(el).slider()
+    $(el).slider();
   }
-})
+});
 </code></pre>
 
 <p>If the helper is called <strong>between tags</strong> like:</p>
@@ -912,17 +912,17 @@ be used to create mustache tags that have rich behavior. </p>
 </code></pre>
 
 <p>The returned function is called with a temporary element. The 
-following helper would be called with a temporary <code>&lt;LI&gt;</code> element:</p>
+following helper would be called with a temporary <code>&lt;li&gt;</code> element:</p>
 
 <pre><code>can.Mustache.registerHelper("items",function(){
   return function(li){
 
   }
-})
+});
 </code></pre>
 
 <p>The temporary element depends on the parent element. The default temporary element
-is a <code>&lt;SPAN&gt;</code> element.</p>
+is a <code>&lt;span&gt;</code> element.</p>
 		</section>
 		
 

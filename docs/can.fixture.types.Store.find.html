@@ -449,7 +449,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/fixture/fixture.js#L718">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/fixture/fixture.js#L725">source</a></li>
 		
 		
 			
@@ -513,7 +513,13 @@ corresponding to the item to find.</p>
 
 		
 		<section class="comment">
-			<p><code>store.find(settings)</code></p>
+			<p><code>store.find(settings)</code>
+<code>store.destroy(request, callback)</code> simulates a request to 
+get a single item from the server.</p>
+
+<pre><code class="lang-javascript">todosStore.find({
+  url: "/todos/5"
+}, function(){});</code></pre>             
 		</section>
 		
 

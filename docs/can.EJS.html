@@ -550,8 +550,8 @@ to update an observable object, these functions are executed to return the new v
 
 <pre><code>// Suppose an observable "foo":
 
-var foo = can.Observe({
-  count: '0'
+var foo = new can.Observe({
+  bar: 'baz'
 });
 
 // Suppose also, the above observable is passed to our view:
@@ -585,9 +585,9 @@ JavaScript. For example, the following binding does not work:</p>
 <p>When the wrapping function is called again, <code>i</code> will 
 not be the index of the item, but instead be items.length.</p>
 
-<p>The [can.EJS.Helpers::view view]<code>(observeList,function(item,index,list){})</code> method in EJS should be used to iterate through observe lists:</p>
+<p>The <a href="can.Observe.List.prototype.each.html">can.Observe.List.each</a> method on all observable lists should be used to iterate through it:</p>
 
-<pre><code>&lt;% list(items, function(item){ %&gt;
+<pre><code>&lt;% items.each(function(item){ %&gt;
   &lt;li&gt;&lt;%= item.attr('name') %&gt;&lt;/li&gt;
 &lt;% }) %&gt;
 </code></pre>
@@ -658,7 +658,7 @@ can.view('//todo/views/init.ejs', todos)
 
 <p>jQuery’s <code>el.data( NAME, data )</code> adds data to an element. If your library does not support this, can provides it as <code>can.data( NodeList, NAME, data )</code>. Rewrite the above example as:</p>
 
-<pre><code>&lt;% list(todos, function( todo ) { %&gt;
+<pre><code>&lt;% todos.each( function( todo ) { %&gt;
   &lt;li &lt;%= (el) -&gt; can.data( el, 'todo', todo ) %&gt;&gt;
     &lt;%= todo.attr( 'name' ) %&gt;
   &lt;/li&gt;
