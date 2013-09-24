@@ -7,7 +7,7 @@ Bitovi.OSS.Tooltip('Bitovi.OSS.ProjectTooltip', {
     this.element.html(can.view(this.options.view, this.options.state))
       .addClass('has-tip project')
       .appendTo(document.body);
-    console.log(this.options.position);
+
     this.element.position({
       of: this.options.relativeTo,
       my: 'left top',

@@ -32,7 +32,7 @@ can.Control('Bitovi.OSS.ProjectCarousel', {
     }, this));
   },
 
-  'a:not(.button) click': function(el, ev) {
+  'a:not(.button) mouseenter': can.debounce(function(el, ev) {
     el = el.closest('li');
 
     if(this.tooltip && this.tooltip.element) {
@@ -45,7 +45,7 @@ can.Control('Bitovi.OSS.ProjectCarousel', {
     });
 
     return false;
-  },
+  }, 100),
 
   '.prev click' : function(el, ev) {
     this.move('left');
