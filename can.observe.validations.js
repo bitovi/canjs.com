@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.7
+ * CanJS - 1.1.8
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 24 Jul 2013 00:23:54 GMT
+ * Tue, 24 Sep 2013 21:59:55 GMT
  * Licensed MIT
  * Includes: can/observe/validations
  * Download from: http://canjs.com
@@ -166,8 +166,8 @@
             });
     });
 
-    can.extend(can.Observe.prototype, {
 
+    can.extend(can.Observe.prototype, {
 
             errors: function(attrs, newVal) {
                 // convert attrs to an array

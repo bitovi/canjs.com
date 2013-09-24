@@ -1,10 +1,10 @@
 /*!
- * CanJS - 1.1.7
+ * CanJS - 1.1.8
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 24 Jul 2013 00:23:52 GMT
+ * Tue, 24 Sep 2013 21:59:53 GMT
  * Licensed MIT
- * Includes: can/construct,can/observe,can/observe/compute,can/model,can/view,can/view/ejs,can/control,can/route,can/control/route
+ * Includes: can/construct,can/observe,can/observe/compute,can/model,can/view,can/view/ejs,can/control,can/route,can/control/route,can/util/string
  * Download from: http://canjs.com
  */
 (function(undefined) {
@@ -842,7 +842,6 @@
 
         can.extend(can, {
                 // Escapes strings for HTML.
-
                 esc: function(content) {
                     // Convert bad values into empty strings
                     var isInvalid = content === null || content === undefined || (isNaN(content) && ("" + content === 'NaN'));
@@ -853,7 +852,6 @@
                         .replace(strQuote, '&#34;')
                         .replace(strSingleQuote, "&#39;");
                 },
-
 
                 getObject: function(name, roots, add) {
 
@@ -916,7 +914,6 @@
                 },
 
                 // Underscores a string.
-
                 underscore: function(s) {
                     return s
                         .replace(strColons, '/')
@@ -1181,7 +1178,11 @@
             // Remove the event handler
             can.removeEvent.apply(this, arguments);
 
-            this._bindings--;
+            if (this._bindings == null) {
+                this._bindings = 0;
+            } else {
+                this._bindings--;
+            }
             // If there are no longer any bindings and
             // there is a bindteardown method, call it.
             if (!this._bindings) {
@@ -2217,12 +2218,16 @@
         var pipe = function(def, model, func) {
             var d = new can.Deferred();
             def.then(function() {
-                var args = can.makeArray(arguments);
+                var args = can.makeArray(arguments),
+                    success = true;
                 try {
                     args[0] = model[func](args[0]);
-                    d.resolveWith(d, args);
                 } catch (e) {
+                    success = false;
                     d.rejectWith(d, [e].concat(args));
+                }
+                if (success) {
+                    d.resolveWith(d, args);
                 }
             }, function() {
                 d.rejectWith(this, arguments);
@@ -4657,7 +4662,6 @@
 
 
         can.extend(can, {
-
                 deparam: function(params) {
 
                     var data = {},

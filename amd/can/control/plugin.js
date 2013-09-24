@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.7
+ * CanJS - 1.1.8
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 24 Jul 2013 00:23:28 GMT
+ * Tue, 24 Sep 2013 21:59:24 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -30,8 +30,14 @@ can.Control.setup = function() {
 	if ( this !== can.Control ) {
 
 		/**
-		 * @property can.Control.plugin.static.pluginName pluginName
+		 * @property {String} can.Control.plugin.static.pluginName pluginName
 		 * @parent can.Control.plugin
+		 *
+		 * @description
+		 *
+		 * Allows you to define the name of the jQuery plugin.
+		 *
+		 * @body
 		 *
 		 * Setting the static `pluginName` property allows you to override the default name
 		 * with your own.
@@ -131,7 +137,7 @@ $.fn.extend({
 	 * @return {can.Control} The first control found.
 	 *
 	 * @body
-	 * This is ths same as [jQuery.fn.controls $().controls] except that
+	 * This is the same as [jQuery.fn.controls $().controls] except that
 	 * it only returns the first Control found.
 	 *
 	 *		//- Init MyBox widget

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.7
+ * CanJS - 1.1.8
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 24 Jul 2013 00:23:28 GMT
+ * Tue, 24 Sep 2013 21:59:24 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -40,14 +40,6 @@ define(["can/util/library"], function (can) {
 
 	can.extend(can, {
 		// Escapes strings for HTML.
-		/**
-		 * @function can.esc
-		 * @parent can.util
-		 *
-		 * `can.esc(string)` escapes a string for insertion into html.
-		 *
-		 *     can.esc( "<foo>&<bar>" ) //-> "&lt;foo&lt;&amp;&lt;bar&lt;"
-		 */
 		esc: function (content) {
 			// Convert bad values into empty strings
 			var isInvalid = content === null || content === undefined || (isNaN(content) && ("" + content === 'NaN'));
@@ -59,23 +51,6 @@ define(["can/util/library"], function (can) {
 				.replace(strSingleQuote, "&#39;");
 		},
 
-		/**
-		 * @function can.getObject
-		 * @parent can.util
-		 * Gets an object from a string.  It can also modify objects on the
-		 * 'object path' by removing or adding properties.
-		 *
-		 *     Foo = {Bar: {Zar: {"Ted"}}}
-		 *     can.getObject("Foo.Bar.Zar") //-> "Ted"
-		 *
-		 * @param {String} name the name of the object to look for
-		 * @param {Array} [roots] an array of root objects to look for the
-		 *   name.  If roots is not provided, the window is used.
-		 * @param {Boolean} [add] true to add missing objects to
-		 *  the path. false to remove found properties. undefined to
-		 *  not modify the root object
-		 * @return {Object} The object.
-		 */
 		getObject: function (name, roots, add) {
 
 			// The parts of the name we are looking up
@@ -147,17 +122,6 @@ define(["can/util/library"], function (can) {
 		},
 
 		// Underscores a string.
-		/**
-		 * @function can.underscore
-		 * @parent can.util
-		 *
-		 * Underscores a string.
-		 *
-		 *     can.underscore("OneTwo") //-> "one_two"
-		 *
-		 * @param {String} s
-		 * @return {String} the underscored string
-		 */
 		underscore: function (s) {
 			return s
 				.replace(strColons, '/')
@@ -168,19 +132,6 @@ define(["can/util/library"], function (can) {
 		},
 		// Micro-templating.
 		/**
-		 * @function can.sub
-		 * @parent can.util
-		 *
-		 * Returns a string with {param} replaced values from data.
-		 *
-		 *     can.sub("foo {bar}",{bar: "far"})
-		 *     //-> "foo far"
-		 *
-		 * @param {String} s The string to replace
-		 * @param {Object} data The data to be used to look for properties.  If it's an array, multiple
-		 * objects can be used.
-		 * @param {Boolean} [remove] if a match is found, remove the property from the object
-		 * @return {String} The converted string or `null` if any data to render are `undefined` or `null`
 		 */
 		sub: function (str, data, remove) {
 			var obs = [];

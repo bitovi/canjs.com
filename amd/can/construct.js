@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.7
+ * CanJS - 1.1.8
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 24 Jul 2013 00:23:28 GMT
+ * Tue, 24 Sep 2013 21:59:24 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -78,7 +78,7 @@ define(["can/util/string"], function(can) {
 		 * using `apply` on newInstance to pass arbitrary parameters.
 		 * 
 		 * @codestart
-		 * var Person = can.Construct({
+		 * var Person = can.Construct.extend({
 		 *   init : function(first, middle, last) {
 		 *     this.first = first;
 		 *     this.middle = middle;
@@ -170,13 +170,13 @@ define(["can/util/string"], function(can) {
 		 * properties of the inheriting constructor.  For example:
 		 * 
 		 * @codestart
-		 * Parent = can.Construct({
+		 * Parent = can.Construct.extend({
 		 *   defaults : {
 		 *     parentProp: 'foo'
 		 *   }
 		 * },{})
 		 * 
-		 * Child = Parent({
+		 * Child = Parent.extend({
 		 *   defaults : {
 		 *     childProp : 'bar'
 		 *   }
@@ -191,7 +191,7 @@ define(["can/util/string"], function(can) {
 		 * so do all the classes that inherit from it.
 		 * 
 		 * @codestart
-		 * Parent = can.Construct({
+		 * Parent = can.Construct.extend({
 		 *   setup : function(base, fullName, staticProps, protoProps){
 		 *     this.base = base;
 		 * 
@@ -431,7 +431,7 @@ define(["can/util/string"], function(can) {
 			
 			//  
 			/**
-			 * @property {Function} can.Construct.prototype.constructor constructor
+			 * @property {Object} can.Construct.prototype.constructor constructor
 			 * @parent can.Construct.prototype
 			 *
 			 * A reference to the constructor function that created the instance. This allows you to access
@@ -439,10 +439,10 @@ define(["can/util/string"], function(can) {
 			 * 
 			 * ## Example
 			 * 
-			 * This class has a static counter that counts how mane instances have been created:
+			 * This can.Construct has a static counter that counts how many instances have been created:
 			 *
 			 * @codestart
-			 * can.Construct("Counter", {
+			 * can.Construct.extend("Counter", {
 			 *     count: 0
 			 * }, {
 			 *     init: function() {
@@ -532,7 +532,7 @@ define(["can/util/string"], function(can) {
 	 * @description Called when a new instance of a can.Construct is created.
 	 * 
 	 * @signature `construct.init(...args)`
-	 * @param {*} args the arguments passed to the constructor (or the elements of the array returned from [can.Construct::setup])
+	 * @param {*} args the arguments passed to the constructor (or the items of the array returned from [can.Construct::setup])
 	 * 
 	 * @body
 	 * If a prototype `init` method is provided, it is called when a new Construct is created,
@@ -544,7 +544,7 @@ define(["can/util/string"], function(can) {
 	 * First, we'll make a Person constructor that has a first and last name:
 	 *
 	 * @codestart
-	 * can.Construct("Person", {
+	 * var Person = can.Construct.extend({
 	 *     init: function(first, last) {
 	 *         this.first = first;
 	 *         this.last  = last;
@@ -559,7 +559,7 @@ define(["can/util/string"], function(can) {
 	 * Then we'll extend Person into Programmer and add a favorite language:
 	 * 
 	 * @codestart
-	 * Person("Programmer", {
+	 * var Programmer = Person.extend({
 	 *     init: function(first, last, language) {
 	 *         // call base's init
 	 *         Person.prototype.init.apply(this, arguments);
@@ -568,8 +568,8 @@ define(["can/util/string"], function(can) {
 	 *         this.language = language;
 	 *     },
 	 *     bio: function() {
-	 *         return 'Hi! I'm ' + this.first + ' ' + this.last +
-	 *             ' and I write ' + this.language + '.';
+	 *         return "Hi! I'm "" + this.first + " " + this.last +
+	 *             " and I write " + this.language + ".";
 	 *     }
 	 * });
 	 * 
@@ -577,11 +577,12 @@ define(["can/util/string"], function(can) {
 	 * brian.bio(); // "Hi! I'm Brian Moschel and I write ECMAScript.";
 	 * @codeend
 	 * 
-	 * ## Be Aware
+	 * ## Modified Arguments
 	 * 
 	 * [can.Construct::setup] is able to modify the arguments passed to `init`.
-	 * If you aren't receiving the right arguments to `init`, check to make sure
-	 * that they aren't being changed by `setup` somewhere along the inheritance chain.
+	 * If you aren't receiving the exact arguments as those passed to `new Construct(args)`,
+	 * check to make sure that they aren't being changed by `setup` somewhere along 
+	 * the inheritance chain.
 	 */
 	can.Construct.prototype.init = function(){};
 

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.7
+ * CanJS - 1.1.8
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 24 Jul 2013 00:23:28 GMT
+ * Tue, 24 Sep 2013 21:59:24 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -26,7 +26,7 @@ can.each([ can.Observe, can.Model ], function(clss){
 		 * `can.Observe.attributes` is a property that contains key/value pair(s) of an attribute's name and its
 		 * respective type for using in [can.Observe.attributes.static.convert convert] and [can.Observe.prototype.serialize serialize].
 		 * 
-		 *		var Contact = can.Observe({
+		 *		var Contact = can.Observe.extend({
 		 *			attributes : {
 		 *				birthday : 'date',
 		 *				age: 'number',
@@ -53,7 +53,7 @@ can.each([ can.Observe, can.Model ], function(clss){
 		 *
 		 * The following sets the birthday attribute to "date" and provides a date conversion function:
 		 *
-		 *		var Contact = can.Observe({
+		 *		var Contact = can.Observe.extend({
 		 *			attributes : {
 		 *				birthday : 'date'
 		 *			},
@@ -85,18 +85,18 @@ can.each([ can.Observe, can.Model ], function(clss){
 		 * If a property is set with an object as a value, the corresponding converter is called with the unmerged data (the raw object)
 		 * as the first argument, and the old value (a can.Observe) as the second:
 		 * 
-		 * 		var MyObserve = can.Observe({
-	     *			attributes: {
-	     *   			nested: "nested"
-	     *			},
-	     *			convert: {
+		 *		var MyObserve = can.Observe.extend({
+	   *      attributes: {
+	   *   			nested: "nested"
+	   *			},
+	   *			convert: {
 		 *				nested: function(data, oldVal) {
 		 *					if(oldVal instanceof MyObserve) {
 		 *						return oldVal.attr(data);
 		 *					}
 		 *					return new MyObserve(data);
 		 *				}
-	     *			}
+	   *			}
 		 *		},{});
 		 *
 		 * ## Differences From `attr`
@@ -113,7 +113,7 @@ can.each([ can.Observe, can.Model ], function(clss){
 		 * `attr` directly on the property instead of on the Observe:
 		 * 
 		 * @codestart
-		 * var Contact = can.Observe({
+		 * var Contact = can.Observe.extend({
 		 *   attributes: {
 		 *     info: 'info'
 		 *   },
@@ -122,7 +122,7 @@ can.each([ can.Observe, can.Model ], function(clss){
 		 *       return data;
 		 * 	}
 		 *   }
-		 * }, {}));
+		 * }, {});
 		 * 
 		 * var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
 		 * alice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}
@@ -142,27 +142,28 @@ can.each([ can.Observe, can.Model ], function(clss){
 		 * If you have assocations defined within your model(s), you can use convert to automatically
 		 * call serialize on those models.
 		 * 
-		 * 		can.Model("Contact",{
-		 * 			attributes : {
-		 * 				tasks: "Task.models"
-		 * 			}
-		 * 		}, {});
+		 * @codestart
+		 * var Contact = can.Model.extend({
+		 *   attributes : {
+		 *     tasks: "Task.models"
+		 *   }
+		 * }, {});
 		 *
-		 * 		can.Model("Task",{
-		 * 			attributes : {
-		 * 				due : 'date'
-		 * 			}
-		 * 		},{});
+		 * var Task = can.Model.extend({
+		 *   attributes : {
+		 *     due : 'date'
+		 *   }
+		 * },{});
 		 *
-		 * 		var contact = new Contact({
-		 * 			tasks: [ new Task({
-		 * 				due: new Date()
-		 * 			}) ]
-		 * 		});
+		 * var contact = new Contact({
+		 *   tasks: [ new Task({
+		 *     due: new Date()
+		 *   }) ]
+		 * });
 		 * 
-		 * 		contact.seralize(); 
-		 * 		//-> { tasks: [ { due: 1333219754627 } ] }
-		 * 
+		 * contact.serialize(); 
+		 * //-> { tasks: [ { due: 1333219754627 } ] }
+		 * @codeend
 		 */
 		convert: {
 			"date": function( str ) {
@@ -206,7 +207,7 @@ can.each([ can.Observe, can.Model ], function(clss){
 		 * `can.Observe.serialize` is an object of name-function pairs that are used to 
 		 * serialize attributes.
 		 *
-		 * Similar to [can.Observe.convert], in that the keys of this object correspond to 
+		 * Similar to [can.Observe.attributes.static.convert can.Observe.attributes.convert], in that the keys of this object correspond to 
 		 * the types specified in [can.Observe.attributes].
 		 *
 		 * By default every attribute will be passed through the 'default' serialization method 
@@ -215,21 +216,23 @@ can.each([ can.Observe, can.Model ], function(clss){
 		 *
 		 * For example, to serialize all dates to ISO format:
 		 *
-		 * 		var Contact = can.Observe({
-		 * 			attributes : {
-		 * 				birthday : 'date'
-		 * 			},
-		 * 			serialize : {
-		 * 				date : function(val, type){
-		 * 					return new Date(val).toISOString();
-		 * 				}
-		 * 			}
-		 * 		},{});
+		 * @codestart
+		 * var Contact = can.Observe.extend({
+		 *   attributes : {
+		 *     birthday : 'date'
+		 *   },
+		 *   serialize : {
+		 *     date : function(val, type){
+		 *       return new Date(val).toISOString();
+		 *     }
+		 *   }
+		 * },{});
 		 * 		
-		 * 		var contact = new Contact({ 
-		 * 			birthday: new Date("Oct 25, 1973") 
-		 * 		}).serialize();
-		 * 		//-> { "birthday" : "1973-10-25T05:00:00.000Z" }
+		 * var contact = new Contact({ 
+		 *   birthday: new Date("Oct 25, 1973") 
+		 * }).serialize();
+		 * //-> { "birthday" : "1973-10-25T05:00:00.000Z" }
+		 * @codeend
 		 *
 		 */
 		serialize: {
@@ -330,7 +333,7 @@ can.Observe.prototype.__convert = function(prop, value){
  * @body
  * You can set the serialization methods similar to the convert methods:
  *
- *		var Contact = can.Observe({
+ *		var Contact = can.Observe.extend({
  *			attributes : { 
  *				birthday : 'date'
  *			},

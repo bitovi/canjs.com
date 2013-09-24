@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.7
+ * CanJS - 1.1.8
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 24 Jul 2013 00:23:28 GMT
+ * Tue, 24 Sep 2013 21:59:24 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -55,9 +55,11 @@ define(["can/util/library", "can/view", "can/util/string", "can/observe/compute"
 	 * @body	 
 	 * Renders an object with view helpers attached to the view.
 	 * 
-	 *     new can.EJS({text: "<%= message %>"}).render({
+	 *     var rendered = new can.EJS({text: "<h1><%= message %>"</h1>}).render({
 	 *       message: "foo"
 	 *     },{helper: function(){ ... }})
+	 *     
+	 *     console.log(rendered); // "<h1>foo</h1>"
 	 */
 	render = function( object, extraHelpers ) {
 		object = object || {};

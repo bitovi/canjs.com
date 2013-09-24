@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.7
+ * CanJS - 1.1.8
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 24 Jul 2013 00:23:28 GMT
+ * Tue, 24 Sep 2013 21:59:24 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -20,12 +20,16 @@ define(["can/util/library", "can/observe"], function( can ) {
 	var	pipe = function( def, model, func ) {
 		var d = new can.Deferred();
 		def.then(function(){
-			var args = can.makeArray( arguments );
+			var args = can.makeArray( arguments ),
+			    success = true;
 			try {
 				args[0] = model[func](args[0]);
-				d.resolveWith(d, args);
 			} catch(e) {
+				success = false;
 				d.rejectWith(d, [e].concat(args));
+			}
+			if (success) {
+				d.resolveWith(d, args);
 			}
 		},function(){
 			d.rejectWith(this, arguments);
@@ -854,7 +858,7 @@ define(["can/util/library", "can/observe"], function( can ) {
 		 * The following uses models to convert to a [can.Model.List] of model
 		 * instances.
 		 * 
-		 *     Task = can.Model.extend({},{})
+		 *     Task = can.Model.extend()
 		 *     var tasks = Task.models([
 		 *       {id: 1, name : "dishes", complete : false},
 		 *       {id: 2, name: "laundry", compelte: true}
@@ -1418,7 +1422,7 @@ define(["can/util/library", "can/observe"], function( can ) {
 		 *             cachedRequests[JSON.stringify(params)] = 
 		 *               findOneData(params).then(function(data){
 		 *                 // convert the raw data into instances
-		 *                 return self.models(data)
+		 *                 return self.model(data)
 		 *               })
 		 *           }
 		 *           // get the saved request

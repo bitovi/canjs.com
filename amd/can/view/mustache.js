@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.7
+ * CanJS - 1.1.8
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 24 Jul 2013 00:23:28 GMT
+ * Tue, 24 Sep 2013 21:59:24 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -100,6 +100,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 	 * @signature `mustache.render( data [, helpers] )`
 	 * @param {Object} data Data to interpolate into the template.
 	 * @return {String} The template with interpolated data, in string form.
+	 * @hide
 	 * 
 	 * @body
 	 * Renders an object with view helpers attached to the view.
@@ -268,6 +269,21 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 				["returnLeft", "{{{", "{{[{&]"],
 				// Full line comments
 				["commentFull", "{{!}}", "^[\\s\\t]*{{!.+?}}\\n"],
+				/**
+				 * @function can.Mustache.tags.comment {{!key}}
+				 * 
+				 * @parent can.Mustache.tags 7
+				 * 
+				 * @description A comment that doesn't get inserted into the rendered result.
+				 * 
+				 * @signature `{{!key}}`
+				 * 
+				 * The comment tag operates similarly to a `<!-- -->` tag in HTML. It exists in your template but never shows up.
+				 * 
+				 * @param {can.Mustache.key} key Everything within this tag is completely ignored.
+				 * @return {String} 
+				 * 
+				 */
 				// Inline comments
 				["commentLeft", "{{!", "(\\n[\\s\\t]*{{!|{{!)"],
 				/**
@@ -287,6 +303,26 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 				 * context. If the value is a function or can.compute, the function's return value is used.
 				 * @return {String|Function|*} 
 				 * 
+				 * 
+				 */
+				//
+				/**
+				 * @function can.Mustache.tags.unescaped2 {{&key}}
+				 * 
+				 * @parent can.Mustache.tags 2
+				 * 
+				 * @description Insert the unescaped value of the [can.Mustache.key key] into the 
+				 * output of the template.
+				 * 
+				 * @signature `{{&key}}`
+				 * 
+				 * The `{{&key}}` tag is an alias for [can.Mustache.tags.unescaped {{{key}}}], behaving just 
+				 * like [can.Mustache.tags.escaped {{key}}] and [can.Mustache.helpers.helper {{helper}}] but does not
+				 * escape the result. 
+				 * 
+				 * @param {can.Mustache.key} key A key that references a value within the current or parent 
+				 * context. If the value is a function or can.compute, the function's return value is used.
+				 * @return {String|Function|*} 
 				 * 
 				 */
 				// Full line escapes
@@ -371,7 +407,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 				//		can.$('#nameli').data('name');
 				/**
 				 * @function can.Mustache.helpers.data {{data name}}
-				 * @parent can.Mustache.tags
+				 * @parent can.Mustache.htags 7
 				 * @signature `{{data name}}`
 				 * 
 				 * Adds the current [can.Mustache.context context] to the
@@ -384,7 +420,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 				 * 
 				 * ## Use 
 				 * 
-				 * Its common you want some data in the template to be available 
+				 * It is common for you to want some data in the template to be available
 				 * on an element.  `{{data name}}` allows you to save the 
 				 * context so it can later be retrieved by [can.data] or 
 				 * `$.fn.data`. For example,
@@ -648,7 +684,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 							switch (mode) {
 								/**
 								 * @function can.Mustache.helpers.section {{#key}}
-								 * @parent can.Mustache.tags 2
+								 * @parent can.Mustache.tags 3
 								 * 
 								 * @signature `{{#key}}BLOCK{{/key}}`
 								 * 
@@ -723,7 +759,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 								 *         <li>Justin</li>
 								 *     </ul>
 								 * 
-								 * Reminder: Sections will reset the current context to the value for which its iterating.
+								 * Reminder: Sections will reset the current context to the value for which it is iterating.
 								 * See the [basics of contexts](#Basics) for more information.
 								 * 
 								 * ## Truthys
@@ -746,7 +782,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 								// 
 								/**
 								 * @function can.Mustache.helpers.helper {{helper args hashes}}
-								 * @parent can.Mustache.tags 5
+								 * @parent can.Mustache.htags 0
 								 * 
 								 * @description Calls a mustache helper function and inserts its return value into
 								 * the rendered template.
@@ -797,8 +833,8 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 								 * 
 								 * ## Use
 								 * 
-								 * The `{{helper}}` syntax is used to call out to Mustache [can.Mustache.helper helper functions] that may do
-								 * more complex functionality. `helper` is a [can.Mustache.key key] that must match either:
+								 * The `{{helper}}` syntax is used to call out to Mustache [can.Mustache.helper helper functions] functions 
+								 * that may contain more complex functionality. `helper` is a [can.Mustache.key key] that must match either:
 								 * 
 								 *  - a [can.Mustache.registerHelper registered helper function], or
 								 *  - a function in the current or parent [can.Mustache.context contexts]
@@ -911,7 +947,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 								// 
 								/**
 								 * @function can.Mustache.helpers.sectionHelper {{#helper args hashes}}
-								 * @parent can.Mustache.tags 6
+								 * @parent can.Mustache.htags 1
 								 * 
 								 * Calls a mustache helper function with a block, and optional inverse 
 								 * block.
@@ -1050,7 +1086,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 								case '#':
 								/**
 								 * @function can.Mustache.helpers.inverse {{^key}}
-								 * @parent can.Mustache.tags 4
+								 * @parent can.Mustache.tags 5
 								 * 
 								 * @signature `{{^key}}BLOCK{{/key}}`
 								 * 
@@ -1112,7 +1148,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 								// Close the prior section.
 								/**
 								 * @function can.Mustache.helpers.close {{/key}}
-								 * @parent can.Mustache.tags 3
+								 * @parent can.Mustache.tags 4
 								 * 
 								 * @signature `{{/key}}`
 								 * 
@@ -1203,7 +1239,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 							// Falsey section
 							/**
 							 * @function can.Mustache.helpers.else {{else}}
-							 * @parent can.Mustache.tags 8
+							 * @parent can.Mustache.htags 3
 							 *
 							 * @signature `{{#helper}}BLOCK{{else}}INVERSE{{/helper}}`
 							 * 
@@ -1621,14 +1657,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 	Mustache.getHelper = function(name,options) {
 		return options && options.helpers && options.helpers[name] && {
 			fn: options.helpers[name]
-		} || this._helpers[name]
-		for (var i = 0, helper; helper = [i]; i++) {
-			// Find the correct helper
-			if (helper.name == name) {
-				return helper;
-			}
-		}
-		return null;
+		} || this._helpers[name];
 	};
 
 	/**
@@ -1676,7 +1705,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 		// Implements the `if` built-in helper.
 		/**
 		 * @function can.Mustache.helpers.if {{#if key}}
-		 * @parent can.Mustache.tags 7
+		 * @parent can.Mustache.htags 2
 		 * @signature `{{#if key}}BLOCK{{/if}}`
 	 	 * 
 	 	 * Renders the `BLOCK` template within the current template.
@@ -1743,7 +1772,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 		// Implements the `unless` built-in helper.
 		/**
 		 * @function can.Mustache.helpers.unless {{#unless key}}
-		 * @parent can.Mustache.tags 10
+		 * @parent can.Mustache.htags 4
 		 * 
 	 	 * @signature `{{#unless key}}BLOCK{{/unless}}`
 	 	 * 
@@ -1774,7 +1803,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 		// Implements the `each` built-in helper.
 		/**
 		 * @function can.Mustache.helpers.each {{#each key}}
-	 	 * @parent can.Mustache.tags 9
+	 	 * @parent can.Mustache.htags 5
 	 	 * 
 	 	 * @signature `{{#each key}}BLOCK{{/each}}`
 	 	 * 
@@ -1795,7 +1824,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 	 	 * 
 	 	 * ## Use
 	 	 * 
-	 	 * Use the `each` helper to itterate over a array 
+	 	 * Use the `each` helper to iterate over a array
 		 * of items and render the block between the helper and the slash. For example,
 		 * 
 		 * The template:
@@ -1838,7 +1867,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 		// Implements the `with` built-in helper.
 		/**
 		 * @function can.Mustache.helpers.with {{#with key}}
-		 * @parent can.Mustache.tags 11
+		 * @parent can.Mustache.htags 6
 		 * 
 		 * @signature `{{#with key}}BLOCK{{/with}}`
 		 * 
@@ -1871,12 +1900,24 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 		
 		/**
 		 * @function can.Mustache.helpers.elementCallback {{(el)->CODE}}
-		 * @parent can.Mustache.tags
-		 * @hide
+		 *
+		 * @parent can.Mustache.htags 8
+		 *
 		 * @signature `{{(el) -> CODE}}`
 		 * 
-		 * Runs a callback on the element.
+		 * Executes an element callback with the inline code on the element.
 		 * 
+		 * @param {String} code The inline code to execute on the element.
+		 * 
+		 * @body
+		 * 
+		 * ## Use 
+		 * 
+		 * It is common for you to want to execute some code on a given 
+		 * DOM element. An example would be for initializing a jQuery plugin 
+		 * on the new HTML.
+		 * 
+		 * 		<div class="tabs" {{(el) -> el.jquery_tabs()}}></div>
 		 * 
 		 */
 		//
