@@ -492,7 +492,7 @@
 	</ul>
 	<ul class="links">
 		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/model/model.js#L1371">source</a></li>
+			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.8/model/model.js#L1371">source</a></li>
 		
 		
 			
@@ -579,7 +579,7 @@ the findOneData function to get the raw data, convert them to model instances wi
         cachedRequests[JSON.stringify(params)] = 
           findOneData(params).then(function(data){
             // convert the raw data into instances
-            return self.models(data)
+            return self.model(data)
           })
       }
       // get the saved request
