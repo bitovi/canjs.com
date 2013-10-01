@@ -1,38 +1,27 @@
-@font-face {
-    font-family: 'Lato';
-    src: url('../fonts/lato-regular.eot');
-    src: url('../fonts/lato-regular.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/lato-regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+@import url('http://fonts.googleapis.com/css?family=Lato:300,400,700');
 
+.font {
+	font-family: 'Lato', Arial, Helvetica, sans-serif;
+	font-weight: 400;
+	font-style: normal;
 }
-@font-face {
-    font-family: 'LatoBold';
-    src: url('../fonts/lato-bold.eot');
-    src: url('../fonts/lato-bold.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/lato-bold.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+.font-bold {
+	font-family: 'Lato', Arial, Helvetica, sans-serif;
+	font-weight: 700;
+	font-style: normal;
+}
+.font-light {
+	font-family: 'Lato', Arial, Helvetica, sans-serif;
+	font-weight: 300;
+	font-style: normal;
+}
 
-}
-@font-face {
-    font-family: 'LatoLight';
-    src: url('../fonts/lato-light.eot');
-    src: url('../fonts/lato-light.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/lato-light.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-
-}
 h1,h2,h3,h4,h5,h6,strong,b{
-	font-family: 'LatoBold', sans-serif;
-	font-weight: normal !important;
-	font-style: normal !important;
+	.font-bold;
 }
 body {
   background: url(../img/bkg-dots.png) repeat #fff;
-  font-family: 'Lato', sans-serif;
+  .font;
 }
 
 .content.docs {
@@ -44,9 +33,7 @@ body {
     color: #767676;
     display: block;
     font-size: 17px;
-    font-family: 'LatoBold', sans-serif;
-    font-weight: normal;
-    font-style: normal;
+    .font-bold;
     line-height: 40px;
 }
 
