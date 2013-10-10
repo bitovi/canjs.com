@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Observables - CanJS Guides</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <link rel="stylesheet" type="text/css" 
+    
+      href='./static/production.css'
+     />
+  <!--[if lt IE 9]>
+   <script type="text/javascript" src="../scripts/static/lib/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="guides">
+  <header>
+    <nav class="container">
+
+      <div class="logo-menu">
+        <a class="brand canjs" href="../index.html">CanJS</a>
+        <ul class="dropdown-menu">
+          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+          <li class="active"><a href="../index.html">CanJS</a></li>
+          <li><a href="http://jquerypp.com">jQuery++</a></li>
+          <li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
+          <li><a href="http://javascriptmvc.com/docs.html#!FuncUnit">FuncUnit</a></li>
+          <li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
+        </ul>
+      </div>
+      <ul class="nav">
+        <li class=""><a href="../index.html">Home</a></li>
+        <li class="active"><a href="../guides/index.html">Guides</a></li>
+        <li class=""><a href="../docs/index.html">Api</a></li>
+        <li class=" community-menu">
+          <a href="../community.html#!forums">Community</a>
+          <ul class="dropdown-menu">
+            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
+            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
+            <li><a href="http://bithub.com/canjs/app/">Apps</a></li>
+            <li><a href="http://bithub.com/canjs/plugin/">Plugins</a></li>
+            <li><a href="http://bithub.com/canjs/article/">Articles</a></li>
+            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+          </ul>
+        </li>
+        <li class=""><a href="../download.html">Download</a></li>
+      </ul>
+      <div class="pull-right">
+        <div class="bitovi-menu">
+          <a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+          <ul class="dropdown-menu">
+            <li><a href="http://bitovi.com">Bitovi.com</a></li>
+            <li><a href="http://bitovi.com/blog/">Blog</a></li>
+            <li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+            <li><a href="http://bitovi.com/training/">Training</a></li>
+            <li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+            <li><a href="http://bitovi.com/people/">People</a></li>
+            <li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container active">
+	   		<a href="Tutorial.html" data-search="Getting Started">
+				Getting Started
+			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Components.html" 
+							data-search="Components">
+							Components
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container active  expanded">
+						<a 	class="page" 
+							href="Observables.html" 
+							data-search="Observables">
+							Observables
+						</a>
+						
+							
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Models.html" 
+							data-search="Models &amp; Retrieving Data">
+							Models &amp; Retrieving Data
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Templates.html" 
+							data-search="Templates">
+							Templates
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="EJS.html" 
+							data-search="EJS">
+							EJS
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Mustache.html" 
+							data-search="Mustache">
+							Mustache
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Controls.html" 
+							data-search="Controls">
+							Controls
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Deferreds.html" 
+							data-search="Deferreds">
+							Deferreds
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Routing.html" 
+							data-search="Routing">
+							Routing
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Constructs.html" 
+							data-search="Constructor Functions">
+							Constructor Functions
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Utilities.html" 
+							data-search="Utility Functions">
+							Utility Functions
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Using.html" data-search="Using CanJS">
+				Using CanJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Recipes.html" data-search="Recipes">
+				Recipes
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="contributing.html" data-search="How to Contribute">
+				How to Contribute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="changelog.html" data-search="Changelog">
+				Changelog
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="license.html" data-search="License">
+				License
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="heading">
+<h1>Observables</h1>
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	
+	
+	
+		<span class="module">Observables</span>
+	
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/wiki/guides_source/observables">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<p>CanJS's observables - <a href="../docs/can.Map.html">can.Map</a>, <a href="../docs/can.List.html">can.List</a>, 
+and <a href="../docs/can.compute.html">can.compute</a> - let you make changes to data and listen
+to those changes.  Observables are the subjects in 
+the <a href="http://en.wikipedia.org/wiki/Observer_pattern">observer pattern</a>.  CanJS comes with
+three forms of observables:</p>
+
+<ul>
+<li><a href="../docs/can.Map.html">can.Map</a> - Used for Objects.</li>
+<li><a href="../docs/can.List.html">can.List</a> - Used for Arrays.</li>
+<li><a href="../docs/can.compute.html">can.compute</a> - Used for values.</li>
+</ul>
+
+<p>can.Map and can.List are often extended to create observable types. 
+<a href="../docs/can.Model.html">Models</a> and <a href="../docs/can.route.html">can.route</a> are
+based on can.Map, and can.Component's <a href="../docs/can.Component.prototype.scope.html">scope</a> is a 
+can.Map, but observables are useful on their own too.</p>
+
+<p>To create a Map, call <code>new can.Map(obj)</code>. This will give you a map
+with the same properties and values as <em>obj</em>. To create a List, call <code>new
+can.List(array)</code>. This will give you a List with the same elements as
+<em>array</em>.</p>
+
+<pre><code class="lang-javascript">var pagination = new can.Map({page: 1, perPage: 25, count: 1388});
+pagination.attr('perPage'); // 25
+
+var hobbies = new can.List(['programming', 'bball', 'party rocking']);
+hobbies.attr(2); // 'partying'</code></pre>
+
+<h2>Manipulating properties</h2>
+
+<p>The <a href="../docs/can.Map.prototype.attr.html">attr</a> method is
+used to read and write a property or properties from a Map or List.</p>
+
+<pre><code class="lang-javascript">pagination.attr('perPage');     // 25
+pagination.attr('perPage', 50);
+pagination.attr('perPage');     // 50
+
+pagination.attr({page: 10, lastVisited: 1});
+pagination.attr(); // {page: 10, perPage: 50, count: 1388, lastVisited: 1}</code></pre>
+
+<p>Properties can be removed from Observes with <code>removeAttr</code>, which is equivalent
+to the <code>delete</code> keyword:</p>
+
+<pre><code class="lang-javascript">pagination.removeAttr('count');
+pagination.attr(); // {page: 10, perPage: 50, lastVisited: 1}</code></pre>
+
+<h2>Listening to events</h2>
+
+<p>When a property on a Map is changed with <code>attr</code>, the Map will emit two
+events: A <em>change</em> event and an event with the same name as the property that
+was changed. You can listen for these events by using
+<a href="../docs/can.Map.prototype.bind.html">bind</a>:</p>
+
+<pre><code class="lang-javascript">paginate.bind('change', function(event, attr, how, newVal, oldVal) {
+    attr;   // 'perPage'
+    how;    // 'set'
+    newVal; // 30
+    oldVal; // 50
+});
+paginate.bind('perPage', function(event, newVal, oldVal) {
+    newVal; // 30
+    oldVal; // 50
+});
+
+paginate.attr('perPage', 30);</code></pre>
+
+<p>You can similarly stop listening to these events by using
+<a href="../docs/can.Map.prototype.unbind.html">unbind</a>:</p>
+
+<pre><code class="lang-javascript">var timesChanged = 0,
+    changeHandler = function() { timesChanged++; },
+    obs = new can.Map({value: 10});
+
+obs.bind('change', changeHandler);
+obs.attr('value', 20);
+timesChanged; // 1
+
+obs.unbind('change', changeHandler);
+obs.attr('value', 30);
+timesChanged; // 1</code></pre>
+
+<h2>Iterating though a Map</h2>
+
+<p>If you want to iterate through the properties on a Map, use <code>each</code>:</p>
+
+<pre><code class="lang-javascript">paginate.each(function(val, key) {
+    console.log(key + ': ' + val);
+});
+
+// The console shows:
+// page: 10
+// perPage: 30
+// lastVisited: 1</code></pre>
+
+<h2>Extending a Map</h2>
+
+<p>Extending a can.Map (or can.List) lets you create custom observable 
+types. The following extends can.Map to create a Paginate type that
+has a <code>.next()</code> method to change its state:</p>
+
+<pre><code>Paginate = can.Map.extend({
+  limit: 100,
+  offset: 0,
+  count: Infinity,
+  page: function() {
+    return Math.floor(this.attr('offset') / this.attr('limit')) + 1;
+  },
+  next: function() {
+    this.attr('offset', this.attr('offset') + this.attr('limit') );
+  }
+});
+
+var pageInfo = new Paginate();
+pageInfo.attr("offset") //-&gt; 0
+
+pageInfo.next();
+
+pageInfo.attr("offset") //-&gt; 100
+pageInfo.page()         //-&gt; 2
+</code></pre>
+
+<h2>Observable Arrays</h2>
+
+<p>As mentioned above, CanJS also provides observable arrays with can.List.
+can.List inherits from can.Map, so a List works much the same way an
+Map does, with the addition of several methods useful for working with
+arrays:</p>
+
+<ul>
+<li><a href="../docs/can.List.prototype.indexOf.html">indexOf</a>, which looks for an item in a
+List.</li>
+<li><a href="../docs/can.List.prototype.pop.html">pop</a>, which removes the last item from a
+List.</li>
+<li><a href="../docs/can.List.prototype.push.html">push</a>, which adds an item to the end of a
+List.</li>
+<li><a href="../docs/can.List.prototype.shift.html">shift</a>, which removes the first item from
+a List.</li>
+<li><a href="../docs/can.List.prototype.unshift.html">unshift</a>, which adds an item to the front
+of a List.</li>
+<li><a href="../docs/can.List.prototype.splice.html">splice</a>, which removes and inserts items
+anywhere in a List.</li>
+</ul>
+
+<p>When these methods are used to modify a List, the appropriate events are
+emitted. See <a href="../docs/can.List.html">the API for Lists</a> for more
+information on the arguments passed to those event handlers.</p>
+
+<h2>Computed values</h2>
+
+<p>CanJS also provides a way to make values themselves observable with
+<a href="../docs/can.compute.html">can.compute</a>. A Compute represents a dynamic value
+that can be read, set, and listened to just like a Map.</p>
+
+<h3>Static Computes</h3>
+
+<p>A simple static Compute contains a single value, and is created by calling
+<code>can.compute(value)</code>. This value can be read, set, and listened to:</p>
+
+<pre><code class="lang-javascript">// create a Compute
+var age = can.compute(25),
+    previousAge = 0;
+
+// read the Compute's value
+age(); // 25
+
+// listen for changes in the Compute's value
+age.bind('change', function(ev, newVal, oldVal) {
+    previousAge = oldVal;
+});
+
+// set the Compute's value
+age(26);
+
+age();       // 26
+previousAge; // 25</code></pre>
+
+<h3>Composite Computes</h3>
+
+<p>Computes can also be used to generate a unique value based on values derived
+from other observable properties. This type of compute is created by calling
+<code>can.compute(getterFunction)</code>. When the observable properties that the compute is
+derived from change, the value of the compute changes:</p>
+
+<pre><code class="lang-javascript">var name = new can.Map({
+    first: 'Alice',
+    last: 'Liddell'
+});
+var fullName = can.compute(function() {
+    // We use attr to read the values so the compute knows what to listen to.
+    return name.attr('first') + ' ' + name.attr('last');
+});
+var previousName = '';
+
+fullName();   // 'Alice Liddell'
+
+fullName.bind('change', function(ev, newVal, oldVal) {
+    previousName = oldVal;
+});
+
+name.attr({
+    first: 'Allison',
+    last: 'Wonderland'
+});
+
+fullname();   // 'Allison Wonderland'
+previousName; // 'Alice Liddell'</code></pre>
+
+<p>Since the value of the Compute is cached any time a derived value is
+changed, reading the value is fast.</p>
+
+<h3>Converted Computes</h3>
+
+<p>Computes are also useful for creating links to properties within Observes. One
+of the most frequent examples of this is when converting from one unit to
+another.</p>
+
+<pre><code class="lang-javascript">// progress ranges from 0 to 1.
+var project = new can.Map({ progress: 0.3 });
+var progressPercentage = can.compute(function(newVal) {
+    if(newVal !== undefined) {
+        // set a value
+        project.attr('progress', newVal / 100);
+    } else {
+        // get the value
+        return project.attr('progress') * 100;
+    }
+});
+
+percentage();     // 30
+
+// Setting percentage...
+percentage(75);
+// ...updates project.progress!
+project.attr('progress'); // .75</code></pre>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+<script type="text/javascript">
+	var docData = {"type":"page","name":"Observables","description":"","title":"Observables","parent":"Tutorial","order":1,"comment":" ","src":"guides_source/observables.md","id":14};
+
+	console.log(docData);
+</script>
+
+
+
+  <footer>
+    <nav class="container">
+      <a class="brand javascriptmvc" href="index.html"></a>
+      <ul class="nav">
+        <li class=""><a href="../index.html">Home</a></li>
+        <li class="active"><a href="../guides/index.html">Guides</a></li>
+        <li class=""><a href="../docs/index.html">Api</a></li>
+        <li class=""><a href="../community.html#!forums">Community</a></li>
+        <li class=""><a href="../download.html">Download</a></li>
+      </ul>
+    </nav>
+  </footer>
+  <script type="text/javascript">
+    window.Bitovi = {
+      URL: {
+        BUILDER: 'http://bitbuilder.herokuapp.com/can.custom.js',
+        BUILDER_DATA: 'http://bitbuilder.herokuapp.com/canjs',
+        BITHUB: 'http://api.bithub.com/api/events/',
+        CDN: '//canjs.com/release/'
+      }
+    }
+    steal = {
+      productionId: "production.js",
+      executed: ["documentjs/site/static/build/production.css"]
+    }
+  </script>
+  <script 
+  
+    src="./static/steal.production.js"
+  
+    ></script>
+  <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2302003-11']);
+  _gaq.push(['_setDomainName', 'canjs.us']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  </script>
+</body>
+
+</html>

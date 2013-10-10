@@ -181,6 +181,38 @@
 				
 					
 					<li class="heading search-container">
+						<span>plugins</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container parent ">
+						<a 	class="property" 
+							href="can.route.pushstate.html" 
+							data-search="can.route.pushstate">
+							pushstate
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
+		
+			
+				
+					
+					<li class="heading search-container">
 						<span>static</span>
 						
 	<ul >
@@ -330,7 +362,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/route/route.js#L288">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/route/route.js#L344">source</a></li>
 	
 	
 		
@@ -344,31 +376,15 @@
 		</section>
 
 		<section class="description">
-			
+			<p>Initialize can.route.</p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>can.route.ready( readyYet )</h2>
+			<h2>can.route.ready()</h2>
 <div class="signature-wrapper">
-<p>Pause and resume the initialization of can.route.</p>
-
-	<h3>Parameters</h3>
-
-	<ol class="parameters">
-		
-		<li class="parameter">
-			<h4>readyYet
-				<code>{Boolean}</code><span class="pull-right optional">Optional</span></h4>
-			<div class="description">
-				<p>Whether the ready event should be fired yet.</p>
-			</div>
-			
-			
-			
-		</li>
-		
-	</ol>
+<p>Sets up the two-way binding between the hash and the can.route observable map and
+sets the can.route map to its initial values.</p>
 
 
 	<h3>Returns</h3>
@@ -395,14 +411,13 @@
 
 		
 		<section class="comment">
-			<p>Indicates that all routes have been added and sets can.route.data
-based upon the routes and the current hash.</p>
+			<h2>Use</h2>
 
-<p>By default, ready is fired on jQuery's ready event.  Sometimes
-you might want it to happen sooner or earlier.  To do this, call:</p>
+<p>After setting all your routes, call can.route.ready().</p>
 
-<pre><code>can.route.ready(false); //prevents firing by the ready event
-can.route.ready(true); // fire the first route change
+<pre><code>can.route("overview/:dateStart-:dateEnd");
+can.route(":type/:id")
+can.route.ready()
 </code></pre>
 		</section>
 		
@@ -412,7 +427,7 @@ can.route.ready(true); // fire the first route change
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"function","name":"can.route.ready","parent":"can.route.static","description":"","title":"ready","signatures":[{"code":"can.route.ready( readyYet )","description":"<p>Pause and resume the initialization of can.route.</p>","params":[{"types":[{"type":"Boolean"}],"optional":true,"name":"readyYet","description":"<p>Whether the ready event should be fired yet.</p>"}],"returns":{"types":[{"type":"can.route"}],"description":"<p>The <code>can.route</code> object.</p>"}}],"comment":" ","src":"can/route/route.js","line":288,"id":171};
+	var docData = {"type":"function","name":"can.route.ready","parent":"can.route.static","description":"<p>Initialize can.route.</p>","title":"ready","signatures":[{"code":"can.route.ready()","description":"<p>Sets up the two-way binding between the hash and the can.route observable map and\nsets the can.route map to its initial values.</p>","params":[],"returns":{"types":[{"type":"can.route"}],"description":"<p>The <code>can.route</code> object.</p>"}}],"comment":" ","src":"can/route/route.js","line":344,"id":173};
 
 	console.log(docData);
 </script>

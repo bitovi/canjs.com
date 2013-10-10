@@ -283,7 +283,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/compute/compute.js#L314">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/compute/compute.js#L320">source</a></li>
 	
 	
 		
@@ -372,7 +372,7 @@ tally(tally() + 5); // The log reads:
 </div>
 
 <script type="text/javascript">
-	var docData = {"name":"can.computed.bind","type":"function","parent":"can.compute","description":"<p>Bind an event handler to a compute. </p>","title":"compute.bind","signatures":[{"code":"compute.bind(eventType, handler)","description":"","params":[{"types":[{"type":"String"}],"name":"eventType","description":"<p>The event to bind this handler to.\nThe only event type that computes emit is <em>change</em>.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"Object","options":[{"name":"Object"}]}]},{"types":[{"type":"Object","options":[{"name":"*"}]}]},{"types":[{"type":"Object","options":[{"name":"*"}]}]}]}],"name":"handler","description":"<p>The handler to call when the event happens.\nThe handler should have three parameters:</p>\n\n<ul>\n<li><em>event</em> is the event object.</li>\n<li><em>newVal</em> is the newly-computed value of the compute.</li>\n<li><em>oldVal</em> is the value of the compute before it changed.</li>\n</ul>\n\n<p><code>bind</code> lets you listen to a compute to know when it changes. It works just like\ncan.Map's <code>[can.Map.prototype.bind bind]</code>:</p>\n\n<pre><code class=\"lang-javascript\">var tally = can.compute(0);\ntally.bind('change', function(ev, newVal, oldVal) {\n    console.log('The tally is now at ' + newVal + '.');\n});\n\ntally(tally() + 5); // The log reads:\n                    // 'The tally is now at 5.'</code></pre>"}]}],"src":"can/compute/compute.js","line":314,"id":305};
+	var docData = {"name":"can.computed.bind","type":"function","parent":"can.compute","description":"<p>Bind an event handler to a compute. </p>","title":"compute.bind","signatures":[{"code":"compute.bind(eventType, handler)","description":"","params":[{"types":[{"type":"String"}],"name":"eventType","description":"<p>The event to bind this handler to.\nThe only event type that computes emit is <em>change</em>.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"Object","options":[{"name":"Object"}]}]},{"types":[{"type":"Object","options":[{"name":"*"}]}]},{"types":[{"type":"Object","options":[{"name":"*"}]}]}]}],"name":"handler","description":"<p>The handler to call when the event happens.\nThe handler should have three parameters:</p>\n\n<ul>\n<li><em>event</em> is the event object.</li>\n<li><em>newVal</em> is the newly-computed value of the compute.</li>\n<li><em>oldVal</em> is the value of the compute before it changed.</li>\n</ul>\n\n<p><code>bind</code> lets you listen to a compute to know when it changes. It works just like\ncan.Map's <code>[can.Map.prototype.bind bind]</code>:</p>\n\n<pre><code class=\"lang-javascript\">var tally = can.compute(0);\ntally.bind('change', function(ev, newVal, oldVal) {\n    console.log('The tally is now at ' + newVal + '.');\n});\n\ntally(tally() + 5); // The log reads:\n                    // 'The tally is now at 5.'</code></pre>"}]}],"src":"can/compute/compute.js","line":320,"id":308};
 
 	console.log(docData);
 </script>
