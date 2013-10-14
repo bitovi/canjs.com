@@ -1,0 +1,35 @@
+<div class="hero">
+	<div class="container">
+
+		<div class="cdn">
+			<h4>CDN:</h4>
+			<div class="input">
+				<select name="library" id="library">
+					<option value="JQuery">JQuery</option>
+					<option value="Zepto">Zepto</option>
+					<option value="Dojo">Dojo</option>
+					<option value="Mootools">Mootools</option>
+					<option value="YUI">YUI</option>
+				</select>
+				<span></span>
+			</div>
+
+		</div>
+
+		<div class="pull-right">
+			<a class="download-link" href="{{self.repository.github}}/archive/v{{package.version}}.zip">
+				<button class="download">Download {{package.version}} <span>(One file. Everything you need.)</span></button>
+			</a>
+			<p class="button-desc">Download for:
+				<a href="{{url.builder}}?configuration=jquery">JQuery</a> |
+				<a href="{{url.builder}}?configuration=zepto">Zepto</a> |
+				<a href="{{url.builder}}?configuration=mootools">Mootools</a> |
+				<a href="{{url.builder}}?configuration=dojo">Dojo</a> |
+				<a href="{{url.builder}}?configuration=yui">YUI</a>
+			</p>
+		</div>
+	</div>
+</div>
+
+<div class="customize container">
+</div>

@@ -1,0 +1,17 @@
+<div class="tooltip plugins">
+  <div class="bithub-content">
+  {{#plugins}}
+    <div class="bithub-post">
+      {{#if image_url}}
+      <a href="{{link}}" class="pull-left"><img {{#image_url}}src="{{.}}"{{/image_url}}/></a>
+      {{/if}}
+      <h2><a href="{{link}}">{{title}}</a></h2>
+      <p>posted {{#if author.name}}by {{/if}}{{author.name}} on {{formatDate date}} via <a href="{{link}}">{{feed}}</a></p>
+    </div>
+  {{/plugins}}
+  {{^plugins}}
+  <div class="loading"/>
+  {{/plugins}}
+  </div>
+  <a href="#" class="button">More Plugins <span class="icon-arrow"></span></a>
+</div>

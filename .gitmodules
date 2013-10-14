@@ -1,0 +1,15 @@
+[submodule "_guides"]
+	path = _guides
+	url = git://github.com/bitovi/canjs.wiki.git
+[submodule "can"]
+	path = can
+	url = git://github.com/bitovi/canjs.git
+[submodule "shared"]
+	path = shared
+	url = git://github.com/bitovi/shared-web.git
+[submodule "documentjs"]
+	path = documentjs
+	url = git://github.com/bitovi/documentjs.git
+[submodule "steal"]
+	path = steal
+	url = git://github.com/bitovi/steal.git

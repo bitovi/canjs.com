@@ -1,0 +1,4 @@
+Banner: #165489
+Background: #eeeeee
+Buttons: #efa81e
+Links: #165489

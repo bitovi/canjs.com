@@ -1,0 +1,85 @@
+/* @override 
+	http://beta.canjs.com/example/example.css */
+
+* {
+    font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
+#content {
+    max-width: 450px;
+    background-color: #ffffff;
+}
+
+h2 {
+    margin: 0 0 8px 2px;
+	font-size: 18px;
+}
+
+#editor {
+    position: relative;
+    height: 24px;
+}
+
+#editor > * {
+    display: block;
+    position: absolute;
+}
+
+#editor > input[type=text] {
+    height: 18px;
+    font-size: 14px;
+    font-family: Arial;
+    left: 18px;
+    right: 28px;
+}
+
+#editor > .spinner {
+    top: 0px;
+    right: 4px;
+    width: 16px;
+    cursor: pointer;
+    color: #4169be;
+    font-weight: bold;
+}
+
+#editor > .spinner.hidden {
+    display: none;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 8px 0 0 0;
+}
+li {
+    position: relative;
+    padding: 2px 0;
+    height: 24px;
+	font-size: 14px;
+}
+li:hover {
+    background-color: #eeeeee;
+}
+li > * {
+    display: block;
+    position: absolute;
+}
+li > input {
+    top: 4px;
+    left: 2px;
+}
+li > .description {
+    top: 5px;
+    right: 20px;
+    left: 22px;
+}
+li > .description.done {
+    text-decoration: line-through;
+}
+li > .delete {
+    top: 6px;
+    right: 0;
+    width: 16px;
+    cursor: pointer;
+    color: #d63129;
+}

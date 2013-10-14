@@ -1,0 +1,127 @@
+.has-tip {
+	background-color: rgba(238, 168, 30, 0.2);
+	cursor: pointer;
+	position: relative;
+	display: inline-block;
+	width: 350px;
+}
+.has-tip .tooltip {
+	position: absolute;
+	display: block;
+	top: 0;
+}
+.has-tip .tooltip:before {
+	position:absolute;
+	content : '';
+	height : 20px;
+	width: 20px;
+	background: @light;
+	-moz-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
+	-o-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
+	-webkit-transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
+	-ms-transform: rotate(-45deg);
+	transform : rotateZ(-45deg) skewY(5deg) skewX(5deg);
+	border: 1px solid #dedbdb;
+	top: -11px;
+	z-index: 90;
+	display: block;
+	left: 40px;
+	border-left-style: none;
+	border-bottom-style: none;
+}
+
+.has-tip .tooltip.left:before {
+	-moz-transform : rotateZ(-135deg) skewY(5deg) skewX(5deg);
+	-o-transform : rotateZ(-135deg) skewY(5deg) skewX(5deg);
+	-webkit-transform : rotateZ(-135deg) skewY(5deg) skewX(5deg);
+	-ms-transform: rotate(-135deg);
+	transform : rotateZ(-135deg) skewY(5deg) skewX(5deg);
+	top: 20px;
+	left: -11px;
+}
+
+.has-tip .tooltip.right:before {
+	-moz-transform : rotateZ(45deg) skewY(5deg) skewX(5deg);
+	-o-transform : rotateZ(45deg) skewY(5deg) skewX(5deg);
+	-webkit-transform : rotateZ(45deg) skewY(5deg) skewX(5deg);
+	-ms-transform: rotate(45deg);
+	transform : rotateZ(45deg) skewY(5deg) skewX(5deg);
+	top: 20px;
+	left: inherit;
+	right: -11px;
+}
+
+.has-tip .tooltip.forumPosts:before, .has-tip .tooltip.github:before {
+	left: inherit;
+	right: 40px;
+}
+
+.tooltip {
+	padding: 5px 20px;
+	background-color: @light;
+	color: @dark;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+	border: 1px solid #dedbdb;
+	-moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
+	-webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
+	cursor: default;
+	display: inline-block;
+	position: relative;
+	z-index: 100;
+	width: 350px;
+	.font;
+	padding-bottom: 15px; 
+	
+	* {
+		text-shadow: none;
+	}
+	p, .bithub-post {
+		color: #333;
+		line-height: 20px;
+		font-size: 14px;
+		margin-bottom: 0;
+	}
+	img {
+		border: 2px solid @color;
+	}
+	h2, h5 {
+		margin-bottom: 3px;
+		margin-top: 3px;
+		
+		a {
+			text-shadow: none;
+			font-size: 18px;
+			.font;
+		}
+	}
+	.button {
+		background-color: @color;
+		border-color: darken(@color, 10%); 
+		text-shadow: 0 -1px darken(@color, 10%);
+		margin: 0 auto;
+		text-align: center;
+		display: block;
+		width: 150px;
+	}
+	.bithub-footer {
+		color: #999;
+		font-size: 12px;
+		text-align: right;
+		display: block;
+		line-height: 14px;
+		
+		a {
+			color: #999;
+		}
+	}
+	.icon-arrow {
+		font-size: 140%;
+		margin-left: 5px;
+		line-height: 14px;
+	}
+}
+.index .example .has-tip .tooltip {
+	width: 250px;
+	right: -300px;
+}

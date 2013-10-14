@@ -1,0 +1,50 @@
+.example {
+	position: relative;
+	margin-top: 20px;
+	clear: both;
+
+	h2 {
+		text-transform: uppercase;
+	}
+}
+
+.example > pre, .example > iframe {
+	float: left;
+	display: block;
+	height: 380px;
+	width: 330px;
+	.border-radius(@borderRadius);
+	border: 1px solid #797979;
+	margin-top: 20px;
+	margin-bottom: 40px;
+	cursor: default;
+}
+
+.example > pre {
+	background-color: @light;
+	text-align: left;
+	font-family: Courier New, Courier, mono;
+	font-size: 12px;
+	color: #666;
+	margin-right: 8px;
+	overflow: scroll;
+	padding: 0 4px;
+}
+
+.example > .code {
+	width: 377px;
+}
+
+.example > .result {
+	width: 212px;
+	background-color: #ffffff;
+}
+
+.example button.color {
+	text-transform: uppercase;
+	font-size: 12px;
+	position: absolute;
+	right: 3px;
+	padding: 3px 20px;
+	top: 50px;
+}

@@ -1,0 +1,14 @@
+<div class="tooltip forumPosts">
+  <div class="bithub-content">
+  {{#forumPosts}}
+  <div class="bithub-post">
+    <h2><a href="{{link}}">{{title}}</a></h2>
+    <p>posted {{#if actor}}by {{/if}}{{actor}} on {{formatDate date}} via <a href="{{link}}">{{feed}}</a></p>
+  </div>
+  {{/forumPosts}}
+  {{^forumPosts}}
+  <div class="loading"/>
+  {{/forumPosts}}
+  </div>
+  <a href="https://forum.javascriptmvc.com/canjs" class="button">More Forum Posts <span class="icon-arrow"></span></a>
+</div>

@@ -1,0 +1,3 @@
+#!/bin/sh
+rm -rf docs/ guides/ *.html
+./js scripts/doc.js
