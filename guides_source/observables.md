@@ -202,7 +202,8 @@ var name = new can.Map({
 	last: 'Liddell'
 });
 var fullName = can.compute(function() {
-	// We use attr to read the values so the compute knows what to listen to.
+	// We use attr to read the values
+	// so the compute knows what to listen to.
 	return name.attr('first') + ' ' + name.attr('last');
 });
 var previousName = '';
