@@ -116,6 +116,8 @@
 		h4 {
 			display: inline-block;
 			color: #fff;
+			float: left;
+			margin-right: 10px;
 			.text-shadow;
 			line-height: @cdn-height;
 			position: relative;
@@ -132,9 +134,10 @@
 		span {
 			line-height: @cdn-height;
 			color: #717171;
-			font-family: LatoLight;
+			.font-light;
 			display: inline-block;
 			position: relative;
+			float: left;
 		}
 		select, .dropdown, .dropdown:before, .dropdown:after {
 			height: @cdn-height;
@@ -150,8 +153,9 @@
 			border-right: 1px solid #ccc;
 			.border-radius (0px);
 			position: relative;
-			top: -1px;
-			height: (@cdn-height -2px);
+			top: 1px;
+			height: (@cdn-height - 2px);
+			float: left;
 			
 			&:before {
 				top: 18px;
@@ -159,7 +163,7 @@
 			select {
 				font-size: 15px;
 				color: #717171;
-				font-family: LatoLight;
+				.font-light;
 				line-height: (@cdn-height - 1px);
 				display: inline-block;
 				position: relative;

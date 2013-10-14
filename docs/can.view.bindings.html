@@ -202,7 +202,7 @@
 			
 				
 				
-					<li class="search-container active  expanded">
+					<li class="search-container active parent expanded">
 						<a 	class="page" 
 							href="can.view.bindings.html" 
 							data-search="can.view.bindings">
@@ -210,6 +210,40 @@
 						</a>
 						
 							
+	<ul >
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.view.bindings.can-EVENT.html" 
+							data-search="can-EVENT">
+							can-EVENT
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.view.bindings.can-value.html" 
+							data-search="can-value">
+							can-value
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
 						
 					</li>
 				
@@ -415,7 +449,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/view/bindings/bindings.md">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/view/bindings/bindings.md">source</a></li>
 	
 	
 		
@@ -429,7 +463,7 @@
 		</section>
 
 		<section class="description">
-			<p>Hello there!</p>
+			<p>Provides template bindings and two-way bindings.</p>
 		</section>
 
 		
@@ -440,13 +474,23 @@
 		
 
 		
+		<section class="comment">
+			<h2>Use</h2>
+
+<p>The <code>can/view/bindings</code> plugin provides helpers useful for template declarative
+binding and two-way bindings.  This plugin is included by default
+in core CanJS.</p>
+
+<div class='demo_wrapper' data-demo-src='can/view/bindings/hyperloop.html'></div>
+		</section>
+		
 
 		
 	</article>
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"page","name":"can.view.bindings","description":"<p>Hello there!</p>","parent":"can.view.plugins","src":"can/view/bindings/bindings.md","id":55};
+	var docData = {"type":"page","name":"can.view.bindings","description":"<p>Provides template bindings and two-way bindings.</p>","parent":"can.view.plugins","comment":" ","src":"can/view/bindings/bindings.md","id":55,"children":[{"type":"function","description":"","title":"can-EVENT","name":"can.view.bindings.can-EVENT","parent":"can.view.bindings","signatures":[{"code":"can-EVENT='KEY'","description":"<p>Specify a callback function to be called on a particular event.</p>","params":[{"types":[{"type":"String"}],"name":"EVENT","description":"<p>A event name like <code>click</code> or <code>keyup</code>.  If you are\nusing jQuery, you can listen to jQuery special events too.</p>"},{"types":[{"type":"can.Mustache.key"}],"name":"key","description":"<p>A named value in the current scope.  The value\nshould be a function.</p>"}]}],"comment":" ","src":"can/view/bindings/bindings.js","line":103,"id":280},{"type":"function","description":"<p>Sets up two way bindings in a template.</p>","title":"can-value","name":"can.view.bindings.can-value","parent":"can.view.bindings","signatures":[{"code":"can-value='KEY'","description":"<p>Binds the element's value or checked property to the value specified by \nkey. Example:</p>\n\n<pre><code>&lt;input type='text' can-value='first.name'/&gt;\n</code></pre>","params":[{"types":[{"type":"can.Mustache.key"}],"name":"key","description":"<p>A named value in the current scope.</p>"}]}],"comment":" ","src":"can/view/bindings/bindings.js","line":4,"id":279}]};
 
 	console.log(docData);
 </script>

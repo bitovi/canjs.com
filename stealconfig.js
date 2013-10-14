@@ -3,7 +3,8 @@ steal.config({
 		"*": {
 			"jquery/jquery.js" : "jquery",
 			"can/util/util.js": "can/util/jquery/jquery.js",
-			"jquery/": "jquerypp/"
+			"jquery/": "jquerypp/",
+			"jquery-ui.js" : "scripts/static/lib/jquery-ui.1.10.3.js"
 		}
 	},
 	paths: {

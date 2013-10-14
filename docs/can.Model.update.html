@@ -514,7 +514,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/model/model.js#L400">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/model/model.js#L400">source</a></li>
 	
 	
 		
@@ -649,7 +649,7 @@ name=salad
 </code></pre>
 
 <p>The server should send back an object with any new attributes the model 
-should have.  For example if your server udpates the "updatedAt" property, it
+should have.  For example if your server updates the "updatedAt" property, it
 should send back something like:</p>
 
 <pre><code>// PUT /recipes/4 {name: "Food"} -&gt;
@@ -661,7 +661,7 @@ should send back something like:</p>
 <h2>Implement with a Function</h2>
 
 <p>You can also implement update by yourself.  Update takes the <code>id</code> and
-<code>attributes</code> of the instance to be udpated.  Update must return
+<code>attributes</code> of the instance to be updated.  Update must return
 a <a href="can.Deferred.html">Deferred</a> that resolves to an object that contains any 
 properties that should be set on the instance.</p>
 

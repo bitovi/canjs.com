@@ -536,6 +536,36 @@
 				
 					<li class="search-container  ">
 						<a 	class="function" 
+							href="can.off.html" 
+							data-search="can.off">
+							can.off
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.on.html" 
+							data-search="can.on">
+							can.on
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
 							href="can.param.html" 
 							data-search="can.param">
 							can.param
@@ -716,7 +746,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/util/func.js#L245">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/util/func.js#L284">source</a></li>
 	
 	
 		
@@ -812,7 +842,7 @@ from an object for a given event.  It works on:</p>
 <li>Objects with bind / unbind methods</li>
 </ul>
 
-<p>The idea is that unbind can be used on anything that produces events
+<p>The idea is that <code>can.unbind</code> can be used on anything that produces events
 and it will figure out the appropriate way to
 unbind to it.  Typically, <code>can.unbind</code> is only used internally to
 CanJS; however, if you are making libraries or extensions, use
@@ -847,7 +877,7 @@ can.unbind.call(el, "click", handler)
 </div>
 
 <script type="text/javascript">
-	var docData = {"description":"<p>Stop listening for events on an object. </p>","title":"","name":"can.unbind","type":"function","parent":"can.util","signatures":[{"code":"can.unbind.call(target, eventName, handler)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"target","description":"<p>The object that emits events.</p>"},{"types":[{"type":"String"}],"name":"eventName","description":"<p>The name of the event to listen for.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"handler","description":"<p>The function to unbind.</p>"}],"returns":{"types":[{"type":"Object","options":[]}],"description":"<p>The <strong>target</strong>.</p>"}}],"comment":" ","src":"can/util/func.js","line":245,"id":246};
+	var docData = {"description":"<p>Stop listening for events on an object. </p>","title":"","name":"can.unbind","type":"function","parent":"can.util","signatures":[{"code":"can.unbind.call(target, eventName, handler)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"target","description":"<p>The object that emits events.</p>"},{"types":[{"type":"String"}],"name":"eventName","description":"<p>The name of the event to listen for.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"handler","description":"<p>The function to unbind.</p>"}],"returns":{"types":[{"type":"Object","options":[]}],"description":"<p>The <strong>target</strong>.</p>"}}],"comment":" ","src":"can/util/func.js","line":284,"id":246};
 
 	console.log(docData);
 </script>

@@ -514,7 +514,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/model/model.js#L311">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/model/model.js#L311">source</a></li>
 	
 	
 		
@@ -533,7 +533,7 @@
 
 		
 		<section class="signature">
-			<h2>can.Model.create: function(serialized) -&gt; seferred</h2>
+			<h2>can.Model.create: function(serialized) -&gt; deferred</h2>
 <div class="signature-wrapper">
 <p>Specify a function to create persistent instances. The function will
 typically perform an AJAX request to a service that results in
@@ -563,7 +563,7 @@ the model to create.</p>
 		<h4><code>{<a href="can.Deferred.html" >can.Deferred</a>}</code></h4>
 		<div class="description">
 			<p>A Deferred that resolves to an object of attributes
-that will be added to the created model isntance.  The object <strong>MUST</strong> contain
+that will be added to the created model instance.  The object <strong>MUST</strong> contain
 an <a href="can.Model.id.html">id</a> property so that future calls to <a href="can.Model.prototype.save.html">save</a>
 will call <a href="can.Model.update.html">can.Model.update</a>.</p>
 		</div>
@@ -710,7 +710,7 @@ something that looks like:</p>
 </div>
 
 <script type="text/javascript">
-	var docData = {"name":"can.Model.create","type":"function","parent":"can.Model.static","description":"<p>Specifies how to create a new resource on the server. <code>create(serialized)</code> is called  by [can.Model.prototype.save save] if the model instance [can.Model.prototype.isNew is new].</p>","title":"create","signatures":[{"code":"can.Model.create: function(serialized) -> seferred","description":"<p>Specify a function to create persistent instances. The function will\ntypically perform an AJAX request to a service that results in\ncreating a record in a database.</p>","params":[{"types":[{"type":"Object","options":[]}],"name":"serialized","description":"<p>The [can.Map::serialize serialized] properties of\nthe model to create.</p>"}],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A Deferred that resolves to an object of attributes\nthat will be added to the created model isntance.  The object <strong>MUST</strong> contain\nan [can.Model.id id] property so that future calls to [can.Model.prototype.save save]\nwill call [can.Model.update].</p>"}},{"code":"can.Model.create: \"[METHOD] /path/to/resource\"","description":"<p>Specify a HTTP method and url to create persistent instances.</p>\n\n<p>If you provide a URL, the Model will send a request to that URL using\nthe method specified (or POST if none is specified) when saving a\nnew instance on the server. (See below for more details.)</p>","params":[{"types":[{"type":"HttpMethod"}],"name":"METHOD","description":"<p>An HTTP method. Defaults to <code>\"POST\"</code>.</p>"},{"types":[{"type":"STRING"}],"name":"url","description":"<p>The URL of the service to retrieve JSON data.</p>"}]},{"code":"can.Model.create: {ajaxSettings}","description":"<p>Specify an options object that is used to make a HTTP request to create\npersistent instances.</p>","params":[{"types":[{"type":"can.AjaxSettings"}],"name":"ajaxSettings","description":"<p>A settings object that\nspecifies the options available to pass to [can.ajax].</p>"}]}],"comment":" ","src":"can/model/model.js","line":311,"id":126};
+	var docData = {"name":"can.Model.create","type":"function","parent":"can.Model.static","description":"<p>Specifies how to create a new resource on the server. <code>create(serialized)</code> is called  by [can.Model.prototype.save save] if the model instance [can.Model.prototype.isNew is new].</p>","title":"create","signatures":[{"code":"can.Model.create: function(serialized) -> deferred","description":"<p>Specify a function to create persistent instances. The function will\ntypically perform an AJAX request to a service that results in\ncreating a record in a database.</p>","params":[{"types":[{"type":"Object","options":[]}],"name":"serialized","description":"<p>The [can.Map::serialize serialized] properties of\nthe model to create.</p>"}],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A Deferred that resolves to an object of attributes\nthat will be added to the created model instance.  The object <strong>MUST</strong> contain\nan [can.Model.id id] property so that future calls to [can.Model.prototype.save save]\nwill call [can.Model.update].</p>"}},{"code":"can.Model.create: \"[METHOD] /path/to/resource\"","description":"<p>Specify a HTTP method and url to create persistent instances.</p>\n\n<p>If you provide a URL, the Model will send a request to that URL using\nthe method specified (or POST if none is specified) when saving a\nnew instance on the server. (See below for more details.)</p>","params":[{"types":[{"type":"HttpMethod"}],"name":"METHOD","description":"<p>An HTTP method. Defaults to <code>\"POST\"</code>.</p>"},{"types":[{"type":"STRING"}],"name":"url","description":"<p>The URL of the service to retrieve JSON data.</p>"}]},{"code":"can.Model.create: {ajaxSettings}","description":"<p>Specify an options object that is used to make a HTTP request to create\npersistent instances.</p>","params":[{"types":[{"type":"can.AjaxSettings"}],"name":"ajaxSettings","description":"<p>A settings object that\nspecifies the options available to pass to [can.ajax].</p>"}]}],"comment":" ","src":"can/model/model.js","line":311,"id":126};
 
 	console.log(docData);
 </script>

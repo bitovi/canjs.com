@@ -188,7 +188,7 @@
 			
 				
 				
-					<li class="search-container active parent expanded">
+					<li class="search-container active  expanded">
 						<a 	class="property" 
 							href="can.route.pushstate.html" 
 							data-search="can.route.pushstate">
@@ -196,25 +196,6 @@
 						</a>
 						
 							
-	<ul >
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="property" 
-							href="can.route.pushstate.root.html" 
-							data-search="can.route.pushstate.root">
-							root
-						</a>
-						
-					</li>
-				
-			
-			
-		
-	</ul>
-
 						
 					</li>
 				
@@ -379,7 +360,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/route/pushstate/pushstate.md">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/route/pushstate/pushstate.md">source</a></li>
 	
 	
 		<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/route/pushstate">download</a></li>
@@ -429,7 +410,7 @@ of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.hash">
 			<h2>Use</h2>
 
 <p>The pushstate plugin uses the same API as <a href="can.route.html">can.route</a> with only one additional 
-property - <a href="can.route.pushstate.root.html">can.route.pushstate.root</a>.  <code>can.route.pushstate.root</code> specifies the part of that pathname that
+property - [can.route.pushstate.root].  <code>can.route.pushstate.root</code> specifies the part of that pathname that
 should not change. For example, if we only want to have pathnames within <code>app.com/contacts/</code>,
 we can specify a root like:</p>
 
@@ -448,7 +429,7 @@ is "/". </p>
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"property","name":"can.route.pushstate","description":"<p>Changes [can.route] to use <a href=\"https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history\">pushstate</a>\nto change the window's <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.pathname\">pathname</a> instead\nof the <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.hash\">hash</a>.</p>","types":[{"type":"Object","options":[],"description":"<p>The pushstate object comprises several properties that configure the behavior of\n[can.route] to work with <code>history.pushstate</code>.</p>"}],"title":"","download":"can/route/pushstate","test":"can/route/pushstate/test.html","parent":"can.route.plugins","comment":" ","src":"can/route/pushstate/pushstate.md","id":44,"children":[{"name":"can.route.pushstate.root","type":"property","parent":"can.route.pushstate","description":"<p>Configure the base url that will not be modified. </p>","types":[{"type":"String","description":"<p>Represents the base url that pushstate will prepend to all \nroutes.  <code>root</code> defaults to: <code>\"/\"</code>.</p>"}],"title":"","comment":" ","src":"can/route/pushstate/pushstate.js","line":5,"id":177}]};
+	var docData = {"type":"property","name":"can.route.pushstate","description":"<p>Changes [can.route] to use <a href=\"https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history\">pushstate</a>\nto change the window's <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.pathname\">pathname</a> instead\nof the <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.hash\">hash</a>.</p>","types":[{"type":"Object","options":[],"description":"<p>The pushstate object comprises several properties that configure the behavior of\n[can.route] to work with <code>history.pushstate</code>.</p>"}],"title":"","download":"can/route/pushstate","test":"can/route/pushstate/test.html","parent":"can.route.plugins","comment":" ","src":"can/route/pushstate/pushstate.md","id":44};
 
 	console.log(docData);
 </script>

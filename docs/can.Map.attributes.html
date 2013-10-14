@@ -631,7 +631,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/map/attributes/attributes.md">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/map/attributes/attributes.md">source</a></li>
 	
 	
 		<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=http://donejs.com/can/dist/can.observe.attributes.js">download</a></li>
@@ -808,24 +808,74 @@ var seralizedObj = brian.serialize();
 //-&gt; { 'birthday': '11-29-1983', 'weight': '300' }
 </code></pre>
 
+<h2>Converter functions</h2>
+
+<p>Another common case is to create converter functions (<code>function(value, oldValue) {}</code>) that return a converted value:</p>
+
+<pre><code>var ValueMap = can.Map.extend({
+    attributes: {
+        value: function(orig) {
+            return orig * 100;
+        }
+    }
+},{});
+
+console.log(new ValueMap({ value: 0.83 }).attr('value'));
+</code></pre>
+
 <h2>Associations</h2>
 
-<p>Attribute type values can also represent the name of a function. The most common case this is used is for associated data.</p>
+<p>The attribute plugin also allows setting up data associations between Maps or Models. This means
+that nested data structures can be automatically converted into their Map or Model (using <code>Model.models</code>) representations by passing them as the attribute.
+If the value to convert is an array it will be converted into its <code>can.Map.List</code> or <code>can.Model.List</code> (using <code>can.Model.models</code>) representation:</p>
 
-<p>For example, a <code>Deliverable</code> might have many tasks and an owner (which is a Person). The attributes property might look like:</p>
+<pre><code>var Sword = can.Model.extend({
+    findAll: 'GET /swords'
+}, {
+    getPower: function() {
+        return this.attr('power') * 100;
+    }
+});
 
-<pre><code>var Deliverable = new can.Map.extend({
-    attributes : {
-        tasks : "App.Models.Task.models"
-        owner: "App.Models.Person.model"
+var Level = can.Model.extend({
+    findAll: 'GET /levels'
+}, {
+    getName: function() {
+        return 'Level: ' + this.attr('name');
+    }
+});
+
+var Zelda = can.Model.extend({
+    findOne: 'GET /zelda/{id}'
+    attributes: {
+        sword: Sword,
+        levelsCompleted: Level
     }
 },{});
 </code></pre>
 
-<p>This points tasks and owner properties to use <em>Task</em> and <em>Person</em> to convert the raw data into an array of Tasks and a Person.</p>
+<p>Assuming that <code>Zelda.findOne({ id: 'link' })</code> will return something like:</p>
 
-<p>It's important to note that the full names of the models themselves are <em>App.Models.Task</em> and <em>App.Models.Person</em>. The <code>.model</code> 
-and <code>.models</code> parts are appended for the benefit of convert to identify the types as models.</p>
+<pre><code>{
+    sword: {
+        name: 'Wooden Sword',
+        power: 0.2
+    },
+    levelsCompleted : [
+        {id: 1, name: 'Aquamentus'},
+        {id: 2, name: 'Dodongo'}
+    ]
+}
+</code></pre>
+
+<p>The converted data will contain a list or Levels and a sword Model:</p>
+
+<pre><code>Zelda.findOne({ id: 'link' }).then(function(link) {
+    console.log(link.attr('sword').getPower()); // -&gt; 20
+    console.log(link.attr('levelsCompleted')[0].getName());
+    // -&gt; 'Level: Aquamentus'
+});
+</code></pre>
 
 <h3>Demo</h3>
 
@@ -841,7 +891,7 @@ for each contact and how much time they have left to complete the task(s) using 
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"page","name":"can.Map.attributes","description":"<p>can.Map.attributes is a plugin that helps convert and normalize data being set on an Observe\nand allows you to specify the way complex types get serialized. The attributes plugin is most\nhelpful when used with [can.Model] (because the serialization aids in sending data to a server),\nbut you can use it with any Observe you plan to make instances\nfrom.</p>","title":"attributes","parent":"can.Map.plugins","plugin":"can/map/attributes","test":"can/map/attributes/test.html","download":"http://donejs.com/can/dist/can.observe.attributes.js","comment":" ","src":"can/map/attributes/attributes.md","id":28,"children":[{"name":"can.Map.attributes.prototype","title":"prototype","type":"group","parent":"can.Map.attributes","description":"","order":0,"id":27,"children":[{"type":"function","name":"can.Map.prototype.attributes.serialize","parent":"can.Map.attributes.prototype","description":"<p>Serializes the observe's properties using  the [can.Map.attributes attribute plugin].</p>","title":"serialize","signatures":[{"code":"observe.serialize([attrName])","description":"","params":[{"types":[{"type":"String"}],"optional":true,"name":"attrName","description":"<p>If passed, returns only a serialization of the named attribute.</p>"}],"returns":{"types":[{"type":"String"}],"description":"<p>A serialization of this Observe.</p>"}}],"comment":" ","src":"can/map/attributes/attributes.js","line":293,"id":151}]},{"name":"can.Map.prototype.convert","type":"function","description":"","hide":true,"title":"","parent":"can.Map.attributes","src":"can/map/attributes/attributes.js","line":268,"id":150},{"name":"can.Map.attributes.static","title":"static","type":"group","parent":"can.Map.attributes","description":"","order":0,"id":26,"children":[{"name":"can.Map.attributes.static.attributes","type":"property","parent":"can.Map.attributes.static","description":"<p><code>can.Map.attributes</code> is a property that contains key/value pair(s) of an attribute's name and its\nrespective type for using in [can.Map.attributes.static.convert convert] and [can.Map.prototype.serialize serialize].</p>","title":"attributes","src":"can/map/attributes/attributes.js","line":12,"id":146},{"name":"can.Map.attributes.static.convert","type":"property","parent":"can.Map.attributes.static","description":"<p>You often want to convert from what the observe sends you to a form more useful to JavaScript. \nFor example, contacts might be returned from the server with dates that look like: \"1982-10-20\". \nWe can observe to convert it to something closer to <code>new Date(1982,10,20)</code>.</p>","title":"convert","src":"can/map/attributes/attributes.js","line":30,"id":147},{"name":"can.Map.attributes.static.serialize","type":"property","parent":"can.Map.attributes.static","description":"<p><code>can.Map.serialize</code> is an object of name-function pairs that are used to \nserialize attributes.</p>","title":"serialize","src":"can/map/attributes/attributes.js","line":193,"id":148}]},{"name":"can.Map.setup","type":"function","description":"<p><code>can.Map.static.setup</code> overrides default <code>can.Map</code> setup to provide\nfunctionality for attributes.</p>","hide":true,"title":"","parent":"can.Map.attributes","src":"can/map/attributes/attributes.js","line":241,"id":149}]};
+	var docData = {"type":"page","name":"can.Map.attributes","description":"<p>can.Map.attributes is a plugin that helps convert and normalize data being set on an Observe\nand allows you to specify the way complex types get serialized. The attributes plugin is most\nhelpful when used with [can.Model] (because the serialization aids in sending data to a server),\nbut you can use it with any Observe you plan to make instances\nfrom.</p>","title":"attributes","parent":"can.Map.plugins","plugin":"can/map/attributes","test":"can/map/attributes/test.html","download":"http://donejs.com/can/dist/can.observe.attributes.js","comment":" ","src":"can/map/attributes/attributes.md","id":28,"children":[{"name":"can.Map.attributes.prototype","title":"prototype","type":"group","parent":"can.Map.attributes","description":"","order":0,"id":27,"children":[{"type":"function","name":"can.Map.prototype.attributes.serialize","parent":"can.Map.attributes.prototype","description":"<p>Serializes the observe's properties using the [can.Map.attributes attribute plugin].</p>","title":"serialize","signatures":[{"code":"observe.serialize([attrName])","description":"","params":[{"types":[{"type":"String"}],"optional":true,"name":"attrName","description":"<p>If passed, returns only a serialization of the named attribute.</p>"}],"returns":{"types":[{"type":"String"}],"description":"<p>A serialization of this Observe.</p>"}}],"comment":" ","src":"can/map/attributes/attributes.js","line":310,"id":151}]},{"name":"can.Map.prototype.convert","type":"function","description":"","hide":true,"title":"","parent":"can.Map.attributes","src":"can/map/attributes/attributes.js","line":285,"id":150},{"name":"can.Map.attributes.static","title":"static","type":"group","parent":"can.Map.attributes","description":"","order":0,"id":26,"children":[{"name":"can.Map.attributes.static.attributes","type":"property","parent":"can.Map.attributes.static","description":"<p><code>can.Map.attributes</code> is a property that contains key/value pair(s) of an attribute's name and its\nrespective type for using in [can.Map.attributes.static.convert convert] and [can.Map.prototype.serialize serialize].</p>","title":"attributes","src":"can/map/attributes/attributes.js","line":11,"id":146},{"name":"can.Map.attributes.static.convert","type":"property","parent":"can.Map.attributes.static","description":"<p>You often want to convert from what the observe sends you to a form more useful to JavaScript.\nFor example, contacts might be returned from the server with dates that look like: \"1982-10-20\".\nWe can observe to convert it to something closer to <code>new Date(1982,10,20)</code>.</p>","title":"convert","src":"can/map/attributes/attributes.js","line":29,"id":147},{"name":"can.Map.attributes.static.serialize","type":"property","parent":"can.Map.attributes.static","description":"<p><code>can.Map.serialize</code> is an object of name-function pairs that are used to\nserialize attributes.</p>","title":"serialize","src":"can/map/attributes/attributes.js","line":210,"id":148}]},{"name":"can.Map.setup","type":"function","description":"<p><code>can.Map.static.setup</code> overrides default <code>can.Map</code> setup to provide\nfunctionality for attributes.</p>","hide":true,"title":"","parent":"can.Map.attributes","src":"can/map/attributes/attributes.js","line":258,"id":149}]};
 
 	console.log(docData);
 </script>

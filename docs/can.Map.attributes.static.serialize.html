@@ -635,7 +635,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.7/map/attributes/attributes.js#L193">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/map/attributes/attributes.js#L210">source</a></li>
 	
 	
 		
@@ -649,7 +649,7 @@
 		</section>
 
 		<section class="description">
-			<p><code>can.Map.serialize</code> is an object of name-function pairs that are used to 
+			<p><code>can.Map.serialize</code> is an object of name-function pairs that are used to
 serialize attributes.</p>
 		</section>
 
@@ -662,11 +662,11 @@ serialize attributes.</p>
 
 		
 		<section class="comment">
-			<p>Similar to <a href="can.Map.attributes.static.convert.html">can.Map.attributes.convert</a>, in that the keys of this object correspond to 
+			<p>Similar to <a href="can.Map.attributes.static.convert.html">can.Map.attributes.convert</a>, in that the keys of this object correspond to
 the types specified in <a href="can.Map.attributes.html">can.Map.attributes</a>.</p>
 
-<p>By default every attribute will be passed through the 'default' serialization method 
-that will return the value if the property holds a primitive value (string, number, ...), 
+<p>By default every attribute will be passed through the 'default' serialization method
+that will return the value if the property holds a primitive value (string, number, ...),
 or it will call the "serialize" method if the property holds an object with the "serialize" method set.</p>
 
 <p>For example, to serialize all dates to ISO format:</p>
@@ -682,7 +682,7 @@ or it will call the "serialize" method if the property holds an object with the 
   }
 },{});
 
-var contact = new Contact({ 
+var contact = new Contact({
   birthday: new Date("Oct 25, 1973") 
 }).serialize();
 //-> { "birthday" : "1973-10-25T05:00:00.000Z" }</code></pre>
@@ -694,7 +694,7 @@ var contact = new Contact({
 </div>
 
 <script type="text/javascript">
-	var docData = {"name":"can.Map.attributes.static.serialize","type":"property","parent":"can.Map.attributes.static","description":"<p><code>can.Map.serialize</code> is an object of name-function pairs that are used to \nserialize attributes.</p>","title":"serialize","src":"can/map/attributes/attributes.js","line":193,"id":148};
+	var docData = {"name":"can.Map.attributes.static.serialize","type":"property","parent":"can.Map.attributes.static","description":"<p><code>can.Map.serialize</code> is an object of name-function pairs that are used to\nserialize attributes.</p>","title":"serialize","src":"can/map/attributes/attributes.js","line":210,"id":148};
 
 	console.log(docData);
 </script>

@@ -3,6 +3,7 @@
 	cursor: pointer;
 	position: relative;
 	display: inline-block;
+	width: 350px;
 }
 .has-tip .tooltip {
 	position: absolute;
@@ -29,6 +30,27 @@
 	border-bottom-style: none;
 }
 
+.has-tip .tooltip.left:before {
+	-moz-transform : rotateZ(-135deg) skewY(5deg) skewX(5deg);
+	-o-transform : rotateZ(-135deg) skewY(5deg) skewX(5deg);
+	-webkit-transform : rotateZ(-135deg) skewY(5deg) skewX(5deg);
+	-ms-transform: rotate(-135deg);
+	transform : rotateZ(-135deg) skewY(5deg) skewX(5deg);
+	top: 20px;
+	left: -11px;
+}
+
+.has-tip .tooltip.right:before {
+	-moz-transform : rotateZ(45deg) skewY(5deg) skewX(5deg);
+	-o-transform : rotateZ(45deg) skewY(5deg) skewX(5deg);
+	-webkit-transform : rotateZ(45deg) skewY(5deg) skewX(5deg);
+	-ms-transform: rotate(45deg);
+	transform : rotateZ(45deg) skewY(5deg) skewX(5deg);
+	top: 20px;
+	left: inherit;
+	right: -11px;
+}
+
 .has-tip .tooltip.forumPosts:before, .has-tip .tooltip.github:before {
 	left: inherit;
 	right: 40px;
@@ -47,8 +69,8 @@
 	display: inline-block;
 	position: relative;
 	z-index: 100;
-	width: 450px;
-	font-family: Lato, "Lucida Grande", Lucida, Verdana, sans-serif;
+	width: 350px;
+	.font;
 	padding-bottom: 15px; 
 	
 	* {
@@ -69,9 +91,8 @@
 		
 		a {
 			text-shadow: none;
-			font-weight: normal;
-			font-style: normal;
-			font: 18px Lato, "Lucida Grande", Lucida, Verdana, sans-serif;
+			font-size: 18px;
+			.font;
 		}
 	}
 	.button {

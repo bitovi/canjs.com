@@ -1,6 +1,105 @@
-.projects.header {
-	position: relative;
+.project-carousel {
+	.header, .carousel-wrapper {
+		position: relative;
+		margin-top: 20px;
+	}
+
+	.carousel-wrapper {
+		height: 380px;
+		width: 1200px;
+
+		.carousel {
+			overflow: hidden;
+			position: relative;
+			width: 1200px;
+			padding-bottom: 25px;
+
+			.list {
+				height: 210px;
+		      	list-style-type: none;
+		      	margin: 0;
+		      	position: relative;
+		      	left: -165px;
+		      	width: 5000px;
+
+		      	li {
+		      		display: inline-block;
+		      		margin-right: 8px;
+		      		vertical-align: top;
+		      		width: 232px;
+		      	}
+		      	a {
+		      		text-decoration: none;
+		      		img {
+		      			width: 232px;
+		      			background: #eee;
+		      			height: 147px;
+		      			
+		      			&:hover {
+		      				border-color: @color;
+		      			}
+		      		}
+
+		      	}
+		      	h3 {
+		      		font-size: 14px;
+		      	}
+		      	img {
+		      		padding: 0;
+		      	}
+			}
+		}
+	}
+
+	button {
+		background: none;
+		border: 1px solid @color;
+		border: none;
+		color: @dark;
+		text-shadow: none;
+		position: absolute;
+		display: block;
+		line-height: 75px;
+		padding: 0;
+		
+		height: 102%;
+		width: 120px;
+		top: 0;
+		font-size: 75px;
+		z-index: 100;
+		background: -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 16%, rgba(255,255,255,1) 100%);
+		background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(16%,rgba(255,255,255,0.5)), color-stop(100%,rgba(255,255,255,1)));
+		background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.5) 16%,rgba(255,255,255,1) 100%);
+		background: -o-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.5) 16%,rgba(255,255,255,1) 100%);
+		background: -ms-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.5) 16%,rgba(255,255,255,1) 100%);
+		background: linear-gradient(to right,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.5) 16%,rgba(255,255,255,1) 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 );
+
+		
+		
+		&:hover {
+			color: @color;
+		}
+		
+		&.next {
+			right: 0px;
+		}
+		&.prev {
+			left: 0px;
+			
+			background: -moz-linear-gradient(left,  rgba(255,255,255,1) 0%, rgba(255,255,255,0.5) 93%, rgba(255,255,255,0) 100%);
+			background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,1)), color-stop(93%,rgba(255,255,255,0.5)), color-stop(100%,rgba(255,255,255,0)));
+			background: -webkit-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(255,255,255,0.5) 93%,rgba(255,255,255,0) 100%);
+			background: -o-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(255,255,255,0.5) 93%,rgba(255,255,255,0) 100%);
+			background: -ms-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(255,255,255,0.5) 93%,rgba(255,255,255,0) 100%);
+			background: linear-gradient(to right,  rgba(255,255,255,1) 0%,rgba(255,255,255,0.5) 93%,rgba(255,255,255,0) 100%);
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 );
+			
+		}
+	}
 }
+
+
 .carousel {
 	.button-nav {
 			float:left;
@@ -35,115 +134,12 @@
 				&.current {
 					color: @color;
 				}
+				
+				&:hover {
+					border-color: @color;
+				}
 			}
 		}
-	}
-}
-.project-carousel.projects {
-
-	height: 300px;
-	width: 1000px;
-
-	.button {
-		margin-top: 10px;
-	}
-	.content {
-		text-align: left;
-		min-height: 125px;
-		
-		.center {
-			text-align: center;
-			margin: 0;
-		}
-		
-		h2 {
-			font: 30px/33px LatoBold;
-			text-align: left;
-			text-transform: none;
-			color: @colorLinks;
-		}
-		p {
-			text-align: left;
-		}
-		.button {
-			background-color: @color;
-			border-color: darken(@color, 10%);
-			text-transform: uppercase;
-
-			&:hover {
-				background-color: darken(@color, 10%);
-			}
-			.icon-arrow {
-				font-size: 140%;
-				margin-left: 5px;
-				line-height: 14px;
-			}
-		}
-	}
-	.carousel {
-		overflow: hidden;
-		position: relative;
-		margin-left: 25px;
-		width: 960px;
-		
-		.list {
-			height: 130px;
-			margin: 0;
-			list-style-type: none;
-			padding: 0;
-			text-align: left;
-			width: 1200px;
-		}
-		li {
-			display: inline-block;
-			margin-left: 30px;
-			
-			&:first-child {
-				margin-left: 0px;
-			}
-			a {
-				font-size: 18px;
-				line-height: 24px;
-				text-decoration: none;
-				display: block;
-				width: 200px;
-			}
-			div {
-				margin-top: 4px;
-			}
-		}
-		
-	}
-	
-}
-.carousel-wrapper {
-	position: relative;
-}
-.carousel-nav {
-	background: none;
-	border: none;
-	color: #ccc;
-	text-shadow: none;
-	position: absolute;
-	top: 42px;
-	width: 35px;
-	height: 35px;
-	display: block;
-	font-size: 35px;
-	line-height: 35px;
-	padding: 0;
-	
-	&:hover {
-		color: #222;
-		border: none;
-		background: none;
-	}
-	
-	&.next {
-		right: -10px;
-	}
-	&.prev {
-		left: -10px;
 	}
 }
 
@@ -196,12 +192,12 @@
 				
 				h2 {
 					text-shadow: none;
-					font-weight: normal;
-					font-style: normal;
-					font: 28px Lato, "Lucida Grande", Lucida, Verdana, sans-serif;
+					font-size: 28px;
+					.font;
 					text-transform: none;
 					color: @dark;
 					text-decoration: underline;
+					line-height: normal;
 				}
 				img {
 					width: 90px;
@@ -244,22 +240,38 @@
 	top: 10px;
 	right: 0;
 }
-
-.carousel li img {
-	display: block;
-	border: 3px solid @color;
-	.border-radius(@borderRadius);
-
-	filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */ 
-  filter: gray; /* IE6-9 */
-  -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
-}
-.carousel li a:hover img, .carousel li.current a img {
-	border-color: @dark;
-	filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0\'/></filter></svg>#grayscale");
-    -webkit-filter: grayscale(0%);
-}
  
 .index .project-carousel.projects .carousel li a {
 	width: 163px;
+}
+
+.bitovi_oss_project_tooltip {
+	.tooltip {
+		box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.4);
+		
+		.bithub-content {
+			h2 {
+				font-size: 18px;
+				line-height: 24px;
+				a {
+					text-decoration: underline;
+				}
+			}
+			p {
+				font-size: 14px;
+				line-height: 18px;
+				
+				.button {
+					display: inline-block;
+					margin-top: 10px;
+					width: inherit;
+				}
+			}
+			
+		}
+	}
+}
+.light.project-carousel.bitovi_oss_project_carousel {
+	padding-bottom: 70px;
+	margin-top: 40px;
 }
