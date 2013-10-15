@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:56 GMT
+ * Tue, 15 Oct 2013 15:05:05 GMT
  * Licensed MIT
  * Includes: can/control/plugin
  * Download from: http://canjs.com
@@ -12,8 +12,9 @@
     //controllers can be strings or classes
     var i,
         isAControllerOf = function(instance, controllers) {
+            var name = instance.constructor.pluginName || instance.constructor._shortName;
             for (i = 0; i < controllers.length; i++) {
-                if (typeof controllers[i] == 'string' ? instance.constructor._shortName == controllers[i] : instance instanceof controllers[i]) {
+                if (typeof controllers[i] == 'string' ? name == controllers[i] : instance instanceof controllers[i]) {
                     return true;
                 }
             }

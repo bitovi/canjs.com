@@ -1,13 +1,13 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:24 GMT
+ * Tue, 15 Oct 2013 15:04:39 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["can/util/can", "mootools", "can/util/event", "can/util/fragment", "can/util/deferred", "can/util/array/each", "can/util/object/isplain"], function(can) {
+define(["can/util/can", "mootools", "can/util/event", "can/util/fragment", "can/util/deferred", "can/util/array/each", "can/util/object/isplain", "can/util/inserted"], function(can) {
 	// mootools.js
 	// ---------
 	// _MooTools node list._
@@ -167,19 +167,29 @@ define(["can/util/can", "mootools", "can/util/event", "can/util/fragment", "can/
 		}
 		return this;
 	}
+
+	// Alias on/off to bind/unbind respectively
+	can.on = can.bind;
+	can.off = can.unbind;
+
 	can.trigger = function(item, event, args, bubble){
 		// Defaults to `true`.
 		bubble = (bubble === undefined ? true : bubble);
-		args = args || []
+		args = args || [];
+		var propagating = true;
+		
 		if(item.fireEvent){
 			item = item[0] || item;
 			// walk up parents to simulate bubbling .
-			while(item) {
+			while(item && propagating) {
 			// Handle walking yourself.
 				if(!event.type){
 					event = {
 						type : event,
-						target : item
+						target : item,
+						stopPropagation: function(){
+							propagating = false;
+						}
 					}
 				}
 				var events = (item !== window ?
@@ -187,11 +197,11 @@ define(["can/util/can", "mootools", "can/util/event", "can/util/fragment", "can/
 					item.retrieve('events') );
 				if (events && events[event.type]) {
 					events[event.type].keys.each(function(fn){
-						fn.apply(this, [event].concat(args));
+						fn.apply(item, [event].concat(args));
 					}, this);
 				}
 				// If we are bubbling, get parent node.
-				if(bubble && item.parentNode){
+				if(bubble && item.parentNode && item.parentNode.nodeType != 11){
 					item = item.parentNode
 				} else {
 					item = null;
@@ -337,17 +347,37 @@ define(["can/util/can", "mootools", "can/util/event", "can/util/fragment", "can/
 		filtered.destroy();
 		return filtered;
 	}
+	can.has = function(wrapped, element){
+		// this way work in mootools
+		if( Slick.contains(wrapped[0], element) ){
+			return wrapped
+		} else {
+			return []
+		}
+	}
 
 	// Destroyed method.
-	var destroy = Element.prototype.destroy;
+	var destroy = Element.prototype.destroy,
+		grab = Element.prototype.grab;
 	Element.implement({
 		destroy : function(){
-			can.trigger(this,"destroyed",[],false)
+			can.trigger(this,"removed",[],false)
 			var elems = this.getElementsByTagName("*");
 			for ( var i = 0, elem; (elem = elems[i]) !== undefined; i++ ) {
-				can.trigger(elem,"destroyed",[],false);
+				can.trigger(elem,"removed",[],false);
 			}
 			destroy.apply(this, arguments)
+		},
+		grab: function(el){
+			var elems;
+			if(el && el.nodeType === 11){
+				elems = can.makeArray(el.childNodes);
+			} else {
+				elems = [el]
+			}
+			var ret = grab.apply(this,arguments);
+			can.inserted( elems );
+			return ret;
 		}
 	});
 	can.get = function(wrapped, index){
@@ -365,6 +395,6 @@ define(["can/util/can", "mootools", "can/util/event", "can/util/fragment", "can/
 			return Math.random();
 		}
 	}
-
+	Element.NativeEvents["hashchange"] = 2;
 	return can;
 });

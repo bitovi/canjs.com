@@ -1,10 +1,10 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:55 GMT
+ * Tue, 15 Oct 2013 15:05:05 GMT
  * Licensed MIT
- * Includes: can/observe/validations
+ * Includes: can/map/validations
  * Download from: http://canjs.com
  */
 (function(can) {
@@ -41,8 +41,8 @@
         });
     };
 
-    var old = can.Observe.prototype.__set;
-    can.Observe.prototype.__set = function(prop, value, current, success, error) {
+    var old = can.Map.prototype.__set;
+    can.Map.prototype.__set = function(prop, value, current, success, error) {
         var self = this,
             validations = self.constructor.validations,
             errorCallback = function(errors) {
@@ -68,7 +68,7 @@
         return this;
     }
 
-    can.each([can.Observe, can.Model], function(clss) {
+    can.each([can.Map, can.Model], function(clss) {
         // in some cases model might not be defined quite yet.
         if (clss === undefined) {
             return;
@@ -167,7 +167,7 @@
     });
 
 
-    can.extend(can.Observe.prototype, {
+    can.extend(can.Map.prototype, {
 
             errors: function(attrs, newVal) {
                 // convert attrs to an array
@@ -215,5 +215,5 @@
                 return can.isEmptyObject(errors) ? null : isTest ? errors[attrs[0]] : errors;
             }
         });
-    return can.Observe;
+    return can.Map;
 })(can);

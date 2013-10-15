@@ -1,10 +1,10 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:55 GMT
+ * Tue, 15 Oct 2013 15:05:05 GMT
  * Licensed MIT
- * Includes: can/observe/backup
+ * Includes: can/map/backup
  * Download from: http://canjs.com
  */
 (function(can) {
@@ -18,7 +18,7 @@
         return obj;
     };
 
-    can.extend(can.Observe.prototype, {
+    can.extend(can.Map.prototype, {
 
 
             backup: function() {
@@ -48,5 +48,5 @@
 
         })
 
-    return can.Observe;
+    return can.Map;
 })(can);

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:24 GMT
+ * Tue, 15 Oct 2013 15:04:39 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -11,7 +11,7 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 	// ## live.js
 	// 
 	// The live module provides live binding for computes
-	// and can.Observe.List.
+	// and can.List.
 	// 
 	// Currently, it's API is designed for `can/view/render`, but
 	// it could easily be used for other purposes.
@@ -28,7 +28,7 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 	var setup = function(el, bind, unbind){
 		var teardown = function(){
 			unbind(data)
-			can.unbind.call(el,'destroyed', teardown);
+			can.unbind.call(el,'removed', teardown);
 		},
 			data = {
 				teardownCheck: function(parent){
@@ -38,7 +38,7 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 				}
 			}
 
-		can.bind.call(el,'destroyed', teardown);
+		can.bind.call(el,'removed', teardown);
 		bind(data)
 		return data;
 	},
@@ -67,9 +67,9 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 					
 			// Insert it in the `document` or `documentFragment`
 			if( last.nextSibling ){
-				last.parentNode.insertBefore(newFrag, last.nextSibling);
+				can.insertBefore(last.parentNode, newFrag, last.nextSibling)
 			} else {
-				last.parentNode.appendChild(newFrag);
+				can.appendChild(last.parentNode, newFrag);
 			}
 		};
 
@@ -104,7 +104,7 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 								nodesMap[index-1], frag)
 					} else {
 						var el = nodesMap[index][0];
-						el.parentNode.insertBefore(frag, el)
+						can.insertBefore(el.parentNode, frag, el);
 					}
 					// register each item
 					can.each(newMappings,function(nodeList){
@@ -160,13 +160,13 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 			var parentNode = elements.getParentNode(el, parentNode),
 
 				data = listen(parentNode, compute, function(ev, newVal, oldVal){
-				var attached = nodes[0].parentNode;
-				// update the nodes in the DOM with the new rendered value
-				if( attached ) {
-					makeAndPut(newVal);
-				}
-				data.teardownCheck(nodes[0].parentNode);
-			});
+					var attached = nodes[0].parentNode;
+					// update the nodes in the DOM with the new rendered value
+					if( attached ) {
+						makeAndPut(newVal);
+					}
+					data.teardownCheck(nodes[0].parentNode);
+				});
 
 			var nodes,
 				makeAndPut = function(val){
@@ -314,8 +314,23 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 
 
 
+		},
+		specialAttribute: function(el, attributeName, compute){
+			
+			listen(el, compute, function(ev, newVal){
+				elements.setAttr( el, attributeName, getValue( newVal ) );
+			});
+			
+			elements.setAttr(el, attributeName, getValue( compute() ) );
 		}
 	}
+	
+	var getValue = function(val){
+		val = val.replace(elements.attrReg,"");
+		// check if starts and ends with " or '
+		return /^["'].*["']$/.test(val) ? val.substr(1, val.length-2) : val
+	}
+	
 	return live;
 
 });

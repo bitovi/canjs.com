@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:24 GMT
+ * Tue, 15 Oct 2013 15:04:39 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -40,8 +40,17 @@ define(function(){
 			"checked": true,
 			"disabled": true,
 			"readonly": true,
-			"required": true
+			"required": true,
+			src: function(el, val){
+				if(val == null || val == ""){
+					el.removeAttribute("src")
+				} else {
+					el.setAttribute("src",val)
+				}
+			}
 		},
+		// matches the attrName of a regexp
+		attrReg: /([^\s]+)[\s]*=[\s]*/,
 		// elements whos default value we should set
 		defaultValue : ["input","textarea"],
 		// a map of parent element to child elements
@@ -74,7 +83,9 @@ define(function(){
 			var tagName = el.nodeName.toString().toLowerCase(),
 				prop = elements.attrMap[attrName];
 			// if this is a special property
-			if(prop === true) {
+			if(typeof prop === "function"){
+				prop(el, val)
+			} else if(prop === true) {
 				el[attrName]  = true;
 			} else if (prop) {
 				// set the value as true / false
@@ -95,9 +106,14 @@ define(function(){
 		},
 		// removes the attribute
 		removeAttr: function(el, attrName){
-			if( elements.attrMap[attrName] === true ) {
+			var setter = elements.attrMap[attrName];
+			if(typeof prop === "function"){
+				prop(el, undefined)
+			} if( setter === true ) {
 				el[attrName] = false;
-			} else{
+			} else if(typeof setter === "string"){
+				el[setter] = "";
+			} else {
 				el.removeAttribute(attrName);
 			}
 		},
@@ -112,6 +128,19 @@ define(function(){
 			return "" + text;
 		}
 	};
+	
+	// feature detect if setAttribute works with styles
+	(function(){
+		// feature detect if 
+		var div = document.createElement('div')
+		div.setAttribute("style","width: 5px")
+		div.setAttribute("style","width: 10px");
+		// make style use cssText
+		elements.attrMap.style = function(el, val){
+			el.style.cssText = val || ""
+		}
+	})();
+	
 	
 	return elements;
 });

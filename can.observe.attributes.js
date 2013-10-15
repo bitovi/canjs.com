@@ -1,15 +1,14 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:55 GMT
+ * Tue, 15 Oct 2013 15:05:05 GMT
  * Licensed MIT
- * Includes: can/observe/attributes
+ * Includes: can/map/attributes
  * Download from: http://canjs.com
  */
-(function(can, Observe) {
-
-    can.each([can.Observe, can.Model], function(clss) {
+(function(can, Map) {
+    can.each([can.Map, can.Model], function(clss) {
         // in some cases model might not be defined quite yet.
         if (clss === undefined) {
             return;
@@ -45,9 +44,27 @@
                         return true;
                     },
                     "default": function(val, oldVal, error, type) {
+                        // Convert can.Model types using .model and .models
+                        if (can.Map.prototype.isPrototypeOf(type.prototype) &&
+                            typeof type.model === 'function' && typeof type.models === 'function') {
+                            return type[can.isArray(val) ? 'models' : 'model'](val);
+                        }
+
+                        if (can.Map.prototype.isPrototypeOf(type.prototype)) {
+                            if (can.isArray(val) && typeof type.List === 'function') {
+                                return new type.List(val);
+                            }
+                            return new type(val);
+                        }
+
+                        if (typeof type === 'function') {
+                            return type(val, oldVal);
+                        }
+
                         var construct = can.getObject(type),
                             context = window,
                             realType;
+
                         // if type has a . we need to look it up
                         if (type.indexOf(".") >= 0) {
                             // get everything before the last .
@@ -91,26 +108,7 @@
         };
     });
 
-    var oldSetup = can.Observe.prototype.setup;
-
-    can.Observe.prototype.setup = function(obj) {
-
-        var diff = {};
-
-        oldSetup.call(this, obj);
-
-        can.each(this.constructor.defaults, function(value, key) {
-            if (!this.hasOwnProperty(key)) {
-                diff[key] = value;
-            }
-        }, this);
-
-        this._init = 1;
-        this.attr(diff);
-        delete this._init;
-    };
-
-    can.Observe.prototype.__convert = function(prop, value) {
+    can.Map.prototype.__convert = function(prop, value) {
         // check if there is a
 
         var Class = this.constructor,
@@ -130,7 +128,7 @@
         converter.call(Class, value, oldVal, function() {}, type);
     };
 
-    can.Observe.prototype.serialize = function(attrName, stack) {
+    can.Map.prototype.serialize = function(attrName, stack) {
         var where = {},
             Class = this.constructor,
             attrs = {};
@@ -148,7 +146,7 @@
             var type, converter;
 
             // If this is an observe, check that it wasn't serialized earlier in the stack.
-            if (val instanceof can.Observe && can.inArray(val._cid, stack) > -1) {
+            if (val instanceof can.Map && can.inArray(val._cid, stack) > -1) {
                 // Since this object has already been serialized once,
                 // just reference the id (or undefined if it doesn't exist).
                 where[name] = val.attr('id');
@@ -171,5 +169,5 @@
 
         return attrName != undefined ? where[attrName] : where;
     };
-    return can.Observe;
+    return can.Map;
 })(can);

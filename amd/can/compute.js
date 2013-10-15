@@ -1,13 +1,13 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:24 GMT
+ * Tue, 15 Oct 2013 15:04:39 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["can/util/library", "can/util/bind"], function(can, bind) {
+define(["can/util/library", "can/util/bind", "can/util/batch"], function(can, bind) {
 	
 	// returns the
     // - observes and attr methods are called by func
@@ -16,22 +16,22 @@ define(["can/util/library", "can/util/bind"], function(can, bind) {
 	var getValueAndObserved = function(func, self){
 		
 		var oldReading;
-		if (can.Observe) {
-			// Set a callback on can.Observe to know
-			// when an attr is read.
-			// Keep a reference to the old reader
-			// if there is one.  This is used
-			// for nested live binding.
-			oldReading = can.Observe.__reading;
-			can.Observe.__reading = function(obj, attr){
-				// Add the observe and attr that was read
-				// to `observed`
-				observed.push({
-					obj: obj,
-					attr: attr+""
-				});
-			};
-		}
+		
+		// Set a callback on can.Map to know
+		// when an attr is read.
+		// Keep a reference to the old reader
+		// if there is one.  This is used
+		// for nested live binding.
+		oldReading = can.__reading;
+		can.__reading = function(obj, attr){
+			// Add the observe and attr that was read
+			// to `observed`
+			observed.push({
+				obj: obj,
+				attr: attr+""
+			});
+		};
+		
 		
 		var observed = [],
 			// Call the "wrapping" function to get the value. `observed`
@@ -39,9 +39,8 @@ define(["can/util/library", "can/util/bind"], function(can, bind) {
 			value = func.call(self);
 
 		// Set back so we are no longer reading.
-		if(can.Observe){
-			can.Observe.__reading = oldReading;
-		}
+		can.__reading = oldReading;
+		
 		return {
 			value : value,
 			observed : observed
@@ -175,8 +174,9 @@ define(["can/util/library", "can/util/bind"], function(can, bind) {
 				value = newVal;
 			},
 			// this compute can be a dependency of other computes
-			// 
-			canReadForChangeEvent = true;
+			canReadForChangeEvent = true,
+			// save for clone
+			args = can.makeArray(arguments);
 
 		computed = function(newVal){
 			// setting ...
@@ -202,20 +202,27 @@ define(["can/util/library", "can/util/bind"], function(can, bind) {
 				}
 				// fire the change
 				if( old !== value){
-					can.Observe.triggerBatch(computed, "change",[value, old] );
+					can.batch.trigger(computed, "change",[value, old] );
 				}
 				return value;
 			} else {
+				var oldReading = can.__reading,
+					ret;
 				// Let others know to listen to changes in this compute
-				if(can.Observe && can.Observe.__reading && canReadForChangeEvent) {
-					can.Observe.__reading(computed,'change');
+				if( can.__reading && canReadForChangeEvent) {
+					can.__reading(computed,'change');
+					// but we are going to bind on this compute,
+					// so we don't want to bind on what it is binding to
+					delete can.__reading;
 				}
 				// if we are bound, use the cached value
 				if( computeState.bound ) {
-					return value;
+					ret = value;
 				} else {
-					return get.call(context);
+					ret = get.call(context);
 				}
+				can.__reading = oldReading;
+				return ret;
 			}
 		}
 		if(typeof getterSetter === "function"){
@@ -237,7 +244,7 @@ define(["can/util/library", "can/util/bind"], function(can, bind) {
 				// `can.compute(obj, "propertyName", [eventName])`
 				
 				var propertyName = context,
-					isObserve = getterSetter instanceof can.Observe;
+					isObserve = getterSetter instanceof can.Map;
 				if(isObserve){
 					computed.hasDependencies = true;
 				}
@@ -307,7 +314,7 @@ define(["can/util/library", "can/util/bind"], function(can, bind) {
 		var updater= function(newValue, oldValue){
 			value = newValue;
 			// might need a way to look up new and oldVal
-			can.Observe.triggerBatch(computed, "change",[newValue, oldValue])
+			can.batch.trigger(computed, "change",[newValue, oldValue])
 		}
 
 		return can.extend(computed,{
@@ -335,7 +342,7 @@ define(["can/util/library", "can/util/bind"], function(can, bind) {
 			 * - _oldVal_ is the value of the compute before it changed.
 			 *
 			 * `bind` lets you listen to a compute to know when it changes. It works just like
-			 * can.Observe's `[can.Observe.prototype.bind bind]`:
+			 * can.Map's `[can.Map.prototype.bind bind]`:
 			 @codestart
 			 * var tally = can.compute(0);
 			 * tally.bind('change', function(ev, newVal, oldVal) {
@@ -358,7 +365,13 @@ define(["can/util/library", "can/util/bind"], function(can, bind) {
 			 * If _handler_ is not supplied, all handlers bound to _eventType_
 			 * will be removed.
 			 */
-			unbind: can.unbindAndTeardown
+			unbind: can.unbindAndTeardown,
+			clone: function(context){
+				if(context){
+					args[1] = context
+				}
+				return can.compute.apply(can,args);
+			}
 		});
 	};
 	can.compute.binder = computeBinder;

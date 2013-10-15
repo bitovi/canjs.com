@@ -1,14 +1,14 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:55 GMT
+ * Tue, 15 Oct 2013 15:05:05 GMT
  * Licensed MIT
- * Includes: can/observe/list
+ * Includes: can/map/list
  * Download from: http://canjs.com
  */
 (function(can) {
-    can.extend(can.Observe.List.prototype, {
+    can.extend(can.List.prototype, {
             filter: function(callback) {
                 // The filtered list
                 var filtered = new this.constructor();
@@ -66,7 +66,7 @@
             },
 
             map: function(callback) {
-                var mapped = new can.Observe.List();
+                var mapped = new can.List();
                 var self = this;
                 // Again, lets run a generator function
                 var generator = function(element, index) {
@@ -105,5 +105,5 @@
 
         });
 
-    return can.Observe.List;
+    return can.List;
 })(can);

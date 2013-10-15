@@ -1,13 +1,13 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:24 GMT
+ * Tue, 15 Oct 2013 15:04:39 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute", "can/view/render"], function( can ){
+define(["can/util/library", "can/view/scope", "can/view", "can/view/scanner", "can/compute", "can/view/render"], function( can ){
 	
 	// # mustache.js
 	// `can.Mustache`: The Mustache templating engine.
@@ -25,27 +25,41 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 	//
 	// An alias for the context variable used for tracking a stack of contexts.
 	// This is also used for passing to helper functions to maintain proper context.
-	var CONTEXT = '___c0nt3xt',
+	var SCOPE = 'scope',
 		// An alias for the variable used for the hash object that can be passed
 		// to helpers via `options.hash`.
 		HASH = '___h4sh',
-		// An alias for the function that adds a new context to the context stack.
-		STACK = '___st4ck',
-		STACKED = '___st4ck3d',
 		// An alias for the most used context stacking call.
-		CONTEXT_STACK = STACK + '(' + CONTEXT + ',this)',
-		CONTEXT_OBJ = '{context:' + CONTEXT_STACK + ',options:options}',
+		CONTEXT_OBJ = '{scope:' + SCOPE + ',options:options}',
+		// argument names used to start the function (used by scanner and steal)
+		ARG_NAMES = SCOPE+",options",
 		
-		/**
-		 * Checks whether an object is a can.Observe.
-		 * @param  {[can.Observe]}  observable
-		 * @return {Boolean} returns if the object is an observable.
-		 */
-		isObserve = function(obj) {
-			return obj !== null && can.isFunction(obj.attr) && obj.constructor && !!obj.constructor.canMakeObserve;
+		// matches arguments inside a {{ }}
+		argumentsRegExp = /((([^\s]+?=)?('.*?'|".*?"))|.*?)\s/g,
+		
+		// matches a literal number, string, null or regexp
+		literalNumberStringBooleanRegExp = /^(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false|null|undefined)|((.+?)=(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false)|(.+))))$/,
+		
+		// returns an object literal that we can use to look up a value in the current scope
+		makeLookupLiteral = function(type){
+			return '{get:"'+type.replace(/"/g,'\\"')+'"}'
+		},
+		// returns if the object is a lookup
+		isLookup = function(obj){
+			return obj && typeof obj.get == "string"
 		},
 		
-		/**
+		/*
+		 * Checks whether an object is like a can.Map. This takes into
+		 * fact that can.route is can.Map like.
+		 * @param  {[can.Map]}  observable
+		 * @return {Boolean} returns if the object is observable like.
+		 */
+		isObserveLike = function(obj) {
+			return obj instanceof can.Map || (obj && !!obj._get);
+		},
+		
+		/*
 		 * Tries to determine if the object passed is an array.
 		 * @param  {Array}  obj The object to check.
 		 * @return {Boolean} returns if the object is an array.
@@ -53,6 +67,19 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 		isArrayLike = function(obj) {
 			return obj && obj.splice && typeof obj.length == 'number';
 		},
+		// used to make sure .fn and .inverse are always called with a Scope like object
+		makeConvertToScopes = function(orignal, scope, options){
+			return function(updatedScope, updatedOptions){
+				if(updatedScope != null && !(updatedScope instanceof  can.view.Scope)){
+					updatedScope = scope.add(updatedScope)
+				}
+				if(updatedOptions != null && !(updatedOptions instanceof  OptionsScope)){
+					updatedOptions = options.add(updatedOptions)
+				}
+				return orignal(updatedScope, updatedOptions || options)
+			}
+		}
+		
 		
 		// ## Mustache
 		/**
@@ -109,16 +136,16 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 	 *			 message: "foo"
 	 *		 })
 	 */
-	render = function( object, options ) {
-		object = object || {};
-		options = options || {};
-		if(!options.helpers && !options.partials){
-			options.helpers = options;
+	render = function( data, options ) {
+		if(!(data instanceof can.view.Scope)){
+			data = new can.view.Scope(data || {});
 		}
-		return this.template.fn.call(object, object, {
-			_data: object,
-			options: options
-		});
+		if( ! (options instanceof OptionsScope) ){
+			options = new OptionsScope(options || {})
+		}
+		options = options || {};
+		
+		return this.template.fn.call(data, data, options);
 	};
 
 	can.extend(Mustache.prototype, {
@@ -128,21 +155,10 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 			text: {
 				// This is the logic to inject at the beginning of a rendered template. 
 				// This includes initializing the `context` stack.
-				start: 'var ' + CONTEXT + ' = this && this.' + STACKED + ' ? this : [];' + CONTEXT + '.' + STACKED + ' = true;' +
-					'var ' + STACK + ' = function(context, self) {' +
-						'var s;' +
-						'if (arguments.length == 1 && context) {' +
-							's = !context.' + STACKED + ' ? [context] : context;' +
-						// Handle helpers with custom contexts (#228)
-						'} else if (!context.' + STACKED + ') {' +
-							's = [self, context];' +
-						'} else if (context && context === self && context.' + STACKED + ') {' +
-							's = context.slice(0);' +
-						'} else {' +
-							's = context && context.' + STACKED + ' ? context.concat([self]) : ' + STACK + '(context).concat([self]);' +
-						'}' +
-						'return (s.' + STACKED + ' = true) && s;' +
-					'};'
+				start: "",//"var "+SCOPE+"= this instanceof can.view.Scope? this : new can.view.Scope(this);\n",
+				scope: SCOPE,
+				options: ",options: options",
+				argNames: ARG_NAMES
 			},
 			
 			// An ordered token registry for the scanner.
@@ -387,8 +403,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 						// Get the template name and call back into the render method,
 						// passing the name and the current context.
 						var templateName = can.trim(content.replace(/^>\s?/, '')).replace(/["|']/g, "");
-						return "options.partials && options.partials['"+templateName+"'] ? can.Mustache.renderPartial(options.partials['"+templateName+"']," + 
-							CONTEXT_STACK + ",options) : can.Mustache.render('" + templateName + "', " + CONTEXT_STACK + ")";
+						return "can.Mustache.renderPartial('"+templateName+"'," + ARG_NAMES + ")";
 					}
 				},
 
@@ -449,11 +464,20 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 						// with the attribute name with the current context.
 						return "can.proxy(function(__){" +
 							// "var context = this[this.length-1];" +
-							// "context = context." + STACKED + " ? context[context.length-2] : context;" +
-							"can.data(can.$(__),'" + attr + "', this.pop()); }, " + CONTEXT_STACK + ")";
+							// "context = context." + STACKED + " ? context[context.length-2] : context; console.warn(this, context);" +
+							"can.data(can.$(__),'" + attr + "', this.attr('.')); }, " + SCOPE + ")";
 					}
 				},
-				
+				{
+					name:/\s*\(([\$\w]+)\)\s*->([^\n]*)/,
+					fn: function(content){
+						var quickFunc = /\s*\(([\$\w]+)\)\s*->([^\n]*)/,
+							parts = content.match(quickFunc);
+						
+						//find 
+						return "can.proxy(function(__){var " + parts[1] + "=can.$(__);with("+SCOPE+".attr('.')){" + parts[2] + "}}, this);";
+					}
+				},
 				// ### Transformation (default)
 				//
 				// This transforms all content to its interpolated equivalent,
@@ -562,22 +586,22 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 				//
 				// 		var ___v1ew = [];
 				// 		var ___c0nt3xt = [];
-				// 		___c0nt3xt.___st4ck = true;
-				// 		var ___st4ck = function(context, self) {
+				// 		___c0nt3xt.__sc0pe = true;
+				// 		var __sc0pe = function(context, self) {
 				// 			var s;
 				// 			if (arguments.length == 1 && context) {
-				// 				s = !context.___st4ck ? [context] : context;
+				// 				s = !context.__sc0pe ? [context] : context;
 				// 			} else {
-				// 				s = context && context.___st4ck 
+				// 				s = context && context.__sc0pe 
 				//					? context.concat([self]) 
-				//					: ___st4ck(context).concat([self]);
+				//					: __sc0pe(context).concat([self]);
 				// 			}
-				// 			return (s.___st4ck = true) && s;
+				// 			return (s.__sc0pe = true) && s;
 				// 		};
 				//
 				// The `___v1ew` is the the array used to serialize the view.
 				// The `___c0nt3xt` is a stacking array of contexts that slices and expands with each nested section.
-				// The `___st4ck` function is used to more easily update the context stack in certain situations.
+				// The `__sc0pe` function is used to more easily update the context stack in certain situations.
 				// Usually, the stack function simply adds a new context (`self`/`this`) to a context stack. 
 				// However, custom helpers will occasionally pass override contexts that need their own context stack.
 				//
@@ -593,9 +617,9 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 				//
 				//		___v1ew.push("\"");
 				//		___v1ew.push(can.view.txt(1, '', 0, this, function() {
-				// 			return can.Mustache.txt(___st4ck(___c0nt3xt, this), null, 
+				// 			return can.Mustache.txt(__sc0pe(___c0nt3xt, this), null, 
 				//				can.Mustache.get("a.b.c.d.e.name", 
-				//					___st4ck(___c0nt3xt, this))
+				//					__sc0pe(___c0nt3xt, this))
 				//			);
 				//		}));
 				//		___v1ew.push("\" == \"Phil\"");
@@ -624,8 +648,8 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 				//
 				//		___v1ew.push("\"");
 				// 		___v1ew.push(can.view.txt(0, '', 0, this, function() {
-				// 			return can.Mustache.txt(___st4ck(___c0nt3xt, this), "#", 
-				//				can.Mustache.get("a", ___st4ck(___c0nt3xt, this)), 
+				// 			return can.Mustache.txt(__sc0pe(___c0nt3xt, this), "#", 
+				//				can.Mustache.get("a", __sc0pe(___c0nt3xt, this)), 
 				//					[{
 				// 					_: function() {
 				// 						return ___v1ew.join("");
@@ -636,10 +660,10 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 				// 						___v1ew.push(can.view.txt(1, '', 0, this, 
 				//								function() {
 				//  								return can.Mustache.txt(
-				// 									___st4ck(___c0nt3xt, this), 
+				// 									__sc0pe(___c0nt3xt, this), 
 				// 									null, 
 				// 									can.Mustache.get("b.c.d.e.name", 
-				// 										___st4ck(___c0nt3xt, this))
+				// 										__sc0pe(___c0nt3xt, this))
 				// 								);
 				// 							}
 				// 						));
@@ -657,7 +681,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 				// 
 				// Within the `fn` function is the section's render context, which in this case will render anything between the `{{#a}}` and `{{/a}}` tokens.
 				// This function has `___c0nt3xt` as an argument because custom helpers can pass their own override contexts. For any case where custom helpers
-				// aren't used, `___c0nt3xt` will be equivalent to the `___st4ck(___c0nt3xt, this)` stack created by its parent section. The `inverse` function
+				// aren't used, `___c0nt3xt` will be equivalent to the `__sc0pe(___c0nt3xt, this)` stack created by its parent section. The `inverse` function
 				// works similarly, except that it is added when `{{^a}}` and `{{else}}` are used. `var ___v1ew = []` is specified in `fn` and `inverse` to 
 				// ensure that live binding in nested sections works properly.
 				//
@@ -700,7 +724,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 								 * 
 								 * Depending on the value's type, the following actions happen:
 								 * 
-								 * - `Array` or [can.Observe.List] - the block is rendered for 
+								 * - `Array` or [can.List] - the block is rendered for 
 								 *   each item in the array. The [can.Mustache.context context] is set to 
 								 *   the item within each block rendering.
 								 * - A `truthy` value - the block is rendered with the [can.Mustache.context context]
@@ -816,7 +840,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 								 * @param {...can.Mustache.key|String|Number} [args] Space seperated arguments
 								 * that get passed to the helper function as arguments. If the key's value is a:
 								 * 
-								 *  - [can.Observe] - A getter/setter [can.compute] is passed.
+								 *  - [can.Map] - A getter/setter [can.compute] is passed.
 								 *  - [can.compute] - The can.compute is passed.
 								 *  - `function` - The function's return value is passed.
 								 * 
@@ -884,7 +908,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 								 *         // number -> 4
 								 *     });
 								 * 
-								 * If an argument `key` value is a [can.Observe] property, the Observe's 
+								 * If an argument `key` value is a [can.Map] property, the Observe's 
 								 * property is converted to a getter/setter [can.compute]. For example:
 								 * 
 								 * The template:
@@ -893,7 +917,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 								 * 
 								 * Rendered with:
 								 * 
-								 *     {user: new can.Observe({name: "Slim Shady"})}
+								 *     {user: new can.Map({name: "Slim Shady"})}
 								 * 
 								 * Needs the helper to check if name is a function or not:
 								 * 
@@ -987,7 +1011,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 								 * @param {...can.Mustache.key|String|Number} [args] Space seperated arguments
 								 * that get passed to the helper function as arguments. If the key's value is a:
 								 * 
-								 *  - [can.Observe] - A getter/setter [can.compute] is passed.
+								 *  - [can.Map] - A getter/setter [can.compute] is passed.
 								 *  - [can.compute] - The can.compute is passed.
 								 *  - `function` - The function's return value is passed.
 								 * 
@@ -1046,7 +1070,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 								 * @param {...can.Mustache.key|String|Number} [args] Space seperated arguments
 								 * that get passed to the helper function as arguments. If the key's value is a:
 								 * 
-								 *  - [can.Observe] - A getter/setter [can.compute] is passed.
+								 *  - [can.Map] - A getter/setter [can.compute] is passed.
 								 *  - [can.compute] - The can.compute is passed.
 								 *  - `function` - The function's return value is passed.
 								 * 
@@ -1143,7 +1167,11 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 								 *     </ul>
 								 */
 								case '^':
-									result.push(cmd.insert + 'can.view.txt(0,\'' + cmd.tagName + '\',' + cmd.status + ',this,function(){ return ');
+									if(cmd.specialAttribute) {
+										result.push(cmd.insert + 'can.view.onlytxt(this,function(){ return ');
+									} else {
+										result.push(cmd.insert + 'can.view.txt(0,\'' + cmd.tagName + '\',' + cmd.status + ',this,function(){ return ');
+									}
 									break;
 								// Close the prior section.
 								/**
@@ -1175,65 +1203,51 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 								hashing = false,
 								arg, split, m;
 							
+							// Start the content render block.
+							result.push('can.Mustache.txt(\n'+CONTEXT_OBJ+',\n' + (mode ? '"'+mode+'"' : 'null') + ',');
+							
 							// Parse the helper arguments.
 							// This needs uses this method instead of a split(/\s/) so that 
 							// strings with spaces can be correctly parsed.
-							(can.trim(content)+' ').replace(/((([^\s]+?=)?('.*?'|".*?"))|.*?)\s/g, function(whole, part) {
-								args.push(part);
-							});
-
-							// Start the content render block.
-							result.push('can.Mustache.txt('+CONTEXT_OBJ+',' + (mode ? '"'+mode+'"' : 'null') + ',');
-						
-							// Iterate through the helper arguments, if there are any.
-							for (; arg = args[i]; i++) {
-								i && result.push(',');
+							var args = [],
+								hashes = [];
+							
+							(can.trim(content)+' ').replace(argumentsRegExp, function(whole, arg) {
 								
 								// Check for special helper arguments (string/number/boolean/hashes).
-								if (i && (m = arg.match(/^(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false)|((.+?)=(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false)|(.+))))$/))) {
+								if (i && (m = arg.match(literalNumberStringBooleanRegExp))) {
 									// Found a native type like string/number/boolean.
 									if (m[2]) {
-										result.push(m[0]);
+										args.push(m[0]);
 									}
 									// Found a hash object.
 									else {
-										// Open the hash object.
-										if (!hashing) {
-											hashing = true;
-											result.push('{' + HASH + ':{');
-										}
+										// Addd to the hash object.
 										
-										// Add the key/value.
-										result.push(m[4], ':', m[6] ? m[6] : 'can.Mustache.get("' + m[5].replace(/"/g,'\\"') + '",' + CONTEXT_OBJ + ')');
-										
-										// Close the hash if this was the last argument.
-										if (i == args.length - 1) {
-											result.push('}}');
-										}
+										hashes.push(m[4]+":"+(m[6] ? m[6] : makeLookupLiteral(m[5])))
 									}
 								}
 								// Otherwise output a normal interpolation reference.
 								else {
-									result.push('can.Mustache.get("' + 
-										// Include the reference name.
-										arg.replace(/"/g,'\\"') + '",' +
-										// Then the stack of context.
-										CONTEXT_OBJ +
-										// Flag as a helper method to aid performance, 
-										// if it is a known helper (anything with > 0 arguments).
-										(i == 0 && args.length > 1 ? ',true' : ',false') +
-										(i > 0 ? ',true' : ',false') +
-										')');
+									args.push( makeLookupLiteral(arg) );
 								}
+								i++;
+							});
+
+							result.push(args.join(","));
+							if( hashes.length ) {
+								result.push(",{"+HASH+":{"+hashes.join(",")+"}}")
 							}
+							
+						
 						}
 						
 						// Create an option object for sections of code.
-						mode && mode != 'else' && result.push(',[{_:function(){');
+						mode && mode != 'else' && result.push(',[\n\n');
 						switch (mode) {
 							// Truthy section
 							case '#':
-								result.push('return ___v1ew.join("");}},{fn:function(' + CONTEXT + '){var ___v1ew = [];');
+								result.push('{fn:function(' + ARG_NAMES + '){var ___v1ew = [];');
 								break;
 							// If/else section
 							// Falsey section
@@ -1261,12 +1275,15 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 							 * 
 							 */
 							case 'else':
-							case '^':
-								result.push('return ___v1ew.join("");}},{inverse:function(' + CONTEXT + '){var ___v1ew = [];');
+								result.push('return ___v1ew.join("");}},\n{inverse:function(' + ARG_NAMES + '){\nvar ___v1ew = [];');
 								break;
-							// Not a section
+							case '^':
+								result.push('{inverse:function(' + ARG_NAMES + '){\nvar ___v1ew = [];');
+								break;
+							
+							// Not a section, no mode
 							default:
-								result.push(');');
+								result.push(')');
 								break;
 						}
 						
@@ -1296,51 +1313,69 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 	 * @param {String} mode		The mode to evaluate the section with: # for truthy, ^ for falsey
 	 * @param {String|Object} name	The string (or sometimes object) to pass to the given helper method.
 	 */
-	Mustache.txt = function(context, mode, name) {
-		// Grab the extra arguments to pass to helpers.
-		var args = Array.prototype.slice.call(arguments, 3),
-			// Create a default `options` object to pass to the helper.
-			options = can.extend.apply(can, [{
-					fn: function() {},
-					inverse: function() {}
-			}].concat(mode ? args.pop() : []));
-			
-			
-		var extra = {};
-		if(context.context) {
-			extra = context.options;
-			context = context.context;
+	Mustache.txt = function(scopeAndOptions, mode, name) {
+		var scope = scopeAndOptions.scope,
+			options = scopeAndOptions.options,
+			args = [],
+			helperOptions = {
+				fn: function() {},
+				inverse: function() {}
+			},
+			hash,
+			context = scope.attr("."); 
+		
+		// convert lookup values to actual values in name, arguments, and hash
+		for(var i =3; i < arguments.length;i++){
+			var arg = arguments[i]
+			if(mode && can.isArray( arg )){
+				// merge into options
+				helperOptions = can.extend.apply(can, [helperOptions].concat(arg))
+			} else if(arg && arg[HASH]){
+				hash = arg[HASH];
+				// get values on hash
+				for(var prop in hash){
+					if(isLookup(hash[prop]) ){
+						hash[prop] = Mustache.get(hash[prop].get, scopeAndOptions)
+					}
+				}
+			} else if(arg && isLookup(arg)){
+				args.push( Mustache.get(arg.get, scopeAndOptions, false, true) );
+			} else {
+				args.push(arg)
+			}
 		}
+		
+		if( isLookup(name) ){
+			name = Mustache.get(name.get, scopeAndOptions, args.length , false)
+		}	
+			
+		// overwrite fn and inverse to always convert to scopes
+		helperOptions.fn = makeConvertToScopes(helperOptions.fn, scope, options);
+		helperOptions.inverse = makeConvertToScopes(helperOptions.inverse, scope, options)
 
 		// Check for a registered helper or a helper-like function.
-		if (helper = (Mustache.getHelper(name,extra) || (can.isFunction(name) && !name.isComputed && { fn: name }))) {
-			// Use the most recent context as `this` for the helper.
-			var stack = context[STACKED] && context,
-				context = (stack && context[context.length - 1]) || context,
-				// Update the options with a function/inverse (the inner templates of a section).
-				opts = {
-					fn: can.proxy(options.fn, context),
-					inverse: can.proxy(options.inverse, context)
-				}, 
-				lastArg = args[args.length-1];
+		if (helper = (Mustache.getHelper(name,options) || (can.isFunction(name) && !name.isComputed && !name.isObserveMethod && { fn: name }))) {
+			// Add additional data to be used by helper functions
 			
-			// Store the context stack in the options if one exists
-			if (stack) {
-				opts.contexts = stack;
-			}
-			// Add the hash to `options` if one exists
-			if (lastArg && lastArg[HASH]) {
-				opts.hash = args.pop()[HASH];
-			}
-			args.push(opts);
+			can.extend(helperOptions,{
+				context: context,
+				scope: scope,
+				contexts: scope,
+				hash: hash
+			})
 
+			args.push(helperOptions)
 			// Call the helper.
 			return helper.fn.apply(context, args) || '';
 		}
 
-		// if a compute, get the value
-		if( can.isFunction(name) && name.isComputed ){
-			name = name();
+		
+		if( can.isFunction(name)  ){
+			if ( name.isComputed ) {
+				name = name();
+			} else if( name.isObserveMethod){
+				name = name(context, scope);
+			}
 		}
 
 		// An array of arguments to check for truthyness when evaluating sections.
@@ -1353,7 +1388,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 		if (mode) {
 			for (i = 0; i < validArgs.length; i++) {
 				arg          = validArgs[i];
-				argIsObserve = typeof arg !== 'undefined' && isObserve(arg);
+				argIsObserve = typeof arg !== 'undefined' && isObserveLike(arg);
 				// Array-like objects are falsey if their length = 0.
 				if (isArrayLike(arg)) {
 					// Use .attr to trigger binding on empty lists returned from function
@@ -1379,11 +1414,11 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 				case '#':
 					// Iterate over arrays
 					if (isArrayLike(name)) {
-						var isObserveList = isObserve(name);
+						var isObserveList = isObserveLike(name);
 						
 						// Add the reference to the list in the contexts.
 						for (i = 0; i < name.length; i++) {
-							result.push(options.fn.call(name[i], context) || '');
+							result.push(helperOptions.fn(name[i]|| '') );
 							
 							// Ensure that live update works on observable lists
 							isObserveList && name.attr(''+i);
@@ -1392,12 +1427,12 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 					}
 					// Normal case.
 					else {
-						return options.fn.call(name || {}, context) || '';
+						return helperOptions.fn(name || {}) || '';
 					}
 					break;
 				// Falsey section.
 				case '^':
-					return options.inverse.call(name || {}, context) || '';
+					return helperOptions.inverse(name || {}) || '';
 					break;
 				default:
 					// Add + '' to convert things like numbers to strings.
@@ -1441,118 +1476,70 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 	 * @param {String} ref      The reference to check for on the obj/context.
 	 * @param {Object} obj  		The object to use for checking for a reference.
 	 * @param {Object} context  The context to use for checking for a reference if it doesn't exist in the object.
-	 * @param {Boolean} [isHelper]  Whether the reference is a helper.
+	 * @param {Boolean} [isHelper]  Whether the reference is seen as a helper.
 	 */
-	Mustache.get = function(ref, contexts, isHelper, isArgument) {
-		var options = contexts.options || {};
-		contexts = contexts.context || contexts;
-		// Assume the local object is the last context in the stack.
-		var obj = contexts[contexts.length - 1],
-			// Assume the parent context is the second to last context in the stack.
-			context = contexts[contexts.length - 2],
-			// Split the reference (like `a.b.c`) into an array of key names.
-			names = ref.indexOf('\\.') == -1 
-				// Reference doesn't contain escaped periods
-				? ref.split('.')
-				// Reference contains escaped periods (`a.b\c.foo` == `a["b.c"].foo)
-				: (function() {
-						var names = [], last = 0;
-						ref.replace(/(\\)?\./g, function($0, $1, index) {
-							if (!$1) {
-								names.push(ref.slice(last, index).replace(/\\\./g,'.'));
-								last = index + $0.length;
-							}
-						});
-						names.push(ref.slice(last).replace(/\\\./g,'.'));
-						return names;
-					})(),
-			namesLength = names.length,
-			value, lastValue, name, i, j,
-			// if we walk up and don't find a property, we default
-			// to listening on an undefined property of the first
-			// context that is an observe
-			defaultObserve,
-			defaultObserveName;
-
-		// Handle `this` references for list iteration: {{.}} or {{this}}
-		if (/^\.|this$/.test(ref)) {
-			// If context isn't an object, then it was a value passed by a helper so use it as an override.
-			if (!/^object|undefined$/.test(typeof context)) {
-				return context || '';
+	Mustache.get = function(ref, scopeAndOptions, isHelper, isArgument) {
+		
+		if(isHelper){
+			// highest priority to registered helpers
+			if(Mustache.getHelper(ref, scopeAndOptions.options)){
+				return ref
 			}
-			// Otherwise just return the closest object.
-			else {
-				while (value = contexts.pop()) {
-					if (typeof value !== 'undefined') {
-						return value;
-					} 
-				}
-				return '';
-			}
-		} 
-		// Handle object resolution (like `a.b.c`).
-		else if (!isHelper) {
-			// Reverse iterate through the contexts (last in, first out).
-			for (i = contexts.length - 1; i >= 0; i--) {
-				// Check the context for the reference
-				value = contexts[i];
-			
-				// Is the value a compute?
-				if(can.isFunction(value) && value.isComputed) {
-					value = value();
-				}
-			
-				// Make sure the context isn't a failed object before diving into it.
-				if (typeof value !== 'undefined' && value !== null) {
-					var isHelper = Mustache.getHelper(ref, options);
-					for (j = 0; j < namesLength; j++) {
-						// Keep running up the tree while there are matches.
-						if (typeof value[names[j]] !== 'undefined' && value[names[j]] !== null) {
-							lastValue = value;
-							value = value[name = names[j]];
-						}
-						// if there's a name conflict between property and helper
-						// property wins
-						else if(isHelper) {
-							return ref;
-						}
-						// If it's undefined, still match if the parent is an Observe.
-						else if ( isObserve(value) ) {
-							defaultObserve = value;
-							defaultObserveName = names[j];
-							lastValue = value = undefined;
-							break;
-						}
-						else {
-							lastValue = value = undefined;
-							break;
-						}
-					}
-				}
-			
-				// Found a matched reference.
-				if (value !== undefined ) {
-					return Mustache.resolve(value, lastValue, name, isArgument);
-				}
-			}
-		}
-
-		if( defaultObserve && 
-			// if there's not a helper by this name and no attribute with this name
-			!(Mustache.getHelper(ref) &&
-				can.inArray(defaultObserveName, can.Observe.keys(defaultObserve)) === -1) ) {
-			return defaultObserve.compute(defaultObserveName);
-		}
-		// Support helpers without arguments, but only if there wasn't a matching data reference.
-		// Helpers have priority over local function, see https://github.com/bitovi/canjs/issues/258
-		if (value = Mustache.getHelper(ref,options)) {
-			return ref;
-		} else if (typeof obj !== 'undefined' && obj !== null && can.isFunction(obj[ref])) {
 			// Support helper-like functions as anonymous helpers
-			return obj[ref];
+			// Check if there is a method directly in the "top" context
+			if(scopeAndOptions.scope && can.isFunction(scopeAndOptions.scope.attr('.')[ref]) ){
+				return scopeAndOptions.scope.attr('.')[ref];
+			}
+			
 		}
-
-		return '';
+		
+		var options = scopeAndOptions.options || {};
+		
+		
+		var data = scopeAndOptions.scope.get(ref);
+		
+		// use value over helper only if within top scope
+		
+		if(Mustache.getHelper(ref, options) && data.scope != scopeAndOptions.scope){
+			return ref
+		}
+		
+		// special behaviors if an argument
+		if(isArgument){
+			if(can.isFunction(data.value)){
+				if(data.value.isComputed){
+					return data.value
+				} else {
+					return function() { 
+						return data.value.apply(data.parent, arguments); 
+					};
+				}
+			}  else if( isObserveLike(data.parent) ) {
+				return data.parent.compute(data.name);
+			} 
+		}
+		// Invoke the length to ensure that Observe.List events fire.
+		if (data.value && isObserveLike(data.value) && isArrayLike(data.value) && data.value.attr('length')){
+			return data.value;
+		}
+		// If it's a function on an observe's prototype
+		else if( can.isFunction(data.value) && isObserveLike(data.parent) && data.parent.constructor.prototype[data.name] === data.value  ){
+			// make sure the value is a function that calls the value
+			var val = can.proxy(data.value, data.parent);
+			// mark val as method
+			val.isObserveMethod = true;
+			return val;
+		}
+		// Add support for observes
+		else if ( data.parent && isObserveLike(data.parent)) {
+			return data.parent.compute(data.name);
+		} else if( can.isFunction(data.value) ){
+			return data.value.call(data.parent)
+		}
+	
+		
+		
+		return data.value;
 	};
 	
 	/**
@@ -1586,11 +1573,11 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 			return lastValue[name]();
 		} 
 		// Invoke the length to ensure that Observe.List events fire.
-		else if (isObserve(value) && isArrayLike(value) && value.attr('length')){
+		else if (isObserveLike(value) && isArrayLike(value) && value.attr('length')){
 			return value;
 		}
 		// Add support for observes
-		else if (lastValue && isObserve(lastValue)) {
+		else if (lastValue && isObserveLike(lastValue)) {
 			return lastValue.compute(name);
 		} 
 		else if (can.isFunction(value)) {
@@ -1604,6 +1591,19 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 	/**
 	 * @static
 	 */
+	
+	var OptionsScope = can.view.Scope.extend({
+		init: function(data, parent){
+			if(!data.helpers && !data.partials){
+				data = {
+					helpers: data
+				}
+			}
+			can.view.Scope.prototype.init.apply(this, arguments)
+		}
+	})
+	
+	
 	// ## Helpers
 	//
 	// Helpers are functions that can be called from within a template.
@@ -1655,9 +1655,8 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 	 * Returns a helper given the name.
 	 */
 	Mustache.getHelper = function(name,options) {
-		return options && options.helpers && options.helpers[name] && {
-			fn: options.helpers[name]
-		} || this._helpers[name];
+		var helper = options.attr("helpers."+name)
+		return helper ? { fn: helper } : this._helpers[name];	
 	};
 
 	/**
@@ -1683,21 +1682,26 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 	 *
 	 * 		context[partial] === "movember.mustache"
 	 */
-	Mustache.render = function(partial, context){
+	Mustache.render = function(partial, context, options){
 		// Make sure the partial being passed in
 		// isn't a variable like { partial: "foo.mustache" }
-		if(!can.view.cached[partial] && context[partial]){
-			partial = context[partial];
+		if(!can.view.cached[partial] && context.attr('partial')){
+			partial = context.attr('partial');
 		}
 
 		// Call into `can.view.render` passing the
 		// partial and context.
-		return can.view.render(partial, context);
+		return can.view.render(partial, context/*, options*/);
 	};
 
-	Mustache.renderPartial = function(partial,context,options) {
-		return partial.render ? partial.render(context,options) :
-			partial(context,options);
+	Mustache.renderPartial = function(partialName,scope,options) {
+		var partial = options.attr("partials."+partialName)
+		if(partial){
+			return partial.render ? partial.render(scope,options) :
+					partial(scope,options);
+		} else {
+			return can.Mustache.render(partialName,scope,options);
+		}
 	};
 
 	// The built-in Mustache helpers.
@@ -1813,7 +1817,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 		 * context. If the value is a function or can.compute, the function's 
 		 * return value is used.
 		 * 
-		 * If the value of the key is a [can.Observe.List], the resulting HTML is updated when the
+		 * If the value of the key is a [can.List], the resulting HTML is updated when the
 		 * list changes. When a change in the list happens, only the minimum amount of DOM
 		 * element changes occur.
 	 	 * 
@@ -1850,7 +1854,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 		'each': function(expr, options) {
       		expr = Mustache.resolve(expr);
 			if (!!expr && isArrayLike(expr)) {
-				if (isObserve(expr) && typeof expr.attr('length') !== 'undefined') {
+				if (isObserveLike(expr) && typeof expr.attr('length') !== 'undefined') {
 					return can.view.lists && can.view.lists(expr, function(item) {
 						return options.fn(item);
 					});
@@ -1935,7 +1939,7 @@ define(["can/util/library", "can/view", "can/view/scanner", "can/observe/compute
 
 		// Returns a `function` that renders the view.
 		script: function( id, src ) {
-			return "can.Mustache(function(_CONTEXT,_VIEW) { " + new Mustache({
+			return "can.Mustache(function("+ARG_NAMES+") { " + new Mustache({
 				text: src,
 				name: id
 			}).template.out + " })";

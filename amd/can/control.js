@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:24 GMT
+ * Tue, 15 Oct 2013 15:04:39 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -147,7 +147,7 @@ define(["can/util/library", "can/construct"], function( can ) {
 			if ( options || ! paramReplacer.test( methodName )) {
 				// If we have options, run sub to replace templates `{}` with a
 				// value from the options or the window
-				var convertedName = options ? can.sub(methodName, [options, window]) : methodName;
+				var convertedName = options ? can.sub(methodName, this._lookup(options)) : methodName;
 				if(!convertedName) {
 					return null;
 				}
@@ -168,6 +168,9 @@ define(["can/util/library", "can/construct"], function( can ) {
 					delegate : arr ? convertedName[0] : undefined
 				};
 			}
+		},
+		_lookup: function(options){
+			return [options, window]
 		},
 		// An object of `{eventName : function}` pairs that Control uses to 
 		// hook up events auto-magically.
@@ -664,9 +667,9 @@ define(["can/util/library", "can/construct"], function( can ) {
 	
 				// Setup to be destroyed...  
 				// don't bind because we don't want to remove it.
-				can.bind.call(element,"destroyed", destroyCB);
+				can.bind.call(element,"removed", destroyCB);
 				bindings.push(function( el ) {
-					can.unbind.call(el,"destroyed", destroyCB);
+					can.unbind.call(el,"removed", destroyCB);
 				});
 				return bindings.length;
 			}
@@ -699,7 +702,7 @@ define(["can/util/library", "can/construct"], function( can ) {
 		 * be calling this unless in use with [can.Control::on].
 		 */
 		off : function(){
-			var el = this.element[0]
+			var el = this.element[0];
 			each(this._bindings || [], function( value ) {
 				value(el);
 			});

@@ -1,13 +1,13 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:24 GMT
+ * Tue, 15 Oct 2013 15:04:39 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["can/util/can", "zepto", "can/util/object/isplain", "can/util/event", "can/util/fragment", "can/util/deferred", "can/util/array/each"], function (can) {
+define(["can/util/can", "zepto", "can/util/object/isplain", "can/util/event", "can/util/fragment", "can/util/deferred", "can/util/array/each", "can/util/inserted"], function (can) {
 	var $ = Zepto;
 
 	// data.js
@@ -39,12 +39,16 @@ define(["can/util/can", "zepto", "can/util/object/isplain", "can/util/event", "c
 			});
 	};
 	$.cleanData = function(elems){
+		// trigger all the events ... then remove the data
+		for ( var i = 0, elem;  (elem = elems[i]) !== undefined; i++ ) {
+			can.trigger(elem,"removed",[],false);
+		}
 		for ( var i = 0, elem;
 		      (elem = elems[i]) !== undefined; i++ ) {
-			can.trigger(elem,"destroyed",[],false)
-			var id = elem[exp]
+			var id = elem[exp];
 			delete data[id];
 		}
+		
 	}
 
 	// zepto.js
@@ -106,6 +110,11 @@ define(["can/util/can", "zepto", "can/util/object/isplain", "can/util/event", "c
 		}
 		return this;
 	}
+
+	// Alias on/off to bind/unbind respectively
+	can.on = can.bind;
+	can.off = can.unbind;
+	
 	can.delegate = function (selector, ev, cb) {
 		if (this.delegate) {
 			this.delegate(selector, ev, cb)
@@ -121,7 +130,7 @@ define(["can/util/can", "zepto", "can/util/object/isplain", "can/util/event", "c
 		}
 	}
 
-	$.each(["append", "filter", "addClass", "remove", "data"], function (i, name) {
+	$.each(["append", "filter", "addClass", "remove", "data","has"], function (i, name) {
 		can[name] = function (wrapped) {
 			return wrapped[name].apply(wrapped, can.makeArray(arguments).slice(1))
 		}
@@ -201,11 +210,15 @@ define(["can/util/can", "zepto", "can/util/object/isplain", "can/util/event", "c
 	}
 
 	$.fn.remove = function () {
-		$.cleanData(this);
 		this.each(function () {
 			if (this.parentNode != null) {
 				// might be a text node
-				this.getElementsByTagName && $.cleanData(this.getElementsByTagName('*'))
+				
+				if( this.getElementsByTagName ){
+					console.log()
+					$.cleanData( [this].concat( can.makeArray(this.getElementsByTagName('*')) )  );
+				} 
+				
 				this.parentNode.removeChild(this);
 			}
 		});
@@ -237,6 +250,33 @@ define(["can/util/can", "zepto", "can/util/object/isplain", "can/util/event", "c
 	can.get = function (wrapped, index) {
 		return wrapped[index];
 	}
+
+	// setup inserted calls
+	can.each([ 'after','prepend', 'before', 'append','html'], function(name){
+		var original = Zepto.fn[name];
+		Zepto.fn[name] = function(){
+			var elems,
+				args = can.makeArray(arguments);
+			
+			if( args[0] != null ){
+				// documentFragment
+				if( typeof args[0] == "string" ) {
+					args[0] = $.zepto.fragment(args[0]);	
+				} 
+				if(args[0].nodeType === 11){
+					elems = can.makeArray(args[0].childNodes);
+				} else {
+					elems = [args[0]]
+				}
+			}
+			
+			var ret = original.apply(this,args);
+			
+			can.inserted( elems );
+			
+			return ret;
+		}
+	})
 
 
 	return can;

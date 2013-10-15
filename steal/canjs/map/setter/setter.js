@@ -1,18 +1,18 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:24 GMT
+ * Tue, 15 Oct 2013 15:04:39 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["can/util/library", "can/observe/attributes"], function(can) {
+steal('can/util', 'can/map/attributes', function(can) {
 
 /**
  * @function can.classize can.classize
- * @parent can.Observe.setter
- * @plugin can/observe/setter
+ * @parent can.Map.setter
+ * @plugin can/map/setter
  * 
  * @description Make a string into a class name.
  *
@@ -43,7 +43,7 @@ can.classize =  function( s , join) {
 }
 
 var classize = can.classize,
-	proto =  can.Observe.prototype,
+	proto =  can.Map.prototype,
 	old = proto.__set;
 
 proto.__set = function(prop, value, current, success, error){
@@ -79,5 +79,5 @@ proto.__set = function(prop, value, current, success, error){
 	
 	return this;
 };
-return can.Observe;
+return can.Map;
 });

@@ -1,13 +1,35 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:24 GMT
+ * Tue, 15 Oct 2013 15:04:39 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["can/util/can", "yui", "can/util/event", "can/util/fragment", "can/util/array/each", "can/util/object/isplain", "can/util/deferred", "can/util/hashchange"], function (can) {
+define(["can/util/can", "yui", "can/util/event", "can/util/fragment", "can/util/array/each", "can/util/object/isplain", "can/util/deferred", "can/util/hashchange", "can/util/inserted"], function (can) {
+
+	// lets overwrite 
+	YUI.add('can-modifications', function (Y, NAME) {
+		var addHTML = Y.DOM.addHTML;
+	
+		Y.DOM.addHTML = function(node, content, where){
+			if(typeof content === "string" || typeof content == "number"){
+				content = can.buildFragment(content);
+			}
+			var elems;
+			if( content.nodeType === 11 ) {
+				elems = can.makeArray(content.childNodes);
+			} else {
+				elems = [content]
+			}
+			var ret = addHTML.call(this, node, content, where);
+			
+			can.inserted( elems );
+			
+			return ret;
+		}
+	},'3.7.3', {"requires": ["node-base"]})
 
 	// ---------
 	// _YUI node list._
@@ -109,14 +131,37 @@ define(["can/util/can", "yui", "can/util/event", "can/util/fragment", "can/util/
 	can.remove = function (wrapped) {
 		return wrapped.remove() && wrapped.destroy();
 	}
+	can.has = function(wrapped, node){
+		if( Y.DOM.contains(wrapped[0], node) ){
+			return wrapped;
+		} else {
+			return [];
+		}
+	}
 	// Destroyed method.
-	can._yNodeDestroy = can._yNodeDestroy || Y.Node.prototype.destroy;
-	Y.Node.prototype.destroy = function () {
-		can.trigger(this, "destroyed", [], false)
-		can._yNodeDestroy.apply(this, arguments)
+	can._yNodeRemove = can._yNodeRemove || Y.Node.prototype.remove;
+	Y.Node.prototype.remove = function () {
+		// make sure this is only fired on normal nodes, if it
+		// is fired on a text node, it will bubble because
+		// the method used to stop bubbling (listening to an event)
+		// does not work on text nodes
+		var node = this.getDOMNode();
+		if( node.nodeType === 1 ){
+			can.trigger(this, "removed", [], false);
+			
+			var elems = node.getElementsByTagName('*');
+			
+			for ( var i = 0, elem;  (elem = elems[i]) !== undefined; i++ ) {
+				can.trigger(elem, "removed", [], false);
+			}
+		}
+		can._yNodeRemove.apply(this, arguments)
 	}
 	// Let `nodelist` know about the new destroy...
-	Y.NodeList.addMethod("destroy", Y.Node.prototype.destroy);
+	Y.NodeList.addMethod("remove", Y.Node.prototype.remove);
+
+
+	
 
 	// Ajax
 	var optionsMap = {
@@ -275,6 +320,11 @@ define(["can/util/can", "yui", "can/util/event", "can/util/fragment", "can/util/
 		}
 		return this;
 	}
+
+	// Alias on/off to bind/unbind respectively
+	can.on = can.bind;
+	can.off = can.unbind;
+	
 	can.trigger = function (item, event, args, bubble) {
 		if (item instanceof Y.NodeList) {
 			item = item.item(0);
@@ -294,7 +344,14 @@ define(["can/util/can", "yui", "can/util/event", "can/util/fragment", "can/util/
 					ev._stopper && ev._stopper();
 				})
 			}
-			realTrigger(item.getDOMNode(), event, {})
+			
+			if(typeof event !== "string"){
+				args = event;
+				event = args.type;
+				delete args.type;
+			}
+			
+			realTrigger(item.getDOMNode(), event, args || {})
 		} else {
 			if (typeof event === 'string') {
 				event = {
@@ -308,7 +365,8 @@ define(["can/util/can", "yui", "can/util/event", "can/util/fragment", "can/util/
 	};
 	// Allow `dom` `destroyed` events.
 	Y.mix(Y.Node.DOM_EVENTS, {
-		destroyed: true,
+		removed: true,
+		inserted: true,
 		foo: true
 	});
 

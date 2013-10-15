@@ -1,13 +1,13 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:24 GMT
+ * Tue, 15 Oct 2013 15:04:39 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["can/util/library", "can/observe/attributes"], function (can) {
+define(["can/util/library", "can/map/attributes"], function (can) {
 //validations object is by property.  You can have validations that
 //span properties, but this way we know which ones to run.
 //  proc should return true if there's an error or the error message
@@ -41,8 +41,8 @@ define(["can/util/library", "can/observe/attributes"], function (can) {
 		});
 	};
 
-	var old = can.Observe.prototype.__set;
-	can.Observe.prototype.__set = function (prop, value, current, success, error) {
+	var old = can.Map.prototype.__set;
+	can.Map.prototype.__set = function (prop, value, current, success, error) {
 		var self = this,
 			validations = self.constructor.validations,
 			errorCallback = function (errors) {
@@ -68,7 +68,7 @@ define(["can/util/library", "can/observe/attributes"], function (can) {
 		return this;
 	}
 
-	can.each([ can.Observe, can.Model ], function (clss) {
+	can.each([ can.Map, can.Model ], function (clss) {
 		// in some cases model might not be defined quite yet.
 		if (clss === undefined) {
 			return;
@@ -86,13 +86,13 @@ define(["can/util/library", "can/observe/attributes"], function (can) {
 				}
 			},
 			/**
-			 * @function can.Observe.validations.static.validate validate
-			 * @parent can.Observe.validations
+			 * @function can.Map.validations.static.validate validate
+			 * @parent can.Map.validations
 			 *
 			 * @body
 			 * The following example validates that a person's age is a number:
 			 *
-			 *     Person = can.Observe.extend({
+			 *     Person = can.Map.extend({
 			 *         init : function(){
 			 *           this.validate(["age"], function(val){
 			 *             if( typeof val === 'number' ){
@@ -105,7 +105,7 @@ define(["can/util/library", "can/observe/attributes"], function (can) {
 			 *
 			 * The error message can be overwritten with `options` __message__ property:
 			 *
-			 *     Person = can.Observe.extend({
+			 *     Person = can.Map.extend({
 			 *         init : function(){
 			 *           this.validate(
 			 *             "age",
@@ -138,12 +138,12 @@ define(["can/util/library", "can/observe/attributes"], function (can) {
 			validate : validate,
 
 			/**
-			 * @property can.Observe.validations.static.validationMessages validationMessages
-			 * @parent can.Observe.validations
+			 * @property can.Map.validations.static.validationMessages validationMessages
+			 * @parent can.Map.validations
 			 *
 			 * `validationMessages` has the default validation error messages that will be returned by the builtin
 			 * validation methods. These can be overwritten by assigning new messages
-			 * to `can.Observe.validationMessages` in your application setup.
+			 * to `can.Map.validationMessages` in your application setup.
 			 *
 			 * The following messages (with defaults) are available:
 			 *
@@ -154,13 +154,13 @@ define(["can/util/library", "can/observe/attributes"], function (can) {
 			 *  * presence - "can't be empty"
 			 *  * range - "is out of range"
 			 *
-			 * It is important to steal can/observe/validations before
+			 * It is important to steal can/map/validations before
 			 * overwriting the messages, otherwise the changes will
 			 * be lost once steal loads it later.
 			 *
 			 * ## Example
 			 *
-			 *     can.Observe.validationMessages.format = "is invalid dummy!"
+			 *     can.Map.validationMessages.format = "is invalid dummy!"
 			 */
 			validationMessages : {
 				format : "is invalid",
@@ -173,8 +173,8 @@ define(["can/util/library", "can/observe/attributes"], function (can) {
 			},
 
 			/**
-			 * @function can.Observe.validations.static.validateFormatOf validateFormatOf
-			 * @parent can.Observe.validations
+			 * @function can.Map.validations.static.validateFormatOf validateFormatOf
+			 * @parent can.Map.validations
 			 *
 			 * @signature `observe.validateFormatOf(attrNames, regexp, options)`
 			 *
@@ -205,8 +205,8 @@ define(["can/util/library", "can/observe/attributes"], function (can) {
 			},
 
 			/**
-			 * @function can.Observe.validations.static.validateInclusionOf validateInclusionOf
-			 * @parent can.Observe.validations
+			 * @function can.Map.validations.static.validateInclusionOf validateInclusionOf
+			 * @parent can.Map.validations
 			 *
 			 * @signature `observe.validateInclusionOf(attrNames, inArray, options)`
 			 *
@@ -238,8 +238,8 @@ define(["can/util/library", "can/observe/attributes"], function (can) {
 			},
 
 			/**
-			 * @function can.Observe.validations.static.validateLengthOf validateLengthOf
-			 * @parent can.Observe.validations
+			 * @function can.Map.validations.static.validateLengthOf validateLengthOf
+			 * @parent can.Map.validations
 			 *
 			 * @signature `observe.validateLengthOf(attrNames, min, max, options)`
 			 *
@@ -266,8 +266,8 @@ define(["can/util/library", "can/observe/attributes"], function (can) {
 			},
 
 			/**
-			 * @function can.Observe.validations.static.validatePresenceOf validatePresenceOf
-			 * @parent can.Observe.validations
+			 * @function can.Map.validations.static.validatePresenceOf validatePresenceOf
+			 * @parent can.Map.validations
 			 *
 			 * @signature `observe.validatePresenceOf(attrNames, options)`
 			 *
@@ -289,8 +289,8 @@ define(["can/util/library", "can/observe/attributes"], function (can) {
 			},
 
 			/**
-			 * @function can.Observe.validations.static.validateRangeOf validateRangeOf
-			 * @parent can.Observe.validations
+			 * @function can.Map.validations.static.validateRangeOf validateRangeOf
+			 * @parent can.Map.validations
 			 *
 			 * @signature `observe.validateRangeOf(attrNames, low, hi, options)`
 			 *
@@ -315,8 +315,8 @@ define(["can/util/library", "can/observe/attributes"], function (can) {
 			},
 			
 			/**
-			 * @function can.Observe.validations.static.validatesNumericalityOf validatesNumericalityOf
-			 * @parent can.Observe.validations
+			 * @function can.Map.validations.static.validatesNumericalityOf validatesNumericalityOf
+			 * @parent can.Map.validations
 			 *
 			 * @signature `observe.validatesNumericalityOf(attrNames)`
 			 *
@@ -339,13 +339,14 @@ define(["can/util/library", "can/observe/attributes"], function (can) {
 		});
 	});
 
+
 	/**
 	 * @prototype
 	 */
-	can.extend(can.Observe.prototype, {
+	can.extend(can.Map.prototype, {
 		/**
-		 * @function can.Observe.validations.prototype.errors errors
-		 * @parent can.Observe.validations
+		 * @function can.Map.validations.prototype.errors errors
+		 * @parent can.Map.validations
 		 * @signature `observe.errors(attrs, newVal)`
 		 * @param {Array<String>|String} [attrs] An optional list of attributes to get errors for:
 		 *
@@ -376,7 +377,7 @@ define(["can/util/library", "can/observe/attributes"], function (can) {
 		 * To use validations, it's suggested you use the
 		 * observe/validations plugin.
 		 *
-		 *     Task = can.Observe.extend({
+		 *     Task = can.Map.extend({
 		 *       init : function(){
 		 *         this.validatePresenceOf("dueDate")
 		 *       }
@@ -434,5 +435,5 @@ define(["can/util/library", "can/observe/attributes"], function (can) {
 			return can.isEmptyObject(errors) ? null : isTest ? errors[attrs[0]] : errors;
 		}
 	});
-	return can.Observe;
+	return can.Map;
 });

@@ -1,10 +1,10 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:55 GMT
+ * Tue, 15 Oct 2013 15:05:04 GMT
  * Licensed MIT
- * Includes: can/observe/delegate
+ * Includes: can/map/delegate
  * Download from: http://canjs.com
  */
 (function(can) {
@@ -137,7 +137,7 @@
             }
         };
 
-    can.extend(can.Observe.prototype, {
+    can.extend(can.Map.prototype, {
 
             delegate: function(selector, event, handler) {
                 selector = can.trim(selector);
@@ -210,6 +210,6 @@
             }
         });
     // add helpers for testing .. 
-    can.Observe.prototype.delegate.matches = delegateMatches;
-    return can.Observe;
+    can.Map.prototype.delegate.matches = delegateMatches;
+    return can.Map;
 })(can);

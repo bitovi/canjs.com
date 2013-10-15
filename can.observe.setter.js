@@ -1,10 +1,10 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:55 GMT
+ * Tue, 15 Oct 2013 15:05:04 GMT
  * Licensed MIT
- * Includes: can/observe/setter
+ * Includes: can/map/setter
  * Download from: http://canjs.com
  */
 (function(can) {
@@ -22,7 +22,7 @@
     }
 
     var classize = can.classize,
-        proto = can.Observe.prototype,
+        proto = can.Map.prototype,
         old = proto.__set;
 
     proto.__set = function(prop, value, current, success, error) {
@@ -59,5 +59,5 @@
 
         return this;
     };
-    return can.Observe;
+    return can.Map;
 })(can);

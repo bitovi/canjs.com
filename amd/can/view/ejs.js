@@ -1,13 +1,13 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:24 GMT
+ * Tue, 15 Oct 2013 15:04:39 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["can/util/library", "can/view", "can/util/string", "can/observe/compute", "can/view/scanner", "can/view/render"], function( can ) {
+define(["can/util/library", "can/view", "can/util/string", "can/compute", "can/view/scanner", "can/view/render"], function( can ) {
 	// ## ejs.js
 	// `can.EJS`  
 	// _Embedded JavaScript Templates._
@@ -72,6 +72,11 @@ define(["can/util/library", "can/view", "can/util/string", "can/observe/compute"
 		 * Singleton scanner instance for parsing templates.
 		 */
 		scanner: new can.view.Scanner({
+			text: {
+				outStart: 'with(_VIEW) { with (_CONTEXT) {',
+				outEnd: "}}",
+				argNames: '_CONTEXT,_VIEW'
+			},
 			/**
 			 * @hide
 			 * An ordered token registry for the scanner.
@@ -88,7 +93,20 @@ define(["can/util/library", "can/view", "can/util/string", "can/observe/compute"
 				["right", "%>"], // Right -> All have same FOR Mustache ...
 				["returnRight", "%>"]
 			],
-
+			helpers: [
+			/**
+			 * Check if its a func like `()->`.
+			 * @param {String} content
+			 */
+				{
+					name:/\s*\(([\$\w]+)\)\s*->([^\n]*)/,
+					fn: function(content){
+						var quickFunc = /\s*\(([\$\w]+)\)\s*->([^\n]*)/,
+							parts = content.match(quickFunc);
+		
+						return "can.proxy(function(__){var " + parts[1] + "=can.$(__);" + parts[2] + "}, this);";
+					}
+				}],
 			/**
 			 * @hide
 			 * Transforms the EJS template to add support for shared blocks.

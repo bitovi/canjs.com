@@ -1,14 +1,14 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:24 GMT
+ * Tue, 15 Oct 2013 15:04:39 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["can/util/library", "can/observe", "can/observe/compute"], function(can) {
-	can.extend(can.Observe.List.prototype, {
+steal('can/util', 'can/map', 'can/list', 'can/compute', function(can) {
+	can.extend(can.List.prototype, {
 		filter : function(callback) {
 			// The filtered list
 			var filtered = new this.constructor();
@@ -66,7 +66,7 @@ define(["can/util/library", "can/observe", "can/observe/compute"], function(can)
 		},
 
 		map : function(callback) {
-			var mapped = new can.Observe.List();
+			var mapped = new can.List();
 			var self = this;
 			// Again, lets run a generator function
 			var generator = function(element, index) {
@@ -131,5 +131,5 @@ define(["can/util/library", "can/observe", "can/observe/compute"], function(can)
 		*/
 	});
 
-	return can.Observe.List;
-});
+	return can.List;
+})

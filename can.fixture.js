@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:56 GMT
+ * Tue, 15 Oct 2013 15:05:05 GMT
  * Licensed MIT
  * Includes: can/util/fixture
  * Download from: http://canjs.com

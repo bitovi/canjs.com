@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0-pre
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:24 GMT
+ * Tue, 15 Oct 2013 15:04:39 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -59,10 +59,10 @@ var pendingHookups = [],
 		return "" + input;
 	},
 	// Returns escaped/sanatized content for anything other than a live-binding
-	contentEscape = function( txt ) {
+	contentEscape = function( txt , tag) {
 		return (typeof txt == 'string' || typeof txt == 'number') ?
 			can.esc( txt ) :
-			contentText(txt);
+			contentText(txt, tag);
 	};
 
 
@@ -86,18 +86,25 @@ can.extend(can.view, {
 			return data;
 		}
 	},
-	pending: function() {
+	pending: function(data) {
 		// TODO, make this only run for the right tagName
-		var hooks = pendingHookups.slice(0);
-		lastHookups = hooks;
-		pendingHookups = [];
+		var hooks = can.view.getHooks();
 		return can.view.hook(function(el){
 			can.each(hooks, function(fn){
 				fn(el);
 			});
+			can.view.Scanner.hookupAttributes(data, el);
 		});
 	},
-
+	getHooks: function(){
+		var hooks = pendingHookups.slice(0);
+		lastHookups = hooks;
+		pendingHookups = [];
+		return hooks;
+	},
+	onlytxt: function(self, func){
+		return contentEscape(func.call(self))
+	},
 	/**
 	 * @function can.view.txt
 	 * @hide
@@ -142,7 +149,6 @@ can.extend(can.view, {
 			listData = listTeardown(),
 			value = compute();
 		
-
 		if(listData){
 			return "<" +tag+can.view.hook(function(el, parentNode){
 				live.list(el, listData.list, listData.renderer, self, parentNode);
@@ -150,9 +156,9 @@ can.extend(can.view, {
 		}
 
 		// If we had no observes just return the value returned by func.
-		if(!compute.hasDependencies){
+		if(!compute.hasDependencies || typeof value === "function"){
 			unbind();
-			return (escape || status !== 0? contentEscape : contentText)(value, status === 0 && tag);
+			return (  (escape || status !== 0) && escape !== 2  ? contentEscape : contentText)(value, status === 0 && tag);
 		}
 
 
@@ -187,6 +193,14 @@ can.extend(can.view, {
 				live.attributes(el, compute, compute());
 				unbind();
 			});
+			return compute();
+		} else if( escape === 2 ) { // In a special attribute like src or style
+			
+			var attributeName = status;
+			pendingHookups.push(function(el){
+				live.specialAttribute(el, attributeName, compute);
+				unbind();
+			})
 			return compute();
 		} else { // In an attribute...
 			var attributeName = status === 0 ? contentProp : status;
