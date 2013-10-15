@@ -461,24 +461,32 @@ can.isFunction(function() { }); // true</code></pre>
 
 <p><code>can.bind</code> binds a callback to an event on an object.</p>
 
-<pre><code class="lang-javascript">can.bind(obj, eventName, handler); // Binds handler on obj's eventName event.</code></pre>
+<pre><code class="lang-javascript">// Binds handler on obj's eventName event.
+can.bind(obj, eventName, handler);</code></pre>
 
 <p><code>can.unbind</code> unbinds a callback from an event on an object.</p>
 
-<pre><code class="lang-javascript">can.unbind(obj, eventName, handler); // Unbinds handler from obj's eventName event.</code></pre>
+<pre><code class="lang-javascript">// Unbinds handler from obj's eventName event.
+can.unbind(obj, eventName, handler);</code></pre>
 
 <p><code>can.delegate</code> binds a callback to an event on an all elements that match a selector.</p>
 
-<pre><code class="lang-javascript">can.delegate(obj, eventName, handler); // Binds handler on eventName events from all elements under obj that match selector.</code></pre>
+<pre><code class="lang-javascript">// Binds handler on eventName events from all
+// elements under obj that match selector.
+can.delegate(obj, eventName, handler);</code></pre>
 
 <p><code>can.undelegate</code> unbinds a callback from an event on an all elements that
 match a selector.</p>
 
-<pre><code class="lang-javascript">can.undelegate(obj, eventName, handler); // Unbinds handler from eventName events from all elements under obj that match selector.</code></pre>
+<pre><code class="lang-javascript">// Unbinds handler from eventName events from all
+// elements under obj that match selector.
+can.undelegate(obj, eventName, handler);</code></pre>
 
 <p><code>can.trigger</code> triggers an event on an object.</p>
 
-<pre><code class="lang-javascript">can.trigger(obj, eventName, args); // Executes all handlers attached to obj for eventName with args as additional arguments.</code></pre>
+<pre><code class="lang-javascript">// Executes all handlers attached to obj for eventName
+// with args as additional arguments.
+can.trigger(obj, eventName, args);</code></pre>
 
 <h2>AJAX utilites</h2>
 
@@ -502,7 +510,8 @@ call has returned.</p>
 
 <p><code>can.append</code> appends elements to the elements in a NodeList.</p>
 
-<pre><code class="lang-javascript">can.append(nodelist, content); // Appends content to each element in nodelist.</code></pre>
+<pre><code class="lang-javascript">// Appends content to each element in nodelist.
+can.append(nodelist, content);</code></pre>
 		</section>
 		
 

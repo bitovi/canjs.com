@@ -381,7 +381,8 @@ behavior.</p>
 <p>And you can use <code>can.view</code> to render the template:</p>
 
 <pre><code class="lang-javascript">Todo.findAll({}, function(todos) {
-    document.getElementById('list').appendChild(can.view('todoList', todos));
+    document.getElementById('list')
+        .appendChild(can.view('todoList', todos));
 });</code></pre>
 
 <p>As you can see from the template and the call to <code>can.view</code>, the <code>todos</code>

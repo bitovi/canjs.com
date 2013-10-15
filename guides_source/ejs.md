@@ -21,7 +21,8 @@ And you can use `can.view` to render the template:
 
 @codestart
 Todo.findAll({}, function(todos) {
-	document.getElementById('list').appendChild(can.view('todoList', todos));
+	document.getElementById('list')
+		.appendChild(can.view('todoList', todos));
 });
 @codeend
 

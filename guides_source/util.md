@@ -113,28 +113,36 @@ can.isFunction(function() { }); // true
 
 `can.bind` binds a callback to an event on an object.
 @codestart
-can.bind(obj, eventName, handler); // Binds handler on obj's eventName event.
+// Binds handler on obj's eventName event.
+can.bind(obj, eventName, handler);
 @codeend
 
 `can.unbind` unbinds a callback from an event on an object.
 @codestart
-can.unbind(obj, eventName, handler); // Unbinds handler from obj's eventName event.
+// Unbinds handler from obj's eventName event.
+can.unbind(obj, eventName, handler);
 @codeend
 
 `can.delegate` binds a callback to an event on an all elements that match a selector.
 @codestart
-can.delegate(obj, eventName, handler); // Binds handler on eventName events from all elements under obj that match selector.
+// Binds handler on eventName events from all
+// elements under obj that match selector.
+can.delegate(obj, eventName, handler);
 @codeend
 
 `can.undelegate` unbinds a callback from an event on an all elements that
 match a selector.
 @codestart
-can.undelegate(obj, eventName, handler); // Unbinds handler from eventName events from all elements under obj that match selector.
+// Unbinds handler from eventName events from all
+// elements under obj that match selector.
+can.undelegate(obj, eventName, handler);
 @codeend
 
 `can.trigger` triggers an event on an object.
 @codestart
-can.trigger(obj, eventName, args); // Executes all handlers attached to obj for eventName with args as additional arguments.
+// Executes all handlers attached to obj for eventName
+// with args as additional arguments.
+can.trigger(obj, eventName, args);
 @codeend
 
 ## AJAX utilites
@@ -162,5 +170,6 @@ can.$(div.bar); // (in jQuery, a jQuery.fn object)
 
 `can.append` appends elements to the elements in a NodeList.
 @codestart
-can.append(nodelist, content); // Appends content to each element in nodelist.
+// Appends content to each element in nodelist.
+can.append(nodelist, content);
 @codeend
