@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -399,6 +406,20 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Model.html" data-search="can.Model">
 				can.Model
 			</a>
@@ -415,20 +436,6 @@
 	   <li class="search-container">
 	   		<a href="can.Mustache.html" data-search="can.Mustache">
 				can.Mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
 			</a>
 			
 	   </li>
@@ -472,33 +479,35 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>jQuery.fn.controls</h1>
 	<ul class="tags">
 		<li>function</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.8/control/plugin/plugin.js#L64">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
-</div>
-
-<h1>
-jQuery.fn.controls
-
+	
+	
 	
 		<span class="module">jQuery.fn.controls</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/control/plugin/plugin.js#L65">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -540,7 +549,10 @@ jQuery.fn.controls
 		<div class="description">
 			<p>The controls associated with the given elements.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -559,29 +571,25 @@ jQuery.fn.controls
 of control instance(s) with the DOM element it was initialized on using 
 <a href="can.data.html">can.data</a> method.</p>
 
-<p>The <code>controls</code> method allows you to get the control instance(s) for any element.  </p>
+<p>The <code>controls</code> method allows you to get the control instance(s) for any element
+either by their type or pluginName.</p>
 
-<pre><code>//- Inits the widgets
-$('.widgets:eq(0)').my_box();
-$('.widgets:eq(1)').my_clock();
+<pre><code> var MyBox = can.Control({
+     pluginName : 'myBox'
+ }, {});
 
-&lt;div class="widgets my_box" /&gt;
-&lt;div class="widgets my_clock" /&gt;
+ var MyClock = can.Control({
+     pluginName : 'myClock'
+ }, {});
+
+
+//- Inits the widgets
+$('.widgets:eq(0)').myBox();
+$('.widgets:eq(1)').myClock();
 
 $('.widgets').controls() //-&gt; [ MyBox, MyClock ]
-</code></pre>
-
-<p>Additionally, you can invoke it passing the name of a control
-to fetch a specific instance(s).</p>
-
-<pre><code>//- Inits the widgets
-$('.widgets:eq(0)').my_box();
-$('.widgets:eq(1)').my_clock();
-
-&lt;div class="widgets my_box" /&gt;
-&lt;div class="widgets my_clock" /&gt;
-
-$('.widgets').controls('MyBox') //-&gt; [ MyBox ]
+$('.widgets').controls('myBox') // -&gt; [MyBox]
+$('.widgets').controls(MyClock) // -&gt; MyClock
 </code></pre>
 		</section>
 		
@@ -589,6 +597,12 @@ $('.widgets').controls('MyBox') //-&gt; [ MyBox ]
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"function","name":"jQuery.fn.controls","parent":"can.Control.plugin","description":"<p>Get the Controls associated with elements. </p>","title":"jQuery.fn.controls","signatures":[{"code":"jQuery.fn.controls([type])","description":"","params":[{"types":[{"type":"String"},{"type":"can.Control"}],"optional":true,"name":"control","description":"<p>The type of Controls to find.</p>"}],"returns":{"types":[{"type":"can.Control"}],"description":"<p>The controls associated with the given elements.</p>"}}],"comment":" ","src":"can/control/plugin/plugin.js","line":65,"id":118};
+
+	console.log(docData);
+</script>
 
 
 

@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -114,6 +121,20 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Model.html" data-search="can.Model">
 				can.Model
 			</a>
@@ -130,20 +151,6 @@
 	   <li class="search-container">
 	   		<a href="can.Mustache.html" data-search="can.Mustache">
 				can.Mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
 			</a>
 			
 	   </li>
@@ -443,29 +450,31 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>findAll</h1>
 	<ul class="tags">
 		<li>function</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.8/util/fixture/fixture.js#L452">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
+	
+	
+	
 </div>
 
-<h1>
-findAll
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/util/fixture/fixture.js#L452">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -587,7 +596,10 @@ before limit and offset is taken into account</li>
 <li>data - an array of JS objects with each item's properties</li>
 </ul>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -605,6 +617,12 @@ before limit and offset is taken into account</li>
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"function","name":"can.fixture.types.Store.findAll","parent":"can.fixture.types.Store","description":"<p>Simulate a findAll to a fixture. </p>","title":"","signatures":[{"code":"store.findAll(request)","description":"<p><code>store.findAll(request)</code> simulates a request to \nget a list items from the server. It supports the\nfollowing params:</p>\n\n<ul>\n<li>order - <code>order=name ASC</code> </li>\n<li>group - <code>group=name</code></li>\n<li>limit - <code>limit=20</code></li>\n<li>offset - <code>offset=60</code></li>\n<li>id filtering - <code>ownerId=5</code></li>\n</ul>","params":[{"types":[{"type":"Object","options":[{"name":"order","description":"<p>The order of the results.\n<code>order: 'name ASC'</code></p>","types":[{"type":"String"}]},{"name":"group","description":"<p>How to group the results.\n<code>group: 'name'</code></p>","types":[{"type":"String"}]},{"name":"limit","description":"<p>A limit on the number to retrieve.\n<code>limit: 20</code></p>","types":[{"type":"String"}]},{"name":"offset","description":"<p>The offset of the results.\n<code>offset: 60</code></p>","types":[{"type":"String"}]},{"name":"id","description":"<p>Filtering by ID.\n<code>id: 5</code></p>","types":[{"type":"String"}]}]}],"name":"request","description":"<p>The ajax request object. The available parameters are:</p>"}],"returns":{"types":[{"type":"Object","options":[]}],"description":"<p>a response object like:</p>\n\n<pre><code>{\n  count: 1000,\n  limit: 20,\n  offset: 60,\n  data: [item1, item2, ...]\n}\n</code></pre>\n\n<p>where:</p>\n\n<ul>\n<li>count - the number of items that match any filtering \nbefore limit and offset is taken into account</li>\n<li>offset - the offset passed</li>\n<li>limit - the limit passed</li>\n<li>data - an array of JS objects with each item's properties</li>\n</ul>"}}],"types":[],"src":"can/util/fixture/fixture.js","line":452,"id":185};
+
+	console.log(docData);
+</script>
 
 
 

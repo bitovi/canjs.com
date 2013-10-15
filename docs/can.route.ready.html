@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -109,6 +116,20 @@
 	   <li class="search-container">
 	   		<a href="can.EJS.html" data-search="can.EJS">
 				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
 			</a>
 			
 	   </li>
@@ -135,20 +156,6 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
 			</a>
@@ -169,6 +176,38 @@
 			
 				
 	<ul class="primary-grouping">
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>plugins</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="property" 
+							href="can.route.pushstate.html" 
+							data-search="can.route.pushstate">
+							pushstate
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
 		
 			
 				
@@ -302,64 +341,50 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>ready</h1>
 	<ul class="tags">
 		<li>function</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.8/route/route.js#L288">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
-</div>
-
-<h1>
-ready
-
+	
+	
 	
 		<span class="module">can.route.ready</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/route/route.js#L364">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
 		</section>
 
 		<section class="description">
-			
+			<p>Initialize can.route.</p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>can.route.ready( readyYet )</h2>
+			<h2>can.route.ready()</h2>
 <div class="signature-wrapper">
-<p>Pause and resume the initialization of can.route.</p>
-
-	<h3>Parameters</h3>
-
-	<ol class="parameters">
-		
-		<li class="parameter">
-			<h4>readyYet
-				<code>{Boolean}</code><span class="pull-right optional">Optional</span></h4>
-			<div class="description">
-				<p>Whether the ready event should be fired yet.</p>
-			</div>
-			
-			
-			
-		</li>
-		
-	</ol>
+<p>Sets up the two-way binding between the hash and the can.route observable map and
+sets the can.route map to its initial values.</p>
 
 
 	<h3>Returns</h3>
@@ -368,7 +393,10 @@ ready
 		<div class="description">
 			<p>The <code>can.route</code> object.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -383,14 +411,13 @@ ready
 
 		
 		<section class="comment">
-			<p>Indicates that all routes have been added and sets can.route.data
-based upon the routes and the current hash.</p>
+			<h2>Use</h2>
 
-<p>By default, ready is fired on jQuery's ready event.  Sometimes
-you might want it to happen sooner or earlier.  To do this, call:</p>
+<p>After setting all your routes, call can.route.ready().</p>
 
-<pre><code>can.route.ready(false); //prevents firing by the ready event
-can.route.ready(true); // fire the first route change
+<pre><code>can.route("overview/:dateStart-:dateEnd");
+can.route(":type/:id")
+can.route.ready()
 </code></pre>
 		</section>
 		
@@ -398,6 +425,12 @@ can.route.ready(true); // fire the first route change
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"function","name":"can.route.ready","parent":"can.route.static","description":"<p>Initialize can.route.</p>","title":"ready","signatures":[{"code":"can.route.ready()","description":"<p>Sets up the two-way binding between the hash and the can.route observable map and\nsets the can.route map to its initial values.</p>","params":[],"returns":{"types":[{"type":"can.route"}],"description":"<p>The <code>can.route</code> object.</p>"}}],"comment":" ","src":"can/route/route.js","line":364,"id":173};
+
+	console.log(docData);
+</script>
 
 
 

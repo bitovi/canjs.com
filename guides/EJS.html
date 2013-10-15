@@ -105,9 +105,9 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="Constructs.html" 
-							data-search="Constructor Classes">
-							Constructor Classes
+							href="Components.html" 
+							data-search="Components">
+							Components
 						</a>
 						
 					</li>
@@ -120,9 +120,9 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="Observes.html" 
-							data-search="Observable Objects">
-							Observable Objects
+							href="Observables.html" 
+							data-search="Observables">
+							Observables
 						</a>
 						
 					</li>
@@ -242,6 +242,21 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
+							href="Constructs.html" 
+							data-search="Constructor Functions">
+							Constructor Functions
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
 							href="Utilities.html" 
 							data-search="Utility Functions">
 							Utility Functions
@@ -303,33 +318,35 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>EJS</h1>
 	<ul class="tags">
 		<li>page</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/wiki/ejs">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
-</div>
-
-<h1>
-EJS
-
+	
+	
 	
 		<span class="module">EJS</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/wiki/guides_source/ejs">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -357,14 +374,15 @@ behavior.</p>
 
 <pre><code class="lang-javascript">&lt;script type="text/ejs" id="todoList">
 <% for(var i = 0; i < todos.length; ++i) { %>
-    &lt;li><%= todos[i].attr('description') &lt;/li>
+    &lt;li><%= this[i].attr('description') &lt;/li>
 <% } %>
 &lt;/script></code></pre>
 
 <p>And you can use <code>can.view</code> to render the template:</p>
 
 <pre><code class="lang-javascript">Todo.findAll({}, function(todos) {
-    document.getElementById('list').appendChild(can.view('todoList', todos));
+    document.getElementById('list')
+        .appendChild(can.view('todoList', todos));
 });</code></pre>
 
 <p>As you can see from the template and the call to <code>can.view</code>, the <code>todos</code>
@@ -374,7 +392,7 @@ of the <code>this</code> object without having to prefix it with <code>this.</co
 <pre><code class="lang-javascript">&lt;script type="text/ejs" id="todosAndUser">
 &lt;h2> <%= user.attr('name') %>&lt;/h2>
 <% for(var i = 0; i < todos.length; ++i) { %>
-    &lt;li><%= todos[i].attr('description') &lt;/li>
+    &lt;li><%= this[i].attr('description') &lt;/li>
 <% } %>
 &lt;/script></code></pre>
 
@@ -503,6 +521,12 @@ reason to do this is to attach a Model to the element that represents it:</p>
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"page","name":"EJS","description":"","title":"EJS","parent":"Tutorial","order":4,"comment":" ","src":"guides_source/ejs.md","id":9};
+
+	console.log(docData);
+</script>
 
 
 

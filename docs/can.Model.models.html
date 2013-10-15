@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -109,6 +116,20 @@
 	   <li class="search-container">
 	   		<a href="can.EJS.html" data-search="can.EJS">
 				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
 			</a>
 			
 	   </li>
@@ -434,20 +455,6 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
 			</a>
@@ -486,33 +493,35 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>models</h1>
 	<ul class="tags">
 		<li>function</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.8/model/model.js#L824">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
-</div>
-
-<h1>
-models
-
+	
+	
 	
 		<span class="module">can.Model.models</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/model/model.js#L923">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -564,7 +573,22 @@ models
 		<div class="description">
 			<p>A List of Models made from the raw data.</p>
 		</div>
+		
+		
 	</div>
+	
+
+
+</div>
+
+		</section>
+		
+		<section class="signature">
+			<h2>models: &#34;PROPERTY&#34;</h2>
+<div class="signature-wrapper">
+<p>Creates a <code>models</code> function that looks for the array of instance data in the PROPERTY
+property of the raw response data of <a href="can.Model.findAll.html">can.Model.findAll</a>.</p>
+
 
 
 </div>
@@ -648,7 +672,7 @@ tasks.count // -&gt; 1500
 },{})
 </code></pre>
 
-<p><code>can.Model.models</code> passes each intstance's data to <code>can.Model.model</code> to
+<p><code>can.Model.models</code> passes each instance's data to <code>can.Model.model</code> to
 create the individual instances.</p>
 		</section>
 		
@@ -656,6 +680,12 @@ create the individual instances.</p>
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"name":"can.Model.models","type":"function","parent":"can.Model.static","description":"<p>Convert raw data into can.Model instances. </p>","title":"models","signatures":[{"code":"can.Model.models(data[, oldList])","description":"","params":[{"types":[{"type":"Array","template":[{"types":[{"type":"Object","options":[]}]}]}],"name":"data","description":"<p>The raw data from a <code>[can.Model.findAll findAll()]</code> request.</p>"},{"types":[{"type":"can.Model.List"}],"optional":true,"name":"oldList","description":"<p>If supplied, this List will be updated with the data from\n<strong>data</strong>.</p>"}],"returns":{"types":[{"type":"can.Model.List"}],"description":"<p>A List of Models made from the raw data.</p>"}},{"code":"models: \"PROPERTY\"","description":"<p>Creates a <code>models</code> function that looks for the array of instance data in the PROPERTY\nproperty of the raw response data of [can.Model.findAll].</p>","params":[]}],"comment":" ","src":"can/model/model.js","line":923,"id":132};
+
+	console.log(docData);
+</script>
 
 
 

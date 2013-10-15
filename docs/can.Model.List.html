@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -109,6 +116,20 @@
 	   <li class="search-container">
 	   		<a href="can.EJS.html" data-search="can.EJS">
 				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
 			</a>
 			
 	   </li>
@@ -132,20 +153,6 @@
 	   <li class="search-container">
 	   		<a href="can.Mustache.html" data-search="can.Mustache">
 				can.Mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
 			</a>
 			
 	   </li>
@@ -189,38 +196,40 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>can.Model.List</h1>
 	<ul class="tags">
 		<li>constructor</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.8/model/model.js">source</a></li>
-		
-		
-			<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/model">download</a></li>
-		
-		
-			<li><a href="../can/model/qunit.html">tests</a></li>
-		
-	</ul>
+	
+	
+	
 </div>
 
-<h1>
-can.Model.List
+<div class="sub-heading">
+	
+	<span class="inherits">inherits: <a href="can.List.html">can.List</a></span>
+</div>
 
-
-</h1>
-
-<span class="inherits">inherits: <a href="can.Observe.List.html">can.Observe.List</a></span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/model/model.js">source</a></li>
+	
+	
+		<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/model">download</a></li>
+	
+	
+		<li><a href="../can/model/qunit.html">tests</a></li>
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
 		</section>
 
 		<section class="description">
-			<p>Works exactly like <a href="can.Observe.List.html">can.Observe.List</a> and has all of the same properties,
+			<p>Works exactly like <a href="can.List.html">can.List</a> and has all of the same properties,
 events, and functions as an observable list. The only difference is that 
 when an item from the list is destroyed, it will automatically get removed
 from the list.</p>
@@ -291,7 +300,7 @@ Todo.findAll({}, function(todos) {
 
 <h2>Removing models from model list</h2>
 
-<p>The advantage that <code>can.Model.List</code> has over a traditional <code>can.Observe.List</code>
+<p>The advantage that <code>can.Model.List</code> has over a traditional <code>can.List</code>
 is that when you destroy a model, if it is in that list, it will automatically
 be removed from the list. </p>
 
@@ -308,6 +317,12 @@ todo1.destroy(); // console shows "Do the dishes removed"
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"name":"can.Model.List","type":"constructor","parent":"canjs","description":"<p>Works exactly like [can.List] and has all of the same properties,\nevents, and functions as an observable list. The only difference is that \nwhen an item from the list is destroyed, it will automatically get removed\nfrom the list.</p>","title":"","inherits":"can.List","download":"can/model","test":"can/model/qunit.html","src":"can/model/model.js","line":1545,"id":145};
+
+	console.log(docData);
+</script>
 
 
 

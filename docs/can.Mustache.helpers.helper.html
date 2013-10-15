@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -109,6 +116,20 @@
 	   <li class="search-container">
 	   		<a href="can.EJS.html" data-search="can.EJS">
 				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
 			</a>
 			
 	   </li>
@@ -662,20 +683,6 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
 			</a>
@@ -714,33 +721,35 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>{{helper args hashes}}</h1>
 	<ul class="tags">
 		<li>function</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.8/view/mustache/mustache.js#L778">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
-</div>
-
-<h1>
-{{helper args hashes}}
-
+	
+	
 	
 		<span class="module">can.Mustache.helpers.helper</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/view/mustache/mustache.js#L803">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -802,7 +811,7 @@ current or parent <a href="can.Mustache.context.html">context</a>.</p>
 that get passed to the helper function as arguments. If the key's value is a:</p>
 
 <ul>
-<li><a href="can.Observe.html">can.Observe</a> - A getter/setter <a href="can.compute.html">can.compute</a> is passed.</li>
+<li><a href="can.Map.html">can.Map</a> - A getter/setter <a href="can.compute.html">can.compute</a> is passed.</li>
 <li><a href="can.compute.html">can.compute</a> - The can.compute is passed.</li>
 <li><code>function</code> - The function's return value is passed.</li>
 </ul>
@@ -923,7 +932,7 @@ listing space seperated strings, numbers or other <a href="can.Mustache.key.html
 });
 </code></pre>
 
-<p>If an argument <code>key</code> value is a <a href="can.Observe.html">can.Observe</a> property, the Observe's 
+<p>If an argument <code>key</code> value is a <a href="can.Map.html">can.Map</a> property, the Observe's 
 property is converted to a getter/setter <a href="can.compute.html">can.compute</a>. For example:</p>
 
 <p>The template:</p>
@@ -933,7 +942,7 @@ property is converted to a getter/setter <a href="can.compute.html">can.compute<
 
 <p>Rendered with:</p>
 
-<pre><code>{user: new can.Observe({name: "Slim Shady"})}
+<pre><code>{user: new can.Map({name: "Slim Shady"})}
 </code></pre>
 
 <p>Needs the helper to check if name is a function or not:</p>
@@ -995,6 +1004,12 @@ on the <a href="can.Mustache.helper.html">helper function</a> page.</p>
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"description":"<p>Calls a mustache helper function and inserts its return value into the rendered template.</p>","title":"{{helper args hashes}}","name":"can.Mustache.helpers.helper","type":"function","parent":"can.Mustache.htags","order":0,"signatures":[{"code":"{{helper [args...] [hashProperty=hashValue...]}}","description":"<p>Calls a mustache helper function or a function. For example:</p>\n\n<p>The template:</p>\n\n<pre><code>&lt;p&gt;{{madLib \"Lebron James\" verb 4 foo=\"bar\"}}&lt;/p&gt;\n</code></pre>\n\n<p>Rendered with:</p>\n\n<pre><code>{verb: \"swept\"}\n</code></pre>\n\n<p>Will call a <code>madLib</code> helper with the following arguements:</p>\n\n<pre><code>can.Mustache.registerHelper('madLib', \n  function(subject, verb, number, options){\n    // subject -&gt; \"Lebron James\"\n    // verb -&gt; \"swept\"\n    // number -&gt; 4\n    // options.hash.foo -&gt; \"bar\"\n});\n</code></pre>","params":[{"types":[{"type":"can.Mustache.key"}],"name":"helper","description":"<p>A key that finds a [can.Mustache.helper helper function]\nthat is either [can.Mustache.registerHelper registered] or found within the\ncurrent or parent [can.Mustache.context context].</p>"},{"variable":true,"types":[{"type":"can.Mustache.key"},{"type":"String"},{"type":"Number"}],"optional":true,"name":"args","description":"<p>Space seperated arguments\nthat get passed to the helper function as arguments. If the key's value is a:</p>\n\n<ul>\n<li>[can.Map] - A getter/setter [can.compute] is passed.</li>\n<li>[can.compute] - The can.compute is passed.</li>\n<li><code>function</code> - The function's return value is passed.</li>\n</ul>"},{"types":[{"type":"String"}],"name":"hashProperty","description":"<p>A property name that gets added to a [can.Mustache.helperOptions helper options]'s \nhash object.</p>"},{"variable":true,"types":[{"type":"can.Mustache.key"},{"type":"String"},{"type":"Number"}],"name":"hashValue","description":"<p>A value that gets \nset as a property value of the [can.Mustache.helperOptions helper option argument]'s \nhash object.</p>"}]}],"comment":" ","src":"can/view/mustache/mustache.js","line":803,"id":216};
+
+	console.log(docData);
+</script>
 
 
 

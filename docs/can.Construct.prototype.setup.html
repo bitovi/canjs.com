@@ -92,6 +92,13 @@
 		<ul class="api">
 	<!-- First Level -->
 	
+	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
 	   <li class="search-container active">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
@@ -353,6 +360,20 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Model.html" data-search="can.Model">
 				can.Model
 			</a>
@@ -369,20 +390,6 @@
 	   <li class="search-container">
 	   		<a href="can.Mustache.html" data-search="can.Mustache">
 				can.Mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
 			</a>
 			
 	   </li>
@@ -426,33 +433,35 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>setup</h1>
 	<ul class="tags">
 		<li>function</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.8/construct/construct.js#L455">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
-</div>
-
-<h1>
-setup
-
+	
+	
 	
 		<span class="module">can.Construct.prototype.setup</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/construct/construct.js#L455">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -510,7 +519,10 @@ MyWidget = WidgetFactory.extend({
 <p>Otherwise, the arguments to the
 constructor are passed to <a href="can.Construct.prototype.init.html">can.Construct.prototype.init</a> and the return value of <code>setup</code> is discarded.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -566,6 +578,12 @@ extends the controller's defaults with the options that were passed.</p>
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"function","name":"can.Construct.prototype.setup","parent":"can.Construct.prototype","description":"","title":"setup","signatures":[{"code":"construct.setup(...args)","description":"<p>A setup function for the instantiation of a constructor function.</p>","params":[{"types":[{"type":"*"}],"name":"args","description":"<p>The arguments passed to the constructor.</p>"}],"returns":{"types":[{"type":"Array"},{"type":"undefined"}],"description":"<p>If an array is returned, the array's items are passed as\narguments to [can.Construct::init init]. The following example always makes \nsure that init is called with a jQuery wrapped element:</p>\n\n<pre><code>WidgetFactory = can.Construct.extend({\n    setup: function(element){\n        return [$(element)]\n    }\n})\n\nMyWidget = WidgetFactory.extend({\n    init: function($el){\n        $el.html(\"My Widget!!\")\n    }\n})\n</code></pre>\n\n<p>Otherwise, the arguments to the\nconstructor are passed to [can.Construct::init] and the return value of <code>setup</code> is discarded.</p>"}}],"comment":" ","src":"can/construct/construct.js","line":455,"id":101};
+
+	console.log(docData);
+</script>
 
 
 

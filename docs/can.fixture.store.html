@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -114,6 +121,20 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Model.html" data-search="can.Model">
 				can.Model
 			</a>
@@ -130,20 +151,6 @@
 	   <li class="search-container">
 	   		<a href="can.Mustache.html" data-search="can.Mustache">
 				can.Mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
 			</a>
 			
 	   </li>
@@ -332,33 +339,35 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>store</h1>
 	<ul class="tags">
 		<li>function</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.8/util/fixture/fixture.js#L347">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
-</div>
-
-<h1>
-store
-
+	
+	
 	
 		<span class="module">can.fixture.store</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/util/fixture/fixture.js#L347">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -433,7 +442,10 @@ false otherwise. For example:</p>
 			<p>A generator object providing fixture functions for <em>findAll</em>, <em>findOne</em>, <em>create</em>,
 <em>update</em> and <em>destroy</em>.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -510,6 +522,12 @@ the store can do filtering, grouping, sorting, and paging.</p>
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"function","name":"can.fixture.store","parent":"can.fixture","description":"<p>Make a store of objects to use when making requests against fixtures. </p>","title":"store","signatures":[{"code":"can.fixture.store(count, make[, filter])","description":"","params":[{"types":[{"type":"Number"}],"name":"count","description":"<p>The number of items to create.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"make","description":"<p>A function that will return the JavaScript object. The\nmake function is called back with the id and the current array of items.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"filter","description":"<p>A function used to further filter results. Used for to simulate\nserver params like searchText or startDate.\nThe function should return true if the item passes the filter,\nfalse otherwise. For example:</p>\n\n<pre><code>function(item, settings){\n  if(settings.data.searchText){\n       var regex = new RegExp(\"^\"+settings.data.searchText)\n      return regex.test(item.name);\n  }\n}\n</code></pre>"}],"returns":{"types":[{"type":"can.fixture.Store"}],"description":"<p>A generator object providing fixture functions for <em>findAll</em>, <em>findOne</em>, <em>create</em>,\n<em>update</em> and <em>destroy</em>.</p>"}}],"comment":" ","src":"can/util/fixture/fixture.js","line":347,"id":184};
+
+	console.log(docData);
+</script>
 
 
 

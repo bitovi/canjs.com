@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -109,6 +116,20 @@
 	   <li class="search-container">
 	   		<a href="can.EJS.html" data-search="can.EJS">
 				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
 			</a>
 			
 	   </li>
@@ -434,20 +455,6 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
 			</a>
@@ -486,33 +493,35 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>update</h1>
 	<ul class="tags">
 		<li>function</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.8/model/model.js#L306">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
-</div>
-
-<h1>
-update
-
+	
+	
 	
 		<span class="module">can.Model.update</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/model/model.js#L400">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -524,7 +533,7 @@ update
 
 		
 		<section class="signature">
-			<h2>can.Model.update: &quot;[METHOD] /path/to/resource&quot;</h2>
+			<h2>can.Model.update: &#34;[METHOD] /path/to/resource&#34;</h2>
 <div class="signature-wrapper">
 <p>If you provide a URL, the Model will send a request to that URL using
 the method specified (or PUT if none is specified) when updating an
@@ -537,7 +546,10 @@ instance on the server. (See below for more details.)</p>
 		<div class="description">
 			<p>A Deferred that resolves to the updated model.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -568,7 +580,7 @@ instance on the server. (See below for more details.)</p>
 			<h4>serialized
 				<code>{Object}</code></h4>
 			<div class="description">
-				<p>The <a href="can.Observe.prototype.serialize.html">serialized</a> properties of
+				<p>The <a href="can.Map.prototype.serialize.html">serialized</a> properties of
 the model to update.</p>
 			</div>
 			
@@ -585,7 +597,10 @@ the model to update.</p>
 		<div class="description">
 			<p>A Deferred that resolves to the updated model.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -634,7 +649,7 @@ name=salad
 </code></pre>
 
 <p>The server should send back an object with any new attributes the model 
-should have.  For example if your server udpates the "updatedAt" property, it
+should have.  For example if your server updates the "updatedAt" property, it
 should send back something like:</p>
 
 <pre><code>// PUT /recipes/4 {name: "Food"} -&gt;
@@ -646,7 +661,7 @@ should send back something like:</p>
 <h2>Implement with a Function</h2>
 
 <p>You can also implement update by yourself.  Update takes the <code>id</code> and
-<code>attributes</code> of the instance to be udpated.  Update must return
+<code>attributes</code> of the instance to be updated.  Update must return
 a <a href="can.Deferred.html">Deferred</a> that resolves to an object that contains any 
 properties that should be set on the instance.</p>
 
@@ -673,6 +688,12 @@ something that looks like:</p>
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"name":"can.Model.update","type":"function","parent":"can.Model.static","description":"<p>Update a resource on the server. </p>","title":"update","signatures":[{"code":"can.Model.update: \"[METHOD] /path/to/resource\"","description":"<p>If you provide a URL, the Model will send a request to that URL using\nthe method specified (or PUT if none is specified) when updating an\ninstance on the server. (See below for more details.)</p>","params":[],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A Deferred that resolves to the updated model.</p>"}},{"code":"can.Model.update: function(id, serialized) -> can.Deffered","description":"<p>If you provide a function, the Model will expect you to do your own AJAX requests.</p>","params":[{"types":[{"type":"*"}],"name":"id","description":"<p>The ID of the model to update.</p>"},{"types":[{"type":"Object","options":[]}],"name":"serialized","description":"<p>The [can.Map::serialize serialized] properties of\nthe model to update.</p>"}],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A Deferred that resolves to the updated model.</p>"}}],"comment":" ","src":"can/model/model.js","line":400,"id":127};
+
+	console.log(docData);
+</script>
 
 
 

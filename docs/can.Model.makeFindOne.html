@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -109,6 +116,20 @@
 	   <li class="search-container">
 	   		<a href="can.EJS.html" data-search="can.EJS">
 				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
 			</a>
 			
 	   </li>
@@ -434,20 +455,6 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
 			</a>
@@ -486,29 +493,31 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>makeFindOne</h1>
 	<ul class="tags">
 		<li>function</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.8/model/model.js#L1371">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
+	
+	
+	
 </div>
 
-<h1>
-makeFindOne
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/model/model.js#L1408">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -539,7 +548,10 @@ should use <code>findOneData</code> internally to get the raw data for the reque
 		<div class="description">
 			<p>Returns function that implements the external API of <code>findOne</code>.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -610,6 +622,12 @@ Todo.findOne({id: 5})
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"name":"can.Model.makeFindOne","type":"function","parent":"can.Model.static","description":"","title":"","signatures":[{"code":"can.Model.makeFindOne: function(findOneData) -> findOne","description":"<p>Returns the external <code>findOne</code> method given the implemented [can.Model.findOneData findOneData] function.</p>\n\n<p>[can.Model.findOne] is implemented with a <code>String</code>, [can.AjaxSettings ajax settings object], or \n[can.Model.findOneData findOneData] function. If it is implemented as\na <code>String</code> or [can.AjaxSettings ajax settings object], those values are used\nto create a [can.Model.findOneData findOneData] function.</p>\n\n<p>The [can.Model.findOneData findOneData] function is passed to <code>makeFindOne</code>. <code>makeFindOne</code>\nshould use <code>findOneData</code> internally to get the raw data for the request.</p>","params":[],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"can.Deferred"}]},"params":[{"types":[{"type":"params"}]},{"types":[{"type":"success"}]},{"types":[{"type":"error"}]}]}],"description":"<p>Returns function that implements the external API of <code>findOne</code>.</p>"}}],"comment":" ","src":"can/model/model.js","line":1408,"id":141};
+
+	console.log(docData);
+</script>
 
 
 

@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -109,6 +116,20 @@
 	   <li class="search-container">
 	   		<a href="can.EJS.html" data-search="can.EJS">
 				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
 			</a>
 			
 	   </li>
@@ -662,20 +683,6 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
 			</a>
@@ -714,33 +721,35 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>Helpers</h1>
 	<ul class="tags">
 		<li>page</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.8/view/mustache/doc/helpers.md">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
-</div>
-
-<h1>
-Helpers
-
+	
+	
 	
 		<span class="module">can.Mustache.Helpers</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/view/mustache/doc/helpers.md">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -938,16 +947,16 @@ Result:
     &lt;span&gt;my string localized&lt;/span&gt;
 </code></pre>
 
-<p><strong>Helpers with can.Observe attributes</strong></p>
+<p><strong>Helpers with can.Map attributes</strong></p>
 
-<p>If a can.Observe attribute is passed as an argument to a helper, it is converted to a can.compute getter/setter function.  This is to allow creating 2-way binding type functionality between a can.Observe attribute and a form element. For example in your template:</p>
+<p>If a can.Map attribute is passed as an argument to a helper, it is converted to a can.compute getter/setter function.  This is to allow creating 2-way binding type functionality between a can.Map attribute and a form element. For example in your template:</p>
 
 <pre><code>&lt;div&gt;{{addPrefix name}}&lt;/div&gt;
 </code></pre>
 
 <p>Your helper would look like:</p>
 
-<pre><code>var item = new can.Observe({name: "Brian"}),
+<pre><code>var item = new can.Map({name: "Brian"}),
     frag = can.view("#template", item, {
       addPrefix: function(name){
         return "Mr." + name()
@@ -1046,6 +1055,12 @@ you can set a custom context by passing the object instead of <code>this</code>.
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"page","name":"can.Mustache.Helpers","description":"<h1>Helpers</h1>","title":"Helpers","parent":"can.Mustache.pages","order":3,"src":"can/view/mustache/doc/helpers.md","id":69};
+
+	console.log(docData);
+</script>
 
 
 

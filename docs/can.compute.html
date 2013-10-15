@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -114,6 +121,20 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Model.html" data-search="can.Model">
 				can.Model
 			</a>
@@ -130,20 +151,6 @@
 	   <li class="search-container">
 	   		<a href="can.Mustache.html" data-search="can.Mustache">
 				can.Mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
 			</a>
 			
 	   </li>
@@ -253,29 +260,31 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>can.compute</h1>
 	<ul class="tags">
 		<li>function</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.8/observe/compute/compute.md">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
+	
+	
+	
 </div>
 
-<h1>
-can.compute
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/compute/compute.md">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -298,7 +307,7 @@ to determine if the compute has changed values.</p>
 		<section class="signature">
 			<h2>can.compute( getterSetter[, context] )</h2>
 <div class="signature-wrapper">
-<p>Create a compute that derives its value from <a href="can.Observe.html">can.Observe</a>s and other <a href="can.computed.html">can.compute</a>s.</p>
+<p>Create a compute that derives its value from <a href="can.Map.html">can.Map</a>s and other <a href="can.computed.html">can.compute</a>s.</p>
 
 	<h3>Parameters</h3>
 
@@ -311,8 +320,8 @@ to determine if the compute has changed values.</p>
 				<p>A function that gets and optionally sets the value of the compute.
 When called with no parameters, <em>getterSetter</em> should return the current value of the compute. When
 called with a single parameter, <em>getterSetter</em> should arrange things so that the next read of the compute
-produces that value. This compute will automatically update its value when any <a href="can.Observe.html">observable</a>
-values are read via <a href="can.Observe.prototype.attr.html">can.Observe.prototype.attr</a>.</p>
+produces that value. This compute will automatically update its value when any <a href="can.Map.html">observable</a>
+values are read via <a href="can.Map.prototype.attr.html">can.Map.prototype.attr</a>.</p>
 			</div>
 			
 			
@@ -339,7 +348,10 @@ values are read via <a href="can.Observe.prototype.attr.html">can.Observe.protot
 		<div class="description">
 			<p>A new compute.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -453,7 +465,10 @@ var value = can.compute("",{
 		<div class="description">
 			<p>The new compute.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -513,7 +528,10 @@ to determine if the compute has changed values.</p>
 		<div class="description">
 			<p>A new compute.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -530,7 +548,7 @@ that be listened to with <a href="can.bind.html">can.bind</a>.</p>
 <pre><code>var input = document.getElementById('age')
 var age = can.compute(input,"value","change");
 
-var me = new can.Observe({name: "Justin"});
+var me = new can.Map({name: "Justin"});
 var name = can.compute(me,"name")
 </code></pre>
 
@@ -583,7 +601,10 @@ to on <code>object</code> for <code>propertyName</code> updates.</p>
 		<div class="description">
 			<p>A new compute.</p>
 		</div>
+		
+		
 	</div>
+	
 
 
 </div>
@@ -601,14 +622,14 @@ to on <code>object</code> for <code>propertyName</code> updates.</p>
 			<h2>Use</h2>
 
 <p><code>can.compute</code> lets you make an observable value. Computes are similar
-to <a href="can.Observe.html">Observes</a>, but they represent a single value rather than 
+to <a href="can.Map.html">Observes</a>, but they represent a single value rather than 
 a collection of values.</p>
 
 <p><code>can.compute</code> returns a <a href="can.computed.html">compute</a> function that can 
 be called to read and optionally update the compute's value.</p>
 
 <p>It's also possible to derive a compute's value from other computes,
-<a href="can.Observe.html">can.Observe</a>s, and <a href="can.Observe.List.html">can.Observe.List</a>s. When the derived values
+<a href="can.Map.html">can.Map</a>s, and <a href="can.List.html">can.List</a>s. When the derived values
 change, the compute's value will be automatically updated.</p>
 
 <p>Use <a href="can.computed.bind.html">compute.bind</a> to listen for changes of the 
@@ -640,14 +661,14 @@ data([{description: "Learn Computes"}])
 <h2>Derived computes</h2>
 
 <p>If you use a compute that derives its
-value from properties of a <a href="can.Observe.html">can.Observe</a> or other <a href="can.compute.html">can.compute</a>s, the compute will listen for changes in those
+value from properties of a <a href="can.Map.html">can.Map</a> or other <a href="can.compute.html">can.compute</a>s, the compute will listen for changes in those
 properties and automatically recalculate itself, emitting a <em>change</em> event if its value
 changes.</p>
 
 <p>The following example shows creating a <code>fullName</code> compute
 that derives its value from two properties on the <code>person</code> observe:</p>
 
-<pre><code>var person = new can.Observe({
+<pre><code>var person = new can.Map({
     firstName: 'Alice',
     lastName: 'Liddell'
 });
@@ -663,7 +684,7 @@ person.attr('firstName', 'Allison'); // The log reads:
 //-&gt; "This person's full name is now Allison Liddell."
 </code></pre>
 
-<p>Notice how the definition of the compute uses <code><a href="can.Observe.prototype.attr.html">attr</a></code>
+<p>Notice how the definition of the compute uses <code><a href="can.Map.prototype.attr.html">attr</a></code>
 to read the values of the properties of <code>person</code>. This is how the compute knows to listen
 for changes.</p>
 
@@ -674,7 +695,7 @@ consider a widget that displays and allows you to update the progress in percent
 of a task. It accepts a compute with values between 0 and 100. But,
 our task observe has progress values between 0 and 1 like:</p>
 
-<pre><code>var task = new can.Observe({
+<pre><code>var task = new can.Map({
   progress: 0.75
 })
 </code></pre>
@@ -700,7 +721,7 @@ task.attr('progress') // -&gt; 1
 
 <p>The following is a similar example that shows converting feet into meters and back:</p>
 
-<pre><code class="lang-javascript">var wall = new can.Observe({
+<pre><code class="lang-javascript">var wall = new can.Map({
     material: 'brick',
     length: 10 // in feet
 });
@@ -765,7 +786,7 @@ SimpleSlider = can.Control.extend({ }, {
 new SimpleSlider('#slider', {percentDone: project.compute('percentDone')});</code></pre>
 
 <p>Now that's some delicious cake. More information on Controls can be found under <code><a href="can.Control.html">can.Control</a></code>.
-There is also a full explanation of can.Observe's <code><a href="can.Observe.prototype.compute.html">compute</a></code>,
+There is also a full explanation of can.Map's <code><a href="can.Map.prototype.compute.html">compute</a></code>,
 which is used in the last line of the example above.</p>
 		</section>
 		
@@ -773,6 +794,12 @@ which is used in the last line of the example above.</p>
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"function","name":"can.compute","description":"<p>Create an observable value. \nof the compute.</p>\n\n<p>A function that is called when a compute is called with an argument. The function is passed\nthe first argumented passed to [can.computed compute] and the current value. If\n<code>set</code> returns a value, it is used to compare to the current value of the compute. Otherwise,\n<code>get</code> is called to get the current value of the compute and that value is used\nto determine if the compute has changed values.</p>\n\n<p>when the computes value needs to be updated.</p>","title":"","parent":"canjs","signatures":[{"code":"can.compute( getterSetter[, context] )","description":"<p>Create a compute that derives its value from [can.Map]s and other [can.computed can.compute]s.</p>","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"*+"}],"name":"newVal"},{"types":[{"type":"*+"}],"name":"oldVal"}]}],"name":"getterSetter","description":"<p>A function that gets and optionally sets the value of the compute.\nWhen called with no parameters, <em>getterSetter</em> should return the current value of the compute. When\ncalled with a single parameter, <em>getterSetter</em> should arrange things so that the next read of the compute\nproduces that value. This compute will automatically update its value when any [can.Map observable]\nvalues are read via [can.Map.prototype.attr].</p>"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"context","description":"<p>The <code>this</code> to use when calling the <code>getterSetter</code> function.</p>"}],"returns":{"types":[{"type":"can.computed"}],"description":"<p>A new compute.</p>"}},{"code":"can.compute( initialValue [, settings] )","description":"<p>Creates a compute from a value and optionally specifies how to read, update, and \nlisten to changes in dependent values. This form of can.compute can be used to \ncreate a compute that derives its value from any source.</p>","params":[{"types":[{"type":"*"}],"name":"initialValue","description":"<p>The initial value of the compute. If <code>settings</code> is\nnot provided, the compute simply updates its value to whatever the first argument \nto the compute is.</p>\n\n<pre><code>var age = can.compute(30);\nage() //-&gt; 30\nage(31) //-&gt; fires a \"change\" event\n</code></pre>"},{"types":[{"type":"Object","options":[{"name":"get","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]},{"name":"set","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]},{"name":"on","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]},{"name":"off","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]}]}],"optional":true,"name":"settings","description":"<p>Configures all behaviors of the [can.computed compute]. The following cross\nbinds an input element to a compute:</p>\n\n<pre><code>var input = document.getElementById(\"age\")\nvar value = can.compute(\"\",{\n    get: function(){\n        return input.value;\n    },\n    set: function(newVal){\n        input.value = newVal;\n    },\n    on: function(updated){\n        input.addEventListener(\"change\", updated, false);\n    },\n    off: function(updated){\n        input.removeEventListener(\"change\", updated, false);\n    }\n})\n</code></pre>"}],"returns":{"types":[{"type":"can.computed"}],"description":"<p>The new compute.</p>"}},{"code":"can.compute( initialValue, setter(newVal,oldVal) )","description":"<p>Create a compute that has a setter that can adjust incoming new values.</p>\n\n<pre><code>var age = can.compute(6,function(newVal, oldVal){\n  if(!isNaN(+newVal)){\n    return +newVal;\n  } else {\n    return oldVal;\n  }\n})\n</code></pre>","params":[{"types":[{"type":"*"}],"name":"initialValue","description":"<p>The initial value of the compute.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"*"}]},"params":[{"types":[{"type":"*"}],"name":"newVal"},{"types":[{"type":"*"}],"name":"oldVal"}]}],"name":"setter","description":"<p>A function that is called when a compute is called with an argument. The function is passed\nthe first argumented passed to [can.computed compute] and the current value. If\n<code>set</code> returns a value, it is used to compare to the current value of the compute. Otherwise,\n<code>get</code> is called to get the current value of the compute and that value is used\nto determine if the compute has changed values.</p>"}],"returns":{"types":[{"type":"can.computed"}],"description":"<p>A new compute.</p>"}},{"code":"can.compute( object, propertyName [, eventName] )","description":"<p>Create a compute from an object's property value. This short-cut\nsignature lets you create a compute on objects that have events\nthat be listened to with [can.bind].</p>\n\n<pre><code>var input = document.getElementById('age')\nvar age = can.compute(input,\"value\",\"change\");\n\nvar me = new can.Map({name: \"Justin\"});\nvar name = can.compute(me,\"name\")\n</code></pre>","params":[{"types":[{"type":"Object","options":[]}],"name":"object","description":"<p>An object that either has a <code>bind</code> method or\na has events dispatched on it via [can.trigger].</p>"},{"types":[{"type":"String"}],"name":"propertyName","description":"<p>The property value to read on <code>object</code>.  The\nproperty will be read via <code>object.attr(propertyName)</code> or <code>object[propertyame]</code>.</p>"},{"types":[{"type":"String"}],"optional":true,"name":"eventName","defaultValue":"propertyName","description":"<p>Specifies the event name to listen\nto on <code>object</code> for <code>propertyName</code> updates.</p>"}],"returns":{"types":[{"type":"can.computed"}],"description":"<p>A new compute.</p>"}}],"types":[],"comment":" ","src":"can/compute/compute.md","id":9,"children":[{"type":"function","name":"can.computed","description":"","title":"compute","parent":"can.compute","signatures":[{"code":"compute( [newVal] )","description":"","params":[{"types":[{"type":"*"}],"optional":true,"name":"newVal","description":"<p>If <code>compute</code> is called with an argument, the first argument is used\nto set the compute to a new value. This may trigger a \n<code>\"change\"</code> event that can be listened for with [can.computed.bind].</p>\n\n<p>If the compute is called without any arguments (<code>compute()</code>), it simply returns\nthe current value of the compute.</p>"}],"returns":{"types":[{"type":"*"}],"description":"<p>The current value of the compute.</p>"}}],"src":"can/compute/computed.md","id":10},{"name":"can.computed.bind","type":"function","parent":"can.compute","description":"<p>Bind an event handler to a compute. </p>","title":"compute.bind","signatures":[{"code":"compute.bind(eventType, handler)","description":"","params":[{"types":[{"type":"String"}],"name":"eventType","description":"<p>The event to bind this handler to.\nThe only event type that computes emit is <em>change</em>.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"Object","options":[{"name":"Object"}]}]},{"types":[{"type":"Object","options":[{"name":"*"}]}]},{"types":[{"type":"Object","options":[{"name":"*"}]}]}]}],"name":"handler","description":"<p>The handler to call when the event happens.\nThe handler should have three parameters:</p>\n\n<ul>\n<li><em>event</em> is the event object.</li>\n<li><em>newVal</em> is the newly-computed value of the compute.</li>\n<li><em>oldVal</em> is the value of the compute before it changed.</li>\n</ul>\n\n<p><code>bind</code> lets you listen to a compute to know when it changes. It works just like\ncan.Map's <code>[can.Map.prototype.bind bind]</code>:</p>\n\n<pre><code class=\"lang-javascript\">var tally = can.compute(0);\ntally.bind('change', function(ev, newVal, oldVal) {\n    console.log('The tally is now at ' + newVal + '.');\n});\n\ntally(tally() + 5); // The log reads:\n                    // 'The tally is now at 5.'</code></pre>"}]}],"src":"can/compute/compute.js","line":320,"id":311},{"name":"can.computed.isComputed","type":"property","parent":"can.compute","description":"<p>Whether the value of the compute has been computed yet.</p>","types":[{"type":"Boolean"}],"title":"compute.isComputed","src":"can/compute/compute.js","line":295,"id":310},{"name":"computed.unbind","type":"function","parent":"can.compute","description":"<p>Unbind an event handler from a compute. </p>","title":"compute.unbind","signatures":[{"code":"compute.unbind(eventType[, handler])","description":"","params":[{"types":[{"type":"String"}],"name":"eventType","description":"<p>The type of event to unbind.\nThe only event type available for computes is <em>change</em>.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"handler","description":"<p>If given, the handler to unbind.\nIf <em>handler</em> is not supplied, all handlers bound to <em>eventType</em>\nwill be removed.</p>"}]}],"src":"can/compute/compute.js","line":347,"id":312}]};
+
+	console.log(docData);
+</script>
 
 
 

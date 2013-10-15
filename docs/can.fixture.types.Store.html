@@ -93,6 +93,13 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Construct.html" data-search="can.Construct">
 				can.Construct
 			</a>
@@ -114,6 +121,20 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.Model.html" data-search="can.Model">
 				can.Model
 			</a>
@@ -130,20 +151,6 @@
 	   <li class="search-container">
 	   		<a href="can.Mustache.html" data-search="can.Mustache">
 				can.Mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.html" data-search="can.Observe">
-				can.Observe
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
-				can.Observe.List
 			</a>
 			
 	   </li>
@@ -441,33 +448,35 @@
 	</nav>
 	<article class="content docs">
 		<section class="title">
-			<div class="pull-right">
+			<div class="heading">
+<h1>Store</h1>
 	<ul class="tags">
 		<li>typedef</li>
 	</ul>
-	<ul class="links">
-		
-			<li><a href="https://github.com/bitovi/canjs/tree/v1.1.8/util/fixture/store.md">source</a></li>
-		
-		
-			
-		
-		
-	</ul>
-</div>
-
-<h1>
-Store
-
+	
+	
 	
 		<span class="module">can.fixture.types.Store</span>
 	
+	
+	
+</div>
 
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
 
-</h1>
-
-<span class="inherits">&nbsp;</span>
-
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/util/fixture/store.md">source</a></li>
+	
+	
+		
+	
+	
+</ul>
+<br />
 		</section>
 
 		<section class="contents">
@@ -523,6 +532,12 @@ can.fixture({
 		
 	</article>
 </div>
+
+<script type="text/javascript">
+	var docData = {"type":"typedef","name":"can.fixture.types.Store","description":"<p>Contains an array of items and methods for \nfinding, adding, updating, and removing items from the store. Many of those\nmethods are designed to work with <code>can.fixture</code> and simulate [can.Model]'s CRUD\nbehavior.</p>","title":"Store","parent":"can.fixture.types","src":"can/util/fixture/store.md","id":52,"children":[{"type":"function","name":"can.fixture.types.Store.create","parent":"can.fixture.types.Store","description":"<p>Simulate creating a Model with a fixture. </p>","title":"","signatures":[{"code":"store.create(request, callback)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"request","description":"<p>Parameters for the request.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"callback","description":"<p>A function to call with the created item.</p>"}]}],"comment":" ","src":"can/util/fixture/fixture.js","line":661,"id":189},{"type":"function","name":"can.fixture.types.Store.destroy","parent":"can.fixture.types.Store","description":"<p>Simulate destroying a Model on a fixture. </p>","title":"","signatures":[{"code":"store.destroy(request, callback)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"request","description":"<p>Parameters for the request.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"callback","description":"<p>A function to call after destruction.</p>"}]}],"comment":" ","src":"can/util/fixture/fixture.js","line":630,"id":188},{"type":"function","name":"can.fixture.types.Store.find","parent":"can.fixture.types.Store","description":"<p>Get an item from the store by ID. </p>","title":"","signatures":[{"code":"store.find(settings)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"settings","description":"<p>An object containing an <code>id</code> key\ncorresponding to the item to find.</p>"}]}],"comment":" ","src":"can/util/fixture/fixture.js","line":725,"id":190},{"type":"function","name":"can.fixture.types.Store.findAll","parent":"can.fixture.types.Store","description":"<p>Simulate a findAll to a fixture. </p>","title":"","signatures":[{"code":"store.findAll(request)","description":"<p><code>store.findAll(request)</code> simulates a request to \nget a list items from the server. It supports the\nfollowing params:</p>\n\n<ul>\n<li>order - <code>order=name ASC</code> </li>\n<li>group - <code>group=name</code></li>\n<li>limit - <code>limit=20</code></li>\n<li>offset - <code>offset=60</code></li>\n<li>id filtering - <code>ownerId=5</code></li>\n</ul>","params":[{"types":[{"type":"Object","options":[{"name":"order","description":"<p>The order of the results.\n<code>order: 'name ASC'</code></p>","types":[{"type":"String"}]},{"name":"group","description":"<p>How to group the results.\n<code>group: 'name'</code></p>","types":[{"type":"String"}]},{"name":"limit","description":"<p>A limit on the number to retrieve.\n<code>limit: 20</code></p>","types":[{"type":"String"}]},{"name":"offset","description":"<p>The offset of the results.\n<code>offset: 60</code></p>","types":[{"type":"String"}]},{"name":"id","description":"<p>Filtering by ID.\n<code>id: 5</code></p>","types":[{"type":"String"}]}]}],"name":"request","description":"<p>The ajax request object. The available parameters are:</p>"}],"returns":{"types":[{"type":"Object","options":[]}],"description":"<p>a response object like:</p>\n\n<pre><code>{\n  count: 1000,\n  limit: 20,\n  offset: 60,\n  data: [item1, item2, ...]\n}\n</code></pre>\n\n<p>where:</p>\n\n<ul>\n<li>count - the number of items that match any filtering \nbefore limit and offset is taken into account</li>\n<li>offset - the offset passed</li>\n<li>limit - the limit passed</li>\n<li>data - an array of JS objects with each item's properties</li>\n</ul>"}}],"types":[],"src":"can/util/fixture/fixture.js","line":452,"id":185},{"type":"function","name":"can.fixture.types.Store.findOne","parent":"can.fixture.types.Store","description":"<p>Simulate a findOne request on a fixture. </p>","title":"","signatures":[{"code":"store.findOne(request, callback)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"request","description":"<p>Parameters for the request.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"callback","description":"<p>A function to call with the retrieved item.</p>"}]}],"comment":" ","src":"can/util/fixture/fixture.js","line":577,"id":186},{"name":"can.fixture.types.Store.reset","type":"function","parent":"can.fixture.types.Store","description":"<p>Reset the fixture store. </p>","title":"","signatures":[{"code":"store.reset()","description":"","params":[]}],"comment":" ","src":"can/util/fixture/fixture.js","line":747,"id":191},{"type":"function","name":"can.fixture.types.Store.update","parent":"can.fixture.types.Store","description":"<p>Simulate an update on a fixture. </p>","title":"","signatures":[{"code":"store.update(request, callback)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"request","description":"<p>Parameters for the request.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"callback","description":"<p>A function to call with the updated item and headers.</p>"}]}],"comment":" ","src":"can/util/fixture/fixture.js","line":600,"id":187}]};
+
+	console.log(docData);
+</script>
 
 
 
