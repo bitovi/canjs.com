@@ -10,7 +10,7 @@ CanJS 2.0 introduces many new features like:
  - [mustache event bindings](../docs/can.Component.html)
 
 and many new API changes.  But it still remains very backwards compatible with
-CanJS 1.1.  This document covers the breaking changes in 2.0 and the deprecated  1.1 features
+CanJS 1.1.  This document covers the breaking changes in 2.0 and the deprecated 1.1 features
 that are currently supported, but will be removed in 2.1.
 
 ## Breaking Changes
@@ -75,7 +75,7 @@ still exist.  Loading these files loads `can.Map`, `can.List` and
 `can.compute` and aliases them to the old `can.Observe` and
 `can.Observe.List`.
 
-## Depricated Changes
+## Deprecated Changes
 
 These are changes that you should strongly consider making to be able to upgrade 
 to 2.1 and beyond:
