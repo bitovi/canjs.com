@@ -9,8 +9,8 @@ CanJS 2.0 introduces many new features like:
  - custom elements with [can.Component](../docs/can.Component.html)
  - [mustache event bindings](../docs/can.Component.html)
 
-and many new API changes.  But it still remains very backwards compatable with
-CanJS 1.1.  This document covers the breaking changes in 2.0 and the depricated 1.1 features
+and many new API changes.  But it still remains very backwards compatible with
+CanJS 1.1.  This document covers the breaking changes in 2.0 and the deprecated  1.1 features
 that are currently supported, but will be removed in 2.1.
 
 ## Breaking Changes
