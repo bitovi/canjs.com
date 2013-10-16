@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>can.append - CanJS API</title>
+  <title>can.batch - CanJS API</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -294,14 +294,12 @@
 			
 				
 				
-					<li class="search-container active  expanded">
+					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.append.html" 
 							data-search="can.append">
 							can.append
 						</a>
-						
-							
 						
 					</li>
 				
@@ -311,12 +309,63 @@
 			
 				
 				
-					<li class="search-container parent ">
+					<li class="search-container active parent expanded">
 						<a 	class="page" 
 							href="can.batch.html" 
 							data-search="can.batch">
 							can.batch
 						</a>
+						
+							
+	<ul >
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.batch.start.html" 
+							data-search="can.batch.start">
+							start
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.batch.stop.html" 
+							data-search="can.batch.stop">
+							stop
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.batch.trigger.html" 
+							data-search="can.batch.trigger">
+							trigger
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
 						
 					</li>
 				
@@ -745,9 +794,9 @@
 	<article class="content docs">
 		<section class="title">
 			<div class="heading">
-<h1>can.append</h1>
+<h1>can.batch</h1>
 	<ul class="tags">
-		<li>function</li>
+		<li>page</li>
 	</ul>
 	
 	
@@ -761,7 +810,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/util/func.js#L521">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0-pre/util/batch/batch.md">source</a></li>
 	
 	
 		
@@ -775,48 +824,9 @@
 		</section>
 
 		<section class="description">
-			<p>Append content to elements. </p>
+			
 		</section>
 
-		
-		<section class="signature">
-			<h2>can.append(nodeList, html)</h2>
-<div class="signature-wrapper">
-
-
-	<h3>Parameters</h3>
-
-	<ol class="parameters">
-		
-		<li class="parameter">
-			<h4>nodeList
-				<code>{NodeList}</code></h4>
-			<div class="description">
-				<p>A nodelist of the elements to append content to.</p>
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>html
-				<code>{String}</code></h4>
-			<div class="description">
-				<p>The HTML to append to the end of the elements in <strong>nodeList</strong>.</p>
-			</div>
-			
-			
-			
-		</li>
-		
-	</ol>
-
-
-
-</div>
-
-		</section>
 		
 
 		
@@ -826,16 +836,154 @@
 
 		
 		<section class="comment">
-			<p><code>can.append( wrappedNodeList, html )</code> inserts content to the end of each wrapped node list item(s) passed.</p>
+			<p><a href="can.batch.start.html"><code>can.batch.start( batchStopHandler )</code></a> and
+[can.batch.end  <code>can.batch.end( force, callStart )</code>] are used to specify 
+atomic operations. <code>start</code>
+prevents change events from being fired until <code>stop</code> is called.</p>
 
-<pre><code>// Before
-&lt;div id="demo" /&gt;
+<p>The following listens to changes on a <code>player</code>:</p>
 
-can.append( can.$('#demo'), 'Demos are fun!' );
+<pre><code>var player = new can.Map({
+  tvshow: "The Simpsons"
+});
 
-// After
-&lt;div id="demo"&gt;Demos are fun!&lt;/div&gt;
+player.bind("change",function(ev, attr, how, newVal, oldVal){
+  console.log("changed", attr );
+});
 </code></pre>
+
+<p>The "change" callback handler does not get called until
+after <code>tvshow</code> is removed, <code>song</code> is added, and <code>stopBatch</code> 
+is called.</p>
+
+<pre><code>can.batch.start();
+
+player.removeAttr("tvshow");
+player.attr("song","What makes you beautiful");
+
+can.batch.stop();
+</code></pre>
+
+<p>Performance and correctness are the two most common reasons
+to use batch operations.</p>
+
+<h2>Correctness</h2>
+
+<p>Sometimes, an object can be temporarily in an invalid 
+state. For example, the previous <code>player</code> should have 
+a <code>tvshow</code> or <code>song</code> property, but not both. Event listeners should 
+never be called in an intermediate state.  We can make this happen 
+with <code>startBatch</code>, <code>stopBatch</code> and
+the <a href="can.Map.setter.html"><code>can/map/setter</code></a> plugin as follows:</p>
+
+<pre><code>// Selection constructor function inherits from Observe
+Player = can.Map({
+
+  // called when setting tvshow
+  setTvshow: function(newVal, success){
+    can.batch.start();
+    this.removeAttr("song")
+    success(newVal);
+    can.batch.stop();
+  },
+  // called when setting song
+  setSong: function(newVal, success){
+    can.batch.start();
+    this.removeAttr("tvshow")
+    success(newVal);
+    can.batch.stop();
+  }
+});
+
+// a new selection instance
+var player =   new Player({song: "Amish Paradise"});
+
+player.bind("change", function( ev, attr, how, newVal, oldVal ){
+  console.log("changed", attr, how, player.attr() );
+});
+
+console.log("start")
+player.attr("tvshow","Breaking Bad");
+console.log("end")
+</code></pre>
+
+<p>Use <code>startBatch</code> and <code>stopBatch</code> to make sure events 
+are triggered when an observe is in a valid state. </p>
+
+<h2>Performance</h2>
+
+<p>CanJS synchronously sends events when a property changes.
+This makes certain patterns easier. For example, if you 
+are doing live-binding, and change a property, the DOM is 
+immediately updated.</p>
+
+<p>Occasionally, you may find yourself changing many properties at once. To 
+prevent live-binding from performing unnecessary updates, 
+write the property updates within a <code>startBatch</code>/<code>stopBatch</code>.</p>
+
+<p>Consider a list of items like:</p>
+
+<pre><code>var items = new Items([
+  {selected: false},
+  {selected: true},
+  {selected: false}
+])
+</code></pre>
+
+<p>And a template that renders the number of selected items:</p>
+
+<pre><code>var template = can.view.mustache("{{count}}")
+
+$("#itemCount").html(template({
+  count: function(){
+      var count = 0;
+      items.each(function(item){
+        count += item.attr('selected') ? 1 : 0
+      })
+      return count
+   }
+}))
+</code></pre>
+
+<p>The following updates the DOM once per click:</p>
+
+<pre><code>$("#selectAll").click(function(){
+    can.batch.start()
+    items.each(function(item){
+      item.attr('selected', true)
+    })
+    can.batch.stop()
+})
+</code></pre>
+
+<h2>batchNum</h2>
+
+<p>All events created within a <code>startBatch</code> / <code>stopBatch</code> share the same batchNum value. To 
+respond only once for a given batchNum, you can do it like:</p>
+
+<pre><code>var batchNum;
+obs.bind("change", function( ev, attr, how, newVal, oldVal ){
+ if( !ev.batchNum || ev.batchNum !== batchNum ) {
+   batchNum = ev.batchNum;
+   // do your code here!
+ }
+});
+</code></pre>
+
+<h2>Automatic Batching</h2>
+
+<p>Libraries like Angular and Ember always batch 
+operations. Set this up with:</p>
+
+<pre><code>can.batch.start();
+setTimeout(function(){
+  can.batch.stop(true, true);
+  setTimeout(arguments.callee, 10)
+},10);
+</code></pre>
+
+<p>This batches everything that happens within the same thread of execution
+and/or within 10 ms of each other. </p>
 		</section>
 		
 
@@ -844,7 +992,7 @@ can.append( can.$('#demo'), 'Demos are fun!' );
 </div>
 
 <script type="text/javascript">
-	var docData = {"description":"<p>Append content to elements. </p>","title":"","name":"can.append","type":"function","parent":"can.util","signatures":[{"code":"can.append(nodeList, html)","description":"","params":[{"types":[{"type":"NodeList"}],"name":"nodeList","description":"<p>A nodelist of the elements to append content to.</p>"},{"types":[{"type":"String"}],"name":"html","description":"<p>The HTML to append to the end of the elements in <strong>nodeList</strong>.</p>"}]}],"comment":" ","src":"can/util/func.js","line":521,"id":254};
+	var docData = {"type":"page","name":"can.batch","description":"","parent":"can.util","src":"can/util/batch/batch.md","id":47,"children":[{"type":"function","name":"can.batch.start","parent":"can.batch","description":"<p>Begin an event batch. </p>","title":"","signatures":[{"code":"can.batch.start([batchStopHandler])","description":"","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"batchStopHandler","description":"<p>a callback that gets called after all batched events have been called</p>"}]}],"comment":" ","src":"can/util/batch/batch.js","line":13,"id":314},{"type":"function","name":"can.batch.stop","parent":"can.batch","description":"<p>End an event batch. </p>","title":"","signatures":[{"code":"can.batch.stop([force[, callStart]])","description":"","params":[{"types":[{"type":"bool"}],"optional":true,"name":"force","defaultValue":"false","description":"<p>whether to stop batching events immediately</p>"},{"types":[{"type":"bool"}],"optional":true,"name":"callStart","defaultValue":"false","description":"<p>whether to call <code>[can.batch.start can.batch.start]</code> after firing batched events</p>"}]}],"comment":" ","src":"can/util/batch/batch.js","line":115,"id":315},{"type":"function","name":"can.batch.trigger","parent":"can.batch","description":"<p>Trigger an event to be added to the current batch. </p>","title":"","signatures":[{"code":"can.batch.trigger(item, event [, args])","description":"","params":[{"types":[{"type":"can.Map"}],"name":"item","description":"<p>the target of the event</p>"},{"types":[{"type":"String"},{"type":"Object","options":[{"name":"type","types":[{"type":"String"}]}]}],"name":"event","description":"<p>the type of event, or an event object with a type given</p>"},{"types":[{"type":"Array","options":[]}],"optional":true,"name":"args","description":"<p>the parameters to trigger the event with.</p>"}]}],"comment":" ","src":"can/util/batch/batch.js","line":186,"id":316}]};
 
 	console.log(docData);
 </script>

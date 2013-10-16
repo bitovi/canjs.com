@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Guides - CanJS</title>
+  <title>Migrating to 2.0 - CanJS Guides</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -141,10 +141,12 @@
 			
 	   </li>
 	
-	   <li class="search-container">
+	   <li class="search-container active">
 	   		<a href="migrating.html" data-search="Migrating to 2.0">
 				Migrating to 2.0
 			</a>
+			
+				
 			
 	   </li>
 	
@@ -153,14 +155,14 @@
 	<article class="content docs">
 		<section class="title">
 			<div class="heading">
-<h1>Guides</h1>
+<h1>Migrating to 2.0</h1>
 	<ul class="tags">
 		<li>page</li>
 	</ul>
 	
 	
 	
-		<span class="module">guides</span>
+		<span class="module">migrating</span>
 	
 	
 	
@@ -173,7 +175,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/wiki/guides_source/Guides">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/wiki/guides_source/migrating_to_2.0">source</a></li>
 	
 	
 		
@@ -199,7 +201,118 @@
 
 		
 		<section class="comment">
-			<p>This page contains recipes and tutorials that will get you started with building CanJS projects. Choose a section on the left to learn more about the components that make CanJS work and to see CanJS being used in real projects. If you're new to CanJS, a good starting point is <a href="Why.html">Why CanJS?</a></p>
+			<p>CanJS 2.0 introduces many new features like:</p>
+
+<ul>
+<li><a href="../docs/can.view.bindings.can-value.html">2 way bindings</a></li>
+<li>custom elements with <a href="../docs/can.Component.html">can.Component</a></li>
+<li><a href="../docs/can.Component.html">mustache event bindings</a></li>
+</ul>
+
+<p>and many new API changes.  But it still remains very backwards compatible with
+CanJS 1.1.  This document covers the breaking changes in 2.0 and the deprecated 1.1 features
+that are currently supported, but will be removed in 2.1.</p>
+
+<h2>Breaking Changes</h2>
+
+<p>These changes require code modifications to use 2.0.</p>
+
+<h3>can.route.ready()</h3>
+
+<p>It is now necessary to always call <a href="../docs/can.route.html">can.route.ready</a> once 
+all routes have been set up. If you previously didn't 
+use <code>can.route.ready()</code>, just add it on document ready like:</p>
+
+<pre><code>$(function(){
+  can.route.ready()
+})
+</code></pre>
+
+<h3>can.Observe.List.Observe is now can.Observe.List.Map</h3>
+
+<p>Although it was an undocumented feature, you could
+provide a static <code>Observe</code> property on lists to
+specify what type of Observe instance should be created
+when items are added to the list.  For example:</p>
+
+<pre><code>MyTasks = can.Observe.List({
+  Observe: Task
+},{})
+
+var tasks = new MyTasks();
+tasks.push({});
+tasks.attr(0) instanceof Task //-&gt; true
+</code></pre>
+
+<p>You should change the static Observe property to
+<code>Map</code> like:</p>
+
+<pre><code>MyTasks = can.Observe.List({
+  Map: Task
+},{})
+</code></pre>
+
+<p>In fact, this code should look like:</p>
+
+<pre><code>MyTasks = can.List.extend({
+  Map: Task
+})
+</code></pre>
+
+<h3>can.EJS is no longer in core</h3>
+
+<p>can.EJS is no longer packaged in the core download by default. It has
+been replaced by can.Mustache. You
+can use the custom download builder to replace can.Mustache with 
+can.EJS.</p>
+
+<h3>can.Observe names and locations</h3>
+
+<p>Plugins like <strong><em>can.observe.attrbibutes.js</em></strong> are now like 
+<strong><em>can.map.attributes.js</em></strong>.  If you are using steal or requirejs to
+load these, you will have to change paths.  In our projects we
+replaced <code>/observe/</code> with <code>/map/</code>.  </p>
+
+<p>Note that <code>can/observe.js</code> (requirejs) and <code>can/observe/observe.js</code>
+still exist.  Loading these files loads <code>can.Map</code>, <code>can.List</code> and
+<code>can.compute</code> and aliases them to the old <code>can.Observe</code> and
+<code>can.Observe.List</code>.</p>
+
+<h2>Deprecated Changes</h2>
+
+<p>These are changes that you should strongly consider making to be able to upgrade 
+to 2.1 and beyond:</p>
+
+<h3>can.Observe and can.Observe.List becomes can.Map and can.List</h3>
+
+<p>In order to comply with the ECMAScript 6 terminology <code>can.Observe</code> has 
+been renamed to <code>can.Map</code> and <code>can.Observe.List</code> is now 
+called <code>can.List</code>. Backwards compatible mappings 
+to <code>can.Observe</code> and <code>can.Observe.List</code> are in place 
+but are deprecated.</p>
+
+<h3>Use .extend for extending Constructs</h3>
+
+<p>Extending <code>can.Construct</code>s without calling <code>.extend</code> is 
+deprecated.  For example, instead of:</p>
+
+<pre><code>Todo = can.Construct(static, proto)
+MyWidget = can.Control(static, proto)
+Task = can.Model(static, proto)
+</code></pre>
+
+<p>do:</p>
+
+<pre><code>Todo = can.Construct.extend(static, proto)
+MyWidget = can.Control.extend(static, proto)
+Task = can.Model.extend(static, proto)
+</code></pre>
+
+<h3>can.Observe.startBatch and can.Observe.stopBatch becomes can.batch.start and can.batch.end</h3>
+
+<p><code>can.Observe.startBatch</code> 
+and <code>can.Observe.stopBatch</code> are now available as <a href="../docs/can.batch.start.html">can.batch.start</a> 
+and <a href="../docs/can.batch.stop.html">can.batch.stop</a>. Backwards compatible mappings are in place.</p>
 		</section>
 		
 
@@ -208,7 +321,7 @@
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"page","name":"guides","description":"","title":"Guides","comment":" ","src":"guides_source/Guides.md","id":10,"children":[{"type":"page","name":"Tutorial","description":"","title":"Getting Started","parent":"guides","order":1,"comment":" ","src":"guides_source/tutorial.md","id":23,"children":[{"type":"page","name":"Components","description":"<p>Now that you've learned about observables, templates, and controls, it's time to learn\nabout <a href=\"../docs/can.Component.html\">can.Component</a>. can.Component makes it easy to combine the functionality of \nthese features. We'll use it to rewrite the todo example.</p>","title":"Components","parent":"Tutorial","order":0,"src":"guides_source/components.md","id":5},{"type":"page","name":"Constructs","description":"","title":"Constructor Functions","parent":"Tutorial","order":9,"comment":" ","src":"guides_source/constructs.md","id":6},{"type":"page","name":"Controls","description":"","title":"Controls","parent":"Tutorial","order":6,"comment":" ","src":"guides_source/controls.md","id":7},{"type":"page","name":"Deferreds","description":"","title":"Deferreds","parent":"Tutorial","order":7,"comment":" ","src":"guides_source/deferred.md","id":8},{"type":"page","name":"EJS","description":"","title":"EJS","parent":"Tutorial","order":4,"comment":" ","src":"guides_source/ejs.md","id":9},{"type":"page","name":"Models","description":"","title":"Models & Retrieving Data","parent":"Tutorial","order":2,"comment":" ","src":"guides_source/models.md","id":13},{"type":"page","name":"Mustache","description":"","title":"Mustache","parent":"Tutorial","order":5,"comment":" ","src":"guides_source/mustache.md","id":14},{"type":"page","name":"Observables","description":"","title":"Observables","parent":"Tutorial","order":1,"comment":" ","src":"guides_source/observables.md","id":15},{"type":"page","name":"Routing","description":"<p><a href=\"../docs/can.route.html\">can.route</a> is the core of CanJS's routing functionality. It is a special\nObserve that updates <code>window.location.hash</code> when its properties change and\nupdates its properties when <code>window.location.hash</code> changes. You can give\n<code>can.route</code> a template to translate URLs into property values, but if no route\nis provided, it just serializes the route into standard URL-encoded notation.</p>","title":"Routing","parent":"Tutorial","order":8,"src":"guides_source/route.md","id":22},{"type":"page","name":"Utilities","description":"","title":"Utility Functions","parent":"Tutorial","order":10,"comment":" ","src":"guides_source/util.md","id":25},{"type":"page","name":"Templates","description":"","title":"Templates","parent":"Tutorial","order":3,"comment":" ","src":"guides_source/views.md","id":26}]},{"type":"page","name":"Using","description":"<p>CanJS can be used with <a href=\"#section_jQuery\">jQuery</a>, <a href=\"#section_Dojo\">Dojo</a>, <a href=\"#section_Mootools\">Mootools</a>, <a href=\"#section_YUI\">YUI</a> and <a href=\"#section_Zepto\">Zepto</a>. You can either include it as an inline script or load it as an <a href=\"#section_AMD\">AMD</a> module with any of these libraries.</p>","title":"Using CanJS","parent":"guides","order":2,"src":"guides_source/using.md","id":24},{"type":"page","name":"Why","description":"","title":"Why CanJS?","parent":"guides","order":3,"comment":" ","src":"guides_source/why.md","id":27},{"type":"page","name":"Recipes","description":"","title":"Recipes","parent":"guides","order":4,"comment":" ","src":"guides_source/recipes.md","id":16,"children":[{"type":"page","name":"RecipesControls","description":"","title":"Controls","parent":"Recipes","order":0,"comment":" ","src":"guides_source/recipes_controls.md","id":17},{"type":"page","name":"RecipesEverything","description":"","title":"Everything Together","parent":"Recipes","order":4,"comment":" ","src":"guides_source/recipes_everything.md","id":18},{"type":"page","name":"RecipesLiveBindings","description":"","title":"Live Bindings","parent":"Recipes","order":1,"comment":" ","src":"guides_source/recipes_livebindings.md","id":19},{"type":"page","name":"RecipesModels","description":"","title":"Models","parent":"Recipes","order":3,"comment":" ","src":"guides_source/recipes_models.md","id":20},{"type":"page","name":"RecipesRouting","description":"","title":"Routing","parent":"Recipes","order":2,"comment":" ","src":"guides_source/recipes_routing.md","id":21}]},{"type":"page","name":"contributing","description":"<p><!--</p>","title":"How to Contribute","parent":"guides","order":4,"comment":" ","src":"can/contributing.md","id":29},{"type":"page","name":"changelog","description":"<!--\n-->","title":"Changelog","parent":"guides","order":5,"src":"can/changelog.md","id":28},{"type":"page","name":"license","description":"<!--\n-->","title":"License","parent":"guides","order":6,"src":"can/license.md","id":30},{"type":"page","name":"migrating","description":"","title":"Migrating to 2.0","parent":"guides","order":7,"comment":" ","src":"guides_source/migrating_to_2.0.md","id":12}]};
+	var docData = {"type":"page","name":"migrating","description":"","title":"Migrating to 2.0","parent":"guides","order":7,"comment":" ","src":"guides_source/migrating_to_2.0.md","id":12};
 
 	console.log(docData);
 </script>
