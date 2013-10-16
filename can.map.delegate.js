@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.0-pre
+ * CanJS - 2.0.0
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 15 Oct 2013 15:05:04 GMT
+ * Wed, 16 Oct 2013 20:41:07 GMT
  * Licensed MIT
  * Includes: can/map/delegate
  * Download from: http://canjs.com

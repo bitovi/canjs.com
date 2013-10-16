@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.0-pre
+ * CanJS - 2.0.0
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 15 Oct 2013 15:04:39 GMT
+ * Wed, 16 Oct 2013 20:40:41 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -99,10 +99,6 @@ define(["can/util/library", "can/map", "can/list"], function( can ) {
 				model = self.constructor,
 				jqXHR;
 
-			// `destroy` only keeps data if needed
-			if ( type == 'destroy' && !this.destroy.needs_attrs) {
-				args.shift();
-			}
 			// `update` and `destroy` need the `id`.
 			if ( type !== 'create' ) {
 				args.unshift(getId(self));
@@ -879,7 +875,6 @@ define(["can/util/library", "can/map", "can/list"], function( can ) {
 					// use ajaxMaker to convert that into a function
 					// that returns a deferred with the data
 					self[name] = ajaxMaker(method, self[name]);
-					self[name].needs_attrs = true;
 				}
 				// check if there's a make function like makeFindAll
 				// these take deferred function and can do special

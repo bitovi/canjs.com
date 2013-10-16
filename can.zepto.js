@@ -1,10 +1,10 @@
 /*!
- * CanJS - 2.0.0-pre
+ * CanJS - 2.0.0
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 15 Oct 2013 15:05:02 GMT
+ * Wed, 16 Oct 2013 20:41:05 GMT
  * Licensed MIT
- * Includes: can/component,can/construct,can/observe,can/compute,can/model,can/view,can/view/ejs,can/control,can/route,can/control/route,can/util/string
+ * Includes: can/component,can/construct,can/observe,can/compute,can/model,can/view,can/control,can/route,can/control/route,can/util/string,can/view/mustache
  * Download from: http://canjs.com
  */
 (function(undefined) {
@@ -360,7 +360,9 @@
                     this._status = st;
 
                     can.each(dst, function(d) {
-                        d.apply(context, args);
+                        if (typeof d.apply === 'function') {
+                            d.apply(context, args);
+                        }
                     });
 
                     return this;
@@ -1444,7 +1446,7 @@
                     batchEvents = [];
                     stopCallbacks = [];
                     batchNum++;
-                    callStart && this.startBatch();
+                    callStart && can.batch.start();
                     can.each(items, function(args) {
                         can.trigger.apply(can, args);
                     });
@@ -2510,7 +2512,7 @@
         can.Observe = can.Map;
         can.Observe.startBatch = can.batch.start;
         can.Observe.stopBatch = can.batch.stop;
-
+        can.Observe.triggerBatch = can.batch.trigger;
         return can;
     })(__m2, __m15, __m18, __m19);
 
@@ -5223,11 +5225,11 @@
                 }
             }
             // Invoke the length to ensure that Observe.List events fire.
-            if (data.value && isObserveLike(data.value) && isArrayLike(data.value) && data.value.attr('length')) {
-                return data.value;
-            }
+            data.value && isObserveLike(data.value) && isArrayLike(data.value) && data.value.attr('length')
+            //	return data.value;
+
             // If it's a function on an observe's prototype
-            else if (can.isFunction(data.value) && isObserveLike(data.parent) && data.parent.constructor.prototype[data.name] === data.value) {
+            if (can.isFunction(data.value) && isObserveLike(data.parent) && data.parent.constructor.prototype[data.name] === data.value) {
                 // make sure the value is a function that calls the value
                 var val = can.proxy(data.value, data.parent);
                 // mark val as method
@@ -5240,8 +5242,6 @@
             } else if (can.isFunction(data.value)) {
                 return data.value.call(data.parent)
             }
-
-
 
             return data.value;
         };
@@ -5861,10 +5861,6 @@
                     model = self.constructor,
                     jqXHR;
 
-                // `destroy` only keeps data if needed
-                if (type == 'destroy' && !this.destroy.needs_attrs) {
-                    args.shift();
-                }
                 // `update` and `destroy` need the `id`.
                 if (type !== 'create') {
                     args.unshift(getId(self));
@@ -6067,7 +6063,6 @@
                             // use ajaxMaker to convert that into a function
                             // that returns a deferred with the data
                             self[name] = ajaxMaker(method, self[name]);
-                            self[name].needs_attrs = true;
                         }
                         // check if there's a make function like makeFindAll
                         // these take deferred function and can do special
@@ -6244,175 +6239,8 @@
         return can.Model;
     })(__m2, __m15, __m18);
 
-    // ## view/ejs/ejs.js
-    var __m30 = (function(can) {
-        // ## ejs.js
-        // `can.EJS`  
-        // _Embedded JavaScript Templates._
-
-        // Helper methods.
-        var extend = can.extend,
-            EJS = function(options) {
-                // Supports calling EJS without the constructor
-                // This returns a function that renders the template.
-                if (this.constructor != EJS) {
-                    var ejs = new EJS(options);
-                    return function(data, helpers) {
-                        return ejs.render(data, helpers);
-                    };
-                }
-                // If we get a `function` directly, it probably is coming from
-                // a `steal`-packaged view.
-                if (typeof options == "function") {
-                    this.template = {
-                        fn: options
-                    };
-                    return;
-                }
-                // Set options on self.
-                extend(this, options);
-                this.template = this.scanner.scan(this.text, this.name);
-            };
-
-        can.EJS = EJS;
-
-
-        EJS.prototype.
-
-        render = function(object, extraHelpers) {
-            object = object || {};
-            return this.template.fn.call(object, object, new EJS.Helpers(object, extraHelpers || {}));
-        };
-
-        extend(EJS.prototype, {
-
-                scanner: new can.view.Scanner({
-                        text: {
-                            outStart: 'with(_VIEW) { with (_CONTEXT) {',
-                            outEnd: "}}",
-                            argNames: '_CONTEXT,_VIEW'
-                        },
-
-                        tokens: [
-                            ["templateLeft", "<%%"], // Template
-                            ["templateRight", "%>"], // Right Template
-                            ["returnLeft", "<%=="], // Return Unescaped
-                            ["escapeLeft", "<%="], // Return Escaped
-                            ["commentLeft", "<%#"], // Comment
-                            ["left", "<%"], // Run --- this is hack for now
-                            ["right", "%>"], // Right -> All have same FOR Mustache ...
-                            ["returnRight", "%>"]
-                        ],
-                        helpers: [
-
-                            {
-                                name: /\s*\(([\$\w]+)\)\s*->([^\n]*)/,
-                                fn: function(content) {
-                                    var quickFunc = /\s*\(([\$\w]+)\)\s*->([^\n]*)/,
-                                        parts = content.match(quickFunc);
-
-                                    return "can.proxy(function(__){var " + parts[1] + "=can.$(__);" + parts[2] + "}, this);";
-                                }
-                            }
-                        ],
-
-                        transform: function(source) {
-                            return source.replace(/<%([\s\S]+?)%>/gm, function(whole, part) {
-                                var brackets = [],
-                                    foundBracketPair,
-                                    i;
-
-                                // Look for brackets (for removing self-contained blocks)
-                                part.replace(/[{}]/gm, function(bracket, offset) {
-                                    brackets.push([bracket, offset]);
-                                });
-
-                                // Remove bracket pairs from the list of replacements
-                                do {
-                                    foundBracketPair = false;
-                                    for (i = brackets.length - 2; i >= 0; i--) {
-                                        if (brackets[i][0] == '{' && brackets[i + 1][0] == '}') {
-                                            brackets.splice(i, 2);
-                                            foundBracketPair = true;
-                                            break;
-                                        }
-                                    }
-                                } while (foundBracketPair);
-
-                                // Unmatched brackets found, inject EJS tags
-                                if (brackets.length >= 2) {
-                                    var result = ['<%'],
-                                        bracket,
-                                        last = 0;
-                                    for (i = 0; bracket = brackets[i]; i++) {
-                                        result.push(part.substring(last, last = bracket[1]));
-                                        if ((bracket[0] == '{' && i < brackets.length - 1) || (bracket[0] == '}' && i > 0)) {
-                                            result.push(bracket[0] == '{' ? '{ %><% ' : ' %><% }');
-                                        } else {
-                                            result.push(bracket[0]);
-                                        }
-                                        ++last;
-                                    }
-                                    result.push(part.substring(last), '%>');
-                                    return result.join('');
-                                }
-                                // Otherwise return the original
-                                else {
-                                    return '<%' + part + '%>';
-                                }
-                            });
-                        }
-                    })
-            });
-
-        EJS.Helpers = function(data, extras) {
-            this._data = data;
-            this._extras = extras;
-            extend(this, extras);
-        };
-
-
-        EJS.Helpers.prototype = {
-            // TODO Deprecated!!
-            list: function(list, cb) {
-
-                can.each(list, function(item, i) {
-                    cb(item, i, list)
-                })
-            },
-            each: function(list, cb) {
-                // Normal arrays don't get live updated
-                if (can.isArray(list)) {
-                    this.list(list, cb);
-                } else {
-                    can.view.lists(list, cb);
-                }
-            }
-        };
-
-        // Options for `steal`'s build.
-        can.view.register({
-                suffix: "ejs",
-                // returns a `function` that renders the view.
-                script: function(id, src) {
-                    return "can.EJS(function(_CONTEXT,_VIEW) { " + new EJS({
-                            text: src,
-                            name: id
-                        }).template.out + " })";
-                },
-                renderer: function(id, text) {
-                    return EJS({
-                            text: text,
-                            name: id
-                        });
-                }
-            });
-
-        return can;
-    })(__m2, __m22, __m13, __m19, __m23, __m25);
-
     // ## util/string/deparam/deparam.js
-    var __m32 = (function(can) {
+    var __m31 = (function(can) {
 
         // ## deparam.js  
         // `can.deparam`  
@@ -6468,7 +6296,7 @@
     })(__m2, __m13);
 
     // ## route/route.js
-    var __m31 = (function(can) {
+    var __m30 = (function(can) {
 
         // ## route.js  
         // `can.route`  
@@ -6912,10 +6740,10 @@
 
 
         return can.route;
-    })(__m2, __m15, __m32);
+    })(__m2, __m15, __m31);
 
     // ## control/route/route.js
-    var __m33 = (function(can) {
+    var __m32 = (function(can) {
 
         // ## control/route.js  
         // _Controller route integration._
@@ -6949,7 +6777,7 @@
         };
 
         return can;
-    })(__m2, __m31, __m11);
+    })(__m2, __m30, __m11);
 
     window['can'] = __m3;
 })();

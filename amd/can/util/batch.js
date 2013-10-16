@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.0-pre
+ * CanJS - 2.0.0
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 15 Oct 2013 15:04:39 GMT
+ * Wed, 16 Oct 2013 20:40:41 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -21,8 +21,8 @@ define(["can/util/can"], function(can){
 	
 	can.batch = {
 		/**
-		 * @function can.batch.start startBatch
-		 * @parent can.Map.static
+		 * @function can.batch.start
+		 * @parent can.batch
 		 * @description Begin an event batch.
 		 * 
 		 * @signature `can.batch.start([batchStopHandler])`
@@ -30,13 +30,13 @@ define(["can/util/can"], function(can){
 		 * @param {Function} [batchStopHandler] a callback that gets called after all batched events have been called
 		 *
 		 * @body
-		 * `startBatch` causes can.Map to begin an event batch. Until `[can.batch.stop]` is called, any
+		 * `can.batch.start` causes can.Map to begin an event batch. Until `[can.batch.stop]` is called, any
 		 * events that would result from calls to `[can.Map::attr attr]` are held back from firing. If you have
 		 * lots of changes to make to can.Maps, batching them together can help performance &emdash; especially if
 		 * those can.Maps are live-bound to the DOM.
 		 *
 		 * In this example, you can see how the _first_ and _change_ events are not fired (and their handlers
-		 * are not called) until `stopBatch` is called.
+		 * are not called) until `can.batch.stop` is called.
 		 *
 		 * @codestart
 		 * var person = new can.Map({
@@ -61,7 +61,7 @@ define(["can/util/can"], function(can){
 		 * // Something changed.
 		 * @codeend
 		 *
-		 * You can also pass a callback to `startBatch` which will be called after all the events have
+		 * You can also pass a callback to `can.batch.start` which will be called after all the events have
 		 * been fired:
 		 * @codestart
 		 * can.batch.start(function() {
@@ -78,14 +78,14 @@ define(["can/util/can"], function(can){
 		 * // The batch is over.
 		 * @codeend
 		 *
-		 * ## Calling `startBatch` multiple times
+		 * ## Calling `can.batch.start` multiple times
 		 * 
-		 * If you call `startBatch` more than once, `stopBatch` needs to be called
+		 * If you call `can.batch.start` more than once, `can.batch.stop` needs to be called
 		 * the same number of times before any batched events will fire. For ways
 		 * to circumvent this process, see [can.batch.stop].
 		 *
 		 * Here is an example that demonstrates how events are affected by calling
-		 * `startBatch` multiple times.
+		 * `can.batch.start` multiple times.
 		 * 
 		 * @codestart
 		 * var addPeople = function(observable) {
@@ -123,21 +123,21 @@ define(["can/util/can"], function(can){
 			batchStopHandler && stopCallbacks.push(batchStopHandler);
 		},
 		/**
-		 * @function can.batch.stop stopBatch
-		 * @parent can.Map.static
+		 * @function can.batch.stop
+		 * @parent can.batch
 		 * @description End an event batch.
 		 * @signature `can.batch.stop([force[, callStart]])`
 		 * @param {bool} [force=false] whether to stop batching events immediately
-		 * @param {bool} [callStart=false] whether to call `[can.batch.start startBatch]` after firing batched events
+		 * @param {bool} [callStart=false] whether to call `[can.batch.start can.batch.start]` after firing batched events
 		 * 
 		 * @body
-		 * `stopBatch` matches an earlier `[can.batch.start]` call. If `stopBatch` has been
-		 * called as many times as `startBatch` (or if _force_ is true), all batched events will be
-		 * fired and any callbacks passed to `startBatch` since the beginning of the batch will be
+		 * `can.batch.stop` matches an earlier `[can.batch.start]` call. If `can.batch.stop` has been
+		 * called as many times as `can.batch.start` (or if _force_ is true), all batched events will be
+		 * fired and any callbacks passed to `can.batch.start` since the beginning of the batch will be
 		 * called. If _force and _callStart_ are both true, a new batch will be started when all
 		 * the events and callbacks have been fired.
 		 *
-		 * See `[can.batch.start]` for examples of `startBatch` and `stopBatch` in normal use.
+		 * See `[can.batch.start]` for examples of `can.batch.start` and `can.batch.stop` in normal use.
 		 * 
 		 * In this example, the batch is forceably ended in the `addPeople` function.
 		 * @codestart
@@ -184,7 +184,7 @@ define(["can/util/can"], function(can){
 				batchEvents= [];
 				stopCallbacks = [];
 				batchNum++;
-				callStart && this.startBatch();
+				callStart && can.batch.start();
 				can.each(items, function( args ) {
 					can.trigger.apply(can, args);
 				});
@@ -194,8 +194,8 @@ define(["can/util/can"], function(can){
 			}
 		},
 		/**
-		 * @function can.batch.trigger triggerBatch
-		 * @parent can.Map.static
+		 * @function can.batch.trigger
+		 * @parent can.batch
 		 * @description Trigger an event to be added to the current batch.
 		 * @signature `can.batch.trigger(item, event [, args])`
 		 * @param {can.Map} item the target of the event
@@ -203,7 +203,7 @@ define(["can/util/can"], function(can){
 		 * @param {Array} [args] the parameters to trigger the event with.
 		 * 
 		 * @body
-		 * If events are currently being batched, calling `triggerBatch` adds an event
+		 * If events are currently being batched, calling `can.batch.trigger` adds an event
 		 * to the batch. If events are not currently being batched, the event is triggered
 		 * immediately.
 		 */

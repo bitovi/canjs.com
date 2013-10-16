@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.0-pre
+ * CanJS - 2.0.0
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 15 Oct 2013 15:04:39 GMT
+ * Wed, 16 Oct 2013 20:40:41 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -1525,11 +1525,11 @@ function( can ){
 			} 
 		}
 		// Invoke the length to ensure that Observe.List events fire.
-		if (data.value && isObserveLike(data.value) && isArrayLike(data.value) && data.value.attr('length')){
-			return data.value;
-		}
+		data.value && isObserveLike(data.value) && isArrayLike(data.value) && data.value.attr('length')
+		//	return data.value;
+
 		// If it's a function on an observe's prototype
-		else if( can.isFunction(data.value) && isObserveLike(data.parent) && data.parent.constructor.prototype[data.name] === data.value  ){
+		if( can.isFunction(data.value) && isObserveLike(data.parent) && data.parent.constructor.prototype[data.name] === data.value  ){
 			// make sure the value is a function that calls the value
 			var val = can.proxy(data.value, data.parent);
 			// mark val as method
@@ -1542,8 +1542,6 @@ function( can ){
 		} else if( can.isFunction(data.value) ){
 			return data.value.call(data.parent)
 		}
-	
-		
 		
 		return data.value;
 	};
