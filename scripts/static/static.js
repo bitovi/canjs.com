@@ -1,8 +1,8 @@
 if(!window.Bitovi){
 	window.Bitovi = {
 			URL: {
-				BUILDER: 'http://bitbuilder.herokuapp.com/can.custom.js',
-				BUILDER_DATA: 'http://bitbuilder.herokuapp.com/canjs',
+				BUILDER: 'http://builder118.herokuapp.com/can.custom.js',
+				BUILDER_DATA: 'http://builder118.herokuapp.com/canjs',
 				BITHUB: 'http://api.bithub.com/api/events/',
 				CDN: '//canjs.com/release/'
 			}

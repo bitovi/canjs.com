@@ -18,7 +18,7 @@ module.exports = function (grunt) {
 				download = 'plugins=' + download;
 			}
 			// TOOO make builder URL configurable
-			return 'http://bitbuilder.herokuapp.com/can.custom.js?' + download;
+			return 'http://builder118.herokuapp.com/can.custom.js?' + download;
 		},
 		sourceUrl: function(src, type, line) {
 			var pkg = grunt.config('can.pkg'),
@@ -78,8 +78,8 @@ module.exports = function (grunt) {
 				self: require(__dirname + '/package.json'),
 				helpers: handlebarsHelpers,
 				url: {
-					builderData: 'http://bitbuilder.herokuapp.com/canjs',
-					builder: 'http://bitbuilder.herokuapp.com/can.custom.js',
+					builderData: 'http://builder118.herokuapp.com/canjs',
+					builder: 'http://builder118.herokuapp.com/can.custom.js',
 					bithub: 'http://api.bithub.com/api/events/',
 					cdn: '//canjs.com/release/'
 				}

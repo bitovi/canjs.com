@@ -9,7 +9,7 @@
         {{#each appRowOne}}
         <li {{data 'project'}}>
           <a href="{{link}}">
-            <img src="{{picture}}" height="147" width="230">
+            <img {{#picture}}src="{{.}}"{{/picture}} height="147" width="230">
             <h3>{{title}}</h3>
           </a>
         </li>
@@ -19,7 +19,7 @@
         {{#each appRowTwo}}
         <li {{data 'project'}}>
           <a href="{{link}}">
-            <img src="{{picture}}" height="147" width="230">
+            <img {{#picture}}src="{{.}}"{{/picture}} height="147" width="230">
             <h3>{{title}}</h3>
           </a>
         </li>
