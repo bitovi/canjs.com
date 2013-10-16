@@ -1,13 +1,13 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:24 GMT
+ * Wed, 16 Oct 2013 21:40:37 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["jquery", "can/util/can", "can/util/array/each"], function($, can) {
+define(["jquery", "can/util/can", "can/util/array/each", "can/util/inserted"], function($, can) {
 	// _jQuery node list._
 	$.extend( can, $, {
 		trigger: function( obj, event, args ) {
@@ -53,8 +53,12 @@ define(["jquery", "can/util/can", "can/util/array/each"], function($, can) {
 		};
 	});
 
+	// Aliases
+	can.on = can.bind;
+	can.off = can.unbind;
+
 	// Wrap modifier functions.
-	$.each(["append","filter","addClass","remove","data","get"], function(i,name){
+	$.each(["append","filter","addClass","remove","data","get","has"], function(i,name){
 		can[name] = function(wrapped){
 			return wrapped[name].apply(wrapped, can.makeArray(arguments).slice(1));
 		};
@@ -66,11 +70,26 @@ define(["jquery", "can/util/can", "can/util/array/each"], function($, can) {
 	$.cleanData = function( elems ) {
 		$.each( elems, function( i, elem ) {
 			if ( elem ) {
-				can.trigger(elem,"destroyed",[],false);
+				can.trigger(elem,"removed",[],false);
 			}
 		});
 		oldClean(elems);
 	};
+	
+	var oldDomManip = $.fn.domManip;
+	
+	$.fn.domManip = function(args, table, callback){
+		return oldDomManip.call(this,args,table, function(elem){
+			if(elem.nodeType === 11){
+				var elems = can.makeArray(elem.childNodes);
+			}
+			var ret = callback.apply(this, arguments);
+			can.inserted(elems? elems : [elem])
+			return ret
+		})
+	}
+	$.event.special.inserted = {};
+	$.event.special.removed = {};
 
 	return can;
 });

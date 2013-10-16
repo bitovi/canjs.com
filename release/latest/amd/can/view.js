@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:24 GMT
+ * Wed, 16 Oct 2013 21:40:37 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -34,8 +34,8 @@ define(["can/util/library"], function( can ) {
 			wrapCallback = isFunction(callback) ? function(frag) {
 				callback(pipe(frag));
 			} : null,
-			// Get the result.
-			result = $view.render(view, data, helpers, wrapCallback),
+			// Get the result, if a renderer function is passed in, then we just use that to render the data
+			result = isFunction(view) ? view(data, helpers, wrapCallback) : $view.render(view, data, helpers, wrapCallback),
 			deferred = can.Deferred();
 
 		if(isFunction(result))  {
@@ -439,13 +439,24 @@ define(["can/util/library"], function( can ) {
 				return deferred;
 			}
 			else {
+				// get is called async but in 
+				// ff will be async so we need to temporarily reset
+				if(can.__reading){
+					var reading = can.__reading;
+					can.__reading = null;
+				}
+				
 				// No deferreds! Render this bad boy.
 				var response, 
 					// If there's a `callback` function
 					async = isFunction( callback ),
 					// Get the `view` type
 					deferred = get(view, async);
-
+					
+				if(can.Map && can.__reading){
+					can.__reading = reading;
+				}
+				
 				// If we are `async`...
 				if ( async ) {
 					// Return the deferred
@@ -518,18 +529,19 @@ define(["can/util/library"], function( can ) {
 		// `url` - The url to the template.  
 		// `async` - If the ajax request should be asynchronous.  
 		// Returns a deferred.
-		get = function( url, async ) {
-			var suffix = url.match(/\.[\w\d]+$/),
-			type, 
-			// If we are reading a script element for the content of the template,
-			// `el` will be set to that script element.
-			el, 
-			// A unique identifier for the view (used for caching).
-			// This is typically derived from the element id or
-			// the url for the template.
-			id, 
-			// The ajax request used to retrieve the template content.
-			jqXHR;
+		get = function( obj, async ) {
+			var url = typeof obj === 'string' ? obj : obj.url,
+				suffix = obj.engine || url.match(/\.[\w\d]+$/),
+				type,
+				// If we are reading a script element for the content of the template,
+				// `el` will be set to that script element.
+				el,
+				// A unique identifier for the view (used for caching).
+				// This is typically derived from the element id or
+				// the url for the template.
+				id,
+				// The ajax request used to retrieve the template content.
+				jqXHR;
 
 			//If the url has a #, we assume we want to use an inline template
 			//from a script element and not current page's HTML
@@ -664,8 +676,7 @@ define(["can/util/library"], function( can ) {
 					return renderer;
 				}
 
-				$view.preload(id, info.renderer(id, text));
-				return can.view(id);
+				return $view.preload(id, info.renderer(id, text));
 			}
 		},
 		registerScript: function( type, id, src ) {

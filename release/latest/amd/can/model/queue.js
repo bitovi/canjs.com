@@ -1,13 +1,13 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:24 GMT
+ * Wed, 16 Oct 2013 21:40:37 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["can/util/library", "can/model", "can/observe/backup"], function(can){
+define(["can/util/library", "can/model", "can/map/backup"], function(can){
 
 	var cleanAttrs = function(changedAttrs, attrs){
 			var newAttrs = can.extend(true, {}, attrs),
@@ -127,7 +127,7 @@ define(["can/util/library", "can/model", "can/observe/backup"], function(can){
 	can.extend(can.Model.prototype, {
 		setup: function(){
 			setupFn.apply(this, arguments);
-			this._requestQueue = new can.Observe.List;
+			this._requestQueue = new can.List;
 		},
 		_changes: function(ev, attr, how,newVal, oldVal){
 			// record changes if there is a request running
