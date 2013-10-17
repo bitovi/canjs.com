@@ -1,5 +1,5 @@
 @page Routing Routing
-@parent Tutorial 8
+@parent Tutorial 9
 
 [can.route](../docs/can.route.html) is the core of CanJS's routing functionality. It is a special
 Observe that updates `window.location.hash` when its properties change and

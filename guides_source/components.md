@@ -1,5 +1,5 @@
 @page Components Components
-@parent Tutorial 0
+@parent Tutorial 7
 
 Now that you've learned about observables, templates, and controls, it's time to learn
 about [can.Component](../docs/can.Component.html). can.Component makes it easy to combine the functionality of 
