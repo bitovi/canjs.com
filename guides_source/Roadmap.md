@@ -41,7 +41,7 @@ it.  We've started work on a LazyMap and LazyList that
 experiences almost no initialization penalty.  As you
 read nested objects, it converts them into LazyMaps and LazyLists.
 
-Futhermore, we want to setup bubbling only when it's necessary and not 
+Furthermore, we want to setup bubbling only when it's necessary and not 
 by default. This will reduce the number of events, improving performance.
 
 ## Component improvements
@@ -52,7 +52,7 @@ makes use of it.  Future improvements:
 
  - A select attribute on `<content>`.
  - In-page custom elements.
- - Iteratable `<content>` for lists.
+ - Iterable `<content>` for lists.
 
 ## Super Model
 
