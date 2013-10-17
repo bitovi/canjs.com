@@ -208,14 +208,12 @@
 			
 				
 				
-					<li class="search-container active  expanded">
+					<li class="search-container  ">
 						<a 	class="page" 
-							href="Components.html" 
-							data-search="Components">
-							Components
+							href="Deferreds.html" 
+							data-search="Deferreds">
+							Deferreds
 						</a>
-						
-							
 						
 					</li>
 				
@@ -225,12 +223,14 @@
 			
 				
 				
-					<li class="search-container  ">
+					<li class="search-container active  expanded">
 						<a 	class="page" 
-							href="Deferreds.html" 
-							data-search="Deferreds">
-							Deferreds
+							href="Components.html" 
+							data-search="Components">
+							Components
 						</a>
+						
+							
 						
 					</li>
 				
@@ -367,23 +367,10 @@
 		</section>
 
 		<section class="description">
-			<h1>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</h1>
-
-<blockquote>
-  <blockquote>
-    <blockquote>
-      <blockquote>
-        <blockquote>
-          <blockquote>
-            <blockquote>
-              <p>51ca1e37f0962c9840f1211cba70be605affc43f</p>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-    </blockquote>
-  </blockquote>
-</blockquote>
+			<p>Now that you've learned about observables, templates, and controls, it's time to learn
+about <a href="../docs/can.Component.html">can.Component</a>. can.Component makes it easy to 
+combine the functionality of these features. We'll use it to rewrite the todo 
+example. </p>
 		</section>
 
 		
@@ -395,12 +382,7 @@
 
 		
 		<section class="comment">
-			<p>Now that you've learned about observables, templates, and controls, it's time to learn
-about <a href="../docs/can.Component.html">can.Component</a>. can.Component makes it easy to 
-combine the functionality of these features. We'll use it to rewrite the todo 
-example. </p>
-
-<p>Create a component constructor function by
+			<p>Create a component constructor function by
 <a href="../docs/can.Component.extend.html">extend</a> can.Component like:</p>
 
 <pre><code>can.Component.extend({
@@ -717,18 +699,18 @@ simply use the attribute's value.</p>
 component.  The following lists todo and adds a <code>todoClass</code> 
 helper that is used to set the className on a todo's <code>&lt;li&gt;</code> element:</p>
 
-<p>can.Component.extend({
-    tag: "todos-list",
+<pre><code>can.Component.extend({
+  tag: "todos-list",
     template: 
-        "<ul>"+
+        "&lt;ul&gt;"+
           "{{#each todos}}"+
-            "<li>"+
-              "<input type='checkbox' can-value='complete'>"+
-              "<span {{todoClass}} can-click='select'>{{name}}</span> "+
-              "<a href='javascript://' can-click='destroy'>X</a>"+
-            "</li>"+
+            "&lt;li&gt;"+
+              "&lt;input type='checkbox' can-value='complete'&gt;"+
+              "&lt;span {{todoClass}} can-click='select'&gt;{{name}}&lt;/span&gt; "+
+              "&lt;a href='javascript://' can-click='destroy'&gt;X&lt;/a&gt;"+
+            "&lt;/li&gt;"+
           "{{/each}}"+
-        "</ul>",
+        "&lt;/ul&gt;",
     scope: {
         todos: new Todo.List({}),
         select: function(todo){
@@ -738,11 +720,12 @@ helper that is used to set the className on a todo's <code>&lt;li&gt;</code> ele
     helpers: {
         todoClass: function(options){
             if(options.context.attr('complete')) {
-                return "class='done'"
+            return "class='done'"
             }
         }
     }
-});</p>
+});
+</code></pre>
 
 <p>Notice that <code>options.context</code> is used to retrieve the todo because
 <code>this</code> within <code>todoClass</code> is the scope.</p>
@@ -782,10 +765,9 @@ the route's <code>id</code> is removed:</p>
         can.route.removeAttr("id")
       }
     }
-}
+  }
+})
 </code></pre>
-
-<p>})</p>
 
 <p>You can use templated event binding to listen to changes in scope 
 objects.  Adding the following to <code>todo-app</code>'s events object
@@ -815,7 +797,7 @@ listens to todo changes and saves the changes.</p>
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"page","name":"Components","description":"<h1>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</h1>\n\n<blockquote>\n  <blockquote>\n    <blockquote>\n      <blockquote>\n        <blockquote>\n          <blockquote>\n            <blockquote>\n              <p>51ca1e37f0962c9840f1211cba70be605affc43f</p>\n            </blockquote>\n          </blockquote>\n        </blockquote>\n      </blockquote>\n    </blockquote>\n  </blockquote>\n</blockquote>","title":"Components","parent":"Tutorial","order":7,"src":"guides_source/components.md","id":5};
+	var docData = {"type":"page","name":"Components","description":"<p>Now that you've learned about observables, templates, and controls, it's time to learn\nabout <a href=\"../docs/can.Component.html\">can.Component</a>. can.Component makes it easy to \ncombine the functionality of these features. We'll use it to rewrite the todo \nexample. </p>","title":"Components","parent":"Tutorial","order":9,"src":"guides_source/components.md","id":5};
 
 	console.log(docData);
 </script>

@@ -1,9 +1,5 @@
 @page Components Components
-<<<<<<< HEAD
 @parent Tutorial 9
-=======
-@parent Tutorial 7
->>>>>>> 51ca1e37f0962c9840f1211cba70be605affc43f
 
 Now that you've learned about observables, templates, and controls, it's time to learn
 about [can.Component](../docs/can.Component.html). can.Component makes it easy to 
@@ -312,32 +308,32 @@ The helpers object registers local helpers avaialble within the
 component.  The following lists todo and adds a `todoClass` 
 helper that is used to set the className on a todo's `<li>` element:
 
-can.Component.extend({
-	tag: "todos-list",
-	template: 
-		"<ul>"+
-		  "{{#each todos}}"+
-			"<li>"+
-		      "<input type='checkbox' can-value='complete'>"+
-		      "<span {{todoClass}} can-click='select'>{{name}}</span> "+
-			  "<a href='javascript://' can-click='destroy'>X</a>"+
-		    "</li>"+
-		  "{{/each}}"+
-		"</ul>",
-	scope: {
-		todos: new Todo.List({}),
-		select: function(todo){
-			can.route.attr("id",todo.attr("id"))
-		}
-	},
-	helpers: {
-		todoClass: function(options){
-			if(options.context.attr('complete')) {
+    can.Component.extend({
+	  tag: "todos-list",
+    	template: 
+    		"<ul>"+
+    		  "{{#each todos}}"+
+    			"<li>"+
+    		      "<input type='checkbox' can-value='complete'>"+
+    		      "<span {{todoClass}} can-click='select'>{{name}}</span> "+
+    			  "<a href='javascript://' can-click='destroy'>X</a>"+
+    		    "</li>"+
+    		  "{{/each}}"+
+    		"</ul>",
+    	scope: {
+    		todos: new Todo.List({}),
+    		select: function(todo){
+    			can.route.attr("id",todo.attr("id"))
+		    }
+	    },
+	    helpers: {
+    		todoClass: function(options){
+    			if(options.context.attr('complete')) {
 				return "class='done'"
-			}
-		}
-	}
-});
+    			}
+    		}
+    	}
+    });
 
 Notice that `options.context` is used to retrieve the todo because
 `this` within `todoClass` is the scope.
@@ -378,8 +374,8 @@ the route's `id` is removed:
 		    can.route.removeAttr("id")
 		  }
         }
-    }
-})
+      }
+    })
 
 
 You can use templated event binding to listen to changes in scope 
