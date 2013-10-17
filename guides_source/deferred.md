@@ -1,5 +1,5 @@
 @page Deferreds Deferreds
-@parent Tutorial 7
+@parent Tutorial 8
 
 @body
 Deferreds in CanJS are explained in greater detail in the [API](../docs/can.Deferred.html).

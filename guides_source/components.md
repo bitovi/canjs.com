@@ -1,5 +1,9 @@
 @page Components Components
+<<<<<<< HEAD
 @parent Tutorial 9
+=======
+@parent Tutorial 7
+>>>>>>> 51ca1e37f0962c9840f1211cba70be605affc43f
 
 Now that you've learned about observables, templates, and controls, it's time to learn
 about [can.Component](../docs/can.Component.html). can.Component makes it easy to 

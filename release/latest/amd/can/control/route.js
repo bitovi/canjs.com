@@ -1,8 +1,8 @@
 /*!
- * CanJS - 1.1.8
+ * CanJS - 2.0.0
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 24 Sep 2013 21:59:24 GMT
+ * Wed, 16 Oct 2013 21:40:37 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -14,7 +14,9 @@ define(["can/util/library", "can/route", "can/control"], function(can){
 	
 	can.Control.processors.route = function( el, event, selector, funcName, controller ) {
 		selector = selector || "";
-		can.route( selector );
+		if ( !can.route.routes[selector] ) {
+			can.route( selector );
+		}
 		var batchNum,
 			check = function( ev, attr, how ) {
 				if ( can.route.attr('route') === ( selector ) && 
