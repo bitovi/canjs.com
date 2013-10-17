@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Alternate-Template-Syntax - CanJS Guides</title>
+  <title>Roadmap - CanJS Guides</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -148,10 +148,12 @@
 			
 	   </li>
 	
-	   <li class="search-container">
+	   <li class="search-container active">
 	   		<a href="roadmap.html" data-search="Roadmap">
 				Roadmap
 			</a>
+			
+				
 			
 	   </li>
 	
@@ -160,10 +162,14 @@
 	<article class="content docs">
 		<section class="title">
 			<div class="heading">
-<h1>Alternate-Template-Syntax</h1>
+<h1>Roadmap</h1>
 	<ul class="tags">
 		<li>page</li>
 	</ul>
+	
+	
+	
+		<span class="module">roadmap</span>
 	
 	
 	
@@ -176,7 +182,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/wiki/guides_source/Alternate-Template-Syntax">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/wiki/guides_source/Roadmap">source</a></li>
 	
 	
 		
@@ -190,7 +196,7 @@
 		</section>
 
 		<section class="description">
-			<p>The "perfect" live-binding template syntax would be:</p>
+			
 		</section>
 
 		
@@ -202,187 +208,77 @@
 
 		
 		<section class="comment">
-			<ul>
-<li>easy to make syntactically correct (meaning your code-editor probably supports its syntax)</li>
-<li>works when syntactically correct (meaning if your code-editor says it looks ok, the template works as expected)</li>
-<li>lends itself to a lightweight implementation</li>
-</ul>
+			<p>Now that 2.0 is out, we're setting our sites on the 
+future.  Help us get there by ranking issues and features
+on bithub and fixing them!</p>
 
-<p>Things a live-template should be able to do:</p>
+<h2>Community</h2>
+
+<p>There's more than code that goes into a library.  Checkout
+how we're working to improve CanJS's community:</p>
+
+<h3>Bithub.com</h3>
+
+<p>We are developing <a href="http://bithub.com/canjs">bithub.com</a> to track
+all community content. Earn points that you 
+can trade for swag by posting apps, articles, events
+and plugins. <strong>Rank bugs and features to let us and the 
+rest of the community know where to focus.</strong></p>
+
+<h3>Meetups</h3>
+
+<p>We've started meetups across the US.  Bitovi provides 
+monthly training and workshop material.  Checkout
+meetup for meetups and <a href="http://bithub.com/canjs/events">bithub.com</a>
+for other events.</p>
+
+<h2>DOM mutation observers</h2>
+
+<p>With CanJS 2.0, you can listen to "inserted" and "removed" events in
+every browser.  We want to make it possible to listen to other DOM
+mutation events, making it easier to create custom elements
+that feel completely native.</p>
+
+<h2>LazyMap and LazyList</h2>
+
+<p>We want our observable layer to handle anything you throw at 
+it.  We've started work on a LazyMap and LazyList that 
+experiences almost no initialization penalty.  As you
+read nested objects, it converts them into LazyMaps and LazyLists.</p>
+
+<p>Futhermore, we want to setup bubbling only when it's necessary and not 
+by default. This will reduce the number of events, improving performance.</p>
+
+<h2>Component improvements</h2>
+
+<p>can.Component is designed to resemble web components.  As that 
+specification takes shape, we will make sure can.Component
+makes use of it.  Future improvements:</p>
 
 <ul>
-<li>conditional blocks - if/else</li>
-<li>looping</li>
-<li>live-bind innerHTML, text, attribute values, attributes themselves (select)</li>
-<li>hook up widgets/controls in the template</li>
-<li>plugins for common use</li>
+<li>A select attribute on <code>&lt;content&gt;</code>.</li>
+<li>In-page custom elements.</li>
+<li>Iteratable <code>&lt;content&gt;</code> for lists.</li>
 </ul>
 
-<h2>Magic Tag but JS performs control / looping blocks ( EJS/ ERB )</h2>
+<h2>Super Model</h2>
 
-<p>```</p>
+<p>We want to create list-store that makes complex real-time apps
+easy to build. It will include a fall-through localStorage cache that
+increases page load times.</p>
 
-<% if( showNavigation ) { %>
+<h2>Dirty checking computes</h2>
 
-<p><ul class="nav nav-list">
-    <li class="nav-header">Categories</li>
-    <li>
-        <a href="javascript://" data-category="all">All (&lt;%= contacts.count('all') %>)</a>
-    </li>
-    &lt;% categories.each(function(category){ %>
-        <li &lt;%= (el)-> el.widget() %> >
-            <a href="javascript://" data-category="&lt;%= category.data %>">
-                &lt;%= category.name %> (&lt;%= contacts.count(category.data) %>)
-            </a>
-        </li>
-    &lt;% }) %>
-  </ul></p>
+<p>Want to use plain old objects in can.Component?  We're looking to
+create a compute that checks its value periodically.  Hopefully
+this becomes unnecessary as object mutation observers and 
+proxies arrive in more browsers.</p>
 
-<% } %>
+<h2>Deferreds and Computes</h2>
 
-<p>```</p>
-
-<p>Positives:
- - lightweight (not much parsing)
- - flexible (works with almost any JS), making plugins stupidly easy to write.
- - ERB, so many IDEs support this syntax</p>
-
-<p>Negatives:
- - easy to make a syntax error</p>
-
-<h2>Magic Tags and special control magic tags (Handlebars)</h2>
-
-<p><code>
-{{#if showNavigation}}
-  &lt;ul class="nav nav-list"&gt;
-    &lt;li class="nav-header"&gt;Categories&lt;/li&gt;
-    &lt;li&gt;
-        &lt;a href="javascript://" data-category="all"&gt;All ({{contacts.count('all')}})&lt;/a&gt;
-    &lt;/li&gt;
-    {{#each categories}}
-        &lt;li&gt;
-            &lt;a href="javascript://" data-category="{{data}}"&gt;
-                {{name}} ({{ contacts.count(data) }})
-            &lt;/a&gt;
-        &lt;/li&gt;
-    {{/each}}
-  &lt;/ul&gt;
-{{/if}}
-</code>
-Positives:
- - simple, few control structures
-Negatives
- - helpers (like the number contacts for a given filter) will not work
- - needs "computed" properties</p>
-
-<p>More discussion <a href="https://gist.github.com/292840">here</a>.</p>
-
-<h2>Pipes (alternative to ERB/EJS)</h2>
-
-<p>```
-| if( showNavigation ) { |</p>
-
-<ul class="nav nav-list">
-    <li class="nav-header">Categories</li>
-    <li>
-        <a href="javascript://" data-category="all">All (|= contacts.count('all') |)</a>
-    </li>
-    | categories.each(function(category){ |
-        <li |= (el) -> el.widget() |>
-            <a href="javascript://" data-category="|= category.data |">
-                |= category.name | (|= contacts.count(category.data) |)
-            </a>
-        </li>
-    | }) |
-</ul>
-
-<p>| } |
-```</p>
-
-<p>Positives / Negatives - Same as EJS, but a little lighter feeling. <code>|</code> doesn't conflict with html's <code>&lt;</code> as much.</p>
-
-<h2>CSS + Indent</h2>
-
-<p><code>
-if showNavigation
-  ul.nav.nav-list
-   li.nav-header Categories
-   li
-     a[href=javascript://][data-category=all] All ({{ contacts.count('all') }})
-   [categories category]
-     li|li.widget()|
-       a[href=javascript://][data-category={{ category.data }}]
-         {{ category.name }} ({{ contacts.count('all') }})
-</code></p>
-
-<p>Positives
- - very terse syntax
- - less likely to make mistakes?</p>
-
-<p>Negatives
- - harder to parse, making template engine likely bigger
- - less flexible syntax</p>
-
-<h2>Valid HTML (basically knockout)</h2>
-
-<p>```</p>
-
-<ul class="nav nav-list" data-bind="if: showNavigation">
-    <li class="nav-header">Categories</li>
-    <li>
-        <a href="javascript://" data-category="all">All (<span data-bind="html: contacts.count('all')"></span>)</a>
-    </li>
-        <!-- ko foreach: categories -->
-        <li data-bind="widget: widget">
-            <a href="javascript://" data-bind="attr: {data-category: category.data}">
-                <span data-bind="text: name"></span>
-                                (<span data-bind="text: data"></span>)
-            </a>
-        </li>
-    <!-- /ko -->
-</ul>
-
-<p>```</p>
-
-<p>Positives
- - valid html</p>
-
-<p>Negatives
- - likely bigger (because everything else is bigger than EJS that has live-binding)
- - less flexible syntax? </p>
-
-<h2>JAML Style</h2>
-
-<p><code>javascript
-if( showNavigation ){
-  ul( {className: "nav nav-list"},
-    li( {className: "nav-header"} ),
-    li(
-      a( { href: "javascript://", "data-category": "all"},
-         "(", span( contacts.count('all') ), ")"
-      )
-    ),
-    categories.map(function(category){
-      return li(
-        function(el){ new widget(el) },
-        a({href: "javascript://", attr: category.data},
-          span( category.name ),
-          "(",category.data,")"
-        )
-      )
-    }) 
-    })
-  )
-}
-</code></p>
-
-<p>Positives
- - can probably be done very lightweight if it can be done w/o parsing
- - valid JS
- - easy on the eyes</p>
-
-<p>Negatives
- - I'm not sure how to make this do live-binding without parsing.</p>
+<p>Ever had a compute that represents a deferred that represents an
+observable list?  We have.  We want to make it easy to nest
+computes and deferreds like you can with Lists and Maps.</p>
 		</section>
 		
 
@@ -391,7 +287,7 @@ if( showNavigation ){
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"page","name":"Alternate-Template-Syntax","description":"<p>The \"perfect\" live-binding template syntax would be:</p>","src":"guides_source/Alternate-Template-Syntax.md","id":1};
+	var docData = {"type":"page","name":"roadmap","description":"","title":"Roadmap","parent":"guides","order":8,"comment":" ","src":"guides_source/Roadmap.md","id":22};
 
 	console.log(docData);
 </script>

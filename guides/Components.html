@@ -103,23 +103,6 @@
 			
 				
 				
-					<li class="search-container active  expanded">
-						<a 	class="page" 
-							href="Components.html" 
-							data-search="Components">
-							Components
-						</a>
-						
-							
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
 					<li class="search-container  ">
 						<a 	class="page" 
 							href="Observables.html" 
@@ -240,6 +223,23 @@
 			
 				
 				
+					<li class="search-container active  expanded">
+						<a 	class="page" 
+							href="Components.html" 
+							data-search="Components">
+							Components
+						</a>
+						
+							
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
 					<li class="search-container  ">
 						<a 	class="page" 
 							href="Constructs.html" 
@@ -321,6 +321,13 @@
 			
 	   </li>
 	
+	   <li class="search-container">
+	   		<a href="roadmap.html" data-search="Roadmap">
+				Roadmap
+			</a>
+			
+	   </li>
+	
 </ul>
 	</nav>
 	<article class="content docs">
@@ -361,8 +368,9 @@
 
 		<section class="description">
 			<p>Now that you've learned about observables, templates, and controls, it's time to learn
-about <a href="../docs/can.Component.html">can.Component</a>. can.Component makes it easy to combine the functionality of 
-these features. We'll use it to rewrite the todo example.</p>
+about <a href="../docs/can.Component.html">can.Component</a>. can.Component makes it easy to 
+combine the functionality of these features. We'll use it to rewrite the todo 
+example. </p>
 		</section>
 
 		
@@ -374,10 +382,59 @@ these features. We'll use it to rewrite the todo example.</p>
 
 		
 		<section class="comment">
-			<h2>Tag</h2>
+			<p>Create a component constructor function by
+<a href="../docs/can.Component.extend.html">extend</a> can.Component like:</p>
 
-<p>A component represents a custom html element whose tagName 
-is specified by the component's tag attribute.  To create
+<pre><code>can.Component.extend({
+  tag: "my-element",
+  scope: {
+    visible: true,
+    toggle: function(){
+      this.attr("visible", !this.attr("visible") )
+    }
+  },
+  template: "&lt;div can-click='toggle'&gt;"+
+              "{{#isVisible}}"+
+                "&lt;content/&gt;"+
+              "{{else}}"+
+                "I am hidden"+
+              "{{/isVisible}}"+
+            "&lt;/div&gt;",
+  helpers: {
+    isVisible: function(options){
+      return this.attr("visible") ?
+        options.fn() : options.inverse();
+    }
+  },
+  events: {
+    "inserted": function(){
+      console.log("you add a my-element to the page")
+    }
+  }
+})
+</code></pre>
+
+<p>Where:</p>
+
+<ul>
+<li><a href="../docs/can.Component.prototype.tag.html">tag</a> - Specifies the HTML element that 
+components are created on.</li>
+<li><a href="../docs/can.Component.prototype.scope.html">scope</a> - Describes a <a href="../docs/can.Map.html">can.Map</a> that
+is added to the scope used to render the component's template.</li>
+<li><a href="../docs/can.Component.prototype.template.html">template</a> - A template who's content
+gets inserted within the component's element.</li>
+<li><a href="../docs/can.Component.prototype.helpers.html">helpers</a> - Local mustache helpers
+available within the component's template.</li>
+<li><a href="../docs/can.Component.prototype.events.html">events</a> - Listen to events like a 
+<a href="../docs/can.Control.html">can.Control</a>.</li>
+</ul>
+
+<p>Now let's dive into component's properties a bit more.</p>
+
+<h2>Tag</h2>
+
+<p>A component represents a custom html element whose nodeName 
+is specified by the component's <a href="../docs/can.Component.prototype.tag.html">tag</a> attribute.  To create
 a can.Component constructor function that manages
 functionality on a <code>&lt;todos-editor&gt;</code> elements, 
 <a href="../docs/can.Component.extend.html">extend</a> can.Component like:</p>
@@ -388,20 +445,350 @@ functionality on a <code>&lt;todos-editor&gt;</code> elements,
 </code></pre>
 
 <p>Now, when a <code>&lt;todos-editor&gt;</code> element is found in a mustache template,
-the template is </p>
+an instance of the component is created on the element.</p>
 
-<pre><code>  tag: "hello-world",
-  template: "{{#if visible}}{{message}}{{else}}Click me{{/if}}",
+<pre><code>var template = can.view.mustache("Here is my "+
+                 "&lt;todos-editor&gt;todos-editor element&lt;/todos-editor&gt;")
+
+var frag = template();
+frag.childNodes[1].nodeName //-&gt; "todos-editor element"
+</code></pre>
+
+<p>This control doesn't do anything.  Lets change that by filing out other
+properties.</p>
+
+<h2>Template</h2>
+
+<p>Lets put an <code>&lt;input/&gt;</code> element inside <code>&lt;todos-editor&gt;</code> elements
+by adding a <a href="../docs/can.Component.prototype.template.html">template</a> property:</p>
+
+<pre><code>can.Component.extend({
+  tag: "todos-editor",
+  template: "&lt;input type='text'/&gt;"
+})
+</code></pre>
+
+<p>This replaces any source content with the component's template.  The result
+of rendering <code>template</code> looks like:</p>
+
+<div class='demo_wrapper' data-demo-src='guides_source/components/template-0.html'></div>
+
+<p>Notice that "todos-editor element" is removed.</p>
+
+<p>To render the source content within the template, add a <code>&lt;content/&gt;</code> tag like:</p>
+
+<pre><code>can.Component.extend({
+  tag: "todos-editor",
+  template: "&lt;content/&gt;&lt;input type='text'/&gt;"
+})
+</code></pre>
+
+<p>This results in:</p>
+
+<div class='demo_wrapper' data-demo-src='guides_source/components/template-1.html'></div>
+
+<p>If no source content is provided between the custom tags, you can specify default
+content to use within the <code>&lt;content&gt;&lt;/content&gt;</code> tags like:</p>
+
+<pre><code>can.Component.extend({
+  tag: "todos-editor",
+  template: "&lt;content&gt;Edit &lt;/content&gt;&lt;input type='text'/&gt;"
+})
+</code></pre>
+
+<p>If the source template is changed to:</p>
+
+<pre><code>var template = can.view.mustache("Here is my "+
+                 "&lt;todos-editor&gt;&lt;/todos-editor&gt;")
+</code></pre>
+
+<p>This results in:</p>
+
+<div class='demo_wrapper' data-demo-src='guides_source/components/template-2.html'></div>
+
+<p>You can also specify the template as a <a href="../docs/can.view.renderer.html">can.view.renderer</a> like:</p>
+
+<pre><code>var template = can.view.mustache("&lt;content&gt;Edit &lt;/content&gt;"+
+                                 "&lt;input type='text'/&gt;");
+
+can.Component.extend({
+  tag: "todos-editor",
+  template: template
+})
+</code></pre>
+
+<p>By default the component's template renders with the 
+same [can.view.Scope scope] as the scope where the custom element is 
+found within the source template. But, you can adjust the 
+scope with can.Component's scope property.</p>
+
+<h2>Scope</h2>
+
+<p>A template's <a href="../docs/can.Component.prototype.scope.html">scope</a> property 
+allows you to adjust the scope used to render the component's 
+template.  If a plain JavaScript object is used, that object is used
+to extend and create an instance of <a href="../docs/can.Map.html">can.Map</a> and
+add to the top to the scope used to render the template.</p>
+
+<p>For example, we can add a visible property to control if the input element
+is visible or not:</p>
+
+<pre><code>can.Component.extend({
+  tag: "todos-editor",
+  template: "&lt;form&gt;Editor: "+
+              "{{#if visible}}&lt;input type='text'/&gt;{{/if}}"+
+            "&lt;/form&gt;",
   scope: {
-    visible: false,
-    message: "Hello There!"
-  },
-  events: {
-    click: function(){
-        this.scope.attr("visible", !this.scope.attr("visible") );
+    visible: true
+  }
+})
+</code></pre>
+
+<h3>Scope bindings</h3>
+
+<p>This isn't interesting without a way to change toggling the 
+visible property. We can tell our template to call a <code>toggle</code> method
+on the scope anytime someone clicks the form 
+with <a href="../docs/can.view.bindings.html">template bindings</a> like:</p>
+
+<pre><code>can.Component.extend({
+  tag: "todos-editor",
+  template: "&lt;form can-click='toggle'&gt;Editor: "+
+              "{{#if visible}}&lt;input type='text'/&gt;{{/if}}"+
+            "&lt;/form&gt;",
+  scope: {
+    visible: true,
+    toggle: function(context, el, ev){
+      this.attr("visible", !this.attr("visible") )
     }
   }
+})
 </code></pre>
+
+<p>Check it out here:</p>
+
+<div class='demo_wrapper' data-demo-src='guides_source/components/scope-0.html'></div>
+
+<p>When bindings are used like this, the scope function is called back with
+the element's context, the element, and the event.</p>
+
+<h3>Scope value functions</h3>
+
+<p>Scope functions can also be called for their value. For example:</p>
+
+<pre><code>can.Component.extend({
+  tag: "todos-editor",
+  template: "&lt;form can-click='toggle'&gt;{{visibility}}: "+
+              "{{#if visible}}&lt;input type='text'/&gt;{{/if}}"+
+            "&lt;/form&gt;",
+  scope: {
+    visible: true,
+    toggle: function(context, el, ev){
+      this.attr("visible", !this.attr("visible") )
+    },
+    visibility: function(){
+      return this.attr("visible") ?
+        "visible" : "invisible"
+    }
+  }
+})
+</code></pre>
+
+<div class='demo_wrapper' data-demo-src='guides_source/components/scope-1.html'></div>
+
+<h3>Scope as a can.Map constructor function</h3>
+
+<p>The scope object can also be defined as a can.Map constructor function.  This
+makes it easier to test the scope object independent of the component's 
+rendering.  For example:</p>
+
+<pre><code>var TodosEditorState = can.Map.extend({
+  visible: true,
+  toggle: function(context, el, ev){
+    this.attr("visible", !this.attr("visible") )
+  },
+  visibility: function(){
+    return this.attr("visible") ?
+      "visible" : "invisible"
+  }
+})
+
+can.Component.extend({
+  tag: "todos-editor",
+  template: "&lt;form can-click='toggle'&gt;{{visibility}}: "+
+              "{{#if visible}}&lt;input type='text'/&gt;{{/if}}"+
+            "&lt;/form&gt;",
+  scope: TodosEditorState
+})
+
+// TEST CODE
+var editor = new TodosEditorState();
+equal( editor.visibility(), "visible" );
+
+editor.toggle();
+equal( editor.visibility(), "invisible" );
+</code></pre>
+
+<h3>Passing values to a component's scope</h3>
+
+<p>Often, you want to pass values to a component.  This is done by 
+setting attributes on the component's element. For example,
+we might want to pass a todo to the todo editor from the source
+template.  To do this, add a <code>todo='mytodo'</code> attribute.</p>
+
+<pre><code>var template = can.view.mustache("&lt;h1&gt;Todo: {{mytodo.name}}&lt;/h1&gt;"+
+                 "&lt;todos-editor todo='mytodo'&gt;&lt;/todos-editor&gt;")
+
+var mytodo = new can.Map({name: "Do the dishes"})
+
+can.Component.extend({
+  tag: "todos-editor",
+  template: "{{#if todo}}"+
+              "&lt;input type='text' can-value='todo.name'/&gt;"+
+            "{{/if}}",
+  scope: {}
+})
+
+var frag = template({
+  mytodo: mytodo
+})
+
+document.body.appendChild(frag)
+</code></pre>
+
+<p>Notice the <code>can-value</code> attribute on the input element. This sets up a two-way binding
+between the todo's name and the input element.  This lets you change the 
+todo's name.</p>
+
+<div class='demo_wrapper' data-demo-src='guides_source/components/scope-2.html'></div>
+
+<p>Sometimes, you want to specify attribute values that are not looked up in the 
+scope.  For example, you might want to give <code>todos-editor</code> placeholder text as follows:</p>
+
+<pre><code>var template = can.view.mustache(
+                 "&lt;h1&gt;Todo: {{mytodo.name}}&lt;/h1&gt;"+
+                 "&lt;todos-editor todo='mytodo' "+
+                                "placeholder='name'&gt;"+
+                "&lt;/todos-editor&gt;")
+</code></pre>
+
+<p>We can modify the component to read the string placeholder value by setting
+<code>placeholder</code> in the scope to "@".  This is a special flag that indicates to 
+simply use the attribute's value.</p>
+
+<pre><code>can.Component.extend({
+  tag: "todos-editor",
+  template: "{{#if todo}}"+
+              "&lt;input type='text' "+
+                     "placeholder='{{placeholder}}' "+
+                     "can-value='todo.name'/&gt;"+
+            "{{/if}}",
+  scope: {
+    placeholder: "@"
+  }
+})
+</code></pre>
+
+<p>If you remove the input's text, a placeholder will show up:</p>
+
+<div class='demo_wrapper' data-demo-src='guides_source/components/scope-3.html'></div>
+
+<h2>Helpers</h2>
+
+<p>The helpers object registers local helpers avaialble within the 
+component.  The following lists todo and adds a <code>todoClass</code> 
+helper that is used to set the className on a todo's <code>&lt;li&gt;</code> element:</p>
+
+<p>can.Component.extend({
+    tag: "todos-list",
+    template: 
+        "<ul>"+
+          "{{#each todos}}"+
+            "<li>"+
+              "<input type='checkbox' can-value='complete'>"+
+              "<span {{todoClass}} can-click='select'>{{name}}</span> "+
+              "<a href='javascript://' can-click='destroy'>X</a>"+
+            "</li>"+
+          "{{/each}}"+
+        "</ul>",
+    scope: {
+        todos: new Todo.List({}),
+        select: function(todo){
+            can.route.attr("id",todo.attr("id"))
+        }
+    },
+    helpers: {
+        todoClass: function(options){
+            if(options.context.attr('complete')) {
+                return "class='done'"
+            }
+        }
+    }
+});</p>
+
+<p>Notice that <code>options.context</code> is used to retrieve the todo because
+<code>this</code> within <code>todoClass</code> is the scope.</p>
+
+<div class='demo_wrapper' data-demo-src='guides_source/components/helpers-0.html'></div>
+
+<h2>Events</h2>
+
+<p>A component's <a href="../docs/can.Component.prototype.events.html">events</a> object is 
+used to create a [can.Control] that has access to scope as 
+<code>this.scope</code>.  Use it to listen to events safely.</p>
+
+<p>For example, we can create a <code>todos-app</code> component that
+manages the high-level state of the application. It listens
+to changes in <a href="../docs/can.route.html">can/route</a> and
+updates the scope's <code>todo</code> property. And, if 
+a todo is destroyed that matches the route's <code>id</code>,
+the route's <code>id</code> is removed:</p>
+
+<pre><code>can.Component.extend({
+  tag: "todos-app",
+  scope: {
+    todo: null
+  },
+  events: {
+    "{can.route} id": function(route, ev, id){
+      if(id){
+        Todo.findOne({id: id}, $.proxy(function(todo){
+          this.scope.attr("todo", todo)
+        }, this))
+      } else {
+        this.scope.removeAttr("todo")
+      }
+    },
+    "{Todo} destroyed": function(Todo, ev, destroyedTodo){
+      if( destroyedTodo.id == can.route.attr("id") ){
+        can.route.removeAttr("id")
+      }
+    }
+}
+</code></pre>
+
+<p>})</p>
+
+<p>You can use templated event binding to listen to changes in scope 
+objects.  Adding the following to <code>todo-app</code>'s events object
+listens to todo changes and saves the changes.</p>
+
+<pre><code>"{todo} change": function(todo, ev, attr){
+  if( attr === "name" || attr == "complete" ) {
+    todo.save()
+  }
+}
+</code></pre>
+
+<p>Finally, to put this all together, we render a template like:</p>
+
+<pre><code>&lt;todos-app&gt;
+  &lt;todos-list&gt;&lt;/todos-list&gt;
+  &lt;todos-editor todo='todo'&gt;&lt;/todos-editor&gt;
+&lt;/todos-app&gt;
+</code></pre>
+
+<div class='demo_wrapper' data-demo-src='guides_source/components/demo.html'></div>
 		</section>
 		
 
@@ -410,7 +797,7 @@ the template is </p>
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"page","name":"Components","description":"<p>Now that you've learned about observables, templates, and controls, it's time to learn\nabout <a href=\"../docs/can.Component.html\">can.Component</a>. can.Component makes it easy to combine the functionality of \nthese features. We'll use it to rewrite the todo example.</p>","title":"Components","parent":"Tutorial","order":0,"src":"guides_source/components.md","id":5};
+	var docData = {"type":"page","name":"Components","description":"<p>Now that you've learned about observables, templates, and controls, it's time to learn\nabout <a href=\"../docs/can.Component.html\">can.Component</a>. can.Component makes it easy to \ncombine the functionality of these features. We'll use it to rewrite the todo \nexample. </p>","title":"Components","parent":"Tutorial","order":9,"src":"guides_source/components.md","id":5};
 
 	console.log(docData);
 </script>
