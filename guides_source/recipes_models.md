@@ -86,13 +86,14 @@ from the server, with no extra effort.
 Type a message in one page, it instantly shows up in the other.
 
 <iframe style="width: 100%; height: 300px" 
-        src="http://jsfiddle.net/donejs/bBVHs/yRMSa/embedded/result%2Cjs/" 
+        src="http://jsfiddle.net/donejs/bBVHs/embedded/result%2Cjs/" 
         allowfullscreen="allowfullscreen" 
         frameborder="0">JSFiddle</iframe>
 
 <iframe style="width: 100%; height: 300px" 
-        src="http://jsfiddle.net/donejs/bBVHs/yRMSa/embedded/result%2Cjs/" 
+        src="http://jsfiddle.net/donejs/bBVHs/embedded/result%2Cjs/"
         allowfullscreen="allowfullscreen" 
         frameborder="0">JSFiddle</iframe>
 
 [How it works](http://bitovi.com/blog/2013/02/weekly-widget-chat.html)
+t-chat.html)
