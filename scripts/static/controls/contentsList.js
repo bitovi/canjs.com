@@ -23,9 +23,11 @@ can.Control("Bitovi.OSS.ContentsList", {
 		));
 
 		if(window.location.hash.length) {
-			var anchor = $(window.location.hash);
-			if(anchor.length) {
-				anchor[0].scrollIntoView(true);
+			var id = window.location.hash.replace('#', ''),
+				anchor = document.getElementById(id);
+
+			if(anchor) {
+				anchor.scrollIntoView(true);
 			}
 		}
 	},

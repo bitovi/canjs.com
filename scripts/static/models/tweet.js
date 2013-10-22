@@ -13,7 +13,7 @@ can.Model("Bitovi.OSS.Tweet", {
 		};
 	},
 	findAll: {
-		url: Bitovi.URL.BITHUB + '?feed=twitter&order=origin_ts:desc&limit={limit}',
+		url: Bitovi.URL.BITHUB + '?feed=twitter&order=origin_ts:desc&tag=status_event&limit={limit}',
 		dataType: 'json'
 	}
 }, { });
