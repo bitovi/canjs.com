@@ -27,7 +27,7 @@ can.Control('Bitovi.OSS.CommunityTabs', {
 			self.state.attr('plugins', plugins);
 		});
 		// Missing counts for plugins/apps/articles
-		Bitovi.OSS.Tweet.findAll({limit: 3}).done(function(tweets) {
+		Bitovi.OSS.Tweet.findAll({limit: 10}).done(function(tweets) {
 			self.state.attr('tweets', tweets);
 		});
 		Bitovi.OSS.GithubIssue.findAll({limit: 3}).done(function(issues) {
@@ -39,6 +39,8 @@ can.Control('Bitovi.OSS.CommunityTabs', {
 		// Missing follower counts for github
 
 		this.element.html(can.view('docs/static/templates/communityTabs.mustache', {}));
+
+		can.route.ready();
 	},
 	//'li mouseenter': '_switchTab',
 	'li click': function(el, ev) {
