@@ -627,7 +627,9 @@ only renders friendly messages:</p>
 
 <pre><code>can.Component.extend({
   tag: "hello-world",
-  template: "{{#isFriendly message}}&lt;h1&gt;{{message}}&lt;/h1&gt;{{/isFriendly}}",
+  template: "{{#isFriendly message}}"+
+              "&lt;h1&gt;{{message}}&lt;/h1&gt;"+
+            "{{/isFriendly}}",
   helpers: {
     isFriendly: function(message, options){
       if( /hi|hello|howdy/.test(message) ) {

@@ -21,6 +21,13 @@ After updating static content or templates, delete `documentjs/site/static/dist/
 
     ./js scripts/doc.js
 
+Add __-f__ to force a new production.js and production.css like:
+
+    ./js scripts/doc.js -f
+    
+Add __-c__ or __-concatonly__ to leave production unminified.
+
+
 If you are having trouble building, open `/documentjs/site/static/build/build.html` in your 
 browser. This page attempts to load all the static content of the site with steal.
 

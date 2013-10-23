@@ -2,6 +2,18 @@ load('steal/rhino/rhino.js');
 
 steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 
+	var forceBuild = false;
+	var minifyBuild = true;
+	// convert args
+	_args.forEach(function(arg){
+		if(arg == "-f" || arg == "-forceBuild") {
+			forceBuild = true
+		}
+		if(arg == "-concatonly" || arg == "-c"){
+			minifyBuild = false;
+		}
+	})
+
 	var cap = function(str){
 		return str.substr(0,1).toUpperCase()+str.substr(1)
 	}
@@ -62,7 +74,9 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 			return {
 				documentTitle: documentTitle
 			}
-		}
+		},
+		forceBuild: forceBuild,
+		minifyBuild: minifyBuild
 		
 	});
 	
@@ -96,7 +110,9 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 				},
 				documentTitle: documentTitle
 			}
-		}
+		},
+		forceBuild: forceBuild,
+		minifyBuild: minifyBuild
 	});
 	
 });

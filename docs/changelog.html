@@ -229,8 +229,7 @@
 		</section>
 
 		<section class="description">
-			<!--
--->
+			<p><strong>2.0.0</strong> ( Oct 17 2013 )</p>
 		</section>
 
 		
@@ -242,7 +241,59 @@
 
 		
 		<section class="comment">
-			<p><strong>1.1.8</strong> ( Sep 24 2013 )</p>
+			<ul>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/502">Replacing lists live-binding</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/499">Fix destroy params</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/498">Special attribute binding</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/496">Fix Mustache binding lists in helpers</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/494">Certain HTML attributes need special live-binding</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/492">Destroy templates and attributes.</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/489">Fix some typo's in the documentation.</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/488">attr() not working in some cases in IE9</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/487">docs update: can.Object dependency for can.fixture</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/486">View renderer functions don't work with Deferreds</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/485">Issue: can.view.ejs(str) and can.view.ejs(id, str) return different responses</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/477">can.Mustache: #if sections are rendered twice when activated from live-binding</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/475">can.route.ready should not be called automatically</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/474">fixed issue #470 can.route default values are not working</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/473">can.route.ready called multiple times</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/469">Mustache two way helpers don't work as documented</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/463">Can't 2-way bind Array</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/459">Bower component does not work with steal</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/457">Live Binding Broken with Models with Nested Sub-models</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/448">String parameter not working as expected for: jQuery.fn.control / jQuery.fn.controls</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/438">error passing can.Observe.List to custom Mustache element helper</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/431">Wrong variable name in the Guide.</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/428">Model.destroy request params</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/421">Fixing can.ajax missing test for error handler with mootools</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/419">Fixing error that occurs when an item in an Observe.List contains a comp...</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/394">Observe#on</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/393">Array is skipped on serialize</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/351"><code>can.Mustache</code> live-binding on <code>can.route</code> attributes</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/327">create can.Component for custom tags</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/306">Feature/route to string</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/298">Default can.route.ready to false</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/293">Attributes automatic conversion to Map/Model specified type</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/259">can.route.pushstate mishandles hash fragments</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/249">Needed host check for pushstate.js</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/244">Support for rendering document fragments (returned from the renderer function) in the templates</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/236">Model.save: handle response data or return data in save callback</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/211">AMD Consistency</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/193">Extensionless views fail</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/186">can.Model.findAll promotes usage of XSS attack vector</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/180">Allow context change after element has been rendered</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/178">Make it easier to setup 2-way-binding and other interesting behaviors</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/171">Accessing attributes in Model destroy</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/163">mustache: support for backtrack path</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/157">Live-bound dynamic attributes don't get updated properly if they don't exist on initial execution</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/128">The can.Model.models arrayName should be configurable like observable's 'id' property</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/119">can.observe.delegate fails on compound selectors with wildcards</a></li>
+</ul>
+
+<!--
+-->
+
+<p><strong>1.1.8</strong> ( Sep 24 2013 )</p>
 
 <ul>
 <li>change: <a href="https://github.com/bitovi/canjs/pull/481">can.Observe.List.Sort: fix for case when comparator is not a function</a></li>
@@ -582,7 +633,7 @@
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"page","name":"changelog","description":"<!--\n-->","title":"Changelog","parent":"guides","order":5,"src":"can/changelog.md","id":1};
+	var docData = {"type":"page","name":"changelog","description":"<p><strong>2.0.0</strong> ( Oct 17 2013 )</p>","title":"Changelog","parent":"guides","order":5,"src":"can/changelog.md","id":1};
 
 	console.log(docData);
 </script>
