@@ -133,7 +133,7 @@ CanJS is also supported by [Bitovi](http://bitovi.com/). We are extremely active
 
 ### Size
 
-On top of jQuery, CanJS is ~20K. Here’s some other frameworks for comparison:
+On top of jQuery, CanJS is ~20KB. Here’s some other frameworks for comparison:
 
 * Backbone 8.97KB (with Underscore.js)
 * Angular 24KB
