@@ -9,7 +9,7 @@ The following recipes explore making UI widgets with `can.control`.
 The following recipes builds a simple tabs widget.
 
 <iframe style="width: 100%; height: 300px" 
-        src="http://jsfiddle.net/donejs/3wtLW/embedded/result,html,js,css" 
+        src="http://jsfiddle.net/donejs/kXLLt/embedded/result,html,js,css" 
         allowfullscreen="allowfullscreen" 
         frameborder="0">JSFiddle</iframe>
 
