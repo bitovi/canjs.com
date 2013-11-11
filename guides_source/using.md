@@ -43,8 +43,8 @@ With RequireJS and Zepto, it loks like this:
 require.config({
   map : {
     '*' : {
-		  "can/util/library" : "can/util/zepto"
-  	}
+      "can/util/library" : "can/util/zepto"
+    }
   },
   paths: {
     "zepto" : "http://cdnjs.cloudflare.com/ajax/libs/zepto/1.0rc1/zepto.min"
@@ -266,3 +266,11 @@ to __zepto.js__ when using Zepto 0.8.
   });
 &lt;/script>
 @codeend
+
+<h2 id="IE">IE 8 Support</h2>
+
+While CanJS does support Internet Exporer 8 out of the box, if you decide 
+to use [can.Components](/docs/can.Component.html) then you will need to use the [HTML5 Shiv](https://github.com/aFarkas/html5shiv)
+in order for your custom tags to work properly. Unfortunately, at the moment, the official HTML5 Shiv
+does not work with namespaced tag names (e.g. &lt;can:example&gt;). Thankfully, CanJS comes with a version that
+fixes this and we've already submitted a pull request so future users of HTML5 Shiv won't run into this issue.
