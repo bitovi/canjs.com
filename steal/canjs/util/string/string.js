@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.0
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 16 Oct 2013 20:40:41 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -22,7 +22,8 @@ steal('can/util', function (can) {
 		strReplacer = /\{([^\}]+)\}/g,
 		strQuote = /"/g,
 		strSingleQuote = /'/g,
-
+		strHyphenMatch = /-+(.)?/g,
+		strCamelMatch = /[a-z][A-Z]/g,
 	// Returns the `prop` property from `obj`.
 	// If `add` is true and `prop` doesn't exist in `obj`, create it as an
 	// empty object.
@@ -36,14 +37,17 @@ steal('can/util', function (can) {
 	// Returns `true` if the object can have properties (no `null`s).
 		isContainer = function (current) {
 			return (/^f|^o/).test(typeof current);
+		},
+		convertBadValues = function(content) {
+			// Convert bad values into empty strings
+			var isInvalid = content === null || content === undefined || (isNaN(content) && ("" + content === 'NaN'));
+			return ( "" + ( isInvalid ? '' : content ) )
 		};
 
 	can.extend(can, {
 		// Escapes strings for HTML.
 		esc: function (content) {
-			// Convert bad values into empty strings
-			var isInvalid = content === null || content === undefined || (isNaN(content) && ("" + content === 'NaN'));
-			return ( "" + ( isInvalid ? '' : content ) )
+			return convertBadValues(content)
 				.replace(/&/g, '&amp;')
 				.replace(/</g, '&lt;')
 				.replace(/>/g, '&gt;')
@@ -119,6 +123,40 @@ steal('can/util', function (can) {
 		capitalize: function (s, cache) {
 			// Used to make newId.
 			return s.charAt(0).toUpperCase() + s.slice(1);
+		},
+
+		/**
+		 * @function can.camelize
+		 * @parent can.util
+		 * @description Takes a hyphenated string and converts it to a camelCase string..
+		 * @signature `can.camelize(str)`
+		 * @param {String} str The string to camelCase.
+		 * @return {String} The camelCased string.
+		 *
+		 *        can.camelize('array-count'); //-> 'arrayCount'
+		 *
+		 */
+		camelize: function(str){ 
+			return convertBadValues(str).replace(strHyphenMatch, function(match, chr){ 
+				return chr ? chr.toUpperCase() : '' 
+			}) 
+		},
+
+		/**
+		 * @function can.hyphenate
+		 * @parent can.util
+		 * @description Hypenates a camelCase string, and makes it lower case.
+		 * @signature `can.capitalize(str)`
+		 * @param {String} str The camelCase string to hyphenate.
+		 * @return {String} The hyphenated string.
+		 *
+		 *        can.hyphenate('fooBarBaz'); //-> 'foo-bar-baz'
+		 *
+		 */
+		hyphenate: function(str) {
+			return convertBadValues(str).replace(strCamelMatch, function(str, offset) {
+				return str.charAt(0) + '-' + str.charAt(1).toLowerCase();
+			});
 		},
 
 		// Underscores a string.

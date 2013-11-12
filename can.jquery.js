@@ -1,10 +1,10 @@
 /*!
- * CanJS - 2.0.0
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 16 Oct 2013 20:41:05 GMT
+ * Tue, 12 Nov 2013 22:06:03 GMT
  * Licensed MIT
- * Includes: can/component,can/construct,can/observe,can/compute,can/model,can/view,can/control,can/route,can/control/route,can/util/string,can/view/mustache
+ * Includes: can/component,can/construct,can/observe,can/compute,can/model,can/view,can/control,can/route,can/control/route,can/view/mustache,can/view/bindings,can/view/live,can/view/scope,can/util/string
  * Download from: http://canjs.com
  */
 (function(undefined) {
@@ -121,25 +121,171 @@
 
     })(__m4);
 
+    // ## util/event.js
+    var __m7 = (function(can) {
+
+        // event.js
+        // ---------
+        // _Basic event wrapper._
+        can.addEvent = function(event, fn) {
+            var allEvents = this.__bindEvents || (this.__bindEvents = {}),
+                eventList = allEvents[event] || (allEvents[event] = []);
+
+            eventList.push({
+                    handler: fn,
+                    name: event
+                });
+            return this;
+        };
+
+        // can.listenTo works without knowing how bind works
+        // the API was heavily influenced by BackboneJS: 
+        // http://backbonejs.org/
+        can.listenTo = function(other, event, handler) {
+
+
+            var idedEvents = this.__listenToEvents;
+            if (!idedEvents) {
+                idedEvents = this.__listenToEvents = {};
+            }
+            var otherId = can.cid(other);
+            var othersEvents = idedEvents[otherId];
+            if (!othersEvents) {
+                othersEvents = idedEvents[otherId] = {
+                    obj: other,
+                    events: {}
+                };
+            }
+            var eventsEvents = othersEvents.events[event]
+            if (!eventsEvents) {
+                eventsEvents = othersEvents.events[event] = []
+            }
+            eventsEvents.push(handler);
+            can.bind.call(other, event, handler);
+        }
+
+        can.stopListening = function(other, event, handler) {
+            var idedEvents = this.__listenToEvents,
+                iterIdedEvents = idedEvents,
+                i = 0;
+            if (!idedEvents) {
+                return this;
+            }
+            if (other) {
+                var othercid = can.cid(other);
+                (iterIdedEvents = {})[othercid] = idedEvents[othercid];
+                // you might be trying to listen to something that is not there
+                if (!idedEvents[othercid]) {
+                    return this;
+                }
+            }
+
+
+            for (var cid in iterIdedEvents) {
+                var othersEvents = iterIdedEvents[cid],
+                    eventsEvents;
+                other = idedEvents[cid].obj;
+                if (!event) {
+                    eventsEvents = othersEvents.events;
+                } else {
+                    (eventsEvents = {})[event] = othersEvents.events[event]
+                }
+                for (var eventName in eventsEvents) {
+                    var handlers = eventsEvents[eventName] || [];
+                    i = 0;
+                    while (i < handlers.length) {
+                        if ((handler && handler === handlers[i]) || (!handler)) {
+                            can.unbind.call(other, eventName, handlers[i])
+                            handlers.splice(i, 1);
+
+                        } else {
+                            i++;
+                        }
+                    }
+                    // no more handlers?
+                    if (!handlers.length) {
+                        delete othersEvents.events[eventName]
+                    }
+                }
+                if (can.isEmptyObject(othersEvents.events)) {
+                    delete idedEvents[cid]
+                }
+            }
+            return this;
+        }
+
+        can.removeEvent = function(event, fn) {
+            if (!this.__bindEvents) {
+                return this;
+            }
+
+            var events = this.__bindEvents[event] || [],
+                i = 0,
+                ev,
+                isFunction = typeof fn == 'function';
+
+            while (i < events.length) {
+                ev = events[i]
+                if ((isFunction && ev.handler === fn) || (!isFunction && ev.cid === fn)) {
+                    events.splice(i, 1);
+                } else {
+                    i++;
+                }
+            }
+
+
+            return this;
+        };
+
+        can.dispatch = function(event, args) {
+            if (!this.__bindEvents) {
+                return;
+            }
+            if (typeof event == "string") {
+                event = {
+                    type: event
+                }
+            }
+            var eventName = event.type,
+                handlers = (this.__bindEvents[eventName] || []).slice(0),
+                args = [event].concat(args || []);
+
+            for (var i = 0, len = handlers.length; i < len; i++) {
+                ev = handlers[i];
+                ev.handler.apply(this, args);
+            };
+        }
+
+        return can;
+
+    })(__m4);
+
     // ## util/jquery/jquery.js
     var __m2 = (function($, can) {
+        var isBindableElement = function(node) {
+            //console.log((node.nodeName && (node.nodeType == 1 || node.nodeType == 9) || node === window))
+            return (node.nodeName && (node.nodeType == 1 || node.nodeType == 9) || node == window);
+        };
+
         // _jQuery node list._
         $.extend(can, $, {
                 trigger: function(obj, event, args) {
-                    if (obj.trigger) {
+                    if (obj.nodeName || obj === window) {
+                        $.event.trigger(event, args, obj, true);
+                    } else if (obj.trigger) {
                         obj.trigger(event, args);
                     } else {
-                        $.event.trigger(event, args, obj, true);
+                        if (typeof event === 'string') {
+                            event = {
+                                type: event
+                            }
+                        }
+                        event.target = event.target || obj;
+                        can.dispatch.call(obj, event, args);
                     }
                 },
-                addEvent: function(ev, cb) {
-                    $([this]).bind(ev, cb);
-                    return this;
-                },
-                removeEvent: function(ev, cb) {
-                    $([this]).unbind(ev, cb);
-                    return this;
-                },
+                addEvent: can.addEvent,
+                removeEvent: can.removeEvent,
                 // jquery caches fragments, we always needs a new one
                 buildFragment: function(elems, context) {
                     var oldFragment = $.buildFragment,
@@ -156,17 +302,56 @@
                     return ret.cacheable ? $.clone(ret.fragment) : ret.fragment || ret;
                 },
                 $: $,
-                each: can.each
+                each: can.each,
+                bind: function(ev, cb) {
+                    // If we can bind to it...
+                    if (this.bind && this.bind !== can.bind) {
+                        this.bind(ev, cb)
+                    } else if (isBindableElement(this)) {
+                        $.event.add(this, ev, cb);
+                    } else {
+                        // Make it bind-able...
+                        can.addEvent.call(this, ev, cb)
+                    }
+                    return this;
+                },
+                unbind: function(ev, cb) {
+                    // If we can bind to it...
+                    if (this.unbind && this.unbind !== can.unbind) {
+                        this.unbind(ev, cb)
+                    } else if (isBindableElement(this)) {
+                        $.event.remove(this, ev, cb);
+                    } else {
+                        // Make it bind-able...
+                        can.removeEvent.call(this, ev, cb)
+                    }
+                    return this;
+                },
+                delegate: function(selector, ev, cb) {
+                    if (this.delegate) {
+                        this.delegate(selector, ev, cb)
+                    } else if (isBindableElement(this)) {
+                        $(this).delegate(selector, ev, cb)
+                    } else {
+                        // make it bind-able ...
+                    }
+                    return this;
+                },
+                undelegate: function(selector, ev, cb) {
+                    if (this.undelegate) {
+                        this.undelegate(selector, ev, cb)
+                    } else if (isBindableElement(this)) {
+                        $(this).undelegate(selector, ev, cb)
+                    } else {
+                        // make it bind-able ...
+
+                    }
+                    return this;
+                }
             });
 
         // Wrap binding functions.
-        $.each(['bind', 'unbind', 'undelegate', 'delegate'], function(i, func) {
-            can[func] = function() {
-                var t = this[func] ? this : $([this]);
-                t[func].apply(t, arguments);
-                return this;
-            };
-        });
+
 
         // Aliases
         can.on = can.bind;
@@ -193,24 +378,31 @@
 
         var oldDomManip = $.fn.domManip;
 
-        $.fn.domManip = function(args, table, callback) {
-            return oldDomManip.call(this, args, table, function(elem) {
-                if (elem.nodeType === 11) {
-                    var elems = can.makeArray(elem.childNodes);
-                }
-                var ret = callback.apply(this, arguments);
-                can.inserted(elems ? elems : [elem])
-                return ret
-            })
-        }
+        $.fn.domManip = function() {
+            var args = can.makeArray(arguments),
+                isNew$ = $.fn.jquery >= "2.0.0",
+                cbIndex = isNew$ ? 1 : 2,
+                callback = args[cbIndex];
+
+            args[cbIndex] = function(elem) {
+                var isFragment = elem.nodeType === 11, //Node.DOCUMENT_FRAGMENT_NODE,
+                    targets = isFragment ? can.makeArray(elem.childNodes) : [elem],
+                    ret = callback.apply(this, arguments);
+                can.inserted(targets);
+                return ret;
+            };
+
+            return oldDomManip.apply(this, args);
+        };
+
         $.event.special.inserted = {};
         $.event.special.removed = {};
 
         return can;
-    })(jQuery, __m4, __m5, __m6);
+    })(jQuery, __m4, __m5, __m6, __m7);
 
     // ## util/string/string.js
-    var __m9 = (function(can) {
+    var __m10 = (function(can) {
         // ##string.js
         // _Miscellaneous string utility functions._  
 
@@ -225,7 +417,8 @@
             strReplacer = /\{([^\}]+)\}/g,
             strQuote = /"/g,
             strSingleQuote = /'/g,
-
+            strHyphenMatch = /-+(.)?/g,
+            strCamelMatch = /[a-z][A-Z]/g,
             // Returns the `prop` property from `obj`.
             // If `add` is true and `prop` doesn't exist in `obj`, create it as an
             // empty object.
@@ -241,14 +434,17 @@
             // Returns `true` if the object can have properties (no `null`s).
             isContainer = function(current) {
                 return (/^f|^o/).test(typeof current);
+            },
+            convertBadValues = function(content) {
+                // Convert bad values into empty strings
+                var isInvalid = content === null || content === undefined || (isNaN(content) && ("" + content === 'NaN'));
+                return ("" + (isInvalid ? '' : content))
             };
 
         can.extend(can, {
                 // Escapes strings for HTML.
                 esc: function(content) {
-                    // Convert bad values into empty strings
-                    var isInvalid = content === null || content === undefined || (isNaN(content) && ("" + content === 'NaN'));
-                    return ("" + (isInvalid ? '' : content))
+                    return convertBadValues(content)
                         .replace(/&/g, '&amp;')
                         .replace(/</g, '&lt;')
                         .replace(/>/g, '&gt;')
@@ -316,6 +512,20 @@
                     return s.charAt(0).toUpperCase() + s.slice(1);
                 },
 
+
+                camelize: function(str) {
+                    return convertBadValues(str).replace(strHyphenMatch, function(match, chr) {
+                        return chr ? chr.toUpperCase() : ''
+                    })
+                },
+
+
+                hyphenate: function(str) {
+                    return convertBadValues(str).replace(strCamelMatch, function(str, offset) {
+                        return str.charAt(0) + '-' + str.charAt(1).toLowerCase();
+                    });
+                },
+
                 // Underscores a string.
                 underscore: function(s) {
                     return s
@@ -363,7 +573,7 @@
     })(__m2);
 
     // ## construct/construct.js
-    var __m8 = (function(can) {
+    var __m9 = (function(can) {
 
         // ## construct.js
         // `can.Construct`  
@@ -550,10 +760,10 @@
 
 
         return can.Construct;
-    })(__m9);
+    })(__m10);
 
     // ## control/control.js
-    var __m7 = (function(can) {
+    var __m8 = (function(can) {
         // ## control.js
         // `can.Control`  
         // _Controller_
@@ -841,10 +1051,10 @@
             });
 
         return Control;
-    })(__m2, __m8);
+    })(__m2, __m9);
 
     // ## util/bind/bind.js
-    var __m12 = (function(can) {
+    var __m13 = (function(can) {
 
 
         // ## Bind helpers
@@ -890,7 +1100,7 @@
     })(__m2);
 
     // ## util/batch/batch.js
-    var __m13 = (function(can) {
+    var __m14 = (function(can) {
 
         // Which batch of events this is for -- might not want to send multiple
         // messages on the same batch.  This is mostly for event delegation.
@@ -957,13 +1167,13 @@
     })(__m4);
 
     // ## map/map.js
-    var __m11 = (function(can, bind) {
+    var __m12 = (function(can, bind) {
         // ## map.js  
         // `can.Map`  
         // _Provides the observable pattern for JavaScript Objects._  
         // Removes all listeners.
         var bindToChildAndBubbleToParent = function(child, prop, parent) {
-            child.bind("change" + parent._cid, function() {
+            can.listenTo.call(parent, child, "change", function() {
                 // `batchTrigger` the type on this...
                 var args = can.makeArray(arguments),
                     ev = args.shift();
@@ -1001,8 +1211,41 @@
                         }
                     })
                 };
-            };
+            },
+            // A map that temporarily houses a reference 
+            // to maps that have already been made for a plain ole JS object
+            madeMap = null,
+            addToMap = function(obj, instance) {
+                var teardown = false;
+                if (!madeMap) {
+                    teardown = true;
+                    madeMap = {}
+                }
+                // record if it has a Cid before we add one
+                var hasCid = obj._cid;
+                var cid = can.cid(obj);
 
+                // only update if there already isn't one
+                if (!madeMap[cid]) {
+
+                    madeMap[cid] = {
+                        obj: obj,
+                        instance: instance,
+                        added: hasCid
+                    }
+                }
+            };
+        teardownMap = function() {
+            for (var cid in madeMap) {
+                if (madeMap[cid].added) {
+                    delete madeMap[cid].obj._cid;
+                }
+            }
+            madeMap = null;
+        },
+        getMapFromObject = function(obj) {
+            return madeMap && madeMap[obj._cid] && madeMap[obj._cid].instance
+        }
 
         var Map = can.Map = can.Construct.extend({
 
@@ -1039,10 +1282,10 @@
                     canMakeObserve: function(obj) {
                         return obj && !can.isDeferred(obj) && (can.isArray(obj) || can.isPlainObject(obj) || (obj instanceof can.Map));
                     },
-                    unhookup: function(items, namespace) {
+                    unhookup: function(items, parent) {
                         return can.each(items, function(item) {
                             if (item && item.unbind) {
-                                item.unbind("change" + namespace);
+                                can.stopListening.call(parent, item, "change");
                             }
                         });
                     },
@@ -1061,11 +1304,11 @@
                             // We have an `map` already...
                             // Make sure it is not listening to this already
                             // It's only listening if it has bindings already.
-                            parent._bindings && Map.helpers.unhookup([child], parent._cid);
+                            parent._bindings && Map.helpers.unhookup([child], parent);
                         } else if (can.isArray(child)) {
-                            child = new List(child);
+                            child = getMapFromObject(child) || new List(child);
                         } else {
-                            child = new Ob(child);
+                            child = getMapFromObject(child) || new Ob(child);
                         }
                         // only listen if something is listening to you
                         if (parent._bindings) {
@@ -1119,24 +1362,34 @@
                     // Sets all `attrs`.
                     this._init = 1;
                     this._setupComputes();
+                    var teardownMapping = obj && addToMap(obj, this)
                     var data = can.extend(can.extend(true, {}, this.constructor.defaults || {}), obj)
                     this.attr(data);
-                    this.bind('change' + this._cid, can.proxy(this._changes, this));
+                    if (teardownMapping) {
+                        teardownMap()
+                    }
+                    this.bind('change', can.proxy(this._changes, this));
+
                     delete this._init;
                 },
                 _setupComputes: function() {
-                    var prototype = this.constructor.prototype
+                    var prototype = this.constructor.prototype;
+                    this._computedBindings = {}
                     for (var prop in prototype) {
                         if (prototype[prop] && prototype[prop].isComputed) {
                             this[prop] = prototype[prop].clone(this);
+                            this._computedBindings[prop] = {
+                                count: 0
+                            }
                         }
                     }
+
                 },
                 _bindsetup: makeBindSetup(),
                 _bindteardown: function() {
-                    var cid = this._cid;
+                    var self = this;
                     this._each(function(child) {
-                        Map.helpers.unhookup([child], cid)
+                        Map.helpers.unhookup([child], self)
                     })
                 },
                 _changes: function(ev, attr, how, newVal, oldVal) {
@@ -1304,7 +1557,7 @@
 
                         //can.batch.trigger(this, prop, [value, current]);
                         // If we can stop listening to our old value, do it.
-                        current && Map.helpers.unhookup([current], this._cid);
+                        current && Map.helpers.unhookup([current], this);
                     }
 
                 },
@@ -1324,11 +1577,43 @@
                 },
 
 
-                bind: can.bindAndSetup,
-                on: can.bindAndSetup,
+                bind: function(eventName, handler) {
+                    var computedBinding = this._computedBindings && this._computedBindings[eventName]
+                    if (computedBinding) {
+                        if (!computedBinding.count) {
+                            computedBinding.count = 1;
+                            var self = this;
+                            computedBinding.handler = function(ev, newVal, oldVal) {
+                                can.batch.trigger(self, {
+                                        type: eventName,
+                                        batchNum: ev.batchNum
+                                    }, [newVal, oldVal])
+                            }
+                            this[eventName].bind("change", computedBinding.handler)
+                        } else {
+                            computedBinding.count++
+                        }
 
-                unbind: can.unbindAndTeardown,
-                off: can.unbindAndTeardown,
+                    }
+                    return can.bindAndSetup.apply(this, arguments);
+
+                },
+
+                unbind: function(eventName, handler) {
+                    var computedBinding = this._computedBindings && this._computedBindings[eventName]
+                    if (computedBinding) {
+                        if (computedBinding.count == 1) {
+                            computedBinding.count = 0;
+                            this[eventName].unbind("change", computedBinding.handler);
+                            delete computedBinding.handler;
+                        } else {
+                            computedBinding.count++
+                        }
+
+                    }
+                    return can.unbindAndTeardown.apply(this, arguments);
+
+                },
 
                 serialize: function() {
                     return can.Map.helpers.serialize(this, 'serialize', {});
@@ -1346,6 +1631,10 @@
                         newVal;
                     can.batch.start();
                     this.each(function(curVal, prop) {
+                        // you can not have a _cid property!
+                        if (prop === "_cid") {
+                            return;
+                        }
                         newVal = props[prop];
 
                         // If we are merging...
@@ -1373,8 +1662,11 @@
                     })
                     // Add remaining props.
                     for (var prop in props) {
-                        newVal = props[prop];
-                        this._set(prop, newVal, true)
+                        if (prop !== "_cid") {
+                            newVal = props[prop];
+                            this._set(prop, newVal, true)
+                        }
+
                     }
                     can.batch.stop()
                     return this;
@@ -1391,11 +1683,14 @@
                 }
             });
 
+        Map.prototype.on = Map.prototype.bind;
+        Map.prototype.off = Map.prototype.unbind;
+
         return Map;
-    })(__m2, __m12, __m8, __m13);
+    })(__m2, __m13, __m9, __m14);
 
     // ## list/list.js
-    var __m14 = (function(can, Map) {
+    var __m15 = (function(can, Map) {
 
 
 
@@ -1415,7 +1710,7 @@
                             this.push.apply(this, can.makeArray(instances || []));
                         }
                         // this change needs to be ignored
-                        this.bind('change' + this._cid, can.proxy(this._changes, this));
+                        this.bind('change', can.proxy(this._changes, this));
                         can.extend(this, options);
                         delete this._init;
                     },
@@ -1477,7 +1772,7 @@
                         can.batch.start();
                         if (howMany > 0) {
                             this._triggerChange("" + index, "remove", undefined, removed);
-                            Map.helpers.unhookup(removed, this._cid);
+                            Map.helpers.unhookup(removed, this);
                         }
                         if (args.length > 2) {
                             this._triggerChange("" + index, "add", args.slice(2), removed);
@@ -1596,7 +1891,7 @@
                     this._triggerChange("" + len, "remove", undefined, [res])
 
                     if (res && res.unbind) {
-                        res.unbind("change" + this._cid)
+                        can.stopListening.call(this, res, "change");
                     }
                     return res;
                 }
@@ -1610,7 +1905,9 @@
                 },
 
 
-                join: [].join,
+                join: function() {
+                    return [].join.apply(this.attr(), arguments)
+                },
 
 
                 reverse: [].reverse,
@@ -1632,7 +1929,7 @@
 
 
                 forEach: function(cb, thisarg) {
-                    can.each(this, cb, thisarg || this);
+                    return can.each(this, cb, thisarg || this);
                 },
 
 
@@ -1649,25 +1946,17 @@
 
         can.List = Map.List = list;
         return can.List;
-    })(__m2, __m11);
+    })(__m2, __m12);
 
     // ## compute/compute.js
-    var __m15 = (function(can, bind) {
+    var __m16 = (function(can, bind) {
 
-        // returns the
-        // - observes and attr methods are called by func
-        // - the value returned by func
-        // ex: `{value: 100, observed: [{obs: o, attr: "completed"}]}`
-        var getValueAndObserved = function(func, self) {
-
-            var oldReading;
-
-            // Set a callback on can.Map to know
-            // when an attr is read.
-            // Keep a reference to the old reader
-            // if there is one.  This is used
-            // for nested live binding.
-            oldReading = can.__reading;
+        var names = ["__reading", "__clearReading", "__setReading"];
+        var setup = function(observed) {
+            var old = {};
+            for (var i = 0; i < names.length; i++) {
+                old[names[i]] = can[names[i]]
+            }
             can.__reading = function(obj, attr) {
                 // Add the observe and attr that was read
                 // to `observed`
@@ -1676,15 +1965,28 @@
                         attr: attr + ""
                     });
             };
-
+            can.__clearReading = function() {
+                return observed.splice(0, observed.length);
+            }
+            can.__setReading = function(o) {
+                [].splice.apply(observed, [0, observed.length].concat(o))
+            }
+            return old;
+        }
+        // returns the
+        // - observes and attr methods are called by func
+        // - the value returned by func
+        // ex: `{value: 100, observed: [{obs: o, attr: "completed"}]}`
+        var getValueAndObserved = function(func, self) {
 
             var observed = [],
+                old = setup(observed),
                 // Call the "wrapping" function to get the value. `observed`
                 // will have the observe/attribute pairs that were read.
                 value = func.call(self);
 
             // Set back so we are no longer reading.
-            can.__reading = oldReading;
+            can.extend(can, old);
 
             return {
                 value: value,
@@ -1745,11 +2047,13 @@
                     var info = getValueAndObserved(getterSetter, context),
                         newObserveSet = info.observed;
 
-                    var value = info.value;
+                    var value = info.value,
+                        ob;
                     matched = !matched;
 
                     // go through every attribute read by this observe
-                    can.each(newObserveSet, function(ob) {
+                    for (var i = 0, len = newObserveSet.length; i < len; i++) {
+                        ob = newObserveSet[i];
                         // if the observe/attribute pair is being observed
                         if (observing[ob.obj._cid + "|" + ob.attr]) {
                             // mark at as observed
@@ -1762,7 +2066,7 @@
                             };
                             ob.obj.bind(ob.attr, onchanged);
                         }
-                    });
+                    }
 
                     // Iterate through oldObserved, looking for observe/attributes
                     // that are no longer being bound and unbind them
@@ -1961,7 +2265,11 @@
                     _bindsetup: function() {
                         computeState.bound = true;
                         // setup live-binding
-                        on.call(this, updater)
+                        // while binding, this does not count as a read
+                        var oldReading = can.__reading;
+                        delete can.__reading;
+                        on.call(this, updater);
+                        can.__reading = oldReading;
                     },
                     _bindteardown: function() {
                         off.call(this, updater)
@@ -1980,20 +2288,29 @@
                 });
         };
         can.compute.binder = computeBinder;
+        can.compute.truthy = function(compute) {
+            return can.compute(function() {
+                var res = compute();
+                if (typeof res === "function") {
+                    res = res()
+                }
+                return !!res;
+            })
+        }
         return can.compute;
-    })(__m2, __m12, __m13);
+    })(__m2, __m13, __m14);
 
     // ## observe/observe.js
-    var __m10 = (function(can) {
+    var __m11 = (function(can) {
         can.Observe = can.Map;
         can.Observe.startBatch = can.batch.start;
         can.Observe.stopBatch = can.batch.stop;
         can.Observe.triggerBatch = can.batch.trigger;
         return can;
-    })(__m2, __m11, __m14, __m15);
+    })(__m2, __m12, __m15, __m16);
 
     // ## view/view.js
-    var __m18 = (function(can) {
+    var __m19 = (function(can) {
         // ## view.js
         // `can.view`  
         // _Templating abstraction._
@@ -2440,30 +2757,177 @@
     })(__m2);
 
     // ## view/scope/scope.js
-    var __m17 = (function(can) {
+    var __m18 = (function(can) {
 
         var isObserve = function(obj) {
-            return obj instanceof can.Map || (obj && !! obj.__get);
-        }
-        var getProp = function(obj, prop) {
-            var val = obj[prop];
+            return obj instanceof can.Map || (obj && obj.__get);
+        },
+            getProp = function(obj, prop) {
+                var val = obj[prop];
 
-            if (typeof val !== "function" && obj.__get) {
-                return obj.__get(prop);
-            } else {
-                return val;
+                if (typeof val !== "function" && obj.__get) {
+                    return obj.__get(prop);
+                } else {
+                    return val;
+                }
+            },
+            escapeReg = /(\\)?\./g,
+            escapeDotReg = /\\\./g,
+            getNames = function(attr) {
+                var names = [],
+                    last = 0;
+                attr.replace(escapeReg, function($0, $1, index) {
+                    if (!$1) {
+                        names.push(attr.slice(last, index).replace(escapeDotReg, '.'));
+                        last = index + $0.length;
+                    }
+                });
+                names.push(attr.slice(last).replace(escapeDotReg, '.'));
+                return names;
+            },
+            extend = function(d, s) {
+                for (var prop in s) {
+                    d[prop] = s[prop]
+                }
+                return d;
             }
-        }
+
+
 
         var Scope = can.Construct.extend({
+                // reads properties from a parent.  A much more complex version of getObject.
+
+                read: function(parent, reads, options) {
+                    // `cur` is the current value.
+                    var cur = parent,
+                        type,
+                        // `prev` is the object we are reading from.
+                        prev,
+                        // `foundObs` did we find an observable.
+                        foundObs;
+                    for (var i = 0, readLength = reads.length; i < readLength; i++) {
+                        // Update what we are reading from.
+                        prev = cur;
+                        // Read from the compute. We can't read a property yet.
+                        if (prev && prev.isComputed) {
+                            options.foundObservable && options.foundObservable(prev, i)
+                            prev = prev()
+                        }
+                        // Look to read a property from something.
+                        if (isObserve(prev)) {
+                            !foundObs && options.foundObservable && options.foundObservable(prev, i);
+                            foundObs = 1;
+                            // is it a method on the prototype?
+                            if (typeof prev[reads[i]] === "function" && prev.constructor.prototype[reads[i]] === prev[reads[i]]) {
+                                // call that method
+                                if (options.returnObserveMethods) {
+                                    cur = cur[reads[i]]
+                                } else {
+                                    cur = prev[reads[i]].apply(prev, options.args || [])
+                                }
+
+                            } else {
+                                // use attr to get that value
+                                cur = cur.attr(reads[i]);
+                            }
+
+                        } else {
+                            // just do the dot operator
+                            cur = prev[reads[i]]
+                        }
+                        // if it's a compute, get the compute's value
+                        if (cur && cur.isComputed && (!options.isArgument && i < readLength - 1)) {
+                            options.foundObservable && options.foundObservable(prev, i + 1)
+                            cur = cur()
+                        }
+
+                        type = typeof cur;
+                        // if there are properties left to read, and we don't have an object, early exit
+                        if (i < reads.length - 1 && (cur == null || (type != "function" && type != "object"))) {
+                            options.earlyExit && options.earlyExit(prev, i, cur);
+                            // return undefined so we know this isn't the right value
+                            return {
+                                value: undefined,
+                                parent: prev
+                            };
+                        }
+                    }
+                    // if we don't have a value, exit early.
+                    if (cur === undefined) {
+                        options.earlyExit && options.earlyExit(prev, i - 1)
+                    }
+                    // handle an ending function
+                    if (typeof cur === "function") {
+                        if (options.isArgument) {
+                            if (!cur.isComputed && options.proxyMethods !== false) {
+                                cur = can.proxy(cur, prev)
+                            }
+                        } else {
+                            cur = cur.call(prev)
+                        }
+
+                    }
+                    return {
+                        value: cur,
+                        parent: prev
+                    };
+                }
+            }, {
                 init: function(data, parent) {
                     this._data = data;
                     this._parent = parent;
                 },
-                get: function(attr) {
+                attr: function(attr) {
+                    return this.read(attr, {
+                            isArgument: true,
+                            returnObserveMethods: true,
+                            proxyMethods: false
+                        }).value
 
+                },
+                add: function(data) {
+                    if (data !== this._data) {
+                        return new this.constructor(data, this);
+                    } else {
+                        return this;
+                    }
+                },
+
+                computeData: function(attr, options) {
+                    options = options || {
+                        args: []
+                    };
+                    var self = this,
+                        rootObserve,
+                        rootReads,
+                        computeData = {
+                            compute: can.compute(function(newVal) {
+                                if (arguments.length) {
+                                    var last = rootReads.length - 1;
+                                    Scope.read(rootObserve, rootReads.slice(0, last)).value.attr(rootReads[last], newVal)
+                                } else {
+                                    if (rootObserve) {
+                                        return Scope.read(rootObserve, rootReads, options).value
+                                    }
+                                    // otherwise, go get the value
+                                    var data = self.read(attr, options);
+                                    rootObserve = data.rootObserve;
+                                    rootReads = data.reads;
+                                    computeData.scope = data.scope;
+                                    computeData.initialValue = data.value;
+                                    return data.value;
+                                }
+                            })
+                        };
+                    return computeData
+
+                },
+
+                read: function(attr, options) {
+
+                    // check if we should be running this on a parent.
                     if (attr.substr(0, 3) === "../") {
-                        return this._parent.get(attr.substr(3))
+                        return this._parent.read(attr.substr(3), options)
                     } else if (attr == "..") {
                         return {
                             value: this._parent._data
@@ -2474,149 +2938,120 @@
                         };
                     }
 
-
+                    // Split the name up.
                     var names = attr.indexOf('\\.') == -1
                     // Reference doesn't contain escaped periods
                     ? attr.split('.')
                     // Reference contains escaped periods (`a.b\c.foo` == `a["b.c"].foo)
-                    : (function() {
-                        var names = [],
-                            last = 0;
-                        attr.replace(/(\\)?\./g, function($0, $1, index) {
-                            if (!$1) {
-                                names.push(attr.slice(last, index).replace(/\\\./g, '.'));
-                                last = index + $0.length;
-                            }
-                        });
-                        names.push(attr.slice(last).replace(/\\\./g, '.'));
-                        return names;
-                    })(),
+                    : getNames(attr),
                         namesLength = names.length,
-                        defaultPropertyDepth = -1,
-                        defaultObserve,
-                        defaultObserveName,
                         j,
-                        lastValue,
-                        ref,
-                        value;
+                        // The current context (a scope is just data and a parent scope).
+                        context,
+                        // The current scope.
+                        scope = this,
+                        // While we are looking for a value, we track the most likely place this value will be found.  
+                        // This is so if there is no me.name.first, we setup a listener on me.name.
+                        // The most likely canidate is the one with the most "read matches" "lowest" in the
+                        // context chain.
+                        // By "read matches", we mean the most number of values along the key.
+                        // By "lowest" in the context chain, we mean the closest to the current context.
+                        // We track the starting position of the likely place with `defaultObserve`.
+                        defaultObserve,
+                        // Tracks how to read from the defaultObserve.
+                        defaultReads = [],
+                        // Tracks the highest found number of "read matches".
+                        defaultPropertyDepth = -1,
+                        // `scope.read` is designed to be called within a compute, but
+                        // for performance reasons only listens to observables within one context.
+                        // This is to say, if you have me.name in the current context, but me.name.first and
+                        // we are looking for me.name.first, we don't setup bindings on me.name and me.name.first.
+                        // To make this happen, we clear readings if they do not find a value.  But,
+                        // if that path turns out to be the default read, we need to restore them.  This
+                        // variable remembers those reads so they can be restored.
+                        defaultComputeReadings,
+                        // Tracks the default's scope.
+                        defaultScope,
+                        // Tracks the first found observe.
+                        currentObserve,
+                        // Tracks the reads to get the value for a scope.
+                        currentReads;
 
-                    var scope = this;
+                    // While there is a scope/context to look in.
                     while (scope) {
 
-                        value = scope._data
+                        // get the context
+                        context = scope._data;
+
+                        if (context != null) {
 
 
+                            // Lets try this context
+                            var data = Scope.read(context, names, extend({
+                                        // Called when an observable is found.
+                                        foundObservable: function(observe, nameIndex) {
+                                            // Save the current observe.
+                                            currentObserve = observe;
+                                            currentReads = names.slice(nameIndex);
+                                        },
+                                        // Called when we were unable to find a value.
+                                        earlyExit: function(parentValue, nameIndex) {
+                                            // If this has more matching values,
+                                            if (nameIndex > defaultPropertyDepth) {
+                                                // save the state.
+                                                defaultObserve = currentObserve;
+                                                defaultReads = currentReads;
+                                                defaultPropertyDepth = nameIndex;
+                                                defaultScope = scope;
+                                                // Clear and save readings so next attempt does not use these readings
+                                                defaultComputeReadings = can.__clearReading && can.__clearReading();
+                                            }
 
+                                        }
+                                    }, options));
 
-                        if (value != null) {
-                            // if it's a compute, read the compute's value
-
-
-                            for (j = 0; j < namesLength; j++) {
-
-                                // convert computes to read properties from them ...
-                                // better would be to generate another compute that reads this compute
-                                if (can.isFunction(value) && value.isComputed) {
-                                    value = value();
-                                }
-                                var tempValue = getProp(value, names[j]);
-                                // Keep running up the tree while there are matches.
-                                if (typeof tempValue !== 'undefined' && tempValue !== null) {
-                                    // //if(typeof tempValue !== 'undefined' && tempValue !== null) {
-                                    // //if (typeof value[names[j]] !== 'undefined' && value[names[j]] !== null) {
-                                    lastValue = value;
-                                    value = tempValue;
-                                    name = names[j];
-                                }
-
-                                // If it's undefined, still match if the parent is an Observe.
-                                else if (isObserve(value) && j > defaultPropertyDepth) {
-                                    defaultObserve = value;
-                                    defaultObserveName = names[j];
-                                    defaultPropertyDepth = j;
-                                    lastValue = value = undefined;
-                                    break;
-                                } else {
-                                    lastValue = value = undefined;
-                                    break;
-                                }
-
-
+                            // Found a matched reference.
+                            if (data.value !== undefined) {
+                                return {
+                                    scope: scope,
+                                    rootObserve: currentObserve,
+                                    value: data.value,
+                                    reads: currentReads
+                                };
                             }
                         }
-                        // Found a matched reference.
-                        if (value !== undefined) {
-                            return {
-                                scope: scope,
-                                parent: lastValue || scope._data,
-                                value: value,
-                                name: name
-                            }; // Mustache.resolve(value, lastValue, name, isArgument);
-                        } else {
-
-                        }
-
-                        // move up to the next scope
+                        // Prevent prior readings.
+                        can.__clearReading && can.__clearReading();
+                        // Move up to the next scope.
                         scope = scope._parent;
                     }
-
+                    // If there was a likely observe.
                     if (defaultObserve) {
-                        {
-                            return {
-                                //scope: scope,
-                                parent: defaultObserve,
-                                name: defaultObserveName,
-                                value: undefined
-                            }
+                        // Restore reading for previous compute
+                        can.__setReading && can.__setReading(defaultComputeReadings)
+                        return {
+                            scope: defaultScope,
+                            rootObserve: defaultObserve,
+                            reads: defaultReads,
+                            value: undefined
                         }
-                    }
-                    return {
-                        //scope: this,
-                        parent: null,
-                        name: attr,
-                        value: undefined
-                    }
-                },
-                attr: function(attr, value) {
-                    if (arguments.length > 1) {
-                        this._data.attr(attr, value)
-                        return this;
                     } else {
-                        return this.get(attr).value
+                        // we found nothing and no observable
+                        return {
+                            names: names,
+                            value: undefined
+                        };
                     }
 
-                },
-                add: function(data) {
-                    if (data !== this._data) {
-                        return new this.constructor(data, this);
-                    } else {
-                        return this;
-                    }
-
-                },
-                compute: function(attr) {
-                    var data = this.get(attr);
-
-                    if (isObserve(data.parent)) {
-                        return data.parent.compute(data.name);
-                    } else {
-                        can.compute(function(newValue) {
-                            if (arguments.length) {
-                                data.parent[data.name] = newValue;
-                            } else {
-                                return data.parent[data.name];
-                            }
-                        })
-                    }
                 }
             });
         can.view.Scope = Scope;
         return Scope;
 
-    })(__m2, __m8, __m11, __m14, __m18, __m15);
+    })(__m2, __m9, __m12, __m15, __m19, __m16);
 
     // ## view/elements.js
-    var __m20 = (function() {
+    var __m21 = (function() {
 
         var elements = {
             tagToContentPropMap: {
@@ -2739,7 +3174,7 @@
     })();
 
     // ## view/scanner.js
-    var __m19 = (function(can, elements) {
+    var __m20 = (function(can, elements) {
 
         var newLine = /(\r|\n)+/g,
             // Escapes characters starting with `\`.
@@ -2802,7 +3237,10 @@
             // returns the top of a stack
             top = function(stack) {
                 return stack[stack.length - 1]
-            };
+            },
+            // characters that automatically mean a custom element
+            automaticCustomElementCharacters = /[-\:]/,
+            Scanner;
 
         can.view.Scanner = Scanner = function(options) {
             // Set options on self
@@ -2887,19 +3325,24 @@
             Scanner.tags[tagName.toLowerCase()] = callback;
         }
         Scanner.tags = {};
-
+        // This is called when there is a special tag
         Scanner.hookupTag = function(hookupOptions) {
+            // we need to call any live hookups
+            // so get that and return the hook
+            // a better system will always be called with the same stuff
             var hooks = can.view.getHooks();
             return can.view.hook(function(el) {
                 can.each(hooks, function(fn) {
                     fn(el);
                 });
 
-                var helperTags = hookupOptions.options.attr('helpers._tags'),
+                var helperTags = hookupOptions.options.read('helpers._tags', {}).value,
                     tagName = hookupOptions.tagName,
                     tagCallback = (helperTags && helperTags[tagName]) || Scanner.tags[tagName]
 
-                var res = tagCallback(el, hookupOptions),
+
+                    // if this was an element like <foo-bar> that doesn't have a component, just render its content
+                var res = tagCallback ? tagCallback(el, hookupOptions) : scope,
                     scope = hookupOptions.scope;
 
                 if (res) {
@@ -2916,7 +3359,7 @@
         }
 
         Scanner.prototype = {
-
+            // a default that can be overwritten
             helpers: [],
 
             scan: function(source, name) {
@@ -3073,12 +3516,13 @@
                                     attrs = "attrs: ['" + specialStates.attributeHookups.join("','") + "'], ";
                                     specialStates.attributeHookups = [];
                                 }
-
+                                // this is the > of a special tag
                                 if (tagName === top(specialStates.tagHookups)) {
-                                    // If it's a self closing tag (like <content/>) make sure we put the / at the end
+                                    // If it's a self closing tag (like <content/>) make sure we put the / at the end.
                                     if (emptyElement) {
                                         content = content.substr(0, content.length - 1)
                                     }
+                                    // Put the start of the end
                                     buff.push(put_cmd,
                                         '"', clean(content), '"',
                                         ",can.view.Scanner.hookupTag({tagName:'" + tagName + "'," + (attrs) + "scope: " + (this.text.scope || "this") + this.text.options)
@@ -3098,16 +3542,18 @@
                                         content = token;
                                         specialStates.tagHookups.pop()
                                     } else {
+                                        // it has content
                                         buff.push(",subtemplate: function(" + this.text.argNames + "){\n" + startTxt + (this.text.start || ''));
                                         content = '';
                                     }
 
                                 } else if (magicInTag || (!popTagName && elements.tagToContentPropMap[tagNames[tagNames.length - 1]]) || attrs) {
                                     // make sure / of /> is on the right of pending
+                                    var pendingPart = ",can.view.pending({" + attrs + "scope: " + (this.text.scope || "this") + this.text.options + "}),\"";
                                     if (emptyElement) {
-                                        put(content.substr(0, content.length - 1), ",can.view.pending({" + attrs + "scope: " + (this.text.scope || "this") + this.text.options + "}),\"/>\"");
+                                        put(content.substr(0, content.length - 1), pendingPart + "/>\"");
                                     } else {
-                                        put(content, ",can.view.pending({" + attrs + "scope: " + (this.text.scope || "this") + this.text.options + "}),\">\"");
+                                        put(content, pendingPart + ">\"");
                                     }
                                     content = '';
                                     magicInTag = 0;
@@ -3222,7 +3668,7 @@
 
                                         }
 
-                                        if (Scanner.tags[tagName]) {
+                                        if (tagName !== "!--" && (Scanner.tags[tagName] || automaticCustomElementCharacters.test(tagName))) {
                                             // if the content tag is inside something it doesn't belong ...
                                             if (tagName === "content" && elements.tagMap[top(tagNames)]) {
                                                 // convert it to an element that will work
@@ -3379,10 +3825,10 @@
         })
 
         return Scanner;
-    })(__m18, __m20);
+    })(__m19, __m21);
 
     // ## view/node_lists.js
-    var __m23 = (function(can) {
+    var __m24 = (function(can) {
 
         // text node expando test
         var canExpando = true;
@@ -3511,8 +3957,8 @@
 
     })(__m2);
 
-    // ## view/live.js
-    var __m22 = (function(can, elements, view, nodeLists) {
+    // ## view/live/live.js
+    var __m23 = (function(can, elements, view, nodeLists) {
         // ## live.js
         // The live module provides live binding for computes
         // and can.List.
@@ -3574,20 +4020,25 @@
 
         var live = {
             nodeLists: nodeLists,
-            list: function(el, list, func, context, parentNode) {
+
+            list: function(el, compute, func, context, parentNode) {
+
+
+
+
                 // A mapping of the index to an array
                 // of elements that represent the item.
                 // Each array is registered so child or parent
                 // live structures can update the elements
                 var nodesMap = [],
-
+                    // called when an item is added
                     add = function(ev, items, index) {
 
                         // Collect new html and mappings
                         var frag = document.createDocumentFragment(),
                             newMappings = [];
-                        can.each(items, function(item) {
-                            var itemHTML = func.call(context, item),
+                        can.each(items, function(item, key) {
+                            var itemHTML = func.call(context, item, (key + index)),
                                 itemFrag = can.view.frag(itemHTML, parentNode);
 
                             newMappings.push(can.makeArray(itemFrag.childNodes));
@@ -3625,21 +4076,44 @@
                         can.remove(can.$(itemsToRemove));
                     },
                     parentNode = elements.getParentNode(el, parentNode),
-                    text = document.createTextNode("");
+                    text = document.createTextNode(""),
+                    list;
 
-                // Setup binding and teardown to add and remove events
-                setup(parentNode, function() {
-                    list.bind("add", add).bind("remove", remove)
-                }, function() {
-                    list.unbind("add", add).unbind("remove", remove);
-                    can.each(nodesMap, function(nodeList) {
-                        nodeLists.unregister(nodeList);
-                    })
-                })
+                teardownList = function() {
+                    // there might be no list right away, and the list might be a plain
+                    // array
+                    list && list.unbind && list.unbind("add", add).unbind("remove", remove);
+                    // use remove to clean stuff up for us
+                    remove({}, {
+                            length: nodesMap.length
+                        }, 0);
+                }
 
+                updateList = function(ev, newList, oldList) {
+                    teardownList();
+                    // make an empty list if the compute returns null or undefined
+                    list = newList || [];
+                    // list might be a plain array
+                    list.bind && list.bind("add", add).bind("remove", remove);
+                    add({}, list, 0);
+                }
                 insertElementsAfter([el], text);
                 can.remove(can.$(el));
-                add({}, list, 0);
+
+                // Setup binding and teardown to add and remove events
+                var data = setup(parentNode, function() {
+                    if (text.parentNode) {
+                        can.isFunction(compute) && compute.bind("change", updateList)
+                    } else {
+                        data.teardownCheck()
+                    }
+                }, function() {
+                    can.isFunction(compute) && compute.unbind("change", updateList)
+                    teardownList()
+                })
+
+                updateList({}, can.isFunction(compute) ? compute() : compute)
+
 
             },
             html: function(el, compute, parentNode) {
@@ -3805,19 +4279,19 @@
                 elements.setAttr(el, attributeName, getValue(compute()));
             }
         }
-
+        var newLine = /(\r|\n)+/g;
         var getValue = function(val) {
-            val = val.replace(elements.attrReg, "");
+            val = val.replace(elements.attrReg, "").replace(newLine, "");
             // check if starts and ends with " or '
             return /^["'].*["']$/.test(val) ? val.substr(1, val.length - 2) : val
         }
-
+        can.view.live = live;
         return live;
 
-    })(__m2, __m20, __m18, __m23);
+    })(__m2, __m21, __m19, __m24);
 
     // ## view/render.js
-    var __m21 = (function(can, elements, live) {
+    var __m22 = (function(can, elements, live) {
 
         var pendingHookups = [],
             tagChildren = function(tagName) {
@@ -3877,6 +4351,10 @@
 
         can.extend(can.view, {
                 live: live,
+                // called in text to make a temporary 
+                // can.view.lists function that can be called with
+                // the list to iterate over and the template
+                // used to produce the content within the list
                 setupLists: function() {
 
                     var old = can.view.lists,
@@ -3887,7 +4365,9 @@
                             list: list,
                             renderer: renderer
                         }
+                        return Math.random()
                     }
+                    // sets back to the old data
                     return function() {
                         can.view.lists = old;
                         return data;
@@ -3937,7 +4417,7 @@
                     // If we had no observes just return the value returned by func.
                     if (!compute.hasDependencies || typeof value === "function") {
                         unbind();
-                        return ((escape || status !== 0) && escape !== 2 ? contentEscape : contentText)(value, status === 0 && tag);
+                        return ((escape || typeof status === 'string') && escape !== 2 ? contentEscape : contentText)(value, status === 0 && tag);
                     }
 
                     // the property (instead of innerHTML elements) to adjust. For
@@ -3997,10 +4477,10 @@
             });
 
         return can;
-    })(__m18, __m20, __m22, __m9);
+    })(__m19, __m21, __m23, __m10);
 
     // ## view/mustache/mustache.js
-    var __m16 = (function(can) {
+    var __m17 = (function(can) {
 
         // # mustache.js
         // `can.Mustache`: The Mustache templating engine.
@@ -4052,12 +4532,46 @@
             makeConvertToScopes = function(orignal, scope, options) {
                 return function(updatedScope, updatedOptions) {
                     if (updatedScope != null && !(updatedScope instanceof can.view.Scope)) {
-                        updatedScope = scope.add(updatedScope)
+                        var key = updatedScope.key,
+                            index = updatedScope.index,
+                            value = updatedScope.value;
+                        // If we have a key property, add @key to the scope
+                        if (key != null) {
+                            updatedScope = scope.add({
+                                    '@key': key
+                                });
+                            updatedScope = updatedScope.add(value);
+                        }
+                        // If we have a index property, add @index to the scope
+                        else if (index != null) {
+                            updatedScope = scope.add({
+                                    '@index': index
+                                });
+                            updatedScope = updatedScope.add(value);
+                        } else {
+                            updatedScope = scope.add(updatedScope)
+                        }
                     }
                     if (updatedOptions != null && !(updatedOptions instanceof OptionsScope)) {
                         updatedOptions = options.add(updatedOptions)
                     }
                     return orignal(updatedScope, updatedOptions || options)
+                }
+            },
+            // temp function to bind and unbind
+            k = function() {},
+            computes,
+            temporarilyBindCompute = function(compute) {
+                compute.bind(k)
+                if (!computes) {
+                    computes = [];
+                    setTimeout(unbindComputes, 100)
+                }
+                computes.push(compute)
+            },
+            unbindComputes = function() {
+                for (var i = 0, len = computes.length; i < len; i++) {
+                    computes[i].unbind(k)
                 }
             }
 
@@ -4534,7 +5048,8 @@
                     inverse: function() {}
                 },
                 hash,
-                context = scope.attr(".");
+                context = scope.attr("."),
+                getHelper = true;
 
             // convert lookup values to actual values in name, arguments, and hash
             for (var i = 3; i < arguments.length; i++) {
@@ -4558,7 +5073,13 @@
             }
 
             if (isLookup(name)) {
-                name = Mustache.get(name.get, scopeAndOptions, args.length, false)
+                var get = name.get;
+                name = Mustache.get(name.get, scopeAndOptions, args.length, false);
+
+                // Base whether or not we will get a helper on whether or not the original
+                // name.get and Mustache.get resolve to the same thing. Saves us from running
+                // into issues like {{text}} / {text: 'with'}
+                getHelper = (get === name);
             }
 
             // overwrite fn and inverse to always convert to scopes
@@ -4566,7 +5087,7 @@
             helperOptions.inverse = makeConvertToScopes(helperOptions.inverse, scope, options)
 
             // Check for a registered helper or a helper-like function.
-            if (helper = (Mustache.getHelper(name, options) || (can.isFunction(name) && !name.isComputed && !name.isObserveMethod && {
+            if (helper = (getHelper && (typeof name === "string" && Mustache.getHelper(name, options)) || (can.isFunction(name) && !name.isComputed && {
                             fn: name
                         }))) {
                 // Add additional data to be used by helper functions
@@ -4587,8 +5108,6 @@
             if (can.isFunction(name)) {
                 if (name.isComputed) {
                     name = name();
-                } else if (name.isObserveMethod) {
-                    name = name(context, scope);
                 }
             }
 
@@ -4660,95 +5179,58 @@
         };
 
 
-        Mustache.get = function(ref, scopeAndOptions, isHelper, isArgument) {
+        Mustache.get = function(key, scopeAndOptions, isHelper, isArgument) {
 
+            // Cache a reference to the current context and options, we will use them a bunch.
+            var context = scopeAndOptions.scope.attr('.'),
+                options = scopeAndOptions.options || {}
+
+                // If key is called as a helper,
             if (isHelper) {
-                // highest priority to registered helpers
-                if (Mustache.getHelper(ref, scopeAndOptions.options)) {
-                    return ref
+                // try to find a registered helper.
+                if (Mustache.getHelper(key, options)) {
+                    return key
                 }
-                // Support helper-like functions as anonymous helpers
-                // Check if there is a method directly in the "top" context
-                if (scopeAndOptions.scope && can.isFunction(scopeAndOptions.scope.attr('.')[ref])) {
-                    return scopeAndOptions.scope.attr('.')[ref];
+                // Support helper-like functions as anonymous helpers.
+                // Check if there is a method directly in the "top" context.
+                if (scopeAndOptions.scope && can.isFunction(context[key])) {
+                    return context[key];
                 }
 
             }
 
-            var options = scopeAndOptions.options || {};
 
+            // Get a compute (and some helper data) that represents key's value in the current scope
+            var computeData = scopeAndOptions.scope.computeData(key, {
+                    isArgument: isArgument,
+                    args: [context, scopeAndOptions.scope]
+                }),
+                compute = computeData.compute;
 
-            var data = scopeAndOptions.scope.get(ref);
+            // Bind on the compute to cache its value. We will unbind in a timeout later.
+            temporarilyBindCompute(compute);
 
-            // use value over helper only if within top scope
+            // computeData gives us an initial value
+            var initialValue = computeData.initialValue;
 
-            if (Mustache.getHelper(ref, options) && data.scope != scopeAndOptions.scope) {
-                return ref
+            // Use helper over the found value if the found value isn't in the current context
+            if ((initialValue === undefined || computeData.scope != scopeAndOptions.scope) && Mustache.getHelper(key, options)) {
+                return key
             }
 
-            // special behaviors if an argument
-            if (isArgument) {
-                if (can.isFunction(data.value)) {
-                    if (data.value.isComputed) {
-                        return data.value
-                    } else {
-                        return function() {
-                            return data.value.apply(data.parent, arguments);
-                        };
-                    }
-                } else if (isObserveLike(data.parent)) {
-                    return data.parent.compute(data.name);
-                }
-            }
-            // Invoke the length to ensure that Observe.List events fire.
-            data.value && isObserveLike(data.value) && isArrayLike(data.value) && data.value.attr('length')
-            //	return data.value;
 
-            // If it's a function on an observe's prototype
-            if (can.isFunction(data.value) && isObserveLike(data.parent) && data.parent.constructor.prototype[data.name] === data.value) {
-                // make sure the value is a function that calls the value
-                var val = can.proxy(data.value, data.parent);
-                // mark val as method
-                val.isObserveMethod = true;
-                return val;
+            // If there are no dependencies, just return the value.
+            if (!compute.hasDependencies) {
+                return initialValue;
+            } else {
+                return compute;
             }
-            // Add support for observes
-            else if (data.parent && isObserveLike(data.parent)) {
-                return data.parent.compute(data.name);
-            } else if (can.isFunction(data.value)) {
-                return data.value.call(data.parent)
-            }
-
-            return data.value;
         };
 
 
-        Mustache.resolve = function(value, lastValue, name, isArgument) {
-            if (lastValue && can.isFunction(lastValue[name]) && isArgument) {
-                if (lastValue[name].isComputed) {
-                    return lastValue[name];
-                }
-                // Don't execute functions if they are parameters for a helper and are not a can.compute
-                // Need to bind it to the original context so that that information doesn't get lost by the helper
-                return function() {
-                    return lastValue[name].apply(lastValue, arguments);
-                };
-            }
-            // Support attributes on compute objects
-            else if (lastValue && can.isFunction(lastValue) && lastValue.isComputed) {
-                return lastValue()[name];
-            }
-            // Support functions stored in objects.
-            else if (lastValue && can.isFunction(lastValue[name])) {
-                return lastValue[name]();
-            }
-            // Invoke the length to ensure that Observe.List events fire.
-            else if (isObserveLike(value) && isArrayLike(value) && value.attr('length')) {
+        Mustache.resolve = function(value) {
+            if (isObserveLike(value) && isArrayLike(value) && value.attr('length')) {
                 return value;
-            }
-            // Add support for observes
-            else if (lastValue && isObserveLike(lastValue)) {
-                return lastValue.compute(name);
             } else if (can.isFunction(value)) {
                 return value();
             } else {
@@ -4816,6 +5298,15 @@
             return can.view.render(partial, context);
         };
 
+
+        Mustache.safeString = function(str) {
+            return {
+                toString: function() {
+                    return str;
+                }
+            }
+        };
+
         Mustache.renderPartial = function(partialName, scope, options) {
             var partial = options.attr("partials." + partialName)
             if (partial) {
@@ -4831,7 +5322,16 @@
                 // Implements the `if` built-in helper.
 
                 'if': function(expr, options) {
-                    if ( !! Mustache.resolve(expr)) {
+                    var value;
+                    // if it's a function, wrap its value in a compute
+                    // that will only change values from true to false
+                    if (can.isFunction(expr)) {
+                        value = can.compute.truthy(expr)()
+                    } else {
+                        value = !! Mustache.resolve(expr)
+                    }
+
+                    if (value) {
                         return options.fn(options.contexts || this);
                     } else {
                         return options.inverse(options.contexts || this);
@@ -4848,19 +5348,56 @@
                 // Implements the `each` built-in helper.
 
                 'each': function(expr, options) {
-                    expr = Mustache.resolve(expr);
-                    if ( !! expr && isArrayLike(expr)) {
-                        if (isObserveLike(expr) && typeof expr.attr('length') !== 'undefined') {
-                            return can.view.lists && can.view.lists(expr, function(item) {
-                                return options.fn(item);
+                    if (expr.isComputed || isObserveLike(expr) && typeof expr.attr('length') !== 'undefined') {
+                        return can.view.lists && can.view.lists(expr, function(item, key) {
+                            // Create a compute that listens to whenever the index of the item in our list changes.
+                            var keyCompute = can.compute(function() {
+                                var exprResolved = Mustache.resolve(expr);
+                                return (exprResolved).indexOf(item);
                             });
-                        } else {
-                            var result = [];
-                            for (var i = 0; i < expr.length; i++) {
-                                result.push(options.fn(expr[i]));
-                            }
-                            return result.join('');
+                            return options.fn({
+                                    value: item,
+                                    index: keyCompute
+                                });
+                        });
+                    }
+                    expr = Mustache.resolve(expr);
+
+                    if ( !! expr && isArrayLike(expr)) {
+                        var result = [];
+                        for (var i = 0; i < expr.length; i++) {
+                            var key = function() {
+                                return i;
+                            };
+
+                            result.push(options.fn({
+                                        value: expr[i],
+                                        index: key
+                                    }));
                         }
+                        return result.join('');
+                    } else if (isObserveLike(expr)) {
+                        var result = [],
+                            // listen to keys changing so we can livebind lists of attributes.
+                            keys = can.Map.keys(expr);
+                        for (var i = 0; i < keys.length; i++) {
+                            var key = keys[i];
+                            result.push(options.fn({
+                                        value: expr[key],
+                                        key: key
+                                    }));
+                        }
+                        return result.join('');
+                    } else if (expr instanceof Object) {
+                        var result = [];
+                        for (var key in expr) {
+                            result.push(options.fn({
+                                        value: expr[key],
+                                        key: key
+                                    }));
+                        }
+                        return result.join('');
+
                     }
                 },
                 // Implements the `with` built-in helper.
@@ -4871,8 +5408,17 @@
                     if ( !! expr) {
                         return options.fn(ctx);
                     }
-                }
+                },
 
+                'log': function(expr, options) {
+                    if (console !== undefined) {
+                        if (!options) {
+                            console.log(expr.context);
+                        } else {
+                            console.log(expr, options.context);
+                        }
+                    }
+                }
 
             }, function(fn, name) {
                 Mustache.registerHelper(name, fn);
@@ -4902,10 +5448,10 @@
             });
 
         return can;
-    })(__m2, __m17, __m18, __m19, __m15, __m21);
+    })(__m2, __m18, __m19, __m20, __m16, __m22);
 
     // ## view/bindings/bindings.js
-    var __m24 = (function(can) {
+    var __m25 = (function(can) {
 
 
 
@@ -4913,7 +5459,9 @@
         can.view.Scanner.attribute("can-value", function(data, el) {
 
             var attr = el.getAttribute("can-value"),
-                value = data.scope.compute(attr);
+                value = data.scope.computeData(attr, {
+                        args: []
+                    }).compute;
 
             if (el.nodeName.toLowerCase() === "input") {
                 if (el.type === "checkbox") {
@@ -4961,11 +5509,13 @@
         can.view.Scanner.attribute(/can-[\w\.]+/, function(data, el) {
 
             var event = data.attr.substr("can-".length),
-                attr = el.getAttribute(data.attr),
-                scopeData = data.scope.get(attr),
                 handler = function(ev) {
-
-                    return scopeData.value.call(scopeData.parent, data.scope.attr("."), can.$(this), ev)
+                    var attr = el.getAttribute(data.attr),
+                        scopeData = data.scope.read(attr, {
+                                returnObserveMethods: true,
+                                isArgument: true
+                            });
+                    return scopeData.value.call(scopeData.parent, data.scope._data, can.$(this), ev)
                 };
 
             if (special[event]) {
@@ -4975,11 +5525,6 @@
             }
 
             can.bind.call(el, event, handler);
-            // not all libraries automatically remove bindings
-            can.bind.call(el, "removed", function() {
-                can.unbind.call(el, event, handler);
-            })
-
         });
 
 
@@ -5040,12 +5585,12 @@
                 }
             });
 
-    })(__m2, __m16, __m7);
+    })(__m2, __m17, __m8);
 
     // ## component/component.js
     var __m1 = (function(can) {
 
-        var ignoreAttributesRegExp = /data-view-id|class|id/i
+        var ignoreAttributesRegExp = /dataViewId|class|id/i
 
         var Component = can.Component = can.Construct.extend(
 
@@ -5114,18 +5659,19 @@
                 setup: function(el, hookupOptions) {
                     // Setup values passed to component
                     var initalScopeData = {},
-                        component = this;
+                        component = this,
+                        twoWayBindings = {};
 
                     // scope prototype properties marked with an "@" are added here
                     can.each(this.constructor.attributeScopeMappings, function(val, prop) {
-                        initalScopeData[prop] = el.getAttribute(val)
+                        initalScopeData[prop] = el.getAttribute(can.hyphenate(val));
                     })
 
                     // get the value in the scope for each attribute
                     // the hookup should probably happen after?
                     can.each(can.makeArray(el.attributes), function(node, index) {
 
-                        var name = node.nodeName.toLowerCase(),
+                        var name = can.camelize(node.nodeName.toLowerCase()),
                             value = node.value;
 
                         // ignore attributes already in ScopeMappings
@@ -5133,35 +5679,43 @@
                             return;
                         }
 
-                        // get the value from the current scope
-                        var scopeValue = hookupOptions.scope.attr(value);
-                        if (can.isFunction(scopeValue) && !scopeValue.isComputed) {
+                        // Cross-bind the value in the scope to this 
+                        // component's scope
+                        var computeData = hookupOptions.scope.computeData(value, {
+                                args: []
+                            }),
+                            compute = computeData.compute;
 
-                            var data = hookupOptions.scope.get(value)
-
-                            scopeValue = data.value.call(data.parent)
-
+                        // bind on this, check it's value, if it has dependencies
+                        var handler = function(ev, newVal) {
+                            componentScope.attr(name, newVal)
                         }
-                        initalScopeData[name] = scopeValue;
+                        // compute only returned if bindable
 
-                        // if this is something that we can auto-update, lets do that
-                        var compute = hookupOptions.scope.compute(value),
-                            handler = function(ev, newVal) {
-                                componentScope.attr(name, newVal)
-                            }
-                            // compute only returned if bindable
-                        if (compute) {
-                            compute.bind("change", handler);
+                        compute.bind("change", handler);
+
+                        // set the value to be added to the scope
+                        initalScopeData[name] = compute();
+
+                        if (!compute.hasDependencies) {
+                            compute.unbind("change", handler);
+                        } else {
+                            // make sure we unbind (there's faster ways of doing this)
                             can.bind.call(el, "removed", function() {
                                 compute.unbind("change", handler);
                             })
+                            // setup two-way binding
+                            twoWayBindings[name] = computeData
                         }
+
                     })
 
                     var componentScope
                     // save the scope
                     if (this.constructor.Map) {
                         componentScope = new this.constructor.Map(initalScopeData);
+                    } else if (this.scope instanceof can.Map) {
+                        componentScope = this.scope;
                     } else if (can.isFunction(this.scope)) {
                         var scopeResult = this.scope(initalScopeData, hookupOptions.scope, el);
                         // if the function returns a can.Map, use that as the scope
@@ -5174,6 +5728,20 @@
                         }
 
                     }
+                    var handlers = {};
+                    // setup reverse bindings
+                    can.each(twoWayBindings, function(computeData, prop) {
+                        handlers[prop] = function(ev, newVal) {
+                            computeData.compute(newVal)
+                        }
+                        componentScope.bind(prop, handlers[prop])
+                    });
+                    // teardown reverse bindings when element is removed
+                    can.bind.call(el, "removed", function() {
+                        can.each(handlers, function(handler, prop) {
+                            componentScope.unbind(prop, handlers[prop])
+                        })
+                    })
 
                     this.scope = componentScope;
                     can.data(can.$(el), "scope", this.scope)
@@ -5182,8 +5750,9 @@
                     var renderedScope = hookupOptions.scope.add(this.scope),
 
                         // setup helpers to callback with `this` as the component
-                        helpers = this.helpers || {};
-                    can.each(helpers, function(val, prop) {
+                        helpers = {};
+
+                    can.each(this.helpers || {}, function(val, prop) {
                         if (can.isFunction(val)) {
                             helpers[prop] = function() {
                                 return val.apply(componentScope, arguments)
@@ -5209,7 +5778,7 @@
                             // otherwise, render what was within <content>, the default code
                             var subtemplate = hookupOptions.subtemplate || rendererOptions.subtemplate
                             if (subtemplate) {
-                                var frag = can.view.frag(subtemplate(renderedScope, rendererOptions.options.add(helpers)));
+                                var frag = can.view.frag(subtemplate(rendererOptions.scope, rendererOptions.options.add(helpers)));
                                 can.insertBefore(el.parentNode, frag, el);
                                 can.remove(can.$(el));
                             }
@@ -5245,10 +5814,10 @@
         }
 
         return Component;
-    })(__m2, __m7, __m10, __m16, __m24);
+    })(__m2, __m8, __m11, __m17, __m25);
 
     // ## model/model.js
-    var __m25 = (function(can) {
+    var __m26 = (function(can) {
 
         // ## model.js  
         // `can.Model`  
@@ -5713,10 +6282,10 @@
             })
 
         return can.Model;
-    })(__m2, __m11, __m14);
+    })(__m2, __m12, __m15);
 
     // ## util/string/deparam/deparam.js
-    var __m27 = (function(can) {
+    var __m28 = (function(can) {
 
         // ## deparam.js  
         // `can.deparam`  
@@ -5769,10 +6338,10 @@
                 }
             });
         return can;
-    })(__m2, __m9);
+    })(__m2, __m10);
 
     // ## route/route.js
-    var __m26 = (function(can) {
+    var __m27 = (function(can) {
 
         // ## route.js  
         // `can.route`  
@@ -6216,10 +6785,10 @@
 
 
         return can.route;
-    })(__m2, __m11, __m27);
+    })(__m2, __m12, __m28);
 
     // ## control/route/route.js
-    var __m28 = (function(can) {
+    var __m29 = (function(can) {
 
         // ## control/route.js  
         // _Controller route integration._
@@ -6253,7 +6822,7 @@
         };
 
         return can;
-    })(__m2, __m26, __m7);
+    })(__m2, __m27, __m8);
 
     window['can'] = __m4;
 })();

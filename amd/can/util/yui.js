@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.0
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 16 Oct 2013 20:40:41 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -358,9 +358,8 @@ define(["can/util/can", "yui", "can/util/event", "can/util/fragment", "can/util/
 					type : event
 				}
 			}
-			event.target = event.target || item
-			event.data = args
-			can.dispatch.call(item, event)
+			event.target = event.target || item;
+			can.dispatch.call(item, event, args)
 		}
 	};
 	// Allow `dom` `destroyed` events.
@@ -415,7 +414,7 @@ define(["can/util/can", "yui", "can/util/event", "can/util/fragment", "can/util/
 				// // fireEvent. /me sighs. http://gist.github.com/315318
 				// throw("janktastic");
 				// }
-				n.fireEvent(ev);
+				n.fireEvent(ev, a);
 			} catch (er) {
 				// a lame duck to work with. we're probably a 'custom event'
 				var evdata = can.extend({

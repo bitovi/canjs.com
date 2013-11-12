@@ -1,15 +1,15 @@
 /*!
- * CanJS - 2.0.0
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 16 Oct 2013 20:40:41 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
 steal("can/util","can/control","can/observe","can/view/mustache","can/view/bindings",function(can){
 	
-	var ignoreAttributesRegExp = /data-view-id|class|id/i
+	var ignoreAttributesRegExp = /dataViewId|class|id/i
 	/**
 	 * @add can.Component
 	 */
@@ -84,18 +84,19 @@ steal("can/util","can/control","can/observe","can/view/mustache","can/view/bindi
 		setup: function(el, hookupOptions){
 			// Setup values passed to component
 			var initalScopeData = {},
-				component = this;
+				component = this,
+				twoWayBindings = {};
 			
 			// scope prototype properties marked with an "@" are added here
 			can.each(this.constructor.attributeScopeMappings,function(val, prop){
-				initalScopeData[prop] = el.getAttribute(val)
+				initalScopeData[prop] = el.getAttribute(can.hyphenate(val));
 			})
 			
 			// get the value in the scope for each attribute
 			// the hookup should probably happen after?
 			can.each(can.makeArray(el.attributes), function(node, index){
 				
-				var name = node.nodeName.toLowerCase(),
+				var name = can.camelize(node.nodeName.toLowerCase()),
 					value = node.value;
 				
 				// ignore attributes already in ScopeMappings
@@ -103,35 +104,41 @@ steal("can/util","can/control","can/observe","can/view/mustache","can/view/bindi
 					return;
 				}
 				
-				// get the value from the current scope
-				var scopeValue = hookupOptions.scope.attr(value);
-				if(can.isFunction(scopeValue) && !scopeValue.isComputed){
-					
-					var data = hookupOptions.scope.get(value)
-					
-					scopeValue = data.value.call(data.parent)
-					
-				} 
-				initalScopeData[name] = scopeValue;
+				// Cross-bind the value in the scope to this 
+				// component's scope
+				var computeData = hookupOptions.scope.computeData(value, {args: []}),
+					compute = computeData.compute;
 				
-				// if this is something that we can auto-update, lets do that
-				var compute = hookupOptions.scope.compute(value),
-					handler = function(ev, newVal){
-						componentScope.attr(name, newVal)
-					}
+				// bind on this, check it's value, if it has dependencies
+				var handler = function(ev, newVal){
+					componentScope.attr(name, newVal)
+				}
 				// compute only returned if bindable
-				if(compute){
-					compute.bind("change", handler);
+				
+				compute.bind("change", handler);
+				
+				// set the value to be added to the scope
+				initalScopeData[name] = compute();
+				
+				if(!compute.hasDependencies) {
+					compute.unbind("change", handler);
+				} else {
+					// make sure we unbind (there's faster ways of doing this)
 					can.bind.call(el,"removed",function(){
 						compute.unbind("change", handler);
 					})
+					// setup two-way binding
+					twoWayBindings[name] = computeData
 				}
+				
 			})
 			
 			var componentScope
 			// save the scope
 			if(this.constructor.Map){
 				componentScope = new this.constructor.Map(initalScopeData);
+			} else if(this.scope instanceof can.Map) {
+				componentScope = this.scope;
 			} else if(can.isFunction(this.scope)){
 				var scopeResult = this.scope(initalScopeData, hookupOptions.scope, el);
 				// if the function returns a can.Map, use that as the scope
@@ -144,6 +151,20 @@ steal("can/util","can/control","can/observe","can/view/mustache","can/view/bindi
 				}
 				
 			}
+			var handlers = {};
+			// setup reverse bindings
+			can.each(twoWayBindings, function(computeData, prop){
+				handlers[prop] = function(ev, newVal){
+					computeData.compute(newVal)
+				}
+				componentScope.bind(prop, handlers[prop])
+			});
+			// teardown reverse bindings when element is removed
+			can.bind.call(el,"removed",function(){
+				can.each(handlers, function(handler, prop){
+					componentScope.unbind(prop, handlers[prop])
+				})
+			})
 			
 			this.scope = componentScope;
 			can.data(can.$(el),"scope", this.scope)
@@ -152,8 +173,9 @@ steal("can/util","can/control","can/observe","can/view/mustache","can/view/bindi
 			var renderedScope = hookupOptions.scope.add( this.scope ),
 			
 				// setup helpers to callback with `this` as the component
-				helpers = this.helpers || {};
-			can.each(helpers, function(val, prop){
+				helpers = {};
+
+			can.each(this.helpers || {}, function(val, prop){
 				if(can.isFunction(val)) {
 					helpers[prop] = function(){
 						return val.apply(componentScope, arguments)
@@ -177,7 +199,7 @@ steal("can/util","can/control","can/observe","can/view/mustache","can/view/bindi
 					// otherwise, render what was within <content>, the default code
 					var subtemplate = hookupOptions.subtemplate || rendererOptions.subtemplate
 					if(subtemplate) {
-						var frag = can.view.frag( subtemplate(renderedScope, rendererOptions.options.add(helpers) ) );
+						var frag = can.view.frag( subtemplate(rendererOptions.scope, rendererOptions.options.add(helpers) ) );
 						can.insertBefore(el.parentNode, frag, el);
 						can.remove( can.$(el) );
 					}

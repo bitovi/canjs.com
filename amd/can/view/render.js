@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.0
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 16 Oct 2013 20:40:41 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -70,6 +70,10 @@ var current;
 
 can.extend(can.view, {
 	live: live,
+	// called in text to make a temporary 
+	// can.view.lists function that can be called with
+	// the list to iterate over and the template
+	// used to produce the content within the list
 	setupLists: function(){
 
 		var old = can.view.lists,
@@ -80,7 +84,9 @@ can.extend(can.view, {
 				list: list,
 				renderer: renderer
 			}
+			return Math.random()
 		}
+		// sets back to the old data
 		return function(){
 			can.view.lists = old;
 			return data;
@@ -158,7 +164,7 @@ can.extend(can.view, {
 		// If we had no observes just return the value returned by func.
 		if(!compute.hasDependencies || typeof value === "function"){
 			unbind();
-			return (  (escape || status !== 0) && escape !== 2  ? contentEscape : contentText)(value, status === 0 && tag);
+			return (  (escape || typeof status === 'string') && escape !== 2  ? contentEscape : contentText)(value, status === 0 && tag);
 		}
 
 

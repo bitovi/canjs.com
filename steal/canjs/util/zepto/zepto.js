@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.0
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 16 Oct 2013 20:40:41 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -82,8 +82,7 @@ function (can) {
 				event = {type : event}
 			}
 			event.target = event.target || obj;
-			event.data = args;
-			can.dispatch.call(obj, event)
+			can.dispatch.call(obj, event, args)
 		}
 
 	}
@@ -217,7 +216,6 @@ function (can) {
 				// might be a text node
 				
 				if( this.getElementsByTagName ){
-					console.log()
 					$.cleanData( [this].concat( can.makeArray(this.getElementsByTagName('*')) )  );
 				} 
 				

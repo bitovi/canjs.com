@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.0
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 16 Oct 2013 20:40:41 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -76,20 +76,32 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 
 	var live = {
 		nodeLists : nodeLists,
-		list: function(el, list, func, context, parentNode){
+		/**
+		 * Used 
+		 * @param {Object} el
+		 * @param {can.compute} list a compute that returns a number or a list 
+		 * @param {Object} func
+		 * @param {Object} context
+		 * @param {Object} parentNode
+		 */
+		list: function(el, compute, func, context, parentNode){
+			
+			
+			
+			
 			// A mapping of the index to an array
 			// of elements that represent the item.
 			// Each array is registered so child or parent
 			// live structures can update the elements
 			var nodesMap = [],
-
+				// called when an item is added
 				add = function(ev, items, index){
 
 					// Collect new html and mappings
 					var frag = document.createDocumentFragment(),
 						newMappings = [];
-					can.each(items, function(item){
-						var itemHTML = func.call(context,item),
+					can.each(items, function(item, key){
+						var itemHTML = func.call(context, item, (key + index)),
 							itemFrag = can.view.frag(itemHTML, parentNode);
 
 						newMappings.push(can.makeArray(itemFrag.childNodes));
@@ -128,33 +140,43 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 					can.remove( can.$(itemsToRemove) );
 				},
 				parentNode = elements.getParentNode(el, parentNode),
-				text = document.createTextNode("");
+				text = document.createTextNode(""),
+				list;
 
-			// Setup binding and teardown to add and remove events
-			setup(parentNode, function(){
-				list.bind("add", add).bind("remove", remove)
-			},function(){
-				list.unbind("add", add).unbind("remove", remove);
-				can.each(nodesMap, function(nodeList){
-					nodeLists.unregister( nodeList );
-				})
-			})
+			teardownList = function(){
+				// there might be no list right away, and the list might be a plain
+				// array
+				list && list.unbind && list.unbind("add", add).unbind("remove", remove);
+				// use remove to clean stuff up for us
+				remove({},{length: nodesMap.length},0);
+			}
 
+			updateList = function(ev, newList, oldList){
+				teardownList();
+				// make an empty list if the compute returns null or undefined
+				list = newList || [];
+				// list might be a plain array
+				list.bind && list.bind("add", add).bind("remove", remove);
+				add({}, list, 0);
+			}
 			insertElementsAfter([el],text);
 			can.remove( can.$(el) );
-			add({}, list, 0);
-/*
-			list.each(function(item, i){
-				
-				var itemFrag = func.call(context,item),
-					newNodes = can.makeArray(itemFrag.childNodes);
 
-				frag.appendChild(itemFrag);
-
-				nodesMap[i] = newNodes;
-				nodeLists.register(newNodes);
+			// Setup binding and teardown to add and remove events
+			var data = setup(parentNode, function(){
+				if(text.parentNode){
+					can.isFunction(compute) && compute.bind("change",updateList)
+				} else {
+					data.teardownCheck()
+				}
+			},function(){
+				can.isFunction(compute) && compute.unbind("change",updateList)
+				teardownList()
 			})
-			replaceElements([el], frag);*/
+
+			updateList({},can.isFunction(compute) ? compute() : compute)
+			
+
 		},
 		html: function(el, compute, parentNode){
 			var parentNode = elements.getParentNode(el, parentNode),
@@ -324,13 +346,13 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 			elements.setAttr(el, attributeName, getValue( compute() ) );
 		}
 	}
-	
+	var newLine = /(\r|\n)+/g;
 	var getValue = function(val){
-		val = val.replace(elements.attrReg,"");
+		val = val.replace(elements.attrReg,"").replace(newLine,"");
 		// check if starts and ends with " or '
 		return /^["'].*["']$/.test(val) ? val.substr(1, val.length-2) : val
 	}
-	
+	can.view.live = live;
 	return live;
 
 });

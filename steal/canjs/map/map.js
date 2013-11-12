@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.0
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 16 Oct 2013 20:40:41 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -15,8 +15,7 @@ steal('can/util','can/util/bind','can/construct', 'can/util/batch',function(can,
 	//  
 		// Removes all listeners.
 	var	bindToChildAndBubbleToParent = function(child, prop, parent){
-			child.bind("change" + parent._cid, 
-				function( /* ev, attr */ ) {
+			can.listenTo.call(parent,child,"change", function( /* ev, attr */ ) {
 				// `batchTrigger` the type on this...
 				var args = can.makeArray(arguments),
 					ev = args.shift();
@@ -56,8 +55,41 @@ steal('can/util','can/util/bind','can/construct', 'can/util/batch',function(can,
 					}
 				})
 			};
+		},
+		// A map that temporarily houses a reference 
+		// to maps that have already been made for a plain ole JS object
+		madeMap = null,
+		addToMap = function(obj, instance){
+			var teardown = false;
+			if(!madeMap){
+				teardown = true;
+				madeMap = {}
+			}
+			// record if it has a Cid before we add one
+			var hasCid = obj._cid;
+			var cid = can.cid(obj);
+			
+			// only update if there already isn't one
+			if( !madeMap[cid] ){
+			
+				madeMap[cid] = {
+					obj: obj,
+					instance: instance,
+					added: hasCid
+				}
+			}
 		};
-	
+		teardownMap = function(){
+			for(var cid in madeMap){
+				if(madeMap[cid].added) {
+					delete madeMap[cid].obj._cid;
+				}
+			}
+			madeMap = null;
+		},
+		getMapFromObject = function(obj){
+			return madeMap && madeMap[obj._cid] && madeMap[obj._cid].instance
+		}
 	/**
 	 * @add can.Map
 	 */
@@ -88,8 +120,8 @@ steal('can/util','can/util/bind','can/construct', 'can/util/batch',function(can,
 	
 		},
 		// keep so it can be overwritten
-		bind : can.bindAndSetup,
-		on : can.bindAndSetup,
+		bind: can.bindAndSetup,
+		on: can.bindAndSetup,
 		unbind: can.unbindAndTeardown,
 		off: can.unbindAndTeardown,
 		id: "id",
@@ -97,10 +129,10 @@ steal('can/util','can/util/bind','can/construct', 'can/util/batch',function(can,
 			canMakeObserve : function( obj ) {
 				return obj && !can.isDeferred(obj) && (can.isArray(obj) || can.isPlainObject( obj ) || ( obj instanceof can.Map ));
 			},
-			unhookup: function(items, namespace){
+			unhookup: function(items, parent){
 				return can.each(items, function(item){
 					if(item && item.unbind){
-						item.unbind("change" + namespace);
+						can.stopListening.call(parent, item,"change");
 					}
 				});
 			},
@@ -119,11 +151,11 @@ steal('can/util','can/util/bind','can/construct', 'can/util/batch',function(can,
 					// We have an `map` already...
 					// Make sure it is not listening to this already
 					// It's only listening if it has bindings already.
-					parent._bindings && Map.helpers.unhookup([child], parent._cid);
+					parent._bindings && Map.helpers.unhookup([child], parent);
 				} else if ( can.isArray(child) ) {
-					child = new List(child);
+					child = getMapFromObject(child) || new List(child);
 				} else {
-					child = new Ob(child);
+					child = getMapFromObject(child) || new Ob(child);
 				}
 				// only listen if something is listening to you
 				if(parent._bindings){
@@ -162,7 +194,7 @@ steal('can/util','can/util/bind','can/construct', 'can/util/batch',function(can,
 		 * @description Iterate over the keys of an Map.
 		 * @signature `can.Map.keys(map)`
 		 * @param {can.Map} map the `can.Map` to get the keys from
-		 * @return {Array} array An array containing the keys from _observe_.
+		 * @return {Array} array An array containing the keys from _map_.
 		 * 
 		 * @body
 		 * `keys` iterates over an map to get an array of its keys.
@@ -204,24 +236,34 @@ steal('can/util','can/util/bind','can/construct', 'can/util/batch',function(can,
 			// Sets all `attrs`.
 			this._init = 1;
 			this._setupComputes();
+			var teardownMapping = obj && addToMap(obj, this)
 			var data = can.extend( can.extend(true,{},this.constructor.defaults || {}), obj )
 			this.attr(data);
-			this.bind('change'+this._cid,can.proxy(this._changes,this));
+			if(teardownMapping){
+				teardownMap()
+			}
+			this.bind('change',can.proxy(this._changes,this));
+			
 			delete this._init;
 		},
 		_setupComputes: function(){
-			var prototype = this.constructor.prototype
+			var prototype = this.constructor.prototype;
+			this._computedBindings = {}
 			for(var prop in prototype){
 				if(prototype[prop] && prototype[prop].isComputed){
 					this[prop] = prototype[prop].clone(this);
+					this._computedBindings[prop] = {
+						count: 0
+					}
 				}
 			}
+			
 		},
 		_bindsetup: makeBindSetup(),
 		_bindteardown: function(){
-			var cid = this._cid;
+			var self = this;
 			this._each(function(child){
-				Map.helpers.unhookup([child], cid)
+				Map.helpers.unhookup([child], self)
 			})
 		},
 		_changes: function(ev, attr, how,newVal, oldVal){
@@ -574,7 +616,7 @@ steal('can/util','can/util/bind','can/construct', 'can/util/batch',function(can,
 				
 				//can.batch.trigger(this, prop, [value, current]);
 				// If we can stop listening to our old value, do it.
-				current && Map.helpers.unhookup([current], this._cid);
+				current && Map.helpers.unhookup([current], this);
 			}
 
 		},
@@ -691,8 +733,24 @@ steal('can/util','can/util/bind','can/construct', 'can/util/batch',function(can,
 		 * 
 		 * For a more specific way to changes on Observes, see the [can.Map.delegate] plugin.
 		 */
-		bind: can.bindAndSetup,
-		on: can.bindAndSetup,
+		bind: function(eventName, handler){
+			var computedBinding = this._computedBindings && this._computedBindings[eventName]
+			if( computedBinding ) {
+				if( !computedBinding.count ) {
+					computedBinding.count = 1;
+					var self =  this;
+					computedBinding.handler = function(ev, newVal, oldVal){
+						can.batch.trigger(self, {type: eventName, batchNum: ev.batchNum}, [newVal, oldVal] )
+					}
+					this[eventName].bind("change", computedBinding.handler)
+				} else {
+					computedBinding.count++
+				}
+				
+			}
+			return can.bindAndSetup.apply(this, arguments);
+			
+		},
 		/**
 		 * @function can.Map.prototype.unbind unbind
 		 * @description Unbind event handlers from an Map.
@@ -724,8 +782,21 @@ steal('can/util','can/util/bind','can/construct', 'can/util/batch',function(can,
 		 * i; // 8
 		 * @codeend
 		 */
-		unbind: can.unbindAndTeardown,
-		off: can.unbindAndTeardown,
+		unbind: function(eventName, handler){
+			var computedBinding = this._computedBindings && this._computedBindings[eventName]
+			if( computedBinding ) {
+				if( computedBinding.count == 1 ) {
+					computedBinding.count = 0;
+					this[eventName].unbind("change", computedBinding.handler);
+					delete computedBinding.handler;
+				} else {
+					computedBinding.count++
+				}
+				
+			}
+			return can.unbindAndTeardown.apply(this, arguments);
+			
+		},
 		/**
 		 * @function can.Map.prototype.serialize serialize
 		 * @description Serialize this object to something that
@@ -771,6 +842,10 @@ steal('can/util','can/util/bind','can/construct', 'can/util/batch',function(can,
 				newVal;
 			can.batch.start();
 			this.each(function(curVal, prop){
+				// you can not have a _cid property!
+				if(prop === "_cid"){
+					return;
+				}
 				newVal = props[prop];
 
 				// If we are merging...
@@ -798,8 +873,11 @@ steal('can/util','can/util/bind','can/construct', 'can/util/batch',function(can,
 			})
 			// Add remaining props.
 			for ( var prop in props ) {
-				newVal = props[prop];
-				this._set(prop, newVal, true)
+				if(prop !== "_cid"){
+					newVal = props[prop];
+					this._set(prop, newVal, true)
+				}
+				
 			}
 			can.batch.stop()
 			return this;
@@ -840,6 +918,9 @@ steal('can/util','can/util/bind','can/construct', 'can/util/batch',function(can,
 			
 		}
 	});
+	
+	Map.prototype.on = Map.prototype.bind;
+	Map.prototype.off = Map.prototype.unbind;
 
 	return Map;
 });

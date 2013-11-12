@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.0
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 16 Oct 2013 20:40:41 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -68,7 +68,7 @@ steal("can/util","can/view/mustache", "can/control", function(can){
 	can.view.Scanner.attribute("can-value", function(data, el){
 		
 		var attr = el.getAttribute("can-value"),
-			value = data.scope.compute(attr);
+			value = data.scope.computeData(attr,{args:[]}).compute;
 		
 		if(el.nodeName.toLowerCase() === "input"){
 			if(el.type === "checkbox") {
@@ -142,11 +142,10 @@ steal("can/util","can/view/mustache", "can/control", function(can){
 	can.view.Scanner.attribute(/can-[\w\.]+/,function(data, el){
 		
 		var event = data.attr.substr("can-".length),
-			attr = el.getAttribute(data.attr),
-			scopeData = data.scope.get(attr),
 			handler = function(ev){
-				
-				return scopeData.value.call(scopeData.parent,data.scope.attr("."), can.$(this), ev )
+				var attr = el.getAttribute(data.attr),
+					scopeData = data.scope.read(attr,{returnObserveMethods: true, isArgument: true});
+				return scopeData.value.call(scopeData.parent,data.scope._data, can.$(this), ev )
 			};
 		
 		if(special[event]){
@@ -156,11 +155,6 @@ steal("can/util","can/view/mustache", "can/control", function(can){
 		}
 		
 		can.bind.call( el, event, handler);
-		// not all libraries automatically remove bindings
-		can.bind.call( el, "removed",function(){
-			can.unbind.call( el, event, handler);
-		})
-		
 	});
 	
 	

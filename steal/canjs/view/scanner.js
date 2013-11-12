@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.0
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 16 Oct 2013 20:40:41 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -73,10 +73,19 @@ var newLine = /(\r|\n)+/g,
 	// returns the top of a stack
 	top = function(stack){
 		return stack[stack.length-1]
-	};
+	},
+	// characters that automatically mean a custom element
+	automaticCustomElementCharacters = /[-\:]/,
+	Scanner;
 
 /**
  * @constructor can.view.Scanner
+ * 
+ * can.view.Scanner is used to convert a template into a JavaScript function.  That
+ * function is called to produce a rendered result as a string. Often
+ * the rendered result will include data-view-id attributes on elements that
+ * will be processed after the template is used to create a document fragment.
+ * 
  * 
  * @param {{text: can.view.Scanner.text, tokens: Array<can.view.Scanner.token>, helpers: Array<can.view.Scanner.helpers>}}
  */
@@ -175,19 +184,24 @@ Scanner.tag = function( tagName, callback){
 	Scanner.tags[tagName.toLowerCase()] = callback;
 }
 Scanner.tags = {};
-
+// This is called when there is a special tag
 Scanner.hookupTag = function(hookupOptions){
+	// we need to call any live hookups
+	// so get that and return the hook
+	// a better system will always be called with the same stuff
 	var hooks = can.view.getHooks();
 	return can.view.hook(function(el){
 		can.each(hooks, function(fn){
 			fn(el);
 		});
 		
-		var helperTags = hookupOptions.options.attr('helpers._tags'),
+		var helperTags = hookupOptions.options.read('helpers._tags',{}).value,
 			tagName= hookupOptions.tagName,
 			tagCallback = ( helperTags && helperTags[tagName] ) || Scanner.tags[tagName]
-			
-		var res = tagCallback(el, hookupOptions),
+		
+		
+		// if this was an element like <foo-bar> that doesn't have a component, just render its content
+		var res = tagCallback ? tagCallback(el, hookupOptions) : scope,
 			scope = hookupOptions.scope;
 
 		if(res){
@@ -207,7 +221,7 @@ Scanner.hookupTag = function(hookupOptions){
  * Extend can.View to add scanner support.
  */
 Scanner.prototype = {
-
+	// a default that can be overwritten
 	helpers: [],
 
 	scan: function(source, name){
@@ -363,12 +377,13 @@ Scanner.prototype = {
 						attrs = "attrs: ['"+specialStates.attributeHookups.join("','")+"'], ";
 						specialStates.attributeHookups = [];
 					}
-					
+					// this is the > of a special tag
 					if(tagName === top(specialStates.tagHookups) ){
-						// If it's a self closing tag (like <content/>) make sure we put the / at the end
+						// If it's a self closing tag (like <content/>) make sure we put the / at the end.
 						if(emptyElement) {
 							content = content.substr(0,content.length-1)
 						}
+						// Put the start of the end
 						buff.push(put_cmd, 
 								 '"', clean(content), '"', 
 								 ",can.view.Scanner.hookupTag({tagName:'"+tagName+"',"+(attrs)+"scope: "+(this.text.scope || "this")+this.text.options)
@@ -388,16 +403,18 @@ Scanner.prototype = {
 							content = token;
 							specialStates.tagHookups.pop()
 						} else {
+							// it has content
 							buff.push(",subtemplate: function("+this.text.argNames+"){\n"+ startTxt+(this.text.start || '') );
 							content = '';
 						}
 
 					} else if(magicInTag || (!popTagName && elements.tagToContentPropMap[ tagNames[tagNames.length -1] ] ) || attrs ){
 						// make sure / of /> is on the right of pending
+						var pendingPart = ",can.view.pending({"+attrs+"scope: "+(this.text.scope || "this")+this.text.options+"}),\"";
 						if(emptyElement){
-							put(content.substr(0,content.length-1), ",can.view.pending({"+attrs+"scope: "+(this.text.scope || "this")+this.text.options+"}),\"/>\"");
+							put(content.substr(0,content.length-1),pendingPart+ "/>\"");
 						} else {
-							put(content, ",can.view.pending({"+attrs+"scope: "+(this.text.scope || "this")+this.text.options+"}),\">\"");
+							put(content, pendingPart+">\"");
 						}
 						content = '';
 						magicInTag = 0;
@@ -512,7 +529,7 @@ Scanner.prototype = {
 								
 							} 
 								
-							if(Scanner.tags[tagName]){
+							if(tagName !== "!--" && ( Scanner.tags[tagName]  || automaticCustomElementCharacters.test(tagName) )){
 								// if the content tag is inside something it doesn't belong ...
 								if(tagName === "content" && elements.tagMap[top(tagNames)]){
 									// convert it to an element that will work

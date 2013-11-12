@@ -1,30 +1,35 @@
 /*!
- * CanJS - 2.0.0
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 16 Oct 2013 20:40:41 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["jquery", "can/util/can", "can/util/array/each", "can/util/inserted"], function($, can) {
+define(["jquery", "can/util/can", "can/util/array/each", "can/util/inserted", "can/util/event"], function($, can) {
+	var isBindableElement = function(node){
+		//console.log((node.nodeName && (node.nodeType == 1 || node.nodeType == 9) || node === window))
+		return (node.nodeName && (node.nodeType == 1 || node.nodeType == 9) || node == window);
+	};
+
 	// _jQuery node list._
 	$.extend( can, $, {
 		trigger: function( obj, event, args ) {
-			if ( obj.trigger ) {
+			if(obj.nodeName || obj === window) {
+				$.event.trigger( event, args, obj, true );
+			} else if ( obj.trigger ) {
 				obj.trigger( event, args );
 			} else {
-				$.event.trigger( event, args, obj, true );
+				if(typeof event === 'string'){
+					event = {type: event}
+				}
+				event.target = event.target || obj;
+				can.dispatch.call(obj, event, args);
 			}
 		},
-		addEvent: function(ev, cb){
-			$([this]).bind(ev, cb);
-			return this;
-		},
-		removeEvent: function(ev, cb){
-			$([this]).unbind(ev, cb);
-			return this;
-		},
+		addEvent: can.addEvent,
+		removeEvent: can.removeEvent,
 		// jquery caches fragments, we always needs a new one
 		buildFragment : function(elems, context){
 			var oldFragment = $.buildFragment,
@@ -41,17 +46,64 @@ define(["jquery", "can/util/can", "can/util/array/each", "can/util/inserted"], f
 			return ret.cacheable ? $.clone(ret.fragment) : ret.fragment || ret;
 		},
 		$: $,
-		each: can.each
+		each: can.each,
+		bind: function( ev, cb){
+			// If we can bind to it...
+			if(this.bind && this.bind !== can.bind){
+				this.bind(ev, cb)
+			} else if(isBindableElement(this)) {
+				$.event.add(this, ev, cb);
+			} else {
+				// Make it bind-able...
+				can.addEvent.call(this, ev, cb)
+			}
+			return this;
+		},
+		unbind: function(ev, cb){
+			// If we can bind to it...
+			if(this.unbind && this.unbind !== can.unbind){
+				this.unbind(ev, cb)
+			} else if(isBindableElement(this)) {
+				$.event.remove(this, ev, cb);
+			} else {
+				// Make it bind-able...
+				can.removeEvent.call(this, ev, cb)
+			}
+			return this;
+		},
+		delegate: function(selector, ev , cb){
+			if(this.delegate) {
+				this.delegate(selector, ev , cb)
+			}
+			 else if(isBindableElement(this)) {
+				$(this).delegate(selector, ev, cb)
+			} else {
+				// make it bind-able ...
+			}
+			return this;
+		},
+		undelegate: function(selector, ev , cb){
+			if(this.undelegate) {
+				this.undelegate(selector, ev , cb)
+			}
+			 else if(isBindableElement(this)) {
+				$(this).undelegate(selector, ev, cb)
+			} else {
+				// make it bind-able ...
+	
+			}
+			return this;
+		}
 	});
 
 	// Wrap binding functions.
-	$.each(['bind','unbind','undelegate','delegate'],function(i,func){
+	/*$.each(['bind','unbind','undelegate','delegate'],function(i,func){
 		can[func] = function(){
 			var t = this[func] ? this : $([this]);
 			t[func].apply(t, arguments);
 			return this;
 		};
-	});
+	});*/
 
 	// Aliases
 	can.on = can.bind;
@@ -78,16 +130,23 @@ define(["jquery", "can/util/can", "can/util/array/each", "can/util/inserted"], f
 	
 	var oldDomManip = $.fn.domManip;
 	
-	$.fn.domManip = function(args, table, callback){
-		return oldDomManip.call(this,args,table, function(elem){
-			if(elem.nodeType === 11){
-				var elems = can.makeArray(elem.childNodes);
-			}
-			var ret = callback.apply(this, arguments);
-			can.inserted(elems? elems : [elem])
-			return ret
-		})
-	}
+	$.fn.domManip = function(){
+		var args = can.makeArray(arguments),
+			isNew$ = $.fn.jquery >= "2.0.0",
+			cbIndex = isNew$ ? 1 : 2,
+			callback = args[cbIndex];
+
+		args[cbIndex] = function(elem) {
+			var isFragment = elem.nodeType === 11, //Node.DOCUMENT_FRAGMENT_NODE,
+				targets = isFragment ? can.makeArray(elem.childNodes) : [elem],
+				ret = callback.apply(this, arguments);
+			can.inserted(targets);
+			return ret;
+		};
+
+		return oldDomManip.apply(this, args);
+	};
+
 	$.event.special.inserted = {};
 	$.event.special.removed = {};
 

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.0
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 16 Oct 2013 20:40:41 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -45,7 +45,9 @@ define(["can/util/can", "dojo", "can/util/event", "can/util/fragment", "can/util
 					//						// fireEvent. /me sighs. http://gist.github.com/315318
 					//						throw("janktastic");
 					//					}
-					n.fireEvent(ev);
+					var evObj = document.createEventObject();
+					mix(evObj, a);
+					n.fireEvent(ev, evObj);
 				} catch (er) {
 					// a lame duck to work with. we're probably a 'custom event'
 					var evdata = mix({
@@ -304,9 +306,15 @@ define(["can/util/can", "dojo", "can/util/event", "can/util/fragment", "can/util
 		dojoRemoveBinding = function( nodelist, ev, cb ) {
 			nodelist.forEach(function( node ) {
 				var node = new dojo.NodeList(node),
-					events = can.data(node, "events"),
-					handlers = events[ev],
-					handler = handlers[cb.__bindingsIds];
+					events = can.data(node, "events");
+				if(!events){
+					return
+				}
+				var handlers = events[ev];
+				if(!handlers){
+					return
+				}
+				var handler = handlers[cb.__bindingsIds];
 
 				dojo.disconnect(handler);
 				delete handlers[cb.__bindingsIds];
@@ -387,9 +395,8 @@ define(["can/util/can", "dojo", "can/util/event", "can/util/fragment", "can/util
 						type: event
 					}
 				}
-				event.data = args
 				event.target = event.target || item;
-				can.dispatch.call(item, event)
+				can.dispatch.call(item, event, args)
 			}
 		}
 

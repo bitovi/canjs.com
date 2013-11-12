@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.0
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 16 Oct 2013 20:40:41 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -102,7 +102,7 @@ steal('can/util', 'can/route', function(can) {
                 if( window.location.host == linksHost ) {
                     var curParams = can.route.deparam(node.pathname+node.search);
                     // if a route matches
-                    if(curParams.route) {
+                    if(curParams.hasOwnProperty('route')) {
                     	// make it possible to have a link with a hash
                     	includeHash = true;
                     	// update the data

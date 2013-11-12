@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.0
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Wed, 16 Oct 2013 20:40:41 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -135,7 +135,7 @@ steal("can/util","can/map", function(can, Map){
 				this.push.apply(this, can.makeArray(instances || []));
 			}
 			// this change needs to be ignored
-			this.bind('change'+this._cid,can.proxy(this._changes,this));
+			this.bind('change',can.proxy(this._changes,this));
 			can.extend(this, options);
 			delete this._init;
 		},
@@ -299,7 +299,7 @@ steal("can/util","can/map", function(can, Map){
 			can.batch.start();
 			if ( howMany > 0 ) {
 				this._triggerChange(""+index, "remove", undefined, removed);
-				Map.helpers.unhookup(removed, this._cid);
+				Map.helpers.unhookup(removed, this);
 			}
 			if ( args.length > 2 ) {
 				this._triggerChange(""+index, "add", args.slice(2), removed);
@@ -815,7 +815,7 @@ steal("can/util","can/map", function(can, Map){
 			this._triggerChange(""+len, "remove", undefined, [res])
 
 			if ( res && res.unbind ) {
-				res.unbind("change" + this._cid)
+				can.stopListening.call(this, res, "change");
 			}
 			return res;
 		}
@@ -874,7 +874,9 @@ steal("can/util","can/map", function(can, Map){
 		 * beatles.join('&'); // 'John&Paul&Ringo&George'
 		 * @codeend
 		 */
-		join : [].join,
+		join: function(){
+			return [].join.apply(this.attr(), arguments)
+		},
 		
 		/**
 		 * @function can.List.prototype.reverse reverse
@@ -983,7 +985,7 @@ steal("can/util","can/map", function(can, Map){
 		 * @codeend
 		 */
 		forEach : function( cb, thisarg ) {
-			can.each(this, cb, thisarg || this );
+			return can.each(this, cb, thisarg || this );
 		},
 
 		/**
