@@ -207,6 +207,21 @@
 			
 		
 			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.Mustache.safeString.html" 
+							data-search="can.Mustache.safeString">
+							safeString
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
 		
 	</ul>
 
@@ -668,6 +683,51 @@
 			
 			
 		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.Mustache.helpers.log.html" 
+							data-search="{{log}}">
+							{{log}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.Mustache.helpers.index.html" 
+							data-search="{{@index}}">
+							{{@index}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.Mustache.helpers.key.html" 
+							data-search="{{@key}}">
+							{{@key}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
 	</ul>
 
 					</li>
@@ -742,7 +802,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0/view/mustache/mustache.js#L803">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.1/view/mustache/mustache.js#L835">source</a></li>
 	
 	
 		
@@ -1006,7 +1066,7 @@ on the <a href="can.Mustache.helper.html">helper function</a> page.</p>
 </div>
 
 <script type="text/javascript">
-	var docData = {"description":"<p>Calls a mustache helper function and inserts its return value into the rendered template.</p>","title":"{{helper args hashes}}","name":"can.Mustache.helpers.helper","type":"function","parent":"can.Mustache.htags","order":0,"signatures":[{"code":"{{helper [args...] [hashProperty=hashValue...]}}","description":"<p>Calls a mustache helper function or a function. For example:</p>\n\n<p>The template:</p>\n\n<pre><code>&lt;p&gt;{{madLib \"Lebron James\" verb 4 foo=\"bar\"}}&lt;/p&gt;\n</code></pre>\n\n<p>Rendered with:</p>\n\n<pre><code>{verb: \"swept\"}\n</code></pre>\n\n<p>Will call a <code>madLib</code> helper with the following arguements:</p>\n\n<pre><code>can.Mustache.registerHelper('madLib', \n  function(subject, verb, number, options){\n    // subject -&gt; \"Lebron James\"\n    // verb -&gt; \"swept\"\n    // number -&gt; 4\n    // options.hash.foo -&gt; \"bar\"\n});\n</code></pre>","params":[{"types":[{"type":"can.Mustache.key"}],"name":"helper","description":"<p>A key that finds a [can.Mustache.helper helper function]\nthat is either [can.Mustache.registerHelper registered] or found within the\ncurrent or parent [can.Mustache.context context].</p>"},{"variable":true,"types":[{"type":"can.Mustache.key"},{"type":"String"},{"type":"Number"}],"optional":true,"name":"args","description":"<p>Space seperated arguments\nthat get passed to the helper function as arguments. If the key's value is a:</p>\n\n<ul>\n<li>[can.Map] - A getter/setter [can.compute] is passed.</li>\n<li>[can.compute] - The can.compute is passed.</li>\n<li><code>function</code> - The function's return value is passed.</li>\n</ul>"},{"types":[{"type":"String"}],"name":"hashProperty","description":"<p>A property name that gets added to a [can.Mustache.helperOptions helper options]'s \nhash object.</p>"},{"variable":true,"types":[{"type":"can.Mustache.key"},{"type":"String"},{"type":"Number"}],"name":"hashValue","description":"<p>A value that gets \nset as a property value of the [can.Mustache.helperOptions helper option argument]'s \nhash object.</p>"}]}],"comment":" ","src":"can/view/mustache/mustache.js","line":803,"id":216};
+	var docData = {"description":"<p>Calls a mustache helper function and inserts its return value into the rendered template.</p>","title":"{{helper args hashes}}","name":"can.Mustache.helpers.helper","type":"function","parent":"can.Mustache.htags","order":0,"signatures":[{"code":"{{helper [args...] [hashProperty=hashValue...]}}","description":"<p>Calls a mustache helper function or a function. For example:</p>\n\n<p>The template:</p>\n\n<pre><code>&lt;p&gt;{{madLib \"Lebron James\" verb 4 foo=\"bar\"}}&lt;/p&gt;\n</code></pre>\n\n<p>Rendered with:</p>\n\n<pre><code>{verb: \"swept\"}\n</code></pre>\n\n<p>Will call a <code>madLib</code> helper with the following arguements:</p>\n\n<pre><code>can.Mustache.registerHelper('madLib', \n  function(subject, verb, number, options){\n    // subject -&gt; \"Lebron James\"\n    // verb -&gt; \"swept\"\n    // number -&gt; 4\n    // options.hash.foo -&gt; \"bar\"\n});\n</code></pre>","params":[{"types":[{"type":"can.Mustache.key"}],"name":"helper","description":"<p>A key that finds a [can.Mustache.helper helper function]\nthat is either [can.Mustache.registerHelper registered] or found within the\ncurrent or parent [can.Mustache.context context].</p>"},{"variable":true,"types":[{"type":"can.Mustache.key"},{"type":"String"},{"type":"Number"}],"optional":true,"name":"args","description":"<p>Space seperated arguments\nthat get passed to the helper function as arguments. If the key's value is a:</p>\n\n<ul>\n<li>[can.Map] - A getter/setter [can.compute] is passed.</li>\n<li>[can.compute] - The can.compute is passed.</li>\n<li><code>function</code> - The function's return value is passed.</li>\n</ul>"},{"types":[{"type":"String"}],"name":"hashProperty","description":"<p>A property name that gets added to a [can.Mustache.helperOptions helper options]'s \nhash object.</p>"},{"variable":true,"types":[{"type":"can.Mustache.key"},{"type":"String"},{"type":"Number"}],"name":"hashValue","description":"<p>A value that gets \nset as a property value of the [can.Mustache.helperOptions helper option argument]'s \nhash object.</p>"}]}],"comment":" ","src":"can/view/mustache/mustache.js","line":835,"id":216};
 
 	console.log(docData);
 </script>

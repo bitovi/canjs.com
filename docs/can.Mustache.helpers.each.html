@@ -207,6 +207,21 @@
 			
 		
 			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.Mustache.safeString.html" 
+							data-search="can.Mustache.safeString">
+							safeString
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
 		
 	</ul>
 
@@ -668,6 +683,51 @@
 			
 			
 		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.Mustache.helpers.log.html" 
+							data-search="{{log}}">
+							{{log}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.Mustache.helpers.index.html" 
+							data-search="{{@index}}">
+							{{@index}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.Mustache.helpers.key.html" 
+							data-search="{{@key}}">
+							{{@key}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
 	</ul>
 
 					</li>
@@ -742,7 +802,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.0/view/mustache/mustache.js#L1802">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.1/view/mustache/mustache.js#L1850">source</a></li>
 	
 	
 		
@@ -780,6 +840,10 @@ return value is used.</p>
 <p>If the value of the key is a <a href="can.List.html">can.List</a>, the resulting HTML is updated when the
 list changes. When a change in the list happens, only the minimum amount of DOM
 element changes occur.</p>
+
+<p>If the value of the key is a <a href="can.Map.html">can.Map</a>, the resulting HTML is updated whenever
+attributes are added or removed. When a change in the map happens, only 
+the minimum amount of DOM element changes occur.</p>
 			</div>
 			
 			
@@ -840,6 +904,34 @@ of items and render the block between the helper and the slash. For example,</p>
   &lt;li&gt;Justin&lt;/li&gt;
 &lt;/ul&gt;
 </code></pre>
+
+<h2>Object iteration</h2>
+
+<p>As of 2.1, you can now iterate over properties of objects and attributes with
+the <code>each</code> helper. When iterating over <a href="can.Map.html">can.Map</a> it will only iterate over the
+map's <a href="can.Map.keys.html">keys</a> and none of the hidden properties of a can.Map. For example,</p>
+
+<p>The template:</p>
+
+<pre><code>&lt;ul&gt;
+  {{#each person}}
+    &lt;li&gt;{{.}}&lt;/li&gt;
+  {{/each}}
+&lt;/ul&gt;
+</code></pre>
+
+<p>Rendered with:</p>
+
+<pre><code>{person: {name: 'Josh', age: 27}}
+</code></pre>
+
+<p>Renders:</p>
+
+<pre><code>&lt;ul&gt;
+  &lt;li&gt;Josh&lt;/li&gt;
+  &lt;li&gt;27&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
 		</section>
 		
 
@@ -848,7 +940,7 @@ of items and render the block between the helper and the slash. For example,</p>
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"function","name":"can.Mustache.helpers.each","parent":"can.Mustache.htags","description":"","title":"{{#each key}}","order":5,"signatures":[{"code":"{{#each key}}BLOCK{{/each}}","description":"<p>Render the block of text for each item in key's value.</p>","params":[{"types":[{"type":"can.Mustache.key"}],"name":"key","description":"<p>A key that references a value within the current or parent \ncontext. If the value is a function or can.compute, the function's \nreturn value is used.</p>\n\n<p>If the value of the key is a [can.List], the resulting HTML is updated when the\nlist changes. When a change in the list happens, only the minimum amount of DOM\nelement changes occur.</p>"},{"types":[{"type":"can.Mustache"}],"name":"BLOCK","description":"<p>A template that is rendered for each item in \nthe <code>key</code>'s value. The <code>BLOCK</code> is rendered with the context set to the item being rendered.</p>"}]}],"comment":" ","src":"can/view/mustache/mustache.js","line":1802,"id":230};
+	var docData = {"type":"function","name":"can.Mustache.helpers.each","parent":"can.Mustache.htags","description":"","title":"{{#each key}}","order":5,"signatures":[{"code":"{{#each key}}BLOCK{{/each}}","description":"<p>Render the block of text for each item in key's value.</p>","params":[{"types":[{"type":"can.Mustache.key"}],"name":"key","description":"<p>A key that references a value within the current or parent \ncontext. If the value is a function or can.compute, the function's \nreturn value is used.</p>\n\n<p>If the value of the key is a [can.List], the resulting HTML is updated when the\nlist changes. When a change in the list happens, only the minimum amount of DOM\nelement changes occur.</p>\n\n<p>If the value of the key is a [can.Map], the resulting HTML is updated whenever\nattributes are added or removed. When a change in the map happens, only \nthe minimum amount of DOM element changes occur.</p>"},{"types":[{"type":"can.Mustache"}],"name":"BLOCK","description":"<p>A template that is rendered for each item in \nthe <code>key</code>'s value. The <code>BLOCK</code> is rendered with the context set to the item being rendered.</p>"}]}],"comment":" ","src":"can/view/mustache/mustache.js","line":1850,"id":231};
 
 	console.log(docData);
 </script>
