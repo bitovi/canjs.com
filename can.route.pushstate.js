@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.1
+ * CanJS - 2.0.2
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 12 Nov 2013 22:06:05 GMT
+ * Thu, 14 Nov 2013 17:39:58 GMT
  * Licensed MIT
  * Includes: can/route/pushstate
  * Download from: http://canjs.com
