@@ -1,39 +1,36 @@
 /*!
- * CanJS - 2.0.2
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Thu, 14 Nov 2013 17:39:50 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
 define(["can/util/library", "can/util/bind", "can/util/batch"], function(can, bind) {
 	
-	var names = ["__reading","__clearReading","__setReading"],
-		setup = function(observed){
-			var old = {};
-			for(var i =0; i < names.length; i++){
-				old[names[i]] = can[names[i]]
-			}
-			can.__reading = function(obj, attr){
-				// Add the observe and attr that was read
-				// to `observed`
-				observed.push({
-					obj: obj,
-					attr: attr+""
-				});
-			};
-			can.__clearReading = function(){
-				return observed.splice(0, observed.length);
-			}
-			can.__setReading = function(o){
-				[].splice.apply(observed, [0, observed.length].concat(o))
-			}
-			return old;
-		},
-		// empty default function 
-		k = function(){};
-		
+	var names = ["__reading","__clearReading","__setReading"];
+	var setup = function(observed){
+		var old = {};
+		for(var i =0; i < names.length; i++){
+			old[names[i]] = can[names[i]]
+		}
+		can.__reading = function(obj, attr){
+			// Add the observe and attr that was read
+			// to `observed`
+			observed.push({
+				obj: obj,
+				attr: attr+""
+			});
+		};
+		can.__clearReading = function(){
+			return observed.splice(0, observed.length);
+		}
+		can.__setReading = function(o){
+			[].splice.apply(observed, [0, observed.length].concat(o))
+		}
+		return old;
+	}
 	// returns the
     // - observes and attr methods are called by func
 	// - the value returned by func
@@ -47,7 +44,7 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function(can, bi
 			value = func.call(self);
 
 		// Set back so we are no longer reading.
-		can.simpleExtend(can,old);
+		can.extend(can,old);
 		
 		return {
 			value : value,
@@ -170,9 +167,9 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function(can, bi
 			},
 			// The following functions are overwritten depending on how compute() is called
 			// a method to setup listening
-			on = k,
+			on = function(){},
 			// a method to teardown listening
-			off = k,
+			off = function(){},
 			// the current cached value (only valid if bound = true)
 			value,
 			// how to read the value
@@ -186,12 +183,7 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function(can, bi
 			// this compute can be a dependency of other computes
 			canReadForChangeEvent = true,
 			// save for clone
-			args = arguments,
-			updater= function(newValue, oldValue){
-				value = newValue;
-				// might need a way to look up new and oldVal
-				can.batch.trigger(computed, "change",[newValue, oldValue])
-			};
+			args = can.makeArray(arguments);
 
 		computed = function(newVal){
 			// setting ...
@@ -221,21 +213,23 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function(can, bi
 				}
 				return value;
 			} else {
-				// Another compute wants to bind to this compute
+				var oldReading = can.__reading,
+					ret;
+				// Let others know to listen to changes in this compute
 				if( can.__reading && canReadForChangeEvent ) {
-					// Tell the compute to listen to change on this computed
 					can.__reading(computed,'change');
-					// We are going to bind on this compute.
-					// If we are not bound, we should bind so that
-					// we don't have to re-read to get the value of this compute.
-					!computeState.bound && can.compute.temporarilyBind(computed)
+					// but we are going to bind on this compute,
+					// so we don't want to bind on what it is binding to
+					delete can.__reading;
 				}
 				// if we are bound, use the cached value
 				if( computeState.bound ) {
-					return value;
+					ret = value;
 				} else {
-					return get.call(context);
+					ret = get.call(context);
 				}
+				can.__reading = oldReading;
+				return ret;
 			}
 		}
 		if(typeof getterSetter === "function"){
@@ -315,18 +309,22 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function(can, bi
 			// `can.compute(5)`
 			value = getterSetter;
 		}
-		
+		/**
+		 * @property {Boolean} can.computed.isComputed compute.isComputed
+		 * @parent can.compute
+		 * Whether the value of the compute has been computed yet.
+		 */
+		computed.isComputed = true;
 		
 		can.cid(computed,"compute")
 
+		var updater= function(newValue, oldValue){
+			value = newValue;
+			// might need a way to look up new and oldVal
+			can.batch.trigger(computed, "change",[newValue, oldValue])
+		}
 
-		return can.simpleExtend(computed,{
-			/**
-			 * @property {Boolean} can.computed.isComputed compute.isComputed
-			 * @parent can.compute
-			 * Whether the value of the compute has been computed yet.
-			 */
-			isComputed: true,
+		return can.extend(computed,{
 			_bindsetup: function(){
 				computeState.bound = true;
 				// setup live-binding
@@ -380,34 +378,13 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function(can, bi
 			 */
 			unbind: can.unbindAndTeardown,
 			clone: function(context){
-				var arrayArgs = can.makeArray(args);
 				if(context){
-					arrayArgs[1] = context
+					args[1] = context
 				}
-				return can.compute.apply(can,arrayArgs);
+				return can.compute.apply(can,args);
 			}
 		});
 	};
-	
-	// a list of temporarily bound computes
-	var	computes,
-		unbindComputes = function(){
-			for( var i =0, len = computes.length; i < len; i++ ) {
-				computes[i].unbind("change",k)
-			}
-			computes = null;
-		}
-	
-	// Binds computes for a moment to retain their value and prevent caching
-	can.compute.temporarilyBind = function(compute){
-		compute.bind("change",k)
-		if(!computes){
-			computes = [];
-			setTimeout(unbindComputes,10)
-		} 
-		computes.push(compute)
-	};
-	
 	can.compute.binder = computeBinder;
 	can.compute.truthy = function(compute){
 		return can.compute(function(){

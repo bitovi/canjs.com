@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.2
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Thu, 14 Nov 2013 17:39:50 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -85,6 +85,10 @@ define(["can/util/library", "can/view/elements", "can/view", "can/view/node_list
 		 * @param {Object} parentNode
 		 */
 		list: function(el, compute, func, context, parentNode){
+			
+			
+			
+			
 			// A mapping of the index to an array
 			// of elements that represent the item.
 			// Each array is registered so child or parent

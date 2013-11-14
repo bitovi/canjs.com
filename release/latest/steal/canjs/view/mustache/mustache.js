@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.2
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Thu, 14 Nov 2013 17:39:50 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -77,14 +77,46 @@ function( can ){
 		makeConvertToScopes = function(orignal, scope, options){
 			return function(updatedScope, updatedOptions){
 				if(updatedScope != null && !(updatedScope instanceof  can.view.Scope)){
-					updatedScope = scope.add(updatedScope)	
+					var key = updatedScope.key,
+						index = updatedScope.index,
+						value = updatedScope.value;
+					// If we have a key property, add @key to the scope
+					if(key != null) {
+						updatedScope = scope.add({'@key': key});
+						updatedScope = updatedScope.add(value);
+					}
+					// If we have a index property, add @index to the scope
+					else if(index != null) {
+						updatedScope = scope.add({'@index': index});
+						updatedScope = updatedScope.add(value);
+					}
+					else {
+						updatedScope = scope.add(updatedScope)	
+					}
 				}
 				if(updatedOptions != null && !(updatedOptions instanceof  OptionsScope)){
 					updatedOptions = options.add(updatedOptions)
 				}
 				return orignal(updatedScope, updatedOptions || options)
 			}
-		};
+		},
+		// temp function to bind and unbind
+		k = function(){},
+		computes,
+		// 
+		temporarilyBindCompute = function(compute){
+			compute.bind(k)
+			if(!computes){
+				computes = [];
+				setTimeout(unbindComputes,100)
+			} 
+			computes.push(compute)
+		},
+		unbindComputes = function(){
+			for( var i =0, len = computes.length; i < len; i++ ) {
+				computes[i].unbind(k)
+			}
+		}
 		
 		
 		// ## Mustache
@@ -1509,12 +1541,13 @@ function( can ){
 			
 		}
 		
+		
 		// Get a compute (and some helper data) that represents key's value in the current scope
 		var computeData = scopeAndOptions.scope.computeData(key, {isArgument:isArgument, args: [context, scopeAndOptions.scope]}),
 			compute = computeData.compute;
 			
 		// Bind on the compute to cache its value. We will unbind in a timeout later.
-		can.compute.temporarilyBind(compute);
+		temporarilyBindCompute(compute);
 		
 		// computeData gives us an initial value
 		var initialValue = computeData.initialValue;
@@ -1902,11 +1935,11 @@ function( can ){
 			if(expr.isComputed || isObserveLike(expr) && typeof expr.attr('length') !== 'undefined'){
 				return can.view.lists && can.view.lists(expr, function(item, key) {
 					// Create a compute that listens to whenever the index of the item in our list changes.
-					var indexCompute = can.compute(function() {
+					var keyCompute = can.compute(function() {
 						var exprResolved = Mustache.resolve(expr);
 						return (exprResolved).indexOf(item);
 					});
-					return options.fn( options.scope.add({"@index": indexCompute}).add(item) );
+					return options.fn({value: item, index: keyCompute});
 				});
 			}
 			expr = Mustache.resolve(expr);
@@ -1914,11 +1947,11 @@ function( can ){
 			if (!!expr && isArrayLike(expr)) {
 				var result = [];
 				for (var i = 0; i < expr.length; i++) {
-					var index = function() {
+					var key = function() {
 						return i;
 					};
-					
-					result.push(options.fn(options.scope.add({"@index": index}).add(expr[i])));
+
+					result.push(options.fn({value:expr[i], index: key}));
 				}
 				return result.join('');
 			}
@@ -1928,14 +1961,14 @@ function( can ){
 					keys = can.Map.keys(expr);
 				for (var i = 0; i < keys.length; i++) {
 					var key = keys[i];
-					result.push(options.fn(options.scope.add({"@key": key}).add(expr[key])));
+					result.push(options.fn({value:expr[key], key: key}));
 				}
 				return result.join('');
 			}
 			else if(expr instanceof Object) {
 				var result = [];
 				for (var key in expr) {
-					result.push(options.fn(options.scope.add({"@key": key}).add(expr[key])));
+					result.push(options.fn({value:expr[key], key: key}));
 				}
 				return result.join('');
 
@@ -1983,7 +2016,7 @@ function( can ){
 		 * Logs the context of the current block with an optional message.
 		 * 
 		 * @param {*} message An optional message to log out in addition to the 
-		 * current context. 
+		 * current context.
 		 *
 		 */
 		'log': function(expr, options) {

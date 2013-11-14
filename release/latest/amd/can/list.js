@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.2
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Thu, 14 Nov 2013 17:39:50 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -136,7 +136,7 @@ define(["can/util/library", "can/map"], function(can, Map){
 			}
 			// this change needs to be ignored
 			this.bind('change',can.proxy(this._changes,this));
-			can.simpleExtend(this, options);
+			can.extend(this, options);
 			delete this._init;
 		},
 		_triggerChange: function(attr, how, newVal, oldVal){
