@@ -148,67 +148,42 @@
     <h1>Simple To Use</h1>
     <h2>Observables and live binding do the work for you.</h2>
 
-    <a href="http://jsfiddle.net/xKc3H/13/" target="_blank"><button class="color">Edit</button></a>
-    <pre class="code prettyprint lang-js" style="overflow-x: hidden;">
-var Todo = can.Model({
+    <a href="http://jsfiddle.net/xKc3H/256/" target="_blank"><button class="color">Edit</button></a>
+    <pre class="code prettyprint lang-js">
+var Todo = can.Model.extend({
   findAll: 'GET /todos',
-    findOne: 'GET /todos/{id}',
+  findOne: 'GET /todos/{id}',
   update: 'PUT /todos/{id}',
   destroy: 'DELETE /todos/{id}'
 }, {});
 
 can.Component.extend({
-  tag: "todos-list",
-  template: can.view('listTmpl'),
+  tag: "todos-app",
   scope: {
+    selectedTodo: null,
     todos: new Todo.List({}),
     select: function(todo){
       can.route.attr("id",todo.attr("id"))
+    },
+    change: function(todo) {
+      todo.save();
+      can.route.removeAttr("id");
     }
-  },
-  helpers: {
-    todoClass: function(options){
-      if(options.context.attr('complete')) {
-        return "class='description done'"
-      }
-      else {
-        return "class='description'" 
-      }
-    }
-  }
-});
-
-can.Component.extend({
-  tag: "todos-editor",
-  template: can.view('editorTmpl')
-});
-
-can.Component.extend({
-  tag: "todos-app",
-  scope: {
-    todo: null
   },
   events: {
     "{can.route} id": function(route, ev, id){
       if(id){
         var self = this;
         Todo.findOne({id: id}, $.proxy(function(todo){
-          this.scope.attr("todo", todo)
+          this.scope.attr("selectedTodo", todo)
         }, this))
       } else {
-        this.scope.removeAttr("todo")
+        this.scope.removeAttr("selectedTodo")
       }
     },
     "{Todo} destroyed": function(Todo, ev, dsTodo){
       if( dsTodo.id == can.route.attr("id") ){
         can.route.removeAttr("id")
-      }
-    },
-    "{todo} change": function(todo, ev, attr){
-      if( attr === "description" || 
-          attr == "complete" ) {
-        todo.save();
-        can.route.removeAttr("id");
       }
     }
   }
@@ -217,34 +192,32 @@ can.Component.extend({
 can.route("todos/:id");
 can.route.ready();
     </pre>
-    <pre class="template prettyprint lang-html" style="overflow-x: hidden;">
-&lt;script id="editorTmpl" type="text/mustache"&gt;
-{{#todo}}
-&lt;div id='editor'&gt;
-    &lt;input type='text' can-value='description'/&gt;
-&lt;/div&gt;
-{{/todo}}
-&lt;/script&gt;
-&lt;script id="listTmpl" type="text/mustache"&gt;
-&lt;ul&gt;
-  {{#each todos}}
-  &lt;li&gt;
-    &lt;input type='checkbox' can-value='complete'&gt;
-    &lt;span {{todoClass}} 
-      can-click='select'&gt;{{description}}&lt;/span&gt;
-    &lt;span class='delete' 
-      can-click='destroy'&gt;&times;&lt;/span&gt;
-  &lt;/li&gt;
-  {{/each}}
-&lt;/ul&gt;
-&lt;/script&gt;
+    <pre class="template prettyprint lang-html">
 &lt;script id='appMustache' type='text/mustache'&gt;
 &lt;todos-app&gt;
   &lt;h2&gt;Todays to-dos&lt;/h2&gt;
-  &lt;todos-editor todo='todo'&gt;&lt;/todos-editor&gt;
-  &lt;todos-list&gt;&lt;/todos-list&gt;
+  {{#selectedTodo}}
+  &lt;div id='editor'&gt;
+    &lt;input type='text' can-value='description' 
+      can-change="change"/&gt;
+  &lt;/div&gt;
+  {{/selectedTodo}}
+  &lt;ul&gt;
+    {{#each todos}}
+    &lt;li&gt;
+      &lt;input type='checkbox' 
+        can-value='complete'&gt;
+      &lt;span class="{{#if complete}}done{{/if}}" 
+        can-click='select'&gt;
+        {{description}}
+      &lt;/span&gt;
+      &lt;span class='delete' 
+        can-click='destroy'&gt;&amp;times;&lt;/span&gt;
+    &lt;/li&gt;
+    {{/each}}
+  &lt;/ul&gt;
 &lt;/todos-app&gt;
-&lt;/script&gt; 
+&lt;/script&gt;  
     </pre>
     <iframe class="result" src="example/example.html"></iframe>
     <br/>

@@ -10,29 +10,29 @@
 <script src="http://canjs.com/release/latest/can.object.js"></script>
 <script src="http://canjs.com/release/latest/can.fixture.js"></script>
 
-<script id="todoEditorTemplate" type="text/mustache">
-{{#todo}}
-<div id='editor'>
-    <input type='text' can-value='description'/>
-</div>
-{{/todo}}
-</script>
 <script id="todoListTemplate" type="text/mustache">
-<ul>
-  {{#each todos}}
-  <li>
-    <input type='checkbox' can-value='complete'>
-    <span {{todoClass}} can-click='select'>{{description}}</span>
-    <span class='delete' can-click='destroy'>&times;</span>
-  </li>
-  {{/each}}
-</ul>
 </script>
 <script id='appMustache' type='text/mustache'>
 <todos-app>
   <h2>Todays to-dos</h2>
-  <todos-editor todo='todo'></todos-editor>
-  <todos-list></todos-list>
+  {{#selectedTodo}}
+  <div id='editor'>
+    <input type='text' can-value='description' can-change="change"/>
+  </div>
+  {{/selectedTodo}}
+  {{#if todos.length}}
+  <ul>
+    {{#each todos}}
+    <li>
+      <input type='checkbox' can-value='complete'>
+      <span class="description {{#if complete}}done{{/if}}" can-click='select'>{{description}}</span>
+      <span class='delete' can-click='destroy'>&times;</span>
+    </li>
+    {{/each}}
+  </ul>
+  {{else}}
+  <div class='no-todos'>No to-dos today. You're free!</div>
+  {{/if}}
 </todos-app>
 </script> 
 <script src="todo-fixtures.js"></script>
