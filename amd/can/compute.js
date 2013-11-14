@@ -1,36 +1,39 @@
 /*!
- * CanJS - 2.0.1
+ * CanJS - 2.0.2
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 12 Nov 2013 22:05:56 GMT
+ * Thu, 14 Nov 2013 18:45:10 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
 define(["can/util/library", "can/util/bind", "can/util/batch"], function(can, bind) {
 	
-	var names = ["__reading","__clearReading","__setReading"];
-	var setup = function(observed){
-		var old = {};
-		for(var i =0; i < names.length; i++){
-			old[names[i]] = can[names[i]]
-		}
-		can.__reading = function(obj, attr){
-			// Add the observe and attr that was read
-			// to `observed`
-			observed.push({
-				obj: obj,
-				attr: attr+""
-			});
-		};
-		can.__clearReading = function(){
-			return observed.splice(0, observed.length);
-		}
-		can.__setReading = function(o){
-			[].splice.apply(observed, [0, observed.length].concat(o))
-		}
-		return old;
-	}
+	var names = ["__reading","__clearReading","__setReading"],
+		setup = function(observed){
+			var old = {};
+			for(var i =0; i < names.length; i++){
+				old[names[i]] = can[names[i]]
+			}
+			can.__reading = function(obj, attr){
+				// Add the observe and attr that was read
+				// to `observed`
+				observed.push({
+					obj: obj,
+					attr: attr+""
+				});
+			};
+			can.__clearReading = function(){
+				return observed.splice(0, observed.length);
+			}
+			can.__setReading = function(o){
+				[].splice.apply(observed, [0, observed.length].concat(o))
+			}
+			return old;
+		},
+		// empty default function 
+		k = function(){};
+		
 	// returns the
     // - observes and attr methods are called by func
 	// - the value returned by func
@@ -44,7 +47,7 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function(can, bi
 			value = func.call(self);
 
 		// Set back so we are no longer reading.
-		can.extend(can,old);
+		can.simpleExtend(can,old);
 		
 		return {
 			value : value,
@@ -167,9 +170,9 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function(can, bi
 			},
 			// The following functions are overwritten depending on how compute() is called
 			// a method to setup listening
-			on = function(){},
+			on = k,
 			// a method to teardown listening
-			off = function(){},
+			off = k,
 			// the current cached value (only valid if bound = true)
 			value,
 			// how to read the value
@@ -183,7 +186,14 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function(can, bi
 			// this compute can be a dependency of other computes
 			canReadForChangeEvent = true,
 			// save for clone
-			args = can.makeArray(arguments);
+			args = can.makeArray(arguments),
+			updater= function(newValue, oldValue){
+				value = newValue;
+				// might need a way to look up new and oldVal
+				can.batch.trigger(computed, "change",[newValue, oldValue])
+			},
+			// the form of the arguments
+			form;
 
 		computed = function(newVal){
 			// setting ...
@@ -213,23 +223,21 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function(can, bi
 				}
 				return value;
 			} else {
-				var oldReading = can.__reading,
-					ret;
-				// Let others know to listen to changes in this compute
+				// Another compute wants to bind to this compute
 				if( can.__reading && canReadForChangeEvent ) {
+					// Tell the compute to listen to change on this computed
 					can.__reading(computed,'change');
-					// but we are going to bind on this compute,
-					// so we don't want to bind on what it is binding to
-					delete can.__reading;
+					// We are going to bind on this compute.
+					// If we are not bound, we should bind so that
+					// we don't have to re-read to get the value of this compute.
+					!computeState.bound && can.compute.temporarilyBind(computed)
 				}
 				// if we are bound, use the cached value
 				if( computeState.bound ) {
-					ret = value;
+					return value;
 				} else {
-					ret = get.call(context);
+					return get.call(context);
 				}
-				can.__reading = oldReading;
-				return ret;
 			}
 		}
 		if(typeof getterSetter === "function"){
@@ -290,6 +298,8 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function(can, bi
 				if(typeof context === "function"){
 					value = getterSetter;
 					set = context;
+					context = eventName;
+					form = "setter";
 				} else {
 					// `can.compute(initialValue,{get:, set:, on:, off:})`
 					value = getterSetter;
@@ -309,22 +319,18 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function(can, bi
 			// `can.compute(5)`
 			value = getterSetter;
 		}
-		/**
-		 * @property {Boolean} can.computed.isComputed compute.isComputed
-		 * @parent can.compute
-		 * Whether the value of the compute has been computed yet.
-		 */
-		computed.isComputed = true;
+		
 		
 		can.cid(computed,"compute")
 
-		var updater= function(newValue, oldValue){
-			value = newValue;
-			// might need a way to look up new and oldVal
-			can.batch.trigger(computed, "change",[newValue, oldValue])
-		}
 
-		return can.extend(computed,{
+		return can.simpleExtend(computed,{
+			/**
+			 * @property {Boolean} can.computed.isComputed compute.isComputed
+			 * @parent can.compute
+			 * Whether the value of the compute has been computed yet.
+			 */
+			isComputed: true,
 			_bindsetup: function(){
 				computeState.bound = true;
 				// setup live-binding
@@ -379,12 +385,36 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function(can, bi
 			unbind: can.unbindAndTeardown,
 			clone: function(context){
 				if(context){
-					args[1] = context
+					if(form == "setter"){
+						args[2] = context
+					} else {
+						args[1] = context
+					}
 				}
 				return can.compute.apply(can,args);
 			}
 		});
 	};
+	
+	// a list of temporarily bound computes
+	var computes,
+		unbindComputes = function(){
+			for( var i =0, len = computes.length; i < len; i++ ) {
+				computes[i].unbind("change",k)
+			}
+			computes = null;
+		}
+	
+	// Binds computes for a moment to retain their value and prevent caching
+	can.compute.temporarilyBind = function(compute){
+		compute.bind("change",k)
+		if(!computes){
+			computes = [];
+			setTimeout(unbindComputes,10)
+		} 
+		computes.push(compute)
+	};
+	
 	can.compute.binder = computeBinder;
 	can.compute.truthy = function(compute){
 		return can.compute(function(){

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.1
+ * CanJS - 2.0.2
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 12 Nov 2013 22:05:56 GMT
+ * Thu, 14 Nov 2013 18:45:10 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -141,9 +141,10 @@ steal("can/util","can/view/mustache", "can/control", function(can){
 	 */
 	can.view.Scanner.attribute(/can-[\w\.]+/,function(data, el){
 		
-		var event = data.attr.substr("can-".length),
+		var attributeName = data.attr,
+			event = data.attr.substr("can-".length),
 			handler = function(ev){
-				var attr = el.getAttribute(data.attr),
+				var attr = el.getAttribute(attributeName),
 					scopeData = data.scope.read(attr,{returnObserveMethods: true, isArgument: true});
 				return scopeData.value.call(scopeData.parent,data.scope._data, can.$(this), ev )
 			};

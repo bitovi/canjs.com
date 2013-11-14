@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.1
+ * CanJS - 2.0.2
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 12 Nov 2013 22:06:05 GMT
+ * Thu, 14 Nov 2013 18:45:19 GMT
  * Licensed MIT
  * Includes: can/view/ejs
  * Download from: http://canjs.com

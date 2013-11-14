@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.1
+ * CanJS - 2.0.2
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 12 Nov 2013 22:05:56 GMT
+ * Thu, 14 Nov 2013 18:45:10 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -548,7 +548,7 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 		// returns the "real" data object itself.
 		__get: function( attr ) {
 			if(attr){
-				if(this[attr] && this[attr].isComputed){
+				if(this[attr] && this[attr].isComputed && can.isFunction(this.constructor.prototype[attr])){
 					return this[attr]()
 				} else {
 					return this._data[attr]
@@ -622,8 +622,8 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 		// Directly sets a property on this `object`.
 		___set: function( prop, val ) {
 			
-			if(this[prop] && this[prop].isComputed){
-				this[prop](val)
+			if(this[prop] && this[prop].isComputed && can.isFunction(this.constructor.prototype[prop])){
+				this[prop](val);
 			}
 			
 			this._data[prop] = val;
@@ -835,7 +835,7 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 				return Map.helpers.serialize(this, 'attr', {})
 			}
 
-			props = can.extend({}, props);
+			props = can.simpleExtend({}, props);
 			var prop,
 				self = this,
 				newVal;
