@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.2
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Thu, 14 Nov 2013 17:39:50 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -85,9 +85,7 @@ steal("can/util","can/control","can/observe","can/view/mustache","can/view/bindi
 			// Setup values passed to component
 			var initalScopeData = {},
 				component = this,
-				twoWayBindings = {},
-				// what scope property is currently updating
-				scopePropertyUpdating;
+				twoWayBindings = {};
 			
 			// scope prototype properties marked with an "@" are added here
 			can.each(this.constructor.attributeScopeMappings,function(val, prop){
@@ -100,6 +98,7 @@ steal("can/util","can/control","can/observe","can/view/mustache","can/view/bindi
 				
 				var name = can.camelize(node.nodeName.toLowerCase()),
 					value = node.value;
+				
 				// ignore attributes already in ScopeMappings
 				if(component.constructor.attributeScopeMappings[name] || ignoreAttributesRegExp.test(name)){
 					return;
@@ -112,9 +111,7 @@ steal("can/util","can/control","can/observe","can/view/mustache","can/view/bindi
 				
 				// bind on this, check it's value, if it has dependencies
 				var handler = function(ev, newVal){
-					scopePropertyUpdating = name;
-					componentScope.attr(name, newVal);
-					scopePropertyUpdating = null;
+					componentScope.attr(name, newVal)
 				}
 				// compute only returned if bindable
 				
@@ -158,11 +155,7 @@ steal("can/util","can/control","can/observe","can/view/mustache","can/view/bindi
 			// setup reverse bindings
 			can.each(twoWayBindings, function(computeData, prop){
 				handlers[prop] = function(ev, newVal){
-					// check that this property is not being changed because
-					// it's source value just changed
-					if(scopePropertyUpdating !== prop){
-						computeData.compute(newVal)
-					}
+					computeData.compute(newVal)
 				}
 				componentScope.bind(prop, handlers[prop])
 			});

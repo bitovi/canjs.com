@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.2
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Thu, 14 Nov 2013 17:39:50 GMT
+ * Tue, 12 Nov 2013 22:05:56 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -34,6 +34,12 @@ define(["can/util/library", "can/construct", "can/map", "can/list", "can/view", 
 			});
 			names.push(attr.slice(last).replace(escapeDotReg,'.'));
 			return names;
+		},
+		extend = function(d, s){
+			for(var prop in s){
+				d[prop] = s[prop]
+			}
+			return d;
 		}
 	
 
@@ -63,7 +69,6 @@ define(["can/util/library", "can/construct", "can/map", "can/list", "can/view", 
 		 * always calls the original function with this as the parent. 
 		 */
 		read: function(parent, reads, options){
-			options = options || {};
 			// `cur` is the current value.
 			var cur = parent,
 				type,
@@ -101,10 +106,9 @@ define(["can/util/library", "can/construct", "can/map", "can/list", "can/view", 
 					// just do the dot operator
 					cur = prev[reads[i]]
 				}
-				// If it's a compute, get the compute's value
-				// unless we are at the end of the 
+				// if it's a compute, get the compute's value
 				if( cur && cur.isComputed && (!options.isArgument && i < readLength - 1) ) {
-					!foundObs && options.foundObservable && options.foundObservable(prev, i+1)
+					options.foundObservable && options.foundObservable(prev, i+1)
 					cur = cur()
 				}
 				
@@ -127,10 +131,6 @@ define(["can/util/library", "can/construct", "can/map", "can/list", "can/view", 
 						cur = can.proxy(cur, prev)
 					}
 				} else {
-					
-					cur.isComputed && !foundObs && options.foundObservable && options.foundObservable(cur, i)
-					
-					
 					cur = cur.call(prev)
 				}
 				
@@ -178,13 +178,8 @@ define(["can/util/library", "can/construct", "can/map", "can/list", "can/view", 
 				computeData = {
 					compute: can.compute(function(newVal){
 						if(arguments.length){
-							// check that there's just a compute with nothing from it ...
-							if(rootObserve.isComputed && !rootReads.length){
-								rootObserve(newVal)
-							} else {
-								var last = rootReads.length-1;
-								Scope.read(rootObserve,rootReads.slice(0, last)).value.attr(rootReads[last], newVal)
-							}
+							var last = rootReads.length-1;
+							Scope.read(rootObserve,rootReads.slice(0, last)).value.attr(rootReads[last], newVal)
 						} else {
 							if( rootObserve ) {
 								return Scope.read(rootObserve, rootReads,  options).value
@@ -282,7 +277,7 @@ define(["can/util/library", "can/construct", "can/map", "can/list", "can/view", 
 					
 					
 					// Lets try this context
-					var data = Scope.read(context, names, can.simpleExtend({
+					var data = Scope.read(context, names, extend({
 						// Called when an observable is found.
 						foundObservable: function(observe, nameIndex){
 							// Save the current observe.

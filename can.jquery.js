@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.2
+ * CanJS - 2.0.1
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Thu, 14 Nov 2013 17:39:56 GMT
+ * Tue, 12 Nov 2013 22:06:03 GMT
  * Licensed MIT
  * Includes: can/component,can/construct,can/observe,can/compute,can/model,can/view,can/control,can/route,can/control/route,can/view/mustache,can/view/bindings,can/view/live,can/view/scope,can/util/string
  * Download from: http://canjs.com
@@ -30,15 +30,7 @@
                 return object._cid = (name || "") + (++cid)
             }
         }
-        can.VERSION = '2.0.2';
-
-        can.simpleExtend = function(d, s) {
-            for (var prop in s) {
-                d[prop] = s[prop]
-            }
-            return d;
-        }
-
+        can.VERSION = '@EDGE';
         return can;
     })();
 
@@ -1498,7 +1490,7 @@
                 // returns the "real" data object itself.
                 __get: function(attr) {
                     if (attr) {
-                        if (this[attr] && this[attr].isComputed && can.isFunction(this.constructor.prototype[attr])) {
+                        if (this[attr] && this[attr].isComputed) {
                             return this[attr]()
                         } else {
                             return this._data[attr]
@@ -1572,8 +1564,8 @@
                 // Directly sets a property on this `object`.
                 ___set: function(prop, val) {
 
-                    if (this[prop] && this[prop].isComputed && can.isFunction(this.constructor.prototype[prop])) {
-                        this[prop](val);
+                    if (this[prop] && this[prop].isComputed) {
+                        this[prop](val)
                     }
 
                     this._data[prop] = val;
@@ -1633,7 +1625,7 @@
                         return Map.helpers.serialize(this, 'attr', {})
                     }
 
-                    props = can.simpleExtend({}, props);
+                    props = can.extend({}, props);
                     var prop,
                         self = this,
                         newVal;
@@ -1719,7 +1711,7 @@
                         }
                         // this change needs to be ignored
                         this.bind('change', can.proxy(this._changes, this));
-                        can.simpleExtend(this, options);
+                        can.extend(this, options);
                         delete this._init;
                     },
                     _triggerChange: function(attr, how, newVal, oldVal) {
@@ -1959,31 +1951,28 @@
     // ## compute/compute.js
     var __m16 = (function(can, bind) {
 
-        var names = ["__reading", "__clearReading", "__setReading"],
-            setup = function(observed) {
-                var old = {};
-                for (var i = 0; i < names.length; i++) {
-                    old[names[i]] = can[names[i]]
-                }
-                can.__reading = function(obj, attr) {
-                    // Add the observe and attr that was read
-                    // to `observed`
-                    observed.push({
-                            obj: obj,
-                            attr: attr + ""
-                        });
-                };
-                can.__clearReading = function() {
-                    return observed.splice(0, observed.length);
-                }
-                can.__setReading = function(o) {
-                    [].splice.apply(observed, [0, observed.length].concat(o))
-                }
-                return old;
-            },
-            // empty default function 
-            k = function() {};
-
+        var names = ["__reading", "__clearReading", "__setReading"];
+        var setup = function(observed) {
+            var old = {};
+            for (var i = 0; i < names.length; i++) {
+                old[names[i]] = can[names[i]]
+            }
+            can.__reading = function(obj, attr) {
+                // Add the observe and attr that was read
+                // to `observed`
+                observed.push({
+                        obj: obj,
+                        attr: attr + ""
+                    });
+            };
+            can.__clearReading = function() {
+                return observed.splice(0, observed.length);
+            }
+            can.__setReading = function(o) {
+                [].splice.apply(observed, [0, observed.length].concat(o))
+            }
+            return old;
+        }
         // returns the
         // - observes and attr methods are called by func
         // - the value returned by func
@@ -1997,7 +1986,7 @@
                 value = func.call(self);
 
             // Set back so we are no longer reading.
-            can.simpleExtend(can, old);
+            can.extend(can, old);
 
             return {
                 value: value,
@@ -2120,9 +2109,9 @@
                 },
                 // The following functions are overwritten depending on how compute() is called
                 // a method to setup listening
-                on = k,
+                on = function() {},
                 // a method to teardown listening
-                off = k,
+                off = function() {},
                 // the current cached value (only valid if bound = true)
                 value,
                 // how to read the value
@@ -2136,12 +2125,7 @@
                 // this compute can be a dependency of other computes
                 canReadForChangeEvent = true,
                 // save for clone
-                args = arguments,
-                updater = function(newValue, oldValue) {
-                    value = newValue;
-                    // might need a way to look up new and oldVal
-                    can.batch.trigger(computed, "change", [newValue, oldValue])
-                };
+                args = can.makeArray(arguments);
 
             computed = function(newVal) {
                 // setting ...
@@ -2171,21 +2155,23 @@
                     }
                     return value;
                 } else {
-                    // Another compute wants to bind to this compute
+                    var oldReading = can.__reading,
+                        ret;
+                    // Let others know to listen to changes in this compute
                     if (can.__reading && canReadForChangeEvent) {
-                        // Tell the compute to listen to change on this computed
                         can.__reading(computed, 'change');
-                        // We are going to bind on this compute.
-                        // If we are not bound, we should bind so that
-                        // we don't have to re-read to get the value of this compute.
-                        !computeState.bound && can.compute.temporarilyBind(computed)
+                        // but we are going to bind on this compute,
+                        // so we don't want to bind on what it is binding to
+                        delete can.__reading;
                     }
                     // if we are bound, use the cached value
                     if (computeState.bound) {
-                        return value;
+                        ret = value;
                     } else {
-                        return get.call(context);
+                        ret = get.call(context);
                     }
+                    can.__reading = oldReading;
+                    return ret;
                 }
             }
             if (typeof getterSetter === "function") {
@@ -2265,12 +2251,17 @@
                 value = getterSetter;
             }
 
+            computed.isComputed = true;
 
             can.cid(computed, "compute")
 
-            return can.simpleExtend(computed, {
+            var updater = function(newValue, oldValue) {
+                value = newValue;
+                // might need a way to look up new and oldVal
+                can.batch.trigger(computed, "change", [newValue, oldValue])
+            }
 
-                    isComputed: true,
+            return can.extend(computed, {
                     _bindsetup: function() {
                         computeState.bound = true;
                         // setup live-binding
@@ -2289,34 +2280,13 @@
 
                     unbind: can.unbindAndTeardown,
                     clone: function(context) {
-                        var arrayArgs = can.makeArray(args);
                         if (context) {
-                            arrayArgs[1] = context
+                            args[1] = context
                         }
-                        return can.compute.apply(can, arrayArgs);
+                        return can.compute.apply(can, args);
                     }
                 });
         };
-
-        // a list of temporarily bound computes
-        var computes,
-            unbindComputes = function() {
-                for (var i = 0, len = computes.length; i < len; i++) {
-                    computes[i].unbind("change", k)
-                }
-                computes = null;
-            }
-
-            // Binds computes for a moment to retain their value and prevent caching
-        can.compute.temporarilyBind = function(compute) {
-            compute.bind("change", k)
-            if (!computes) {
-                computes = [];
-                setTimeout(unbindComputes, 10)
-            }
-            computes.push(compute)
-        };
-
         can.compute.binder = computeBinder;
         can.compute.truthy = function(compute) {
             return can.compute(function() {
@@ -2814,6 +2784,12 @@
                 });
                 names.push(attr.slice(last).replace(escapeDotReg, '.'));
                 return names;
+            },
+            extend = function(d, s) {
+                for (var prop in s) {
+                    d[prop] = s[prop]
+                }
+                return d;
             }
 
 
@@ -2822,7 +2798,6 @@
                 // reads properties from a parent.  A much more complex version of getObject.
 
                 read: function(parent, reads, options) {
-                    options = options || {};
                     // `cur` is the current value.
                     var cur = parent,
                         type,
@@ -2860,10 +2835,9 @@
                             // just do the dot operator
                             cur = prev[reads[i]]
                         }
-                        // If it's a compute, get the compute's value
-                        // unless we are at the end of the 
+                        // if it's a compute, get the compute's value
                         if (cur && cur.isComputed && (!options.isArgument && i < readLength - 1)) {
-                            !foundObs && options.foundObservable && options.foundObservable(prev, i + 1)
+                            options.foundObservable && options.foundObservable(prev, i + 1)
                             cur = cur()
                         }
 
@@ -2889,10 +2863,6 @@
                                 cur = can.proxy(cur, prev)
                             }
                         } else {
-
-                            cur.isComputed && !foundObs && options.foundObservable && options.foundObservable(cur, i)
-
-
                             cur = cur.call(prev)
                         }
 
@@ -2933,13 +2903,8 @@
                         computeData = {
                             compute: can.compute(function(newVal) {
                                 if (arguments.length) {
-                                    // check that there's just a compute with nothing from it ...
-                                    if (rootObserve.isComputed && !rootReads.length) {
-                                        rootObserve(newVal)
-                                    } else {
-                                        var last = rootReads.length - 1;
-                                        Scope.read(rootObserve, rootReads.slice(0, last)).value.attr(rootReads[last], newVal)
-                                    }
+                                    var last = rootReads.length - 1;
+                                    Scope.read(rootObserve, rootReads.slice(0, last)).value.attr(rootReads[last], newVal)
                                 } else {
                                     if (rootObserve) {
                                         return Scope.read(rootObserve, rootReads, options).value
@@ -3022,7 +2987,7 @@
 
 
                             // Lets try this context
-                            var data = Scope.read(context, names, can.simpleExtend({
+                            var data = Scope.read(context, names, extend({
                                         // Called when an observable is found.
                                         foundObservable: function(observe, nameIndex) {
                                             // Save the current observe.
@@ -4057,6 +4022,10 @@
             nodeLists: nodeLists,
 
             list: function(el, compute, func, context, parentNode) {
+
+
+
+
                 // A mapping of the index to an array
                 // of elements that represent the item.
                 // Each array is registered so child or parent
@@ -4563,17 +4532,51 @@
             makeConvertToScopes = function(orignal, scope, options) {
                 return function(updatedScope, updatedOptions) {
                     if (updatedScope != null && !(updatedScope instanceof can.view.Scope)) {
-                        updatedScope = scope.add(updatedScope)
+                        var key = updatedScope.key,
+                            index = updatedScope.index,
+                            value = updatedScope.value;
+                        // If we have a key property, add @key to the scope
+                        if (key != null) {
+                            updatedScope = scope.add({
+                                    '@key': key
+                                });
+                            updatedScope = updatedScope.add(value);
+                        }
+                        // If we have a index property, add @index to the scope
+                        else if (index != null) {
+                            updatedScope = scope.add({
+                                    '@index': index
+                                });
+                            updatedScope = updatedScope.add(value);
+                        } else {
+                            updatedScope = scope.add(updatedScope)
+                        }
                     }
                     if (updatedOptions != null && !(updatedOptions instanceof OptionsScope)) {
                         updatedOptions = options.add(updatedOptions)
                     }
                     return orignal(updatedScope, updatedOptions || options)
                 }
-            };
+            },
+            // temp function to bind and unbind
+            k = function() {},
+            computes,
+            temporarilyBindCompute = function(compute) {
+                compute.bind(k)
+                if (!computes) {
+                    computes = [];
+                    setTimeout(unbindComputes, 100)
+                }
+                computes.push(compute)
+            },
+            unbindComputes = function() {
+                for (var i = 0, len = computes.length; i < len; i++) {
+                    computes[i].unbind(k)
+                }
+            }
 
 
-        // ## Mustache
+            // ## Mustache
 
         Mustache = function(options, helpers) {
             // Support calling Mustache without the constructor.
@@ -5196,6 +5199,7 @@
 
             }
 
+
             // Get a compute (and some helper data) that represents key's value in the current scope
             var computeData = scopeAndOptions.scope.computeData(key, {
                     isArgument: isArgument,
@@ -5204,7 +5208,7 @@
                 compute = computeData.compute;
 
             // Bind on the compute to cache its value. We will unbind in a timeout later.
-            can.compute.temporarilyBind(compute);
+            temporarilyBindCompute(compute);
 
             // computeData gives us an initial value
             var initialValue = computeData.initialValue;
@@ -5347,13 +5351,14 @@
                     if (expr.isComputed || isObserveLike(expr) && typeof expr.attr('length') !== 'undefined') {
                         return can.view.lists && can.view.lists(expr, function(item, key) {
                             // Create a compute that listens to whenever the index of the item in our list changes.
-                            var indexCompute = can.compute(function() {
+                            var keyCompute = can.compute(function() {
                                 var exprResolved = Mustache.resolve(expr);
                                 return (exprResolved).indexOf(item);
                             });
-                            return options.fn(options.scope.add({
-                                        "@index": indexCompute
-                                    }).add(item));
+                            return options.fn({
+                                    value: item,
+                                    index: keyCompute
+                                });
                         });
                     }
                     expr = Mustache.resolve(expr);
@@ -5361,13 +5366,14 @@
                     if ( !! expr && isArrayLike(expr)) {
                         var result = [];
                         for (var i = 0; i < expr.length; i++) {
-                            var index = function() {
+                            var key = function() {
                                 return i;
                             };
 
-                            result.push(options.fn(options.scope.add({
-                                            "@index": index
-                                        }).add(expr[i])));
+                            result.push(options.fn({
+                                        value: expr[i],
+                                        index: key
+                                    }));
                         }
                         return result.join('');
                     } else if (isObserveLike(expr)) {
@@ -5376,17 +5382,19 @@
                             keys = can.Map.keys(expr);
                         for (var i = 0; i < keys.length; i++) {
                             var key = keys[i];
-                            result.push(options.fn(options.scope.add({
-                                            "@key": key
-                                        }).add(expr[key])));
+                            result.push(options.fn({
+                                        value: expr[key],
+                                        key: key
+                                    }));
                         }
                         return result.join('');
                     } else if (expr instanceof Object) {
                         var result = [];
                         for (var key in expr) {
-                            result.push(options.fn(options.scope.add({
-                                            "@key": key
-                                        }).add(expr[key])));
+                            result.push(options.fn({
+                                        value: expr[key],
+                                        key: key
+                                    }));
                         }
                         return result.join('');
 
@@ -5500,10 +5508,9 @@
 
         can.view.Scanner.attribute(/can-[\w\.]+/, function(data, el) {
 
-            var attributeName = data.attr,
-                event = data.attr.substr("can-".length),
+            var event = data.attr.substr("can-".length),
                 handler = function(ev) {
-                    var attr = el.getAttribute(attributeName),
+                    var attr = el.getAttribute(data.attr),
                         scopeData = data.scope.read(attr, {
                                 returnObserveMethods: true,
                                 isArgument: true
@@ -5653,9 +5660,7 @@
                     // Setup values passed to component
                     var initalScopeData = {},
                         component = this,
-                        twoWayBindings = {},
-                        // what scope property is currently updating
-                        scopePropertyUpdating;
+                        twoWayBindings = {};
 
                     // scope prototype properties marked with an "@" are added here
                     can.each(this.constructor.attributeScopeMappings, function(val, prop) {
@@ -5668,6 +5673,7 @@
 
                         var name = can.camelize(node.nodeName.toLowerCase()),
                             value = node.value;
+
                         // ignore attributes already in ScopeMappings
                         if (component.constructor.attributeScopeMappings[name] || ignoreAttributesRegExp.test(name)) {
                             return;
@@ -5682,9 +5688,7 @@
 
                         // bind on this, check it's value, if it has dependencies
                         var handler = function(ev, newVal) {
-                            scopePropertyUpdating = name;
-                            componentScope.attr(name, newVal);
-                            scopePropertyUpdating = null;
+                            componentScope.attr(name, newVal)
                         }
                         // compute only returned if bindable
 
@@ -5728,11 +5732,7 @@
                     // setup reverse bindings
                     can.each(twoWayBindings, function(computeData, prop) {
                         handlers[prop] = function(ev, newVal) {
-                            // check that this property is not being changed because
-                            // it's source value just changed
-                            if (scopePropertyUpdating !== prop) {
-                                computeData.compute(newVal)
-                            }
+                            computeData.compute(newVal)
                         }
                         componentScope.bind(prop, handlers[prop])
                     });
