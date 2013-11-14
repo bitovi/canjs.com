@@ -68,100 +68,101 @@
 
     <a href="http://jsfiddle.net/xKc3H/13/" target="_blank"><button class="color">Edit</button></a>
     <pre class="code prettyprint lang-js" style="overflow-x: hidden;">
-var Todo = can.Model.extend({
+var Todo = can.Model({
   findAll: 'GET /todos',
-  findOne: 'GET /todos/{id}',
+    findOne: 'GET /todos/{id}',
   update: 'PUT /todos/{id}',
   destroy: 'DELETE /todos/{id}'
 }, {});
 
-var TodoBoard = can.Control.extend({
-  init: function() {
-    this.element.html(can.view('todoBoard',
-      new Todo.List({})));
+can.Component.extend({
+  tag: "todos-list",
+  template: can.view('listTmpl'),
+  scope: {
+    todos: new Todo.List({}),
+    select: function(todo){
+      can.route.attr("id",todo.attr("id"))
+    }
   },
-  'input[type=checkbox] change': function(el, ev) {
-    el.parent().data('todo').attr('done',
-      el.prop('checked')).save();
-  },
-  '.delete click': function(el, ev) {
-    el.parent().data('todo').destroy();
-  },
-  '.description click': function(el, ev) {
-    can.route.attr('id',
-      el.parent().data('todo').id);
-  }
-});
-
-var TodoEditor = can.Control.extend({
-  setTodo: function(todo) {
-    this.options.todo = todo;
-    this.on();
-    this.element.html(can.view('todoEditor',
-      this.options.todo));
-   },
-  'input change': function(el, ev) {
-    this.element.find('.spinner')
-      .removeClass('hidden');
-    this.options.todo.attr('description',
-      el.val()).save();
-  },
-  '{todo} updated': function() {
-    this.element.find('.spinner')
-      .addClass('hidden');
-  },
-  '{todo} destroyed': function() {
-    can.route.removeAttr('id');
-  }
-});
-
-var Routing = can.Control.extend({
-  init: function() {
-    can.route('todos/:id');
-    new TodoBoard($('#board'));
-    this.editor = new TodoEditor($('#editor'));
-    $('#editor').hide();
-  },
-  'todos/:id route': function(data) {
-    if(data.id) {
-      var editor = this.editor;
-      Todo.findOne({id: data.id}, function(todo) {
-        editor.setTodo(todo);
-        editor.element.show();
-      });
-    } else {
-      $('#editor').hide();
+  helpers: {
+    todoClass: function(options){
+      if(options.context.attr('complete')) {
+        return "class='description done'"
+      }
+      else {
+        return "class='description'" 
+      }
     }
   }
 });
+
+can.Component.extend({
+  tag: "todos-editor",
+  template: can.view('editorTmpl')
+});
+
+can.Component.extend({
+  tag: "todos-app",
+  scope: {
+    todo: null
+  },
+  events: {
+    "{can.route} id": function(route, ev, id){
+      if(id){
+        var self = this;
+        Todo.findOne({id: id}, $.proxy(function(todo){
+          this.scope.attr("todo", todo)
+        }, this))
+      } else {
+        this.scope.removeAttr("todo")
+      }
+    },
+    "{Todo} destroyed": function(Todo, ev, dsTodo){
+      if( dsTodo.id == can.route.attr("id") ){
+        can.route.removeAttr("id")
+      }
+    },
+    "{todo} change": function(todo, ev, attr){
+      if( attr === "description" || 
+          attr == "complete" ) {
+        todo.save();
+        can.route.removeAttr("id");
+      }
+    }
+  }
+})
+
+can.route("todos/:id");
+can.route.ready();
     </pre>
     <pre class="template prettyprint lang-html" style="overflow-x: hidden;">
-&lt;script type="text/mustache" id="todoBoard"&gt;
-\{{#if length}}
-&lt;ul&gt;
-\{{#this}}
-  &lt;li \{{data 'todo'}}&gt;
-    &lt;input type="checkbox"
-      \{{#if done}}checked="checked"\{{/if}}/&gt;
-    &lt;span class="description
-        \{{#if done}}done\{{/if}}"&gt;
-      \{{description}}
-    &lt;/span&gt;
-    &lt;span class="delete"&gt;&times;&lt;/span&gt;
-  &lt;/li&gt;
-\{{/this}}
-&lt;/ul&gt;
-\{{else}}
-&lt;div class="no-todos"&gt;No to-dos today.
-  You're free!&lt;/div&gt;
-\{{/if}}
-&lt;/script&gt;  
-&lt;script type="text/mustache" id="todoEditor"&gt;
-  &lt;input type="text"
-    value="\{{description}}"/&gt;
-  &lt;img class="spinner hidden"
-    src="spinny.gif"/&gt;
+&lt;script id="editorTmpl" type="text/mustache"&gt;
+\{{#todo}}
+&lt;div id='editor'&gt;
+    &lt;input type='text' can-value='description'/&gt;
+&lt;/div&gt;
+\{{/todo}}
 &lt;/script&gt;
+&lt;script id="listTmpl" type="text/mustache"&gt;
+&lt;ul&gt;
+  \{{#each todos}}
+  &lt;li&gt;
+    &lt;input type='checkbox' can-value='complete'&gt;
+    &lt;span \{{todoClass}} 
+      can-click='select'&gt;\{{description}}&lt;/span&gt;
+    &lt;span class='delete' 
+      can-click='destroy'&gt;&times;&lt;/span&gt;
+  &lt;/li&gt;
+  \{{/each}}
+&lt;/ul&gt;
+&lt;/script&gt;
+&lt;script id='appMustache' type='text/mustache'&gt;
+&lt;todos-app&gt;
+  &lt;h2&gt;Todays to-dos&lt;/h2&gt;
+  &lt;todos-editor todo='todo'&gt;&lt;/todos-editor&gt;
+  &lt;todos-list&gt;&lt;/todos-list&gt;
+&lt;/todos-app&gt;
+&lt;/script&gt; 
     </pre>
     <iframe class="result" src="example/example.html"></iframe>
     <br/>
