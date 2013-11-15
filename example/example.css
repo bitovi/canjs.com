@@ -80,10 +80,16 @@ li > .description {
 li > .description.done {
     text-decoration: line-through;
 }
-li > .delete {
+li > button {
+    border: 0;
+    background: transparent;
     top: 6px;
     right: 0;
     width: 16px;
+}
+li > button:after {
+    display: block;
     cursor: pointer;
     color: #d63129;
+    content: 'X';
 }

@@ -106,7 +106,7 @@
 			
 			</li><li class="powerful"><a href="guides/Why.html#Powerful">
 			<h3>Powerful</h3>
-			<p>Live binding, restful models, observables, declarative events, and memory safety.</p>
+			<p>2-way binding, restful models, custom tags, observables, memory safety, and more.</p>
 			</a>
 			
 			</li><li class="fast"><a href="guides/Why.html#Fast">
@@ -116,7 +116,7 @@
 			
 		</li></ul>
 		
-		<p>CanJS is a JavaScript library that makes developing complex applications simple and fast. Easy-to-learn, small, and unassuming of your application structure, but with modern features like live-binding and computed values. Creating apps is easy and maintainable.</p>
+		<p>CanJS is a JavaScript library that makes developing complex applications simple and fast. Easy-to-learn, small, and unassuming of your application structure, but with modern features like custom tags and 2-way binding. Creating apps is easy and maintainable.</p>
  
   </div>
 
@@ -148,7 +148,7 @@
     <h1>Simple To Use</h1>
     <h2>Observables and live binding do the work for you.</h2>
 
-    <a href="http://jsfiddle.net/xKc3H/256/" target="_blank"><button class="color">Edit</button></a>
+    <a href="http://jsfiddle.net/xKc3H/258/" target="_blank"><button class="color">Edit</button></a>
     <pre class="code prettyprint lang-js">
 var Todo = can.Model.extend({
   findAll: 'GET /todos',
@@ -163,62 +163,36 @@ can.Component.extend({
     selectedTodo: null,
     todos: new Todo.List({}),
     select: function(todo){
-      can.route.attr("id",todo.attr("id"))
+      this.attr('selectedTodo', todo);
     },
-    change: function(todo) {
+    saveTodo: function(todo) {
       todo.save();
-      can.route.removeAttr("id");
-    }
-  },
-  events: {
-    "{can.route} id": function(route, ev, id){
-      if(id){
-        var self = this;
-        Todo.findOne({id: id}, $.proxy(function(todo){
-          this.scope.attr("selectedTodo", todo)
-        }, this))
-      } else {
-        this.scope.removeAttr("selectedTodo")
-      }
-    },
-    "{Todo} destroyed": function(Todo, ev, dsTodo){
-      if( dsTodo.id == can.route.attr("id") ){
-        can.route.removeAttr("id")
-      }
+      this.removeAttr('selectedTodo');
     }
   }
-})
-
-can.route("todos/:id");
-can.route.ready();
-    </pre>
+})</pre>
     <pre class="template prettyprint lang-html">
-&lt;script id='appMustache' type='text/mustache'&gt;
 &lt;todos-app&gt;
   &lt;h2&gt;Todays to-dos&lt;/h2&gt;
   {{#selectedTodo}}
-  &lt;div id='editor'&gt;
-    &lt;input type='text' can-value='description' 
-      can-change="change"/&gt;
-  &lt;/div&gt;
+  &lt;input type='text' 
+         can-value='description' 
+         can-change="save"/&gt;
   {{/selectedTodo}}
   &lt;ul&gt;
     {{#each todos}}
     &lt;li&gt;
       &lt;input type='checkbox' 
-        can-value='complete'&gt;
-      &lt;span class="{{#if complete}}done{{/if}}" 
-        can-click='select'&gt;
+             can-value='complete'/&gt;
+      &lt;span class="{{#if complete}}done{{/if}}"
+            can-click='select'&gt;
         {{description}}
       &lt;/span&gt;
-      &lt;span class='delete' 
-        can-click='destroy'&gt;&amp;times;&lt;/span&gt;
+      &lt;button can-click="destroy"&gt;&lt;/button&gt;
     &lt;/li&gt;
     {{/each}}
   &lt;/ul&gt;
-&lt;/todos-app&gt;
-&lt;/script&gt;  
-    </pre>
+&lt;/todos-app&gt;</pre>
     <iframe class="result" src="example/example.html"></iframe>
     <br/>
   </div>

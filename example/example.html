@@ -17,22 +17,18 @@
   <h2>Todays to-dos</h2>
   {{#selectedTodo}}
   <div id='editor'>
-    <input type='text' can-value='description' can-change="change"/>
+    <input type='text' can-value='description' can-change="saveTodo"/>
   </div>
   {{/selectedTodo}}
-  {{#if todos.length}}
   <ul>
     {{#each todos}}
     <li>
       <input type='checkbox' can-value='complete'>
       <span class="description {{#if complete}}done{{/if}}" can-click='select'>{{description}}</span>
-      <span class='delete' can-click='destroy'>&times;</span>
+      <button can-click="destroy"></button>
     </li>
     {{/each}}
   </ul>
-  {{else}}
-  <div class='no-todos'>No to-dos today. You're free!</div>
-  {{/if}}
 </todos-app>
 </script> 
 <script src="todo-fixtures.js"></script>
