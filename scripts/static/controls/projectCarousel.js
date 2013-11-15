@@ -28,6 +28,8 @@ can.Control('Bitovi.OSS.ProjectCarousel', {
 
       this.element.html(can.view(this.options.view, this.state));
 
+      this.element.addClass('loaded');
+
       this.current = this.element.find('li:first').addClass('current');
     }, this));
   },
