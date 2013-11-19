@@ -338,7 +338,7 @@
 
 <div class="sub-heading">
 	
-	<h2><code>{Object | <a href="can.Map.html" >can.Map</a> | function(attrs, parentScope, element)}</code></h2>
+	<h2><code>{Object | <a href="can.Map.html" >can.Map</a> | function(attrs, <a href="can.view.Scope.html" >parentScope</a>, element)}</code></h2>
 	
 	<span class="inherits">&nbsp;</span>
 </div>
@@ -411,9 +411,11 @@ the matching attribute values are used.  For example:</p>
 
 
 
+
+
+
 </div>
 
-  
   
 
 
@@ -437,13 +439,15 @@ can.Component.extend({
 
 
 
+
+
+
 </div>
 
   
-  
 
 
-  <h2>function(attrs, parentScope, element)</h2>
+  <h2>function(attrs, <a href="can.view.Scope.html" >parentScope</a>, element)</h2>
 <div class="signature-wrapper">
 <p>Returns the instance or constructor function of the object that will be added
 to the scope.</p>
@@ -485,7 +489,7 @@ value is looked up in <code>my-element</code>'s parent scope.</p>
 		
 		<li class="parameter">
 			<h4>parentScope
-				<code>{can.view.Scope}</code></h4>
+				<code>{<a href="can.view.Scope.html" >can.view.Scope</a>}</code></h4>
 			<div class="description">
 				<p>The scope the the custom tag was found within.  By default, any attribute's values will
 be looked up within the current scope, but if you want to add values without needing
@@ -543,7 +547,9 @@ to add custom attribute handling, you can do that here.  For example:</p>
 		<ul class="options">
 			
 			<li class="option">
-				<h5>can.Map</h5>
+				<h5> 
+					
+				</h5>
 				<div class="description">
 					<p>If an instance of <code>can.Map</code> is returned, that instance is placed
 on top of the scope and used to render the component's template.</p>
@@ -551,7 +557,9 @@ on top of the scope and used to render the component's template.</p>
 			</li>
 			
 			<li class="option">
-				<h5>Object</h5>
+				<h5> 
+					
+				</h5>
 				<div class="description">
 					<p>If a plain JavaScript object is returned, that is used as a prototype
 definition used to extend <code>can.Map</code>.  A new instance of the extended Map is creatd.</p>
@@ -564,9 +572,11 @@ definition used to extend <code>can.Map</code>.  A new instance of the extended 
 	
 
 
+
+
+
 </div>
 
-  
   
 
 		</section>
