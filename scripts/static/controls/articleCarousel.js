@@ -22,6 +22,8 @@ can.Control('Bitovi.OSS.ArticleCarousel', {
 
       this.element.html(can.view(this.options.view, this.state));
 
+      this.element.addClass('loaded');
+
       this.current = this.element.find('.item').hide().eq(this.options.index).show();
       this.slideTo(this.options.index);
       this.cycle();

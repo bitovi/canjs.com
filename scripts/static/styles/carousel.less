@@ -99,6 +99,16 @@
 	}
 }
 
+.article-carousel, .project-carousel {
+	background-image: url(../img/ajax-loader.gif);
+	background-repeat: no-repeat;
+	background-position: center;
+
+	&.loaded {
+		background-image: none;
+	}
+}
+
 
 .carousel {
 	.button-nav {
@@ -145,6 +155,7 @@
 
 
 .articles.container, .article-carousel.articles {
+	min-height: 50px;
 	width: 700px;
 }
 
