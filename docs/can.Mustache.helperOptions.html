@@ -903,25 +903,52 @@ options.hash = {
 	</li>
 	
 	<li class="parameter">
-		<h4>contexts
-			<code>{Array}</code></h4>
+		<h4>context
+			<code>{*}</code></h4>
 		<div class="description">
-			<p>An array containing the context lookup stack for the current helper.</p>
+			<p>The current context the mustache helper is called within.</p>
 
-<pre><code>{{#section}}
-    {{#someObj}}
-        {{#panels}}
-            {{helper}}
-        {{/panels}}
-    {{/someObj}}
-{{/section}}
+<pre><code>var temp = can.view.mustache(
+  "{{#person.name}}{{helper}}{{/person.name}}");
 
-options.contexts = [
-    &lt;root_scope&gt;,
-    &lt;context_lookup&gt;.section,
-    &lt;context_lookup&gt;.someObj,
-    panel
-]
+var data = {person: {name: {first: "Justin"}}};
+
+can.Mustache.registerHelper("helper", function(options){
+
+  options.context === data.person //-&gt; true
+
+})
+
+
+temp(data);
+</code></pre>
+		</div>
+		
+		
+		
+	</li>
+	
+	<li class="parameter">
+		<h4>scope
+			<code>{<a href="can.view.Scope.html" >can.view.Scope</a>}</code></h4>
+		<div class="description">
+			<p>An object that represents the current context and all parent 
+contexts.  It can be used to look up <a href="can.Mustache.key.html">key</a> values in the current scope.</p>
+
+<pre><code>var temp = can.view.mustache(
+  "{{#person.name}}{{helper}}{{/person.name}}");
+
+var data = {person: {name: {first: "Justin"}}};
+
+can.Mustache.registerHelper("helper", function(options){
+
+  options.scope.attr("first")   //-&gt; "Justin"
+  options.scope.attr("person")  //-&gt; data.person
+
+})
+
+
+temp(data);
 </code></pre>
 		</div>
 		
@@ -949,7 +976,7 @@ options.contexts = [
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"typedef","name":"can.Mustache.helperOptions","description":"<p>The options argument passed to a [can.Mustache.helper helper function]. </p>","title":"helperOptions","types":[{"type":"Object","options":[{"name":"fn","types":[{"type":"can.Mustache.sectionRenderer"}],"description":"<p>Provided if a \n[can.Mustache.helpers.sectionHelper section helper] is called.  Call <code>fn</code> to\nrender the BLOCK with the specified <code>context</code>.</p>","optional":true},{"name":"inverse","types":[{"type":"can.Mustache.sectionRenderer"}],"description":"<p>Provided if a \n[can.Mustache.helpers.sectionHelper section helper] is called \nwith [can.Mustache.helpers.else {{else}}].  Call <code>inverse</code> to\nrender the INVERSE with the specified <code>context</code>.</p>","optional":true},{"name":"hash","types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"*"},{"type":"String"},{"type":"Number"}]}]}],"description":"<p>An object containing all of the final \narguments listed as <code>name=value</code> pairs for the helper.</p>\n\n<pre><code>{{helper arg1 arg2 name=value other=3 position=\"top\"}}\n\noptions.hash = {\n    name: &lt;context_lookup&gt;.value,\n    other: 3,\n    position: \"top\"\n}\n</code></pre>"},{"name":"contexts","description":"<p>An array containing the context lookup stack for the current helper.</p>\n\n<pre><code>{{#section}}\n    {{#someObj}}\n        {{#panels}}\n            {{helper}}\n        {{/panels}}\n    {{/someObj}}\n{{/section}}\n\noptions.contexts = [\n    &lt;root_scope&gt;,\n    &lt;context_lookup&gt;.section,\n    &lt;context_lookup&gt;.someObj,\n    panel\n]\n</code></pre>","types":[{"type":"Array","options":[]}]}]}],"parent":"can.Mustache.types","src":"can/view/mustache/doc/helperOptions.md","id":68};
+	var docData = {"type":"typedef","name":"can.Mustache.helperOptions","description":"<p>The options argument passed to a [can.Mustache.helper helper function]. </p>","title":"helperOptions","types":[{"type":"Object","options":[{"name":"fn","types":[{"type":"can.Mustache.sectionRenderer"}],"description":"<p>Provided if a \n[can.Mustache.helpers.sectionHelper section helper] is called.  Call <code>fn</code> to\nrender the BLOCK with the specified <code>context</code>.</p>","optional":true},{"name":"inverse","types":[{"type":"can.Mustache.sectionRenderer"}],"description":"<p>Provided if a \n[can.Mustache.helpers.sectionHelper section helper] is called \nwith [can.Mustache.helpers.else {{else}}].  Call <code>inverse</code> to\nrender the INVERSE with the specified <code>context</code>.</p>","optional":true},{"name":"hash","types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"*"},{"type":"String"},{"type":"Number"}]}]}],"description":"<p>An object containing all of the final \narguments listed as <code>name=value</code> pairs for the helper.</p>\n\n<pre><code>{{helper arg1 arg2 name=value other=3 position=\"top\"}}\n\noptions.hash = {\n    name: &lt;context_lookup&gt;.value,\n    other: 3,\n    position: \"top\"\n}\n</code></pre>"},{"name":"context","description":"<p>The current context the mustache helper is called within.</p>\n\n<pre><code>var temp = can.view.mustache(\n  \"{{#person.name}}{{helper}}{{/person.name}}\");\n\nvar data = {person: {name: {first: \"Justin\"}}};\n\ncan.Mustache.registerHelper(\"helper\", function(options){\n\n  options.context === data.person //-&gt; true\n\n})\n\n\ntemp(data);\n</code></pre>","types":[{"type":"*"}]},{"name":"scope","description":"<p>An object that represents the current context and all parent \ncontexts.  It can be used to look up [can.Mustache.key key] values in the current scope.</p>\n\n<pre><code>var temp = can.view.mustache(\n  \"{{#person.name}}{{helper}}{{/person.name}}\");\n\nvar data = {person: {name: {first: \"Justin\"}}};\n\ncan.Mustache.registerHelper(\"helper\", function(options){\n\n  options.scope.attr(\"first\")   //-&gt; \"Justin\"\n  options.scope.attr(\"person\")  //-&gt; data.person\n\n})\n\n\ntemp(data);\n</code></pre>","types":[{"type":"can.view.Scope"}]}]}],"parent":"can.Mustache.types","src":"can/view/mustache/doc/helperOptions.md","id":68};
 
 	console.log(docData);
 </script>
