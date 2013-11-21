@@ -42,7 +42,7 @@ can.Control('Bitovi.OSS.SocialStats', {}, {
 		el.parent().addClass('active');
 		this.tooltip = new Bitovi.OSS[tooltip + 'Tooltip']('<div>', {state: this.modelState, relativeTo: el.parent()});	
 
-		this.tooltip.on('destroyed', can.proxy(function() {
+		this.tooltip.on('removed', can.proxy(function() {
 			this.element.find('.active').removeClass('active');
 		}, this));
 		
