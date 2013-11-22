@@ -1,0 +1,54 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:100,400,700);
+
+* {
+	font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    text-shadow: 0 -1px 0 #ffffff;
+}
+.tabs {
+    padding: 0px; 
+    margin: 10px 0px 0px 0px;
+    position: relative;
+    z-index: 1;
+    top: 1px;
+}
+.tabs li {
+    float: left;
+    padding: 7px 10px;
+    background-color: #F6F6F6;
+    list-style: none;
+    margin-left: 5px;
+    border: 1px solid #ccc;
+    -webkit-border-top-left-radius: 3px;
+    -webkit-border-top-right-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    -moz-border-radius-topright: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.tabs li a {
+    color: #999;
+    font-weight: bold;
+    text-decoration: none;
+}
+.tabs li.active {
+    background-color: #fff;
+    border-bottom: 1px solid #fff;
+}        
+.tabs li.active a {
+    color: #000;
+    cursor: default;
+}
+.tab {
+    border: solid 1px #ccc;
+    padding: 10px;
+    
+}
+
+
+/* clearfix from jQueryUI */
+        .ui-helper-clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+        .ui-helper-clearfix { display: inline-block; }
+        /* required comment for clearfix to work in Opera \*/
+        * html .ui-helper-clearfix { height:1%; }
+        .ui-helper-clearfix { display:block; }

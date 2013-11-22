@@ -1,0 +1,9 @@
+---
+ name: CanJS can.Control Tabs
+ description: An example of how to build a simple tab widget using can.Control.
+ authors:
+   - Bitovi
+ resources:
+   - http://canjs.com/release/2.0.2/can.jquery.js
+ normalize_css: no
+ ...
