@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>can.Map.attributes.static.attributes - CanJS API</title>
+  <title>can.Map.prototype.COMPUTE-ATTR - CanJS API</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -146,12 +146,14 @@
 			
 				
 				
-					<li class="search-container  ">
+					<li class="search-container active  expanded">
 						<a 	class="property" 
 							href="can.Map.prototype.COMPUTE-ATTR.html" 
 							data-search="can.Map.prototype.COMPUTE-ATTR">
 							COMPUTE-ATTR
 						</a>
+						
+							
 						
 					</li>
 				
@@ -332,118 +334,12 @@
 			
 				
 				
-					<li class="search-container parent expanded">
+					<li class="search-container parent ">
 						<a 	class="page" 
 							href="can.Map.attributes.html" 
 							data-search="attributes">
 							attributes
 						</a>
-						
-							
-	<ul >
-		
-			
-		
-			
-		
-			
-				
-					
-					<li class="heading search-container">
-						<span>prototype</span>
-						
-	<ul >
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.Map.prototype.attributes.serialize.html" 
-							data-search="serialize">
-							serialize
-						</a>
-						
-					</li>
-				
-			
-			
-		
-	</ul>
-
-					</li>
-					
-				
-				
-			
-			
-		
-			
-				
-					
-					<li class="heading search-container">
-						<span>static</span>
-						
-	<ul >
-		
-			
-				
-				
-					<li class="search-container active  expanded">
-						<a 	class="property" 
-							href="can.Map.attributes.static.attributes.html" 
-							data-search="attributes">
-							attributes
-						</a>
-						
-							
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="property" 
-							href="can.Map.attributes.static.convert.html" 
-							data-search="convert">
-							convert
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="property" 
-							href="can.Map.attributes.static.serialize.html" 
-							data-search="serialize">
-							serialize
-						</a>
-						
-					</li>
-				
-			
-			
-		
-	</ul>
-
-					</li>
-					
-				
-				
-			
-			
-		
-	</ul>
-
 						
 					</li>
 				
@@ -585,14 +481,10 @@
 	<article class="content docs">
 		<section class="title">
 			<div class="heading">
-<h1>attributes</h1>
+<h1>COMPUTE-ATTR</h1>
 	<ul class="tags">
 		<li>property</li>
 	</ul>
-	
-	
-	
-		<span class="module">can.Map.attributes.static.attributes</span>
 	
 	
 	
@@ -600,12 +492,14 @@
 
 <div class="sub-heading">
 	
+	<h2><code>{<a href="can.compute.html" >can.compute</a>(getterSetter, context)}</code></h2>
+	
 	<span class="inherits">&nbsp;</span>
 </div>
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.2/map/attributes/attributes.js#L11">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.2/map/map.js#L271">source</a></li>
 	
 	
 		
@@ -619,12 +513,31 @@
 		</section>
 
 		<section class="description">
-			<p><code>can.Map.attributes</code> is a property that contains key/value pair(s) of an attribute's name and its
-respective type for using in <a href="can.Map.attributes.static.convert.html">convert</a> and <a href="can.Map.prototype.serialize.html">serialize</a>.</p>
+			<p>Specify an attribute that is computed from other attributes. </p>
 		</section>
 
 		
 
+		
+		<section class='primary-options'>
+			
+
+  <h2><a href="can.compute.html" >can.compute</a>(getterSetter, context)</h2>
+<div class="signature-wrapper">
+<p>A compute that reads values on instances of the
+map and returns a derived value.  The compute may also be a getter-setter
+compute and able to be passed a value.</p>
+
+
+
+
+
+
+</div>
+
+  
+
+		</section>
 		
 		
 		
@@ -632,14 +545,84 @@ respective type for using in <a href="can.Map.attributes.static.convert.html">co
 
 		
 		<section class="comment">
-			<pre><code>var Contact = can.Map.extend({
-    attributes : {
-        birthday : 'date',
-        age: 'number',
-        name: 'string'
-    }
-});
+			<h2>Use</h2>
+
+<p>When extending <a href="can.Map.html">can.Map</a>, if a prototype property is a <a href="can.compute.html">can.compute</a>
+it will setup that compute to behave like a normal attribute. This means
+that it can be read and written to with <a href="can.Map.prototype.attr.html">attr</a> and bound to
+with <a href="can.Map.prototype.bind.html">bind</a>.  </p>
+
+<p>The following example makes a <code>fullName</code> attribute on <code>Person</code> maps:</p>
+
+<pre><code>var Person = can.Map.extend({
+  fullName: can.compute(function(){
+    return this.attr("first")+" "+this.attr("last")  
+  })
+})
+
+var me = new Person({first: "Justin", last: "Meyer"})
+
+me.attr("fullName") //-&gt; "Justin Meyer"
+
+me.bind("fullName", function(ev, newValue, oldValue){
+  newValue //-&gt; Brian Moschel
+  oldValue //-&gt; Justin Meyer
+})
+
+me.attr({first: "Brian", last: "Moschel"})
 </code></pre>
+
+<h2>Getter / Setter computes</h2>
+
+<p>A compute's setter will be called if <a href="can.Map.prototype.attr.html">attr</a> is
+used to set the compute-property's value.</p>
+
+<p>The following makes <code>fullName</code> able to set <code>first</code> and <code>last</code>:</p>
+
+<pre><code>var Person = can.Map.extend({
+  fullName: can.compute(function(newValue){
+    if( arguments.length ) {
+      var parts = newValue.split(" ");
+      this.attr({
+        first: parts[0],
+        last:  parts[1]
+      });
+
+    } else {
+      return this.attr("first")+" "+this.attr("last");
+    }
+  })
+})
+
+var me = new Person({first: "Justin", last: "Meyer"})
+
+me.attr("fullName", "Brian Moschel") 
+me.attr("first") //-&gt; "Brian"
+me.attr("last")  //-&gt; "Moschel"
+</code></pre>
+
+<h2>Alternatives</h2>
+
+<p><a href="can.Mustache.html">can.Mustache</a> and <a href="can.EJS.html">can.EJS</a> will automatically convert any function
+read in the template to a can.compute. So, simply having a fullName
+function like:</p>
+
+<pre><code>var Person = can.Map.extend({
+  fullName: function(){
+    return this.attr("first")+" "+this.attr("last")  
+  }
+})
+var me = new Person({first: "Justin", last: "Meyer"})
+</code></pre>
+
+<p>Will already be live-bound if read in a template like:</p>
+
+<pre><code>{{me.fullName}}
+&lt;%= me.attr("fullName") %&gt;
+</code></pre>
+
+<p>The <a href="can.Map.setter.html">setter</a> plugin can also provide similar functionality as
+Getter/Setter computes.</p>
 		</section>
 		
 
@@ -648,7 +631,7 @@ respective type for using in <a href="can.Map.attributes.static.convert.html">co
 </div>
 
 <script type="text/javascript">
-	var docData = {"name":"can.Map.attributes.static.attributes","type":"property","parent":"can.Map.attributes.static","description":"<p><code>can.Map.attributes</code> is a property that contains key/value pair(s) of an attribute's name and its\nrespective type for using in [can.Map.attributes.static.convert convert] and [can.Map.prototype.serialize serialize].</p>","title":"attributes","src":"can/map/attributes/attributes.js","line":11,"id":152};
+	var docData = {"type":"property","name":"can.Map.prototype.COMPUTE-ATTR","params":[],"parent":"can.Map.prototype","description":"<p>Specify an attribute that is computed from other attributes. </p>","types":[{"type":"can.compute","description":"<p>A compute that reads values on instances of the\nmap and returns a derived value.  The compute may also be a getter-setter\ncompute and able to be passed a value.</p>"}],"title":"","comment":" ","src":"can/map/map.js","line":271,"id":298};
 
 	console.log(docData);
 </script>

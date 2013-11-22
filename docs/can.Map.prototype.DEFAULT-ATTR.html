@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>can.Map.attributes.static.attributes - CanJS API</title>
+  <title>can.Map.prototype.DEFAULT-ATTR - CanJS API</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -161,12 +161,14 @@
 			
 				
 				
-					<li class="search-container  ">
+					<li class="search-container active  expanded">
 						<a 	class="property" 
 							href="can.Map.prototype.DEFAULT-ATTR.html" 
 							data-search="can.Map.prototype.DEFAULT-ATTR">
 							DEFAULT-ATTR
 						</a>
+						
+							
 						
 					</li>
 				
@@ -332,118 +334,12 @@
 			
 				
 				
-					<li class="search-container parent expanded">
+					<li class="search-container parent ">
 						<a 	class="page" 
 							href="can.Map.attributes.html" 
 							data-search="attributes">
 							attributes
 						</a>
-						
-							
-	<ul >
-		
-			
-		
-			
-		
-			
-				
-					
-					<li class="heading search-container">
-						<span>prototype</span>
-						
-	<ul >
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.Map.prototype.attributes.serialize.html" 
-							data-search="serialize">
-							serialize
-						</a>
-						
-					</li>
-				
-			
-			
-		
-	</ul>
-
-					</li>
-					
-				
-				
-			
-			
-		
-			
-				
-					
-					<li class="heading search-container">
-						<span>static</span>
-						
-	<ul >
-		
-			
-				
-				
-					<li class="search-container active  expanded">
-						<a 	class="property" 
-							href="can.Map.attributes.static.attributes.html" 
-							data-search="attributes">
-							attributes
-						</a>
-						
-							
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="property" 
-							href="can.Map.attributes.static.convert.html" 
-							data-search="convert">
-							convert
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="property" 
-							href="can.Map.attributes.static.serialize.html" 
-							data-search="serialize">
-							serialize
-						</a>
-						
-					</li>
-				
-			
-			
-		
-	</ul>
-
-					</li>
-					
-				
-				
-			
-			
-		
-	</ul>
-
 						
 					</li>
 				
@@ -585,14 +481,10 @@
 	<article class="content docs">
 		<section class="title">
 			<div class="heading">
-<h1>attributes</h1>
+<h1>DEFAULT-ATTR</h1>
 	<ul class="tags">
 		<li>property</li>
 	</ul>
-	
-	
-	
-		<span class="module">can.Map.attributes.static.attributes</span>
 	
 	
 	
@@ -600,12 +492,14 @@
 
 <div class="sub-heading">
 	
+	<h2><code>{*}</code></h2>
+	
 	<span class="inherits">&nbsp;</span>
 </div>
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.2/map/attributes/attributes.js#L11">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.2/map/map.js#L230">source</a></li>
 	
 	
 		
@@ -619,12 +513,30 @@
 		</section>
 
 		<section class="description">
-			<p><code>can.Map.attributes</code> is a property that contains key/value pair(s) of an attribute's name and its
-respective type for using in <a href="can.Map.attributes.static.convert.html">convert</a> and <a href="can.Map.prototype.serialize.html">serialize</a>.</p>
+			<p>Specify a default property and value. </p>
 		</section>
 
 		
 
+		
+		<section class='primary-options'>
+			
+
+  <h2>*</h2>
+<div class="signature-wrapper">
+<p>A value of any type other than a function that will
+be set as the <code>DEFAULT-ATTR</code> attribute's value.</p>
+
+
+
+
+
+
+</div>
+
+  
+
+		</section>
 		
 		
 		
@@ -632,13 +544,27 @@ respective type for using in <a href="can.Map.attributes.static.convert.html">co
 
 		
 		<section class="comment">
-			<pre><code>var Contact = can.Map.extend({
-    attributes : {
-        birthday : 'date',
-        age: 'number',
-        name: 'string'
-    }
+			<h2>Use</h2>
+
+<p>When extending <a href="can.Map.html">can.Map</a>, if a prototype property is not a function,
+it is used as a default value on instances of the extended Map.  For example:</p>
+
+<pre><code>var Paginate = can.Map.extend({
+  limit: 20,
+  offset: 0,
+  next: function(){
+    this.attr("offset", this.attr("offset")+this.attr("limit"))
+  }  
 });
+
+var paginate = new Paginate({limit: 30});
+
+paginate.attr("offset") //-&gt; 0
+paginate.attr("limit")  //-&gt; 30
+
+paginate.next();
+
+paginate.attr("offset") //-&gt; 30
 </code></pre>
 		</section>
 		
@@ -648,7 +574,7 @@ respective type for using in <a href="can.Map.attributes.static.convert.html">co
 </div>
 
 <script type="text/javascript">
-	var docData = {"name":"can.Map.attributes.static.attributes","type":"property","parent":"can.Map.attributes.static","description":"<p><code>can.Map.attributes</code> is a property that contains key/value pair(s) of an attribute's name and its\nrespective type for using in [can.Map.attributes.static.convert convert] and [can.Map.prototype.serialize serialize].</p>","title":"attributes","src":"can/map/attributes/attributes.js","line":11,"id":152};
+	var docData = {"name":"can.Map.prototype.DEFAULT-ATTR","type":"property","parent":"can.Map.prototype","description":"<p>Specify a default property and value. </p>","types":[{"type":"*","description":"<p>A value of any type other than a function that will\nbe set as the <code>DEFAULT-ATTR</code> attribute's value.</p>"}],"title":"","comment":" ","src":"can/map/map.js","line":230,"id":297};
 
 	console.log(docData);
 </script>
