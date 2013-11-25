@@ -3,7 +3,7 @@
 
 @body
 
-Now that 2.0 is out, we're setting our sites on the 
+Now that 2.0 is out, we're setting our sights on the 
 future.  Help us get there by ranking issues and features
 on bithub and fixing them!
 
@@ -58,7 +58,7 @@ makes use of it.  Future improvements:
 
 We want to create list-store that makes complex real-time apps
 easy to build. It will include a fall-through localStorage cache that
-increases page load times.
+decreases page load times.
 
 ## Dirty checking computes
 

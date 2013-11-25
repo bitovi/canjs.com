@@ -213,7 +213,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.2/model/model.js">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.2/model/model_list.md">source</a></li>
 	
 	
 		<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/model">download</a></li>
@@ -229,12 +229,74 @@
 		</section>
 
 		<section class="description">
-			<p>Works exactly like <a href="can.List.html">can.List</a> and has all of the same properties,
-events, and functions as an observable list. The only difference is that 
-when an item from the list is destroyed, it will automatically get removed
-from the list.</p>
+			<p>A list connected to can.Model's CRUD abilities. </p>
 		</section>
 
+		
+		<section class="signature">
+			<h2>new can.Model.List( [models] )</h2>
+<div class="signature-wrapper">
+<p>Create a model list with the provided model instances.</p>
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>models
+				<code>{Array&lt;<a href="can.Model.html" >can.Model</a> | Object&gt;}</code><span class="pull-right optional">Optional</span></h4>
+			<div class="description">
+				<p>An array of <a href="can.Model.html">can.Model</a> instances
+or Objects that will be converted to the list's <a href="can.List.Map.html">Map type</a>.</p>
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+
+
+
+
+</div>
+
+		</section>
+		
+		<section class="signature">
+			<h2>new can.Model.List( params )</h2>
+<div class="signature-wrapper">
+<p>Create an initially empty model list, but use the model's <a href="can.Model.findAll.html">findAll</a>
+to get a list of models and add it to this empty list.</p>
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>params
+				<code>{Object}</code></h4>
+			<div class="description">
+				<p>Params that are passed to 
+the <a href="can.List.Map.html">Map property's</a> <a href="can.Model.findAll.html">findAll</a> method.</p>
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+
+
+
+
+</div>
+
+		</section>
 		
 
 		
@@ -244,42 +306,50 @@ from the list.</p>
 
 		
 		<section class="comment">
-			<h2>Creating a new Model List</h2>
+			<h2>Use</h2>
 
-<p>To create a new model list, just use <code>new {model_name}.List(ARRAY)</code> like:</p>
+<p><code>can.Model.List</code> is a <a href="can.List.html">can.List</a> associated with a <a href="can.Model.html">can.Model</a>. <code>can.Model.List</code>s
+are just like <a href="can.List.html">can.List</a> except they have a few super-powers:</p>
 
-<pre><code>var todo1 = new Todo( { name: "Do the dishes" } ),
-    todo2 = new Todo( { name: "Wash floors" } )
-var todos = new Todo.List( [todo1, todo2] );
+<ul>
+<li>They are returned by <a href="can.Model.findAll.html">findAll</a>.</li>
+<li>They automatically remove "destroyed" items.</li>
+<li>They can retrieve items from the server (similar to <code>findAll</code>).</li>
+</ul>
+
+<h2>Defining a model list</h2>
+
+<p>When <a href="can.Model.html">can.Model</a> is 
+extended,  <code>can.Model.List</code> extended and set as that model's
+<a href="can.Model.static.List.html">List property</a>. Typically, a <code>can.Model.List</code> is 
+defined for you. For example:</p>
+
+<pre><code>Task = can.Model.extend({
+  findAll: "/tasks"
+},{})
+Task.List instanceof can.Model.List //-&gt; true
 </code></pre>
 
-<h3>Model Lists in <code>can.Model</code></h3>
+<p>This List type is returned by <a href="can.Model.findAll.html">findAll</a>:</p>
 
-<p><a href="can.Model.findAll.html">can.Model.findAll</a> or <a href="can.Model.models.html">can.Model.models</a> will
-almost always be used to return a <code>can.Model.List</code> object, even though it
-is possible to create new lists like below:</p>
-
-<pre><code>var todos = Todo.models([
-    new Todo( { name: "Do the dishes" } ),
-    new Todo( { name: "Wash floors" } )
-])
-
-todos.constructor // -&gt; can.Model.List
-
-// the most correct way to get a can.Model.List
-Todo.findAll({}, function(todos) {
-    todos.constructor // -&gt; can.Model.List
+<pre><code>Task.findAll({}, function(tasks){
+  tasks instanceof Task.List //-&gt; true
 })
 </code></pre>
 
-<h3>Extending <code>can.Model.List</code></h3>
+<p>The List's <a href="can.List.Map.html">Map</a> property points to the extended <a href="can.Model.html">can.Model</a>:</p>
 
-<p>Creating custom <code>can.Model.Lists</code> allows you to extend lists with helper
-functions for a list of a specific type. So, if you wanted to be able to
-see how many todos were completed and remaining something could be written
-like:</p>
+<pre><code>Task = can.Model.extend({
+  findAll: "/tasks"
+},{});
+Task.List.Map //-&gt; Task
+</code></pre>
 
-<pre><code>Todo.List = can.Model.List({
+<p>Defining custom <code>can.Model.Lists</code> allows you to extend lists with helper
+functions for a list of a specific type. The following
+adds the ability to retrieve the number of completed and remaining todos:</p>
+
+<pre><code>Todo.List = Todo.List.extend({
     completed: function() {
         var completed = 0;
         this.each(function(i, todo) {
@@ -298,18 +368,66 @@ Todo.findAll({}, function(todos) {
 });
 </code></pre>
 
+<h2>Creating a model list instance</h2>
+
+<p>If you use <a href="can.Model.findAll.html">findAll</a>, it calls back with and resolves to a model list:</p>
+
+<pre><code>var def = Task.findAll({}, function(tasks){
+  tasks instanceof Task.List //-&gt; true
+});
+
+def.then(function(tasks){
+  tasks instanceof Task.List //-&gt; true
+})
+</code></pre>
+
+<p>Create a model list yourself, use <code>new {model_name}.List(ARRAY)</code> like:</p>
+
+<pre><code>var todo1 = new Todo( { name: "Do the dishes", id: 1 } ),
+    todo2 = new Todo( { name: "Wash floors", id: 2 } )
+var todos = new Todo.List( [todo1, todo2] );
+</code></pre>
+
+<p>If objects are provided, model list will convert them to models. The
+following does the same thing as the previous example:</p>
+
+<pre><code>var todos = new Todo.List( [
+  { name: "Do the dishes", id: 1 }, 
+  { name: "Wash floors", id: 2 } 
+] );
+</code></pre>
+
+<p>If a model list is created with a plain JavaScript object like:</p>
+
+<pre><code>var todos = new Todo.List({due: "today"});
+</code></pre>
+
+<p>The object is assumed to be
+parameters to the list's Model's <a href="can.Model.findAll.html">findAll</a> 
+method. An empty list will be returned, but <code>Todo.findAll</code> will 
+be called. The items it returns will be inserted into the 
+list.</p>
+
+<pre><code>var todos = new Todo.List({due: "today"});
+todos.attr("length") //-&gt; 0
+
+todos.bind("length", function(){
+  console.log("items added to the list")
+})
+</code></pre>
+
 <h2>Removing models from model list</h2>
 
-<p>The advantage that <code>can.Model.List</code> has over a traditional <code>can.List</code>
+<p>One advantage that <code>can.Model.List</code> has over a traditional <code>can.List</code>
 is that when you destroy a model, if it is in that list, it will automatically
 be removed from the list. </p>
 
 <pre><code>// Listen for when something is removed from the todos list.
 todos.bind("remove", function( ev, oldVals, indx ) {
-    console.log(oldVals[indx].attr("name") + " removed")
+    console.log("todo"+indx+" removed")
 })
 
-todo1.destroy(); // console shows "Do the dishes removed"
+todos.attr(0).destroy(); // console shows "todo 0 removed"
 </code></pre>
 		</section>
 		
@@ -319,7 +437,7 @@ todo1.destroy(); // console shows "Do the dishes removed"
 </div>
 
 <script type="text/javascript">
-	var docData = {"name":"can.Model.List","type":"constructor","parent":"canjs","description":"<p>Works exactly like [can.List] and has all of the same properties,\nevents, and functions as an observable list. The only difference is that \nwhen an item from the list is destroyed, it will automatically get removed\nfrom the list.</p>","title":"","inherits":"can.List","download":"can/model","test":"can/model/qunit.html","src":"can/model/model.js","line":1540,"id":149};
+	var docData = {"type":"constructor","name":"can.Model.List","description":"<p>A list connected to can.Model's CRUD abilities. </p>","title":"","inherits":"can.List","parent":"canjs","download":"can/model","test":"can/model/qunit.html","signatures":[{"code":"new can.Model.List( [models] )","description":"<p>Create a model list with the provided model instances.</p>","params":[{"types":[{"type":"Array","template":[{"types":[{"type":"can.Model"},{"type":"Object","options":[]}]}]}],"optional":true,"name":"models","description":"<p>An array of [can.Model] instances\nor Objects that will be converted to the list's [can.List.Map Map type].</p>"}]},{"code":"new can.Model.List( params )","description":"<p>Create an initially empty model list, but use the model's [can.Model.findAll findAll]\nto get a list of models and add it to this empty list.</p>","params":[{"types":[{"type":"Object","options":[]}],"name":"params","description":"<p>Params that are passed to \nthe [can.List.Map Map property's] [can.Model.findAll findAll] method.</p>"}]}],"comment":" ","src":"can/model/model_list.md","id":40};
 
 	console.log(docData);
 </script>
