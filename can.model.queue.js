@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.2
+ * CanJS - 2.0.3
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Thu, 14 Nov 2013 18:45:19 GMT
+ * Tue, 26 Nov 2013 18:21:41 GMT
  * Licensed MIT
  * Includes: can/model/queue
  * Download from: http://canjs.com

@@ -1,10 +1,10 @@
 /*!
- * CanJS - 2.0.2
+ * CanJS - 2.0.3
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Thu, 14 Nov 2013 18:45:17 GMT
+ * Tue, 26 Nov 2013 18:21:37 GMT
  * Licensed MIT
- * Includes: can/component,can/construct,can/observe,can/compute,can/model,can/view,can/control,can/route,can/control/route,can/view/mustache,can/view/bindings,can/view/live,can/view/scope,can/util/string
+ * Includes: can/component,can/construct,can/map,can/list,can/observe,can/compute,can/model,can/view,can/control,can/route,can/control/route,can/view/mustache,can/view/bindings,can/view/live,can/view/scope,can/util/string
  * Download from: http://canjs.com
  */
 (function(undefined) {
@@ -30,7 +30,7 @@
                 return object._cid = (name || "") + (++cid)
             }
         }
-        can.VERSION = '2.0.2';
+        can.VERSION = '2.0.3';
 
         can.simpleExtend = function(d, s) {
             for (var prop in s) {
@@ -648,11 +648,11 @@
         can.isArray = function(arr) {
             return typeOf(arr) === 'array'
         };
-        can.inArray = function(item, arr) {
+        can.inArray = function(item, arr, fromIndex) {
             if (!arr) {
                 return -1;
             }
-            return Array.prototype.indexOf.call(arr, item);
+            return Array.prototype.indexOf.call(arr, item, fromIndex);
         }
         can.map = function(arr, fn) {
             return Array.from(arr || []).map(fn);
@@ -1768,9 +1768,10 @@
                     madeMap[cid] = {
                         obj: obj,
                         instance: instance,
-                        added: hasCid
+                        added: !hasCid
                     }
                 }
+                return teardown;
             };
         teardownMap = function() {
             for (var cid in madeMap) {
@@ -1899,7 +1900,8 @@
                     // Sets all `attrs`.
                     this._init = 1;
                     this._setupComputes();
-                    var teardownMapping = obj && addToMap(obj, this)
+                    var teardownMapping = obj && addToMap(obj, this);
+
                     var data = can.extend(can.extend(true, {}, this.constructor.defaults || {}), obj)
                     this.attr(data);
                     if (teardownMapping) {
@@ -1909,6 +1911,7 @@
 
                     delete this._init;
                 },
+
                 _setupComputes: function() {
                     var prototype = this.constructor.prototype;
                     this._computedBindings = {}
@@ -2237,6 +2240,12 @@
             list = Map(
 
                 {
+
+                    Map: Map
+
+                },
+
+                {
                     setup: function(instances, options) {
                         this.length = 0;
                         can.cid(this, ".map")
@@ -2436,9 +2445,9 @@
 
         can.extend(list.prototype, {
 
-                indexOf: function(item) {
+                indexOf: function(item, fromIndex) {
                     this.attr('length')
-                    return can.inArray(item, this)
+                    return can.inArray(item, this, fromIndex)
                 },
 
 
@@ -3325,6 +3334,8 @@
     // ## view/scope/scope.js
     var __m21 = (function(can) {
 
+
+
         var isObserve = function(obj) {
             return obj instanceof can.Map || (obj && obj.__get);
         },
@@ -3354,7 +3365,10 @@
 
 
 
-        var Scope = can.Construct.extend({
+        var Scope = can.Construct.extend(
+
+
+            {
                 // reads properties from a parent.  A much more complex version of getObject.
 
                 read: function(parent, reads, options) {
@@ -3438,28 +3452,31 @@
                         parent: prev
                     };
                 }
-            }, {
-                init: function(data, parent) {
-                    this._data = data;
+            },
+
+            {
+                init: function(context, parent) {
+                    this._context = context;
                     this._parent = parent;
                 },
-                attr: function(attr) {
-                    return this.read(attr, {
+
+                attr: function(key) {
+                    return this.read(key, {
                             isArgument: true,
                             returnObserveMethods: true,
                             proxyMethods: false
                         }).value
-
                 },
-                add: function(data) {
-                    if (data !== this._data) {
-                        return new this.constructor(data, this);
+
+                add: function(context) {
+                    if (context !== this._context) {
+                        return new this.constructor(context, this);
                     } else {
                         return this;
                     }
                 },
 
-                computeData: function(attr, options) {
+                computeData: function(key, options) {
                     options = options || {
                         args: []
                     };
@@ -3481,7 +3498,7 @@
                                         return Scope.read(rootObserve, rootReads, options).value
                                     }
                                     // otherwise, go get the value
-                                    var data = self.read(attr, options);
+                                    var data = self.read(key, options);
                                     rootObserve = data.rootObserve;
                                     rootReads = data.reads;
                                     computeData.scope = data.scope;
@@ -3501,11 +3518,11 @@
                         return this._parent.read(attr.substr(3), options)
                     } else if (attr == "..") {
                         return {
-                            value: this._parent._data
+                            value: this._parent._context
                         }
                     } else if (attr == "." || attr == "this") {
                         return {
-                            value: this._data
+                            value: this._context
                         };
                     }
 
@@ -3552,7 +3569,7 @@
                     while (scope) {
 
                         // get the context
-                        context = scope._data;
+                        context = scope._context;
 
                         if (context != null) {
 
@@ -3913,10 +3930,12 @@
 
 
                     // if this was an element like <foo-bar> that doesn't have a component, just render its content
-                var res = tagCallback ? tagCallback(el, hookupOptions) : scope,
-                    scope = hookupOptions.scope;
+                var scope = hookupOptions.scope,
+                    res = tagCallback ? tagCallback(el, hookupOptions) : scope;
 
-                if (res) {
+                // If the tagCallback gave us something to render with, and there is content within that element
+                // render it!
+                if (res && hookupOptions.subtemplate) {
 
                     if (scope !== res) {
                         scope = scope.add(res)
@@ -4545,12 +4564,12 @@
             var teardown = function() {
                 unbind(data)
                 can.unbind.call(el, 'removed', teardown);
+                return true
             },
                 data = {
+                    // returns true if no parent
                     teardownCheck: function(parent) {
-                        if (!parent) {
-                            teardown();
-                        }
+                        return parent ? false : teardown();
                     }
                 }
 
@@ -4600,6 +4619,12 @@
                 var nodesMap = [],
                     // called when an item is added
                     add = function(ev, items, index) {
+                        // check that the placeholder textNode still has a parent.
+                        // it's possible someone removed the contents of
+                        // this element without removing the parent
+                        if (data.teardownCheck(text.parentNode)) {
+                            return
+                        }
 
                         // Collect new html and mappings
                         var frag = document.createDocumentFragment(),
@@ -4627,7 +4652,17 @@
                         });
                         [].splice.apply(nodesMap, [index, 0].concat(newMappings));
                     },
-                    remove = function(ev, items, index) {
+                    // Remove can be called during teardown or when items are 
+                    // removed from the element.
+                    remove = function(ev, items, index, duringTeardown) {
+
+                        // If this is because an element was removed, we should
+                        // check to make sure the live elements are still in the page.
+                        // If we did this during a teardown, it would cause an infinite loop.
+                        if (!duringTeardown && data.teardownCheck(text.parentNode)) {
+                            return
+                        }
+
                         var removedMappings = nodesMap.splice(index, items.length),
                             itemsToRemove = [];
 
@@ -4653,7 +4688,7 @@
                     // use remove to clean stuff up for us
                     remove({}, {
                             length: nodesMap.length
-                        }, 0);
+                        }, 0, true);
                 }
 
                 updateList = function(ev, newList, oldList) {
@@ -4669,11 +4704,7 @@
 
                 // Setup binding and teardown to add and remove events
                 var data = setup(parentNode, function() {
-                    if (text.parentNode) {
-                        can.isFunction(compute) && compute.bind("change", updateList)
-                    } else {
-                        data.teardownCheck()
-                    }
+                    can.isFunction(compute) && compute.bind("change", updateList)
                 }, function() {
                     can.isFunction(compute) && compute.unbind("change", updateList)
                     teardownList()
@@ -4730,7 +4761,7 @@
                 var parent = elements.getParentNode(el, parentNode);
 
                 // setup listening right away so we don't have to re-calculate value
-                var data = listen(el.parentNode !== parent ? el.parentNode : parent, compute, function(ev, newVal, oldVal) {
+                var data = listen(parent, compute, function(ev, newVal, oldVal) {
                     // Sometimes this is 'unknown' in IE and will throw an exception if it is
                     if (typeof node.nodeValue != 'unknown') {
                         node.nodeValue = "" + newVal;
@@ -5098,10 +5129,10 @@
             // used to make sure .fn and .inverse are always called with a Scope like object
             makeConvertToScopes = function(orignal, scope, options) {
                 return function(updatedScope, updatedOptions) {
-                    if (updatedScope != null && !(updatedScope instanceof can.view.Scope)) {
+                    if (updatedScope !== undefined && !(updatedScope instanceof can.view.Scope)) {
                         updatedScope = scope.add(updatedScope)
                     }
-                    if (updatedOptions != null && !(updatedOptions instanceof OptionsScope)) {
+                    if (updatedOptions !== undefined && !(updatedOptions instanceof OptionsScope)) {
                         updatedOptions = options.add(updatedOptions)
                     }
                     return orignal(updatedScope, updatedOptions || options)
@@ -5682,7 +5713,7 @@
 
                             // Add the reference to the list in the contexts.
                             for (i = 0; i < name.length; i++) {
-                                result.push(helperOptions.fn(name[i] || ''));
+                                result.push(helperOptions.fn(name[i]));
 
                                 // Ensure that live update works on observable lists
                                 isObserveList && name.attr('' + i);
@@ -5703,7 +5734,7 @@
                         // This can cause issues if you are trying to
                         // eval on the length but this is the more
                         // common case.
-                        return '' + (name !== undefined ? name : '');
+                        return '' + (name != undefined ? name : '');
                         break;
                 }
             }
@@ -5883,12 +5914,14 @@
                     if (expr.isComputed || isObserveLike(expr) && typeof expr.attr('length') !== 'undefined') {
                         return can.view.lists && can.view.lists(expr, function(item, key) {
                             // Create a compute that listens to whenever the index of the item in our list changes.
-                            var indexCompute = can.compute(function() {
-                                var exprResolved = Mustache.resolve(expr);
-                                return (exprResolved).indexOf(item);
-                            });
+                            var index = function() {
+                                var exprResolved = Mustache.resolve(expr),
+                                    fromIndex = key < (exprResolved).attr('length') ? key : undefined;
+
+                                return (exprResolved).indexOf(item, fromIndex);
+                            };
                             return options.fn(options.scope.add({
-                                        "@index": indexCompute
+                                        "@index": index
                                     }).add(item));
                         });
                     }
@@ -6044,7 +6077,7 @@
                                 returnObserveMethods: true,
                                 isArgument: true
                             });
-                    return scopeData.value.call(scopeData.parent, data.scope._data, can.$(this), ev)
+                    return scopeData.value.call(scopeData.parent, data.scope._context, can.$(this), ev)
                 };
 
             if (special[event]) {
@@ -6141,7 +6174,7 @@
                                         var self = this;
                                         this.on(this.scope, "change", function() {
                                             self.on();
-                                            self.on(this.scope, "change", arguments.callee);
+                                            self.on(self.scope, "change", arguments.callee);
                                         });
                                         return res;
                                     }
@@ -6156,9 +6189,17 @@
                         })
                         this.attributeScopeMappings = attributeScopeMappings;
 
-                        // setup inheritance right away
+                        // If scope is an object,
                         if (!this.prototype.scope || typeof this.prototype.scope === "object") {
+                            // use that object as the prototype of an extened Map constructor function.
+                            // A new instance of that Map constructor function will be created and
+                            // set as this.scope.
                             this.Map = can.Map.extend(this.prototype.scope || {});
+                        }
+                        // If scope is a can.Map constructor function, 
+                        else if (this.prototype.scope.prototype instanceof can.Map) {
+                            // just use that.
+                            this.Map = this.prototype.scope;
                         }
 
 
@@ -6191,7 +6232,9 @@
                         component = this,
                         twoWayBindings = {},
                         // what scope property is currently updating
-                        scopePropertyUpdating;
+                        scopePropertyUpdating,
+                        // the object added to the scope
+                        componentScope;
 
                     // scope prototype properties marked with an "@" are added here
                     can.each(this.constructor.attributeScopeMappings, function(val, prop) {
@@ -6242,18 +6285,19 @@
 
                     })
 
-                    var componentScope
-                    // save the scope
+
+
                     if (this.constructor.Map) {
                         componentScope = new this.constructor.Map(initalScopeData);
                     } else if (this.scope instanceof can.Map) {
                         componentScope = this.scope;
                     } else if (can.isFunction(this.scope)) {
+
                         var scopeResult = this.scope(initalScopeData, hookupOptions.scope, el);
                         // if the function returns a can.Map, use that as the scope
                         if (scopeResult instanceof can.Map) {
                             componentScope = scopeResult
-                        } else if (typeof scopeResult == "function" && typeof scopeResult.extend == "function") {
+                        } else if (scopeResult.prototype instanceof can.Map) {
                             componentScope = new scopeResult(initalScopeData);
                         } else {
                             componentScope = new(can.Map.extend(scopeResult))(initalScopeData);
@@ -6628,6 +6672,7 @@
                     if (!can.Model) {
                         return;
                     }
+
                     this.List = ML({
                             Map: this
                         }, {});
@@ -6796,7 +6841,6 @@
 
         // Model lists are just like `Map.List` except that when their items are 
         // destroyed, it automatically gets removed from the list.
-
         var ML = can.Model.List = can.List({
                 setup: function(params) {
                     if (can.isPlainObject(params) && !can.isArray(params)) {

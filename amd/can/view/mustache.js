@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.2
+ * CanJS - 2.0.3
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Thu, 14 Nov 2013 18:45:10 GMT
+ * Tue, 26 Nov 2013 18:21:22 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -70,10 +70,10 @@ define(["can/util/library", "can/view/scope", "can/view", "can/view/scanner", "c
 		// used to make sure .fn and .inverse are always called with a Scope like object
 		makeConvertToScopes = function(orignal, scope, options){
 			return function(updatedScope, updatedOptions){
-				if(updatedScope != null && !(updatedScope instanceof  can.view.Scope)){
+				if(updatedScope !== undefined && !(updatedScope instanceof  can.view.Scope)){
 					updatedScope = scope.add(updatedScope)	
 				}
-				if(updatedOptions != null && !(updatedOptions instanceof  OptionsScope)){
+				if(updatedOptions !== undefined && !(updatedOptions instanceof  OptionsScope)){
 					updatedOptions = options.add(updatedOptions)
 				}
 				return orignal(updatedScope, updatedOptions || options)
@@ -1423,7 +1423,7 @@ define(["can/util/library", "can/view/scope", "can/view", "can/view/scanner", "c
 						
 						// Add the reference to the list in the contexts.
 						for (i = 0; i < name.length; i++) {
-							result.push(helperOptions.fn(name[i]|| '') );
+							result.push( helperOptions.fn(name[i]) );
 							
 							// Ensure that live update works on observable lists
 							isObserveList && name.attr(''+i);
@@ -1444,7 +1444,7 @@ define(["can/util/library", "can/view/scope", "can/view", "can/view/scanner", "c
 					// This can cause issues if you are trying to
 					// eval on the length but this is the more
 					// common case.
-					return '' + (name !== undefined ? name : '');
+					return '' + (name != undefined ? name : '');
 					break;
 			}
 		}
@@ -1896,11 +1896,13 @@ define(["can/util/library", "can/view/scope", "can/view", "can/view/scanner", "c
 			if(expr.isComputed || isObserveLike(expr) && typeof expr.attr('length') !== 'undefined'){
 				return can.view.lists && can.view.lists(expr, function(item, key) {
 					// Create a compute that listens to whenever the index of the item in our list changes.
-					var indexCompute = can.compute(function() {
-						var exprResolved = Mustache.resolve(expr);
-						return (exprResolved).indexOf(item);
-					});
-					return options.fn( options.scope.add({"@index": indexCompute}).add(item) );
+					var index = function() {
+						var exprResolved = Mustache.resolve(expr),
+							fromIndex    = key < (exprResolved).attr('length') ? key : undefined;
+
+						return (exprResolved).indexOf(item, fromIndex);
+					};
+					return options.fn( options.scope.add({"@index": index}).add(item) );
 				});
 			}
 			expr = Mustache.resolve(expr);

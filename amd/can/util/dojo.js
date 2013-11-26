@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.2
+ * CanJS - 2.0.3
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Thu, 14 Nov 2013 18:45:10 GMT
+ * Tue, 26 Nov 2013 18:21:22 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -206,8 +206,8 @@ define(["can/util/can", "dojo", "can/util/event", "can/util/fragment", "can/util
 		return array;
 	};
 	can.isArray = dojo.isArray;
-	can.inArray = function( item, arr ) {
-		return dojo.indexOf(arr, item);
+	can.inArray = function( item, arr, from ) {
+		return dojo.indexOf(arr, item, from);
 	};
 	can.map = function( arr, fn ) {
 		return dojo.map(can.makeArray(arr || []), fn);

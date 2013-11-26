@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.2
+ * CanJS - 2.0.3
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Thu, 14 Nov 2013 18:45:10 GMT
+ * Tue, 26 Nov 2013 18:21:22 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -201,10 +201,12 @@ Scanner.hookupTag = function(hookupOptions){
 		
 		
 		// if this was an element like <foo-bar> that doesn't have a component, just render its content
-		var res = tagCallback ? tagCallback(el, hookupOptions) : scope,
-			scope = hookupOptions.scope;
-
-		if(res){
+		var scope = hookupOptions.scope,
+			res = tagCallback ? tagCallback(el, hookupOptions) : scope;
+			
+		// If the tagCallback gave us something to render with, and there is content within that element
+		// render it!
+		if(res && hookupOptions.subtemplate){
 			
 			if(scope !== res){
 				scope = scope.add(res)
