@@ -6,7 +6,8 @@ can.Control('Bitovi.OSS.CommunityTabs', {
 			'plugins': 'PluginsTab',
 			'twitter': 'TwitterTab',
 			'issues': 'IssuesTab',
-			'github': 'GithubTab'
+			'github': 'GithubTab',
+			'meetups': 'MeetupsTab'
 		}
 	}
 }, {
@@ -38,6 +39,19 @@ can.Control('Bitovi.OSS.CommunityTabs', {
 		});
 		// Missing follower counts for github
 
+		self.state.attr('meetupCities',[
+				{ name: "Boston", image: "city-boston.jpg", url: "http://www.meetup.com/CanJS-Boston/" },
+				{ name: "Chicago", image: "city-chicago.jpg", url: "http://www.meetup.com/CanJS-Chicago" },
+				{ name: "Dallas", image: "city-dallas.jpg", url: "http://www.meetup.com/CanJS-Dallas/" },
+				{ name: "Ft. Lauderdale", image: "city-fortlauderdale.jpg", url: "http://www.meetup.com/CanJS-Fort-Lauderdale/" },
+				{ name: "Los Angeles", image: "city-losangeles.jpg", url: "http://www.meetup.com/CanJS-LA" },
+				{ name: "New York", image: "city-newyork.jpg", url: "http://www.meetup.com/CanJS-NYC" },
+				{ name: "Phoenix", image: "city-phoenix.jpg", url: "http://www.meetup.com/CanJS-Phoenix" },
+				{ name: "Raleigh-Durham", image: "city-raleighdurham.jpg", url: "http://www.meetup.com/canjs-raleigh-durham" },
+				{ name: "San Francisco", image: "city-sanfran.jpg", url: "http://www.meetup.com/CanJS-San-Francisco" },
+				{ name: "Seattle", image: "city-seattle.jpg", url: "http://www.meetup.com/CanJS-Seattle/" },
+				{ name: "Zagreb, Croatia", image: "city-zagreb.jpg", url: "http://www.meetup.com/CanJS-Zagreb/" }]);
+
 		this.element.html(can.view('docs/static/templates/communityTabs.mustache', {}));
 
 		can.route.ready();
@@ -54,6 +68,7 @@ can.Control('Bitovi.OSS.CommunityTabs', {
 			.find('li').removeClass('active')
 			.filter('.' + selectedTab).addClass('active');
 		var tabControl = this.options.tabControls[selectedTab];
+		console.log(Bitovi.OSS[tabControl]);
 		new Bitovi.OSS[tabControl]($('.content > .container'), {state: this.state});
 	}
 });
