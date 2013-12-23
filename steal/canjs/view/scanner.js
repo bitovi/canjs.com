@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.3
+ * CanJS - 2.0.4
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 26 Nov 2013 18:21:22 GMT
+ * Mon, 23 Dec 2013 19:49:14 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -195,12 +195,11 @@ Scanner.hookupTag = function(hookupOptions){
 			fn(el);
 		});
 		
-		var helperTags = hookupOptions.options.read('helpers._tags',{}).value,
-			tagName= hookupOptions.tagName,
-			tagCallback = ( helperTags && helperTags[tagName] ) || Scanner.tags[tagName]
-		
-		
-		// if this was an element like <foo-bar> that doesn't have a component, just render its content
+		var tagName= hookupOptions.tagName,
+			helperTagCallback = hookupOptions.options.read('helpers._tags.'+tagName,{isArgument: true, proxyMethods: false}).value,
+			tagCallback = helperTagCallback || Scanner.tags[tagName];
+			
+		// If this was an element like <foo-bar> that doesn't have a component, just render its content
 		var scope = hookupOptions.scope,
 			res = tagCallback ? tagCallback(el, hookupOptions) : scope;
 			
@@ -492,7 +491,10 @@ Scanner.prototype = {
 				default:
 					// Track the current tag
 					if(lastToken === '<'){
-						tagName = token.split(/\s/)[0];
+						
+						tagName = token.substr(0,3) === "!--" ?
+							"!--" : token.split(/\s/)[0];
+							
 						var isClosingTag = false;
 						
 						if( tagName.indexOf("/") === 0 ) {

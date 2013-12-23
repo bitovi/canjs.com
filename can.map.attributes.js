@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.3
+ * CanJS - 2.0.4
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 26 Nov 2013 18:21:42 GMT
+ * Mon, 23 Dec 2013 19:49:29 GMT
  * Licensed MIT
  * Includes: can/map/attributes
  * Download from: http://canjs.com
@@ -128,6 +128,10 @@
         converter.call(Class, value, oldVal, function() {}, type);
     };
 
+    can.List.prototype.serialize = function(attrName, stack) {
+        return can.makeArray(can.Map.prototype.serialize.apply(this, arguments));
+    }
+
     can.Map.prototype.serialize = function(attrName, stack) {
         var where = {},
             Class = this.constructor,
@@ -166,6 +170,10 @@
                 val;
             }
         });
+
+        if (typeof attrs.length !== 'undefined') {
+            where.length = attrs.length;
+        }
 
         return attrName != undefined ? where[attrName] : where;
     };

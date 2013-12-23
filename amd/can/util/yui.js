@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.3
+ * CanJS - 2.0.4
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 26 Nov 2013 18:21:22 GMT
+ * Mon, 23 Dec 2013 19:49:14 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -101,7 +101,7 @@ define(["can/util/can", "yui", "can/util/event", "can/util/fragment", "can/util/
 		} else if (selector instanceof Y.NodeList) {
 			return prepareNodeList(selector);
 		} else if (typeof selector === "object" && !can.isArray(selector) && typeof selector.nodeType === "undefined" && !selector.getDOMNode) {
-			return selector;
+			return new Y.NodeList(selector);
 		} else {
 			return prepareNodeList(Y.all(selector));
 		}
@@ -269,6 +269,7 @@ define(["can/util/can", "yui", "can/util/event", "can/util/fragment", "can/util/
 						var eventName = ev + ":" + selector,
 							handlers = events[eventName],
 							handler = handlers[cb.__bindingsIds];
+						
 						handler.detach();
 						delete handlers[cb.__bindingsIds];
 						if (can.isEmptyObject(handlers)) {

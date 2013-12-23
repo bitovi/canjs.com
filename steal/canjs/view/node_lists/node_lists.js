@@ -7,7 +7,7 @@
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["can/util/library", "can/view/elements"], function(can){
+steal('can/util',"can/view/elements.js",function(can){
 
 
 	// In some browsers, text nodes can not take expando properties.
@@ -247,4 +247,4 @@ define(["can/util/library", "can/view/elements"], function(can){
 	return nodeLists;
 
 
-});
+})

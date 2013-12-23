@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.3
+ * CanJS - 2.0.4
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 26 Nov 2013 18:21:41 GMT
+ * Mon, 23 Dec 2013 19:49:28 GMT
  * Licensed MIT
  * Includes: can/model/queue
  * Download from: http://canjs.com
@@ -32,7 +32,7 @@
 
             var def = new can.Deferred,
                 self = this,
-                attrs = this.attr(),
+                attrs = this.serialize(),
                 queue = this._requestQueue,
                 changedAttrs = this._changedAttrs,
                 reqFn, index;

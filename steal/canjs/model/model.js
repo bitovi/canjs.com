@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.3
+ * CanJS - 2.0.4
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 26 Nov 2013 18:21:22 GMT
+ * Mon, 23 Dec 2013 19:49:14 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -215,7 +215,7 @@ steal('can/util','can/map', 'can/list',function( can ) {
 					return model;
 				}
 			}
-		}
+		},
 		
 		
 	// This object describes how to make an ajax request for each ajax method.  
@@ -842,7 +842,7 @@ steal('can/util','can/map', 'can/list',function( can ) {
 				// Return the ajax method with `data` and the `type` provided.
 				return ajax(str || this[ajaxMethod.url || "_url"], data, ajaxMethod.type || "get")
 			}
-		}
+		};
 
 
 	

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.3
+ * CanJS - 2.0.4
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 26 Nov 2013 18:21:22 GMT
+ * Mon, 23 Dec 2013 19:49:14 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -93,6 +93,11 @@ define(["jquery", "can/util/can", "can/util/array/each", "can/util/inserted", "c
 	
 			}
 			return this;
+		},
+		proxy: function(fn, context){
+			return function(){
+				return fn.apply(context, arguments)
+			}
 		}
 	});
 

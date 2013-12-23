@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.3
+ * CanJS - 2.0.4
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 26 Nov 2013 18:21:22 GMT
+ * Mon, 23 Dec 2013 19:49:14 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -133,12 +133,13 @@ can.dispatch = function(event, args){
 	}
 	var eventName = event.type,
 		handlers = (this.__bindEvents[eventName] || []).slice(0),
-		args = [event].concat(args||[]);
+		args = [event].concat(args||[]),
+		ev;
 	
 	for(var i =0, len = handlers.length; i < len; i++) {	
 		ev = handlers[i];
 		ev.handler.apply(this, args);
-	};
+	}
 }
 
 return can;

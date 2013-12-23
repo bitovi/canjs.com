@@ -1,18 +1,20 @@
 /*!
- * CanJS - 2.0.3
+ * CanJS - 2.0.4
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 26 Nov 2013 18:21:43 GMT
+ * Mon, 23 Dec 2013 19:49:29 GMT
  * Licensed MIT
  * Includes: can/map/backup
  * Download from: http://canjs.com
  */
 (function(can) {
-    var flatProps = function(a) {
+    var flatProps = function(a, cur) {
         var obj = {};
         for (var prop in a) {
             if (typeof a[prop] !== 'object' || a[prop] === null || a[prop] instanceof Date) {
                 obj[prop] = a[prop]
+            } else {
+                obj[prop] = cur.attr(prop)
             }
         }
         return obj;
@@ -37,10 +39,12 @@
 
 
             restore: function(restoreAssociations) {
-                var props = restoreAssociations ? this._backupStore : flatProps(this._backupStore)
+                var props = restoreAssociations ?
+                    this._backupStore :
+                    flatProps(this._backupStore, this)
 
                 if (this.isDirty(restoreAssociations)) {
-                    this._attrs(props);
+                    this._attrs(props, true);
                 }
 
                 return this;

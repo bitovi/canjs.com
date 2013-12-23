@@ -1,13 +1,13 @@
 /*!
- * CanJS - 2.0.3
+ * CanJS - 2.0.4
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 26 Nov 2013 18:21:22 GMT
+ * Mon, 23 Dec 2013 19:49:14 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-steal('can/util', 'can/map', function(can, Map) {
+steal('can/util', 'can/map', 'can/list', function(can, Map) {
 can.each([ can.Map, can.Model ], function(clss){
 	// in some cases model might not be defined quite yet.
 	if(clss === undefined){
@@ -355,6 +355,10 @@ can.Map.prototype.__convert = function(prop, value){
  *
  *		contact.serialize('birthday') //-> 'YYYY-MM-DD'
  */
+can.List.prototype.serialize = function(attrName, stack) {
+	return can.makeArray(can.Map.prototype.serialize.apply(this, arguments));
+}
+
 can.Map.prototype.serialize = function(attrName, stack) {
 	var where = {},
 		Class = this.constructor,
@@ -394,6 +398,10 @@ can.Map.prototype.serialize = function(attrName, stack) {
 				val;
 		}
 	});
+
+	if(typeof attrs.length !== 'undefined') {
+		where.length = attrs.length;
+	}
 
 	return attrName != undefined ? where[attrName] : where;
 };

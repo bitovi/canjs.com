@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.3
+ * CanJS - 2.0.4
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 26 Nov 2013 18:21:22 GMT
+ * Mon, 23 Dec 2013 19:49:14 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -13,6 +13,13 @@ steal("can/util","can/map", function(can, Map){
 	
 	// Helpers for `observable` lists.
 	var splice = [].splice,
+		// test if splice works correctly
+		spliceRemovesProps = (function(){
+			// IE's splice doesn't remove properties
+			var obj = {0: "a", length: 1};
+			splice.call(obj, 0,1);
+			return !obj[0];
+		})(),
 	/**
 	 * @add can.List
 	 */
@@ -88,11 +95,18 @@ steal("can/util","can/map", function(can, Map){
 			this.length = 0;
 			can.cid(this, ".map")
 			this._init = 1;
+			instances = instances || [];
+			
+			
 			if( can.isDeferred(instances) ) {
 				this.replace(instances)
 			} else {
+				var teardownMapping = instances.length && can.Map.helpers.addToMap(instances, this);
 				this.push.apply(this, can.makeArray(instances || []));
 			}
+			
+			teardownMapping && teardownMapping();
+			
 			// this change needs to be ignored
 			this.bind('change',can.proxy(this._changes,this));
 			can.simpleExtend(this, options);
@@ -255,6 +269,13 @@ steal("can/util","can/map", function(can, Map){
 				howMany = args[1] = this.length - index;
 			}
 			var removed = splice.apply(this, args);
+			
+			if(!spliceRemovesProps) {
+				for(var i = this.length; i < removed.length+this.length; i++){
+					delete this[i]
+				}
+			}
+			
 			can.batch.start();
 			if ( howMany > 0 ) {
 				this._triggerChange(""+index, "remove", undefined, removed);
@@ -1024,7 +1045,6 @@ steal("can/util","can/map", function(can, Map){
 			return this;
 		}
 	});
-
 	can.List = Map.List = list;
 	return can.List;
 })

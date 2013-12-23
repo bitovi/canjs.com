@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.3
+ * CanJS - 2.0.4
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 26 Nov 2013 18:21:22 GMT
+ * Mon, 23 Dec 2013 19:49:14 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -1677,7 +1677,7 @@ function( can ){
    *   url  = can.esc(url);
    *
    *   var result = '&lt;a href="' + url + '"&gt;' + text + '&lt;/a&gt;';
-   *   return new can.Mustache.safeString(result);
+   *   return can.Mustache.safeString(result);
    * });
    * @codeend
    *
@@ -1692,7 +1692,7 @@ function( can ){
    * &lt;div&gt;&lt;a href="http://google.com"&gt;Google&lt;/a&gt;&lt;/div&gt;
    * @codeend
    *
-   * As an anchor tag whereas if we would have just returned the result rather than a new
+   * As an anchor tag whereas if we would have just returned the result rather than a
    * `can.Mustache.safeString` our template would have rendered a div with the escaped anchor tag.
    *
    */
@@ -1899,19 +1899,21 @@ function( can ){
 		 *     </ul>
 		 */
 		'each': function(expr, options) {
-			if(expr.isComputed || isObserveLike(expr) && typeof expr.attr('length') !== 'undefined'){
-				return can.view.lists && can.view.lists(expr, function(item, key) {
-					// Create a compute that listens to whenever the index of the item in our list changes.
-					var index = function() {
-						var exprResolved = Mustache.resolve(expr),
-							fromIndex    = key < (exprResolved).attr('length') ? key : undefined;
-
-						return (exprResolved).indexOf(item, fromIndex);
-					};
+			// Check if this is a list or a compute that resolves to a list, and setup
+			// the incremental live-binding 
+			
+			
+			// First, see what we are dealing with.  It's ok to read the compute
+			// because can.view.text is only temporarily binding to what is going on here.
+			// Calling can.view.lists prevents anything from listening on that compute.
+			var resolved = Mustache.resolve(expr);
+			
+			if(resolved instanceof can.List){
+				return can.view.lists && can.view.lists(expr, function(item, index) {
 					return options.fn( options.scope.add({"@index": index}).add(item) );
 				});
 			}
-			expr = Mustache.resolve(expr);
+			expr = resolved;
 			
 			if (!!expr && isArrayLike(expr)) {
 				var result = [];

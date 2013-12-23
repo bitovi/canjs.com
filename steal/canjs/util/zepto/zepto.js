@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.3
+ * CanJS - 2.0.4
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 26 Nov 2013 18:21:22 GMT
+ * Mon, 23 Dec 2013 19:49:14 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -212,13 +212,12 @@ function (can) {
 
 	$.fn.remove = function () {
 		this.each(function () {
+			if( this.getElementsByTagName ){
+				$.cleanData( [this].concat( can.makeArray(this.getElementsByTagName('*')) )  );
+			}
+
 			if (this.parentNode != null) {
 				// might be a text node
-				
-				if( this.getElementsByTagName ){
-					$.cleanData( [this].concat( can.makeArray(this.getElementsByTagName('*')) )  );
-				} 
-				
 				this.parentNode.removeChild(this);
 			}
 		});

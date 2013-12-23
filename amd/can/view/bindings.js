@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.3
+ * CanJS - 2.0.4
  * http://canjs.us/
  * Copyright (c) 2013 Bitovi
- * Tue, 26 Nov 2013 18:21:22 GMT
+ * Mon, 23 Dec 2013 19:49:14 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -163,7 +163,7 @@ define(["can/util/library", "can/view/mustache", "can/control"], function(can){
 		init: function(){
 			if(this.element[0].nodeName.toUpperCase() === "SELECT"){
 				// need to wait until end of turn ...
-				setTimeout($.proxy(this.set,this),1)
+				setTimeout(can.proxy(this.set,this),1)
 			} else {
 				this.set()
 			}
@@ -171,9 +171,16 @@ define(["can/util/library", "can/view/mustache", "can/control"], function(can){
 		},
 		"{value} change": "set",
 		set: function(){
-			this.element[0].value = this.options.value()
+			//this may happen in some edgecases, esp. with selects that are not in DOM after the timeout has fired
+			if(!this.element) return;
+
+			var val = this.options.value();
+			this.element[0].value = (typeof val === 'undefined' ? '' : val);
 		},
 		"change": function(){
+			//this may happen in some edgecases, esp. with selects that are not in DOM after the timeout has fired
+			if(!this.element) return;
+			
 			this.options.value(this.element[0].value)
 		}
 	})
