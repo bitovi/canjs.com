@@ -216,7 +216,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.3/changelog.md">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.4/changelog.md">source</a></li>
 	
 	
 		
@@ -245,7 +245,40 @@
 
 		
 		<section class="comment">
-			<p><strong>2.0.3</strong> ( Nov 26 2013 )</p>
+			<p><strong>2.0.4</strong> ( Dec 23 2013 )</p>
+
+<ul>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/625">2.0.4 test fixes</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/624">Makes live safeStrings work</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/620">Working @index in mustache templates</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/619">Fixes nested components and <code>&amp;lt;content&amp;gt;</code> tags.</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/618">Fixes a problem with double inserted events</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/616">benchmark.js and minor performance improvements</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/615">Node lists rewrite</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/613">temporary fixed mustache index calculation with simple can.List when remove first item of list</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/611">Serialization</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/609">can.Component ATTR value is undefined when passing a function as a scope</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/607">restore will not remove properties that were added since the last backup</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/606">can.Mustache.safestring does not work with computed properties</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/605">Items pushed on lists don&#39;t get removed from the DOM in some cases</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/604">Functions globally defined when it shouldn&#39;t be</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/602">undefined list passed to {{#each}}</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/601">Added test for inserted event bug (live binding block)</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/600">Support Offline Testing</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/598">When using certain html-comments, can.view.Scanner does not recognize them correctly</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/595">teardownMap slows perfomance drastically</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/594">test for component content extension stack overflow bug</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/592">Split element classnames fails with {{#if}}</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/591">fixed an error that is caused by the timeout firing after the element has been removed from the DOM</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/588">Please add trailing slash support for can.route.pushstate</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/585">Overwrite can.Map.List.prototype.serialize to avoid infinite loops</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/583">Iterating over component data not as expected</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/580">can-value shows &quot;undefined&quot; if bound to undefined value</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/476">Maximum Call Stack Exceeded When Destroying a nested model</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/446">Individual test pages should run in CI as well</a></li>
+</ul>
+
+<p><strong>2.0.3</strong> ( Nov 26 2013 )</p>
 
 <ul>
 <li>change: <a href="https://github.com/bitovi/canjs/pull/578">fixes #577</a></li>
@@ -273,42 +306,6 @@
 <li>change: <a href="https://github.com/bitovi/canjs/pull/542">'key' property breaks mustache helpers</a></li>
 <li>change: <a href="https://github.com/bitovi/canjs/issues/540">component does not respect can.compute passed via attributes</a></li>
 <li>change: <a href="https://github.com/bitovi/canjs/issues/530">Wrapping can.compute in can.Map breaks live-binding</a></li>
-</ul>
-
-<p><strong>2.0.1</strong> ( Nov 14 2013 )</p>
-
-<ul>
-<li>change: <a href="https://github.com/bitovi/canjs/pull/541">Fixes #538 helpers aren't called is data passed to the template happens ...</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/pull/539">Update included plugins and release tasks</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/issues/538">mustache: 'with' string is interpreted as with helper keyword</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/issues/537">can.Component two way binding issues</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/pull/535">New lines are not handled properly in special attributes</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/issues/534">can.Control: {document} events are not working</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/pull/531">&quot;{document} body click&quot; breaks in latest</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/pull/528">pushstate() and preventDefault() were not working on default route becau...</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/pull/526">Make $#domManip patch jq2.0-compatible</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/issues/525">broken livebinding after replace can.Map property or remove property</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/pull/522">fixes a problem with each not working if the whole list is replaced</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/issues/521">can.Map stack exceeded on circular data structures</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/pull/520">Fixes #512 #513, sees the glorious return of can.camelize and his trusty sidekick, can.hyphenate</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/issues/519">List.join is not compute-able</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/pull/518">Fix to multiple tags not necessarily having the right context. Close #515</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/pull/517">avoids jQuery's event system when binding on observes which fixes #280</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/pull/516">Implement can.Mustache.safeString</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/issues/515">can.Component helpers context issue</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/issues/513">can.camelize</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/issues/512">can.Component template attributes name case</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/pull/508">Makes attribute arguments passed to a component two way binding</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/pull/506">Fix <code>Model.List.prototype.findAll()</code> in IE8.</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/pull/505">Return a new can.compute every time (new can.view.Scope()).compute() is called</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/pull/504">Mustache and EJS issues with attributes and truthy blocks</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/issues/503">Handlebars {{#if}} losing scope of var</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/issues/495">can.Model.List() updates its length after destoy() of one of its models only if it has bindings</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/issues/468">can.Mustache doesn't support SafeString</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/issues/441">can.Mustache: inconsistent behavior when updating nested attributes of an Observe</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/issues/383">Support Handlebars @key and @index directives</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/issues/378">Accessing a parent array property from within mustche</a></li>
-<li>change: <a href="https://github.com/bitovi/canjs/issues/280">can.Observe binds for nested object. First time event trigger is only on top level object instead of nested one.</a></li>
 </ul>
 
 <p><strong>2.0.1</strong> ( Nov 12 2013 )</p>

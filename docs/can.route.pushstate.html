@@ -361,7 +361,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.3/route/pushstate/pushstate.md">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.4/route/pushstate/pushstate.md">source</a></li>
 	
 	
 		<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/route/pushstate">download</a></li>
@@ -414,18 +414,18 @@ of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.hash">
 		<section class="comment">
 			<h2>Use</h2>
 
-<p>The pushstate plugin uses the same API as <a href="can.route.html">can.route</a> with only one additional 
-property - [can.route.pushstate.root].  <code>can.route.pushstate.root</code> specifies the part of that pathname that
+<p>The pushstate plugin uses the same API as <a href="can.route.html">can.route</a> with only one additional
+property - [can.route.bindings.pushstate.root].  <code>can.route.bindings.pushstate.root</code> specifies the part of that pathname that
 should not change. For example, if we only want to have pathnames within <code>app.com/contacts/</code>,
 we can specify a root like:</p>
 
-<pre><code>can.route.pushstate.root = "/contacts/"
+<pre><code>can.route.bindings.pushstate.root = "/contacts/"
 can.route(":page\\.html");
 can.route.url({page: "list"}) //-&gt; "/contacts/list.html"
 </code></pre>
 
-<p>Now, all routes will start with "/contacts/". The default [can.root.route] 
-is "/". </p>
+<p>Now, all routes will start with "/contacts/". The default [can.root.route]
+is "/".</p>
 		</section>
 		
 

@@ -483,7 +483,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.3/list/list.js#L14">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.4/list/list.js#L21">source</a></li>
 	
 	
 		
@@ -562,7 +562,7 @@ user.fullName() //-&gt; "Justin Meyer"
 </div>
 
 <script type="text/javascript">
-	var docData = {"name":"can.List.Map","type":"property","parent":"can.List.static","description":"<p>Specify the Map type used to make objects added to this list observable. </p>","types":[{"type":"can.Map","description":"<p>When objects are added to a can.List, those objects are\nconverted into can.Map instances.  For example:</p>\n\n<pre><code>var list = new can.List();\nlist.push({name: \"Justin\"});\n\nvar map = list.attr(0);\nmap.attr(\"name\") //-&gt; \"Justin\"\n</code></pre>\n\n<p>By changing [can.List.Map], you can specify a different type of Map instance to \ncreate. For example:</p>\n\n<pre><code>var User = can.Map.extend({\n  fullName: function(){\n    return this.attr(\"first\")+\" \"+this.attr(\"last\")\n  }\n});\n\nUser.List = can.List.extend({\n  Map: User\n});\n\nvar list = new User.List();\nlist.push({first: \"Justin\", last: \"Meyer\"});\n\nvar user = list.attr(0);\nuser.fullName() //-&gt; \"Justin Meyer\"\n</code></pre>"}],"title":"","src":"can/list/list.js","line":14,"id":309};
+	var docData = {"name":"can.List.Map","type":"property","parent":"can.List.static","description":"<p>Specify the Map type used to make objects added to this list observable. </p>","types":[{"type":"can.Map","description":"<p>When objects are added to a can.List, those objects are\nconverted into can.Map instances.  For example:</p>\n\n<pre><code>var list = new can.List();\nlist.push({name: \"Justin\"});\n\nvar map = list.attr(0);\nmap.attr(\"name\") //-&gt; \"Justin\"\n</code></pre>\n\n<p>By changing [can.List.Map], you can specify a different type of Map instance to \ncreate. For example:</p>\n\n<pre><code>var User = can.Map.extend({\n  fullName: function(){\n    return this.attr(\"first\")+\" \"+this.attr(\"last\")\n  }\n});\n\nUser.List = can.List.extend({\n  Map: User\n});\n\nvar list = new User.List();\nlist.push({first: \"Justin\", last: \"Meyer\"});\n\nvar user = list.attr(0);\nuser.fullName() //-&gt; \"Justin Meyer\"\n</code></pre>"}],"title":"","src":"can/list/list.js","line":21,"id":309};
 
 	console.log(docData);
 </script>
