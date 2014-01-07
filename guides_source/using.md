@@ -1,7 +1,63 @@
 @page Using Using CanJS
 @parent guides 2
 
-CanJS can be used with [jQuery](#section_jQuery), [Dojo](#section_Dojo), [Mootools](#section_Mootools), [YUI](#section_YUI) and [Zepto](#section_Zepto). You can either include it as an inline script or load it as an [AMD](#section_AMD) module with any of these libraries.
+CanJS can be loaded in a variety of ways, alongsize a variety of libraries, in all the browsers
+you care about. This page covers the different ways to
+use CanJS.
+
+Loaded with:
+
+ - [script tag](#ScriptTag)
+ - [AMD](#AMD)
+ - [StealJS](#StealJS)
+
+Libraries:
+
+ - [jQuery](#jQuery)
+ - [Zepto](#Zepto)
+ - [Dojo](#Dojo)
+ - [Mootools](#Mootools)
+ - [YUI](#YUI) 
+
+Browsers:
+
+ - [IE <= 8](#IE)
+
+
+<h2 id="ScriptTag">Script Tag</h2>
+
+Load CanJS locally or from a CDN with a script tag.  
+
+### Locally
+
+[Download](http://canjs.com/download.html) CanJS to a public folder in your web 
+application.  Add a script tag that points to the library specific version of
+CanJS after the library's script tag.  For example, if you are using jQuery, 
+you will have something like:
+
+    <script src="jquery.1.10.1.js"></script>
+    <script src="can.jquery.js"></script>
+
+Add `<script>` tags for any CanJS plugins you use after 
+the _can.jquery.js_ `<script>` tag.  Read the 
+[jQuery](#jQuery), [Zepto](#Zepto)
+[Dojo](#Dojo), [Mootools](#Mootools), or [YUI](#YUI) sections 
+for additional, library-specific instructions.
+
+### From a CDN
+
+Add a script tag that points to the library specific version of
+CanJS after the library's script tag.  For example, if you are using jQuery, 
+you will have something like:
+
+    <script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="//canjs.com/release/2.0.4/can.jquery.js"></script>
+
+Add `<script>` tags for any CanJS plugins you use after 
+the _can.jquery.js_ `<script>` tag.  Read the 
+[jQuery](#jQuery), [Zepto](#Zepto)
+[Dojo](#Dojo), [Mootools](#Mootools), or [YUI](#YUI) sections 
+for additional, library-specific instructions.
 
 <h2 id="AMD">AMD</h2>
 
@@ -62,7 +118,7 @@ CanJS supports jQuery 1.8+. Include a copy of jQuery along with CanJS to get sta
 &lt;script src="can.jquery.js">&lt;/script>
 &lt;script>
   // start using CanJS
-  can.Model('Todo', {
+  can.Model.extend('Todo', {
     ...
   });
 &lt;/script>
@@ -80,11 +136,11 @@ jQuery events, so for those cases, a workaround should be applied:
 &lt;script src="can.jquery.js">&lt;/script>
 &lt;script>
   // create models
-  Todo = can.Model({ ... });
-  Todo.List = can.Model.List({ ... });
+  Todo = can.Model.extend({ ... });
+  Todo.List = can.Model.List.extend({ ... });
 
   // create control
-  Todos = can.Control({
+  Todos = can.Control.extend({
     // listen to the calendar widget's datepickerselect event
     '{calendar} datepickerselect': function(calendar, ev){
       // do something with the selected date
@@ -146,7 +202,7 @@ mootools.js">&lt;/script>
 &lt;script src="can.mootools.js">&lt;/script>
 &lt;script>
   // start using CanJS
-  Todo = can.Model({
+  Todo = can.Model.extend({
     ...
   });
 &lt;/script>
@@ -167,7 +223,7 @@ Add `'can'` to your normal list of modules with `YUI().use('can', ...)` wherever
   // CanJS with support for modern browsers
   YUI().use('can', function(Y) {
     // start using CanJS
-    Todo = can.Model({
+    Todo = can.Model.extend({
       ...
     });
   });
@@ -175,7 +231,7 @@ Add `'can'` to your normal list of modules with `YUI().use('can', ...)` wherever
   // CanJS with support for IE7 and other browsers without querySelectorAll
   YUI({ loadOptional: true }).use('can', function(Y) {
     // start using CanJS
-    Todo = can.Model({
+    Todo = can.Model.extend({
       ...
     });
   });
@@ -209,7 +265,7 @@ ringify-min.js&3.7.3/build/event-custom-complex/event-custom-complex-min.js&3.
 &lt;script src="can.yui.js">&lt;/script>
 &lt;script>
     // start using CanJS
-    Todo = can.Model({
+    Todo = can.Model.extend({
       ...
     });
 &lt;/script>
@@ -221,11 +277,11 @@ bind to the __selectionChange__ event for a YUI Calendar widget:
 @codestart
 YUI().use('can', 'calendar', function(Y) {
   // create models
-  Todo = can.Model({ ... });
-  Todo.List = can.Model.List({ ... });
+  Todo = can.Model.extend({ ... });
+  Todo.List = can.Model.List.extend({ ... });
 
   // create control
-  Todos = can.Control({
+  Todos = can.Control.extend({
     // listen to the calendar widget's selectionChange event
     '{calendar} selectionChange': function(calendar, ev){
       // do something with the selected date
@@ -261,7 +317,7 @@ to __zepto.js__ when using Zepto 0.8.
 &lt;script src="can.zepto.js">&lt;/script>
 &lt;script>
   // start using CanJS
-  Todo = can.Model({
+  Todo = can.Model.extend({
     ...
   });
 &lt;/script>

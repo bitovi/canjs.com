@@ -199,7 +199,9 @@
 		
 
 		<section class="description">
-			<p>CanJS can be used with <a href="#section_jQuery">jQuery</a>, <a href="#section_Dojo">Dojo</a>, <a href="#section_Mootools">Mootools</a>, <a href="#section_YUI">YUI</a> and <a href="#section_Zepto">Zepto</a>. You can either include it as an inline script or load it as an <a href="#section_AMD">AMD</a> module with any of these libraries.</p>
+			<p>CanJS can be loaded in a variety of ways, alongsize a variety of libraries, in all the browsers
+you care about. This page covers the different ways to
+use CanJS.</p>
 		</section>
 
 		
@@ -211,7 +213,68 @@
 
 		
 		<section class="comment">
-			<h2 id="AMD">AMD</h2>
+			<p>Loaded with:</p>
+
+<ul>
+<li><a href="#ScriptTag">script tag</a></li>
+<li><a href="#AMD">AMD</a></li>
+<li><a href="#StealJS">StealJS</a></li>
+</ul>
+
+<p>Libraries:</p>
+
+<ul>
+<li><a href="#jQuery">jQuery</a></li>
+<li><a href="#Zepto">Zepto</a></li>
+<li><a href="#Dojo">Dojo</a></li>
+<li><a href="#Mootools">Mootools</a></li>
+<li><a href="#YUI">YUI</a> </li>
+</ul>
+
+<p>Browsers:</p>
+
+<ul>
+<li><a href="#IE">IE &lt;= 8</a></li>
+</ul>
+
+<h2 id="ScriptTag">Script Tag</h2>
+
+<p>Load CanJS locally or from a CDN with a script tag.  </p>
+
+<h3>Locally</h3>
+
+<p><a href="http://canjs.com/download.html">Download</a> CanJS to a public folder in your web 
+application.  Add a script tag that points to the library specific version of
+CanJS after the library's script tag.  For example, if you are using jQuery, 
+you will have something like:</p>
+
+<pre><code>&lt;script src="jquery.1.10.1.js"&gt;&lt;/script&gt;
+&lt;script src="can.jquery.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>Add <code>&lt;script&gt;</code> tags for any CanJS plugins you use after 
+the <em>can.jquery.js</em> <code>&lt;script&gt;</code> tag.  Read the 
+<a href="#jQuery">jQuery</a>, <a href="#Zepto">Zepto</a>
+<a href="#Dojo">Dojo</a>, <a href="#Mootools">Mootools</a>, or <a href="#YUI">YUI</a> sections 
+for additional, library-specific instructions.</p>
+
+<h3>From a CDN</h3>
+
+<p>Add a script tag that points to the library specific version of
+CanJS after the library's script tag.  For example, if you are using jQuery, 
+you will have something like:</p>
+
+<pre><code>&lt;script src="//code.jquery.com/jquery-1.10.1.min.js"&gt;&lt;/script&gt;
+&lt;script src="//canjs.com/release/2.0.4/can.jquery.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>Add <code>&lt;script&gt;</code> tags for any CanJS plugins you use after 
+the <em>can.jquery.js</em> <code>&lt;script&gt;</code> tag.  Read the 
+<a href="#jQuery">jQuery</a>, <a href="#Zepto">Zepto</a>
+<a href="#Dojo">Dojo</a>, <a href="#Mootools">Mootools</a>, or <a href="#YUI">YUI</a> sections 
+for additional, library-specific instructions.</p>
+
+<h2 id="AMD">AMD</h2>
 
 <p>The <a href="../download.html">CanJS Download</a> contains an <code>amd</code> folder which allows
 you to load any CanJS component and plugin using an AMD module loader like <a href="http://requirejs.org/">RequireJS</a>.
@@ -263,7 +326,7 @@ and returns the <code>can</code> namespace.</p>
 &lt;script src="can.jquery.js">&lt;/script>
 &lt;script>
   // start using CanJS
-  can.Model('Todo', {
+  can.Model.extend('Todo', {
     ...
   });
 &lt;/script></code></pre>
@@ -279,11 +342,11 @@ jQuery events, so for those cases, a workaround should be applied:</p>
 &lt;script src="can.jquery.js">&lt;/script>
 &lt;script>
   // create models
-  Todo = can.Model({ ... });
-  Todo.List = can.Model.List({ ... });
+  Todo = can.Model.extend({ ... });
+  Todo.List = can.Model.List.extend({ ... });
 
   // create control
-  Todos = can.Control({
+  Todos = can.Control.extend({
     // listen to the calendar widget's datepickerselect event
     '{calendar} datepickerselect': function(calendar, ev){
       // do something with the selected date
@@ -341,7 +404,7 @@ mootools.js">&lt;/script>
 &lt;script src="can.mootools.js">&lt;/script>
 &lt;script>
   // start using CanJS
-  Todo = can.Model({
+  Todo = can.Model.extend({
     ...
   });
 &lt;/script></code></pre>
@@ -360,7 +423,7 @@ Add <code>'can'</code> to your normal list of modules with <code>YUI().use('can'
   // CanJS with support for modern browsers
   YUI().use('can', function(Y) {
     // start using CanJS
-    Todo = can.Model({
+    Todo = can.Model.extend({
       ...
     });
   });
@@ -368,7 +431,7 @@ Add <code>'can'</code> to your normal list of modules with <code>YUI().use('can'
   // CanJS with support for IE7 and other browsers without querySelectorAll
   YUI({ loadOptional: true }).use('can', function(Y) {
     // start using CanJS
-    Todo = can.Model({
+    Todo = can.Model.extend({
       ...
     });
   });
@@ -400,7 +463,7 @@ ringify-min.js&3.7.3/build/event-custom-complex/event-custom-complex-min.js&3.
 &lt;script src="can.yui.js">&lt;/script>
 &lt;script>
     // start using CanJS
-    Todo = can.Model({
+    Todo = can.Model.extend({
       ...
     });
 &lt;/script></code></pre>
@@ -410,11 +473,11 @@ bind to the <strong>selectionChange</strong> event for a YUI Calendar widget:</p
 
 <pre><code class="lang-javascript">YUI().use('can', 'calendar', function(Y) {
   // create models
-  Todo = can.Model({ ... });
-  Todo.List = can.Model.List({ ... });
+  Todo = can.Model.extend({ ... });
+  Todo.List = can.Model.List.extend({ ... });
 
   // create control
-  Todos = can.Control({
+  Todos = can.Control.extend({
     // listen to the calendar widget's selectionChange event
     '{calendar} selectionChange': function(calendar, ev){
       // do something with the selected date
@@ -448,7 +511,7 @@ to <strong>zepto.js</strong> when using Zepto 0.8.</p>
 &lt;script src="can.zepto.js">&lt;/script>
 &lt;script>
   // start using CanJS
-  Todo = can.Model({
+  Todo = can.Model.extend({
     ...
   });
 &lt;/script></code></pre>
@@ -468,7 +531,7 @@ fixes this and we've already submitted a pull request so future users of HTML5 S
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"page","name":"Using","description":"<p>CanJS can be used with <a href=\"#section_jQuery\">jQuery</a>, <a href=\"#section_Dojo\">Dojo</a>, <a href=\"#section_Mootools\">Mootools</a>, <a href=\"#section_YUI\">YUI</a> and <a href=\"#section_Zepto\">Zepto</a>. You can either include it as an inline script or load it as an <a href=\"#section_AMD\">AMD</a> module with any of these libraries.</p>","title":"Using CanJS","parent":"guides","order":2,"src":"guides_source/using.md","id":25};
+	var docData = {"type":"page","name":"Using","description":"<p>CanJS can be loaded in a variety of ways, alongsize a variety of libraries, in all the browsers\nyou care about. This page covers the different ways to\nuse CanJS.</p>","title":"Using CanJS","parent":"guides","order":2,"src":"guides_source/using.md","id":25};
 
 	console.log(docData);
 </script>

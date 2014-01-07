@@ -278,7 +278,7 @@
 		
 
 		<section class="description">
-			
+			<h2>How do I...</h2>
 		</section>
 
 		
@@ -290,17 +290,568 @@
 
 		
 		<section class="comment">
-			<p>To the left is a list of <strong>CanJS</strong> recipes to help you learn CanJS.  To
-add your own, simply <a href="https://github.com/bitovi/canjs/edit/gh-pages/recipes.md">edit this file</a>. To
-help create a JSFiddle, we've created the following fiddles you can fork:</p>
+			<h2>Get Started</h2>
 
-<ul>
-<li><a href="http://jsfiddle.net/donejs/qYdwR/">jQuery and CanJS</a></li>
-<li><a href="http://jsfiddle.net/donejs/7Yaxk/">Zepto and CanJS</a></li>
-<li><a href="http://jsfiddle.net/donejs/9x96n/">Dojo and CanJS</a></li>
-<li><a href="http://jsfiddle.net/donejs/w6m73/">YUI and CanJS</a></li>
-<li><a href="http://jsfiddle.net/donejs/mnNJX/">Mootools and CanJS</a></li>
-</ul>
+<p>There are a variety of ways to get CanJS.  Read the <a href="http://canjs.com/guides/Using.html">using CanJS guide</a>
+for comprehensive list.  For the following recepies, we will load CanJS
+with a <code>&lt;script&gt;</code> tag pointed to CanJS's CDN.</p>
+
+<p>Create a file called <code>myapp.html</code> and put the following in it to get started:</p>
+
+<pre><code>&lt;script src="//code.jquery.com/jquery-1.10.1.min.js"&gt;&lt;/script&gt;
+&lt;script src="//canjs.com/release/2.0.4/can.jquery.js"&gt;&lt;/script&gt;
+&lt;script type="text/mustache" id="app-template"&gt;
+//Template will go here
+&lt;/script&gt;
+&lt;script&gt;
+//Application code will go here
+&lt;/script&gt;
+
+&lt;!-- CanJS needs a place to put your application --&gt;
+&lt;div id="my-app"&gt;&lt;/div&gt;
+</code></pre>
+
+<p>To follow along with the other recipes, you can also use 
+<a href="http://jsfiddle.net/donejs/GE3yf/">this JSFiddle</a> as a template.</p>
+
+<p>You can also <a href="http://canjs.com/download.html">Download CanJS</a> 
+or follow <a href="http://canjs.com/guides/Tutorial.html">other tutorials</a> to get
+started, but for the rest of the examples below, we'll be using this
+setup.</p>
+
+<h2>Say "Hello World"</h2>
+
+<p>In CanJS, content is displayed using <em>templates</em>.  Instead of manually
+changing elements in the DOM, you create a template and CanJS
+automatically updates the page from the data in your application code.</p>
+
+<h3>Template</h3>
+
+<p>In the template section of <code>myapp.html</code>, put the following:</p>
+
+<pre><code>&lt;script type="text/mustache" id="app-template"&gt;
+&lt;h1&gt;{{message}}&lt;/h1&gt;
+&lt;/script&gt;
+</code></pre>
+
+<p>This template displays the value of <code>message</code>.</p>
+
+<h3>Pass message to the Template</h3>
+
+<p>Templates are rendered with <a href="../docs/can.view.html">can.view</a>. 
+can.view takes two arguments: the first is the <code>id</code> of the template,
+and the second is the data passed to the template (in this case,
+an object with a <code>message</code> property).</p>
+
+<p>Render the template with a <code>message</code> and insert it into the page with:</p>
+
+<pre><code>&lt;script&gt;
+// Give message a value
+var data = {message: "Hello World!"};
+
+// Pass the id of the template and the data, containing our message to can.view
+var frag = can.view("app-template", data);
+
+//Load the DocumentFragment in the page
+$("#my-app").html( frag )
+&lt;/script&gt;
+</code></pre>
+
+<blockquote>
+  <p><code>frag</code> is a <a href="https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment">DocumentFragment</a>. A DocumentFragment 
+  is a lightweight container of HTMLElements that can be inserted in the page quickly. They can be used
+  anywhere a normal HTMLElement is used.</p>
+</blockquote>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/GE3yf/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+<h2>Update Text in the Page</h2>
+
+<p>CanJS will update the page automatically when observable data changes. To make 
+observable data, pass raw data to <a href="../docs/can.Map.html">can.Map</a>, 
+<a href="../docs/can.List.html">can.List</a> or <a href="../docs/can.compute.html">can.compute</a> like:</p>
+
+<pre><code>var data = new can.Map({message: "Hello World!"});
+</code></pre>
+
+<p>To change the message, use the <a href="../docs/can.Map.prototype.attr.html">attr()</a> method of <code>can.Map</code>.</p>
+
+<pre><code>data.attr("message", "Goodbye World!")
+</code></pre>
+
+<p>When the button is clicked in the example below, the message is
+changed with <code>data.attr()</code>.</p>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/quTtE/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+<h3>Show a List in a Template</h3>
+
+<p>To make an Array observable, pass it to <a href="../docs/can.List.html">can.List</a>.</p>
+
+<pre><code>var people = new can.List([
+    {firstname: "John", lastname: "Doe"},
+    {firstname: "Emily", lastname: "Dickinson"}
+])
+
+var frag = can.view("app-template", {people: people})
+$("#my-app").html(frag);
+</code></pre>
+
+<p>To show a list of data within a mustache template, use the <code>#each</code> operator.</p>
+
+<pre><code>&lt;ul&gt;
+{{#each people}}
+  &lt;li&gt;
+    {{lastname}}, {{firstname}}
+  &lt;li&gt;
+{{/each}}
+&lt;/ul&gt;
+</code></pre>
+
+<p>Inside the <code>#each</code> block, the attributes are scoped to individual
+objects in the list of <code>people</code>.</p>
+
+<p>To make changes to the list, use an Array method such as 
+<a href="/docs/can.List.prototype.push.html">push</a>
+or <a href="/docs/can.List.prototype.pop.html">pop</a>.</p>
+
+<pre><code>// adds a new person
+people.push({firstname: "Paul", lastname: "Newman"})
+// removes the last person
+people.pop()
+</code></pre>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/Pgbpa/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+<h3>Show and Hide Elements</h3>
+
+<p>Instead of showing and hiding elements by changing the DOM
+directly like:</p>
+
+<pre><code>$("h1").show()
+$("h1").hide()
+</code></pre>
+
+<p>Make the template show or hide those elements when a value 
+changes.  </p>
+
+<pre><code>{{#if visible}}
+  &lt;h1&gt;{{message}}&lt;/h1&gt;
+{{/if}}
+</code></pre>
+
+<p>When the button is clicked, change the observable value.</p>
+
+<pre><code>data.attr("visible", !data.attr("visible"))
+</code></pre>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/eFss4/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+<h4>Application State</h4>
+
+<p>Typically, it's not a good idea to mix view state and application data.
+In the previous example, the <code>message</code> is application data, while the 
+<code>visible</code> property represents view state. In CanJS, state and data
+should be separated using different observables.</p>
+
+<pre><code>var data = new can.Map({message: "Hello World!"}),
+    state = new can.Map({visible: true});
+
+var frag = can.view("app-template", {
+  data: data,
+  state: state
+})
+</code></pre>
+
+<p>As an application gets more complex, separating state from data
+makes things more maintainable.</p>
+
+<h3>Creating a Live Timestamp</h3>
+
+<p>This recipe demonstrates adding a <code>createdAt</code> property to the data like:</p>
+
+<pre><code> var data = new can.Map({
+   message: "Hello World",
+   createdAt: new Date()
+ })
+</code></pre>
+
+<p>On the page, this should be displayed as a human readable
+timestamp:</p>
+
+<pre><code> &lt;h1&gt;Hello World &lt;i&gt;created just now&lt;/i&gt;&lt;/h1&gt;
+</code></pre>
+
+<p><strong>and</strong> as time passes, the timestamp will update to:</p>
+
+<pre><code>&lt;h1&gt;Hello World &lt;i&gt;created a few seconds ago&lt;/i&gt;&lt;/h1&gt;
+</code></pre>
+
+<p><strong>and</strong> then update to "some seconds ago" and so forth.</p>
+
+<p>To accomplish this, create a <code>prettyDate</code> <a href="../docs/can.Mustache.helper.html">mustache helper</a> that converts
+dates into a human readable format.  A helper function is called from within the template where its result 
+will be displayed.  The following calls <code>prettyDate</code> with an observable value of <code>createdAt</code>.</p>
+
+<pre><code>&lt;h1&gt;
+  {{message}} 
+  &lt;i&gt;created {{prettyDate createdAt}}&lt;/i&gt;
+&lt;/h1&gt;
+</code></pre>
+
+<p>To call a function from a template, <a href="../docs/can.Mustache.registerHelper.html">register</a> the function
+as a helper function:</p>
+
+<pre><code>can.Mustache.registerHelper('prettyDate', function( date ){
+
+})
+</code></pre>
+
+<p>In this helper, <code>date</code> is not a Date object, instead it is an observable <a href="../docs/can.compute.html">can.compute</a> that
+contains the <code>createdAt</code> value.  A <code>can.compute</code> is an observables that contains a single value.  To read the value,
+call the compute like you would any other function:</p>
+
+<pre><code>date() //-&gt; Date
+</code></pre>
+
+<p>We need to compare <code>date</code> with the current time. The current time
+will be represented by a compute:</p>
+
+<pre><code>var now = can.compute( new Date() )
+</code></pre>
+
+<p>As the current time changes, we update <code>now</code> with the new time. To change the value of a <code>can.compute</code>,
+call it with its new value as an argument:</p>
+
+<pre><code>// update that property every second        
+setTimeout(function(){
+    now( new Date() );
+    setTimeout(arguments.callee, 1000);
+},1000)
+</code></pre>
+
+<p>The <code>prettyDate</code> helper will read and compare the <code>date</code> and <code>now</code> compute to 
+get the time elapsed in seconds:</p>
+
+<pre><code>var timeElapsed = ( now() - date() ) / 1000
+</code></pre>
+
+<p>Using the <code>timeElapsed</code>, <code>prettyDate</code> returns human readable timestamps:</p>
+
+<pre><code>  if(timeElapsed &lt; 1.2){
+    return "just now"
+  } else if (timeElapsed &lt; 10) {
+    return "a couple seconds ago"   
+  } 
+  ... 
+  else {
+    return Math.round(difference/60)+" minutes ago"
+  }
+</code></pre>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/VQNSH/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+<h2>Handle user Input</h2>
+
+<h3>Changing the page based on a value</h3>
+
+<p>When a data value is changed by user interaction (or by other means),
+the page can be automatically updated using <code>can-value</code>.</p>
+
+<pre><code>//Coming soon
+</code></pre>
+
+<h3>Changing a value based on user interaction</h3>
+
+<p>To make changes to observable data, CanJS is able to listen for
+user interaction using helper functions.</p>
+
+<pre><code>//Coming soon
+</code></pre>
+
+<h3>Show the Same Data in Two Places</h3>
+
+<p>Using the observable pattern, the same data can be showed in
+two places at once.  Notice that when 'do dishes' changes on
+one list, it also changes on the other.  This is because the
+same value is shared accross both lists.</p>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/SnRKV/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+<h3>Converting User Input to Data</h3>
+
+<pre><code>//Coming soon
+</code></pre>
+
+<h3>Update data when a Form is Changed</h3>
+
+<h2>Make Widgets / UI Elements</h2>
+
+<p>One way to create widgets is to use <code>can.Control</code> helper functions
+to change the classes of elements that are then styled
+with CSS.</p>
+
+<h3>Create a tab widget</h3>
+
+<p>The helper functions for a tab widget include
+finding a tab's content for a given <code>li</code> (the tab)
+and on the user clicking a list element, hiding
+the old tab and show a new one.</p>
+
+<pre><code>var Tabs = can.Control.extend({
+    init: function ( el ) {
+    /*
+     * initialization and rendering
+     * ...
+     * /
+    },
+    // finds tab for a given li
+    tab: function ( li ){
+        return $( li.find( 'a' ).attr( 'href' ));
+    }
+    // hides the old active tab, shows new one
+    'li click': function( el, ev ) {
+        ev.preventDefault();
+        this.tab( this.element.find( '.active' )
+                    .removeClass( 'active' ) ).hide()
+        this.tab( el.addClass( 'active' ) ).show();
+    }
+})
+</code></pre>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/kXLLt/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+<h3>Create a tooltip</h3>
+
+<p>For a tooltip, helper functions include initializing
+the tooltip when an element is clicked, then listening
+for any click outside the tooltip to hide it.</p>
+
+<p>First, the tooltip's styling and behavior is defined.</p>
+
+<pre><code>var Tooltip = can.Control.extend({
+    init: function(){
+        // styling and display of the tooltip
+    },
+    '{window} click': function( el, ev ) {
+        // hide only if we clicked outside the tooltip
+        // or outside the relative element
+        if (!this.element.has( ev.target ).length &amp;&amp;
+            ev.target !== this.element[0] &amp;&amp;
+            ev.target !== this.options.relativeTo[0] ) {
+          this.element.remove();
+        }
+    }
+})
+</code></pre>
+
+<p>Then, when an <code>li</code> element is clicked, a new tooltip
+is created.</p>
+
+<pre><code>$("li").bind("click", function(){
+    new Tooltip( $("&lt;div&gt;"), {
+      relativeTo : $(this),
+      html : "tooltip"
+    })
+})
+</code></pre>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/3wtLW/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+<h3>Create a tree combo</h3>
+
+<p>A more advanced UI element, like a tree combo, uses
+advanced templates and helpers in its <code>can.Control</code>
+object.</p>
+
+<p>The templates include breadcrumbs for navigational display
+and a list of options.</p>
+
+<pre><code>&lt;!-- The breadcrumb template --&gt;
+&lt;ul class='breadcrumb'&gt;
+    &lt;li&gt;&lt;%= title %&gt;&lt;/li&gt;
+    &lt;% breadcrumb.each(function(item){ %&gt;
+        &lt;li &lt;%=(el)-&gt; el.data('item',item) %&gt;&gt;
+          &lt;%= item.attr('title') %&gt;
+        &lt;/li&gt;
+    &lt;%})%&gt;
+&lt;/ul&gt;
+
+&lt;!-- The options template --&gt;
+&lt;ul class='options'&gt;
+    &lt;% selectableItems().each(function(item){ %&gt;
+        &lt;li class='&lt;%= selected.indexOf(item) &gt;= 0 ? "checked":""%&gt;'
+            &lt;%=(el)-&gt; el.data('item',item) %&gt; &gt;
+            &lt;input type="checkbox"
+                   &lt;%= selected.indexOf(item) &gt;= 0 ? "checked":""%&gt;&gt;
+
+            &lt;%= item.attr('title') %&gt;
+
+            &lt;%if(item.children &amp;&amp; item.children.length){ %&gt;
+                &lt;button class="showChildren"&gt;→&lt;/button&gt;
+            &lt;%}%&gt;
+        &lt;/li&gt;
+    &lt;% }) %&gt;
+&lt;/ul&gt;
+</code></pre>
+
+<p>In addition to rendering the template the <code>can.Control</code> object
+listens for clicks on the breadcrumbs and navigation arrows as
+well as the checkboxes for saving the options selected.</p>
+
+<pre><code>var TreeCombo = can.Control.extend({
+    init: function() {
+        /*
+         * initialization and rendering
+         * ...
+         */
+    },
+     ".showChildren click": function(el, ev){
+        // add the item to the breadcrumb
+        this.options.breadcrumb.push(el.closest('li').data('item'));
+        // prevents selection
+        ev.stopPropagation();
+      },
+      ".breadcrumb li click": function(el){
+        var item = el.data('item');
+        // if you clicked on a breadcrumb li with data
+        if(item){
+          // remove all breadcrumb items after it
+          var index = this.options.breadcrumb.indexOf(item);
+          this.options.breadcrumb.splice(index+1, 
+                                         this.options.breadcrumb.length - index-1)
+        } else {
+          // clear the breadcrumb
+          this.options.breadcrumb.replace([])
+        }
+
+      },
+      ".options li click": function(el){
+        // toggles an item's existance in the selected array
+        var item = el.data('item'),
+            index = this.options.selected.indexOf(item);
+        if(index === -1 ){
+          this.options.selected.push(item);
+        } else {
+          this.options.selected.splice(index, 1) 
+        }
+      }
+
+    });
+})
+</code></pre>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/XP5pv/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+<h2>Use navigation in a single-page app</h2>
+
+<p>To implement navigation in a single-page app, use <code>can.route</code>
+to synchronize the browser's <code>window.location.hash</code> with the
+application's state (represented in a <code>can.Map</code>).  This allows
+the usage of the "back" and "forward" buttons on the browser,
+as well as the ability to link to specific pages within the app.</p>
+
+<h3>Display multiple pages</h3>
+
+<p>To implement pagination that will work with the <code>hash</code>, the route
+must be updated when the page changes, and the page must
+be updated when the route changes.</p>
+
+<pre><code>// update the route when the page state changes
+"{paginate} offset": function(paginate){
+    can.route.attr('page', paginate.page());
+},
+// update the page's state when the route changes
+"{can.route} page": function(route){
+    this.options.paginate.page(route.attr('page'));
+}
+</code></pre>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/Rtz2J/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+<h3>Add history to a tab widget</h3>
+
+<p>Similarly to pagination, <code>can.route</code> can be used to
+add history and navigation to a tab widget.  Instead
+of using pages, <code>can.route</code> tracks which tab
+is being viewed and synchronizes it with the browser's
+<code>window.location.hash</code>.</p>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/epjUv/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+<h3>?? Handle advanced navigation with sections and subsections</h3>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/2UL6R/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+<h2>Save data</h2>
+
+<pre><code>// coming soon
+</code></pre>
+
+<h3>Interact with a Server</h3>
+
+<pre><code>// coming soon
+</code></pre>
+
+<h3>Create a REST interface</h3>
+
+<pre><code>// coming soon
+</code></pre>
+
+<h3>Simulate a server during development</h3>
+
+<pre><code>// coming soon
+</code></pre>
+
+<h3>Use LocalStorage</h3>
+
+<pre><code>// coming soon
+</code></pre>
+
+<h3>Implement Caching</h3>
+
+<pre><code>// coming soon
+</code></pre>
+
+<h2>Validate Forms</h2>
+
+<pre><code>// coming soon
+</code></pre>
+
+<h2>Authenticate Users</h2>
+
+<pre><code>// coming soon
+</code></pre>
+
+<h2>Test an Application</h2>
+
+<pre><code>// coming soon
+</code></pre>
+
+<h2>Use a third-party UI Library</h2>
+
+<h3>Bootstrap</h3>
+
+<pre><code>// coming soon
+</code></pre>
+
+<h3>jQuery UI</h3>
+
+<pre><code>// coming soon
+</code></pre>
+
+<h2>Make a real-time application</h2>
+
+<p>Making a real-time applicaiton in CanJS is as simple as listening for changes on the server.  Binding values to data on the server allows elements
+on the page to atuomatically update accordingly, as seen in this real-time chat application.</p>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/bBVHs/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+<h2>Structure an application</h2>
+
+<p>To understand the structure of a full application, take a look at the CanJS implementation of TodoMVC.  This implementation uses <code>can.Component</code> to structure the application and to maintain separation between design and behavior.</p>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/CRZXH/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
 		</section>
 		
 
@@ -309,7 +860,7 @@ help create a JSFiddle, we've created the following fiddles you can fork:</p>
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"page","name":"Recipes","description":"","title":"Recipes","parent":"guides","order":4,"comment":" ","src":"guides_source/recipes.md","id":16,"children":[{"type":"page","name":"RecipesControls","description":"","title":"Controls","parent":"Recipes","order":0,"comment":" ","src":"guides_source/recipes_controls.md","id":17},{"type":"page","name":"RecipesEverything","description":"","title":"Everything Together","parent":"Recipes","order":4,"comment":" ","src":"guides_source/recipes_everything.md","id":18},{"type":"page","name":"RecipesLiveBindings","description":"","title":"Live Bindings","parent":"Recipes","order":1,"comment":" ","src":"guides_source/recipes_livebindings.md","id":19},{"type":"page","name":"RecipesModels","description":"","title":"Models","parent":"Recipes","order":3,"comment":" ","src":"guides_source/recipes_models.md","id":20},{"type":"page","name":"RecipesRouting","description":"","title":"Routing","parent":"Recipes","order":2,"comment":" ","src":"guides_source/recipes_routing.md","id":21}]};
+	var docData = {"type":"page","name":"Recipes","description":"<h2>How do I...</h2>","title":"Recipes","parent":"guides","order":4,"src":"guides_source/recipes.md","id":16,"children":[{"type":"page","name":"RecipesControls","description":"","title":"Controls","parent":"Recipes","order":0,"comment":" ","src":"guides_source/recipes_controls.md","id":17},{"type":"page","name":"RecipesEverything","description":"","title":"Everything Together","parent":"Recipes","order":4,"comment":" ","src":"guides_source/recipes_everything.md","id":18},{"type":"page","name":"RecipesLiveBindings","description":"","title":"Live Bindings","parent":"Recipes","order":1,"comment":" ","src":"guides_source/recipes_livebindings.md","id":19},{"type":"page","name":"RecipesModels","description":"","title":"Models","parent":"Recipes","order":3,"comment":" ","src":"guides_source/recipes_models.md","id":20},{"type":"page","name":"RecipesRouting","description":"","title":"Routing","parent":"Recipes","order":2,"comment":" ","src":"guides_source/recipes_routing.md","id":21}]};
 
 	console.log(docData);
 </script>
