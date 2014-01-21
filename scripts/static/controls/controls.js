@@ -23,4 +23,5 @@ steal("./downloadCustomizer.js").then(
 	"./githubTooltip.js",
 	"./pluginTooltip.js",
 	"./projectTooltip.js",
-	"./twitterTab.js")
+	"./twitterTab.js",
+	"./meetupsTab.js")

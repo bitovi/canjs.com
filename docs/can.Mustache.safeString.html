@@ -59,6 +59,7 @@
             <li><a href="http://bithub.com/canjs/article/">Articles</a></li>
             <li><a href="http://github.com/bitovi/canjs">Github</a></li>
             <li><a href="http://twitter.com/canjs">Twitter</a></li>
+            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
           </ul>
         </li>
         <li class=""><a href="../download.html">Download</a></li>
@@ -813,7 +814,7 @@
 
 <ul class="links">
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.2/view/mustache/mustache.js#L1651">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.0.4/view/mustache/mustache.js#L1651">source</a></li>
 	
 	
 		
@@ -893,7 +894,7 @@ you will want to manually escape parameters with <code><a href="can.esc.html">ca
   url  = can.esc(url);
 
   var result = '&lt;a href="' + url + '"&gt;' + text + '&lt;/a&gt;';
-  return new can.Mustache.safeString(result);
+  return can.Mustache.safeString(result);
 });</code></pre>
 
 <p>Rendering:</p>
@@ -904,7 +905,7 @@ you will want to manually escape parameters with <code><a href="can.esc.html">ca
 
 <pre><code class="lang-javascript">&lt;div&gt;&lt;a href="http://google.com"&gt;Google&lt;/a&gt;&lt;/div&gt;</code></pre>
 
-<p>As an anchor tag whereas if we would have just returned the result rather than a new
+<p>As an anchor tag whereas if we would have just returned the result rather than a
 <code>can.Mustache.safeString</code> our template would have rendered a div with the escaped anchor tag.</p>
 		</section>
 		
