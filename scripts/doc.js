@@ -48,11 +48,23 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 		version = ""+pkg.version;
 	
 	
+	var copyCanJSTo = function(loc){
+		var dest = new steal.URI(loc);
+		if (!dest.exists()) {
+			dest.mkdirs();
+		}
+		console.log("Copying CanJS files to "+dest)
+		new steal.URI('can').copyTo(dest);
+		
+		//new steal.URI(loc+"/.git").removeDir();
+		new steal.URI(loc+"/node_modules").removeDir();
+	}
 	
+	copyCanJSTo(version+"/can");
 	
 	DocumentJS('scripts/doc.html',{
 		"markdown": [ 'can' ],
-		"out": "docs/"+version,
+		"out": version+"/docs",
 		"parent": "canjs",
 		// "static": "documentjs/site/static",
 		"root": '..',
@@ -87,7 +99,6 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 		minifyBuild: minifyBuild,
 		versions: [{number: "1.1.8"},{number:"2.0.5-pre", branch: "master"}, {number: "2.1.0-pre", branch: "minor"}],
 		version: version,
-		demoSrcRoot: "."
 	});
 	
 	return;
