@@ -97,7 +97,7 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 		},
 		forceBuild: forceBuild,
 		minifyBuild: minifyBuild,
-		versions: [{number: "1.1.8"},{number:"2.0.5-pre", branch: "master"}, {number: "2.1.0-pre", branch: "minor"}],
+		versions: [{number: "1.1.8"},{number: "2.0.4"},{number:"2.0.5-pre", branch: "master"}, {number: "2.1.0-pre", branch: "minor"}],
 		version: version,
 	});
 	
