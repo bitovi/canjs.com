@@ -1,3 +1,11 @@
+<h2>
+CanJS 
+<select id="version">
+{{#versions}}
+	<option {{#isLatestVersion}}selected{{/isLatestVersion}} value="{{version}}">{{version}}</option>
+{{/versions}}
+</select>
+</h2>
 <ul class="api">
 	<!-- First Level -->
 	{{#firstLevelChildren}}

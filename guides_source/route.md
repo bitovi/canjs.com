@@ -81,7 +81,7 @@ var Routing = can.Control({
 	':type/:id route': function(data) {
 		// Matches routes like #!recipes/5,
 		// and will get passed {id: 5, type: 'recipes'} as data.
-	},
+	}
 })
 @codeend
 

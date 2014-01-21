@@ -44,11 +44,15 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 
 	var pkg = JSON.parse(readFile('./can/package.json'));
 	var self = JSON.parse(readFile('./package.json'));
-	var builder = JSON.parse(readFile('./can/builder.json'));
-
+	var builder = JSON.parse(readFile('./can/builder.json')),
+		version = ""+pkg.version;
+	
+	
+	
+	
 	DocumentJS('scripts/doc.html',{
 		"markdown": [ 'can' ],
-		"out": "docs",
+		"out": "docs/"+version,
 		"parent": "canjs",
 		// "static": "documentjs/site/static",
 		"root": '..',
@@ -72,14 +76,21 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 		},
 		helpers: function(data, config, getCurrent, oldHelpers){
 			return {
-				documentTitle: documentTitle
+				documentTitle: documentTitle,
+				isLatestVersion: function(options){
+					return this.version == config.version ?
+						options.fn(this) : options.inverse(this);
+				}
 			}
 		},
 		forceBuild: forceBuild,
-		minifyBuild: minifyBuild
-		
+		minifyBuild: minifyBuild,
+		versions: [{number: "1.1.8"},{number:"2.0.5-pre", branch: "master"}, {number: "2.1.0-pre", branch: "minor"}],
+		version: version,
+		demoSrcRoot: "."
 	});
 	
+	return;
 	var pkg = JSON.parse(readFile('./can/package.json'));
 	var self = JSON.parse(readFile('./package.json'));
 	var builder = JSON.parse(readFile('./can/builder.json'));
