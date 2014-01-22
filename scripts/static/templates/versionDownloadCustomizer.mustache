@@ -1,0 +1,17 @@
+<button class="customize">Other versions <span class="arrow down"></span></button>
+<div class="customize-box other-versions-wrapper">
+    {{#if leftDownloads.length}}
+        <ul class="half">
+            {{#leftDownloads}}
+                <li><a href="{{ zipball_url }}">CanJS {{ name }}</a></li>
+            {{/leftDownloads}}
+        </ul>
+    {{/if}}
+    {{#if rightDownloads.length}}
+        <ul class="half">
+            {{#rightDownloads}}
+                <li><a href="{{ zipball_url }}">CanJS {{ name }}</a></li>
+            {{/rightDownloads}}
+        </ul>
+    {{/if}}
+</div>

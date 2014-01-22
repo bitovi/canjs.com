@@ -25,7 +25,7 @@ steal("jquery","jquery-ui.js", "can","can/construct/super", "can/util/function")
 		}, 0);
 	};
 
-	
+
 	// Based on https://github.com/jaubourg/ajaxHooks/blob/master/src/ajax/xdr.js
 	if ( window.XDomainRequest && !jQuery.support.cors ) {
 		jQuery.ajaxTransport(function( s ) {
@@ -77,7 +77,7 @@ steal("jquery","jquery-ui.js", "can","can/construct/super", "can/util/function")
 			}
 		});
 	}
-	
+
 	var initControls = function(mappings) {
 		can.each(mappings, function(name, selector) {
 			$(selector).each(function() {
@@ -98,7 +98,8 @@ steal("jquery","jquery-ui.js", "can","can/construct/super", "can/util/function")
 			'.sidebar': 'Menu',
 			'.project-carousel': 'ProjectCarousel',
 			'.article-carousel': 'ArticleCarousel',
-			"#versions": "Versions"
+			"#versions": "Versions",
+			'.download-wrapper': 'VersionDownloadCustomizer'
 		});
 
 		// Syntax highlighting

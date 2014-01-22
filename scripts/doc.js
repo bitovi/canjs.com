@@ -107,9 +107,6 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 			"docs": "shared/_templates/docs.mustache",
 			"static" : "scripts/static",
 			"templates": "scripts/templates",
-			statics: {
-				src: "_pages"
-			},
 			helpers: function(data, config, getCurrent, oldHelpers){
 				return {
 					documentTitle: documentTitle,
@@ -120,10 +117,15 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 					// if we are in /2.0.4/docs/can.Component.html,
 					// we want links to download to be ../../download.html
 					removeVersionUrl: function(url){
-						if(config.isVersioned) {
+						// statics don't have a root
+						if(config.isVersioned && this.root) {
 							return "../../"+url;
 						} else {
-							return config.root + '/' + url;
+							if(this.root){
+								return this.root + '/' + url;
+							} else {
+								return url;
+							}
 						}
 					}
 				}
@@ -157,10 +159,15 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 							options.fn(this) : options.inverse(this);
 					},
 					removeVersionUrl: function(url){
-						if(config.isVersioned) {
+						// statics don't have a root
+						if(config.isVersioned && this.root) {
 							return "../../"+url;
 						} else {
-							return config.root + '/' + url;
+							if(this.root){
+								return this.root + '/' + url;
+							} else {
+								return url;
+							}
 						}
 					}
 				}
@@ -176,16 +183,16 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 	// UPDATING FILES
 	
 	// clean versioned folder
-	new steal.URI(version).removeDir();
+	//new steal.URI(version).removeDir();
 	
 	// Make versioned CanJS
-	copyCanJSTo(version+"/can");
+	//copyCanJSTo(version+"/can");
 	
 	// Make versioned API docs
-	DocumentJS('scripts/doc.html', apiOptions);
+	//DocumentJS('scripts/doc.html', apiOptions);
 	
 	// Make versioned guides
-	DocumentJS(null, guidesOptions);
+	//DocumentJS(null, guidesOptions);
 	
 	
 	// if version is the last non-branch version, put in "docs" and "guides" 
@@ -201,15 +208,19 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 			steal.extend( apiOptions, {
 				out: "docs",
 				versionsSrc: "../versions.json",
-				isVersioned: false
+				isVersioned: false,
+				
+				statics: {
+					src: "_pages"
+				}
 			}) );
 		// Make current guides
-		DocumentJS(null, 
+		/*DocumentJS(null, 
 			steal.extend( guidesOptions, {
 				out: "guides",
 				versionsSrc: "../versions.json",
 				isVersioned: false
-			} ));
+			} ));*/
 		
 		
 	}

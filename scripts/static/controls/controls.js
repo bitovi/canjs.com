@@ -1,4 +1,4 @@
-steal("./downloadCustomizer.js").then(
+steal("./downloadCustomizer.js", "./downloadCustomizerDropdown.js").then(
 	"./apiSignature.js",
 	"./articleCarousel.js",
 	"./benefitTabs.js",
@@ -8,6 +8,7 @@ steal("./downloadCustomizer.js").then(
 	"./contentsList.js",
 	"./forumsTab.js",
 	"./githubTab.js",
+	"./versionDownloadCustomizer.js",
 	"./heroDownloadCustomizer.js",
 	"./ircTab.js",
 	"./issuesTab.js",
@@ -25,4 +26,5 @@ steal("./downloadCustomizer.js").then(
 	"./projectTooltip.js",
 	"./twitterTab.js",
 	"./meetupsTab.js",
-	"./versions.js")
+	"./versions.js",
+	"./meetupsTab.js")
