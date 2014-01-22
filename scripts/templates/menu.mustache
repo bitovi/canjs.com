@@ -1,9 +1,7 @@
 <h2>
 CanJS 
-<select id="version">
-{{#versions}}
-	<option {{#isLatestVersion}}selected{{/isLatestVersion}} value="{{version}}">{{version}}</option>
-{{/versions}}
+<select id="versions">
+	<option value="{{number}}">{{version}}</option>
 </select>
 </h2>
 <ul class="api">

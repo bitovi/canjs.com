@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>can.fixture - CanJS API</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <link rel="stylesheet" type="text/css" 
+    
+      href='./static/production.css'
+     />
+  <!--[if lt IE 9]>
+   <script type="text/javascript" src="../scripts/static/lib/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+  <header>
+    <nav class="container">
+
+      <div class="logo-menu">
+        <a class="brand canjs" href="../index.html">CanJS</a>
+        <ul class="dropdown-menu">
+          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+          <li class="active"><a href="../index.html">CanJS</a></li>
+          <li><a href="http://jquerypp.com">jQuery++</a></li>
+          <li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
+          <li><a href="http://javascriptmvc.com/docs.html#!FuncUnit">FuncUnit</a></li>
+          <li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
+        </ul>
+      </div>
+      <ul class="nav">
+        <li class=""><a href="../../index.html">Home</a></li>
+        <li class=""><a href="../guides/index.html">Guides</a></li>
+        <li class="active"><a href="../docs/index.html">Api</a></li>
+        <li class=" community-menu">
+          <a href="../../community.html#!forums">Community</a>
+          <ul class="dropdown-menu">
+            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
+            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
+            <li><a href="http://bithub.com/canjs/app/">Apps</a></li>
+            <li><a href="http://bithub.com/canjs/plugin/">Plugins</a></li>
+            <li><a href="http://bithub.com/canjs/article/">Articles</a></li>
+            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+          </ul>
+        </li>
+        <li class=""><a href="../../download.html">Download</a></li>
+      </ul>
+      <div class="pull-right">
+        <div class="bitovi-menu">
+          <a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+          <ul class="dropdown-menu">
+            <li><a href="http://bitovi.com">Bitovi.com</a></li>
+            <li><a href="http://bitovi.com/blog/">Blog</a></li>
+            <li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+            <li><a href="http://bitovi.com/training/">Training</a></li>
+            <li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+            <li><a href="http://bitovi.com/people/">People</a></li>
+            <li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<h2>
+CanJS 
+<select id="versions">
+	<option value="">1.1</option>
+</select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.Construct.html" data-search="can.Construct">
+				can.Construct
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Control.html" data-search="can.Control">
+				can.Control
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Model.html" data-search="can.Model">
+				can.Model
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Model.List.html" data-search="can.Model.List">
+				can.Model.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Observe.html" data-search="can.Observe">
+				can.Observe
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Observe.List.html" data-search="can.Observe.List">
+				can.Observe.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.compute.html" data-search="can.compute">
+				can.compute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container active">
+	   		<a href="can.fixture.html" data-search="can.fixture">
+				can.fixture
+			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="property" 
+							href="can.fixture.delay.html" 
+							data-search="delay">
+							delay
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>Types</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container parent ">
+						<a 	class="typedef" 
+							href="can.fixture.types.Store.html" 
+							data-search="Store">
+							Store
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="typedef" 
+							href="can.fixture.types.requestHandler.html" 
+							data-search="requestHandler">
+							requestHandler
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="typedef" 
+							href="can.fixture.types.responseHandler.html" 
+							data-search="responseHandler">
+							responseHandler
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.fixture.rand.html" 
+							data-search="rand">
+							rand
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="property" 
+							href="can.fixture.on.html" 
+							data-search="on">
+							on
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="property" 
+							href="can.fixture.rootUrl.html" 
+							data-search="rootUrl">
+							rootUrl
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.fixture.store.html" 
+							data-search="store">
+							store
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.route.html" data-search="can.route">
+				can.route
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.util.html" data-search="can.util">
+				can.util
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.view.html" data-search="can.view">
+				can.view
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="heading">
+<h1>can.fixture</h1>
+	<ul class="tags">
+		<li>function</li>
+	</ul>
+	
+	
+	
+		<span class="module">can.fixture</span>
+	
+	
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v1.1.8/util/fixture/fixture.md">source</a></li>
+	
+	
+		
+	
+	
+		<li><a href="../can/util/fixture/test.html">tests</a></li>
+	
+</ul>
+<br />
+		</section>
+
+		<section class="contents">
+		</section>
+
+		
+
+		<section class="description">
+			<p>Simulate AJAX requests. </p>
+		</section>
+
+		
+		<section class="signature">
+			<h2>can.fixture( url, toUrl )
+</h2>
+<div class="signature-wrapper">
+<p>Trap requests from one url and redirect them from another.</p>
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>url
+				<code>{String}</code></h4>
+			<div class="description">
+				<p>Trap requests made by <a href="can.ajax.html">can.ajax</a> to this url.</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>toUrl
+				<code>{String | null}</code></h4>
+			<div class="description">
+				<p>Redirect requests to this url. If <code>null</code> is provided,
+this removes a the fixture at <code>url</code>.</p>
+			</div>
+			
+			
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+
+
+
+
+</div>
+
+		</section>
+		
+		<section class="signature">
+			<h2>can.fixture( url, handler(request, response, requestHeaders) )
+</h2>
+<div class="signature-wrapper">
+<p>Trap requests to a url and provide the response with a
+callback function.</p>
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>url
+				<code>{String}</code></h4>
+			<div class="description">
+				<p>Trap requests made 
+by <a href="can.ajax.html">can.ajax</a> to this url. </p>
+
+<p>The url can be templated with tags that
+look like <code>{TEMPLATE}</code>. For example: "/users/{id}". Any templated
+values get added to the <code>handler</code>'s request object's data.</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>handler
+				<code>{<a href="can.fixture.types.requestHandler.html" >requestHandler</a>(<a href="can.AjaxSettings.html" >request</a>, <a href="can.fixture.types.responseHandler.html" >response</a>, requestHeaders)}</code></h4>
+			<div class="description">
+				<p>Specifies the response of the fixture. <code>handler</code> gets called with
+the <a href="can.ajax.html">can.ajax</a> <a href="can.AjaxSettings.html">settings object</a> and a <a href="can.fixture.types.responseHandler.html">response handler</a>
+that is used to specify the response.</p>
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+
+
+
+
+</div>
+
+		</section>
+		
+		<section class="signature">
+			<h2>can.fixture(fixtures)
+</h2>
+<div class="signature-wrapper">
+<p>Configures multiple ajax traps.</p>
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>fixtures
+				<code>{Object&lt;url,<a href="can.fixture.types.requestHandler.html" >requestHandler</a>(<a href="can.AjaxSettings.html" >request</a>, <a href="can.fixture.types.responseHandler.html" >response</a>, requestHeaders) | String&gt;}</code></h4>
+			<div class="description">
+				<p>An mapping of templated urls to redirect urls 
+or <a href="can.fixture.types.requestHandler.html">request handler functions</a>.</p>
+
+<pre><code>can.fixture({
+  "/tasks": "/fixtures/tasks.json",
+  "DESTROY /tasks/{id}": function(){
+      return {};
+  }
+})
+</code></pre>
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+
+
+
+
+</div>
+
+		</section>
+		
+
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<h2>Use</h2>
+
+<p><code>can.fixture</code> intercepts an AJAX request and simulates
+the response with a file or function. Use them to develop 
+JavaScript independently of the backend services.</p>
+
+<p>The following simulates a <code>GET</code> request to <code>/recipes</code>:</p>
+
+<pre><code>can.fixture("GET /recipes",function(){
+  return [
+    {id: 1, name: "omelette"},
+    {id: 2, name: "hot dog"}
+  ];
+});
+</code></pre>
+
+<p>Requests made to <code>GET /recipes</code> with <a href="can.ajax.html">can.ajax</a>, <a href="http://api.jquery.com/jQuery.ajax/">jQuery.ajax</a>,or
+<a href="http://api.jquery.com/jQuery.get/">jQuery.get</a> will receive the data
+returned by the fixture function above:</p>
+
+<pre><code>$.get("/recipes",function(data){
+  assertEqual( data.length, 2 )
+})
+</code></pre>
+
+<p>There are two common ways of using fixtures.  The first is to
+map Ajax requests to another file.  The following
+intercepts requests to <code>/tasks.json</code> and directs them
+to <code>fixtures/tasks.json</code>:</p>
+
+<pre><code>can.fixture("/tasks.json", "fixtures/tasks.json");
+</code></pre>
+
+<p>The other common option is to generate the Ajax response with
+a <a href="can.fixture.types.requestHandler.html">can.fixture.types.requestHandler</a> function.  The following intercepts updating tasks at
+<code>/tasks/ID.json</code> and responds with updated data:</p>
+
+<pre><code>can.fixture("GET /tasks/{id}",function(request,response){
+  return {id: request.data.id, name: "fix tires."}
+})
+</code></pre>
+
+<p>A <a href="can.fixture.types.requestHandler.html">requestHandler</a> function's <a href="can.fixture.types.responseHandler.html">response</a>
+argument can be used to specify even more details of the Ajax response:</p>
+
+<pre><code>can.fixture("GET /tasks/{id}",function(request,response){
+  response(
+    200,
+    "success",
+    {id: request.data.id, name: "fix tires."},
+    {location: "/tasks/"+request.data.id})
+})
+</code></pre>
+
+<p>Read more about <a href="can.fixture.types.requestHandler.html">requestHandler</a> and its
+<a href="can.fixture.types.responseHandler.html">response</a> argument on their own documentation pages.</p>
+
+<h2>Templated Urls</h2>
+
+<p>Often, you want a dynamic fixture to handle urls for multiple resources (for example a REST url scheme).
+can.fixture's templated urls allow you to match urls with a wildcard.</p>
+
+<p>The following example simulates services that get and update 100 todos.</p>
+
+<pre><code>// create todos
+var todos = {};
+for(var i = 0; i &lt; 100; i++) {
+  todos[i] = {
+    id: i,
+    name: "Todo "+i
+  }
+}
+can.fixture("GET /todos/{id}",
+  function(request, response, headers){
+    // return the JSON data
+    // notice that id is pulled from the url and added to data
+    response(todos[orig.data.id]);
+  })
+
+can.fixture("PUT /todos/{id}",
+  function(request, response, headers){
+    // update the todo's data
+    can.extend(todos[orig.data.id], orig.data );
+    response({});
+  })
+</code></pre>
+
+<p>Notice that data found in templated urls (ex: <code>{id}</code>) is added to the request's data object.</p>
+
+<h2>Simulating Errors</h2>
+
+<p>The following simulates an unauthorized request
+to <code>/foo</code>.</p>
+
+<pre><code>can.fixture("/foo",
+  function(request, response) {
+    response(401,"{type: 'unauthorized'}");
+  });
+</code></pre>
+
+<p>This could be received by the following Ajax request:</p>
+
+<pre><code>can.ajax({
+  url: '/foo',
+  error : function(jqXhr, status, statusText){
+    // status === 'error'
+    // statusText === "{type: 'unauthorized'}"
+  }
+})
+</code></pre>
+
+<h2>Turning off Fixtures</h2>
+
+<p>You can remove a fixture by passing <code>null</code> for the fixture option:</p>
+
+<pre><code>// add a fixture
+can.fixture("GET todos.json","//fixtures/todos.json");
+
+// remove the fixture
+can.fixture("GET todos.json", null)
+</code></pre>
+
+<p>You can also set <a href="can.fixture.on.html">can.fixture.on</a> to false:</p>
+
+<pre><code>can.fixture.on = false;
+</code></pre>
+
+<h2>can.fixture.store</h2>
+
+<p><a href="can.fixture.store.html">can.fixture.store</a> makes a CRUD service layer that handles sorting, grouping, filtering and more. Use
+it with a <a href="can.Model.html">can.Model</a> like this:</p>
+
+<pre><code>var Todo = can.Model.extend({
+  findAll : 'GET /todos',
+  findOne : 'GET /todos/{id}',
+  create  : 'POST /todos',
+  update  : 'PUT /todos/{id}',
+  destroy : 'DELETE /todos/{id}'
+  }, {});
+
+var store = can.fixture.store(100, function(i) {
+  return {
+    id : i,
+    name : 'Todo ' + i
+  }
+});
+
+can.fixture('GET /todos', store.findAll);
+can.fixture('GET /todos/{id}', store.findOne);
+can.fixture('POST /todos', store.create);
+can.fixture('PUT /todos/{id}', store.update);
+can.fixture('DELETE /todos/{id}', store.destroy);
+</code></pre>
+
+<h2>Testing Performance</h2>
+
+<p>Dynamic fixtures are awesome for performance testing.  Want to see what
+10000 files does to your app's performance?  Make a fixture that returns 10000 items.</p>
+
+<p>What to see what the app feels like when a request takes 5 seconds to return?  Set
+<a href="can.fixture.delay.html">can.fixture.delay</a> to 5000.</p>
+
+<p>Since <code>response</code> is called asynchronously you can also set a custom fixture timeout like this:</p>
+
+<pre><code>can.fixture( "/foobar.json", function(request, response){
+  setTimeout(function() {
+    response({ foo: "bar" });
+  }, 1000);
+})
+</code></pre>
+
+<h2>Organizing fixtures</h2>
+
+<p>The <strong>best</strong> way of organizing fixtures is to have a 'fixtures.js' file that steals
+<code>can/util/fixture</code> and defines all your fixtures.  For example,
+if you have a 'todo' application, you might
+have <code>todo/fixtures/fixtures.js</code> look like:</p>
+
+<pre><code>steal({
+        path: '//can/util/fixture.js',
+        ignore: true
+      })
+      .then(function(){
+
+  can.fixture({
+      type: 'get',
+      url: '/services/todos.json'
+    },
+    '//todo/fixtures/todos.json');
+
+  can.fixture({
+      type: 'post',
+      url: '/services/todos.json'
+    },
+    function(request, response, settings){
+        response({
+            id: Math.random(),
+            name: settings.data.name
+        })
+    });
+
+})
+</code></pre>
+
+<p><strong>Notice</strong>: We used steal's ignore option to prevent
+loading the fixture plugin in production.</p>
+
+<p>Finally, we steal <code>todo/fixtures/fixtures.js</code> in the
+app file (<code>todo/todo.js</code>) like:</p>
+
+<pre><code>steal({path: '//todo/fixtures/fixtures.js',ignore: true});
+
+//start of your app's steals
+steal( ... )
+</code></pre>
+
+<p>We typically keep it a one liner so it's easy to comment out.</p>
+
+<h3>Switching Between Sets of Fixtures</h3>
+
+<p>If you are using fixtures for testing, you often want to use different
+sets of fixtures.  You can add something like the following to your fixtures.js file:</p>
+
+<pre><code>if( /fixtureSet1/.test( window.location.search) ){
+  can.fixture("/foo","//foo/fixtures/foo1.json');
+} else if(/fixtureSet2/.test( window.location.search)){
+  can.fixture("/foo","//foo/fixtures/foo1.json');
+} else {
+  // default fixtures (maybe no fixtures)
+}
+</code></pre>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+<script type="text/javascript">
+	var docData = {"type":"function","name":"can.fixture","description":"<p>Simulate AJAX requests. </p>","title":"can.fixture","parent":"canjs","test":"can/util/fixture/test.html","signatures":[{"code":"can.fixture( url, toUrl )","description":"<p>Trap requests from one url and redirect them from another.</p>","params":[{"types":[{"type":"String"}],"name":"url","description":"<p>Trap requests made by [can.ajax] to this url.</p>"},{"types":[{"type":"String"},{"type":"null"}],"name":"toUrl","description":"<p>Redirect requests to this url. If <code>null</code> is provided,\nthis removes a the fixture at <code>url</code>.</p>"}]},{"code":"can.fixture( url, handler(request, response, requestHeaders) )","description":"<p>Trap requests to a url and provide the response with a\ncallback function.</p>","params":[{"types":[{"type":"String"}],"name":"url","description":"<p>Trap requests made \nby [can.ajax] to this url. </p>\n\n<p>The url can be templated with tags that\nlook like <code>{TEMPLATE}</code>. For example: \"/users/{id}\". Any templated\nvalues get added to the <code>handler</code>'s request object's data.</p>"},{"types":[{"type":"can.fixture.types.requestHandler"}],"name":"handler","description":"<p>Specifies the response of the fixture. <code>handler</code> gets called with\nthe [can.ajax] [can.AjaxSettings settings object] and a [can.fixture.types.responseHandler response handler]\nthat is used to specify the response.</p>"}]},{"code":"can.fixture(fixtures)","description":"<p>Configures multiple ajax traps.</p>","params":[{"types":[{"type":"Object","template":[{"types":[{"type":"url"}]},{"types":[{"type":"can.fixture.types.requestHandler"},{"type":"String"}]}]}],"name":"fixtures","description":"<p>An mapping of templated urls to redirect urls \nor [can.fixture.types.requestHandler request handler functions].</p>\n\n<pre><code>can.fixture({\n  \"/tasks\": \"/fixtures/tasks.json\",\n  \"DESTROY /tasks/{id}\": function(){\n      return {};\n  }\n})\n</code></pre>"}]}],"comment":" ","src":"can/util/fixture/fixture.md","id":41,"children":[{"name":"can.fixture.delay","type":"property","parent":"can.fixture","description":"<p><code>can.fixture.delay</code> indicates the delay in milliseconds between an ajax request is made and\nthe success and complete handlers are called.  This only sets\nfunctional synchronous fixtures that return a result. By default, the delay is 200ms.</p>","types":[{"type":"Number"}],"title":"delay","src":"can/util/fixture/fixture.js","line":908,"id":214},{"name":"can.fixture.types","title":"Types","type":"group","parent":"can.fixture","description":"","order":0,"id":40,"children":[{"type":"typedef","name":"can.fixture.types.Store","description":"<p>Contains an array of items and methods for \nfinding, adding, updating, and removing items from the store. Many of those\nmethods are designed to work with <code>can.fixture</code> and simulate [can.Model]'s CRUD\nbehavior.</p>","title":"Store","parent":"can.fixture.types","src":"can/util/fixture/store.md","id":44,"children":[{"type":"function","name":"can.fixture.types.Store.create","parent":"can.fixture.types.Store","description":"<p>Simulate creating a Model with a fixture. </p>","title":"","signatures":[{"code":"store.create(request, callback)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"request","description":"<p>Parameters for the request.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"callback","description":"<p>A function to call with the created item.</p>"}]}],"comment":" ","src":"can/util/fixture/fixture.js","line":661,"id":208},{"type":"function","name":"can.fixture.types.Store.destroy","parent":"can.fixture.types.Store","description":"<p>Simulate destroying a Model on a fixture. </p>","title":"","signatures":[{"code":"store.destroy(request, callback)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"request","description":"<p>Parameters for the request.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"callback","description":"<p>A function to call after destruction.</p>"}]}],"comment":" ","src":"can/util/fixture/fixture.js","line":630,"id":207},{"type":"function","name":"can.fixture.types.Store.find","parent":"can.fixture.types.Store","description":"<p>Get an item from the store by ID. </p>","title":"","signatures":[{"code":"store.find(settings)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"settings","description":"<p>An object containing an <code>id</code> key\ncorresponding to the item to find.</p>"}]}],"comment":" ","src":"can/util/fixture/fixture.js","line":725,"id":209},{"type":"function","name":"can.fixture.types.Store.findAll","parent":"can.fixture.types.Store","description":"<p>Simulate a findAll to a fixture. </p>","title":"","signatures":[{"code":"store.findAll(request)","description":"<p><code>store.findAll(request)</code> simulates a request to \nget a list items from the server. It supports the\nfollowing params:</p>\n\n<ul>\n<li>order - <code>order=name ASC</code> </li>\n<li>group - <code>group=name</code></li>\n<li>limit - <code>limit=20</code></li>\n<li>offset - <code>offset=60</code></li>\n<li>id filtering - <code>ownerId=5</code></li>\n</ul>","params":[{"types":[{"type":"Object","options":[{"name":"order","description":"<p>The order of the results.\n<code>order: 'name ASC'</code></p>","types":[{"type":"String"}]},{"name":"group","description":"<p>How to group the results.\n<code>group: 'name'</code></p>","types":[{"type":"String"}]},{"name":"limit","description":"<p>A limit on the number to retrieve.\n<code>limit: 20</code></p>","types":[{"type":"String"}]},{"name":"offset","description":"<p>The offset of the results.\n<code>offset: 60</code></p>","types":[{"type":"String"}]},{"name":"id","description":"<p>Filtering by ID.\n<code>id: 5</code></p>","types":[{"type":"String"}]}]}],"name":"request","description":"<p>The ajax request object. The available parameters are:</p>"}],"returns":{"types":[{"type":"Object","options":[]}],"description":"<p>a response object like:</p>\n\n<pre><code>{\n  count: 1000,\n  limit: 20,\n  offset: 60,\n  data: [item1, item2, ...]\n}\n</code></pre>\n\n<p>where:</p>\n\n<ul>\n<li>count - the number of items that match any filtering \nbefore limit and offset is taken into account</li>\n<li>offset - the offset passed</li>\n<li>limit - the limit passed</li>\n<li>data - an array of JS objects with each item's properties</li>\n</ul>"}}],"types":[],"src":"can/util/fixture/fixture.js","line":452,"id":204},{"type":"function","name":"can.fixture.types.Store.findOne","parent":"can.fixture.types.Store","description":"<p>Simulate a findOne request on a fixture. </p>","title":"","signatures":[{"code":"store.findOne(request, callback)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"request","description":"<p>Parameters for the request.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"callback","description":"<p>A function to call with the retrieved item.</p>"}]}],"comment":" ","src":"can/util/fixture/fixture.js","line":577,"id":205},{"name":"can.fixture.types.Store.reset","type":"function","parent":"can.fixture.types.Store","description":"<p>Reset the fixture store. </p>","title":"","signatures":[{"code":"store.reset()","description":"","params":[]}],"comment":" ","src":"can/util/fixture/fixture.js","line":747,"id":210},{"type":"function","name":"can.fixture.types.Store.update","parent":"can.fixture.types.Store","description":"<p>Simulate an update on a fixture. </p>","title":"","signatures":[{"code":"store.update(request, callback)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"request","description":"<p>Parameters for the request.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"callback","description":"<p>A function to call with the updated item and headers.</p>"}]}],"comment":" ","src":"can/util/fixture/fixture.js","line":600,"id":206}]},{"type":"typedef","name":"can.fixture.types.requestHandler","description":"<p>Specifies the response of a fixture. Used in [can.fixture]. </p>","title":"requestHandler","types":[{"type":"function","returns":{"types":[{"type":"*"},{"type":"undefined"}],"description":"<p>If a value is returned, it is used as a JSON\nresponse body. If nothing is returned, it's expected that <code>responseHandler</code>\nwas used.</p>"},"params":[{"types":[{"type":"can.AjaxSettings"}],"name":"request","description":"<p>The ajax settings object that\nwas passed to [can.ajax] or a jQuery ajax method.  Any templated\nportions of the url passed to [can.fixture] are added as\ndata to <code>request.data</code>.  For example, calling:</p>\n\n<pre><code>$.get(\"/todos/5\");\n</code></pre>\n\n<p>With the following fixture:</p>\n\n<pre><code>can.fixture(\"/todos/:id\", function(request, response){ })\n</code></pre>\n\n<p><code>request.data.id</code> will be <code>5</code>.</p>"},{"types":[{"type":"can.fixture.types.responseHandler"}],"optional":true,"name":"response","description":"<p>Optionally called to specify the response of the fixture.</p>"},{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"String"}]}]}],"name":"requestHeaders","description":"<p>A map of request headers specified by [can.ajax]'s headers property.</p>"}]}],"parent":"can.fixture.types","comment":" ","src":"can/util/fixture/requestHandler.md","id":42},{"type":"typedef","name":"can.fixture.types.responseHandler","description":"<p>Specifies the response of an AJAX request. </p>","title":"responseHandler","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"Number"}],"name":"status"},{"types":[{"type":"String"}],"name":"statusText"},{"types":[{"type":"Object","template":[{"types":[{"type":"typeName"}]},{"types":[{"type":"*"}]}]}],"name":"responses"},{"types":[{"type":"headers"}],"name":"headers"}]}],"parent":"can.fixture.types","signatures":[{"code":"response(status [,statusText], responses, headers)","description":"<p>Specify a HTTP response.</p>","params":[{"types":[{"type":"Number"}],"name":"status","description":"<p>The <a href=\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html\">HTTP response code</a>. Ex: <code>200</code>.</p>"},{"types":[{"type":"String"}],"optional":true,"name":"statusText","description":"<p>the status text of the response. Ex: \"success\"\nfor 200.</p>"},{"types":[{"type":"Object","template":[{"types":[{"type":"typeName"}]},{"types":[{"type":"*"}]}]}],"name":"responses","description":"<p>An object of responses by type.  For example:</p>\n\n<pre><code>{\n  text: \"{\\\"age\\\":5}\"\n}\n</code></pre>\n\n<p>If responses does not have a <code>typeName</code> property for the type of request, the\nentire responses object is used as the response data.</p>"},{"types":[{"type":"Object","template":[{"types":[{"type":"headerName"}]},{"types":[{"type":"String"}]}]}],"name":"headers","description":"<p>HTTP response headers and values.</p>"}]},{"code":"response(responses)","description":"<p>Specify the body of a successful HTTP response.</p>","params":[{"types":[{"type":"Object","template":[{"types":[{"type":"typeName"}]},{"types":[{"type":"*"}]}]}],"name":"responses","description":"<p>An object of responses by type.  For example:</p>\n\n<pre><code>{\n  text: \"{\\\"age\\\":5}\"\n}\n</code></pre>\n\n<p>If responses does not have a <code>typeName</code> property for the type of request, the\nentire responses object is used as the response data.</p>"}]}],"src":"can/util/fixture/responseHandler.md","id":43}]},{"name":"can.fixture.on","type":"property","parent":"can.fixture","description":"<p><code>can.fixture.on</code> lets you programatically turn off fixtures. This is mostly used for testing.</p>","types":[{"type":"Boolean"}],"title":"on","src":"can/util/fixture/fixture.js","line":895,"id":213},{"type":"function","name":"can.fixture.rand","parent":"can.fixture","description":"<p>Create a random number or selection. </p>","title":"rand","signatures":[{"code":"can.fixture.rand([min,] max)","description":"","params":[{"types":[{"type":"Number"}],"optional":true,"name":"min","defaultValue":"0","description":"<p>The lower bound on integers to select.</p>"},{"types":[{"type":"Number"}],"name":"max","description":"<p>The upper bound on integers to select.</p>"}],"returns":{"types":[{"type":"Number"}],"description":"<p>A random integer in the range [<strong>min</strong>, <strong>max</strong>).</p>"}},{"code":"can.fixture.rand(choices, min[ ,max])","description":"","params":[{"types":[{"type":"Array","options":[]}],"name":"choices","description":"<p>An array of things to choose from.</p>"},{"types":[{"type":"Number"}],"name":"min","description":"<p>The minimum number of times to choose from <strong>choices</strong>.</p>"},{"types":[{"type":"Number"}],"optional":true,"name":"max","defaultValue":"min","description":"<p>The maximum number of times to choose from <strong>choices</strong>.</p>"}],"returns":{"types":[{"type":"Array","options":[]}],"description":"<p>An array of between <strong>min</strong> and <strong>max</strong> random choices from <strong>choices</strong>.</p>"}}],"comment":" ","src":"can/util/fixture/fixture.js","line":775,"id":211},{"name":"can.fixture.rootUrl","type":"property","parent":"can.fixture","description":"<p><code>can.fixture.rootUrl</code> contains the root URL for fixtures to use.\nIf you are using StealJS it will use the Steal root\nURL by default.</p>","types":[{"type":"String"}],"title":"rootUrl","src":"can/util/fixture/fixture.js","line":924,"id":215},{"type":"function","name":"can.fixture.store","parent":"can.fixture","description":"<p>Make a store of objects to use when making requests against fixtures. </p>","title":"store","signatures":[{"code":"can.fixture.store(count, make[, filter])","description":"","params":[{"types":[{"type":"Number"}],"name":"count","description":"<p>The number of items to create.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"make","description":"<p>A function that will return the JavaScript object. The\nmake function is called back with the id and the current array of items.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"filter","description":"<p>A function used to further filter results. Used for to simulate\nserver params like searchText or startDate.\nThe function should return true if the item passes the filter,\nfalse otherwise. For example:</p>\n\n<pre><code>function(item, settings){\n  if(settings.data.searchText){\n       var regex = new RegExp(\"^\"+settings.data.searchText)\n      return regex.test(item.name);\n  }\n}\n</code></pre>"}],"returns":{"types":[{"type":"can.fixture.Store"}],"description":"<p>A generator object providing fixture functions for <em>findAll</em>, <em>findOne</em>, <em>create</em>,\n<em>update</em> and <em>destroy</em>.</p>"}}],"comment":" ","src":"can/util/fixture/fixture.js","line":347,"id":203}]};
+
+	console.log(docData);
+</script>
+
+
+
+  <footer>
+    <nav class="container">
+      <a class="brand javascriptmvc" href="index.html"></a>
+      <ul class="nav">
+        <li class=""><a href="../../index.html">Home</a></li>
+        <li class=""><a href="../guides/index.html">Guides</a></li>
+        <li class="active"><a href="../docs/index.html">Api</a></li>
+        <li class=""><a href="../../community.html#!forums">Community</a></li>
+        <li class=""><a href="../../download.html">Download</a></li>
+      </ul>
+    </nav>
+  </footer>
+  <script type="text/javascript">
+    window.docConfig = {"debug":false,"enableSearch":true,"parent":"canjs","layout":"shared/_templates/page.mustache","docs":"shared/_templates/docs.mustache","root":"..","out":"1.1/docs","page":"docs","markdown":["can"],"package":{"name":"CanJS","description":"MIT-licensed, client-side, JavaScript framework that makes building rich web applications easy.","version":"1.1.8","author":{"name":"Bitovi","email":"contact@bitovi.com","web":"http://bitovi.com/"},"homepage":"http://canjs.us/","repository":{"type":"git","url":"git@github.com:bitovi/canjs.git","github":"https://github.com/bitovi/canjs"},"devDependencies":{"grunt":"0.4.0","grunt-string-replace":"0.2.2","grunt-contrib-qunit":"0.2.1","grunt-contrib-connect":"0.3.0","grunt-docco":"0.2.0","bitovi-tools":"https://github.com/bitovi/bitovi-tools/tarball/master","steal":"https://github.com/bitovi/steal-build/tarball/master","grunt-contrib-uglify":"~0.2.1"},"scripts":{"test":"grunt test"},"demos":["http://canjs.us/#examples","http://canjs.us/recipes"],"licenses":[{"type":"MIT","url":"http://opensource.org/licenses/mit-license.php"}],"dependencies":{"grunt-cli":"~0.1.7"}},"self":{"name":"canjs.com","description":"We can do JS better.","version":"0.2.0","homepage":"http://canjs.com","author":{"name":"Bitovi","url":"http://bitovi.com/"},"repository":{"type":"git","url":"git://github.com/bitovi/canjs.com.git","github":"https://github.com/bitovi/canjs.com"},"bugs":{"url":"https://github.com/bitovi/canjs.com/issues"},"licenses":[{"type":"MIT","url":"https://github.com/bitovi/canjs.com/blob/master/LICENSE-MIT"}],"engines":{"node":">= 0.10.0"},"devDependencies":{"grunt":"~0.4.1","grunt-contrib-watch":"~0.3.1","grunt-contrib-less":"~0.5.0","documentjs":"https://github.com/bitovi/documentjs/tarball/node-generator","grunt-contrib-clean":"~0.4.1"}},"builder":{"filename":"can.custom.js","banner":"/*!\n * <%= pkg.title || pkg.name %> - <%= pkg.version %>\n * <%= pkg.homepage %>\n * Copyright (c) <%= new Date().getFullYear() %> <%= pkg.author.name %>\n * <%= new Date().toUTCString() %>\n * Licensed <%= pkg.licenses[0].type %><% if(typeof url !== \"undefined\") { %>\n * Includes: <%= ids %>\n * Download from: <%= url %>\n<% } %> */\n","modules":{"can/construct":{"name":"can.Construct","description":"Inheritable constructor functions","type":"core","isDefault":true},"can/observe":{"name":"can.Observe","description":"Observable key-value bindings","type":"core","isDefault":true},"can/observe/compute":{"name":"can.compute","description":"can.compute lets you make observable values","type":"core","isDefault":true},"can/model":{"name":"can.Model","description":"Observes connected to a RESTful JSON interface","type":"core","isDefault":true},"can/view":{"name":"can.view","description":"Template loading, caching, rendering","type":"core","isDefault":true},"can/view/ejs":{"name":"can.EJS","description":"Live-binding Embedded JavaScript","type":"core","isDefault":true},"can/control":{"name":"can.Control","description":"Declarative event bindings","type":"core","isDefault":true},"can/route":{"name":"can.route","description":"Back button and bookmarking support","type":"core","isDefault":true},"can/control/route":{"name":"can.Control.route","description":"Declare routes in your Control","type":"core","isDefault":true},"can/util/string":{"name":"can.util.string","type":"core","description":"Helper methods for strings","isDefault":true},"can/view/mustache":{"name":"can.Mustache","type":"plugin","description":"Live-binding Handlebars and Mustache views"},"can/model/queue":{"name":"can.Model.Queue","type":"plugin","description":"Queued requests to the server."},"can/construct/super":{"name":"can.Construct.super","type":"plugin","description":"Call super methods"},"can/construct/proxy":{"name":"can.Construct.proxy","type":"plugin","description":"Proxy construct methods"},"can/observe/delegate":{"name":"can.Observe.delegate","type":"plugin","description":"Listen to Observe attributes"},"can/observe/setter":{"name":"can.Observe.setter","type":"plugin","description":"Use setter methods on Observes"},"can/observe/attributes":{"name":"can.Observe.attributes","type":"plugin","description":"Define Observe attributes"},"can/observe/validations":{"name":"can.Observe.validations","type":"plugin","description":"Validate Observe attributes"},"can/observe/backup":{"name":"can.Observe.backup","type":"plugin","description":"Backup and restore an Observes state"},"can/observe/list":{"name":"can.Observe.List","type":"plugin","description":"Live-updating mapped and filtered observe lists"},"can/control/plugin":{"name":"can.Control.plugin","type":"plugin","description":"Registers a jQuery plugin function for Controls","configurations":["jquery"]},"can/view/modifiers":{"name":"can.view.modifiers","type":"plugin","description":"Use jQuery modifiers to render views","configurations":["jquery"]},"can/util/object":{"name":"can.Object","type":"plugin","description":"Helper methods for object comparison"},"can/util/fixture":{"name":"can.fixture","type":"plugin","description":"Intercepts an AJAX request and simulates the response with a file or function"}},"types":{"core":"CanJS core","plugin":"Plugins"},"pluginify":{"shim":{"can/lib/jquery.1.9.1.js":"jQuery","can/lib/zepto.1.0rc1.js":"Zepto","can/lib/mootools-core-1.4.3.js":"{}","can/util/dojo/dojo-1.8.1.js":"{}","can/lib/yui-3.7.3.js":"YUI"},"exports":{"can/util/can.js":"can"}},"configurations":{"jquery":{"description":"jQuery","isDefault":true,"library":"lib/jquery.1.9.1.js","steal":{"map":{"*":{"can/util/util.js":"can/util/jquery/jquery.js","jquery/jquery.js":"can/lib/jquery.1.9.1.js"}},"shim":{"jquery/jquery.js":{"exports":"jQuery"}}}},"zepto":{"description":"Zepto","library":"lib/zepto.1.0rc1.js","steal":{"map":{"*":{"can/util/util.js":"can/util/zepto/zepto.js","zepto/zepto.js":"can/lib/zepto.1.0rc1.js"}},"shim":{"zepto/zepto.js":{"exports":"Zepto"}}}},"mootools":{"description":"Mootools","library":"lib/mootools-core-1.4.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/mootools/mootools.js","mootools/mootools.js":"can/lib/mootools-core-1.4.3.js"}}}},"yui":{"description":"YUI","library":"lib/yui-3.7.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/yui/yui.js","yui/yui.js":"can/lib/yui-3.7.3.js"}}}},"dojo":{"description":"Dojo","library":"util/dojo/dojo-1.8.1.js","steal":{"map":{"*":{"can/util/util.js":"can/util/dojo/dojo.js","dojo/dojo.js":"can/util/dojo/dojo-1.8.1.js"}}}}}},"url":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/events/","cdn":"//canjs.com/release/"},"static":"scripts/static","templates":"scripts/templates","statics":{"src":"_pages"},"forceBuild":false,"minifyBuild":true,"versionsSrc":"../../versions.json","version":"1.1","isVersioned":true};
+    window.Bitovi = {
+      URL: {
+        BUILDER: 'http://bitbuilder.herokuapp.com/can.custom.js',
+        BUILDER_DATA: 'http://bitbuilder.herokuapp.com/canjs',
+        BITHUB: 'http://api.bithub.com/api/events/',
+        CDN: '//canjs.com/release/'
+      }
+    }
+    steal = {
+      productionId: "production.js",
+      executed: ["documentjs/site/static/build/production.css"]
+    }
+  </script>
+  <script 
+  
+    src="./static/steal.production.js"
+  
+    ></script>
+  <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2302003-11']);
+  _gaq.push(['_setDomainName', 'canjs.com']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<div class="tab-description meetups">
+	<div class="pull-right categories">
+		<a href="http://bitovi.github.io/canjsmeetup/" class="button">Find a Meetup Near You</a>
+		<div>
+			<ul>
+				<li>
+					<a href="http://bitovi.github.io/canjsmeetup/#cities">Cities</a>
+				</li>
+				<li>
+					<a href="http://bitovi.github.io/canjsmeetup/#meetup_content">Meetup Content</a>
+				</li>
+				<li>
+					<a href="http://bitovi.github.io/canjsmeetup/#sponsors_and_organizers">Sponsors and Organizers</a>
+				</li>
+				<li>
+					<a href="http://bitovi.github.io/canjsmeetup/#get_involved">Get Involved</a>
+				</li>
+			</ul>
+		</div>
+	</div><!-- categories -->
+	<div class="posts">
+		<h1>CanJS Meetups</h1>
+		<div class="meetups-content">
+		<p>
+		CanJS’s community and Bitovi are starting local CanJS meetups across the United States. They are going to be a great place to learn CanJS and share strategies on building amazing applications. Refer to the <a href="http://bitovi.github.io/canjsmeetup/">meetups site</a> for more information.
+		</p>
+		<h2>Meetup Cities</h2>
+		<ul class="city-list">
+			{{#meetupCities}}
+			<li>
+				<a href="{{url}}"><img src="./resources/meetups/{{image}}" /></a>
+				
+				<span class="meetup-city-name"><a href="{{url}}">{{name}}</a></span>
+			</li>
+			{{/meetupCities}}
+		</ul>
+		</div>
+	<br class="clear" />
+	</div>

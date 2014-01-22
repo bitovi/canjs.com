@@ -97,7 +97,8 @@ steal("jquery","jquery-ui.js", "can","can/construct/super", "can/util/function")
 			'.communityTabs': 'CommunityTabs',
 			'.sidebar': 'Menu',
 			'.project-carousel': 'ProjectCarousel',
-			'.article-carousel': 'ArticleCarousel'
+			'.article-carousel': 'ArticleCarousel',
+			"#versions": "Versions"
 		});
 
 		// Syntax highlighting

@@ -1,0 +1,300 @@
+var path = require('path');
+// Returns mappings for AMDify
+var getAmdifyMap = function (baseName) {
+	var amdifyMap = {};
+
+	amdifyMap[baseName + 'util'] = 'can/util/library';
+	amdifyMap[baseName] = 'can/';
+	amdifyMap['can/can'] = 'can';
+
+	return amdifyMap;
+}
+
+module.exports = function (grunt) {
+	var _ = grunt.util._;
+	var baseName = path.basename(__dirname) + '/';
+	var builderJSON = grunt.file.readJSON('builder.json');
+	var pkg = grunt.file.readJSON('package.json');
+	var banner = _.template(builderJSON.banner, {
+		pkg: pkg,
+		ids: [ 'CanJS default build' ],
+		url: pkg.homepage
+	});
+
+	grunt.registerTask('publish', 'Publish a a release (patch, minor, major).', function () {
+		var type = this.args[0];
+
+		if (['patch', 'minor', 'major'].indexOf(type) === -1) {
+			throw new Error(type + ' is not a valid release version bump (patch, minor, major)');
+		}
+
+		grunt.task.run(['release:bump:' + type, 'changelog', 'shell:updateChangelog',
+			'release:add:commit:push:tag:pushTags']);
+	});
+
+	grunt.initConfig({
+		pkg: pkg,
+		testify: {
+			libs: {
+				template: 'test/templates/__configuration__.html.ejs',
+				builder: builderJSON,
+				out: 'test/',
+				transform: {
+					options: function () {
+						this.steal.map = (this.steal && this.steal.map) || {};
+						this.steal.map['*'] = this.steal.map['*'] || {};
+						return this;
+					}
+				}
+			},
+			dist: {
+				template: 'test/templates/__configuration__-dist.html.ejs',
+				builder: builderJSON,
+				root: '../../',
+				out: 'test/dist/',
+				transform: {
+					module: function (definition) {
+						if (!definition.isDefault) {
+							return definition.name.toLowerCase();
+						}
+						return null;
+					},
+
+					test: function (definition, key) {
+						var name = key.substr(key.lastIndexOf('/') + 1);
+						var path = key.replace('can/', '') + '/';
+						return path + name + '_test.js';
+					},
+
+					options: function (config) {
+						return {
+							dist: 'can.' + config
+						}
+					}
+				}
+			},
+			amd: {
+				template: 'test/templates/__configuration__-amd.html.ejs',
+				builder: builderJSON,
+				root: '../..',
+				out: 'test/amd/'
+			}
+		},
+		builder: {
+			options: {
+				url: 'http://canjs.com',
+				pluginify: {
+					ignore: [ /\/lib\//, /util\/dojo-(.*?).js/ ]
+				},
+				pkg: pkg,
+				builder: builderJSON,
+				steal: {
+					map: {
+						'*': {
+							'can/': ''
+						}
+					},
+					root: __dirname
+				}
+			},
+			dist: {
+				options: {
+					prefix: 'can.'
+				},
+				files: {
+					'dist/': '.'
+				}
+			}
+		},
+		amdify: {
+			options: {
+				steal: {
+					root: '../',
+					map: {
+						'*': {
+							'can/': baseName
+						}
+					}
+				},
+				map: getAmdifyMap(baseName),
+				banner: banner
+			},
+			all: {
+				options: {
+					ids: ['can'].concat(_.map(
+						_.keys(builderJSON.configurations), function (name) {
+							return 'can/util/' + name;
+						}), _.keys(builderJSON.modules))
+				},
+				files: {
+					'dist/amd/': '.'
+				}
+			}
+		},
+		stealify: {
+			options: {
+				steal: {
+					root: '../',
+					map: {
+						'*': {
+							'can/': baseName
+						}
+					}
+				},
+				banner: banner
+			},
+			all: {
+				options: {
+					ids: ['can'].concat(_.map(
+						_.keys(builderJSON.configurations), function (name) {
+							return 'can/util/' + name;
+						}), _.keys(builderJSON.modules))
+				},
+				files: {
+					'dist/steal/': '.'
+				}
+			}
+		},
+		changelog: {
+			options: {
+				repo: 'canjs',
+				user: 'bitovi',
+				version: pkg.version
+			}
+		},
+		connect: {
+			server: {
+				options: {
+					port: 8000,
+					base: '.'
+				}
+			}
+		},
+		qunit: {
+			steal: {
+				options: {
+					urls: [
+						'http://localhost:8000/test/jquery.html',
+						'http://localhost:8000/test/jquery-2.html',
+						'http://localhost:8000/test/dojo.html',
+						//'http://localhost:8000/can/test/zepto.html',
+						'http://localhost:8000/test/mootools.html',
+						'http://localhost:8000/test/yui.html'
+					]
+				}
+			},
+			dist: {
+				options: {
+					urls: [
+						'http://localhost:8000/test/dist/dojo.html',
+						'http://localhost:8000/test/dist/jquery.html',
+						'http://localhost:8000/test/dist/jquery-2.html',
+						//'http://localhost:8000/can/test/zepto.html',
+						'http://localhost:8000/test/dist/mootools.html',
+						'http://localhost:8000/test/dist/yui.html'
+					]
+				}
+			},
+			amd: {
+				options: {
+					urls: [
+						// TODO AMD & DOJO 'http://localhost:8000/test/amd/dojo.html',
+						'http://localhost:8000/test/amd/jquery.html',
+						'http://localhost:8000/test/amd/jquery-2.html',
+						//'http://localhost:8000/can/test/zepto.html',
+						'http://localhost:8000/test/amd/mootools.html',
+						'http://localhost:8000/test/amd/yui.html'
+					]
+				}
+			},
+			individuals: {
+				options: {
+					urls: [
+						'http://localhost:8000/component/test.html',
+						'http://localhost:8000/compute/test.html',
+						'http://localhost:8000/construct/test.html',
+						'http://localhost:8000/construct/proxy/test.html',
+						'http://localhost:8000/construct/super/test.html',
+						'http://localhost:8000/control/test.html',
+						'http://localhost:8000/map/test.html',
+						'http://localhost:8000/map/attributes/test.html',
+						'http://localhost:8000/map/backup/test.html',
+						// 'http://localhost:8000/map/delegate/test.html',
+						'http://localhost:8000/map/list/test.html',
+						'http://localhost:8000/map/setter/test.html',
+						'http://localhost:8000/map/sort/test.html',
+						'http://localhost:8000/map/validations/test.html',
+						'http://localhost:8000/model/test.html',
+						'http://localhost:8000/observe/test.html',
+						// 'http://localhost:8000/route/test.html',
+						'http://localhost:8000/route/pushstate/test.html',
+						'http://localhost:8000/view/test.html',
+						'http://localhost:8000/view/ejs/test.html',
+						'http://localhost:8000/view/mustache/test.html'
+					]
+				}
+			}
+		},
+		uglify: {
+			options: {
+				banner: banner
+			},
+			all: {
+				files: {
+					'dist/can.jquery.min.js': 'dist/can.jquery.js',
+					'dist/can.zepto.min.js': 'dist/can.zepto.js',
+					'dist/can.mootools.min.js': 'dist/can.mootools.js',
+					'dist/can.dojo.min.js': 'dist/can.dojo.js',
+					'dist/can.yui.min.js': 'dist/can.yui.js'
+				}
+			}
+		},
+		clean: {
+			build: ['dist/']
+		},
+		'string-replace': {
+			version: {
+				options: {
+					replacements: [
+						{
+							pattern: /@EDGE/gim, //version property
+							replacement: pkg.version
+						}
+					]
+				},
+				files: [
+					{
+						src: 'dist/**/*.js',
+						dest: './',
+						cwd: './'
+					}
+				]
+			}
+		},
+		shell: {
+			updateChangelog: {
+				command: 'git add changelog.md && git commit -m "Updating changelog." && git push origin'
+			}
+		},
+		release: {
+			options: {
+				tagName: 'v<%= version %>'
+			}
+		},
+		publish: {}
+	});
+
+	grunt.loadNpmTasks('grunt-string-replace');
+	grunt.loadNpmTasks('grunt-contrib-connect');
+	grunt.loadNpmTasks('grunt-contrib-qunit');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-release-steps');
+	grunt.loadNpmTasks('grunt-shell');
+	grunt.loadNpmTasks('bitovi-tools');
+
+	grunt.registerTask('build', ['clean:build', 'builder', 'amdify', 'stealify', 'uglify', 'string-replace:version']);
+	grunt.registerTask('test', ['connect', 'build', 'testify', 'qunit']);
+	grunt.registerTask('default', ['build']);
+
+};
