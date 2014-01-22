@@ -8,7 +8,7 @@ can.Control.extend('Bitovi.OSS.Versions', {}, {
 				html += "<option value='"+version.number+"'"+
 							(version.number == docConfig.version ? 
 								" SELECTED" : "") +
-						">"+ version.number+"" +(version.branch && version.branch != "master" ? "-pre": "") +
+						">CanJS v"+ version.number+"" +(version.branch && version.branch != "master" ? "-pre": "") +
 						"</option>";
 			});
 			element.html(html);
