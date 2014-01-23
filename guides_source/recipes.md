@@ -50,8 +50,7 @@ This template displays the value of `message`.
 
 ### Pass message to the Template
 
-Templates are rendered with [can.view](../docs/can.view.html). 
-can.view takes two arguments: the first is the `id` of the template,
+Templates are rendered with [can.view](../docs/can.view.html), which takes two arguments: the first is the `id` of the template,
 and the second is the data passed to the template (in this case,
 an object with a `message` property).
 
@@ -77,8 +76,8 @@ Render the template with a `message` and insert it into the page with:
 
 ## Update Text in the Page
 
-CanJS will update the page automatically when observable data changes. To make 
-observable data, pass raw data to [can.Map](../docs/can.Map.html), 
+CanJS will update the page automatically when [observable](http://sourcemaking.com/design_patterns/observer) 
+data changes. To make observable data, pass raw data to [can.Map](../docs/can.Map.html), 
 [can.List](../docs/can.List.html) or [can.compute](../docs/can.compute.html) like:
 
 	var data = new can.Map({message: "Hello World!"});
@@ -246,286 +245,283 @@ Using the `timeElapsed`, `prettyDate` returns human readable timestamps:
 
 <iframe width="100%" height="300" src="http://jsfiddle.net/donejs/VQNSH/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
 
-## Handle User Interaction
+## Handle User Interaction 
 
+Previous recipes have shown how the page changes when state and data change. When a user 
+interacts with an application (through things like clicking, typing, and submitting forms), 
+the state and data of the application are affected. The user sees the page change when 
+changing a value in a form, but in CanJS changes should be made to the application data or state 
+and the page will update automatically according to its template.
+
+At first this may seem more complicated than making direct changes to the page, but 
+[as an application gets larger it makes things much easier](http://www.youtube.com/watch?v=NZi5Ru4KVug&list=UUoF55kH83o2ihqHbDipRm2Q#t=44).
+Instead of updating every relevant part of a page when a user clicks a button, with CanJS
+the state is changed and the page changes accordingly.
+
+### Respond to user Actions
+
+When a user does something, such as clicking, an `event` occurs. Event handlers specify
+how [JavaScript should respond to an event](http://bitovi.com/blog/2010/10/a-crash-course-in-how-dom-events-work.html).
 Previous examples have used jQuery's `click` event listener:
 
-	
+	$("#push").click(function(){
+	  //handle the event
+	})
 
-### Bind an Input Field to a Value
+However, CanJS provides a few different ways to respond to events. As well as
+making application code simpler, using CanJS to handle events can help to
+automatically prevent [memory leaks](http://bitovi.com/blog/2012/04/zombie-apocolypse.html).
 
-	//Coming soon
+As a reminder, though event handlers respond to actions on the page 
+they should *change application state or data* (e.g. make a change to a `can.Map`).
+This will update the page automatically, keeping code manageable.
 
-### ?? Respond to Keyboard and Mouse Events
+#### Control Events
 
-	//Coming soon
+What we want to do is make something happen when we an event occurs.
+The way this works is by using a can.control.  Essentially, this is a module
+that is a controller and a view.  We can control UI elements, but we should
+be doing this by using state.  Let's make it so when we click a person from the
+list we remove that person from the list.  So, how do we check for that click event?
 
-### Show the Same Data in Two Places
+Use a `can.Control` to 
 
-Using the observable pattern, the same data can be showed in
-two places at once.  Notice that when 'do dishes' changes on
-one list, it also changes on the other.  This is because the
-same value is shared accross both lists.
+	var PeopleList = can.Control.extend({
+    init: function( el, op ){
+         this.options.people = new can.List(op.people);
+         this.element.html( can.view('app-template', {
+             people: this.options.people
+        }));
+    }
+  }
 
-<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/SnRKV/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+When you create a `PeopleList`, you will pass the elements you want
+to insert your templated list into and an object with `people`, an 
+array of first and last names.
 
-### Converting User Input to Data
+	var people = [
+    {firstname: "John", lastname: "Doe"},
+    {firstname: "Emily", lastname: "Dickinson"},
+    {firstname: "William", lastname: "Adams"},
+    {firstname: "Stevie", lastname: "Nicks"},
+    {firstname: "Bob", lastname: "Barker"}
+	];
 
-	//Coming soon
+	new PeopleList('#my-app', {people: people});
 
-### Update data when a Form is Changed
+In the mustache template, there is a `data` helper that can reference 
+the object associated with the `li` that is rendering that object.
 
-## Make Widgets / UI Elements
+	<ul>
+	{{#each people}}
+	    <li {{data 'person'}}>
+		{{lastname}}, {{firstname}}
+	    </li>
+	{{/each}}
+	</ul>  
 
-One way to create widgets is to use `can.Control` helper functions
-to change the classes of elements that are then styled
-with CSS.
+Now, any time a person's name is clicked, that person
+should be removed from the `can.List`, which will
+also remove it from our page. When a string selector
+is defined as a functionwhen extending `can.Control`,
+event handlers are automatically bound to the relevant
+events:
 
-### Create a tab widget
+	var PeopleList = can.Control.extend({
+    init: function(){ 
+    	...
+    },
+    'li click': function( li, event ) {
+           var people = this.options.people;
+           var person = li.data('person');
+           var index = people.indexOf(person);
+           people.splice(index, 1);
+    }
+});
 
-The helper functions for a tab widget include
-finding a tab's content for a given `li` (the tab)
-and on the user clicking a list element, hiding
-the old tab and show a new one.
+This is *one* way to handle events. Others will be covered
+in the following recipes while building widgets.
 
-	var Tabs = can.Control.extend({
-		init: function ( el ) {
-		/*
-		 * initialization and rendering
-		 * ...
-		 * /
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/F9kzt/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+## Build Widgets/UI Elements
+
+So far, recipes have demonstrated how to change page content and introduced
+event handling. When application state and data change, so does how the
+page is displayed. When users interact with an application, they change
+the state and data, but do not directly manipulate the page.
+
+While this can be accomplished with `can.Control`, CanJS actually provides
+a way to structure this for individual parts, or components, of an
+application. [can.Component](http://canjs.com/docs/can.Component.html)
+enables building reusable widgets with using custom tags.
+
+### Create a Component
+
+The previous recipe that displays a list of people can be represented
+as a component. The application template can be replaced with:
+
+	<people></people>
+
+Any time a `people` tag is put into a template, the component will
+be rendered since we set `people` as the tag.
+
+	can.Component.extend({
+	    tag: 'people',
+	...
+
+The previous template is now passed as the `template` argument.
+This can also be a file.  The template includes a `can-click`
+attribute. This is another way of declaring an event binding.
+In this case, the `remove` function of component will be called
+with the relevant `people` object as an argument.
+
+	...
+	    template: '<ul>' +
+	                '{{#each people}}' +
+	                '<li can-click="remove">' +
+	                    '{{lastname}}, {{firstname}}' +
+	                '</li>' +
+	                '{{/each}}' +
+	                '</ul>',
+	...
+
+The `scope` object contains the component's state and 
+data information, as well as defining some of its
+behavior. This includes the `remove` function that
+`can-click` uses.
+
+	...
+	    scope: {
+	        people: people,
+	        remove: function( person ) {
+	            var people = this.attr("people");
+	            var index = people.indexOf(person);
+	            people.splice(index, 1);
+	        }
+	    }
+	});
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/WBM9z/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+### Build a Tabs Widget
+
+Using `can.Component`, a tab widget template looks like this:
+
+	<tabs>
+		<panel title="Fruit">Oranges, Apples, Pears</panel>
+		<panel title="Vegetable">Carrot, Lettuce, Rutabega</panel>
+		<panel title="Grains">Bread, Pasta, Rice</panel>
+	</tabs>
+
+This is one of the most useful features of components. A designer
+that understands HTML can put together a template for a `tabs`
+widget without understanding anything other than the syntax.
+
+#### Tabs Widget Behavior
+
+Before implementing the component itself, it can be useful
+to take a moment to define an observable *view model*, 
+or a representation of the state of the UI element.
+This makes unit testing and makes the code modular
+and easy to manage. State is best represented using a `can.Map`.
+
+A `TabsViewModel` needs:
+ - An observable list of panels
+ - An active panel
+ - Functions to add, remove, and activate panels
+
+ Since this is a `can.Map`, `panels` is automatically 
+ converted to a `can.List`.  `addPanel` will not only
+ add a new panel, but activate it if there were previously
+ no panels.  `removePanel` handles making a new panel
+ active if necessary.
+
+	var TabsViewModel = can.Map.extend({
+		panels: [],
+		active: null,
+		addPanel: function( panel ){
+			var panels = this.attr("panels");
+			panels.push(panel);
+			panel.attr("visible", false);
+			//activate panel if it is the first one
+			if ( panels.attr("length") === 1 ){
+				this.activate( panel );
+			}
 		},
-		// finds tab for a given li
-		tab: function ( li ){
-			return $( li.find( 'a' ).attr( 'href' ));
+		removePanel: function( panel ){
+			var panels = this.attr("panels");
+			var index = panels.indexOf(panel);
+			panels.splice(index, 1);
+			//activate a new panel if panel being removed was the active panel
+			if( this.attr("active") === panel ){
+				panels.attr("length") ? this.activate(panels[0]) : this.attr("active", null)
+			}
+		},
+		activate: function( panel ){
+			var active = this.attr("active")
+			if( active !== panel ){
+				active && active.attr("visible", false);
+				this.attr("active", panel.attr("visible", true));
+			}
 		}
-		// hides the old active tab, shows new one
-		'li click': function( el, ev ) {
-			ev.preventDefault();
-			this.tab( this.element.find( '.active' )
-			            .removeClass( 'active' ) ).hide()
-			this.tab( el.addClass( 'active' ) ).show();
-		}
 	})
 
-<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/kXLLt/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+#### Tabs Widget Component
 
-### Create a tooltip
+Now that the view model is defined, making a component is simply
+a matter of defining the way the tabs widget is displayed.
 
-For a tooltip, helper functions include initializing
-the tooltip when an element is clicked, then listening
-for any click outside the tooltip to hide it.
+The template for a `tabs` component needs a heading for each
+panel that will `activate` that panel when clicked. The template
+also includes three `panel` components, which can be inserted
+into the template with a `<content />` tag.
 
-First, the tooltip's styling and behavior is defined.
+	can.Component.extend({
+		tag: "tabs",
+		scope: TabsViewModel,
+		template: "<ul>\
+					{{#each panels}}\
+						<li can-click='activate'>{{title}}</li>\
+					{{/each}}\
+					</ul>\
+					<content />"
+	});
 
-	var Tooltip = can.Control.extend({
-		init: function(){
-			// styling and display of the tooltip
-		},
-		'{window} click': function( el, ev ) {
-		    // hide only if we clicked outside the tooltip
-		    // or outside the relative element
-		    if (!this.element.has( ev.target ).length &&
-		        ev.target !== this.element[0] &&
-		        ev.target !== this.options.relativeTo[0] ) {
-		      this.element.remove();
-		    }
-	  	}
-	})
+The `tabs` component contains panels, which are also defined
+as components. The template contains the logic for whether
+the panel is visible (`visible` is controlled by the tabs
+component's `activate` method).
 
-Then, when an `li` element is clicked, a new tooltip
-is created.
+Each panel's `scope` contains a title, which should be
+taken from the `title` attribute in the `<panel>` tag.
+To do this, the `@` helper is used.
 
-	$("li").bind("click", function(){
-	    new Tooltip( $("<div>"), {
-	      relativeTo : $(this),
-	      html : "tooltip"
-	    })
-	})
-
-<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/3wtLW/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
-
-### Create a tree combo
-
-A more advanced UI element, like a tree combo, uses
-advanced templates and helpers in its `can.Control`
-object.
-
-The templates include breadcrumbs for navigational display
-and a list of options.
-
-	<!-- The breadcrumb template -->
-	<ul class='breadcrumb'>
-		<li><%= title %></li>
-		<% breadcrumb.each(function(item){ %>
-			<li <%=(el)-> el.data('item',item) %>>
-	          <%= item.attr('title') %>
-	        </li>
-		<%})%>
-	</ul>
-
-	<!-- The options template -->
-	<ul class='options'>
-		<% selectableItems().each(function(item){ %>
-			<li class='<%= selected.indexOf(item) >= 0 ? "checked":""%>'
-	            <%=(el)-> el.data('item',item) %> >
-				<input type="checkbox"
-				       <%= selected.indexOf(item) >= 0 ? "checked":""%>>
-				
-				<%= item.attr('title') %>
-				
-				<%if(item.children && item.children.length){ %>
-					<button class="showChildren">→</button>
-				<%}%>
-			</li>
-		<% }) %>
-	</ul>
-
-In addition to rendering the template the `can.Control` object
-listens for clicks on the breadcrumbs and navigation arrows as
-well as the checkboxes for saving the options selected.
-
-
-	var TreeCombo = can.Control.extend({
-		init: function() {
-			/*
-			 * initialization and rendering
-			 * ...
-			 */
-		},
-		 ".showChildren click": function(el, ev){
-		    // add the item to the breadcrumb
-		    this.options.breadcrumb.push(el.closest('li').data('item'));
-		    // prevents selection
-		    ev.stopPropagation();
-		  },
-		  ".breadcrumb li click": function(el){
-		    var item = el.data('item');
-		    // if you clicked on a breadcrumb li with data
-		    if(item){
-		      // remove all breadcrumb items after it
-		      var index = this.options.breadcrumb.indexOf(item);
-		      this.options.breadcrumb.splice(index+1, 
-		                                     this.options.breadcrumb.length - index-1)
-		    } else {
-		      // clear the breadcrumb
-		      this.options.breadcrumb.replace([])
-		    }
-		    
-		  },
-		  ".options li click": function(el){
-		    // toggles an item's existance in the selected array
-		    var item = el.data('item'),
-		        index = this.options.selected.indexOf(item);
-		    if(index === -1 ){
-		      this.options.selected.push(item);
-		    } else {
-		      this.options.selected.splice(index, 1) 
-		    }
-		  }
-		  
-		});
-	})
-
-<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/XP5pv/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
-
-## Use navigation in a single-page app
-
-To implement navigation in a single-page app, use `can.route`
-to synchronize the browser's `window.location.hash` with the
-application's state (represented in a `can.Map`).  This allows
-the usage of the "back" and "forward" buttons on the browser,
-as well as the ability to link to specific pages within the app.
-
-### Display multiple pages
-
-To implement pagination that will work with the `hash`, the route
-must be updated when the page changes, and the page must
-be updated when the route changes.
-
-	// update the route when the page state changes
-	"{paginate} offset": function(paginate){
-		can.route.attr('page', paginate.page());
+	can.Component.extend({
+	tag: "panel",
+	template: "{{#if visible}}<content />{{/if}}",
+	scope: {
+		title: "@"
 	},
-	// update the page's state when the route changes
-	"{can.route} page": function(route){
-		this.options.paginate.page(route.attr('page'));
-	}
+	...
 
-<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/Rtz2J/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+In addition to the `scope` object, a component has 
+`events` that behave in a similar way to the events
+in a `can.Control`.  A component has two events that
+will be used by the tabs widget: `inserted` and 
+`removed`. Since this behavior has already been
+defined in the `TabsViewModel`, an inserted panel
+need only call the tabs component's `addPanel` method.
 
-### Add history to a tab widget
+	...
+		events: {
+			inserted: function() {
+				this.element.parent().scope().addPanel( this.scope )
+			},
+			removed: function() {
+				this.element.parent().scope().addPanel( this.scope )
+			}
+		}
+	});
 
-Similarly to pagination, `can.route` can be used to
-add history and navigation to a tab widget.  Instead
-of using pages, `can.route` tracks which tab
-is being viewed and synchronizes it with the browser's
-`window.location.hash`.
-
-<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/epjUv/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
-
-### ?? Handle advanced navigation with sections and subsections
-
-<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/2UL6R/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
-
-## Save data
-
-	// coming soon
-
-### Interact with a Server
-
-	// coming soon
-
-### Create a REST interface
-
-	// coming soon
-
-### Simulate a server during development
-
-
-	// coming soon
-
-### Use LocalStorage
-
-	// coming soon
-
-### Implement Caching
-
-	// coming soon
-
-## Validate Forms
-
-	// coming soon
-
-## Authenticate Users
-
-	// coming soon
-
-## Test an Application
-
-	// coming soon
-
-## Use a third-party UI Library
-
-### Bootstrap
-
-	// coming soon
-
-### jQuery UI
-
-	// coming soon
-
-## Make a real-time application
-
-Making a real-time applicaiton in CanJS is as simple as listening for changes on the server.  Binding values to data on the server allows elements
-on the page to atuomatically update accordingly, as seen in this real-time chat application.
-
-<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/bBVHs/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
-
-## Structure an application
-
-To understand the structure of a full application, take a look at the CanJS implementation of TodoMVC.  This implementation uses `can.Component` to structure the application and to maintain separation between design and behavior.
-
-
-
-<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/CRZXH/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/x6TJK/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
