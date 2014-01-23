@@ -1,6 +1,9 @@
 @page Recipes Recipes
 @parent guides 4
 
+
+This is organized by what you want to do, illustrated with copious examples
+
 ##How do I...
 
 ## Get Started
@@ -168,9 +171,14 @@ should be separated using different observables.
 As an application gets more complex, separating state from data
 makes things more maintainable.
 
-### Creating a Live Timestamp
+### Create a Live Timestamp
 
-This recipe demonstrates adding a `createdAt` property to the data like:
+This recipe demonstrates how to generate a 'live' timestamp
+that displays in a human-readable format. This means handling 
+application state that changes over time, as well as making 
+information rendered in a template human-readable using a helper function.
+
+First, we'll add a `createdAt` property to the data like:
 
      var data = new can.Map({
        message: "Hello World",
@@ -195,17 +203,20 @@ will be displayed.  The following calls `prettyDate` with an observable value of
     <h1>
       {{message}} 
       <i>created {{prettyDate createdAt}}</i>
-    </h1>
+    </h1> 
 
-To call a function from a template, [register](../docs/can.Mustache.registerHelper.html) the function
-as a helper function:
+To call a function from a template, [register](../docs/can.Mustache.registerHelper.html) it with `can.view`.
+The third argument passed to `can.view` is an object with helper functions, so the `dateHelper` function
+can be registered as `prettyView`.
 
-    can.Mustache.registerHelper('prettyDate', function( date ){
+		var dateHelper = function ( date ) {
+			//helper function
+		}
 
-    })
+    var frag = can.view("app-template", data, {prettyDate: dateHelper});
 
 In this helper, `date` is not a Date object, instead it is an observable [can.compute](../docs/can.compute.html) that
-contains the `createdAt` value.  A `can.compute` is an observables that contains a single value.  To read the value,
+contains the `createdAt` value.  A `can.compute` is an observable that contains a single value.  To read the value,
 call the compute like you would any other function:
 
     date() //-> Date
@@ -247,57 +258,32 @@ Using the `timeElapsed`, `prettyDate` returns human readable timestamps:
 
 ## Handle User Interaction 
 
-Previous recipes have shown how the page changes when state and data change. When a user 
-interacts with an application (through things like clicking, typing, and submitting forms), 
-the state and data of the application are affected. The user sees the page change when 
-changing a value in a form, but in CanJS changes should be made to the application data or state 
-and the page will update automatically according to its template.
-
-At first this may seem more complicated than making direct changes to the page, but 
-[as an application gets larger it makes things much easier](http://www.youtube.com/watch?v=NZi5Ru4KVug&list=UUoF55kH83o2ihqHbDipRm2Q#t=44).
-Instead of updating every relevant part of a page when a user clicks a button, with CanJS
-the state is changed and the page changes accordingly.
-
-### Respond to user Actions
-
 When a user does something, such as clicking, an `event` occurs. Event handlers specify
 how [JavaScript should respond to an event](http://bitovi.com/blog/2010/10/a-crash-course-in-how-dom-events-work.html).
-Previous examples have used jQuery's `click` event listener:
+
+This recipe will introduce handling a click event using a [`can.Control`](http://canjs.com/docs/can.Control).
+Using a list of people like previous recipes, clicking any individual person's name
+will remove that person from the list.
+
+Previous examples have used jQuery's event handlers:
 
 	$("#push").click(function(){
 	  //handle the event
 	})
 
-However, CanJS provides a few different ways to respond to events. As well as
+CanJS provides a few different ways to respond to events. As well as
 making application code simpler, using CanJS to handle events can help to
 automatically prevent [memory leaks](http://bitovi.com/blog/2012/04/zombie-apocolypse.html).
 
-As a reminder, though event handlers respond to actions on the page 
-they should *change application state or data* (e.g. make a change to a `can.Map`).
-This will update the page automatically, keeping code manageable.
-
-#### Control Events
-
-What we want to do is make something happen when we an event occurs.
-The way this works is by using a can.control.  Essentially, this is a module
-that is a controller and a view.  We can control UI elements, but we should
-be doing this by using state.  Let's make it so when we click a person from the
-list we remove that person from the list.  So, how do we check for that click event?
-
-Use a `can.Control` to 
+A `can.Control` allows us to define how the application should behave
+when its state changes.  To do this, extend `can.Control`.
 
 	var PeopleList = can.Control.extend({
-    init: function( el, op ){
-         this.options.people = new can.List(op.people);
-         this.element.html( can.view('app-template', {
-             people: this.options.people
-        }));
-    }
-  }
+		//behavior
+	});
 
-When you create a `PeopleList`, you will pass the elements you want
-to insert your templated list into and an object with `people`, an 
-array of first and last names.
+Then, we will be able to use our data, in this case an array
+of `people`, when instantiating our `PeopleList` Control.
 
 	var people = [
     {firstname: "John", lastname: "Doe"},
@@ -309,23 +295,39 @@ array of first and last names.
 
 	new PeopleList('#my-app', {people: people});
 
-In the mustache template, there is a `data` helper that can reference 
-the object associated with the `li` that is rendering that object.
+When instantiated, the `init` method is called, and `PeopleList`
+needs to keep an observable list of `people` (accomplished with
+`can.List`) and render the list using `can.view`. The first argument
+(in this case `'#my-app'`) is a selector defining the elements
+the list should be rendered in.
+
+	var PeopleList = can.Control.extend({
+    init: function( element, options ){
+         this.people = new can.List(op.people);
+         this.element.html( can.view('app-template', {
+         		 //defines people in the template as the observable can.List
+             people: this.people
+        }));
+    }
+  }
+
+When the event handler for a `click` is defined, it needs a way
+to access the object associated with the `li` that was clicked.
+With the `data` helper, the element will retain a reference
+to the object it is associated with (in this case, a `person`).
 
 	<ul>
 	{{#each people}}
 	    <li {{data 'person'}}>
-		{{lastname}}, {{firstname}}
+			{{lastname}}, {{firstname}}
 	    </li>
 	{{/each}}
 	</ul>  
 
-Now, any time a person's name is clicked, that person
-should be removed from the `can.List`, which will
-also remove it from our page. When a string selector
-is defined as a functionwhen extending `can.Control`,
-event handlers are automatically bound to the relevant
-events:
+Finally, the event handler must be defined. In a `can.Control`,
+an event handler function can be defined with a string containing
+a selector and an event. In this case, these are `li` and `click`,
+recpectively, since we want to handle click events on each list item.
 
 	var PeopleList = can.Control.extend({
     init: function(){ 
@@ -337,7 +339,18 @@ events:
            var index = people.indexOf(person);
            people.splice(index, 1);
     }
-});
+	});
+
+As a reminder, though event handlers respond to actions on the page 
+they should *change application state or data* (e.g. make a change to a `can.Map`).
+This will update the page automatically, keeping code manageable.
+
+When a user clicks a list item:
+
+ 1. The function bound to `li click` is called
+ 2. The object associated with that list item is accessed using the `data` helper
+ 3. That object is removed from the observable `people` list
+ 4. The template updates automatically
 
 This is *one* way to handle events. Others will be covered
 in the following recipes while building widgets.
@@ -346,20 +359,19 @@ in the following recipes while building widgets.
 
 ## Build Widgets/UI Elements
 
-So far, recipes have demonstrated how to change page content and introduced
-event handling. When application state and data change, so does how the
-page is displayed. When users interact with an application, they change
-the state and data, but do not directly manipulate the page.
+Previous recipes have demonstrated how to change page content and introduced
+event handling. The following recipes will introduce `can.Component`, 
+which allows for straightforward widget construction by packaging
+template, state, and event handling code in one place.
 
-While this can be accomplished with `can.Control`, CanJS actually provides
-a way to structure this for individual parts, or components, of an
-application. [can.Component](http://canjs.com/docs/can.Component.html)
-enables building reusable widgets with using custom tags.
+While similar *behavior* can be accomplished with `can.Control`,
+building a Component enables building reusable widgets using custom
+HTML tags.
 
 ### Create a Component
 
-The previous recipe that displays a list of people can be represented
-as a component. The application template can be replaced with:
+The previous recipe that displays a list of people can instead 
+be represented as a component. 
 
 	<people></people>
 
@@ -370,11 +382,12 @@ be rendered since we set `people` as the tag.
 	    tag: 'people',
 	...
 
-The previous template is now passed as the `template` argument.
-This can also be a file.  The template includes a `can-click`
-attribute. This is another way of declaring an event binding.
-In this case, the `remove` function of component will be called
-with the relevant `people` object as an argument.
+The template for the component itself is passed via the `template`
+argument. This can either be an external file or a string.
+Each `li` uses `can-click`, which declares an event binding.
+Here, the method called `remove` inside this component's
+scope will be called with the relevant `people` object
+as an argument.
 
 	...
 	    template: '<ul>' +
@@ -386,10 +399,10 @@ with the relevant `people` object as an argument.
 	                '</ul>',
 	...
 
-The `scope` object contains the component's state and 
-data information, as well as defining some of its
-behavior. This includes the `remove` function that
-`can-click` uses.
+The `scope` object contains the component's state
+as well as defining some of its behavior. Here,
+this includes the `remove` function that was bound
+to the `can-click` event above.
 
 	...
 	    scope: {
@@ -402,11 +415,17 @@ behavior. This includes the `remove` function that
 	    }
 	});
 
+This behaves similarly to the `can.Control` from before.
+However, the `<people>` tag can be used without having
+any knowledge about the inner workings of the widget.
+The template, state, and behavior are all combined
+into one Component.
+
 <iframe width="100%" height="300" src="http://jsfiddle.net/donejs/WBM9z/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
 
 ### Build a Tabs Widget
 
-Using `can.Component`, a tab widget template looks like this:
+A tabs widget could be instantiated with the following HTML:
 
 	<tabs>
 		<panel title="Fruit">Oranges, Apples, Pears</panel>
@@ -418,24 +437,25 @@ This is one of the most useful features of components. A designer
 that understands HTML can put together a template for a `tabs`
 widget without understanding anything other than the syntax.
 
-#### Tabs Widget Behavior
+### Tabs Widget Behavior
 
-Before implementing the component itself, it can be useful
-to take a moment to define an observable *view model*, 
-or a representation of the state of the UI element.
-This makes unit testing and makes the code modular
-and easy to manage. State is best represented using a `can.Map`.
+Before implementing the component itself, we'll
+define an observable *view model*--the state object
+of the UI element. This makes the code modular and easier
+to manage (and also allows for unit testing).
 
-A `TabsViewModel` needs:
- - An observable list of panels
- - An active panel
- - Functions to add, remove, and activate panels
+In order to accurately represent a tabs widget,
+a `TabsViewModel` needs:
+<ul>
+<li>An observable list of panels</li>
+<li>A state variable with the active panel</li>
+<li>Helper methods to add, remove, and activate panels</li>
+</ul>
 
- Since this is a `can.Map`, `panels` is automatically 
- converted to a `can.List`.  `addPanel` will not only
- add a new panel, but activate it if there were previously
- no panels.  `removePanel` handles making a new panel
- active if necessary.
+Since this is a `can.Map`, the `panels` object is
+automatically converted to a `can.List`.
+The `active` variable references the `panel` object
+that should currently be displayed.
 
 	var TabsViewModel = can.Map.extend({
 		panels: [],
@@ -467,15 +487,16 @@ A `TabsViewModel` needs:
 		}
 	})
 
-#### Tabs Widget Component
+### Tabs Widget Component
 
 Now that the view model is defined, making a component is simply
 a matter of defining the way the tabs widget is displayed.
 
-The template for a `tabs` component needs a heading for each
-panel that will `activate` that panel when clicked. The template
-also includes three `panel` components, which can be inserted
-into the template with a `<content />` tag.
+The template for a `tabs` component needs a list of panel titles
+that will `activate` that panel when clicked. Inside the tabs
+template, the `<content>` tag will insert everything that is
+inside the Component's tag (in this case,
+the three `<panel>` components).
 
 	can.Component.extend({
 		tag: "tabs",
@@ -495,7 +516,8 @@ component's `activate` method).
 
 Each panel's `scope` contains a title, which should be
 taken from the `title` attribute in the `<panel>` tag.
-To do this, the `@` helper is used.
+If you want to set the string value of a Component's
+attribute as a `scope` variable, use the `'@'` helper.
 
 	can.Component.extend({
 	tag: "panel",
@@ -507,12 +529,11 @@ To do this, the `@` helper is used.
 
 In addition to the `scope` object, a component has 
 `events` that behave in a similar way to the events
-in a `can.Control`.  A component has two events that
-will be used by the tabs widget: `inserted` and 
-`removed`. Since this behavior has already been
-defined in the `TabsViewModel`, an inserted panel
-need only call the tabs component's `addPanel` method.
-
+in a `can.Control`.  The `inserted` event occurs when
+each `<panel>` is inserted into the page.  When this
+happens, the `TabsViewModel` should change, so the
+`addPanel` method of the parent object (a `tabs`
+component) is called.
 	...
 		events: {
 			inserted: function() {
@@ -523,5 +544,10 @@ need only call the tabs component's `addPanel` method.
 			}
 		}
 	});
+
+With this component, any time a `<tabs>` element with
+`<panel>` elements is put in a page, a tabs widget will
+automatically be created. This allows application behavior
+and design to be compartmentalized from each other.
 
 <iframe width="100%" height="300" src="http://jsfiddle.net/donejs/x6TJK/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
