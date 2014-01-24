@@ -2,7 +2,7 @@
 @parent guides 4
 
 
-This is organized by what you want to do, illustrated with copious examples
+
 
 ##How do I...
 
@@ -487,7 +487,7 @@ that should currently be displayed.
 		}
 	})
 
-### Tabs Widget Component
+#### Tabs Widget Component
 
 Now that the view model is defined, making a component is simply
 a matter of defining the way the tabs widget is displayed.
@@ -534,6 +534,7 @@ each `<panel>` is inserted into the page.  When this
 happens, the `TabsViewModel` should change, so the
 `addPanel` method of the parent object (a `tabs`
 component) is called.
+
 	...
 		events: {
 			inserted: function() {
@@ -551,3 +552,468 @@ automatically be created. This allows application behavior
 and design to be compartmentalized from each other.
 
 <iframe width="100%" height="300" src="http://jsfiddle.net/donejs/x6TJK/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+## Build an Application with Data from a Server
+
+In CanJS, `can.Model` adds functionality to `can.Map` to 
+work with data on a server.  It enables you to:
+
+ - Get and modify data from a server
+ - Listen to changes made to the data on the server
+ - Unify service data with other objects in your application
+
+`can.Model` allows you to access data from a server
+easily:
+
+	var Todo = can.Model.extend({
+	  findAll: 'GET /todos',
+	  findOne: 'GET /todos/{id}',
+	  create:  'POST /todos',
+	  update:  'PUT /todos/{id}',
+	  destroy: 'DELETE /todos/{id}' 
+	},{});
+
+Using *any* server with a [*REST* interface](http://blog.mashape.com/post/60820526317/list-of-40-tutorials-on-how-to-create-an-api),
+ `can.Model` enables create, read, update, and destroy functionality.
+
+### Create a Chat Application
+
+To put together a chat application, we'll use two methods
+from `can.Model` to fetch the messages and create new ones:
+
+	var Message = can.Model({
+	    findAll : 'GET ' + myServerUrl + '/messages',
+	    create : 'POST ' + myServerUrl + '/messages'
+	},{});
+
+Using this `Model`, create a `can.Component`.  The tabs Component
+used `can-click` to listen for click events.  Since this chat
+application uses a `<form>` for sending messages, we'll use
+`can-submit` to specify an event handler.
+
+There's one more helper used in the template: [`can-value`](http://canjs.com/docs/can.view.bindings.can-value.html).
+This automatically binds the value of an input field to an observable
+variable, in this case `newMessage` will be an attribute of the Component:
+
+	can.Component.extend({
+	  tag: 'chat',
+	  template: '<ul id="messages">' +
+	              '{{#each messages}}' +
+	              '<li>{{body}}</li>' +
+	              '{{/each}}' +
+	            '</ul>' +
+	            '<form id="create-message" action="" can-submit="submitMessage">' +
+	                '<input type="text" id="body" placeholder="type message here..."' + 
+	                'can-value="newMessage" />' +
+	            '</form>',
+	...
+
+
+In the scope, the `Message` model is stored so provide
+so we can save new messages and observe changes to the Model.
+`new Message.List({})` is a shortcut to perform
+the `findAll` operation on a `can.Model` and
+return a `can.List`.
+
+	...
+    scope: {    
+        Message: Message,
+        messages: new Message.List({}),
+  ...
+
+
+When `submitMessage` is called, a new `Message` is created
+with `new Message()`. The body of the message is fetched from
+the Component's `newMessage` attribute thanks to `can-value`.
+
+To commit the new message to the server, call `save()`.
+
+        submitMessage: function(el, ev, ev2){
+            ev2.preventDefault();
+            new Message({body: this.attr("newMessage")}).save();
+            this.attr("newMessage", "");
+        }
+    },
+
+Finally, when a new `Message` is created, the `messages` list
+must be updated.
+
+    events: {
+        '{Message} created': function(construct, ev, message){
+            this.scope.attr('messages').push(message);
+        }
+    }
+});
+
+When the chat Component is loaded, messages are loaded from the server
+using `can.Model` and `new Message.List({})`.  When a new message is
+submitted:
+
+	1. `can-submit` calls `submitMessage`
+	2. a new `Message` is created and saved to the server
+	3. `'{Message created}'` detects this change and adds the new message to `messages`
+	4. The template is automatically updated since `messages` is an observable `can.List`
+
+### Add real-time functionality
+
+This example uses [socket.io](http://socket.io/)
+to enable real-time functionality. This guide won't go
+into detail on how to use `socket.io`, but for real-time
+chat the application needed two more things.
+
+First, the socket must listen to a change from the server, and trigger
+the `{Message} created` event:
+
+	var socket = io.connect(myServerUrl)
+	socket.on('message-created', function(message){
+		new Message(message).created();
+	})
+
+Now, when a new message is sent, this will detect the change and
+insert it into `messages`. To keep the `created` event from firing
+twice, modify the `create` function in the Model:
+
+	var Message = can.Model({
+    findAll : 'GET ' + myServerUrl + '/messages',
+    create : function(attrs) {
+        $.post(myServerUrl + '/messages', attrs);
+        //keep '{Message} created' from firing twice
+        return $.Deferred();
+    }
+	},{});
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/afC94/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+## Request a Recipe
+
+To request a new recipe or vote on an upcoming one, [submit an issue](https://github.com/bitovi/canjs.com/issues)
+to the `canjs.com` respository on GitHub.
+
+
+<!--
+### Bind an Input Field to a Value
+
+	//Coming soon
+
+### ?? Respond to Keyboard and Mouse Events
+
+	//Coming soon
+
+### ?? can.Control
+
+In CanJS, [can.Control](/docs/can.Control) is used to listen
+for events.
+
+	var People = can.Control.extend({
+
+	  '#push click': function( el, ev ){
+	    people.push({firstname: "Paul", lastname: "Newman"})
+	  },
+	  '#pop click': function( el, ev ){
+	    people.pop()
+	  }
+	})
+
+Any number of event listeners can be added in a `can.Control`
+using jQuery-like selectors. This can be used, for instance,
+to remove a specific element from a list. First, add a
+'destroy' button to the template:
+
+	<script type="text/mustache" id="app-template">
+	<button id="push">Add a new person to the list</button>
+	<button id="pop">Remove someone from the list</button>  
+	<ul>
+	{{#each people}}
+	    <li>
+		{{lastname}}, {{firstname}}
+		<button class="destroy">X</button>
+	    </li>
+	{{/each}}
+	</ul>  
+	</script>
+
+Then, add a listener that 
+
+	var People = can.Control.extend({
+
+	  'li .destroy click': function( el, ev ){
+	  	// get the li element that holds the destroy button
+	  	var li = el.closest( 'li' )
+
+	  }
+
+	  '#push click': function( el, ev ){
+	    people.push({firstname: "Paul", lastname: "Newman"})
+	  },
+	  '#pop click': function( el, ev ){
+	    people.pop()
+	  }
+	})
+
+### Show the Same Data in Two Places
+
+Using the observable pattern, the same data can be showed in
+two places at once.  Notice that when 'do dishes' changes on
+one list, it also changes on the other.  This is because the
+same value is shared accross both lists.
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/SnRKV/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+### Converting User Input to Data
+
+	//Coming soon
+
+### Update data when a Form is Changed
+
+## Make Widgets / UI Elements
+
+One way to create widgets is to use `can.Control` helper functions
+to change the classes of elements that are then styled
+with CSS.
+
+### Create a tab widget
+
+The helper functions for a tab widget include
+finding a tab's content for a given `li` (the tab)
+and on the user clicking a list element, hiding
+the old tab and show a new one.
+
+	var Tabs = can.Control.extend({
+		init: function ( el ) {
+		/*
+		 * initialization and rendering
+		 * ...
+		 * /
+		},
+		// finds tab for a given li
+		tab: function ( li ){
+			return $( li.find( 'a' ).attr( 'href' ));
+		}
+		// hides the old active tab, shows new one
+		'li click': function( el, ev ) {
+			ev.preventDefault();
+			this.tab( this.element.find( '.active' )
+			            .removeClass( 'active' ) ).hide()
+			this.tab( el.addClass( 'active' ) ).show();
+		}
+	})
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/kXLLt/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+### Create a tooltip
+
+For a tooltip, helper functions include initializing
+the tooltip when an element is clicked, then listening
+for any click outside the tooltip to hide it.
+
+First, the tooltip's styling and behavior is defined.
+
+	var Tooltip = can.Control.extend({
+		init: function(){
+			// styling and display of the tooltip
+		},
+		'{window} click': function( el, ev ) {
+		    // hide only if we clicked outside the tooltip
+		    // or outside the relative element
+		    if (!this.element.has( ev.target ).length &&
+		        ev.target !== this.element[0] &&
+		        ev.target !== this.options.relativeTo[0] ) {
+		      this.element.remove();
+		    }
+	  	}
+	})
+
+Then, when an `li` element is clicked, a new tooltip
+is created.
+
+	$("li").bind("click", function(){
+	    new Tooltip( $("<div>"), {
+	      relativeTo : $(this),
+	      html : "tooltip"
+	    })
+	})
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/3wtLW/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+### Create a tree combo
+
+A more advanced UI element, like a tree combo, uses
+advanced templates and helpers in its `can.Control`
+object.
+
+The templates include breadcrumbs for navigational display
+and a list of options.
+
+	<ul class='breadcrumb'>
+		<li><%= title %></li>
+		<% breadcrumb.each(function(item){ %>
+			<li <%=(el)-> el.data('item',item) %>>
+	          <%= item.attr('title') %>
+	        </li>
+		<%})%>
+	</ul>
+
+	<ul class='options'>
+		<% selectableItems().each(function(item){ %>
+			<li class='<%= selected.indexOf(item) >= 0 ? "checked":""%>'
+	            <%=(el)-> el.data('item',item) %> >
+				<input type="checkbox"
+				       <%= selected.indexOf(item) >= 0 ? "checked":""%>>
+				
+				<%= item.attr('title') %>
+				
+				<%if(item.children && item.children.length){ %>
+					<button class="showChildren">→</button>
+				<%}%>
+			</li>
+		<% }) %>
+	</ul>
+
+In addition to rendering the template the `can.Control` object
+listens for clicks on the breadcrumbs and navigation arrows as
+well as the checkboxes for saving the options selected.
+
+
+	var TreeCombo = can.Control.extend({
+		init: function() {
+			/*
+			 * initialization and rendering
+			 * ...
+			 */
+		},
+		 ".showChildren click": function(el, ev){
+		    // add the item to the breadcrumb
+		    this.options.breadcrumb.push(el.closest('li').data('item'));
+		    // prevents selection
+		    ev.stopPropagation();
+		  },
+		  ".breadcrumb li click": function(el){
+		    var item = el.data('item');
+		    // if you clicked on a breadcrumb li with data
+		    if(item){
+		      // remove all breadcrumb items after it
+		      var index = this.options.breadcrumb.indexOf(item);
+		      this.options.breadcrumb.splice(index+1, 
+		                                     this.options.breadcrumb.length - index-1)
+		    } else {
+		      // clear the breadcrumb
+		      this.options.breadcrumb.replace([])
+		    }
+		    
+		  },
+		  ".options li click": function(el){
+		    // toggles an item's existance in the selected array
+		    var item = el.data('item'),
+		        index = this.options.selected.indexOf(item);
+		    if(index === -1 ){
+		      this.options.selected.push(item);
+		    } else {
+		      this.options.selected.splice(index, 1) 
+		    }
+		  }
+		  
+		});
+	})
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/XP5pv/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+## Use navigation in a single-page app
+
+To implement navigation in a single-page app, use `can.route`
+to synchronize the browser's `window.location.hash` with the
+application's state (represented in a `can.Map`).  This allows
+the usage of the "back" and "forward" buttons on the browser,
+as well as the ability to link to specific pages within the app.
+
+### Display multiple pages
+
+To implement pagination that will work with the `hash`, the route
+must be updated when the page changes, and the page must
+be updated when the route changes.
+
+	// update the route when the page state changes
+	"{paginate} offset": function(paginate){
+		can.route.attr('page', paginate.page());
+	},
+	// update the page's state when the route changes
+	"{can.route} page": function(route){
+		this.options.paginate.page(route.attr('page'));
+	}
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/Rtz2J/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+### Add history to a tab widget
+
+Similarly to pagination, `can.route` can be used to
+add history and navigation to a tab widget.  Instead
+of using pages, `can.route` tracks which tab
+is being viewed and synchronizes it with the browser's
+`window.location.hash`.
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/epjUv/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+### ?? Handle advanced navigation with sections and subsections
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/2UL6R/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+## Save data
+
+	// coming soon
+
+### Interact with a Server
+
+	// coming soon
+
+### Create a REST interface
+
+	// coming soon
+
+### Simulate a server during development
+
+
+	// coming soon
+
+### Use LocalStorage
+
+	// coming soon
+
+### Implement Caching
+
+	// coming soon
+
+## Validate Forms
+
+	// coming soon
+
+## Authenticate Users
+
+	// coming soon
+
+## Test an Application
+
+	// coming soon
+
+## Use a third-party UI Library
+
+### Bootstrap
+
+	// coming soon
+
+### jQuery UI
+
+	// coming soon
+
+## Make a real-time application
+
+Making a real-time applicaiton in CanJS is as simple as listening for changes on the server.  Binding values to data on the server allows elements
+on the page to atuomatically update accordingly, as seen in this real-time chat application.
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/bBVHs/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
+
+## Structure an application
+
+To understand the structure of a full application, take a look at the CanJS implementation of TodoMVC.  This implementation uses `can.Component` to structure the application and to maintain separation between design and behavior.
+
+
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/donejs/CRZXH/embedded/result,html,js,css/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>-->
