@@ -1,5 +1,5 @@
 var getBranchDownloads = function(){
-	return can.map(can.grep(docConfig.versions, function(v){ return !!v.branch }), function(v){
+	return can.map(can.grep(docConfig.versions || [], function(v){ return !!v.branch }), function(v){
 		return {
 			name : v.number,
 			zipball_url : can.sub('https://github.com/bitovi/canjs/archive/{branch}.zip', v)

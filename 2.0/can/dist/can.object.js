@@ -2,31 +2,13 @@
  * CanJS - 2.0.4
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Sat, 04 Jan 2014 05:54:39 GMT
+ * Thu, 30 Jan 2014 00:55:41 GMT
  * Licensed MIT
  * Includes: can/util/object
  * Download from: http://canjs.com
  */
 (function(can) {
-
-    var isArray = can.isArray,
-        // essentially returns an object that has all the must have comparisons ...
-        // must haves, do not return true when provided undefined
-        cleanSet = function(obj, compares) {
-            var copy = can.extend({}, obj);
-            for (var prop in copy) {
-                var compare = compares[prop] === undefined ? compares["*"] : compares[prop];
-                if (same(copy[prop], undefined, compare)) {
-                    delete copy[prop]
-                }
-            }
-            return copy;
-        },
-        propCount = function(obj) {
-            var count = 0;
-            for (var prop in obj) count++;
-            return count;
-        };
+    var isArray = can.isArray;
 
     can.Object = {};
 
@@ -35,16 +17,14 @@
             aArray = isArray(a),
             comparesType = typeof compares,
             compare;
-
-        if (comparesType == 'string' || compares === null) {
+        if (comparesType === 'string' || compares === null) {
             compares = compareMethods[compares];
-            comparesType = 'function'
+            comparesType = 'function';
         }
-        if (comparesType == 'function') {
-            return compares(a, b, aParent, bParent)
+        if (comparesType === 'function') {
+            return compares(a, b, aParent, bParent);
         }
         compares = compares || {};
-
         if (a instanceof Date) {
             return a === b;
         }
@@ -62,16 +42,16 @@
                 return false;
             }
             for (var i = 0; i < a.length; i++) {
-                compare = compares[i] === undefined ? compares["*"] : compares[i]
+                compare = compares[i] === undefined ? compares['*'] : compares[i];
                 if (!same(a[i], b[i], a, b, compare)) {
                     return false;
                 }
-            };
+            }
             return true;
-        } else if (aType === "object" || aType === 'function') {
+        } else if (aType === 'object' || aType === 'function') {
             var bCopy = can.extend({}, b);
             for (var prop in a) {
-                compare = compares[prop] === undefined ? compares["*"] : compares[prop];
+                compare = compares[prop] === undefined ? compares['*'] : compares[prop];
                 if (!same(a[prop], b[prop], compare, a, b, deep === false ? -1 : undefined)) {
                     return false;
                 }
@@ -90,15 +70,12 @@
 
     can.Object.subsets = function(checkSet, sets, compares) {
         var len = sets.length,
-            subsets = [],
-            checkPropCount = propCount(checkSet),
-            setLength;
-
+            subsets = [];
         for (var i = 0; i < len; i++) {
             //check this subset
             var set = sets[i];
             if (can.Object.subset(checkSet, set, compares)) {
-                subsets.push(set)
+                subsets.push(set);
             }
         }
         return subsets;
@@ -110,28 +87,23 @@
         // then make sure that set has fewer properties
         // make sure we are only checking 'important' properties
         // in subset (ones that have to have a value)
-
-        var setPropCount = 0,
-            compares = compares || {};
-
+        compares = compares || {};
         for (var prop in set) {
-
             if (!same(subset[prop], set[prop], compares[prop], subset, set)) {
                 return false;
             }
         }
         return true;
-    }
-
+    };
     var compareMethods = {
-        "null": function() {
+        'null': function() {
             return true;
         },
         i: function(a, b) {
-            return ("" + a).toLowerCase() == ("" + b).toLowerCase()
+            return ('' + a)
+                .toLowerCase() === ('' + b)
+                .toLowerCase();
         }
-    }
-
+    };
     return can.Object;
-
 })(can);

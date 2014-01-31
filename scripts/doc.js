@@ -134,7 +134,8 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 			minifyBuild: minifyBuild,
 			versionsSrc: "../../versions.json",
 			version: version,
-			isVersioned: true
+			isVersioned: true,
+			versions: versions
 		},
 		guidesOptions = {
 			"markdown": [ 'can/guides', 'can/changelog.md', 'can/contributing.md', 'can/license.md' ],
@@ -176,23 +177,24 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 			minifyBuild: minifyBuild,
 			versionsSrc: "../../versions.json",
 			version: version,
-			isVersioned: true
+			isVersioned: true,
+			versions: versions
 		};
 	
 	
 	// UPDATING FILES
 	
 	// clean versioned folder
-	//new steal.URI(version).removeDir();
+	new steal.URI(version).removeDir();
 	
 	// Make versioned CanJS
-	//copyCanJSTo(version+"/can");
+	copyCanJSTo(version+"/can");
 	
 	// Make versioned API docs
-	//DocumentJS('scripts/doc.html', apiOptions);
+	DocumentJS('scripts/doc.html', apiOptions);
 	
 	// Make versioned guides
-	//DocumentJS(null, guidesOptions);
+	DocumentJS(null, guidesOptions);
 	
 	
 	// if version is the last non-branch version, put in "docs" and "guides" 
@@ -215,12 +217,12 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 				}
 			}) );
 		// Make current guides
-		/*DocumentJS(null, 
+		DocumentJS(null, 
 			steal.extend( guidesOptions, {
 				out: "guides",
 				versionsSrc: "../versions.json",
 				isVersioned: false
-			} ));*/
+			} ));
 		
 		
 	}

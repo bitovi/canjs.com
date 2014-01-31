@@ -2,7 +2,7 @@
  * CanJS - 2.0.4
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Sat, 04 Jan 2014 05:54:30 GMT
+ * Thu, 30 Jan 2014 00:55:27 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -13,14 +13,13 @@ steal('can/util', 'can/map', 'can/util/object', function (can) {
 		var obj = {};
 		for (var prop in a) {
 			if (typeof a[prop] !== 'object' || a[prop] === null || a[prop] instanceof Date) {
-				obj[prop] = a[prop]
+				obj[prop] = a[prop];
 			} else {
-				obj[prop] = cur.attr(prop)
+				obj[prop] = cur.attr(prop);
 			}
 		}
 		return obj;
 	};
-
 	can.extend(can.Map.prototype, {
 
 		/**
@@ -31,15 +30,15 @@ steal('can/util', 'can/map', 'can/util/object', function (can) {
 		 * @description Save the values of the properties of an Map.
 		 *
 		 * @signature `map.backup()`
-		 * 
+		 *
 		 * `backup` backs up the current state of the properties of an Observe and marks
 		 * the Observe as clean. If any of the properties change value, the original
 		 * values can be restored with [can.Map.backup.prototype.restore restore].
-		 * 
+		 *
 		 * @return {can.Map} The map, for chaining.
 		 *
 		 * @body
-		 * 
+		 *
 		 * ## Example
 		 *
 		 * @codestart
@@ -64,15 +63,15 @@ steal('can/util', 'can/map', 'can/util/object', function (can) {
 		 *   }]
 		 * });
 		 * recipe.backup();
-		 * 
+		 *
 		 * recipe.attr('title', 'Flapjack Mix');
 		 * recipe.title;     // 'Flapjack Mix'
-		 * 
+		 *
 		 * recipe.restore();
 		 * recipe.title;     // 'Pancake Mix'
 		 * @codeend
 		 */
-		backup : function () {
+		backup: function () {
 			this._backupStore = this._attrs();
 			return this;
 		},
@@ -90,7 +89,7 @@ steal('can/util', 'can/map', 'can/util/object', function (can) {
 		 * been added or removed since the last time the Observe was backed up. If _deep_ is `true`,
 		 * If the Observe has never been backed up, `isDirty` returns `undefined`.
 		 * `isDirty` will include nested Observes in its checks.
-		 * 
+		 *
 		 * @param {bool} [deep=false] whether to check nested Observes
 		 * @return {bool} Whether the Observe has changed since the last time it was [can.Map.backup.prototype.backup backed up].
 		 *
@@ -118,7 +117,7 @@ steal('can/util', 'can/map', 'can/util/object', function (can) {
 		 *
 		 * recipe.isDirty();     // false
 		 * recipe.backup();
-		 * 
+		 *
 		 * recipe.attr('title', 'Flapjack Mix');
 		 * recipe.isDirty();     // true
 		 * recipe.restore();
@@ -133,37 +132,31 @@ steal('can/util', 'can/map', 'can/util/object', function (can) {
 		 * recipe.isDirty(true); // false
 		 * @codeend
 		 */
-		isDirty : function (checkAssociations) {
-			return this._backupStore &&
-				!can.Object.same(this._attrs(),
-					this._backupStore,
-					undefined,
-					undefined,
-					undefined,
-					!!checkAssociations);
+		isDirty: function (checkAssociations) {
+			return this._backupStore && !can.Object.same(this._attrs(), this._backupStore, undefined, undefined, undefined, !! checkAssociations);
 		},
 
 		/**
 		 * @function can.Map.backup.prototype.restore restore
 		 * @plugin can/map/backup
 		 * @parent can.Map.backup
-		 * 
+		 *
 		 * @description Restore saved values of an Observe's properties.
 		 *
 		 * @signature `map.restore( [deep] )`
 		 *
-		 * `restore` sets the properties of an Observe back to what they were the last time 
+		 * `restore` sets the properties of an Observe back to what they were the last time
 		 * [can.Map.backup.prototype.backup backup] was called. If _deep_ is `true`,
 		 * `restore` will also restore the properties of nested Observes.
-		 * 
+		 *
 		 * `restore` will not remove properties that were added since the last backup, but it
 		 * will re-add properties that have been removed.
-		 * 
+		 *
 		 * @param {bool} [deep=false] whether to restore properties in nested Observes
 		 * @return {can.Map} The Observe, for chaining.
-		 * 
-		 * 
-		 * 
+		 *
+		 *
+		 *
 		 * @codestart
 		 * var recipe = new can.Map({
 		 *   title: 'Pancake Mix',
@@ -187,7 +180,7 @@ steal('can/util', 'can/map', 'can/util/object', function (can) {
 		 * });
 		 *
 		 * recipe.backup();
-		 * 
+		 *
 		 * recipe.attr('title', 'Flapjack Mix');
 		 * recipe.restore();
 		 * recipe.attr('title'); // 'Pancake Mix'
@@ -198,26 +191,18 @@ steal('can/util', 'can/map', 'can/util/object', function (can) {
 		 * recipe.restore(true);
 		 * recipe.attr('ingredients.0.quantity'); // '6 cups'
 		 * @codeend
-		 * 
+		 *
 		 * ## Events
 		 * When `restore` sets values or re-adds properties, the same events will be fired (including
 		 * _change_, _add_, and _set_) as if the values of the properties had been set using `[can.Map.prototype.attr attr]`.
 		 */
-		restore : function (restoreAssociations) {
-			var props = restoreAssociations ? 
-				this._backupStore : 
-				flatProps(this._backupStore, this)
-
+		restore: function (restoreAssociations) {
+			var props = restoreAssociations ? this._backupStore : flatProps(this._backupStore, this);
 			if (this.isDirty(restoreAssociations)) {
 				this._attrs(props, true);
 			}
-
 			return this;
 		}
-
-	})
-
+	});
 	return can.Map;
-})
-
-
+});

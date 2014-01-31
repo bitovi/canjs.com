@@ -2,7 +2,7 @@
  * CanJS - 2.0.4
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Sat, 04 Jan 2014 05:54:38 GMT
+ * Thu, 30 Jan 2014 00:55:40 GMT
  * Licensed MIT
  * Includes: can/route/pushstate
  * Download from: http://canjs.com
@@ -24,10 +24,14 @@
                 // To detect when someone calls push/replaceState, we need to wrap each method.
                 can.each(['pushState', 'replaceState'], function(method) {
                     originalMethods[method] = window.history[method];
-                    window.history[method] = function(state) {
-                        var result = originalMethods[method].apply(window.history, arguments);
-                        can.route.setState();
-                        return result;
+                    window.history[method] = function(state, title, url) {
+                        // avoid doubled history states (with pushState)
+                        var absolute = url.indexOf("http") === 0;
+                        var searchHash = window.location.search + window.location.hash;
+                        if ((!absolute && url !== window.location.pathname + searchHash) || (absolute && url !== window.location.href + searchHash)) {
+                            originalMethods[method].apply(window.history, arguments);
+                            can.route.setState();
+                        }
                     };
                 });
 
@@ -51,13 +55,12 @@
             },
             setURL: function(path) {
                 // keep hash if not in path, but in 
-                if (includeHash && path.indexOf("#") == -1 && window.location.hash) {
-                    path += window.location.hash
+                if (includeHash && path.indexOf("#") === -1 && window.location.hash) {
+                    path += window.location.hash;
                 }
                 window.history.pushState(null, null, can.route._call("root") + path);
             }
-        }
-
+        };
 
         var anchorClickFix = function(e) {
             if (!(e.isDefaultPrevented ? e.isDefaultPrevented() : e.defaultPrevented === true)) {
@@ -66,18 +69,27 @@
                 // Fix for ie showing blank host, but blank host means current host.
                 var linksHost = node.host || window.location.host;
                 // if link is within the same domain
-                if (window.location.host == linksHost) {
-                    var curParams = can.route.deparam(node.pathname + node.search);
-                    // if a route matches
-                    if (curParams.hasOwnProperty('route')) {
-                        // make it possible to have a link with a hash
-                        includeHash = true;
-                        // update the data
-                        window.history.pushState(null, null, node.href);
-                        // test if you can preventDefault
-                        // our tests can't call .click() b/c this
-                        // freezes phantom
-                        e.preventDefault && e.preventDefault();
+                if (window.location.host === linksHost) {
+                    // if link is a descendant of `root`
+                    var root = can.route._call("root");
+                    if (node.pathname.indexOf(root) === 0) {
+                        // remove `root` from url
+                        var url = (node.pathname + node.search)
+                            .substr(root.length);
+                        var curParams = can.route.deparam(url);
+                        // if a route matches
+                        if (curParams.hasOwnProperty('route')) {
+                            // make it possible to have a link with a hash
+                            includeHash = true;
+                            // update the data
+                            window.history.pushState(null, null, node.href);
+                            // test if you can preventDefault
+                            // our tests can't call .click() b/c this
+                            // freezes phantom
+                            if (e.preventDefault) {
+                                e.preventDefault();
+                            }
+                        }
                     }
                 }
             }
@@ -86,10 +98,10 @@
                 var domain = location.protocol + "//" + location.host,
                     root = can.route._call("root"),
                     index = root.indexOf(domain);
-                if (index == 0) {
-                    return can.route.root.substr(domain.length)
+                if (index === 0) {
+                    return can.route.root.substr(domain.length);
                 }
-                return root
+                return root;
             },
             // a collection of methods on history that we are overwriting
             originalMethods = {},
