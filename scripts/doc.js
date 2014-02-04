@@ -62,6 +62,8 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 		new steal.URI(loc+"/.gitattributes").remove();
 		new steal.URI(loc+"/.gitignore").remove();
 		new steal.URI(loc+"/node_modules").removeDir();
+		new steal.URI(loc+"/test/pluginified").removeDir();
+		new steal.URI(loc+"/dist").removeDir();
 	}
 
 	var minorVersionOf = function(version){
@@ -185,7 +187,9 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 	// UPDATING FILES
 	
 	// clean versioned folder
-	new steal.URI(version).removeDir();
+	new steal.URI(version+"/can").removeDir();
+	new steal.URI(version+"/docs").removeDir();
+	new steal.URI(version+"/guides").removeDir();
 	
 	// Make versioned CanJS
 	copyCanJSTo(version+"/can");

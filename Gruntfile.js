@@ -1,38 +1,28 @@
 /*global module:false*/
 module.exports = function (grunt) {
+	
 	var _ = grunt.util._;
 	var path = require('path');
-	var handlebarsHelpers = {
-		makeTypesString: function (types) {
-			if (types.length) {
-				// turns [{type: 'Object'}, {type: 'String'}] into '{Object | String}'
-				return '{' + types.map(function (t) {
-					return t.type;
-				}).join(' | ') + '}';
-			} else {
-				return '';
-			}
-		},
-		downloadUrl: function(download, isPlugin) {
-			if(isPlugin) {
-				download = 'plugins=' + download;
-			}
-			// TOOO make builder URL configurable
-			return 'http://bitbuilder.herokuapp.com/can.custom.js?' + download;
-		},
-		sourceUrl: function(src, type, line) {
-			var pkg = grunt.config('can.pkg'),
-				relative = path.relative(grunt.config('can.path'), src),
-				hash = type !== 'page' && type !== 'constructor' && line ? '#L' + line : '';
-			return pkg.repository.github + '/tree/v' + pkg.version + '/' + relative + hash;
-		},
-		testUrl: function(test) {
-			// TODO we know we're in the docs/ folder for test links but there might
-			// be a more flexible way for doing this
-			return '../' + test;
-		}
-	}
 
+
+	var canPkg = grunt.file.readJSON('can/package.json'),
+		minor = canPkg.version.split(".").slice(0,2).join("."),
+		versions = grunt.file.readJSON('versions.json'),
+		versionMap = {};
+		
+	versions.forEach(function(version){
+		versionMap[version.number] = version;
+	});
+	
+	grunt.registerTask('overwrite-docco-css', 'Overwites doccos css', function () {
+		grunt.file.copy("scripts/docco.css", minor+"/docco/docco.css");
+		
+		if(versionMap[minor].branch === "master") {
+			grunt.file.copy("scripts/docco.css", "docco/docco.css");
+		}
+	})
+	
+		
 	// Project configuration.
 	grunt.initConfig({
 		// Metadata.
@@ -41,118 +31,72 @@ module.exports = function (grunt) {
 			pkg: grunt.file.readJSON('can/package.json'),
 			path: 'can/'
 		},
-		less: {
-			development: {
+		docco: {
+			dev: {
+				src: [
+					'can/component/**/*.js', 
+					'can/compute/**/*.js', 
+					'can/construct/**/*.js', 
+					'can/control/**/*.js', 
+					'can/list/**/*.js',
+					'can/map/**/*.js', 
+					'can/model/**/*.js', 
+					'can/observe/**/*.js',
+					'can/route/**/*.js', 
+					'can/util/**/*.js',
+					'can/view/**/*.js',
+					'!util/dojo/dojo-1.8.1.js', '!util/dojo/nodelist-traverse.js','!**/*_test.js',
+					'!can/map/list/list.js',
+					'!can/model/list/list.js'
+				],
 				options: {
-					compress: true
+					output: minor+'/docco/'
+				}
+			},
+			latest: {
+				src: [
+					'can/component/**/*.js', 
+					'can/compute/**/*.js', 
+					'can/construct/**/*.js', 
+					'can/control/**/*.js', 
+					'can/list/**/*.js',
+					'can/map/**/*.js', 
+					'can/model/**/*.js', 
+					'can/observe/**/*.js',
+					'can/route/**/*.js', 
+					'can/util/**/*.js',
+					'can/view/**/*.js',
+					'!util/dojo/dojo-1.8.1.js', '!util/dojo/nodelist-traverse.js','!**/*_test.js',
+					'!can/map/list/list.js',
+					'!can/model/list/list.js'
+				],
+				options: {
+					output: 'docco/'
+				}
+			}
+		},
+		plato: {
+			src : {
+				options : {
+					jshint : grunt.file.readJSON('can/.jshintrc'),
+					title : "CanJS Source",
+					exclude : /bower_components\|dist\|docs\|guides\|lib\|node_modules\|src\|examples\|dojo\-\|demos/
 				},
 				files: {
-					"resources/styles.css": "_styles/styles.less"
-				}
-			}
-		},
-		watch: {
-			less: {
-				files: ['_styles/*.less', 'shared/_styles/*.less'],
-				tasks: ['less']
-			},
-			docs: {
-				files: '<%= generate.docs.src %>',
-				tasks: ['docs']
-			},
-			pages: {
-				files: ['<%= generate.docs.src %>', '_pages/*.mustache', '_layouts/*.mustache', '_docs/*.mustache'],
-				tasks: ['docs']
-			},
-			guides: {
-				files: ['_guides/*.md'],
-				tasks: ['docs']
-			}
-		},
-		generate: {
-			options: {
-				layout: 'shared/_templates/page.mustache',
-				docs: 'shared/_templates/docs.mustache',
-				root: '',
-				package: require(__dirname + '/can/package.json'),
-				self: require(__dirname + '/package.json'),
-				helpers: handlebarsHelpers,
-				url: {
-					builderData: 'http://bitbuilder.herokuapp.com/canjs',
-					builder: 'http://bitbuilder.herokuapp.com/can.custom.js',
-					bithub: 'http://api.bithub.com/api/events/',
-					cdn: '//canjs.com/release/'
+					'plato/src': '<%= docco.dev.src %>',
 				}
 			},
-			guides: {
-				options: {
-					root: '../',
-					parent: 'guides',
-					page: 'guides',
-					enableSearch: false
+			tests : {
+				options : {
+					jshint : grunt.file.readJSON('can/.jshintrc'),
+					title : "CanJS Tests",
+					exclude : /node_modules/
 				},
-				src: ['_guides/*.md', 'can/changelog.md', 'can/contributing.md', 'can/license.md'],
-				dest: 'guides/'
-			},
-			docs: {
-				options: {
-					root: '../',
-					parent: 'canjs',
-					page: 'docs',
-					enableSearch: true
-				},
-				src: [
-					'can/can.md',
-					'can/construct/construct.md',
-					'can/construct/construct.js',
-					'can/construct/proxy/proxy.md',
-					'can/construct/super/super.md',
-					'can/observe/observe.md',
-					'can/observe/observe.js',
-					'can/observe/attributes/attributes.md',
-					'can/observe/attributes/attributes.js',
-					'can/observe/backup/backup.md',
-					'can/observe/backup/backup.js',
-					'can/observe/delegate/delegate.js',
-					'can/observe/delegate/delegate.md',
-					'can/observe/setter/setter.md',
-					'can/observe/setter/setter.js',
-					'can/observe/validations/validations.md',
-					'can/observe/validations/validations.js',
-					'can/observe/compute/compute.js',
-					'can/model/model.md',
-					'can/model/model.js',
-					'can/control/control.md',
-					'can/control/control.js',
-					'can/control/route/route.md',
-					'can/control/plugin/plugin.md',
-					'can/control/plugin/plugin.js',
-					'can/route/route.md',
-					'can/route/route.js',
-					'can/view/view.md',
-					'can/view/view.js',
-					'can/view/ejs/ejs.md',
-					'can/view/ejs/ejs.js',
-					'can/view/mustache/doc/*.md',
-					'can/view/mustache/mustache.js',
-					'can/view/modifiers/modifiers.md',
-					'can/view/modifiers/modifiers.js',
-					'can/util/util.md',
-					'can/util/func.js',
-					'can/util/fixture/fixture.md',
-					'can/util/fixture/fixture.js'
-				],
-				dest: 'docs/'
-			},
-			statics: {
-				src: ['_pages/*.mustache'],
-				dest: '.'
+				files: {
+					'plato/tests': '**/*_test.js',
+				}
 			}
-		},
-		clean: {
-			docs: ['<%= generate.docs.dest %>'],
-			guides: ['<%= generate.guides.dest %>'],
-			statics: ['*.html']
+
 		}
 	});
 
@@ -160,12 +104,22 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-clean');
-	grunt.loadNpmTasks('documentjs');
-
-	grunt.registerTask('development', ['watch:all']);
-	grunt.registerTask('docs', ['clean', 'generate']);
+	grunt.loadNpmTasks('grunt-docco');
+	grunt.loadNpmTasks('grunt-plato');
+	grunt.loadNpmTasks('grunt-jsbeautifier');
+	
+	var subTasks = ['docco:dev'];
+	if(versionMap[minor].branch === "master") {
+		subTasks.push("docco:latest")
+	}
+	subTasks.push("overwrite-docco-css");
+	
+	
+	grunt.registerTask('doccoit',subTasks);
+	
+	
 
 	// Default task.
-	grunt.registerTask('default', [ 'less', 'clean', 'generate' ]);
+	grunt.registerTask('default', [ 'doccoit' ]);
 
 };

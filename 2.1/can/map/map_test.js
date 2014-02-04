@@ -1,5 +1,5 @@
 /* jshint asi:true*/
-(function (undefined) {
+steal("can/map", "can/compute", "can/test", function (undefined) {
 
 	module('can/map')
 
@@ -146,7 +146,7 @@
 			} else {
 				attributesRead.push(attribute);
 			}
-		}
+		};
 
 		var testMap = new can.Map({
 			cats: "meow",
@@ -155,7 +155,9 @@
 
 		testMap.serialize();
 
-		ok(attributesRead.indexOf("cats") !== -1 && attributesRead.indexOf("dogs") !== -1, "map serialization triggered __reading on all attributes");
+		
+
+		ok(can.inArray("cats", attributesRead ) !== -1 && can.inArray( "dogs", attributesRead ) !== -1, "map serialization triggered __reading on all attributes");
 		ok(readingTriggeredForKeys, "map serialization triggered __reading for __keys");
 
 		can.__reading = old;
@@ -185,4 +187,4 @@
 		equal(test.attr('my.newCount'), 1, 'falsey (1) value accessed correctly');
 	});
 
-})();
+});
