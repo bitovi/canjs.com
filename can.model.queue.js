@@ -1,17 +1,16 @@
 /*!
- * CanJS - 2.0.4
+ * CanJS - 2.0.5
  * http://canjs.us/
- * Copyright (c) 2013 Bitovi
- * Mon, 23 Dec 2013 19:49:28 GMT
+ * Copyright (c) 2014 Bitovi
+ * Tue, 04 Feb 2014 22:36:38 GMT
  * Licensed MIT
  * Includes: can/model/queue
  * Download from: http://canjs.com
  */
 (function(can) {
-
     var cleanAttrs = function(changedAttrs, attrs) {
         var newAttrs = can.extend(true, {}, attrs),
-            attr, current, path;
+            current, path;
         if (changedAttrs) {
             // go through the attributes returned from the server
             // and remove those that were changed during the current
@@ -22,30 +21,32 @@
                 while (path.length > 1) {
                     current = current && current[path.shift()];
                 }
-                current && delete current[path.shift()];
+                if (current) {
+                    delete current[path.shift()];
+                }
             }
         }
         return newAttrs;
-    },
-        queueRequests = function(success, error, method, callback) {
+    }, queueRequests = function(success, error, method, callback) {
             this._changedAttrs = this._changedAttrs || [];
-
-            var def = new can.Deferred,
+            var def = new can.Deferred(),
                 self = this,
                 attrs = this.serialize(),
                 queue = this._requestQueue,
                 changedAttrs = this._changedAttrs,
                 reqFn, index;
-
-            reqFn = (function(self, type, success, error) {
+            reqFn = function(self, type, success, error) {
                 // Function that performs actual request
                 return function() {
                     // pass already serialized attributes because we want to 
                     // save model in state it was when request was queued, not
                     // when request is ran
-                    return self.constructor._makeRequest([self, attrs], type || (self.isNew() ? 'create' : 'update'), success, error, callback)
-                }
-            })(this, method, function() {
+                    return self.constructor._makeRequest([
+                            self,
+                            attrs
+                        ], type || (self.isNew() ? 'create' : 'update'), success, error, callback);
+                };
+            }(this, method, function() {
                 // resolve deferred with results from the request
                 def.resolveWith(self, arguments);
                 // remove current deferred from the queue 
@@ -59,7 +60,6 @@
                     // clean up changed attrs since there is no more requests in the queue
                     changedAttrs.splice(0);
                 }
-
             }, function() {
                 // reject deferred with results from the request
                 def.rejectWith(self, arguments);
@@ -67,11 +67,9 @@
                 queue.splice(0);
                 // clean up changed attrs since there is no more requests in the queue
                 changedAttrs.splice(0);
-            })
-
+            });
             // Add our fn to the queue
             index = queue.push(reqFn) - 1;
-
             // If there is only one request in the queue, run
             // it immediately.
             if (queue.length === 1) {
@@ -80,7 +78,6 @@
                 // can access it's `abort` function
                 queue[0] = queue[0]();
             }
-
             def.abort = function() {
                 var abort;
                 // check if this request is running, if it's not
@@ -95,48 +92,48 @@
                     changedAttrs.splice(0);
                 }
                 return abort;
-            }
+            };
             // deferred will be resolved with original success and
             // error functions
             def.then(success, error);
-
             return def;
-        },
-        _changes = can.Model.prototype._changes,
+        }, _changes = can.Model.prototype._changes,
         destroyFn = can.Model.prototype.destroy,
         setupFn = can.Model.prototype.setup;
-
-    can.each(["created", "updated", "destroyed"], function(fn) {
-        var prototypeFn = can.Model.prototype[fn];
-
-        can.Model.prototype[fn] = function(attrs) {
-            if (attrs && typeof attrs == 'object') {
-                attrs = attrs.attr ? attrs.attr() : attrs;
-                // Create backup of last good known state returned
-                // from the server. This allows users to restore it
-                // if API returns error
-                this._backupStore = attrs;
-                attrs = cleanAttrs(this._changedAttrs || [], attrs);
-            }
-            // call the original function with the cleaned up attributes
-            prototypeFn.call(this, attrs);
-        }
-    })
-
+    can.each([
+            'created',
+            'updated',
+            'destroyed'
+        ], function(fn) {
+            var prototypeFn = can.Model.prototype[fn];
+            can.Model.prototype[fn] = function(attrs) {
+                if (attrs && typeof attrs === 'object') {
+                    attrs = attrs.attr ? attrs.attr() : attrs;
+                    // Create backup of last good known state returned
+                    // from the server. This allows users to restore it
+                    // if API returns error
+                    this._backupStore = attrs;
+                    attrs = cleanAttrs(this._changedAttrs || [], attrs);
+                }
+                // call the original function with the cleaned up attributes
+                prototypeFn.call(this, attrs);
+            };
+        });
     can.extend(can.Model.prototype, {
             setup: function() {
                 setupFn.apply(this, arguments);
-                this._requestQueue = new can.List;
+                this._requestQueue = new can.List();
             },
             _changes: function(ev, attr, how, newVal, oldVal) {
                 // record changes if there is a request running
-                this._changedAttrs && this._changedAttrs.push(attr);
+                if (this._changedAttrs) {
+                    this._changedAttrs.push(attr);
+                }
                 _changes.apply(this, arguments);
             },
             hasQueuedRequests: function() {
                 return this._requestQueue.attr('length') > 1;
             },
-            // call queued save request
             save: function() {
                 return queueRequests.apply(this, arguments);
             },
@@ -147,7 +144,6 @@
                 }
                 return queueRequests.call(this, success, error, 'destroy', 'destroyed');
             }
-        })
-
+        });
     return can;
 })(can);

@@ -1,32 +1,29 @@
 /*!
- * CanJS - 2.0.4
+ * CanJS - 2.0.5
  * http://canjs.us/
- * Copyright (c) 2013 Bitovi
- * Mon, 23 Dec 2013 19:49:14 GMT
+ * Copyright (c) 2014 Bitovi
+ * Tue, 04 Feb 2014 22:36:26 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["can/util/can"], function(can){
-	
-		// Which batch of events this is for -- might not want to send multiple
-		// messages on the same batch.  This is mostly for event delegation.
-	var	batchNum = 1,
+define(["can/util/can"], function (can) {
+	// Which batch of events this is for -- might not want to send multiple
+	// messages on the same batch.  This is mostly for event delegation.
+	var batchNum = 1,
 		// how many times has start been called without a stop
 		transactions = 0,
 		// an array of events within a transaction
 		batchEvents = [],
 		stopCallbacks = [];
-	
-	
 	can.batch = {
 		/**
 		 * @function can.batch.start
 		 * @parent can.batch
 		 * @description Begin an event batch.
-		 * 
+		 *
 		 * @signature `can.batch.start([batchStopHandler])`
-		 * 
+		 *
 		 * @param {Function} [batchStopHandler] a callback that gets called after all batched events have been called
 		 *
 		 * @body
@@ -49,12 +46,12 @@ define(["can/util/can"], function(can){
 		 * }).bind('change', function() {
 		 *     console.log("Something changed.");
 		 * });
-		 * 
+		 *
 		 * can.batch.start();
 		 * person.attr('first', 'Alex');
 		 * console.log('Still in the batch.');
 		 * can.batch.stop();
-		 * 
+		 *
 		 * // the log has:
 		 * // Still in the batch.
 		 * // First name changed.
@@ -70,7 +67,7 @@ define(["can/util/can"], function(can){
 		 * person.attr('first', 'Izzy');
 		 * console.log('Still in the batch.');
 		 * can.batch.stop();
-		 * 
+		 *
 		 * // The console has:
 		 * // Still in the batch.
 		 * // First name changed.
@@ -79,14 +76,14 @@ define(["can/util/can"], function(can){
 		 * @codeend
 		 *
 		 * ## Calling `can.batch.start` multiple times
-		 * 
+		 *
 		 * If you call `can.batch.start` more than once, `can.batch.stop` needs to be called
 		 * the same number of times before any batched events will fire. For ways
 		 * to circumvent this process, see [can.batch.stop].
 		 *
 		 * Here is an example that demonstrates how events are affected by calling
 		 * `can.batch.start` multiple times.
-		 * 
+		 *
 		 * @codestart
 		 * var addPeople = function(observable) {
 		 *     can.batch.start();
@@ -108,9 +105,9 @@ define(["can/util/can"], function(can){
 		 *
 		 * // Here, the console has:
 		 * // Still in the batch.
-		 * 
+		 *
 		 * can.batch.stop();
-		 * 
+		 *
 		 * // Here, the console has:
 		 * // Still in the batch.
 		 * // The list changed.
@@ -118,9 +115,11 @@ define(["can/util/can"], function(can){
 		 * // The list changed.
 		 * @codeend
 		 */
-		start: function( batchStopHandler ) {
+		start: function (batchStopHandler) {
 			transactions++;
-			batchStopHandler && stopCallbacks.push(batchStopHandler);
+			if (batchStopHandler) {
+				stopCallbacks.push(batchStopHandler);
+			}
 		},
 		/**
 		 * @function can.batch.stop
@@ -129,7 +128,7 @@ define(["can/util/can"], function(can){
 		 * @signature `can.batch.stop([force[, callStart]])`
 		 * @param {bool} [force=false] whether to stop batching events immediately
 		 * @param {bool} [callStart=false] whether to call `[can.batch.start can.batch.start]` after firing batched events
-		 * 
+		 *
 		 * @body
 		 * `can.batch.stop` matches an earlier `[can.batch.start]` call. If `can.batch.stop` has been
 		 * called as many times as `can.batch.start` (or if _force_ is true), all batched events will be
@@ -138,7 +137,7 @@ define(["can/util/can"], function(can){
 		 * the events and callbacks have been fired.
 		 *
 		 * See `[can.batch.start]` for examples of `can.batch.start` and `can.batch.stop` in normal use.
-		 * 
+		 *
 		 * In this example, the batch is forceably ended in the `addPeople` function.
 		 * @codestart
 		 * var addPeople = function(observable) {
@@ -161,9 +160,9 @@ define(["can/util/can"], function(can){
 		 *
 		 * // Here, the console has:
 		 * // Still in the batch.
-		 * 
+		 *
 		 * can.batch.stop();
-		 * 
+		 *
 		 * // Here, the console has:
 		 * // The list changed.
 		 * // The list changed.
@@ -171,24 +170,25 @@ define(["can/util/can"], function(can){
 		 * // Still in the batch.
 		 * @codeend
 		 */
-		stop: function(force, callStart){
-			if(force){
+		stop: function (force, callStart) {
+			if (force) {
 				transactions = 0;
 			} else {
 				transactions--;
 			}
-			
-			if(transactions == 0){
+			if (transactions === 0) {
 				var items = batchEvents.slice(0),
 					callbacks = stopCallbacks.slice(0);
-				batchEvents= [];
+				batchEvents = [];
 				stopCallbacks = [];
 				batchNum++;
-				callStart && can.batch.start();
-				can.each(items, function( args ) {
+				if (callStart) {
+					can.batch.start();
+				}
+				can.each(items, function (args) {
 					can.trigger.apply(can, args);
 				});
-				can.each(callbacks, function( cb ) {
+				can.each(callbacks, function (cb) {
 					cb();
 				});
 			}
@@ -201,30 +201,29 @@ define(["can/util/can"], function(can){
 		 * @param {can.Map} item the target of the event
 		 * @param {String|{type: String}} event the type of event, or an event object with a type given
 		 * @param {Array} [args] the parameters to trigger the event with.
-		 * 
+		 *
 		 * @body
 		 * If events are currently being batched, calling `can.batch.trigger` adds an event
 		 * to the batch. If events are not currently being batched, the event is triggered
 		 * immediately.
 		 */
-		trigger: function( item, event, args ) {
+		trigger: function (item, event, args) {
 			// Don't send events if initalizing.
-			if ( ! item._init) {
-				if (transactions == 0 ) {
+			if (!item._init) {
+				if (transactions === 0) {
 					return can.trigger(item, event, args);
 				} else {
-					event = typeof event === "string" ?
-						{ type: event } : 
-						event;
+					event = typeof event === 'string' ? {
+						type: event
+					} : event;
 					event.batchNum = batchNum;
 					batchEvents.push([
-					item,
-					event, 
-					args ] );
+						item,
+						event,
+						args
+					]);
 				}
 			}
 		}
-	}
-	
-	
+	};
 });

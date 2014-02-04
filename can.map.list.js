@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.4
+ * CanJS - 2.0.5
  * http://canjs.us/
- * Copyright (c) 2013 Bitovi
- * Mon, 23 Dec 2013 19:49:29 GMT
+ * Copyright (c) 2014 Bitovi
+ * Tue, 04 Feb 2014 22:36:39 GMT
  * Licensed MIT
  * Includes: can/map/list
  * Download from: http://canjs.com
@@ -22,24 +22,20 @@
                         if (!val && index !== -1) {
                             filtered.splice(index, 1);
                         }
-
                         // Add it to the list if it isn't in there and the new value is true
                         if (val && index === -1) {
                             filtered.push(element);
                         }
                     };
-
                     // a can.compute that executes the callback
                     var compute = can.compute(function() {
                         return callback(element, self.indexOf(element), self);
                     });
-
                     // Update the filtered list on any compute change
                     compute.bind('change', binder);
                     // Call binder explicitly for the initial list
                     binder(null, compute());
                 };
-
                 // We also want to know when something gets added to our original list
                 this.bind('add', function(ev, data, index) {
                     can.each(data, function(element, i) {
@@ -48,7 +44,6 @@
                         generator(element, index + i);
                     });
                 });
-
                 // Removed items should be removed from both lists
                 this.bind('remove', function(ev, data, index) {
                     can.each(data, function(element, i) {
@@ -58,13 +53,10 @@
                         }
                     });
                 });
-
                 // Run the generator for each list element
                 this.forEach(generator);
-
                 return filtered;
             },
-
             map: function(callback) {
                 var mapped = new can.List();
                 var self = this;
@@ -74,17 +66,13 @@
                     var compute = can.compute(function() {
                         return callback(element, index, self);
                     });
-
                     compute.bind('change', function(ev, val) {
                         // On change, replace the current value with the new one
                         mapped.splice(index, 1, val);
                     });
-
                     mapped.splice(index, 0, compute());
-                }
-
+                };
                 this.forEach(generator);
-
                 // We also want to know when something gets added to our original list
                 this.bind('add', function(ev, data, index) {
                     can.each(data, function(element, i) {
@@ -93,17 +81,13 @@
                         generator(element, index + i);
                     });
                 });
-
                 this.bind('remove', function(ev, data, index) {
                     // The indices in the mapped list are the same so lets just splice it out
                     mapped.splice(index, data.length);
-                })
-
+                });
                 return mapped;
             }
 
-
         });
-
     return can.List;
 })(can);

@@ -2,7 +2,7 @@
  * CanJS - 2.0.5
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 04 Feb 2014 22:36:36 GMT
+ * Tue, 04 Feb 2014 22:36:35 GMT
  * Licensed MIT
  * Includes: can/component,can/construct,can/map,can/list,can/observe,can/compute,can/model,can/view,can/control,can/route,can/control/route,can/view/mustache,can/view/bindings,can/view/live,can/view/scope,can/util/string
  * Download from: http://canjs.com
@@ -10,7 +10,7 @@
 (function(undefined) {
 
     // ## util/can.js
-    var __m3 = (function() {
+    var __m4 = (function() {
 
         var can = window.can || {};
         if (typeof GLOBALCAN === 'undefined' || GLOBALCAN !== false) {
@@ -40,11 +40,145 @@
             return d;
         };
 
+        //!steal-remove-start
+        can.dev = {
+            logLevel: 0,
+
+            warn: function(out) {
+                var ll = this.logLevel;
+                if (ll < 2) {
+                    Array.prototype.unshift.call(arguments, 'WARN:');
+                    if (window.console && console.warn) {
+                        this._logger("warn", Array.prototype.slice.call(arguments));
+                    } else if (window.console && console.log) {
+                        this._logger("log", Array.prototype.slice.call(arguments));
+                    } else if (window.opera && window.opera.postError) {
+                        window.opera.postError("steal.js WARNING: " + out);
+                    }
+                }
+            },
+
+            log: function(out) {
+                var ll = this.logLevel;
+                if (ll < 1) {
+                    if (window.console && console.log) {
+                        Array.prototype.unshift.call(arguments, 'Info:');
+                        this._logger("log", Array.prototype.slice.call(arguments));
+                    } else if (window.opera && window.opera.postError) {
+                        window.opera.postError("steal.js INFO: " + out);
+                    }
+                }
+            },
+            _logger: function(type, arr) {
+                if (console.log.apply) {
+                    console[type].apply(console, arr);
+                } else {
+                    console[type](arr);
+                }
+            }
+        };
+        //!steal-remove-end
+
         return can;
     })();
 
-    // ## util/event.js
+    // ## util/array/each.js
     var __m5 = (function(can) {
+        can.each = function(elements, callback, context) {
+            var i = 0,
+                key;
+            if (elements) {
+                if (typeof elements.length === 'number' && elements.pop) {
+                    if (elements.attr) {
+                        elements.attr('length');
+                    }
+                    for (key = elements.length; i < key; i++) {
+                        if (callback.call(context || elements[i], elements[i], i, elements) === false) {
+                            break;
+                        }
+                    }
+                } else if (elements.hasOwnProperty) {
+                    if (can.Map && elements instanceof can.Map) {
+                        if (can.__reading) {
+                            can.__reading(elements, '__keys');
+                        }
+                        elements = elements.__get();
+                    }
+                    for (key in elements) {
+                        if (elements.hasOwnProperty(key) && callback.call(context || elements[key], elements[key], key, elements) === false) {
+                            break;
+                        }
+                    }
+                }
+            }
+            return elements;
+        };
+        return can;
+    })(__m4);
+
+    // ## util/inserted/inserted.js
+    var __m6 = (function(can) {
+        // Given a list of elements, check if they are in the dom, if they 
+        // are in the dom, trigger inserted on them.
+        can.inserted = function(elems) {
+            // prevent mutations from changing the looping
+            elems = can.makeArray(elems);
+            var inDocument = false,
+                // Not all browsers implement document.contains (Android)
+                doc = can.$(document.contains ? document : document.body),
+                children;
+            for (var i = 0, elem;
+                (elem = elems[i]) !== undefined; i++) {
+                if (!inDocument) {
+                    if (elem.getElementsByTagName) {
+                        if (can.has(doc, elem)
+                            .length) {
+                            inDocument = true;
+                        } else {
+                            return;
+                        }
+                    } else {
+                        continue;
+                    }
+                }
+
+                if (inDocument && elem.getElementsByTagName) {
+                    children = can.makeArray(elem.getElementsByTagName("*"));
+                    can.trigger(elem, "inserted", [], false);
+                    for (var j = 0, child;
+                        (child = children[j]) !== undefined; j++) {
+                        // Trigger the destroyed event
+                        can.trigger(child, "inserted", [], false);
+                    }
+                }
+            }
+        };
+
+        can.appendChild = function(el, child) {
+            var children;
+            if (child.nodeType === 11) {
+                children = can.makeArray(child.childNodes);
+            } else {
+                children = [child];
+            }
+            el.appendChild(child);
+            can.inserted(children);
+        };
+        can.insertBefore = function(el, child, ref) {
+            var children;
+            if (child.nodeType === 11) {
+                children = can.makeArray(child.childNodes);
+            } else {
+                children = [child];
+            }
+            el.insertBefore(child, ref);
+            can.inserted(children);
+        };
+
+    })(__m4);
+
+    // ## util/event.js
+    var __m7 = (function(can) {
         // event.js
         // ---------
         // _Basic event wrapper._
@@ -163,717 +297,166 @@
             }
         };
         return can;
-    })(__m3);
+    })(__m4);
 
-    // ## util/fragment.js
-    var __m6 = (function(can) {
-        // fragment.js
-        // ---------
-        // _DOM Fragment support._
-        var fragmentRE = /^\s*<(\w+)[^>]*>/,
-            fragment = function(html, name) {
-                if (name === undefined) {
-                    name = fragmentRE.test(html) && RegExp.$1;
-                }
-                if (html && can.isFunction(html.replace)) {
-                    // Fix "XHTML"-style tags in all browsers
-                    html = html.replace(/<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi, '<$1></$2>');
-                }
-                var container = document.createElement('div'),
-                    temp = document.createElement('div');
-                // IE's parser will strip any `<tr><td>` tags when `innerHTML`
-                // is called on a `tbody`. To get around this, we construct a 
-                // valid table with a `tbody` that has the `innerHTML` we want. 
-                // Then the container is the `firstChild` of the `tbody`.
-                // [source](http://www.ericvasilik.com/2006/07/code-karma.html).
-                if (name === 'tbody' || name === 'tfoot' || name === 'thead') {
-                    temp.innerHTML = '<table>' + html + '</table>';
-                    container = temp.firstChild.nodeType === 3 ? temp.lastChild : temp.firstChild;
-                } else if (name === 'tr') {
-                    temp.innerHTML = '<table><tbody>' + html + '</tbody></table>';
-                    container = temp.firstChild.nodeType === 3 ? temp.lastChild : temp.firstChild.firstChild;
-                } else if (name === 'td' || name === 'th') {
-                    temp.innerHTML = '<table><tbody><tr>' + html + '</tr></tbody></table>';
-                    container = temp.firstChild.nodeType === 3 ? temp.lastChild : temp.firstChild.firstChild.firstChild;
-                } else if (name === 'option') {
-                    temp.innerHTML = '<select>' + html + '</select>';
-                    container = temp.firstChild.nodeType === 3 ? temp.lastChild : temp.firstChild;
-                } else {
-                    container.innerHTML = '' + html;
-                }
-                // IE8 barfs if you pass slice a `childNodes` object, so make a copy.
-                var tmp = {}, children = container.childNodes;
-                tmp.length = children.length;
-                for (var i = 0; i < children.length; i++) {
-                    tmp[i] = children[i];
-                }
-                return [].slice.call(tmp);
-            };
-        can.buildFragment = function(html, nodes) {
-            var parts = fragment(html),
-                frag = document.createDocumentFragment();
-            can.each(parts, function(part) {
-                frag.appendChild(part);
-            });
-            return frag;
+    // ## util/jquery/jquery.js
+    var __m2 = (function($, can) {
+        var isBindableElement = function(node) {
+            // In IE8 window.window !== window.window, so we allow == here.
+
+            return (node.nodeName && (node.nodeType === 1 || node.nodeType === 9)) || node == window;
         };
-        return can;
-    })(__m3);
-
-    // ## util/deferred.js
-    var __m7 = (function(can) {
-        // deferred.js
-        // ---------
-        // _Lightweight, jQuery style deferreds._
-        // extend is usually provided by the wrapper but to avoid steal.then calls
-        // we define a simple extend here as well
-        var extend = function(target, src) {
-            for (var key in src) {
-                if (src.hasOwnProperty(key)) {
-                    target[key] = src[key];
-                }
-            }
-        }, Deferred = function(func) {
-                if (!(this instanceof Deferred)) {
-                    return new Deferred();
-                }
-                this._doneFuncs = [];
-                this._failFuncs = [];
-                this._resultArgs = null;
-                this._status = '';
-                // Check for option `function` -- call it with this as context and as first
-                // parameter, as specified in jQuery API.
-                if (func) {
-                    func.call(this, this);
-                }
-            };
-        can.Deferred = Deferred;
-        can.when = Deferred.when = function() {
-            var args = can.makeArray(arguments);
-            if (args.length < 2) {
-                var obj = args[0];
-                if (obj && (can.isFunction(obj.isResolved) && can.isFunction(obj.isRejected))) {
-                    return obj;
-                } else {
-                    return Deferred()
-                        .resolve(obj);
-                }
-            } else {
-                var df = Deferred(),
-                    done = 0,
-                    // Resolve params -- params of each resolve, we need to track them down 
-                    // to be able to pass them in the correct order if the master 
-                    // needs to be resolved.
-                    rp = [];
-                can.each(args, function(arg, j) {
-                    arg.done(function() {
-                        rp[j] = arguments.length < 2 ? arguments[0] : arguments;
-                        if (++done === args.length) {
-                            df.resolve.apply(df, rp);
-                        }
-                    })
-                        .fail(function() {
-                            df.reject(arguments.length === 1 ? arguments[0] : arguments);
-                        });
-                });
-                return df;
-            }
-        };
-        var resolveFunc = function(type, _status) {
-            return function(context) {
-                var args = this._resultArgs = arguments.length > 1 ? arguments[1] : [];
-                return this.exec(context, this[type], args, _status);
-            };
-        }, doneFunc = function doneFunc(type, _status) {
-                return function() {
-                    var self = this;
-                    // In Safari, the properties of the `arguments` object are not enumerable, 
-                    // so we have to convert arguments to an `Array` that allows `can.each` to loop over them.
-                    can.each(Array.prototype.slice.call(arguments), function(v, i, args) {
-                        if (!v) {
-                            return;
-                        }
-                        if (v.constructor === Array) {
-                            doneFunc.apply(self, v);
-                        } else {
-                            // Immediately call the `function` if the deferred has been resolved.
-                            if (self._status === _status) {
-                                v.apply(self, self._resultArgs || []);
-                            }
-                            self[type].push(v);
-                        }
-                    });
-                    return this;
-                };
-            };
-        extend(Deferred.prototype, {
-                pipe: function(done, fail) {
-                    var d = can.Deferred();
-                    this.done(function() {
-                        d.resolve(done.apply(this, arguments));
-                    });
-                    this.fail(function() {
-                        if (fail) {
-                            d.reject(fail.apply(this, arguments));
-                        } else {
-                            d.reject.apply(d, arguments);
-                        }
-                    });
-                    return d;
-                },
-                resolveWith: resolveFunc('_doneFuncs', 'rs'),
-                rejectWith: resolveFunc('_failFuncs', 'rj'),
-                done: doneFunc('_doneFuncs', 'rs'),
-                fail: doneFunc('_failFuncs', 'rj'),
-                always: function() {
-                    var args = can.makeArray(arguments);
-                    if (args.length && args[0]) {
-                        this.done(args[0])
-                            .fail(args[0]);
-                    }
-                    return this;
-                },
-                then: function() {
-                    var args = can.makeArray(arguments);
-                    // Fail `function`(s)
-                    if (args.length > 1 && args[1]) {
-                        this.fail(args[1]);
-                    }
-                    // Done `function`(s)
-                    if (args.length && args[0]) {
-                        this.done(args[0]);
-                    }
-                    return this;
-                },
-                state: function() {
-                    switch (this._status) {
-                        case 'rs':
-                            return 'resolved';
-                        case 'rj':
-                            return 'rejected';
-                        default:
-                            return 'pending';
-                    }
-                },
-                isResolved: function() {
-                    return this._status === 'rs';
-                },
-                isRejected: function() {
-                    return this._status === 'rj';
-                },
-                reject: function() {
-                    return this.rejectWith(this, arguments);
-                },
-                resolve: function() {
-                    return this.resolveWith(this, arguments);
-                },
-                exec: function(context, dst, args, st) {
-                    if (this._status !== '') {
-                        return this;
-                    }
-                    this._status = st;
-                    can.each(dst, function(d) {
-                        if (typeof d.apply === 'function') {
-                            d.apply(context, args);
-                        }
-                    });
-                    return this;
-                }
-            });
-        return can;
-    })(__m3);
-
-    // ## util/array/each.js
-    var __m8 = (function(can) {
-        can.each = function(elements, callback, context) {
-            var i = 0,
-                key;
-            if (elements) {
-                if (typeof elements.length === 'number' && elements.pop) {
-                    if (elements.attr) {
-                        elements.attr('length');
-                    }
-                    for (key = elements.length; i < key; i++) {
-                        if (callback.call(context || elements[i], elements[i], i, elements) === false) {
-                            break;
-                        }
-                    }
-                } else if (elements.hasOwnProperty) {
-                    if (can.Map && elements instanceof can.Map) {
-                        if (can.__reading) {
-                            can.__reading(elements, '__keys');
-                        }
-                        elements = elements.__get();
-                    }
-                    for (key in elements) {
-                        if (elements.hasOwnProperty(key) && callback.call(context || elements[key], elements[key], key, elements) === false) {
-                            break;
-                        }
-                    }
-                }
-            }
-            return elements;
-        };
-        return can;
-    })(__m3);
-
-    // ## util/object/isplain/isplain.js
-    var __m9 = (function(can) {
-        var core_hasOwn = Object.prototype.hasOwnProperty,
-            isWindow = function(obj) {
-                // In IE8 window.window !== window.window, so we allow == here.
-
-                return obj !== null && obj == obj.window;
-            }, isPlainObject = function(obj) {
-                // Must be an Object.
-                // Because of IE, we also have to check the presence of the constructor property.
-                // Make sure that DOM nodes and window objects don't pass through, as well
-                if (!obj || typeof obj !== 'object' || obj.nodeType || isWindow(obj)) {
-                    return false;
-                }
-                try {
-                    // Not own constructor property must be Object
-                    if (obj.constructor && !core_hasOwn.call(obj, 'constructor') && !core_hasOwn.call(obj.constructor.prototype, 'isPrototypeOf')) {
-                        return false;
-                    }
-                } catch (e) {
-                    // IE8,9 Will throw exceptions on certain host objects #9897
-                    return false;
-                }
-                // Own properties are enumerated firstly, so to speed up,
-                // if last one is own, then all properties are own.
-                var key;
-                for (key in obj) {}
-                return key === undefined || core_hasOwn.call(obj, key);
-            };
-        can.isPlainObject = isPlainObject;
-        return can;
-    })(__m3);
-
-    // ## util/inserted/inserted.js
-    var __m10 = (function(can) {
-        // Given a list of elements, check if they are in the dom, if they 
-        // are in the dom, trigger inserted on them.
-        can.inserted = function(elems) {
-            // prevent mutations from changing the looping
-            elems = can.makeArray(elems);
-            var inDocument = false,
-                // Not all browsers implement document.contains (Android)
-                doc = can.$(document.contains ? document : document.body),
-                children;
-            for (var i = 0, elem;
-                (elem = elems[i]) !== undefined; i++) {
-                if (!inDocument) {
-                    if (elem.getElementsByTagName) {
-                        if (can.has(doc, elem)
-                            .length) {
-                            inDocument = true;
-                        } else {
-                            return;
-                        }
+        // _jQuery node list._
+        $.extend(can, $, {
+                trigger: function(obj, event, args) {
+                    if (isBindableElement(obj)) {
+                        $.event.trigger(event, args, obj, true);
+                    } else if (obj.trigger) {
+                        obj.trigger(event, args);
                     } else {
-                        continue;
-                    }
-                }
-
-                if (inDocument && elem.getElementsByTagName) {
-                    children = can.makeArray(elem.getElementsByTagName("*"));
-                    can.trigger(elem, "inserted", [], false);
-                    for (var j = 0, child;
-                        (child = children[j]) !== undefined; j++) {
-                        // Trigger the destroyed event
-                        can.trigger(child, "inserted", [], false);
-                    }
-                }
-            }
-        };
-
-        can.appendChild = function(el, child) {
-            var children;
-            if (child.nodeType === 11) {
-                children = can.makeArray(child.childNodes);
-            } else {
-                children = [child];
-            }
-            el.appendChild(child);
-            can.inserted(children);
-        };
-        can.insertBefore = function(el, child, ref) {
-            var children;
-            if (child.nodeType === 11) {
-                children = can.makeArray(child.childNodes);
-            } else {
-                children = [child];
-            }
-            el.insertBefore(child, ref);
-            can.inserted(children);
-        };
-
-    })(__m3);
-
-    // ## util/mootools/mootools.js
-    var __m2 = (function(can) {
-
-        // mootools.js
-        // ---------
-        // _MooTools node list._
-        // Map string helpers.
-        can.trim = function(s) {
-            return s ? s.trim() : s;
-        };
-        // This extend() function is ruthlessly and shamelessly stolen from
-        // jQuery 1.8.2:, lines 291-353.
-        var extend = function() {
-            var options, name, src, copy, copyIsArray, clone, target = arguments[0] || {}, i = 1,
-                length = arguments.length,
-                deep = false;
-            // Handle a deep copy situation
-            if (typeof target === 'boolean') {
-                deep = target;
-                target = arguments[1] || {};
-                // skip the boolean and the target
-                i = 2;
-            }
-            // Handle case when target is a string or something (possible in deep copy)
-            if (typeof target !== 'object' && !can.isFunction(target)) {
-                target = {};
-            }
-            // extend jQuery itself if only one argument is passed
-            if (length === i) {
-                target = this;
-                --i;
-            }
-            for (; i < length; i++) {
-                // Only deal with non-null/undefined values
-                if ((options = arguments[i]) !== null) {
-                    // Extend the base object
-                    for (name in options) {
-                        src = target[name];
-                        copy = options[name];
-                        // Prevent never-ending loop
-                        if (target === copy) {
-                            continue;
+                        if (typeof event === 'string') {
+                            event = {
+                                type: event
+                            };
                         }
-                        // Recurse if we're merging plain objects or arrays
-                        if (deep && copy && (can.isPlainObject(copy) || (copyIsArray = can.isArray(copy)))) {
-                            if (copyIsArray) {
-                                copyIsArray = false;
-                                clone = src && can.isArray(src) ? src : [];
-                            } else {
-                                clone = src && can.isPlainObject(src) ? src : {};
-                            }
-                            // Never move original objects, clone them
-                            target[name] = can.extend(deep, clone, copy); // Don't bring in undefined values
-                        } else if (copy !== undefined) {
-                            target[name] = copy;
-                        }
+                        event.target = event.target || obj;
+                        can.dispatch.call(obj, event, args);
                     }
+                },
+                addEvent: can.addEvent,
+                removeEvent: can.removeEvent,
+                buildFragment: function(elems, context) {
+                    var oldFragment = $.buildFragment,
+                        ret;
+                    elems = [elems];
+                    // Set context per 1.8 logic
+                    context = context || document;
+                    context = !context.nodeType && context[0] || context;
+                    context = context.ownerDocument || context;
+                    ret = oldFragment.call(jQuery, elems, context);
+                    return ret.cacheable ? $.clone(ret.fragment) : ret.fragment || ret;
+                },
+                $: $,
+                each: can.each,
+                bind: function(ev, cb) {
+                    // If we can bind to it...
+                    if (this.bind && this.bind !== can.bind) {
+                        this.bind(ev, cb);
+                    } else if (isBindableElement(this)) {
+                        $.event.add(this, ev, cb);
+                    } else {
+                        // Make it bind-able...
+                        can.addEvent.call(this, ev, cb);
+                    }
+                    return this;
+                },
+                unbind: function(ev, cb) {
+                    // If we can bind to it...
+                    if (this.unbind && this.unbind !== can.unbind) {
+                        this.unbind(ev, cb);
+                    } else if (isBindableElement(this)) {
+                        $.event.remove(this, ev, cb);
+                    } else {
+                        // Make it bind-able...
+                        can.removeEvent.call(this, ev, cb);
+                    }
+                    return this;
+                },
+                delegate: function(selector, ev, cb) {
+                    if (this.delegate) {
+                        this.delegate(selector, ev, cb);
+                    } else if (isBindableElement(this)) {
+                        $(this)
+                            .delegate(selector, ev, cb);
+                    } else {
+                        // make it bind-able ...
+                    }
+                    return this;
+                },
+                undelegate: function(selector, ev, cb) {
+                    if (this.undelegate) {
+                        this.undelegate(selector, ev, cb);
+                    } else if (isBindableElement(this)) {
+                        $(this)
+                            .undelegate(selector, ev, cb);
+                    } else {
+                        // make it bind-able ...
+
+                    }
+                    return this;
+                },
+                proxy: function(fn, context) {
+                    return function() {
+                        return fn.apply(context, arguments);
+                    };
                 }
-            }
-            // Return the modified object
-            return target;
-        };
-        can.extend = extend;
-        // Map array helpers.
-        can.makeArray = function(item) {
-            // All other libraries return a copy if item is an array.
-            // The original Mootools Array.from returned the same item so we need to slightly modify it
-            if (item === null) {
-                return [];
-            }
-            try {
-                return Type.isEnumerable(item) && typeof item !== 'string' ? Array.prototype.slice.call(item) : [item];
-            } catch (ex) {
-                // some things like DOMNodeChildCollections don't slice so good.
-                // This pains me, but it has to be done.
-                var arr = [],
-                    i;
-                for (i = 0; i < item.length; ++i) {
-                    arr.push(item[i]);
-                }
-                return arr;
-            }
-        };
-        can.isArray = function(arr) {
-            return typeOf(arr) === 'array';
-        };
-        can.inArray = function(item, arr, fromIndex) {
-            if (!arr) {
-                return -1;
-            }
-            return Array.prototype.indexOf.call(arr, item, fromIndex);
-        };
-        can.map = function(arr, fn) {
-            return Array.from(arr || [])
-                .map(fn);
-        };
-        // Map object helpers.
-        can.param = function(object) {
-            return Object.toQueryString(object);
-        };
-        can.isEmptyObject = function(object) {
-            return Object.keys(object)
-                .length === 0;
-        };
-        // Map function helpers.
-        can.proxy = function() {
-            var args = can.makeArray(arguments),
-                func = args.shift();
-            return func.bind.apply(func, args);
-        };
-        can.isFunction = function(f) {
-            return typeOf(f) === 'function';
-        };
-        // Make this object so you can bind on it.
-        can.bind = function(ev, cb) {
-            // If we can bind to it...
-            if (this.bind && this.bind !== can.bind) {
-                this.bind(ev, cb);
-            } else if (this.addEvent) {
-                this.addEvent(ev, cb);
-            } else if (this.nodeName && this.nodeType === 1) {
-                $(this)
-                    .addEvent(ev, cb);
-            } else {
-                // Make it bind-able...
-                can.addEvent.call(this, ev, cb);
-            }
-            return this;
-        };
-        can.unbind = function(ev, cb) {
-            // If we can bind to it...
-            if (this.unbind && this.unbind !== can.unbind) {
-                this.unbind(ev, cb);
-            } else if (this.removeEvent) {
-                this.removeEvent(ev, cb);
-            }
-            if (this.nodeName && this.nodeType === 1) {
-                $(this)
-                    .removeEvent(ev, cb);
-            } else {
-                // Make it bind-able...
-                can.removeEvent.call(this, ev, cb);
-            }
-            return this;
-        };
-        // Alias on/off to bind/unbind respectively
+            });
+        // Wrap binding functions.
+
+        // Aliases
         can.on = can.bind;
         can.off = can.unbind;
-        can.trigger = function(item, event, args, bubble) {
-            // Defaults to `true`.
-            bubble = bubble === undefined ? true : bubble;
-            args = args || [];
-            var propagating = true;
-            if (item.fireEvent) {
-                item = item[0] || item;
-                // walk up parents to simulate bubbling .
-                while (item && propagating) {
-                    // Handle walking yourself.
-                    if (!event.type) {
-                        event = {
-                            type: event,
-                            target: item,
-                            stopPropagation: function() {
-                                propagating = false;
-                            }
-                        };
-                    }
-                    var events = item !== window ? can.$(item)
-                        .retrieve('events')[0] : item.retrieve('events');
-                    if (events && events[event.type]) {
-                        events[event.type].keys.each(function(fn) {
-                            fn.apply(item, [event].concat(args));
-                        }, this);
-                    }
-                    // If we are bubbling, get parent node.
-                    if (bubble && item.parentNode && item.parentNode.nodeType !== 11) {
-                        item = item.parentNode;
-                    } else {
-                        item = null;
-                    }
-                }
-            } else {
-                if (typeof event === 'string') {
-                    event = {
-                        type: event
-                    };
-                }
-                event.target = event.target || item;
-                can.dispatch.call(item, event, args);
-            }
-        };
-        can.delegate = function(selector, ev, cb) {
-            if (this.delegate) {
-                this.delegate(selector, ev, cb);
-            } else if (this.addEvent) {
-                this.addEvent(ev + ':relay(' + selector + ')', cb);
-            } else {}
-            return this;
-        };
-        can.undelegate = function(selector, ev, cb) {
-            if (this.undelegate) {
-                this.undelegate(selector, ev, cb);
-            } else if (this.removeEvent) {
-                this.removeEvent(ev + ':relay(' + selector + ')', cb);
-            } else {}
-            return this;
-        };
-        var optionsMap = {
-            type: 'method',
-            success: undefined,
-            error: undefined
-        };
-        var updateDeferred = function(xhr, d) {
-            for (var prop in xhr) {
-                if (typeof d[prop] === 'function') {
-                    d[prop] = function() {
-                        xhr[prop].apply(xhr, arguments);
-                    };
-                } else {
-                    d[prop] = prop[xhr];
-                }
-            }
-        };
-        can.ajax = function(options) {
-            var d = can.Deferred(),
-                requestOptions = can.extend({}, options),
-                request;
-            // Map jQuery options to MooTools options.
-            for (var option in optionsMap) {
-                if (requestOptions[option] !== undefined) {
-                    requestOptions[optionsMap[option]] = requestOptions[option];
-                    delete requestOptions[option];
-                }
-            }
-            // Mootools defaults to 'post', but Can expects a default of 'get'
-            requestOptions.method = requestOptions.method || 'get';
-            requestOptions.url = requestOptions.url.toString();
-            var success = options.onSuccess || options.success,
-                error = options.onFailure || options.error;
-            requestOptions.onSuccess = function(response, xml) {
-                var data = response;
-                updateDeferred(request.xhr, d);
-                d.resolve(data, 'success', request.xhr);
-                if (success) {
-                    success(data, 'success', request.xhr);
-                }
-            };
-            requestOptions.onFailure = function() {
-                updateDeferred(request.xhr, d);
-                d.reject(request.xhr, 'error');
-                if (error) {
-                    error(request.xhr, 'error');
-                }
-            };
-            if (options.dataType === 'json') {
-                request = new Request.JSON(requestOptions);
-            } else {
-                request = new Request(requestOptions);
-            }
-            request.send();
-            updateDeferred(request.xhr, d);
-            return d;
-        };
-        // Element -- get the wrapped helper.
-        can.$ = function(selector) {
-            if (selector === window) {
-                return window;
-            }
-            return $$(selector);
-        };
-        // Add `document` fragment support.
-        var old = document.id;
-        document.id = function(el) {
-            if (el && el.nodeType === 11) {
-                return el;
-            } else {
-                return old.apply(document, arguments);
-            }
-        };
-        can.append = function(wrapped, html) {
-            if (typeof html === 'string') {
-                html = can.buildFragment(html);
-            }
-            return wrapped.grab(html);
-        };
-        can.filter = function(wrapped, filter) {
-            return wrapped.filter(filter);
-        };
-        can.data = function(wrapped, key, value) {
-            if (value === undefined) {
-                return wrapped[0].retrieve(key);
-            } else {
-                return wrapped.store(key, value);
-            }
-        };
-        can.addClass = function(wrapped, className) {
-            return wrapped.addClass(className);
-        };
-        can.remove = function(wrapped) {
-            // We need to remove text nodes ourselves.
-            var filtered = wrapped.filter(function(node) {
-                if (node.nodeType !== 1) {
-                    node.parentNode.removeChild(node);
-                } else {
-                    return true;
+        // Wrap modifier functions.
+        $.each([
+                'append',
+                'filter',
+                'addClass',
+                'remove',
+                'data',
+                'get',
+                'has'
+            ], function(i, name) {
+                can[name] = function(wrapped) {
+                    return wrapped[name].apply(wrapped, can.makeArray(arguments)
+                        .slice(1));
+                };
+            });
+        // Memory safe destruction.
+        var oldClean = $.cleanData;
+        $.cleanData = function(elems) {
+            $.each(elems, function(i, elem) {
+                if (elem) {
+                    can.trigger(elem, 'removed', [], false);
                 }
             });
-            filtered.destroy();
-            return filtered;
+            oldClean(elems);
         };
-        can.has = function(wrapped, element) {
-            // this way work in mootools
-            if (Slick.contains(wrapped[0], element)) {
-                return wrapped;
-            } else {
-                return [];
-            }
-        };
-        // Destroyed method.
-        var destroy = Element.prototype.destroy,
-            grab = Element.prototype.grab;
-        Element.implement({
-                destroy: function() {
-                    can.trigger(this, 'removed', [], false);
-                    var elems = this.getElementsByTagName('*');
-                    for (var i = 0, elem;
-                        (elem = elems[i]) !== undefined; i++) {
-                        can.trigger(elem, 'removed', [], false);
-                    }
-                    destroy.apply(this, arguments);
-                },
-                grab: function(el) {
-                    var elems;
-                    if (el && el.nodeType === 11) {
-                        elems = can.makeArray(el.childNodes);
-                    } else {
-                        elems = [el];
-                    }
-                    var ret = grab.apply(this, arguments);
-                    can.inserted(elems);
-                    return ret;
+        var oldDomManip = $.fn.domManip,
+            cbIndex;
+        // feature detect which domManip we are using
+        $.fn.domManip = function(args, cb1, cb2) {
+            for (var i = 1; i < arguments.length; i++) {
+                if (typeof arguments[i] === 'function') {
+                    cbIndex = i;
+                    break;
                 }
-            });
-        can.get = function(wrapped, index) {
-            return wrapped[index];
-        };
-        // Overwrite to handle IE not having an id.
-        // IE barfs if text node.
-        var idOf = Slick.uidOf;
-        Slick.uidOf = function(node) {
-            // for some reason, in IE8, node will be the window but not equal it.
-            if (node.nodeType === 1 || node === window || node.document === document) {
-                return idOf(node);
-            } else {
-                return Math.random();
             }
+            return oldDomManip.apply(this, arguments);
         };
-        Element.NativeEvents.hashchange = 2;
+        $(document.createElement('div'))
+            .append(document.createElement('div'));
+        $.fn.domManip = cbIndex === 2 ? function(args, table, callback) {
+            return oldDomManip.call(this, args, table, function(elem) {
+                var elems = elem.nodeType === 11 ? can.makeArray(elem.childNodes) : null;
+                var ret = callback.apply(this, arguments);
+                can.inserted(elems ? elems : [elem]);
+                return ret;
+            });
+        } : function(args, callback) {
+            return oldDomManip.call(this, args, function(elem) {
+                var elems = elem.nodeType === 11 ? can.makeArray(elem.childNodes) : null;
+                var ret = callback.apply(this, arguments);
+                can.inserted(elems ? elems : [elem]);
+                return ret;
+            });
+        };
+        $.event.special.inserted = {};
+        $.event.special.removed = {};
         return can;
-    })(__m3, {}, __m5, __m6, __m7, __m8, __m9, __m10);
+    })(jQuery, __m4, __m5, __m6, __m7);
 
     // ## util/string/string.js
-    var __m13 = (function(can) {
+    var __m10 = (function(can) {
         // ##string.js
         // _Miscellaneous string utility functions._  
         // Several of the methods in this plugin use code adapated from Prototype
@@ -1008,7 +591,7 @@
     })(__m2);
 
     // ## construct/construct.js
-    var __m12 = (function(can) {
+    var __m9 = (function(can) {
         // ## construct.js
         // `can.Construct`  
         // _This is a modified version of
@@ -1125,7 +708,11 @@
                         _fullName = can.underscore(fullName.replace(/\./g, "_"));
                         _shortName = can.underscore(shortName);
 
-
+                        //!steal-remove-start
+                        if (current[shortName]) {
+                            can.dev.warn("can/construct/construct.js: There's already something called " + fullName);
+                        }
+                        //!steal-remove-end
 
                         current[shortName] = Constructor;
                     }
@@ -1162,10 +749,10 @@
 
         can.Construct.prototype.init = function() {};
         return can.Construct;
-    })(__m13);
+    })(__m10);
 
     // ## control/control.js
-    var __m11 = (function(can) {
+    var __m8 = (function(can) {
         // ## control.js
         // `can.Control`  
         // _Controller_
@@ -1272,7 +859,9 @@
                         // value from the options or the window
                         var convertedName = options ? can.sub(methodName, this._lookup(options)) : methodName;
                         if (!convertedName) {
-
+                            //!steal-remove-start
+                            can.dev.log('can/control/control.js: No property found for handling ' + methodName);
+                            //!steal-remove-end
                             return null;
                         }
                         // If a `{}` template resolves to an object, `convertedName` will be
@@ -1410,7 +999,9 @@
                 destroy: function() {
                     //Control already destroyed
                     if (this.element === null) {
-
+                        //!steal-remove-start
+                        can.dev.warn("can/control/control.js: Control already destroyed");
+                        //!steal-remove-end
                         return;
                     }
                     var Class = this.constructor,
@@ -1456,10 +1047,10 @@
             });
 
         return Control;
-    })(__m2, __m12);
+    })(__m2, __m9);
 
     // ## util/bind/bind.js
-    var __m16 = (function(can) {
+    var __m13 = (function(can) {
 
         // ## Bind helpers
         can.bindAndSetup = function() {
@@ -1499,7 +1090,7 @@
     })(__m2);
 
     // ## util/batch/batch.js
-    var __m17 = (function(can) {
+    var __m14 = (function(can) {
         // Which batch of events this is for -- might not want to send multiple
         // messages on the same batch.  This is mostly for event delegation.
         var batchNum = 1,
@@ -1560,10 +1151,10 @@
                 }
             }
         };
-    })(__m3);
+    })(__m4);
 
     // ## map/map.js
-    var __m15 = (function(can, bind) {
+    var __m12 = (function(can, bind) {
         // ## map.js  
         // `can.Map`  
         // _Provides the observable pattern for JavaScript Objects._  
@@ -2129,10 +1720,10 @@
         Map.prototype.off = Map.prototype.unbind;
 
         return Map;
-    })(__m2, __m16, __m12, __m17);
+    })(__m2, __m13, __m9, __m14);
 
     // ## list/list.js
-    var __m18 = (function(can, Map) {
+    var __m15 = (function(can, Map) {
 
         // Helpers for `observable` lists.
         var splice = [].splice,
@@ -2416,10 +2007,10 @@
             });
         can.List = Map.List = list;
         return can.List;
-    })(__m2, __m15);
+    })(__m2, __m12);
 
     // ## compute/compute.js
-    var __m19 = (function(can, bind) {
+    var __m16 = (function(can, bind) {
         var names = [
             '__reading',
             '__clearReading',
@@ -2867,19 +2458,19 @@
         };
 
         return can.compute;
-    })(__m2, __m16, __m17);
+    })(__m2, __m13, __m14);
 
     // ## observe/observe.js
-    var __m14 = (function(can) {
+    var __m11 = (function(can) {
         can.Observe = can.Map;
         can.Observe.startBatch = can.batch.start;
         can.Observe.stopBatch = can.batch.stop;
         can.Observe.triggerBatch = can.batch.trigger;
         return can;
-    })(__m2, __m15, __m18, __m19);
+    })(__m2, __m12, __m15, __m16);
 
     // ## view/view.js
-    var __m22 = (function(can) {
+    var __m19 = (function(can) {
         // ## view.js
         // `can.view`  
         // _Templating abstraction._
@@ -3152,7 +2743,9 @@
         var checkText = function(text, url) {
             if (!text.length) {
 
-
+                //!steal-remove-start
+                can.dev.log("can/view/view.js: There is no template or an empty template at " + url);
+                //!steal-remove-end
 
                 throw "can.view: No template or empty template:" + url;
             }
@@ -3268,11 +2861,32 @@
                 return can.isArray(resolved) && resolved[1] === 'success' ? resolved[0] : resolved;
             };
 
+        //!steal-remove-start
+        if (window.steal) {
+            steal.type("view js", function(options, success, error) {
+                var type = $view.types["." + options.type],
+                    id = $view.toId(options.id);
+
+                options.text = 'steal(\'' + (type.plugin || 'can/view/' + options.type) + '\',function(can){return ' + 'can.view.preload(\'' + id + '\',' + options.text + ');\n})';
+                success();
+            });
+        }
+        //!steal-remove-end
+
         can.extend($view, {
                 register: function(info) {
                     this.types['.' + info.suffix] = info;
 
-
+                    //!steal-remove-start
+                    if (window.steal) {
+                        steal.type(info.suffix + " view js", function(options, success, error) {
+                            var type = $view.types["." + options.type],
+                                id = $view.toId(options.id + '');
+                            options.text = type.script(id, options.text);
+                            success();
+                        });
+                    }
+                    //!steal-remove-end
 
                     $view[info.suffix] = function(id, text) {
                         if (!text) {
@@ -3318,7 +2932,7 @@
     })(__m2);
 
     // ## view/scope/scope.js
-    var __m21 = (function(can) {
+    var __m18 = (function(can) {
         var escapeReg = /(\\)?\./g;
         var escapeDotReg = /\\\./g;
         var getNames = function(attr) {
@@ -3525,10 +3139,10 @@
             });
         can.view.Scope = Scope;
         return Scope;
-    })(__m2, __m12, __m15, __m18, __m22, __m19);
+    })(__m2, __m9, __m12, __m15, __m19, __m16);
 
     // ## view/elements.js
-    var __m24 = (function(can) {
+    var __m21 = (function(can) {
 
         var elements = {
             tagToContentPropMap: {
@@ -3667,7 +3281,7 @@
     })(__m2);
 
     // ## view/scanner.js
-    var __m23 = (function(can, elements) {
+    var __m20 = (function(can, elements) {
 
 
         var newLine = /(\r|\n)+/g,
@@ -3845,7 +3459,11 @@
                 var scope = hookupOptions.scope,
                     res = tagCallback ? tagCallback(el, hookupOptions) : scope;
 
-
+                //!steal-remove-start
+                if (!tagCallback) {
+                    can.dev.warn('can/view/scanner.js: No custom element found for ' + tagName);
+                }
+                //!steal-remove-end
 
                 // If the tagCallback gave us something to render with, and there is content within that element
                 // render it!
@@ -4321,10 +3939,10 @@
         });
 
         return Scanner;
-    })(__m22, __m24);
+    })(__m19, __m21);
 
     // ## view/node_lists/node_lists.js
-    var __m27 = (function(can) {
+    var __m24 = (function(can) {
         // In some browsers, text nodes can not take expando properties.
         // We test that here.
         var canExpando = true;
@@ -4436,10 +4054,10 @@
             nodeMap: nodeMap
         };
         return nodeLists;
-    })(__m2, __m24);
+    })(__m2, __m21);
 
     // ## view/live/live.js
-    var __m26 = (function(can, elements, view, nodeLists) {
+    var __m23 = (function(can, elements, view, nodeLists) {
         // ## live.js
         // The live module provides live binding for computes
         // and can.List.
@@ -4776,10 +4394,10 @@
         can.view.nodeLists = nodeLists;
         can.view.elements = elements;
         return live;
-    })(__m2, __m24, __m22, __m27);
+    })(__m2, __m21, __m19, __m24);
 
     // ## view/render.js
-    var __m25 = (function(can, elements, live) {
+    var __m22 = (function(can, elements, live) {
 
 
         var pendingHookups = [],
@@ -5017,10 +4635,10 @@
             });
 
         return can;
-    })(__m22, __m24, __m26, __m13);
+    })(__m19, __m21, __m23, __m10);
 
     // ## view/mustache/mustache.js
-    var __m20 = (function(can) {
+    var __m17 = (function(can) {
 
         // # mustache.js
         // `can.Mustache`: The Mustache templating engine.
@@ -5968,10 +5586,10 @@
             });
 
         return can;
-    })(__m2, __m21, __m22, __m23, __m19, __m25);
+    })(__m2, __m18, __m19, __m20, __m16, __m22);
 
     // ## view/bindings/bindings.js
-    var __m28 = (function(can) {
+    var __m25 = (function(can) {
 
         // IE < 8 doesn't support .hasAttribute, so feature detect it.
         var hasAttribute = function(el, name) {
@@ -6116,7 +5734,7 @@
                 }
             });
 
-    })(__m2, __m20, __m11);
+    })(__m2, __m17, __m8);
 
     // ## component/component.js
     var __m1 = (function(can) {
@@ -6397,10 +6015,10 @@
         };
 
         return Component;
-    })(__m2, __m11, __m14, __m20, __m28);
+    })(__m2, __m8, __m11, __m17, __m25);
 
     // ## model/model.js
-    var __m29 = (function(can) {
+    var __m26 = (function(can) {
 
         // ## model.js  
         // `can.Model`  
@@ -6554,7 +6172,11 @@
                             throw new Error('Could not get any raw data while converting using .models');
                         }
 
-
+                        //!steal-remove-start
+                        if (!raw.length) {
+                            can.dev.warn("model.js models has no data.");
+                        }
+                        //!steal-remove-end
 
                         if (res.length) {
                             res.splice(0);
@@ -6832,7 +6454,9 @@
                     // but there should be a better way.
                     can.trigger(this, "change", funcName);
 
-
+                    //!steal-remove-start
+                    can.dev.log("Model.js - " + constructor.shortName + " " + funcName);
+                    //!steal-remove-end
 
                     // Call event on the instance's Class
                     can.trigger(constructor, funcName, this);
@@ -6862,10 +6486,10 @@
             });
 
         return can.Model;
-    })(__m2, __m15, __m18);
+    })(__m2, __m12, __m15);
 
     // ## util/string/deparam/deparam.js
-    var __m31 = (function(can) {
+    var __m28 = (function(can) {
         // ## deparam.js  
         // `can.deparam`  
         // _Takes a string of name value pairs and returns a Object literal that represents those params._
@@ -6907,10 +6531,10 @@
                 }
             });
         return can;
-    })(__m2, __m13);
+    })(__m2, __m10);
 
     // ## route/route.js
-    var __m30 = (function(can) {
+    var __m27 = (function(can) {
 
         // ## route.js
         // `can.route`
@@ -7350,10 +6974,10 @@
         };
 
         return can.route;
-    })(__m2, __m15, __m18, __m31);
+    })(__m2, __m12, __m15, __m28);
 
     // ## control/route/route.js
-    var __m32 = (function(can) {
+    var __m29 = (function(can) {
 
         // ## control/route.js
         // _Controller route integration._
@@ -7390,7 +7014,7 @@
         };
 
         return can;
-    })(__m2, __m30, __m11);
+    })(__m2, __m27, __m8);
 
-    window['can'] = __m3;
+    window['can'] = __m4;
 })();
