@@ -1,13 +1,15 @@
 (function(){
 	var getBranchDownloads = function(){
-		return can.map(can.grep(docConfig.versions || [], function(v){ return !!v.branch }), function(v){
+		return can.map(can.grep(docConfig.versions || [], function(v){ 
+			return typeof v.branch !== 'undefined' && v.branch !== 'master';
+		}), function(v){
 			return {
-				name : v.number,
+				name : v.number + '-pre',
 				zipball_url : can.sub('https://github.com/bitovi/canjs.com/archive/{branch}.zip', v)
 			}
 		});
 	}
-
+g
 	var parts = function(version){
 
 		var numbers = [],
