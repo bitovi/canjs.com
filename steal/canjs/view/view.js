@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.5
+ * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 04 Feb 2014 22:36:26 GMT
+ * Wed, 05 Feb 2014 18:50:02 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -443,19 +443,15 @@ steal('can/util', function (can) {
 			} else {
 				// get is called async but in 
 				// ff will be async so we need to temporarily reset
-				if (can.__reading) {
-					reading = can.__reading;
-					can.__reading = null;
-				}
-
-				// No deferreds! Render this bad boy.
+				reading = can.__clearReading();
 
 				// If there's a `callback` function
 				async = isFunction(callback);
 				// Get the `view` type
 				deferred = get(view, async);
-				if (can.Map && reading) {
-					can.__reading = reading;
+
+				if (reading) {
+					can.__setReading(reading);
 				}
 
 				// If we are `async`...

@@ -1,56 +1,59 @@
 /*!
- * CanJS - 2.0.5
+ * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 04 Feb 2014 22:36:26 GMT
+ * Wed, 05 Feb 2014 18:50:02 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
 define(["can/util/library", "can/util/bind", "can/util/batch"], function (can, bind) {
-	var names = [
-		'__reading',
-		'__clearReading',
-		'__setReading'
-	],
-		setup = function (observed) {
-			var old = {};
-			for (var i = 0; i < names.length; i++) {
-				old[names[i]] = can[names[i]];
-			}
-			can.__reading = function (obj, attr) {
-				// Add the observe and attr that was read
-				// to `observed`
-				observed.push({
-					obj: obj,
-					attr: attr + ''
-				});
-			};
-			can.__clearReading = function () {
-				return observed.splice(0, observed.length);
-			};
-			can.__setReading = function (o) {
-				[].splice.apply(observed, [
-					0,
-					observed.length
-				].concat(o));
-			};
-			return old;
-		},
-		// empty default function
+
+	// a stack of observables
+	var stack = [],
+		// the current compute's array of observed objects
+		currentObserved,
 		k = function () {};
+
+	can.__reading = function (obj, attr) {
+		// Add the observe and attr that was read
+		// to `observed`
+		if (currentObserved) {
+			currentObserved.push({
+				obj: obj,
+				attr: attr + ""
+			});
+		}
+
+	};
+	can.__clearReading = function () {
+		if (currentObserved) {
+			return currentObserved.splice(0, currentObserved.length);
+		}
+	};
+	can.__setReading = function (o) {
+		if (currentObserved) {
+			[].splice.apply(currentObserved, [0, currentObserved.length].concat(o));
+		}
+	};
+
 	// returns the
 	// - observes and attr methods are called by func
 	// - the value returned by func
 	// ex: `{value: 100, observed: [{obs: o, attr: "completed"}]}`
 	var getValueAndObserved = function (func, self) {
-		var observed = [],
-			old = setup(observed),
+
+		if (currentObserved) {
+			stack.push(currentObserved);
+		}
+
+		var observed = (currentObserved = []),
 			// Call the "wrapping" function to get the value. `observed`
 			// will have the observe/attribute pairs that were read.
 			value = func.call(self);
+
 		// Set back so we are no longer reading.
-		can.simpleExtend(can, old);
+		currentObserved = stack.pop();
 		return {
 			value: value,
 			observed: observed
@@ -214,7 +217,8 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function (can, b
 				return value;
 			} else {
 				// Another compute wants to bind to this compute
-				if (can.__reading && canReadForChangeEvent) {
+				if (currentObserved && canReadForChangeEvent) {
+
 					// Tell the compute to listen to change on this computed
 					can.__reading(computed, 'change');
 					// We are going to bind on this compute.
@@ -317,10 +321,9 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function (can, b
 				computeState.bound = true;
 				// setup live-binding
 				// while binding, this does not count as a read
-				var oldReading = can.__reading;
-				delete can.__reading;
+				var oldReading = can.__clearReading();
 				on.call(this, updater);
-				can.__reading = oldReading;
+				can.__setReading(oldReading);
 			},
 			_bindteardown: function () {
 				off.call(this, updater);
@@ -491,6 +494,7 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function (can, b
 			value: cur,
 			parent: prev
 		};
+
 	};
 
 	return can.compute;

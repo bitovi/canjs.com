@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.5
+ * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 04 Feb 2014 22:36:26 GMT
+ * Wed, 05 Feb 2014 18:50:02 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -35,38 +35,38 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 			// send modified attr event to parent
 			//can.trigger(parent, args[0], args);
 		});
-	};
-	var attrParts = function (attr, keepKey) {
-		if (keepKey) {
-			return [attr];
-		}
-		return can.isArray(attr) ? attr : ("" + attr)
-			.split(".");
-	};
-	var makeBindSetup = function (wildcard) {
-		return function () {
-			var parent = this;
-			this._each(function (child, prop) {
-				if (child && child.bind) {
-					bindToChildAndBubbleToParent(child, wildcard || prop, parent);
-				}
-			});
-		};
-	};
-	// A map that temporarily houses a reference
-	// to maps that have already been made for a plain ole JS object
-	var madeMap = null;
-	var teardownMap = function () {
-		for (var cid in madeMap) {
-			if (madeMap[cid].added) {
-				delete madeMap[cid].obj._cid;
+	},
+		attrParts = function (attr, keepKey) {
+			if (keepKey) {
+				return [attr];
 			}
-		}
-		madeMap = null;
-	};
-	var getMapFromObject = function (obj) {
-		return madeMap && madeMap[obj._cid] && madeMap[obj._cid].instance;
-	};
+			return can.isArray(attr) ? attr : ("" + attr)
+				.split(".");
+		},
+		makeBindSetup = function (wildcard) {
+			return function () {
+				var parent = this;
+				this._each(function (child, prop) {
+					if (child && child.bind) {
+						bindToChildAndBubbleToParent(child, wildcard || prop, parent);
+					}
+				});
+			};
+		},
+		// A map that temporarily houses a reference 
+		// to maps that have already been made for a plain ole JS object
+		madeMap = null,
+		teardownMap = function () {
+			for (var cid in madeMap) {
+				if (madeMap[cid].added) {
+					delete madeMap[cid].obj._cid;
+				}
+			}
+			madeMap = null;
+		},
+		getMapFromObject = function (obj) {
+			return madeMap && madeMap[obj._cid] && madeMap[obj._cid].instance;
+		};
 
 	/**
 	 * @add can.Map
@@ -187,14 +187,10 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 						// Otherwise return the value.
 						val;
 
-						if (can.__reading) {
-							can.__reading(map, name);
-						}
+						can.__reading(map, name);
 					});
 
-					if (can.__reading) {
-						can.__reading(map, '__keys');
-					}
+					can.__reading(map, '__keys');
 
 					return where;
 				},
@@ -227,9 +223,7 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 			 */
 			keys: function (map) {
 				var keys = [];
-				if (can.__reading) {
-					can.__reading(map, '__keys');
-				}
+				can.__reading(map, '__keys');
 				for (var keyName in map._data) {
 					keys.push(keyName);
 				}
@@ -404,6 +398,7 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 				});
 			},
 			_changes: function (ev, attr, how, newVal, oldVal) {
+				// when a change happens, forward the event
 				can.batch.trigger(this, {
 					type: attr,
 					batchNum: ev.batchNum
@@ -411,6 +406,7 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 			},
 			_triggerChange: function (attr, how, newVal, oldVal) {
 				can.batch.trigger(this, "change", can.makeArray(arguments));
+
 			},
 			// no live binding iterator
 			_each: function (callback) {
@@ -560,9 +556,7 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 					return this._attrs(attr, val);
 				} else if (arguments.length === 1) { // If we are getting a value.
 					// Let people know we are reading.
-					if (can.__reading) {
-						can.__reading(this, attr);
-					}
+					can.__reading(this, attr);
 					return this._get(attr);
 				} else {
 					// Otherwise we are setting.
@@ -607,9 +601,7 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 			 * @codeend
 			 */
 			each: function () {
-				if (can.__reading) {
-					can.__reading(this, '__keys');
-				}
+				can.__reading(this, '__keys');
 				return can.each.apply(undefined, [this.__get()].concat(can.makeArray(arguments)));
 			},
 			/**
@@ -766,6 +758,7 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 					if (current) {
 						Map.helpers.unhookup([current], this);
 					}
+
 				}
 
 			},
@@ -983,15 +976,15 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 			 * @param {Boolean} remove true if you should remove properties that are not in props
 			 */
 			_attrs: function (props, remove) {
-				var self = this,
-					newVal;
 
 				if (props === undefined) {
 					return Map.helpers.serialize(this, 'attr', {});
 				}
 
 				props = can.simpleExtend({}, props);
-
+				var prop,
+					self = this,
+					newVal;
 				can.batch.start();
 				this.each(function (curVal, prop) {
 					// you can not have a _cid property!
@@ -1026,7 +1019,7 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 					delete props[prop];
 				});
 				// Add remaining props.
-				for (var prop in props) {
+				for (prop in props) {
 					if (prop !== "_cid") {
 						newVal = props[prop];
 						this._set(prop, newVal, true);

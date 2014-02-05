@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.5
+ * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 04 Feb 2014 22:36:26 GMT
+ * Wed, 05 Feb 2014 18:50:02 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -88,7 +88,7 @@ steal('can/util', 'can/construct', 'can/map', 'can/list', 'can/view', 'can/compu
 			 * will be explored.
 			 *
 			 *     var list = [{name: "Justin"},{name: "Brian"}],
-			 *     justin = list[0];
+			 *         justin = list[0];
 			 *
 			 *     var curScope = new can.view.Scope(list).add(justin);
 			 *
@@ -105,9 +105,7 @@ steal('can/util', 'can/construct', 'can/map', 'can/list', 'can/view', 'can/compu
 						proxyMethods: false
 					})
 						.value;
-				if (can.__setReading) {
-					can.__setReading(previousReads);
-				}
+				can.__setReading(previousReads);
 				return res;
 			},
 			/**
@@ -128,7 +126,7 @@ steal('can/util', 'can/construct', 'can/map', 'can/list', 'can/view', 'can/compu
 			 * parent `scope` object.
 			 *
 			 *     var list = [{name: "Justin"},{name: "Brian"}],
-			 *      justin = list[0];
+			 *         justin = list[0];
 			 *
 			 *     var curScope = new can.view.Scope(list).add(justin);
 			 *
@@ -222,6 +220,27 @@ steal('can/util', 'can/construct', 'can/map', 'can/list', 'can/view', 'can/compu
 						})
 					};
 				return computeData;
+
+			},
+			/**
+			 * @function can.view.Scope.prototype.compute
+			 *
+			 * @description Provides a get-set compute that represents a
+			 * key's value.
+			 *
+			 * @signature `scope.compute( key, [options] )`
+			 * @release 2.1
+			 *
+			 * @param {can.Mustache.key} key A dot seperated path.  Use `"\."` if you have a
+			 * property name that includes a dot.
+			 *
+			 * @param {can.view.Scope.readOptions} [options] Options that configure how the `key` gets read.
+			 *
+			 * @return {can.compute} A compute that can get or set `key`.
+			 */
+			compute: function (key, options) {
+				return this.computeData(key, options)
+					.compute;
 			},
 			/**
 			 * @hide
@@ -244,18 +263,20 @@ steal('can/util', 'can/construct', 'can/map', 'can/list', 'can/view', 'can/compu
 			 * @option {*} value the found value
 			 */
 			read: function (attr, options) {
+
 				// check if we should be running this on a parent.
-				if (attr.substr(0, 3) === '../') {
+				if (attr.substr(0, 3) === "../") {
 					return this._parent.read(attr.substr(3), options);
-				} else if (attr === '..') {
+				} else if (attr === "..") {
 					return {
 						value: this._parent._context
 					};
-				} else if (attr === '.' || attr === 'this') {
+				} else if (attr === "." || attr === "this") {
 					return {
 						value: this._context
 					};
 				}
+
 				// Split the name up.
 				var names = attr.indexOf('\\.') === -1 ?
 				// Reference doesn't contain escaped periods
@@ -330,18 +351,15 @@ steal('can/util', 'can/construct', 'can/map', 'can/list', 'can/view', 'can/compu
 						}
 					}
 					// Prevent prior readings.
-					if (can.__clearReading) {
-						can.__clearReading();
-					}
+					can.__clearReading();
 					// Move up to the next scope.
 					scope = scope._parent;
 				}
+
 				// If there was a likely observe.
 				if (defaultObserve) {
 					// Restore reading for previous compute
-					if (can.__setReading) {
-						can.__setReading(defaultComputeReadings);
-					}
+					can.__setReading(defaultComputeReadings);
 					return {
 						scope: defaultScope,
 						rootObserve: defaultObserve,
