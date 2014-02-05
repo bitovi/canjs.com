@@ -2,7 +2,7 @@ var getBranchDownloads = function(){
 	return can.map(can.grep(docConfig.versions || [], function(v){ return !!v.branch }), function(v){
 		return {
 			name : v.number,
-			zipball_url : can.sub('https://github.com/bitovi/canjs/archive/{branch}.zip', v)
+			zipball_url : can.sub('https://github.com/bitovi/canjs.com/archive/{branch}.zip', v)
 		}
 	});
 }
@@ -26,7 +26,7 @@ can.Control.extend('Bitovi.OSS.VersionDownloadCustomizer', {
 
 		$.ajax({
 			dataType: "jsonp",
-			url: 'https://api.github.com/repos/bitovi/canjs/tags',
+			url: 'https://api.github.com/repos/bitovi/canjs.com/tags',
 			success: $.proxy(this.renderResults, this)
 		});
 	},
