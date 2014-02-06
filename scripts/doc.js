@@ -1,6 +1,8 @@
 load('steal/rhino/rhino.js');
 
-steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
+steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) {
+
+	// ARGUMENT PROCESSING
 
 	var forceBuild = false;
 	var minifyBuild = true;
@@ -13,6 +15,8 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 			minifyBuild = false;
 		}
 	})
+	
+	// HELPER METHODS
 
 	var cap = function(str){
 		return str.substr(0,1).toUpperCase()+str.substr(1)
@@ -42,77 +46,190 @@ steal("documentjs", "steal/rhino/json.js", function (DocumentJS) {
 		return "CanJS"
 	}
 
-	var pkg = JSON.parse(readFile('./can/package.json'));
-	var self = JSON.parse(readFile('./package.json'));
-	var builder = JSON.parse(readFile('./can/builder.json'));
-
-	DocumentJS('scripts/doc.html',{
-		"markdown": [ 'can' ],
-		"out": "docs",
-		"parent": "canjs",
-		// "static": "documentjs/site/static",
-		"root": '..',
-		"package": pkg,
-		"self": self,
-		"builder": builder,
-		// helpers: handlebarsHelpers,
-		"url": {
-			builderData: 'http://bitbuilder.herokuapp.com/canjs',
-			builder: 'http://bitbuilder.herokuapp.com/can.custom.js',
-			bithub: 'http://api.bithub.com/api/events/',
-			cdn: '//canjs.com/release/'
-		},
-		// TODO move out (possibly make a flag or something)
-		"layout": "shared/_templates/page.mustache",
-		"docs": "shared/_templates/docs.mustache",
-		"static" : "scripts/static",
-		"templates": "scripts/templates",
-		statics: {
-			src: "_pages"
-		},
-		helpers: function(data, config, getCurrent, oldHelpers){
-			return {
-				documentTitle: documentTitle
-			}
-		},
-		forceBuild: forceBuild,
-		minifyBuild: minifyBuild
+	var copyCanJSTo = function(loc){
+		var dest = new steal.URI(loc);
+		if (!dest.exists()) {
+			dest.mkdirs();
+		}
+		console.log("Copying CanJS files to "+dest)
+		new steal.URI('can').copyTo(dest);
 		
-	});
-	
-	var pkg = JSON.parse(readFile('./can/package.json'));
-	var self = JSON.parse(readFile('./package.json'));
-	var builder = JSON.parse(readFile('./can/builder.json'));
+		try{
+			new steal.URI(loc+"/.git").removeDir();
+		} catch(e){
+			new steal.URI(loc+"/.git").remove();
+		}
+		new steal.URI(loc+"/.gitattributes").remove();
+		new steal.URI(loc+"/.gitignore").remove();
+		new steal.URI(loc+"/node_modules").removeDir();
+		new steal.URI(loc+"/test/pluginified").removeDir();
+		new steal.URI(loc+"/dist").removeDir();
+	}
 
-	DocumentJS('guides_source',{
-		"markdown": [ 'guides_source', 'can/changelog.md', 'can/contributing.md', 'can/license.md' ],
-		"out": "guides",
-		"parent": "guides",
-		// "static": "documentjs/site/static",
-		"root": '..',
-		"package": pkg,
-		"self": self,
-		"builder": builder,
-		"page": "guides", 
-		// helpers: handlebarsHelpers,
-		"url": {
+	var minorVersionOf = function(version){
+			return version.split(".").slice(0,2).join(".")
+		}
+	
+
+	// CONFIG PREPERATION
+
+	var pkg = JSON.parse(readFile('./can/package.json')),
+		self = JSON.parse(readFile('./package.json')),
+		builder = JSON.parse(readFile('./can/builder.json')),
+		versions = JSON.parse(readFile('./versions.json')),
+		version = minorVersionOf(""+pkg.version),
+		isCurrentVersion = false;
+	
+	// the master version is the current version
+	for(var i =0 ; i < versions.length; i++){
+		
+		if(versions[i].branch == "master" &&  version == versions[i].number ){
+			isCurrentVersion = true;
+		} 
+	}
+	
+	var urls = {
 			builderData: 'http://bitbuilder.herokuapp.com/canjs',
 			builder: 'http://bitbuilder.herokuapp.com/can.custom.js',
 			bithub: 'http://api.bithub.com/api/events/',
 			cdn: '//canjs.com/release/'
+	},
+		apiOptions = {
+			"markdown": [ 'can' ],
+			"markdownIgnore": /can\/guides/,
+			"out": version+"/docs",
+			"parent": "canjs",
+			"root": '..',
+			"package": pkg,
+			"self": self,
+			"builder": builder,
+			// helpers: handlebarsHelpers,
+			"url": urls,
+			"layout": "shared/_templates/page.mustache",
+			"docs": "shared/_templates/docs.mustache",
+			"static" : "scripts/static",
+			"templates": "scripts/templates",
+			helpers: function(data, config, getCurrent, oldHelpers){
+				return {
+					documentTitle: documentTitle,
+					isLatestVersion: function(options){
+						return this.number == config.version ?
+							options.fn(this) : options.inverse(this);
+					},
+					// if we are in /2.0.4/docs/can.Component.html,
+					// we want links to download to be ../../download.html
+					removeVersionUrl: function(url){
+						// statics don't have a root
+						if(config.isVersioned && this.root) {
+							return "../../"+url;
+						} else {
+							if(this.root){
+								return this.root + '/' + url;
+							} else {
+								return url;
+							}
+						}
+					}
+				}
+			},
+			forceBuild: forceBuild,
+			minifyBuild: minifyBuild,
+			versionsSrc: "../../versions.json",
+			version: version,
+			isVersioned: true,
+			versions: versions
 		},
-		"static" : "scripts/static",
-		"templates": "scripts/templates",
-		helpers: function(data, config, getCurrent, oldHelpers){
-			return {
-				sourceUrl: function(src){
-					return "https://github.com/bitovi/canjs/wiki/"+src.replace(".md","").replace("_guides/","")
-				},
-				documentTitle: documentTitle
-			}
-		},
-		forceBuild: forceBuild,
-		minifyBuild: minifyBuild
-	});
+		guidesOptions = {
+			"markdown": [ 'can/guides', 'can/changelog.md', 'can/contributing.md', 'can/license.md' ],
+			"out": version+"/guides",
+			"parent": "guides",
+			"root": '..',
+			"package": pkg,
+			"self": self,
+			"builder": builder,
+			"page": "guides", 
+			"url": urls,
+			"static" : "scripts/static",
+			"templates": "scripts/templates",
+			helpers: function(data, config, getCurrent, oldHelpers){
+				return {
+					sourceUrl: function(src){
+						return "https://github.com/bitovi/canjs/wiki/"+src.replace(".md","").replace("_guides/","")
+					},
+					documentTitle: documentTitle,
+					isLatestVersion: function(options){
+						return this.number == config.version ?
+							options.fn(this) : options.inverse(this);
+					},
+					removeVersionUrl: function(url){
+						// statics don't have a root
+						if(config.isVersioned && this.root) {
+							return "../../"+url;
+						} else {
+							if(this.root){
+								return this.root + '/' + url;
+							} else {
+								return url;
+							}
+						}
+					}
+				}
+			},
+			forceBuild: forceBuild,
+			minifyBuild: minifyBuild,
+			versionsSrc: "../../versions.json",
+			version: version,
+			isVersioned: true,
+			versions: versions
+		};
+	
+	
+	// UPDATING FILES
+	
+	// clean versioned folder
+	new steal.URI(version+"/can").removeDir();
+	new steal.URI(version+"/docs").removeDir();
+	new steal.URI(version+"/guides").removeDir();
+	
+	// Make versioned CanJS
+	copyCanJSTo(version+"/can");
+	
+	// Make versioned API docs
+	DocumentJS('scripts/doc.html', apiOptions);
+	
+	// Make versioned guides
+	DocumentJS(null, guidesOptions);
+	
+	
+	// if version is the last non-branch version, put in "docs" and "guides" 
+	if( isCurrentVersion ) {
+		print("\nWRITING CURRENT VERSION\n")
+		// clear docs folder
+		new steal.URI("docs").removeDir();
+		// clear guides folder
+		new steal.URI("docs").removeDir();
+		
+		// Make current API docs
+		DocumentJS('scripts/doc.html', 
+			steal.extend( apiOptions, {
+				out: "docs",
+				versionsSrc: "../versions.json",
+				isVersioned: false,
+				
+				statics: {
+					src: "_pages"
+				}
+			}) );
+		// Make current guides
+		DocumentJS(null, 
+			steal.extend( guidesOptions, {
+				out: "guides",
+				versionsSrc: "../versions.json",
+				isVersioned: false
+			} ));
+		
+		
+	}
+	
 	
 });
