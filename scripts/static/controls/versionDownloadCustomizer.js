@@ -9,7 +9,7 @@
 			}
 		});
 	}
-g
+
 	var parts = function(version){
 
 		var numbers = [],
