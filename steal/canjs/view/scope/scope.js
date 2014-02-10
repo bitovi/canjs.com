@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Wed, 05 Feb 2014 18:50:02 GMT
+ * Mon, 10 Feb 2014 20:24:20 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -98,7 +98,7 @@ steal('can/util', 'can/construct', 'can/map', 'can/list', 'can/view', 'can/compu
 			attr: function (key) {
 				// reads for whatever called before attr.  It's possible
 				// that this.read clears them.  We want to restore them.
-				var previousReads = can.__clearReading && can.__clearReading(),
+				var previousReads = can.__clearReading(),
 					res = this.read(key, {
 						isArgument: true,
 						returnObserveMethods: true,
@@ -336,7 +336,7 @@ steal('can/util', 'can/construct', 'can/map', 'can/list', 'can/view', 'can/compu
 									defaultPropertyDepth = nameIndex;
 									defaultScope = scope;
 									// Clear and save readings so next attempt does not use these readings
-									defaultComputeReadings = can.__clearReading && can.__clearReading();
+									defaultComputeReadings = can.__clearReading();
 								}
 							}
 						}, options));
