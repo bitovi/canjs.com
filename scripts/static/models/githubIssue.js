@@ -2,8 +2,8 @@ can.Model("Bitovi.OSS.GithubIssue", {
 	model: function(data) {
 		return {
 			actor: data.actor,
-			actorID: data._author,
-			picture: data.source_data.org.avatar_url,
+			actorID: data.author.id,
+			picture: data.props.origin_author_avatar_url,
 			title: data.title,
 			body: data.body,
 
@@ -15,7 +15,7 @@ can.Model("Bitovi.OSS.GithubIssue", {
 		};
 	},
 	findAll: {
-		url: Bitovi.URL.BITHUB +  '?category=bug&also=source_data&order=upvotes&limit={limit}',
+		url: Bitovi.URL.BITHUB +  '?category=bug&order=upvotes&limit={limit}',
 		dataType: 'json'
 	}
 }, { });

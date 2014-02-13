@@ -91,7 +91,7 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 	var urls = {
 			builderData: 'http://bitbuilder.herokuapp.com/canjs',
 			builder: 'http://bitbuilder.herokuapp.com/can.custom.js',
-			bithub: 'http://api.bithub.com/api/events/',
+			bithub: 'http://api.bithub.com/api/v1/events/',
 			cdn: '//canjs.com/release/'
 	},
 		apiOptions = {

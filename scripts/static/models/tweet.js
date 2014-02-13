@@ -2,8 +2,8 @@ can.Model("Bitovi.OSS.Tweet", {
 	model: function(data) {
 		return {
 			handle: data.actor,
-			realName: data.source_data[data.source_data.event === 'follow' ? 'source' : 'user'].name,
-			picture: data.source_data[data.source_data.event === 'follow' ? 'source' : 'user'].profile_image_url,
+			realName: data.author.name,
+			picture: data.props.origin_author_avatar_url,
 			body: data.title,
 
 			feed: data.feed,
@@ -13,7 +13,7 @@ can.Model("Bitovi.OSS.Tweet", {
 		};
 	},
 	findAll: {
-		url: Bitovi.URL.BITHUB + '?feed=twitter&order=origin_ts:desc&tag=status_event&limit={limit}',
+		url: Bitovi.URL.BITHUB + '?feed=twitter&order=origin_ts:desc&tag=tweet&limit={limit}',
 		dataType: 'json'
 	}
 }, { });
