@@ -83,7 +83,7 @@ can.Component.extend({
     select: function(todo){
       this.attr('selectedTodo', todo);
     },
-    saveTodo: function(todo) {
+    save: function(todo) {
       todo.save();
       this.removeAttr('selectedTodo');
     }
