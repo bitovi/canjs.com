@@ -2,24 +2,24 @@ can.Model("Bitovi.OSS.GithubEvent", {
 	model: function(data) {
 		return {
 			actor: data.actor,
-			actorID: data._author,
-			picture: data.source_data.org.avatar_url,
+			actorID: data.author.id,
+			picture: data.props.origin_author_avatar_url,
 			title: data.title,
-			commits: data.source_data.payload.commits ? data.source_data.payload.commits.map(function(el) {
+			commits: data.children ? data.children.map(function(el) {
 				return {
-					hash: el.sha,
-					message: el.message
+					hash: el.props.sha,
+					message: el.source_body
 				}
 			}) : [],
 			feed: data.feed,
 			category: data.category,
 			link: data.url,
-			points: data.points,
+			points: data.upvotes,
 			date: new Date(data.origin_ts)
 		};
 	},
 	findAll: {
-		url: Bitovi.URL.BITHUB + '?category=code&also=source_data&order=origin_ts:desc&limit={limit}',
+		url: Bitovi.URL.BITHUB + '?category=code&order=origin_ts:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });

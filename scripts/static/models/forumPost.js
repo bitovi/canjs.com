@@ -12,7 +12,7 @@ can.Model("Bitovi.OSS.ForumPost", {
 		};
 	},
 	findAll: {
-		url: Bitovi.URL.BITHUB + '?feed=forums&order=origin_ts:desc&limit={limit}',
+		url: Bitovi.URL.BITHUB + '?feed=forum&order=origin_ts:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });
