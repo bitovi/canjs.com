@@ -2,13 +2,13 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 10 Feb 2014 20:24:20 GMT
+ * Thu, 13 Mar 2014 20:06:01 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
 /* jshint maxdepth:7*/
-steal('can/view', './elements', function (can, elements) {
+steal('can/view', './elements', "can/view/callbacks",function (can, elements, viewCallbacks) {
 
 	/**
 	 * Helper(s)
@@ -81,8 +81,6 @@ steal('can/view', './elements', function (can, elements) {
 		top = function (stack) {
 			return stack[stack.length - 1];
 		},
-		// characters that automatically mean a custom element
-		automaticCustomElementCharacters = /[-\:]/,
 		Scanner;
 
 	/**
@@ -388,14 +386,8 @@ steal('can/view', './elements', function (can, elements) {
 								// Otherwise we are creating a quote.
 								// TODO: does this handle `\`?
 								var attr = getAttrName();
-								if (VIEWATTR.attributes[attr]) {
+								if (viewCallbacks.attr(attr)) {
 									specialStates.attributeHookups.push(attr);
-								} else {
-									can.each(VIEWATTR.regExpAttributes, function (attrMatcher) {
-										if (attrMatcher.match.test(attr)) {
-											specialStates.attributeHookups.push(attr);
-										}
-									});
 								}
 
 								if (specialAttribute) {
@@ -474,7 +466,7 @@ steal('can/view', './elements', function (can, elements) {
 
 								}
 
-								if (tagName !== "!--" && (VIEWTAG.tags[tagName] || automaticCustomElementCharacters.test(tagName))) {
+								if (tagName !== "!--" && (viewCallbacks.tag(tagName) )) {
 									// if the content tag is inside something it doesn't belong ...
 									if (tagName === "content" && elements.tagMap[top(tagNames)]) {
 										// convert it to an element that will work
@@ -573,8 +565,7 @@ steal('can/view', './elements', function (can, elements) {
 							if (typeof content === 'object') {
 
 								if (content.startTxt && content.end && specialAttribute) {
-
-									buff.push(insert_cmd, content.content, '());');
+									buff.push(insert_cmd, "can.view.toStr( ",content.content, '() ) );');
 
 								} else {
 
@@ -666,30 +657,7 @@ steal('can/view', './elements', function (can, elements) {
 	};
 
 	// can.view.attr
-	var VIEWATTR = can.view.attr = function (attributeName, attrHandler) {
-		if (typeof attributeName === "string") {
-			VIEWATTR.attributes[attributeName] = attrHandler;
-		} else {
-			VIEWATTR.regExpAttributes[attributeName] = {
-				match: attributeName,
-				handler: attrHandler
-			};
-		}
-	};
-
-	VIEWATTR.attributes = {};
-	VIEWATTR.regExpAttributes = {};
-
-	var VIEWTAG = can.view.tag = function (tagName, tagHandler) {
-		// if we have html5shive ... re-generate
-		if (window.html5) {
-			window.html5.elements += " " + tagName;
-			window.html5.shivDocument();
-		}
-
-		VIEWTAG.tags[tagName.toLowerCase()] = tagHandler;
-	};
-	VIEWTAG.tags = {};
+	
 	// This is called when there is a special tag
 	can.view.pending = function (viewData) {
 		// we need to call any live hookups
@@ -702,48 +670,14 @@ steal('can/view', './elements', function (can, elements) {
 			});
 
 			if (viewData.tagName) {
-
-				var tagName = viewData.tagName,
-					helperTagCallback = viewData.options.read('tags.' + tagName, {
-						isArgument: true,
-						proxyMethods: false
-					})
-						.value,
-					tagCallback = helperTagCallback || VIEWTAG.tags[tagName];
-
-				// If this was an element like <foo-bar> that doesn't have a component, just render its content
-				var scope = viewData.scope,
-					res = tagCallback ? tagCallback(el, viewData) : scope;
-
-				//!steal-remove-start
-				if (!tagCallback) {
-					can.dev.warn('can/view/scanner.js: No custom element found for ' + tagName);
-				}
-				//!steal-remove-end
-
-				// If the tagCallback gave us something to render with, and there is content within that element
-				// render it!
-				if (res && viewData.subtemplate) {
-
-					if (scope !== res) {
-						scope = scope.add(res);
-					}
-					var frag = can.view.frag(viewData.subtemplate(scope, viewData.options));
-					can.appendChild(el, frag);
-				}
-
+				viewCallbacks.tagHandler(el, viewData.tagName, viewData);
 			}
 
 			can.each(viewData && viewData.attrs || [], function (attributeName) {
 				viewData.attributeName = attributeName;
-				if (VIEWATTR.attributes[attributeName]) {
-					VIEWATTR.attributes[attributeName](el, viewData);
-				} else {
-					can.each(VIEWATTR.regExpAttributes, function (attrMatcher) {
-						if (attrMatcher.match.test(attributeName)) {
-							attrMatcher.handler(el, viewData);
-						}
-					});
+				var callback = viewCallbacks.attr(attributeName);
+				if(callback) {
+					callback(el, viewData);
 				}
 			});
 
@@ -754,6 +688,8 @@ steal('can/view', './elements', function (can, elements) {
 	can.view.tag("content", function (el, tagData) {
 		return tagData.scope;
 	});
+
+	can.view.Scanner = Scanner;
 
 	return Scanner;
 });

@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 10 Feb 2014 20:24:20 GMT
+ * Thu, 13 Mar 2014 20:06:01 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -37,6 +37,8 @@ steal('can/util',
 			HASH = '___h4sh',
 			// An alias for the most used context stacking call.
 			CONTEXT_OBJ = '{scope:' + SCOPE + ',options:options}',
+			// a context object used to incidate being special
+			SPECIAL_CONTEXT_OBJ = '{scope:' + SCOPE + ',options:options, special: true}',
 			// argument names used to start the function (used by scanner and steal)
 			ARG_NAMES = SCOPE + ",options",
 
@@ -1221,7 +1223,9 @@ steal('can/util',
 									m;
 
 								// Start the content render block.
-								result.content += 'can.Mustache.txt(\n' + CONTEXT_OBJ + ',\n' + (mode ? '"' + mode + '"' : 'null') + ',';
+								result.content += 'can.Mustache.txt(\n' +
+									(cmd.specialAttribute ? SPECIAL_CONTEXT_OBJ : CONTEXT_OBJ ) +
+									',\n' + (mode ? '"' + mode + '"' : 'null') + ',';
 
 								// Parse the helper arguments.
 								// This needs uses this method instead of a split(/\s/) so that 
@@ -1402,9 +1406,14 @@ steal('can/util',
 				};
 
 			}
-
+			/*if( !mode && !args.length && can.isFunction(name) && name.isComputed ) {
+				if(!scopeAndOptions.special) {
+					name.canReadForChangeEvent = false;
+				}
+				return name;
+			}*/
 			return function () {
-
+				//{{#foo.bar zed ted}}
 				var value;
 				if (can.isFunction(name) && name.isComputed) {
 					value = name();

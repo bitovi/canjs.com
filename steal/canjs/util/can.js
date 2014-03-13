@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 10 Feb 2014 20:24:20 GMT
+ * Thu, 13 Mar 2014 20:06:01 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -13,6 +13,9 @@ steal(function () {
 	if (typeof GLOBALCAN === 'undefined' || GLOBALCAN !== false) {
 		window.can = can;
 	}
+
+	// An empty function useful for where you need a dummy callback.
+	can.k = function(){};
 
 	can.isDeferred = function (obj) {
 		var isFunction = this.isFunction;
@@ -37,6 +40,38 @@ steal(function () {
 		return d;
 	};
 
+
+	can.frag = function(item){
+		var frag;
+		if(!item || typeof item === "string"){
+			frag = can.buildFragment(item == null ? "" : ""+item, document.body);
+			// If we have an empty frag...
+			if (!frag.childNodes.length) {
+				frag.appendChild(document.createTextNode(''));
+			}
+			return frag;
+		} else if(item.nodeType === 11) {
+			return item;
+		} else if(typeof item.nodeType === "number") {
+			frag = document.createDocumentFragment();
+			frag.appendChild(item);
+			return frag;
+		} else if(typeof item.length === "number") {
+			frag = document.createDocumentFragment();
+			can.each(item, function(item){
+				frag.appendChild( can.frag(item) );
+			});
+			return frag;
+		} else {
+			frag = can.buildFragment( ""+item, document.body);
+			// If we have an empty frag...
+			if (!frag.childNodes.length) {
+				frag.appendChild(document.createTextNode(''));
+			}
+			return frag;
+		}
+	};
+	
 	// this is here in case can.compute hasn't loaded
 	can.__reading = function () {};
 

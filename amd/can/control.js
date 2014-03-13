@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 10 Feb 2014 20:24:20 GMT
+ * Thu, 13 Mar 2014 20:06:01 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -302,6 +302,24 @@ define(["can/util/library", "can/construct"], function (can) {
 		}, {
 			/**
 			 * @prototype
+			 */
+			//
+			/**
+			 * @functioncan.Control.prototype.init init
+			 * @parent can.Control.prototype
+			 * @description instance init method required for most applications of [can.Control]
+			 * @signature `control.init(element,options)`
+			 * @param element The wrapped element passed to the control.
+			 *		Control accepts a raw HTMLElement, a CSS selector, or a NodeList.
+			 *		This is set as `this.element` on the control instance.
+			 * @param options The second argument passed to new Control,
+			 *		extended with the can.Control's static _defaults__.
+			 *		This is set as `this.options` on the control instance.
+			 *		Note that static is used formally to indicate that
+			 *		_default values are shared across control instances_.
+			 *
+			 * @body
+			 * Any additional arguments provided to the constructor will be passed as normal.
 			 */
 			// Sets `this.element`, saves the control in `data, binds event
 			// handlers.

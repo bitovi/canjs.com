@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 10 Feb 2014 20:24:20 GMT
+ * Thu, 13 Mar 2014 20:06:01 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -33,14 +33,14 @@ define(["jquery", "can/util/can", "can/util/attr", "can/util/array/each", "can/u
 		addEvent: can.addEvent,
 		removeEvent: can.removeEvent,
 		buildFragment: function (elems, context) {
-			var oldFragment = $.buildFragment,
-				ret;
+			// Check if this has any html nodes on our own.
+			var ret;
 			elems = [elems];
 			// Set context per 1.8 logic
 			context = context || document;
 			context = !context.nodeType && context[0] || context;
 			context = context.ownerDocument || context;
-			ret = oldFragment.call(jQuery, elems, context);
+			ret = $.buildFragment(elems, context);
 			return ret.cacheable ? $.clone(ret.fragment) : ret.fragment || ret;
 		},
 		$: $,
@@ -235,6 +235,32 @@ define(["jquery", "can/util/can", "can/util/attr", "can/util/array/each", "can/u
 			}
 		};
 	}
+	
+	// ## Fix build fragment.
+	// In IE8, we can pass jQuery a fragment and it removes newlines.
+	// This checks for that and replaces can.buildFragment with something
+	// that if only a single text node is returned, returns a fragment with
+	// a text node that is set to the content.
+	(function(){
+		
+		var text = "<-\n>",
+			frag = can.buildFragment(text, document);
+		if(text !== frag.childNodes[0].nodeValue) {
+			
+			var oldBuildFragment  = can.buildFragment;
+			can.buildFragment = function(content, context){
+				var res = oldBuildFragment(content, context);
+				if(res.childNodes.length === 1 && res.childNodes[0].nodeType === 3) {
+					res.childNodes[0].nodeValue = content;
+				}
+				return res;
+			};
+			
+		}
+		
+		
+		
+	})();
 
 	$.event.special.inserted = {};
 	$.event.special.removed = {};

@@ -2,17 +2,25 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 10 Feb 2014 20:24:20 GMT
+ * Thu, 13 Mar 2014 20:06:01 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
 steal('can/util/can.js', function (can) {
+	
+	// The following is from jQuery
+	var isArrayLike = function(obj){
+		var length = obj.length;
+		return typeof arr !== "function" &&
+			( length === 0 || typeof length === "number" && length > 0 && ( length - 1 ) in obj );
+	};
+	
 	can.each = function (elements, callback, context) {
 		var i = 0,
 			key;
 		if (elements) {
-			if (typeof elements.length === 'number' && elements.pop) {
+			if ( isArrayLike(elements) ) {
 				if (elements.attr) {
 					elements.attr('length');
 				}

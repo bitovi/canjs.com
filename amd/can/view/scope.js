@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 10 Feb 2014 20:24:20 GMT
+ * Thu, 13 Mar 2014 20:06:01 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -68,6 +68,7 @@ define(["can/util/library", "can/construct", "can/map", "can/list", "can/view", 
 			init: function (context, parent) {
 				this._context = context;
 				this._parent = parent;
+				this.__cache = {};
 			},
 			/**
 			 * @function can.view.Scope.prototype.attr
@@ -193,7 +194,10 @@ define(["can/util/library", "can/construct", "can/map", "can/list", "can/view", 
 					args: []
 				};
 				var self = this,
-					rootObserve, rootReads, computeData = {
+					rootObserve,
+					rootReads,
+					// fastRead,
+					computeData = {
 						compute: can.compute(function (newVal) {
 							if (arguments.length) {
 								// check that there's just a compute with nothing from it ...
@@ -205,6 +209,9 @@ define(["can/util/library", "can/construct", "can/map", "can/list", "can/view", 
 										.value.attr(rootReads[last], newVal);
 								}
 							} else {
+								/*if(fastRead){
+									return fastRead(rootObserve);
+								}*/
 								if (rootObserve) {
 									return Scope.read(rootObserve, rootReads, options)
 										.value;
@@ -215,6 +222,9 @@ define(["can/util/library", "can/construct", "can/map", "can/list", "can/view", 
 								rootReads = data.reads;
 								computeData.scope = data.scope;
 								computeData.initialValue = data.value;
+								/*if(rootReads && rootReads.length === 1 && rootObserve instanceof can.Map) {
+									fastRead = new Function("obs","return obs.attr(\""+rootReads[0]+"\")")
+								}*/
 								return data.value;
 							}
 						})

@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 10 Feb 2014 20:24:20 GMT
+ * Thu, 13 Mar 2014 20:06:01 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -178,19 +178,20 @@ define(["can/util/can"], function (can) {
 			}
 			if (transactions === 0) {
 				var items = batchEvents.slice(0),
-					callbacks = stopCallbacks.slice(0);
+					callbacks = stopCallbacks.slice(0),
+					i, len;
 				batchEvents = [];
 				stopCallbacks = [];
 				batchNum++;
 				if (callStart) {
 					can.batch.start();
 				}
-				can.each(items, function (args) {
-					can.trigger.apply(can, args);
-				});
-				can.each(callbacks, function (cb) {
-					cb();
-				});
+				for(i = 0, len = items.length; i < len; i++) {
+					can.trigger.apply(can, items[i]);
+				}
+				for(i = 0, len = callbacks.length; i < callbacks.length; i++) {
+					callbacks[i]();
+				}
 			}
 		},
 		/**

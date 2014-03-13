@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 10 Feb 2014 20:24:20 GMT
+ * Thu, 13 Mar 2014 20:06:01 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -167,7 +167,6 @@ steal("can/util", "can/view/mustache", "can/control", function (can) {
 			handler = specialData.handler;
 			event = specialData.event;
 		}
-
 		can.bind.call(el, event, handler);
 	});
 
