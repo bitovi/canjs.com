@@ -140,9 +140,9 @@ steal('can/util', 'can/construct', function (can) {
 					// value from the options or the window
 					var convertedName = options ? can.sub(methodName, this._lookup(options)) : methodName;
 					if (!convertedName) {
-						//!dev-remove-start
+						//!steal-remove-start
 						can.dev.log('can/control/control.js: No property found for handling ' + methodName);
-						//!dev-remove-end
+						//!steal-remove-end
 						return null;
 					}
 					// If a `{}` template resolves to an object, `convertedName` will be
@@ -295,6 +295,24 @@ steal('can/util', 'can/construct', function (can) {
 		}, {
 			/**
 			 * @prototype
+			 */
+			//
+			/**
+			 * @functioncan.Control.prototype.init init
+			 * @parent can.Control.prototype
+			 * @description instance init method required for most applications of [can.Control]
+			 * @signature `control.init(element,options)`
+			 * @param element The wrapped element passed to the control.
+			 *		Control accepts a raw HTMLElement, a CSS selector, or a NodeList.
+			 *		This is set as `this.element` on the control instance.
+			 * @param options The second argument passed to new Control,
+			 *		extended with the can.Control's static _defaults__.
+			 *		This is set as `this.options` on the control instance.
+			 *		Note that static is used formally to indicate that
+			 *		_default values are shared across control instances_.
+			 *
+			 * @body
+			 * Any additional arguments provided to the constructor will be passed as normal.
 			 */
 			// Sets `this.element`, saves the control in `data, binds event
 			// handlers.
@@ -809,9 +827,9 @@ steal('can/util', 'can/construct', function (can) {
 			destroy: function () {
 				//Control already destroyed
 				if (this.element === null) {
-					//!dev-remove-start
+					//!steal-remove-start
 					can.dev.warn("can/control/control.js: Control already destroyed");
-					//!dev-remove-end
+					//!steal-remove-end
 					return;
 				}
 				var Class = this.constructor,
