@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.5
+ * CanJS - 2.0.6
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 04 Feb 2014 22:36:26 GMT
+ * Fri, 14 Mar 2014 21:59:09 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -294,7 +294,15 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function (can, b
 				} else {
 					// `can.compute(initialValue,{get:, set:, on:, off:})`
 					value = getterSetter;
-					var options = context;
+					var options = context,
+						oldUpdater = updater;
+						
+					updater = function(){
+						var newVal = get.call(context);
+						if(newVal !== value) {
+							oldUpdater(newVal, value);
+						}
+					};
 					get = options.get || get;
 					set = options.set || set;
 					on = options.on || on;

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.5
+ * CanJS - 2.0.6
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 04 Feb 2014 22:36:26 GMT
+ * Fri, 14 Mar 2014 21:59:09 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -102,7 +102,10 @@ steal('can/util', function (can) {
 			return compares(a, b, aParent, bParent);
 		}
 		compares = compares || {};
-		if (a instanceof Date) {
+		if (a === null || b === null) {
+			return a === b;
+		}
+		if (a instanceof Date || b instanceof Date) {
 			return a === b;
 		}
 		if (deep === -1) {

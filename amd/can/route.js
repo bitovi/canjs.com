@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.5
+ * CanJS - 2.0.6
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 04 Feb 2014 22:36:26 GMT
+ * Fri, 14 Mar 2014 21:59:09 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -577,7 +577,7 @@ define(["can/util/library", "can/map", "can/list", "can/util/string/deparam"], f
 				prop = args.shift(),
 				binding = can.route.bindings[can.route.currentBinding || can.route.defaultBinding],
 				method = binding[prop];
-			if (typeof method === "function") {
+			if (method.apply) {
 				return method.apply(binding, args);
 			} else {
 				return method;

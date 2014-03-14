@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.5
+ * CanJS - 2.0.6
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 04 Feb 2014 22:36:36 GMT
+ * Fri, 14 Mar 2014 21:59:16 GMT
  * Licensed MIT
  * Includes: can/component,can/construct,can/map,can/list,can/observe,can/compute,can/model,can/view,can/control,can/route,can/control/route,can/view/mustache,can/view/bindings,can/view/live,can/view/scope,can/util/string
  * Download from: http://canjs.com
@@ -31,7 +31,7 @@
             }
             return object._cid;
         };
-        can.VERSION = '2.0.5';
+        can.VERSION = '2.0.6';
 
         can.simpleExtend = function(d, s) {
             for (var prop in s) {
@@ -2126,9 +2126,12 @@
                         current = isList ? this[prop] : this._data[prop];
 
                     // If we have more parts, call `removeAttr` on that part.
-                    if (parts.length) {
+                    if (parts.length && current) {
                         return current.removeAttr(parts);
                     } else {
+                        if ( !! ~attr.indexOf('.')) {
+                            prop = attr;
+                        }
                         if (isList) {
                             this.splice(prop, 1);
                         } else if (prop in this._data) {
@@ -2967,7 +2970,15 @@
                     } else {
                         // `can.compute(initialValue,{get:, set:, on:, off:})`
                         value = getterSetter;
-                        var options = context;
+                        var options = context,
+                            oldUpdater = updater;
+
+                        updater = function() {
+                            var newVal = get.call(context);
+                            if (newVal !== value) {
+                                oldUpdater(newVal, value);
+                            }
+                        };
                         get = options.get || get;
                         set = options.set || set;
                         on = options.on || on;
@@ -4207,7 +4218,7 @@
                         buff.push(put_cmd, '"', clean(content), '"' + (bonus || '') + ');');
                     },
                     // A stack used to keep track of how we should end a bracket
-                    // `}`.  
+                    // `}`.
                     // Once we have a `<%= %>` with a `leftBracket`,
                     // we store how the file should end here (either `))` or `;`).
                     endStack = [],
@@ -4221,7 +4232,14 @@
                     specialStates = {
                         attributeHookups: [],
                         // a stack of tagHookups
-                        tagHookups: []
+                        tagHookups: [],
+                        //last tag hooked up
+                        lastTagHookup: ''
+                    },
+                    // Helper `function` for removing tagHookups from the hookup stack
+                    popTagHookup = function() {
+                        // The length of tagHookups is the nested depth which can be used to uniquely identify custom tags of the same type
+                        specialStates.lastTagHookup = specialStates.tagHookups.pop() + specialStates.tagHookups.length;
                     },
                     // The current tag name.
                     tagName = '',
@@ -4231,7 +4249,6 @@
                     popTagName = false,
                     // Declared here.
                     bracketCount,
-
                     // in a special attr like src= or style=
                     specialAttribute = false,
 
@@ -4242,7 +4259,6 @@
 
                 // Reinitialize the tag state goodness.
                 htmlTag = quote = beforeQuote = null;
-
                 for (;
                     (token = tokens[i++]) !== undefined;) {
                     if (startTag === null) {
@@ -4253,7 +4269,7 @@
                                 magicInTag = htmlTag && 1;
 
                             case tmap.commentLeft:
-                                // A new line -- just add whatever content within a clean.  
+                                // A new line -- just add whatever content within a clean.
                                 // Reset everything.
                                 startTag = token;
                                 if (content.length) {
@@ -4299,16 +4315,17 @@
                                 var emptyElement = content.substr(content.length - 1) === '/' || content.substr(content.length - 2) === '--',
                                     attrs = '';
                                 // if there was a magic tag
-                                // or it's an element that has text content between its tags, 
+                                // or it's an element that has text content between its tags,
                                 // but content is not other tags add a hookup
-                                // TODO: we should only add `can.EJS.pending()` if there's a magic tag 
+                                // TODO: we should only add `can.EJS.pending()` if there's a magic tag
                                 // within the html tags.
                                 if (specialStates.attributeHookups.length) {
                                     attrs = "attrs: ['" + specialStates.attributeHookups.join("','") + "'], ";
                                     specialStates.attributeHookups = [];
                                 }
                                 // this is the > of a special tag
-                                if (tagName === top(specialStates.tagHookups)) {
+                                // comparison to lastTagHookup makes sure the same custom tags can be nested
+                                if ((tagName + specialStates.tagHookups.length) !== specialStates.lastTagHookup && tagName === top(specialStates.tagHookups)) {
                                     // If it's a self closing tag (like <content/>) make sure we put the / at the end.
                                     if (emptyElement) {
                                         content = content.substr(0, content.length - 1);
@@ -4322,13 +4339,13 @@
                                     if (emptyElement) {
                                         buff.push("}));");
                                         content = "/>";
-                                        specialStates.tagHookups.pop();
+                                        popTagHookup();
                                     }
                                     // if it's an empty tag
                                     else if (tokens[i] === "<" && tokens[i + 1] === "/" + tagName) {
                                         buff.push("}));");
                                         content = token;
-                                        specialStates.tagHookups.pop();
+                                        popTagHookup();
                                     } else {
                                         // it has content
                                         buff.push(",subtemplate: function(" + this.text.argNames + "){\n" + startTxt + (this.text.start || ''));
@@ -4434,7 +4451,6 @@
                                             tagName = cleanedTagName;
                                             popTagName = true;
                                         }
-
                                         // if we are in a closing tag of a custom tag
                                         if (top(specialStates.tagHookups) === cleanedTagName) {
                                             // remove the last < from the content
@@ -4442,10 +4458,9 @@
 
                                             // finish the "section"
                                             buff.push(finishTxt + "}}) );");
-
                                             // the < belongs to the outside
                                             content = "><";
-                                            specialStates.tagHookups.pop();
+                                            popTagHookup();
                                         }
 
                                     } else {
@@ -4484,7 +4499,7 @@
 
                                         // We are ending a block.
                                         if (bracketCount === 1) {
-                                            // We are starting on. 
+                                            // We are starting on.
                                             buff.push(insert_cmd, 'can.view.txt(0,\'' + getTag(tagName, tokens, i) + '\',' + status() + ',this,function(){', startTxt, content);
                                             endStack.push({
                                                     before: '',
@@ -4497,7 +4512,7 @@
                                                 after: ';'
                                             };
 
-                                            // If we are ending a returning block, 
+                                            // If we are ending a returning block,
                                             // add the finish text which returns the result of the
                                             // block.
                                             if (last.before) {
@@ -4600,7 +4615,7 @@
                         out: (this.text.outStart || '') + template + ' ' + finishTxt + (this.text.outEnd || '')
                     };
                 // Use `eval` instead of creating a function, because it is easier to debug.
-                myEval.call(out, 'this.fn = (function(' + this.text.argNames + '){' + out.out + '});\r\n//@ sourceURL=' + name + '.js');
+                myEval.call(out, 'this.fn = (function(' + this.text.argNames + '){' + out.out + '});\r\n//# sourceURL=' + name + '.js');
                 return out;
             }
         };
@@ -7579,7 +7594,7 @@
                         prop = args.shift(),
                         binding = can.route.bindings[can.route.currentBinding || can.route.defaultBinding],
                         method = binding[prop];
-                    if (typeof method === "function") {
+                    if (method.apply) {
                         return method.apply(binding, args);
                     } else {
                         return method;

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.5
+ * CanJS - 2.0.6
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 04 Feb 2014 22:36:26 GMT
+ * Fri, 14 Mar 2014 21:59:09 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -646,9 +646,12 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 					current = isList ? this[prop] : this._data[prop];
 
 				// If we have more parts, call `removeAttr` on that part.
-				if (parts.length) {
+				if (parts.length && current) {
 					return current.removeAttr(parts);
 				} else {
+					if (!!~attr.indexOf('.')) {
+						prop = attr;
+					}
 					if (isList) {
 						this.splice(prop, 1);
 					} else if (prop in this._data) {
