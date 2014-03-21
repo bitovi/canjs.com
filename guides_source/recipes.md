@@ -9,7 +9,7 @@
 ## Get Started
 
 There are a variety of ways to get CanJS.  Read the [using CanJS guide](http://canjs.com/guides/Using.html)
-for comprehensive list.  For the following recepies, we will load CanJS
+for comprehensive list.  For the following recipes, we will load CanJS
 with a `<script>` tag pointed to CanJS's CDN.
 
 Create a file called `myapp.html` and put the following in it to get started:
@@ -26,10 +26,10 @@ Create a file called `myapp.html` and put the following in it to get started:
 	<!-- CanJS needs a place to put your application -->
 	<div id="my-app"></div>
 
-To follow along with the other recipes, you can also use 
+To follow along with the other recipes, you can also use
 [this JSFiddle](http://jsfiddle.net/donejs/GE3yf/) as a template.
 
-You can also [Download CanJS](http://canjs.com/download.html) 
+You can also [Download CanJS](http://canjs.com/download.html)
 or follow [other tutorials](http://canjs.com/guides/Tutorial.html) to get
 started, but for the rest of the examples below, we'll be using this
 setup.
@@ -71,7 +71,7 @@ Render the template with a `message` and insert it into the page with:
     $("#my-app").html( frag )
     </script>
 
-> `frag` is a [DocumentFragment](https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment). A DocumentFragment 
+> `frag` is a [DocumentFragment](https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment). A DocumentFragment
 > is a lightweight container of HTMLElements that can be inserted in the page quickly. They can be used
 > anywhere a normal HTMLElement is used.
 
@@ -79,8 +79,8 @@ Render the template with a `message` and insert it into the page with:
 
 ## Update Text in the Page
 
-CanJS will update the page automatically when [observable](http://sourcemaking.com/design_patterns/observer) 
-data changes. To make observable data, pass raw data to [can.Map](../docs/can.Map.html), 
+CanJS will update the page automatically when [observable](http://sourcemaking.com/design_patterns/observer)
+data changes. To make observable data, pass raw data to [can.Map](../docs/can.Map.html),
 [can.List](../docs/can.List.html) or [can.compute](../docs/can.compute.html) like:
 
 	var data = new can.Map({message: "Hello World!"});
@@ -120,7 +120,7 @@ To show a list of data within a mustache template, use the `#each` operator.
 Inside the `#each` block, the attributes are scoped to individual
 objects in the list of `people`.
 
-To make changes to the list, use an Array method such as 
+To make changes to the list, use an Array method such as
 [push](/docs/can.List.prototype.push.html)
 or [pop](/docs/can.List.prototype.pop.html).
 
@@ -139,7 +139,7 @@ directly like:
     $("h1").show()
     $("h1").hide()
 
-Make the template show or hide those elements when a value 
+Make the template show or hide those elements when a value
 changes.  
 
 
@@ -156,7 +156,7 @@ When the button is clicked, change the observable value.
 #### Application State
 
 Typically, it's not a good idea to mix view state and application data.
-In the previous example, the `message` is application data, while the 
+In the previous example, the `message` is application data, while the
 `visible` property represents view state. In CanJS, state and data
 should be separated using different observables.
 
@@ -174,8 +174,8 @@ makes things more maintainable.
 ### Create a Live Timestamp
 
 This recipe demonstrates how to generate a 'live' timestamp
-that displays in a human-readable format. This means handling 
-application state that changes over time, as well as making 
+that displays in a human-readable format. This means handling
+application state that changes over time, as well as making
 information rendered in a template human-readable using a helper function.
 
 First, we'll add a `createdAt` property to the data like:
@@ -197,13 +197,13 @@ __and__ as time passes, the timestamp will update to:
 __and__ then update to "some seconds ago" and so forth.
 
 To accomplish this, create a `prettyDate` [mustache helper](../docs/can.Mustache.helper.html) that converts
-dates into a human readable format.  A helper function is called from within the template where its result 
+dates into a human readable format.  A helper function is called from within the template where its result
 will be displayed.  The following calls `prettyDate` with an observable value of `createdAt`.
 
     <h1>
-      {{message}} 
+      {{message}}
       <i>created {{prettyDate createdAt}}</i>
-    </h1> 
+    </h1>
 
 To call a function from a template, [register](../docs/can.Mustache.registerHelper.html) it with `can.view`.
 The third argument passed to `can.view` is an object with helper functions, so the `dateHelper` function
@@ -228,14 +228,14 @@ will be represented by a compute:
 
 As the current time changes, we update `now` with the new time. To change the value of a `can.compute`,
 call it with its new value as an argument:
-    
-    // update that property every second        
+
+    // update that property every second
     setTimeout(function(){
         now( new Date() );
         setTimeout(arguments.callee, 1000);
     },1000)
 
-The `prettyDate` helper will read and compare the `date` and `now` compute to 
+The `prettyDate` helper will read and compare the `date` and `now` compute to
 get the time elapsed in seconds:
 
     var timeElapsed = ( now() - date() ) / 1000
@@ -246,9 +246,9 @@ Using the `timeElapsed`, `prettyDate` returns human readable timestamps:
 	  if(timeElapsed < 1.2){
 	    return "just now"
 	  } else if (timeElapsed < 10) {
-	    return "a couple seconds ago"	
-	  } 
-      ... 
+	    return "a couple seconds ago"
+	  }
+      ...
 	  else {
 	    return Math.round(difference/60)+" minutes ago"
 	  }
@@ -256,7 +256,7 @@ Using the `timeElapsed`, `prettyDate` returns human readable timestamps:
 
 <iframe width="100%" height="300" src="http://jsfiddle.net/donejs/VQNSH/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
 
-## Handle User Interaction 
+## Handle User Interaction
 
 When a user does something, such as clicking, an `event` occurs. Event handlers specify
 how [JavaScript should respond to an event](http://bitovi.com/blog/2010/10/a-crash-course-in-how-dom-events-work.html).
@@ -275,8 +275,7 @@ CanJS provides a few different ways to respond to events. As well as
 making application code simpler, using CanJS to handle events can help to
 automatically prevent [memory leaks](http://bitovi.com/blog/2012/04/zombie-apocolypse.html).
 
-A `can.Control` allows us to define how the application should behave
-when its state changes.  To do this, extend `can.Control`.
+To handle events, extend `can.Control`.
 
 	var PeopleList = can.Control.extend({
 		//behavior
@@ -293,27 +292,36 @@ of `people`, when instantiating our `PeopleList` Control.
     {firstname: "Bob", lastname: "Barker"}
 	];
 
+You create a `can.Control` by [calling it as a constructor function](http://canjs.com/docs/can.Control.html#sig_newcan_Control_element_options_).
+The first argument is the element the control will be created on.
+The second argument is an object of options.
+
 	new PeopleList('#my-app', {people: people});
 
-When instantiated, the `init` method is called, and `PeopleList`
-needs to keep an observable list of `people` (accomplished with
-`can.List`) and render the list using `can.view`. The first argument
-(in this case `'#my-app'`) is a selector defining the elements
-the list should be rendered in.
+When the constructor function is called and the `can.Control`
+is instantiated:
+
+1. The `init` method is called
+2. An observable `can.List` is created from `people`
+3. The list is rendered using `can.view` so when the list changes, so will the view
 
 	var PeopleList = can.Control.extend({
-    init: function( element, options ){
-         this.people = new can.List(op.people);
-         this.element.html( can.view('app-template', {
-         		 //defines people in the template as the observable can.List
-             people: this.people
-        }));
-    }
-  }
+	  init: function( element, options ){
+	       this.people = new can.List(options.people);
+	       this.element.html( can.view('app-template', {
+	       		 //defines people in the template as the observable can.List
+	           people: this.people
+	      }));
+	  },
+		'li click': function( li, event ){
+			//Handle the click event
+		}
+	}
 
-When the event handler for a `click` is defined, it needs a way
+When the event handler for a `click` runs, it needs a way
 to access the object associated with the `li` that was clicked.
-With the `data` helper, the element will retain a reference
+With the [`data`](http://canjs.com/docs/can.Mustache.helpers.data.html) helper,
+the element will retain a reference
 to the object it is associated with (in this case, a `person`).
 
 	<ul>
@@ -325,12 +333,13 @@ to the object it is associated with (in this case, a `person`).
 	</ul>  
 
 Finally, the event handler must be defined. In a `can.Control`,
-an event handler function can be defined with a string containing
-a selector and an event. In this case, these are `li` and `click`,
-recpectively, since we want to handle click events on each list item.
+an event handler function [can be defined with a string containing
+a selector and an event](http://canjs.com/docs/can.Control.html#section_Listeningtoevents).
+In this case, these are `li` and `click`, recpectively,
+since we want to handle click events on each list item.
 
 	var PeopleList = can.Control.extend({
-    init: function(){ 
+    init: function(){
     	...
     },
     'li click': function( li, event ) {
@@ -341,16 +350,17 @@ recpectively, since we want to handle click events on each list item.
     }
 	});
 
-As a reminder, though event handlers respond to actions on the page 
-they should *change application state or data* (e.g. make a change to a `can.Map`).
-This will update the page automatically, keeping code manageable.
-
 When a user clicks a list item:
 
  1. The function bound to `li click` is called
  2. The object associated with that list item is accessed using the `data` helper
  3. That object is removed from the observable `people` list
  4. The template updates automatically
+
+As a reminder, though event handlers respond to actions on the page,
+they should *change application state or data* (e.g. make a change to a `can.Map`)
+rather than modifying the DOM directly (e.g. toggling a class).
+This will update the page automatically, keeping code manageable.
 
 This is *one* way to handle events. Others will be covered
 in the following recipes while building widgets.
@@ -360,7 +370,7 @@ in the following recipes while building widgets.
 ## Build Widgets/UI Elements
 
 Previous recipes have demonstrated how to change page content and introduced
-event handling. The following recipes will introduce `can.Component`, 
+event handling. The following recipes will introduce `can.Component`,
 which allows for straightforward widget construction by packaging
 template, state, and event handling code in one place.
 
@@ -370,21 +380,20 @@ HTML tags.
 
 ### Create a Component
 
-The previous recipe that displays a list of people can instead 
-be represented as a component. 
+The previous recipe that displays a list of people can instead
+be represented as a component.
 
 	<people></people>
 
-Any time a `people` tag is put into a template, the component will
-be rendered since we set `people` as the tag.
+A component is rendered anywhere its specified `tag` is in a template.
 
 	can.Component.extend({
 	    tag: 'people',
 	...
 
 The template for the component itself is passed via the `template`
-argument. This can either be an external file or a string.
-Each `li` uses `can-click`, which declares an event binding.
+property. This can either be an external file or a string.
+[Each `li` uses `can-click`, which declares an event binding.](http://canjs.com/docs/can.view.bindings.can-EVENT.html)
 Here, the method called `remove` inside this component's
 scope will be called with the relevant `people` object
 as an argument.
@@ -400,8 +409,8 @@ as an argument.
 	...
 
 The `scope` object contains the component's state
-as well as defining some of its behavior. Here,
-this includes the `remove` function that was bound
+as well as methods that define some of its behavior.
+Here, this includes the `remove` function that was bound
 to the `can-click` event above.
 
 	...
@@ -415,11 +424,12 @@ to the `can-click` event above.
 	    }
 	});
 
-This behaves similarly to the `can.Control` from before.
+This behaves similarly to the `can.Control` from above.
 However, the `<people>` tag can be used without having
 any knowledge about the inner workings of the widget.
-The template, state, and behavior are all combined
-into one Component.
+Using declarative HTML tags, a component can be used
+without writing any javascript. The template, state,
+anc behavior are all combined into one Component.
 
 <iframe width="100%" height="300" src="http://jsfiddle.net/donejs/WBM9z/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"> </iframe>
 
@@ -452,9 +462,9 @@ a `TabsViewModel` needs:
 <li>Helper methods to add, remove, and activate panels</li>
 </ul>
 
-Since this is a `can.Map`, the `panels` object is
+Since TabsViewModel is a `can.Map`, the `panels` property is
 automatically converted to a `can.List`.
-The `active` variable references the `panel` object
+The `active` property references the `panel` object
 that should currently be displayed.
 
 	var TabsViewModel = can.Map.extend({
@@ -493,8 +503,13 @@ Now that the view model is defined, making a component is simply
 a matter of defining the way the tabs widget is displayed.
 
 The template for a `tabs` component needs a list of panel titles
-that will `activate` that panel when clicked. Inside the tabs
-template, the `<content>` tag will insert everything that is
+that will `activate` that panel when clicked. By calling `activate`
+with a panel as the argument, the properties of the `panel` can
+be manipulated. By changing the `visible` property of a panel,
+a template can be used display or hide the panel accordingly.
+
+Inside the tabs template, the `<content>`
+tag will insert everything that is
 inside the Component's tag (in this case,
 the three `<panel>` components).
 
@@ -527,13 +542,16 @@ attribute as a `scope` variable, use the `'@'` helper.
 	},
 	...
 
-In addition to the `scope` object, a component has 
-`events` that behave in a similar way to the events
-in a `can.Control`.  The `inserted` event occurs when
-each `<panel>` is inserted into the page.  When this
-happens, the `TabsViewModel` should change, so the
-`addPanel` method of the parent object (a `tabs`
-component) is called.
+In addition to the `scope` property, a component has an
+[`events` property](http://canjs.com/docs/can.Component.prototype.events.html).
+This `events` property uses a `can.Control` instantiated inside
+the component to handle events.
+
+When each `<panel>` is inserted into the page, the "inserted" event
+is triggered on the `Panel` `can.Component` below. This panel must
+be added to the `panels` property on the `Tab` component's scope.
+We can access the `Tab`'s scope using `this.element.parent.scope()`
+The `addPanel` method is called passing the panel's `scope` object.
 
 	...
 		events: {
@@ -555,7 +573,7 @@ and design to be compartmentalized from each other.
 
 ## Build an Application with Data from a Server
 
-In CanJS, `can.Model` adds functionality to `can.Map` to 
+In CanJS, `can.Model` adds functionality to `can.Map` to
 work with data on a server.  It enables you to:
 
  - Get and modify data from a server
@@ -570,7 +588,7 @@ easily:
 	  findOne: 'GET /todos/{id}',
 	  create:  'POST /todos',
 	  update:  'PUT /todos/{id}',
-	  destroy: 'DELETE /todos/{id}' 
+	  destroy: 'DELETE /todos/{id}'
 	},{});
 
 Using *any* server with a [*REST* interface](http://blog.mashape.com/post/60820526317/list-of-40-tutorials-on-how-to-create-an-api),
@@ -586,14 +604,25 @@ from `can.Model` to fetch the messages and create new ones:
 	    create : 'POST ' + myServerUrl + '/messages'
 	},{});
 
-Using this `Model`, create a `can.Component`.  The tabs Component
-used `can-click` to listen for click events.  Since this chat
-application uses a `<form>` for sending messages, we'll use
+In the scope, we use the `Message` model to
+save new messages and observe changes to the Model.
+`new Message.List({})` is a shortcut to perform
+the `findAll` operation on a `can.Model` and
+return a `can.List`.
+
+	...
+		scope: {
+				messages: new Message.List({}),
+				newMessage: ""
+	...
+
+The tabs Component used `can-click` to listen for click events.  
+Since this chat application uses a `<form>` for sending messages, we'll use
 `can-submit` to specify an event handler.
 
 There's one more helper used in the template: [`can-value`](http://canjs.com/docs/can.view.bindings.can-value.html).
-This automatically binds the value of an input field to an observable
-variable, in this case `newMessage` will be an attribute of the Component:
+This automatically two-way binds the value of an input field to an observable
+property on the `scope` of the component (in this case, `newMessage`).
 
 	can.Component.extend({
 	  tag: 'chat',
@@ -603,37 +632,25 @@ variable, in this case `newMessage` will be an attribute of the Component:
 	              '{{/each}}' +
 	            '</ul>' +
 	            '<form id="create-message" action="" can-submit="submitMessage">' +
-	                '<input type="text" id="body" placeholder="type message here..."' + 
+	                '<input type="text" id="body" placeholder="type message here..."' +
 	                'can-value="newMessage" />' +
 	            '</form>',
 	...
 
 
-In the scope, the `Message` model is stored so provide
-so we can save new messages and observe changes to the Model.
-`new Message.List({})` is a shortcut to perform
-the `findAll` operation on a `can.Model` and
-return a `can.List`.
-
-	...
-    scope: {    
-        Message: Message,
-        messages: new Message.List({}),
-  ...
-
-
 When `submitMessage` is called, a new `Message` is created
 with `new Message()`. The body of the message is fetched from
-the Component's `newMessage` attribute thanks to `can-value`.
+the Component's `newMessage` attribute after a user submits the form.
+Since `can-value` was declared on the `input` element, `newMessage` will
+always be the current text in the `input` field.
 
-To commit the new message to the server, call `save()`.
+To save the new message to the server, call `save()`.
 
-        submitMessage: function(el, ev, ev2){
-            ev2.preventDefault();
-            new Message({body: this.attr("newMessage")}).save();
-            this.attr("newMessage", "");
-        }
-    },
+    submitMessage: function(scope, el, ev){
+        ev.preventDefault();
+        new Message({body: this.attr("newMessage")}).save();
+        this.attr("newMessage", "");
+    }
 
 Finally, when a new `Message` is created, the `messages` list
 must be updated.
@@ -643,35 +660,42 @@ must be updated.
             this.scope.attr('messages').push(message);
         }
     }
-});
+
+There are two ways that messages are added: from the current user,
+or from another user. In the next section, we demonstrate how to use
+[socket.io](http://socket.io/) to update the `Message` model with messages
+from other users in real time. Binding to the `created` event for **all**
+messages allows us to create a single entry point that pushes new messages
+to the `scope`, regardless of where those messages are from.
 
 When the chat Component is loaded, messages are loaded from the server
 using `can.Model` and `new Message.List({})`.  When a new message is
 submitted:
 
-	1. `can-submit` calls `submitMessage`
-	2. a new `Message` is created and saved to the server
-	3. `'{Message created}'` detects this change and adds the new message to `messages`
-	4. The template is automatically updated since `messages` is an observable `can.List`
+1. `submitMessage` is called via the event handler bound by the `can-submit` attribute
+2. a new `Message` is created and saved to the server
+3. `'{Message created}'` detects this change and adds the new message to `messages`
+4. The template is automatically updated since `messages` is an observable `can.List`
 
 ### Add real-time functionality
 
 This example uses [socket.io](http://socket.io/)
 to enable real-time functionality. This guide won't go
 into detail on how to use `socket.io`, but for real-time
-chat the application needed two more things.
+chat the application needs two more things.
 
-First, the socket must listen to a change from the server, and trigger
-the `{Message} created` event:
+When a message is created on another chat client, `socket.io`
+will notify this client by triggering the `message-created` event,
+wich will render the new message in the page by adding it to the
+`Message` model.
 
 	var socket = io.connect(myServerUrl)
 	socket.on('message-created', function(message){
 		new Message(message).created();
 	})
 
-Now, when a new message is sent, this will detect the change and
-insert it into `messages`. To keep the `created` event from firing
-twice, modify the `create` function in the Model:
+To keep the `created` event from firing
+twice, we modify the `create` function in the model.
 
 	var Message = can.Model({
     findAll : 'GET ' + myServerUrl + '/messages',
@@ -732,7 +756,7 @@ to remove a specific element from a list. First, add a
 	</ul>  
 	</script>
 
-Then, add a listener that 
+Then, add a listener that
 
 	var People = can.Control.extend({
 
@@ -859,9 +883,9 @@ and a list of options.
 	            <%=(el)-> el.data('item',item) %> >
 				<input type="checkbox"
 				       <%= selected.indexOf(item) >= 0 ? "checked":""%>>
-				
+
 				<%= item.attr('title') %>
-				
+
 				<%if(item.children && item.children.length){ %>
 					<button class="showChildren">→</button>
 				<%}%>
@@ -893,13 +917,13 @@ well as the checkboxes for saving the options selected.
 		    if(item){
 		      // remove all breadcrumb items after it
 		      var index = this.options.breadcrumb.indexOf(item);
-		      this.options.breadcrumb.splice(index+1, 
+		      this.options.breadcrumb.splice(index+1,
 		                                     this.options.breadcrumb.length - index-1)
 		    } else {
 		      // clear the breadcrumb
 		      this.options.breadcrumb.replace([])
 		    }
-		    
+
 		  },
 		  ".options li click": function(el){
 		    // toggles an item's existance in the selected array
@@ -908,10 +932,10 @@ well as the checkboxes for saving the options selected.
 		    if(index === -1 ){
 		      this.options.selected.push(item);
 		    } else {
-		      this.options.selected.splice(index, 1) 
+		      this.options.selected.splice(index, 1)
 		    }
 		  }
-		  
+
 		});
 	})
 
