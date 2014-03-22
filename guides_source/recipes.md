@@ -9,7 +9,7 @@
 ## Get Started
 
 There are a variety of ways to get CanJS.  Read the [using CanJS guide](http://canjs.com/guides/Using.html)
-for comprehensive list.  For the following recepies, we will load CanJS
+for comprehensive list.  For the following recipies, we will load CanJS
 with a `<script>` tag pointed to CanJS's CDN.
 
 Create a file called `myapp.html` and put the following in it to get started:
