@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 13 Mar 2014 20:06:13 GMT
+ * Wed, 26 Mar 2014 16:31:50 GMT
  * Licensed MIT
  * Includes: can/model/queue
  * Download from: http://canjs.com
@@ -28,7 +28,10 @@
                 return compares(a, b, aParent, bParent);
             }
             compares = compares || {};
-            if (a instanceof Date) {
+            if (a === null || b === null) {
+                return a === b;
+            }
+            if (a instanceof Date || b instanceof Date) {
                 return a === b;
             }
             if (deep === -1) {

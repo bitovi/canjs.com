@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 13 Mar 2014 20:06:01 GMT
+ * Wed, 26 Mar 2014 16:31:38 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -222,7 +222,7 @@ steal('can/view', './elements', "can/view/callbacks",function (can, elements, vi
 					buff.push(put_cmd, '"', clean(content), '"' + (bonus || '') + ');');
 				},
 				// A stack used to keep track of how we should end a bracket
-				// `}`.  
+				// `}`.
 				// Once we have a `<%= %>` with a `leftBracket`,
 				// we store how the file should end here (either `))` or `;`).
 				endStack = [],
@@ -236,7 +236,14 @@ steal('can/view', './elements', "can/view/callbacks",function (can, elements, vi
 				specialStates = {
 					attributeHookups: [],
 					// a stack of tagHookups
-					tagHookups: []
+					tagHookups: [],
+					//last tag hooked up
+					lastTagHookup: ''
+				},
+				// Helper `function` for removing tagHookups from the hookup stack
+				popTagHookup = function() {
+					// The length of tagHookups is the nested depth which can be used to uniquely identify custom tags of the same type
+					specialStates.lastTagHookup = specialStates.tagHookups.pop() + specialStates.tagHookups.length;
 				},
 				// The current tag name.
 				tagName = '',
@@ -246,7 +253,6 @@ steal('can/view', './elements', "can/view/callbacks",function (can, elements, vi
 				popTagName = false,
 				// Declared here.
 				bracketCount,
-
 				// in a special attr like src= or style=
 				specialAttribute = false,
 
@@ -257,7 +263,6 @@ steal('can/view', './elements', "can/view/callbacks",function (can, elements, vi
 
 			// Reinitialize the tag state goodness.
 			htmlTag = quote = beforeQuote = null;
-
 			for (;
 				(token = tokens[i++]) !== undefined;) {
 				if (startTag === null) {
@@ -268,7 +273,7 @@ steal('can/view', './elements', "can/view/callbacks",function (can, elements, vi
 						magicInTag = htmlTag && 1;
 						/* falls through */
 					case tmap.commentLeft:
-						// A new line -- just add whatever content within a clean.  
+						// A new line -- just add whatever content within a clean.
 						// Reset everything.
 						startTag = token;
 						if (content.length) {
@@ -314,16 +319,17 @@ steal('can/view', './elements', "can/view/callbacks",function (can, elements, vi
 						var emptyElement = (content.substr(content.length - 1) === "/" || content.substr(content.length - 2) === "--"),
 							attrs = "";
 						// if there was a magic tag
-						// or it's an element that has text content between its tags, 
+						// or it's an element that has text content between its tags,
 						// but content is not other tags add a hookup
-						// TODO: we should only add `can.EJS.pending()` if there's a magic tag 
+						// TODO: we should only add `can.EJS.pending()` if there's a magic tag
 						// within the html tags.
 						if (specialStates.attributeHookups.length) {
 							attrs = "attrs: ['" + specialStates.attributeHookups.join("','") + "'], ";
 							specialStates.attributeHookups = [];
 						}
 						// this is the > of a special tag
-						if (tagName === top(specialStates.tagHookups)) {
+						// comparison to lastTagHookup makes sure the same custom tags can be nested
+						if ((tagName + specialStates.tagHookups.length) !== specialStates.lastTagHookup && tagName === top(specialStates.tagHookups)) {
 							// If it's a self closing tag (like <content/>) make sure we put the / at the end.
 							if (emptyElement) {
 								content = content.substr(0, content.length - 1);
@@ -337,13 +343,13 @@ steal('can/view', './elements', "can/view/callbacks",function (can, elements, vi
 							if (emptyElement) {
 								buff.push("}));");
 								content = "/>";
-								specialStates.tagHookups.pop();
+								popTagHookup();
 							}
 							// if it's an empty tag	 
 							else if (tokens[i] === "<" && tokens[i + 1] === "/" + tagName) {
 								buff.push("}));");
 								content = token;
-								specialStates.tagHookups.pop();
+								popTagHookup();
 							} else {
 								// it has content
 								buff.push(",subtemplate: function(" + this.text.argNames + "){\n" + startTxt + (this.text.start || ''));
@@ -445,7 +451,6 @@ steal('can/view', './elements', "can/view/callbacks",function (can, elements, vi
 									tagName = cleanedTagName;
 									popTagName = true;
 								}
-
 								// if we are in a closing tag of a custom tag
 								if (top(specialStates.tagHookups) === cleanedTagName) {
 
@@ -454,10 +459,9 @@ steal('can/view', './elements', "can/view/callbacks",function (can, elements, vi
 
 									// finish the "section"
 									buff.push(finishTxt + "}}) );");
-
 									// the < belongs to the outside
 									content = "><";
-									specialStates.tagHookups.pop();
+									popTagHookup();
 								}
 
 							} else {
@@ -496,10 +500,8 @@ steal('can/view', './elements', "can/view/callbacks",function (can, elements, vi
 
 							// We are ending a block.
 							if (bracketCount === 1) {
-
 								// We are starting on. 
-								buff.push(insert_cmd, "can.view.txt(0,'" + getTag(tagName, tokens, i) + "'," + status() + ",this,function(){", startTxt, content);
-
+								buff.push(insert_cmd, 'can.view.txt(0,\'' + getTag(tagName, tokens, i) + '\',' + status() + ',this,function(){', startTxt, content);
 								endStack.push({
 									before: "",
 									after: finishTxt + "}));\n"
@@ -514,7 +516,7 @@ steal('can/view', './elements', "can/view/callbacks",function (can, elements, vi
 									after: ";"
 								};
 
-								// If we are ending a returning block, 
+								// If we are ending a returning block,
 								// add the finish text which returns the result of the
 								// block.
 								if (last.before) {
@@ -650,8 +652,7 @@ steal('can/view', './elements', "can/view/callbacks",function (can, elements, vi
 				};
 
 			// Use `eval` instead of creating a function, because it is easier to debug.
-			myEval.call(out, 'this.fn = (function(' + this.text.argNames + '){' + out.out + '});\r\n//@ sourceURL=' + name + ".js");
-
+			myEval.call(out, 'this.fn = (function(' + this.text.argNames + '){' + out.out + '});\r\n//# sourceURL=' + name + '.js');
 			return out;
 		}
 	};

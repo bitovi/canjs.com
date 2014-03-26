@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 13 Mar 2014 20:06:01 GMT
+ * Wed, 26 Mar 2014 16:31:38 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -630,8 +630,8 @@ steal("can/util", "can/map", function (can, Map) {
 			 *
 			 * ## See also
 			 *
-			 * `push` has a counterpart in [can.List.pop pop], or you may be
-			 * looking for [can.List.unshift unshift] and its counterpart [can.List.shift shift].
+			 * `push` has a counterpart in [can.List::pop pop], or you may be
+			 * looking for [can.List::unshift unshift] and its counterpart [can.List::shift shift].
 			 */
 			push: "length",
 			/**
@@ -672,8 +672,8 @@ steal("can/util", "can/map", function (can, Map) {
 			 *
 			 * ## See also
 			 *
-			 * `unshift` has a counterpart in [can.List.shift shift], or you may be
-			 * looking for [can.List.push push] and its counterpart [can.List.pop pop].
+			 * `unshift` has a counterpart in [can.List::shift shift], or you may be
+			 * looking for [can.List::push push] and its counterpart [can.List::pop pop].
 			 */
 			unshift: 0
 		},
@@ -742,8 +742,8 @@ steal("can/util", "can/map", function (can, Map) {
 			 *
 			 * ## See also
 			 *
-			 * `pop` has its counterpart in [can.List.push push], or you may be
-			 * looking for [can.List.unshift unshift] and its counterpart [can.List.shift shift].
+			 * `pop` has its counterpart in [can.List::push push], or you may be
+			 * looking for [can.List::unshift unshift] and its counterpart [can.List::shift shift].
 			 */
 			pop: "length",
 			/**
@@ -756,7 +756,7 @@ steal("can/util", "can/map", function (can, Map) {
 			 * @return {*} the element just shifted off the List, or `undefined` if the List is empty
 			 *
 			 * @body
-			 * `shift` is the opposite action from `[can.List.unshift unshift]`:
+			 * `shift` is the opposite action from `[can.List::unshift unshift]`:
 			 *
 			 * @codestart
 			 * var list = new can.List(['Alice']);
@@ -777,8 +777,8 @@ steal("can/util", "can/map", function (can, Map) {
 			 *
 			 * ## See also
 			 *
-			 * `shift` has a counterpart in [can.List.unshift unshift], or you may be
-			 * looking for [can.List.push push] and its counterpart [can.List.pop pop].
+			 * `shift` has a counterpart in [can.List::unshift unshift], or you may be
+			 * looking for [can.List::push push] and its counterpart [can.List::pop pop].
 			 */
 			shift: 0
 		},
@@ -1003,7 +1003,7 @@ steal("can/util", "can/map", function (can, Map) {
 		 * ## Events
 		 *
 		 * A major difference between `replace` and `attr(newElements, true)` is that `replace` always emits
-		 * an_add_ event and a _remove_ event, whereas `attr` will cause _set_ events along an _add_ or _remove_
+		 * an _add_ event and a _remove_ event, whereas `attr` will cause _set_ events along with an _add_ or _remove_
 		 * event if needed. Corresponding _change_ and _length_ events will be fired as well.
 		 *
 		 * The differences in the events fired by `attr` and `replace` are demonstrated concretely by this example:

@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 13 Mar 2014 20:06:13 GMT
+ * Wed, 26 Mar 2014 16:31:50 GMT
  * Licensed MIT
  * Includes: can/util/fixture
  * Download from: http://canjs.com
@@ -28,7 +28,10 @@
                 return compares(a, b, aParent, bParent);
             }
             compares = compares || {};
-            if (a instanceof Date) {
+            if (a === null || b === null) {
+                return a === b;
+            }
+            if (a instanceof Date || b instanceof Date) {
                 return a === b;
             }
             if (deep === -1) {
@@ -524,7 +527,7 @@
                                     if (request.data[param] !== undefined && // don't do this if the value of the param is null (ignore it)
                                         (param.indexOf("Id") !== -1 || param.indexOf("_id") !== -1)) {
                                         while (i < retArr.length) {
-                                            if (request.data[param] !== retArr[i][param]) {
+                                            if (request.data[param] != retArr[i][param]) { // jshint eqeqeq: false
                                                 retArr.splice(i, 1);
                                             } else {
                                                 i++;
@@ -573,7 +576,7 @@
                             destroy: function(request) {
                                 var id = getId(request);
                                 for (var i = 0; i < items.length; i++) {
-                                    if (items[i].id === id) {
+                                    if (items[i].id == id) { // jshint eqeqeq: false
                                         items.splice(i, 1);
                                         break;
                                     }

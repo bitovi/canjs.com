@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 13 Mar 2014 20:06:01 GMT
+ * Wed, 26 Mar 2014 16:31:38 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -577,7 +577,7 @@ steal('can/util', 'can/map', 'can/list','can/util/string/deparam', function (can
 				prop = args.shift(),
 				binding = can.route.bindings[can.route.currentBinding || can.route.defaultBinding],
 				method = binding[prop];
-			if (typeof method === "function") {
+			if (method.apply) {
 				return method.apply(binding, args);
 			} else {
 				return method;
