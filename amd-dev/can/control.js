@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Wed, 26 Mar 2014 16:31:38 GMT
+ * Thu, 27 Mar 2014 21:04:57 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -396,8 +396,11 @@ define(["can/util/library", "can/construct"], function (can) {
 					// Set element and `className` on element.
 					this.element.addClass(pluginname);
 				}
+
+				// Set up the 'controls' data on the element
 				arr = can.data(this.element, 'controls');
 				if (!arr) {
+					// If it does not exist, initialize it to an empty array
 					arr = [];
 					can.data(this.element, 'controls', arr);
 				}
@@ -572,12 +575,12 @@ define(["can/util/library", "can/construct"], function (can) {
 			 * @signature `control.on([el,] selector, eventName, func)`
 			 * @param {HTMLElement|jQuery collection|Object} [el=this.element]
 			 * The element to be bound.  If no element is provided, the control's element is used instead.
-			 * @param {CSSSelectorString} selector A css selector for event delegation.
-			 * @param {String} eventName The event to listen for.
+			 * @param {CSSSelectorString} selector A CSS selector for event delegation.
+			 * @param {String} eventName The name of the event to listen for.
 			 * @param {Function|String} func A callback function or the String name of a control function.  If a control
 			 * function name is given, the control function is called back with the bound element and event as the first
 			 * and second parameter.  Otherwise the function is called back like a normal bind.
-			 * @return {Number} The id of the binding in this._bindings
+			 * @return {Number} The id of the binding in this._bindings.
 			 *
 			 * @body
 			 * `on(el, selector, eventName, func)` binds an event handler for an event to a selector under the scope of the given element.
@@ -641,9 +644,9 @@ define(["can/util/library", "can/construct"], function (can) {
 			 *     var taskstriker = new TaskStriker({
 			 *       task: new Task({ completed: true })
 			 *     });
-			 *     taskstriker.task( new TaskStriker({
-			 *       task: new Task({ completed: false })
-			 *     }));
+			 *
+			 *     // Now, add a new task that is not yet completed
+			 *     taskstriker.task(new Task({ completed: false }));
 			 *
 			 * ## Adding new events
 			 *
@@ -651,16 +654,16 @@ define(["can/util/library", "can/construct"], function (can) {
 			 * are not sufficient, you can call this.on to bind or delegate programmatically:
 			 *
 			 *     init: function() {
-			 *        // calls somethingClicked( el, ev )
-			 *        this.on( 'click', 'somethingClicked' );
+			 *         // calls somethingClicked( el, ev )
+			 *         this.on( 'click', 'somethingClicked' );
 			 *
-			 *        // calls function when the window is clicked
-			 *        this.on( window, 'click', function( ev ) {
-			 *          //do something
-			 *        });
+			 *         // calls function when the window is clicked
+			 *         this.on( window, 'click', function( ev ) {
+			 *             //do something
+			 *         });
 			 *     },
 			 *     somethingClicked: function( el, ev ) {
-			 *
+			 *         // ...
 			 *     }
 			 */
 			on: function (el, selector, eventName, func) {
@@ -696,6 +699,7 @@ define(["can/util/library", "can/construct"], function (can) {
 					return bindings.length;
 				}
 
+				// if `el` is a string, use that as `selector` and re-set it to this control's element...
 				if (typeof el === 'string') {
 					func = eventName;
 					eventName = selector;
@@ -703,6 +707,7 @@ define(["can/util/library", "can/construct"], function (can) {
 					el = this.element;
 				}
 
+				// ...otherwise, set `selector` to null
 				if (func === undefined) {
 					func = eventName;
 					eventName = selector;

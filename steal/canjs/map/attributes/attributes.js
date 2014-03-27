@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Wed, 26 Mar 2014 16:31:38 GMT
+ * Thu, 27 Mar 2014 21:04:57 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -356,6 +356,7 @@ steal('can/util', 'can/map', 'can/list', function (can, Map) {
 			attrs = this.__get();
 		}
 		can.each(attrs, function (val, name) {
+			can.__reading(val, name);
 			var type, converter;
 			// If this is an observe, check that it wasn't serialized earlier in the stack.
 			if (val instanceof can.Map && can.inArray(val._cid, stack) > -1) {
@@ -377,6 +378,9 @@ steal('can/util', 'can/map', 'can/list', function (can, Map) {
 				val;
 			}
 		});
+
+		can.__reading(this, '__keys');
+
 		if (typeof attrs.length !== 'undefined') {
 			where.length = attrs.length;
 		}

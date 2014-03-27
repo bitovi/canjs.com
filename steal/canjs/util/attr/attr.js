@@ -2,17 +2,22 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Wed, 26 Mar 2014 16:31:38 GMT
+ * Thu, 27 Mar 2014 21:04:57 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
 steal("can/util/can.js", function (can) {
 
+	// # can/util/attr
+	// Contains helpers for dealing with element attributes.
+
 	var setImmediate = window.setImmediate || function (cb) {
 			return setTimeout(cb, 0);
 		},
 		attr = {
+			// Keep a reference to MutationObserver because we need to trigger
+			// events for browsers that do not support it.
 			MutationObserver: window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver,
 
 			/**
@@ -44,6 +49,7 @@ steal("can/util/can.js", function (can) {
 				"disabled": true,
 				"readonly": true,
 				"required": true,
+				// setter function for the src attribute
 				src: function (el, val) {
 					if (val == null || val === "") {
 						el.removeAttribute("src");
@@ -53,16 +59,19 @@ steal("can/util/can.js", function (can) {
 						return val;
 					}
 				},
+				// setter function for a style attribute
 				style: function (el, val) {
 					return el.style.cssText = val || "";
 				}
 			},
-			// elements whos default value we should set
+			// Elements whos default value we should set
 			defaultValue: ["input", "textarea"],
-			// Set an attribute on an element
+			// ## attr.set
+			// Set the value an attribute on an element
 			set: function (el, attrName, val) {
 				var oldValue;
 				if (!attr.MutationObserver) {
+					// Get the current value
 					oldValue = attr.get(el, attrName);
 				}
 
@@ -70,7 +79,7 @@ steal("can/util/can.js", function (can) {
 					.toLowerCase(),
 					prop = attr.map[attrName],
 					newValue;
-				// if this is a special property
+				// if this is a special property call the setter
 				if (typeof prop === "function") {
 					newValue = prop(el, val);
 				} else if (prop === true) {
@@ -96,9 +105,12 @@ steal("can/util/can.js", function (can) {
 					attr.trigger(el, attrName, oldValue);
 				}
 			},
+			// ## attr.trigger
+			// Trigger an "attributes" event on an element
 			trigger: function (el, attrName, oldValue) {
-				// only trigger if someone has bound
+				// Only trigger if someone has bound
 				if (can.data(can.$(el), "canHasAttributesBindings")) {
+					// Queue up a function to be called
 					return setImmediate(function () {
 						can.trigger(el, {
 							type: "attributes",
@@ -110,13 +122,17 @@ steal("can/util/can.js", function (can) {
 					});
 				}
 			},
+			// ## attr.get
 			// Gets the value of an attribute.
 			get: function (el, attrName) {
 				// Default to a blank string for IE7/8
+				// Try to get the attribute from the element before
+				// using `getAttribute`
 				return (attr.map[attrName] && el[attr.map[attrName]] ?
 					el[attr.map[attrName]] :
 					el.getAttribute(attrName));
 			},
+			// ## attr.remove
 			// Removes the attribute.
 			remove: function (el, attrName) {
 				var oldValue;
@@ -125,6 +141,7 @@ steal("can/util/can.js", function (can) {
 				}
 
 				var setter = attr.map[attrName];
+				// A special type of attribute, call the function
 				if (typeof setter === "function") {
 					setter(el, undefined);
 				}
@@ -136,12 +153,15 @@ steal("can/util/can.js", function (can) {
 					el.removeAttribute(attrName);
 				}
 				if (!attr.MutationObserver && oldValue != null) {
+					// Trigger that the attribute has changed
 					attr.trigger(el, attrName, oldValue);
 				}
 
 			},
+			// ## attr.has
 			has: (function () {
-
+				// Use hasAttribute if the browser supports it,
+				// otherwise check that the attribute's value is not null
 				var el = document.createElement('div');
 				if (el.hasAttribute) {
 					return function (el, name) {

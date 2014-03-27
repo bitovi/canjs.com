@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Wed, 26 Mar 2014 16:31:50 GMT
+ * Thu, 27 Mar 2014 21:05:14 GMT
  * Licensed MIT
  * Includes: can/component,can/construct,can/map,can/list,can/observe,can/compute,can/model,can/view,can/control,can/route,can/control/route,can/view/mustache,can/view/bindings,can/view/live,can/view/scope,can/util/string,can/util/attr
  * Download from: http://canjs.com
@@ -83,10 +83,15 @@
     // ## util/attr/attr.js
     var __m5 = (function(can) {
 
+        // # can/util/attr
+        // Contains helpers for dealing with element attributes.
+
         var setImmediate = window.setImmediate || function(cb) {
                 return setTimeout(cb, 0);
             },
             attr = {
+                // Keep a reference to MutationObserver because we need to trigger
+                // events for browsers that do not support it.
                 MutationObserver: window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver,
 
 
@@ -99,6 +104,7 @@
                     "disabled": true,
                     "readonly": true,
                     "required": true,
+                    // setter function for the src attribute
                     src: function(el, val) {
                         if (val == null || val === "") {
                             el.removeAttribute("src");
@@ -108,16 +114,19 @@
                             return val;
                         }
                     },
+                    // setter function for a style attribute
                     style: function(el, val) {
                         return el.style.cssText = val || "";
                     }
                 },
-                // elements whos default value we should set
+                // Elements whos default value we should set
                 defaultValue: ["input", "textarea"],
-                // Set an attribute on an element
+                // ## attr.set
+                // Set the value an attribute on an element
                 set: function(el, attrName, val) {
                     var oldValue;
                     if (!attr.MutationObserver) {
+                        // Get the current value
                         oldValue = attr.get(el, attrName);
                     }
 
@@ -125,7 +134,7 @@
                         .toLowerCase(),
                         prop = attr.map[attrName],
                         newValue;
-                    // if this is a special property
+                    // if this is a special property call the setter
                     if (typeof prop === "function") {
                         newValue = prop(el, val);
                     } else if (prop === true) {
@@ -151,9 +160,12 @@
                         attr.trigger(el, attrName, oldValue);
                     }
                 },
+                // ## attr.trigger
+                // Trigger an "attributes" event on an element
                 trigger: function(el, attrName, oldValue) {
-                    // only trigger if someone has bound
+                    // Only trigger if someone has bound
                     if (can.data(can.$(el), "canHasAttributesBindings")) {
+                        // Queue up a function to be called
                         return setImmediate(function() {
                             can.trigger(el, {
                                     type: "attributes",
@@ -165,13 +177,17 @@
                         });
                     }
                 },
+                // ## attr.get
                 // Gets the value of an attribute.
                 get: function(el, attrName) {
                     // Default to a blank string for IE7/8
+                    // Try to get the attribute from the element before
+                    // using `getAttribute`
                     return (attr.map[attrName] && el[attr.map[attrName]] ?
                         el[attr.map[attrName]] :
                         el.getAttribute(attrName));
                 },
+                // ## attr.remove
                 // Removes the attribute.
                 remove: function(el, attrName) {
                     var oldValue;
@@ -180,6 +196,7 @@
                     }
 
                     var setter = attr.map[attrName];
+                    // A special type of attribute, call the function
                     if (typeof setter === "function") {
                         setter(el, undefined);
                     }
@@ -191,12 +208,15 @@
                         el.removeAttribute(attrName);
                     }
                     if (!attr.MutationObserver && oldValue != null) {
+                        // Trigger that the attribute has changed
                         attr.trigger(el, attrName, oldValue);
                     }
 
                 },
+                // ## attr.has
                 has: (function() {
-
+                    // Use hasAttribute if the browser supports it,
+                    // otherwise check that the attribute's value is not null
                     var el = document.createElement('div');
                     if (el.hasAttribute) {
                         return function(el, name) {
@@ -1673,8 +1693,11 @@
                         // Set element and `className` on element.
                         this.element.addClass(pluginname);
                     }
+
+                    // Set up the 'controls' data on the element
                     arr = can.data(this.element, 'controls');
                     if (!arr) {
+                        // If it does not exist, initialize it to an empty array
                         arr = [];
                         can.data(this.element, 'controls', arr);
                     }
@@ -1725,6 +1748,7 @@
                         return bindings.length;
                     }
 
+                    // if `el` is a string, use that as `selector` and re-set it to this control's element...
                     if (typeof el === 'string') {
                         func = eventName;
                         eventName = selector;
@@ -1732,6 +1756,7 @@
                         el = this.element;
                     }
 
+                    // ...otherwise, set `selector` to null
                     if (func === undefined) {
                         func = eventName;
                         eventName = selector;
@@ -1942,38 +1967,31 @@
                 // send modified attr event to parent
                 //can.trigger(parent, args[0], args);
             });
-        },
-            attrParts = function(attr, keepKey) {
-                if (keepKey) {
-                    return [attr];
-                }
-                return can.isArray(attr) ? attr : ("" + attr)
-                    .split(".");
-            },
-            makeBindSetup = function(wildcard) {
-                return function() {
-                    var parent = this;
-                    this._each(function(child, prop) {
-                        if (child && child.bind) {
-                            bindToChildAndBubbleToParent(child, wildcard || prop, parent);
-                        }
-                    });
-                };
-            },
-            // A map that temporarily houses a reference 
-            // to maps that have already been made for a plain ole JS object
-            madeMap = null,
-            teardownMap = function() {
-                for (var cid in madeMap) {
-                    if (madeMap[cid].added) {
-                        delete madeMap[cid].obj._cid;
+        };
+        var makeBindSetup = function(wildcard) {
+            return function() {
+                var parent = this;
+                this._each(function(child, prop) {
+                    if (child && child.bind) {
+                        bindToChildAndBubbleToParent(child, wildcard || prop, parent);
                     }
-                }
-                madeMap = null;
-            },
-            getMapFromObject = function(obj) {
-                return madeMap && madeMap[obj._cid] && madeMap[obj._cid].instance;
+                });
             };
+        };
+        // A map that temporarily houses a reference
+        // to maps that have already been made for a plain ole JS object
+        var madeMap = null;
+        var teardownMap = function() {
+            for (var cid in madeMap) {
+                if (madeMap[cid].added) {
+                    delete madeMap[cid].obj._cid;
+                }
+            }
+            madeMap = null;
+        };
+        var getMapFromObject = function(obj) {
+            return madeMap && madeMap[obj._cid] && madeMap[obj._cid].instance;
+        };
 
 
         var Map = can.Map = can.Construct.extend({
@@ -2012,6 +2030,14 @@
                 off: can.unbindAndTeardown,
                 id: "id",
                 helpers: {
+                    attrParts: function(attr, keepKey) {
+                        if (keepKey) {
+                            return [attr];
+                        }
+                        return can.isArray(attr) ? attr : ("" + attr)
+                            .split(".");
+                    },
+
                     addToMap: function(obj, instance) {
                         var teardown;
                         if (!madeMap) {
@@ -2044,15 +2070,16 @@
                             }
                         });
                     },
-                    // Listens to changes on `child` and "bubbles" the event up.  
-                    // `child` - The object to listen for changes on.  
-                    // `prop` - The property name is at on.  
+                    // Listens to changes on `child` and "bubbles" the event up.
+                    // `child` - The object to listen for changes on.
+                    // `prop` - The property name is at on.
                     // `parent` - The parent object of prop.
                     // `ob` - (optional) The Map object constructor
                     // `list` - (optional) The observable list constructor
                     hookupBubble: function(child, prop, parent, Ob, List) {
                         Ob = Ob || Map;
                         List = List || can.List;
+                        prop = typeof prop === 'function' ? prop() : prop;
 
                         // If it's an `array` make a list, otherwise a child.
                         if (child instanceof Map) {
@@ -2067,6 +2094,7 @@
                         } else {
                             child = getMapFromObject(child) || new Ob(child);
                         }
+
                         // only listen if something is listening to you
                         if (parent._bindings) {
                             // Listen to all changes and `batchTrigger` upwards.
@@ -2075,9 +2103,9 @@
 
                         return child;
                     },
-                    // A helper used to serialize an `Map` or `Map.List`.  
-                    // `map` - The observable.  
-                    // `how` - To serialize with `attr` or `serialize`.  
+                    // A helper used to serialize an `Map` or `Map.List`.
+                    // `map` - The observable.
+                    // `how` - To serialize with `attr` or `serialize`.
                     // `where` - To put properties, in an `{}` or `[]`.
                     serialize: function(map, how, where) {
                         // Go through each property.
@@ -2164,7 +2192,6 @@
                 },
                 _triggerChange: function(attr, how, newVal, oldVal) {
                     can.batch.trigger(this, "change", can.makeArray(arguments));
-
                 },
                 // no live binding iterator
                 _each: function(callback) {
@@ -2202,7 +2229,7 @@
                     // Info if this is List or not
                     var isList = can.List && this instanceof can.List,
                         // Convert the `attr` into parts (if nested).
-                        parts = attrParts(attr),
+                        parts = can.Map.helpers.attrParts(attr),
                         // The actual property to remove.
                         prop = parts.shift(),
                         // The current value.
@@ -2243,7 +2270,7 @@
                     }
 
                     // break up the attr (`"foo.bar"`) into `["foo","bar"]`
-                    var parts = attrParts(attr),
+                    var parts = can.Map.helpers.attrParts(attr),
                         // get the value of the first attr name (`"foo"`)
                         current = this.__get(parts.shift());
                     // if there are other attributes to read
@@ -2275,7 +2302,7 @@
                 // `value` - The raw value to set.
                 _set: function(attr, value, keepKey) {
                     // Convert `attr` to attr parts (if it isn't already).
-                    var parts = attrParts(attr, keepKey),
+                    var parts = can.Map.helpers.attrParts(attr, keepKey),
                         // The immediate prop we are setting.
                         prop = parts.shift(),
                         // The current value.
@@ -2332,7 +2359,6 @@
                         if (current) {
                             Map.helpers.unhookup([current], this);
                         }
-
                     }
 
                 },
@@ -2395,7 +2421,6 @@
                 },
 
                 _attrs: function(props, remove) {
-
                     if (props === undefined) {
                         return Map.helpers.serialize(this, 'attr', {});
                     }
@@ -3537,7 +3562,7 @@
         can.view.elements = elements;
 
         return elements;
-    })(__m2);
+    })(__m2, __m10);
 
     // ## view/scanner.js
     var __m22 = (function(can, elements, viewCallbacks) {

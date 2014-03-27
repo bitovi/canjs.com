@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Wed, 26 Mar 2014 16:31:50 GMT
+ * Thu, 27 Mar 2014 21:05:14 GMT
  * Licensed MIT
  * Includes: can/map/attributes
  * Download from: http://canjs.com
@@ -134,6 +134,7 @@
                 attrs = this.__get();
             }
             can.each(attrs, function(val, name) {
+                can.__reading(val, name);
                 var type, converter;
                 // If this is an observe, check that it wasn't serialized earlier in the stack.
                 if (val instanceof can.Map && can.inArray(val._cid, stack) > -1) {
@@ -155,6 +156,9 @@
                     val;
                 }
             });
+
+            can.__reading(this, '__keys');
+
             if (typeof attrs.length !== 'undefined') {
                 where.length = attrs.length;
             }

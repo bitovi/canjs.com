@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Wed, 26 Mar 2014 16:31:38 GMT
+ * Thu, 27 Mar 2014 21:04:57 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -35,38 +35,31 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 			// send modified attr event to parent
 			//can.trigger(parent, args[0], args);
 		});
-	},
-		attrParts = function (attr, keepKey) {
-			if (keepKey) {
-				return [attr];
-			}
-			return can.isArray(attr) ? attr : ("" + attr)
-				.split(".");
-		},
-		makeBindSetup = function (wildcard) {
-			return function () {
-				var parent = this;
-				this._each(function (child, prop) {
-					if (child && child.bind) {
-						bindToChildAndBubbleToParent(child, wildcard || prop, parent);
-					}
-				});
-			};
-		},
-		// A map that temporarily houses a reference 
-		// to maps that have already been made for a plain ole JS object
-		madeMap = null,
-		teardownMap = function () {
-			for (var cid in madeMap) {
-				if (madeMap[cid].added) {
-					delete madeMap[cid].obj._cid;
+	};
+	var makeBindSetup = function (wildcard) {
+		return function () {
+			var parent = this;
+			this._each(function (child, prop) {
+				if (child && child.bind) {
+					bindToChildAndBubbleToParent(child, wildcard || prop, parent);
 				}
-			}
-			madeMap = null;
-		},
-		getMapFromObject = function (obj) {
-			return madeMap && madeMap[obj._cid] && madeMap[obj._cid].instance;
+			});
 		};
+	};
+	// A map that temporarily houses a reference
+	// to maps that have already been made for a plain ole JS object
+	var madeMap = null;
+	var teardownMap = function () {
+		for (var cid in madeMap) {
+			if (madeMap[cid].added) {
+				delete madeMap[cid].obj._cid;
+			}
+		}
+		madeMap = null;
+	};
+	var getMapFromObject = function (obj) {
+		return madeMap && madeMap[obj._cid] && madeMap[obj._cid].instance;
+	};
 
 	/**
 	 * @add can.Map
@@ -110,6 +103,14 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 			off: can.unbindAndTeardown,
 			id: "id",
 			helpers: {
+				attrParts: function (attr, keepKey) {
+					if (keepKey) {
+						return [attr];
+					}
+					return can.isArray(attr) ? attr : ("" + attr)
+						.split(".");
+				},
+
 				addToMap: function (obj, instance) {
 					var teardown;
 					if (!madeMap) {
@@ -142,15 +143,16 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 						}
 					});
 				},
-				// Listens to changes on `child` and "bubbles" the event up.  
-				// `child` - The object to listen for changes on.  
-				// `prop` - The property name is at on.  
+				// Listens to changes on `child` and "bubbles" the event up.
+				// `child` - The object to listen for changes on.
+				// `prop` - The property name is at on.
 				// `parent` - The parent object of prop.
 				// `ob` - (optional) The Map object constructor
 				// `list` - (optional) The observable list constructor
 				hookupBubble: function (child, prop, parent, Ob, List) {
 					Ob = Ob || Map;
 					List = List || can.List;
+					prop = typeof prop === 'function' ? prop() : prop;
 
 					// If it's an `array` make a list, otherwise a child.
 					if (child instanceof Map) {
@@ -165,6 +167,7 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 					} else {
 						child = getMapFromObject(child) || new Ob(child);
 					}
+
 					// only listen if something is listening to you
 					if (parent._bindings) {
 						// Listen to all changes and `batchTrigger` upwards.
@@ -173,9 +176,9 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 
 					return child;
 				},
-				// A helper used to serialize an `Map` or `Map.List`.  
-				// `map` - The observable.  
-				// `how` - To serialize with `attr` or `serialize`.  
+				// A helper used to serialize an `Map` or `Map.List`.
+				// `map` - The observable.
+				// `how` - To serialize with `attr` or `serialize`.
 				// `where` - To put properties, in an `{}` or `[]`.
 				serialize: function (map, how, where) {
 					// Go through each property.
@@ -406,7 +409,6 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 			},
 			_triggerChange: function (attr, how, newVal, oldVal) {
 				can.batch.trigger(this, "change", can.makeArray(arguments));
-
 			},
 			// no live binding iterator
 			_each: function (callback) {
@@ -631,7 +633,7 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 				// Info if this is List or not
 				var isList = can.List && this instanceof can.List,
 					// Convert the `attr` into parts (if nested).
-					parts = attrParts(attr),
+					parts = can.Map.helpers.attrParts(attr),
 					// The actual property to remove.
 					prop = parts.shift(),
 					// The current value.
@@ -672,7 +674,7 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 				}
 
 				// break up the attr (`"foo.bar"`) into `["foo","bar"]`
-				var parts = attrParts(attr),
+				var parts = can.Map.helpers.attrParts(attr),
 					// get the value of the first attr name (`"foo"`)
 					current = this.__get(parts.shift());
 				// if there are other attributes to read
@@ -704,7 +706,7 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 			// `value` - The raw value to set.
 			_set: function (attr, value, keepKey) {
 				// Convert `attr` to attr parts (if it isn't already).
-				var parts = attrParts(attr, keepKey),
+				var parts = can.Map.helpers.attrParts(attr, keepKey),
 					// The immediate prop we are setting.
 					prop = parts.shift(),
 					// The current value.
@@ -761,7 +763,6 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 					if (current) {
 						Map.helpers.unhookup([current], this);
 					}
-
 				}
 
 			},
@@ -979,7 +980,6 @@ define(["can/util/library", "can/util/bind", "can/construct", "can/util/batch"],
 			 * @param {Boolean} remove true if you should remove properties that are not in props
 			 */
 			_attrs: function (props, remove) {
-
 				if (props === undefined) {
 					return Map.helpers.serialize(this, 'attr', {});
 				}
