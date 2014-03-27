@@ -35,10 +35,10 @@
     <nav class="container">
 
       <div class="logo-menu">
-        <a class="brand canjs" href="../index.html">CanJS</a>
+        <a class="brand canjs" href="../../index.html">CanJS</a>
         <ul class="dropdown-menu">
           <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
-          <li class="active"><a href="../index.html">CanJS</a></li>
+          <li class="active"><a href="../../index.html">CanJS</a></li>
           <li><a href="http://jquerypp.com">jQuery++</a></li>
           <li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
           <li><a href="http://funcunit.com">FuncUnit</a></li>
@@ -392,6 +392,28 @@ to-do app with CanJS and jQuery like this:</p>
 
 <iframe src="http://jsfiddle.net/donejs/c3bfy/embedded/result,html,js,css" frameborder="0" allowfullscreen style="width: 100%; height: 300px;"></iframe>
 
+<h2>Loading CanJS</h2>
+
+<p>The first step is to get and install CanJS. In this tutorial we will be using the <a href="using-standalone.html">standalone</a> version from our CDN (and jQuery from the <a href="https://developers.google.com/speed/libraries/devguide#jquery">Google API CDN</a>) so an <code>index.html</code> like this will get you started:</p>
+
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;CanJS Tutorial&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"&gt;&lt;/script&gt;
+    &lt;script src="http://canjs.com/release/latest/can.jquery.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"&gt;
+        $(function() {
+            // Your tutorial code here
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h2>Get started</h2>
+
 <p>To get started, click <a href="Constructs.html">Constructs</a> in the navigation to the left, or you can watch the video version.</p>
 
 <iframe width="560" height="315" src="http://www.youtube.com/embed/GdT4Oq6ZQ68" frameborder="0" allowfullscreen></iframe>
@@ -406,7 +428,7 @@ our <a href="../docs/index.html">API</a>, or dive right in and poke around the <
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"page","name":"Tutorial","description":"","title":"Getting Started","parent":"guides","order":1,"comment":" ","src":"can/guides/tutorial.md","id":24,"children":[{"type":"page","name":"Components","description":"<p>Now that you've learned about observables, templates, and controls, it's time to learn\nabout <a href=\"../docs/can.Component.html\">can.Component</a>. can.Component makes it easy to \ncombine the functionality of these features. We'll use it to rewrite the todo \nexample. </p>","title":"Components","parent":"Tutorial","order":9,"src":"can/guides/components.md","id":5},{"type":"page","name":"Constructs","description":"","title":"Constructor Functions","parent":"Tutorial","order":0,"comment":" ","src":"can/guides/constructs.md","id":6},{"type":"page","name":"Controls","description":"","title":"Controls","parent":"Tutorial","order":6,"comment":" ","src":"can/guides/controls.md","id":7},{"type":"page","name":"Deferreds","description":"","title":"Deferreds","parent":"Tutorial","order":8,"comment":" ","src":"can/guides/deferred.md","id":8},{"type":"page","name":"EJS","description":"","title":"EJS","parent":"Tutorial","order":4,"comment":" ","src":"can/guides/ejs.md","id":9},{"type":"page","name":"Models","description":"","title":"Models & Retrieving Data","parent":"Tutorial","order":2,"comment":" ","src":"can/guides/models.md","id":13},{"type":"page","name":"Mustache","description":"","title":"Mustache","parent":"Tutorial","order":5,"comment":" ","src":"can/guides/mustache.md","id":14},{"type":"page","name":"Observables","description":"","title":"Observables","parent":"Tutorial","order":1,"comment":" ","src":"can/guides/observables.md","id":15},{"type":"page","name":"Routing","description":"<p><a href=\"../docs/can.route.html\">can.route</a> is the core of CanJS's routing functionality. It is a special\nObserve that updates <code>window.location.hash</code> when its properties change and\nupdates its properties when <code>window.location.hash</code> changes. You can give\n<code>can.route</code> a template to translate URLs into property values, but if no route\nis provided, it just serializes the route into standard URL-encoded notation.</p>","title":"Routing","parent":"Tutorial","order":9,"src":"can/guides/route.md","id":23},{"type":"page","name":"Utilities","description":"","title":"Utility Functions","parent":"Tutorial","order":10,"comment":" ","src":"can/guides/util.md","id":26},{"type":"page","name":"Templates","description":"","title":"Templates","parent":"Tutorial","order":3,"comment":" ","src":"can/guides/views.md","id":27}]};
+	var docData = {"type":"page","name":"Tutorial","description":"","title":"Getting Started","parent":"guides","order":1,"comment":" ","src":"can/guides/tutorial.md","id":24,"children":[{"type":"page","name":"Components","description":"<p>Now that you've learned about observables, templates, and controls, it's time to learn\nabout <a href=\"../docs/can.Component.html\">can.Component</a>. can.Component makes it easy to \ncombine the functionality of these features. We'll use it to rewrite the todo \nexample. </p>","title":"Components","parent":"Tutorial","order":9,"src":"can/guides/components.md","id":5},{"type":"page","name":"Constructs","description":"","title":"Constructor Functions","parent":"Tutorial","order":0,"comment":" ","src":"can/guides/constructs.md","id":6},{"type":"page","name":"Controls","description":"","title":"Controls","parent":"Tutorial","order":6,"comment":" ","src":"can/guides/controls.md","id":7},{"type":"page","name":"Deferreds","description":"","title":"Deferreds","parent":"Tutorial","order":8,"comment":" ","src":"can/guides/deferred.md","id":8},{"type":"page","name":"EJS","description":"","title":"EJS","parent":"Tutorial","order":4,"comment":" ","src":"can/guides/ejs.md","id":9},{"type":"page","name":"Models","description":"","title":"Models & Retrieving Data","parent":"Tutorial","order":2,"comment":" ","src":"can/guides/models.md","id":13},{"type":"page","name":"Mustache","description":"","title":"Mustache","parent":"Tutorial","order":5,"comment":" ","src":"can/guides/mustache.md","id":14},{"type":"page","name":"Observables","description":"","title":"Observables","parent":"Tutorial","order":1,"comment":" ","src":"can/guides/observables.md","id":15},{"type":"page","name":"Routing","description":"<p><a href=\"../docs/can.route.html\">can.route</a> is the core of CanJS's routing functionality. It is a special\nObserve that updates <code>window.location.hash</code> when its properties change and\nupdates its properties when <code>window.location.hash</code> changes. You can give\n<code>can.route</code> a template to translate URLs into property values, but if no route\nis provided, it just serializes the route into standard URL-encoded notation.</p>","title":"Routing","parent":"Tutorial","order":9,"src":"can/guides/route.md","id":23},{"type":"page","name":"Utilities","description":"","title":"Utility Functions","parent":"Tutorial","order":10,"comment":" ","src":"can/guides/util.md","id":30},{"type":"page","name":"Templates","description":"","title":"Templates","parent":"Tutorial","order":3,"comment":" ","src":"can/guides/views.md","id":31}]};
 
 	console.log(docData);
 </script>

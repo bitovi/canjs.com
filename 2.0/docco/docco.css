@@ -67,10 +67,11 @@ h1, h2, h3, h4, h5, h6 {
   color: #112233;
   line-height: 1em;
   font-weight: normal;
-  font-family: "novecento-bold";
-  text-transform: uppercase;
+  /*font-family: "novecento-bold";
+  text-transform: uppercase;*/
   margin: 30px 0 15px 0;
 }
+
 
 h1 {
   margin-top: 40px;
@@ -180,6 +181,8 @@ ul.sections > li > div {
 
 #jump_to:hover #jump_wrapper {
   display: block;
+  overflow: auto;
+  bottom: 0;
 }
 
 #jump_page {

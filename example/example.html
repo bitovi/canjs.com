@@ -16,14 +16,14 @@
 <todos-app>
   <h2>Todays to-dos</h2>
   {{#selectedTodo}}
-  <div id='editor'>
-    <input type='text' can-value='description' can-change="saveTodo"/>
+  <div id="editor">
+    <input type="text" can-value="description" can-change="saveTodo">
   </div>
   {{/selectedTodo}}
   <ul>
     {{#each todos}}
     <li>
-      <input type='checkbox' can-value='complete'>
+      <input type="checkbox" can-value="complete">
       <span class="description {{#if complete}}done{{/if}}" can-click='select'>{{description}}</span>
       <button can-click="destroy"></button>
     </li>

@@ -181,6 +181,8 @@ ul.sections > li > div {
 
 #jump_to:hover #jump_wrapper {
   display: block;
+  overflow: auto;
+  bottom: 0;
 }
 
 #jump_page {
