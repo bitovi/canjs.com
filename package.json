@@ -30,7 +30,7 @@
     "grunt-contrib-less": "~0.5.0",
     "documentjs": "https://github.com/bitovi/documentjs/tarball/node-generator",
     "grunt-contrib-clean": "~0.4.1",
-    "grunt-docco": "~0.3.2",
+	"grunt-docco2": "git://github.com/shcarrico/grunt-docco.git#options-passing",
     "grunt-plato": "~0.2.1",
     "grunt-jsbeautifier": "~0.2.6"
   }
