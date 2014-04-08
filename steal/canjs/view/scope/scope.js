@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 27 Mar 2014 21:04:57 GMT
+ * Tue, 08 Apr 2014 17:31:35 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -273,9 +273,15 @@ steal('can/util', 'can/construct', 'can/map', 'can/list', 'can/view', 'can/compu
 			 * @option {*} value the found value
 			 */
 			read: function (attr, options) {
-
+				// check if we should only look within current scope
+				if(attr.substr(0, 2) === './') {
+					// set flag to halt lookup from walking up scope
+					this._stopLookup = true;
+					// stop lookup from checking parent scopes
+					return this.read(attr.substr(2), options);
+				}
 				// check if we should be running this on a parent.
-				if (attr.substr(0, 3) === "../") {
+				else if (attr.substr(0, 3) === "../") {
 					return this._parent.read(attr.substr(3), options);
 				} else if (attr === "..") {
 					return {
@@ -362,8 +368,14 @@ steal('can/util', 'can/construct', 'can/map', 'can/list', 'can/view', 'can/compu
 					}
 					// Prevent prior readings.
 					can.__clearReading();
-					// Move up to the next scope.
-					scope = scope._parent;
+
+					if(!this._stopLookup) {
+						// Move up to the next scope.
+						scope = scope._parent;
+					}
+
+					// a flag to set if we should stop walking up scope
+					this._stopLookup = false;
 				}
 
 				// If there was a likely observe.

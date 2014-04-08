@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 27 Mar 2014 21:05:14 GMT
+ * Tue, 08 Apr 2014 17:31:42 GMT
  * Licensed MIT
  * Includes: can/util/fixture
  * Download from: http://canjs.com
@@ -200,6 +200,7 @@
                 }
 
                 if (data && originalOptions) {
+                    originalOptions.data = originalOptions.data || {};
                     can.extend(originalOptions.data, data);
                 }
             }

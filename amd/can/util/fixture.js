@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 27 Mar 2014 21:04:57 GMT
+ * Tue, 08 Apr 2014 17:31:35 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -92,6 +92,7 @@ define(["can/util/library", "can/util/string", "can/util/object"], function (can
 			}
 
 			if (data && originalOptions) {
+				originalOptions.data = originalOptions.data || {};
 				can.extend(originalOptions.data, data);
 			}
 		}

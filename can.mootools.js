@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 27 Mar 2014 21:05:13 GMT
+ * Tue, 08 Apr 2014 17:31:42 GMT
  * Licensed MIT
  * Includes: can/component,can/construct,can/map,can/list,can/observe,can/compute,can/model,can/view,can/control,can/route,can/control/route,can/view/mustache,can/view/bindings,can/view/live,can/view/scope,can/util/string,can/util/attr
  * Download from: http://canjs.com
@@ -3158,7 +3158,10 @@
                 },
 
 
-                reverse: [].reverse,
+                reverse: function() {
+                    var list = can.makeArray([].reverse.call(this));
+                    this.replace(list);
+                },
 
 
                 slice: function() {
@@ -3771,9 +3774,15 @@
                 },
 
                 read: function(attr, options) {
-
+                    // check if we should only look within current scope
+                    if (attr.substr(0, 2) === './') {
+                        // set flag to halt lookup from walking up scope
+                        this._stopLookup = true;
+                        // stop lookup from checking parent scopes
+                        return this.read(attr.substr(2), options);
+                    }
                     // check if we should be running this on a parent.
-                    if (attr.substr(0, 3) === "../") {
+                    else if (attr.substr(0, 3) === "../") {
                         return this._parent.read(attr.substr(3), options);
                     } else if (attr === "..") {
                         return {
@@ -3860,8 +3869,14 @@
                         }
                         // Prevent prior readings.
                         can.__clearReading();
-                        // Move up to the next scope.
-                        scope = scope._parent;
+
+                        if (!this._stopLookup) {
+                            // Move up to the next scope.
+                            scope = scope._parent;
+                        }
+
+                        // a flag to set if we should stop walking up scope
+                        this._stopLookup = false;
                     }
 
                     // If there was a likely observe.
@@ -6168,6 +6183,7 @@
                                     }
                                     switch (mode) {
                                         // Truthy section
+                                        case '^':
                                         case '#':
                                             result.content += ('{fn:function(' + ARG_NAMES + '){var ___v1ew = [];');
                                             break;
@@ -6176,9 +6192,6 @@
 
                                         case 'else':
                                             result.content += 'return ___v1ew.join("");}},\n{inverse:function(' + ARG_NAMES + '){\nvar ___v1ew = [];';
-                                            break;
-                                        case '^':
-                                            result.content += '{inverse:function(' + ARG_NAMES + '){\nvar ___v1ew = [];';
                                             break;
 
                                             // Not a section, no mode
@@ -6256,6 +6269,13 @@
             // overwrite fn and inverse to always convert to scopes
             helperOptions.fn = makeConvertToScopes(helperOptions.fn, scope, options);
             helperOptions.inverse = makeConvertToScopes(helperOptions.inverse, scope, options);
+
+            // if mode is ^, swap fn and inverse
+            if (mode === '^') {
+                var tmp = helperOptions.fn;
+                helperOptions.fn = helperOptions.inverse;
+                helperOptions.inverse = tmp;
+            }
 
             // Check for a registered helper or a helper-like function.
             if (helper = (getHelper && (typeof name === "string" && Mustache.getHelper(name, options)) || (can.isFunction(name) && !name.isComputed && {
@@ -7424,9 +7444,15 @@
                         return;
                     }
 
-                    this.List = ML({
-                            Map: this
-                        }, {});
+                    if (staticProps && staticProps.List) {
+                        this.List = staticProps.List;
+                        this.List.Map = this;
+                    } else {
+                        this.List = base.List.extend({
+                                Map: this
+                            }, {});
+                    }
+
                     var self = this,
                         clean = can.proxy(this._clean, self);
 

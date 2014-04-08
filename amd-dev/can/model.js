@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 27 Mar 2014 21:04:57 GMT
+ * Tue, 08 Apr 2014 17:31:35 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -1091,9 +1091,16 @@ define(["can/util/library", "can/map", "can/list"], function (can) {
 				 *     Task.List.Map //-> Task
 				 *
 				 */
-				this.List = ML({
-					Map: this
-				}, {});
+				if(staticProps && staticProps.List) {
+					this.List = staticProps.List;
+					this.List.Map = this;
+				}
+				else {
+					this.List = base.List.extend({
+						Map: this
+					}, {});
+				}
+
 				var self = this,
 					clean = can.proxy(this._clean, self);
 
