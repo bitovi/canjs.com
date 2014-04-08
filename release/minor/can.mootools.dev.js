@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 10 Feb 2014 20:24:29 GMT
+ * Tue, 08 Apr 2014 17:31:42 GMT
  * Licensed MIT
  * Includes: can/component,can/construct,can/map,can/list,can/observe,can/compute,can/model,can/view,can/control,can/route,can/control/route,can/view/mustache,can/view/bindings,can/view/live,can/view/scope,can/util/string,can/util/attr
  * Download from: http://canjs.com
@@ -16,6 +16,9 @@
         if (typeof GLOBALCAN === 'undefined' || GLOBALCAN !== false) {
             window.can = can;
         }
+
+        // An empty function useful for where you need a dummy callback.
+        can.k = function() {};
 
         can.isDeferred = function(obj) {
             var isFunction = this.isFunction;
@@ -38,6 +41,37 @@
                 d[prop] = s[prop];
             }
             return d;
+        };
+
+        can.frag = function(item) {
+            var frag;
+            if (!item || typeof item === "string") {
+                frag = can.buildFragment(item == null ? "" : "" + item, document.body);
+                // If we have an empty frag...
+                if (!frag.childNodes.length) {
+                    frag.appendChild(document.createTextNode(''));
+                }
+                return frag;
+            } else if (item.nodeType === 11) {
+                return item;
+            } else if (typeof item.nodeType === "number") {
+                frag = document.createDocumentFragment();
+                frag.appendChild(item);
+                return frag;
+            } else if (typeof item.length === "number") {
+                frag = document.createDocumentFragment();
+                can.each(item, function(item) {
+                    frag.appendChild(can.frag(item));
+                });
+                return frag;
+            } else {
+                frag = can.buildFragment("" + item, document.body);
+                // If we have an empty frag...
+                if (!frag.childNodes.length) {
+                    frag.appendChild(document.createTextNode(''));
+                }
+                return frag;
+            }
         };
 
         // this is here in case can.compute hasn't loaded
@@ -88,10 +122,15 @@
     // ## util/attr/attr.js
     var __m4 = (function(can) {
 
+        // # can/util/attr
+        // Contains helpers for dealing with element attributes.
+
         var setImmediate = window.setImmediate || function(cb) {
                 return setTimeout(cb, 0);
             },
             attr = {
+                // Keep a reference to MutationObserver because we need to trigger
+                // events for browsers that do not support it.
                 MutationObserver: window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver,
 
 
@@ -104,6 +143,7 @@
                     "disabled": true,
                     "readonly": true,
                     "required": true,
+                    // setter function for the src attribute
                     src: function(el, val) {
                         if (val == null || val === "") {
                             el.removeAttribute("src");
@@ -113,16 +153,19 @@
                             return val;
                         }
                     },
+                    // setter function for a style attribute
                     style: function(el, val) {
                         return el.style.cssText = val || "";
                     }
                 },
-                // elements whos default value we should set
+                // Elements whos default value we should set
                 defaultValue: ["input", "textarea"],
-                // Set an attribute on an element
+                // ## attr.set
+                // Set the value an attribute on an element
                 set: function(el, attrName, val) {
                     var oldValue;
                     if (!attr.MutationObserver) {
+                        // Get the current value
                         oldValue = attr.get(el, attrName);
                     }
 
@@ -130,7 +173,7 @@
                         .toLowerCase(),
                         prop = attr.map[attrName],
                         newValue;
-                    // if this is a special property
+                    // if this is a special property call the setter
                     if (typeof prop === "function") {
                         newValue = prop(el, val);
                     } else if (prop === true) {
@@ -156,9 +199,12 @@
                         attr.trigger(el, attrName, oldValue);
                     }
                 },
+                // ## attr.trigger
+                // Trigger an "attributes" event on an element
                 trigger: function(el, attrName, oldValue) {
-                    // only trigger if someone has bound
+                    // Only trigger if someone has bound
                     if (can.data(can.$(el), "canHasAttributesBindings")) {
+                        // Queue up a function to be called
                         return setImmediate(function() {
                             can.trigger(el, {
                                     type: "attributes",
@@ -170,13 +216,17 @@
                         });
                     }
                 },
+                // ## attr.get
                 // Gets the value of an attribute.
                 get: function(el, attrName) {
                     // Default to a blank string for IE7/8
+                    // Try to get the attribute from the element before
+                    // using `getAttribute`
                     return (attr.map[attrName] && el[attr.map[attrName]] ?
                         el[attr.map[attrName]] :
                         el.getAttribute(attrName));
                 },
+                // ## attr.remove
                 // Removes the attribute.
                 remove: function(el, attrName) {
                     var oldValue;
@@ -185,6 +235,7 @@
                     }
 
                     var setter = attr.map[attrName];
+                    // A special type of attribute, call the function
                     if (typeof setter === "function") {
                         setter(el, undefined);
                     }
@@ -196,12 +247,15 @@
                         el.removeAttribute(attrName);
                     }
                     if (!attr.MutationObserver && oldValue != null) {
+                        // Trigger that the attribute has changed
                         attr.trigger(el, attrName, oldValue);
                     }
 
                 },
+                // ## attr.has
                 has: (function() {
-
+                    // Use hasAttribute if the browser supports it,
+                    // otherwise check that the attribute's value is not null
                     var el = document.createElement('div');
                     if (el.hasAttribute) {
                         return function(el, name) {
@@ -320,7 +374,8 @@
             return this;
         };
         can.dispatch = function(event, args) {
-            if (!this.__bindEvents) {
+            var events = this.__bindEvents;
+            if (!events) {
                 return;
             }
             if (typeof event === 'string') {
@@ -329,13 +384,11 @@
                 };
             }
             var eventName = event.type,
-                handlers = (this.__bindEvents[eventName] || [])
-                    .slice(0),
-                ev;
+                handlers = (events[eventName] || []).slice(0);
+
             args = [event].concat(args || []);
             for (var i = 0, len = handlers.length; i < len; i++) {
-                ev = handlers[i];
-                ev.handler.apply(this, args);
+                handlers[i].handler.apply(this, args);
             }
         };
         return can;
@@ -561,11 +614,19 @@
 
     // ## util/array/each.js
     var __m9 = (function(can) {
+
+        // The following is from jQuery
+        var isArrayLike = function(obj) {
+            var length = obj.length;
+            return typeof arr !== "function" &&
+            (length === 0 || typeof length === "number" && length > 0 && (length - 1) in obj);
+        };
+
         can.each = function(elements, callback, context) {
             var i = 0,
                 key;
             if (elements) {
-                if (typeof elements.length === 'number' && elements.pop) {
+                if (isArrayLike(elements)) {
                     if (elements.attr) {
                         elements.attr('length');
                     }
@@ -1093,8 +1154,567 @@
         return can;
     })(__m3, __m4, {}, __m6, __m7, __m8, __m9, __m10, __m11);
 
+    // ## view/view.js
+    var __m13 = (function(can) {
+        // ## view.js
+        // `can.view`  
+        // _Templating abstraction._
+
+        var isFunction = can.isFunction,
+            makeArray = can.makeArray,
+            // Used for hookup `id`s.
+            hookupId = 1,
+            // Makes a renderer function.
+            makeRenderer = function(textRenderer) {
+                var renderer = function() {
+                    return $view.frag(textRenderer.apply(this, arguments));
+                };
+                renderer.render = function() {
+                    return textRenderer.apply(textRenderer, arguments);
+                };
+                return renderer;
+            },
+
+            $view = can.view = can.template = function(view, data, helpers, callback) {
+                // If helpers is a `function`, it is actually a callback.
+                if (isFunction(helpers)) {
+                    callback = helpers;
+                    helpers = undefined;
+                }
+                var result;
+                // Get the result, if a renderer function is passed in, then we just use that to render the data
+                if (isFunction(view)) {
+                    result = view(data, helpers, callback);
+                } else {
+                    result = $view.renderAs("fragment", view, data, helpers, callback);
+                }
+
+                return result;
+            };
+
+        can.extend($view, {
+                // creates a frag and hooks it up all at once
+
+                frag: function(result, parentNode) {
+                    return $view.hookup($view.fragment(result), parentNode);
+                },
+
+                // simply creates a frag
+                // this is used internally to create a frag
+                // insert it
+                // then hook it up
+                fragment: function(result) {
+                    var frag = can.buildFragment(result, document.body);
+                    // If we have an empty frag...
+                    if (!frag.childNodes.length) {
+                        frag.appendChild(document.createTextNode(''));
+                    }
+                    return frag;
+                },
+
+                // Convert a path like string into something that's ok for an `element` ID.
+                toId: function(src) {
+                    return can.map(src.toString()
+                        .split(/\/|\./g), function(part) {
+                            // Dont include empty strings in toId functions
+                            if (part) {
+                                return part;
+                            }
+                        })
+                        .join('_');
+                },
+                toStr: function(txt) {
+                    return txt == null ? "" : "" + txt;
+                },
+                hookup: function(fragment, parentNode) {
+                    var hookupEls = [],
+                        id,
+                        func;
+
+                    // Get all `childNodes`.
+                    can.each(fragment.childNodes ? can.makeArray(fragment.childNodes) : fragment, function(node) {
+                        if (node.nodeType === 1) {
+                            hookupEls.push(node);
+                            hookupEls.push.apply(hookupEls, can.makeArray(node.getElementsByTagName('*')));
+                        }
+                    });
+
+                    // Filter by `data-view-id` attribute.
+                    can.each(hookupEls, function(el) {
+                        if (el.getAttribute && (id = el.getAttribute('data-view-id')) && (func = $view.hookups[id])) {
+                            func(el, parentNode, id);
+                            delete $view.hookups[id];
+                            el.removeAttribute('data-view-id');
+                        }
+                    });
+
+                    return fragment;
+                },
+
+
+                // auj
+
+                // heir
+
+                hookups: {},
+
+
+                hook: function(cb) {
+                    $view.hookups[++hookupId] = cb;
+                    return ' data-view-id=\'' + hookupId + '\'';
+                },
+
+
+                cached: {},
+
+                cachedRenderers: {},
+
+
+                cache: true,
+
+
+                register: function(info) {
+                    this.types['.' + info.suffix] = info;
+                },
+
+                types: {},
+
+
+                ext: ".ejs",
+
+
+                registerScript: function() {},
+
+
+                preload: function() {},
+
+
+                render: function(view, data, helpers, callback) {
+                    return can.view.renderAs("string", view, data, helpers, callback);
+                },
+                renderTo: function(format, renderer, data, helpers) {
+                    return (format === "string" && renderer.render ? renderer.render : renderer)(data, helpers);
+                },
+                renderAs: function(format, view, data, helpers, callback) {
+                    // If helpers is a `function`, it is actually a callback.
+                    if (isFunction(helpers)) {
+                        callback = helpers;
+                        helpers = undefined;
+                    }
+
+                    // See if we got passed any deferreds.
+                    var deferreds = getDeferreds(data);
+                    var reading, deferred, dataCopy, async, response;
+                    if (deferreds.length) {
+                        // Does data contain any deferreds?
+                        // The deferred that resolves into the rendered content...
+                        deferred = new can.Deferred();
+                        dataCopy = can.extend({}, data);
+
+                        // Add the view request to the list of deferreds.
+                        deferreds.push(get(view, true));
+                        // Wait for the view and all deferreds to finish...
+                        can.when.apply(can, deferreds)
+                            .then(function(resolved) {
+                                // Get all the resolved deferreds.
+                                var objs = makeArray(arguments),
+                                    // Renderer is the last index of the data.
+                                    renderer = objs.pop(),
+                                    // The result of the template rendering with data.
+                                    result;
+
+                                // Make data look like the resolved deferreds.
+                                if (can.isDeferred(data)) {
+                                    dataCopy = usefulPart(resolved);
+                                } else {
+                                    // Go through each prop in data again and
+                                    // replace the defferreds with what they resolved to.
+                                    for (var prop in data) {
+                                        if (can.isDeferred(data[prop])) {
+                                            dataCopy[prop] = usefulPart(objs.shift());
+                                        }
+                                    }
+                                }
+
+                                // Get the rendered result.
+                                result = can.view.renderTo(format, renderer, dataCopy, helpers);
+
+                                // Resolve with the rendered view.
+                                deferred.resolve(result, dataCopy);
+
+                                // If there's a `callback`, call it back with the result.
+                                if (callback) {
+                                    callback(result, dataCopy);
+                                }
+                            }, function() {
+                                deferred.reject.apply(deferred, arguments);
+                            });
+                        // Return the deferred...
+                        return deferred;
+                    } else {
+                        // get is called async but in 
+                        // ff will be async so we need to temporarily reset
+                        reading = can.__clearReading();
+
+                        // If there's a `callback` function
+                        async = isFunction(callback);
+                        // Get the `view` type
+                        deferred = get(view, async);
+
+                        if (reading) {
+                            can.__setReading(reading);
+                        }
+
+                        // If we are `async`...
+                        if (async) {
+                            // Return the deferred
+                            response = deferred;
+                            // And fire callback with the rendered result.
+                            deferred.then(function(renderer) {
+                                callback(data ? can.view.renderTo(format, renderer, data, helpers) : renderer);
+                            });
+                        } else {
+                            // if the deferred is resolved, call the cached renderer instead
+                            // this is because it's possible, with recursive deferreds to
+                            // need to render a view while its deferred is _resolving_.  A _resolving_ deferred
+                            // is a deferred that was just resolved and is calling back it's success callbacks.
+                            // If a new success handler is called while resoliving, it does not get fired by
+                            // jQuery's deferred system.  So instead of adding a new callback
+                            // we use the cached renderer.
+                            // We also add __view_id on the deferred so we can look up it's cached renderer.
+                            // In the future, we might simply store either a deferred or the cached result.
+                            if (deferred.state() === 'resolved' && deferred.__view_id) {
+                                var currentRenderer = $view.cachedRenderers[deferred.__view_id];
+                                return data ? can.view.renderTo(format, currentRenderer, data, helpers) : currentRenderer;
+                            } else {
+                                // Otherwise, the deferred is complete, so
+                                // set response to the result of the rendering.
+                                deferred.then(function(renderer) {
+                                    response = data ? can.view.renderTo(format, renderer, data, helpers) : renderer;
+                                });
+                            }
+                        }
+
+                        return response;
+                    }
+                },
+
+
+                registerView: function(id, text, type, def) {
+                    // Get the renderer function.
+                    var info = (typeof type === "object" ? type : $view.types[type || $view.ext]),
+                        renderer;
+                    if (info.fragRenderer) {
+                        renderer = info.fragRenderer(id, text);
+                    } else {
+                        renderer = makeRenderer(info.renderer(id, text));
+                    }
+
+                    def = def || new can.Deferred();
+
+                    // Cache if we are caching.
+                    if ($view.cache) {
+                        $view.cached[id] = def;
+                        def.__view_id = id;
+                        $view.cachedRenderers[id] = renderer;
+                    }
+
+                    // Return the objects for the response's `dataTypes`
+                    // (in this case view).
+                    return def.resolve(renderer);
+                }
+            });
+
+        // Makes sure there's a template, if not, have `steal` provide a warning.
+        var checkText = function(text, url) {
+            if (!text.length) {
+
+                //!steal-remove-start
+                can.dev.log("can/view/view.js: There is no template or an empty template at " + url);
+                //!steal-remove-end
+
+                throw "can.view: No template or empty template:" + url;
+            }
+        },
+            // `Returns a `view` renderer deferred.  
+            // `url` - The url to the template.  
+            // `async` - If the ajax request should be asynchronous.  
+            // Returns a deferred.
+            get = function(obj, async) {
+                var url = typeof obj === 'string' ? obj : obj.url,
+                    suffix = (obj.engine && '.' + obj.engine) || url.match(/\.[\w\d]+$/),
+                    type,
+                    // If we are reading a script element for the content of the template,
+                    // `el` will be set to that script element.
+                    el,
+                    // A unique identifier for the view (used for caching).
+                    // This is typically derived from the element id or
+                    // the url for the template.
+                    id;
+
+                //If the url has a #, we assume we want to use an inline template
+                //from a script element and not current page's HTML
+                if (url.match(/^#/)) {
+                    url = url.substr(1);
+                }
+                // If we have an inline template, derive the suffix from the `text/???` part.
+                // This only supports `<script>` tags.
+                if (el = document.getElementById(url)) {
+                    suffix = '.' + el.type.match(/\/(x\-)?(.+)/)[2];
+                }
+
+                // If there is no suffix, add one.
+                if (!suffix && !$view.cached[url]) {
+                    url += suffix = $view.ext;
+                }
+
+                if (can.isArray(suffix)) {
+                    suffix = suffix[0];
+                }
+
+                // Convert to a unique and valid id.
+                id = $view.toId(url);
+
+                // If an absolute path, use `steal`/`require` to get it.
+                // You should only be using `//` if you are using an AMD loader like `steal` or `require` (not almond).
+                if (url.match(/^\/\//)) {
+                    url = url.substr(2);
+                    url = !window.steal ?
+                        url :
+                        steal.config()
+                        .root.mapJoin("" + steal.id(url));
+                }
+
+                // Localize for `require` (not almond)
+                if (window.require) {
+                    if (require.toUrl) {
+                        url = require.toUrl(url);
+                    }
+                }
+
+                // Set the template engine type.
+                type = $view.types[suffix];
+
+                // If it is cached, 
+                if ($view.cached[id]) {
+                    // Return the cached deferred renderer.
+                    return $view.cached[id];
+
+                    // Otherwise if we are getting this from a `<script>` element.
+                } else if (el) {
+                    // Resolve immediately with the element's `innerHTML`.
+                    return $view.registerView(id, el.innerHTML, type);
+                } else {
+                    // Make an ajax request for text.
+                    var d = new can.Deferred();
+                    can.ajax({
+                            async: async,
+                            url: url,
+                            dataType: 'text',
+                            error: function(jqXHR) {
+                                checkText('', url);
+                                d.reject(jqXHR);
+                            },
+                            success: function(text) {
+                                // Make sure we got some text back.
+                                checkText(text, url);
+                                $view.registerView(id, text, type, d);
+                            }
+                        });
+                    return d;
+                }
+            },
+            // Gets an `array` of deferreds from an `object`.
+            // This only goes one level deep.
+            getDeferreds = function(data) {
+                var deferreds = [];
+
+                // pull out deferreds
+                if (can.isDeferred(data)) {
+                    return [data];
+                } else {
+                    for (var prop in data) {
+                        if (can.isDeferred(data[prop])) {
+                            deferreds.push(data[prop]);
+                        }
+                    }
+                }
+                return deferreds;
+            },
+            // Gets the useful part of a resolved deferred.
+            // This is for `model`s and `can.ajax` that resolve to an `array`.
+            usefulPart = function(resolved) {
+                return can.isArray(resolved) && resolved[1] === 'success' ? resolved[0] : resolved;
+            };
+
+        //!steal-remove-start
+        if (window.steal) {
+            steal.type("view js", function(options, success, error) {
+                var type = $view.types["." + options.type],
+                    id = $view.toId(options.id);
+
+                options.text = 'steal(\'' + (type.plugin || 'can/view/' + options.type) + '\',function(can){return ' + 'can.view.preloadStringRenderer(\'' + id + '\',' + options.text + ');\n})';
+                success();
+            });
+        }
+        //!steal-remove-end
+
+        can.extend($view, {
+                register: function(info) {
+                    this.types['.' + info.suffix] = info;
+
+                    //!steal-remove-start
+                    if (window.steal) {
+                        steal.type(info.suffix + " view js", function(options, success, error) {
+                            var type = $view.types["." + options.type],
+                                id = $view.toId(options.id + '');
+                            options.text = type.script(id, options.text);
+                            success();
+                        });
+                    }
+                    //!steal-remove-end
+
+                    can[info.suffix] = $view[info.suffix] = function(id, text) {
+                        // If there is no text, assume id is the template text, so return a nameless renderer.
+                        if (!text) {
+                            // if the template has a fragRenderer already, just return that.
+                            if (info.fragRenderer) {
+                                return info.fragRenderer(null, id);
+                            } else {
+                                return makeRenderer(info.renderer(null, id));
+                            }
+
+                        }
+                        if (info.fragRenderer) {
+                            return $view.preload(id, info.fragRenderer(id, text));
+                        } else {
+                            return $view.preloadStringRenderer(id, info.renderer(id, text));
+                        }
+
+                    };
+
+                },
+                registerScript: function(type, id, src) {
+                    return 'can.view.preloadStringRenderer(\'' + id + '\',' + $view.types['.' + type].script(id, src) + ');';
+                },
+                preloadStringRenderer: function(id, stringRenderer) {
+                    return this.preload(id, makeRenderer(stringRenderer));
+                },
+                preload: function(id, renderer) {
+                    var def = $view.cached[id] = new can.Deferred()
+                        .resolve(function(data, helpers) {
+                            return renderer.call(data, data, helpers);
+                        });
+
+                    // set cache references (otherwise preloaded recursive views won't recurse properly)
+                    def.__view_id = id;
+                    $view.cachedRenderers[id] = renderer;
+
+                    return renderer;
+                }
+
+            });
+
+        return can;
+    })(__m2);
+
+    // ## view/callbacks/callbacks.js
+    var __m12 = (function(can) {
+
+        var attr = can.view.attr = function(attributeName, attrHandler) {
+            if (attrHandler) {
+                if (typeof attributeName === "string") {
+                    attributes[attributeName] = attrHandler;
+                } else {
+                    regExpAttributes.push({
+                            match: attributeName,
+                            handler: attrHandler
+                        });
+                }
+            } else {
+                var cb = attributes[attributeName];
+                if (!cb) {
+
+                    for (var i = 0, len = regExpAttributes.length; i < len; i++) {
+                        var attrMatcher = regExpAttributes[i];
+                        if (attrMatcher.match.test(attributeName)) {
+                            cb = attrMatcher.handler;
+                            break;
+                        }
+                    }
+                }
+                return cb;
+            }
+        };
+
+        var attributes = {},
+            regExpAttributes = [],
+            automaticCustomElementCharacters = /[-\:]/;
+
+        var tag = can.view.tag = function(tagName, tagHandler) {
+            if (tagHandler) {
+                // if we have html5shive ... re-generate
+                if (window.html5) {
+                    window.html5.elements += " " + tagName;
+                    window.html5.shivDocument();
+                }
+
+                tags[tagName.toLowerCase()] = tagHandler;
+            } else {
+                var cb = tags[tagName.toLowerCase()];
+                if (!cb && automaticCustomElementCharacters.test(tagName)) {
+                    // empty callback for things that look like special tags
+                    cb = function() {};
+                }
+                return cb;
+            }
+
+        };
+        var tags = {};
+
+        can.view.callbacks = {
+            _tags: tags,
+            _attributes: attributes,
+            _regExpAttributes: regExpAttributes,
+            tag: tag,
+            attr: attr,
+            // handles calling back a tag callback
+            tagHandler: function(el, tagName, tagData) {
+                var helperTagCallback = tagData.options.read('tags.' + tagName, {
+                        isArgument: true,
+                        proxyMethods: false
+                    })
+                    .value,
+                    tagCallback = helperTagCallback || tags[tagName];
+
+                // If this was an element like <foo-bar> that doesn't have a component, just render its content
+                var scope = tagData.scope,
+                    res = tagCallback ? tagCallback(el, tagData) : scope;
+
+                //!steal-remove-start
+                if (!tagCallback) {
+                    can.dev.warn('can/view/scanner.js: No custom element found for ' + tagName);
+                }
+                //!steal-remove-end
+
+                // If the tagCallback gave us something to render with, and there is content within that element
+                // render it!
+                if (res && tagData.subtemplate) {
+
+                    if (scope !== res) {
+                        scope = scope.add(res);
+                    }
+                    var result = tagData.subtemplate(scope, tagData.options);
+                    var frag = typeof result === "string" ? can.view.frag(result) : result;
+                    can.appendChild(el, frag);
+                }
+            }
+        };
+        return can.view.callbacks;
+    })(__m2, __m13);
+
     // ## util/string/string.js
-    var __m14 = (function(can) {
+    var __m16 = (function(can) {
         // ##string.js
         // _Miscellaneous string utility functions._  
         // Several of the methods in this plugin use code adapated from Prototype
@@ -1229,7 +1849,7 @@
     })(__m2);
 
     // ## construct/construct.js
-    var __m13 = (function(can) {
+    var __m15 = (function(can) {
         // ## construct.js
         // `can.Construct`  
         // _This is a modified version of
@@ -1387,10 +2007,10 @@
 
         can.Construct.prototype.init = function() {};
         return can.Construct;
-    })(__m14);
+    })(__m16);
 
     // ## control/control.js
-    var __m12 = (function(can) {
+    var __m14 = (function(can) {
         // ## control.js
         // `can.Control`  
         // _Controller_
@@ -1549,8 +2169,11 @@
                         // Set element and `className` on element.
                         this.element.addClass(pluginname);
                     }
+
+                    // Set up the 'controls' data on the element
                     arr = can.data(this.element, 'controls');
                     if (!arr) {
+                        // If it does not exist, initialize it to an empty array
                         arr = [];
                         can.data(this.element, 'controls', arr);
                     }
@@ -1601,6 +2224,7 @@
                         return bindings.length;
                     }
 
+                    // if `el` is a string, use that as `selector` and re-set it to this control's element...
                     if (typeof el === 'string') {
                         func = eventName;
                         eventName = selector;
@@ -1608,6 +2232,7 @@
                         el = this.element;
                     }
 
+                    // ...otherwise, set `selector` to null
                     if (func === undefined) {
                         func = eventName;
                         eventName = selector;
@@ -1685,10 +2310,10 @@
             });
 
         return Control;
-    })(__m2, __m13);
+    })(__m2, __m15);
 
     // ## util/bind/bind.js
-    var __m17 = (function(can) {
+    var __m19 = (function(can) {
 
         // ## Bind helpers
         can.bindAndSetup = function() {
@@ -1728,7 +2353,7 @@
     })(__m2);
 
     // ## util/batch/batch.js
-    var __m18 = (function(can) {
+    var __m20 = (function(can) {
         // Which batch of events this is for -- might not want to send multiple
         // messages on the same batch.  This is mostly for event delegation.
         var batchNum = 1,
@@ -1754,19 +2379,20 @@
                 }
                 if (transactions === 0) {
                     var items = batchEvents.slice(0),
-                        callbacks = stopCallbacks.slice(0);
+                        callbacks = stopCallbacks.slice(0),
+                        i, len;
                     batchEvents = [];
                     stopCallbacks = [];
                     batchNum++;
                     if (callStart) {
                         can.batch.start();
                     }
-                    can.each(items, function(args) {
-                        can.trigger.apply(can, args);
-                    });
-                    can.each(callbacks, function(cb) {
-                        cb();
-                    });
+                    for (i = 0, len = items.length; i < len; i++) {
+                        can.trigger.apply(can, items[i]);
+                    }
+                    for (i = 0, len = callbacks.length; i < callbacks.length; i++) {
+                        callbacks[i]();
+                    }
                 }
             },
 
@@ -1792,7 +2418,7 @@
     })(__m3);
 
     // ## map/map.js
-    var __m16 = (function(can, bind) {
+    var __m18 = (function(can, bind) {
         // ## map.js  
         // `can.Map`  
         // _Provides the observable pattern for JavaScript Objects._  
@@ -1819,38 +2445,31 @@
                 // send modified attr event to parent
                 //can.trigger(parent, args[0], args);
             });
-        },
-            attrParts = function(attr, keepKey) {
-                if (keepKey) {
-                    return [attr];
-                }
-                return can.isArray(attr) ? attr : ("" + attr)
-                    .split(".");
-            },
-            makeBindSetup = function(wildcard) {
-                return function() {
-                    var parent = this;
-                    this._each(function(child, prop) {
-                        if (child && child.bind) {
-                            bindToChildAndBubbleToParent(child, wildcard || prop, parent);
-                        }
-                    });
-                };
-            },
-            // A map that temporarily houses a reference 
-            // to maps that have already been made for a plain ole JS object
-            madeMap = null,
-            teardownMap = function() {
-                for (var cid in madeMap) {
-                    if (madeMap[cid].added) {
-                        delete madeMap[cid].obj._cid;
+        };
+        var makeBindSetup = function(wildcard) {
+            return function() {
+                var parent = this;
+                this._each(function(child, prop) {
+                    if (child && child.bind) {
+                        bindToChildAndBubbleToParent(child, wildcard || prop, parent);
                     }
-                }
-                madeMap = null;
-            },
-            getMapFromObject = function(obj) {
-                return madeMap && madeMap[obj._cid] && madeMap[obj._cid].instance;
+                });
             };
+        };
+        // A map that temporarily houses a reference
+        // to maps that have already been made for a plain ole JS object
+        var madeMap = null;
+        var teardownMap = function() {
+            for (var cid in madeMap) {
+                if (madeMap[cid].added) {
+                    delete madeMap[cid].obj._cid;
+                }
+            }
+            madeMap = null;
+        };
+        var getMapFromObject = function(obj) {
+            return madeMap && madeMap[obj._cid] && madeMap[obj._cid].instance;
+        };
 
 
         var Map = can.Map = can.Construct.extend({
@@ -1889,6 +2508,14 @@
                 off: can.unbindAndTeardown,
                 id: "id",
                 helpers: {
+                    attrParts: function(attr, keepKey) {
+                        if (keepKey) {
+                            return [attr];
+                        }
+                        return can.isArray(attr) ? attr : ("" + attr)
+                            .split(".");
+                    },
+
                     addToMap: function(obj, instance) {
                         var teardown;
                         if (!madeMap) {
@@ -1921,15 +2548,16 @@
                             }
                         });
                     },
-                    // Listens to changes on `child` and "bubbles" the event up.  
-                    // `child` - The object to listen for changes on.  
-                    // `prop` - The property name is at on.  
+                    // Listens to changes on `child` and "bubbles" the event up.
+                    // `child` - The object to listen for changes on.
+                    // `prop` - The property name is at on.
                     // `parent` - The parent object of prop.
                     // `ob` - (optional) The Map object constructor
                     // `list` - (optional) The observable list constructor
                     hookupBubble: function(child, prop, parent, Ob, List) {
                         Ob = Ob || Map;
                         List = List || can.List;
+                        prop = typeof prop === 'function' ? prop() : prop;
 
                         // If it's an `array` make a list, otherwise a child.
                         if (child instanceof Map) {
@@ -1944,6 +2572,7 @@
                         } else {
                             child = getMapFromObject(child) || new Ob(child);
                         }
+
                         // only listen if something is listening to you
                         if (parent._bindings) {
                             // Listen to all changes and `batchTrigger` upwards.
@@ -1952,9 +2581,9 @@
 
                         return child;
                     },
-                    // A helper used to serialize an `Map` or `Map.List`.  
-                    // `map` - The observable.  
-                    // `how` - To serialize with `attr` or `serialize`.  
+                    // A helper used to serialize an `Map` or `Map.List`.
+                    // `map` - The observable.
+                    // `how` - To serialize with `attr` or `serialize`.
                     // `where` - To put properties, in an `{}` or `[]`.
                     serialize: function(map, how, where) {
                         // Go through each property.
@@ -2041,7 +2670,6 @@
                 },
                 _triggerChange: function(attr, how, newVal, oldVal) {
                     can.batch.trigger(this, "change", can.makeArray(arguments));
-
                 },
                 // no live binding iterator
                 _each: function(callback) {
@@ -2079,16 +2707,19 @@
                     // Info if this is List or not
                     var isList = can.List && this instanceof can.List,
                         // Convert the `attr` into parts (if nested).
-                        parts = attrParts(attr),
+                        parts = can.Map.helpers.attrParts(attr),
                         // The actual property to remove.
                         prop = parts.shift(),
                         // The current value.
                         current = isList ? this[prop] : this._data[prop];
 
                     // If we have more parts, call `removeAttr` on that part.
-                    if (parts.length) {
+                    if (parts.length && current) {
                         return current.removeAttr(parts);
                     } else {
+                        if ( !! ~attr.indexOf('.')) {
+                            prop = attr;
+                        }
                         if (isList) {
                             this.splice(prop, 1);
                         } else if (prop in this._data) {
@@ -2117,7 +2748,7 @@
                     }
 
                     // break up the attr (`"foo.bar"`) into `["foo","bar"]`
-                    var parts = attrParts(attr),
+                    var parts = can.Map.helpers.attrParts(attr),
                         // get the value of the first attr name (`"foo"`)
                         current = this.__get(parts.shift());
                     // if there are other attributes to read
@@ -2149,7 +2780,7 @@
                 // `value` - The raw value to set.
                 _set: function(attr, value, keepKey) {
                     // Convert `attr` to attr parts (if it isn't already).
-                    var parts = attrParts(attr, keepKey),
+                    var parts = can.Map.helpers.attrParts(attr, keepKey),
                         // The immediate prop we are setting.
                         prop = parts.shift(),
                         // The current value.
@@ -2206,7 +2837,6 @@
                         if (current) {
                             Map.helpers.unhookup([current], this);
                         }
-
                     }
 
                 },
@@ -2269,7 +2899,6 @@
                 },
 
                 _attrs: function(props, remove) {
-
                     if (props === undefined) {
                         return Map.helpers.serialize(this, 'attr', {});
                     }
@@ -2351,10 +2980,10 @@
         Map.prototype.off = Map.prototype.unbind;
 
         return Map;
-    })(__m2, __m17, __m13, __m18);
+    })(__m2, __m19, __m15, __m20);
 
     // ## list/list.js
-    var __m19 = (function(can, Map) {
+    var __m21 = (function(can, Map) {
 
         // Helpers for `observable` lists.
         var splice = [].splice,
@@ -2603,7 +3232,10 @@
                 },
 
 
-                reverse: [].reverse,
+                reverse: function() {
+                    var list = can.makeArray([].reverse.call(this));
+                    this.replace(list);
+                },
 
 
                 slice: function() {
@@ -2638,10 +3270,10 @@
             });
         can.List = Map.List = list;
         return can.List;
-    })(__m2, __m16);
+    })(__m2, __m18);
 
     // ## compute/compute.js
-    var __m20 = (function(can, bind) {
+    var __m22 = (function(can, bind) {
 
         // # can.compute
 
@@ -2749,9 +3381,13 @@
             return info;
         };
 
-        var updateOnChange = function(compute, newValue, oldValue) {
+        var updateOnChange = function(compute, newValue, oldValue, batchNum) {
+            //console.log("update",compute._cid, newValue, oldValue)
             if (newValue !== oldValue) {
-                can.batch.trigger(compute, 'change', [
+                can.batch.trigger(compute, batchNum ? {
+                        type: "change",
+                        batchNum: batchNum
+                    } : 'change', [
                         newValue,
                         oldValue
                     ]);
@@ -2775,7 +3411,7 @@
                                 // get the new value
                                 readInfo = getValueAndBind(func, context, readInfo.observed, onchanged);
 
-                                updater(readInfo.value, oldValue);
+                                updater(readInfo.value, oldValue, ev.batchNum);
 
                                 batchNum = batchNum = ev.batchNum;
                             }
@@ -2803,6 +3439,7 @@
             k = function() {};
         // if no one is listening ... we can not calculate every time
         can.compute = function(getterSetter, context, eventName) {
+
             if (getterSetter && getterSetter.isComputed) {
                 return getterSetter;
             }
@@ -2824,13 +3461,11 @@
                     value = newVal;
                 },
                 setCached = set,
-                // this compute can be a dependency of other computes
-                canReadForChangeEvent = true,
                 // save for clone
                 args = can.makeArray(arguments),
-                updater = function(newValue, oldValue) {
+                updater = function(newValue, oldValue, batchNum) {
                     setCached(newValue);
-                    updateOnChange(computed, newValue, oldValue);
+                    updateOnChange(computed, newValue, oldValue, batchNum);
                 },
                 // the form of the arguments
                 form;
@@ -2858,7 +3493,7 @@
                     return value;
                 } else {
                     // Another compute wants to bind to this compute
-                    if (stack.length && canReadForChangeEvent) {
+                    if (stack.length && computed.canReadForChangeEvent !== false) {
 
                         // Tell the compute to listen to change on this computed
                         can.__reading(computed, 'change');
@@ -2880,7 +3515,7 @@
             if (typeof getterSetter === 'function') {
                 set = getterSetter;
                 get = getterSetter;
-                canReadForChangeEvent = eventName === false ? false : true;
+                computed.canReadForChangeEvent = eventName === false ? false : true;
 
                 var handlers = setupComputeHandlers(computed, getterSetter, context || this, setCached);
                 on = handlers.on;
@@ -3096,481 +3731,22 @@
                 value: cur,
                 parent: prev
             };
-
         };
 
         return can.compute;
-    })(__m2, __m17, __m18);
+    })(__m2, __m19, __m20);
 
     // ## observe/observe.js
-    var __m15 = (function(can) {
+    var __m17 = (function(can) {
         can.Observe = can.Map;
         can.Observe.startBatch = can.batch.start;
         can.Observe.stopBatch = can.batch.stop;
         can.Observe.triggerBatch = can.batch.trigger;
         return can;
-    })(__m2, __m16, __m19, __m20);
-
-    // ## view/view.js
-    var __m23 = (function(can) {
-        // ## view.js
-        // `can.view`  
-        // _Templating abstraction._
-
-        var isFunction = can.isFunction,
-            makeArray = can.makeArray,
-            // Used for hookup `id`s.
-            hookupId = 1,
-
-            $view = can.view = can.template = function(view, data, helpers, callback) {
-                // If helpers is a `function`, it is actually a callback.
-                if (isFunction(helpers)) {
-                    callback = helpers;
-                    helpers = undefined;
-                }
-
-                var pipe = function(result) {
-                    return $view.frag(result);
-                },
-                    // In case we got a callback, we need to convert the can.view.render
-                    // result to a document fragment
-                    wrapCallback = isFunction(callback) ? function(frag) {
-                        callback(pipe(frag));
-                    } : null,
-                    // Get the result, if a renderer function is passed in, then we just use that to render the data
-                    result = isFunction(view) ? view(data, helpers, wrapCallback) : $view.render(view, data, helpers, wrapCallback),
-                    deferred = can.Deferred();
-
-                if (isFunction(result)) {
-                    return result;
-                }
-
-                if (can.isDeferred(result)) {
-                    result.then(function(result, data) {
-                        deferred.resolve.call(deferred, pipe(result), data);
-                    }, function() {
-                        deferred.fail.apply(deferred, arguments);
-                    });
-                    return deferred;
-                }
-
-                // Convert it into a dom frag.
-                return pipe(result);
-            };
-
-        can.extend($view, {
-                // creates a frag and hooks it up all at once
-
-                frag: function(result, parentNode) {
-                    return $view.hookup($view.fragment(result), parentNode);
-                },
-
-                // simply creates a frag
-                // this is used internally to create a frag
-                // insert it
-                // then hook it up
-                fragment: function(result) {
-                    var frag = can.buildFragment(result, document.body);
-                    // If we have an empty frag...
-                    if (!frag.childNodes.length) {
-                        frag.appendChild(document.createTextNode(''));
-                    }
-                    return frag;
-                },
-
-                // Convert a path like string into something that's ok for an `element` ID.
-                toId: function(src) {
-                    return can.map(src.toString()
-                        .split(/\/|\./g), function(part) {
-                            // Dont include empty strings in toId functions
-                            if (part) {
-                                return part;
-                            }
-                        })
-                        .join('_');
-                },
-
-                hookup: function(fragment, parentNode) {
-                    var hookupEls = [],
-                        id,
-                        func;
-
-                    // Get all `childNodes`.
-                    can.each(fragment.childNodes ? can.makeArray(fragment.childNodes) : fragment, function(node) {
-                        if (node.nodeType === 1) {
-                            hookupEls.push(node);
-                            hookupEls.push.apply(hookupEls, can.makeArray(node.getElementsByTagName('*')));
-                        }
-                    });
-
-                    // Filter by `data-view-id` attribute.
-                    can.each(hookupEls, function(el) {
-                        if (el.getAttribute && (id = el.getAttribute('data-view-id')) && (func = $view.hookups[id])) {
-                            func(el, parentNode, id);
-                            delete $view.hookups[id];
-                            el.removeAttribute('data-view-id');
-                        }
-                    });
-
-                    return fragment;
-                },
-
-
-                // auj
-
-                // heir
-
-                hookups: {},
-
-
-                hook: function(cb) {
-                    $view.hookups[++hookupId] = cb;
-                    return ' data-view-id=\'' + hookupId + '\'';
-                },
-
-
-                cached: {},
-
-                cachedRenderers: {},
-
-
-                cache: true,
-
-
-                register: function(info) {
-                    this.types['.' + info.suffix] = info;
-                },
-
-                types: {},
-
-
-                ext: ".ejs",
-
-
-                registerScript: function() {},
-
-
-                preload: function() {},
-
-
-                render: function(view, data, helpers, callback) {
-                    // If helpers is a `function`, it is actually a callback.
-                    if (isFunction(helpers)) {
-                        callback = helpers;
-                        helpers = undefined;
-                    }
-
-                    // See if we got passed any deferreds.
-                    var deferreds = getDeferreds(data);
-                    var reading, deferred, dataCopy, async, response;
-                    if (deferreds.length) {
-                        // Does data contain any deferreds?
-                        // The deferred that resolves into the rendered content...
-                        deferred = new can.Deferred();
-                        dataCopy = can.extend({}, data);
-
-                        // Add the view request to the list of deferreds.
-                        deferreds.push(get(view, true));
-                        // Wait for the view and all deferreds to finish...
-                        can.when.apply(can, deferreds)
-                            .then(function(resolved) {
-                                // Get all the resolved deferreds.
-                                var objs = makeArray(arguments),
-                                    // Renderer is the last index of the data.
-                                    renderer = objs.pop(),
-                                    // The result of the template rendering with data.
-                                    result;
-
-                                // Make data look like the resolved deferreds.
-                                if (can.isDeferred(data)) {
-                                    dataCopy = usefulPart(resolved);
-                                } else {
-                                    // Go through each prop in data again and
-                                    // replace the defferreds with what they resolved to.
-                                    for (var prop in data) {
-                                        if (can.isDeferred(data[prop])) {
-                                            dataCopy[prop] = usefulPart(objs.shift());
-                                        }
-                                    }
-                                }
-
-                                // Get the rendered result.
-                                result = renderer(dataCopy, helpers);
-
-                                // Resolve with the rendered view.
-                                deferred.resolve(result, dataCopy);
-
-                                // If there's a `callback`, call it back with the result.
-                                if (callback) {
-                                    callback(result, dataCopy);
-                                }
-                            }, function() {
-                                deferred.reject.apply(deferred, arguments);
-                            });
-                        // Return the deferred...
-                        return deferred;
-                    } else {
-                        // get is called async but in 
-                        // ff will be async so we need to temporarily reset
-                        reading = can.__clearReading();
-
-                        // If there's a `callback` function
-                        async = isFunction(callback);
-                        // Get the `view` type
-                        deferred = get(view, async);
-
-                        if (reading) {
-                            can.__setReading(reading);
-                        }
-
-                        // If we are `async`...
-                        if (async) {
-                            // Return the deferred
-                            response = deferred;
-                            // And fire callback with the rendered result.
-                            deferred.then(function(renderer) {
-                                callback(data ? renderer(data, helpers) : renderer);
-                            });
-                        } else {
-                            // if the deferred is resolved, call the cached renderer instead
-                            // this is because it's possible, with recursive deferreds to
-                            // need to render a view while its deferred is _resolving_.  A _resolving_ deferred
-                            // is a deferred that was just resolved and is calling back it's success callbacks.
-                            // If a new success handler is called while resoliving, it does not get fired by
-                            // jQuery's deferred system.  So instead of adding a new callback
-                            // we use the cached renderer.
-                            // We also add __view_id on the deferred so we can look up it's cached renderer.
-                            // In the future, we might simply store either a deferred or the cached result.
-                            if (deferred.state() === 'resolved' && deferred.__view_id) {
-                                var currentRenderer = $view.cachedRenderers[deferred.__view_id];
-                                return data ? currentRenderer(data, helpers) : currentRenderer;
-                            } else {
-                                // Otherwise, the deferred is complete, so
-                                // set response to the result of the rendering.
-                                deferred.then(function(renderer) {
-                                    response = data ? renderer(data, helpers) : renderer;
-                                });
-                            }
-                        }
-
-                        return response;
-                    }
-                },
-
-
-                registerView: function(id, text, type, def) {
-                    // Get the renderer function.
-                    var func = (type || $view.types[$view.ext])
-                        .renderer(id, text);
-                    def = def || new can.Deferred();
-
-                    // Cache if we are caching.
-                    if ($view.cache) {
-                        $view.cached[id] = def;
-                        def.__view_id = id;
-                        $view.cachedRenderers[id] = func;
-                    }
-
-                    // Return the objects for the response's `dataTypes`
-                    // (in this case view).
-                    return def.resolve(func);
-                }
-            });
-
-        // Makes sure there's a template, if not, have `steal` provide a warning.
-        var checkText = function(text, url) {
-            if (!text.length) {
-
-                //!steal-remove-start
-                can.dev.log("can/view/view.js: There is no template or an empty template at " + url);
-                //!steal-remove-end
-
-                throw "can.view: No template or empty template:" + url;
-            }
-        },
-            // `Returns a `view` renderer deferred.  
-            // `url` - The url to the template.  
-            // `async` - If the ajax request should be asynchronous.  
-            // Returns a deferred.
-            get = function(obj, async) {
-                var url = typeof obj === 'string' ? obj : obj.url,
-                    suffix = obj.engine || url.match(/\.[\w\d]+$/),
-                    type,
-                    // If we are reading a script element for the content of the template,
-                    // `el` will be set to that script element.
-                    el,
-                    // A unique identifier for the view (used for caching).
-                    // This is typically derived from the element id or
-                    // the url for the template.
-                    id;
-
-                //If the url has a #, we assume we want to use an inline template
-                //from a script element and not current page's HTML
-                if (url.match(/^#/)) {
-                    url = url.substr(1);
-                }
-                // If we have an inline template, derive the suffix from the `text/???` part.
-                // This only supports `<script>` tags.
-                if (el = document.getElementById(url)) {
-                    suffix = '.' + el.type.match(/\/(x\-)?(.+)/)[2];
-                }
-
-                // If there is no suffix, add one.
-                if (!suffix && !$view.cached[url]) {
-                    url += suffix = $view.ext;
-                }
-
-                if (can.isArray(suffix)) {
-                    suffix = suffix[0];
-                }
-
-                // Convert to a unique and valid id.
-                id = $view.toId(url);
-
-                // If an absolute path, use `steal`/`require` to get it.
-                // You should only be using `//` if you are using an AMD loader like `steal` or `require` (not almond).
-                if (url.match(/^\/\//)) {
-                    url = url.substr(2);
-                    url = !window.steal ?
-                        url :
-                        steal.config()
-                        .root.mapJoin("" + steal.id(url));
-                }
-
-                // Localize for `require` (not almond)
-                if (window.require) {
-                    if (require.toUrl) {
-                        url = require.toUrl(url);
-                    }
-                }
-
-                // Set the template engine type.
-                type = $view.types[suffix];
-
-                // If it is cached, 
-                if ($view.cached[id]) {
-                    // Return the cached deferred renderer.
-                    return $view.cached[id];
-
-                    // Otherwise if we are getting this from a `<script>` element.
-                } else if (el) {
-                    // Resolve immediately with the element's `innerHTML`.
-                    return $view.registerView(id, el.innerHTML, type);
-                } else {
-                    // Make an ajax request for text.
-                    var d = new can.Deferred();
-                    can.ajax({
-                            async: async,
-                            url: url,
-                            dataType: 'text',
-                            error: function(jqXHR) {
-                                checkText('', url);
-                                d.reject(jqXHR);
-                            },
-                            success: function(text) {
-                                // Make sure we got some text back.
-                                checkText(text, url);
-                                $view.registerView(id, text, type, d);
-                            }
-                        });
-                    return d;
-                }
-            },
-            // Gets an `array` of deferreds from an `object`.
-            // This only goes one level deep.
-            getDeferreds = function(data) {
-                var deferreds = [];
-
-                // pull out deferreds
-                if (can.isDeferred(data)) {
-                    return [data];
-                } else {
-                    for (var prop in data) {
-                        if (can.isDeferred(data[prop])) {
-                            deferreds.push(data[prop]);
-                        }
-                    }
-                }
-                return deferreds;
-            },
-            // Gets the useful part of a resolved deferred.
-            // This is for `model`s and `can.ajax` that resolve to an `array`.
-            usefulPart = function(resolved) {
-                return can.isArray(resolved) && resolved[1] === 'success' ? resolved[0] : resolved;
-            };
-
-        //!steal-remove-start
-        if (window.steal) {
-            steal.type("view js", function(options, success, error) {
-                var type = $view.types["." + options.type],
-                    id = $view.toId(options.id);
-
-                options.text = 'steal(\'' + (type.plugin || 'can/view/' + options.type) + '\',function(can){return ' + 'can.view.preload(\'' + id + '\',' + options.text + ');\n})';
-                success();
-            });
-        }
-        //!steal-remove-end
-
-        can.extend($view, {
-                register: function(info) {
-                    this.types['.' + info.suffix] = info;
-
-                    //!steal-remove-start
-                    if (window.steal) {
-                        steal.type(info.suffix + " view js", function(options, success, error) {
-                            var type = $view.types["." + options.type],
-                                id = $view.toId(options.id + '');
-                            options.text = type.script(id, options.text);
-                            success();
-                        });
-                    }
-                    //!steal-remove-end
-
-                    $view[info.suffix] = function(id, text) {
-                        if (!text) {
-                            // Return a nameless renderer
-                            var renderer = function() {
-                                return $view.frag(renderer.render.apply(this, arguments));
-                            };
-                            renderer.render = function() {
-                                var renderer = info.renderer(null, id);
-                                return renderer.apply(renderer, arguments);
-                            };
-                            return renderer;
-                        }
-
-                        return $view.preload(id, info.renderer(id, text));
-                    };
-                },
-                registerScript: function(type, id, src) {
-                    return 'can.view.preload(\'' + id + '\',' + $view.types['.' + type].script(id, src) + ');';
-                },
-                preload: function(id, renderer) {
-                    var def = $view.cached[id] = new can.Deferred()
-                        .resolve(function(data, helpers) {
-                            return renderer.call(data, data, helpers);
-                        });
-
-                    function frag() {
-                        return $view.frag(renderer.apply(this, arguments));
-                    }
-                    // expose the renderer for mustache
-                    frag.render = renderer;
-
-                    // set cache references (otherwise preloaded recursive views won't recurse properly)
-                    def.__view_id = id;
-                    $view.cachedRenderers[id] = renderer;
-
-                    return frag;
-                }
-
-            });
-
-        return can;
-    })(__m2);
+    })(__m2, __m18, __m21, __m22);
 
     // ## view/scope/scope.js
-    var __m22 = (function(can) {
+    var __m24 = (function(can) {
         var escapeReg = /(\\)?\./g;
         var escapeDotReg = /\\\./g;
         var getNames = function(attr) {
@@ -3601,6 +3777,7 @@
                 init: function(context, parent) {
                     this._context = context;
                     this._parent = parent;
+                    this.__cache = {};
                 },
 
                 attr: function(key) {
@@ -3630,7 +3807,10 @@
                         args: []
                     };
                     var self = this,
-                        rootObserve, rootReads, computeData = {
+                        rootObserve,
+                        rootReads,
+                        // fastRead,
+                        computeData = {
                             compute: can.compute(function(newVal) {
                                 if (arguments.length) {
                                     // check that there's just a compute with nothing from it ...
@@ -3642,6 +3822,7 @@
                                             .value.attr(rootReads[last], newVal);
                                     }
                                 } else {
+
                                     if (rootObserve) {
                                         return Scope.read(rootObserve, rootReads, options)
                                             .value;
@@ -3652,6 +3833,7 @@
                                     rootReads = data.reads;
                                     computeData.scope = data.scope;
                                     computeData.initialValue = data.value;
+
                                     return data.value;
                                 }
                             })
@@ -3666,9 +3848,15 @@
                 },
 
                 read: function(attr, options) {
-
+                    // check if we should only look within current scope
+                    if (attr.substr(0, 2) === './') {
+                        // set flag to halt lookup from walking up scope
+                        this._stopLookup = true;
+                        // stop lookup from checking parent scopes
+                        return this.read(attr.substr(2), options);
+                    }
                     // check if we should be running this on a parent.
-                    if (attr.substr(0, 3) === "../") {
+                    else if (attr.substr(0, 3) === "../") {
                         return this._parent.read(attr.substr(3), options);
                     } else if (attr === "..") {
                         return {
@@ -3755,8 +3943,14 @@
                         }
                         // Prevent prior readings.
                         can.__clearReading();
-                        // Move up to the next scope.
-                        scope = scope._parent;
+
+                        if (!this._stopLookup) {
+                            // Move up to the next scope.
+                            scope = scope._parent;
+                        }
+
+                        // a flag to set if we should stop walking up scope
+                        this._stopLookup = false;
                     }
 
                     // If there was a likely observe.
@@ -3780,10 +3974,10 @@
             });
         can.view.Scope = Scope;
         return Scope;
-    })(__m2, __m13, __m16, __m19, __m23, __m20);
+    })(__m2, __m15, __m18, __m21, __m13, __m22);
 
     // ## view/elements.js
-    var __m25 = (function(can) {
+    var __m26 = (function(can) {
 
 
         var elements = {
@@ -3857,11 +4051,14 @@
                 can.remove(can.$(oldElements));
             }
         };
+
+        can.view.elements = elements;
+
         return elements;
-    })(__m2);
+    })(__m2, __m13);
 
     // ## view/scanner.js
-    var __m24 = (function(can, elements) {
+    var __m25 = (function(can, elements, viewCallbacks) {
 
 
         var newLine = /(\r|\n)+/g,
@@ -3932,8 +4129,6 @@
             top = function(stack) {
                 return stack[stack.length - 1];
             },
-            // characters that automatically mean a custom element
-            automaticCustomElementCharacters = /[-\:]/,
             Scanner;
 
 
@@ -4042,7 +4237,7 @@
                         buff.push(put_cmd, '"', clean(content), '"' + (bonus || '') + ');');
                     },
                     // A stack used to keep track of how we should end a bracket
-                    // `}`.  
+                    // `}`.
                     // Once we have a `<%= %>` with a `leftBracket`,
                     // we store how the file should end here (either `))` or `;`).
                     endStack = [],
@@ -4056,7 +4251,14 @@
                     specialStates = {
                         attributeHookups: [],
                         // a stack of tagHookups
-                        tagHookups: []
+                        tagHookups: [],
+                        //last tag hooked up
+                        lastTagHookup: ''
+                    },
+                    // Helper `function` for removing tagHookups from the hookup stack
+                    popTagHookup = function() {
+                        // The length of tagHookups is the nested depth which can be used to uniquely identify custom tags of the same type
+                        specialStates.lastTagHookup = specialStates.tagHookups.pop() + specialStates.tagHookups.length;
                     },
                     // The current tag name.
                     tagName = '',
@@ -4066,7 +4268,6 @@
                     popTagName = false,
                     // Declared here.
                     bracketCount,
-
                     // in a special attr like src= or style=
                     specialAttribute = false,
 
@@ -4077,7 +4278,6 @@
 
                 // Reinitialize the tag state goodness.
                 htmlTag = quote = beforeQuote = null;
-
                 for (;
                     (token = tokens[i++]) !== undefined;) {
                     if (startTag === null) {
@@ -4088,7 +4288,7 @@
                                 magicInTag = htmlTag && 1;
 
                             case tmap.commentLeft:
-                                // A new line -- just add whatever content within a clean.  
+                                // A new line -- just add whatever content within a clean.
                                 // Reset everything.
                                 startTag = token;
                                 if (content.length) {
@@ -4134,16 +4334,17 @@
                                 var emptyElement = (content.substr(content.length - 1) === "/" || content.substr(content.length - 2) === "--"),
                                     attrs = "";
                                 // if there was a magic tag
-                                // or it's an element that has text content between its tags, 
+                                // or it's an element that has text content between its tags,
                                 // but content is not other tags add a hookup
-                                // TODO: we should only add `can.EJS.pending()` if there's a magic tag 
+                                // TODO: we should only add `can.EJS.pending()` if there's a magic tag
                                 // within the html tags.
                                 if (specialStates.attributeHookups.length) {
                                     attrs = "attrs: ['" + specialStates.attributeHookups.join("','") + "'], ";
                                     specialStates.attributeHookups = [];
                                 }
                                 // this is the > of a special tag
-                                if (tagName === top(specialStates.tagHookups)) {
+                                // comparison to lastTagHookup makes sure the same custom tags can be nested
+                                if ((tagName + specialStates.tagHookups.length) !== specialStates.lastTagHookup && tagName === top(specialStates.tagHookups)) {
                                     // If it's a self closing tag (like <content/>) make sure we put the / at the end.
                                     if (emptyElement) {
                                         content = content.substr(0, content.length - 1);
@@ -4157,13 +4358,13 @@
                                     if (emptyElement) {
                                         buff.push("}));");
                                         content = "/>";
-                                        specialStates.tagHookups.pop();
+                                        popTagHookup();
                                     }
                                     // if it's an empty tag	 
                                     else if (tokens[i] === "<" && tokens[i + 1] === "/" + tagName) {
                                         buff.push("}));");
                                         content = token;
-                                        specialStates.tagHookups.pop();
+                                        popTagHookup();
                                     } else {
                                         // it has content
                                         buff.push(",subtemplate: function(" + this.text.argNames + "){\n" + startTxt + (this.text.start || ''));
@@ -4206,14 +4407,8 @@
                                         // Otherwise we are creating a quote.
                                         // TODO: does this handle `\`?
                                         var attr = getAttrName();
-                                        if (VIEWATTR.attributes[attr]) {
+                                        if (viewCallbacks.attr(attr)) {
                                             specialStates.attributeHookups.push(attr);
-                                        } else {
-                                            can.each(VIEWATTR.regExpAttributes, function(attrMatcher) {
-                                                if (attrMatcher.match.test(attr)) {
-                                                    specialStates.attributeHookups.push(attr);
-                                                }
-                                            });
                                         }
 
                                         if (specialAttribute) {
@@ -4271,7 +4466,6 @@
                                             tagName = cleanedTagName;
                                             popTagName = true;
                                         }
-
                                         // if we are in a closing tag of a custom tag
                                         if (top(specialStates.tagHookups) === cleanedTagName) {
 
@@ -4280,10 +4474,9 @@
 
                                             // finish the "section"
                                             buff.push(finishTxt + "}}) );");
-
                                             // the < belongs to the outside
                                             content = "><";
-                                            specialStates.tagHookups.pop();
+                                            popTagHookup();
                                         }
 
                                     } else {
@@ -4292,7 +4485,7 @@
 
                                         }
 
-                                        if (tagName !== "!--" && (VIEWTAG.tags[tagName] || automaticCustomElementCharacters.test(tagName))) {
+                                        if (tagName !== "!--" && (viewCallbacks.tag(tagName))) {
                                             // if the content tag is inside something it doesn't belong ...
                                             if (tagName === "content" && elements.tagMap[top(tagNames)]) {
                                                 // convert it to an element that will work
@@ -4322,10 +4515,8 @@
 
                                         // We are ending a block.
                                         if (bracketCount === 1) {
-
                                             // We are starting on. 
-                                            buff.push(insert_cmd, "can.view.txt(0,'" + getTag(tagName, tokens, i) + "'," + status() + ",this,function(){", startTxt, content);
-
+                                            buff.push(insert_cmd, 'can.view.txt(0,\'' + getTag(tagName, tokens, i) + '\',' + status() + ',this,function(){', startTxt, content);
                                             endStack.push({
                                                     before: "",
                                                     after: finishTxt + "}));\n"
@@ -4340,7 +4531,7 @@
                                                 after: ";"
                                             };
 
-                                            // If we are ending a returning block, 
+                                            // If we are ending a returning block,
                                             // add the finish text which returns the result of the
                                             // block.
                                             if (last.before) {
@@ -4391,8 +4582,7 @@
                                         if (typeof content === 'object') {
 
                                             if (content.startTxt && content.end && specialAttribute) {
-
-                                                buff.push(insert_cmd, content.content, '());');
+                                                buff.push(insert_cmd, "can.view.toStr( ", content.content, '() ) );');
 
                                             } else {
 
@@ -4464,37 +4654,13 @@
                     };
 
                 // Use `eval` instead of creating a function, because it is easier to debug.
-                myEval.call(out, 'this.fn = (function(' + this.text.argNames + '){' + out.out + '});\r\n//@ sourceURL=' + name + ".js");
-
+                myEval.call(out, 'this.fn = (function(' + this.text.argNames + '){' + out.out + '});\r\n//# sourceURL=' + name + '.js');
                 return out;
             }
         };
 
         // can.view.attr
-        var VIEWATTR = can.view.attr = function(attributeName, attrHandler) {
-            if (typeof attributeName === "string") {
-                VIEWATTR.attributes[attributeName] = attrHandler;
-            } else {
-                VIEWATTR.regExpAttributes[attributeName] = {
-                    match: attributeName,
-                    handler: attrHandler
-                };
-            }
-        };
 
-        VIEWATTR.attributes = {};
-        VIEWATTR.regExpAttributes = {};
-
-        var VIEWTAG = can.view.tag = function(tagName, tagHandler) {
-            // if we have html5shive ... re-generate
-            if (window.html5) {
-                window.html5.elements += " " + tagName;
-                window.html5.shivDocument();
-            }
-
-            VIEWTAG.tags[tagName.toLowerCase()] = tagHandler;
-        };
-        VIEWTAG.tags = {};
         // This is called when there is a special tag
         can.view.pending = function(viewData) {
             // we need to call any live hookups
@@ -4507,48 +4673,14 @@
                 });
 
                 if (viewData.tagName) {
-
-                    var tagName = viewData.tagName,
-                        helperTagCallback = viewData.options.read('tags.' + tagName, {
-                                isArgument: true,
-                                proxyMethods: false
-                            })
-                            .value,
-                        tagCallback = helperTagCallback || VIEWTAG.tags[tagName];
-
-                    // If this was an element like <foo-bar> that doesn't have a component, just render its content
-                    var scope = viewData.scope,
-                        res = tagCallback ? tagCallback(el, viewData) : scope;
-
-                    //!steal-remove-start
-                    if (!tagCallback) {
-                        can.dev.warn('can/view/scanner.js: No custom element found for ' + tagName);
-                    }
-                    //!steal-remove-end
-
-                    // If the tagCallback gave us something to render with, and there is content within that element
-                    // render it!
-                    if (res && viewData.subtemplate) {
-
-                        if (scope !== res) {
-                            scope = scope.add(res);
-                        }
-                        var frag = can.view.frag(viewData.subtemplate(scope, viewData.options));
-                        can.appendChild(el, frag);
-                    }
-
+                    viewCallbacks.tagHandler(el, viewData.tagName, viewData);
                 }
 
                 can.each(viewData && viewData.attrs || [], function(attributeName) {
                     viewData.attributeName = attributeName;
-                    if (VIEWATTR.attributes[attributeName]) {
-                        VIEWATTR.attributes[attributeName](el, viewData);
-                    } else {
-                        can.each(VIEWATTR.regExpAttributes, function(attrMatcher) {
-                            if (attrMatcher.match.test(attributeName)) {
-                                attrMatcher.handler(el, viewData);
-                            }
-                        });
+                    var callback = viewCallbacks.attr(attributeName);
+                    if (callback) {
+                        callback(el, viewData);
                     }
                 });
 
@@ -4560,11 +4692,13 @@
             return tagData.scope;
         });
 
+        can.view.Scanner = Scanner;
+
         return Scanner;
-    })(__m23, __m25);
+    })(__m13, __m26, __m12);
 
     // ## view/node_lists/node_lists.js
-    var __m28 = (function(can) {
+    var __m29 = (function(can) {
         // In some browsers, text nodes can not take expando properties.
         // We test that here.
         var canExpando = true;
@@ -4597,89 +4731,402 @@
                     textNodeMap['text_' + _id] = node;
                     return 'text_' + _id;
                 }
-            }, splice = [].splice;
+            },
+            splice = [].splice,
+            push = [].push,
+            itemsInChildListTree = function(list) {
+                var count = 0;
+                for (var i = 0, len = list.length; i < len; i++) {
+                    var item = list[i];
+                    if (item.nodeType) {
+                        count++;
+                    } else {
+                        count += itemsInChildListTree(item);
+                    }
+                }
+                return count;
+            };
 
         var nodeLists = {
             id: id,
 
 
             update: function(nodeList, newNodes) {
-                // Unregister all childNodes.
-                can.each(nodeList.childNodeLists, function(nodeList) {
-                    nodeLists.unregister(nodeList);
-                });
-                nodeList.childNodeLists = [];
-                // Remove old node pointers to this list.
-                can.each(nodeList, function(node) {
-                    delete nodeMap[id(node)];
-                });
+                // Unregister all childNodeLists.
+
+                var oldNodes = nodeLists.unregisterChildren(nodeList);
+
                 newNodes = can.makeArray(newNodes);
-                // indicate the new nodes belong to this list
-                can.each(newNodes, function(node) {
-                    nodeMap[id(node)] = nodeList;
-                });
-                var oldListLength = nodeList.length,
-                    firstNode = nodeList[0];
+
+                var oldListLength = nodeList.length;
+
                 // Replace oldNodeLists's contents'
                 splice.apply(nodeList, [
                         0,
                         oldListLength
                     ].concat(newNodes));
-                // update all parent nodes so they are able to replace the correct elements
-                var parentNodeList = nodeList;
-                while (parentNodeList = parentNodeList.parentNodeList) {
-                    splice.apply(parentNodeList, [
-                            can.inArray(firstNode, parentNodeList),
-                            oldListLength
-                        ].concat(newNodes));
+
+                nodeLists.nestList(nodeList);
+
+                return oldNodes;
+            },
+            nestList: function(list) {
+                var index = 0;
+                while (index < list.length) {
+                    var node = list[index],
+                        childNodeList = nodeMap[id(node)];
+                    if (childNodeList) {
+
+                        if (childNodeList !== list) {
+                            // point this 
+                            //childNodeList.
+                            // point the next set of items to the nodeList that contains them
+                            list.splice(index, itemsInChildListTree(childNodeList), childNodeList);
+                        }
+
+                    } else {
+                        nodeMap[id(node)] = list;
+                    }
+                    index++;
+                }
+            },
+            last: function(nodeList) {
+                var last = nodeList[nodeList.length - 1];
+                if (last.nodeType) {
+                    return last;
+                } else {
+                    return nodeLists.last(last);
+                }
+            },
+            first: function(nodeList) {
+                var first = nodeList[0];
+                if (first.nodeType) {
+                    return first;
+                } else {
+                    return nodeLists.first(first);
                 }
             },
 
             register: function(nodeList, unregistered, parent) {
                 // add an id to the nodeList
                 nodeList.unregistered = unregistered;
-                nodeList.childNodeLists = [];
-                if (!parent) {
-                    // find the parent by looking up where this node is
-                    if (nodeList.length > 1) {
-                        throw 'does not work';
-                    }
-                    var nodeId = id(nodeList[0]);
-                    parent = nodeMap[nodeId];
-                }
-                nodeList.parentNodeList = parent;
-                if (parent) {
-                    parent.childNodeLists.push(nodeList);
-                }
+
+                nodeLists.nestList(nodeList);
+
                 return nodeList;
+            },
+            unregisterChildren: function(nodeList) {
+                var nodes = [];
+
+                can.each(nodeList, function(node) {
+                    if (node.nodeType) {
+                        delete nodeMap[id(node)];
+                        nodes.push(node);
+                    } else {
+                        push.apply(nodes, nodeLists.unregister(node));
+                    }
+                });
+                return nodes;
             },
             // removes node in all parent nodes and unregisters all childNodes
 
             unregister: function(nodeList) {
-                if (!nodeList.isUnregistered) {
-                    nodeList.isUnregistered = true;
-                    // unregister all childNodeLists
-                    delete nodeList.parentNodeList;
-                    can.each(nodeList, function(node) {
-                        var nodeId = id(node);
-                        delete nodeMap[nodeId];
-                    });
-                    // this can unbind which will call itself
-                    if (nodeList.unregistered) {
-                        nodeList.unregistered();
-                    }
-                    can.each(nodeList.childNodeLists, function(nodeList) {
-                        nodeLists.unregister(nodeList);
-                    });
+
+                var nodes = nodeLists.unregisterChildren(nodeList);
+
+
+                // this can unbind which will call itself
+                if (nodeList.unregistered) {
+                    var unregisteredCallback = nodeList.unregistered;
+                    delete nodeList.unregistered;
+                    unregisteredCallback();
                 }
+
+                return nodes;
+
             },
             nodeMap: nodeMap
         };
+
+        can.view.nodeLists = nodeLists;
+
         return nodeLists;
-    })(__m2, __m25);
+    })(__m2, __m26);
+
+    // ## view/parser/parser.js
+    var __m30 = (function() {
+
+
+        function makeMap(str) {
+            var obj = {}, items = str.split(",");
+            for (var i = 0; i < items.length; i++) {
+                obj[items[i]] = true;
+            }
+
+            return obj;
+        }
+
+        var alphaNumericHU = "-A-Za-z0-9_",
+            attributeNames = "[a-zA-Z_:][" + alphaNumericHU + ":.]+",
+            spaceEQspace = "\\s*=\\s*",
+            dblQuote2dblQuote = "\"((?:\\\\.|[^\"])*)\"",
+            quote2quote = "'((?:\\\\.|[^'])*)'",
+            attributeEqAndValue = "(?:" + spaceEQspace + "(?:" +
+                "(?:\"[^\"]*\")|(?:'[^']*')|[^>\\s]+))?",
+            matchStash = "\\{\\{[^\\}]*\\}\\}\\}?",
+            stash = "\\{\\{([^\\}]*)\\}\\}\\}?",
+            startTag = new RegExp("^<([" + alphaNumericHU + "]+)" +
+                "(" +
+                "(?:\\s*" +
+                "(?:(?:" +
+                "(?:" + attributeNames + ")?" +
+                attributeEqAndValue + ")|" +
+                "(?:" + matchStash + ")+)" +
+                ")*" +
+                ")\\s*(\\/?)>"),
+            endTag = new RegExp("^<\\/([" + alphaNumericHU + "]+)[^>]*>"),
+            attr = new RegExp("(?:" +
+                "(?:(" + attributeNames + ")|" + stash + ")" +
+                "(?:" + spaceEQspace +
+                "(?:" +
+                "(?:" + dblQuote2dblQuote + ")|(?:" + quote2quote + ")|([^>\\s]+)" +
+                ")" +
+                ")?)", "g"),
+            mustache = new RegExp(stash, "g"),
+            txtBreak = /<|\{\{/;
+
+        // Empty Elements - HTML 5
+        var empty = makeMap("area,base,basefont,br,col,frame,hr,img,input,isindex,link,meta,param,embed");
+
+        // Block Elements - HTML 5
+        var block = makeMap("address,article,applet,aside,audio,blockquote,button,canvas,center,dd,del,dir,div,dl,dt,fieldset,figcaption,figure,footer,form,frameset,h1,h2,h3,h4,h5,h6,header,hgroup,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,output,p,pre,section,script,table,tbody,td,tfoot,th,thead,tr,ul,video");
+
+        // Inline Elements - HTML 5
+        var inline = makeMap("a,abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var");
+
+        // Elements that you can, intentionally, leave open
+        // (and which close themselves)
+        var closeSelf = makeMap("colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr");
+
+        // Attributes that have their values filled in disabled="disabled"
+        var fillAttrs = makeMap("checked,compact,declare,defer,disabled,ismap,multiple,nohref,noresize,noshade,nowrap,readonly,selected");
+
+        // Special Elements (can contain anything)
+        var special = makeMap("script,style");
+
+        var HTMLParser = function(html, handler) {
+
+            function parseStartTag(tag, tagName, rest, unary) {
+                tagName = tagName.toLowerCase();
+
+                if (block[tagName]) {
+                    while (stack.last() && inline[stack.last()]) {
+                        parseEndTag("", stack.last());
+                    }
+                }
+
+                if (closeSelf[tagName] && stack.last() === tagName) {
+                    parseEndTag("", tagName);
+                }
+
+                unary = empty[tagName] || !! unary;
+
+                handler.start(tagName, unary);
+
+                if (!unary) {
+                    stack.push(tagName);
+                }
+                // find attribute or special
+                HTMLParser.parseAttrs(rest, handler);
+
+                handler.end(tagName, unary);
+
+            }
+
+            function parseEndTag(tag, tagName) {
+                // If no tag name is provided, clean shop
+                var pos;
+                if (!tagName) {
+                    pos = 0;
+                }
+
+
+                // Find the closest opened tag of the same type
+                else {
+                    for (pos = stack.length - 1; pos >= 0; pos--) {
+                        if (stack[pos] === tagName) {
+                            break;
+                        }
+                    }
+
+                }
+
+
+                if (pos >= 0) {
+                    // Close all the open elements, up the stack
+                    for (var i = stack.length - 1; i >= pos; i--) {
+                        if (handler.close) {
+                            handler.close(stack[i]);
+                        }
+                    }
+
+                    // Remove the open elements from the stack
+                    stack.length = pos;
+                }
+            }
+
+            function parseMustache(mustache, inside) {
+                if (handler.special) {
+                    handler.special(inside);
+                }
+            }
+
+
+            var index, chars, match, stack = [],
+                last = html;
+            stack.last = function() {
+                return this[this.length - 1];
+            };
+
+            while (html) {
+                chars = true;
+
+                // Make sure we're not in a script or style element
+                if (!stack.last() || !special[stack.last()]) {
+
+                    // Comment
+                    if (html.indexOf("<!--") === 0) {
+                        index = html.indexOf("-->");
+
+                        if (index >= 0) {
+                            if (handler.comment) {
+                                handler.comment(html.substring(4, index));
+                            }
+                            html = html.substring(index + 3);
+                            chars = false;
+                        }
+
+                        // end tag
+                    } else if (html.indexOf("</") === 0) {
+                        match = html.match(endTag);
+
+                        if (match) {
+                            html = html.substring(match[0].length);
+                            match[0].replace(endTag, parseEndTag);
+                            chars = false;
+                        }
+
+                        // start tag
+                    } else if (html.indexOf("<") === 0) {
+                        match = html.match(startTag);
+
+                        if (match) {
+                            html = html.substring(match[0].length);
+                            match[0].replace(startTag, parseStartTag);
+                            chars = false;
+                        }
+                    } else if (html.indexOf("{{") === 0) {
+                        match = html.match(mustache);
+
+                        if (match) {
+                            html = html.substring(match[0].length);
+                            match[0].replace(mustache, parseMustache);
+                        }
+                    }
+
+                    if (chars) {
+                        index = html.search(txtBreak);
+
+                        var text = index < 0 ? html : html.substring(0, index);
+                        html = index < 0 ? "" : html.substring(index);
+
+                        if (handler.chars && text) {
+                            handler.chars(text);
+                        }
+                    }
+
+                } else {
+                    html = html.replace(new RegExp("([\\s\\S]*?)<\/" + stack.last() + "[^>]*>"), function(all, text) {
+                        text = text.replace(/<!--([\s\S]*?)-->|<!\[CDATA\[([\s\S]*?)]]>/g, "$1$2");
+                        if (handler.chars) {
+                            handler.chars(text);
+                        }
+                        return "";
+                    });
+
+                    parseEndTag("", stack.last());
+                }
+
+                if (html === last) {
+                    throw "Parse Error: " + html;
+                }
+
+                last = html;
+            }
+
+            // Clean up any remaining tags
+            parseEndTag();
+
+
+            handler.done();
+        };
+        HTMLParser.parseAttrs = function(rest, handler) {
+
+
+            (rest != null ? rest : "").replace(attr, function(text, name, special, dblQuote, singleQuote, val) {
+                if (special) {
+                    handler.special(special);
+
+                }
+                if (name || dblQuote || singleQuote || val) {
+                    var value = arguments[3] ? arguments[3] :
+                        arguments[4] ? arguments[4] :
+                        arguments[5] ? arguments[5] :
+                        fillAttrs[name.toLowerCase()] ? name : "";
+                    handler.attrStart(name || "");
+
+                    var last = mustache.lastIndex = 0,
+                        res = mustache.exec(value),
+                        chars;
+                    while (res) {
+                        chars = value.substring(
+                            last,
+                            mustache.lastIndex - res[0].length);
+                        if (chars.length) {
+                            handler.attrValue(chars);
+                        }
+                        handler.special(res[1]);
+                        last = mustache.lastIndex;
+                        res = mustache.exec(value);
+                    }
+                    chars = value.substr(
+                        last,
+                        value.length);
+                    if (chars) {
+                        handler.attrValue(chars);
+                    }
+                    handler.attrEnd(name || "");
+                }
+
+
+            });
+
+
+        };
+
+        can.view.parser = HTMLParser;
+
+        return HTMLParser;
+
+    })(__m13);
 
     // ## view/live/live.js
-    var __m27 = (function(can, elements, view, nodeLists) {
+    var __m28 = (function(can, elements, view, nodeLists, parser) {
+
+        elements = elements || can.view.elements;
+        nodeLists = nodeLists || can.view.NodeLists;
+        parser = parser || can.view.parser;
+
         // ## live.js
         // The live module provides live binding for computes
         // and can.List.
@@ -4726,23 +5173,38 @@
             // #### getAttributeParts
             // Breaks up a string like foo='bar' into ["foo","'bar'""]
             getAttributeParts = function(newVal) {
-                return (newVal || '')
-                    .replace(/['"]/g, '')
-                    .split('=');
-            }, splice = [].splice;
+                var attrs = {},
+                    attr;
+                parser.parseAttrs(newVal, {
+                        attrStart: function(name) {
+                            attrs[name] = "";
+                            attr = name;
+                        },
+                        attrValue: function(value) {
+                            attrs[attr] += value;
+                        },
+                        attrEnd: function() {}
+                    });
+                return attrs;
+            },
+            splice = [].splice,
+            isNode = function(obj) {
+                return obj && obj.nodeType;
+            },
+            addTextNodeIfNoChildren = function(frag) {
+                if (!frag.childNodes.length) {
+                    frag.appendChild(document.createTextNode(""));
+                }
+            };
 
         var live = {
 
             list: function(el, compute, render, context, parentNode) {
+
                 // A nodeList of all elements this live-list manages.
                 // This is here so that if this live list is within another section
                 // that section is able to remove the items in this list.
                 var masterNodeList = [el],
-                    // A mapping of the index of an item to an array
-                    // of elements that represent the item.
-                    // Each array is registered so child or parent
-                    // live structures can update the elements.
-                    itemIndexToNodeListsMap = [],
                     // A mapping of items to their indicies'
                     indexMap = [],
                     // Called when items are added to the list.
@@ -4756,65 +5218,86 @@
                             var itemIndex = can.compute(key + index),
                                 // get its string content
                                 itemHTML = render.call(context, item, itemIndex),
+                                gotText = typeof itemHTML === "string",
                                 // and convert it into elements.
-                                itemFrag = can.view.fragment(itemHTML);
+                                itemFrag = can.frag(itemHTML);
                             // Add those elements to the mappings.
-                            newNodeLists.push(nodeLists.register(can.makeArray(itemFrag.childNodes), undefined, masterNodeList));
+
+                            itemFrag = gotText ? can.view.hookup(itemFrag) : itemFrag;
+
+                            var childNodes = can.makeArray(itemFrag.childNodes);
+
+
+
+                            newNodeLists.push(nodeLists.register(childNodes));
                             // Hookup the fragment (which sets up child live-bindings) and
                             // add it to the collection of all added elements.
-                            frag.appendChild(can.view.hookup(itemFrag));
+                            frag.appendChild(itemFrag);
+                            // track indicies;
                             newIndicies.push(itemIndex);
                         });
+                        // The position of elements is always after the initial text placeholder node
+                        var masterListIndex = index + 1;
+
+
                         // Check if we are adding items at the end
-                        if (!itemIndexToNodeListsMap[index]) {
-                            elements.after(index === 0 ? [text] : itemIndexToNodeListsMap[index - 1], frag);
+                        if (!masterNodeList[masterListIndex]) {
+                            elements.after(masterListIndex === 1 ? [text] : [nodeLists.last(masterNodeList[masterListIndex - 1])], frag);
                         } else {
                             // Add elements before the next index's first element.
-                            var el = itemIndexToNodeListsMap[index][0];
+                            var el = nodeLists.first(masterNodeList[masterListIndex]);
                             can.insertBefore(el.parentNode, frag, el);
                         }
-                        splice.apply(itemIndexToNodeListsMap, [
-                                index,
+                        splice.apply(masterNodeList, [
+                                masterListIndex,
                                 0
                             ].concat(newNodeLists));
+
                         // update indices after insert point
                         splice.apply(indexMap, [
                                 index,
                                 0
                             ].concat(newIndicies));
+
                         for (var i = index + newIndicies.length, len = indexMap.length; i < len; i++) {
                             indexMap[i](i);
                         }
                     },
                     // Called when items are removed or when the bindings are torn down.
-                    remove = function(ev, items, index, duringTeardown) {
+                    remove = function(ev, items, index, duringTeardown, fullTeardown) {
                         // If this is because an element was removed, we should
                         // check to make sure the live elements are still in the page.
                         // If we did this during a teardown, it would cause an infinite loop.
                         if (!duringTeardown && data.teardownCheck(text.parentNode)) {
                             return;
                         }
-                        var removedMappings = itemIndexToNodeListsMap.splice(index, items.length),
+                        var removedMappings = masterNodeList.splice(index + 1, items.length),
                             itemsToRemove = [];
                         can.each(removedMappings, function(nodeList) {
+
+                            // Unregister to free up event bindings.
+                            var nodesToRemove = nodeLists.unregister(nodeList);
+
                             // add items that we will remove all at once
-                            [].push.apply(itemsToRemove, nodeList);
-                            // Update any parent lists to remove these items
-                            nodeLists.update(nodeList, []);
-                            // unregister the list
-                            nodeLists.unregister(nodeList);
+                            [].push.apply(itemsToRemove, nodesToRemove);
                         });
                         // update indices after remove point
                         indexMap.splice(index, items.length);
                         for (var i = index, len = indexMap.length; i < len; i++) {
                             indexMap[i](i);
                         }
-                        can.remove(can.$(itemsToRemove));
-                    }, text = document.createTextNode(''),
+                        // don't remove elements during teardown.  Something else will probably be doing that.
+                        if (!fullTeardown) {
+                            can.remove(can.$(itemsToRemove));
+                        }
+
+                    },
+                    // A text node placeholder
+                    text = document.createTextNode(''),
                     // The current list.
                     list,
                     // Called when the list is replaced with a new list or the binding is torn-down.
-                    teardownList = function() {
+                    teardownList = function(fullTeardown) {
                         // there might be no list right away, and the list might be a plain
                         // array
                         if (list && list.unbind) {
@@ -4823,8 +5306,8 @@
                         }
                         // use remove to clean stuff up for us
                         remove({}, {
-                                length: itemIndexToNodeListsMap.length
-                            }, 0, true);
+                                length: masterNodeList.length - 1
+                            }, 0, true, fullTeardown);
                     },
                     // Called when the list is replaced or setup.
                     updateList = function(ev, newList, oldList) {
@@ -4848,8 +5331,9 @@
                     if (can.isFunction(compute)) {
                         compute.unbind('change', updateList);
                     }
-                    teardownList();
+                    teardownList(true);
                 });
+
                 live.replace(masterNodeList, text, data.teardownCheck);
                 // run the list setup
                 updateList({}, can.isFunction(compute) ? compute() : compute);
@@ -4859,25 +5343,34 @@
                 var data;
                 parentNode = elements.getParentNode(el, parentNode);
                 data = listen(parentNode, compute, function(ev, newVal, oldVal) {
+
                     // TODO: remove teardownCheck in 2.1
-                    var attached = nodes[0].parentNode;
+                    var attached = nodeLists.first(nodes).parentNode;
                     // update the nodes in the DOM with the new rendered value
                     if (attached) {
                         makeAndPut(newVal);
                     }
-                    data.teardownCheck(nodes[0].parentNode);
+                    data.teardownCheck(nodeLists.first(nodes).parentNode);
                 });
 
                 var nodes = [el],
                     makeAndPut = function(val) {
-                        var frag = can.view.fragment('' + val),
+                        var isString = !isNode(val),
+                            frag = can.frag(val),
                             oldNodes = can.makeArray(nodes);
+
+                        // Add a placeholder textNode if necessary.
+                        addTextNodeIfNoChildren(frag);
+
+                        if (isString) {
+                            frag = can.view.hookup(frag, parentNode);
+                        }
                         // We need to mark each node as belonging to the node list.
-                        nodeLists.update(nodes, frag.childNodes);
-                        frag = can.view.hookup(frag, parentNode);
+                        oldNodes = nodeLists.update(nodes, frag.childNodes);
                         elements.replace(oldNodes, frag);
                     };
                 data.nodeList = nodes;
+
                 // register the span so nodeLists knows the parentNodeList
                 nodeLists.register(nodes, data.teardownCheck);
                 makeAndPut(compute());
@@ -4885,22 +5378,16 @@
 
             replace: function(nodes, val, teardown) {
                 var oldNodes = nodes.slice(0),
-                    frag;
+                    frag = can.frag(val);
                 nodeLists.register(nodes, teardown);
-                if (typeof val === 'string') {
-                    frag = can.view.fragment(val);
-                } else if (val.nodeType !== 11) {
-                    frag = document.createDocumentFragment();
-                    frag.appendChild(val);
-                } else {
-                    frag = val;
-                }
-                // We need to mark each node as belonging to the node list.
-                nodeLists.update(nodes, frag.childNodes);
+
+
                 if (typeof val === 'string') {
                     // if it was a string, check for hookups
                     frag = can.view.hookup(frag, nodes[0].parentNode);
                 }
+                // We need to mark each node as belonging to the node list.
+                nodeLists.update(nodes, frag.childNodes);
                 elements.replace(oldNodes, frag);
                 return nodes;
             },
@@ -4912,39 +5399,50 @@
                     // Sometimes this is 'unknown' in IE and will throw an exception if it is
 
                     if (typeof node.nodeValue !== 'unknown') {
-                        node.nodeValue = '' + newVal;
+                        node.nodeValue = can.view.toStr(newVal);
                     }
 
                     // TODO: remove in 2.1
                     data.teardownCheck(node.parentNode);
                 }),
                     // The text node that will be updated
-                    node = document.createTextNode(compute());
+                    node = document.createTextNode(can.view.toStr(compute()));
                 // Replace the placeholder with the live node and do the nodeLists thing.
                 // Add that node to nodeList so we can remove it when the parent element is removed from the page
                 data.nodeList = live.replace([el], node, data.teardownCheck);
             },
+            setAttributes: function(el, newVal) {
+                var attrs = getAttributeParts(newVal);
+                for (var name in attrs) {
+                    can.attr.set(el, name, attrs[name]);
+                }
+            },
 
             attributes: function(el, compute, currentValue) {
+                var oldAttrs = {};
+
                 var setAttrs = function(newVal) {
-                    var parts = getAttributeParts(newVal),
-                        newAttrName = parts.shift();
-                    // Remove if we have a change and used to have an `attrName`.
-                    if (newAttrName !== attrName && attrName) {
-                        elements.removeAttr(el, attrName);
+                    var newAttrs = getAttributeParts(newVal),
+                        name;
+                    for (name in newAttrs) {
+                        var newValue = newAttrs[name],
+                            oldValue = oldAttrs[name];
+                        if (newValue !== oldValue) {
+                            can.attr.set(el, name, newValue);
+                        }
+                        delete oldAttrs[name];
                     }
-                    // Set if we have a new `attrName`.
-                    if (newAttrName) {
-                        elements.setAttr(el, newAttrName, parts.join('='));
-                        attrName = newAttrName;
+                    for (name in oldAttrs) {
+                        elements.removeAttr(el, name);
                     }
+                    oldAttrs = newAttrs;
                 };
                 listen(el, compute, function(ev, newVal) {
                     setAttrs(newVal);
                 });
                 // current value has been set
                 if (arguments.length >= 3) {
-                    var attrName = getAttributeParts(currentValue)[0];
+                    oldAttrs = getAttributeParts(currentValue);
                 } else {
                     setAttrs(compute());
                 }
@@ -5008,6 +5506,12 @@
                     elements.setAttr(el, attributeName, getValue(newVal));
                 });
                 elements.setAttr(el, attributeName, getValue(compute()));
+            },
+            simpleAttribute: function(el, attributeName, compute) {
+                listen(el, compute, function(ev, newVal) {
+                    elements.setAttr(el, attributeName, newVal);
+                });
+                elements.setAttr(el, attributeName, compute());
             }
         };
         var newLine = /(\r|\n)+/g;
@@ -5019,13 +5523,12 @@
             return regexp.test(val) ? val.substr(1, val.length - 2) : val;
         };
         can.view.live = live;
-        can.view.nodeLists = nodeLists;
-        can.view.elements = elements;
+
         return live;
-    })(__m2, __m25, __m23, __m28);
+    })(__m2, __m26, __m13, __m29, __m30);
 
     // ## view/render.js
-    var __m26 = (function(can, elements, live) {
+    var __m27 = (function(can, elements, live) {
 
 
         var pendingHookups = [],
@@ -5253,10 +5756,10 @@
             });
 
         return can;
-    })(__m23, __m25, __m27, __m14);
+    })(__m13, __m26, __m28, __m16);
 
     // ## view/mustache/mustache.js
-    var __m21 = (function(can) {
+    var __m23 = (function(can) {
 
         // # mustache.js
         // `can.Mustache`: The Mustache templating engine.
@@ -5277,6 +5780,8 @@
             HASH = '___h4sh',
             // An alias for the most used context stacking call.
             CONTEXT_OBJ = '{scope:' + SCOPE + ',options:options}',
+            // a context object used to incidate being special
+            SPECIAL_CONTEXT_OBJ = '{scope:' + SCOPE + ',options:options, special: true}',
             // argument names used to start the function (used by scanner and steal)
             ARG_NAMES = SCOPE + ",options",
 
@@ -5709,7 +6214,9 @@
                                             m;
 
                                         // Start the content render block.
-                                        result.content += 'can.Mustache.txt(\n' + CONTEXT_OBJ + ',\n' + (mode ? '"' + mode + '"' : 'null') + ',';
+                                        result.content += 'can.Mustache.txt(\n' +
+                                        (cmd.specialAttribute ? SPECIAL_CONTEXT_OBJ : CONTEXT_OBJ) +
+                                            ',\n' + (mode ? '"' + mode + '"' : 'null') + ',';
 
                                         // Parse the helper arguments.
                                         // This needs uses this method instead of a split(/\s/) so that 
@@ -5750,6 +6257,7 @@
                                     }
                                     switch (mode) {
                                         // Truthy section
+                                        case '^':
                                         case '#':
                                             result.content += ('{fn:function(' + ARG_NAMES + '){var ___v1ew = [];');
                                             break;
@@ -5758,9 +6266,6 @@
 
                                         case 'else':
                                             result.content += 'return ___v1ew.join("");}},\n{inverse:function(' + ARG_NAMES + '){\nvar ___v1ew = [];';
-                                            break;
-                                        case '^':
-                                            result.content += '{inverse:function(' + ARG_NAMES + '){\nvar ___v1ew = [];';
                                             break;
 
                                             // Not a section, no mode
@@ -5839,6 +6344,13 @@
             helperOptions.fn = makeConvertToScopes(helperOptions.fn, scope, options);
             helperOptions.inverse = makeConvertToScopes(helperOptions.inverse, scope, options);
 
+            // if mode is ^, swap fn and inverse
+            if (mode === '^') {
+                var tmp = helperOptions.fn;
+                helperOptions.fn = helperOptions.inverse;
+                helperOptions.inverse = tmp;
+            }
+
             // Check for a registered helper or a helper-like function.
             if (helper = (getHelper && (typeof name === "string" && Mustache.getHelper(name, options)) || (can.isFunction(name) && !name.isComputed && {
                             fn: name
@@ -5861,7 +6373,7 @@
             }
 
             return function() {
-
+                //{{#foo.bar zed ted}}
                 var value;
                 if (can.isFunction(name) && name.isComputed) {
                     value = name();
@@ -6204,10 +6716,10 @@
             });
 
         return can;
-    })(__m2, __m22, __m23, __m24, __m20, __m26);
+    })(__m2, __m24, __m13, __m25, __m22, __m27);
 
     // ## view/bindings/bindings.js
-    var __m29 = (function(can) {
+    var __m31 = (function(can) {
 
 
         can.view.attr("can-value", function(el, data) {
@@ -6286,7 +6798,6 @@
                 handler = specialData.handler;
                 event = specialData.event;
             }
-
             can.bind.call(el, event, handler);
         });
 
@@ -6415,14 +6926,13 @@
                     }
                 });
 
-    })(__m2, __m21, __m12);
+    })(__m2, __m23, __m14);
 
     // ## component/component.js
-    var __m1 = (function(can) {
+    var __m1 = (function(can, viewCallbacks) {
         // ## Helpers
         // Attribute names to ignore for setting scope values.
-        var ignoreAttributesRegExp = /^(dataViewId|class|id)$/i,
-            viewAttr = can.view.attr;
+        var ignoreAttributesRegExp = /^(dataViewId|class|id)$/i;
 
         var Component = can.Component = can.Construct.extend(
 
@@ -6531,14 +7041,8 @@
                         var name = can.camelize(node.nodeName.toLowerCase()),
                             value = node.value;
                         // ignore attributes already in ScopeMappings
-                        if (component.constructor.attributeScopeMappings[name] || ignoreAttributesRegExp.test(name) || viewAttr.attributes[node.nodeName]) {
+                        if (component.constructor.attributeScopeMappings[name] || ignoreAttributesRegExp.test(name) || viewCallbacks.attr(node.nodeName)) {
                             return;
-                        }
-
-                        for (var attrNames in viewAttr.regExpAttributes) {
-                            if (viewAttr.regExpAttributes[attrNames].match.test(node.nodeName)) {
-                                return;
-                            }
                         }
 
                         // Cross-bind the value in the scope to this 
@@ -6710,10 +7214,10 @@
         };
 
         return Component;
-    })(__m2, __m12, __m15, __m21, __m29);
+    })(__m2, __m12, __m14, __m17, __m23, __m31);
 
     // ## model/model.js
-    var __m30 = (function(can) {
+    var __m32 = (function(can) {
 
         // ## model.js  
         // `can.Model`  
@@ -7018,9 +7522,15 @@
                         return;
                     }
 
-                    this.List = ML({
-                            Map: this
-                        }, {});
+                    if (staticProps && staticProps.List) {
+                        this.List = staticProps.List;
+                        this.List.Map = this;
+                    } else {
+                        this.List = base.List.extend({
+                                Map: this
+                            }, {});
+                    }
+
                     var self = this,
                         clean = can.proxy(this._clean, self);
 
@@ -7254,10 +7764,10 @@
             });
 
         return can.Model;
-    })(__m2, __m16, __m19);
+    })(__m2, __m18, __m21);
 
     // ## util/string/deparam/deparam.js
-    var __m32 = (function(can) {
+    var __m34 = (function(can) {
         // ## deparam.js  
         // `can.deparam`  
         // _Takes a string of name value pairs and returns a Object literal that represents those params._
@@ -7299,10 +7809,10 @@
                 }
             });
         return can;
-    })(__m2, __m14);
+    })(__m2, __m16);
 
     // ## route/route.js
-    var __m31 = (function(can) {
+    var __m33 = (function(can) {
 
         // ## route.js
         // `can.route`
@@ -7677,7 +8187,7 @@
                         prop = args.shift(),
                         binding = can.route.bindings[can.route.currentBinding || can.route.defaultBinding],
                         method = binding[prop];
-                    if (typeof method === "function") {
+                    if (method.apply) {
                         return method.apply(binding, args);
                     } else {
                         return method;
@@ -7742,10 +8252,10 @@
         };
 
         return can.route;
-    })(__m2, __m16, __m19, __m32);
+    })(__m2, __m18, __m21, __m34);
 
     // ## control/route/route.js
-    var __m33 = (function(can) {
+    var __m35 = (function(can) {
 
         // ## control/route.js
         // _Controller route integration._
@@ -7782,7 +8292,7 @@
         };
 
         return can;
-    })(__m2, __m31, __m12);
+    })(__m2, __m33, __m14);
 
     window['can'] = __m3;
 })();
