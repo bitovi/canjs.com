@@ -506,7 +506,10 @@
 			<span class="hljs-keyword">return</span> compares(a, b, aParent, bParent);
 		}
 		compares = compares || {};
-		<span class="hljs-keyword">if</span> (a <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Date</span>) {
+		<span class="hljs-keyword">if</span> (a === <span class="hljs-literal">null</span> || b === <span class="hljs-literal">null</span>) {
+			<span class="hljs-keyword">return</span> a === b;
+		}
+		<span class="hljs-keyword">if</span> (a <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Date</span> || b <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Date</span>) {
 			<span class="hljs-keyword">return</span> a === b;
 		}
 		<span class="hljs-keyword">if</span> (deep === -<span class="hljs-number">1</span>) {

@@ -1337,7 +1337,15 @@ reads this property if it happens to be binding on it</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>					value = getterSetter;
-					<span class="hljs-keyword">var</span> options = context;
+					<span class="hljs-keyword">var</span> options = context,
+						oldUpdater = updater;
+						
+					updater = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+						<span class="hljs-keyword">var</span> newVal = get.call(context);
+						<span class="hljs-keyword">if</span>(newVal !== value) {
+							oldUpdater(newVal, value);
+						}
+					};
 					get = options.get || get;
 					set = options.set || set;
 					on = options.on || on;

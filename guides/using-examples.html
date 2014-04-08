@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Models - CanJS Guides</title>
+  <title>Examples - CanJS Guides</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -105,23 +105,9 @@
 			
 	   </li>
 	
-	   <li class="search-container">
+	   <li class="search-container active">
 	   		<a href="Using.html" data-search="Setting up CanJS">
 				Setting up CanJS
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="Why.html" data-search="Why CanJS?">
-				Why CanJS?
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container active">
-	   		<a href="Recipes.html" data-search="Recipes">
-				Recipes
 			</a>
 			
 				
@@ -132,9 +118,9 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="RecipesControls.html" 
-							data-search="Controls">
-							Controls
+							href="using-download.html" 
+							data-search="Download">
+							Download
 						</a>
 						
 					</li>
@@ -147,9 +133,9 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="RecipesLiveBindings.html" 
-							data-search="Live Bindings">
-							Live Bindings
+							href="using-loading.html" 
+							data-search="Loading">
+							Loading
 						</a>
 						
 					</li>
@@ -162,9 +148,9 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="RecipesRouting.html" 
-							data-search="Routing">
-							Routing
+							href="using-production.html" 
+							data-search="In Production">
+							In Production
 						</a>
 						
 					</li>
@@ -177,9 +163,9 @@
 				
 					<li class="search-container active  expanded">
 						<a 	class="page" 
-							href="RecipesModels.html" 
-							data-search="Models">
-							Models
+							href="using-examples.html" 
+							data-search="Examples">
+							Examples
 						</a>
 						
 							
@@ -189,23 +175,22 @@
 			
 			
 		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="page" 
-							href="RecipesEverything.html" 
-							data-search="Everything Together">
-							Everything Together
-						</a>
-						
-					</li>
-				
-			
-			
-		
 	</ul>
 
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Recipes.html" data-search="Recipes">
+				Recipes
+			</a>
 			
 	   </li>
 	
@@ -249,14 +234,14 @@
 	<article class="content docs">
 		<section class="title">
 			<div class="heading">
-<h1>Models</h1>
+<h1>Examples</h1>
 	<ul class="tags">
 		<li>page</li>
 	</ul>
 	
 	
 	
-		<span class="module">RecipesModels</span>
+		<span class="module">using-examples</span>
 	
 	
 	
@@ -271,7 +256,7 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/wiki/can/guides/recipes_models">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/wiki/can/guides/using-examples">source</a></li>
 	
 	
 		
@@ -299,102 +284,171 @@
 
 		
 		<section class="comment">
-			<p>The following recipes show how to use <code>can.Model</code> (and often the <code>can.fixture</code> plugin).</p>
+			<h2>jQuery from a CDN</h2>
 
-<h3>Showing the same data in 2 places</h3>
+<p>The easiest way to get started with CanJS is to create the following <code>index.html</code> which loads everything from a CDN:</p>
 
-<p>The following recipe shows how <code>can.Model</code>'s internal store and <code>can.view</code>'s live-binding
-can easily solve the editing-data-that-is-represented-two-places problem.  It 
-shows two task lists of overlaping data.  Notice how the <strong>"do dishes"</strong> is listed 
-twice. But if you click one "do dishes" checkbox, it updates the other.</p>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;CanJS Tutorial&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"&gt;&lt;/script&gt;
+    &lt;script src="http://canjs.com/release/latest/can.jquery.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"&gt;
+        $(function() {
+            // Your CanJS code here
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 
-<iframe style="width: 100%; height: 300px"
-        src="http://jsfiddle.net/donejs/SnRKV/embedded/result,html,js,css" 
-        allowfullscreen="allowfullscreen" 
-        frameborder="0">JSFiddle</iframe>
+<h2>Bower + Grunt</h2>
 
-<h4>How it works</h4>
+<p>A more convenient way to get the latest version of CanJS and easily stay is the <a href="http://bower.io/">Bower</a> package manager.
+If you haven't yet, initialize a <code>bower.json</code> in your project folder by running</p>
 
-<p>The code first sets up a <code>can.fixture</code> to return different, but overlapping lists of 
-tasks from the server.  The fixture returns data from the following calls:</p>
+<blockquote>
+  <p>bower init</p>
+</blockquote>
 
-<ul>
-<li><code>/tasks?due=today</code></li>
-<li><code>/tasks?type=critical</code></li>
-</ul>
+<p>After that we need to add jQuery and CanJS as dependencies:</p>
 
-<p>You'll notice "do dishes" in both lists.</p>
+<blockquote>
+  <p>bower install jquery canjs --save</p>
+</blockquote>
 
-<p>The code then creates a <code>Task</code> model that maps findAll to <code>/tasks</code>.  It then uses
-<code>can.view</code> to render the retrieved tasks with the <code>tasksEJS</code> template. </p>
+<p>And the following <code>index.html</code> in the same folder, that also loads the <a href="/docs/can.route.pushstate.html">Pushstate</a> and <a href="/docs/can.Map.backup.html">can.Map.backup</a> plugins:</p>
 
-<p>Finally, it listens when an <code>input</code> element's value changes.  When it does,
-it gets the task model instance from the <code>li</code> element's <code>$.data</code> and 
-updates it's "complete" property.</p>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;CanJS Tutorial&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script src="bower_components/jquery/dist/jquery.js"&gt;&lt;/script&gt;
+    &lt;script src="bower_components/canjs/can.jquery.js"&gt;&lt;/script&gt;
+    &lt;script src="bower_components/canjs/can.route.pushstate.js"&gt;&lt;/script&gt;
+    &lt;script src="bower_components/canjs/can.map.backup"&gt;&lt;/script&gt;
+    &lt;script src="js/app.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 
-<p><strong><em>The Secret Sauce</em></strong></p>
+<p>In <code>js/app.js</code>:</p>
 
-<p>Model keeps an internal, non-leaking, store of instances your app loads.  When
-<code>Task.findAll({type: "critical"})</code> and <code>Task.findAll({due: "today"})</code> get their
-raw JSON data from the server, they convert it to instances.  But before they create
-a new instance, they check if the same instance, matched by 
-the <a href="../docs/can.Model.id.html">id</a> property already exists.  If it
-does, it uses that instance. </p>
+<pre><code>$(function() {
+    // Your CanJS code here
+});
+</code></pre>
 
-<p>This means that the <code>criticalTasks</code> list and <code>todaysTasks</code> list both point to the 
-same instance. When <code>can.EJS</code> does it's live binding on <code>&lt;%= task.attr("complete") ? "checked" : "" %&gt;</code>
-it's actually binding on the same "do dishes" intance once.  So updating "do dishes" updates
-the DOM in two places!</p>
+<p>An easy way to get this setup production ready is creating an <code>index.production.html</code> that references the production files:</p>
 
-<h3>Caching Data in Local Storage</h3>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;CanJS Tutorial&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script src="production.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 
-<p>The following recipe shows how <code>can.Model</code> can be used to create an ORM-like 
-model layer for keeping a local copy of a restful API. This type of base model
-is perfect for situations where you want a responsive UI, but may not want to 
-wait for updates from the server before displaying data, or you need to make 
-your data persist offline. Storing your responses in <code>localStorage</code> allows you 
-to get data to the view as quickly as possible.</p>
+<p>With <a href="http://gruntjs.com/">Grunt</a> as a build tool your <code>Gruntfile.js</code> to create <code>production.js</code> can look like this:</p>
 
-<iframe style="width: 100%; height: 300px" 
-        src="http://jsfiddle.net/donejs/ZhScj/embedded/result%2Cjs/" 
-        allowfullscreen="allowfullscreen" 
-        frameborder="0">JSFiddle</iframe>
+<pre><code>module.exports = function(grunt) {
 
-<h4>How it works</h4>
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+    concat: {
+      options: {
+        separator: ';'
+      },
+      dist: {
+        src: [
+          'js/**/*.js',
+          'bower_components/jquery/dist/jquery.js',
+          'bower_components/canjs/can.jquery.js',
+          'bower_components/canjs/can.route.pushstate.js',
+          'bower_components/canjs/can.map.backup'
+        ],
+        dest: 'dist.js'
+      }
+    },
+    uglify: {
+      options: {
+        banner: '/*! &lt;%= pkg.name %&gt; &lt;%= grunt.template.today("dd-mm-yyyy") %&gt; */\n'
+      },
+      dist: {
+        files: {
+          'production.min.js': ['&lt;%= concat.dist.dest %&gt;']
+        }
+      }
+    }
+  });
 
-<p>When creating your base model for other models to extend from, you can prefix 
-static service methods with <code>make</code>, to allow the base model to define how the 
-extending model's method will behave. In this example, our base model implements
-a static method called <code>makeFindOne</code>. This method acts as a hook to define the 
-extending model's <code>findOne</code> method. Using this, we can create a middleware-like
-layer between the extending model and the base model that loads and saves model
-data to <code>localStorage</code>, while still requesting out to the restful API to get 
-updates.</p>
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-concat');
 
-<p><strong><em>The Secret Sauce</em></strong></p>
+  grunt.registerTask('default', ['concat', 'uglify']);
+};
+</code></pre>
 
-<p>The secret sauce for this example is the static <code>makeFindOne</code> method along with
-EJS's live binding. Because the live binding will automatically update the view when the 
-bound model gets updated, we can write our code as usual and allow the base model
-to deliver <code>localStorage</code> data instantly, while automatically upating with responses
-from the server, with no extra effort.</p>
+<h2>Bower + RequireJS</h2>
 
-<h3>Real Time Chat</h3>
+<p>A fairly common setup is using CanJS with RequireJS and <a href="http://bower.io/">Bower</a> as the package manager which is described in the following section. For a working example have a look at the <a href="http://todomvc.com/labs/dependency-examples/canjs_require/">RequireJS + CanJS TodoMVC example</a>.</p>
 
-<p>Type a message in one page, it instantly shows up in the other.</p>
+<p>If you haven't yet, initialize a <code>bower.json</code> in your project folder by running</p>
 
-<iframe style="width: 100%; height: 300px" 
-        src="http://jsfiddle.net/donejs/bBVHs/embedded/result%2Cjs/" 
-        allowfullscreen="allowfullscreen" 
-        frameborder="0">JSFiddle</iframe>
+<blockquote>
+  <p>bower init</p>
+</blockquote>
 
-<iframe style="width: 100%; height: 300px" 
-        src="http://jsfiddle.net/donejs/bBVHs/embedded/result%2Cjs/"
-        allowfullscreen="allowfullscreen" 
-        frameborder="0">JSFiddle</iframe>
+<p>After that we need to add jQuery, RequireJS and CanJS as dependencies:</p>
 
-<p><a href="http://bitovi.com/blog/2013/02/weekly-widget-chat.html">How it works</a>
-t-chat.html)</p>
+<blockquote>
+  <p>bower install jquery requirejs canjs --save</p>
+</blockquote>
+
+<p>And initialize RequireJS on our HTML page and point the root module to <code>js/app</code>:</p>
+
+<pre><code>&lt;script data-main="js/app" src="bower_components/requirejs/require.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>In <code>js/app.js</code>:</p>
+
+<pre><code>require.config({
+  paths : {
+    "jquery" : "bower_components/jquery/jquery",
+    "can": "bower_components/can/amd"
+  }
+});
+
+require('./my-control', function(MyControl, can) {
+  new MyControl('body', {});
+});
+</code></pre>
+
+<p>In <code>js/my-control.js</code>:</p>
+
+<pre><code>require(['can/control', 'can/view/mustache'], function(Control, can) {
+  // Use Mustache and Control
+  return Control.extend({
+    init: function() {
+      this.element.html(can.view('views/index.mustache', {
+        message: 'CanJS'
+      }));
+    }
+  });
+});
+</code></pre>
+
+<p>In <code>view/index.mustache</code>:</p>
+
+<pre><code>&lt;h1&gt;Hello {{message}}!&lt;/h1&gt;
+</code></pre>
+
+<p>You are set up and good to go. Follow up in the <a href="using-production.html">Using CanJS in production</a> section on how to pre-compile your views and make a build using the RequireJS optimizer.</p>
 		</section>
 		
 
@@ -403,7 +457,7 @@ t-chat.html)</p>
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"page","name":"RecipesModels","description":"","title":"Models","parent":"Recipes","order":3,"comment":" ","src":"can/guides/recipes_models.md","id":20};
+	var docData = {"type":"page","name":"using-examples","description":"","title":"Examples","parent":"Using","order":3,"src":"can/guides/using-examples.md","id":26};
 
 	console.log(docData);
 </script>

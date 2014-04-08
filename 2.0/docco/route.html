@@ -1711,7 +1711,7 @@ easily kick off calling setState
 				prop = args.shift(),
 				binding = can.route.bindings[can.route.currentBinding || can.route.defaultBinding],
 				method = binding[prop];
-			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> method === <span class="hljs-string">"function"</span>) {
+			<span class="hljs-keyword">if</span> (method.apply) {
 				<span class="hljs-keyword">return</span> method.apply(binding, args);
 			} <span class="hljs-keyword">else</span> {
 				<span class="hljs-keyword">return</span> method;

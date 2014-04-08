@@ -1504,9 +1504,12 @@ if the type of the attribute is not a <code>number</code> or a <code>string</cod
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (parts.length) {
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (parts.length &amp;&amp; current) {
 					<span class="hljs-keyword">return</span> current.removeAttr(parts);
 				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">if</span> (!!~attr.indexOf(<span class="hljs-string">'.'</span>)) {
+						prop = attr;
+					}
 					<span class="hljs-keyword">if</span> (isList) {
 						<span class="hljs-keyword">this</span>.splice(prop, <span class="hljs-number">1</span>);
 					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (prop <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>._data) {</pre></div></div>

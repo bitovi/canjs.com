@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>With StealJS - CanJS Guides</title>
+  <title>Loading - CanJS Guides</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -106,8 +106,8 @@
 	   </li>
 	
 	   <li class="search-container active">
-	   		<a href="Using.html" data-search="Using CanJS">
-				Using CanJS
+	   		<a href="Using.html" data-search="Setting up CanJS">
+				Setting up CanJS
 			</a>
 			
 				
@@ -118,24 +118,9 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="using-standalone.html" 
-							data-search="Standalone">
-							Standalone
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="page" 
-							href="using-require.html" 
-							data-search="With AMD (RequireJS)">
-							With AMD (RequireJS)
+							href="using-download.html" 
+							data-search="Download">
+							Download
 						</a>
 						
 					</li>
@@ -148,9 +133,9 @@
 				
 					<li class="search-container active  expanded">
 						<a 	class="page" 
-							href="using-steal.html" 
-							data-search="With StealJS">
-							With StealJS
+							href="using-loading.html" 
+							data-search="Loading">
+							Loading
 						</a>
 						
 							
@@ -166,8 +151,23 @@
 					<li class="search-container  ">
 						<a 	class="page" 
 							href="using-production.html" 
-							data-search="In production">
-							In production
+							data-search="In Production">
+							In Production
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="using-examples.html" 
+							data-search="Examples">
+							Examples
 						</a>
 						
 					</li>
@@ -234,14 +234,14 @@
 	<article class="content docs">
 		<section class="title">
 			<div class="heading">
-<h1>With StealJS</h1>
+<h1>Loading</h1>
 	<ul class="tags">
 		<li>page</li>
 	</ul>
 	
 	
 	
-		<span class="module">using-steal</span>
+		<span class="module">using-loading</span>
 	
 	
 	
@@ -256,7 +256,7 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/wiki/can/guides/using-steal">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/wiki/can/guides/using-loading">source</a></li>
 	
 	
 		
@@ -272,8 +272,7 @@
 		
 
 		<section class="description">
-			<p>StealJS is the dependency manager that comes with <a href="http://javascriptmvc.com">JavaScriptMVC</a> and that is natively used by CanJS.
-Since JavaScriptMVC comes with CanJS and Steal, the easiest way to use them together is by <a href="http://javascriptmvc.com/dist/javascriptmvc-3.3.zip">downloading JavaScriptMVC</a>. You can also use the <code>steal/</code> folder from the CanJS download or Bower package.</p>
+			<p>There are several ways to load CanJS in your application. Most likely you will use one of the pre-built versions like <code>can.jquery.js</code> but it is also possible to load each module individually using AMD or Steal.</p>
 		</section>
 
 		
@@ -285,7 +284,255 @@ Since JavaScriptMVC comes with CanJS and Steal, the easiest way to use them toge
 
 		
 		<section class="comment">
-			<p>With the JavaScriptMVC download, in the main folder, you can simply run the application generator:</p>
+			<h2>In a <code>&lt;script&gt;</code> tag</h2>
+
+<p>The most common way of using CanJS is the core builds from the download (or download builder) included in a <code>&lt;script&gt;</code> tag. The following section contains quick instructions how to load CanJS for each library it supports.</p>
+
+<h3>jQuery</h3>
+
+<p>CanJS supports jQuery in the latest 1.X and 2.0 version. Include jQuery before your CanJS jQuery build to get started:</p>
+
+<pre><code>&lt;script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"&gt;
+&lt;/script&gt;
+&lt;script src="can.jquery.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  $(function() {
+    // start using CanJS
+    var Todo = can.Model.extend({
+      ...
+    });
+  });
+&lt;/script&gt;
+</code></pre>
+
+<h3>Zepto</h3>
+
+<p>CanJS supports Zepto 0.9+. Include a copy of Zepto along with CanJS to get started.</p>
+
+<pre><code>&lt;!-- Zepto 0.8 with focus/blur patch applied --&gt;
+&lt;script src="http://zeptojs.com/zepto.js"&gt;&lt;/script&gt;
+&lt;script src="can.zepto.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  $(function() {
+    // start using CanJS
+    var Todo = can.Model.extend({
+      ...
+    });
+  });
+&lt;/script&gt;
+</code></pre>
+
+<h3>Dojo</h3>
+
+<p>You can also use the <a href="http://dojotoolkit.org/download/">Dojo base download</a> and simply include it alongside CanJS:</p>
+
+<pre><code>&lt;script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"&gt;
+&lt;/script&gt;
+&lt;script src="can.dojo.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  // start using CanJS
+  var Todo = can.Model.extend({
+    ...
+  });
+&lt;/script&gt;
+</code></pre>
+
+<h3>Mootools</h3>
+
+<p>CanJS supports Mootools 1.4+. Include a copy of <a href="http://mootools.net/download">Mootools Core</a> along with CanJS to get started.</p>
+
+<p>Mootools Core has an issue where <strong>focus</strong> and <strong>blur</strong> events are not fired for delegate event listeners.
+Include Mootools More's Event.Pseudos module for <strong>focus</strong> and <strong>blur</strong> support.</p>
+
+<pre><code>&lt;script src="https://ajax.googleapis.com/ajax/libs/mootools/1.4.5/
+mootools.js"&gt;&lt;/script&gt;
+&lt;!-- Mootools More Event.Pseudos module --&gt;
+&lt;script src="mootools-more-event_pseudos-1.4.0.1.js"&gt;&lt;/script&gt;
+&lt;script src="can.mootools.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  // start using CanJS
+  var Todo = can.Model({
+    ...
+  });
+&lt;/script&gt;
+</code></pre>
+
+<h3>YUI</h3>
+
+<p>CanJS supports YUI 3.4+ with both dynamically or statically loaded modules.
+CanJS depends on the following YUI modules: <strong>node</strong>, <strong>io-base</strong>, <strong>querystring</strong>, <strong>event-focus</strong>, and <strong>array-extras</strong>. The <strong>selector-css2</strong> and <strong>selector-css3</strong> YUI modules are optional, but necessary for IE7 and other browsers that don't support <strong>querySelectorAll</strong>.</p>
+
+<p>To use with dynamically loaded modules, include the YUI loader along with CanJS.
+Add <code>'can'</code> to your normal list of modules with <code>YUI().use('can', ...)</code> wherever CanJS will be used.</p>
+
+<pre><code>&lt;script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js"&gt;&lt;/script&gt;
+&lt;script src="can.yui.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  // CanJS with support for modern browsers
+  YUI().use('can', function(Y) {
+    // start using CanJS
+    Todo = can.Model({
+      ...
+    });
+  });
+  // CanJS with support for IE7 and other browsers without querySelectorAll
+  YUI({ loadOptional: true }).use('can', function(Y) {
+    // start using CanJS
+    Todo = can.Model({
+      ...
+    });
+  });
+&lt;/script&gt;
+</code></pre>
+
+<p>To use with statically loaded modules, include a static copy of YUI (with the
+previously mentioned YUI dependencies) along with CanJS. CanJS will automatically
+be included wherever <code>YUI().use('*')</code> is used.</p>
+
+<pre><code>&lt;!-- YUI Configurator: http://yuilibrary.com/yui/configurator/ --&gt;
+&lt;script src="http://yui.yahooapis.com/combo?3.7.3/build/yui-base/yui-base-min.
+js&amp;3.7.3/build/oop/oop-min.js&amp;3.7.3/build/event-custom-base/event-custom-base-
+min.js&amp;3.7.3/build/features/features-min.js&amp;3.7.3/build/dom-core/dom-core-min.
+js&amp;3.7.3/build/dom-base/dom-base-min.js&amp;3.7.3/build/selector-native/selector-n
+ative-min.js&amp;3.7.3/build/selector/selector-min.js&amp;3.7.3/build/node-core/node-c
+ore-min.js&amp;3.7.3/build/node-base/node-base-min.js&amp;3.7.3/build/event-base/event
+-base-min.js&amp;3.7.3/build/event-delegate/event-delegate-min.js&amp;3.7.3/build/node
+-event-delegate/node-event-delegate-min.js&amp;3.7.3/build/pluginhost-base/pluginh
+ost-base-min.js&amp;3.7.3/build/pluginhost-config/pluginhost-config-min.js&amp;3.7.3/b
+uild/node-pluginhost/node-pluginhost-min.js&amp;3.7.3/build/dom-style/dom-style-mi
+n.js&amp;3.7.3/build/dom-screen/dom-screen-min.js&amp;3.7.3/build/node-screen/node-scr
+een-min.js&amp;3.7.3/build/node-style/node-style-min.js&amp;3.7.3/build/querystring-st
+ringify-simple/querystring-stringify-simple-min.js&amp;3.7.3/build/io-base/io-base
+-min.js&amp;3.7.3/build/array-extras/array-extras-min.js&amp;3.7.3/build/querystring-p
+arse/querystring-parse-min.js&amp;3.7.3/build/querystring-stringify/querystring-st
+ringify-min.js&amp;3.7.3/build/event-custom-complex/event-custom-complex-min.js&amp;3.
+4.1/build/event-synthetic/event-synthetic-min.js&amp;3.7.3/build/event-focus/event
+-focus-min.js"&gt;&lt;/script&gt;
+&lt;script src="can.yui.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+    // start using CanJS
+    Todo = can.Model({
+      ...
+    });
+&lt;/script&gt;
+</code></pre>
+
+<p>CanJS can also bind to YUI widget events. The following example shows how to
+bind to the <strong>selectionChange</strong> event for a YUI Calendar widget:</p>
+
+<pre><code>YUI().use('can', 'calendar', function(Y) {
+  // create models
+  Todo = can.Model({ ... });
+  Todo.List = can.Model.List({ ... });
+  // create control
+  Todos = can.Control({
+    // listen to the calendar widget's selectionChange event
+    '{calendar} selectionChange': function(calendar, ev){
+      // do something with the selected date
+      var selectedDate = ev.newSelection[0];
+      ...
+    }
+  });
+  // initialize the app
+  Todo.findAll({}, function(todos) {
+    new Todos('#todoapp', {
+      todos: todos,
+      calendar: new Y.Calendar({
+        contentBox: "#calendar"
+      }).render()
+    });
+  });
+});
+</code></pre>
+
+<h2>AMD</h2>
+
+<p>The <a href="../download.html">CanJS Download</a> contains an <code>amd/</code> folder which allows you to load any CanJS component and plugin using an AMD module loader like <a href="http://requirejs.org/">RequireJS</a>. Unlike many other JavaScript libraries CanJS is fully modular and loading a dependency will only include the modules actually used (for example, <code>can/control</code> will only load <code>can/construct</code> and <code>can/util</code>). The <code>amd-dev/</code> folder contains the same files but with debugging message enabled which can be very helpful during development.</p>
+
+<h3>Configuration</h3>
+
+<p>The default library used with AMD modules is jQuery. CanJS will reference the <code>jquery</code> module so that name needs to point to your jQuery source and the <code>can</code> module name needs to be mapped to the <code>amd/</code> folder of the CanJS download.</p>
+
+<h3>RequireJS</h3>
+
+<p>In RequireJS a simple configuration looks like this:</p>
+
+<pre><code>&lt;script type="text/javascript" src="require.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript"&gt;
+  require.config({
+    paths : {
+      "jquery" : "http://code.jquery.com/jquery-2.0.3",
+      "can": "path/to/can/amd"
+    }
+  });
+
+  require(['can/control', 'can/view/mustache'], function(Control, can) {
+    // Use Mustache and Control
+    var MyControl = Control.extend({
+      init: function() {
+        this.element.html(can.view('path/to/view.mustache', this.options));
+      }
+    });
+  });
+&lt;/script&gt;
+</code></pre>
+
+<p>The <code>can</code> module is a shortcut that loads CanJS's core plugins and returns the <code>can</code> namespace:</p>
+
+<pre><code>require(['can'], function(can) {
+  // Use can.Control, can.view, can.Model etc.
+});
+</code></pre>
+
+<h3>Dojo</h3>
+
+<p>The configuration for Dojo is similar but <code>can/util/library</code> needs to be mapped to <code>can/util/dojo</code>:</p>
+
+<pre><code>&lt;script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"&gt;
+&lt;/script&gt;
+&lt;script src="can.dojo.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  require({
+    aliases : [
+      ['can/util/library', 'can/util/dojo']
+    ],
+    paths : {
+      can: 'path/to/can/amd'
+    }
+  });
+
+  require(['can/control'], function(Control) {
+    // Use Control
+  });
+&lt;/script&gt;
+</code></pre>
+
+<h3>Using other libraries</h3>
+
+<p>If you would like to use another library, map the <code>can/util/library</code> module to <code>can/util/zepto</code>,
+<code>can/util/yui</code> or <code>can/util/mootools</code>.</p>
+
+<p>With RequireJS and Zepto, it loks like this:</p>
+
+<pre><code>require.config({
+  paths : {
+    "can": "path/to/can/amd",
+    "zepto" : "http://cdnjs.cloudflare.com/ajax/libs/zepto/1.0rc1/zepto.min"
+  },
+  map : {
+    '*' : {
+      "can/util/library" : "can/util/zepto"
+    }
+  }
+});
+</code></pre>
+
+<h2>StealJS</h2>
+
+<p>StealJS is the dependency manager that comes with <a href="http://javascriptmvc.com">JavaScriptMVC</a> and that is natively used by CanJS.
+Since JavaScriptMVC comes with CanJS and Steal, the easiest way to use them together is by <a href="http://javascriptmvc.com/dist/javascriptmvc-3.3.zip">downloading JavaScriptMVC</a>. You can also use the <code>steal/</code> folder from the CanJS download or Bower package.</p>
+
+<p>With the JavaScriptMVC download, in the main folder, you can simply run the application generator:</p>
 
 <blockquote>
   <p>./js jmvc/generate/app app</p>
@@ -311,7 +558,7 @@ For more information follow up in the <a href="http://javascriptmvc.com/docs">Ja
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"page","name":"using-steal","description":"<p>StealJS is the dependency manager that comes with <a href=\"http://javascriptmvc.com\">JavaScriptMVC</a> and that is natively used by CanJS.\nSince JavaScriptMVC comes with CanJS and Steal, the easiest way to use them together is by <a href=\"http://javascriptmvc.com/dist/javascriptmvc-3.3.zip\">downloading JavaScriptMVC</a>. You can also use the <code>steal/</code> folder from the CanJS download or Bower package.</p>","title":"With StealJS","parent":"Using","order":2,"src":"can/guides/using-steal.md","id":28};
+	var docData = {"type":"page","name":"using-loading","description":"<p>There are several ways to load CanJS in your application. Most likely you will use one of the pre-built versions like <code>can.jquery.js</code> but it is also possible to load each module individually using AMD or Steal.</p>","title":"Loading","parent":"Using","order":1,"src":"can/guides/using-loading.md","id":27};
 
 	console.log(docData);
 </script>

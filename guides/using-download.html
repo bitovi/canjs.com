@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Models - CanJS Guides</title>
+  <title>Download - CanJS Guides</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -105,23 +105,9 @@
 			
 	   </li>
 	
-	   <li class="search-container">
+	   <li class="search-container active">
 	   		<a href="Using.html" data-search="Setting up CanJS">
 				Setting up CanJS
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="Why.html" data-search="Why CanJS?">
-				Why CanJS?
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container active">
-	   		<a href="Recipes.html" data-search="Recipes">
-				Recipes
 			</a>
 			
 				
@@ -130,56 +116,11 @@
 			
 				
 				
-					<li class="search-container  ">
-						<a 	class="page" 
-							href="RecipesControls.html" 
-							data-search="Controls">
-							Controls
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="page" 
-							href="RecipesLiveBindings.html" 
-							data-search="Live Bindings">
-							Live Bindings
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="page" 
-							href="RecipesRouting.html" 
-							data-search="Routing">
-							Routing
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
 					<li class="search-container active  expanded">
 						<a 	class="page" 
-							href="RecipesModels.html" 
-							data-search="Models">
-							Models
+							href="using-download.html" 
+							data-search="Download">
+							Download
 						</a>
 						
 							
@@ -194,9 +135,39 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="RecipesEverything.html" 
-							data-search="Everything Together">
-							Everything Together
+							href="using-loading.html" 
+							data-search="Loading">
+							Loading
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="using-production.html" 
+							data-search="In Production">
+							In Production
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="using-examples.html" 
+							data-search="Examples">
+							Examples
 						</a>
 						
 					</li>
@@ -206,6 +177,20 @@
 		
 	</ul>
 
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Recipes.html" data-search="Recipes">
+				Recipes
+			</a>
 			
 	   </li>
 	
@@ -249,14 +234,14 @@
 	<article class="content docs">
 		<section class="title">
 			<div class="heading">
-<h1>Models</h1>
+<h1>Download</h1>
 	<ul class="tags">
 		<li>page</li>
 	</ul>
 	
 	
 	
-		<span class="module">RecipesModels</span>
+		<span class="module">using-download</span>
 	
 	
 	
@@ -271,7 +256,7 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/wiki/can/guides/recipes_models">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/wiki/can/guides/using-download">source</a></li>
 	
 	
 		
@@ -299,102 +284,102 @@
 
 		
 		<section class="comment">
-			<p>The following recipes show how to use <code>can.Model</code> (and often the <code>can.fixture</code> plugin).</p>
+			<h2>The CanJS download</h2>
 
-<h3>Showing the same data in 2 places</h3>
-
-<p>The following recipe shows how <code>can.Model</code>'s internal store and <code>can.view</code>'s live-binding
-can easily solve the editing-data-that-is-represented-two-places problem.  It 
-shows two task lists of overlaping data.  Notice how the <strong>"do dishes"</strong> is listed 
-twice. But if you click one "do dishes" checkbox, it updates the other.</p>
-
-<iframe style="width: 100%; height: 300px"
-        src="http://jsfiddle.net/donejs/SnRKV/embedded/result,html,js,css" 
-        allowfullscreen="allowfullscreen" 
-        frameborder="0">JSFiddle</iframe>
-
-<h4>How it works</h4>
-
-<p>The code first sets up a <code>can.fixture</code> to return different, but overlapping lists of 
-tasks from the server.  The fixture returns data from the following calls:</p>
+<p>The buttons on the <a href="http://canjs.com">CanJS homepage</a> lets you either get the full download or create customized download using the
+<a href="#section_Thedownloadbuilder">download builder</a>. The full download is a zipped version of <a href="https://github.com/bitovi/canjs.com">this repository</a>
+and contains:</p>
 
 <ul>
-<li><code>/tasks?due=today</code></li>
-<li><code>/tasks?type=critical</code></li>
+<li><code>can.&lt;library&gt;.js</code> (e.g. <code>can.jquery.js</code>) - The core build for a supported library</li>
+<li><code>can.&lt;library&gt;.dev.js</code> - A development build logging useful messages for a supported library</li>
+<li><code>can.&lt;library&gt;.min.js</code> - The minified core build for a supported library</li>
+<li><code>can.&lt;type&gt;.&lt;plugin&gt;</code> - Individual builds for each official CanJS plugin</li>
+<li><code>amd/</code> - CanJS provided as AMD modules (see [using-require using with RequireJS] for usage)</li>
+<li><code>amd-dev/</code> - CanJS AMD modules with development messages</li>
+<li><code>steal/</code> - CanJS modules using the StealJS syntax (see [using-steal using with StealJS])</li>
 </ul>
 
-<p>You'll notice "do dishes" in both lists.</p>
+<p>The <a href="http://canjs.com/download.html">download page</a> also offers those downloads for older versions and pre-releases for the next version from the "Other Versions" dropdown.</p>
 
-<p>The code then creates a <code>Task</code> model that maps findAll to <code>/tasks</code>.  It then uses
-<code>can.view</code> to render the retrieved tasks with the <code>tasksEJS</code> template. </p>
+<h2>The download builder</h2>
 
-<p>Finally, it listens when an <code>input</code> element's value changes.  When it does,
-it gets the task model instance from the <code>li</code> element's <code>$.data</code> and 
-updates it's "complete" property.</p>
+<p>The <a href="http://canjs.com/download.html">download builder</a> creates a single - optionally minified - JavaScript
+file (<code>can.custom.js</code>) for the library and CanJS modules (including plugins) you selected in the currently released version.
+The advantage is that you will get a single file with only the dependencies needed. The banner at the top will
+contain a "Download from:" link so that you will be able to re-download the same configuration for newer versions.</p>
 
-<p><strong><em>The Secret Sauce</em></strong></p>
+<h2>Bower</h2>
 
-<p>Model keeps an internal, non-leaking, store of instances your app loads.  When
-<code>Task.findAll({type: "critical"})</code> and <code>Task.findAll({due: "today"})</code> get their
-raw JSON data from the server, they convert it to instances.  But before they create
-a new instance, they check if the same instance, matched by 
-the <a href="../docs/can.Model.id.html">id</a> property already exists.  If it
-does, it uses that instance. </p>
+<p><a href="http://bower.io/">Bower</a> is a package manager to organize dependencies on front-end packages. Bower runs over Git, and is package-agnostic. The CanJS Bower package references the <a href="https://github.com/bitovi/canjs.com">same repository</a>
+(and files) as the Zip download. With <a href="http://nodejs.org">NodeJS</a> available Bower can easily be installed via:</p>
 
-<p>This means that the <code>criticalTasks</code> list and <code>todaysTasks</code> list both point to the 
-same instance. When <code>can.EJS</code> does it's live binding on <code>&lt;%= task.attr("complete") ? "checked" : "" %&gt;</code>
-it's actually binding on the same "do dishes" intance once.  So updating "do dishes" updates
-the DOM in two places!</p>
+<blockquote>
+  <p>npm install bower -g</p>
+</blockquote>
 
-<h3>Caching Data in Local Storage</h3>
+<p>To install the latest CanJS release run:</p>
 
-<p>The following recipe shows how <code>can.Model</code> can be used to create an ORM-like 
-model layer for keeping a local copy of a restful API. This type of base model
-is perfect for situations where you want a responsive UI, but may not want to 
-wait for updates from the server before displaying data, or you need to make 
-your data persist offline. Storing your responses in <code>localStorage</code> allows you 
-to get data to the view as quickly as possible.</p>
+<blockquote>
+  <p>bower install canjs</p>
+</blockquote>
 
-<iframe style="width: 100%; height: 300px" 
-        src="http://jsfiddle.net/donejs/ZhScj/embedded/result%2Cjs/" 
-        allowfullscreen="allowfullscreen" 
-        frameborder="0">JSFiddle</iframe>
+<p>To save the dependency in you <code>bower.json</code> configuration:</p>
 
-<h4>How it works</h4>
+<blockquote>
+  <p>bower install canjs --save</p>
+</blockquote>
 
-<p>When creating your base model for other models to extend from, you can prefix 
-static service methods with <code>make</code>, to allow the base model to define how the 
-extending model's method will behave. In this example, our base model implements
-a static method called <code>makeFindOne</code>. This method acts as a hook to define the 
-extending model's <code>findOne</code> method. Using this, we can create a middleware-like
-layer between the extending model and the base model that loads and saves model
-data to <code>localStorage</code>, while still requesting out to the restful API to get 
-updates.</p>
+<p>To install a different version (e.g. 1.1.8):</p>
 
-<p><strong><em>The Secret Sauce</em></strong></p>
+<blockquote>
+  <p>bower install canjs#1.1.8</p>
+</blockquote>
 
-<p>The secret sauce for this example is the static <code>makeFindOne</code> method along with
-EJS's live binding. Because the live binding will automatically update the view when the 
-bound model gets updated, we can write our code as usual and allow the base model
-to deliver <code>localStorage</code> data instantly, while automatically upating with responses
-from the server, with no extra effort.</p>
+<p>To get a CanJS pre-release run:</p>
 
-<h3>Real Time Chat</h3>
+<blockquote>
+  <p>bower install canjs#minor</p>
+</blockquote>
 
-<p>Type a message in one page, it instantly shows up in the other.</p>
+<h2>The GitHub CDN</h2>
 
-<iframe style="width: 100%; height: 300px" 
-        src="http://jsfiddle.net/donejs/bBVHs/embedded/result%2Cjs/" 
-        allowfullscreen="allowfullscreen" 
-        frameborder="0">JSFiddle</iframe>
+<p>We also make every CanJS version available via our homepage as:</p>
 
-<iframe style="width: 100%; height: 300px" 
-        src="http://jsfiddle.net/donejs/bBVHs/embedded/result%2Cjs/"
-        allowfullscreen="allowfullscreen" 
-        frameborder="0">JSFiddle</iframe>
+<ul>
+<li><a href="http://canjs.com/release/latest/can.jquery.js">canjs.com/release/</a> - For the latest version for each library and plugin:
+<ul><li><a href="http://canjs.com/release/latest/can.jquery.js">can.jquery.js</a></li>
+<li><a href="http://canjs.com/release/latest/can.zepto.js">can.zepto.js</a></li>
+<li><a href="http://canjs.com/release/latest/can.dojo.js">can.dojo.js</a></li>
+<li><a href="http://canjs.com/release/latest/can.mootools.js">can.mootools.js</a></li>
+<li><a href="http://canjs.com/release/latest/can.yui.js">can.yui.js</a></li></ul></li>
+<li><a href="http://canjs.com/release/2.0.0/can.jquery.js">canjs.com/--version--/can.jquery.js</a> - For a specific version</li>
+</ul>
 
-<p><a href="http://bitovi.com/blog/2013/02/weekly-widget-chat.html">How it works</a>
-t-chat.html)</p>
+<p>A list of all available CDN releases and files can be found at <a href="https://github.com/bitovi/canjs.com/tree/gh-pages/release">github.com/bitovi/canjs.com/tree/gh-pages/release</a>.</p>
+
+<p><strong>Note:</strong> We highly recommend to always reference a specific version and never <code>latest</code> directly in a production environment.
+Latest can contain backwards incompatible releases <strong>and will break your application</strong>.</p>
+
+<h2>JSFiddle</h2>
+
+<p>To make quick demos and examples for CanJS you can use one of the following <a href="http://jsfiddle.com">JSFiddles</a>:</p>
+
+<ul>
+<li><a href="http://jsfiddle.net/donejs/qYdwR/">jQuery</a></li>
+<li><a href="http://jsfiddle.net/donejs/7Yaxk/">Zepto</a></li>
+<li><a href="http://jsfiddle.net/donejs/9x96n/">Dojo</a></li>
+<li><a href="http://jsfiddle.net/donejs/w6m73/">YUI</a></li>
+<li><a href="http://jsfiddle.net/donejs/mnNJX/">Mootools</a></li>
+</ul>
+
+<h2>IE 8 Support</h2>
+
+<p>While CanJS does support Internet Exporer 8 out of the box, if you decide
+to use <a href="/docs/can.Component.html">can.Components</a> then you will need to use the <a href="https://github.com/aFarkas/html5shiv">HTML5 Shiv</a>
+in order for your custom tags to work properly. Unfortunately, at the moment, the official HTML5 Shiv
+does not work with namespaced tag names (e.g. &lt;can:example&gt;). Thankfully, CanJS comes with a version that
+fixes this and we've already submitted a pull request so future users of HTML5 Shiv won't run into this issue.</p>
 		</section>
 		
 
@@ -403,7 +388,7 @@ t-chat.html)</p>
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"page","name":"RecipesModels","description":"","title":"Models","parent":"Recipes","order":3,"comment":" ","src":"can/guides/recipes_models.md","id":20};
+	var docData = {"type":"page","name":"using-download","description":"","title":"Download","parent":"Using","order":0,"src":"can/guides/using-download.md","id":25};
 
 	console.log(docData);
 </script>

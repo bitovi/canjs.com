@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>With AMD (RequireJS) - CanJS Guides</title>
+  <title>Examples - CanJS Guides</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -106,8 +106,8 @@
 	   </li>
 	
 	   <li class="search-container active">
-	   		<a href="Using.html" data-search="Using CanJS">
-				Using CanJS
+	   		<a href="Using.html" data-search="Setting up CanJS">
+				Setting up CanJS
 			</a>
 			
 				
@@ -118,27 +118,10 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="using-standalone.html" 
-							data-search="Standalone">
-							Standalone
+							href="using-download.html" 
+							data-search="Download">
+							Download
 						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container active  expanded">
-						<a 	class="page" 
-							href="using-require.html" 
-							data-search="With AMD (RequireJS)">
-							With AMD (RequireJS)
-						</a>
-						
-							
 						
 					</li>
 				
@@ -150,9 +133,9 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="using-steal.html" 
-							data-search="With StealJS">
-							With StealJS
+							href="using-loading.html" 
+							data-search="Loading">
+							Loading
 						</a>
 						
 					</li>
@@ -166,9 +149,26 @@
 					<li class="search-container  ">
 						<a 	class="page" 
 							href="using-production.html" 
-							data-search="In production">
-							In production
+							data-search="In Production">
+							In Production
 						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container active  expanded">
+						<a 	class="page" 
+							href="using-examples.html" 
+							data-search="Examples">
+							Examples
+						</a>
+						
+							
 						
 					</li>
 				
@@ -234,14 +234,14 @@
 	<article class="content docs">
 		<section class="title">
 			<div class="heading">
-<h1>With AMD (RequireJS)</h1>
+<h1>Examples</h1>
 	<ul class="tags">
 		<li>page</li>
 	</ul>
 	
 	
 	
-		<span class="module">using-require</span>
+		<span class="module">using-examples</span>
 	
 	
 	
@@ -256,7 +256,7 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/wiki/can/guides/using-require">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/wiki/can/guides/using-examples">source</a></li>
 	
 	
 		
@@ -272,7 +272,7 @@
 		
 
 		<section class="description">
-			<p>The <a href="../download.html">CanJS Download</a> contains an <code>amd/</code> folder which allows you to load any CanJS component and plugin using an AMD module loader like <a href="http://requirejs.org/">RequireJS</a>. Unlike many other JavaScript libraries CanJS is fully modular and loading a dependency will only include the modules actually used (for example, <code>can/control</code> will only load <code>can/construct</code> and <code>can/util</code>). The <code>amd-dev/</code> folder contains the same files but with debugging message enabled which can be very helpful during development.</p>
+			
 		</section>
 
 		
@@ -284,82 +284,114 @@
 
 		
 		<section class="comment">
-			<h2>Configuration</h2>
+			<h2>jQuery from a CDN</h2>
 
-<p>The default library used with AMD modules is jQuery. CanJS will reference the <code>jquery</code> module so that name needs to point to your jQuery source and the <code>can</code> module name needs to be mapped to the <code>amd/</code> folder of the CanJS download.</p>
+<p>The easiest way to get started with CanJS is to create the following <code>index.html</code> which loads everything from a CDN:</p>
 
-<p><strong>RequireJS:</strong></p>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;CanJS Tutorial&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"&gt;&lt;/script&gt;
+    &lt;script src="http://canjs.com/release/latest/can.jquery.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"&gt;
+        $(function() {
+            // Your CanJS code here
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 
-<p>In RequireJS a simple configuration looks like this:</p>
+<h2>Bower + Grunt</h2>
 
-<pre><code>&lt;script type="text/javascript" src="require.js"&gt;&lt;/script&gt;
-&lt;script type="text/javascript"&gt;
-  require.config({
-    paths : {
-      "jquery" : "http://code.jquery.com/jquery-2.0.3",
-      "can": "path/to/can/amd"
-    }
-  });
+<p>A more convenient way to get the latest version of CanJS and easily stay is the <a href="http://bower.io/">Bower</a> package manager.
+If you haven't yet, initialize a <code>bower.json</code> in your project folder by running</p>
 
-  require(['can/control', 'can/view/mustache'], function(Control, can) {
-    // Use Mustache and Control
-    var MyControl = Control.extend({
-      init: function() {
-        this.element.html(can.view('path/to/view.mustache', this.options));
+<blockquote>
+  <p>bower init</p>
+</blockquote>
+
+<p>After that we need to add jQuery and CanJS as dependencies:</p>
+
+<blockquote>
+  <p>bower install jquery canjs --save</p>
+</blockquote>
+
+<p>And the following <code>index.html</code> in the same folder, that also loads the <a href="/docs/can.route.pushstate.html">Pushstate</a> and <a href="/docs/can.Map.backup.html">can.Map.backup</a> plugins:</p>
+
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;CanJS Tutorial&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script src="bower_components/jquery/dist/jquery.js"&gt;&lt;/script&gt;
+    &lt;script src="bower_components/canjs/can.jquery.js"&gt;&lt;/script&gt;
+    &lt;script src="bower_components/canjs/can.route.pushstate.js"&gt;&lt;/script&gt;
+    &lt;script src="bower_components/canjs/can.map.backup"&gt;&lt;/script&gt;
+    &lt;script src="js/app.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>In <code>js/app.js</code>:</p>
+
+<pre><code>$(function() {
+    // Your CanJS code here
+});
+</code></pre>
+
+<p>An easy way to get this setup production ready is creating an <code>index.production.html</code> that references the production files:</p>
+
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;CanJS Tutorial&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script src="production.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>With <a href="http://gruntjs.com/">Grunt</a> as a build tool your <code>Gruntfile.js</code> to create <code>production.js</code> can look like this:</p>
+
+<pre><code>module.exports = function(grunt) {
+
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+    concat: {
+      options: {
+        separator: ';'
+      },
+      dist: {
+        src: [
+          'js/**/*.js',
+          'bower_components/jquery/dist/jquery.js',
+          'bower_components/canjs/can.jquery.js',
+          'bower_components/canjs/can.route.pushstate.js',
+          'bower_components/canjs/can.map.backup'
+        ],
+        dest: 'dist.js'
       }
-    });
-  });
-&lt;/script&gt;
-</code></pre>
-
-<p>The <code>can</code> module is a shortcut that loads CanJS's core plugins and returns the <code>can</code> namespace:</p>
-
-<pre><code>require(['can'], function(can) {
-  // Use can.Control, can.view, can.Model etc.
-});
-</code></pre>
-
-<p><strong>Dojo:</strong></p>
-
-<p>The configuration for Dojo is similar but <code>can/util/library</code> needs to be mapped to <code>can/util/dojo</code>:</p>
-
-<pre><code>&lt;script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"&gt;
-&lt;/script&gt;
-&lt;script src="can.dojo.js"&gt;&lt;/script&gt;
-&lt;script&gt;
-  require({
-    aliases : [
-      ['can/util/library', 'can/util/dojo']
-    ],
-    paths : {
-      can: 'path/to/can/amd'
+    },
+    uglify: {
+      options: {
+        banner: '/*! &lt;%= pkg.name %&gt; &lt;%= grunt.template.today("dd-mm-yyyy") %&gt; */\n'
+      },
+      dist: {
+        files: {
+          'production.min.js': ['&lt;%= concat.dist.dest %&gt;']
+        }
+      }
     }
   });
 
-  require(['can/control'], function(Control) {
-    // Use Control
-  });
-&lt;/script&gt;
-</code></pre>
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-concat');
 
-<p><strong>Other libraries:</strong></p>
-
-<p>If you would like to use another library, map the <code>can/util/library</code> module to <code>can/util/zepto</code>,
-<code>can/util/yui</code> or <code>can/util/mootools</code>.</p>
-
-<p>With RequireJS and Zepto, it loks like this:</p>
-
-<pre><code>require.config({
-  paths : {
-    "can": "path/to/can/amd",
-    "zepto" : "http://cdnjs.cloudflare.com/ajax/libs/zepto/1.0rc1/zepto.min"
-  },
-  map : {
-    '*' : {
-      "can/util/library" : "can/util/zepto"
-    }
-  }
-});
+  grunt.registerTask('default', ['concat', 'uglify']);
+};
 </code></pre>
 
 <h2>Bower + RequireJS</h2>
@@ -425,7 +457,7 @@ require('./my-control', function(MyControl, can) {
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"page","name":"using-require","description":"<p>The <a href=\"../download.html\">CanJS Download</a> contains an <code>amd/</code> folder which allows you to load any CanJS component and plugin using an AMD module loader like <a href=\"http://requirejs.org/\">RequireJS</a>. Unlike many other JavaScript libraries CanJS is fully modular and loading a dependency will only include the modules actually used (for example, <code>can/control</code> will only load <code>can/construct</code> and <code>can/util</code>). The <code>amd-dev/</code> folder contains the same files but with debugging message enabled which can be very helpful during development.</p>","title":"With AMD (RequireJS)","parent":"Using","order":1,"src":"can/guides/using-require.md","id":26};
+	var docData = {"type":"page","name":"using-examples","description":"","title":"Examples","parent":"Using","order":3,"src":"can/guides/using-examples.md","id":26};
 
 	console.log(docData);
 </script>

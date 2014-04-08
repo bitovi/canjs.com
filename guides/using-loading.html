@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Models - CanJS Guides</title>
+  <title>Loading - CanJS Guides</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -105,23 +105,9 @@
 			
 	   </li>
 	
-	   <li class="search-container">
+	   <li class="search-container active">
 	   		<a href="Using.html" data-search="Setting up CanJS">
 				Setting up CanJS
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="Why.html" data-search="Why CanJS?">
-				Why CanJS?
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container active">
-	   		<a href="Recipes.html" data-search="Recipes">
-				Recipes
 			</a>
 			
 				
@@ -132,39 +118,9 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="RecipesControls.html" 
-							data-search="Controls">
-							Controls
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="page" 
-							href="RecipesLiveBindings.html" 
-							data-search="Live Bindings">
-							Live Bindings
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="page" 
-							href="RecipesRouting.html" 
-							data-search="Routing">
-							Routing
+							href="using-download.html" 
+							data-search="Download">
+							Download
 						</a>
 						
 					</li>
@@ -177,9 +133,9 @@
 				
 					<li class="search-container active  expanded">
 						<a 	class="page" 
-							href="RecipesModels.html" 
-							data-search="Models">
-							Models
+							href="using-loading.html" 
+							data-search="Loading">
+							Loading
 						</a>
 						
 							
@@ -194,9 +150,24 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="RecipesEverything.html" 
-							data-search="Everything Together">
-							Everything Together
+							href="using-production.html" 
+							data-search="In Production">
+							In Production
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="using-examples.html" 
+							data-search="Examples">
+							Examples
 						</a>
 						
 					</li>
@@ -206,6 +177,20 @@
 		
 	</ul>
 
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Recipes.html" data-search="Recipes">
+				Recipes
+			</a>
 			
 	   </li>
 	
@@ -249,14 +234,14 @@
 	<article class="content docs">
 		<section class="title">
 			<div class="heading">
-<h1>Models</h1>
+<h1>Loading</h1>
 	<ul class="tags">
 		<li>page</li>
 	</ul>
 	
 	
 	
-		<span class="module">RecipesModels</span>
+		<span class="module">using-loading</span>
 	
 	
 	
@@ -271,7 +256,7 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/wiki/can/guides/recipes_models">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/wiki/can/guides/using-loading">source</a></li>
 	
 	
 		
@@ -287,7 +272,7 @@
 		
 
 		<section class="description">
-			
+			<p>There are several ways to load CanJS in your application. Most likely you will use one of the pre-built versions like <code>can.jquery.js</code> but it is also possible to load each module individually using AMD or Steal.</p>
 		</section>
 
 		
@@ -299,102 +284,272 @@
 
 		
 		<section class="comment">
-			<p>The following recipes show how to use <code>can.Model</code> (and often the <code>can.fixture</code> plugin).</p>
+			<h2>In a <code>&lt;script&gt;</code> tag</h2>
 
-<h3>Showing the same data in 2 places</h3>
+<p>The most common way of using CanJS is the core builds from the download (or download builder) included in a <code>&lt;script&gt;</code> tag. The following section contains quick instructions how to load CanJS for each library it supports.</p>
 
-<p>The following recipe shows how <code>can.Model</code>'s internal store and <code>can.view</code>'s live-binding
-can easily solve the editing-data-that-is-represented-two-places problem.  It 
-shows two task lists of overlaping data.  Notice how the <strong>"do dishes"</strong> is listed 
-twice. But if you click one "do dishes" checkbox, it updates the other.</p>
+<h3>jQuery</h3>
 
-<iframe style="width: 100%; height: 300px"
-        src="http://jsfiddle.net/donejs/SnRKV/embedded/result,html,js,css" 
-        allowfullscreen="allowfullscreen" 
-        frameborder="0">JSFiddle</iframe>
+<p>CanJS supports jQuery in the latest 1.X and 2.0 version. Include jQuery before your CanJS jQuery build to get started:</p>
 
-<h4>How it works</h4>
+<pre><code>&lt;script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"&gt;
+&lt;/script&gt;
+&lt;script src="can.jquery.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  $(function() {
+    // start using CanJS
+    var Todo = can.Model.extend({
+      ...
+    });
+  });
+&lt;/script&gt;
+</code></pre>
 
-<p>The code first sets up a <code>can.fixture</code> to return different, but overlapping lists of 
-tasks from the server.  The fixture returns data from the following calls:</p>
+<h3>Zepto</h3>
 
-<ul>
-<li><code>/tasks?due=today</code></li>
-<li><code>/tasks?type=critical</code></li>
-</ul>
+<p>CanJS supports Zepto 0.9+. Include a copy of Zepto along with CanJS to get started.</p>
 
-<p>You'll notice "do dishes" in both lists.</p>
+<pre><code>&lt;!-- Zepto 0.8 with focus/blur patch applied --&gt;
+&lt;script src="http://zeptojs.com/zepto.js"&gt;&lt;/script&gt;
+&lt;script src="can.zepto.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  $(function() {
+    // start using CanJS
+    var Todo = can.Model.extend({
+      ...
+    });
+  });
+&lt;/script&gt;
+</code></pre>
 
-<p>The code then creates a <code>Task</code> model that maps findAll to <code>/tasks</code>.  It then uses
-<code>can.view</code> to render the retrieved tasks with the <code>tasksEJS</code> template. </p>
+<h3>Dojo</h3>
 
-<p>Finally, it listens when an <code>input</code> element's value changes.  When it does,
-it gets the task model instance from the <code>li</code> element's <code>$.data</code> and 
-updates it's "complete" property.</p>
+<p>You can also use the <a href="http://dojotoolkit.org/download/">Dojo base download</a> and simply include it alongside CanJS:</p>
 
-<p><strong><em>The Secret Sauce</em></strong></p>
+<pre><code>&lt;script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"&gt;
+&lt;/script&gt;
+&lt;script src="can.dojo.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  // start using CanJS
+  var Todo = can.Model.extend({
+    ...
+  });
+&lt;/script&gt;
+</code></pre>
 
-<p>Model keeps an internal, non-leaking, store of instances your app loads.  When
-<code>Task.findAll({type: "critical"})</code> and <code>Task.findAll({due: "today"})</code> get their
-raw JSON data from the server, they convert it to instances.  But before they create
-a new instance, they check if the same instance, matched by 
-the <a href="../docs/can.Model.id.html">id</a> property already exists.  If it
-does, it uses that instance. </p>
+<h3>Mootools</h3>
 
-<p>This means that the <code>criticalTasks</code> list and <code>todaysTasks</code> list both point to the 
-same instance. When <code>can.EJS</code> does it's live binding on <code>&lt;%= task.attr("complete") ? "checked" : "" %&gt;</code>
-it's actually binding on the same "do dishes" intance once.  So updating "do dishes" updates
-the DOM in two places!</p>
+<p>CanJS supports Mootools 1.4+. Include a copy of <a href="http://mootools.net/download">Mootools Core</a> along with CanJS to get started.</p>
 
-<h3>Caching Data in Local Storage</h3>
+<p>Mootools Core has an issue where <strong>focus</strong> and <strong>blur</strong> events are not fired for delegate event listeners.
+Include Mootools More's Event.Pseudos module for <strong>focus</strong> and <strong>blur</strong> support.</p>
 
-<p>The following recipe shows how <code>can.Model</code> can be used to create an ORM-like 
-model layer for keeping a local copy of a restful API. This type of base model
-is perfect for situations where you want a responsive UI, but may not want to 
-wait for updates from the server before displaying data, or you need to make 
-your data persist offline. Storing your responses in <code>localStorage</code> allows you 
-to get data to the view as quickly as possible.</p>
+<pre><code>&lt;script src="https://ajax.googleapis.com/ajax/libs/mootools/1.4.5/
+mootools.js"&gt;&lt;/script&gt;
+&lt;!-- Mootools More Event.Pseudos module --&gt;
+&lt;script src="mootools-more-event_pseudos-1.4.0.1.js"&gt;&lt;/script&gt;
+&lt;script src="can.mootools.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  // start using CanJS
+  var Todo = can.Model({
+    ...
+  });
+&lt;/script&gt;
+</code></pre>
 
-<iframe style="width: 100%; height: 300px" 
-        src="http://jsfiddle.net/donejs/ZhScj/embedded/result%2Cjs/" 
-        allowfullscreen="allowfullscreen" 
-        frameborder="0">JSFiddle</iframe>
+<h3>YUI</h3>
 
-<h4>How it works</h4>
+<p>CanJS supports YUI 3.4+ with both dynamically or statically loaded modules.
+CanJS depends on the following YUI modules: <strong>node</strong>, <strong>io-base</strong>, <strong>querystring</strong>, <strong>event-focus</strong>, and <strong>array-extras</strong>. The <strong>selector-css2</strong> and <strong>selector-css3</strong> YUI modules are optional, but necessary for IE7 and other browsers that don't support <strong>querySelectorAll</strong>.</p>
 
-<p>When creating your base model for other models to extend from, you can prefix 
-static service methods with <code>make</code>, to allow the base model to define how the 
-extending model's method will behave. In this example, our base model implements
-a static method called <code>makeFindOne</code>. This method acts as a hook to define the 
-extending model's <code>findOne</code> method. Using this, we can create a middleware-like
-layer between the extending model and the base model that loads and saves model
-data to <code>localStorage</code>, while still requesting out to the restful API to get 
-updates.</p>
+<p>To use with dynamically loaded modules, include the YUI loader along with CanJS.
+Add <code>'can'</code> to your normal list of modules with <code>YUI().use('can', ...)</code> wherever CanJS will be used.</p>
 
-<p><strong><em>The Secret Sauce</em></strong></p>
+<pre><code>&lt;script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js"&gt;&lt;/script&gt;
+&lt;script src="can.yui.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  // CanJS with support for modern browsers
+  YUI().use('can', function(Y) {
+    // start using CanJS
+    Todo = can.Model({
+      ...
+    });
+  });
+  // CanJS with support for IE7 and other browsers without querySelectorAll
+  YUI({ loadOptional: true }).use('can', function(Y) {
+    // start using CanJS
+    Todo = can.Model({
+      ...
+    });
+  });
+&lt;/script&gt;
+</code></pre>
 
-<p>The secret sauce for this example is the static <code>makeFindOne</code> method along with
-EJS's live binding. Because the live binding will automatically update the view when the 
-bound model gets updated, we can write our code as usual and allow the base model
-to deliver <code>localStorage</code> data instantly, while automatically upating with responses
-from the server, with no extra effort.</p>
+<p>To use with statically loaded modules, include a static copy of YUI (with the
+previously mentioned YUI dependencies) along with CanJS. CanJS will automatically
+be included wherever <code>YUI().use('*')</code> is used.</p>
 
-<h3>Real Time Chat</h3>
+<pre><code>&lt;!-- YUI Configurator: http://yuilibrary.com/yui/configurator/ --&gt;
+&lt;script src="http://yui.yahooapis.com/combo?3.7.3/build/yui-base/yui-base-min.
+js&amp;3.7.3/build/oop/oop-min.js&amp;3.7.3/build/event-custom-base/event-custom-base-
+min.js&amp;3.7.3/build/features/features-min.js&amp;3.7.3/build/dom-core/dom-core-min.
+js&amp;3.7.3/build/dom-base/dom-base-min.js&amp;3.7.3/build/selector-native/selector-n
+ative-min.js&amp;3.7.3/build/selector/selector-min.js&amp;3.7.3/build/node-core/node-c
+ore-min.js&amp;3.7.3/build/node-base/node-base-min.js&amp;3.7.3/build/event-base/event
+-base-min.js&amp;3.7.3/build/event-delegate/event-delegate-min.js&amp;3.7.3/build/node
+-event-delegate/node-event-delegate-min.js&amp;3.7.3/build/pluginhost-base/pluginh
+ost-base-min.js&amp;3.7.3/build/pluginhost-config/pluginhost-config-min.js&amp;3.7.3/b
+uild/node-pluginhost/node-pluginhost-min.js&amp;3.7.3/build/dom-style/dom-style-mi
+n.js&amp;3.7.3/build/dom-screen/dom-screen-min.js&amp;3.7.3/build/node-screen/node-scr
+een-min.js&amp;3.7.3/build/node-style/node-style-min.js&amp;3.7.3/build/querystring-st
+ringify-simple/querystring-stringify-simple-min.js&amp;3.7.3/build/io-base/io-base
+-min.js&amp;3.7.3/build/array-extras/array-extras-min.js&amp;3.7.3/build/querystring-p
+arse/querystring-parse-min.js&amp;3.7.3/build/querystring-stringify/querystring-st
+ringify-min.js&amp;3.7.3/build/event-custom-complex/event-custom-complex-min.js&amp;3.
+4.1/build/event-synthetic/event-synthetic-min.js&amp;3.7.3/build/event-focus/event
+-focus-min.js"&gt;&lt;/script&gt;
+&lt;script src="can.yui.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+    // start using CanJS
+    Todo = can.Model({
+      ...
+    });
+&lt;/script&gt;
+</code></pre>
 
-<p>Type a message in one page, it instantly shows up in the other.</p>
+<p>CanJS can also bind to YUI widget events. The following example shows how to
+bind to the <strong>selectionChange</strong> event for a YUI Calendar widget:</p>
 
-<iframe style="width: 100%; height: 300px" 
-        src="http://jsfiddle.net/donejs/bBVHs/embedded/result%2Cjs/" 
-        allowfullscreen="allowfullscreen" 
-        frameborder="0">JSFiddle</iframe>
+<pre><code>YUI().use('can', 'calendar', function(Y) {
+  // create models
+  Todo = can.Model({ ... });
+  Todo.List = can.Model.List({ ... });
+  // create control
+  Todos = can.Control({
+    // listen to the calendar widget's selectionChange event
+    '{calendar} selectionChange': function(calendar, ev){
+      // do something with the selected date
+      var selectedDate = ev.newSelection[0];
+      ...
+    }
+  });
+  // initialize the app
+  Todo.findAll({}, function(todos) {
+    new Todos('#todoapp', {
+      todos: todos,
+      calendar: new Y.Calendar({
+        contentBox: "#calendar"
+      }).render()
+    });
+  });
+});
+</code></pre>
 
-<iframe style="width: 100%; height: 300px" 
-        src="http://jsfiddle.net/donejs/bBVHs/embedded/result%2Cjs/"
-        allowfullscreen="allowfullscreen" 
-        frameborder="0">JSFiddle</iframe>
+<h2>AMD</h2>
 
-<p><a href="http://bitovi.com/blog/2013/02/weekly-widget-chat.html">How it works</a>
-t-chat.html)</p>
+<p>The <a href="../download.html">CanJS Download</a> contains an <code>amd/</code> folder which allows you to load any CanJS component and plugin using an AMD module loader like <a href="http://requirejs.org/">RequireJS</a>. Unlike many other JavaScript libraries CanJS is fully modular and loading a dependency will only include the modules actually used (for example, <code>can/control</code> will only load <code>can/construct</code> and <code>can/util</code>). The <code>amd-dev/</code> folder contains the same files but with debugging message enabled which can be very helpful during development.</p>
+
+<h3>Configuration</h3>
+
+<p>The default library used with AMD modules is jQuery. CanJS will reference the <code>jquery</code> module so that name needs to point to your jQuery source and the <code>can</code> module name needs to be mapped to the <code>amd/</code> folder of the CanJS download.</p>
+
+<h3>RequireJS</h3>
+
+<p>In RequireJS a simple configuration looks like this:</p>
+
+<pre><code>&lt;script type="text/javascript" src="require.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript"&gt;
+  require.config({
+    paths : {
+      "jquery" : "http://code.jquery.com/jquery-2.0.3",
+      "can": "path/to/can/amd"
+    }
+  });
+
+  require(['can/control', 'can/view/mustache'], function(Control, can) {
+    // Use Mustache and Control
+    var MyControl = Control.extend({
+      init: function() {
+        this.element.html(can.view('path/to/view.mustache', this.options));
+      }
+    });
+  });
+&lt;/script&gt;
+</code></pre>
+
+<p>The <code>can</code> module is a shortcut that loads CanJS's core plugins and returns the <code>can</code> namespace:</p>
+
+<pre><code>require(['can'], function(can) {
+  // Use can.Control, can.view, can.Model etc.
+});
+</code></pre>
+
+<h3>Dojo</h3>
+
+<p>The configuration for Dojo is similar but <code>can/util/library</code> needs to be mapped to <code>can/util/dojo</code>:</p>
+
+<pre><code>&lt;script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"&gt;
+&lt;/script&gt;
+&lt;script src="can.dojo.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  require({
+    aliases : [
+      ['can/util/library', 'can/util/dojo']
+    ],
+    paths : {
+      can: 'path/to/can/amd'
+    }
+  });
+
+  require(['can/control'], function(Control) {
+    // Use Control
+  });
+&lt;/script&gt;
+</code></pre>
+
+<h3>Using other libraries</h3>
+
+<p>If you would like to use another library, map the <code>can/util/library</code> module to <code>can/util/zepto</code>,
+<code>can/util/yui</code> or <code>can/util/mootools</code>.</p>
+
+<p>With RequireJS and Zepto, it loks like this:</p>
+
+<pre><code>require.config({
+  paths : {
+    "can": "path/to/can/amd",
+    "zepto" : "http://cdnjs.cloudflare.com/ajax/libs/zepto/1.0rc1/zepto.min"
+  },
+  map : {
+    '*' : {
+      "can/util/library" : "can/util/zepto"
+    }
+  }
+});
+</code></pre>
+
+<h2>StealJS</h2>
+
+<p>StealJS is the dependency manager that comes with <a href="http://javascriptmvc.com">JavaScriptMVC</a> and that is natively used by CanJS.
+Since JavaScriptMVC comes with CanJS and Steal, the easiest way to use them together is by <a href="http://javascriptmvc.com/dist/javascriptmvc-3.3.zip">downloading JavaScriptMVC</a>. You can also use the <code>steal/</code> folder from the CanJS download or Bower package.</p>
+
+<p>With the JavaScriptMVC download, in the main folder, you can simply run the application generator:</p>
+
+<blockquote>
+  <p>./js jmvc/generate/app app</p>
+</blockquote>
+
+<p>In <code>app/app.js</code> you should see something like:</p>
+
+<pre><code>steal(
+    './app.less',
+    './models/fixtures/fixtures.js',
+function(){
+
+})
+</code></pre>
+
+<p>This file will be loaded when opening <code>app/index.html</code> and you are ready to use CanJS with StealJS and make <a href="using-production.html">production builds</a>.
+For more information follow up in the <a href="http://javascriptmvc.com/docs">JavaScriptMVC documentation</a>.</p>
 		</section>
 		
 
@@ -403,7 +558,7 @@ t-chat.html)</p>
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"page","name":"RecipesModels","description":"","title":"Models","parent":"Recipes","order":3,"comment":" ","src":"can/guides/recipes_models.md","id":20};
+	var docData = {"type":"page","name":"using-loading","description":"<p>There are several ways to load CanJS in your application. Most likely you will use one of the pre-built versions like <code>can.jquery.js</code> but it is also possible to load each module individually using AMD or Steal.</p>","title":"Loading","parent":"Using","order":1,"src":"can/guides/using-loading.md","id":27};
 
 	console.log(docData);
 </script>

@@ -471,7 +471,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>!dev-remove-start</p>
+              <p>!steal-remove-start</p>
 
             </div>
             
@@ -487,7 +487,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>!dev-remove-end</p>
+              <p>!steal-remove-end</p>
 
             </div>
             
@@ -623,7 +623,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>!dev-remove-start</p>
+              <p>!steal-remove-start</p>
 
             </div>
             
@@ -638,7 +638,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <p>!dev-remove-end</p>
+              <p>!steal-remove-end</p>
 
             </div>
             
@@ -662,7 +662,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>!dev-remove-start</p>
+              <p>!steal-remove-start</p>
 
             </div>
             
@@ -677,7 +677,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
-              <p>!dev-remove-end</p>
+              <p>!steal-remove-end</p>
 
             </div>
             
@@ -1593,7 +1593,7 @@ order looks like [“age ASC”,”gender DESC”]</p>
 						<span class="hljs-keyword">if</span> (request.data[param] !== <span class="hljs-literal">undefined</span> &amp;&amp; <span class="hljs-comment">// don't do this if the value of the param is null (ignore it)</span>
 							(param.indexOf(<span class="hljs-string">"Id"</span>) !== -<span class="hljs-number">1</span> || param.indexOf(<span class="hljs-string">"_id"</span>) !== -<span class="hljs-number">1</span>)) {
 							<span class="hljs-keyword">while</span> (i &lt; retArr.length) {
-								<span class="hljs-keyword">if</span> (request.data[param] !== retArr[i][param]) {
+								<span class="hljs-keyword">if</span> (request.data[param] != retArr[i][param]) { <span class="hljs-comment">// jshint eqeqeq: false</span>
 									retArr.splice(i, <span class="hljs-number">1</span>);
 								} <span class="hljs-keyword">else</span> {
 									i++;
@@ -1719,7 +1719,7 @@ order looks like [“age ASC”,”gender DESC”]</p>
 				destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(request)</span> {</span>
 					<span class="hljs-keyword">var</span> id = getId(request);
 					<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; items.length; i++) {
-						<span class="hljs-keyword">if</span> (items[i].id === id) {
+						<span class="hljs-keyword">if</span> (items[i].id == id) {  <span class="hljs-comment">// jshint eqeqeq: false</span>
 							items.splice(i, <span class="hljs-number">1</span>);
 							<span class="hljs-keyword">break</span>;
 						}
