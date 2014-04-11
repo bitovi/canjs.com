@@ -2,12 +2,12 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 08 Apr 2014 17:31:35 GMT
+ * Fri, 11 Apr 2014 19:07:11 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["jquery", "can/util/can", "can/util/attr", "can/util/array/each", "can/util/inserted", "can/util/event"], function ($, can, attr) {
+define(["jquery", "can/util/can", "can/util/attr", "can/event", "can/util/array/each", "can/util/inserted"], function ($, can, attr, event) {
 	var isBindableElement = function (node) {
 		// In IE8 window.window !== window.window, so we allow == here.
 		/*jshint eqeqeq:false*/
@@ -30,6 +30,7 @@ define(["jquery", "can/util/can", "can/util/attr", "can/util/array/each", "can/u
 				can.dispatch.call(obj, event, args);
 			}
 		},
+		event: can.event,
 		addEvent: can.addEvent,
 		removeEvent: can.removeEvent,
 		buildFragment: function (elems, context) {
@@ -77,6 +78,7 @@ define(["jquery", "can/util/can", "can/util/attr", "can/util/array/each", "can/u
 					.delegate(selector, ev, cb);
 			} else {
 				// make it bind-able ...
+				can.bind.call(this, ev, cb);
 			}
 			return this;
 		},
@@ -87,8 +89,7 @@ define(["jquery", "can/util/can", "can/util/attr", "can/util/array/each", "can/u
 				$(this)
 					.undelegate(selector, ev, cb);
 			} else {
-				// make it bind-able ...
-
+				can.unbind.call(this, ev, cb);
 			}
 			return this;
 		},

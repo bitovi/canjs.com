@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 08 Apr 2014 17:31:42 GMT
+ * Fri, 11 Apr 2014 19:07:25 GMT
  * Licensed MIT
  * Includes: can/view/stache
  * Download from: http://canjs.com
@@ -980,7 +980,7 @@
     })(window.can, __m11, __m14, __m15);
 
     // ## view/stache/text_section.js
-    var __m27 = (function(can, live, utils) {
+    var __m28 = (function(can, live, utils) {
         live = live || can.view.live;
 
         var TextSectionBuilder = function() {
@@ -1370,6 +1370,6 @@
         };
 
         return stache;
-    })(undefined, __m11, __m13, __m27, __m15, __m16, undefined);
+    })(undefined, __m11, __m13, __m28, __m15, __m16, undefined);
 
 })();

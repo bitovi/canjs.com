@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 08 Apr 2014 17:31:35 GMT
+ * Fri, 11 Apr 2014 19:07:11 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -211,7 +211,15 @@ steal('can/util', function (can) {
 			return ('' + a)
 				.toLowerCase() === ('' + b)
 				.toLowerCase();
+		},
+		eq: function(a, b) {
+			return a === b;
+		},
+		similar: function(a, b) {
+			/*jshint eqeqeq:false */
+			return a == b;
 		}
 	};
+	compareMethods.eqeq = compareMethods.similar;
 	return can.Object;
 });

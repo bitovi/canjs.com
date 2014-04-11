@@ -2,12 +2,12 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 08 Apr 2014 17:31:35 GMT
+ * Fri, 11 Apr 2014 19:07:11 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["can/util/can", "can/util/attr", "yui", "can/util/event", "can/util/fragment", "can/util/array/each", "can/util/object/isplain", "can/util/deferred", "can/util/hashchange", "can/util/inserted"], function (can, attr) {
+define(["can/util/can", "can/util/attr", "yui", "can/event", "can/util/fragment", "can/util/array/each", "can/util/object/isplain", "can/util/deferred", "can/util/hashchange", "can/util/inserted"], function (can, attr) {
 
 		// lets overwrite 
 		YUI.add('can-modifications', function (Y, NAME) {
@@ -402,6 +402,9 @@ define(["can/util/can", "can/util/attr", "yui", "can/util/event", "can/util/frag
 				addBinding(can.$(this), selector, ev, cb);
 			} else if (this.delegate) {
 				this.delegate(selector, ev, cb);
+			} else {
+				// make it bind-able ...
+				can.bind.call(this, ev, cb);
 			}
 			return this;
 		};
@@ -410,6 +413,8 @@ define(["can/util/can", "can/util/attr", "yui", "can/util/event", "can/util/frag
 				removeBinding(can.$(this), selector, ev, cb);
 			} else if (this.undelegate) {
 				this.undelegate(selector, ev, cb);
+			} else {
+				can.unbind.call(this, ev, cb);
 			}
 			return this;
 		};

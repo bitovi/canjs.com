@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 08 Apr 2014 17:31:42 GMT
+ * Fri, 11 Apr 2014 19:07:25 GMT
  * Licensed MIT
  * Includes: can/map/setter
  * Download from: http://canjs.com
@@ -25,7 +25,6 @@
                 can.extend(clss, {
 
                         attributes: {},
-
 
                         convert: {
                             'date': function(str) {
@@ -75,7 +74,6 @@
                                 return typeof construct === 'function' ? construct.call(context, val, oldVal) : val;
                             }
                         },
-
                         serialize: {
                             'default': function(val, type) {
                                 return isObject(val) && val.serialize ? val.serialize() : val;
@@ -110,7 +108,7 @@
         can.Map.prototype.__convert = function(prop, value) {
             // check if there is a
             var Class = this.constructor,
-                oldVal = this.attr(prop),
+                oldVal = this.__get(prop),
                 type, converter;
             if (Class.attributes) {
                 // the type of the attribute
@@ -119,7 +117,6 @@
             }
             return value === null || !type ? value : converter.call(Class, value, oldVal, function() {}, type);
         };
-
         can.List.prototype.serialize = function(attrName, stack) {
             return can.makeArray(can.Map.prototype.serialize.apply(this, arguments));
         };
@@ -167,8 +164,8 @@
         return can.Map;
     })(window.can, undefined, undefined);
 
-    // ## map/setter/setter.js
-    var __m1 = (function(can) {
+    // ## util/string/classize.js
+    var __m17 = (function() {
 
         can.classize = function(s, join) {
             // this can be moved out ..
@@ -180,16 +177,24 @@
             }
             return parts.join(join || '');
         };
+    })(undefined);
+
+    // ## map/setter/setter.js
+    var __m1 = (function(can) {
         var classize = can.classize,
             proto = can.Map.prototype,
             old = proto.__set;
         proto.__set = function(prop, value, current, success, error) {
+
+
             // check if there's a setter
             var cap = classize(prop),
                 setName = 'set' + cap,
                 errorCallback = function(errors) {
+
+
                     var stub = error && error.call(self, errors);
-                    // if 'setter' is on the page it will trigger
+                    // if 'validations' is on the page it will trigger
                     // the error itself and we dont want to trigger
                     // the event twice. :)
                     if (stub !== false) {
@@ -200,20 +205,39 @@
                     }
                     return false;
                 }, self = this;
+
+
+
             // if we have a setter
-            if (this[setName] &&
+            if (this[setName]) {
                 // call the setter, if returned value is undefined,
                 // this means the setter is async so we
                 // do not call update property and return right away
-                (value = this[setName](value, function(value) {
-                            old.call(self, prop, value, current, success, errorCallback);
-                        }, errorCallback)) === undefined) {
-                return;
+                can.batch.start();
+
+                value = this[setName](value, function(value) {
+                    old.call(self, prop, value, current, success, errorCallback);
+
+                }, errorCallback);
+
+
+                if (value === undefined) {
+
+                    can.batch.stop();
+                    return;
+                } else {
+                    old.call(self, prop, value, current, success, errorCallback);
+                    can.batch.stop();
+                    return this;
+                }
+
+            } else {
+                old.call(self, prop, value, current, success, errorCallback);
             }
-            old.call(self, prop, value, current, success, errorCallback);
+
             return this;
         };
         return can.Map;
-    })(window.can, __m9);
+    })(window.can, __m9, __m17);
 
 })();

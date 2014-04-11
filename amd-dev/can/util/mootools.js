@@ -2,12 +2,12 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 08 Apr 2014 17:31:35 GMT
+ * Fri, 11 Apr 2014 19:07:11 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["can/util/can", "can/util/attr", "mootools", "can/util/event", "can/util/fragment", "can/util/deferred", "can/util/array/each", "can/util/object/isplain", "can/util/inserted"], function (can, attr) {
+define(["can/util/can", "can/util/attr", "mootools", "can/event", "can/util/fragment", "can/util/deferred", "can/util/array/each", "can/util/object/isplain", "can/util/inserted"], function (can, attr) {
 		/* jshint maxdepth:5 */
 		// mootools.js
 		// ---------
@@ -125,11 +125,11 @@ define(["can/util/can", "can/util/attr", "mootools", "can/util/event", "can/util
 			// If we can bind to it...
 			if (this.bind && this.bind !== can.bind) {
 				this.bind(ev, cb);
+			} else if (this.nodeName && (this.nodeType && this.nodeType !== 11)) {
+				can.$(this)
+					.addEvent(ev, cb);
 			} else if (this.addEvent) {
 				this.addEvent(ev, cb);
-			} else if (this.nodeName && this.nodeType === 1) {
-				$(this)
-					.addEvent(ev, cb);
 			} else {
 				// Make it bind-able...
 				can.addEvent.call(this, ev, cb);
@@ -140,12 +140,11 @@ define(["can/util/can", "can/util/attr", "mootools", "can/util/event", "can/util
 			// If we can bind to it...
 			if (this.unbind && this.unbind !== can.unbind) {
 				this.unbind(ev, cb);
+			} else if (this.nodeName && (this.nodeType && this.nodeType !== 11)) {
+				can.$(this)
+					.removeEvent(ev, cb);
 			} else if (this.removeEvent) {
 				this.removeEvent(ev, cb);
-			}
-			if (this.nodeName && this.nodeType === 1) {
-				$(this)
-					.removeEvent(ev, cb);
 			} else {
 				// Make it bind-able...
 				can.removeEvent.call(this, ev, cb);
@@ -203,7 +202,10 @@ define(["can/util/can", "can/util/attr", "mootools", "can/util/event", "can/util
 				this.delegate(selector, ev, cb);
 			} else if (this.addEvent) {
 				this.addEvent(ev + ':relay(' + selector + ')', cb);
-			} else {}
+			} else {
+				// make it bind-able ...
+				can.bind.call(this, ev, cb);
+			}
 			return this;
 		};
 		can.undelegate = function (selector, ev, cb) {
@@ -211,7 +213,9 @@ define(["can/util/can", "can/util/attr", "mootools", "can/util/event", "can/util
 				this.undelegate(selector, ev, cb);
 			} else if (this.removeEvent) {
 				this.removeEvent(ev + ':relay(' + selector + ')', cb);
-			} else {}
+			} else {
+				can.unbind.call(this, ev, cb);
+			}
 			return this;
 		};
 		var optionsMap = {

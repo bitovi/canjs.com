@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 08 Apr 2014 17:31:42 GMT
+ * Fri, 11 Apr 2014 19:07:25 GMT
  * Licensed MIT
  * Includes: can/map/backup
  * Download from: http://canjs.com
@@ -10,7 +10,7 @@
 (function(undefined) {
 
     // ## util/object/object.js
-    var __m14 = (function(can) {
+    var __m15 = (function(can) {
         var isArray = can.isArray;
 
         can.Object = {};
@@ -109,8 +109,16 @@
                 return ('' + a)
                     .toLowerCase() === ('' + b)
                     .toLowerCase();
+            },
+            eq: function(a, b) {
+                return a === b;
+            },
+            similar: function(a, b) {
+
+                return a == b;
             }
         };
+        compareMethods.eqeq = compareMethods.similar;
         return can.Object;
     })(window.can);
 
@@ -129,18 +137,13 @@
         };
         can.extend(can.Map.prototype, {
 
-
                 backup: function() {
                     this._backupStore = this._attrs();
                     return this;
                 },
-
-
                 isDirty: function(checkAssociations) {
                     return this._backupStore && !can.Object.same(this._attrs(), this._backupStore, undefined, undefined, undefined, !! checkAssociations);
                 },
-
-
                 restore: function(restoreAssociations) {
                     var props = restoreAssociations ? this._backupStore : flatProps(this._backupStore, this);
                     if (this.isDirty(restoreAssociations)) {
@@ -150,6 +153,6 @@
                 }
             });
         return can.Map;
-    })(window.can, undefined, __m14);
+    })(window.can, undefined, __m15);
 
 })();

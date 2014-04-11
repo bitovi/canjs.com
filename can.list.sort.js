@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 08 Apr 2014 17:31:42 GMT
+ * Fri, 11 Apr 2014 19:07:25 GMT
  * Licensed MIT
  * Includes: can/map/sort
  * Download from: http://canjs.com
@@ -11,10 +11,33 @@
 
     // ## map/sort/sort.js
     var __m1 = (function(can) {
+
+        // Change bubble rule to bubble on change if their is a comparator
+        var oldBubbleRule = can.List._bubbleRule;
+        can.List._bubbleRule = function(eventName, list) {
+            if (list.comparator) {
+                return "change";
+            }
+            return oldBubbleRule.apply(this, arguments);
+        };
+        if (can.Model) {
+            var oldModelListBubble = can.Model.List._bubbleRule;
+            can.Model.List._bubbleRule = function(eventName, list) {
+                if (list.comparator) {
+                    return "change";
+                }
+                return oldModelListBubble.apply(this, arguments);
+            };
+        }
+
         var proto = can.List.prototype,
             _changes = proto._changes,
             setup = proto.setup;
+
+        //Add `move` as an event that lazy-bubbles
+
         // extend the list for sorting support
+
         can.extend(proto, {
                 comparator: undefined,
                 sortIndexes: [],

@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 08 Apr 2014 17:31:42 GMT
+ * Fri, 11 Apr 2014 19:07:25 GMT
  * Licensed MIT
  * Includes: can/map/delegate
  * Download from: http://canjs.com
@@ -127,7 +127,6 @@
                 }
             };
         can.extend(can.Map.prototype, {
-
                 delegate: function(selector, event, handler) {
                     selector = can.trim(selector);
                     var delegates = this._observe_delegates || (this._observe_delegates = []),
@@ -169,7 +168,6 @@
                     }
                     return this;
                 },
-
                 undelegate: function(selector, event, handler) {
                     selector = selector && can.trim(selector);
                     var i = 0,

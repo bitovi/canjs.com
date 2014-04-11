@@ -2,7 +2,7 @@
  * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Tue, 08 Apr 2014 17:31:42 GMT
+ * Fri, 11 Apr 2014 19:07:25 GMT
  * Licensed MIT
  * Includes: can/map/validations
  * Download from: http://canjs.com
@@ -25,7 +25,6 @@
                 can.extend(clss, {
 
                         attributes: {},
-
 
                         convert: {
                             'date': function(str) {
@@ -75,7 +74,6 @@
                                 return typeof construct === 'function' ? construct.call(context, val, oldVal) : val;
                             }
                         },
-
                         serialize: {
                             'default': function(val, type) {
                                 return isObject(val) && val.serialize ? val.serialize() : val;
@@ -110,7 +108,7 @@
         can.Map.prototype.__convert = function(prop, value) {
             // check if there is a
             var Class = this.constructor,
-                oldVal = this.attr(prop),
+                oldVal = this.__get(prop),
                 type, converter;
             if (Class.attributes) {
                 // the type of the attribute
@@ -119,7 +117,6 @@
             }
             return value === null || !type ? value : converter.call(Class, value, oldVal, function() {}, type);
         };
-
         can.List.prototype.serialize = function(attrName, stack) {
             return can.makeArray(can.Map.prototype.serialize.apply(this, arguments));
         };
@@ -240,9 +237,7 @@
                                 this.validations = {};
                             }
                         },
-
                         validate: validate,
-
 
                         validationMessages: {
                             format: 'is invalid',
@@ -253,8 +248,6 @@
                             range: 'is out of range',
                             numericality: 'must be a number'
                         },
-
-
                         validateFormatOf: function(attrNames, regexp, options) {
                             validate.call(this, attrNames, options, function(value) {
                                 if (typeof value !== 'undefined' && value !== null && value !== '' && String(value)
@@ -263,8 +256,6 @@
                                 }
                             });
                         },
-
-
                         validateInclusionOf: function(attrNames, inArray, options) {
                             validate.call(this, attrNames, options, function(value) {
                                 if (typeof value === 'undefined') {
@@ -278,8 +269,6 @@
                                 return this.constructor.validationMessages.inclusion;
                             });
                         },
-
-
                         validateLengthOf: function(attrNames, min, max, options) {
                             validate.call(this, attrNames, options, function(value) {
                                 if ((typeof value === 'undefined' || value === null) && min > 0 || typeof value !== 'undefined' && value !== null && value.length < min) {
@@ -289,8 +278,6 @@
                                 }
                             });
                         },
-
-
                         validatePresenceOf: function(attrNames, options) {
                             validate.call(this, attrNames, options, function(value) {
                                 if (typeof value === 'undefined' || value === '' || value === null) {
@@ -298,8 +285,6 @@
                                 }
                             });
                         },
-
-
                         validateRangeOf: function(attrNames, low, hi, options) {
                             validate.call(this, attrNames, options, function(value) {
                                 if ((typeof value === 'undefined' || value === null) && low > 0 || typeof value !== 'undefined' && value !== null && (value < low || value > hi)) {
@@ -307,8 +292,6 @@
                                 }
                             });
                         },
-
-
                         validatesNumericalityOf: function(attrNames) {
                             validate.call(this, attrNames, function(value) {
                                 var res = !isNaN(parseFloat(value)) && isFinite(value);
@@ -321,7 +304,6 @@
             });
 
         can.extend(can.Map.prototype, {
-
                 errors: function(attrs, newVal) {
                     // convert attrs to an array
                     if (attrs) {
