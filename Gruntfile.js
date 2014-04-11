@@ -14,14 +14,6 @@ module.exports = function (grunt) {
 		versionMap[version.number] = version;
 	});
 	
-	grunt.registerTask('overwrite-docco-css', 'Overwites doccos css', function () {
-		grunt.file.copy("scripts/docco.css", minor+"/docco/docco.css");
-		
-		if(versionMap[minor].branch === "master") {
-			grunt.file.copy("scripts/docco.css", "docco/docco.css");
-		}
-	})
-	
 		
 	// Project configuration.
 	grunt.initConfig({
@@ -33,46 +25,62 @@ module.exports = function (grunt) {
 		},
 		docco: {
 			dev: {
-				src: [
-					'can/component/**/*.js', 
-					'can/compute/**/*.js', 
-					'can/construct/**/*.js', 
-					'can/control/**/*.js', 
-					'can/list/**/*.js',
-					'can/map/**/*.js', 
-					'can/model/**/*.js', 
-					'can/observe/**/*.js',
-					'can/route/**/*.js', 
-					'can/util/**/*.js',
-					'can/view/**/*.js',
-					'!util/dojo/dojo-1.8.1.js', '!util/dojo/nodelist-traverse.js','!**/*_test.js',
-					'!can/map/list/list.js',
-					'!can/model/list/list.js'
-				],
 				options: {
-					output: minor+'/docco/'
-				}
+					dst:  minor+'/docco',
+					layout : 'parallel',
+					css : 'scripts/docco.css'
+				},
+				files : [
+					{
+						src : [
+							'component/**/*.js',
+							'compute/**/*.js',
+							'construct/**/*.js',
+							'control/**/*.js',
+							'list/**/*.js',
+							'map/**/*.js',
+							'model/**/*.js',
+							'observe/**/*.js',
+							'route/**/*.js',
+							'util/**/*.js',
+							'view/**/*.js',
+							'!util/dojo/dojo-1.8.1.js',
+							'!util/dojo/nodelist-traverse.js',
+							'!**/*_test.js'
+						],
+						expand : true,
+						cwd : "can/"
+					}
+				]
 			},
 			latest: {
-				src: [
-					'can/component/**/*.js', 
-					'can/compute/**/*.js', 
-					'can/construct/**/*.js', 
-					'can/control/**/*.js', 
-					'can/list/**/*.js',
-					'can/map/**/*.js', 
-					'can/model/**/*.js', 
-					'can/observe/**/*.js',
-					'can/route/**/*.js', 
-					'can/util/**/*.js',
-					'can/view/**/*.js',
-					'!util/dojo/dojo-1.8.1.js', '!util/dojo/nodelist-traverse.js','!**/*_test.js',
-					'!can/map/list/list.js',
-					'!can/model/list/list.js'
-				],
 				options: {
-					output: 'docco/'
-				}
+					dst:  'docco/',
+					layout : 'parallel',
+					css : 'scripts/docco.css'
+				},
+				files : [
+					{
+						src : [
+							'component/**/*.js',
+							'compute/**/*.js',
+							'construct/**/*.js',
+							'control/**/*.js',
+							'list/**/*.js',
+							'map/**/*.js',
+							'model/**/*.js',
+							'observe/**/*.js',
+							'route/**/*.js',
+							'util/**/*.js',
+							'view/**/*.js',
+							'!util/dojo/dojo-1.8.1.js',
+							'!util/dojo/nodelist-traverse.js',
+							'!**/*_test.js'
+						],
+						expand : true,
+						cwd : "can/"
+					}
+				]
 			}
 		},
 		plato: {
@@ -83,20 +91,24 @@ module.exports = function (grunt) {
 					exclude : /bower_components\|dist\|docs\|guides\|lib\|node_modules\|src\|examples\|dojo\-\|demos/
 				},
 				files: {
-					'plato/src': '<%= docco.dev.src %>',
-				}
-			},
-			tests : {
-				options : {
-					jshint : grunt.file.readJSON('can/.jshintrc'),
-					title : "CanJS Tests",
-					exclude : /node_modules/
-				},
-				files: {
-					'plato/tests': '**/*_test.js',
+					'plato/src': [
+						'can/component/**/*.js',
+						'can/compute/**/*.js',
+						'can/construct/**/*.js',
+						'can/control/**/*.js',
+						'can/list/**/*.js',
+						'can/map/**/*.js',
+						'can/model/**/*.js',
+						'can/observe/**/*.js',
+						'can/route/**/*.js',
+						'can/util/**/*.js',
+						'can/view/**/*.js',
+						'!util/dojo/dojo-1.8.1.js',
+						'!util/dojo/nodelist-traverse.js',
+						'!**/*_test.js'
+					]
 				}
 			}
-
 		}
 	});
 
@@ -104,7 +116,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-clean');
-	grunt.loadNpmTasks('grunt-docco');
+	grunt.loadNpmTasks('grunt-docco2');
 	grunt.loadNpmTasks('grunt-plato');
 	grunt.loadNpmTasks('grunt-jsbeautifier');
 	
@@ -112,12 +124,8 @@ module.exports = function (grunt) {
 	if(versionMap[minor].branch === "master") {
 		subTasks.push("docco:latest")
 	}
-	subTasks.push("overwrite-docco-css");
-	
-	
+
 	grunt.registerTask('doccoit',subTasks);
-	
-	
 
 	// Default task.
 	grunt.registerTask('default', [ 'doccoit' ]);
