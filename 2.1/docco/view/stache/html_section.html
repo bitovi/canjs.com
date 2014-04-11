@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>html_section.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="html_section.html">
+                html_section.js
+              </a>
+            
+              
+              <a class="source" href="mustache_core.html">
+                mustache_core.js
+              </a>
+            
+              
+              <a class="source" href="mustache_helpers.html">
+                mustache_helpers.js
+              </a>
+            
+              
+              <a class="source" href="stache.html">
+                stache.js
+              </a>
+            
+              
+              <a class="source" href="text_section.html">
+                text_section.js
+              </a>
+            
+              
+              <a class="source" href="utils.html">
+                utils.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>html_section.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>,<span class="hljs-string">"can/view/target"</span>,<span class="hljs-string">"./utils.js"</span>,<span class="hljs-string">"./mustache_core.js"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( can, target, utils, mustacheCore )</span> {</span>
+
+	
+	<span class="hljs-keyword">var</span> decodeHTML = (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+		<span class="hljs-keyword">var</span> el = document.createElement(<span class="hljs-string">'div'</span>);
+		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(html)</span>{</span>
+			<span class="hljs-keyword">if</span>(html.indexOf(<span class="hljs-string">"&amp;"</span>) === -<span class="hljs-number">1</span>) {
+				<span class="hljs-keyword">return</span> html.replace(<span class="hljs-regexp">/\r\n/g</span>,<span class="hljs-string">"\n"</span>);
+			}
+			el.innerHTML = html;
+			<span class="hljs-keyword">return</span> el.childNodes.length === <span class="hljs-number">0</span> ? <span class="hljs-string">""</span> : el.childNodes[<span class="hljs-number">0</span>].nodeValue;
+		};
+	})();
+	
+	<span class="hljs-keyword">var</span> HTMLSectionBuilder = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+		<span class="hljs-keyword">this</span>.stack = [<span class="hljs-keyword">new</span> HTMLSection()];
+	};
+	
+	can.extend(HTMLSectionBuilder.prototype,utils.mixins);
+	
+	can.extend(HTMLSectionBuilder.prototype,{
+		startSubSection: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(process)</span>{</span>
+			<span class="hljs-keyword">var</span> newSection = <span class="hljs-keyword">new</span> HTMLSection(process);
+			<span class="hljs-keyword">this</span>.stack.push(newSection);
+			<span class="hljs-keyword">return</span> newSection;
+		},
+		endSubSection: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+			<span class="hljs-keyword">var</span> htmlSection = <span class="hljs-keyword">this</span>.endSection();
+			<span class="hljs-keyword">return</span> can.proxy(htmlSection.compiled.hydrate, htmlSection.compiled);
+		},
+		startSection: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( process )</span> {</span>
+			<span class="hljs-keyword">var</span> newSection = <span class="hljs-keyword">new</span> HTMLSection(process);
+			<span class="hljs-keyword">this</span>.last().add(newSection.targetCallback);
+			<span class="hljs-keyword">this</span>.stack.push(newSection);
+		},
+		endSection: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+			<span class="hljs-keyword">this</span>.last().compile();
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.stack.pop();
+		},
+		inverse: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+			<span class="hljs-keyword">this</span>.last().inverse();
+		},
+		compile: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+			<span class="hljs-keyword">var</span> compiled = <span class="hljs-keyword">this</span>.stack.pop().compile();
+			
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(scope, options)</span>{</span>
+				<span class="hljs-keyword">if</span> ( !(scope <span class="hljs-keyword">instanceof</span> can.view.Scope) ) {
+					scope = <span class="hljs-keyword">new</span> can.view.Scope(scope || {});
+				}
+				<span class="hljs-keyword">if</span> ( !(options <span class="hljs-keyword">instanceof</span> mustacheCore.Options) ) {
+					options = <span class="hljs-keyword">new</span> mustacheCore.Options(options || {});
+				}
+				<span class="hljs-keyword">return</span> compiled.hydrate(scope, options);
+			};
+		},
+		push: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(chars)</span>{</span>
+			<span class="hljs-keyword">this</span>.last().push(chars);
+		},
+		pop: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.last().pop();
+		}
+	});
+	
+	<span class="hljs-keyword">var</span> HTMLSection = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(process)</span>{</span>
+		<span class="hljs-keyword">this</span>.data = <span class="hljs-string">"targetData"</span>;
+		<span class="hljs-keyword">this</span>.targetData = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>A record of what targetData element we are within.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">this</span>.targetStack = [];
+		<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
+		<span class="hljs-keyword">this</span>.targetCallback = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(scope, options)</span>{</span>
+			process.call(<span class="hljs-keyword">this</span>,
+				scope,
+				options,
+				can.proxy(self.compiled.hydrate, self.compiled),
+				self.inverseCompiled &amp;&amp; can.proxy(self.inverseCompiled.hydrate, self.inverseCompiled)  ) ;
+		};
+	};
+	can.extend(HTMLSection.prototype,{
+		inverse: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+			<span class="hljs-keyword">this</span>.inverseData = [];
+			<span class="hljs-keyword">this</span>.data = <span class="hljs-string">"inverseData"</span>;
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Adds a DOM node.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		push: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span>{</span>
+			<span class="hljs-keyword">this</span>.add(data);
+			<span class="hljs-keyword">this</span>.targetStack.push(data);
+		},
+		pop: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.targetStack.pop();
+		},
+		add: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span>{</span>
+			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> data === <span class="hljs-string">"string"</span>){
+				data = decodeHTML(data);
+			}
+			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.targetStack.length) {
+				<span class="hljs-keyword">this</span>.targetStack[<span class="hljs-keyword">this</span>.targetStack.length-<span class="hljs-number">1</span>].children.push(data);
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">this</span>[<span class="hljs-keyword">this</span>.data].push(data);
+			}
+		},
+		compile: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+			<span class="hljs-keyword">this</span>.compiled = target(<span class="hljs-keyword">this</span>.targetData);
+			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.inverseData) {
+				<span class="hljs-keyword">this</span>.inverseCompiled = target(<span class="hljs-keyword">this</span>.inverseData);
+				<span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.inverseData;
+			}
+			<span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.targetData;
+			<span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.targetStack;
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.compiled;
+		},
+		children: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.targetStack.length) {
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.targetStack[<span class="hljs-keyword">this</span>.targetStack.length-<span class="hljs-number">1</span>].children;
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>[<span class="hljs-keyword">this</span>.data];
+			}
+		}
+	});
+	
+	<span class="hljs-keyword">return</span> HTMLSectionBuilder;
+	
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

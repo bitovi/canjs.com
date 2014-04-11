@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>list.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>list.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/model'</span>, <span class="hljs-string">'can/map/elements'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span>
+	<span class="hljs-keyword">var</span> getArgs = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args)</span> {</span>
+		<span class="hljs-keyword">if</span> (args[<span class="hljs-number">0</span>] &amp;&amp; can.isArray(args[<span class="hljs-number">0</span>])) {
+			<span class="hljs-keyword">return</span> args[<span class="hljs-number">0</span>];
+		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (args[<span class="hljs-number">0</span>] <span class="hljs-keyword">instanceof</span> can.Model.List) {
+			<span class="hljs-keyword">return</span> can.makeArray(args[<span class="hljs-number">0</span>]);
+		} <span class="hljs-keyword">else</span> {
+			<span class="hljs-keyword">return</span> can.makeArray(args);
+		}
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>used for namespacing</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		getIds = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> {</span>
+			<span class="hljs-keyword">return</span> item.__get(item.constructor.id);
+		}, ajaxMaker = can.Model._ajax,
+		<span class="hljs-comment">/**
+		 * @constructor jQuery.Model.List
+		 * @parent jQuery.Model
+		 * @download http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/model/list/list.js
+		 * @test jquery/model/list/qunit.html
+		 * @plugin jquery/model/list
+		 *
+		 * Model.Lists manage a lists (or arrays) of
+		 * model instances.  Similar to [jQuery.Model $.Model],
+		 * they are used to:
+		 *
+		 *  - create events when a list changes
+		 *  - make Ajax requests on multiple instances
+		 *  - add helper function for multiple instances (ACLs)
+		 *
+		 * The [todo] app demonstrates using a can.Control to
+		 * implement an interface for a $.Model.List.
+		 *
+		 * ## Creating A List Class
+		 *
+		 * Create a `$.Model.List [jQuery.Class class] for a $.Model
+		 * like:
+		 *
+		 *     $.Model('Todo')
+		 *     $.Model.List('Todo.List',{
+		 *       // static properties
+		 *     },{
+		 *       // prototype properties
+		 *     })
+		 *
+		 * This creates a `Todo.List` class for the `Todo`
+		 * class. This creates some nifty magic that we will see soon.
+		 *
+		 * `static` properties are typically used to describe how
+		 * a list makes requests.  `prototype` properties are
+		 * helper functions that operate on an instance of
+		 * a list.
+		 *
+		 * ## Make a Helper Function
+		 *
+		 * Often, a user wants to select multiple items on a
+		 * page and perform some action on them (for example,
+		 * deleting them). The app
+		 * needs to indicate if this is possible (for example,
+		 * by enabling a "DELETE" button).
+		 *
+		 *
+		 * If we get todo data back like:
+		 *
+		 *     // GET /todos.json -&gt;
+		 *     [{
+		 *       "id" : 1,
+		 *       "name" : "dishes",
+		 *       "acl" : "rwd"
+		 *     },{
+		 *       "id" : 2,
+		 *       "name" : "laundry",
+		 *       "acl" : "r"
+		 *     }, ... ]
+		 *
+		 * We can add a helper function to let us know if we can
+		 * delete all the instances:
+		 *
+		 *     $.Model.List('Todo.List',{
+		 *
+		 *     },{
+		 *        canDelete : function(){
+		 *          return this.grep(function(todo){
+		 *            return todo.acl.indexOf("d") != 0
+		 *          }).length == this.length
+		 *        }
+		 *     })
+		 *
+		 * `canDelete` gets a list of all todos that have
+		 * __d__ in their acl.  If all todos have __d__,
+		 * then `canDelete` returns true.
+		 *
+		 * ## Get a List Instance
+		 *
+		 * You can create a model list instance by using
+		 * `new Todo.List( instances )` like:
+		 *
+		 *     var todos = new Todo.List([
+		 *       new Todo({id: 1, name: ...}),
+		 *       new Todo({id: 2, name: ...}),
+		 *     ]);
+		 *
+		 * And call `canDelete` on it like:
+		 *
+		 *     todos.canDelete() //-&gt; boolean
+		 *
+		 * BUT! $.Model, [jQuery.fn.models $.fn.models], and $.Model.List are designed
+		 * to work with each other.
+		 *
+		 * When you use `Todo.findAll`, it will callback with an instance
+		 * of `Todo.List`:
+		 *
+		 *     Todo.findAll({}, function(todos){
+		 *        todos.canDelete() //-&gt; boolean
+		 *     })
+		 *
+		 * If you are adding the model instance to elements and
+		 * retrieving them back with `$().models()`, it will
+		 * return a instance of `Todo.List`.  The following
+		 * returns if the checked `.todo` elements are
+		 * deletable:
+		 *
+		 *     // get the checked inputs
+		 *     $('.todo input:checked')
+		 *        // get the todo elements
+		 *        .closest('.todo')
+		 *        // get the model list
+		 *        .models()
+		 *        // check canDelete
+		 *        .canDelete()
+		 *
+		 * ## Make Ajax Requests with Lists
+		 *
+		 * After checking if we can delete the todos,
+		 * we should delete them from the server. Like
+		 * `$.Model`, we can add a
+		 * static [jQuery.Model.List.static.destroy destroy] url:
+		 *
+		 *     $.Model.List('Todo.List',{
+		 *        destroy : 'POST /todos/delete'
+		 *     },{
+		 *        canDelete : function(){
+		 *          return this.grep(function(todo){
+		 *            return todo.acl.indexOf("d") != 0
+		 *          }).length == this.length
+		 *        }
+		 *     })
+		 *
+		 *
+		 * and call [jQuery.Model.List.prototype.destroy destroy] on
+		 * our list.
+		 *
+		 *     // get the checked inputs
+		 *     var todos = $('.todo input:checked')
+		 *        // get the todo elements
+		 *        .closest('.todo')
+		 *        // get the model list
+		 *        .models()
+		 *
+		 *     if( todos.canDelete() ) {
+		 *        todos.destroy()
+		 *     }
+		 *
+		 * By default, destroy will create an AJAX request to
+		 * delete these instances on the server, when
+		 * the AJAX request is successful, the instances are removed
+		 * from the list and events are dispatched.
+		 *
+		 * ## Listening to events on Lists
+		 *
+		 * Use [jQuery.Model.List.prototype.bind bind]`(eventName, handler(event, data))`
+		 * to listen to __add__, __remove__, and __updated__ events on a
+		 * list.
+		 *
+		 * When a model instance is destroyed, it is removed from
+		 * all lists.  In the todo example, we can bind to remove to know
+		 * when a todo has been destroyed.  The following
+		 * removes all the todo elements from the page when they are removed
+		 * from the list:
+		 *
+		 *     todos.bind('remove', function(ev, removedTodos){
+		 *       removedTodos.elements().remove();
+		 *     })
+		 *
+		 * ## Demo
+		 *
+		 * The following demo illustrates the previous features with
+		 * a contacts list.  Check
+		 * multiple Contacts and click "DESTROY ALL"
+		 *
+		 * @demo jquery/model/list/list.html
+		 *
+		 * ## Other List Features
+		 *
+		 *  - Store and retrieve multiple instances
+		 *  - Fast HTML inserts
+		 *
+		 * ### Store and retrieve multiple instances
+		 *
+		 * Once you have a collection of models, you often want to retrieve and update
+		 * that list with new instances.  Storing and retrieving is a powerful feature
+		 * you can leverage to manage and maintain a list of models.
+		 *
+		 * To store a new model instance in a list...
+		 *
+		 *     listInstance.push(new Animal({ type: dog, id: 123 }))
+		 *
+		 * To later retrieve that instance in your list...
+		 *
+		 *     var animal = listInstance.get(123);
+		 *
+		 *
+		 * ### Faster Inserts
+		 *
+		 * The 'easy' way to add a model to an element is simply inserting
+		 * the model into the view like:
+		 *
+		 * @codestart xml
+		 * &amp;lt;div &amp;lt;%= task %&gt;&gt; A task &amp;lt;/div&gt;
+		 * @codeend
+		 *
+		 * And then you can use [jQuery.fn.models $('.task').models()].
+		 *
+		 * This pattern is fast enough for 90% of all widgets.  But it
+		 * does require an extra query.  Lists help you avoid this.
+		 *
+		 * The [jQuery.Model.List.prototype.get get] method takes elements and
+		 * uses their className to return matched instances in the list.
+		 *
+		 * To use get, your elements need to have the instance's
+		 * identity in their className.  So to setup a div to reprsent
+		 * a task, you would have the following in a view:
+		 *
+		 * @codestart xml
+		 * &amp;lt;div class='task &amp;lt;%= task.identity() %&gt;'&gt; A task &amp;lt;/div&gt;
+		 * @codeend
+		 *
+		 * Then, with your model list, you could use get to get a list of
+		 * tasks:
+		 *
+		 * @codestart
+		 * taskList.get($('.task'))
+		 * @codeend
+		 *
+		 * The following demonstrates how to use this technique:
+		 *
+		 * @demo jquery/model/list/list-insert.html
+		 *
+		 */</span>
+		ajaxMethods = {
+			update: {
+				data: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ids, attrs)</span> {</span>
+					<span class="hljs-keyword">return</span> {
+						ids: ids,
+						attrs: attrs
+					};
+				},
+				type: <span class="hljs-string">'put'</span>
+			},
+			destroy: {
+				type: <span class="hljs-string">'delete'</span>
+			}
+		};
+	<span class="hljs-keyword">var</span> oldSetup = can.Model.List.setup;
+	can.Model.List.setup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+		oldSetup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+		<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
+		can.each(ajaxMethods, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method, name)</span> {</span>
+			<span class="hljs-keyword">if</span> (!can.isFunction(self[name])) {
+				self[name] = ajaxMaker(method, self[name]);
+			}
+		});
+	};
+	can.extend(can.Model.List.prototype, {
+		slice: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.constructor(<span class="hljs-built_in">Array</span>.prototype.slice.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>));
+		},
+		match: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(property, value)</span> {</span>
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.grep(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(inst)</span> {</span>
+				<span class="hljs-keyword">return</span> inst[property] === value;
+			});
+		},
+		grep: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(callback, args)</span> {</span>
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.constructor($.grep(<span class="hljs-keyword">this</span>, callback, args));
+		},
+		get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.length) {
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.constructor([]);
+			}
+			<span class="hljs-keyword">var</span> list = [],
+				constructor = <span class="hljs-keyword">this</span>[<span class="hljs-number">0</span>].constructor,
+				underscored = constructor._fullName,
+				test = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(underscored + <span class="hljs-string">'_([^ ]+)'</span>),
+				matches, val, args = getArgs(<span class="hljs-built_in">arguments</span>);
+			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; args.length; i++) {
+				<span class="hljs-keyword">if</span> (args[i].nodeName &amp;&amp; (matches = args[i].className.match(test))) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>If this is a dom element</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					val = <span class="hljs-keyword">this</span>.grep(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> {</span>
+						<span class="hljs-keyword">return</span> getIds(item) === matches[<span class="hljs-number">1</span>];
+					})[<span class="hljs-number">0</span>];
+				} <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Else an id was provided as a number or string.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					val = <span class="hljs-keyword">this</span>.grep(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> {</span>
+						<span class="hljs-keyword">return</span> getIds(item) === args[i];
+					})[<span class="hljs-number">0</span>];
+				}
+				<span class="hljs-keyword">if</span> (val) {
+					list.push(val);
+				}
+			}
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.constructor(list);
+		},
+		remove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args)</span> {</span>
+			<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.length) {
+				<span class="hljs-keyword">return</span> [];
+			}
+			<span class="hljs-keyword">var</span> list = [],
+				constructor = <span class="hljs-keyword">this</span>[<span class="hljs-number">0</span>].constructor,
+				underscored = constructor._fullName,
+				test = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(underscored + <span class="hljs-string">'_([^ ]+)'</span>),
+				matches;
+			args = getArgs(<span class="hljs-built_in">arguments</span>)
+				.slice(<span class="hljs-number">0</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>for performance, we will go through each and splice it</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;
+			<span class="hljs-keyword">while</span> (i &lt; <span class="hljs-keyword">this</span>.length) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>check</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> inst = <span class="hljs-keyword">this</span>[i],
+					found = <span class="hljs-literal">false</span>;
+				<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> a = <span class="hljs-number">0</span>; a &lt; args.length; a++) {
+					<span class="hljs-keyword">var</span> id = args[a].nodeName &amp;&amp; (matches = args[a].className.match(test)) &amp;&amp; matches[<span class="hljs-number">1</span>] || (<span class="hljs-keyword">typeof</span> args[a] === <span class="hljs-string">'string'</span> || <span class="hljs-keyword">typeof</span> args[a] === <span class="hljs-string">'number'</span> ? args[a] : getIds(args[a]));
+					<span class="hljs-keyword">if</span> (getIds(inst) === id) {
+						list.push.apply(list, <span class="hljs-keyword">this</span>.splice(i, <span class="hljs-number">1</span>));
+						args.splice(a, <span class="hljs-number">1</span>);
+						found = <span class="hljs-literal">true</span>;
+						<span class="hljs-keyword">break</span>;
+					}
+				}
+				<span class="hljs-keyword">if</span> (!found) {
+					i++;
+				}
+			}
+			<span class="hljs-keyword">var</span> ret = <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.constructor(list);
+			<span class="hljs-keyword">if</span> (ret.length) {
+				$([<span class="hljs-keyword">this</span>])
+					.trigger(<span class="hljs-string">'remove'</span>, [ret]);
+			}
+			<span class="hljs-keyword">return</span> ret;
+		},
+		elements: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(context)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>TODO : this can probably be done with 1 query.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> $(<span class="hljs-keyword">this</span>.map(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> {</span>
+					<span class="hljs-keyword">return</span> <span class="hljs-string">'.'</span> + item.identity();
+				})
+				.join(<span class="hljs-string">','</span>), context);
+		},
+		model: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.constructor.namespace;
+		},
+		findAll: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params, success, error)</span> {</span>
+			<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
+			<span class="hljs-keyword">this</span>.model()
+				.findAll(params, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items)</span> {</span>
+					self.push.apply(self, can.makeArray(items));
+					<span class="hljs-keyword">if</span> (success) {
+						success(self);
+					}
+				}, error);
+		},
+		destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(success, error)</span> {</span>
+			<span class="hljs-keyword">var</span> ids = <span class="hljs-keyword">this</span>.map(getIds),
+				items = can.makeArray(<span class="hljs-keyword">this</span>),
+				construct = <span class="hljs-keyword">this</span>.constructor,
+				list = <span class="hljs-keyword">this</span>;
+			<span class="hljs-keyword">if</span> (ids.length) {
+				<span class="hljs-keyword">this</span>.constructor.destroy(ids)
+					.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+						can.each(items, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>remove this item from this list</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>							list.remove(item.id);
+							item.destroyed();
+						});
+						<span class="hljs-keyword">if</span> (success) {
+							success(items);
+						}
+					}, error);
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">if</span> (success) {
+					success(<span class="hljs-keyword">new</span> construct(items));
+				}
+			}
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		},
+		update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrs, success, error)</span> {</span>
+			<span class="hljs-keyword">var</span> ids = <span class="hljs-keyword">this</span>.map(getIds),
+				items = <span class="hljs-keyword">this</span>.slice(<span class="hljs-number">0</span>, <span class="hljs-keyword">this</span>.length);
+			<span class="hljs-keyword">if</span> (ids.length) {
+				<span class="hljs-keyword">this</span>.constructor.update(ids, attrs)
+					.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newAttrs)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>final attributes to update with</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> attributes = $.extend(attrs, newAttrs || {});
+						can.each(items, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> {</span>
+							item.updated(attributes);
+						});
+						<span class="hljs-keyword">if</span> (success) {
+							success(items);
+						}
+					}, error);
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">if</span> (success) {
+					success(<span class="hljs-keyword">this</span>);
+				}
+			}
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		},
+		_updateAttrs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items, remove)</span> {</span>
+			<span class="hljs-keyword">var</span> len = items.length,
+				newVal, curVal, itemsNotInList = [];
+			<span class="hljs-keyword">var</span> id = <span class="hljs-keyword">this</span>.constructor.id;
+
+			<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getId</span><span class="hljs-params">(obj)</span> {</span>
+				<span class="hljs-keyword">return</span> obj.attr ? obj.attr(id) : obj[id];
+			}
+			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+				newVal = items[i];
+				curVal = <span class="hljs-literal">null</span>;
+				<span class="hljs-keyword">if</span> (can.Map.helpers.canMakeObserve(newVal) &amp;&amp; getId(newVal)) {
+					curVal = <span class="hljs-keyword">this</span>.get(getId(newVal))[<span class="hljs-number">0</span>];
+					<span class="hljs-keyword">if</span> (curVal) {
+						curVal.attr(newVal, remove);
+					} <span class="hljs-keyword">else</span> {
+						itemsNotInList.push(newVal);
+					}
+				}
+			}
+			<span class="hljs-keyword">if</span> (itemsNotInList.length) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>splice everything onto end of list so as not to trigger change events for each push</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.constructor.namespace) {
+					itemsNotInList = can.makeArray(<span class="hljs-keyword">this</span>.constructor.namespace.models(itemsNotInList));
+				}
+				<span class="hljs-keyword">this</span>.splice.apply(<span class="hljs-keyword">this</span>, [
+					<span class="hljs-keyword">this</span>.length,
+					<span class="hljs-number">0</span>
+				].concat(itemsNotInList));
+			}
+			<span class="hljs-keyword">if</span> (remove) {
+				<span class="hljs-keyword">var</span> existingIds = <span class="hljs-keyword">this</span>.map(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(element)</span> {</span>
+					<span class="hljs-keyword">return</span> getId(element);
+				}),
+					itemIds = can.map(items, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(element)</span> {</span>
+						<span class="hljs-keyword">return</span> getId(element);
+					});
+				can.each(existingIds, $.proxy(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> {</span>
+					<span class="hljs-keyword">if</span> (!~can.inArray(id, itemIds)) {
+						<span class="hljs-keyword">this</span>.remove(id);
+					}
+				}, <span class="hljs-keyword">this</span>));
+			}
+		}
+	});
+	can.each([<span class="hljs-string">'map'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
+		can.Model.List.prototype[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(callback, args)</span> {</span>
+			<span class="hljs-keyword">return</span> $[name](<span class="hljs-keyword">this</span>, callback, args);
+		};
+	});
+	<span class="hljs-keyword">return</span> can.Model.List;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

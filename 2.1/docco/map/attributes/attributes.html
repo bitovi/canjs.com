@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>attributes.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>attributes.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-string">'can/list'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, Map)</span> {</span>
+	can.each([
+		can.Map,
+		can.Model
+	], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(clss)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>in some cases model might not be defined quite yet.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (clss === <span class="hljs-literal">undefined</span>) {
+			<span class="hljs-keyword">return</span>;
+		}
+		<span class="hljs-keyword">var</span> isObject = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> {</span>
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> obj === <span class="hljs-string">'object'</span> &amp;&amp; obj !== <span class="hljs-literal">null</span> &amp;&amp; obj;
+		};
+		can.extend(clss, {
+
+			attributes: {},
+
+			convert: {
+				<span class="hljs-string">'date'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> {</span>
+					<span class="hljs-keyword">var</span> type = <span class="hljs-keyword">typeof</span> str;
+					<span class="hljs-keyword">if</span> (type === <span class="hljs-string">'string'</span>) {
+						str = <span class="hljs-built_in">Date</span>.parse(str);
+						<span class="hljs-keyword">return</span> <span class="hljs-built_in">isNaN</span>(str) ? <span class="hljs-literal">null</span> : <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(str);
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type === <span class="hljs-string">'number'</span>) {
+						<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(str);
+					} <span class="hljs-keyword">else</span> {
+						<span class="hljs-keyword">return</span> str;
+					}
+				},
+				<span class="hljs-string">'number'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> {</span>
+					<span class="hljs-keyword">return</span> <span class="hljs-built_in">parseFloat</span>(val);
+				},
+				<span class="hljs-string">'boolean'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> {</span>
+					<span class="hljs-keyword">if</span> (val === <span class="hljs-string">'false'</span> || val === <span class="hljs-string">'0'</span> || !val) {
+						<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+					}
+					<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+				},
+				<span class="hljs-string">'default'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val, oldVal, error, type)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Convert can.Model types using .model and .models</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (can.Map.prototype.isPrototypeOf(type.prototype) &amp;&amp; <span class="hljs-keyword">typeof</span> type.model === <span class="hljs-string">'function'</span> &amp;&amp; <span class="hljs-keyword">typeof</span> type.models === <span class="hljs-string">'function'</span>) {
+						<span class="hljs-keyword">return</span> type[can.isArray(val) ? <span class="hljs-string">'models'</span> : <span class="hljs-string">'model'</span>](val);
+					}
+					<span class="hljs-keyword">if</span> (can.Map.prototype.isPrototypeOf(type.prototype)) {
+						<span class="hljs-keyword">if</span> (can.isArray(val) &amp;&amp; <span class="hljs-keyword">typeof</span> type.List === <span class="hljs-string">'function'</span>) {
+							<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> type.List(val);
+						}
+						<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> type(val);
+					}
+					<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> type === <span class="hljs-string">'function'</span>) {
+						<span class="hljs-keyword">return</span> type(val, oldVal);
+					}
+					<span class="hljs-keyword">var</span> construct = can.getObject(type),
+						context = window,
+						realType;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>if type has a . we need to look it up</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (type.indexOf(<span class="hljs-string">'.'</span>) &gt;= <span class="hljs-number">0</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>get everything before the last .</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						realType = type.substring(<span class="hljs-number">0</span>, type.lastIndexOf(<span class="hljs-string">'.'</span>));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>get the object before the last .</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						context = can.getObject(realType);
+					}
+					<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> construct === <span class="hljs-string">'function'</span> ? construct.call(context, val, oldVal) : val;
+				}
+			},
+			serialize: {
+				<span class="hljs-string">'default'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val, type)</span> {</span>
+					<span class="hljs-keyword">return</span> isObject(val) &amp;&amp; val.serialize ? val.serialize() : val;
+				},
+				<span class="hljs-string">'date'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> {</span>
+					<span class="hljs-keyword">return</span> val &amp;&amp; val.getTime();
+				}
+			}
+		});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>overwrite setup to do this stuff</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> oldSetup = clss.setup;
+		<span class="hljs-comment">/**
+		 * @hide
+		 * @function can.Map.setup
+		 * @parent can.Map.attributes
+		 *
+		 * `can.Map.static.setup` overrides default `can.Map` setup to provide
+		 * functionality for attributes.
+		 *
+		 */</span>
+		clss.setup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(superClass, stat, proto)</span> {</span>
+			<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
+			oldSetup.call(self, superClass, stat, proto);
+			can.each([<span class="hljs-string">'attributes'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
+				<span class="hljs-keyword">if</span> (!self[name] || superClass[name] === self[name]) {
+					self[name] = {};
+				}
+			});
+			can.each([
+				<span class="hljs-string">'convert'</span>,
+				<span class="hljs-string">'serialize'</span>
+			], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
+				<span class="hljs-keyword">if</span> (superClass[name] !== self[name]) {
+					self[name] = can.extend({}, superClass[name], self[name]);
+				}
+			});
+		};
+	});
+	<span class="hljs-comment">/**
+	 * @hide
+	 * @function can.Map.prototype.convert
+	 * @parent can.Map.attributes
+	 */</span>
+	can.Map.prototype.__convert = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, value)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>check if there is a</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> Class = <span class="hljs-keyword">this</span>.constructor,
+			oldVal = <span class="hljs-keyword">this</span>.__get(prop),
+			type, converter;
+		<span class="hljs-keyword">if</span> (Class.attributes) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>the type of the attribute</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			type = Class.attributes[prop];
+			converter = Class.convert[type] || Class.convert[<span class="hljs-string">'default'</span>];
+		}
+		<span class="hljs-keyword">return</span> value === <span class="hljs-literal">null</span> || !type ? value : converter.call(Class, value, oldVal, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>}, type);
+	};
+	can.List.prototype.serialize = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrName, stack)</span> {</span>
+		<span class="hljs-keyword">return</span> can.makeArray(can.Map.prototype.serialize.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>));
+	};
+	can.Map.prototype.serialize = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrName, stack)</span> {</span>
+		<span class="hljs-keyword">var</span> where = {}, Class = <span class="hljs-keyword">this</span>.constructor,
+			attrs = {};
+		stack = can.isArray(stack) ? stack : [];
+		stack.push(<span class="hljs-keyword">this</span>._cid);
+		<span class="hljs-keyword">if</span> (attrName !== <span class="hljs-literal">undefined</span>) {
+			attrs[attrName] = <span class="hljs-keyword">this</span>[attrName];
+		} <span class="hljs-keyword">else</span> {
+			attrs = <span class="hljs-keyword">this</span>.__get();
+		}
+		can.each(attrs, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val, name)</span> {</span>
+			can.__reading(val, name);
+			<span class="hljs-keyword">var</span> type, converter;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>If this is an observe, check that it wasn’t serialized earlier in the stack.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (val <span class="hljs-keyword">instanceof</span> can.Map &amp;&amp; can.inArray(val._cid, stack) &gt; -<span class="hljs-number">1</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Since this object has already been serialized once,
+just reference the id (or undefined if it doesn’t exist).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				where[name] = val.attr(<span class="hljs-string">'id'</span>);
+			} <span class="hljs-keyword">else</span> {
+				type = Class.attributes ? Class.attributes[name] : <span class="hljs-number">0</span>;
+				converter = Class.serialize ? Class.serialize[type] : <span class="hljs-number">0</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>if the value is an object, and has a attrs or serialize function</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				where[name] = val &amp;&amp; <span class="hljs-keyword">typeof</span> val.serialize === <span class="hljs-string">'function'</span> ?</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>call attrs or serialize to get the original data back</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				val.serialize(<span class="hljs-literal">undefined</span>, stack) :</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>otherwise if we have  a converter</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				converter ?</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>use the converter</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				converter(val, type) :</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>or return the val</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				val;
+			}
+		});
+
+		can.__reading(<span class="hljs-keyword">this</span>, <span class="hljs-string">'__keys'</span>);
+
+		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> attrs.length !== <span class="hljs-string">'undefined'</span>) {
+			where.length = attrs.length;
+		}
+		<span class="hljs-keyword">return</span> attrName !== <span class="hljs-literal">undefined</span> ? where[attrName] : where;
+	};
+	<span class="hljs-keyword">return</span> can.Map;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

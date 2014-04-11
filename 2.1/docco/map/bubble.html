@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>bubble.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="bubble.html">
+                bubble.js
+              </a>
+            
+              
+              <a class="source" href="map.html">
+                map.js
+              </a>
+            
+              
+              <a class="source" href="map_benchmark.html">
+                map_benchmark.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>bubble.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can)</span>{</span>
+	
+	
+
+	<span class="hljs-keyword">var</span> bubble = can.bubble = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Given a binding, returns a string event name used to set up bubbline.
+If no binding should be done, undefined or null should be returned</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			event: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(map, eventName)</span> {</span>
+				<span class="hljs-keyword">return</span> map.constructor._bubbleRule(eventName, map);
+			},
+			childrenOf: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(parentMap, eventName)</span> {</span>
+	
+				parentMap._each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(child, prop)</span> {</span>
+					<span class="hljs-keyword">if</span> (child &amp;&amp; child.bind) {
+						bubble.toParent(child, parentMap, prop, eventName);
+					}
+				});
+				
+			},
+			teardownChildrenFrom: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parentMap, eventName)</span>{</span>
+				parentMap._each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(child)</span> {</span>
+					
+					bubble.teardownFromParent(parentMap, child, eventName);
+					
+				});
+			},
+			toParent: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(child, parent, prop, eventName)</span> {</span>
+				can.listenTo.call(parent, child, eventName, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">( <span class="hljs-comment">/* ev, attr */</span> )</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p><code>batchTrigger</code> the type on this…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>),
+						ev = args.shift();
+					
+					args[<span class="hljs-number">0</span>] =
+						(can.List &amp;&amp; parent <span class="hljs-keyword">instanceof</span> can.List ?
+							parent.indexOf(child) :
+							prop ) + (args[<span class="hljs-number">0</span>] ? <span class="hljs-string">"."</span>+args[<span class="hljs-number">0</span>] : <span class="hljs-string">""</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>track objects dispatched on this map        </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					ev.triggeredNS = ev.triggeredNS || {};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>if it has already been dispatched exit</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (ev.triggeredNS[parent._cid]) {
+						<span class="hljs-keyword">return</span>;
+					}
+		
+					ev.triggeredNS[parent._cid] = <span class="hljs-literal">true</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>send change event with modified attr to parent    </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					can.trigger(parent, ev, args);
+				});
+			},
+			teardownFromParent: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(parent, child, eventName )</span> {</span>
+				<span class="hljs-keyword">if</span>(child &amp;&amp; child.unbind ) {
+					can.stopListening.call(parent, child, eventName);
+				}
+			},
+			bind: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, eventName)</span> {</span>
+				<span class="hljs-keyword">if</span> (!parent._init ) {
+					<span class="hljs-keyword">var</span> bubbleEvent = bubble.event(parent, eventName);
+					<span class="hljs-keyword">if</span>(bubbleEvent) {
+						<span class="hljs-keyword">if</span>(!parent._bubbleBindings) {
+							parent._bubbleBindings = {};
+						}
+						<span class="hljs-keyword">if</span> (!parent._bubbleBindings[bubbleEvent]) {
+							parent._bubbleBindings[bubbleEvent] = <span class="hljs-number">1</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>setup live-binding</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>							bubble.childrenOf(parent, bubbleEvent);
+						} <span class="hljs-keyword">else</span> {
+							parent._bubbleBindings[bubbleEvent]++;
+						}
+						
+					}
+				}
+			},
+			unbind: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, eventName)</span> {</span>
+				<span class="hljs-keyword">var</span> bubbleEvent = bubble.event(parent, eventName);
+				<span class="hljs-keyword">if</span>(bubbleEvent) {
+					<span class="hljs-keyword">if</span> (parent._bubbleBindings ) {
+						parent._bubbleBindings[bubbleEvent]--;
+					}
+					
+					<span class="hljs-keyword">if</span> (! parent._bubbleBindings[bubbleEvent] ) {
+						<span class="hljs-keyword">delete</span> parent._bubbleBindings[bubbleEvent];
+						bubble.teardownChildrenFrom(parent, bubbleEvent);
+						<span class="hljs-keyword">if</span>(can.isEmptyObject(parent._bubbleBindings)) {
+							<span class="hljs-keyword">delete</span> parent._bubbleBindings;
+						}
+					}
+				}
+			},
+			add: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, child, prop)</span>{</span>
+				<span class="hljs-keyword">if</span>(child <span class="hljs-keyword">instanceof</span> can.Map &amp;&amp; parent._bubbleBindings) {
+					<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> eventName <span class="hljs-keyword">in</span> parent._bubbleBindings) {
+						<span class="hljs-keyword">if</span>( parent._bubbleBindings[eventName] ) {
+							bubble.teardownFromParent(parent, child, eventName);
+							bubble.toParent(child, parent, prop, eventName);
+						}
+					}
+				}
+			},
+			removeMany: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, children)</span>{</span>
+				<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = children.length; i &lt; len; i++) {
+					bubble.remove(parent, children[i]);
+				}
+			},
+			remove: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, child)</span>{</span>
+				<span class="hljs-keyword">if</span>(child <span class="hljs-keyword">instanceof</span> can.Map &amp;&amp; parent._bubbleBindings) {
+					<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> eventName <span class="hljs-keyword">in</span> parent._bubbleBindings) {
+						<span class="hljs-keyword">if</span>( parent._bubbleBindings[eventName] ) {
+							bubble.teardownFromParent(parent, child, eventName);
+						}
+					}
+				}
+			},
+			set: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, prop, value, current)</span>{</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>var res = parent.__type(value, prop);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>( can.Map.helpers.isObservable(value) ) {
+					bubble.add(parent, value, prop);
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>bubble.add will remove, so only remove if we are replacing another object</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>( can.Map.helpers.isObservable(current) ) {
+					bubble.remove(parent, current);
+				}
+				<span class="hljs-keyword">return</span> value;
+			}
+		};
+	
+	<span class="hljs-keyword">return</span> bubble;
+	
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
