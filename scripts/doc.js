@@ -196,10 +196,19 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 	
 	// Make versioned API docs
 	DocumentJS('scripts/doc.html', apiOptions);
+
+	// Produce API files compatible for Dash .docset output
+	apiOptions.out = version + "/docset/Contents/Resources/Documents";
+	apiOptions.templates = 'scripts/docset-templates';
+	DocumentJS('scripts/doc.html', apiOptions);
 	
 	// Make versioned guides
 	DocumentJS(null, guidesOptions);
-	
+
+	// ... and versioned guides for Dash
+	guidesOptions.out = version + "/docset/Contents/Resources/Documents/Guides"
+	guidesOptions.templates = 'scripts/docset-templates';
+	DocumentJS(null, guidesOptions);
 	
 	// if version is the last non-branch version, put in "docs" and "guides" 
 	if( isCurrentVersion ) {
