@@ -190,6 +190,7 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 	new steal.URI(version+"/can").removeDir();
 	new steal.URI(version+"/docs").removeDir();
 	new steal.URI(version+"/guides").removeDir();
+	new steal.URI(version+"/docset").removeDir();
 	
 	// Make versioned CanJS
 	copyCanJSTo(version+"/can");
@@ -201,6 +202,9 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 	apiOptions.out = version + "/docset/Contents/Resources/Documents";
 	apiOptions.templates = 'scripts/docset-templates';
 	DocumentJS('scripts/doc.html', apiOptions);
+
+	// Copy the Info.plist file into the right place
+	new steal.File('Info.plist').copyTo(version + "/docset/Contents/Info.plist");
 	
 	// Make versioned guides
 	DocumentJS(null, guidesOptions);
