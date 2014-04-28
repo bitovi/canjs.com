@@ -86,7 +86,7 @@ module.exports = function(grunt) {
 						return;
 					}
 
-					console.log('Inserting ' + opts.$name + ' as type ' + opts.$type + ' at path ' + opts.$path + '.');
+					grunt.verbose.writeln('Inserting ' + opts.$name + ' as type ' + opts.$type + ' at path ' + opts.$path + '.');
 					return qrun("INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ($name, $type, $path);", opts);
 				}).filter(function(elem) { return elem !== undefined; }));
 			}).then(function() {
@@ -94,7 +94,7 @@ module.exports = function(grunt) {
 				done();
 			}, function(err) {
 				db.close();
-				console.log('There was an SQLite error.', err);
+				grunt.error('There was an SQLite error.');
 				done(err);
 			}).done();
 		});
@@ -127,7 +127,7 @@ module.exports = function(grunt) {
 			).then(function() {
 				done();
 			}, function(err) {
-				console.log('Failed to write Info.plist file.', err);
+				grunt.error('Failed to write Info.plist file.', err);
 				done(err);
 			});
 		});
