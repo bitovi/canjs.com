@@ -79,7 +79,7 @@ module.exports = function(grunt) {
 					var opts = {
 						$name: props.title || props.name,
 						$type: getType(props),
-						$path: task.options().docsURL + (props.id === 0 ? 'index' : key) + '.html'
+						$path: (props.id === 0 ? 'index' : key) + '.html'
 					};
 
 					if(props.hide || opts.$type == null) {
@@ -135,7 +135,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerMultiTask('dash-repath', "Renames the docset to the right name.", function() {
-		this.requires('shell:docjs', 'dash-infoplist', 'dash-docset');
+		this.requires('shell:docjs', 'dash-docset');
 		fs.renameSync(
 			this.options().containingFolder + 'docset',
 			this.options().containingFolder + 'canjs.docset'
