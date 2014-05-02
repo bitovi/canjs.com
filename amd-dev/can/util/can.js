@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.7
+ * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Wed, 26 Mar 2014 16:12:27 GMT
+ * Fri, 02 May 2014 01:43:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -13,6 +13,9 @@ define(function () {
 	if (typeof GLOBALCAN === 'undefined' || GLOBALCAN !== false) {
 		window.can = can;
 	}
+
+	// An empty function useful for where you need a dummy callback.
+	can.k = function(){};
 
 	can.isDeferred = function (obj) {
 		var isFunction = this.isFunction;
@@ -28,7 +31,7 @@ define(function () {
 		}
 		return object._cid;
 	};
-	can.VERSION = '2.0.7';
+	can.VERSION = '2.1.0-pre';
 
 	can.simpleExtend = function (d, s) {
 		for (var prop in s) {
@@ -37,56 +40,42 @@ define(function () {
 		return d;
 	};
 
-	//!steal-remove-start
-	can.dev = {
-		logLevel: 0,
-		/**
-		 * Adds a warning message to the console.
-		 * @codestart
-		 * can.dev.warn("something evil");
-		 * @codeend
-		 * @param {String} out the message
-		 */
-		warn: function (out) {
-			var ll = this.logLevel;
-			if (ll < 2) {
-				Array.prototype.unshift.call(arguments, 'WARN:');
-				if (window.console && console.warn) {
-					this._logger("warn", Array.prototype.slice.call(arguments));
-				} else if (window.console && console.log) {
-					this._logger("log", Array.prototype.slice.call(arguments));
-				} else if (window.opera && window.opera.postError) {
-					window.opera.postError("steal.js WARNING: " + out);
-				}
+
+	can.frag = function(item){
+		var frag;
+		if(!item || typeof item === "string"){
+			frag = can.buildFragment(item == null ? "" : ""+item, document.body);
+			// If we have an empty frag...
+			if (!frag.childNodes.length) {
+				frag.appendChild(document.createTextNode(''));
 			}
-		},
-		/**
-		 * Adds a message to the console.
-		 * @codestart
-		 * can.dev.log("hi");
-		 * @codeend
-		 * @param {String} out the message
-		 */
-		log: function (out) {
-			var ll = this.logLevel;
-			if (ll < 1) {
-				if (window.console && console.log) {
-					Array.prototype.unshift.call(arguments, 'Info:');
-					this._logger("log", Array.prototype.slice.call(arguments));
-				} else if (window.opera && window.opera.postError) {
-					window.opera.postError("steal.js INFO: " + out);
-				}
+			return frag;
+		} else if(item.nodeType === 11) {
+			return item;
+		} else if(typeof item.nodeType === "number") {
+			frag = document.createDocumentFragment();
+			frag.appendChild(item);
+			return frag;
+		} else if(typeof item.length === "number") {
+			frag = document.createDocumentFragment();
+			can.each(item, function(item){
+				frag.appendChild( can.frag(item) );
+			});
+			return frag;
+		} else {
+			frag = can.buildFragment( ""+item, document.body);
+			// If we have an empty frag...
+			if (!frag.childNodes.length) {
+				frag.appendChild(document.createTextNode(''));
 			}
-		},
-		_logger: function (type, arr) {
-			if (console.log.apply) {
-				console[type].apply(console, arr);
-			} else {
-				console[type](arr);
-			}
+			return frag;
 		}
 	};
-	//!steal-remove-end
+	
+	// this is here in case can.compute hasn't loaded
+	can.__reading = function () {};
+
+
 
 	return can;
 });

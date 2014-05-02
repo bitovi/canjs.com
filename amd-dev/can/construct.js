@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.7
+ * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Wed, 26 Mar 2014 16:12:27 GMT
+ * Fri, 02 May 2014 01:43:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -326,11 +326,7 @@ define(["can/util/string"], function (can) {
 				_fullName = can.underscore(fullName.replace(/\./g, "_"));
 				_shortName = can.underscore(shortName);
 
-				//!steal-remove-start
-				if (current[shortName]) {
-					can.dev.warn("can/construct/construct.js: There's already something called " + fullName);
-				}
-				//!steal-remove-end
+			
 
 				current[shortName] = Constructor;
 			}

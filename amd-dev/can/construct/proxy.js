@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.7
+ * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Wed, 26 Mar 2014 16:12:27 GMT
+ * Fri, 02 May 2014 01:43:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -24,13 +24,7 @@ define(["can/util/library", "can/construct"], function (can, Construct) {
 			// keep a reference to us in self
 			self = this;
 
-			//!steal-remove-start
-			for (var i = 0; i < funcs.length; i++) {
-				if (typeof funcs[i] === "string" && !isFunction(this[funcs[i]])) {
-					throw ("class.js " + (this.fullName || this.Class.fullName) + " does not have a " + funcs[i] + "method!");
-				}
-			}
-			//!steal-remove-end
+		
 
 			return function class_cb() {
 				// add the arguments after the curried args

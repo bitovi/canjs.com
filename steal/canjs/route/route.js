@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.7
+ * CanJS - 2.1.0-pre
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Wed, 26 Mar 2014 16:12:27 GMT
+ * Fri, 02 May 2014 01:43:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -355,6 +355,18 @@ steal('can/util', 'can/map', 'can/list','can/util/string/deparam', function (can
 		 * A can.Map that represents the state of the history.
 		 */
 		data: new can.Map({}),
+		map: function(data){
+			var appState;
+			// appState is an instance of can.Map
+			if(data instanceof can.Map){
+				appState = data;
+			}
+			// appState is a can.Map constructor function
+			else if(data.prototype instanceof can.Map){
+				appState = new data();
+			}
+			can.route.data = appState;
+		},
 		/**
 		 * @property {Object} routes
 		 * @hide
