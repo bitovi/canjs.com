@@ -163,7 +163,7 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('doccoit',subTasks);
 
-	grunt.registerTask('docjs', ['clean', 'shell:docjs', 'dash-docset', 'dash-repath']);
+	grunt.registerTask('docjs', ['clean', 'shell:docjs', 'doccoit', 'dash-docset', 'dash-repath']);
 
 	// Default task.
 	grunt.registerTask('default', [ 'doccoit' ]);
