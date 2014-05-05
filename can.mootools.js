@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre.1
+ * CanJS - 2.1.0
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 05 May 2014 20:37:34 GMT
+ * Mon, 05 May 2014 22:15:55 GMT
  * Licensed MIT
  * Includes: can/component,can/construct,can/map,can/list,can/observe,can/compute,can/model,can/view,can/control,can/route,can/control/route,can/view/mustache,can/view/bindings,can/view/live,can/view/scope,can/util/string,can/util/attr
  * Download from: http://canjs.com
@@ -34,7 +34,7 @@
             }
             return object._cid;
         };
-        can.VERSION = '2.1.0-pre.1';
+        can.VERSION = '2.1.0';
 
         can.simpleExtend = function(d, s) {
             for (var prop in s) {
