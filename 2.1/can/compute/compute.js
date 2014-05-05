@@ -400,13 +400,19 @@ steal('can/util', 'can/util/bind', 'can/util/batch', function (can, bind) {
 						
 					context = options.context || options;
 					get = options.get || get;
-					set = options.set || set;
-					
+					set = options.set || function(){
+						return value;
+					};
+					// This is a "hack" to allow async computes.
 					if(options.fn) {
 						var fn = options.fn,
 							data;
-						get = fn;
-						
+						// make sure get is called with the newVal, but not setter
+						get = function(){
+							return fn.call(context, value);
+						};
+						// Check the number of arguments the 
+						// async function takes.
 						if(fn.length === 0) {
 							
 							data = setupComputeHandlers(computed, fn, context, setCached);
@@ -425,6 +431,7 @@ steal('can/util', 'can/util/bind', 'can/util/batch', function (can, bind) {
 								var res = fn.call(context, value, function(newVal){
 									oldUpdater(newVal, value);
 								});
+								// If undefined is returned, don't update the value.
 								return res !== undefined ? res : value;
 							}, context, setCached);
 						}
@@ -600,6 +607,7 @@ steal('can/util', 'can/util/bind', 'can/util/batch', function (can, bind) {
 				// just do the dot operator
 				cur = prev[reads[i]];
 			}
+			type = typeof cur;
 			// If it's a compute, get the compute's value
 			// unless we are at the end of the 
 			if (cur && cur.isComputed && (!options.isArgument && i < readLength - 1)) {
@@ -608,7 +616,10 @@ steal('can/util', 'can/util/bind', 'can/util/batch', function (can, bind) {
 				}
 				cur = cur();
 			}
-			type = typeof cur;
+			// If it's an anonymous function, execute as requested
+			else if (i < reads.length - 1 && type === 'function' && options.executeAnonymousFunctions && !(can.Construct && cur.prototype instanceof can.Construct)) {
+				cur = cur();
+			}
 			// if there are properties left to read, and we don't have an object, early exit
 			if (i < reads.length - 1 && (cur === null || type !== 'function' && type !== 'object')) {
 				if (options.earlyExit) {
@@ -622,7 +633,8 @@ steal('can/util', 'can/util/bind', 'can/util/batch', function (can, bind) {
 			}
 		}
 		// handle an ending function
-		if (typeof cur === 'function') {
+		// unless it is a can.Construct-derived constructor
+		if (typeof cur === 'function' && !(can.Construct && cur.prototype instanceof can.Construct)) {
 			if (options.isArgument) {
 				if (!cur.isComputed && options.proxyMethods !== false) {
 					cur = can.proxy(cur, prev);

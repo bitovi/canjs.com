@@ -234,9 +234,9 @@ module.exports = function (grunt) {
 				options: {
 					timeout: 10000,
 					urls: [
-						'http://localhost:8000/test/dist/dojo.html',
 						'http://localhost:8000/test/dist/jquery.html',
 						'http://localhost:8000/test/dist/jquery-2.html',
+						'http://localhost:8000/test/dist/dojo.html',
 						//'http://localhost:8000/can/test/zepto.html',
 						'http://localhost:8000/test/dist/mootools.html',
 						'http://localhost:8000/test/dist/yui.html'
@@ -293,6 +293,7 @@ module.exports = function (grunt) {
 						'http://localhost:8000/control/test.html',
 						'http://localhost:8000/map/test.html',
 						'http://localhost:8000/map/lazy/test.html',
+						// 'http://localhost:8000/map/define/test.html',
 						'http://localhost:8000/map/attributes/test.html',
 						'http://localhost:8000/map/backup/test.html',
 						// 'http://localhost:8000/map/delegate/test.html',
@@ -302,6 +303,7 @@ module.exports = function (grunt) {
 						'http://localhost:8000/map/validations/test.html',
 						'http://localhost:8000/model/test.html',
 						'http://localhost:8000/observe/test.html',
+						'http://localhost:8000/list/promise/test.html',
 						// 'http://localhost:8000/route/test.html',
 						'http://localhost:8000/route/pushstate/test.html',
 						'http://localhost:8000/view/test.html',
@@ -391,7 +393,7 @@ module.exports = function (grunt) {
 						],
 						expand : true
 					}
-				],
+				]
 			}
 		},
 		plato: {
@@ -466,5 +468,6 @@ module.exports = function (grunt) {
 	grunt.registerTask('test:individuals', ['connect', 'qunit:individuals']);
 	grunt.registerTask('test', ['jshint', 'connect', 'build', 'testify', 'pluginifyTests:latest', 'qunit']);
 	grunt.registerTask('default', ['build']);
-
+	grunt.registerTask('test:steal', ['connect',  'testify','qunit:steal']);
+	grunt.registerTask('test:amd', ['connect',  'build','testify','qunit:amd']);
 };

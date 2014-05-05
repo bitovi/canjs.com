@@ -4,6 +4,59 @@
 // for in template event bindings. These are usable in any mustache template, but mainly and documented 
 // for use within can.Component.
 steal("can/util", "can/view/mustache", "can/control", function (can) {
+	/**
+	 * @function isContentEditable
+	 * @hide
+	 *
+	 * Determines if an element is contenteditable.
+	 *
+	 * An element is contenteditable if it contains the `contenteditable`
+	 * attribute set to either an empty string or "true".
+	 *
+	 * By default an element is also contenteditable if its immediate parent
+	 * has a truthy version of the attribute, unless the element is explicitly
+	 * set to "false".
+	 *
+	 * @param {HTMLElement} el
+	 * @return {Boolean} returns if the element is editable
+	 */
+	// Function for determining of an element is contenteditable
+	var isContentEditable = (function(){
+		// A contenteditable element has a value of an empty string or "true"
+		var values = {
+			"": true,
+			"true": true,
+			"false": false
+		};
+
+		// Tests if an element has the appropriate contenteditable attribute
+		var editable = function(el){
+			// DocumentFragments do not have a getAttribute
+			if(!el || !el.getAttribute) {
+				return;
+			}
+
+			var attr = el.getAttribute("contenteditable");
+			return values[attr];
+		};
+
+		return function (el){
+			// First check if the element is explicitly true or false
+			var val = editable(el);
+			if(typeof val === "boolean") {
+				return val;
+			} else {
+				// Otherwise, check the parent
+				return !!editable(el.parentNode);
+			}
+		};
+	})(),
+		removeCurly = function(value){
+			if(value[0] === "{" && value[value.length-1] === "}") {
+				return value.substr(1, value.length - 2);
+			}
+			return value;
+		};
 
 	// ## can-value
 	// Implement the `can-value` special attribute
@@ -16,7 +69,7 @@ steal("can/util", "can/view/mustache", "can/control", function (can) {
 	// should be a string representing some value in the current scope to cross-bind to.
 	can.view.attr("can-value", function (el, data) {
 
-		var attr = el.getAttribute("can-value"),
+		var attr = removeCurly(el.getAttribute("can-value")),
 			// Turn the attribute passed in into a compute.  If the user passed in can-value="name" and the current 
 			// scope of the template is some object called data, the compute representing this can-value will be the 
 			// data.attr('name') property.
@@ -64,6 +117,13 @@ steal("can/util", "can/view/mustache", "can/control", function (can) {
 			// For multiselect enabled select inputs, we instantiate a special control around that select element 
 			// called Multiselect
 			new Multiselect(el, {
+				value: value
+			});
+			return;
+		}
+		// For contenteditable elements, we instantiate a Content control.
+		if (isContentEditable(el)) {
+			new Content(el, {
 				value: value
 			});
 			return;
@@ -121,7 +181,7 @@ steal("can/util", "can/view/mustache", "can/control", function (can) {
 			handler = function (ev) {
 				// The attribute value, representing the name of the method to call (i.e. can-submit="foo" foo is the 
 				// name of the method)
-				var attr = el.getAttribute(attributeName),
+				var attr = removeCurly( el.getAttribute(attributeName) ),
 					scopeData = data.scope.read(attr, {
 						returnObserveMethods: true,
 						isArgument: true
@@ -174,7 +234,7 @@ steal("can/util", "can/view/mustache", "can/control", function (can) {
 			}
 			var val = this.options.value();
 			// Set the element's value to match the attribute that was passed in
-			this.element[0].value = (typeof val === 'undefined' ? '' : val);
+			this.element[0].value = (val == null ? '' : val);
 		},
 		// If the input value changes, this will set the live bound data to reflect the change.
 		"change": function () {
@@ -199,6 +259,7 @@ steal("can/util", "can/view/mustache", "can/control", function (can) {
 			// scope is someObj, value is the compute representing someObj.attr('foo')
 			"{value} change": "check",
 			check: function () {
+				// jshint eqeqeq: false
 				if (this.isCheckbox) {
 					var value = this.options.value(),
 						trueValue = this.options.trueValue || true;
@@ -208,7 +269,7 @@ steal("can/util", "can/view/mustache", "can/control", function (can) {
 				}
 				// Its a radio input type
 				else {
-					var setOrRemove = this.options.value() === this.element[0].value ?
+					var setOrRemove = this.options.value() == this.element[0].value ?
 						"set" : "remove";
 
 					can.attr[setOrRemove](this.element[0], 'checked', true);
@@ -306,6 +367,20 @@ steal("can/util", "can/view/mustache", "can/control", function (can) {
 					this.options.value(value);
 				}
 
+			}
+		}),
+		Content = can.Control.extend({
+			init: function () {
+				this.set();
+				this.on("blur", "setValue");
+			},
+			"{value} change": "set",
+			set: function () {
+				var val = this.options.value();
+				this.element[0].innerHTML = (typeof val === 'undefined' ? '' : val);
+			},
+			setValue: function () {
+				this.options.value(this.element[0].innerHTML);
 			}
 		});
 

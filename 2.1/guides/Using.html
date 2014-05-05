@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Using CanJS - CanJS Guides</title>
+  <title>Setting up CanJS - CanJS Guides</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -106,8 +106,8 @@
 	   </li>
 	
 	   <li class="search-container active">
-	   		<a href="Using.html" data-search="Using CanJS">
-				Using CanJS
+	   		<a href="Using.html" data-search="Setting up CanJS">
+				Setting up CanJS
 			</a>
 			
 				
@@ -118,9 +118,9 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="using-standalone.html" 
-							data-search="Standalone">
-							Standalone
+							href="using-download.html" 
+							data-search="Download">
+							Download
 						</a>
 						
 					</li>
@@ -133,24 +133,9 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="using-require.html" 
-							data-search="With AMD (RequireJS)">
-							With AMD (RequireJS)
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="page" 
-							href="using-steal.html" 
-							data-search="With StealJS">
-							With StealJS
+							href="using-loading.html" 
+							data-search="Loading">
+							Loading
 						</a>
 						
 					</li>
@@ -164,8 +149,23 @@
 					<li class="search-container  ">
 						<a 	class="page" 
 							href="using-production.html" 
-							data-search="In production">
-							In production
+							data-search="In Production">
+							In Production
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="using-examples.html" 
+							data-search="Examples">
+							Examples
 						</a>
 						
 					</li>
@@ -232,7 +232,7 @@
 	<article class="content docs">
 		<section class="title">
 			<div class="heading">
-<h1>Using CanJS</h1>
+<h1>Setting up CanJS</h1>
 	<ul class="tags">
 		<li>page</li>
 	</ul>
@@ -270,8 +270,7 @@
 		
 
 		<section class="description">
-			<p>CanJS can be used with <a href="http://jquery.com">jQuery</a>, <a href="http://dojotoolkit.org/">Dojo</a>, <a href="http://mootools.net/">Mootools</a>, <a href="http://yuilibrary.com/">YUI</a> and <a href="http://zeptojs.com/">Zepto</a>. This guide outlines the different ways CanJS can be obtained
-and the follow up chapters show how to use CanJS <a href="using-standalone.html">standalone</a>, <a href="using-steal.html">with StealJS</a> or <a href="using-require.html">with RequireJS</a> and tips for the <a href="using-production.html">use in production</a>.</p>
+			<p>CanJS is designed and packaged so that it can easily fit into your development workflow. You can use it with <a href="http://jquery.com">jQuery</a>, <a href="http://dojotoolkit.org/">Dojo</a>, <a href="http://mootools.net/">Mootools</a>, <a href="http://yuilibrary.com/">YUI</a> and <a href="http://zeptojs.com/">Zepto</a>. The following pages contain guides on</p>
 		</section>
 
 		
@@ -283,81 +282,32 @@ and the follow up chapters show how to use CanJS <a href="using-standalone.html"
 
 		
 		<section class="comment">
-			<h2>The CanJS download</h2>
-
-<p>The buttons on the <a href="http://canjs.com">CanJS homepage</a> lets you either get the full download or create customized download using the
-<a href="#section_Thedownloadbuilder">download builder</a>. The full download is a zipped version of <a href="https://github.com/bitovi/canjs.com">this repository</a>
-and contains:</p>
-
-<ul>
-<li><code>can.&lt;library&gt;.js</code> (e.g. <code>can.jquery.js</code>) - The core build for a supported library</li>
-<li><code>can.&lt;library&gt;.dev.js</code> - A development build logging useful messages for a supported library</li>
-<li><code>can.&lt;library&gt;.min.js</code> - The minified core build for a supported library</li>
-<li><code>can.&lt;type&gt;.&lt;plugin&gt;</code> - Individual builds for each official CanJS plugin</li>
-<li><code>amd/</code> - CanJS provided as AMD modules (see [using with RequireJS using-require] for usage)</li>
-<li><code>amd-dev/</code> - CanJS AMD modules with development messages</li>
-<li><code>steal/</code> - CanJS modules using the StealJS syntax (see [using with StealJS using-steal])</li>
+			<ul>
+<li><a href="using-download.html">Download</a> - How to get CanJS using the <a href="using-download.html#section_TheCanJSdownload">big download</a>, a <a href="using-download.html#section_Thedownloadbuilder">customized build</a>, <a href="using-download.html#section_Bower">Bower</a> or our <a href="using-download.html#section_TheGitHubCDN">CDN</a></li>
+<li><a href="using-loading.html">Loading</a> - How to load CanJS via a <a href="using-loading.html#section_Ina_script_tag">script tag</a>, <a href="using-loading.html#section_AMD">AMD</a> (RequireJS) or <a href="using-loading.html#section_StealJS">StealJS</a></li>
+<li><a href="using-production.html">In Production</a> - Tips on how to set up CanJS in a production environment.</li>
+<li><a href="using-examples.html">Examples</a> - Some examples on how it all works combined</li>
 </ul>
 
-<p>The <a href="http://canjs.com/download.html">download page</a> also offers those downloads for older versions and pre-releases for the next version from the "Other Versions" dropdown.</p>
+<p>If you are looking for a quick start using our <a href="">CDN</a> just create an HTML page like this:</p>
 
-<h2>The download builder</h2>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;CanJS Test&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"&gt;&lt;/script&gt;
+    &lt;script src="http://canjs.com/release/latest/can.jquery.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"&gt;
+        $(function() {
+            // Your CanJS code here
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 
-<p>The <a href="http://canjs.com/download.html">download builder</a> creates a single - optionally minified - JavaScript
-file (<code>can.custom.js</code>) for the library and CanJS modules (including plugins) you selected in the currently released version.
-The advantage is that you will get a single file with only the dependencies needed. The banner at the top will
-contain a "Download from:" link so that you will be able to re-download the same configuration for newer versions.</p>
-
-<h2>Bower</h2>
-
-<p><a href="http://bower.io/">Bower</a> is a package manager to organize dependencies on front-end packages. Bower runs over Git, and is package-agnostic. The CanJS Bower package references the <a href="https://github.com/bitovi/canjs.com">same repository</a>
-(and files) as the Zip download. With <a href="http://nodejs.org">NodeJS</a> available Bower can easily be installed via:</p>
-
-<blockquote>
-  <p>npm install bower -g</p>
-</blockquote>
-
-<p>To install the latest CanJS release run:</p>
-
-<blockquote>
-  <p>bower install canjs</p>
-</blockquote>
-
-<p>To save the dependency in you <code>bower.json</code> configuration:</p>
-
-<blockquote>
-  <p>bower install canjs --save</p>
-</blockquote>
-
-<p>To install a different version (e.g. 1.1.8):</p>
-
-<blockquote>
-  <p>bower install canjs#1.1.8</p>
-</blockquote>
-
-<p>To get a CanJS pre-release run:</p>
-
-<blockquote>
-  <p>bower install canjs#minor</p>
-</blockquote>
-
-<h2>The GitHub CDN</h2>
-
-<p>We also make every CanJS version available via our homepage as:</p>
-
-<ul>
-<li><a href="http://canjs.com/releases/latest/can.jquery.js">canjs.com/releases/can.jquery.js</a> - For the latest version</li>
-<li><a href="http://canjs.com/releases/2.0.0/can.jquery.js">canjs.com/--version--/can.jquery.js</a> - For a specific version</li>
-</ul>
-
-<p>A list of all available files can be found in <a href="https://github.com/bitovi/canjs.com">this repository</a>.</p>
-
-<p><strong>Note:</strong> We highly recommend to always reference a specific version and never <code>latest</code> directly in a production environment.
-Latest can contain backwards incompatible releases <strong>and will break your application</strong>.</p>
-
-<h2>JSFiddle</h2>
-
-<p>To make quick demos and examples for CanJS you can use one of the following <a href="http://jsfiddle.com">JSFiddles</a>:</p>
+<p>Or fork one the <a href="http://jsfiddle.com">JSFiddle</a> with your library of choice:</p>
 
 <ul>
 <li><a href="http://jsfiddle.net/donejs/qYdwR/">jQuery</a></li>
@@ -366,14 +316,6 @@ Latest can contain backwards incompatible releases <strong>and will break your a
 <li><a href="http://jsfiddle.net/donejs/w6m73/">YUI</a></li>
 <li><a href="http://jsfiddle.net/donejs/mnNJX/">Mootools</a></li>
 </ul>
-
-<h2>IE 8 Support</h2>
-
-<p>While CanJS does support Internet Exporer 8 out of the box, if you decide
-to use <a href="/docs/can.Component.html">can.Components</a> then you will need to use the <a href="https://github.com/aFarkas/html5shiv">HTML5 Shiv</a>
-in order for your custom tags to work properly. Unfortunately, at the moment, the official HTML5 Shiv
-does not work with namespaced tag names (e.g. &lt;can:example&gt;). Thankfully, CanJS comes with a version that
-fixes this and we've already submitted a pull request so future users of HTML5 Shiv won't run into this issue.</p>
 		</section>
 		
 
@@ -382,7 +324,7 @@ fixes this and we've already submitted a pull request so future users of HTML5 S
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"page","name":"Using","description":"<p>CanJS can be used with <a href=\"http://jquery.com\">jQuery</a>, <a href=\"http://dojotoolkit.org/\">Dojo</a>, <a href=\"http://mootools.net/\">Mootools</a>, <a href=\"http://yuilibrary.com/\">YUI</a> and <a href=\"http://zeptojs.com/\">Zepto</a>. This guide outlines the different ways CanJS can be obtained\nand the follow up chapters show how to use CanJS [using-standalone standalone], [using-steal with StealJS] or [using-require with RequireJS] and tips for the [using-production use in production].</p>","title":"Using CanJS","parent":"guides","order":2,"src":"can/guides/using.md","id":29,"children":[{"type":"page","name":"using-production","description":"<p>While it makes sense to use uniminified JavaScript split into separate files and a CanJS debugging version (like <code>can.jquery.dev.js</code>) during development, you should concatenate and minify all your resources for use in production. If you are using CanJS [using-standalone standalone] this can be done through a build tool like <a href=\"http://gruntjs.com/\">Grunt</a> or <a href=\"http://gulpjs.com/\">Gulp</a> or tools part of your server side framework like the <a href=\"http://guides.rubyonrails.org/asset_pipeline.html\">Ruby on Rails asset pipeline</a>.</p>","title":"In production","parent":"Using","order":3,"src":"can/guides/using-production.md","id":25},{"type":"page","name":"using-require","description":"<p>The <a href=\"../download.html\">CanJS Download</a> contains an <code>amd/</code> folder which allows you to load any CanJS component and plugin using an AMD module loader like <a href=\"http://requirejs.org/\">RequireJS</a>. Unlike many other JavaScript libraries CanJS is fully modular and loading a dependency will only include the modules actually used (for example, <code>can/control</code> will only load <code>can/construct</code> and <code>can/util</code>). The <code>amd-dev/</code> folder contains the same files but with debugging message enabled which can be very helpful during development.</p>","title":"With AMD (RequireJS)","parent":"Using","order":1,"src":"can/guides/using-require.md","id":26},{"type":"page","name":"using-standalone","description":"<p>The most common way of using CanJS is the core builds from the download (or download builder) included in a <code>&lt;script&gt;</code> tag.\nThis page contains quick instructions for using CanJS with the different supported libraries.</p>","title":"Standalone","parent":"Using","order":0,"src":"can/guides/using-standalone.md","id":27},{"type":"page","name":"using-steal","description":"<p>StealJS is the dependency manager that comes with <a href=\"http://javascriptmvc.com\">JavaScriptMVC</a> and that is natively used by CanJS.\nSince JavaScriptMVC comes with CanJS and Steal, the easiest way to use them together is by <a href=\"http://javascriptmvc.com/dist/javascriptmvc-3.3.zip\">downloading JavaScriptMVC</a>. You can also use the <code>steal/</code> folder from the CanJS download or Bower package.</p>","title":"With StealJS","parent":"Using","order":2,"src":"can/guides/using-steal.md","id":28}]};
+	var docData = {"type":"page","name":"Using","description":"<p>CanJS is designed and packaged so that it can easily fit into your development workflow. You can use it with <a href=\"http://jquery.com\">jQuery</a>, <a href=\"http://dojotoolkit.org/\">Dojo</a>, <a href=\"http://mootools.net/\">Mootools</a>, <a href=\"http://yuilibrary.com/\">YUI</a> and <a href=\"http://zeptojs.com/\">Zepto</a>. The following pages contain guides on</p>","title":"Setting up CanJS","parent":"guides","order":2,"src":"can/guides/using.md","id":25,"children":[{"type":"page","name":"using-download","description":"","title":"Download","parent":"Using","order":0,"src":"can/guides/using-download.md","id":21},{"type":"page","name":"using-examples","description":"","title":"Examples","parent":"Using","order":3,"src":"can/guides/using-examples.md","id":22},{"type":"page","name":"using-loading","description":"<p>There are several ways to load CanJS in your application. Most likely you will use one of the pre-built versions like <code>can.jquery.js</code> but it is also possible to load each module individually using AMD or Steal.</p>","title":"Loading","parent":"Using","order":1,"src":"can/guides/using-loading.md","id":23},{"type":"page","name":"using-production","description":"<p>While it makes sense to use uniminified JavaScript split into separate files and a CanJS debugging version (like <code>can.jquery.dev.js</code>) during development, you should concatenate and minify all your resources for use in production. If you are using CanJS [using-standalone standalone] this can be done through a build tool like <a href=\"http://gruntjs.com/\">Grunt</a> or <a href=\"http://gulpjs.com/\">Gulp</a> or tools part of your server side framework like the <a href=\"http://guides.rubyonrails.org/asset_pipeline.html\">Ruby on Rails asset pipeline</a>.</p>","title":"In Production","parent":"Using","order":2,"src":"can/guides/using-production.md","id":24}]};
 
 	console.log(docData);
 </script>
@@ -402,7 +344,7 @@ fixes this and we've already submitted a pull request so future users of HTML5 S
     </nav>
   </footer>
   <script type="text/javascript">
-    window.docConfig = {"debug":false,"enableSearch":true,"parent":"guides","layout":"documentjs/site/templates/page.mustache","docs":"documentjs/site/templates/docs.mustache","root":"..","out":"2.1/guides","page":"guides","markdown":["can/guides","can/changelog.md","can/contributing.md","can/license.md"],"package":{"name":"CanJS","description":"MIT-licensed, client-side, JavaScript framework that makes building rich web applications easy.","version":"2.1.0-pre","author":{"name":"Bitovi","email":"contact@bitovi.com","web":"http://bitovi.com/"},"homepage":"http://canjs.us/","repository":{"type":"git","url":"git@github.com:bitovi/canjs.git","github":"https://github.com/bitovi/canjs"},"devDependencies":{"grunt":"~0.4.0","grunt-string-replace":"~0.2.2","grunt-contrib-qunit":"~0.2.1","grunt-contrib-connect":"~0.3.0","bitovi-tools":"https://github.com/bitovi/bitovi-tools/tarball/master","steal":"https://github.com/bitovi/steal-build/tarball/master","grunt-contrib-uglify":"~0.2.1","grunt-contrib-clean":"~0.5.0","grunt-shell":"~0.5.0","grunt-release-steps":"~0.3.7","bower":"~1.2.7","grunt-contrib-jshint":"~0.8.0","grunt-jsbeautifier":"~0.2.6","grunt-docco2":"git://github.com/shcarrico/grunt-docco.git#e4de54886ed5c421b2e26e7a2aeba1f73e889733","grunt-plato":"~0.2.1"},"scripts":{"test":"grunt test","install":"node node_modules/bower/bin/bower install"},"demos":["http://canjs.us/#examples","http://canjs.us/recipes"],"licenses":[{"type":"MIT","url":"http://opensource.org/licenses/mit-license.php"}],"dependencies":{"grunt-cli":"~0.1.7"}},"self":{"name":"canjs.com","description":"We can do JS better.","version":"0.2.0","homepage":"http://canjs.com","author":{"name":"Bitovi","url":"http://bitovi.com/"},"repository":{"type":"git","url":"git://github.com/bitovi/canjs.com.git","github":"https://github.com/bitovi/canjs.com"},"bugs":{"url":"https://github.com/bitovi/canjs.com/issues"},"licenses":[{"type":"MIT","url":"https://github.com/bitovi/canjs.com/blob/master/LICENSE-MIT"}],"engines":{"node":">= 0.10.0"},"devDependencies":{"grunt":"~0.4.1","grunt-contrib-watch":"~0.3.1","grunt-contrib-less":"~0.5.0","documentjs":"https://github.com/bitovi/documentjs/tarball/node-generator","grunt-contrib-clean":"~0.4.1","grunt-docco":"~0.3.2","grunt-plato":"~0.2.1","grunt-jsbeautifier":"~0.2.6"}},"builder":{"filename":"can.custom.js","banner":"/*!\n * <%= pkg.title || pkg.name %> - <%= pkg.version %>\n * <%= pkg.homepage %>\n * Copyright (c) <%= new Date().getFullYear() %> <%= pkg.author.name %>\n * <%= new Date().toUTCString() %>\n * Licensed <%= pkg.licenses[0].type %><% if(typeof url !== \"undefined\") { %>\n * Includes: <%= ids %>\n * Download from: <%= url %>\n<% } %> */\n","modules":{"can/component":{"name":"can.Component","description":"Custom elements and widgets","type":"core","isDefault":true},"can/construct":{"name":"can.Construct","description":"Inheritable constructor functions","type":"core","isDefault":true},"can/map":{"name":"can.Map","description":"Observables and key-value bindings","type":"core","isDefault":true},"can/list":{"name":"can.List","description":"Observables lists","type":"core","isDefault":true},"can/observe":{"name":"can.Observe","description":"Observables and key-value bindings","type":"core","isDefault":true,"hidden":true},"can/compute":{"name":"can.compute","description":"can.compute lets you make observable values","type":"core","isDefault":true},"can/model":{"name":"can.Model","description":"Observes connected to a RESTful JSON interface","type":"core","isDefault":true},"can/view":{"name":"can.view","description":"Template loading, caching, rendering","type":"core","isDefault":true},"can/view/ejs":{"name":"can.EJS","description":"Live-binding Embedded JavaScript","type":"plugin"},"can/view/stache":{"name":"can.stache","description":"High performance Mustache templates","type":"plugin"},"can/control":{"name":"can.Control","description":"Declarative event bindings","type":"core","isDefault":true},"can/route":{"name":"can.route","description":"Back button and bookmarking support","type":"core","isDefault":true},"can/control/route":{"name":"can.Control.route","description":"Declare routes in your Control","type":"core","isDefault":true},"can/view/mustache":{"name":"can.Mustache","description":"Live-binding Handlebars and Mustache views","type":"core","isDefault":true},"can/route/pushstate":{"name":"can.route.pushstate","description":"can.route with pushstate","type":"plugin"},"can/model/queue":{"name":"can.Model.Queue","type":"plugin","description":"Queued requests to the server."},"can/construct/super":{"name":"can.Construct.super","type":"plugin","description":"Call super methods"},"can/construct/proxy":{"name":"can.Construct.proxy","type":"plugin","description":"Proxy construct methods"},"can/map/lazy":{"name":"can.Map.Lazy","type":"plugin","description":"Lazy initializing maps and lists"},"can/map/delegate":{"name":"can.Map.delegate","type":"plugin","description":"Listen to Observe attributes"},"can/map/setter":{"name":"can.Map.setter","type":"plugin","description":"Use setter methods on Observes"},"can/map/attributes":{"name":"can.Map.attributes","type":"plugin","description":"Define Observe attributes"},"can/map/validations":{"name":"can.Map.validations","type":"plugin","description":"Validate Observe attributes"},"can/map/backup":{"name":"can.Map.backup","type":"plugin","description":"Backup and restore an Observes state"},"can/map/list":{"name":"can.Map.List","type":"plugin","description":"Live-updating mapped and filtered observe lists"},"can/map/sort":{"name":"can.List.Sort","type":"plugin","description":"Sort observable lists"},"can/control/plugin":{"name":"can.Control.plugin","type":"plugin","description":"Registers a jQuery plugin function for Controls","configurations":["jquery","jquery-2"]},"can/view/modifiers":{"name":"can.view.modifiers","type":"plugin","description":"Use jQuery modifiers to render views","configurations":["jquery","jquery-2"]},"can/util/object":{"name":"can.Object","type":"plugin","description":"Helper methods for object comparison"},"can/util/fixture":{"name":"can.fixture","type":"plugin","description":"Intercepts an AJAX request and simulates the response with a file or function"},"can/view/bindings":{"name":"can.view.bindings","type":"core","isDefault":true,"hidden":true},"can/view/live":{"name":"can.view.live","type":"core","isDefault":true,"hidden":true},"can/view/scope":{"name":"can.view.Scope","type":"core","isDefault":true,"hidden":true},"can/util/string":{"name":"can.util.string","type":"core","isDefault":true,"hidden":true},"can/util/attr":{"name":"can.util.attr","type":"core","isDefault":true,"hidden":true}},"types":{"core":"CanJS core","plugin":"Plugins"},"pluginify":{"shim":{"can/lib/jquery.2.0.3.js":"jQuery","can/lib/jquery.1.10.2.js":"jQuery","can/bower_components/zepto/zepto.js":"Zepto","can/lib/mootools-core-1.4.5.js":"{}","can/util/dojo/dojo-1.8.1.js":"{}","can/lib/yui-3.7.3.js":"YUI"},"exports":{"can/util/can.js":"can"}},"configurations":{"jquery":{"description":"jQuery","isDefault":true,"library":"lib/jquery.1.10.2.js","steal":{"map":{"*":{"can/util/util.js":"can/util/jquery/jquery.js","jquery/jquery.js":"can/lib/jquery.1.10.2.js"}}}},"jquery-2":{"description":"jQuery (2.x)","hidden":true,"library":"lib/jquery.2.0.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/jquery/jquery.js","jquery/jquery.js":"can/lib/jquery.2.0.3.js"}}}},"zepto":{"description":"Zepto","library":"bower_components/zepto/zepto.js","steal":{"map":{"*":{"can/util/util.js":"can/util/zepto/zepto.js","zepto/zepto.js":"can/bower_components/zepto/zepto.js"}}}},"mootools":{"description":"Mootools","library":"lib/mootools-core-1.4.5.js","steal":{"map":{"*":{"can/util/util.js":"can/util/mootools/mootools.js","mootools/mootools.js":"can/lib/mootools-core-1.4.5.js"}}}},"yui":{"description":"YUI","library":"lib/yui-3.7.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/yui/yui.js","yui/yui.js":"can/lib/yui-3.7.3.js"}}}},"dojo":{"description":"Dojo","library":"util/dojo/dojo-1.8.1.js","steal":{"map":{"*":{"can/util/util.js":"can/util/dojo/dojo.js","dojo/dojo.js":"can/util/dojo/dojo-1.8.1.js"}}}}}},"url":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"static":"scripts/static","templates":"scripts/templates","forceBuild":false,"minifyBuild":true,"versionsSrc":"../../versions.json","version":"2.1","isVersioned":true,"versions":[{"number":"2.1","branch":"minor"},{"number":"2.0","branch":"master"},{"number":"1.1"}]};
+    window.docConfig = {"debug":false,"enableSearch":true,"parent":"guides","layout":"documentjs/site/templates/page.mustache","docs":"documentjs/site/templates/docs.mustache","root":"..","out":"2.1/guides","page":"guides","markdown":["can/guides","can/changelog.md","can/contributing.md","can/license.md"],"package":{"name":"CanJS","description":"MIT-licensed, client-side, JavaScript framework that makes building rich web applications easy.","version":"2.1.0","author":{"name":"Bitovi","email":"contact@bitovi.com","web":"http://bitovi.com/"},"homepage":"http://canjs.us/","repository":{"type":"git","url":"git@github.com:bitovi/canjs.git","github":"https://github.com/bitovi/canjs"},"devDependencies":{"grunt":"~0.4.0","grunt-string-replace":"~0.2.2","grunt-contrib-qunit":"~0.2.1","grunt-contrib-connect":"~0.3.0","bitovi-tools":"https://github.com/bitovi/bitovi-tools/tarball/master","steal":"https://github.com/bitovi/steal-build/tarball/master","grunt-contrib-uglify":"~0.2.1","grunt-contrib-clean":"~0.5.0","grunt-shell":"~0.5.0","grunt-release-steps":"~0.3.7","bower":"~1.2.7","grunt-contrib-jshint":"~0.8.0","grunt-jsbeautifier":"~0.2.6","grunt-docco2":"git://github.com/shcarrico/grunt-docco.git#e4de54886ed5c421b2e26e7a2aeba1f73e889733","grunt-plato":"~0.2.1"},"scripts":{"test":"grunt test","install":"node node_modules/bower/bin/bower install"},"demos":["http://canjs.us/#examples","http://canjs.us/recipes"],"licenses":[{"type":"MIT","url":"http://opensource.org/licenses/mit-license.php"}],"dependencies":{"grunt-cli":"~0.1.7"}},"self":{"name":"canjs.com","description":"We can do JS better.","version":"0.2.0","homepage":"http://canjs.com","author":{"name":"Bitovi","url":"http://bitovi.com/"},"repository":{"type":"git","url":"git://github.com/bitovi/canjs.com.git","github":"https://github.com/bitovi/canjs.com"},"bugs":{"url":"https://github.com/bitovi/canjs.com/issues"},"licenses":[{"type":"MIT","url":"https://github.com/bitovi/canjs.com/blob/master/LICENSE-MIT"}],"engines":{"node":">= 0.10.0"},"devDependencies":{"grunt":"~0.4.1","grunt-contrib-watch":"~0.3.1","grunt-contrib-less":"~0.5.0","documentjs":"https://github.com/bitovi/documentjs/tarball/node-generator","grunt-contrib-clean":"~0.4.1","grunt-docco2":"git://github.com/shcarrico/grunt-docco.git#options-passing","grunt-plato":"~0.2.1","grunt-jsbeautifier":"~0.2.6"}},"builder":{"filename":"can.custom.js","banner":"/*!\n * <%= pkg.title || pkg.name %> - <%= pkg.version %>\n * <%= pkg.homepage %>\n * Copyright (c) <%= new Date().getFullYear() %> <%= pkg.author.name %>\n * <%= new Date().toUTCString() %>\n * Licensed <%= pkg.licenses[0].type %><% if(typeof url !== \"undefined\") { %>\n * Includes: <%= ids %>\n * Download from: <%= url %>\n<% } %> */\n","modules":{"can/component":{"name":"can.Component","description":"Custom elements and widgets","type":"core","isDefault":true},"can/construct":{"name":"can.Construct","description":"Inheritable constructor functions","type":"core","isDefault":true},"can/map":{"name":"can.Map","description":"Observables and key-value bindings","type":"core","isDefault":true},"can/list":{"name":"can.List","description":"Observables lists","type":"core","isDefault":true},"can/list/promise":{"name":"can.List.promise","description":"Promises on lists","type":"plugin"},"can/observe":{"name":"can.Observe","description":"Observables and key-value bindings","type":"core","isDefault":true,"hidden":true},"can/compute":{"name":"can.compute","description":"can.compute lets you make observable values","type":"core","isDefault":true},"can/model":{"name":"can.Model","description":"Observes connected to a RESTful JSON interface","type":"core","isDefault":true},"can/view":{"name":"can.view","description":"Template loading, caching, rendering","type":"core","isDefault":true},"can/view/ejs":{"name":"can.ejs","description":"Live-binding Embedded JavaScript","type":"plugin"},"can/view/stache":{"name":"can.stache","description":"High performance Mustache templates","type":"plugin"},"can/control":{"name":"can.Control","description":"Declarative event bindings","type":"core","isDefault":true},"can/route":{"name":"can.route","description":"Back button and bookmarking support","type":"core","isDefault":true},"can/control/route":{"name":"can.Control.route","description":"Declare routes in your Control","type":"core","isDefault":true},"can/view/mustache":{"name":"can.mustache","description":"Live-binding Handlebars and Mustache views","type":"core","isDefault":true},"can/route/pushstate":{"name":"can.route.pushstate","description":"can.route with pushstate","type":"plugin"},"can/model/queue":{"name":"can.Model.Queue","type":"plugin","description":"Queued requests to the server."},"can/construct/super":{"name":"can.Construct.super","type":"plugin","description":"Call super methods"},"can/construct/proxy":{"name":"can.Construct.proxy","type":"plugin","description":"Proxy construct methods"},"can/map/lazy":{"name":"can.Map.Lazy","type":"plugin","description":"Lazy initializing maps and lists"},"can/map/delegate":{"name":"can.Map.delegate","type":"plugin","description":"Listen to Observe attributes"},"can/map/setter":{"name":"can.Map.setter","type":"plugin","description":"Use setter methods on can.Map"},"can/map/attributes":{"name":"can.Map.attributes","type":"plugin","deprecated":true,"description":"Define Observe attributes"},"can/map/validations":{"name":"can.Map.validations","type":"plugin","description":"Validate Observe attributes"},"can/map/backup":{"name":"can.Map.backup","type":"plugin","description":"Backup and restore an Observes state"},"can/map/list":{"name":"can.Map.List","type":"plugin","description":"Live-updating mapped and filtered observe lists"},"can/map/define":{"name":"can.Map.define","type":"plugin","description":"Define rich attribute behavior"},"can/map/sort":{"name":"can.List.Sort","type":"plugin","description":"Sort observable lists"},"can/control/plugin":{"name":"can.Control.plugin","type":"plugin","description":"Registers a jQuery plugin function for Controls","configurations":["jquery","jquery-2"]},"can/view/modifiers":{"name":"can.view.modifiers","type":"plugin","description":"Use jQuery modifiers to render views","configurations":["jquery","jquery-2"]},"can/util/object":{"name":"can.Object","type":"plugin","description":"Helper methods for object comparison"},"can/util/fixture":{"name":"can.fixture","type":"plugin","description":"Intercepts an AJAX request and simulates the response with a file or function"},"can/view/bindings":{"name":"can.view.bindings","type":"core","isDefault":true,"hidden":true},"can/view/live":{"name":"can.view.live","type":"core","isDefault":true,"hidden":true},"can/view/scope":{"name":"can.view.Scope","type":"core","isDefault":true,"hidden":true},"can/util/string":{"name":"can.util.string","type":"core","isDefault":true,"hidden":true},"can/util/attr":{"name":"can.util.attr","type":"core","isDefault":true,"hidden":true}},"types":{"core":"CanJS core","plugin":"Plugins"},"pluginify":{"shim":{"can/lib/jquery.2.0.3.js":"jQuery","can/lib/jquery.1.10.2.js":"jQuery","can/bower_components/zepto/zepto.js":"Zepto","can/lib/mootools-core-1.4.5.js":"{}","can/util/dojo/dojo-1.8.1.js":"{}","can/lib/yui-3.7.3.js":"YUI"},"exports":{"can/util/can.js":"can"}},"configurations":{"jquery":{"description":"jQuery","isDefault":true,"library":"lib/jquery.1.10.2.js","steal":{"map":{"*":{"can/util/util.js":"can/util/jquery/jquery.js","jquery/jquery.js":"can/lib/jquery.1.10.2.js"}}}},"jquery-2":{"description":"jQuery (2.x)","hidden":true,"library":"lib/jquery.2.0.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/jquery/jquery.js","jquery/jquery.js":"can/lib/jquery.2.0.3.js"}}}},"zepto":{"description":"Zepto","library":"bower_components/zepto/zepto.js","steal":{"map":{"*":{"can/util/util.js":"can/util/zepto/zepto.js","zepto/zepto.js":"can/bower_components/zepto/zepto.js"}}}},"mootools":{"description":"Mootools","library":"lib/mootools-core-1.4.5.js","steal":{"map":{"*":{"can/util/util.js":"can/util/mootools/mootools.js","mootools/mootools.js":"can/lib/mootools-core-1.4.5.js"}}}},"yui":{"description":"YUI","library":"lib/yui-3.7.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/yui/yui.js","yui/yui.js":"can/lib/yui-3.7.3.js"}}}},"dojo":{"description":"Dojo","library":"util/dojo/dojo-1.8.1.js","steal":{"map":{"*":{"can/util/util.js":"can/util/dojo/dojo.js","dojo/dojo.js":"can/util/dojo/dojo-1.8.1.js"}}}}}},"url":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"static":"scripts/static","templates":"scripts/templates","forceBuild":true,"minifyBuild":true,"versionsSrc":"../../versions.json","version":"2.1","isVersioned":true,"versions":[{"number":"2.1","branch":"master"},{"number":"2.0"},{"number":"1.1"}]};
     window.Bitovi = {
       URL: {
         BUILDER: 'http://bitbuilder.herokuapp.com/can.custom.js',

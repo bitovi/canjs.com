@@ -1,5 +1,5 @@
 [
-	{"number": "2.1", "branch": "minor"},
-	{"number":"2.0", "branch": "master"},
+	{"number": "2.1", "branch": "master"},
+	{"number":"2.0"},
 	{"number": "1.1"}
 ]

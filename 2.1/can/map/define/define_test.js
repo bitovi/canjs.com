@@ -251,6 +251,10 @@ steal("can/map/define", "can/test", function () {
 		equal(t.attr("boolean"), false, "converted to boolean");
 
 		equal(t.attr("leaveAlone"), obj, "left as object");
+		t.attr({
+			'number': '15'
+		});
+		ok(t.attr("number") === 15, "converted to number");
 
 	});
 
@@ -377,5 +381,157 @@ steal("can/map/define", "can/test", function () {
 
 
 	});
+	
+	test("getter with initial value", function(){
+		
+		var compute = can.compute(1);
+		
+		var Grabber = can.Map.extend({
+			define: {
+				vals: {
+					type: "*",
+					Value: Array,
+					get: function(current, setVal){
+						if(setVal){
+							current.push( compute() );
+						}
+						return current;
+					}
+				}
+			}
+		});
+		
+		var g = new Grabber();
+		// This assertion doesn't mean much.  It's mostly testing
+		// that there were no errors.
+		equal(g.attr("vals").length,0,"zero items in array" );
+		
+	});
+	
+
+	test("serialize basics", function(){
+		var MyMap = can.Map.extend({
+			define: {
+				name: {
+					serialize: function(){
+						return;
+					}
+				},
+				locations: {
+					serialize: false
+				},
+				locationIds: {
+					get: function(){
+						var ids = [];
+						this.attr('locations').each(function(location){
+							ids.push(location.id);
+						});
+						return ids;
+					},
+					serialize: function(locationIds){
+						return locationIds.join(',');
+					}
+				},
+				bared: {
+					get: function(){
+						return this.attr("name")+"+bar";
+					},
+					serialize: true
+				},
+				ignored: {
+					get: function(){
+						return this.attr("name")+"+ignored";
+					}
+				}
+			}
+		});
+		
+		var map = new MyMap({name: "foo"});
+		map.attr("locations", [{id: 1, name: "Chicago"}, {id: 2, name: "LA"}]);
+		equal(map.attr("locationIds").length, 2, "get locationIds");
+		equal(map.attr("locationIds")[0], 1, "get locationIds index 0");
+		equal(map.attr("locations")[0].id, 1, "get locations index 0");
+		
+		var serialized = map.serialize();
+		equal(serialized.locations, undefined, "locations doesn't serialize");
+		equal(serialized.locationIds, "1,2", "locationIds serializes");
+		equal(serialized.name, undefined, "name doesn't serialize");
+		
+		equal(serialized.bared, "foo+bar", "true adds computed props");
+		equal(serialized.ignored, undefined, "computed props are not serialized by default");
+		
+	});
+
+	test("serialize context", function(){
+		var context, serializeContext;
+		var MyMap = can.Map.extend({
+			define: {
+				name: {
+					serialize: function(obj){
+						context = this;
+						return obj;
+					}
+				}
+			},
+			serialize: function(){
+				serializeContext = this;
+				can.Map.prototype.serialize.apply(this, arguments);
+				
+			}
+		});
+		
+		var map = new MyMap();
+		map.serialize();
+		equal(context, map);
+		equal(serializeContext, map);
+	});
+
+	test("methods contexts", function(){
+		var contexts = {};
+		var MyMap = can.Map.extend({
+			define: {
+				name: {
+					value: 'John Galt',
+					
+					get: function(obj){
+						contexts.get = this;
+						return obj;
+					},
+					
+					remove: function(obj){
+						contexts.remove = this;
+						return obj;
+					},
+					
+					set: function(obj){
+						contexts.set = this;
+						return obj;
+					},
+					
+					serialize: function(obj){
+						contexts.serialize = this;
+						return obj;
+					},
+					
+					type: function(val){
+						contexts.type = this;
+						return val;
+					}
+				}
+			
+			}
+		});
+		
+		var map = new MyMap();
+		map.serialize();
+		map.removeAttr('name');
+		
+		equal(contexts.get, map);
+		equal(contexts.remove, map);
+		equal(contexts.set, map);
+		equal(contexts.serialize, map);
+		equal(contexts.type, map);
+	});
+
 
 });

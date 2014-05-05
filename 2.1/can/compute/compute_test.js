@@ -1,4 +1,4 @@
-steal("can/compute", "can/test", function () {
+steal("can/compute", "can/test", "can/map", function () {
 	module('can/compute');
 	test('single value compute', function () {
 		var num = can.compute(1);
@@ -266,6 +266,55 @@ steal("can/compute", "can/test", function () {
 		
 		
 	});
+
+	test("can.Construct derived classes should be considered objects, not functions (#450)", function() {
+		var foostructor = can.Map({ text: "bar" }, {}),
+			obj = {
+				next_level: {
+					thing: foostructor,
+					text: "In the inner context"
+				}
+			},
+			read;
+		foostructor.self = foostructor;
+
+		read = can.compute.read(obj, ["next_level","thing","self","text"]);
+		equal(read.value, "bar", "static properties on a can.Construct-based function");
+
+		read = can.compute.read(obj, ["next_level","thing","self"], { isArgument: true });
+		ok(read.value === foostructor, "arguments shouldn't be executed");
+
+		foostructor.self = function() { return foostructor; };
+		read = can.compute.read(obj, ["next_level","thing","self","text"], { executeAnonymousFunctions: true });
+		equal(read.value, "bar", "anonymous functions in the middle of a read should be executed if requested");
+	});
 	
+	test("compute.async read without binding", function(){
+		
+		var source = can.compute(1);
+		
+		var async = can.compute.async([],function( curVal, setVal ){
+			curVal.push(source());
+			return curVal;
+		});
+		
+		ok(async(), "calling async worked");
+		
+		
+		
+	});
+	
+	test("compute.async setting does not force a read", function(){
+		expect(0);
+		var source = can.compute(1);
+		
+		var async = can.compute.async([],function( curVal, setVal ){
+			ok(false);
+			curVal.push(source());
+			return curVal;
+		});
+		
+		async([]);
+	});
 	
 });

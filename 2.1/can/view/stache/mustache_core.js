@@ -94,6 +94,9 @@ steal("can/util",
 		// Returns a new renderer function that makes sure any data or helpers passed
 		// to it are converted to a can.view.Scope and a can.view.Options.
 		makeRendererConvertScopes = function (renderer, parentScope, parentOptions) {
+			var rendererWithScope = function(ctx, opts){
+				return renderer(ctx || parentScope, opts);
+			};
 			return function (newScope, newOptions) {
 				// If a non-scope value is passed, add that to the parent scope.
 				if (newScope !== undefined && !(newScope instanceof can.view.Scope)) {
@@ -102,7 +105,7 @@ steal("can/util",
 				if (newOptions !== undefined && !(newOptions instanceof core.Options)) {
 					newOptions = parentOptions.add(newOptions);
 				}
-				return renderer(newScope, newOptions || parentOptions);
+				return rendererWithScope(newScope, newOptions || parentOptions);
 			};
 		};
 	
@@ -189,7 +192,7 @@ steal("can/util",
 				// If name is a helper, this gets set to the helper.
 				helper,
 				// `true` if the expression looks like a helper.
-				isHelper = exprData.args.length || !can.isEmptyObject(exprData.hash),
+				looksLikeAHelper = exprData.args.length || !can.isEmptyObject(exprData.hash),
 				// The "peaked" at value of the name.
 				initialValue;
 				
@@ -215,7 +218,7 @@ steal("can/util",
 			if ( isLookup(name) ) {
 			
 				// If the expression looks like a helper, try to get a helper right away.
-				if (isHelper) {
+				if (looksLikeAHelper) {
 					// Try to find a registered helper.
 					helper = mustacheHelpers.getHelper(name.get, options);
 					
@@ -223,6 +226,7 @@ steal("can/util",
 					if(!helper && typeof context[name.get] === "function") {
 						helper = {fn: context[name.get]};
 					}
+
 				}
 				// If a helper has not been found, either because this does not look like a helper
 				// or because a helper was not found, get the value of name and determine 
@@ -246,7 +250,7 @@ steal("can/util",
 
 					// If it doesn't look like a helper and there is no value, check helpers
 					// anyway. This is for when foo is a helper in `{{foo}}`.
-					if( !isHelper && initialValue === undefined ) {
+					if( !looksLikeAHelper && initialValue === undefined ) {
 						helper = mustacheHelpers.getHelper(get, options);
 					}
 					// Otherwise, if the value is a function, we'll call that as a helper.
@@ -255,8 +259,20 @@ steal("can/util",
 							fn: initialValue
 						};
 					}
+
 				}
+				//!steal-remove-start
+				if ( !helper && initialValue === undefined) {
+					if(looksLikeAHelper) {
+						can.dev.warn('can/view/stache/mustache_core.js: Unable to find helper "' + exprData.name.get + '".');
+					} else {
+						can.dev.warn('can/view/stache/mustache_core.js: Unable to find key or helper "' + exprData.name.get + '".');
+					}
+				}
+				//!steal-remove-end
 			}
+
+
 			
 			// If inverse mode, reverse renderers.
 			if(mode === "^") {

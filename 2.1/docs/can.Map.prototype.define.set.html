@@ -120,13 +120,6 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.EJS.html" data-search="can.EJS">
-				can.EJS
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -318,6 +311,8 @@
 			
 			
 		
+			
+		
 	</ul>
 
 					</li>
@@ -412,6 +407,36 @@
 				
 				
 					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.Map.prototype.define.TypeConstructor.html" 
+							data-search="Type">
+							Type
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.Map.prototype.define.ValueConstructor.html" 
+							data-search="Value">
+							Value
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
 						<a 	class="typedef" 
 							href="can.Map.prototype.define.attrDefinition.html" 
 							data-search="attrDefinition">
@@ -446,6 +471,21 @@
 							href="can.Map.prototype.define.remove.html" 
 							data-search="remove">
 							remove
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.Map.prototype.define.serialize.html" 
+							data-search="serialize">
+							serialize
 						</a>
 						
 					</li>
@@ -511,7 +551,7 @@
 			
 				
 				
-					<li class="search-container  ">
+					<li class="search-container parent ">
 						<a 	class="function" 
 							href="can.Map.setter.html" 
 							data-search="setter">
@@ -567,15 +607,15 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.Mustache.html" data-search="can.Mustache">
-				can.Mustache
+	   		<a href="can.compute.html" data-search="can.compute">
+				can.compute
 			</a>
 			
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.compute.html" data-search="can.compute">
-				can.compute
+	   		<a href="can.ejs.html" data-search="can.ejs">
+				can.ejs
 			</a>
 			
 	   </li>
@@ -590,6 +630,13 @@
 	   <li class="search-container">
 	   		<a href="can.fixture.html" data-search="can.fixture">
 				can.fixture
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.mustache.html" data-search="can.mustache">
+				can.mustache
 			</a>
 			
 	   </li>
@@ -656,7 +703,7 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v2.1.0-pre/map/define/doc/set.md">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.1.0/map/define/doc/set.md">source</a></li>
 	
 	
 		
@@ -855,12 +902,12 @@ var map = new MyMap({prop : "foo"});
 can.Map.keys(map) //-&gt; []
 </code></pre>
 
-<p>With 2 arguments, <code>undefined</code> leaves the property in place.  Its expected
+<p>With 2 arguments, <code>undefined</code> leaves the property in place.  It is expected
 that <code>setValue</code> will be called:</p>
 
 <pre><code>MyMap = can.Map.extend({
   define: {
-    prop: {set: function(newVal, setVal){}}
+    prop: {set: function(newVal, setValue){}}
   }
 })
 
@@ -871,9 +918,77 @@ map.attr("prop") //-&gt; "foo"
 
 <h2>Side effects</h2>
 
+<p>A set function provides a useful hook for performing side effect logic as a certain property is being changed.</p>
+
+<p>For example, in the example below, Paginator can.Map includes a <code>page</code> property, which derives its value entirely from other properties (limit and offset).  If something tries to set the <code>page</code> directly, the set method will set the value of <code>offset</code>:</p>
+
+<pre><code>var Paginate = can.Map.extend({
+  define: {
+    page: {
+      set: function (newVal) {
+        this.attr('offset', (parseInt(newVal) - 1) * this.attr('limit'));
+      },
+      get: function () {
+        return Math.floor(this.attr('offset') / this.attr('limit')) + 1;
+      }
+    }
+  }
+});
+
+var p = new Paginate({limit: 10, offset: 20});
+</code></pre>
+
 <h2>Merging</h2>
 
+<p>By default, if a value returned from a setter is an object, array, can.Map, or can.List, the effect will be to replace the property with the new object completely. This is not the same as calling setting a property with plain old <code>attr</code> and passing an object into a property that was already a can.Map, which will merge the new properties with the existing map.</p>
+
+<p>With a set method, the nested map is replaced with a new one:</p>
+
+<pre><code>Contact = can.Map.extend({
+  define: {
+    info: {
+      set: function(newVal){
+        return newVal;
+      }
+    }
+  }
+})
+
+var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
+alice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}
+alice.info._cid; // '.map1'
+
+alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
+alice.attr(); // {name: 'Allison Wonderland', 'phone': '888-888-8888'}
+alice.info._cid; // '.map2'
+</code></pre>
+
+<p>If you would rather have the new Map or List merged into the current value, call
+<code>attr</code> inside the setter:</p>
+
+<pre><code>Contact = can.Map.extend({
+  define: {
+    info: {
+      set: function(newVal){
+        this.info.attr(newVal);
+        return this.info;
+      }
+    }
+  }
+})
+
+var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
+alice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}
+alice.info._cid; // '.map1'
+
+alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
+alice.attr(); // {name: 'Allison Wonderland', email: 'alice@liddell.com', 'phone': '888-888-8888'}
+alice.info._cid; // '.map1'
+</code></pre>
+
 <h2>Batched Changes</h2>
+
+<p>By default, calls to set methods are wrapped in a call to <a href="can.batch.start.html">can.batch.start</a> and <a href="can.batch.stop.html">can.batch.stop</a>, so if a set method has side effects that set more than one property, all these sets are wrapped in a single batch for better performance.</p>
 		</section>
 		
 
@@ -882,7 +997,7 @@ map.attr("prop") //-&gt; "foo"
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"function","name":"can.Map.prototype.define.set","description":"<p>Specify what happens when a value is set on a map attribute.</p>","title":"set","parent":"can.Map.prototype.define","signatures":[{"code":"set( [newVal,] [setValue] )","description":"<p>A set function defines the behavior of what happens when a value is set on a\n[can.Map]. It is typically used to:</p>\n\n<ul>\n<li>Add or remove other attributes as side effects</li>\n<li>Coerce the set value into an appropriate action</li>\n</ul>\n\n<p>The behavior of the setter depends on the number of arguments specified. This means that a\nsetter like:</p>\n\n<pre><code>define: {\n  prop: {\n    set: function(){}\n  }\n}\n</code></pre>\n\n<p>behaves differently than:</p>\n\n<pre><code>define: {\n  prop: {\n    set: function(newVal){}\n  }\n}\n</code></pre>","params":[{"types":[{"type":"*"}],"optional":true,"name":"newVal","description":"<p>The [can.Map::define.type type function] coerced value the user intends to set on the\ncan.Map.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"*"}],"name":"newValue"}]}],"optional":true,"name":"setValue","description":"<p>A callback that can set the value of the property \nasyncronously.</p>"}],"returns":{"types":[{"type":"*"},{"type":"undefined"}],"description":"<p>If a non-undefined value is returned, that value is set as \nthe attribute value. </p>\n\n<p>If an <code>undefined</code> value is returned, the behavior depends on the number of\narguments the setter declares:</p>\n\n<ul>\n<li>If the setter <em>does not</em> specify the <code>newValue</code> argument, the attribute value is set\nto whatever was passed to [can.Map::attr attr].</li>\n<li>If the setter specifies the <code>newValue</code> argument only, the attribute value will be removed.</li>\n<li>If the setter specifies both <code>newValue</code> and <code>setValue</code>, the value of the property will not be \nupdated until <code>setValue</code> is called.</li>\n</ul>"}}],"comment":" ","src":"can/map/define/doc/set.md","id":66};
+	var docData = {"type":"function","name":"can.Map.prototype.define.set","description":"<p>Specify what happens when a value is set on a map attribute.</p>","title":"set","parent":"can.Map.prototype.define","signatures":[{"code":"set( [newVal,] [setValue] )","description":"<p>A set function defines the behavior of what happens when a value is set on a\n[can.Map]. It is typically used to:</p>\n\n<ul>\n<li>Add or remove other attributes as side effects</li>\n<li>Coerce the set value into an appropriate action</li>\n</ul>\n\n<p>The behavior of the setter depends on the number of arguments specified. This means that a\nsetter like:</p>\n\n<pre><code>define: {\n  prop: {\n    set: function(){}\n  }\n}\n</code></pre>\n\n<p>behaves differently than:</p>\n\n<pre><code>define: {\n  prop: {\n    set: function(newVal){}\n  }\n}\n</code></pre>","params":[{"types":[{"type":"*"}],"optional":true,"name":"newVal","description":"<p>The [can.Map::define.type type function] coerced value the user intends to set on the\ncan.Map.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"*"}],"name":"newValue"}]}],"optional":true,"name":"setValue","description":"<p>A callback that can set the value of the property \nasyncronously.</p>"}],"returns":{"types":[{"type":"*"},{"type":"undefined"}],"description":"<p>If a non-undefined value is returned, that value is set as \nthe attribute value. </p>\n\n<p>If an <code>undefined</code> value is returned, the behavior depends on the number of\narguments the setter declares:</p>\n\n<ul>\n<li>If the setter <em>does not</em> specify the <code>newValue</code> argument, the attribute value is set\nto whatever was passed to [can.Map::attr attr].</li>\n<li>If the setter specifies the <code>newValue</code> argument only, the attribute value will be removed.</li>\n<li>If the setter specifies both <code>newValue</code> and <code>setValue</code>, the value of the property will not be \nupdated until <code>setValue</code> is called.</li>\n</ul>"}}],"comment":" ","src":"can/map/define/doc/set.md","id":78};
 
 	console.log(docData);
 </script>
@@ -902,7 +1017,7 @@ map.attr("prop") //-&gt; "foo"
     </nav>
   </footer>
   <script type="text/javascript">
-    window.docConfig = {"debug":false,"enableSearch":true,"parent":"canjs","layout":"shared/_templates/page.mustache","docs":"shared/_templates/docs.mustache","root":"..","out":"2.1/docs","page":"docs","markdown":["can"],"package":{"name":"CanJS","description":"MIT-licensed, client-side, JavaScript framework that makes building rich web applications easy.","version":"2.1.0-pre","author":{"name":"Bitovi","email":"contact@bitovi.com","web":"http://bitovi.com/"},"homepage":"http://canjs.us/","repository":{"type":"git","url":"git@github.com:bitovi/canjs.git","github":"https://github.com/bitovi/canjs"},"devDependencies":{"grunt":"~0.4.0","grunt-string-replace":"~0.2.2","grunt-contrib-qunit":"~0.2.1","grunt-contrib-connect":"~0.3.0","bitovi-tools":"https://github.com/bitovi/bitovi-tools/tarball/master","steal":"https://github.com/bitovi/steal-build/tarball/master","grunt-contrib-uglify":"~0.2.1","grunt-contrib-clean":"~0.5.0","grunt-shell":"~0.5.0","grunt-release-steps":"~0.3.7","bower":"~1.2.7","grunt-contrib-jshint":"~0.8.0","grunt-jsbeautifier":"~0.2.6","grunt-docco2":"git://github.com/shcarrico/grunt-docco.git#e4de54886ed5c421b2e26e7a2aeba1f73e889733","grunt-plato":"~0.2.1"},"scripts":{"test":"grunt test","install":"node node_modules/bower/bin/bower install"},"demos":["http://canjs.us/#examples","http://canjs.us/recipes"],"licenses":[{"type":"MIT","url":"http://opensource.org/licenses/mit-license.php"}],"dependencies":{"grunt-cli":"~0.1.7"}},"self":{"name":"canjs.com","description":"We can do JS better.","version":"0.2.0","homepage":"http://canjs.com","author":{"name":"Bitovi","url":"http://bitovi.com/"},"repository":{"type":"git","url":"git://github.com/bitovi/canjs.com.git","github":"https://github.com/bitovi/canjs.com"},"bugs":{"url":"https://github.com/bitovi/canjs.com/issues"},"licenses":[{"type":"MIT","url":"https://github.com/bitovi/canjs.com/blob/master/LICENSE-MIT"}],"engines":{"node":">= 0.10.0"},"devDependencies":{"grunt":"~0.4.1","grunt-contrib-watch":"~0.3.1","grunt-contrib-less":"~0.5.0","documentjs":"https://github.com/bitovi/documentjs/tarball/node-generator","grunt-contrib-clean":"~0.4.1","grunt-docco":"~0.3.2","grunt-plato":"~0.2.1","grunt-jsbeautifier":"~0.2.6"}},"builder":{"filename":"can.custom.js","banner":"/*!\n * <%= pkg.title || pkg.name %> - <%= pkg.version %>\n * <%= pkg.homepage %>\n * Copyright (c) <%= new Date().getFullYear() %> <%= pkg.author.name %>\n * <%= new Date().toUTCString() %>\n * Licensed <%= pkg.licenses[0].type %><% if(typeof url !== \"undefined\") { %>\n * Includes: <%= ids %>\n * Download from: <%= url %>\n<% } %> */\n","modules":{"can/component":{"name":"can.Component","description":"Custom elements and widgets","type":"core","isDefault":true},"can/construct":{"name":"can.Construct","description":"Inheritable constructor functions","type":"core","isDefault":true},"can/map":{"name":"can.Map","description":"Observables and key-value bindings","type":"core","isDefault":true},"can/list":{"name":"can.List","description":"Observables lists","type":"core","isDefault":true},"can/observe":{"name":"can.Observe","description":"Observables and key-value bindings","type":"core","isDefault":true,"hidden":true},"can/compute":{"name":"can.compute","description":"can.compute lets you make observable values","type":"core","isDefault":true},"can/model":{"name":"can.Model","description":"Observes connected to a RESTful JSON interface","type":"core","isDefault":true},"can/view":{"name":"can.view","description":"Template loading, caching, rendering","type":"core","isDefault":true},"can/view/ejs":{"name":"can.EJS","description":"Live-binding Embedded JavaScript","type":"plugin"},"can/view/stache":{"name":"can.stache","description":"High performance Mustache templates","type":"plugin"},"can/control":{"name":"can.Control","description":"Declarative event bindings","type":"core","isDefault":true},"can/route":{"name":"can.route","description":"Back button and bookmarking support","type":"core","isDefault":true},"can/control/route":{"name":"can.Control.route","description":"Declare routes in your Control","type":"core","isDefault":true},"can/view/mustache":{"name":"can.Mustache","description":"Live-binding Handlebars and Mustache views","type":"core","isDefault":true},"can/route/pushstate":{"name":"can.route.pushstate","description":"can.route with pushstate","type":"plugin"},"can/model/queue":{"name":"can.Model.Queue","type":"plugin","description":"Queued requests to the server."},"can/construct/super":{"name":"can.Construct.super","type":"plugin","description":"Call super methods"},"can/construct/proxy":{"name":"can.Construct.proxy","type":"plugin","description":"Proxy construct methods"},"can/map/lazy":{"name":"can.Map.Lazy","type":"plugin","description":"Lazy initializing maps and lists"},"can/map/delegate":{"name":"can.Map.delegate","type":"plugin","description":"Listen to Observe attributes"},"can/map/setter":{"name":"can.Map.setter","type":"plugin","description":"Use setter methods on Observes"},"can/map/attributes":{"name":"can.Map.attributes","type":"plugin","description":"Define Observe attributes"},"can/map/validations":{"name":"can.Map.validations","type":"plugin","description":"Validate Observe attributes"},"can/map/backup":{"name":"can.Map.backup","type":"plugin","description":"Backup and restore an Observes state"},"can/map/list":{"name":"can.Map.List","type":"plugin","description":"Live-updating mapped and filtered observe lists"},"can/map/sort":{"name":"can.List.Sort","type":"plugin","description":"Sort observable lists"},"can/control/plugin":{"name":"can.Control.plugin","type":"plugin","description":"Registers a jQuery plugin function for Controls","configurations":["jquery","jquery-2"]},"can/view/modifiers":{"name":"can.view.modifiers","type":"plugin","description":"Use jQuery modifiers to render views","configurations":["jquery","jquery-2"]},"can/util/object":{"name":"can.Object","type":"plugin","description":"Helper methods for object comparison"},"can/util/fixture":{"name":"can.fixture","type":"plugin","description":"Intercepts an AJAX request and simulates the response with a file or function"},"can/view/bindings":{"name":"can.view.bindings","type":"core","isDefault":true,"hidden":true},"can/view/live":{"name":"can.view.live","type":"core","isDefault":true,"hidden":true},"can/view/scope":{"name":"can.view.Scope","type":"core","isDefault":true,"hidden":true},"can/util/string":{"name":"can.util.string","type":"core","isDefault":true,"hidden":true},"can/util/attr":{"name":"can.util.attr","type":"core","isDefault":true,"hidden":true}},"types":{"core":"CanJS core","plugin":"Plugins"},"pluginify":{"shim":{"can/lib/jquery.2.0.3.js":"jQuery","can/lib/jquery.1.10.2.js":"jQuery","can/bower_components/zepto/zepto.js":"Zepto","can/lib/mootools-core-1.4.5.js":"{}","can/util/dojo/dojo-1.8.1.js":"{}","can/lib/yui-3.7.3.js":"YUI"},"exports":{"can/util/can.js":"can"}},"configurations":{"jquery":{"description":"jQuery","isDefault":true,"library":"lib/jquery.1.10.2.js","steal":{"map":{"*":{"can/util/util.js":"can/util/jquery/jquery.js","jquery/jquery.js":"can/lib/jquery.1.10.2.js"}}}},"jquery-2":{"description":"jQuery (2.x)","hidden":true,"library":"lib/jquery.2.0.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/jquery/jquery.js","jquery/jquery.js":"can/lib/jquery.2.0.3.js"}}}},"zepto":{"description":"Zepto","library":"bower_components/zepto/zepto.js","steal":{"map":{"*":{"can/util/util.js":"can/util/zepto/zepto.js","zepto/zepto.js":"can/bower_components/zepto/zepto.js"}}}},"mootools":{"description":"Mootools","library":"lib/mootools-core-1.4.5.js","steal":{"map":{"*":{"can/util/util.js":"can/util/mootools/mootools.js","mootools/mootools.js":"can/lib/mootools-core-1.4.5.js"}}}},"yui":{"description":"YUI","library":"lib/yui-3.7.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/yui/yui.js","yui/yui.js":"can/lib/yui-3.7.3.js"}}}},"dojo":{"description":"Dojo","library":"util/dojo/dojo-1.8.1.js","steal":{"map":{"*":{"can/util/util.js":"can/util/dojo/dojo.js","dojo/dojo.js":"can/util/dojo/dojo-1.8.1.js"}}}}}},"url":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"static":"scripts/static","templates":"scripts/templates","forceBuild":false,"minifyBuild":true,"versionsSrc":"../../versions.json","version":"2.1","isVersioned":true,"versions":[{"number":"2.1","branch":"minor"},{"number":"2.0","branch":"master"},{"number":"1.1"}]};
+    window.docConfig = {"debug":false,"enableSearch":true,"parent":"canjs","layout":"shared/_templates/page.mustache","docs":"shared/_templates/docs.mustache","root":"..","out":"2.1/docs","page":"docs","markdown":["can"],"package":{"name":"CanJS","description":"MIT-licensed, client-side, JavaScript framework that makes building rich web applications easy.","version":"2.1.0","author":{"name":"Bitovi","email":"contact@bitovi.com","web":"http://bitovi.com/"},"homepage":"http://canjs.us/","repository":{"type":"git","url":"git@github.com:bitovi/canjs.git","github":"https://github.com/bitovi/canjs"},"devDependencies":{"grunt":"~0.4.0","grunt-string-replace":"~0.2.2","grunt-contrib-qunit":"~0.2.1","grunt-contrib-connect":"~0.3.0","bitovi-tools":"https://github.com/bitovi/bitovi-tools/tarball/master","steal":"https://github.com/bitovi/steal-build/tarball/master","grunt-contrib-uglify":"~0.2.1","grunt-contrib-clean":"~0.5.0","grunt-shell":"~0.5.0","grunt-release-steps":"~0.3.7","bower":"~1.2.7","grunt-contrib-jshint":"~0.8.0","grunt-jsbeautifier":"~0.2.6","grunt-docco2":"git://github.com/shcarrico/grunt-docco.git#e4de54886ed5c421b2e26e7a2aeba1f73e889733","grunt-plato":"~0.2.1"},"scripts":{"test":"grunt test","install":"node node_modules/bower/bin/bower install"},"demos":["http://canjs.us/#examples","http://canjs.us/recipes"],"licenses":[{"type":"MIT","url":"http://opensource.org/licenses/mit-license.php"}],"dependencies":{"grunt-cli":"~0.1.7"}},"self":{"name":"canjs.com","description":"We can do JS better.","version":"0.2.0","homepage":"http://canjs.com","author":{"name":"Bitovi","url":"http://bitovi.com/"},"repository":{"type":"git","url":"git://github.com/bitovi/canjs.com.git","github":"https://github.com/bitovi/canjs.com"},"bugs":{"url":"https://github.com/bitovi/canjs.com/issues"},"licenses":[{"type":"MIT","url":"https://github.com/bitovi/canjs.com/blob/master/LICENSE-MIT"}],"engines":{"node":">= 0.10.0"},"devDependencies":{"grunt":"~0.4.1","grunt-contrib-watch":"~0.3.1","grunt-contrib-less":"~0.5.0","documentjs":"https://github.com/bitovi/documentjs/tarball/node-generator","grunt-contrib-clean":"~0.4.1","grunt-docco2":"git://github.com/shcarrico/grunt-docco.git#options-passing","grunt-plato":"~0.2.1","grunt-jsbeautifier":"~0.2.6"}},"builder":{"filename":"can.custom.js","banner":"/*!\n * <%= pkg.title || pkg.name %> - <%= pkg.version %>\n * <%= pkg.homepage %>\n * Copyright (c) <%= new Date().getFullYear() %> <%= pkg.author.name %>\n * <%= new Date().toUTCString() %>\n * Licensed <%= pkg.licenses[0].type %><% if(typeof url !== \"undefined\") { %>\n * Includes: <%= ids %>\n * Download from: <%= url %>\n<% } %> */\n","modules":{"can/component":{"name":"can.Component","description":"Custom elements and widgets","type":"core","isDefault":true},"can/construct":{"name":"can.Construct","description":"Inheritable constructor functions","type":"core","isDefault":true},"can/map":{"name":"can.Map","description":"Observables and key-value bindings","type":"core","isDefault":true},"can/list":{"name":"can.List","description":"Observables lists","type":"core","isDefault":true},"can/list/promise":{"name":"can.List.promise","description":"Promises on lists","type":"plugin"},"can/observe":{"name":"can.Observe","description":"Observables and key-value bindings","type":"core","isDefault":true,"hidden":true},"can/compute":{"name":"can.compute","description":"can.compute lets you make observable values","type":"core","isDefault":true},"can/model":{"name":"can.Model","description":"Observes connected to a RESTful JSON interface","type":"core","isDefault":true},"can/view":{"name":"can.view","description":"Template loading, caching, rendering","type":"core","isDefault":true},"can/view/ejs":{"name":"can.ejs","description":"Live-binding Embedded JavaScript","type":"plugin"},"can/view/stache":{"name":"can.stache","description":"High performance Mustache templates","type":"plugin"},"can/control":{"name":"can.Control","description":"Declarative event bindings","type":"core","isDefault":true},"can/route":{"name":"can.route","description":"Back button and bookmarking support","type":"core","isDefault":true},"can/control/route":{"name":"can.Control.route","description":"Declare routes in your Control","type":"core","isDefault":true},"can/view/mustache":{"name":"can.mustache","description":"Live-binding Handlebars and Mustache views","type":"core","isDefault":true},"can/route/pushstate":{"name":"can.route.pushstate","description":"can.route with pushstate","type":"plugin"},"can/model/queue":{"name":"can.Model.Queue","type":"plugin","description":"Queued requests to the server."},"can/construct/super":{"name":"can.Construct.super","type":"plugin","description":"Call super methods"},"can/construct/proxy":{"name":"can.Construct.proxy","type":"plugin","description":"Proxy construct methods"},"can/map/lazy":{"name":"can.Map.Lazy","type":"plugin","description":"Lazy initializing maps and lists"},"can/map/delegate":{"name":"can.Map.delegate","type":"plugin","description":"Listen to Observe attributes"},"can/map/setter":{"name":"can.Map.setter","type":"plugin","description":"Use setter methods on can.Map"},"can/map/attributes":{"name":"can.Map.attributes","type":"plugin","deprecated":true,"description":"Define Observe attributes"},"can/map/validations":{"name":"can.Map.validations","type":"plugin","description":"Validate Observe attributes"},"can/map/backup":{"name":"can.Map.backup","type":"plugin","description":"Backup and restore an Observes state"},"can/map/list":{"name":"can.Map.List","type":"plugin","description":"Live-updating mapped and filtered observe lists"},"can/map/define":{"name":"can.Map.define","type":"plugin","description":"Define rich attribute behavior"},"can/map/sort":{"name":"can.List.Sort","type":"plugin","description":"Sort observable lists"},"can/control/plugin":{"name":"can.Control.plugin","type":"plugin","description":"Registers a jQuery plugin function for Controls","configurations":["jquery","jquery-2"]},"can/view/modifiers":{"name":"can.view.modifiers","type":"plugin","description":"Use jQuery modifiers to render views","configurations":["jquery","jquery-2"]},"can/util/object":{"name":"can.Object","type":"plugin","description":"Helper methods for object comparison"},"can/util/fixture":{"name":"can.fixture","type":"plugin","description":"Intercepts an AJAX request and simulates the response with a file or function"},"can/view/bindings":{"name":"can.view.bindings","type":"core","isDefault":true,"hidden":true},"can/view/live":{"name":"can.view.live","type":"core","isDefault":true,"hidden":true},"can/view/scope":{"name":"can.view.Scope","type":"core","isDefault":true,"hidden":true},"can/util/string":{"name":"can.util.string","type":"core","isDefault":true,"hidden":true},"can/util/attr":{"name":"can.util.attr","type":"core","isDefault":true,"hidden":true}},"types":{"core":"CanJS core","plugin":"Plugins"},"pluginify":{"shim":{"can/lib/jquery.2.0.3.js":"jQuery","can/lib/jquery.1.10.2.js":"jQuery","can/bower_components/zepto/zepto.js":"Zepto","can/lib/mootools-core-1.4.5.js":"{}","can/util/dojo/dojo-1.8.1.js":"{}","can/lib/yui-3.7.3.js":"YUI"},"exports":{"can/util/can.js":"can"}},"configurations":{"jquery":{"description":"jQuery","isDefault":true,"library":"lib/jquery.1.10.2.js","steal":{"map":{"*":{"can/util/util.js":"can/util/jquery/jquery.js","jquery/jquery.js":"can/lib/jquery.1.10.2.js"}}}},"jquery-2":{"description":"jQuery (2.x)","hidden":true,"library":"lib/jquery.2.0.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/jquery/jquery.js","jquery/jquery.js":"can/lib/jquery.2.0.3.js"}}}},"zepto":{"description":"Zepto","library":"bower_components/zepto/zepto.js","steal":{"map":{"*":{"can/util/util.js":"can/util/zepto/zepto.js","zepto/zepto.js":"can/bower_components/zepto/zepto.js"}}}},"mootools":{"description":"Mootools","library":"lib/mootools-core-1.4.5.js","steal":{"map":{"*":{"can/util/util.js":"can/util/mootools/mootools.js","mootools/mootools.js":"can/lib/mootools-core-1.4.5.js"}}}},"yui":{"description":"YUI","library":"lib/yui-3.7.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/yui/yui.js","yui/yui.js":"can/lib/yui-3.7.3.js"}}}},"dojo":{"description":"Dojo","library":"util/dojo/dojo-1.8.1.js","steal":{"map":{"*":{"can/util/util.js":"can/util/dojo/dojo.js","dojo/dojo.js":"can/util/dojo/dojo-1.8.1.js"}}}}}},"url":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"static":"scripts/static","templates":"scripts/templates","forceBuild":true,"minifyBuild":true,"versionsSrc":"../../versions.json","version":"2.1","isVersioned":true,"versions":[{"number":"2.1","branch":"master"},{"number":"2.0"},{"number":"1.1"}]};
     window.Bitovi = {
       URL: {
         BUILDER: 'http://bitbuilder.herokuapp.com/can.custom.js',

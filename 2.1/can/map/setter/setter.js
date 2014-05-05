@@ -1,10 +1,23 @@
-steal('can/util', 'can/map/attributes', 'can/util/string/classize.js',function (can) {
+steal('can/util', 'can/map', function (can) {
+
+	can.classize = function (s, join) {
+		// this can be moved out ..
+		// used for getter setter
+		var parts = s.split(can.undHash),
+			i = 0;
+		for (; i < parts.length; i++) {
+			parts[i] = can.capitalize(parts[i]);
+		}
+		return parts.join(join || '');
+	};
 	var classize = can.classize,
 		proto = can.Map.prototype,
 		old = proto.__set;
 	proto.__set = function (prop, value, current, success, error) {
 		//!steal-remove-start
 		var asyncTimer;
+		can.dev.warn("can/map/setter is a deprecated plugin and will be removed in a future release. "+
+			"can/map/define provides the same functionality in a more complete API.");
 		//!steal-remove-end
 		
 		// check if there's a setter

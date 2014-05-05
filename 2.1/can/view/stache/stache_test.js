@@ -1,5 +1,5 @@
 /* jshint asi:true,multistr:true*/
-steal("can/view/stache", "can/view","can/test",function(){
+steal("can/view/stache", "can/view","can/test","can/view/mustache/spec/specs",function(){
 	
 	
 	module("can/view/stache",{
@@ -186,7 +186,7 @@ steal("can/view/stache", "can/view","can/test",function(){
 			// Stashe does not needs to escape .nodeValues of text nodes
 			'HTML Escaping' : "These characters should be HTML escaped: & \" < >\n",
 			'Triple Mustache' : "These characters should not be HTML escaped: & \" < >\n",
-			'Ampersand' : "These characters should not be HTML escaped: & \" < >\n",
+			'Ampersand' : "These characters should not be HTML escaped: & \" < >\n"
 		},
 		inverted: {
 			'Standalone Line Endings': '|\n\n|',
@@ -196,7 +196,7 @@ steal("can/view/stache", "can/view","can/test",function(){
 			'Standalone Line Endings': '|\n>\n|',
 			'Standalone Without Newline': '>\n  >\n>',
 			'Standalone Without Previous Line': '  >\n>\n>',
-			'Standalone Indentation': '\\\n |\n<\n->\n|\n\n/\n',
+			'Standalone Indentation': '\\\n |\n<\n->\n|\n\n/\n'
 		},
 		sections: {
 			'Standalone Line Endings': '|\n\n|',
@@ -205,49 +205,44 @@ steal("can/view/stache", "can/view","can/test",function(){
 	};
 
 	// Add mustache specs to the test
-	can.each(['comments', /*'delimiters',*/ 'interpolation', 'inverted', 'partials', 'sections' /*, '~lambdas'*/ ], function (spec) {
-		can.ajax({
-			url: can.test.path('view/mustache/spec/specs/' + spec + '.json'),
-			dataType: 'json',
-			async: false
-		})
-			.done(function (data) {
-				can.each(data.tests, function (t) {
-					test('specs/' + spec + ' - ' + t.name + ': ' + t.desc, function () {
-						// stache does not escape double quotes, mustache expects &quot;.
-						// can uses \n for new lines, mustache expects \r\n.
-						var expected = (override[spec] && override[spec][t.name]) || t.expected.replace(/&quot;/g, '"')
-							//.replace(/\r\n/g, '\n');
+	can.each(window.MUSTACHE_SPECS, function(specData){
+		var spec = specData.name;
+		can.each(specData.data.tests, function (t) {
+			test('specs/' + spec + ' - ' + t.name + ': ' + t.desc, function () {
+				// stache does not escape double quotes, mustache expects &quot;.
+				// can uses \n for new lines, mustache expects \r\n.
+				var expected = (override[spec] && override[spec][t.name]) || t.expected.replace(/&quot;/g, '"')
+					//.replace(/\r\n/g, '\n');
 
-						// Mustache's "Recursion" spec generates invalid HTML
-						if (spec === 'partials' && t.name === 'Recursion') {
-							t.partials.node = t.partials.node.replace(/</g, '[')
-								.replace(/\}>/g, '}]');
-							expected = expected.replace(/</g, '[')
-								.replace(/>/g, ']');
-						} else if(spec === 'partials'){
-							//expected = expected.replace(/\</g,"&lt;").replace(/\>/g,"&gt;")
-						}
-						
+				// Mustache's "Recursion" spec generates invalid HTML
+				if (spec === 'partials' && t.name === 'Recursion') {
+					t.partials.node = t.partials.node.replace(/</g, '[')
+						.replace(/\}>/g, '}]');
+					expected = expected.replace(/</g, '[')
+						.replace(/>/g, ']');
+				} else if(spec === 'partials'){
+					//expected = expected.replace(/\</g,"&lt;").replace(/\>/g,"&gt;")
+				}
+				
 
-						// register the partials in the spec
-						if (t.partials) {
-							for (var name in t.partials) {
-								can.view.registerView(name, t.partials[name])
-							}
-						}
+				// register the partials in the spec
+				if (t.partials) {
+					for (var name in t.partials) {
+						can.view.registerView(name, t.partials[name])
+					}
+				}
 
-						// register lambdas
-						if (t.data.lambda && t.data.lambda.js) {
-							t.data.lambda = eval('(' + t.data.lambda.js + ')');
-						}
-						var res = can.stache(t.template)(t.data);
-						
-						deepEqual(getTextFromFrag(res), expected);
-					});
-				});
+				// register lambdas
+				if (t.data.lambda && t.data.lambda.js) {
+					t.data.lambda = eval('(' + t.data.lambda.js + ')');
+				}
+				var res = can.stache(t.template)(t.data);
+				
+				deepEqual(getTextFromFrag(res), expected);
 			});
+		});
 	});
+
 	
 
 	test('Tokens returning 0 where they should diplay the number', function () {
@@ -282,7 +277,7 @@ steal("can/view/stache", "can/view","can/test",function(){
 		obsvr.attr('named', true);
 		deepEqual(can.$('#completed')[0].innerHTML, "", 'hidden gone');
 
-		can.remove(can.$('#qunit-test-area *'));
+		can.remove(can.$('#qunit-test-area>*'));
 	});
 
 	test("live-binding with escaping", function () {
@@ -302,9 +297,10 @@ steal("can/view/stache", "can/view","can/test",function(){
 		teacher.attr('name', '<i>Mr Scott</i>');
 
 		deepEqual(can.$('#binder1')[0].innerHTML, "&lt;i&gt;Mr Scott&lt;/i&gt;");
+		
 		deepEqual(can.$('#binder2')[0].getElementsByTagName('i')[0].innerHTML, "Mr Scott");
 
-		can.remove(can.$('#qunit-test-area *'));
+		can.remove(can.$('#qunit-test-area>*'));
 	});
 
 	test("truthy", function () {
@@ -3119,11 +3115,11 @@ steal("can/view/stache", "can/view","can/test",function(){
 	test("{{#each}} handles an undefined list changing to a defined list (#629)", function () {
 		
 		var renderer = can.stache('    {{description}}: \
-    <ul> \
-    {{#each list}} \
-        <li>{{name}}</li> \
-    {{/each}} \
-    </ul>');
+		<ul> \
+		{{#each list}} \
+				<li>{{name}}</li> \
+		{{/each}} \
+		</ul>');
 
 		var div = document.createElement('div'),
 			data1 = new can.Map({
@@ -3281,7 +3277,7 @@ steal("can/view/stache", "can/view","can/test",function(){
 			
 		});
 		
-		var template = can.stache("<div stache-attr='foo'></div>")
+		var template = can.stache("<div stache-attr='foo'></div>");
 		
 		template({});
 		
@@ -3298,15 +3294,136 @@ steal("can/view/stache", "can/view","can/test",function(){
 			
 			var template = can.stache( "{{#jQueryHelper}}{{first}} {{last}}{{/jQueryHelper}}");
 			
-			var res = template({last: "Meyer"})
+			var res = template({last: "Meyer"});
 			
 			equal(res.childNodes[0].nodeName.toLowerCase(), "h1");
 			
 			equal(res.childNodes[0].innerHTML, "Justin Meyer");
 			
-		})
+		});
 	}
 	
+	test("./ in key", function(){
+		var template = can.stache( "<div><label>{{name}}</label>{{#children}}<span>{{./name}}-{{name}}</span>{{/children}}</div>");
+		
+		var data = {
+			name: "CanJS",
+			children: [{},{name: "stache"}]
+		};
+		var res =  template(data);
+		var spans = res.childNodes[0].getElementsByTagName('span');
+		equal( spans[0].innerHTML, "-CanJS", "look in current level" );
+		equal( spans[1].innerHTML, "stache-stache", "found in current level" );
+	});
 	
+	test("self closing tags callback custom tag callbacks (#880)", function(){
+		
+		can.view.tag("stache-tag", function(el, tagData){
+			ok(true,"tag callback called");
+			equal(tagData.scope.attr(".").foo, "bar", "got scope");
+			ok(!tagData.subtemplate, "there is no subtemplate");
+		});
+		
+		var template = can.stache("<div><stache-tag/></div>");
+		
+		template({
+			foo: "bar"
+		});
+		
+	});
 	
-})
+	test("empty custom tags do not have a subtemplate (#880)", function(){
+		
+		can.view.tag("stache-tag", function(el, tagData){
+			ok(true,"tag callback called");
+			equal(tagData.scope.attr(".").foo, "bar", "got scope");
+			ok(!tagData.subtemplate, "there is no subtemplate");
+		});
+		
+		var template = can.stache("<div><stache-tag></stache-tag></div>");
+		
+		template({
+			foo: "bar"
+		});
+		
+	});
+
+	test("inverse in tag", function(){
+		var template = can.stache('<span {{^isBlack}} style="display:none"{{/if}}>Hi</span>');
+		
+		var res = template({
+			isBlack: false
+		});
+		
+		equal(res.childNodes[0].style.display, "none", "color is not set");
+		
+	});
+
+	//!steal-remove-start
+	if (can.dev) {
+		test("Logging: Helper not found in stache template(#726)", function () {
+			var oldlog = can.dev.warn,
+					message = 'can/view/stache/mustache_core.js: Unable to find helper "helpme".';
+
+			can.dev.warn = function (text) {
+				equal(text, message, 'Got expected message logged.');
+			}
+
+			can.view.stache('<li>{{helpme name}}</li>')({
+				name: 'Hulk Hogan'
+			});
+
+			can.dev.warn = oldlog;
+		});
+
+		test("Logging: Variable not found in stache template (#720)", function () {
+			var oldlog = can.dev.warn,
+					message = 'can/view/stache/mustache_core.js: Unable to find key or helper "user.name".';
+
+			can.dev.warn = function (text) {
+				equal(text, message, 'Got expected message logged.');
+			}
+
+			can.view.stache('<li>{{user.name}}</li>')({
+				user: {}
+			});
+
+			can.dev.warn = oldlog;
+		});
+	}
+	//!steal-remove-end
+	test("Calling .fn without arguments should forward scope by default (#658)", function(){
+		var tmpl = "{{#foo}}<span>{{bar}}</span>{{/foo}}";
+		var frag = can.stache(tmpl)(new can.Map({
+			bar : 'baz'
+		}), {
+			foo : function(opts){
+				return opts.fn();
+			}
+		});
+		var node = frag.childNodes[0];
+
+		equal(node.innerHTML, 'baz', 'Context is forwarded correctly');
+	})
+
+	test("Calling .fn with falsy value as the context will render correctly (#658)", function(){
+		var tmpl = "{{#zero}}<span>{{ . }}</span>{{/zero}}{{#emptyString}}<span>{{ . }}</span>{{/emptyString}}{{#nullVal}}<span>{{ . }}</span>{{/nullVal}}";
+
+		var frag = can.stache(tmpl)({ foo: 'bar' }, {
+			zero : function(opts){
+				return opts.fn(0);
+			},
+			emptyString : function(opts){
+				return opts.fn("");
+			},
+			nullVal : function(opts){
+				return opts.fn(null);
+			}
+
+		});
+
+		equal(frag.childNodes[0].innerHTML, '0', 'Context is set correctly for falsy values');
+		equal(frag.childNodes[1].innerHTML, '', 'Context is set correctly for falsy values');
+		equal(frag.childNodes[2].innerHTML, '', 'Context is set correctly for falsy values');
+	})
+});

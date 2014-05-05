@@ -26,6 +26,11 @@
 			"type": "core",
 			"isDefault": true
 		},
+		"can/list/promise": {
+			"name": "can.List.promise",
+			"description": "Promises on lists",
+			"type": "plugin"
+		},
 		"can/observe": {
 			"name": "can.Observe",
 			"description": "Observables and key-value bindings",
@@ -52,7 +57,7 @@
 			"isDefault": true
 		},
 		"can/view/ejs": {
-			"name": "can.EJS",
+			"name": "can.ejs",
 			"description": "Live-binding Embedded JavaScript",
 			"type": "plugin"
 		},
@@ -80,7 +85,7 @@
 			"isDefault": true
 		},
 		"can/view/mustache": {
-			"name": "can.Mustache",
+			"name": "can.mustache",
 			"description": "Live-binding Handlebars and Mustache views",
 			"type": "core",
 			"isDefault": true
@@ -118,11 +123,12 @@
 		"can/map/setter": {
 			"name": "can.Map.setter",
 			"type": "plugin",
-			"description": "Use setter methods on Observes"
+			"description": "Use setter methods on can.Map"
 		},
 		"can/map/attributes": {
 			"name": "can.Map.attributes",
 			"type": "plugin",
+			"deprecated": true,
 			"description": "Define Observe attributes"
 		},
 		"can/map/validations": {
@@ -139,6 +145,11 @@
 			"name": "can.Map.List",
 			"type": "plugin",
 			"description": "Live-updating mapped and filtered observe lists"
+		},
+		"can/map/define": {
+			"name": "can.Map.define",
+			"type": "plugin",
+			"description": "Define rich attribute behavior"
 		},
 		"can/map/sort": {
 			"name": "can.List.Sort",

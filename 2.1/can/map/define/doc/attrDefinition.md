@@ -25,7 +25,7 @@ returns a fresh copy can be provided:
       }
     }
 
-@option {function} Value Specifies a function that will be called with `new` whos result is
+@option {function} Value Specifies a function that will be called with `new` whose result is
 set as the initial value of the attribute. For example, if the default value should be a can.List:
 
     define: {
@@ -48,11 +48,13 @@ The following example converts the `count` property to a number and the `items` 
 
      define: {
        count: {type: "number"},
-       items: function(newValue){
-         if(typeof newValue === "string") {
-           return newValue.split(",")
-         } else if( can.isArray(newValue) ) {
-           return newValue;
+       items: {
+         type: function(newValue){
+           if(typeof newValue === "string") {
+             return newValue.split(",")
+           } else if( can.isArray(newValue) ) {
+             return newValue;
+           }
          }
        }
      }
@@ -96,6 +98,8 @@ defines a `page` getter that reads from a map's offset and limit:
 		}
       }
     }
+    
+A `get` definition makes the property __computed__ which means it will not be serialized by default.
 
 @option {can.Map.prototype.define.remove} remove A function that specifies what should happen when an attribute is removed
 with [can.Map::removeAttr removeAttr]. The following removes a `modelId` when `makeId` is removed:
@@ -108,3 +112,65 @@ with [can.Map::removeAttr removeAttr]. The following removes a `modelId` when `m
       }
     }
 
+@option {can.Map.prototype.define.serialize|Boolean} serialize Specifies the behavior of the 
+property when [can.Map::serialize serialize] is called. 
+
+By default, serialize does not include computed values. Properties with a `get` definition
+are computed and therefore are not added to the result.  Non-computed properties values are
+serialized if possible and added to the result.
+
+    Paginate = can.Map.extend({
+      define: {
+        pageNum: {
+          get: function(){ return this.offset() / 20 }
+        }
+      }
+    });
+    
+    p = new Paginate({offset: 40});
+    p.serialize() //-> {offset: 40}
+
+If `true` is specified, computed properties will be serialized and added to the result.
+
+    Paginate = can.Map.extend({
+      define: {
+        pageNum: { 
+          get: function(){ return this.offset() / 20 },
+          serialize: true
+        }
+      }
+    });
+
+    p = new Paginate({offset: 40});
+    p.serialize() //-> {offset: 40, pageNum: 2}
+    
+    
+If `false` is specified, non-computed properties will not be added to the result.
+
+    Paginate = can.Map.extend({
+      define: {
+        offset: {
+          serialize: false
+        }
+      }
+    });
+
+    p = new Paginate({offset: 40});
+    p.serialize() //-> {}
+
+If a [can.Map.prototype.define.serialize serialize function] is specified, the result
+of the function is added to the result.
+
+    Paginate = can.Map.extend({
+      define: {
+        offset: {
+          serialize: function(offset){
+            return (offset / 20)+1
+          }
+        }
+      }
+    });
+
+    p = new Paginate({offset: 40});
+    p.serialize() //-> {offset: 3}
+    
