@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.7
+ * CanJS - 2.1.0
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Wed, 26 Mar 2014 16:12:27 GMT
+ * Mon, 05 May 2014 22:15:43 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -355,6 +355,18 @@ define(["can/util/library", "can/map", "can/list", "can/util/string/deparam"], f
 		 * A can.Map that represents the state of the history.
 		 */
 		data: new can.Map({}),
+		map: function(data){
+			var appState;
+			// appState is an instance of can.Map
+			if(data instanceof can.Map){
+				appState = data;
+			}
+			// appState is a can.Map constructor function
+			else if(data.prototype instanceof can.Map){
+				appState = new data();
+			}
+			can.route.data = appState;
+		},
 		/**
 		 * @property {Object} routes
 		 * @hide
@@ -632,12 +644,20 @@ define(["can/util/library", "can/map", "can/list", "can/util/string/deparam"], f
 	// if the data is changing or the hash already matches the hash that was set.
 	setState = can.route.setState = function () {
 		var hash = can.route._call("matchingPartOfURL");
+		var oldParams = curParams;
 		curParams = can.route.deparam(hash);
 
 		// if the hash data is currently changing, or
 		// the hash is what we set it to anyway, do NOT change the hash
 		if (!changingData || hash !== lastHash) {
-			can.route.attr(curParams, true);
+			can.batch.start();
+			for(var attr in oldParams){
+				if(!curParams[attr]){
+					can.route.removeAttr(attr);
+				}
+			}
+			can.route.attr(curParams);
+			can.batch.stop();
 		}
 	};
 

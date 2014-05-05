@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.0.7
+ * CanJS - 2.1.0
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Wed, 26 Mar 2014 16:12:27 GMT
+ * Mon, 05 May 2014 22:15:43 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -56,7 +56,7 @@ define(["can/view", "can/view/elements", "can/view/live", "can/util/string"], fu
 			}
 
 			// Finally, if all else is `false`, `toString()` it.
-			return '' + input;
+			return "" + input;
 		},
 		// Returns escaped/sanatized content for anything other than a live-binding
 		contentEscape = function (txt, tag) {
@@ -94,16 +94,6 @@ define(["can/view", "can/view/elements", "can/view/live", "can/util/string"], fu
 				can.view.lists = old;
 				return data;
 			};
-		},
-		pending: function (data) {
-			// TODO, make this only run for the right tagName
-			var hooks = can.view.getHooks();
-			return can.view.hook(function (el) {
-				can.each(hooks, function (fn) {
-					fn(el);
-				});
-				can.view.Scanner.hookupAttributes(data, el);
-			});
 		},
 		getHooks: function () {
 			var hooks = pendingHookups.slice(0);
@@ -149,7 +139,11 @@ define(["can/view", "can/view/elements", "can/view/live", "can/util/string"], fu
 				// should live-binding be setup
 				setupLiveBinding = false,
 				// the compute's value
-				compute, value, unbind, listData, attributeName;
+				value,
+				listData,
+				compute,
+				unbind = emptyHandler,
+				attributeName;
 
 			// Are we currently within a live section within an element like the {{name}}
 			// within `<div {{#person}}{{name}}{{/person}}/>`.
@@ -198,9 +192,7 @@ define(["can/view", "can/view/elements", "can/view/live", "can/util/string"], fu
 			}
 
 			if (listData) {
-				if (unbind) {
-					unbind();
-				}
+				unbind();
 				return "<" + tag + can.view.hook(function (el, parentNode) {
 					live.list(el, listData.list, listData.renderer, self, parentNode);
 				}) + "></" + tag + ">";
@@ -208,9 +200,7 @@ define(["can/view", "can/view/elements", "can/view/live", "can/util/string"], fu
 
 			// If we had no observes just return the value returned by func.
 			if (!setupLiveBinding || typeof value === "function") {
-				if (unbind) {
-					unbind();
-				}
+				unbind();
 				return ((withinTemplatedSectionWithinAnElement || escape === 2 || !escape) ?
 					contentText :
 					contentEscape)(value, status === 0 && tag);
