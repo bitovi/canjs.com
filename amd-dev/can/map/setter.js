@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:28 GMT
+ * Mon, 05 May 2014 20:37:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -23,13 +23,19 @@ define(["can/util/library", "can/map"], function (can) {
 		proto = can.Map.prototype,
 		old = proto.__set;
 	proto.__set = function (prop, value, current, success, error) {
-	
+		//!steal-remove-start
+		var asyncTimer;
+		can.dev.warn("can/map/setter is a deprecated plugin and will be removed in a future release. "+
+			"can/map/define provides the same functionality in a more complete API.");
+		//!steal-remove-end
 		
 		// check if there's a setter
 		var cap = classize(prop),
 			setName = 'set' + cap,
 			errorCallback = function (errors) {
-			
+				//!steal-remove-start
+				clearTimeout(asyncTimer);
+				//!steal-remove-end
 				
 				var stub = error && error.call(self, errors);
 				// if 'validations' is on the page it will trigger
@@ -55,12 +61,18 @@ define(["can/util/library", "can/map"], function (can) {
 			
 			value = this[setName](value, function (value) {
 				old.call(self, prop, value, current, success, errorCallback);
-			
+				//!steal-remove-start
+				clearTimeout(asyncTimer);
+				//!steal-remove-end
 			}, errorCallback);
 			
 			
 			if(value === undefined) {
-			
+				//!steal-remove-start
+				asyncTimer = setTimeout(function(){
+					can.dev.warn('can/map/setter.js: Setter ' + setName+' did not return a value or call the setter callback.');
+				},can.dev.warnTimeout);
+				//!steal-remove-end
 				can.batch.stop();
 				return;
 			} else {

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:28 GMT
+ * Mon, 05 May 2014 20:37:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -601,6 +601,7 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function (can, b
 				// just do the dot operator
 				cur = prev[reads[i]];
 			}
+			type = typeof cur;
 			// If it's a compute, get the compute's value
 			// unless we are at the end of the 
 			if (cur && cur.isComputed && (!options.isArgument && i < readLength - 1)) {
@@ -609,7 +610,10 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function (can, b
 				}
 				cur = cur();
 			}
-			type = typeof cur;
+			// If it's an anonymous function, execute as requested
+			else if (i < reads.length - 1 && type === 'function' && options.executeAnonymousFunctions && !(can.Construct && cur.prototype instanceof can.Construct)) {
+				cur = cur();
+			}
 			// if there are properties left to read, and we don't have an object, early exit
 			if (i < reads.length - 1 && (cur === null || type !== 'function' && type !== 'object')) {
 				if (options.earlyExit) {
@@ -623,7 +627,8 @@ define(["can/util/library", "can/util/bind", "can/util/batch"], function (can, b
 			}
 		}
 		// handle an ending function
-		if (typeof cur === 'function') {
+		// unless it is a can.Construct-derived constructor
+		if (typeof cur === 'function' && !(can.Construct && cur.prototype instanceof can.Construct)) {
 			if (options.isArgument) {
 				if (!cur.isComputed && options.proxyMethods !== false) {
 					cur = can.proxy(cur, prev);

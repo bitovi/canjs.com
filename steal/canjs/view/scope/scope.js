@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:28 GMT
+ * Mon, 05 May 2014 20:37:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -262,7 +262,9 @@ steal(
 										/* Clear and save readings so next attempt does not use these readings */
 										defaultComputeReadings = can.__clearReading();
 									}
-								}
+								},
+								// Execute anonymous functions found along the way
+								executeAnonymousFunctions: true
 							}, options));
 							// **Key was found**, return value and location data
 							if (data.value !== undefined) {

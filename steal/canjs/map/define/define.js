@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:28 GMT
+ * Mon, 05 May 2014 20:37:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -226,7 +226,7 @@ steal('can/util', 'can/observe', function (can) {
 		if(serializer === undefined) {
 			return oldSingleSerialize.apply(this, arguments);
 		} else if(serializer !== false){
-			return typeof serializer === "function" ? serializer.call(this, val, attr): oldSingleSerialize.apply(this, arguments);
+			return typeof serializer === "function" ? serializer.call(map, val, attr): oldSingleSerialize.apply(this, arguments);
 		}
 	};
 	

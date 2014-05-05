@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:28 GMT
+ * Mon, 05 May 2014 20:37:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -41,7 +41,9 @@ define(["can/util/library"], function (can) {
 
 			// _removed if not used as a steal module_
 
-		
+			//!steal-remove-start
+			can.dev.log("can/view/view.js: There is no template or an empty template at " + url);
+			//!steal-remove-end
 
 			throw "can.view: No template or empty template:" + url;
 		}
@@ -218,6 +220,9 @@ define(["can/util/library"], function (can) {
 		// #### fragment
 		// this is used internally to create a document fragment, insert it,then hook it up
 		fragment: function (result) {
+			if(typeof result !== "string" && result.nodeType === 11) {
+				return result;
+			}
 			var frag = can.buildFragment(result, document.body);
 			// If we have an empty frag...
 			if (!frag.childNodes.length) {
@@ -378,7 +383,16 @@ define(["can/util/library"], function (can) {
 
 			// _removed if not used as a steal module_
 
-		
+			//!steal-remove-start
+			if (window.steal) {
+				steal.type(info.suffix + " view js", function (options, success, error) {
+					var type = $view.types["." + options.type],
+						id = $view.toId(options.id + '');
+					options.text = type.script(id, options.text);
+					success();
+				});
+			}
+			//!steal-remove-end
 
 			can[info.suffix] = $view[info.suffix] = function (id, text) {
 				// If there is no text, assume id is the template text, so return a nameless renderer.
@@ -698,7 +712,26 @@ define(["can/util/library"], function (can) {
 
 	// _removed if not used as a steal module_
 
-
+	//!steal-remove-start
+	if (window.steal) {
+		//when being used as a steal module, add a new type for 'view' that runs
+		// `can.view.preloadStringRenderer` with the loaded string/text for the dependency.
+		steal.type("view js", function (options, success, error) {
+			var type = $view.types["." + options.type],
+				id = $view.toId(options.id);
+			/**
+			 * @hide
+			 * should return something like steal("dependencies",function(EJS){
+			 * return can.view.preload("ID", options.text)
+			 * })
+			 */
+			var dependency = type.plugin || 'can/view/' + options.type,
+				preload = type.fragRenderer ? "preload" : "preloadStringRenderer";
+			options.text = 'steal(\'can/view\',\'' + dependency + '\',function(can){return ' + 'can.view.'+preload+'(\'' + id + '\',' + options.text + ');\n})';
+			success();
+		});
+	}
+	//!steal-remove-end
 
 	return can;
 });

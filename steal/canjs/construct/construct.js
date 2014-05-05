@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:28 GMT
+ * Mon, 05 May 2014 20:37:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -302,6 +302,14 @@ steal('can/util/string', function (can) {
 			function Constructor() {
 				// All construction is actually done in the init method.
 				if (!initializing) {
+					//!steal-remove-start
+					if(this.constructor !== Constructor &&
+					// We are being called without `new` or we are extending.
+					arguments.length && Constructor.constructorExtends) {
+						can.dev.warn('can/construct/construct.js: extending a can.Construct without calling extend');
+					}
+					//!steal-remove-end
+					
 					return this.constructor !== Constructor &&
 					// We are being called without `new` or we are extending.
 					arguments.length && Constructor.constructorExtends ? Constructor.extend.apply(Constructor, arguments) :

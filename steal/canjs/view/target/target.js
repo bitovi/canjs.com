@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:28 GMT
+ * Mon, 05 May 2014 20:37:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -21,12 +21,17 @@ steal("can/util", "can/view/elements.js",function(can, elements){
 	},
 		keepsTextNodes =  (function(){
 			var testFrag = document.createDocumentFragment();
-			testFrag.appendChild(document.createTextNode("One"));
-			testFrag.appendChild(document.createTextNode("Two"));
+			var div = document.createElement("div");
+			
+			div.appendChild(document.createTextNode(""));
+			div.appendChild(document.createTextNode(""));
+			testFrag.appendChild(div);
+			
 			var cloned  = testFrag.cloneNode(true);
-			return cloned.childNodes.length === 2;
+			
+			return cloned.childNodes[0].childNodes.length === 2;
 		})();
-	
+
 	function processNode(node, paths, location){
 		var callback,
 			loc = location,

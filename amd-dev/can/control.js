@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:28 GMT
+ * Mon, 05 May 2014 20:37:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -127,7 +127,9 @@ define(["can/util/library", "can/construct"], function (can) {
 				if (options || !paramReplacer.test(methodName)) {
 					var convertedName = options ? can.sub(methodName, this._lookup(options)) : methodName;
 					if (!convertedName) {
-					
+						//!steal-remove-start
+						can.dev.log('can/control/control.js: No property found for handling ' + methodName);
+						//!steal-remove-end
 						return null;
 					}
 					var arr = can.isArray(convertedName),
@@ -285,7 +287,9 @@ define(["can/util/library", "can/construct"], function (can) {
 			// the element from the Control instance.
 			destroy: function () {
 				if (this.element === null) {
-				
+					//!steal-remove-start
+					can.dev.warn("can/control/control.js: Control already destroyed");
+					//!steal-remove-end
 					return;
 				}
 				var Class = this.constructor,

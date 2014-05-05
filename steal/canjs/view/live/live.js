@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:28 GMT
+ * Mon, 05 May 2014 20:37:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -92,15 +92,24 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 	 * @parent can.view.static
 	 * @release 2.0.4
 	 *
-	 * Setup live-binding to a compute manually.
-	 *
+	 * Setup live-binding between the DOM and a compute manually.
+	 * 
+	 * @option {Object} An object with the live-binding methods:
+	 * [can.view.live.html], [can.view.live.list], [can.view.live.text], 
+	 * [can.view.live.attr] and [can.view.live.attrs].
+	 * 
 	 * @body
 	 *
 	 * ## Use
 	 *
 	 * `can.view.live` is an object with utlitiy methods for setting up
-	 * live-binding.  For example, to make an `<h2>`
-	 *
+	 * live-binding in relation to different parts of the DOM and DOM elements.  For 
+	 * example, to make an `<h2>`'s text stay live with
+	 * a compute:
+	 * 
+	 *     var text = can.compute("Hello World");
+	 *     var textNode = $("h2").text(" ")[0].childNodes[0];
+	 *     can.view.live.text(textNode, text);
 	 *
 	 *
 	 */
@@ -415,11 +424,22 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 			}
 		},
 		/**
-		 * @function can.view.live.text
+		 * @function can.view.live.attrs
 		 * @parent can.view.live
-		 *
-		 * Replaces one element with some content while keeping [can.view.live.nodeLists nodeLists] data
-		 * correct.
+		 * 
+		 * Keep attributes live to a [can.compute].
+		 * 
+		 * @param {HTMLElement} el The element whos attributes will be kept live.
+		 * @param {can.compute} compute The compute.
+		 * 
+		 * @body
+		 * 
+		 * ## Use
+		 * 
+		 *     var div = document.createElement('div');
+		 *     var compute = can.compute("foo='bar' zed='ted'");
+		 *     can.view.live.attr(div,compute);
+		 * 
 		 */
 		attributes: function (el, compute, currentValue) {
 			var oldAttrs = {};
@@ -510,6 +530,24 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 			});
 			elements.setAttr(el, attributeName, getValue(compute()));
 		},
+		/**
+		 * @function can.view.live.attr
+		 * @parent can.view.live
+		 * 
+		 * Keep an attribute live to a [can.compute].
+		 * 
+		 * @param {HTMLElement} el The element whos attribute will be kept live.
+		 * @param {String} attributeName The attribute name.
+		 * @param {can.compute} compute The compute.
+		 * 
+		 * @body
+		 * 
+		 * ## Use
+		 * 
+		 *     var div = document.createElement('div');
+		 *     var compute = can.compute("foo bar");
+		 *     can.view.live.attr(div,"class", compute);
+		 */
 		simpleAttribute: function(el, attributeName, compute){
 			listen(el, compute, function (ev, newVal) {
 				elements.setAttr(el, attributeName, newVal);
@@ -517,6 +555,8 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 			elements.setAttr(el, attributeName, compute());
 		}
 	};
+	live.attr = live.simpleAttribute;
+	live.attrs = live.attributes;
 	var newLine = /(\r|\n)+/g;
 	var getValue = function (val) {
 		var regexp = /^["'].*["']$/;

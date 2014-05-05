@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:28 GMT
+ * Mon, 05 May 2014 20:37:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -109,7 +109,7 @@ define(["can/util/library", "can/view/callbacks", "can/control", "can/observe", 
 				can.each(this.constructor.attributeScopeMappings, function (val, prop) {
 					initalScopeData[prop] = el.getAttribute(can.hyphenate(val));
 				});
-
+				
 				// Get the value in the scope for each attribute
 				// the hookup should probably happen after?
 				can.each(can.makeArray(el.attributes), function (node, index) {
@@ -130,7 +130,6 @@ define(["can/util/library", "can/view/callbacks", "can/control", "can/observe", 
 							return;
 						}
 					}
-					
 					// Cross-bind the value in the scope to this 
 					// component's scope
 					var computeData = hookupOptions.scope.computeData(value, {
@@ -150,7 +149,7 @@ define(["can/util/library", "can/view/callbacks", "can/control", "can/observe", 
 
 					// Set the value to be added to the scope
 					initalScopeData[name] = compute();
-
+					
 					// We don't need to listen to the compute `change` if it doesn't have any dependencies
 					if (!compute.hasDependencies) {
 						compute.unbind("change", handler);
@@ -291,7 +290,12 @@ define(["can/util/library", "can/view/callbacks", "can/control", "can/observe", 
 					frag = this.constructor.renderer(renderedScope, hookupOptions.options.add(options));
 				} else {
 					// Otherwise render the contents between the 
-					frag = can.view.frag(hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : "");
+					if(hookupOptions.templateType === "legacy") {
+						frag = can.view.frag(hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : "");
+					} else {
+						frag = hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : document.createDocumentFragment();
+					}
+					
 				}
 				// Append the resulting document fragment to the element
 				can.appendChild(el, frag);

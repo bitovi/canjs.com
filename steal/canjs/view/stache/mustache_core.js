@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:28 GMT
+ * Mon, 05 May 2014 20:37:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -103,6 +103,9 @@ steal("can/util",
 		// Returns a new renderer function that makes sure any data or helpers passed
 		// to it are converted to a can.view.Scope and a can.view.Options.
 		makeRendererConvertScopes = function (renderer, parentScope, parentOptions) {
+			var rendererWithScope = function(ctx, opts){
+				return renderer(ctx || parentScope, opts);
+			};
 			return function (newScope, newOptions) {
 				// If a non-scope value is passed, add that to the parent scope.
 				if (newScope !== undefined && !(newScope instanceof can.view.Scope)) {
@@ -111,7 +114,7 @@ steal("can/util",
 				if (newOptions !== undefined && !(newOptions instanceof core.Options)) {
 					newOptions = parentOptions.add(newOptions);
 				}
-				return renderer(newScope, newOptions || parentOptions);
+				return rendererWithScope(newScope, newOptions || parentOptions);
 			};
 		};
 	
@@ -198,7 +201,7 @@ steal("can/util",
 				// If name is a helper, this gets set to the helper.
 				helper,
 				// `true` if the expression looks like a helper.
-				isHelper = exprData.args.length || !can.isEmptyObject(exprData.hash),
+				looksLikeAHelper = exprData.args.length || !can.isEmptyObject(exprData.hash),
 				// The "peaked" at value of the name.
 				initialValue;
 				
@@ -224,7 +227,7 @@ steal("can/util",
 			if ( isLookup(name) ) {
 			
 				// If the expression looks like a helper, try to get a helper right away.
-				if (isHelper) {
+				if (looksLikeAHelper) {
 					// Try to find a registered helper.
 					helper = mustacheHelpers.getHelper(name.get, options);
 					
@@ -233,9 +236,6 @@ steal("can/util",
 						helper = {fn: context[name.get]};
 					}
 
-					//!steal-remove-start
-					can.dev.warn('can/view/stache/mustache_core.js: Unable to find helper "' + name.get + '".');
-					//!steal-remove-end
 				}
 				// If a helper has not been found, either because this does not look like a helper
 				// or because a helper was not found, get the value of name and determine 
@@ -257,10 +257,9 @@ steal("can/util",
 						name = initialValue;
 					}
 
-					// FIXME (EK): Wat? I would think this should be checked above.
 					// If it doesn't look like a helper and there is no value, check helpers
 					// anyway. This is for when foo is a helper in `{{foo}}`.
-					if( !isHelper && initialValue === undefined ) {
+					if( !looksLikeAHelper && initialValue === undefined ) {
 						helper = mustacheHelpers.getHelper(get, options);
 					}
 					// Otherwise, if the value is a function, we'll call that as a helper.
@@ -270,16 +269,19 @@ steal("can/util",
 						};
 					}
 
-					//!steal-remove-start
-					// Yes this is weird that I'm checking for !helper again but we potentially
-					// reassign it above and we don't want to log a warning if we actually
-					// found it as a helper.
-					if (!isHelper && !helper && initialValue === undefined) {
-						can.dev.warn('can/view/stache/mustache_core.js: Unable to find key "' + get + '".');
-					}
-					//!steal-remove-end
 				}
+				//!steal-remove-start
+				if ( !helper && initialValue === undefined) {
+					if(looksLikeAHelper) {
+						can.dev.warn('can/view/stache/mustache_core.js: Unable to find helper "' + exprData.name.get + '".');
+					} else {
+						can.dev.warn('can/view/stache/mustache_core.js: Unable to find key or helper "' + exprData.name.get + '".');
+					}
+				}
+				//!steal-remove-end
 			}
+
+
 			
 			// If inverse mode, reverse renderers.
 			if(mode === "^") {

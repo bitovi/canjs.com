@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:37 GMT
+ * Mon, 05 May 2014 20:37:35 GMT
  * Licensed MIT
  * Includes: can/component,can/construct,can/map,can/list,can/observe,can/compute,can/model,can/view,can/control,can/route,can/control/route,can/view/mustache,can/view/bindings,can/view/live,can/view/scope,can/util/string,can/util/attr
  * Download from: http://canjs.com
@@ -34,7 +34,7 @@
             }
             return object._cid;
         };
-        can.VERSION = '2.1.0-pre';
+        can.VERSION = '2.1.0-pre.1';
 
         can.simpleExtend = function(d, s) {
             for (var prop in s) {
@@ -1013,6 +1013,9 @@
                 // #### fragment
                 // this is used internally to create a document fragment, insert it,then hook it up
                 fragment: function(result) {
+                    if (typeof result !== "string" && result.nodeType === 11) {
+                        return result;
+                    }
                     var frag = can.buildFragment(result, document.body);
                     // If we have an empty frag...
                     if (!frag.childNodes.length) {
@@ -1624,6 +1627,8 @@
                     function Constructor() {
                         // All construction is actually done in the init method.
                         if (!initializing) {
+
+
                             return this.constructor !== Constructor &&
                             // We are being called without `new` or we are extending.
                             arguments.length && Constructor.constructorExtends ? Constructor.extend.apply(Constructor, arguments) :
@@ -2278,7 +2283,7 @@
                     }
                     // If we inherit from can.Map, but not can.List, make sure any lists are the correct type.
                     if (can.List && !(this.prototype instanceof can.List)) {
-                        this.List = Map.List({
+                        this.List = Map.List.extend({
                                 Map: this
                             }, {});
                     }
@@ -2534,7 +2539,7 @@
                     } else {
 
                         // If attr does not have a `.`
-                        if ( !! ~attr.indexOf('.')) {
+                        if (typeof attr === 'string' && !! ~attr.indexOf('.')) {
                             prop = attr;
                         }
 
@@ -2767,13 +2772,14 @@
 
                         // If we're dealing with models, we want to call _set to let converters run.
                         if (Map.helpers.isObservable(newVal)) {
-                            self.__set(prop, newVal, curVal);
+
+                            self.__set(prop, self.__type(newVal, prop), curVal);
                             // If its an object, let attr merge.
                         } else if (Map.helpers.isObservable(curVal) && Map.helpers.canMakeObserve(newVal)) {
                             curVal.attr(newVal, remove);
                             // Otherwise just set.
                         } else if (curVal !== newVal) {
-                            self.__set(prop, newVal, curVal);
+                            self.__set(prop, self.__type(newVal, prop), curVal);
                         }
 
                         delete props[prop];
@@ -2840,7 +2846,7 @@
             })();
 
 
-        var list = Map(
+        var list = Map.extend(
 
             {
 
@@ -3681,6 +3687,7 @@
                     // just do the dot operator
                     cur = prev[reads[i]];
                 }
+                type = typeof cur;
                 // If it's a compute, get the compute's value
                 // unless we are at the end of the 
                 if (cur && cur.isComputed && (!options.isArgument && i < readLength - 1)) {
@@ -3689,7 +3696,10 @@
                     }
                     cur = cur();
                 }
-                type = typeof cur;
+                // If it's an anonymous function, execute as requested
+                else if (i < reads.length - 1 && type === 'function' && options.executeAnonymousFunctions && !(can.Construct && cur.prototype instanceof can.Construct)) {
+                    cur = cur();
+                }
                 // if there are properties left to read, and we don't have an object, early exit
                 if (i < reads.length - 1 && (cur === null || type !== 'function' && type !== 'object')) {
                     if (options.earlyExit) {
@@ -3703,7 +3713,8 @@
                 }
             }
             // handle an ending function
-            if (typeof cur === 'function') {
+            // unless it is a can.Construct-derived constructor
+            if (typeof cur === 'function' && !(can.Construct && cur.prototype instanceof can.Construct)) {
                 if (options.isArgument) {
                     if (!cur.isComputed && options.proxyMethods !== false) {
                         cur = can.proxy(cur, prev);
@@ -3967,7 +3978,9 @@
 
                                                 defaultComputeReadings = can.__clearReading();
                                             }
-                                        }
+                                        },
+                                        // Execute anonymous functions found along the way
+                                        executeAnonymousFunctions: true
                                     }, options));
                             // **Key was found**, return value and location data
                             if (data.value !== undefined) {
@@ -4016,6 +4029,10 @@
 
     // ## view/elements.js
     var __m24 = (function(can) {
+
+        var selectsCommentNodes = (function() {
+            return can.$(document.createComment('~')).length === 1;
+        })();
 
 
         var elements = {
@@ -4086,7 +4103,13 @@
 
             replace: function(oldElements, newFrag) {
                 elements.after(oldElements, newFrag);
-                can.remove(can.$(oldElements));
+                if (can.remove(can.$(oldElements)).length < oldElements.length && !selectsCommentNodes) {
+                    can.each(oldElements, function(el) {
+                        if (el.nodeType === 8) {
+                            el.parentNode.removeChild(el);
+                        }
+                    });
+                }
             }
         };
 
@@ -5650,6 +5673,7 @@
                 });
                 elements.setAttr(el, attributeName, getValue(compute()));
             },
+
             simpleAttribute: function(el, attributeName, compute) {
                 listen(el, compute, function(ev, newVal) {
                     elements.setAttr(el, attributeName, newVal);
@@ -5657,6 +5681,8 @@
                 elements.setAttr(el, attributeName, compute());
             }
         };
+        live.attr = live.simpleAttribute;
+        live.attrs = live.attributes;
         var newLine = /(\r|\n)+/g;
         var getValue = function(val) {
             var regexp = /^["'].*["']$/;
@@ -5953,7 +5979,10 @@
                 return obj && obj.splice && typeof obj.length === 'number';
             },
             // used to make sure .fn and .inverse are always called with a Scope like object
-            makeConvertToScopes = function(orignal, scope, options) {
+            makeConvertToScopes = function(original, scope, options) {
+                var originalWithScope = function(ctx, opts) {
+                    return original(ctx || scope, opts);
+                };
                 return function(updatedScope, updatedOptions) {
                     if (updatedScope !== undefined && !(updatedScope instanceof can.view.Scope)) {
                         updatedScope = scope.add(updatedScope);
@@ -5961,7 +5990,7 @@
                     if (updatedOptions !== undefined && !(updatedOptions instanceof can.view.Options)) {
                         updatedOptions = options.add(updatedOptions);
                     }
-                    return orignal(updatedScope, updatedOptions || options);
+                    return originalWithScope(updatedScope, updatedOptions || options);
                 };
             };
 
@@ -6463,7 +6492,7 @@
                     // get values on hash
                     for (var prop in hash) {
                         if (isLookup(hash[prop])) {
-                            hash[prop] = Mustache.get(hash[prop].get, scopeAndOptions);
+                            hash[prop] = Mustache.get(hash[prop].get, scopeAndOptions, false, true);
                         }
                     }
                 } else if (arg && isLookup(arg)) {
@@ -6861,6 +6890,8 @@
                 }
             });
 
+        can.mustache.registerHelper = can.proxy(can.Mustache.registerHelper, can.Mustache);
+        can.mustache.safeString = can.Mustache.safeString;
         return can;
     })(__m2, __m22, __m10, __m23, __m20, __m25);
 
@@ -7339,7 +7370,6 @@
                                 return;
                             }
                         }
-
                         // Cross-bind the value in the scope to this 
                         // component's scope
                         var computeData = hookupOptions.scope.computeData(value, {
@@ -7499,7 +7529,12 @@
                         frag = this.constructor.renderer(renderedScope, hookupOptions.options.add(options));
                     } else {
                         // Otherwise render the contents between the 
-                        frag = can.view.frag(hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : "");
+                        if (hookupOptions.templateType === "legacy") {
+                            frag = can.view.frag(hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : "");
+                        } else {
+                            frag = hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : document.createDocumentFragment();
+                        }
+
                     }
                     // Append the resulting document fragment to the element
                     can.appendChild(el, frag);
@@ -8283,7 +8318,7 @@
         // # can.Model.List
         // Model Lists are just like `Map.List`s except that when their items are
         // destroyed, they automatically get removed from the List.
-        var ML = can.Model.List = can.List({
+        var ML = can.Model.List = can.List.extend({
                 // ## can.Model.List.setup
                 // On change or a nested named event, setup change bubbling.
                 // On any other type of event, setup "destroyed" bubbling.
@@ -8806,12 +8841,20 @@
         // if the data is changing or the hash already matches the hash that was set.
         setState = can.route.setState = function() {
             var hash = can.route._call("matchingPartOfURL");
+            var oldParams = curParams;
             curParams = can.route.deparam(hash);
 
             // if the hash data is currently changing, or
             // the hash is what we set it to anyway, do NOT change the hash
             if (!changingData || hash !== lastHash) {
-                can.route.attr(curParams, true);
+                can.batch.start();
+                for (var attr in oldParams) {
+                    if (!curParams[attr]) {
+                        can.route.removeAttr(attr);
+                    }
+                }
+                can.route.attr(curParams);
+                can.batch.stop();
             }
         };
 

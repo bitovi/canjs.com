@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:28 GMT
+ * Mon, 05 May 2014 20:37:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -31,7 +31,7 @@ define(function () {
 		}
 		return object._cid;
 	};
-	can.VERSION = '2.1.0-pre';
+	can.VERSION = '2.1.0-pre.1';
 
 	can.simpleExtend = function (d, s) {
 		for (var prop in s) {
@@ -75,7 +75,57 @@ define(function () {
 	// this is here in case can.compute hasn't loaded
 	can.__reading = function () {};
 
-
+	//!steal-remove-start
+	can.dev = {
+		warnTimeout: 5000,
+		logLevel: 0,
+		/**
+		 * Adds a warning message to the console.
+		 * @codestart
+		 * can.dev.warn("something evil");
+		 * @codeend
+		 * @param {String} out the message
+		 */
+		warn: function (out) {
+			var ll = this.logLevel;
+			if (ll < 2) {
+				Array.prototype.unshift.call(arguments, 'WARN:');
+				if (window.console && console.warn) {
+					this._logger("warn", Array.prototype.slice.call(arguments));
+				} else if (window.console && console.log) {
+					this._logger("log", Array.prototype.slice.call(arguments));
+				} else if (window.opera && window.opera.postError) {
+					window.opera.postError("steal.js WARNING: " + out);
+				}
+			}
+		},
+		/**
+		 * Adds a message to the console.
+		 * @codestart
+		 * can.dev.log("hi");
+		 * @codeend
+		 * @param {String} out the message
+		 */
+		log: function (out) {
+			var ll = this.logLevel;
+			if (ll < 1) {
+				if (window.console && console.log) {
+					Array.prototype.unshift.call(arguments, 'Info:');
+					this._logger("log", Array.prototype.slice.call(arguments));
+				} else if (window.opera && window.opera.postError) {
+					window.opera.postError("steal.js INFO: " + out);
+				}
+			}
+		},
+		_logger: function (type, arr) {
+			if (console.log.apply) {
+				console[type].apply(console, arr);
+			} else {
+				console[type](arr);
+			}
+		}
+	};
+	//!steal-remove-end
 
 	return can;
 });

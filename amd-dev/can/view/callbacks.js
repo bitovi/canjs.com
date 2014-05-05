@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:28 GMT
+ * Mon, 05 May 2014 20:37:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -80,7 +80,11 @@ define(["can/util/library", "can/view"], function(can){
 			var scope = tagData.scope,
 				res = tagCallback ? tagCallback(el, tagData) : scope;
 	
-		
+			//!steal-remove-start
+			if (!tagCallback) {
+				can.dev.warn('can/view/scanner.js: No custom element found for ' + tagName);
+			}
+			//!steal-remove-end
 	
 			// If the tagCallback gave us something to render with, and there is content within that element
 			// render it!

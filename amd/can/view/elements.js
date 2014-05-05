@@ -1,13 +1,17 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:28 GMT
+ * Mon, 05 May 2014 20:37:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
 define(["can/util/library", "can/view"], function (can) {
+
+	var selectsCommentNodes = (function(){
+		return can.$(document.createComment('~')).length === 1;
+	})();
 
 	/**
 	 * @property {Object} can.view.elements
@@ -127,7 +131,13 @@ define(["can/util/library", "can/view"], function (can) {
 		 */
 		replace: function (oldElements, newFrag) {
 			elements.after(oldElements, newFrag);
-			can.remove(can.$(oldElements));
+			if(can.remove(can.$(oldElements)).length < oldElements.length && !selectsCommentNodes) {
+				can.each(oldElements, function(el) {
+					if(el.nodeType === 8) {
+						el.parentNode.removeChild(el);
+					}
+				});
+			}
 		}
 	};
 

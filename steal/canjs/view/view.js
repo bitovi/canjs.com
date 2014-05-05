@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:28 GMT
+ * Mon, 05 May 2014 20:37:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -227,6 +227,9 @@ steal('can/util', function (can) {
 		// #### fragment
 		// this is used internally to create a document fragment, insert it,then hook it up
 		fragment: function (result) {
+			if(typeof result !== "string" && result.nodeType === 11) {
+				return result;
+			}
 			var frag = can.buildFragment(result, document.body);
 			// If we have an empty frag...
 			if (!frag.childNodes.length) {

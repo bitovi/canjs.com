@@ -1,75 +1,80 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:40 GMT
+ * Mon, 05 May 2014 20:37:35 GMT
  * Licensed MIT
  * Includes: can/list/promise
  * Download from: http://canjs.com
  */
-(function(list) {
+(function(undefined) {
 
-    var oldReplace = can.List.prototype.replace;
+    // ## list/promise/promise.js
+    var __m1 = (function(list) {
 
-    can.List.prototype.replace = function(data) {
-        // First call the old replace so its
-        // deferred callbacks will be called first
-        var result = oldReplace.apply(this, arguments);
+        var oldReplace = can.List.prototype.replace;
 
-        // If there is a deferred:
-        if (can.isDeferred(data)) {
-            // Set up its state.  Must call this way
-            // because we are working on an array.
-            can.batch.start();
-            this.attr("state", data.state());
-            this.removeAttr("reason");
-            can.batch.stop();
+        can.List.prototype.replace = function(data) {
+            // First call the old replace so its
+            // deferred callbacks will be called first
+            var result = oldReplace.apply(this, arguments);
 
-            var self = this;
-            // update its state when it changes
-            var deferred = this._deferred = new can.Deferred();
-
-            data.then(function() {
-                self.attr("state", data.state());
-                // The deferred methods will always return this object
-                deferred.resolve(self);
-            }, function(reason) {
+            // If there is a deferred:
+            if (can.isDeferred(data)) {
+                // Set up its state.  Must call this way
+                // because we are working on an array.
                 can.batch.start();
-                self.attr("state", data.state());
-                self.attr("reason", reason);
+                this.attr("state", data.state());
+                this.removeAttr("reason");
                 can.batch.stop();
-                deferred.reject(reason);
+
+                var self = this;
+                // update its state when it changes
+                var deferred = this._deferred = new can.Deferred();
+
+                data.then(function() {
+                    self.attr("state", data.state());
+                    // The deferred methods will always return this object
+                    deferred.resolve(self);
+                }, function(reason) {
+                    can.batch.start();
+                    self.attr("state", data.state());
+                    self.attr("reason", reason);
+                    can.batch.stop();
+                    deferred.reject(reason);
+                });
+            }
+            return result;
+        };
+
+        can.each({
+                isResolved: "resolved",
+                isPending: "pending",
+                isRejected: "rejected"
+            }, function(value, method) {
+                can.List.prototype[method] = function() {
+                    return this.attr("state") === value;
+                };
             });
-        }
-        return result;
-    };
 
-    can.each({
-            isResolved: "resolved",
-            isPending: "pending",
-            isRejected: "rejected"
-        }, function(value, method) {
-            can.List.prototype[method] = function() {
-                return this.attr("state") === value;
-            };
-        });
+        can.each([
+                "then",
+                "done",
+                "fail",
+                "always",
+                "promise"
+            ], function(name) {
+                can.List.prototype[name] = function() {
+                    // it's possible a list is created manually and returned as the result
+                    // of .then.  It should not break.
+                    if (!this._deferred) {
+                        this._deferred = new can.Deferred();
+                        this._deferred.resolve(this);
+                    }
 
-    can.each([
-            "then",
-            "done",
-            "fail",
-            "always",
-            "promise"
-        ], function(name) {
-            can.List.prototype[name] = function() {
-                // it's possible a list is created manually and returned as the result
-                // of .then.  It should not break.
-                if (!this._deferred) {
-                    this._deferred = new can.Deferred();
-                    this._deferred.resolve(this);
-                }
+                    return this._deferred[name].apply(this._deferred, arguments);
+                };
+            });
+    })(undefined);
 
-                return this._deferred[name].apply(this._deferred, arguments);
-            };
-        });
-})(can);
+})();

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:28 GMT
+ * Mon, 05 May 2014 20:37:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -70,7 +70,7 @@ steal('can/util', 'can/util/bind','./bubble.js', 'can/construct', 'can/util/batc
 				}
 				// If we inherit from can.Map, but not can.List, make sure any lists are the correct type.
 				if (can.List && !(this.prototype instanceof can.List)) {
-					this.List = Map.List({
+					this.List = Map.List.extend({
 						Map: this
 					}, {});
 				}
@@ -367,7 +367,7 @@ steal('can/util', 'can/util/bind','./bubble.js', 'can/construct', 'can/util/batc
 				} else {
 
 					// If attr does not have a `.`
-					if (!!~attr.indexOf('.')) {
+					if (typeof attr === 'string' && !!~attr.indexOf('.')) {
 						prop = attr;
 					}
 
@@ -605,13 +605,14 @@ steal('can/util', 'can/util/bind','./bubble.js', 'can/construct', 'can/util/batc
 
 					// If we're dealing with models, we want to call _set to let converters run.
 					if ( Map.helpers.isObservable( newVal ) ) {
-						self.__set(prop, newVal, curVal);
+
+						self.__set(prop, self.__type(newVal, prop), curVal);
 						// If its an object, let attr merge.
 					} else if (Map.helpers.isObservable(curVal) && Map.helpers.canMakeObserve(newVal) ) {
 						curVal.attr(newVal, remove);
 						// Otherwise just set.
 					} else if (curVal !== newVal) {
-						self.__set(prop, newVal, curVal);
+						self.__set(prop, self.__type(newVal, prop), curVal);
 					}
 
 					delete props[prop];

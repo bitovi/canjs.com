@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0-pre
+ * CanJS - 2.1.0-pre.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Fri, 02 May 2014 01:43:28 GMT
+ * Mon, 05 May 2014 20:37:28 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -25,7 +25,7 @@ define(["can/util/library", "can/map", "can/map/bubble"], function (can, Map, bu
 	/**
 	 * @add can.List
 	 */
-	var list = Map(
+	var list = Map.extend(
 		/**
 		 * @static
 		 */
