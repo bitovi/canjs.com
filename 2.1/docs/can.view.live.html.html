@@ -493,6 +493,21 @@
 			
 				
 				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.view.mustache.html" 
+							data-search="mustache">
+							mustache
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
 					<li class="search-container parent ">
 						<a 	class="property" 
 							href="can.view.nodeLists.html" 
@@ -726,7 +741,7 @@ can.view.live.html( placeholder,  greeting );
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"function","name":"can.view.live.html","params":[{"types":[{"type":"HTMLElement"}],"name":"el","description":"<p>An html element to replace with the live-section.</p>"},{"types":[{"type":"can.compute"}],"name":"compute","description":"<p>A [can.compute] whose value is HTML.</p>"},{"types":[{"type":"HTMLElement"}],"optional":true,"name":"parentNode","description":"<p>An overwritable parentNode if <code>el</code>'s parent is\na documentFragment.</p>\n\n<h2>Use</h2>\n\n<p><code>can.view.live.html</code> is used to setup incremental live-binding.</p>\n\n<pre><code>// a compute that change's it's list\nvar greeting = can.compute(function(){\n  return \"Welcome &lt;i&gt;\"+me.attr(\"name\")+\"&lt;/i&gt;\"\n});\n\nvar placeholder = document.createTextNode(\" \");\n$(\"#greeting\").append(placeholder);\n\ncan.view.live.html( placeholder,  greeting );\n</code></pre>"}],"parent":"can.view.live","description":"<p>Live binds a compute's value to a collection of elements.</p>","title":"","release":"2.0.4","src":"can/view/live/live.js","line":288,"id":492};
+	var docData = {"type":"function","name":"can.view.live.html","params":[{"types":[{"type":"HTMLElement"}],"name":"el","description":"<p>An html element to replace with the live-section.</p>"},{"types":[{"type":"can.compute"}],"name":"compute","description":"<p>A [can.compute] whose value is HTML.</p>"},{"types":[{"type":"HTMLElement"}],"optional":true,"name":"parentNode","description":"<p>An overwritable parentNode if <code>el</code>'s parent is\na documentFragment.</p>\n\n<h2>Use</h2>\n\n<p><code>can.view.live.html</code> is used to setup incremental live-binding.</p>\n\n<pre><code>// a compute that change's it's list\nvar greeting = can.compute(function(){\n  return \"Welcome &lt;i&gt;\"+me.attr(\"name\")+\"&lt;/i&gt;\"\n});\n\nvar placeholder = document.createTextNode(\" \");\n$(\"#greeting\").append(placeholder);\n\ncan.view.live.html( placeholder,  greeting );\n</code></pre>"}],"parent":"can.view.live","description":"<p>Live binds a compute's value to a collection of elements.</p>","title":"","release":"2.0.4","src":"can/view/live/live.js","line":288,"id":493};
 
 	console.log(docData);
 </script>
