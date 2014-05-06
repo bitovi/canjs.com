@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>map_benchmark.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="bubble.html">
+                bubble.js
+              </a>
+            
+              
+              <a class="source" href="map.html">
+                map.js
+              </a>
+            
+              
+              <a class="source" href="map_benchmark.html">
+                map_benchmark.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>map_benchmark.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/map'</span>, <span class="hljs-string">'can/list'</span>, <span class="hljs-string">'can/test/benchmarks.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Map, List, benchmarks)</span> {</span>
+	<span class="hljs-keyword">var</span> objects, map;
+	benchmarks.add(<span class="hljs-string">'Adding a big array to an object'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+		objects = [];
+		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) {
+			objects.push({
+				prop: <span class="hljs-string">'prop'</span>,
+				nest: {
+					prop: <span class="hljs-string">'prop'</span>,
+					nest: {
+						prop: <span class="hljs-string">'prop'</span>
+					}
+				}
+			});
+		}
+	}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+		map = <span class="hljs-keyword">new</span> can.Map();
+		map.attr(<span class="hljs-string">'obj'</span>, objects);
+	});
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

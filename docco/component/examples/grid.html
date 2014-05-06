@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>grid.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>grid.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>can.Component.extend({
+	tag: <span class="hljs-string">'grid'</span>,
+	scope: {
+		items: []
+	},
+	template: <span class="hljs-string">'&lt;table&gt;&lt;tbody&gt;&lt;content&gt;&lt;/content&gt;&lt;/tbody&gt;&lt;/table&gt;'</span>,
+	events: {
+		init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">this</span>.update();
+		},
+		<span class="hljs-string">'{deferreddata} change'</span>: <span class="hljs-string">'update'</span>,
+		update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">var</span> deferred = <span class="hljs-keyword">this</span>.scope.attr(<span class="hljs-string">'deferreddata'</span>),
+				scope = <span class="hljs-keyword">this</span>.scope;
+			<span class="hljs-keyword">if</span> (can.isDeferred(deferred)) {
+				<span class="hljs-keyword">this</span>.element.find(<span class="hljs-string">'tbody'</span>)
+					.css(<span class="hljs-string">'opacity'</span>, <span class="hljs-number">0.5</span>);
+				deferred.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items)</span> {</span>
+					scope.attr(<span class="hljs-string">'items'</span>)
+						.attr(items, <span class="hljs-literal">true</span>);
+				});
+			} <span class="hljs-keyword">else</span> {
+				scope.attr(<span class="hljs-string">'items'</span>)
+					.attr(deferred, <span class="hljs-literal">true</span>);
+			}
+		},
+		<span class="hljs-string">'{items} change'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">this</span>.element.find(<span class="hljs-string">'tbody'</span>)
+				.css(<span class="hljs-string">'opacity'</span>, <span class="hljs-number">1</span>);
+		}
+	}
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
