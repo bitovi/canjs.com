@@ -926,6 +926,14 @@ its sub-components:</p>
 &lt;next-prev paginate='paginate'/&gt;
 &lt;page-count page='paginate.page' count='paginate.pageCount'/&gt;
 </code></pre>
+
+<h2>IE 8 Support</h2>
+
+<p>While CanJS does support Internet Explorer 8 out of the box, if you decide
+to use can.Component then you will need to include <a href="https://github.com/aFarkas/html5shiv">HTML5 Shiv</a>
+in order for your custom tags to work properly.</p>
+
+<p>For namespaced tag names (e.g. <code>&lt;can:example&gt;</code>) and hyphenated tag names (e.g. <code>&lt;can-example&gt;</code>) to work properly, you will need to use version 3.7.2 or later.</p>
 		</section>
 		
 
