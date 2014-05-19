@@ -11,9 +11,11 @@ Next, install the required NPM modules:
 
 	npm install
 
-To generate the site, Dash docsets, and all other content, run:
+To re-generate the site, Dash docsets, and all other content, run:
 
     grunt docjs
+
+If this is all you needed to do, you can skip to the Deploy section below.
 
 To adjust __styles__:
 
@@ -48,19 +50,20 @@ browser. This page attempts to load all the static content of the site with stea
 
 __NOTE:__ Folders starting with `_` won't show up on the Homepage ([More info about Jekyll](http://jekyllrb.com/docs/structure/)).
 
-- `_guides` - Submodule for the [CanJS Wiki](https://github.com/bitovi/canjs/wiki) GIT repository
+- `_guides` - Submodule for the [CanJS Wiki](https://github.com/bitovi/canjs/wiki) Git repository
 - `_pages` - Mustache templates which will be rendered as their HTML equivalents in the root folder
-- `can` - The [CanJS repository](https://github.com/bitovi/canjs) submodule
+- `can` - Submodule for the [CanJS repository](https://github.com/bitovi/canjs) Git repository
 - `docs` - The generated documentation (from the `can` folder) - *Do not modify files in this folder*
 - `guides` - The generated guides (from the `_guides` markdown files) - *Do not modify files in this folder*
-- `img` - Image resources. This should be moved to `scripts/static/img`
-- `resources` - Other resources like generated CSS and additional JavaScript. This should also be removed.
+- `img` - Image resources.
+- `resources` - Other resources like generated CSS and additional JavaScript.
 - `scripts` - Contains the documentjs configuration code, including custom css, js, templates and specifies the scripts that comprise CanJS.
 
 ## Deploy
 
-Update all submodules and submodule references first and push them to GitHub, then commit and push this
-repository back to `gh-pages`.
+If you changed any of the submodules, commit those changes and push them to GitHub first (more about why [here](http://git-scm.com/book/en/Git-Tools-Submodules)) . Then, commit and push this repository back to `gh-pages`:
+
+	git push origin gh-pages
 
 ## Notes
 
@@ -69,3 +72,6 @@ repository back to `gh-pages`.
 - Only push to gh-pages for a new release, it will update the homepage right away
 - *Do not modify any HTML and CSS files directly. They are generated when running the Grunt tasks.*
 
+## TODO
+- Image resources (`img`) should be moved to `scripts/static/img`.
+- Other resources `resources` should be removed.
