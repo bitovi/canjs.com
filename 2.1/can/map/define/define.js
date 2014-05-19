@@ -127,7 +127,7 @@ steal('can/util', 'can/observe', function (can) {
 			}
 		},
 		'number': function (val) {
-			return parseFloat(val);
+			return +(val);
 		},
 		'boolean': function (val) {
 			if (val === 'false' || val === '0' || !val) {
@@ -142,7 +142,7 @@ steal('can/util', 'can/observe', function (can) {
 			return '' + val;
 		}
 	};
-
+	
 	// the old type sets up bubbling
 	var oldType = proto.__type;
 	proto.__type = function (value, prop) {
@@ -193,18 +193,61 @@ steal('can/util', 'can/observe', function (can) {
 	};
 
 	var oldSetupComputes = proto._setupComputes;
-	proto._setupComputes = function () {
+	proto._setupComputes = function (defaultsValues) {
 		oldSetupComputes.apply(this, arguments);
 		for (var attr in this.define) {
 			var def = this.define[attr],
 				get = def.get;
 			if (get) {
-				this[attr] = can.compute.async(def.value, get, this);
+				this[attr] = can.compute.async(defaultsValues[attr], get, this);
 				this._computedBindings[attr] = {
 					count: 0
 				};
 			}
 		}
 	};
+	// Overwrite the invidual property serializer b/c we will overwrite it.
+	var oldSingleSerialize = can.Map.helpers._serialize;
+	can.Map.helpers._serialize = function(map, name, val){
+		return serializeProp(map, name, val);
+	};
+	// If the map has a define serializer for the given attr, run it.
+	var serializeProp = function(map, attr, val) {
+		var serializer = map.define && map.define[attr] && map.define[attr].serialize;
+		if(serializer === undefined) {
+			return oldSingleSerialize.apply(this, arguments);
+		} else if(serializer !== false){
+			return typeof serializer === "function" ? serializer.call(map, val, attr): oldSingleSerialize.apply(this, arguments);
+		}
+	};
+	
+	// Overwrite serialize to add in any missing define serialized properties.
+	var oldSerialize = proto.serialize;
+	proto.serialize = function (property) {
+		var serialized = oldSerialize.apply(this, arguments);
+		if(property){
+			return serialized;
+		}
+		// add in properties not already serialized
+		
+		var serializer,
+			val;
+		// Go through each property.
+		for(var attr in this.define){
+			// if it's not already defined
+			if(!(attr in serialized)) {
+				// check there is a serializer so we aren't doing extra work on serializer:false
+				serializer = this.define && this.define[attr] && this.define[attr].serialize;
+				if(serializer) {
+					val = serializeProp(this, attr, this.attr(attr));
+					if(val !== undefined) {
+						serialized[attr] = val;
+					}
+				}
+			}
+		}
+		return serialized;
+	};
+
 	return can.Map;
 });

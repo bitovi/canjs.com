@@ -120,13 +120,6 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.EJS.html" data-search="can.EJS">
-				can.EJS
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -155,15 +148,15 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.Mustache.html" data-search="can.Mustache">
-				can.Mustache
+	   		<a href="can.compute.html" data-search="can.compute">
+				can.compute
 			</a>
 			
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.compute.html" data-search="can.compute">
-				can.compute
+	   		<a href="can.ejs.html" data-search="can.ejs">
+				can.ejs
 			</a>
 			
 	   </li>
@@ -178,6 +171,13 @@
 	   <li class="search-container">
 	   		<a href="can.fixture.html" data-search="can.fixture">
 				can.fixture
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.mustache.html" data-search="can.mustache">
+				can.mustache
 			</a>
 			
 	   </li>
@@ -244,7 +244,7 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v2.1.0-pre/changelog.md">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.1.0/changelog.md">source</a></li>
 	
 	
 		
@@ -273,7 +273,85 @@
 
 		
 		<section class="comment">
-			<p><strong>2.0.7</strong> ( Mar 26 2014 )</p>
+			<p><strong>2.1.0</strong> ( May 05 2014 )</p>
+
+<ul>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/963">fixes IE8</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/955">IE fixes</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/950">stache issue with steal and single quotes</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/947">Update component docs about passing in data via attributes</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/935">can.Mustache, can.EJS and can.view.mustache, can.view.ejs are depreicated</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/934">Finalize can.Map.define docs</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/932">Warning not using extend.</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/929">Adding guide for developing plugins</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/925">List promise documentation.</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/919">Mustache dev logging</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/913">can.Map.define</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/908">Makes can-value and can-EVENT work with {}</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/907">Fixes bugs with custom self-closing tags and empty custom tags.</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/905">{} works with can-value and can-click</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/898">Stache doesn&#39;t register correctly with steal</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/892">can.Mustache is converting a can.Model to a can.Map</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/891">can-value handling null in addition to undefined for select elements</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/889">can.view.live docs</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/885">Updates to recipes page</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/884">can.stache using ^ inside a tag throws an exception</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/883">Fix implementation of ./</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/880">can.stache won&#39;t render if self-closing content tag is used</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/874">Add &quot;./&quot; to mustache to denote selecting a property from current scope</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/870">can/event</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/869">Subclassed Model.List should inherit from their parent Model.List</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/868">Docco inline documentation</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/862">Adds computed attributes for can.List instances</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/860">Emit events for can.List.prototype.reverse</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/859">Fix inverse ^ to be able to use {{else}}</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/858">Adding test for #each with child sections</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/857">Remove all references from Model.List on model destroy.</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/856">Test for Mustache if sections removing all content</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/854">Update can.fixture request data with id</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/824">Settable can.computes</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/819">can.Map.prototype.define</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/815">batchNum issues</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/814">Change syntax for passing in template objects to Components to use <code>{}</code></a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/813">changing cross-binding comparison from === to ==</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/811">can-value when cross-bound with input value using === comparison</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/803">Restful behavior not fully implemented in can.fixture.store.findOne</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/801">Fix for calling removeAttr with number type (on lists)</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/797">Bug in log() method in can.view.Mustache</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/760">Added delegate/undelegate fallbacks to bind/unbind and fixed broken Zepto/Dojo delegate implementations</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/752">can.route crossbind to can.Map</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/751">Inverse ^if doesn&#39;t work correctly with an else</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/750">#each with nested #if not working as expected</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/744">Mustache live binding throws &quot;Cannot read property &#39;length&#39; of undefined&quot; in can.view.elements.after </a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/736">can.Model.List should extend an existing List</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/726">Dev warning when mustache doesn&#39;t find a helper</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/723">Recursive mustache template ends with &quot;Maximum call stack size exceeded&quot;</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/720">Dev warning when mustache doesn&#39;t find a variable</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/693">can.Components ignores attributes containing &quot;id&quot;</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/688">Adds a can.List promise plugin.</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/683">can.List.filter</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/677">Content not removed when it should be</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/674">defining &#39;can&#39; missing. setting it as a dependancy</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/658">Calling .fn() without arguments should forward scope by default</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/645">Path accessor to prevent walking up the scope</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/641">Observe attributes for #637</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/637">Attributes event API</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/636">can.view.tag and can.view.attr</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/635">2.1 API Changes</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/608">can.view returns a renderer function that returns a string</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/571">Added parseModels and parseModel to fix duplicate instances being created after create an update.</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/561">Added test to issue #560</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/560">can.Model#save: values for attributes not found in response are replaced with their defaults</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/551">Select with multiple-selection for can.view.bindings (i.e. two-way binding via can-value)</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/514">Update on can.Model&#39;s nested object throws error on recursive mustache template</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/501">can.Model: one URL property for REST resource</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/472">Adding wildcards to attributes plugin</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/450">Inconsistency when passing functions (e.g. descendants of can.Construct) to helpers.</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/425">Mustache - TypeError: Cannot read property &#39;childNodes&#39; of null </a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/311">Make can.extend&#39;s deep copy clone CanJS classes</a></li>
+</ul>
+
+<p><strong>2.0.7</strong> ( Mar 26 2014 )</p>
 
 <ul>
 <li>change: <a href="https://github.com/bitovi/canjs/pull/821">Configuration for AMD development build</a></li>
@@ -862,7 +940,7 @@
     </nav>
   </footer>
   <script type="text/javascript">
-    window.docConfig = {"debug":false,"enableSearch":true,"parent":"canjs","layout":"shared/_templates/page.mustache","docs":"shared/_templates/docs.mustache","root":"..","out":"2.1/docs","page":"docs","markdown":["can"],"package":{"name":"CanJS","description":"MIT-licensed, client-side, JavaScript framework that makes building rich web applications easy.","version":"2.1.0-pre","author":{"name":"Bitovi","email":"contact@bitovi.com","web":"http://bitovi.com/"},"homepage":"http://canjs.us/","repository":{"type":"git","url":"git@github.com:bitovi/canjs.git","github":"https://github.com/bitovi/canjs"},"devDependencies":{"grunt":"~0.4.0","grunt-string-replace":"~0.2.2","grunt-contrib-qunit":"~0.2.1","grunt-contrib-connect":"~0.3.0","bitovi-tools":"https://github.com/bitovi/bitovi-tools/tarball/master","steal":"https://github.com/bitovi/steal-build/tarball/master","grunt-contrib-uglify":"~0.2.1","grunt-contrib-clean":"~0.5.0","grunt-shell":"~0.5.0","grunt-release-steps":"~0.3.7","bower":"~1.2.7","grunt-contrib-jshint":"~0.8.0","grunt-jsbeautifier":"~0.2.6","grunt-docco2":"git://github.com/shcarrico/grunt-docco.git#e4de54886ed5c421b2e26e7a2aeba1f73e889733","grunt-plato":"~0.2.1"},"scripts":{"test":"grunt test","install":"node node_modules/bower/bin/bower install"},"demos":["http://canjs.us/#examples","http://canjs.us/recipes"],"licenses":[{"type":"MIT","url":"http://opensource.org/licenses/mit-license.php"}],"dependencies":{"grunt-cli":"~0.1.7"}},"self":{"name":"canjs.com","description":"We can do JS better.","version":"0.2.0","homepage":"http://canjs.com","author":{"name":"Bitovi","url":"http://bitovi.com/"},"repository":{"type":"git","url":"git://github.com/bitovi/canjs.com.git","github":"https://github.com/bitovi/canjs.com"},"bugs":{"url":"https://github.com/bitovi/canjs.com/issues"},"licenses":[{"type":"MIT","url":"https://github.com/bitovi/canjs.com/blob/master/LICENSE-MIT"}],"engines":{"node":">= 0.10.0"},"devDependencies":{"grunt":"~0.4.1","grunt-contrib-watch":"~0.3.1","grunt-contrib-less":"~0.5.0","documentjs":"https://github.com/bitovi/documentjs/tarball/node-generator","grunt-contrib-clean":"~0.4.1","grunt-docco":"~0.3.2","grunt-plato":"~0.2.1","grunt-jsbeautifier":"~0.2.6"}},"builder":{"filename":"can.custom.js","banner":"/*!\n * <%= pkg.title || pkg.name %> - <%= pkg.version %>\n * <%= pkg.homepage %>\n * Copyright (c) <%= new Date().getFullYear() %> <%= pkg.author.name %>\n * <%= new Date().toUTCString() %>\n * Licensed <%= pkg.licenses[0].type %><% if(typeof url !== \"undefined\") { %>\n * Includes: <%= ids %>\n * Download from: <%= url %>\n<% } %> */\n","modules":{"can/component":{"name":"can.Component","description":"Custom elements and widgets","type":"core","isDefault":true},"can/construct":{"name":"can.Construct","description":"Inheritable constructor functions","type":"core","isDefault":true},"can/map":{"name":"can.Map","description":"Observables and key-value bindings","type":"core","isDefault":true},"can/list":{"name":"can.List","description":"Observables lists","type":"core","isDefault":true},"can/observe":{"name":"can.Observe","description":"Observables and key-value bindings","type":"core","isDefault":true,"hidden":true},"can/compute":{"name":"can.compute","description":"can.compute lets you make observable values","type":"core","isDefault":true},"can/model":{"name":"can.Model","description":"Observes connected to a RESTful JSON interface","type":"core","isDefault":true},"can/view":{"name":"can.view","description":"Template loading, caching, rendering","type":"core","isDefault":true},"can/view/ejs":{"name":"can.EJS","description":"Live-binding Embedded JavaScript","type":"plugin"},"can/view/stache":{"name":"can.stache","description":"High performance Mustache templates","type":"plugin"},"can/control":{"name":"can.Control","description":"Declarative event bindings","type":"core","isDefault":true},"can/route":{"name":"can.route","description":"Back button and bookmarking support","type":"core","isDefault":true},"can/control/route":{"name":"can.Control.route","description":"Declare routes in your Control","type":"core","isDefault":true},"can/view/mustache":{"name":"can.Mustache","description":"Live-binding Handlebars and Mustache views","type":"core","isDefault":true},"can/route/pushstate":{"name":"can.route.pushstate","description":"can.route with pushstate","type":"plugin"},"can/model/queue":{"name":"can.Model.Queue","type":"plugin","description":"Queued requests to the server."},"can/construct/super":{"name":"can.Construct.super","type":"plugin","description":"Call super methods"},"can/construct/proxy":{"name":"can.Construct.proxy","type":"plugin","description":"Proxy construct methods"},"can/map/lazy":{"name":"can.Map.Lazy","type":"plugin","description":"Lazy initializing maps and lists"},"can/map/delegate":{"name":"can.Map.delegate","type":"plugin","description":"Listen to Observe attributes"},"can/map/setter":{"name":"can.Map.setter","type":"plugin","description":"Use setter methods on Observes"},"can/map/attributes":{"name":"can.Map.attributes","type":"plugin","description":"Define Observe attributes"},"can/map/validations":{"name":"can.Map.validations","type":"plugin","description":"Validate Observe attributes"},"can/map/backup":{"name":"can.Map.backup","type":"plugin","description":"Backup and restore an Observes state"},"can/map/list":{"name":"can.Map.List","type":"plugin","description":"Live-updating mapped and filtered observe lists"},"can/map/sort":{"name":"can.List.Sort","type":"plugin","description":"Sort observable lists"},"can/control/plugin":{"name":"can.Control.plugin","type":"plugin","description":"Registers a jQuery plugin function for Controls","configurations":["jquery","jquery-2"]},"can/view/modifiers":{"name":"can.view.modifiers","type":"plugin","description":"Use jQuery modifiers to render views","configurations":["jquery","jquery-2"]},"can/util/object":{"name":"can.Object","type":"plugin","description":"Helper methods for object comparison"},"can/util/fixture":{"name":"can.fixture","type":"plugin","description":"Intercepts an AJAX request and simulates the response with a file or function"},"can/view/bindings":{"name":"can.view.bindings","type":"core","isDefault":true,"hidden":true},"can/view/live":{"name":"can.view.live","type":"core","isDefault":true,"hidden":true},"can/view/scope":{"name":"can.view.Scope","type":"core","isDefault":true,"hidden":true},"can/util/string":{"name":"can.util.string","type":"core","isDefault":true,"hidden":true},"can/util/attr":{"name":"can.util.attr","type":"core","isDefault":true,"hidden":true}},"types":{"core":"CanJS core","plugin":"Plugins"},"pluginify":{"shim":{"can/lib/jquery.2.0.3.js":"jQuery","can/lib/jquery.1.10.2.js":"jQuery","can/bower_components/zepto/zepto.js":"Zepto","can/lib/mootools-core-1.4.5.js":"{}","can/util/dojo/dojo-1.8.1.js":"{}","can/lib/yui-3.7.3.js":"YUI"},"exports":{"can/util/can.js":"can"}},"configurations":{"jquery":{"description":"jQuery","isDefault":true,"library":"lib/jquery.1.10.2.js","steal":{"map":{"*":{"can/util/util.js":"can/util/jquery/jquery.js","jquery/jquery.js":"can/lib/jquery.1.10.2.js"}}}},"jquery-2":{"description":"jQuery (2.x)","hidden":true,"library":"lib/jquery.2.0.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/jquery/jquery.js","jquery/jquery.js":"can/lib/jquery.2.0.3.js"}}}},"zepto":{"description":"Zepto","library":"bower_components/zepto/zepto.js","steal":{"map":{"*":{"can/util/util.js":"can/util/zepto/zepto.js","zepto/zepto.js":"can/bower_components/zepto/zepto.js"}}}},"mootools":{"description":"Mootools","library":"lib/mootools-core-1.4.5.js","steal":{"map":{"*":{"can/util/util.js":"can/util/mootools/mootools.js","mootools/mootools.js":"can/lib/mootools-core-1.4.5.js"}}}},"yui":{"description":"YUI","library":"lib/yui-3.7.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/yui/yui.js","yui/yui.js":"can/lib/yui-3.7.3.js"}}}},"dojo":{"description":"Dojo","library":"util/dojo/dojo-1.8.1.js","steal":{"map":{"*":{"can/util/util.js":"can/util/dojo/dojo.js","dojo/dojo.js":"can/util/dojo/dojo-1.8.1.js"}}}}}},"url":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"static":"scripts/static","templates":"scripts/templates","forceBuild":false,"minifyBuild":true,"versionsSrc":"../../versions.json","version":"2.1","isVersioned":true,"versions":[{"number":"2.1","branch":"minor"},{"number":"2.0","branch":"master"},{"number":"1.1"}]};
+    window.docConfig = {"debug":false,"enableSearch":true,"parent":"canjs","layout":"shared/_templates/page.mustache","docs":"shared/_templates/docs.mustache","root":"..","out":"2.1/docs","page":"docs","markdown":["can"],"package":{"name":"CanJS","description":"MIT-licensed, client-side, JavaScript framework that makes building rich web applications easy.","version":"2.1.0","author":{"name":"Bitovi","email":"contact@bitovi.com","web":"http://bitovi.com/"},"homepage":"http://canjs.us/","repository":{"type":"git","url":"git@github.com:bitovi/canjs.git","github":"https://github.com/bitovi/canjs"},"devDependencies":{"grunt":"~0.4.0","grunt-string-replace":"~0.2.2","grunt-contrib-qunit":"~0.2.1","grunt-contrib-connect":"~0.3.0","bitovi-tools":"https://github.com/bitovi/bitovi-tools/tarball/master","steal":"https://github.com/bitovi/steal-build/tarball/master","grunt-contrib-uglify":"~0.2.1","grunt-contrib-clean":"~0.5.0","grunt-shell":"~0.5.0","grunt-release-steps":"~0.3.7","bower":"~1.2.7","grunt-contrib-jshint":"~0.8.0","grunt-jsbeautifier":"~0.2.6","grunt-docco2":"git://github.com/shcarrico/grunt-docco.git#e4de54886ed5c421b2e26e7a2aeba1f73e889733","grunt-plato":"~0.2.1"},"scripts":{"test":"grunt test","install":"node node_modules/bower/bin/bower install"},"demos":["http://canjs.us/#examples","http://canjs.us/recipes"],"licenses":[{"type":"MIT","url":"http://opensource.org/licenses/mit-license.php"}],"dependencies":{"grunt-cli":"~0.1.7"}},"self":{"name":"canjs.com","description":"We can do JS better.","version":"0.2.0","homepage":"http://canjs.com","author":{"name":"Bitovi","url":"http://bitovi.com/"},"repository":{"type":"git","url":"git://github.com/bitovi/canjs.com.git","github":"https://github.com/bitovi/canjs.com"},"bugs":{"url":"https://github.com/bitovi/canjs.com/issues"},"licenses":[{"type":"MIT","url":"https://github.com/bitovi/canjs.com/blob/master/LICENSE-MIT"}],"engines":{"node":">= 0.10.0"},"devDependencies":{"grunt":"~0.4.1","grunt-contrib-watch":"~0.3.1","grunt-contrib-less":"~0.5.0","documentjs":"https://github.com/bitovi/documentjs/tarball/node-generator","grunt-contrib-clean":"~0.4.1","grunt-docco2":"git://github.com/shcarrico/grunt-docco.git#options-passing","grunt-plato":"~0.2.1","grunt-jsbeautifier":"~0.2.6"}},"builder":{"filename":"can.custom.js","banner":"/*!\n * <%= pkg.title || pkg.name %> - <%= pkg.version %>\n * <%= pkg.homepage %>\n * Copyright (c) <%= new Date().getFullYear() %> <%= pkg.author.name %>\n * <%= new Date().toUTCString() %>\n * Licensed <%= pkg.licenses[0].type %><% if(typeof url !== \"undefined\") { %>\n * Includes: <%= ids %>\n * Download from: <%= url %>\n<% } %> */\n","modules":{"can/component":{"name":"can.Component","description":"Custom elements and widgets","type":"core","isDefault":true},"can/construct":{"name":"can.Construct","description":"Inheritable constructor functions","type":"core","isDefault":true},"can/map":{"name":"can.Map","description":"Observables and key-value bindings","type":"core","isDefault":true},"can/list":{"name":"can.List","description":"Observables lists","type":"core","isDefault":true},"can/list/promise":{"name":"can.List.promise","description":"Promises on lists","type":"plugin"},"can/observe":{"name":"can.Observe","description":"Observables and key-value bindings","type":"core","isDefault":true,"hidden":true},"can/compute":{"name":"can.compute","description":"can.compute lets you make observable values","type":"core","isDefault":true},"can/model":{"name":"can.Model","description":"Observes connected to a RESTful JSON interface","type":"core","isDefault":true},"can/view":{"name":"can.view","description":"Template loading, caching, rendering","type":"core","isDefault":true},"can/view/ejs":{"name":"can.ejs","description":"Live-binding Embedded JavaScript","type":"plugin"},"can/view/stache":{"name":"can.stache","description":"High performance Mustache templates","type":"plugin"},"can/control":{"name":"can.Control","description":"Declarative event bindings","type":"core","isDefault":true},"can/route":{"name":"can.route","description":"Back button and bookmarking support","type":"core","isDefault":true},"can/control/route":{"name":"can.Control.route","description":"Declare routes in your Control","type":"core","isDefault":true},"can/view/mustache":{"name":"can.mustache","description":"Live-binding Handlebars and Mustache views","type":"core","isDefault":true},"can/route/pushstate":{"name":"can.route.pushstate","description":"can.route with pushstate","type":"plugin"},"can/model/queue":{"name":"can.Model.Queue","type":"plugin","description":"Queued requests to the server."},"can/construct/super":{"name":"can.Construct.super","type":"plugin","description":"Call super methods"},"can/construct/proxy":{"name":"can.Construct.proxy","type":"plugin","description":"Proxy construct methods"},"can/map/lazy":{"name":"can.Map.Lazy","type":"plugin","description":"Lazy initializing maps and lists"},"can/map/delegate":{"name":"can.Map.delegate","type":"plugin","description":"Listen to Observe attributes"},"can/map/setter":{"name":"can.Map.setter","type":"plugin","description":"Use setter methods on can.Map"},"can/map/attributes":{"name":"can.Map.attributes","type":"plugin","deprecated":true,"description":"Define Observe attributes"},"can/map/validations":{"name":"can.Map.validations","type":"plugin","description":"Validate Observe attributes"},"can/map/backup":{"name":"can.Map.backup","type":"plugin","description":"Backup and restore an Observes state"},"can/map/list":{"name":"can.Map.List","type":"plugin","description":"Live-updating mapped and filtered observe lists"},"can/map/define":{"name":"can.Map.define","type":"plugin","description":"Define rich attribute behavior"},"can/map/sort":{"name":"can.List.Sort","type":"plugin","description":"Sort observable lists"},"can/control/plugin":{"name":"can.Control.plugin","type":"plugin","description":"Registers a jQuery plugin function for Controls","configurations":["jquery","jquery-2"]},"can/view/modifiers":{"name":"can.view.modifiers","type":"plugin","description":"Use jQuery modifiers to render views","configurations":["jquery","jquery-2"]},"can/util/object":{"name":"can.Object","type":"plugin","description":"Helper methods for object comparison"},"can/util/fixture":{"name":"can.fixture","type":"plugin","description":"Intercepts an AJAX request and simulates the response with a file or function"},"can/view/bindings":{"name":"can.view.bindings","type":"core","isDefault":true,"hidden":true},"can/view/live":{"name":"can.view.live","type":"core","isDefault":true,"hidden":true},"can/view/scope":{"name":"can.view.Scope","type":"core","isDefault":true,"hidden":true},"can/util/string":{"name":"can.util.string","type":"core","isDefault":true,"hidden":true},"can/util/attr":{"name":"can.util.attr","type":"core","isDefault":true,"hidden":true}},"types":{"core":"CanJS core","plugin":"Plugins"},"pluginify":{"shim":{"can/lib/jquery.2.0.3.js":"jQuery","can/lib/jquery.1.10.2.js":"jQuery","can/bower_components/zepto/zepto.js":"Zepto","can/lib/mootools-core-1.4.5.js":"{}","can/util/dojo/dojo-1.8.1.js":"{}","can/lib/yui-3.7.3.js":"YUI"},"exports":{"can/util/can.js":"can"}},"configurations":{"jquery":{"description":"jQuery","isDefault":true,"library":"lib/jquery.1.10.2.js","steal":{"map":{"*":{"can/util/util.js":"can/util/jquery/jquery.js","jquery/jquery.js":"can/lib/jquery.1.10.2.js"}}}},"jquery-2":{"description":"jQuery (2.x)","hidden":true,"library":"lib/jquery.2.0.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/jquery/jquery.js","jquery/jquery.js":"can/lib/jquery.2.0.3.js"}}}},"zepto":{"description":"Zepto","library":"bower_components/zepto/zepto.js","steal":{"map":{"*":{"can/util/util.js":"can/util/zepto/zepto.js","zepto/zepto.js":"can/bower_components/zepto/zepto.js"}}}},"mootools":{"description":"Mootools","library":"lib/mootools-core-1.4.5.js","steal":{"map":{"*":{"can/util/util.js":"can/util/mootools/mootools.js","mootools/mootools.js":"can/lib/mootools-core-1.4.5.js"}}}},"yui":{"description":"YUI","library":"lib/yui-3.7.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/yui/yui.js","yui/yui.js":"can/lib/yui-3.7.3.js"}}}},"dojo":{"description":"Dojo","library":"util/dojo/dojo-1.8.1.js","steal":{"map":{"*":{"can/util/util.js":"can/util/dojo/dojo.js","dojo/dojo.js":"can/util/dojo/dojo-1.8.1.js"}}}}}},"url":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"static":"scripts/static","templates":"scripts/templates","forceBuild":false,"minifyBuild":true,"versionsSrc":"../../versions.json","version":"2.1","isVersioned":true,"versions":[{"number":"2.1","branch":"master"},{"number":"2.0"},{"number":"1.1"}]};
     window.Bitovi = {
       URL: {
         BUILDER: 'http://bitbuilder.herokuapp.com/can.custom.js',

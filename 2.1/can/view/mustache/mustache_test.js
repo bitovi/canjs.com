@@ -1,6 +1,6 @@
 /* jshint asi:true,multistr:true*/
 /*global Mustache*/
-steal("can/model", "can/view/mustache", "can/test", function () {
+steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/specs",function () {
 
 	module("can/view/mustache, rendering", {
 		setup: function () {
@@ -50,48 +50,43 @@ steal("can/model", "can/view/mustache", "can/test", function () {
 	};
 
 	// Add mustache specs to the test
-	can.each(['comments', /*'delimiters',*/ 'interpolation', 'inverted', 'partials', 'sections' /*, '~lambdas'*/ ], function (spec) {
-		can.ajax({
-			url: can.test.path('view/mustache/spec/specs/' + spec + '.json'),
-			dataType: 'json',
-			async: false
-		})
-			.done(function (data) {
-				can.each(data.tests, function (t) {
-					test('specs/' + spec + ' - ' + t.name + ': ' + t.desc, function () {
-						// can uses &#34; to escape double quotes, mustache expects &quot;.
-						// can uses \n for new lines, mustache expects \r\n.
-						var expected = (override[spec] && override[spec][t.name]) || t.expected.replace(/&quot;/g, '&#34;')
-							.replace(/\r\n/g, '\n');
+	can.each(window.MUSTACHE_SPECS, function(specData){
+		var spec = specData.name;
+		can.each(specData.data.tests, function (t) {
+			test('specs/' + spec + ' - ' + t.name + ': ' + t.desc, function () {
+				// can uses &#34; to escape double quotes, mustache expects &quot;.
+				// can uses \n for new lines, mustache expects \r\n.
+				var expected = (override[spec] && override[spec][t.name]) || t.expected.replace(/&quot;/g, '&#34;')
+					.replace(/\r\n/g, '\n');
 
-						// Mustache's "Recursion" spec generates invalid HTML
-						if (spec === 'partials' && t.name === 'Recursion') {
-							t.partials.node = t.partials.node.replace(/</g, '[')
-								.replace(/\}>/g, '}]');
-							expected = expected.replace(/</g, '[')
-								.replace(/>/g, ']');
-						}
+				// Mustache's "Recursion" spec generates invalid HTML
+				if (spec === 'partials' && t.name === 'Recursion') {
+					t.partials.node = t.partials.node.replace(/</g, '[')
+						.replace(/\}>/g, '}]');
+					expected = expected.replace(/</g, '[')
+						.replace(/>/g, ']');
+				}
 
-						// register the partials in the spec
-						if (t.partials) {
-							for (var name in t.partials) {
-								can.view.registerView(name, t.partials[name], ".mustache");
-							}
-						}
+				// register the partials in the spec
+				if (t.partials) {
+					for (var name in t.partials) {
+						can.view.registerView(name, t.partials[name], ".mustache");
+					}
+				}
 
-						// register lambdas
-						if (t.data.lambda && t.data.lambda.js) {
-							t.data.lambda = eval('(' + t.data.lambda.js + ')');
-						}
+				// register lambdas
+				if (t.data.lambda && t.data.lambda.js) {
+					t.data.lambda = eval('(' + t.data.lambda.js + ')');
+				}
 
-						deepEqual(new can.Mustache({
-								text: t.template
-							})
-							.render(t.data), expected);
-					});
-				});
+				deepEqual(new can.Mustache({
+						text: t.template
+					})
+					.render(t.data), expected);
 			});
+		});
 	});
+	
 
 	var getAttr = function (el, attrName) {
 		return attrName === "class" ?
@@ -222,7 +217,7 @@ steal("can/model", "can/view/mustache", "can/test", function () {
 		obsvr.attr('named', true);
 		deepEqual(can.$('#completed')[0].innerHTML, "", 'hidden gone');
 
-		can.remove(can.$('#qunit-test-area *'));
+		can.remove(can.$('#qunit-test-area>*'));
 	});
 
 	test("Mustache live-binding with escaping", function () {
@@ -246,7 +241,7 @@ steal("can/model", "can/view/mustache", "can/test", function () {
 		deepEqual(can.$('#binder1')[0].innerHTML, "&lt;i&gt;Mr Scott&lt;/i&gt;");
 		deepEqual(can.$('#binder2')[0].getElementsByTagName('i')[0].innerHTML, "Mr Scott")
 
-		can.remove(can.$('#qunit-test-area *'));
+		can.remove(can.$('#qunit-test-area>*'));
 	});
 
 	test("Mustache truthy", function () {
@@ -593,7 +588,7 @@ steal("can/model", "can/view/mustache", "can/test", function () {
 				animals: this.animals
 			})
 		equal(compiled, "<ul><li>sloth</li><li>bear</li><li>monkey</li></ul>", "renders with bracket")
-	})
+	});
 	test("render with with", function () {
 		var compiled = new can.Mustache({
 			text: this.squareBracketsNoThis,
@@ -603,7 +598,7 @@ steal("can/model", "can/view/mustache", "can/test", function () {
 				animals: this.animals
 			});
 		equal(compiled, "<ul><li>sloth</li><li>bear</li><li>monkey</li></ul>", "renders bracket with no this")
-	})
+	});
 	test("default carrot", function () {
 		var compiled = new can.Mustache({
 			text: this.angleBracketsNoThis
@@ -2812,14 +2807,14 @@ steal("can/model", "can/view/mustache", "can/test", function () {
 
 	});
 
-	test("can.Mustache.safeString", function () {
+	test("can.mustache.safeString", function () {
 		var text = "Google",
 			url = "http://google.com/",
 			templateEscape = can.view.mustache('{{link "' + text + '" "' + url + '"}}'),
 			templateUnescape = can.view.mustache('{{{link "' + text + '" "' + url + '"}}}');
-		can.Mustache.registerHelper('link', function (text, url) {
+		can.mustache.registerHelper('link', function (text, url) {
 			var link = '<a href="' + url + '">' + text + '</a>';
-			return can.Mustache.safeString(link);
+			return can.mustache.safeString(link);
 		});
 
 		var div = document.createElement('div');
@@ -3150,9 +3145,9 @@ steal("can/model", "can/view/mustache", "can/test", function () {
 
 		var num = can.compute(1)
 
-		can.Mustache.registerHelper("safeHelper", function () {
+		can.mustache.registerHelper("safeHelper", function () {
 
-			return can.Mustache.safeString(
+			return can.mustache.safeString(
 				"<p>" + num() + "</p>"
 			)
 
@@ -3543,6 +3538,36 @@ steal("can/model", "can/view/mustache", "can/test", function () {
 
 			can.dev.warn = oldlog;
 		});
+
+		test("Logging: Helper not found in mustache template(#726)", function () {
+			var oldlog = can.dev.warn,
+					message = 'can/view/mustache/mustache.js: Unable to find helper "helpme".';
+
+			can.dev.warn = function (text) {
+				equal(text, message, 'Got expected message logged.');
+			}
+
+			can.view.mustache('<li>{{helpme name}}</li>')({
+				name: 'Hulk Hogan'
+			});
+
+			can.dev.warn = oldlog;
+		});
+
+		test("Logging: Variable not found in mustache template (#720)", function () {
+			var oldlog = can.dev.warn,
+					message = 'can/view/mustache/mustache.js: Unable to find key "user.name".';
+
+			can.dev.warn = function (text) {
+				equal(text, message, 'Got expected message logged.');
+			}
+
+			can.view.mustache('<li>{{user.name}}</li>')({
+				user: {}
+			});
+
+			can.dev.warn = oldlog;
+		});
 	}
 	//!steal-remove-end
 
@@ -3568,7 +3593,10 @@ steal("can/model", "can/view/mustache", "can/test", function () {
 
 		equal(ul.innerHTML, '', 'list is empty');
 		map.attr('showPeople', true);
-		equal(ul.innerHTML, '<li>Curtis</li><li>Stan</li><li>David</li>', 'List got updated');
+		equal(ul.childNodes.length, 3, 'List got updated');
+		equal(ul.getElementsByTagName('li')[0].innerHTML, 'Curtis', 'List got updated');
+		equal(ul.getElementsByTagName('li')[1].innerHTML, 'Stan', 'List got updated');
+		equal(ul.getElementsByTagName('li')[2].innerHTML, 'David', 'List got updated');
 	});
 
 	test('each with child objects (#750)', function() {
@@ -3631,4 +3659,111 @@ steal("can/model", "can/view/mustache", "can/test", function () {
 		data.attr("show", true);
 		equal(frag.childNodes[0].innerHTML, "Is showing", "Not showing the else");
 	});
+
+	test("Expandos (#744)", function(){
+		var template =  can.mustache("{{#each items}}<div>{{name}}</div>{{/each}}"+
+			"{{#if items.spliced}}<strong>List was spliced</strong>{{/if}}");
+		var items = new can.List([
+			{ name: 1}
+		]);
+
+		var frag = template({
+			items: items
+		});
+		//items.splice(0,2);
+		items.attr('spliced', true);
+		// 2 because {{#each}} keeps a textnode placeholder
+		equal(frag.childNodes[2].nodeName.toLowerCase(),"strong", "worked");
+	});
+
+
+	test("Calling .fn without arguments should forward scope by default (#658)", function(){
+		var tmpl = "{{#foo}}<span>{{bar}}</span>{{/foo}}";
+		var frag = can.mustache(tmpl)(new can.Map({
+			bar : 'baz'
+		}), {
+			foo : function(opts){
+				return opts.fn();
+			}
+		});
+		var node = frag.childNodes[0];
+
+		equal(node.innerHTML, 'baz', 'Context is forwarded correctly');
+	});
+
+	test("Calling .fn with falsy value as the context will render correctly (#658)", function(){
+		var tmpl = "{{#zero}}<span>{{ . }}</span>{{/zero}}{{#emptyString}}<span>{{ . }}</span>{{/emptyString}}{{#nullVal}}<span>{{ . }}</span>{{/nullVal}}";
+
+		var frag = can.mustache(tmpl)({ foo: 'bar' }, {
+			zero : function(opts){
+				return opts.fn(0);
+			},
+			emptyString : function(opts){
+				return opts.fn("");
+			},
+			nullVal : function(opts){
+				return opts.fn(null);
+			}
+		});
+
+		equal(frag.childNodes[0].innerHTML, '0', 'Context is set correctly for falsy values');
+		equal(frag.childNodes[1].innerHTML, '', 'Context is set correctly for falsy values');
+		equal(frag.childNodes[2].innerHTML, '', 'Context is set correctly for falsy values');
+	})
+
+	test("can.Construct derived classes should be considered objects, not functions (#450)", 8, function() {
+		
+		can.Mustache.registerHelper("cat", function(options) {
+			var clazz = options.hash ? options.hash.clazz : options;
+			// When using the anonymous function containing foostructor, it will need to be executed
+			return clazz.text || clazz().text;
+		});
+
+		var foostructor = can.Map({ text: "bar" }, {}),
+			obj = {
+				next_level: {
+					thing: foostructor,
+					text: "In the inner context"
+				}
+			},
+			div = document.createElement("div"),
+			description;
+			
+		foostructor.self = foostructor;
+		window.other_text = "Window context";
+
+		for (var i = 0; i < 2; i++) {
+			if (i === 1) {
+				foostructor.self = function() { return foostructor; };
+			}
+
+			// // Fully dotted
+			div.appendChild(can.view.mustache("<div>{{next_level.thing.self.text}}</div>")(obj));
+
+			// // With attribute nested
+			div.appendChild(can.view.mustache("<div>{{#next_level.thing.self}}{{text}}{{/next_level.thing}}</div>")(obj));
+
+			// Passed as an argument to helper
+			div.appendChild(can.view.mustache("<div>{{cat next_level.thing.self}}</div>")(obj));
+
+			// Passed as a hash to helper
+			div.appendChild(can.view.mustache("<div>{{cat clazz=next_level.thing.self}}</div>")(obj));
+		}
+
+		var content = div.getElementsByTagName('div');
+
+		description = " (constructor by itself)";
+		
+		equal(content[0].innerHTML, "bar", "fully dotted" + description);
+		equal(content[1].innerHTML.replace(/<\/?span>/ig,''), "", "with attribute nested" + description);
+		equal(content[2].innerHTML, "bar", "passed as an argument to helper" + description);
+		equal(content[3].innerHTML, "bar", "passed as a hash to helper" + description);
+
+		description = " (constructor as function returning itself)";
+		equal(content[4].innerHTML, "bar", "fully dotted" + description);
+		equal(content[5].innerHTML.replace(/<\/?span>/ig,''), "", "with attribute nested" + description);
+		equal(content[6].innerHTML, "bar", "passed as an argument to helper" + description);
+		equal(content[7].innerHTML, "bar", "passed as a hash to helper" + description);
+	});
+
 });

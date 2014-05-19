@@ -1,5 +1,7 @@
-steal("can/util", "can/list", "can/test", "can/compute", function () {
+steal("can/util", "can/list", "can/test", "can/compute", function(){
+	
 	module('can/list');
+	
 	test('list attr changes length', function () {
 		var l = new can.List([
 			0,
@@ -8,6 +10,12 @@ steal("can/util", "can/list", "can/test", "can/compute", function () {
 		]);
 		l.attr(3, 3);
 		equal(l.length, 4);
+	});
+	test('removeAttr on list', function() {
+		var l = new can.List([0, 1, 2]);
+		l.removeAttr(1);
+		equal(l.attr('length'), 2);
+		deepEqual(l.attr(), [0, 2]);
 	});
 	test('list splice', function () {
 		var l = new can.List([
@@ -208,4 +216,14 @@ steal("can/util", "can/list", "can/test", "can/compute", function () {
 		equal(filtered.length, 1, "one item");
 		equal(filtered[0].name, "Mary", "filter works");
 	});
+	
+	
+	test('removing expandos on lists', function(){
+		var list = new can.List(["a","b"]);
+		
+		list.removeAttr("foo");
+		
+		equal(list.length, 2);
+	});
+	
 });

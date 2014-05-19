@@ -67,7 +67,10 @@ steal('can/util',
 				return obj && obj.splice && typeof obj.length === 'number';
 			},
 			// used to make sure .fn and .inverse are always called with a Scope like object
-			makeConvertToScopes = function (orignal, scope, options) {
+			makeConvertToScopes = function (original, scope, options) {
+				var originalWithScope = function(ctx, opts){
+					return original(ctx || scope, opts);
+				};
 				return function (updatedScope, updatedOptions) {
 					if (updatedScope !== undefined && !(updatedScope instanceof can.view.Scope)) {
 						updatedScope = scope.add(updatedScope);
@@ -75,7 +78,7 @@ steal('can/util',
 					if (updatedOptions !== undefined && !(updatedOptions instanceof can.view.Options)) {
 						updatedOptions = options.add(updatedOptions);
 					}
-					return orignal(updatedScope, updatedOptions || options);
+					return originalWithScope(updatedScope, updatedOptions || options);
 				};
 			};
 
@@ -110,7 +113,7 @@ steal('can/util',
 		};
 
 		/**
-		 * @add can.Mustache
+		 * @add can.MustacheConstructor
 		 */
 		// Put Mustache on the `can` object.
 		can.Mustache = window.Mustache = Mustache;
@@ -120,8 +123,8 @@ steal('can/util',
 		 */
 		Mustache.prototype.
 		/**
-		 * @function can.Mustache.prototype.render render
-		 * @parent can.Mustache.prototype
+		 * @function can.MustacheConstructor.prototype.render render
+		 * @parent can.MustacheConstructor.prototype
 		 * @signature `mustache.render( data [, helpers] )`
 		 * @param {Object} data Data to interpolate into the template.
 		 * @return {String} The template with interpolated data, in string form.
@@ -183,20 +186,20 @@ steal('can/util',
 				//		]
 				tokens: [
 					/**
-					 * @function can.Mustache.tags.escaped {{key}}
+					 * @function can.mustache.tags.escaped {{key}}
 					 *
-					 * @description Insert the value of the [can.Mustache.key key] into the
+					 * @description Insert the value of the [can.mustache.key key] into the
 					 * output of the template.
 					 *
-					 * @parent can.Mustache.tags 0
+					 * @parent can.mustache.tags 0
 					 *
 					 * @signature `{{key}}`
 					 *
-					 * @param {can.Mustache.key} key A key that references one of the following:
+					 * @param {can.mustache.key} key A key that references one of the following:
 					 *
-					 *  - A [can.Mustache.registerHelper registered helper].
+					 *  - A [can.mustache.registerHelper registered helper].
 					 *  - A value within the current or parent
-					 *    [can.Mustache.context context]. If the value is a function or [can.compute], the
+					 *    [can.mustache.context context]. If the value is a function or [can.compute], the
 					 *    function's return value is used.
 					 *
 					 * @return {String|Function|*}
@@ -215,7 +218,7 @@ steal('can/util',
 					 * ## Use
 					 *
 					 * `{{key}}` insert data into the template. It most commonly references
-					 * values within the current [can.Mustache.context context]. For example:
+					 * values within the current [can.mustache.context context]. For example:
 					 *
 					 * Rendering:
 					 *
@@ -284,9 +287,9 @@ steal('can/util',
 					// Full line comments
 					["commentFull", "{{!}}", "^[\\s\\t]*{{!.+?}}\\n"],
 					/**
-					 * @function can.Mustache.tags.comment {{!key}}
+					 * @function can.mustache.tags.comment {{!key}}
 					 *
-					 * @parent can.Mustache.tags 7
+					 * @parent can.mustache.tags 7
 					 *
 					 * @description A comment that doesn't get inserted into the rendered result.
 					 *
@@ -294,26 +297,26 @@ steal('can/util',
 					 *
 					 * The comment tag operates similarly to a `<!-- -->` tag in HTML. It exists in your template but never shows up.
 					 *
-					 * @param {can.Mustache.key} key Everything within this tag is completely ignored.
+					 * @param {can.mustache.key} key Everything within this tag is completely ignored.
 					 * @return {String}
 					 *
 					 */
 					// Inline comments
 					["commentLeft", "{{!", "(\\n[\\s\\t]*{{!|{{!)"],
 					/**
-					 * @function can.Mustache.tags.unescaped {{{key}}}
+					 * @function can.mustache.tags.unescaped {{{key}}}
 					 *
-					 * @parent can.Mustache.tags 1
+					 * @parent can.mustache.tags 1
 					 *
-					 * @description Insert the unescaped value of the [can.Mustache.key key] into the
+					 * @description Insert the unescaped value of the [can.mustache.key key] into the
 					 * output of the template.
 					 *
 					 * @signature `{{{key}}}`
 					 *
-					 * Behaves just like [can.Mustache.tags.escaped {{key}}] and [can.Mustache.helpers.helper {{helper}}] but does not
+					 * Behaves just like [can.mustache.tags.escaped {{key}}] and [can.mustache.helpers.helper {{helper}}] but does not
 					 * escape the result.
 					 *
-					 * @param {can.Mustache.key} key A key that references a value within the current or parent
+					 * @param {can.mustache.key} key A key that references a value within the current or parent
 					 * context. If the value is a function or can.compute, the function's return value is used.
 					 * @return {String|Function|*}
 					 *
@@ -321,20 +324,20 @@ steal('can/util',
 					 */
 					//
 					/**
-					 * @function can.Mustache.tags.unescaped2 {{&key}}
+					 * @function can.mustache.tags.unescaped2 {{&key}}
 					 *
-					 * @parent can.Mustache.tags 2
+					 * @parent can.mustache.tags 2
 					 *
-					 * @description Insert the unescaped value of the [can.Mustache.key key] into the
+					 * @description Insert the unescaped value of the [can.mustache.key key] into the
 					 * output of the template.
 					 *
 					 * @signature `{{&key}}`
 					 *
-					 * The `{{&key}}` tag is an alias for [can.Mustache.tags.unescaped {{{key}}}], behaving just
-					 * like [can.Mustache.tags.escaped {{key}}] and [can.Mustache.helpers.helper {{helper}}] but does not
+					 * The `{{&key}}` tag is an alias for [can.mustache.tags.unescaped {{{key}}}], behaving just
+					 * like [can.mustache.tags.escaped {{key}}] and [can.mustache.helpers.helper {{helper}}] but does not
 					 * escape the result.
 					 *
-					 * @param {can.Mustache.key} key A key that references a value within the current or parent
+					 * @param {can.mustache.key} key A key that references a value within the current or parent
 					 * context. If the value is a function or can.compute, the function's return value is used.
 					 * @return {String|Function|*}
 					 *
@@ -422,11 +425,11 @@ steal('can/util',
 					// 
 					//		can.$('#nameli').data('name');
 					/**
-					 * @function can.Mustache.helpers.data {{data name}}
-					 * @parent can.Mustache.htags 7
+					 * @function can.mustache.helpers.data {{data name}}
+					 * @parent can.mustache.htags 7
 					 * @signature `{{data name}}`
 					 *
-					 * Adds the current [can.Mustache.context context] to the
+					 * Adds the current [can.mustache.context context] to the
 					 * element's [can.data].
 					 *
 					 * @param {String} name The name of the data attribute to use for the
@@ -712,16 +715,16 @@ steal('can/util',
 								mode = mode[0];
 								switch (mode) {
 									/**
-									 * @function can.Mustache.helpers.section {{#key}}
-									 * @parent can.Mustache.tags 3
+									 * @function can.mustache.helpers.section {{#key}}
+									 * @parent can.mustache.tags 3
 									 *
 									 * @signature `{{#key}}BLOCK{{/key}}`
 									 *
 									 * Render blocks of text one or more times, depending
 									 * on the value of the key in the current context.
 									 *
-									 * @param {can.Mustache.key} key A key that references a value within the current or parent
-									 * [can.Mustache.context context]. If the value is a function or [can.compute], the
+									 * @param {can.mustache.key} key A key that references a value within the current or parent
+									 * [can.mustache.context context]. If the value is a function or [can.compute], the
 									 * function's return value is used.
 									 *
 									 *
@@ -730,9 +733,9 @@ steal('can/util',
 									 * Depending on the value's type, the following actions happen:
 									 *
 									 * - `Array` or [can.List] - the block is rendered for
-									 *   each item in the array. The [can.Mustache.context context] is set to
+									 *   each item in the array. The [can.mustache.context context] is set to
 									 *   the item within each block rendering.
-									 * - A `truthy` value - the block is rendered with the [can.Mustache.context context]
+									 * - A `truthy` value - the block is rendered with the [can.mustache.context context]
 									 *   set to the value.
 									 * - A `falsey` value - the block is not rendered.
 									 *
@@ -810,8 +813,8 @@ steal('can/util',
 									 */
 									// 
 									/**
-									 * @function can.Mustache.helpers.helper {{helper args hashes}}
-									 * @parent can.Mustache.htags 0
+									 * @function can.mustache.helpers.helper {{helper args hashes}}
+									 * @parent can.mustache.htags 0
 									 *
 									 * @description Calls a mustache helper function and inserts its return value into
 									 * the rendered template.
@@ -830,7 +833,7 @@ steal('can/util',
 									 *
 									 * Will call a `madLib` helper with the following arguements:
 									 *
-									 *     can.Mustache.registerHelper('madLib',
+									 *     can.mustache.registerHelper('madLib',
 									 *       function(subject, verb, number, options){
 									 *         // subject -> "Lebron James"
 									 *         // verb -> "swept"
@@ -838,11 +841,11 @@ steal('can/util',
 									 *         // options.hash.foo -> "bar"
 									 *     });
 									 *
-									 * @param {can.Mustache.key} helper A key that finds a [can.Mustache.helper helper function]
-									 * that is either [can.Mustache.registerHelper registered] or found within the
-									 * current or parent [can.Mustache.context context].
+									 * @param {can.mustache.key} helper A key that finds a [can.mustache.helper helper function]
+									 * that is either [can.mustache.registerHelper registered] or found within the
+									 * current or parent [can.mustache.context context].
 									 *
-									 * @param {...can.Mustache.key|String|Number} [args] Space seperated arguments
+									 * @param {...can.mustache.key|String|Number} [args] Space seperated arguments
 									 * that get passed to the helper function as arguments. If the key's value is a:
 									 *
 									 *  - [can.Map] - A getter/setter [can.compute] is passed.
@@ -851,22 +854,22 @@ steal('can/util',
 									 *
 									 * @param {String} hashProperty
 									 *
-									 * A property name that gets added to a [can.Mustache.helperOptions helper options]'s
+									 * A property name that gets added to a [can.mustache.helperOptions helper options]'s
 									 * hash object.
 									 *
-									 * @param {...can.Mustache.key|String|Number} hashValue A value that gets
-									 * set as a property value of the [can.Mustache.helperOptions helper option argument]'s
+									 * @param {...can.mustache.key|String|Number} hashValue A value that gets
+									 * set as a property value of the [can.mustache.helperOptions helper option argument]'s
 									 * hash object.
 									 *
 									 * @body
 									 *
 									 * ## Use
 									 *
-									 * The `{{helper}}` syntax is used to call out to Mustache [can.Mustache.helper helper functions] functions
-									 * that may contain more complex functionality. `helper` is a [can.Mustache.key key] that must match either:
+									 * The `{{helper}}` syntax is used to call out to Mustache [can.mustache.helper helper functions] functions
+									 * that may contain more complex functionality. `helper` is a [can.mustache.key key] that must match either:
 									 *
-									 *  - a [can.Mustache.registerHelper registered helper function], or
-									 *  - a function in the current or parent [can.Mustache.context contexts]
+									 *  - a [can.mustache.registerHelper registered helper function], or
+									 *  - a function in the current or parent [can.mustache.context contexts]
 									 *
 									 * The following example shows both cases.
 									 *
@@ -882,7 +885,7 @@ steal('can/util',
 									 *
 									 * And a with a registered helper like:
 									 *
-									 *     can.Mustache.registerHelper('greeting', function(){
+									 *     can.mustache.registerHelper('greeting', function(){
 									 *       return "Hello"
 									 *     });
 									 *
@@ -893,7 +896,7 @@ steal('can/util',
 									 * ## Arguments
 									 *
 									 * Arguments can be passed from the template to helper function by
-									 * listing space seperated strings, numbers or other [can.Mustache.key keys] after the
+									 * listing space seperated strings, numbers or other [can.mustache.key keys] after the
 									 * `helper` name.  For example:
 									 *
 									 * The template:
@@ -906,7 +909,7 @@ steal('can/util',
 									 *
 									 * Will call a `madLib` helper with the following arguements:
 									 *
-									 *     can.Mustache.registerHelper('madLib',
+									 *     can.mustache.registerHelper('madLib',
 									 *       function(subject, verb, number, options){
 									 *         // subject -> "Lebron James"
 									 *         // verb -> "swept"
@@ -926,20 +929,20 @@ steal('can/util',
 									 *
 									 * Needs the helper to check if name is a function or not:
 									 *
-									 *     can.Mustache.registerHelper('mr',function(name){
+									 *     can.mustache.registerHelper('mr',function(name){
 									 *       return "Mr. "+ (typeof name === "function" ?
 									 *                       name():
 									 *                       name)
 									 *     })
 									 *
 									 * This behavior enables two way binding helpers and is explained in more detail
-									 * on the [can.Mustache.helper helper functions] docs.
+									 * on the [can.mustache.helper helper functions] docs.
 									 *
 									 * ## Hash
 									 *
 									 * If enumerated arguments isn't an appropriate way to configure the behavior
 									 * of a helper, it's possible to pass a hash of key-value pairs to the
-									 * [can.Mustache.helperOptions helper option argument]'s
+									 * [can.mustache.helperOptions helper option argument]'s
 									 * hash object.  Properties and values are specified
 									 * as `hashProperty=hashValue`.  For example:
 									 *
@@ -949,7 +952,7 @@ steal('can/util',
 									 * `
 									 * And the helper:
 									 *
-									 *     can.Mustache.registerHelper("excuse",function(options){
+									 *     can.mustache.registerHelper("excuse",function(options){
 									 *       return ["My",
 									 *         options.hash.who || "dog".
 									 *         options.hash.how || "ate",
@@ -970,13 +973,13 @@ steal('can/util',
 									 * If a helper returns a function, that function is called back after
 									 * the template has been rendered into DOM elements. This can
 									 * be used to create mustache tags that have rich behavior. Read about it
-									 * on the [can.Mustache.helper helper function] page.
+									 * on the [can.mustache.helper helper function] page.
 									 *
 									 */
 									// 
 									/**
-									 * @function can.Mustache.helpers.sectionHelper {{#helper args hashes}}
-									 * @parent can.Mustache.htags 1
+									 * @function can.mustache.helpers.sectionHelper {{#helper args hashes}}
+									 * @parent can.mustache.htags 1
 									 *
 									 * Calls a mustache helper function with a block, and optional inverse
 									 * block.
@@ -996,7 +999,7 @@ steal('can/util',
 									 *
 									 * Will call the `countTo` helper:
 									 *
-									 *     can.Mustache.registerHelper('madLib',
+									 *     can.mustache.registerHelper('madLib',
 									 *       function(number, options){
 									 *         var out = []
 									 *         for(var i =0; i < number; i++){
@@ -1009,11 +1012,11 @@ steal('can/util',
 									 *
 									 *     <p>1 2 3 4 5</p>
 									 *
-									 * @param {can.Mustache.key} helper A key that finds a [can.Mustache.helper helper function]
-									 * that is either [can.Mustache.registerHelper registered] or found within the
-									 * current or parent [can.Mustache.context context].
+									 * @param {can.mustache.key} helper A key that finds a [can.mustache.helper helper function]
+									 * that is either [can.mustache.registerHelper registered] or found within the
+									 * current or parent [can.mustache.context context].
 									 *
-									 * @param {...can.Mustache.key|String|Number} [args] Space seperated arguments
+									 * @param {...can.mustache.key|String|Number} [args] Space seperated arguments
 									 * that get passed to the helper function as arguments. If the key's value is a:
 									 *
 									 *  - [can.Map] - A getter/setter [can.compute] is passed.
@@ -1022,15 +1025,15 @@ steal('can/util',
 									 *
 									 * @param {String} hashProperty
 									 *
-									 * A property name that gets added to a [can.Mustache.helperOptions helper options]'s
+									 * A property name that gets added to a [can.mustache.helperOptions helper options]'s
 									 * hash object.
 									 *
-									 * @param {...can.Mustache.key|String|Number} hashValue A value that gets
-									 * set as a property value of the [can.Mustache.helperOptions helper option argument]'s
+									 * @param {...can.mustache.key|String|Number} hashValue A value that gets
+									 * set as a property value of the [can.mustache.helperOptions helper option argument]'s
 									 * hash object.
 									 *
 									 * @param {mustache} BLOCK A mustache template that gets compiled and
-									 * passed to the helper function as the [can.Mustache.helperOptions options argument's] `fn`
+									 * passed to the helper function as the [can.mustache.helperOptions options argument's] `fn`
 									 * property.
 									 *
 									 *
@@ -1054,7 +1057,7 @@ steal('can/util',
 									 *
 									 * Will call the `isJustRight` helper:
 									 *
-									 *     can.Mustache.registerHelper('isJustRight',
+									 *     can.mustache.registerHelper('isJustRight',
 									 *       function(number, options){
 									 *         if(number > 50){
 									 *           return options.fn(this)
@@ -1068,11 +1071,11 @@ steal('can/util',
 									 *
 									 *     <p>The bed is uncomfortable.</p>
 									 *
-									 * @param {can.Mustache.key} helper A key that finds a [can.Mustache.helper helper function]
-									 * that is either [can.Mustache.registerHelper registered] or found within the
-									 * current or parent [can.Mustache.context context].
+									 * @param {can.mustache.key} helper A key that finds a [can.mustache.helper helper function]
+									 * that is either [can.mustache.registerHelper registered] or found within the
+									 * current or parent [can.mustache.context context].
 									 *
-									 * @param {...can.Mustache.key|String|Number} [args] Space seperated arguments
+									 * @param {...can.mustache.key|String|Number} [args] Space seperated arguments
 									 * that get passed to the helper function as arguments. If the key's value is a:
 									 *
 									 *  - [can.Map] - A getter/setter [can.compute] is passed.
@@ -1081,19 +1084,19 @@ steal('can/util',
 									 *
 									 * @param {String} hashProperty
 									 *
-									 * A property name that gets added to a [can.Mustache.helperOptions helper options]'s
+									 * A property name that gets added to a [can.mustache.helperOptions helper options]'s
 									 * hash object.
 									 *
-									 * @param {...can.Mustache.key|String|Number} hashValue A value that gets
-									 * set as a property value of the [can.Mustache.helperOptions helper option argument]'s
+									 * @param {...can.mustache.key|String|Number} hashValue A value that gets
+									 * set as a property value of the [can.mustache.helperOptions helper option argument]'s
 									 * hash object.
 									 *
 									 * @param {mustache} BLOCK A mustache template that gets compiled and
-									 * passed to the helper function as the [can.Mustache.helperOptions options argument's] `fn`
+									 * passed to the helper function as the [can.mustache.helperOptions options argument's] `fn`
 									 * property.
 									 *
 									 * @param {mustache} INVERSE A mustache template that gets compiled and
-									 * passed to the helper function as the [can.Mustache.helperOptions options argument's] `inverse`
+									 * passed to the helper function as the [can.mustache.helperOptions options argument's] `inverse`
 									 * property.
 									 *
 									 *
@@ -1101,21 +1104,21 @@ steal('can/util',
 									 *
 									 * ## Use
 									 *
-									 * Read the [use section of {{helper}}](can.Mustache.helpers.helper.html#section_Use) to better understand how:
+									 * Read the [use section of {{helper}}](can.mustache.helpers.helper.html#section_Use) to better understand how:
 									 *
-									 *  - [Helper functions are found](can.Mustache.helpers.helper.html#section_Arguments)
-									 *  - [Arguments are passed to the helper](can.Mustache.helpers.helper.html#section_Arguments)
-									 *  - [Hash values are passed to the helper](can.Mustache.helpers.helper.html#section_Hash)
+									 *  - [Helper functions are found](can.mustache.helpers.helper.html#section_Arguments)
+									 *  - [Arguments are passed to the helper](can.mustache.helpers.helper.html#section_Arguments)
+									 *  - [Hash values are passed to the helper](can.mustache.helpers.helper.html#section_Hash)
 									 *
-									 * Read how [helpers that return functions](can.Mustache.helper.html#section_Returninganelementcallbackfunction) can
+									 * Read how [helpers that return functions](can.mustache.helper.html#section_Returninganelementcallbackfunction) can
 									 * be used for rich behavior like 2-way binding.
 									 *
 									 */
 									// Open a new section.
 								case '#':
 									/**
-									 * @function can.Mustache.helpers.inverse {{^key}}
-									 * @parent can.Mustache.tags 5
+									 * @function can.mustache.helpers.inverse {{^key}}
+									 * @parent can.mustache.tags 5
 									 *
 									 * @signature `{{^key}}BLOCK{{/key}}`
 									 *
@@ -1124,8 +1127,8 @@ steal('can/util',
 									 * sections except it begins with a caret rather than a
 									 * pound. If the value referenced is falsey, the section will render.
 									 *
-									 * @param {can.Mustache.key} key A key that references a value within the current or parent
-									 * [can.Mustache.context context]. If the value is a function or [can.compute], the
+									 * @param {can.mustache.key} key A key that references a value within the current or parent
+									 * [can.mustache.context context]. If the value is a function or [can.compute], the
 									 * function's return value is used.
 									 *
 									 * @return {String}
@@ -1184,15 +1187,15 @@ steal('can/util',
 									break;
 									// Close the prior section.
 									/**
-									 * @function can.Mustache.helpers.close {{/key}}
-									 * @parent can.Mustache.tags 4
+									 * @function can.mustache.helpers.close {{/key}}
+									 * @parent can.mustache.tags 4
 									 *
 									 * @signature `{{/key}}`
 									 *
-									 * Ends a [can.Mustache.helpers.section {{#key}}] or [can.Mustache.helpers.sectionHelper {{#helper}}]
+									 * Ends a [can.mustache.helpers.section {{#key}}] or [can.mustache.helpers.sectionHelper {{#helper}}]
 									 * block.
 									 *
-									 * @param {can.Mustache.key} [key] A key that matches the opening key or helper name. It's also
+									 * @param {can.mustache.key} [key] A key that matches the opening key or helper name. It's also
 									 * possible to simply write `{{/}}` to end a block.
 									 */
 								case '/':
@@ -1264,17 +1267,17 @@ steal('can/util',
 								// If/else section
 								// Falsey section
 								/**
-								 * @function can.Mustache.helpers.else {{else}}
-								 * @parent can.Mustache.htags 3
+								 * @function can.mustache.helpers.else {{else}}
+								 * @parent can.mustache.htags 3
 								 *
 								 * @signature `{{#helper}}BLOCK{{else}}INVERSE{{/helper}}`
 								 *
-								 * Creates an `inverse` block for a [can.Mustache.helper helper function]'s
-								 * [can.Mustache.helperOptions options argument]'s `inverse` property.
+								 * Creates an `inverse` block for a [can.mustache.helper helper function]'s
+								 * [can.mustache.helperOptions options argument]'s `inverse` property.
 								 *
-								 * @param {can.Mustache} INVERSE a mustache template coverted to a
-								 * function and set as the [can.Mustache.helper helper function]'s
-								 * [can.Mustache.helperOptions options argument]'s `inverse` property.
+								 * @param {can.mustache} INVERSE a mustache template coverted to a
+								 * function and set as the [can.mustache.helper helper function]'s
+								 * [can.mustache.helperOptions options argument]'s `inverse` property.
 								 *
 								 * @body
 								 *
@@ -1282,8 +1285,8 @@ steal('can/util',
 								 *
 								 * For more information on how `{{else}}` is used checkout:
 								 *
-								 *  - [can.Mustache.helpers.if {{if key}}]
-								 *  - [can.Mustache.helpers.sectionHelper {{#helper}}]
+								 *  - [can.mustache.helpers.if {{if key}}]
+								 *  - [can.mustache.helpers.sectionHelper {{#helper}}]
 								 *
 								 */
 							case 'else':
@@ -1316,7 +1319,7 @@ steal('can/util',
 		}
 
 		/**
-		 * @function can.Mustache.txt
+		 * @function can.MustacheConstructor.txt
 		 * @hide
 		 *
 		 * Evaluates the resulting string based on the context/name.
@@ -1351,7 +1354,7 @@ steal('can/util',
 					// get values on hash
 					for (var prop in hash) {
 						if (isLookup(hash[prop])) {
-							hash[prop] = Mustache.get(hash[prop].get, scopeAndOptions);
+							hash[prop] = Mustache.get(hash[prop].get, scopeAndOptions, false, true);
 						}
 					}
 				} else if (arg && isLookup(arg)) {
@@ -1473,7 +1476,7 @@ steal('can/util',
 		};
 
 		/**
-		 * @function can.Mustache.get
+		 * @function can.MustacheConstructor.get
 		 * @hide
 		 *
 		 * Resolves a key for a given object (and then a context if that fails).
@@ -1503,7 +1506,7 @@ steal('can/util',
 		 *		{ a: { d: 1 } }
 		 *		=> ""
 		 *
-		 * @param {can.Mustache.key} key The reference to check for on the obj/context.
+		 * @param {can.mustache.key} key The reference to check for on the obj/context.
 		 * @param {Object} obj The object to use for checking for a reference.
 		 * @param {Object} context The context to use for checking for a reference if it doesn't exist in the object.
 		 * @param {Boolean} [isHelper] Whether the reference is seen as a helper.
@@ -1526,6 +1529,9 @@ steal('can/util',
 					return context[key];
 				}
 
+				//!steal-remove-start
+				can.dev.warn('can/view/mustache/mustache.js: Unable to find helper "' + key + '".');
+				//!steal-remove-end
 			}
 
 			// Get a compute (and some helper data) that represents key's value in the current scope
@@ -1540,6 +1546,12 @@ steal('can/util',
 
 			// computeData gives us an initial value
 			var initialValue = computeData.initialValue;
+			  
+			//!steal-remove-start
+			if (initialValue === undefined && !isHelper) {
+				can.dev.warn('can/view/mustache/mustache.js: Unable to find key "' + key + '".');
+			}
+			//!steal-remove-end
 
 			// Use helper over the found value if the found value isn't in the current context
 			if ((initialValue === undefined || computeData.scope !== scopeAndOptions.scope) && Mustache.getHelper(key, options)) {
@@ -1609,11 +1621,13 @@ steal('can/util',
 		// * `with` - Opens a context section: `{{#with var}} render {{/with}}`
 		Mustache._helpers = {};
 		/**
+		 * @function can.mustache.registerHelper
+		 * @parent can.mustache.methods
 		 * @description Register a helper.
-		 * @function can.Mustache.registerHelper registerHelper
+		 * @function can.mustache.registerHelper registerHelper
 		 * @signature `Mustache.registerHelper(name, helper)`
 		 * @param {String} name The name of the helper.
-		 * @param {can.Mustache.helper} helper The helper function.
+		 * @param {can.mustache.helper} helper The helper function.
 		 *
 		 * @body
 		 * Registers a helper with the Mustache system.
@@ -1630,7 +1644,7 @@ steal('can/util',
 
 		/**
 		 * @hide
-		 * @function can.Mustache.getHelper getHelper
+		 * @function can.MustacheConstructor.getHelper getHelper
 		 * @description Retrieve a helper.
 		 * @signature `Mustache.getHelper(name)`
 		 * @param {String} name The name of the helper.
@@ -1648,7 +1662,7 @@ steal('can/util',
 		};
 
 		/**
-		 * @function can.Mustache.static.render render
+		 * @function can.MustacheConstructor.static.render render
 		 * @hide
 		 * @parent can.Mustache.static
 		 * @signature `Mustache.render(partial, context)`
@@ -1692,25 +1706,27 @@ steal('can/util',
 		};
 
 		/**
-		 * @function can.Mustache.safeString
-		 * @signature `can.Mustache.safeString(str)`
+		 * @function can.mustache.safeString
+		 * @parent can.mustache.methods
+		 * 
+		 * @signature `can.mustache.safeString(str)`
 		 *
 		 * @param {String} str A string you don't want to become escaped.
-		 * @return {String} A string flagged by `can.Mustache` as safe, which will
-		 * not become escaped, even if you use [can.Mustache.tags.unescaped](triple slash).
+		 * @return {String} A string flagged by `can.mustache` as safe, which will
+		 * not become escaped, even if you use [can.mustache.tags.unescaped](triple slash).
 		 *
 		 * @body
 		 * If you write a helper that generates its own HTML, you will
-		 * usually want to return a `can.Mustache.safeString.` In this case,
+		 * usually want to return a `can.mustache.safeString.` In this case,
 		 * you will want to manually escape parameters with `[can.esc].`
 		 *
 		 * @codestart
-		 * can.Mustache.registerHelper('link', function(text, url) {
+		 * can.mustache.registerHelper('link', function(text, url) {
 		 *   text = can.esc(text);
 		 *   url  = can.esc(url);
 		 *
 		 *   var result = '&lt;a href="' + url + '"&gt;' + text + '&lt;/a&gt;';
-		 *   return can.Mustache.safeString(result);
+		 *   return can.mustache.safeString(result);
 		 * });
 		 * @codeend
 		 *
@@ -1726,7 +1742,7 @@ steal('can/util',
 		 * @codeend
 		 *
 		 * As an anchor tag whereas if we would have just returned the result rather than a
-		 * `can.Mustache.safeString` our template would have rendered a div with the escaped anchor tag.
+		 * `can.mustache.safeString` our template would have rendered a div with the escaped anchor tag.
 		 *
 		 */
 		Mustache.safeString = function (str) {
@@ -1751,16 +1767,16 @@ steal('can/util',
 		can.each({
 			// Implements the `if` built-in helper.
 			/**
-			 * @function can.Mustache.helpers.if {{#if key}}
-			 * @parent can.Mustache.htags 2
+			 * @function can.mustache.helpers.if {{#if key}}
+			 * @parent can.mustache.htags 2
 			 * @signature `{{#if key}}BLOCK{{/if}}`
 			 *
 			 * Renders the `BLOCK` template within the current template.
 			 *
-			 * @param {can.Mustache.key} key A key that references a value within the current or parent
+			 * @param {can.mustache.key} key A key that references a value within the current or parent
 			 * context. If the value is a function or can.compute, the function's return value is used.
 			 *
-			 * @param {can.Mustache} BLOCK A mustache template.
+			 * @param {can.mustache} BLOCK A mustache template.
 			 *
 			 * @return {String} If the key's value is truthy, the `BLOCK` is rendered with the
 			 * current context and its value is returned; otherwise, an empty string.
@@ -1790,7 +1806,7 @@ steal('can/util',
 			 *
 			 *     Mrs
 			 *
-			 * If can be used with [can.Mustache.helpers.else {{else}}] too. For example,
+			 * If can be used with [can.mustache.helpers.else {{else}}] too. For example,
 			 *
 			 *     {{#if user.isFemale}}
 			 *       {{#if user.isMarried}}
@@ -1826,18 +1842,18 @@ steal('can/util',
 			},
 			// Implements the `unless` built-in helper.
 			/**
-			 * @function can.Mustache.helpers.unless {{#unless key}}
-			 * @parent can.Mustache.htags 4
+			 * @function can.mustache.helpers.unless {{#unless key}}
+			 * @parent can.mustache.htags 4
 			 *
 			 * @signature `{{#unless key}}BLOCK{{/unless}}`
 			 *
 			 * Render the block of text if the key's value is falsey.
 			 *
-			 * @param {can.Mustache.key} key A key that references a value within the current or parent
+			 * @param {can.mustache.key} key A key that references a value within the current or parent
 			 * context. If the value is a function or can.compute, the function's
 			 * return value is used.
 			 *
-			 * @param {can.Mustache} BLOCK A template that is rendered
+			 * @param {can.mustache} BLOCK A template that is rendered
 			 * if the `key`'s value is falsey.
 			 *
 			 * @body
@@ -1857,14 +1873,14 @@ steal('can/util',
 
 			// Implements the `each` built-in helper.
 			/**
-			 * @function can.Mustache.helpers.each {{#each key}}
-			 * @parent can.Mustache.htags 5
+			 * @function can.mustache.helpers.each {{#each key}}
+			 * @parent can.mustache.htags 5
 			 *
 			 * @signature `{{#each key}}BLOCK{{/each}}`
 			 *
 			 * Render the block of text for each item in key's value.
 			 *
-			 * @param {can.Mustache.key} key A key that references a value within the current or parent
+			 * @param {can.mustache.key} key A key that references a value within the current or parent
 			 * context. If the value is a function or can.compute, the function's
 			 * return value is used.
 			 *
@@ -1876,7 +1892,7 @@ steal('can/util',
 			 * attributes are added or removed. When a change in the map happens, only
 			 * the minimum amount of DOM element changes occur.
 			 *
-			 * @param {can.Mustache} BLOCK A template that is rendered for each item in
+			 * @param {can.mustache} BLOCK A template that is rendered for each item in
 			 * the `key`'s value. The `BLOCK` is rendered with the context set to the item being rendered.
 			 *
 			 * @body
@@ -1988,18 +2004,18 @@ steal('can/util',
 			},
 			// Implements the `with` built-in helper.
 			/**
-			 * @function can.Mustache.helpers.with {{#with key}}
-			 * @parent can.Mustache.htags 6
+			 * @function can.mustache.helpers.with {{#with key}}
+			 * @parent can.mustache.htags 6
 			 *
 			 * @signature `{{#with key}}BLOCK{{/with}}`
 			 *
 			 * Changes the context within a block.
 			 *
-			 * @param {can.Mustache.key} key A key that references a value within the current or parent
+			 * @param {can.mustache.key} key A key that references a value within the current or parent
 			 * context. If the value is a function or can.compute, the function's
 			 * return value is used.
 			 *
-			 * @param {can.Mustache} BLOCK A template that is rendered
+			 * @param {can.mustache} BLOCK A template that is rendered
 			 * with the context of the `key`'s value.
 			 *
 			 * @body
@@ -2020,8 +2036,8 @@ steal('can/util',
 				}
 			},
 			/**
-			 * @function can.Mustache.helpers.log {{log}}
-			 * @parent can.Mustache.htags 9
+			 * @function can.mustache.helpers.log {{log}}
+			 * @parent can.mustache.htags 9
 			 *
 			 * @signature `{{#log [message]}}`
 			 *
@@ -2032,7 +2048,7 @@ steal('can/util',
 			 *
 			 */
 			'log': function (expr, options) {
-				if (console !== undefined) {
+				if(typeof console !== "undefined" && console.log) {
 					if (!options) {
 						console.log(expr.context);
 					} else {
@@ -2041,9 +2057,9 @@ steal('can/util',
 				}
 			}
 			/**
-			 * @function can.Mustache.helpers.elementCallback {{(el)->CODE}}
+			 * @function can.mustache.helpers.elementCallback {{(el)->CODE}}
 			 *
-			 * @parent can.Mustache.htags 8
+			 * @parent can.mustache.htags 8
 			 *
 			 * @signature `{{(el) -> CODE}}`
 			 *
@@ -2064,13 +2080,13 @@ steal('can/util',
 			 */
 			//
 			/**
-			 * @function can.Mustache.helpers.index {{@index}}
+			 * @function can.mustache.helpers.index {{@index}}
 			 *
-			 * @parent can.Mustache.htags 10
+			 * @parent can.mustache.htags 10
 			 *
 			 * @signature `{{@index [offset]}}`
 			 *
-			 * Insert the index of an Array or can.List we are iterating on with [#each](can.Mustache.helpers.each)
+			 * Insert the index of an Array or can.List we are iterating on with [#each](can.mustache.helpers.each)
 			 *
 			 * @param {Number} offset The number to optionally offset the index by.
 			 *
@@ -2104,19 +2120,19 @@ steal('can/util',
 			 */
 			//
 			/**
-			 * @function can.Mustache.helpers.key {{@key}}
+			 * @function can.mustache.helpers.key {{@key}}
 			 *
-			 * @parent can.Mustache.htags 11
+			 * @parent can.mustache.htags 11
 			 *
 			 * @signature `{{@key}}`
 			 *
-			 * Insert the property name of an Object or attribute name of a can.Map that we iterate over with [#each](can.Mustache.helpers.each)
+			 * Insert the property name of an Object or attribute name of a can.Map that we iterate over with [#each](can.mustache.helpers.each)
 			 *
 			 * @body
 			 *
 			 * ## Use
 			 *
-			 * Use `{{@key}}` to render the property or attribute name of an Object or can.Map, when iterating over it with [#each](can.Mustache.helpers.each). For example,
+			 * Use `{{@key}}` to render the property or attribute name of an Object or can.Map, when iterating over it with [#each](can.mustache.helpers.each). For example,
 			 *
 			 * The template:
 			 *
@@ -2167,6 +2183,8 @@ steal('can/util',
 				});
 			}
 		});
-
+		
+		can.mustache.registerHelper = can.proxy(can.Mustache.registerHelper, can.Mustache);
+		can.mustache.safeString = can.Mustache.safeString;
 		return can;
 	});

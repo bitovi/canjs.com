@@ -160,7 +160,7 @@ steal(
 				// was found in, readsData and the current scope.
 				/**
 				 * @hide
-				 * @param {can.Mustache.key} attr A dot seperated path.  Use `"\."` if you have a property name that includes a dot.
+				 * @param {can.mustache.key} attr A dot seperated path.  Use `"\."` if you have a property name that includes a dot.
 				 * @param {can.view.Scope.readOptions} options that configure how this gets read.
 				 * @return {{}}
 				 * @option {Object} parent the value's immediate parent
@@ -170,11 +170,12 @@ steal(
 				 */
 				read: function (attr, options) {
 					// check if we should only look within current scope
+					var stopLookup;
 					if(attr.substr(0, 2) === './') {
 						// set flag to halt lookup from walking up scope
-						this._stopLookup = true;
+						stopLookup = true;
 						// stop lookup from checking parent scopes
-						return this.read(attr.substr(2), options);
+						attr = attr.substr(2);
 					}
 					// check if we should be running this on a parent.
 					else if (attr.substr(0, 3) === "../") {
@@ -252,7 +253,9 @@ steal(
 										/* Clear and save readings so next attempt does not use these readings */
 										defaultComputeReadings = can.__clearReading();
 									}
-								}
+								},
+								// Execute anonymous functions found along the way
+								executeAnonymousFunctions: true
 							}, options));
 							// **Key was found**, return value and location data
 							if (data.value !== undefined) {
@@ -266,13 +269,12 @@ steal(
 						}
 						// Prevent prior readings and then move up to the next scope.
 						can.__clearReading();
-						if(!this._stopLookup) {
+						if(!stopLookup) {
 							// Move up to the next scope.
 							scope = scope._parent;
+						} else {
+							scope = null;
 						}
-
-						// a flag to set if we should stop walking up scope
-						this._stopLookup = false;
 					}
 
 					// **Key was not found**, return undefined for the value.  Unless an observable was

@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>can/control/control.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="can-control-control-js">can/control/control.js</h1>
+<p>Create organized, memory-leak free, rapidly performing, stateful 
+controls with declarative eventing binding. Used when creating UI 
+controls with behaviors, bound to elements on the page.</p>
+<h2 id="helpers">helpers</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/construct'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h3 id="bind">bind</h3>
+<p>this helper binds to one element and returns a function that unbinds from that element.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> bind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, ev, callback)</span> {</span>
+
+		can.bind.call(el, ev, callback);
+
+		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			can.unbind.call(el, ev, callback);
+		};
+	},
+		isFunction = can.isFunction,
+		extend = can.extend,
+		each = can.each,
+		slice = [].slice,
+		paramReplacer = <span class="hljs-regexp">/\{([^\}]+)\}/g</span>,
+		special = can.getObject(<span class="hljs-string">"$.event.special"</span>, [can]) || {},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h3 id="delegate">delegate</h3>
+<p>this helper binds to elements based on a selector and returns a 
+function that unbinds.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		delegate = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, selector, ev, callback)</span> {</span>
+			can.delegate.call(el, selector, ev, callback);
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+				can.undelegate.call(el, selector, ev, callback);
+			};
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h3 id="binder">binder</h3>
+<p>Calls bind or unbind depending if there is a selector.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		binder = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, ev, callback, selector)</span> {</span>
+			<span class="hljs-keyword">return</span> selector ?
+				delegate(el, can.trim(selector), ev, callback) :
+				bind(el, ev, callback);
+		},
+
+		basicProcessor;
+
+	<span class="hljs-keyword">var</span> Control = can.Control = can.Construct(
+		<span class="hljs-comment">/**
+		 * @add can.Control
+		 */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <h2 id="-static-functions-"><em>static functions</em></h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-comment">/** 
+		 * @static
+		 */</span>
+		{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h2 id="can-control-setup">can.Control.setup</h2>
+<p>This function pre-processes which methods are event listeners and which are methods of
+the control. It has a mechanism to allow controllers to inherit default values from super
+classes, like <code>can.Construct</code>, and will cache functions that are action functions (see <code>_isAction</code>)
+or functions with an underscored name.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+				can.Construct.setup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+
+				<span class="hljs-keyword">if</span> (can.Control) {
+					<span class="hljs-keyword">var</span> control = <span class="hljs-keyword">this</span>,
+						funcName;
+
+					control.actions = {};
+					<span class="hljs-keyword">for</span> (funcName <span class="hljs-keyword">in</span> control.prototype) {
+						<span class="hljs-keyword">if</span> (control._isAction(funcName)) {
+							control.actions[funcName] = control._action(funcName);
+						}
+					}
+				}
+			},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <h2 id="can-control-_shifter">can.Control._shifter</h2>
+<p>Moves <code>this</code> to the first argument, wraps it with <code>jQuery</code> if it’s 
+an element.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			_shifter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(context, name)</span> {</span>
+
+				<span class="hljs-keyword">var</span> method = <span class="hljs-keyword">typeof</span> name === <span class="hljs-string">"string"</span> ? context[name] : name;
+
+				<span class="hljs-keyword">if</span> (!isFunction(method)) {
+					method = context[method];
+				}
+
+				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+					context.called = name;
+					<span class="hljs-keyword">return</span> method.apply(context, [<span class="hljs-keyword">this</span>.nodeName ? can.$(<span class="hljs-keyword">this</span>) : <span class="hljs-keyword">this</span>].concat(slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">0</span>)));
+				};
+			},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h2 id="can-control-_isaction">can.Control._isAction</h2>
+<p>Return <code>true</code> if <code>methodName</code> refers to an action. An action is a <code>methodName</code> value that
+is not the constructor, and is either a function or string that refers to a function, or is
+defined in <code>special</code>, <code>processors</code>. Detects whether <code>methodName</code> is also a valid method name.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			_isAction: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(methodName)</span> {</span>
+				<span class="hljs-keyword">var</span> val = <span class="hljs-keyword">this</span>.prototype[methodName],
+					type = <span class="hljs-keyword">typeof</span> val;
+
+				<span class="hljs-keyword">return</span> (methodName !== <span class="hljs-string">'constructor'</span>) &amp;&amp;
+				(type === <span class="hljs-string">"function"</span> || (type === <span class="hljs-string">"string"</span> &amp;&amp; isFunction(<span class="hljs-keyword">this</span>.prototype[val]))) &amp;&amp;
+				!! (special[methodName] || processors[methodName] || <span class="hljs-regexp">/[^\w]/</span>.test(methodName));
+			},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <h2 id="can-control-_action">can.Control._action</h2>
+<p>Takes a method name and the options passed to a control and tries to return the data 
+necessary to pass to a processor (something that binds things).</p>
+<p>For performance reasons, <code>_action</code> is called twice: </p>
+<ul>
+<li>It’s called when the Control class is created. for templated method names (e.g., <code>{window} foo</code>), it returns null. For non-templated method names it returns the event binding data. That data is added to <code>this.actions</code>.</li>
+<li>It is called wehn a control instance is created, but only for templated actions.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			_action: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(methodName, options)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>If we don’t have options (a <code>control</code> instance), we’ll run this later. If we have
+options, run <code>can.sub</code> to replace the action template <code>{}</code> with values from the <code>options</code>
+or <code>window</code>. If a <code>{}</code> template resolves to an object, <code>convertedName</code> will be an array.
+In that case, the event name we want will be the last item in that array.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				paramReplacer.lastIndex = <span class="hljs-number">0</span>;
+				<span class="hljs-keyword">if</span> (options || !paramReplacer.test(methodName)) {
+					<span class="hljs-keyword">var</span> convertedName = options ? can.sub(methodName, <span class="hljs-keyword">this</span>._lookup(options)) : methodName;
+					<span class="hljs-keyword">if</span> (!convertedName) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>!steal-remove-start</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						can.dev.log(<span class="hljs-string">'can/control/control.js: No property found for handling '</span> + methodName);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>!steal-remove-end</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+					}
+					<span class="hljs-keyword">var</span> arr = can.isArray(convertedName),
+						name = arr ? convertedName[<span class="hljs-number">1</span>] : convertedName,
+						parts = name.split(<span class="hljs-regexp">/\s+/g</span>),
+						event = parts.pop();
+
+					<span class="hljs-keyword">return</span> {
+						processor: processors[event] || basicProcessor,
+						parts: [name, parts.join(<span class="hljs-string">" "</span>), event],
+						delegate: arr ? convertedName[<span class="hljs-number">0</span>] : <span class="hljs-literal">undefined</span>
+					};
+				}
+			},
+			_lookup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> {</span>
+				<span class="hljs-keyword">return</span> [options, window];
+			},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <h2 id="can-control-processors">can.Control.processors</h2>
+<p>An object of <code>{eventName : function}</code> pairs that Control uses to 
+hook up events automatically.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			processors: {},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <h2 id="can-control-defaults">can.Control.defaults</h2>
+<p>A object of name-value pairs that act as default values for a control instance</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			defaults: {}
+		}, {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <h2 id="-prototype-functions-"><em>prototype functions</em></h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-comment">/**
+			 * @prototype
+			 */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <h2 id="setup">setup</h2>
+<p>Setup is where most of the Control’s magic happens. It performs several pre-initialization steps:</p>
+<ul>
+<li>Sets <code>this.element</code></li>
+<li>Adds the Control’s name to the element’s className</li>
+<li>Saves the Control in <code>$.data</code></li>
+<li>Merges Options</li>
+<li>Binds event handlers using <code>delegate</code>
+The final step is to return pass the element and prepareed options, to be used in <code>init</code>.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(element, options)</span> {</span>
+
+				<span class="hljs-keyword">var</span> cls = <span class="hljs-keyword">this</span>.constructor,
+					pluginname = cls.pluginName || cls._fullName,
+					arr;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Retrieve the raw element, then set the plugin name as a class there.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>.element = can.$(element);
+
+				<span class="hljs-keyword">if</span> (pluginname &amp;&amp; pluginname !== <span class="hljs-string">'can_control'</span>) {
+					<span class="hljs-keyword">this</span>.element.addClass(pluginname);
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Set up the ‘controls’ data on the element. If it does not exist, initialize
+it to an empty array.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				arr = can.data(<span class="hljs-keyword">this</span>.element, <span class="hljs-string">'controls'</span>);
+				<span class="hljs-keyword">if</span> (!arr) {
+					arr = [];
+					can.data(<span class="hljs-keyword">this</span>.element, <span class="hljs-string">'controls'</span>, arr);
+				}
+				arr.push(<span class="hljs-keyword">this</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>The <code>this.options</code> property is an Object that contains configuration data
+passed to a control when it is created (<code>new can.Control(element, options)</code>)</p>
+<p>The <code>options</code> argument passed when creating the control is merged with <code>can.Control.defaults</code> 
+in [can.Control.prototype.setup setup].</p>
+<p>If no <code>options</code> value is used during creation, the value in <code>defaults</code> is used instead</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>.options = extend({}, cls.defaults, options);
+
+				<span class="hljs-keyword">this</span>.on();
+
+				<span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>.element, <span class="hljs-keyword">this</span>.options];
+			},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <h2 id="on">on</h2>
+<p>This binds an event handler for an event to a selector under the scope of <code>this.element</code>
+If no options are specified, all events are rebound to their respective elements. The actions,
+which were cached in <code>setup</code>, are used and all elements are bound using <code>delegate</code> from <code>this.element</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			on: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, selector, eventName, func)</span> {</span>
+				<span class="hljs-keyword">if</span> (!el) {
+					<span class="hljs-keyword">this</span>.off();
+
+					<span class="hljs-keyword">var</span> cls = <span class="hljs-keyword">this</span>.constructor,
+						bindings = <span class="hljs-keyword">this</span>._bindings,
+						actions = cls.actions,
+						element = <span class="hljs-keyword">this</span>.element,
+						destroyCB = can.Control._shifter(<span class="hljs-keyword">this</span>, <span class="hljs-string">"destroy"</span>),
+						funcName, ready;
+
+					<span class="hljs-keyword">for</span> (funcName <span class="hljs-keyword">in</span> actions) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Only push if we have the action and no option is <code>undefined</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span> ( actions.hasOwnProperty(funcName) ) {
+							ready = actions[funcName] || cls._action(funcName, <span class="hljs-keyword">this</span>.options, <span class="hljs-keyword">this</span>);
+							<span class="hljs-keyword">if</span>( ready ) {
+								bindings.control[funcName]  = ready.processor(ready.delegate || element,
+									ready.parts[<span class="hljs-number">2</span>], ready.parts[<span class="hljs-number">1</span>], funcName, <span class="hljs-keyword">this</span>);
+							}
+						}
+					}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>Set up the ability to <code>destroy</code> the control later.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					can.bind.call(element, <span class="hljs-string">"removed"</span>, destroyCB);
+					bindings.user.push(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> {</span>
+						can.unbind.call(el, <span class="hljs-string">"removed"</span>, destroyCB);
+					});
+					<span class="hljs-keyword">return</span> bindings.user.length;
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>if <code>el</code> is a string, use that as <code>selector</code> and re-set it to this control’s element…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> el === <span class="hljs-string">'string'</span>) {
+					func = eventName;
+					eventName = selector;
+					selector = el;
+					el = <span class="hljs-keyword">this</span>.element;
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>…otherwise, set <code>selector</code> to null</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (func === <span class="hljs-literal">undefined</span>) {
+					func = eventName;
+					eventName = selector;
+					selector = <span class="hljs-literal">null</span>;
+				}
+
+				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> func === <span class="hljs-string">'string'</span>) {
+					func = can.Control._shifter(<span class="hljs-keyword">this</span>, func);
+				}
+
+				<span class="hljs-keyword">this</span>._bindings.user.push(binder(el, eventName, func, selector));
+
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._bindings.user.length;
+			},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <h2 id="off">off</h2>
+<p>Unbinds all event handlers on the controller.
+This should <em>only</em> be called in combination with .on()</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			off: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+				<span class="hljs-keyword">var</span> el = <span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>],
+					bindings = <span class="hljs-keyword">this</span>._bindings;
+				<span class="hljs-keyword">if</span>( bindings ) {
+					each(bindings.user || [], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> {</span>
+						value(el);
+					});
+					each(bindings.control || {}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> {</span>
+						value(el);
+					});
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>Adds bindings.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>._bindings = {user: [], control: {}};
+			},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <h2 id="destroy">destroy</h2>
+<p>Prepares a <code>control</code> for garbage collection.
+First checks if it has already been removed. Then, removes all the bindings, data, and 
+the element from the Control instance.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.element === <span class="hljs-literal">null</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>!steal-remove-start</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					can.dev.warn(<span class="hljs-string">"can/control/control.js: Control already destroyed"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>!steal-remove-end</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">return</span>;
+				}
+				<span class="hljs-keyword">var</span> Class = <span class="hljs-keyword">this</span>.constructor,
+					pluginName = Class.pluginName || Class._fullName,
+					controls;
+
+				<span class="hljs-keyword">this</span>.off();
+
+				<span class="hljs-keyword">if</span> (pluginName &amp;&amp; pluginName !== <span class="hljs-string">'can_control'</span>) {
+					<span class="hljs-keyword">this</span>.element.removeClass(pluginName);
+				}
+
+				controls = can.data(<span class="hljs-keyword">this</span>.element, <span class="hljs-string">"controls"</span>);
+				controls.splice(can.inArray(<span class="hljs-keyword">this</span>, controls), <span class="hljs-number">1</span>);
+
+				can.trigger(<span class="hljs-keyword">this</span>, <span class="hljs-string">"destroyed"</span>);
+
+				<span class="hljs-keyword">this</span>.element = <span class="hljs-literal">null</span>;
+			}
+		});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <h2 id="processors">Processors</h2>
+<p>Processors do the binding. This basic processor binds events. Each returns a function that unbinds 
+when called.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> processors = can.Control.processors;
+	basicProcessor = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, event, selector, methodName, control)</span> {</span>
+		<span class="hljs-keyword">return</span> binder(el, event, can.Control._shifter(control, methodName), selector);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>Set common events to be processed as a <code>basicProcessor</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	each([<span class="hljs-string">"change"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-string">"contextmenu"</span>, <span class="hljs-string">"dblclick"</span>, <span class="hljs-string">"keydown"</span>, <span class="hljs-string">"keyup"</span>,
+		<span class="hljs-string">"keypress"</span>, <span class="hljs-string">"mousedown"</span>, <span class="hljs-string">"mousemove"</span>, <span class="hljs-string">"mouseout"</span>, <span class="hljs-string">"mouseover"</span>,
+		<span class="hljs-string">"mouseup"</span>, <span class="hljs-string">"reset"</span>, <span class="hljs-string">"resize"</span>, <span class="hljs-string">"scroll"</span>, <span class="hljs-string">"select"</span>, <span class="hljs-string">"submit"</span>, <span class="hljs-string">"focusin"</span>,
+		<span class="hljs-string">"focusout"</span>, <span class="hljs-string">"mouseenter"</span>, <span class="hljs-string">"mouseleave"</span>,
+		<span class="hljs-string">"touchstart"</span>, <span class="hljs-string">"touchmove"</span>, <span class="hljs-string">"touchcancel"</span>, <span class="hljs-string">"touchend"</span>, <span class="hljs-string">"touchleave"</span>
+	], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(v)</span> {</span>
+		processors[v] = basicProcessor;
+	});
+
+	<span class="hljs-keyword">return</span> Control;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

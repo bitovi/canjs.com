@@ -1434,4 +1434,86 @@ steal("can/model", 'can/map/attributes', "can/test", "can/util/fixture", functio
 
 	});
 
+	test("Nested lists", function(){
+		var Teacher = can.Model.extend({});
+		var teacher = new Teacher();
+		teacher.attr("locations", [{id: 1, name: "Chicago"}, {id: 2, name: "LA"}]);
+		ok(!(teacher.attr('locations') instanceof Teacher.List), 'nested list is not an instance of Teacher.List');
+		ok(!(teacher.attr('locations')[0] instanceof Teacher), 'nested map is not an instance of Teacher');
+	});
+
+	test("#501 - resource definition - create", function() {
+		can.fixture("/foods", function() {
+			return [];
+		});
+
+		var FoodModel = can.Model.extend({
+			resource: "/foods"
+		}, {});
+
+		stop();
+		var steak = new FoodModel({name: "steak"});
+		steak.save(function(food) {
+			equal(food.name, "steak", "create created the correct model");
+			start();
+		});
+	});
+
+	test("#501 - resource definition - findAll", function() {
+		can.fixture("/drinks", function() {
+			return [{
+				id: 1,
+				name: "coke"
+			}];
+		});
+
+		var DrinkModel = can.Model.extend({
+			resource: "/drinks"
+		}, {});
+
+		stop();
+		DrinkModel.findAll({}, function(drinks) {
+			deepEqual(drinks.attr(), [{
+				id: 1,
+				name: "coke"
+			}], "findAll returned the correct models");
+			start();
+		});
+	});
+
+	test("#501 - resource definition - findOne", function() {
+		can.fixture("GET /clothes/{id}", function() {
+			return [{
+				id: 1,
+				name: "pants"
+			}];
+		});
+
+		var ClothingModel = can.Model.extend({
+			resource: "/clothes"
+		}, {});
+
+		stop();
+		ClothingModel.findOne({id: 1}, function(item) {
+			equal(item[0].name, "pants", "findOne returned the correct model");
+			start();
+		});
+	});
+
+	test("#501 - resource definition - remove trailing slash(es)", function() {
+		can.fixture("POST /foods", function() {
+			return [];
+		});
+
+		var FoodModel = can.Model.extend({
+			resource: "/foods//////"
+		}, {});
+
+		stop();
+		var steak = new FoodModel({name: "steak"});
+		steak.save(function(food) {
+			equal(food.name, "steak", "removed trailing '/' and created the correct model");
+			start();
+		});
+	});
 });

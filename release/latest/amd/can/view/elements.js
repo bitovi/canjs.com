@@ -1,13 +1,18 @@
 /*!
- * CanJS - 2.0.7
+ * CanJS - 2.1.0
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Wed, 26 Mar 2014 16:12:27 GMT
+ * Mon, 05 May 2014 22:15:43 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["can/util/library"], function (can) {
+define(["can/util/library", "can/view"], function (can) {
+
+	var selectsCommentNodes = (function(){
+		return can.$(document.createComment('~')).length === 1;
+	})();
+
 	/**
 	 * @property {Object} can.view.elements
 	 * @parent can.view
@@ -40,26 +45,12 @@ define(["can/util/library"], function (can) {
 		 * If the attribute name is not found, it's assumed to use
 		 * `element.getAttribute` and `element.setAttribute`.
 		 */
-		attrMap: {
-			'class': 'className',
-			'value': 'value',
-			'innerText': 'innerText',
-			'textContent': 'textContent',
-			'checked': true,
-			'disabled': true,
-			'readonly': true,
-			'required': true,
-			src: function (el, val) {
-				if (val === null || val === '') {
-					el.removeAttribute('src');
-				} else {
-					el.setAttribute('src', val);
-				}
-			}
-		},
+		// 3.0 TODO: remove
+		attrMap: can.attr.map,
+		// matches the attrName of a regexp
 		attrReg: /([^\s=]+)[\s]*=[\s]*/,
-		// elements whos default value we should set
-		defaultValue: ["input", "textarea"],
+		// 3.0 TODO: remove
+		defaultValue: can.attr.defaultValue,
 		// a map of parent element to child elements
 		/**
 		 * @property {Object.<String,String>} can.view.elements.tagMap
@@ -94,48 +85,12 @@ define(["can/util/library"], function (can) {
 		getParentNode: function (el, defaultParentNode) {
 			return defaultParentNode && el.parentNode.nodeType === 11 ? defaultParentNode : el.parentNode;
 		},
-		// Set an attribute on an element
-		setAttr: function (el, attrName, val) {
-			var tagName = el.nodeName.toString()
-				.toLowerCase(),
-				prop = elements.attrMap[attrName];
-			// if this is a special property
-			if (typeof prop === "function") {
-				prop(el, val);
-			} else if (prop === true && attrName === "checked" && el.type === "radio") {
-				// IE7 bugs sometimes if defaultChecked isn't set first
-				if (can.inArray(tagName, elements.defaultValue) >= 0) {
-					el.defaultChecked = true;
-				}
-				el[attrName] = true;
-			} else if (prop === true) {
-				el[attrName] = true;
-			} else if (prop) {
-				// set the value as true / false
-				el[prop] = val;
-				if (prop === 'value' && can.inArray(tagName, elements.defaultValue) >= 0) {
-					el.defaultValue = val;
-				}
-			} else {
-				el.setAttribute(attrName, val);
-			}
-		},
-		// Gets the value of an attribute.
-		getAttr: function (el, attrName) {
-			// Default to a blank string for IE7/8
-			return (elements.attrMap[attrName] && el[elements.attrMap[attrName]] ? el[elements.attrMap[attrName]] : el.getAttribute(attrName)) || '';
-		},
-		// Removes the attribute.
-		removeAttr: function (el, attrName) {
-			var setter = elements.attrMap[attrName];
-			if (setter === true) {
-				el[attrName] = false;
-			} else if (typeof setter === 'string') {
-				el[setter] = '';
-			} else {
-				el.removeAttribute(attrName);
-			}
-		},
+		// 3.0 TODO: remove
+		setAttr: can.attr.set,
+		// 3.0 TODO: remove
+		getAttr: can.attr.get,
+		// 3.0 TODO: remove
+		removeAttr: can.attr.remove,
 		// Gets a "pretty" value for something
 		contentText: function (text) {
 			if (typeof text === 'string') {
@@ -176,20 +131,17 @@ define(["can/util/library"], function (can) {
 		 */
 		replace: function (oldElements, newFrag) {
 			elements.after(oldElements, newFrag);
-			can.remove(can.$(oldElements));
+			if(can.remove(can.$(oldElements)).length < oldElements.length && !selectsCommentNodes) {
+				can.each(oldElements, function(el) {
+					if(el.nodeType === 8) {
+						el.parentNode.removeChild(el);
+					}
+				});
+			}
 		}
 	};
-	// TODO: this doesn't seem to be doing anything
-	// feature detect if setAttribute works with styles
-	(function () {
-		// feature detect if
-		var div = document.createElement('div');
-		div.setAttribute('style', 'width: 5px');
-		div.setAttribute('style', 'width: 10px');
-		// make style use cssText
-		elements.attrMap.style = function (el, val) {
-			el.style.cssText = val || '';
-		};
-	}());
+
+	can.view.elements = elements;
+
 	return elements;
 });

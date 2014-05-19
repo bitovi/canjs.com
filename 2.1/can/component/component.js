@@ -111,7 +111,7 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 				can.each(this.constructor.attributeScopeMappings, function (val, prop) {
 					initalScopeData[prop] = el.getAttribute(can.hyphenate(val));
 				});
-
+				
 				// Get the value in the scope for each attribute
 				// the hookup should probably happen after?
 				can.each(can.makeArray(el.attributes), function (node, index) {
@@ -122,7 +122,16 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 					if (component.constructor.attributeScopeMappings[name] || ignoreAttributesRegExp.test(name) || viewCallbacks.attr(node.nodeName)) {
 						return;
 					}
-
+					// Only setup bindings if attribute looks like `foo="{bar}"`
+					if(value[0] === "{" && value[value.length-1] === "}") {
+						value = value.substr(1, value.length - 2 );
+					} else {
+						// Legacy template types will crossbind "foo=bar"
+						if(hookupOptions.templateType !== "legacy") {
+							initalScopeData[name] = value;
+							return;
+						}
+					}
 					// Cross-bind the value in the scope to this 
 					// component's scope
 					var computeData = hookupOptions.scope.computeData(value, {
@@ -142,7 +151,7 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 
 					// Set the value to be added to the scope
 					initalScopeData[name] = compute();
-
+					
 					// We don't need to listen to the compute `change` if it doesn't have any dependencies
 					if (!compute.hasDependencies) {
 						compute.unbind("change", handler);
@@ -201,12 +210,12 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 					});
 				});
 				// Setup the attributes bindings
-				if (!can.isEmptyObject(this.constructor.attributeScopeMappings)) {
+				if (!can.isEmptyObject(this.constructor.attributeScopeMappings) || hookupOptions.templateType !== "legacy") {
 					// Bind on the `attributes` event and update the scope.
 					can.bind.call(el, "attributes", function (ev) {
 						// Convert attribute name from the `attribute-name` to the `attributeName` format.
 						var camelized = can.camelize(ev.attributeName);
-						if (component.constructor.attributeScopeMappings[camelized]) {
+						if (!twoWayBindings[camelized]) {
 							// If there is a mapping for this attribute, update the `componentScope` attribute
 							componentScope.attr(camelized, el.getAttribute(ev.attributeName));
 						}
@@ -283,7 +292,12 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 					frag = this.constructor.renderer(renderedScope, hookupOptions.options.add(options));
 				} else {
 					// Otherwise render the contents between the 
-					frag = can.view.frag(hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : "");
+					if(hookupOptions.templateType === "legacy") {
+						frag = can.view.frag(hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : "");
+					} else {
+						frag = hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : document.createDocumentFragment();
+					}
+					
 				}
 				// Append the resulting document fragment to the element
 				can.appendChild(el, frag);

@@ -1,11 +1,13 @@
 @function can.stache
 @parent canjs
 @release 2.1
-@group can.stache.pages 0 Pages
-@group can.stache.types 1 Types
-@group can.stache.tags 2 Basic Tags
-@group can.stache.htags 3 Helper Tags
-@group can.stache.static 4 Methods
+@group can.stache.static 0 Methods
+@group can.stache.pages 1 Pages
+@group can.stache.types 2 Types
+@group can.stache.tags 3 Basic Tags
+@group can.stache.htags 4 Helper Tags
+
+
 @link ../docco/view/stache/mustache_core.html docco
 @test can/view/stache/test/test.html
 @plugin can/view/stache
@@ -80,24 +82,63 @@ can.stache provides significantly more functionality such as:
 - [can.stache.Binding Live Binding]
 
 
-## Deferrences from can.Mustache
+## Deferrences from can.mustache
 
-`can.stache` is largely compatable with [can.Mustache].  There are two main differences:
+`can.stache` is largely compatable with [can.mustache].  There are three main differences:
 
+ - Passes values in the scope to [can.Component] with `{key}`.
  - [can.stache.sectionRenderer section renderers] return documentFragments.
- - [can.Mustache.helpers.elementCallback Element callbacks] like `{{(el) -> CODE}}` are no longer supported.
+ - [can.mustache.helpers.elementCallback Element callbacks] like `{{(el) -> CODE}}` are no longer supported.
+ 
+ 
+### Passing values in the scope to can.Components
+
+A [can.mustache] template passes values from the scope to a [can.Component]
+by specifying the key of the value in the attribute directly.  For example:
+
+    can.Component.extend({
+      tag: "my-tag",
+      template: "<h1>{{greeting}}</h1>"
+    });
+    var template = can.mustache("<my-tag greeting='message'></my-tag>");
+    
+    var frag = template({
+      message: "Hi"
+    });
+    
+    frag //-> <my-tag greeting='message'><h1>Hi</h1></my-tag>
+   
+With stache, you wrap the key with `{}`. For example:
+
+    can.Component.extend({
+      tag: "my-tag",
+      template: "<h1>{{greeting}}</h1>"
+    });
+    var template = can.stache("<my-tag greeting='{message}'></my-tag>");
+    
+    var frag = template({
+      message: "Hi"
+    });
+     
+    frag //-> <my-tag greeting='{message}'><h1>Hi</h1></my-tag>
+
+If the key was not wrapped, the template would render:
+
+    frag //-> <my-tag greeting='message'><h1>message</h1></my-tag>
+ 
+Because the attribute value would be passed as the value of `gretting`.
  
 ### Section renderers return documentFragments
 
-A [can.Mustache.sectionRenderer Mustache section renderer] called 
+A [can.mustache.sectionRenderer Mustache section renderer] called 
 like `options.fn()` or `options.inverse()` would always return a String. For example,
 the following would wrap the `.fn` section in an `<h1>` tag:
 
-    can.Mustache.registerHelper("wrapH1", function(options.fn()){
+    can.mustache.registerHelper("wrapH1", function(options.fn()){
        return "<h1>"+options.fn()+"</h1>";
     });
     
-    var template = can.view.mustache("{{#wrapH1}}Hi There!{{/#wrapH1}}");
+    var template = can.mustache("{{#wrapH1}}Hi There!{{/#wrapH1}}");
     template() //-> <h1>Hi There</h1>
 
 `can.stache`s [can.stache.sectionRenderer section renderers] return documentFragments when sections
@@ -118,7 +159,7 @@ jQuery, this can be done like:
 
 ### Element callbacks are no longer supported
 
-`can.Mustache` supported [can.Mustache.helpers.elementCallback element callbacks] like `{{(el) -> CODE}}`. These
+`can.mustache` supported [can.mustache.helpers.elementCallback element callbacks] like `{{(el) -> CODE}}`. These
 are not supported in `can.stache`.  Instead, create a helper that returns a function or register 
 a [can.view.attr custom attribute].
 
