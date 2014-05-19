@@ -11,9 +11,9 @@ Next, install the required NPM modules:
 
 	npm install
 
-To generate the site, run:
+To generate the site, Dash docsets, and all other content, run:
 
-    ./js scripts/doc.js
+    grunt docjs
 
 To adjust __styles__:
 
