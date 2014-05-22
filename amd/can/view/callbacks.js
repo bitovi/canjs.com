@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0
+ * CanJS - 2.1.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 05 May 2014 22:15:43 GMT
+ * Thu, 22 May 2014 03:37:55 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -78,7 +78,15 @@ define(["can/util/library", "can/view"], function(can){
 	
 			// If this was an element like <foo-bar> that doesn't have a component, just render its content
 			var scope = tagData.scope,
-				res = tagCallback ? tagCallback(el, tagData) : scope;
+				res;
+				
+			if(tagCallback) {
+				var reads = can.__clearReading();
+				res = tagCallback(el, tagData);
+				can.__setReading(reads);
+			} else {
+				res = scope;
+			}
 	
 		
 	

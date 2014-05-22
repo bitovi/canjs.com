@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0
+ * CanJS - 2.1.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 05 May 2014 22:15:43 GMT
+ * Thu, 22 May 2014 03:37:55 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -332,7 +332,8 @@ steal('can/util', 'can/construct', function (can) {
 		"keypress", "mousedown", "mousemove", "mouseout", "mouseover",
 		"mouseup", "reset", "resize", "scroll", "select", "submit", "focusin",
 		"focusout", "mouseenter", "mouseleave",
-		"touchstart", "touchmove", "touchcancel", "touchend", "touchleave"
+		"touchstart", "touchmove", "touchcancel", "touchend", "touchleave",
+		"inserted","removed"
 	], function (v) {
 		processors[v] = basicProcessor;
 	});

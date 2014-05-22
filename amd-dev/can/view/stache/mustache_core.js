@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0
+ * CanJS - 2.1.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 05 May 2014 22:15:43 GMT
+ * Thu, 22 May 2014 03:37:55 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -17,7 +17,7 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 	// A lookup is an object that is used to identify a lookup in the scope.
 	/**
 	 * @hide
-	 * @typedef {{get: String}} can.Mustache.Lookup
+	 * @typedef {{get: String}} can.mustache.Lookup
 	 * @option {String} get A value in the scope to look up.
 	 */
 	
@@ -115,11 +115,11 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 		/**
 		 * @hide
 		 * Returns processed information about the arguments and hash in a mustache expression.
-		 * @param {can.Mustache.Expression} An expression minus the mode like: `each items animate="in"`
+		 * @param {can.mustache.Expression} An expression minus the mode like: `each items animate="in"`
 		 * @return {Object} Packaged info about the expression for faster processing.
-		 * @option {can.Mustache.Lookup|*} name The first key which is usually the name of a value or a helper to lookup.
-		 * @option {Array<can.Mustache.Lookup|*>} args An array of lookup values or JS literal values.
-		 * @option {Object.<String,can.Mustache.Lookup|*>} hashes A mapping of hash name to lookup values or JS literal values.
+		 * @option {can.mustache.Lookup|*} name The first key which is usually the name of a value or a helper to lookup.
+		 * @option {Array<can.mustache.Lookup|*>} args An array of lookup values or JS literal values.
+		 * @option {Object.<String,can.mustache.Lookup|*>} hashes A mapping of hash name to lookup values or JS literal values.
 		 */
 		expressionData: function(expression){
 			var args = [],
@@ -368,7 +368,7 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 				// Use can.view to get and render the partial.
 				else {
 					
-					res = can.view.render(partialName, scope /*, options*/ );
+					res = can.view.render(partialName, scope, options );
 				}
 				
 				live.replace([this], res);
@@ -381,7 +381,7 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 		 * @hide
 		 * Return a renderer function that evaluates to a string.
 		 * @param {String} mode
-		 * @param {can.Mustache.Expression} expression
+		 * @param {can.mustache.Expression} expression
 		 * @return {function(can.view.Scope,can.view.Options, can.view.renderer, can.view.renderer)} 
 		 */
 		makeStringBranchRenderer: function(mode, expression){
@@ -415,7 +415,7 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 		 * @hide
 		 * Returns a renderer function that evaluates the mustache expression.
 		 * @param {String} mode
-		 * @param {can.Mustache.Expression} expression
+		 * @param {can.mustache.Expression} expression
 		 * @param {Object} state The html state of where the expression was found.
 		 */
 		makeLiveBindingBranchRenderer: function(mode, expression, state){
@@ -499,7 +499,7 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 		/**
 		 * @hide
 		 * Returns the mustache mode split from the rest of the expression.
-		 * @param {can.Mustache.Expression} expression
+		 * @param {can.mustache.Expression} expression
 		 * @param {Object} state The state of HTML where the expression was found.
 		 */
 		splitModeFromExpression: function(expression, state){

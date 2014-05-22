@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0
+ * CanJS - 2.1.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 05 May 2014 22:15:43 GMT
+ * Thu, 22 May 2014 03:37:55 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -116,7 +116,7 @@ define(["can/util/library", "can/view/scope", "can/view", "can/view/scanner", "c
 		};
 
 		/**
-		 * @add can.Mustache
+		 * @add can.MustacheConstructor
 		 */
 		// Put Mustache on the `can` object.
 		can.Mustache = window.Mustache = Mustache;
@@ -126,8 +126,8 @@ define(["can/util/library", "can/view/scope", "can/view", "can/view/scanner", "c
 		 */
 		Mustache.prototype.
 		/**
-		 * @function can.Mustache.prototype.render render
-		 * @parent can.Mustache.prototype
+		 * @function can.MustacheConstructor.prototype.render render
+		 * @parent can.MustacheConstructor.prototype
 		 * @signature `mustache.render( data [, helpers] )`
 		 * @param {Object} data Data to interpolate into the template.
 		 * @return {String} The template with interpolated data, in string form.
@@ -1322,7 +1322,7 @@ define(["can/util/library", "can/view/scope", "can/view", "can/view/scanner", "c
 		}
 
 		/**
-		 * @function can.Mustache.txt
+		 * @function can.MustacheConstructor.txt
 		 * @hide
 		 *
 		 * Evaluates the resulting string based on the context/name.
@@ -1479,7 +1479,7 @@ define(["can/util/library", "can/view/scope", "can/view", "can/view/scanner", "c
 		};
 
 		/**
-		 * @function can.Mustache.get
+		 * @function can.MustacheConstructor.get
 		 * @hide
 		 *
 		 * Resolves a key for a given object (and then a context if that fails).
@@ -1647,7 +1647,7 @@ define(["can/util/library", "can/view/scope", "can/view", "can/view/scanner", "c
 
 		/**
 		 * @hide
-		 * @function can.Mustache.getHelper getHelper
+		 * @function can.MustacheConstructor.getHelper getHelper
 		 * @description Retrieve a helper.
 		 * @signature `Mustache.getHelper(name)`
 		 * @param {String} name The name of the helper.
@@ -1665,7 +1665,7 @@ define(["can/util/library", "can/view/scope", "can/view", "can/view/scanner", "c
 		};
 
 		/**
-		 * @function can.Mustache.static.render render
+		 * @function can.MustacheConstructor.static.render render
 		 * @hide
 		 * @parent can.Mustache.static
 		 * @signature `Mustache.render(partial, context)`
@@ -1705,7 +1705,7 @@ define(["can/util/library", "can/view/scope", "can/view", "can/view/scanner", "c
 
 			// Call into `can.view.render` passing the
 			// partial and scope.
-			return can.view.render(partial, scope /*, options*/ );
+			return can.view.render(partial, scope, options);
 		};
 
 		/**
@@ -1779,7 +1779,7 @@ define(["can/util/library", "can/view/scope", "can/view", "can/view/scanner", "c
 			 * @param {can.mustache.key} key A key that references a value within the current or parent
 			 * context. If the value is a function or can.compute, the function's return value is used.
 			 *
-			 * @param {can.Mustache} BLOCK A mustache template.
+			 * @param {can.mustache} BLOCK A mustache template.
 			 *
 			 * @return {String} If the key's value is truthy, the `BLOCK` is rendered with the
 			 * current context and its value is returned; otherwise, an empty string.
@@ -1869,9 +1869,10 @@ define(["can/util/library", "can/view/scope", "can/view", "can/view/scanner", "c
 			 *     {{/unless}}
 			 */
 			'unless': function (expr, options) {
-				if (!Mustache.resolve(expr)) {
-					return options.fn(options.contexts || this);
-				}
+				var fn = options.fn;
+				options.fn = options.inverse;
+				options.inverse = fn;
+				return Mustache._helpers['if'].fn.apply(this, arguments);
 			},
 
 			// Implements the `each` built-in helper.
@@ -2018,7 +2019,7 @@ define(["can/util/library", "can/view/scope", "can/view", "can/view/scanner", "c
 			 * context. If the value is a function or can.compute, the function's
 			 * return value is used.
 			 *
-			 * @param {can.Mustache} BLOCK A template that is rendered
+			 * @param {can.mustache} BLOCK A template that is rendered
 			 * with the context of the `key`'s value.
 			 *
 			 * @body

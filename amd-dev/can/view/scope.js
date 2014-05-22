@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0
+ * CanJS - 2.1.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 05 May 2014 22:15:43 GMT
+ * Thu, 22 May 2014 03:37:55 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -158,7 +158,7 @@ define(["can/util/library", "can/construct", "can/map", "can/list", "can/view", 
 				// was found in, readsData and the current scope.
 				/**
 				 * @hide
-				 * @param {can.Mustache.key} attr A dot seperated path.  Use `"\."` if you have a property name that includes a dot.
+				 * @param {can.mustache.key} attr A dot seperated path.  Use `"\."` if you have a property name that includes a dot.
 				 * @param {can.view.Scope.readOptions} options that configure how this gets read.
 				 * @return {{}}
 				 * @option {Object} parent the value's immediate parent

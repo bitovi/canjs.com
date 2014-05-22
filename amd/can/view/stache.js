@@ -1,13 +1,13 @@
 /*!
- * CanJS - 2.1.0
+ * CanJS - 2.1.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 05 May 2014 22:15:43 GMT
+ * Thu, 22 May 2014 03:37:55 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["can/view/parser", "can/view/target", "can/view/stache/html_section", "can/view/stache/text_section", "can/view/stache/mustache_core", "can/view/stache/mustache_helpers", "can/view/callbacks"], function(parser, target,  HTMLSection, TextSection, mustacheCore, mustacheHelpers, viewCallbacks ){
+define(["can/util/library", "can/view/parser", "can/view/target", "can/view/stache/html_section", "can/view/stache/text_section", "can/view/stache/mustache_core", "can/view/stache/mustache_helpers", "can/view/callbacks"], function(can, parser, target,  HTMLSectionBuilder, TextSectionBuilder, mustacheCore, mustacheHelpers, viewCallbacks ){
 
 	// Make sure that we can also use our modules with Stache as a plugin
 	parser = parser || can.view.parser;
@@ -19,7 +19,7 @@ define(["can/view/parser", "can/view/target", "can/view/stache/html_section", "c
 		template = mustacheCore.cleanLineEndings(template);
 		
 		// The HTML section that is the root section for the entire template.
-		var section = new HTMLSection(),
+		var section = new HTMLSectionBuilder(),
 		
 			// This function is a catch all for taking a section and figuring out
 			// how to create a "renderer" that handles the functionality for a 
@@ -48,7 +48,7 @@ define(["can/view/parser", "can/view/target", "can/view/stache/html_section", "c
 					// the mustache text, and sets up live binding if an observable is read.
 					// A StringBranchRenderer function processes the mustache text and returns a 
 					// text value.  
-					var makeRenderer = section instanceof HTMLSection ?
+					var makeRenderer = section instanceof HTMLSectionBuilder ?
 						
 						mustacheCore.makeLiveBindingBranchRenderer:
 						mustacheCore.makeStringBranchRenderer;
@@ -210,7 +210,7 @@ define(["can/view/parser", "can/view/target", "can/view/stache/html_section", "c
 				
 				
 				if(expression === "else") {
-					section.inverse();
+					(state.attr && state.attr.section ? state.attr.section : section).inverse();
 					return;
 				}
 				
@@ -232,7 +232,7 @@ define(["can/view/parser", "can/view/target", "can/view/stache/html_section", "c
 				else if(state.attr) {
 					
 					if(!state.attr.section) {
-						state.attr.section = new TextSection();
+						state.attr.section = new TextSectionBuilder();
 						if(state.attr.value) {
 							state.attr.section.add(state.attr.value);
 						}
@@ -249,7 +249,7 @@ define(["can/view/parser", "can/view/target", "can/view/stache/html_section", "c
 						state.node.attributes.push( mustacheCore.makeLiveBindingBranchRenderer( null,expression, copyState() ) );
 					} else if( mode === "#" || mode === "^" ) {
 						if(!state.node.section) {
-							state.node.section = new TextSection();
+							state.node.section = new TextSectionBuilder();
 						}
 						makeRendererAndUpdateSection(state.node.section, mode, expression );
 					} else {

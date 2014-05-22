@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0
+ * CanJS - 2.1.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 05 May 2014 22:15:55 GMT
+ * Thu, 22 May 2014 03:38:01 GMT
  * Licensed MIT
  * Includes: can/component,can/construct,can/map,can/list,can/observe,can/compute,can/model,can/view,can/control,can/route,can/control/route,can/view/mustache,can/view/bindings,can/view/live,can/view/scope,can/util/string,can/util/attr
  * Download from: http://canjs.com
@@ -34,7 +34,7 @@
             }
             return object._cid;
         };
-        can.VERSION = '2.1.0';
+        can.VERSION = '2.1.1';
 
         can.simpleExtend = function(d, s) {
             for (var prop in s) {
@@ -418,9 +418,23 @@
         can.event = {
             // Event method aliases
 
-            on: can.addEvent,
+            on: function() {
+                if (arguments.length === 0 && can.Control && this instanceof can.Control) {
+                    return can.Control.prototype.on.call(this);
+                } else {
+                    return can.addEvent.apply(this, arguments);
+                }
+            },
 
-            off: can.removeEvent,
+
+            off: function() {
+                if (arguments.length === 0 && can.Control && this instanceof can.Control) {
+                    return can.Control.prototype.off.call(this);
+                } else {
+                    return can.removeEvent.apply(this, arguments);
+                }
+            },
+
 
             bind: can.addEvent,
 
@@ -1775,7 +1789,15 @@
 
                 // If this was an element like <foo-bar> that doesn't have a component, just render its content
                 var scope = tagData.scope,
-                    res = tagCallback ? tagCallback(el, tagData) : scope;
+                    res;
+
+                if (tagCallback) {
+                    var reads = can.__clearReading();
+                    res = tagCallback(el, tagData);
+                    can.__setReading(reads);
+                } else {
+                    res = scope;
+                }
 
 
 
@@ -2384,7 +2406,8 @@
                 "keypress", "mousedown", "mousemove", "mouseout", "mouseover",
                 "mouseup", "reset", "resize", "scroll", "select", "submit", "focusin",
                 "focusout", "mouseenter", "mouseleave",
-                "touchstart", "touchmove", "touchcancel", "touchend", "touchleave"
+                "touchstart", "touchmove", "touchcancel", "touchend", "touchleave",
+                "inserted", "removed"
             ], function(v) {
                 processors[v] = basicProcessor;
             });
@@ -5416,7 +5439,7 @@
     })(__m2, __m27);
 
     // ## view/parser/parser.js
-    var __m31 = (function() {
+    var __m31 = (function(can) {
 
 
         function makeMap(str) {
@@ -7130,7 +7153,7 @@
 
             // Call into `can.view.render` passing the
             // partial and scope.
-            return can.view.render(partial, scope);
+            return can.view.render(partial, scope, options);
         };
 
 
@@ -7175,9 +7198,10 @@
                 // Implements the `unless` built-in helper.
 
                 'unless': function(expr, options) {
-                    if (!Mustache.resolve(expr)) {
-                        return options.fn(options.contexts || this);
-                    }
+                    var fn = options.fn;
+                    options.fn = options.inverse;
+                    options.inverse = fn;
+                    return Mustache._helpers['if'].fn.apply(this, arguments);
                 },
 
                 // Implements the `each` built-in helper.
@@ -7751,6 +7775,8 @@
                     can.each(can.makeArray(el.attributes), function(node, index) {
                         var name = can.camelize(node.nodeName.toLowerCase()),
                             value = node.value;
+
+
 
                         // Ignore attributes already present in the ScopeMappings.
                         if (component.constructor.attributeScopeMappings[name] || ignoreAttributesRegExp.test(name) || viewCallbacks.attr(node.nodeName)) {
@@ -9083,13 +9109,13 @@
                 data: new can.Map({}),
                 map: function(data) {
                     var appState;
-                    // appState is an instance of can.Map
-                    if (data instanceof can.Map) {
-                        appState = data;
-                    }
                     // appState is a can.Map constructor function
-                    else if (data.prototype instanceof can.Map) {
+                    if (data.prototype instanceof can.Map) {
                         appState = new data();
+                    }
+                    // appState is an instance of can.Map
+                    else {
+                        appState = data;
                     }
                     can.route.data = appState;
                 },

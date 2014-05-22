@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0
+ * CanJS - 2.1.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 05 May 2014 22:15:43 GMT
+ * Thu, 22 May 2014 03:37:55 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -357,13 +357,13 @@ define(["can/util/library", "can/map", "can/list", "can/util/string/deparam"], f
 		data: new can.Map({}),
 		map: function(data){
 			var appState;
-			// appState is an instance of can.Map
-			if(data instanceof can.Map){
-				appState = data;
-			}
 			// appState is a can.Map constructor function
-			else if(data.prototype instanceof can.Map){
+			if(data.prototype instanceof can.Map){
 				appState = new data();
+			}
+			// appState is an instance of can.Map
+			else {
+				appState = data;
 			}
 			can.route.data = appState;
 		},

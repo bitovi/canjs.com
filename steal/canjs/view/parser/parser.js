@@ -1,14 +1,14 @@
 /*!
- * CanJS - 2.1.0
+ * CanJS - 2.1.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 05 May 2014 22:15:43 GMT
+ * Thu, 22 May 2014 03:37:55 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
 /* jshint maxdepth:7*/
-steal("can/view", function(){
+steal("can/view", function(can){
 	
 	
 	function makeMap(str){

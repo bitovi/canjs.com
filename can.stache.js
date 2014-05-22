@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0
+ * CanJS - 2.1.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 05 May 2014 22:15:57 GMT
+ * Thu, 22 May 2014 03:38:02 GMT
  * Licensed MIT
  * Includes: can/view/stache
  * Download from: http://canjs.com
@@ -32,7 +32,54 @@
                 var cloned = testFrag.cloneNode(true);
 
                 return cloned.childNodes[0].childNodes.length === 2;
+            })(),
+            clonesWork = (function() {
+                // Since html5shiv is required to support custom elements, assume cloning
+                // works in any browser that doesn't have html5shiv
+
+                // Clone an element containing a custom tag to see if the innerHTML is what we
+                // expect it to be, or if not it probably was created outside of the document's
+                // namespace.
+                var a = document.createElement('a');
+                a.innerHTML = "<xyz></xyz>";
+                var clone = a.cloneNode(true);
+
+                return clone.innerHTML === "<xyz></xyz>";
             })();
+
+
+        var cloneNode = clonesWork ? function(el) {
+                return el.cloneNode(true);
+            } : function(node) {
+                var copy;
+
+                if (node.nodeType === 1) {
+                    copy = document.createElement(node.nodeName);
+                } else if (node.nodeType === 3) {
+                    copy = document.createTextNode(node.nodeValue);
+                } else if (node.nodeType === 8) {
+                    copy = document.createComment(node.nodeValue);
+                } else if (node.nodeType === 11) {
+                    copy = document.createDocumentFragment();
+                }
+
+                if (node.attributes) {
+                    var attributes = can.makeArray(node.attributes);
+                    can.each(attributes, function(node) {
+                        if (node && node.specified) {
+                            copy.setAttribute(node.nodeName, node.nodeValue);
+                        }
+                    });
+                }
+
+                if (node.childNodes) {
+                    can.each(node.childNodes, function(child) {
+                        copy.appendChild(cloneNode(child));
+                    });
+                }
+
+                return copy;
+            };
 
         function processNode(node, paths, location) {
             var callback,
@@ -138,7 +185,7 @@
                 callbackData.callback.apply(child, args);
             }
             if (paths && paths.length) {
-                for (i = 0, len = paths.length; i < len; i++) {
+                for (i = paths.length - 1; i >= 0; i--) {
                     hydratePath(child, paths[i], args);
                 }
             }
@@ -151,8 +198,8 @@
                 paths: paths,
                 clone: frag,
                 hydrate: function() {
-                    var cloned = this.clone.cloneNode(true),
-                        args = can.makeArray(arguments);
+                    var cloned = cloneNode(this.clone);
+                    var args = can.makeArray(arguments);
                     for (var i = paths.length - 1; i >= 0; i--) {
                         hydratePath(cloned, paths[i], args);
                     }
@@ -292,9 +339,10 @@
                 }
             },
             'unless': function(expr, options) {
-                if (!resolve(expr)) {
-                    return options.fn(options.scope || this);
-                }
+                var fn = options.fn;
+                options.fn = options.inverse;
+                options.inverse = fn;
+                return helpers['if'].apply(this, arguments);
             },
             'with': function(expr, options) {
                 var ctx = expr;
@@ -671,7 +719,7 @@
                     // Use can.view to get and render the partial.
                     else {
 
-                        res = can.view.render(partialName, scope);
+                        res = can.view.render(partialName, scope, options);
                     }
 
                     live.replace([this], res);
@@ -1033,7 +1081,7 @@
                     this.stack.pop();
                 },
                 inverse: function() {
-                    this.pop();
+                    this.stack.pop();
                     var falseySection = new TextSection();
                     this.last().last().falsey = falseySection;
                     this.stack.push(falseySection);
@@ -1115,7 +1163,7 @@
     })(window.can, undefined, __m14);
 
     // ## view/stache/stache.js
-    var __m1 = (function(parser, target, HTMLSection, TextSection, mustacheCore, mustacheHelpers, viewCallbacks) {
+    var __m1 = (function(can, parser, target, HTMLSectionBuilder, TextSectionBuilder, mustacheCore, mustacheHelpers, viewCallbacks) {
 
         // Make sure that we can also use our modules with Stache as a plugin
         parser = parser || can.view.parser;
@@ -1127,7 +1175,7 @@
             template = mustacheCore.cleanLineEndings(template);
 
             // The HTML section that is the root section for the entire template.
-            var section = new HTMLSection(),
+            var section = new HTMLSectionBuilder(),
 
                 // This function is a catch all for taking a section and figuring out
                 // how to create a "renderer" that handles the functionality for a 
@@ -1156,7 +1204,7 @@
                         // the mustache text, and sets up live binding if an observable is read.
                         // A StringBranchRenderer function processes the mustache text and returns a 
                         // text value.  
-                        var makeRenderer = section instanceof HTMLSection ?
+                        var makeRenderer = section instanceof HTMLSectionBuilder ?
 
                         mustacheCore.makeLiveBindingBranchRenderer :
                             mustacheCore.makeStringBranchRenderer;
@@ -1320,7 +1368,7 @@
 
 
                         if (expression === "else") {
-                            section.inverse();
+                            (state.attr && state.attr.section ? state.attr.section : section).inverse();
                             return;
                         }
 
@@ -1342,7 +1390,7 @@
                         else if (state.attr) {
 
                             if (!state.attr.section) {
-                                state.attr.section = new TextSection();
+                                state.attr.section = new TextSectionBuilder();
                                 if (state.attr.value) {
                                     state.attr.section.add(state.attr.value);
                                 }
@@ -1359,7 +1407,7 @@
                                 state.node.attributes.push(mustacheCore.makeLiveBindingBranchRenderer(null, expression, copyState()));
                             } else if (mode === "#" || mode === "^") {
                                 if (!state.node.section) {
-                                    state.node.section = new TextSection();
+                                    state.node.section = new TextSectionBuilder();
                                 }
                                 makeRendererAndUpdateSection(state.node.section, mode, expression);
                             } else {
@@ -1429,6 +1477,6 @@
         };
 
         return stache;
-    })(undefined, __m11, __m13, __m28, __m15, __m16, undefined);
+    })(window.can, undefined, __m11, __m13, __m28, __m15, __m16, undefined);
 
 })();

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.0
+ * CanJS - 2.1.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 05 May 2014 22:15:43 GMT
+ * Thu, 22 May 2014 03:37:55 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -296,7 +296,15 @@ define(["can/util/can"], function (can) {
 		 *
 		 * This syntax can be used for objects that don't include the `can.event` mixin.
 		 */
-		on: can.addEvent,
+		on: function() {
+			if (arguments.length === 0 && can.Control && this instanceof can.Control) {
+				return can.Control.prototype.on.call(this);
+			}
+			else {
+				return can.addEvent.apply(this, arguments);
+			}
+		},
+
 		/**
 		 * @function can.event.off
 		 * @parent can.event.static
@@ -310,7 +318,15 @@ define(["can/util/can"], function (can) {
 		 *
 		 * This syntax can be used for objects that don't include the `can.event` mixin.
 		 */
-		off: can.removeEvent,
+		off: function() {
+			if (arguments.length === 0 && can.Control && this instanceof can.Control) {
+				return can.Control.prototype.off.call(this);
+			}
+			else {
+				return can.removeEvent.apply(this, arguments);
+			}
+		},
+
 		/**
 		 * @function can.event.bind
 		 * @parent can.event.static
