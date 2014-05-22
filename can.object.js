@@ -2,7 +2,7 @@
  * CanJS - 2.1.1
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:38:02 GMT
+ * Thu, 22 May 2014 03:45:24 GMT
  * Licensed MIT
  * Includes: can/util/object
  * Download from: http://canjs.com
