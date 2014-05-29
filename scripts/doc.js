@@ -46,6 +46,10 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 		return "CanJS"
 	}
 
+	var docsetTitle = function() {
+		return (this.name || this.title);
+	};
+
 	var copyCanJSTo = function(loc){
 		var dest = new steal.URI(loc);
 		if (!dest.exists()) {
@@ -111,6 +115,7 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 			"templates": "scripts/templates",
 			helpers: function(data, config, getCurrent, oldHelpers){
 				return {
+					docsetTitle: docsetTitle,
 					documentTitle: documentTitle,
 					isLatestVersion: function(options){
 						return this.number == config.version ?
@@ -199,20 +204,25 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 	DocumentJS('scripts/doc.html', apiOptions);
 
 	// Produce API files compatible for Dash .docset output
-	apiOptions.out = version + "/docset/Contents/Resources/Documents";
-	apiOptions.templates = 'scripts/docset-templates';
-	DocumentJS('scripts/doc.html', apiOptions);
+	DocumentJS('scripts/doc.html', steal.extend(apiOptions, {
+		out: version + "/docset/Contents/Resources/Documents",
+		templates: "scripts/docset-templates"
+	}));
 
 	// Copy the Info.plist file into the right place
 	new steal.File('Info.plist').copyTo(version + "/docset/Contents/Info.plist");
+
+	// Copy the Favicon file into the right place inside the docset path
+	new steal.File('canjs-logo-32x32.png').copyTo(version + "/docset/icon.png");
 	
 	// Make versioned guides
 	DocumentJS(null, guidesOptions);
 
 	// ... and versioned guides for Dash
-	guidesOptions.out = version + "/docset/Contents/Resources/Documents/Guides"
-	guidesOptions.templates = 'scripts/docset-templates';
-	DocumentJS(null, guidesOptions);
+	DocumentJS(null, steal.extend(guidesOptions, {
+		out: version + "/docset/Contents/Resources/Documents/Guides",
+		templates: "scripts/docset-templates"
+	}));
 	
 	// if version is the last non-branch version, put in "docs" and "guides" 
 	if( isCurrentVersion ) {
@@ -228,18 +238,19 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 				out: "docs",
 				versionsSrc: "../versions.json",
 				isVersioned: false,
-				
+				templates: "scripts/templates",
 				statics: {
 					src: "_pages"
 				}
-			}) );
+			}));
 		// Make current guides
 		DocumentJS(null, 
 			steal.extend( guidesOptions, {
 				out: "guides",
 				versionsSrc: "../versions.json",
-				isVersioned: false
-			} ));
+				templates: "scripts/templates",
+				isVersioned: false,
+			}));
 		
 		
 	}

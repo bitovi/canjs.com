@@ -65,6 +65,32 @@ If you changed any of the submodules, commit those changes and push them to GitH
 
 	git push origin gh-pages
 
+## Deploying Dash Docsets
+
+These scripts now include a component to generate [Dash](http://kapeli.com/dash)-compatible documentation archives. Once all the documentation has been generated from above, you can submit a pull request for their docset integration [here](https://github.com/Kapeli/Dash-User-Contributions). For CanJS docs, we use the following convention (example: for CanJS Version 2.1.0):
+
+* use the Major, Minor, and patch version for the CanJS directory (ex. `docsets/CanJS/versions/2.1.0/CanJS.tgz`)
+* use the Major, Minor, and patch version with the date in the docset.json file (ex. `"version": 2.1.0/2014-05-16`) and update for specific versions like:
+
+	"specific_versions": [
+		{ "_comment": "Legacy Versions of CanJS" },
+		{
+			"version": "2.1.0/2014-05-16",
+			"archive": "versions/2.1.0/CanJS.tgz"
+		},
+		{
+			"version": "2.0.6/2014-04-28",
+			"archive": "versions/2.0.6/CanJS.tgz"
+		},
+		{
+			"version": "2.0.5/2014-04-10",
+			"archive": "versions/2.0.5/CanJS.tgz"
+		},
+		// ...
+	]
+
+If we do not need to support older versions of CanJS, specific versions can be omitted.
+
 ## Notes
 
 - Always keep submodule references up to date by running the `update` command above.
