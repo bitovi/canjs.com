@@ -123,27 +123,27 @@ module.exports = function (grunt) {
 		'dash-docset': {
 			dist: {
 				options: {
-					path: process.cwd() + '/' + versions[0].number + '/docset/',
-					docsURL: 'http://canjs.com/' + versions[0].number + '/docs/'
+					path: process.cwd() + '/' + minor + '/docset/',
+					docsURL: 'http://canjs.com/' + minor + '/docs/'
 				}
 			}
 		},
 		'dash-infoplist': {
 			dist: {
 				options: {
-					path: process.cwd() + '/' + versions[0].number + '/docset/'
+					path: process.cwd() + '/' + minor + '/docset/'
 				}
 			}
 		},
 		'dash-repath': {
 			dist: {
 				options: {
-					containingFolder: process.cwd() + '/' + versions[0].number + '/'
+					containingFolder: process.cwd() + '/' + minor + '/'
 				}
 			}
 		},
-		clean: [process.cwd() + '/' + versions[0].number + '/docset/',
-				process.cwd() + '/' + versions[0].number + '/']
+		clean: [process.cwd() + '/' + minor + '/docset/',
+				process.cwd() + '/' + minor + '/']
 	});
 
 	// These plugins provide necessary tasks.
