@@ -51,15 +51,15 @@ module.exports = function(grunt) {
 							break;
 						case 'page':
 							if(/plugins$/.test(props.parent)) {
-								type = 'Mixin';
+								type = 'Plugin';
 							} else if(props.name === 'can.event') {
-								type = 'Mixin';
+								type = 'Plugin';
 							} else if(props.parent === 'guides') {
 								type = 'Guide';
 							} else if(props.parent === 'can.Mustache.pages') {
-								type = 'Mixin';
+								type = 'Plugin';
 							} else if(props.parent === 'can.stache.pages') {
-								type = 'Mixin';
+								type = 'Plugin';
 							} else {
 								type = null; // do not show this in the docs
 							}
