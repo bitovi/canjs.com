@@ -6,13 +6,18 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 
 	var forceBuild = false;
 	var minifyBuild = true;
+	var generateDocset = true;
 	// convert args
 	_args.forEach(function(arg){
-		if(arg == "-f" || arg == "-forceBuild") {
+		if(arg == "-forceBuild" || arg == "-f") {
 			forceBuild = true
 		}
 		if(arg == "-concatonly" || arg == "-c"){
 			minifyBuild = false;
+		}
+
+		if (arg === "-skipdocset" || arg === "-s") {
+			generateDocset = false;
 		}
 	})
 	
@@ -71,8 +76,8 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 	}
 
 	var minorVersionOf = function(version){
-			return version.split(".").slice(0,2).join(".")
-		}
+		return version.split(".").slice(0,2).join(".");
+	};
 	
 
 	// CONFIG PREPERATION
@@ -203,27 +208,30 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 	// Make versioned API docs
 	DocumentJS('scripts/doc.html', apiOptions);
 
-	// Produce API files compatible for Dash .docset output
-	DocumentJS('scripts/doc.html', steal.extend(apiOptions, {
-		out: version + "/docset/Contents/Resources/Documents",
-		templates: "scripts/docset-templates"
-	}));
-
-	// Copy the Info.plist file into the right place
-	new steal.File('Info.plist').copyTo(version + "/docset/Contents/Info.plist");
-
-	// Copy the Favicon file into the right place inside the docset path
-	new steal.File('canjs-logo-32x32.png').copyTo(version + "/docset/icon.png");
-	
 	// Make versioned guides
 	DocumentJS(null, guidesOptions);
 
-	// ... and versioned guides for Dash
-	DocumentJS(null, steal.extend(guidesOptions, {
-		out: version + "/docset/Contents/Resources/Documents/Guides",
-		templates: "scripts/docset-templates"
-	}));
-	
+	if (generateDocset) {
+		// Produce API files compatible for Dash .docset output
+		DocumentJS('scripts/doc.html', steal.extend(apiOptions, {
+			out: version + "/docset/Contents/Resources/Documents",
+			templates: "scripts/docset-templates"
+		}));
+
+		// Copy the Info.plist file into the right place
+		new steal.File('Info.plist').copyTo(version + "/docset/Contents/Info.plist");
+
+		// Copy the Favicon file into the right place inside the docset path
+		new steal.File('canjs-logo-16x16.png').copyTo(version + "/docset/icon.png");
+		new steal.File('canjs-logo-32x32.png').copyTo(version + "/docset/icon@2x.png");
+
+		// ... and versioned guides for Dash
+		DocumentJS(null, steal.extend(guidesOptions, {
+			out: version + "/docset/Contents/Resources/Documents/Guides",
+			templates: "scripts/docset-templates"
+		}));
+	}
+		
 	// if version is the last non-branch version, put in "docs" and "guides" 
 	if( isCurrentVersion ) {
 		print("\nWRITING CURRENT VERSION\n")

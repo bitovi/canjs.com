@@ -43,6 +43,8 @@ Add __-f__ to force a new production.js and production.css like:
     
 Add __-c__ or __-concatonly__ to leave production unminified.
 
+Add __-s__ or __-skipdocset__ to avoid re-generating the docset directories.
+
 If you are having trouble building, open `/documentjs/site/static/build/build.html` in your 
 browser. This page attempts to load all the static content of the site with steal.
 
