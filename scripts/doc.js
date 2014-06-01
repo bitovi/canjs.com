@@ -75,6 +75,26 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 		new steal.URI(loc+"/dist").removeDir();
 	}
 
+	var copyStealTo = function(loc){
+		var dest = new steal.URI(loc);
+		if (!dest.exists()) {
+			dest.mkdirs();
+		}
+		console.log("Copying Steal files to "+dest)
+		new steal.URI('steal').copyTo(dest);
+		
+		try{
+			new steal.URI(loc+"/.git").removeDir();
+		} catch(e){
+			new steal.URI(loc+"/.git").remove();
+		}
+		new steal.URI(loc+"/.gitattributes").remove();
+		new steal.URI(loc+"/.gitignore").remove();
+		// new steal.URI(loc+"/node_modules").removeDir();
+		// new steal.URI(loc+"/test/pluginified").removeDir();
+		// new steal.URI(loc+"/dist").removeDir();
+	}
+
 	var minorVersionOf = function(version){
 		return version.split(".").slice(0,2).join(".");
 	};
@@ -212,6 +232,13 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 	DocumentJS(null, guidesOptions);
 
 	if (generateDocset) {
+		// copy can and steal content to subdirectories of the docset package so that examples work without modification
+		// TODO: it has to put can in two different locations which is silly.
+		copyCanJSTo(version + '/docset/Contents/Resources/can');
+		copyCanJSTo(version + '/docset/Contents/can');
+		copyStealTo(version + '/docset/Contents/steal');
+		new steal.File('stealconfig.js').copyTo(version + '/docset/Contents/stealconfig.js');
+
 		// Produce API files compatible for Dash .docset output
 		DocumentJS('scripts/doc.html', steal.extend(apiOptions, {
 			out: version + "/docset/Contents/Resources/Documents",
