@@ -80,6 +80,7 @@ These scripts now include a component to generate [Dash](http://kapeli.com/dash)
 * use the Major, Minor, and patch version for the CanJS directory (ex. `docsets/CanJS/versions/2.1.0/CanJS.tgz`)
 * use the Major, Minor, and patch version with the date in the docset.json file (ex. `"version": 2.1.0/2014-05-16`) and update for specific versions like:
 
+	// ...
 	"specific_versions": [
 		{ "_comment": "Legacy Versions of CanJS" },
 		{
@@ -97,7 +98,7 @@ These scripts now include a component to generate [Dash](http://kapeli.com/dash)
 		// ...
 	]
 
-If we do not need to support older versions of CanJS, specific versions can be omitted.
+If we do not need to support older versions of CanJS, they can be omitted from this file.
 
 ## Notes
 
