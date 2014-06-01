@@ -3,10 +3,10 @@ load('steal/rhino/rhino.js');
 steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) {
 
 	// ARGUMENT PROCESSING
-
 	var forceBuild = false;
 	var minifyBuild = true;
-	var generateDocset = true;
+	var generateDocset = false;
+	
 	// convert args
 	_args.forEach(function(arg){
 		if(arg == "-forceBuild" || arg == "-f") {
@@ -16,13 +16,12 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 			minifyBuild = false;
 		}
 
-		if (arg === "-skipdocset" || arg === "-s") {
-			generateDocset = false;
+		if (arg === "-generateDocset" || arg === "-g") {
+			generateDocset = true;
 		}
 	})
 	
 	// HELPER METHODS
-
 	var cap = function(str){
 		return str.substr(0,1).toUpperCase()+str.substr(1)
 	}
@@ -220,7 +219,6 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 	new steal.URI(version+"/can").removeDir();
 	new steal.URI(version+"/docs").removeDir();
 	new steal.URI(version+"/guides").removeDir();
-	new steal.URI(version+"/docset").removeDir();
 	
 	// Make versioned CanJS
 	copyCanJSTo(version+"/can");
@@ -232,6 +230,9 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 	DocumentJS(null, guidesOptions);
 
 	if (generateDocset) {
+		// Remove the previous docset
+		new steal.URI(version+"/docset").removeDir();
+
 		// copy can and steal content to subdirectories of the docset package so that examples work without modification
 		// TODO: it has to put can in two different locations which is silly.
 		copyCanJSTo(version + '/docset/Contents/Resources/can');
