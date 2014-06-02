@@ -112,7 +112,7 @@ module.exports = function (grunt) {
 		},
 		shell: {
 			docjs: {
-				command: "./js ./scripts/doc.js",
+				command: "./js ./scripts/doc.js -g",
 				options: {
 					stdout: true,
 					stderr: true,

@@ -138,7 +138,7 @@ module.exports = function(grunt) {
 		this.requires('shell:docjs', 'dash-docset');
 		fs.renameSync(
 			this.options().containingFolder + 'docset',
-			this.options().containingFolder + 'canjs.docset'
+			this.options().containingFolder + 'CanJS.docset'
 		);
 	});
 };

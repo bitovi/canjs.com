@@ -11,11 +11,13 @@ Next, install the required NPM modules:
 
 	npm install
 
-To re-generate the site, Dash docsets, and all other content, run:
+If you need to re-generate the docs while testing some changes, run:
+
+	./js scripts/doc.js
+
+To simply re-generate the site, docset, and all other content, run:
 
     grunt docjs
-
-If this is all you needed to do, you can skip to the Deploy section below.
 
 ## Additional instructions and options
 
@@ -47,9 +49,11 @@ Add __-c__ or __-concatonly__ to leave production unminified.
 
 	./js scripts/doc.js -c
 
-Add __-g__ or __-generateDocset__ to re-generat the docs AND docset directory. (By default, `grunt docjs` will use this option.)
+Add __-g__ or __-generateDocset__ to re-generate the docs AND docset directory. (By default, `grunt docjs` will use this option.)
 
-	./js scripts.doc.js -g
+	./js scripts/doc.js -g
+
+__NOTE:__ Do not commit the *.docset directories that this will generate. Instead, after compressing the package and submitting to Kapeli, erase the files.
 
 If you are having trouble building, open `/documentjs/site/static/build/build.html` in your 
 browser. This page attempts to load all the static content of the site with steal.
@@ -75,14 +79,14 @@ If you changed any of the submodules, commit those changes and push them to GitH
 
 ## Deploying Dash Docsets
 
-These scripts now include a component to generate [Dash](http://kapeli.com/dash)-compatible documentation archives. Once all the documentation has been generated from above, you can submit a pull request for their docset integration [here](https://github.com/Kapeli/Dash-User-Contributions). For CanJS docs, we use the following convention (example: for CanJS Version 2.1.0):
+These scripts now include a component to generate [Dash](http://kapeli.com/dash)-compatible documentation archives. Once all the documentation has been generated from the above command, you can submit a pull request for their docset integration [here](https://github.com/Kapeli/Dash-User-Contributions). For CanJS docs, we use the following convention (example: for CanJS Version 2.1.0 and today's date):
 
 * use the Major, Minor, and patch version for the CanJS directory (ex. `docsets/CanJS/versions/2.1.0/CanJS.tgz`)
 * use the Major, Minor, and patch version with the date in the docset.json file (ex. `"version": 2.1.0/2014-05-16`) and update for specific versions like:
 
 	// ...
 	"specific_versions": [
-		{ "_comment": "Legacy Versions of CanJS" },
+		{ "_comment": "Current and Legacy Versions of CanJS" },
 		{
 			"version": "2.1.0/2014-05-16",
 			"archive": "versions/2.1.0/CanJS.tgz"
@@ -98,7 +102,7 @@ These scripts now include a component to generate [Dash](http://kapeli.com/dash)
 		// ...
 	]
 
-If we do not need to support older versions of CanJS, they can be omitted from this file.
+For now, do not commit the directories or files created by the docset generation script. Once the pull request has been submitted to Kapeli, erase the *.docset directories and tgz files. In the future, this behavior will be automated.
 
 ## Notes
 
@@ -108,5 +112,7 @@ If we do not need to support older versions of CanJS, they can be omitted from t
 - *Do not modify any HTML and CSS files directly. They are generated when running the Grunt tasks.*
 
 ## TODO
+
 - Image resources (`img`) should be moved to `scripts/static/img`.
 - Other resources `resources` should be removed.
+- Automate the process for preparing and submitting the Docsets for inclusion in Dash.app
