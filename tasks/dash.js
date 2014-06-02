@@ -1,6 +1,8 @@
 var fs = require('fs');
+var util = require('util');
 var sqlite3 = require('sqlite3').verbose();
 var Q = require('q');
+var typeExceptions = require('./docset-types.js');
 
 var qfs = {
 	writeFile: Q.denodeify(fs.writeFile),
@@ -28,48 +30,24 @@ module.exports = function(grunt) {
 				var searchData = grunt.file.readJSON(task.options().path + 'Contents/Resources/Documents/searchdata.json');
 
 				var getType = function(props) {
-					var type = null;
+					var defaultTypes = {
+						'constructor': 'Constructor',
+						'function': 'Function',
+						'property': 'Property',
+						'typedef': 'Type'
+					};
 
-					switch(props.type) {
-						case 'constructor':
-							type = 'Constructor';
-							break;
-						case 'function':
-							type = 'Function'; // maybe this should be Method?
-							break;
-						case 'property':
-							type = 'Property';
-							break;
-						case 'typedef':
-							if(props.name === 'can.util.bind') {
-								type = null; // don't show this
-							} else if(props.parent === 'can.events') {
-								type = 'Event';
-							} else {
-								type = 'Type';
-							}
-							break;
-						case 'page':
-							if(/plugins$/.test(props.parent)) {
-								type = 'Plugin';
-							} else if(props.name === 'can.event') {
-								type = 'Plugin';
-							} else if(props.parent === 'guides') {
-								type = 'Guide';
-							} else if(props.parent === 'can.Mustache.pages') {
-								type = 'Plugin';
-							} else if(props.parent === 'can.stache.pages') {
-								type = 'Plugin';
-							} else {
-								type = null; // do not show this in the docs
-							}
-							break;
-						//case 'group':
-						//case 'prototype':
-						//case 'static':
-						default:
-							type = null; // do not show this in the docs
-					}
+					// a null type means not to show that thing in the docs
+					var type = defaultTypes[props.type] || null;
+					typeExceptions.forEach(function(ex) {
+						var allMatch = Object.keys(ex.match).every(function(key) {
+							return util.isRegExp(ex.match[key]) ? ex.match[key].test(props[key]) : ex.match[key] === props[key];
+						});
+
+						if(allMatch) {
+							type = ex.type;
+						}
+					});
 
 					return type;
 				};
