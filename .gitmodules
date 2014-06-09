@@ -9,4 +9,4 @@
 	url = git://github.com/bitovi/documentjs.git
 [submodule "steal"]
 	path = steal
-	url = git://github.com/bitovi/steal.git
+	url = git://github.com/bitovi/legacy-steal.git

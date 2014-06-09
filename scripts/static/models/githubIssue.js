@@ -15,7 +15,7 @@ can.Model("Bitovi.OSS.GithubIssue", {
 		};
 	},
 	findAll: {
-		url: Bitovi.URL.BITHUB +  '?category=bug&order=upvotes&limit={limit}',
+		url: Bitovi.URL.BITHUB +  '?category=bug&order=upvotes&limit={limit}&tag=canjs',
 		dataType: 'json'
 	}
 }, { });
