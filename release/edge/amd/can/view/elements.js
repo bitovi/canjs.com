@@ -1,146 +1,149 @@
 /*!
- * CanJS - 2.0.0
+ * CanJS - 2.1.2-pre
  * http://canjs.us/
- * Copyright (c) 2013 Bitovi
- * Wed, 16 Oct 2013 21:40:37 GMT
+ * Copyright (c) 2014 Bitovi
+ * Thu, 12 Jun 2014 22:19:03 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(function(){
+define(["can/util/library", "can/view"], function (can) {
+
+	var selectsCommentNodes = (function(){
+		return can.$(document.createComment('~')).length === 1;
+	})();
+
 	/**
-	 * @typedef {{}} can/view/elements.js
-	 * 
+	 * @property {Object} can.view.elements
+	 * @parent can.view
+	 *
 	 * Provides helper methods for and information about the behavior
 	 * of DOM elements.
 	 */
 	var elements = {
 		tagToContentPropMap: {
-			option: "textContent" in document.createElement("option") ? "textContent" : "innerText",
-			textarea: "value"
+			option: 'textContent' in document.createElement('option') ? 'textContent' : 'innerText',
+			textarea: 'value'
 		},
 		/**
-		 * @property {Object.<String,(String|Boolean)>} attrMap a mapping of
+		 * @property {Object.<String,(String|Boolean|function)>} can.view.elements.attrMap
+		 * @parent can.view.elements
+		 *
+		 *
+		 * A mapping of
 		 * special attributes to their JS property. For example:
-		 * 
+		 *
 		 *     "class" : "className"
-		 * 
-		 * means call element.className. And: 
-		 * 
+		 *
+		 * means get or set `element.className`. And:
+		 *
 		 *      "checked" : true
-		 * 
-		 * means call `element.checked = true`
-		 *     
+		 *
+		 * means set `element.checked = true`.
+		 *
+		 *
+		 * If the attribute name is not found, it's assumed to use
+		 * `element.getAttribute` and `element.setAttribute`.
 		 */
-		attrMap: {
-			"class" : "className",
-			"value": "value",
-			"innerText" : "innerText",
-			"textContent" : "textContent",
-			"checked": true,
-			"disabled": true,
-			"readonly": true,
-			"required": true,
-			src: function(el, val){
-				if(val == null || val == ""){
-					el.removeAttribute("src")
-				} else {
-					el.setAttribute("src",val)
-				}
-			}
-		},
+		// 3.0 TODO: remove
+		attrMap: can.attr.map,
 		// matches the attrName of a regexp
-		attrReg: /([^\s]+)[\s]*=[\s]*/,
-		// elements whos default value we should set
-		defaultValue : ["input","textarea"],
+		attrReg: /([^\s=]+)[\s]*=[\s]*/,
+		// 3.0 TODO: remove
+		defaultValue: can.attr.defaultValue,
 		// a map of parent element to child elements
-		tagMap : {
-			"": "span", 
-			table: "tbody", 
-			tr: "td",
-			ol: "li", 
-			ul: "li", 
-			tbody: "tr",
-			thead: "tr",
-			tfoot: "tr",
-			select: "option",
-			optgroup: "option"
+		/**
+		 * @property {Object.<String,String>} can.view.elements.tagMap
+		 * @parent can.view.elements
+		 *
+		 * A mapping of parent node names to child node names that can be inserted within
+		 * the parent node name.  For example: `table: "tbody"` means that
+		 * if you want a placeholder element within a `table`, a `tbody` will be
+		 * created.
+		 */
+		tagMap: {
+			'': 'span',
+			colgroup: 'col',
+			table: 'tbody',
+			tr: 'td',
+			ol: 'li',
+			ul: 'li',
+			tbody: 'tr',
+			thead: 'tr',
+			tfoot: 'tr',
+			select: 'option',
+			optgroup: 'option'
 		},
 		// a tag's parent element
 		reverseTagMap: {
-			tr:"tbody",
-			option:"select",
-			td:"tr",
-			th:"tr",
-			li: "ul"
+			col: 'colgroup',
+			tr: 'tbody',
+			option: 'select',
+			td: 'tr',
+			th: 'tr',
+			li: 'ul'
 		},
-		
-		getParentNode: function(el, defaultParentNode){
+		// Used to determine the parentNode if el is directly within a documentFragment
+		getParentNode: function (el, defaultParentNode) {
 			return defaultParentNode && el.parentNode.nodeType === 11 ? defaultParentNode : el.parentNode;
 		},
-		// set an attribute on an element
-		setAttr: function (el, attrName, val) {
-			var tagName = el.nodeName.toString().toLowerCase(),
-				prop = elements.attrMap[attrName];
-			// if this is a special property
-			if(typeof prop === "function"){
-				prop(el, val)
-			} else if(prop === true) {
-				el[attrName]  = true;
-			} else if (prop) {
-				// set the value as true / false
-				el[prop] = val;
-				if( prop === "value" && can.inArray(tagName, elements.defaultValue) >= 0 ) {
-					el.defaultValue = val;
-				}
-			} else {
-				el.setAttribute(attrName, val);
-			}
-		},
-		// gets the value of an attribute
-		getAttr: function(el, attrName){
-			// Default to a blank string for IE7/8
-			return (elements.attrMap[attrName] && el[elements.attrMap[attrName]] ?
-				el[elements.attrMap[attrName]]:
-				el.getAttribute(attrName)) || '';
-		},
-		// removes the attribute
-		removeAttr: function(el, attrName){
-			var setter = elements.attrMap[attrName];
-			if(typeof prop === "function"){
-				prop(el, undefined)
-			} if( setter === true ) {
-				el[attrName] = false;
-			} else if(typeof setter === "string"){
-				el[setter] = "";
-			} else {
-				el.removeAttribute(attrName);
-			}
-		},
-		contentText: function(text){
-			if ( typeof text == 'string' ) {
+		// 3.0 TODO: remove
+		setAttr: can.attr.set,
+		// 3.0 TODO: remove
+		getAttr: can.attr.get,
+		// 3.0 TODO: remove
+		removeAttr: can.attr.remove,
+		// Gets a "pretty" value for something
+		contentText: function (text) {
+			if (typeof text === 'string') {
 				return text;
 			}
 			// If has no value, return an empty string.
-			if ( !text && text !== 0 ) {
+			if (!text && text !== 0) {
 				return '';
 			}
-			return "" + text;
+			return '' + text;
+		},
+		/**
+		 * @function can.view.elements.after
+		 * @parent can.view.elements
+		 *
+		 * Inserts newFrag after oldElements.
+		 *
+		 * @param {Array.<HTMLElement>} oldElements
+		 * @param {DocumentFragment} newFrag
+		 */
+		after: function (oldElements, newFrag) {
+			var last = oldElements[oldElements.length - 1];
+			// Insert it in the `document` or `documentFragment`
+			if (last.nextSibling) {
+				can.insertBefore(last.parentNode, newFrag, last.nextSibling);
+			} else {
+				can.appendChild(last.parentNode, newFrag);
+			}
+		},
+		/**
+		 * @function can.view.elements.replace
+		 * @parent can.view.elements
+		 *
+		 * Replaces `oldElements` with `newFrag`
+		 *
+		 * @param {Array.<HTMLElement>} oldElements
+		 * @param {DocumentFragment} newFrag
+		 */
+		replace: function (oldElements, newFrag) {
+			elements.after(oldElements, newFrag);
+			if(can.remove(can.$(oldElements)).length < oldElements.length && !selectsCommentNodes) {
+				can.each(oldElements, function(el) {
+					if(el.nodeType === 8) {
+						el.parentNode.removeChild(el);
+					}
+				});
+			}
 		}
 	};
-	
-	// feature detect if setAttribute works with styles
-	(function(){
-		// feature detect if 
-		var div = document.createElement('div')
-		div.setAttribute("style","width: 5px")
-		div.setAttribute("style","width: 10px");
-		// make style use cssText
-		elements.attrMap.style = function(el, val){
-			el.style.cssText = val || ""
-		}
-	})();
-	
-	
+
+	can.view.elements = elements;
+
 	return elements;
 });

@@ -1,23 +1,28 @@
 /*!
- * CanJS - 2.0.0
+ * CanJS - 2.1.2-pre
  * http://canjs.us/
- * Copyright (c) 2013 Bitovi
- * Wed, 16 Oct 2013 21:40:37 GMT
+ * Copyright (c) 2014 Bitovi
+ * Thu, 12 Jun 2014 22:19:03 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
 define(["can/util/can"], function (can) {
-	// Given a list of elements, check if they are in the dom, if they 
-	// are in the dom, trigger inserted on them.
-	can.inserted = function(elems){
+	can.inserted = function (elems) {
+		// Turn the `elems` property into an array to prevent mutations from changing the looping.
+		elems = can.makeArray(elems);
 		var inDocument = false,
-			checked = false,
+			// Gets the `doc` to use as a reference for finding out whether the element is in the document.
+			doc = can.$(document.contains ? document : document.body),
 			children;
-		for ( var i = 0, elem; (elem = elems[i]) !== undefined; i++ ) {
-			if( !inDocument ) {
-				if( elem.getElementsByTagName ){
-					if( can.has( can.$(document) , elem ).length ) {
+		// Go through `elems` and trigger the `inserted` event.
+		// If the first element is not in the document (a Document Fragment) it will exit the function. If it is in the document it sets the `inDocument` flag to true. This means that we only check for the first element and either exit the function or start triggering "inserted" for child elements.
+		for (var i = 0, elem;
+			(elem = elems[i]) !== undefined; i++) {
+			if (!inDocument) {
+				if (elem.getElementsByTagName) {
+					if (can.has(doc, elem)
+						.length) {
 						inDocument = true;
 					} else {
 						return;
@@ -26,36 +31,42 @@ define(["can/util/can"], function (can) {
 					continue;
 				}
 			}
-			
-			if(inDocument && elem.getElementsByTagName){
-				can.trigger(elem,"inserted",[],false);
-				children = can.makeArray( elem.getElementsByTagName("*") );
-				for ( var j = 0, child; (child = children[j]) !== undefined; j++ ) {
-					// Trigger the destroyed event
-					can.trigger(child,"inserted",[],false);
+
+			// If we've found an element in the document then we can now trigger **"inserted"** for `elem` and all of its children. We are using `getElementsByTagName("*")` so that we grab all of the descendant nodes.
+			if (inDocument && elem.getElementsByTagName) {
+				children = can.makeArray(elem.getElementsByTagName("*"));
+				can.trigger(elem, "inserted", [], false);
+				for (var j = 0, child;
+					(child = children[j]) !== undefined; j++) {
+					can.trigger(child, "inserted", [], false);
 				}
 			}
 		}
-	}
-	
-	
-	can.appendChild = function(el, child){
-		if(child.nodeType === 11){
-			var children = can.makeArray(child.childNodes);
+	};
+
+	// ## can.appendChild
+	// Used to append a node to an element and trigger the "inserted" event on all of the newly inserted children. Since `can.inserted` takes an array we convert the child to an array, or in the case of a DocumentFragment we first convert the childNodes to an array and call inserted on those.
+	can.appendChild = function (el, child) {
+		var children;
+		if (child.nodeType === 11) {
+			children = can.makeArray(child.childNodes);
 		} else {
-			var children = [child]
+			children = [child];
 		}
 		el.appendChild(child);
-		can.inserted(children)
-	}
-	can.insertBefore = function(el, child, ref){
-		if(child.nodeType === 11){
-			var children = can.makeArray(child.childNodes);
+		can.inserted(children);
+	};
+
+	// ## can.insertBefore
+	// Like can.appendChild, used to insert a node to an element before a reference node and then trigger the "inserted" event.
+	can.insertBefore = function (el, child, ref) {
+		var children;
+		if (child.nodeType === 11) {
+			children = can.makeArray(child.childNodes);
 		} else {
-			var children = [child];
+			children = [child];
 		}
 		el.insertBefore(child, ref);
-		can.inserted(children)
-	}
-	
+		can.inserted(children);
+	};
 });
