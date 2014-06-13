@@ -2,7 +2,7 @@ can.Model("Bitovi.OSS.App", {
   model: function(data) {
     return {
       title: data.title,
-      picture: data.image_url,
+      picture: data.image_url.replace(/thumb/, '464x294'),
       body: data.body,
       link: data.url.indexOf('http') === -1 ? 'http://' + data.url : data.url
     };
