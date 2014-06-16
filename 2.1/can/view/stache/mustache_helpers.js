@@ -21,14 +21,14 @@ steal("can/util", "./utils.js","can/view/live",function(can, utils, live){
 			
 			if( resolved instanceof can.List || (items && items.isComputed && resolved === undefined)) {
 				return function(el){
-					var cb = function (item, index) {
+					var cb = function (item, index, parentNodeList) {
 								
 						return options.fn(options.scope.add({
 								"@index": index
-							}).add(item));
+							}).add(item), options.options, parentNodeList);
 							
 					};
-					live.list(el, items, cb, options.context, el.parentNode);
+					live.list(el, items, cb, options.context, el.parentNode, options.nodeList);
 				};
 			}
 			
@@ -81,10 +81,7 @@ steal("can/util", "./utils.js","can/view/live",function(can, utils, live){
 			}
 		},
 		'unless': function (expr, options) {
-			var fn = options.fn;
-			options.fn = options.inverse;
-			options.inverse = fn;
-			return helpers['if'].apply(this, arguments);
+			return helpers['if'].apply(this, [can.isFunction(expr) ? can.compute(function() { return !expr(); }) : !expr, options]);
 		},
 		'with': function (expr, options) {
 			var ctx = expr;
