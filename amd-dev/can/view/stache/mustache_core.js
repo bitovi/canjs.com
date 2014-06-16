@@ -1,16 +1,18 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:17 GMT
+ * Mon, 16 Jun 2014 20:44:18 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
-define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_helpers", "can/view/live", "can/view/elements", "can/view/scope"], function(can, utils, mustacheHelpers, live, elements, Scope ){
+define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_helpers", "can/view/live", "can/view/elements", "can/view/scope", "can/view/node_lists"], function(can, utils, mustacheHelpers, live, elements, Scope, nodeLists ){
 
 	live = live || can.view.live;
 	elements = elements || can.view.elements;
+	Scope = Scope || can.view.Scope;
+	nodeLists = nodeLists || can.view.nodeLists;
 	
 	// ## Types
 	
@@ -80,22 +82,24 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 		},
 		// Sets .fn and .inverse on a helperOptions object and makes sure 
 		// they can reference the current scope and options.
-		convertToScopes = function(helperOptions, scope, options, truthyRenderer, falseyRenderer){
+		convertToScopes = function(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer){
 			// overwrite fn and inverse to always convert to scopes
 			if(truthyRenderer) {
-				helperOptions.fn = makeRendererConvertScopes(truthyRenderer, scope, options);
+				helperOptions.fn = makeRendererConvertScopes(truthyRenderer, scope, options, nodeList);
 			}
 			if(falseyRenderer) {
-				helperOptions.inverse = makeRendererConvertScopes(falseyRenderer, scope, options);
+				helperOptions.inverse = makeRendererConvertScopes(falseyRenderer, scope, options, nodeList);
 			}
 		},
 		// Returns a new renderer function that makes sure any data or helpers passed
 		// to it are converted to a can.view.Scope and a can.view.Options.
-		makeRendererConvertScopes = function (renderer, parentScope, parentOptions) {
-			var rendererWithScope = function(ctx, opts){
-				return renderer(ctx || parentScope, opts);
+		makeRendererConvertScopes = function (renderer, parentScope, parentOptions, nodeList) {
+			var rendererWithScope = function(ctx, opts, parentNodeList){
+				return renderer(ctx || parentScope, opts, parentNodeList);
 			};
-			return function (newScope, newOptions) {
+			return function (newScope, newOptions, parentNodeList) {
+				// prevent binding on fn.
+				var reads = can.__clearReading();
 				// If a non-scope value is passed, add that to the parent scope.
 				if (newScope !== undefined && !(newScope instanceof can.view.Scope)) {
 					newScope = parentScope.add(newScope);
@@ -103,7 +107,9 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 				if (newOptions !== undefined && !(newOptions instanceof core.Options)) {
 					newOptions = parentOptions.add(newOptions);
 				}
-				return rendererWithScope(newScope, newOptions || parentOptions);
+				var result = rendererWithScope(newScope, newOptions || parentOptions, parentNodeList|| nodeList );
+				can.__setReading(reads);
+				return result;
 			};
 		};
 	
@@ -171,7 +177,7 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 		 * @param {String} [stringOnly] A flag to indicate that only strings will be returned by subsections.
 		 * @return {Function} An 'evaluator' function that evaluates the expression.
 		 */
-		makeEvaluator: function (scope, options, mode, exprData, truthyRenderer, falseyRenderer, stringOnly) {
+		makeEvaluator: function (scope, options, nodeList, mode, exprData, truthyRenderer, falseyRenderer, stringOnly) {
 			// Arguments for the helper.
 			var args = [],
 				// Hash values for helper.
@@ -238,6 +244,11 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 						compute = computeData.compute;
 						
 					initialValue = computeData.initialValue;
+					if(computeData.reads && computeData.reads.length === 1 && computeData.root instanceof can.Map) {
+						compute = can.compute(computeData.root, computeData.reads[0]);
+					}
+					
+					
 					// Set name to be the compute if the compute reads observables,
 					// or the value of the value of the compute if no observables are found.
 					if(computeData.compute.hasDependencies) {
@@ -283,13 +294,14 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 			if ( helper ) {
 				
 				// Add additional data to be used by helper functions
-				convertToScopes(helperOptions, scope, options, truthyRenderer, falseyRenderer);
+				convertToScopes(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer);
 
-				can.extend(helperOptions, {
+				can.simpleExtend(helperOptions, {
 					context: context,
 					scope: scope,
 					contexts: scope,
-					hash: hash
+					hash: hash,
+					nodeList: nodeList
 				});
 
 				args.push(helperOptions);
@@ -304,9 +316,7 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 			if(!mode) {
 				// If it's computed, return a function that just reads the compute.
 				if(name && name.isComputed) {
-					return function(){
-						return name();
-					};
+					return name;
 				}
 				// Just return name as the value
 				else {
@@ -317,7 +327,7 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 				}
 			} else if( mode === "#" || mode === "^" ) {
 				// Setup renderers.
-				convertToScopes(helperOptions, scope, options, truthyRenderer, falseyRenderer);
+				convertToScopes(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer);
 				return function(){
 					// Get the value
 					var value;
@@ -355,9 +365,10 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 		 * @return {function(this:HTMLElement,can.view.Scope,can.view.Options)} A renderer function 
 		 * live binds a partial.
 		 */
-		makeLiveBindingPartialRenderer: function(partialName){
+		makeLiveBindingPartialRenderer: function(partialName, state){
 			partialName = can.trim(partialName);
-			return function(scope, options){
+
+			return function(scope, options, parentSectionNodeList){
 				// Look up partials in options first.
 				var partial = options.attr("partials." + partialName),
 					res;
@@ -370,8 +381,14 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 					
 					res = can.view.render(partialName, scope, options );
 				}
-				
-				live.replace([this], res);
+
+				res = can.frag(res);
+
+				var nodeList = [this];
+
+				nodeLists.register(nodeList, null, state.directlyNested ? parentSectionNodeList || true :  true);
+				nodeLists.update(nodeList, res.childNodes);
+				elements.replace([this], res);
 			};
 		},
 		// ## mustacheCore.makeStringBranchRenderer
@@ -385,19 +402,21 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 		 * @return {function(can.view.Scope,can.view.Options, can.view.renderer, can.view.renderer)} 
 		 */
 		makeStringBranchRenderer: function(mode, expression){
-			
 			var exprData = expressionData(expression),
 				// Use the full mustache expression as the cache key.
 				fullExpression = mode+expression;
-			
+
 			// A branching renderer takes truthy and falsey renderer.
 			return function branchRenderer(scope, options, truthyRenderer, falseyRenderer){
-				// TODO: What happens if same mode/expresion, but different sub-sections?
 				// Check the scope's cache if the evaluator already exists for performance.
 				var evaluator = scope.__cache[fullExpression];
-				if(!evaluator) {
-					evaluator = scope.__cache[fullExpression] = makeEvaluator( scope, options, mode, exprData, truthyRenderer, falseyRenderer, true);
+				if(mode || !evaluator) {
+					evaluator = makeEvaluator( scope, options, null, mode, exprData, truthyRenderer, falseyRenderer, true);
+					if(!mode) {
+						scope.__cache[fullExpression] = evaluator;
+					}
 				}
+
 				// Run the evaluator and return the result.
 				var res = evaluator();
 				return res == null ? "" : ""+res;
@@ -424,11 +443,18 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 			var exprData = expressionData(expression);
 			
 			// A branching renderer takes truthy and falsey renderer.
-			return function branchRenderer(scope, options, truthyRenderer, falseyRenderer){
+			return function branchRenderer(scope, options, parentSectionNodeList, truthyRenderer, falseyRenderer){
+				
+				var nodeList = [this];
+				nodeList.expression = expression;
+				// register this nodeList.
+				// Regsiter it with its parent ONLY if this is directly nested.  Otherwise, it's unencessary.
+				nodeLists.register(nodeList, null, state.directlyNested ? parentSectionNodeList || true :  true);
+				
 				
 				// Get the evaluator. This does not need to be cached (probably) because if there
 				// an observable value, it will be handled by `can.view.live`.
-				var evaluator = makeEvaluator( scope, options, mode, exprData, truthyRenderer, falseyRenderer,
+				var evaluator = makeEvaluator( scope, options, nodeList, mode, exprData, truthyRenderer, falseyRenderer,
 					// If this is within a tag, make sure we only get string values. 
 					state.tag );
 				
@@ -437,7 +463,7 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 				// parent expresions.  If this value changes, the parent expressions should
 				// not re-evaluate. We prevent that by making sure this compute is ignored by 
 				// everyone else.
-				var compute = can.compute(evaluator, null, false);
+				var compute = can.compute(evaluator, null, false, true);
 				
 				// Bind on the compute to set the cached value. This helps performance
 				// so live binding can read a cached value instead of re-calculating.
@@ -468,10 +494,10 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 						live.attributes( this, compute );
 					}
 					else if(state.text && typeof value !== "object"){
-						live.text(this, compute, this.parentNode);
+						live.text(this, compute, this.parentNode, nodeList);
 					}
 					else {
-						live.html(this, compute, this.parentNode);
+						live.html(this, compute, this.parentNode, nodeList);
 					}
 				}
 				// If the compute has no observable dependencies, just set the value on the element.

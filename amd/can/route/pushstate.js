@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:17 GMT
+ * Mon, 16 Jun 2014 20:44:18 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -53,6 +53,8 @@ define(["can/util/library", "can/route"], function (can) {
 			// Start of `location.pathname` is the root.
 			// (Can be configured via `can.route.bindings.pushstate.root`)
 			root: "/",
+			// don't greedily match slashes in routing rules
+			matchSlashes: false,
 			paramsMatcher: /^\?(?:[^=]+=[^&]*&)*[^=]+=[^&]*/,
 			querySeparator: '?',
 
@@ -129,7 +131,7 @@ define(["can/util/library", "can/route"], function (can) {
 
 				// If link is within the same domain and descendant of `root`
 				if (window.location.host === linksHost) {
-					var root = can.route._call("root");
+					var root = cleanRoot();
 					if (node.pathname.indexOf(root) === 0) {
 
 						// Removes root from url.
@@ -161,7 +163,7 @@ define(["can/util/library", "can/route"], function (can) {
 					root = can.route._call("root"),
 					index = root.indexOf(domain);
 				if (index === 0) {
-					return can.route.root.substr(domain.length);
+					return root.substr(domain.length);
 				}
 				return root;
 			},

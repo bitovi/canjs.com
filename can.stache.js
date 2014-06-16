@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:24 GMT
+ * Mon, 16 Jun 2014 20:44:30 GMT
  * Licensed MIT
  * Includes: can/view/stache
  * Download from: http://canjs.com
@@ -279,14 +279,14 @@
 
                 if (resolved instanceof can.List || (items && items.isComputed && resolved === undefined)) {
                     return function(el) {
-                        var cb = function(item, index) {
+                        var cb = function(item, index, parentNodeList) {
 
                             return options.fn(options.scope.add({
                                         "@index": index
-                                    }).add(item));
+                                    }).add(item), options.options, parentNodeList);
 
                         };
-                        live.list(el, items, cb, options.context, el.parentNode);
+                        live.list(el, items, cb, options.context, el.parentNode, options.nodeList);
                     };
                 }
 
@@ -339,10 +339,9 @@
                 }
             },
             'unless': function(expr, options) {
-                var fn = options.fn;
-                options.fn = options.inverse;
-                options.inverse = fn;
-                return helpers['if'].apply(this, arguments);
+                return helpers['if'].apply(this, [can.isFunction(expr) ? can.compute(function() {
+                                return !expr();
+                            }) : !expr, options]);
             },
             'with': function(expr, options) {
                 var ctx = expr;
@@ -391,10 +390,12 @@
     })(window.can, __m14, undefined);
 
     // ## view/stache/mustache_core.js
-    var __m15 = (function(can, utils, mustacheHelpers, live, elements, Scope) {
+    var __m15 = (function(can, utils, mustacheHelpers, live, elements, Scope, nodeLists) {
 
         live = live || can.view.live;
         elements = elements || can.view.elements;
+        Scope = Scope || can.view.Scope;
+        nodeLists = nodeLists || can.view.nodeLists;
 
         // ## Types
 
@@ -460,22 +461,24 @@
             },
             // Sets .fn and .inverse on a helperOptions object and makes sure 
             // they can reference the current scope and options.
-            convertToScopes = function(helperOptions, scope, options, truthyRenderer, falseyRenderer) {
+            convertToScopes = function(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer) {
                 // overwrite fn and inverse to always convert to scopes
                 if (truthyRenderer) {
-                    helperOptions.fn = makeRendererConvertScopes(truthyRenderer, scope, options);
+                    helperOptions.fn = makeRendererConvertScopes(truthyRenderer, scope, options, nodeList);
                 }
                 if (falseyRenderer) {
-                    helperOptions.inverse = makeRendererConvertScopes(falseyRenderer, scope, options);
+                    helperOptions.inverse = makeRendererConvertScopes(falseyRenderer, scope, options, nodeList);
                 }
             },
             // Returns a new renderer function that makes sure any data or helpers passed
             // to it are converted to a can.view.Scope and a can.view.Options.
-            makeRendererConvertScopes = function(renderer, parentScope, parentOptions) {
-                var rendererWithScope = function(ctx, opts) {
-                    return renderer(ctx || parentScope, opts);
+            makeRendererConvertScopes = function(renderer, parentScope, parentOptions, nodeList) {
+                var rendererWithScope = function(ctx, opts, parentNodeList) {
+                    return renderer(ctx || parentScope, opts, parentNodeList);
                 };
-                return function(newScope, newOptions) {
+                return function(newScope, newOptions, parentNodeList) {
+                    // prevent binding on fn.
+                    var reads = can.__clearReading();
                     // If a non-scope value is passed, add that to the parent scope.
                     if (newScope !== undefined && !(newScope instanceof can.view.Scope)) {
                         newScope = parentScope.add(newScope);
@@ -483,7 +486,9 @@
                     if (newOptions !== undefined && !(newOptions instanceof core.Options)) {
                         newOptions = parentOptions.add(newOptions);
                     }
-                    return rendererWithScope(newScope, newOptions || parentOptions);
+                    var result = rendererWithScope(newScope, newOptions || parentOptions, parentNodeList || nodeList);
+                    can.__setReading(reads);
+                    return result;
                 };
             };
 
@@ -535,7 +540,7 @@
             // if it's a helper, or not, and which mode the expression is in, it returns
             // a function that can quickly evaluate the expression.
 
-            makeEvaluator: function(scope, options, mode, exprData, truthyRenderer, falseyRenderer, stringOnly) {
+            makeEvaluator: function(scope, options, nodeList, mode, exprData, truthyRenderer, falseyRenderer, stringOnly) {
                 // Arguments for the helper.
                 var args = [],
                     // Hash values for helper.
@@ -604,6 +609,11 @@
                             compute = computeData.compute;
 
                         initialValue = computeData.initialValue;
+                        if (computeData.reads && computeData.reads.length === 1 && computeData.root instanceof can.Map) {
+                            compute = can.compute(computeData.root, computeData.reads[0]);
+                        }
+
+
                         // Set name to be the compute if the compute reads observables,
                         // or the value of the value of the compute if no observables are found.
                         if (computeData.compute.hasDependencies) {
@@ -640,13 +650,14 @@
                 if (helper) {
 
                     // Add additional data to be used by helper functions
-                    convertToScopes(helperOptions, scope, options, truthyRenderer, falseyRenderer);
+                    convertToScopes(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer);
 
-                    can.extend(helperOptions, {
+                    can.simpleExtend(helperOptions, {
                             context: context,
                             scope: scope,
                             contexts: scope,
-                            hash: hash
+                            hash: hash,
+                            nodeList: nodeList
                         });
 
                     args.push(helperOptions);
@@ -661,9 +672,7 @@
                 if (!mode) {
                     // If it's computed, return a function that just reads the compute.
                     if (name && name.isComputed) {
-                        return function() {
-                            return name();
-                        };
+                        return name;
                     }
                     // Just return name as the value
                     else {
@@ -674,7 +683,7 @@
                     }
                 } else if (mode === "#" || mode === "^") {
                     // Setup renderers.
-                    convertToScopes(helperOptions, scope, options, truthyRenderer, falseyRenderer);
+                    convertToScopes(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer);
                     return function() {
                         // Get the value
                         var value;
@@ -706,9 +715,10 @@
             // ## mustacheCore.makeLiveBindingPartialRenderer
             // Returns a renderer function that live binds a partial.
 
-            makeLiveBindingPartialRenderer: function(partialName) {
+            makeLiveBindingPartialRenderer: function(partialName, state) {
                 partialName = can.trim(partialName);
-                return function(scope, options) {
+
+                return function(scope, options, parentSectionNodeList) {
                     // Look up partials in options first.
                     var partial = options.attr("partials." + partialName),
                         res;
@@ -722,7 +732,13 @@
                         res = can.view.render(partialName, scope, options);
                     }
 
-                    live.replace([this], res);
+                    res = can.frag(res);
+
+                    var nodeList = [this];
+
+                    nodeLists.register(nodeList, null, state.directlyNested ? parentSectionNodeList || true : true);
+                    nodeLists.update(nodeList, res.childNodes);
+                    elements.replace([this], res);
                 };
             },
             // ## mustacheCore.makeStringBranchRenderer
@@ -730,19 +746,21 @@
             // the evaluator on the scope.
 
             makeStringBranchRenderer: function(mode, expression) {
-
                 var exprData = expressionData(expression),
                     // Use the full mustache expression as the cache key.
                     fullExpression = mode + expression;
 
                 // A branching renderer takes truthy and falsey renderer.
                 return function branchRenderer(scope, options, truthyRenderer, falseyRenderer) {
-                    // TODO: What happens if same mode/expresion, but different sub-sections?
                     // Check the scope's cache if the evaluator already exists for performance.
                     var evaluator = scope.__cache[fullExpression];
-                    if (!evaluator) {
-                        evaluator = scope.__cache[fullExpression] = makeEvaluator(scope, options, mode, exprData, truthyRenderer, falseyRenderer, true);
+                    if (mode || !evaluator) {
+                        evaluator = makeEvaluator(scope, options, null, mode, exprData, truthyRenderer, falseyRenderer, true);
+                        if (!mode) {
+                            scope.__cache[fullExpression] = evaluator;
+                        }
                     }
+
                     // Run the evaluator and return the result.
                     var res = evaluator();
                     return res == null ? "" : "" + res;
@@ -762,11 +780,18 @@
                 var exprData = expressionData(expression);
 
                 // A branching renderer takes truthy and falsey renderer.
-                return function branchRenderer(scope, options, truthyRenderer, falseyRenderer) {
+                return function branchRenderer(scope, options, parentSectionNodeList, truthyRenderer, falseyRenderer) {
+
+                    var nodeList = [this];
+                    nodeList.expression = expression;
+                    // register this nodeList.
+                    // Regsiter it with its parent ONLY if this is directly nested.  Otherwise, it's unencessary.
+                    nodeLists.register(nodeList, null, state.directlyNested ? parentSectionNodeList || true : true);
+
 
                     // Get the evaluator. This does not need to be cached (probably) because if there
                     // an observable value, it will be handled by `can.view.live`.
-                    var evaluator = makeEvaluator(scope, options, mode, exprData, truthyRenderer, falseyRenderer,
+                    var evaluator = makeEvaluator(scope, options, nodeList, mode, exprData, truthyRenderer, falseyRenderer,
                         // If this is within a tag, make sure we only get string values. 
                         state.tag);
 
@@ -775,7 +800,7 @@
                     // parent expresions.  If this value changes, the parent expressions should
                     // not re-evaluate. We prevent that by making sure this compute is ignored by 
                     // everyone else.
-                    var compute = can.compute(evaluator, null, false);
+                    var compute = can.compute(evaluator, null, false, true);
 
                     // Bind on the compute to set the cached value. This helps performance
                     // so live binding can read a cached value instead of re-calculating.
@@ -804,9 +829,9 @@
                         } else if (state.tag) {
                             live.attributes(this, compute);
                         } else if (state.text && typeof value !== "object") {
-                            live.text(this, compute, this.parentNode);
+                            live.text(this, compute, this.parentNode, nodeList);
                         } else {
-                            live.html(this, compute, this.parentNode);
+                            live.html(this, compute, this.parentNode, nodeList);
                         }
                     }
                     // If the compute has no observable dependencies, just set the value on the element.
@@ -913,7 +938,7 @@
 
 
         return core;
-    })(window.can, __m14, __m16, undefined, undefined, undefined);
+    })(window.can, __m14, __m16, undefined, undefined, undefined, undefined);
 
     // ## view/stache/html_section.js
     var __m13 = (function(can, target, utils, mustacheCore) {
@@ -962,6 +987,8 @@
                 startSection: function(process) {
                     var newSection = new HTMLSection(process);
                     this.last().add(newSection.targetCallback);
+                    // adding a section within a section ...
+                    // the stack has section ...
                     this.stack.push(newSection);
                 },
                 endSection: function() {
@@ -998,10 +1025,11 @@
             // A record of what targetData element we are within.
             this.targetStack = [];
             var self = this;
-            this.targetCallback = function(scope, options) {
+            this.targetCallback = function(scope, options, sectionNode) {
                 process.call(this,
                     scope,
                     options,
+                    sectionNode,
                     can.proxy(self.compiled.hydrate, self.compiled),
                     self.inverseCompiled && can.proxy(self.inverseCompiled.hydrate, self.inverseCompiled));
             };
@@ -1094,7 +1122,7 @@
 
                         var compute = can.compute(function() {
                             return renderer(scope, options);
-                        }, this, false);
+                        }, this, false, true);
 
                         compute.bind("change", emptyHandler);
                         var value = compute();
@@ -1176,7 +1204,16 @@
 
             // The HTML section that is the root section for the entire template.
             var section = new HTMLSectionBuilder(),
-
+                // Tracks the state of the parser.
+                state = {
+                    node: null,
+                    attr: null,
+                    // A stack of which node / section we are in.
+                    // There is probably a better way of doing this.
+                    sectionElementStack: [],
+                    // If text should be inserted and HTML escaped
+                    text: false
+                },
                 // This function is a catch all for taking a section and figuring out
                 // how to create a "renderer" that handles the functionality for a 
                 // given section and modify the section to use that renderer.
@@ -1186,12 +1223,14 @@
 
                     if (mode === ">") {
                         // Partials use liveBindingPartialRenderers
-                        section.add(mustacheCore.makeLiveBindingPartialRenderer(stache));
+                        section.add(mustacheCore.makeLiveBindingPartialRenderer(stache, state));
 
                     } else if (mode === "/") {
 
                         section.endSection();
-
+                        if (section instanceof HTMLSectionBuilder) {
+                            state.sectionElementStack.pop();
+                        }
                     } else if (mode === "else") {
 
                         section.inverse();
@@ -1216,10 +1255,12 @@
                             section.add(makeRenderer(null, stache, copyState()));
 
                         } else if (mode === "#" || mode === "^") {
-
                             // Adds a renderer function and starts a section.
                             section.startSection(makeRenderer(mode, stache, copyState()));
-
+                            // If we are a directly nested section, count how many we are within
+                            if (section instanceof HTMLSectionBuilder) {
+                                state.sectionElementStack.push("section");
+                            }
                         } else {
                             // Adds a renderer function that only updates text.
                             section.add(makeRenderer(null, stache, copyState({
@@ -1229,19 +1270,12 @@
 
                     }
                 },
-                // Tracks the state of the parser.
-                state = {
-                    node: null,
-                    attr: null,
-                    section: null,
-                    // If text should be inserted and HTML escaped
-                    text: false
-                },
                 // Copys the state object for use in renderers.
                 copyState = function(overwrites) {
                     var cur = {
                         tag: state.node && state.node.tag,
-                        attr: state.attr && state.attr.name
+                        attr: state.attr && state.attr.name,
+                        directlyNested: state.sectionElementStack[state.sectionElementStack.length - 1] === "section"
                     };
                     return overwrites ? can.simpleExtend(cur, overwrites) : cur;
                 },
@@ -1277,6 +1311,9 @@
                             }
                         } else {
                             section.push(state.node);
+
+                            state.sectionElementStack.push("element");
+
                             // If it's a custom tag with content, we need a section renderer.
                             if (isCustomTag) {
                                 section.startSubSection();
@@ -1285,6 +1322,7 @@
 
 
                         state.node = null;
+
                     },
                     close: function(tagName) {
                         var isCustomTag = viewCallbacks.tag(tagName),
@@ -1305,7 +1343,7 @@
                                     });
                             });
                         }
-
+                        state.sectionElementStack.pop();
                     },
                     attrStart: function(attrName) {
                         if (state.node.section) {

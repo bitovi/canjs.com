@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:17 GMT
+ * Mon, 16 Jun 2014 20:44:18 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -18,9 +18,8 @@ define(function () {
 	can.k = function(){};
 
 	can.isDeferred = function (obj) {
-		var isFunction = this.isFunction;
 		// Returns `true` if something looks like a deferred.
-		return obj && isFunction(obj.then) && isFunction(obj.pipe);
+		return obj && typeof obj.then === "function" && typeof obj.pipe === "function";
 	};
 
 	var cid = 0;
@@ -31,7 +30,7 @@ define(function () {
 		}
 		return object._cid;
 	};
-	can.VERSION = '2.1.1';
+	can.VERSION = '2.1.2';
 
 	can.simpleExtend = function (d, s) {
 		for (var prop in s) {

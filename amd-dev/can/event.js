@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:17 GMT
+ * Mon, 16 Jun 2014 20:44:18 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -242,12 +242,16 @@ define(["can/util/can"], function (can) {
 
 		// Grab event listeners
 		var eventName = event.type,
-			handlers = (events[eventName] || []).slice(0);
+			handlers = (events[eventName] || []).slice(0),
+			passed = [event];
 		
 		// Execute handlers listening for this event.
-		args = [event].concat(args || []);
+		if(args) {
+			passed.push.apply(passed, args);
+		}
+
 		for (var i = 0, len = handlers.length; i < len; i++) {
-			handlers[i].handler.apply(this, args);
+			handlers[i].handler.apply(this, passed);
 		}
 
 		return event;
@@ -376,7 +380,7 @@ define(["can/util/can"], function (can) {
 		 * This syntax can be used for objects that don't include the `can.event` mixin.
 		 */
 		delegate: function(selector, event, handler) {
-			return can.addEvent.call(event, handler);
+			return can.addEvent.call(this, event, handler);
 		},
 		/**
 		 * @function can.event.undelegate
@@ -399,7 +403,7 @@ define(["can/util/can"], function (can) {
 		 * This syntax can be used for objects that don't include the `can.event` mixin.
 		 */
 		undelegate: function(selector, event, handler) {
-			return can.removeEvent.call(event, handler);
+			return can.removeEvent.call(this, event, handler);
 		},
 		/**
 		 * @function can.event.trigger

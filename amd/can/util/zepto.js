@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:17 GMT
+ * Mon, 16 Jun 2014 20:44:18 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -92,7 +92,7 @@ define(["can/util/can", "can/util/attr", "can/event", "zepto", "can/util/object/
 					};
 				}
 				event.target = event.target || obj;
-				can.dispatch.call(obj, event, args);
+				can.dispatch.call(obj, event, can.makeArray(args));
 			}
 
 		};
@@ -166,9 +166,19 @@ define(["can/util/can", "can/util/attr", "can/event", "zepto", "can/util/object/
 
 		can.makeArray = function (arr) {
 			var ret = [];
+
+			if(arr == null) {
+				return [];
+			}
+
+			if(arr.length === undefined || typeof arr === 'string') {
+				return [arr];
+			}
+
 			can.each(arr, function (a, i) {
 				ret[i] = a;
 			});
+
 			return ret;
 		};
 

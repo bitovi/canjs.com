@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:17 GMT
+ * Mon, 16 Jun 2014 20:44:18 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -12,6 +12,12 @@ steal('can/util', 'can/observe', function (can) {
 
 	can.Map.helpers.define = function (Map) {
 		var define = Map.prototype.define;
+		//!steal-remove-start
+		if(Map.define){
+			can.dev.warn("The define property should be on the map's prototype properties, "+
+				"not the static properies.");
+		}
+		//!steal-remove-end
 		Map.defaultGenerators = {};
 		for (var prop in define) {
 			if ("value" in define[prop]) {

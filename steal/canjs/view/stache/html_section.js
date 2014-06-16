@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:17 GMT
+ * Mon, 16 Jun 2014 20:44:18 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -56,6 +56,8 @@ steal("can/util","can/view/target","./utils.js","./mustache_core.js",function( c
 		startSection: function( process ) {
 			var newSection = new HTMLSection(process);
 			this.last().add(newSection.targetCallback);
+			// adding a section within a section ...
+			// the stack has section ...
 			this.stack.push(newSection);
 		},
 		endSection: function(){
@@ -92,10 +94,11 @@ steal("can/util","can/view/target","./utils.js","./mustache_core.js",function( c
 		// A record of what targetData element we are within.
 		this.targetStack = [];
 		var self = this;
-		this.targetCallback = function(scope, options){
+		this.targetCallback = function(scope, options, sectionNode){
 			process.call(this,
 				scope,
 				options,
+				sectionNode,
 				can.proxy(self.compiled.hydrate, self.compiled),
 				self.inverseCompiled && can.proxy(self.inverseCompiled.hydrate, self.inverseCompiled)  ) ;
 		};

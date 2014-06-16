@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:17 GMT
+ * Mon, 16 Jun 2014 20:44:18 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -69,11 +69,7 @@ define(["can/util/library", "can/view"], function(can){
 		attr: attr,
 		// handles calling back a tag callback
 		tagHandler: function(el, tagName, tagData){
-			var helperTagCallback = tagData.options.read('tags.' + tagName, {
-					isArgument: true,
-					proxyMethods: false
-				})
-					.value,
+			var helperTagCallback = tagData.options.attr('tags.' + tagName),
 				tagCallback = helperTagCallback || tags[tagName];
 	
 			// If this was an element like <foo-bar> that doesn't have a component, just render its content

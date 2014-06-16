@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:17 GMT
+ * Mon, 16 Jun 2014 20:44:18 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -1869,10 +1869,7 @@ define(["can/util/library", "can/view/scope", "can/view", "can/view/scanner", "c
 			 *     {{/unless}}
 			 */
 			'unless': function (expr, options) {
-				var fn = options.fn;
-				options.fn = options.inverse;
-				options.inverse = fn;
-				return Mustache._helpers['if'].fn.apply(this, arguments);
+				return Mustache._helpers['if'].fn.apply(this, [can.isFunction(expr) ? can.compute(function() { return !expr(); }) : !expr, options]);
 			},
 
 			// Implements the `each` built-in helper.

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:17 GMT
+ * Mon, 16 Jun 2014 20:44:18 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -27,6 +27,16 @@ steal('jquery', 'can/util/can.js', 'can/util/attr', "can/event", 'can/util/array
 					};
 				}
 				event.target = event.target || obj;
+				if(args){
+					if( args.length && typeof args === "string") {
+						args = [args];
+					} else if(! args.length ) {
+						args = [args];
+					}
+				}
+				if(!args){
+					args = [];
+				}
 				can.dispatch.call(obj, event, args);
 			}
 		},

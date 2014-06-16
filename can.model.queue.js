@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:24 GMT
+ * Mon, 16 Jun 2014 20:44:30 GMT
  * Licensed MIT
  * Includes: can/model/queue
  * Download from: http://canjs.com
@@ -246,7 +246,7 @@
                 // error functions
                 def.then(success, error);
                 return def;
-            }, _changes = can.Model.prototype._changes,
+            }, _triggerChange = can.Model.prototype._triggerChange,
             destroyFn = can.Model.prototype.destroy,
             setupFn = can.Model.prototype.setup;
         can.each([
@@ -273,12 +273,12 @@
                     setupFn.apply(this, arguments);
                     this._requestQueue = new can.List();
                 },
-                _changes: function(ev, attr, how, newVal, oldVal) {
+                _triggerChange: function(attr, how, newVal, oldVal) {
                     // record changes if there is a request running
                     if (this._changedAttrs) {
                         this._changedAttrs.push(attr);
                     }
-                    _changes.apply(this, arguments);
+                    _triggerChange.apply(this, arguments);
                 },
                 hasQueuedRequests: function() {
                     return this._requestQueue.attr('length') > 1;

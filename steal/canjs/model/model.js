@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:17 GMT
+ * Mon, 16 Jun 2014 20:44:18 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -1112,6 +1112,9 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 				// Assume no static properties were passed. (`can.Model.extend({ ... })`)
 				// This is really unusual for a model though, since there's so much configuration.
 				if (!protoProps) {
+					//!steal-remove-start
+					can.dev.warn("can/model/model.js: can.Model extended without static properties.");
+					//!steal-remove-end
 					protoProps = staticProps;
 				}
 
@@ -1864,14 +1867,14 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 			// handler( 'change','1.destroyed' ). This is used
 			// to remove items on destroyed from Model Lists.
 			// but there should be a better way.
-			can.trigger(this, "change", funcName);
+			can.dispatch.call(this, {type:"change", target: this}, [funcName]);
 
 			//!steal-remove-start
 			can.dev.log("Model.js - " + constructor.shortName + " " + funcName);
 			//!steal-remove-end
 
 			// Call event on the instance's Class
-			can.trigger(constructor, funcName, this);
+			can.dispatch.call(constructor, funcName, [this]);
 		};
 	});
 	
