@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:17 GMT
+ * Mon, 16 Jun 2014 20:44:18 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -139,6 +139,8 @@ define(["can/util/library", "can/construct", "can/map", "can/list", "can/view", 
 									rootReads = data.reads;
 									computeData.scope = data.scope;
 									computeData.initialValue = data.value;
+									computeData.reads = data.reads;
+									computeData.root = rootObserve;
 									return data.value;
 								}
 							})

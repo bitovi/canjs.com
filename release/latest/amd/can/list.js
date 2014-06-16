@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:17 GMT
+ * Mon, 16 Jun 2014 20:44:18 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -280,16 +280,26 @@ define(["can/util/library", "can/map", "can/map/bubble"], function (can, Map, bu
 			 */
 			splice: function (index, howMany) {
 				var args = can.makeArray(arguments),
-					i;
-
+					added =[],
+					i, j;
 				for (i = 2; i < args.length; i++) {
 					args[i] = bubble.set(this, i, this.__type(args[i], i) );
-					
+					added.push(args[i]);
 				}
 				if (howMany === undefined) {
 					howMany = args[1] = this.length - index;
 				}
-				var removed = splice.apply(this, args);
+				var removed = splice.apply(this, args),
+					cleanRemoved = removed;
+
+				// remove any items that were just added from the removed array
+				if(added.length && removed.length){
+					for (j = 0; j < removed.length; j++) {
+						if(can.inArray(removed[j], added) >= 0) {
+							cleanRemoved.splice(j, 1);
+						}
+					}
+				}
 
 				if (!spliceRemovesProps) {
 					for (i = this.length; i < removed.length + this.length; i++) {

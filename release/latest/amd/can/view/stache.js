@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:17 GMT
+ * Mon, 16 Jun 2014 20:44:18 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -20,7 +20,16 @@ define(["can/util/library", "can/view/parser", "can/view/target", "can/view/stac
 		
 		// The HTML section that is the root section for the entire template.
 		var section = new HTMLSectionBuilder(),
-		
+			// Tracks the state of the parser.
+			state = {
+				node: null,
+				attr: null,
+				// A stack of which node / section we are in.
+				// There is probably a better way of doing this.
+				sectionElementStack: [],
+				// If text should be inserted and HTML escaped
+				text: false
+			},
 			// This function is a catch all for taking a section and figuring out
 			// how to create a "renderer" that handles the functionality for a 
 			// given section and modify the section to use that renderer.
@@ -30,12 +39,14 @@ define(["can/util/library", "can/view/parser", "can/view/target", "can/view/stac
 				
 				if(mode === ">") {
 					// Partials use liveBindingPartialRenderers
-					section.add(mustacheCore.makeLiveBindingPartialRenderer(stache));
-					
+					section.add(mustacheCore.makeLiveBindingPartialRenderer(stache, state));
+
 				} else if(mode === "/") {
 					
 					section.endSection();
-					
+					if(section instanceof HTMLSectionBuilder) {
+						state.sectionElementStack.pop();
+					}
 				} else if(mode === "else") {
 					
 					section.inverse();
@@ -60,10 +71,12 @@ define(["can/util/library", "can/view/parser", "can/view/target", "can/view/stac
 						section.add( makeRenderer(null,stache, copyState() ));
 					
 					} else if(mode === "#" || mode === "^") {
-					
 						// Adds a renderer function and starts a section.
 						section.startSection(makeRenderer(mode,stache, copyState()  ));
-						
+						// If we are a directly nested section, count how many we are within
+						if(section instanceof HTMLSectionBuilder) {
+							state.sectionElementStack.push("section");
+						}
 					} else {
 						// Adds a renderer function that only updates text.
 						section.add( makeRenderer(null,stache, copyState({text: true}) ));
@@ -71,19 +84,12 @@ define(["can/util/library", "can/view/parser", "can/view/target", "can/view/stac
 					
 				}
 			},
-			// Tracks the state of the parser.
-			state = {
-				node: null,
-				attr: null,
-				section: null,
-				// If text should be inserted and HTML escaped
-				text: false
-			},
 			// Copys the state object for use in renderers.
 			copyState = function(overwrites){
 				var cur = {
 					tag: state.node && state.node.tag,
-					attr: state.attr && state.attr.name
+					attr: state.attr && state.attr.name,
+					directlyNested: state.sectionElementStack[state.sectionElementStack.length - 1] === "section"
 				};
 				return overwrites ? can.simpleExtend(cur, overwrites) : cur;
 			},
@@ -119,6 +125,9 @@ define(["can/util/library", "can/view/parser", "can/view/target", "can/view/stac
 					}
 				} else {
 					section.push(state.node);
+					
+					state.sectionElementStack.push("element");
+					
 					// If it's a custom tag with content, we need a section renderer.
 					if( isCustomTag ) {
 						section.startSubSection();
@@ -127,6 +136,7 @@ define(["can/util/library", "can/view/parser", "can/view/target", "can/view/stac
 				
 				
 				state.node =null;
+				
 			},
 			close: function( tagName ) {
 				var isCustomTag = viewCallbacks.tag(tagName),
@@ -147,7 +157,7 @@ define(["can/util/library", "can/view/parser", "can/view/target", "can/view/stac
 						});
 					});
 				}
-				
+				state.sectionElementStack.pop();
 			},
 			attrStart: function(attrName){
 				if(state.node.section) {

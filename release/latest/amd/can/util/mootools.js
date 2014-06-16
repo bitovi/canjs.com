@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:17 GMT
+ * Mon, 16 Jun 2014 20:44:18 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -194,7 +194,7 @@ define(["can/util/can", "can/util/attr", "mootools", "can/event", "can/util/frag
 					};
 				}
 				event.target = event.target || item;
-				can.dispatch.call(item, event, args);
+				can.dispatch.call(item, event, can.makeArray(args));
 			}
 		};
 		can.delegate = function (selector, ev, cb) {

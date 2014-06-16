@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:17 GMT
+ * Mon, 16 Jun 2014 20:44:18 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -30,14 +30,14 @@ define(["can/util/library", "can/view/stache/utils", "can/view/live"], function(
 			
 			if( resolved instanceof can.List || (items && items.isComputed && resolved === undefined)) {
 				return function(el){
-					var cb = function (item, index) {
+					var cb = function (item, index, parentNodeList) {
 								
 						return options.fn(options.scope.add({
 								"@index": index
-							}).add(item));
+							}).add(item), options.options, parentNodeList);
 							
 					};
-					live.list(el, items, cb, options.context, el.parentNode);
+					live.list(el, items, cb, options.context, el.parentNode, options.nodeList);
 				};
 			}
 			
@@ -90,10 +90,7 @@ define(["can/util/library", "can/view/stache/utils", "can/view/live"], function(
 			}
 		},
 		'unless': function (expr, options) {
-			var fn = options.fn;
-			options.fn = options.inverse;
-			options.inverse = fn;
-			return helpers['if'].apply(this, arguments);
+			return helpers['if'].apply(this, [can.isFunction(expr) ? can.compute(function() { return !expr(); }) : !expr, options]);
 		},
 		'with': function (expr, options) {
 			var ctx = expr;

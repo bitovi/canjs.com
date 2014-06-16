@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.1
+ * CanJS - 2.1.2
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Thu, 22 May 2014 03:45:17 GMT
+ * Mon, 16 Jun 2014 20:44:18 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -187,7 +187,7 @@ define(["can/util/can"], function (can) {
 					can.batch.start();
 				}
 				for(i = 0, len = items.length; i < len; i++) {
-					can.trigger.apply(can, items[i]);
+					can.dispatch.apply(items[i][0],items[i][1]);
 				}
 				for(i = 0, len = callbacks.length; i < callbacks.length; i++) {
 					callbacks[i]();
@@ -212,7 +212,7 @@ define(["can/util/can"], function (can) {
 			// Don't send events if initalizing.
 			if (!item._init) {
 				if (transactions === 0) {
-					return can.trigger(item, event, args);
+					return can.dispatch.call(item, event, args);
 				} else {
 					event = typeof event === 'string' ? {
 						type: event
@@ -220,8 +220,7 @@ define(["can/util/can"], function (can) {
 					event.batchNum = batchNum;
 					batchEvents.push([
 						item,
-						event,
-						args
+						[event, args]
 					]);
 				}
 			}
