@@ -13,7 +13,8 @@ Next, install the required NPM modules:
 
 If you need to re-generate the docs while testing some changes, run:
 
-	./js scripts/doc.js
+	./js scripts/doc.js		# for API docs
+	grunt doccoit			# for docco docs
 
 To simply re-generate the site, docset, and all other content, run:
 
