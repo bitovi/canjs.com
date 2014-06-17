@@ -3,21 +3,25 @@ load('steal/rhino/rhino.js');
 steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) {
 
 	// ARGUMENT PROCESSING
-
 	var forceBuild = false;
 	var minifyBuild = true;
+	var generateDocset = false;
+	
 	// convert args
 	_args.forEach(function(arg){
-		if(arg == "-f" || arg == "-forceBuild") {
+		if(arg == "-forceBuild" || arg == "-f") {
 			forceBuild = true
 		}
 		if(arg == "-concatonly" || arg == "-c"){
 			minifyBuild = false;
 		}
+
+		if (arg === "-generateDocset" || arg === "-g") {
+			generateDocset = true;
+		}
 	})
 	
 	// HELPER METHODS
-
 	var cap = function(str){
 		return str.substr(0,1).toUpperCase()+str.substr(1)
 	}
@@ -46,6 +50,10 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 		return "CanJS"
 	}
 
+	var docsetTitle = function() {
+		return (this.name || this.title);
+	};
+
 	var copyCanJSTo = function(loc){
 		var dest = new steal.URI(loc);
 		if (!dest.exists()) {
@@ -66,9 +74,29 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 		new steal.URI(loc+"/dist").removeDir();
 	}
 
-	var minorVersionOf = function(version){
-			return version.split(".").slice(0,2).join(".")
+	var copyStealTo = function(loc){
+		var dest = new steal.URI(loc);
+		if (!dest.exists()) {
+			dest.mkdirs();
 		}
+		console.log("Copying Steal files to "+dest)
+		new steal.URI('steal').copyTo(dest);
+		
+		try{
+			new steal.URI(loc+"/.git").removeDir();
+		} catch(e){
+			new steal.URI(loc+"/.git").remove();
+		}
+		new steal.URI(loc+"/.gitattributes").remove();
+		new steal.URI(loc+"/.gitignore").remove();
+		// new steal.URI(loc+"/node_modules").removeDir();
+		// new steal.URI(loc+"/test/pluginified").removeDir();
+		// new steal.URI(loc+"/dist").removeDir();
+	}
+
+	var minorVersionOf = function(version){
+		return version.split(".").slice(0,2).join(".");
+	};
 	
 
 	// CONFIG PREPERATION
@@ -111,6 +139,7 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 			"templates": "scripts/templates",
 			helpers: function(data, config, getCurrent, oldHelpers){
 				return {
+					docsetTitle: docsetTitle,
 					documentTitle: documentTitle,
 					isLatestVersion: function(options){
 						return this.number == config.version ?
@@ -196,11 +225,41 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 	
 	// Make versioned API docs
 	DocumentJS('scripts/doc.html', apiOptions);
-	
+
 	// Make versioned guides
 	DocumentJS(null, guidesOptions);
-	
-	
+
+	if (generateDocset) {
+		// Remove the previous docset
+		new steal.URI(version+"/docset").removeDir();
+
+		// copy can and steal content to subdirectories of the docset package so that examples work without modification
+		// TODO: it has to put can in two different locations which is silly.
+		copyCanJSTo(version + '/docset/Contents/Resources/can');
+		copyCanJSTo(version + '/docset/Contents/can');
+		copyStealTo(version + '/docset/Contents/steal');
+		new steal.File('stealconfig.js').copyTo(version + '/docset/Contents/stealconfig.js');
+
+		// Produce API files compatible for Dash .docset output
+		DocumentJS('scripts/doc.html', steal.extend(apiOptions, {
+			out: version + "/docset/Contents/Resources/Documents",
+			templates: "scripts/docset-templates"
+		}));
+
+		// Copy the Info.plist file into the right place
+		new steal.File('Info.plist').copyTo(version + "/docset/Contents/Info.plist");
+
+		// Copy the Favicon file into the right place inside the docset path
+		new steal.File('canjs-logo-16x16.png').copyTo(version + "/docset/icon.png");
+		new steal.File('canjs-logo-32x32.png').copyTo(version + "/docset/icon@2x.png");
+
+		// ... and versioned guides for Dash
+		DocumentJS(null, steal.extend(guidesOptions, {
+			out: version + "/docset/Contents/Resources/Documents/Guides",
+			templates: "scripts/docset-templates"
+		}));
+	}
+		
 	// if version is the last non-branch version, put in "docs" and "guides" 
 	if( isCurrentVersion ) {
 		print("\nWRITING CURRENT VERSION\n")
@@ -215,18 +274,19 @@ steal("documentjs", "steal","steal/rhino/json.js", function (DocumentJS, steal) 
 				out: "docs",
 				versionsSrc: "../versions.json",
 				isVersioned: false,
-				
+				templates: "scripts/templates",
 				statics: {
 					src: "_pages"
 				}
-			}) );
+			}));
 		// Make current guides
 		DocumentJS(null, 
 			steal.extend( guidesOptions, {
 				out: "guides",
 				versionsSrc: "../versions.json",
-				isVersioned: false
-			} ));
+				templates: "scripts/templates",
+				isVersioned: false,
+			}));
 		
 		
 	}

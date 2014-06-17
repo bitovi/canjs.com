@@ -1,6 +1,6 @@
 /*global module:false*/
 module.exports = function (grunt) {
-	
+
 	var _ = grunt.util._;
 	var path = require('path');
 
@@ -9,12 +9,12 @@ module.exports = function (grunt) {
 		minor = canPkg.version.split(".").slice(0,2).join("."),
 		versions = grunt.file.readJSON('versions.json'),
 		versionMap = {};
-		
+
 	versions.forEach(function(version){
 		versionMap[version.number] = version;
 	});
-	
-		
+
+
 	// Project configuration.
 	grunt.initConfig({
 		// Metadata.
@@ -109,7 +109,41 @@ module.exports = function (grunt) {
 					]
 				}
 			}
-		}
+		},
+		shell: {
+			docjs: {
+				command: "./js ./scripts/doc.js -g",
+				options: {
+					stdout: true,
+					stderr: true,
+					failOnError: true
+				}
+			}
+		},
+		'dash-docset': {
+			dist: {
+				options: {
+					path: process.cwd() + '/' + minor + '/docset/',
+					docsURL: 'http://canjs.com/' + minor + '/docs/'
+				}
+			}
+		},
+		'dash-infoplist': {
+			dist: {
+				options: {
+					path: process.cwd() + '/' + minor + '/docset/'
+				}
+			}
+		},
+		'dash-repath': {
+			dist: {
+				options: {
+					containingFolder: process.cwd() + '/' + minor + '/'
+				}
+			}
+		},
+		clean: [process.cwd() + '/' + minor + '/docset/',
+				process.cwd() + '/' + minor + '/']
 	});
 
 	// These plugins provide necessary tasks.
@@ -119,13 +153,17 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-docco2');
 	grunt.loadNpmTasks('grunt-plato');
 	grunt.loadNpmTasks('grunt-jsbeautifier');
-	
+	grunt.loadNpmTasks('grunt-shell');
+	grunt.loadTasks("tasks");
+
 	var subTasks = ['docco:dev'];
 	if(versionMap[minor].branch === "master") {
-		subTasks.push("docco:latest")
+		subTasks.push("docco:latest");
 	}
 
 	grunt.registerTask('doccoit',subTasks);
+
+	grunt.registerTask('docjs', ['clean', 'shell:docjs', 'doccoit', 'dash-docset', 'dash-repath']);
 
 	// Default task.
 	grunt.registerTask('default', [ 'doccoit' ]);
