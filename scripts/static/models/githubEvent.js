@@ -19,7 +19,7 @@ can.Model("Bitovi.OSS.GithubEvent", {
 		};
 	},
 	findAll: {
-		url: Bitovi.URL.BITHUB + '?category=code&order=origin_ts:desc&limit={limit}&tag=canjs',
+		url: Bitovi.URL.BITHUB + '?category=code&order=origin_ts:desc&limit={limit}',
 		dataType: 'json'
 	}
 }, { });

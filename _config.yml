@@ -1,3 +1,8 @@
-safe: true
-pygments: true
 exclude: Gruntfile.js, package.json, readme.md
+
+# Permalinks
+permalink: /blog/:year/:month/:title.html
+
+# Dependencies
+markdown:         kramdown
+pygments:         true

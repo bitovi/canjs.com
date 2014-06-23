@@ -1,10 +1,4 @@
-var filterAppsWithoutPicture = function(apps){
-    return can.grep(apps, function(app){
-        return !!app.attr('picture')
-    })
-}
-
-can.Control('Bitovi.OSS.ProjectCarousel', {
+can.Control('Bitovi.OSS.ProjectCarousel', { 
   defaults: {
     view: 'guides/static/templates/projectCarousel.mustache'
   }
@@ -21,7 +15,6 @@ can.Control('Bitovi.OSS.ProjectCarousel', {
     });
 
     Bitovi.OSS.App.findAll({limit: 300, size: 'canjscom'}).done(can.proxy(function(apps) {
-      apps = filterAppsWithoutPicture(apps);
       var len = apps.length;
       this.state.attr('length', len);
       var rowOne = apps.splice(0, (len / 2));
@@ -47,9 +40,9 @@ can.Control('Bitovi.OSS.ProjectCarousel', {
     if(this.tooltip && this.tooltip.element) {
       this.tooltip.element.remove();
     }
-
-    this.tooltip = new Bitovi.OSS.ProjectTooltip('<div>', {
-      state: el.data('project'),
+    
+    this.tooltip = new Bitovi.OSS.ProjectTooltip('<div>', { 
+      state: el.data('project'), 
       relativeTo: el
     });
 
@@ -73,7 +66,7 @@ can.Control('Bitovi.OSS.ProjectCarousel', {
     if(this.animating) {
       return;
     }
-
+    
     this.animating = true;
     this.element.find('.list').animate({
       left: left

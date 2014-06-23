@@ -20,7 +20,6 @@
   <title>can.ejs.tags.escaped - CanJS API</title>
   <meta name="description" content="">
   <meta name="author" content="">
-  <link rel="shortcut icon" type="image/png" href="/canjs-logo-32x32.png"/>
 
   <link rel="stylesheet" type="text/css" 
     
@@ -63,6 +62,7 @@
             <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
           </ul>
         </li>
+        <li class=""><a href="../blog/index.html">Blog</a></li>
         <li class=""><a href="../download.html">Download</a></li>
       </ul>
       <div class="pull-right">
@@ -381,7 +381,7 @@
 
 		
 		<section class="signature">
-			<h2 id="sig__lt___CODE__gt_">&lt;%= CODE %&gt;
+			<h2 id="sig__amp_lt___CODE__amp_gt_">&amp;lt;%= CODE %&amp;gt;
 </h2>
 <div class="signature-wrapper">
 <p>Runs JS Code and writes the <em>escaped</em> result into the result of the template. This is useful for when you want to show code in your page.</p>
@@ -414,7 +414,7 @@
 </div>
 
 <script type="text/javascript">
-	var docData = {"type":"function","name":"can.ejs.tags.escaped","description":"","title":"<%= CODE %>","parent":"can.ejs.tags","order":1,"signatures":[{"code":"<%= CODE %>","description":"<p>Runs JS Code and writes the <em>escaped</em> result into the result of the template. This is useful for when you want to show code in your page.</p>\n\n<p>The following results in the user seeing \"my favorite element is &lt;blink>BLINK&lt;blink>\" and not\n<blink>BLINK</blink>.</p>\n\n<pre><code> &lt;div&gt;my favorite element is &lt;%= '&lt;blink&gt;BLINK&lt;/blink&gt;' %&gt;.&lt;/div&gt;\n</code></pre>","params":[]}],"src":"can/view/ejs/doc/tags.escaped.md","id":203};
+	var docData = {"type":"function","name":"can.ejs.tags.escaped","description":"","title":"<%= CODE %>","parent":"can.ejs.tags","order":1,"signatures":[{"code":"&lt;%= CODE %&gt;","description":"<p>Runs JS Code and writes the <em>escaped</em> result into the result of the template. This is useful for when you want to show code in your page.</p>\n\n<p>The following results in the user seeing \"my favorite element is &lt;blink>BLINK&lt;blink>\" and not\n<blink>BLINK</blink>.</p>\n\n<pre><code> &lt;div&gt;my favorite element is &lt;%= '&lt;blink&gt;BLINK&lt;/blink&gt;' %&gt;.&lt;/div&gt;\n</code></pre>","params":[]}],"src":"can/view/ejs/doc/tags.escaped.md","id":203};
 
 	console.log(docData);
 </script>
@@ -429,6 +429,7 @@
         <li class=""><a href="../guides/index.html">Guides</a></li>
         <li class="active"><a href="../docs/index.html">Api</a></li>
         <li class=""><a href="../community.html#!forums">Community</a></li>
+        <li class=""><a href="../blog/index.html">Blog</a></li>
         <li class=""><a href="../download.html">Download</a></li>
       </ul>
     </nav>
