@@ -59,8 +59,15 @@ module.exports = function(grunt) {
 						$type: getType(props),
 						$path: (props.id === 0 ? 'index' : key) + '.html'
 					};
+					var fileFullPath = task.options().path + 'Contents/Resources/Documents/' + opts.$path;
 
 					if(props.hide || opts.$type == null) {
+						return;
+					}
+
+					// Don't index files that were not created properly
+					if (!grunt.file.exists(fileFullPath)) {
+						grunt.log.warn('Source file ' + fileFullPath + ' not found. ("' + props.type + '" named: ' + opts.$name + ')');
 						return;
 					}
 
