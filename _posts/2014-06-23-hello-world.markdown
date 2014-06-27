@@ -34,19 +34,15 @@ We'll often use this space to ask what our users want and hope to create a place
 * What do you think we should change to make your jobs easier, both in the code and the documentation?
 * Which features on the roadmap are you most interested in?
 
-### Short Examples
+### Short examples
 
 We'll post quick JSBin examples with short explanations that we think users would find as useful patterns.
 
-### Architecture Discussions
+### News roundups
 
-We'll also be writing up discussions on JavaScript concepts we have strong opinions about that don't specifically belong in the tutorials or API docs. Things like: 
+We'll do occassional posts with curated JavaScript and CanJS articles users might find useful and educational.
 
-* hash based routing vs state based routing
-* dirty checking vs observer API patterns
-* web components
-
-### External Content
+### External content
 
 Eventually, we'll include useful CanJS blog posts written in other places on the web, discovered and fed into this blog by Bithub.
 
