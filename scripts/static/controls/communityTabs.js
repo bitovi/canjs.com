@@ -14,10 +14,7 @@ can.Control('Bitovi.OSS.CommunityTabs', {
 	init: function() {
 		// get data for all six tabs up front
 		// this way, it doesn't call for the data every time a tab switches.
-		this.state = new can.Observe({
-			lines : []
-		});
-
+		this.state = new can.Observe({});
 		var self = this;
 
 		Bitovi.OSS.ForumPost.findAll({limit: 6}).done(function(posts) {
@@ -25,8 +22,7 @@ can.Control('Bitovi.OSS.CommunityTabs', {
 		});
 		// Missing counts for forum categories
 		Bitovi.OSS.ChatLine.findAll({limit: 30}).done(function(lines) {
-			var l = self.state.attr('lines')
-			l.push.apply(l, [].reverse.call(lines));
+			self.state.attr('lines', lines);
 		});
 		Bitovi.OSS.Plugin.findAll({category: 'article|app|plugin', limit: 6}).done(function(plugins) {
 			self.state.attr('plugins', plugins);
@@ -72,6 +68,7 @@ can.Control('Bitovi.OSS.CommunityTabs', {
 			.find('li').removeClass('active')
 			.filter('.' + selectedTab).addClass('active');
 		var tabControl = this.options.tabControls[selectedTab];
+		console.log(Bitovi.OSS[tabControl]);
 		new Bitovi.OSS[tabControl]($('.content > .container'), {state: this.state});
 	}
 });

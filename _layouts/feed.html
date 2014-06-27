@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+	<channel>
+		<title>Bitovi - Blog</title>
+		<description>Blog posts published by the Bitovi team</description>
+		<link>http://www.bitovi.com</link>
+		{% for post in site.posts limit:10 %}
+			<item>
+				<title>{{ post.title }}</title>
+				<description>{% if post.lead != nil %}{{ post.lead | xml_escape }}{% endif %}</description>
+				<published>{{ post.date }}</published>
+				<link>http://www.bitovi.com{{ post.url }}</link>
+			</item>
+		{% endfor %}
+	</channel>
+</rss>

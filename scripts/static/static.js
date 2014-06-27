@@ -29,5 +29,5 @@ steal(
 	prettyPrint();
 	
 	new ContentList(".contents");
-	new FrameHelper(".docs")
+	new FrameHelper(".docs");
 })

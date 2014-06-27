@@ -20,7 +20,6 @@
   <title>{{documentTitle}}</title>
   <meta name="description" content="">
   <meta name="author" content="">
-  <link rel="shortcut icon" type="image/png" href="/canjs-logo-32x32.png"/>
 
   <link rel="stylesheet" type="text/css" 
     {{#staticLocation}}
@@ -65,6 +64,7 @@
             <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
           </ul>
         </li>
+        <li class="{{activePage 'download'}}"><a href="{{removeVersionUrl 'blog/index.html'}}">Blog</a></li>
         <li class="{{activePage 'download'}}"><a href="{{removeVersionUrl 'download.html'}}">Download</a></li>
       </ul>
       <div class="pull-right">
@@ -94,6 +94,7 @@
         <li class="{{activePage 'guides'}}"><a href="{{url 'guides'}}/index.html">Guides</a></li>
         <li class="{{activePage 'docs'}}"><a href="{{url 'docs'}}/index.html">Api</a></li>
         <li class="{{activePage 'community'}}"><a href="{{removeVersionUrl 'community.html#!forums'}}">Community</a></li>
+        <li class="{{activePage 'blog'}}"><a href="{{url 'blog'}}/index.html">Blog</a></li>
         <li class="{{activePage 'download'}}"><a href="{{removeVersionUrl 'download.html'}}">Download</a></li>
       </ul>
     </nav>

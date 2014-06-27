@@ -1,0 +1,19 @@
+{{#each blogList}}
+    <div {{data 'foo'}}>
+    {{#isBlogLimit pageSize @index}}
+    <h2>
+        <span class="date">{{ dateFormat published }}</span>
+        <a href="{{url}}">{{ title }}</a>
+    </h2>
+    <p>{{{ description }}} <a href="{{url}}">Read More &raquo;</a></p>
+    {{/isBlogLimit}}
+    </div>
+{{/each}}
+{{#hasMorePosts pageSize blogList}}
+<div id="more_marker" class="container">
+    <div class="row help text-center">
+        <small><a class="more" href="#more">load more...</a></small>
+    </div>
+</div>
+{{/hasMorePosts}}
+
