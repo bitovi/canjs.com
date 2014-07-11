@@ -1,3 +1,14 @@
+---
+title: Weekly Community Hangouts
+category: news
+author: Chris Stegner
+twitterHandle: cstegner
+githubHandle: cstegner
+banner_img: /img/canjs-banner-background.jpg
+lead: Join us for our weekly community hangouts every Friday at 3PM CST.
+layout: post
+---
+
 Join CanJS’s core team of developers every Friday at 3pm CST as they present new features, discuss JavaScript application best practices and answer your questions.  Hangout with us this and every following Friday on Google Hangouts for 30-minute live CanJS Community Hangouts.
   
 **What to expect**
