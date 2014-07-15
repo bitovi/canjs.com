@@ -11,7 +11,7 @@ layout: post
 
 [BrightRoll](http://www.brightroll.com) is an online video advertising platform company who built their [Console](http://www.brightroll.com/technology/console/) purchasing application using CanJS. They wanted to share their experience.
 
-The following case study is written by their engineers, posted here with their permission. Feel free to email them at <a href='mailto:community@brightroll.com'>community@brightroll.com</a> or find them at twitter [@brightrolleng](http://twitter.com/brightrolleng).
+The following case study is written by their engineers, posted here with their permission. Feel free to email them at community@brightroll.com or find them at twitter [@brightrolleng](http://twitter.com/brightrolleng).
 
 To see other examples of applications written with CanJS, or to post one of your own, visit the [Bithub Apps](http://bithub.com/app) page.
 
