@@ -11,27 +11,6 @@
   <div id="container">
     <div id="background"></div>
     
-      <ul id="jump_to">
-        <li>
-          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
-          <a class="small" href="javascript:void(0);">+</a>
-          <div id="jump_wrapper">
-          <div id="jump_page">
-            
-              
-              <a class="source" href="each.html">
-                each.js
-              </a>
-            
-              
-              <a class="source" href="makeArray.html">
-                makeArray.js
-              </a>
-            
-          </div>
-        </li>
-      </ul>
-    
     <ul class="sections">
         
           <li id="title">
@@ -52,7 +31,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/* jshint maxdepth:7*/</span>
-steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span></pre></div></div>
+steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -67,13 +46,13 @@ steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-func
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> isArrayLike = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span>{</span>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> isArrayLike = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span></span>{
 		<span class="hljs-keyword">var</span> length = obj.length;
 		<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> arr !== <span class="hljs-string">"function"</span> &amp;&amp;
 			( length === <span class="hljs-number">0</span> || <span class="hljs-keyword">typeof</span> length === <span class="hljs-string">"number"</span> &amp;&amp; length &gt; <span class="hljs-number">0</span> &amp;&amp; ( length - <span class="hljs-number">1</span> ) <span class="hljs-keyword">in</span> obj );
 	};
 	
-	can.each = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elements, callback, context)</span> {</span>
+	can.each = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elements, callback, context)</span> </span>{
 		<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>,
 			key,
 			len,

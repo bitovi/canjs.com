@@ -31,7 +31,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util/string'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util/string'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -54,7 +54,7 @@ initializing it’s bindings.</p>
 	<span class="hljs-comment">/**
 	 * @add can.Construct
 	 */</span>
-	can.Construct = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+	can.Construct = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 		<span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length) {
 			<span class="hljs-keyword">return</span> can.Construct.extend.apply(can.Construct, <span class="hljs-built_in">arguments</span>);
 		}
@@ -121,7 +121,7 @@ initializing it’s bindings.</p>
 		 *     justin = new Person.newInstance.apply(null, args);
 		 * @codeend
 		 */</span>
-		newInstance: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+		newInstance: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -191,7 +191,7 @@ initializing it’s bindings.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		_inherit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newProps, oldProps, addTo)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		_inherit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newProps, oldProps, addTo)</span> </span>{
 			can.extend(addTo || newProps, newProps || {});
 		},</pre></div></div>
             
@@ -210,7 +210,7 @@ the super plugin overwrites this</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		_overwrite: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(what, oldProps, propName, val)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		_overwrite: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(what, oldProps, propName, val)</span> </span>{
 			what[propName] = val;
 		},</pre></div></div>
             
@@ -311,7 +311,7 @@ include option merging logic.</p>
 		 * Child.base; // Parent
 		 * @codeend
 		 */</span>
-		setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(base, fullName)</span> {</span>
+		setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(base, fullName)</span> </span>{
 			<span class="hljs-keyword">this</span>.defaults = can.extend(<span class="hljs-literal">true</span>, {}, base.defaults, <span class="hljs-keyword">this</span>.defaults);
 		},</pre></div></div>
             
@@ -329,7 +329,7 @@ include option merging logic.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		instance: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>		instance: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -441,7 +441,7 @@ include option merging logic.</p>
 		 * @return {function} The constructor function.
 		 *
 		 */</span>
-		extend: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fullName, klass, proto)</span> {</span></pre></div></div>
+		extend: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fullName, klass, proto)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -514,7 +514,7 @@ don’t run the init constructor).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Constructor</span><span class="hljs-params">()</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Constructor</span><span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -662,7 +662,7 @@ don’t run the init constructor).</p>
 
 				parts = fullName.split(<span class="hljs-string">'.'</span>);
 				shortName = parts.pop();
-				current = can.getObject(parts.join(<span class="hljs-string">'.'</span>), window, <span class="hljs-literal">true</span>);
+				current = can.getObject(parts.join(<span class="hljs-string">'.'</span>), <span class="hljs-built_in">window</span>, <span class="hljs-literal">true</span>);
 				namespace = current;
 				_fullName = can.underscore(fullName.replace(<span class="hljs-regexp">/\./g</span>, <span class="hljs-string">"_"</span>));
 				_shortName = can.underscore(shortName);</pre></div></div>
@@ -914,7 +914,7 @@ don’t run the init constructor).</p>
 	 *     });
 	 *
 	 */</span>
-	can.Construct.prototype.setup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>};
+	can.Construct.prototype.setup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{};
 	<span class="hljs-comment">/**
 	 * @function can.Construct.prototype.init init
 	 * @parent can.Construct.prototype
@@ -974,7 +974,7 @@ don’t run the init constructor).</p>
 	 * check to make sure that they aren't being changed by `setup` somewhere along
 	 * the inheritance chain.
 	 */</span>
-	can.Construct.prototype.init = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>};
+	can.Construct.prototype.init = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{};
 	<span class="hljs-keyword">return</span> can.Construct;
 });</pre></div></div>
             

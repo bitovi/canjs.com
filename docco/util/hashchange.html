@@ -96,7 +96,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -111,8 +111,8 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-		<span class="hljs-keyword">var</span> addEvent = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, ev, fn)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-keyword">var</span> addEvent = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, ev, fn)</span> </span>{
 			<span class="hljs-keyword">if</span> (el.addEventListener) {
 				el.addEventListener(ev, fn, <span class="hljs-literal">false</span>);
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (el.attachEvent) {
@@ -120,10 +120,10 @@
 			} <span class="hljs-keyword">else</span> {
 				el[<span class="hljs-string">'on'</span> + ev] = fn;
 			}
-		}, onHashchange = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-				can.trigger(window, <span class="hljs-string">'hashchange'</span>);
+		}, onHashchange = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				can.trigger(<span class="hljs-built_in">window</span>, <span class="hljs-string">'hashchange'</span>);
 			};
-		addEvent(window, <span class="hljs-string">'hashchange'</span>, onHashchange);
+		addEvent(<span class="hljs-built_in">window</span>, <span class="hljs-string">'hashchange'</span>, onHashchange);
 	}());
 });</pre></div></div>
             

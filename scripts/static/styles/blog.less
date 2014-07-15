@@ -1,0 +1,296 @@
+.blog {
+
+	border-top: 1px solid #ccc;
+	margin-top: 20px;
+	padding-top: 20px;
+}
+.sidebar .api .social-links a {
+	margin-top: 0;
+	padding-top: 0;
+}
+
+.docs .content.blog-wrapper {
+	border: 1px solid #d5d5d5;
+}
+
+.blog {
+	.date {
+		font-size: 12px;
+		background: #767676;
+		border-radius: 4px;
+		padding: 2px 8px;
+		float: left;
+		color: white;
+		margin: 3px 5px 0 0;
+		line-height: 18px;
+	}
+}
+#blog {
+	.rss-link {
+		background: #FFA200;
+		color: white;
+		text-decoration: none;
+		font-size: 14px;
+		padding: 3px 5px;
+		float: right;
+		margin: 7px 0 0 0;
+		border-radius: 3px;
+		&:hover {
+			background: #E99400;
+		}
+	}
+}
+.blog-wrapper {
+	.date {
+		margin-top: 0;
+	}
+	.tags {
+		float: right;
+	}
+	h1, h2, h3, h4, h5, h6 {
+		font-family: 'Lato',Arial,Helvetica,sans-serif;
+		display: block;
+		text-align: left;
+		color:#165489;
+		margin-bottom: 5px;
+		font-weight: 400;
+		font-style: normal;
+	}
+	.title-and-lead-wrap {
+		color: white;
+		background: url(/img/canjs-background-blue.gif);
+		background-position: 50% 50%;
+		border-top: none;
+		margin: 0 -20px 30px -20px;
+		min-height: 230px;
+		p {
+			text-align: center;
+		}
+		h1 {
+			color: #fff;
+		}
+	}
+	p, ul, li,  {
+		color: #666666;
+	}
+	ul {
+	    list-style: none;
+	    padding:0;
+	    margin:0;
+	}
+
+	li { 
+	    padding-left: 1em; 
+	    text-indent: -.7em;
+	}
+
+	li:before {
+	    content: "• ";
+	    color: #165489;
+	}	
+	.date-and-tags-wrap {
+		margin: 0;
+		padding: 10px 0 10px 0;
+		font-size: 12px;
+		line-height: 15px;
+		img {
+			height: 30px;
+			width: 30px;
+			padding: 0;
+			border: none;
+			display: inline-block;
+			margin: 0 10px 0 0;
+		}
+		.twitter-share-button {
+			position: absolute;
+			right: 20px;
+			top: 15px;
+		}
+		code {
+			padding: 0 5px;
+			border: 1px solid #eeeeee;
+		}
+	}
+	.blog-archive {
+		display: block;
+		border-bottom: 1px solid #114069;
+		margin: -20px -20px 0;
+		padding: 20px 20px;
+		background: #f8f8f8;
+		box-shadow: 0px 2px 5px rgba(0,0,0,0.08);
+		text-decoration: none;
+		position: relative;
+		z-index: 10;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+	ul.tags {
+		float: right;
+		list-style: none;
+		li {
+			float: left;
+			-webkit-border-radius: 4px;
+			-moz-border-radius: 4px;
+			border-radius: 4px;
+			background-color: #767676;
+			color: #fff;
+			font-size: 12px;
+			margin-left: 5px;
+			padding: 2px 8px;
+			line-height: 18px;
+			a {
+				color: white;
+				text-decoration: none;
+			}
+		}
+	}
+	#disqus_thread {
+		margin-top: 20px;
+		padding-top: 20px;
+		border-top: 1px solid #ccc;
+	}
+}
+
+/* Tomorrow Night Blue Theme */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+.prettyprint {
+  background: #002451 !important;
+  font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', Monaco, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.pln {
+  color: white;
+}
+
+@media screen {
+  .str {
+    color: #d1f1a9;
+  }
+
+  .kwd {
+    color: #ebbbff;
+  }
+
+  .com {
+    color: #7285b7;
+  }
+
+  .typ {
+    color: #bbdaff;
+  }
+
+  .lit {
+    color: #ffc58f;
+  }
+
+  .pun {
+    color: white;
+  }
+
+  .opn {
+    color: white;
+  }
+
+  .clo {
+    color: white;
+  }
+
+  .tag {
+    color: #ff9da4;
+  }
+
+  .atn {
+    color: #ffc58f;
+  }
+
+  .atv {
+    color: #99ffff;
+  }
+
+  .dec {
+    color: #ffc58f;
+  }
+
+  .var {
+    color: #ff9da4;
+  }
+
+  .fun {
+    color: #bbdaff;
+  }
+}
+@media print, projection {
+  .str {
+    color: #006600;
+  }
+
+  .kwd {
+    color: #006;
+    font-weight: bold;
+  }
+
+  .com {
+    color: #600;
+    font-style: italic;
+  }
+
+  .typ {
+    color: #404;
+    font-weight: bold;
+  }
+
+  .lit {
+    color: #004444;
+  }
+
+  .pun, .opn, .clo {
+    color: #444400;
+  }
+
+  .tag {
+    color: #006;
+    font-weight: bold;
+  }
+
+  .atn {
+    color: #440044;
+  }
+
+  .atv {
+    color: #006600;
+  }
+}
+/* Specify class=linenums on a pre to get line numbering */
+ol.linenums {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* IE indents via margin-left */
+li.L0,
+li.L1,
+li.L2,
+li.L3,
+li.L4,
+li.L5,
+li.L6,
+li.L7,
+li.L8,
+li.L9 {
+  /* */
+}
+
+/* Alternate shading for lines */
+li.L1,
+li.L3,
+li.L5,
+li.L7,
+li.L9 {
+  /* */
+}

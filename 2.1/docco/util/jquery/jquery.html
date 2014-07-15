@@ -30,8 +30,8 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'jquery'</span>, <span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-string">'can/util/attr'</span>, <span class="hljs-string">"can/event"</span>, <span class="hljs-string">'can/util/array/each.js'</span>, <span class="hljs-string">"can/util/inserted"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($, can, attr, event)</span> {</span>
-	<span class="hljs-keyword">var</span> isBindableElement = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'jquery'</span>, <span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-string">'can/util/attr'</span>, <span class="hljs-string">"can/event"</span>, <span class="hljs-string">'can/util/array/each.js'</span>, <span class="hljs-string">"can/util/inserted"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($, can, attr, event)</span> </span>{
+	<span class="hljs-keyword">var</span> isBindableElement = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -47,7 +47,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-comment">/*jshint eqeqeq:false*/</span>
-		<span class="hljs-keyword">return</span> ( node.nodeName &amp;&amp; (node.nodeType === <span class="hljs-number">1</span> || node.nodeType === <span class="hljs-number">9</span>) )|| node == window;
+		<span class="hljs-keyword">return</span> ( node.nodeName &amp;&amp; (node.nodeType === <span class="hljs-number">1</span> || node.nodeType === <span class="hljs-number">9</span>) )|| node == <span class="hljs-built_in">window</span>;
 	};</pre></div></div>
             
         </li>
@@ -64,7 +64,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>	$.extend(can, $, {
-		trigger: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj, event, args, bubbles)</span> {</span>
+		trigger: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj, event, args, bubbles)</span> </span>{
 			<span class="hljs-keyword">if</span> (isBindableElement( obj ) ) {
 				$.event.trigger(event, args, obj, !bubbles);
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (obj.trigger) {
@@ -76,13 +76,23 @@
 					};
 				}
 				event.target = event.target || obj;
+				<span class="hljs-keyword">if</span>(args){
+					<span class="hljs-keyword">if</span>( args.length &amp;&amp; <span class="hljs-keyword">typeof</span> args === <span class="hljs-string">"string"</span>) {
+						args = [args];
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(! args.length ) {
+						args = [args];
+					}
+				}
+				<span class="hljs-keyword">if</span>(!args){
+					args = [];
+				}
 				can.dispatch.call(obj, event, args);
 			}
 		},
 		event: can.event,
 		addEvent: can.addEvent,
 		removeEvent: can.removeEvent,
-		buildFragment: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elems, context)</span> {</span></pre></div></div>
+		buildFragment: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elems, context)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -113,7 +123,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			context = context || document;
+            <div class="content"><div class='highlight'><pre>			context = context || <span class="hljs-built_in">document</span>;
 			context = !context.nodeType &amp;&amp; context[<span class="hljs-number">0</span>] || context;
 			context = context.ownerDocument || context;
 			ret = $.buildFragment(elems, context);
@@ -121,7 +131,7 @@
 		},
 		$: $,
 		each: can.each,
-		bind: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, cb)</span> {</span></pre></div></div>
+		bind: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, cb)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -159,7 +169,7 @@
 			}
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 		},
-		unbind: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, cb)</span> {</span></pre></div></div>
+		unbind: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, cb)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -197,7 +207,7 @@
 			}
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 		},
-		delegate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector, ev, cb)</span> {</span>
+		delegate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector, ev, cb)</span> </span>{
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.delegate) {
 				<span class="hljs-keyword">this</span>.delegate(selector, ev, cb);
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isBindableElement(<span class="hljs-keyword">this</span>)) {
@@ -222,7 +232,7 @@
 			}
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 		},
-		undelegate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector, ev, cb)</span> {</span>
+		undelegate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector, ev, cb)</span> </span>{
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.undelegate) {
 				<span class="hljs-keyword">this</span>.undelegate(selector, ev, cb);
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isBindableElement(<span class="hljs-keyword">this</span>)) {
@@ -233,8 +243,8 @@
 			}
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 		},
-		proxy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fn, context)</span> {</span>
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+		proxy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fn, context)</span> </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">return</span> fn.apply(context, <span class="hljs-built_in">arguments</span>);
 			};
 		},
@@ -299,8 +309,8 @@
 		<span class="hljs-string">'data'</span>,
 		<span class="hljs-string">'get'</span>,
 		<span class="hljs-string">'has'</span>
-	], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(i, name)</span> {</span>
-		can[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped)</span> {</span>
+	], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(i, name)</span> </span>{
+		can[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped)</span> </span>{
 			<span class="hljs-keyword">return</span> wrapped[name].apply(wrapped, can.makeArray(<span class="hljs-built_in">arguments</span>)
 				.slice(<span class="hljs-number">1</span>));
 		};
@@ -320,8 +330,8 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> oldClean = $.cleanData;
-	$.cleanData = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elems)</span> {</span>
-		$.each(elems, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(i, elem)</span> {</span>
+	$.cleanData = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elems)</span> </span>{
+		$.each(elems, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(i, elem)</span> </span>{
 			<span class="hljs-keyword">if</span> (elem) {
 				can.trigger(elem, <span class="hljs-string">'removed'</span>, [], <span class="hljs-literal">false</span>);
 			}
@@ -344,7 +354,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	$.fn.domManip = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args, cb1, cb2)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	$.fn.domManip = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args, cb1, cb2)</span> </span>{
 		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">1</span>; i &lt; <span class="hljs-built_in">arguments</span>.length; i++) {
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">arguments</span>[i] === <span class="hljs-string">'function'</span>) {
 				cbIndex = i;
@@ -353,12 +363,12 @@
 		}
 		<span class="hljs-keyword">return</span> oldDomManip.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 	};
-	$(document.createElement(<span class="hljs-string">"div"</span>))
-		.append(document.createElement(<span class="hljs-string">"div"</span>));
+	$(<span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"div"</span>))
+		.append(<span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"div"</span>));
 
 	$.fn.domManip = (cbIndex === <span class="hljs-number">2</span> ?
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args, table, callback)</span> {</span>
-			<span class="hljs-keyword">return</span> oldDomManip.call(<span class="hljs-keyword">this</span>, args, table, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elem)</span> {</span>
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args, table, callback)</span> </span>{
+			<span class="hljs-keyword">return</span> oldDomManip.call(<span class="hljs-keyword">this</span>, args, table, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elem)</span> </span>{
 				<span class="hljs-keyword">var</span> elems;
 				<span class="hljs-keyword">if</span> (elem.nodeType === <span class="hljs-number">11</span>) {
 					elems = can.makeArray(elem.childNodes);
@@ -368,8 +378,8 @@
 				<span class="hljs-keyword">return</span> ret;
 			});
 		} :
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args, callback)</span> {</span>
-			<span class="hljs-keyword">return</span> oldDomManip.call(<span class="hljs-keyword">this</span>, args, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elem)</span> {</span>
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args, callback)</span> </span>{
+			<span class="hljs-keyword">return</span> oldDomManip.call(<span class="hljs-keyword">this</span>, args, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elem)</span> </span>{
 				<span class="hljs-keyword">var</span> elems;
 				<span class="hljs-keyword">if</span> (elem.nodeType === <span class="hljs-number">11</span>) {
 					elems = can.makeArray(elem.childNodes);
@@ -396,7 +406,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> oldAttr = $.attr;
-		$.attr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName)</span> {</span>
+		$.attr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName)</span> </span>{
 			<span class="hljs-keyword">var</span> oldValue, newValue;
 			<span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length &gt;= <span class="hljs-number">3</span>) {
 				oldValue = oldAttr.call(<span class="hljs-keyword">this</span>, el, attrName);
@@ -411,7 +421,7 @@
 			<span class="hljs-keyword">return</span> res;
 		};
 		<span class="hljs-keyword">var</span> oldRemove = $.removeAttr;
-		$.removeAttr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName)</span> {</span>
+		$.removeAttr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName)</span> </span>{
 			<span class="hljs-keyword">var</span> oldValue = oldAttr.call(<span class="hljs-keyword">this</span>, el, attrName),
 				res = oldRemove.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 
@@ -421,10 +431,10 @@
 			<span class="hljs-keyword">return</span> res;
 		};
 		$.event.special.attributes = {
-			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				can.data(can.$(<span class="hljs-keyword">this</span>), <span class="hljs-string">"canHasAttributesBindings"</span>, <span class="hljs-literal">true</span>);
 			},
-			teardown: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			teardown: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				$.removeData(<span class="hljs-keyword">this</span>, <span class="hljs-string">"canHasAttributesBindings"</span>);
 			}
 		};
@@ -444,10 +454,10 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>		$.event.special.attributes = {
-			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
-				<span class="hljs-keyword">var</span> observer = <span class="hljs-keyword">new</span> can.attr.MutationObserver(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(mutations)</span> {</span>
-					mutations.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(mutation)</span> {</span>
+				<span class="hljs-keyword">var</span> observer = <span class="hljs-keyword">new</span> can.attr.MutationObserver(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(mutations)</span> </span>{
+					mutations.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(mutation)</span> </span>{
 						<span class="hljs-keyword">var</span> copy = can.simpleExtend({}, mutation);
 						can.trigger(self, copy, []);
 					});
@@ -459,7 +469,7 @@
 				});
 				can.data(can.$(<span class="hljs-keyword">this</span>), <span class="hljs-string">"canAttributesObserver"</span>, observer);
 			},
-			teardown: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			teardown: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				can.data(can.$(<span class="hljs-keyword">this</span>), <span class="hljs-string">"canAttributesObserver"</span>)
 					.disconnect();
 				$.removeData(<span class="hljs-keyword">this</span>, <span class="hljs-string">"canAttributesObserver"</span>);
@@ -485,14 +495,14 @@ a text node that is set to the content.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+            <div class="content"><div class='highlight'><pre>	(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
 		
 		<span class="hljs-keyword">var</span> text = <span class="hljs-string">"&lt;-\n&gt;"</span>,
-			frag = can.buildFragment(text, document);
+			frag = can.buildFragment(text, <span class="hljs-built_in">document</span>);
 		<span class="hljs-keyword">if</span>(text !== frag.childNodes[<span class="hljs-number">0</span>].nodeValue) {
 			
 			<span class="hljs-keyword">var</span> oldBuildFragment  = can.buildFragment;
-			can.buildFragment = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(content, context)</span>{</span>
+			can.buildFragment = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(content, context)</span></span>{
 				<span class="hljs-keyword">var</span> res = oldBuildFragment(content, context);
 				<span class="hljs-keyword">if</span>(res.childNodes.length === <span class="hljs-number">1</span> &amp;&amp; res.childNodes[<span class="hljs-number">0</span>].nodeType === <span class="hljs-number">3</span>) {
 					res.childNodes[<span class="hljs-number">0</span>].nodeValue = content;

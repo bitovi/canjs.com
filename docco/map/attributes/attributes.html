@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-string">'can/list'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, Map)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-string">'can/list'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, Map)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -65,7 +65,7 @@
 	can.each([
 		can.Map,
 		can.Model
-	], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(clss)</span> {</span></pre></div></div>
+	], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(clss)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -83,7 +83,7 @@
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (clss === <span class="hljs-literal">undefined</span>) {
 			<span class="hljs-keyword">return</span>;
 		}
-		<span class="hljs-keyword">var</span> isObject = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> {</span>
+		<span class="hljs-keyword">var</span> isObject = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> obj === <span class="hljs-string">'object'</span> &amp;&amp; obj !== <span class="hljs-literal">null</span> &amp;&amp; obj;
 		};
 		can.extend(clss, {
@@ -91,7 +91,7 @@
 			attributes: {},
 
 			convert: {
-				<span class="hljs-string">'date'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> {</span>
+				<span class="hljs-string">'date'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> </span>{
 					<span class="hljs-keyword">var</span> type = <span class="hljs-keyword">typeof</span> str;
 					<span class="hljs-keyword">if</span> (type === <span class="hljs-string">'string'</span>) {
 						str = <span class="hljs-built_in">Date</span>.parse(str);
@@ -102,16 +102,16 @@
 						<span class="hljs-keyword">return</span> str;
 					}
 				},
-				<span class="hljs-string">'number'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> {</span>
+				<span class="hljs-string">'number'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> </span>{
 					<span class="hljs-keyword">return</span> <span class="hljs-built_in">parseFloat</span>(val);
 				},
-				<span class="hljs-string">'boolean'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> {</span>
+				<span class="hljs-string">'boolean'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> </span>{
 					<span class="hljs-keyword">if</span> (val === <span class="hljs-string">'false'</span> || val === <span class="hljs-string">'0'</span> || !val) {
 						<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 					}
 					<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 				},
-				<span class="hljs-string">'default'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val, oldVal, error, type)</span> {</span></pre></div></div>
+				<span class="hljs-string">'default'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val, oldVal, error, type)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -139,7 +139,7 @@
 						<span class="hljs-keyword">return</span> type(val, oldVal);
 					}
 					<span class="hljs-keyword">var</span> construct = can.getObject(type),
-						context = window,
+						context = <span class="hljs-built_in">window</span>,
 						realType;</pre></div></div>
             
         </li>
@@ -191,10 +191,10 @@
 				}
 			},
 			serialize: {
-				<span class="hljs-string">'default'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val, type)</span> {</span>
+				<span class="hljs-string">'default'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val, type)</span> </span>{
 					<span class="hljs-keyword">return</span> isObject(val) &amp;&amp; val.serialize ? val.serialize() : val;
 				},
-				<span class="hljs-string">'date'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> {</span>
+				<span class="hljs-string">'date'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> </span>{
 					<span class="hljs-keyword">return</span> val &amp;&amp; val.getTime();
 				}
 			}
@@ -223,10 +223,10 @@
 		 * functionality for attributes.
 		 *
 		 */</span>
-		clss.setup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(superClass, stat, proto)</span> {</span>
+		clss.setup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(superClass, stat, proto)</span> </span>{
 			<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
 			oldSetup.call(self, superClass, stat, proto);
-			can.each([<span class="hljs-string">'attributes'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
+			can.each([<span class="hljs-string">'attributes'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
 				<span class="hljs-keyword">if</span> (!self[name] || superClass[name] === self[name]) {
 					self[name] = {};
 				}
@@ -234,7 +234,7 @@
 			can.each([
 				<span class="hljs-string">'convert'</span>,
 				<span class="hljs-string">'serialize'</span>
-			], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
+			], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
 				<span class="hljs-keyword">if</span> (superClass[name] !== self[name]) {
 					self[name] = can.extend({}, superClass[name], self[name]);
 				}
@@ -246,7 +246,7 @@
 	 * @function can.Map.prototype.convert
 	 * @parent can.Map.attributes
 	 */</span>
-	can.Map.prototype.__convert = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, value)</span> {</span></pre></div></div>
+	can.Map.prototype.__convert = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, value)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -282,11 +282,11 @@
             <div class="content"><div class='highlight'><pre>			type = Class.attributes[prop];
 			converter = Class.convert[type] || Class.convert[<span class="hljs-string">'default'</span>];
 		}
-		<span class="hljs-keyword">return</span> value === <span class="hljs-literal">null</span> || !type ? value : converter.call(Class, value, oldVal, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>}, type);
+		<span class="hljs-keyword">return</span> value === <span class="hljs-literal">null</span> || !type ? value : converter.call(Class, value, oldVal, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{}, type);
 	};
 	
 	<span class="hljs-keyword">var</span> oldSerialize = can.Map.helpers._serialize;
-	can.Map.helpers._serialize = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(map, name, val)</span>{</span>
+	can.Map.helpers._serialize = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(map, name, val)</span></span>{
 		
 		<span class="hljs-keyword">var</span> constructor = map.constructor,
 			type = constructor.attributes ? constructor.attributes[name] : <span class="hljs-number">0</span>,
@@ -369,7 +369,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> mapSerialize = can.Map.prototype.serialize;
-	can.Map.prototype.serialize = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrName)</span> {</span>
+	can.Map.prototype.serialize = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrName)</span> </span>{
 		<span class="hljs-keyword">var</span> baseResult = mapSerialize.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 		<span class="hljs-keyword">if</span>(attrName){
 			<span class="hljs-keyword">return</span> baseResult[attrName];

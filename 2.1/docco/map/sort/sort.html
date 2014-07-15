@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/list'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/list'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -46,7 +46,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> oldBubbleRule = can.List._bubbleRule;
-	can.List._bubbleRule = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventName, list)</span> {</span>
+	can.List._bubbleRule = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventName, list)</span> </span>{
 		<span class="hljs-keyword">if</span>(list.comparator) {
 			<span class="hljs-keyword">return</span> <span class="hljs-string">"change"</span>;
 		}
@@ -54,7 +54,7 @@
 	};
 	<span class="hljs-keyword">if</span>(can.Model) {
 		<span class="hljs-keyword">var</span> oldModelListBubble = can.Model.List._bubbleRule;
-		can.Model.List._bubbleRule = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventName, list)</span>{</span>
+		can.Model.List._bubbleRule = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventName, list)</span></span>{
 			<span class="hljs-keyword">if</span>(list.comparator) {
 				<span class="hljs-keyword">return</span> <span class="hljs-string">"change"</span>;
 			}
@@ -100,7 +100,7 @@
 		<span class="hljs-comment">/**
 		 * @hide
 		 */</span>
-		sortedIndex: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> {</span>
+		sortedIndex: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> </span>{
 			<span class="hljs-keyword">var</span> itemCompare = item.attr(<span class="hljs-keyword">this</span>.comparator),
 				equaled = <span class="hljs-number">0</span>;
 			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, length = <span class="hljs-keyword">this</span>.length; i &lt; length; i++) {
@@ -118,11 +118,11 @@
 		<span class="hljs-comment">/**
 		 * @hide
 		 */</span>
-		sort: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method, silent)</span> {</span>
+		sort: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method, silent)</span> </span>{
 			<span class="hljs-keyword">var</span> comparator = <span class="hljs-keyword">this</span>.comparator,
 				args = comparator ? [
 
-					<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> {</span>
+					<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> </span>{
 						a = <span class="hljs-keyword">typeof</span> a[comparator] === <span class="hljs-string">'function'</span> ? a[comparator]() : a[comparator];
 						b = <span class="hljs-keyword">typeof</span> b[comparator] === <span class="hljs-string">'function'</span> ? b[comparator]() : b[comparator];
 						<span class="hljs-keyword">return</span> a === b ? <span class="hljs-number">0</span> : a &lt; b ? -<span class="hljs-number">1</span> : <span class="hljs-number">1</span>;
@@ -149,7 +149,7 @@ converts to an array of arguments</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> getArgs = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> getArgs = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args)</span> </span>{
 		<span class="hljs-keyword">return</span> args[<span class="hljs-number">0</span>] &amp;&amp; can.isArray(args[<span class="hljs-number">0</span>]) ? args[<span class="hljs-number">0</span>] : can.makeArray(args);
 	};
 	can.each({
@@ -195,10 +195,10 @@ converts to an array of arguments</p>
 		 * @param where items in the array should be added
 		 * @param name method name
 		 */</span>
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(where, name)</span> {</span>
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(where, name)</span> </span>{
 			<span class="hljs-keyword">var</span> proto = can.List.prototype,
 				old = proto[name];
-			proto[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+			proto[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -286,7 +286,7 @@ undefined - the old value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	proto._changes = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, attr, how, newVal, oldVal)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	proto._changes = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, attr, how, newVal, oldVal)</span> </span>{
 		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.comparator &amp;&amp; <span class="hljs-regexp">/^\d+./</span>.test(attr)) {</pre></div></div>
             
         </li>
@@ -384,7 +384,7 @@ undefined - the old value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	proto.setup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(instances, options)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	proto.setup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(instances, options)</span> </span>{
 		setup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.comparator) {
 			<span class="hljs-keyword">this</span>.sort();

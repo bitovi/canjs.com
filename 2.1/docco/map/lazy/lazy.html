@@ -56,7 +56,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'./bubble.js'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-string">'can/list'</span>, <span class="hljs-string">'./nested_reference.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, bubble)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'./bubble.js'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-string">'can/list'</span>, <span class="hljs-string">'./nested_reference.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, bubble)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -73,14 +73,14 @@ to maps that have already been made for a plain ole JS object</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> madeMap = <span class="hljs-literal">null</span>;
-	<span class="hljs-keyword">var</span> getMapFromObject = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> {</span>
+	<span class="hljs-keyword">var</span> getMapFromObject = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> </span>{
 		<span class="hljs-keyword">return</span> madeMap &amp;&amp; madeMap[obj._cid] &amp;&amp; madeMap[obj._cid].instance;
 	};
 
 	can.LazyMap = can.Map.extend({
 		_bubble: bubble
 	}, {
-		setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> {</span>
+		setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> </span>{
 			<span class="hljs-keyword">this</span>.constructor.Map = <span class="hljs-keyword">this</span>.constructor;
 			<span class="hljs-keyword">this</span>.constructor.List = can.LazyList;</pre></div></div>
             
@@ -163,7 +163,7 @@ to maps that have already been made for a plain ole JS object</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.each(<span class="hljs-keyword">this</span>._data, can.proxy(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value, prop)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			can.each(<span class="hljs-keyword">this</span>._data, can.proxy(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value, prop)</span> </span>{
 				<span class="hljs-keyword">this</span>.___set(prop, value);
 			}, <span class="hljs-keyword">this</span>));
 			<span class="hljs-keyword">this</span>.bind(<span class="hljs-string">'change'</span>, can.proxy(<span class="hljs-keyword">this</span>._changes, <span class="hljs-keyword">this</span>));
@@ -184,7 +184,7 @@ to maps that have already been made for a plain ole JS object</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		_addChild: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(path, newChild, setNewChild)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		_addChild: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(path, newChild, setNewChild)</span> </span>{
 			<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;</pre></div></div>
             
         </li>
@@ -200,7 +200,7 @@ to maps that have already been made for a plain ole JS object</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>._nestedReference.removeChildren(path, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oldChild, oldChildPath)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>._nestedReference.removeChildren(path, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oldChild, oldChildPath)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -260,7 +260,7 @@ to maps that have already been made for a plain ole JS object</p>
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>						oldChild._nestedReference.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj, path)</span> {</span>
+            <div class="content"><div class='highlight'><pre>						oldChild._nestedReference.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj, path)</span> </span>{
 							newChild._nestedReference.make(path());
 							<span class="hljs-keyword">if</span> (self._bindings) {
 								bubble.add(<span class="hljs-keyword">this</span>, newChild, path());
@@ -328,7 +328,7 @@ to maps that have already been made for a plain ole JS object</p>
 			<span class="hljs-keyword">return</span> newChild;
 		},
 
-		removeAttr: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr)</span> {</span>
+		removeAttr: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr)</span> </span>{
 			<span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>._goto(attr);</pre></div></div>
             
         </li>
@@ -434,7 +434,7 @@ instead remove all references, do not unbind as _addChild does</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		__type: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value, prop)</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>		__type: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value, prop)</span></span>{</pre></div></div>
             
         </li>
         
@@ -481,7 +481,7 @@ if it finds something else, it uses __get</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		_goto: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr, keepKey)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		_goto: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr, keepKey)</span> </span>{
 			<span class="hljs-keyword">var</span> parts = can.Map.helpers.attrParts(attr, keepKey).slice(<span class="hljs-number">0</span>),
 				prev,
 				path = [],
@@ -545,7 +545,7 @@ if it finds something else, it uses __get</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		_get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		_get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr)</span> </span>{
 			<span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>._goto(attr);</pre></div></div>
             
         </li>
@@ -597,7 +597,7 @@ if it finds something else, it uses __get</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>._addChild(attr, converted, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>._addChild(attr, converted, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 					data.parent[data.prop] = converted;
 				});
 				<span class="hljs-keyword">return</span> converted;
@@ -651,7 +651,7 @@ if it finds something else, it uses __get</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		_set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr, value, keepKey)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		_set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr, value, keepKey)</span> </span>{
 			<span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>._goto(attr, keepKey);
 			<span class="hljs-keyword">if</span> (can.Map.helpers.isObservable(data.value) &amp;&amp; data.parts.length) {
 				<span class="hljs-keyword">return</span> data.value._set(data.parts, value);
@@ -661,7 +661,7 @@ if it finds something else, it uses __get</p>
 				<span class="hljs-keyword">throw</span> <span class="hljs-string">"can.LazyMap: object does not exist"</span>;
 			}
 		},
-		__set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, value, current, data, convert)</span> {</span></pre></div></div>
+		__set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, value, current, data, convert)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -755,7 +755,7 @@ if we are, we need to create an <code>add</code> event.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">this</span>._addChild(prop, value, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">this</span>._addChild(prop, value, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -841,7 +841,7 @@ the the number of keys have changed</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		___set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, val, data)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		___set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, val, data)</span> </span>{
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>[prop] &amp;&amp; <span class="hljs-keyword">this</span>[prop].isComputed &amp;&amp; can.isFunction(<span class="hljs-keyword">this</span>.constructor.prototype[prop])) {
 				<span class="hljs-keyword">this</span>[prop](val);
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (data) {
@@ -874,7 +874,7 @@ Check if its on the <code>prototype</code> so we don’t overwrite methods like 
 		 * @param {Object} props
 		 * @param {Boolean} remove true if you should remove properties that are not in props
 		 */</span>
-		_attrs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(props, remove)</span> {</span>
+		_attrs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(props, remove)</span> </span>{
 			<span class="hljs-keyword">if</span> (props === <span class="hljs-literal">undefined</span>) {
 				<span class="hljs-keyword">return</span> can.Map.helpers.serialize(<span class="hljs-keyword">this</span>, <span class="hljs-string">'attr'</span>, {});
 			}
@@ -900,7 +900,7 @@ Check if its on the <code>prototype</code> so we don’t overwrite methods like 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(curVal, prop)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(curVal, prop)</span> </span>{
 				newVal = props[prop];
 				data = self._goto(prop, <span class="hljs-literal">true</span>);</pre></div></div>
             
@@ -1061,7 +1061,7 @@ Check if its on the <code>prototype</code> so we don’t overwrite methods like 
 	can.LazyList = can.List.extend({
 		Map: can.LazyMap
 	}, {
-		setup: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+		setup: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
 			can.List.prototype.setup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 			<span class="hljs-keyword">this</span>._nestedReference = <span class="hljs-keyword">new</span> can.NestedReference(<span class="hljs-keyword">this</span>);
 		}

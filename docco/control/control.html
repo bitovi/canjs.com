@@ -30,7 +30,7 @@ controls with behaviors, bound to elements on the page.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/construct'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span></pre></div></div>
+steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/construct'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -46,11 +46,11 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> bind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, ev, callback)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> bind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, ev, callback)</span> </span>{
 
 		can.bind.call(el, ev, callback);
 
-		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 			can.unbind.call(el, ev, callback);
 		};
 	},
@@ -76,9 +76,9 @@ function that unbinds.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		delegate = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, selector, ev, callback)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		delegate = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, selector, ev, callback)</span> </span>{
 			can.delegate.call(el, selector, ev, callback);
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				can.undelegate.call(el, selector, ev, callback);
 			};
 		},</pre></div></div>
@@ -97,7 +97,7 @@ function that unbinds.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		binder = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, ev, callback, selector)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		binder = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, ev, callback, selector)</span> </span>{
 			<span class="hljs-keyword">return</span> selector ?
 				delegate(el, can.trim(selector), ev, callback) :
 				bind(el, ev, callback);
@@ -145,7 +145,7 @@ or functions with an underscored name.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				can.Construct.setup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 
 				<span class="hljs-keyword">if</span> (can.Control) {
@@ -176,7 +176,7 @@ an element.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			_shifter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(context, name)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			_shifter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(context, name)</span> </span>{
 
 				<span class="hljs-keyword">var</span> method = <span class="hljs-keyword">typeof</span> name === <span class="hljs-string">"string"</span> ? context[name] : name;
 
@@ -184,7 +184,7 @@ an element.</p>
 					method = context[method];
 				}
 
-				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 					context.called = name;
 					<span class="hljs-keyword">return</span> method.apply(context, [<span class="hljs-keyword">this</span>.nodeName ? can.$(<span class="hljs-keyword">this</span>) : <span class="hljs-keyword">this</span>].concat(slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">0</span>)));
 				};
@@ -206,7 +206,7 @@ defined in <code>special</code>, <code>processors</code>. Detects whether <code>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			_isAction: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(methodName)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			_isAction: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(methodName)</span> </span>{
 				<span class="hljs-keyword">var</span> val = <span class="hljs-keyword">this</span>.prototype[methodName],
 					type = <span class="hljs-keyword">typeof</span> val;
 
@@ -235,7 +235,7 @@ necessary to pass to a processor (something that binds things).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			_action: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(methodName, options)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>			_action: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(methodName, options)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -300,8 +300,8 @@ In that case, the event name we want will be the last item in that array.</p>
 					};
 				}
 			},
-			_lookup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> {</span>
-				<span class="hljs-keyword">return</span> [options, window];
+			_lookup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> </span>{
+				<span class="hljs-keyword">return</span> [options, <span class="hljs-built_in">window</span>];
 			},</pre></div></div>
             
         </li>
@@ -377,7 +377,7 @@ The final step is to return pass the element and prepareed options, to be used i
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(element, options)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(element, options)</span> </span>{
 
 				<span class="hljs-keyword">var</span> cls = <span class="hljs-keyword">this</span>.constructor,
 					pluginname = cls.pluginName || cls._fullName,
@@ -463,7 +463,7 @@ which were cached in <code>setup</code>, are used and all elements are bound usi
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			on: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, selector, eventName, func)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			on: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, selector, eventName, func)</span> </span>{
 				<span class="hljs-keyword">if</span> (!el) {
 					<span class="hljs-keyword">this</span>.off();
 
@@ -512,7 +512,7 @@ which were cached in <code>setup</code>, are used and all elements are bound usi
             </div>
             
             <div class="content"><div class='highlight'><pre>					can.bind.call(element, <span class="hljs-string">"removed"</span>, destroyCB);
-					bindings.user.push(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> {</span>
+					bindings.user.push(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> </span>{
 						can.unbind.call(el, <span class="hljs-string">"removed"</span>, destroyCB);
 					});
 					<span class="hljs-keyword">return</span> bindings.user.length;
@@ -581,14 +581,14 @@ This should <em>only</em> be called in combination with .on()</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			off: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>			off: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">var</span> el = <span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>],
 					bindings = <span class="hljs-keyword">this</span>._bindings;
 				<span class="hljs-keyword">if</span>( bindings ) {
-					each(bindings.user || [], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> {</span>
+					each(bindings.user || [], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> </span>{
 						value(el);
 					});
-					each(bindings.control || {}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> {</span>
+					each(bindings.control || {}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> </span>{
 						value(el);
 					});
 				}</pre></div></div>
@@ -625,7 +625,7 @@ the element from the Control instance.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>			destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.element === <span class="hljs-literal">null</span>) {</pre></div></div>
             
         </li>
@@ -693,7 +693,7 @@ when called.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> processors = can.Control.processors;
-	basicProcessor = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, event, selector, methodName, control)</span> {</span>
+	basicProcessor = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, event, selector, methodName, control)</span> </span>{
 		<span class="hljs-keyword">return</span> binder(el, event, can.Control._shifter(control, methodName), selector);
 	};</pre></div></div>
             
@@ -714,8 +714,9 @@ when called.</p>
 		<span class="hljs-string">"keypress"</span>, <span class="hljs-string">"mousedown"</span>, <span class="hljs-string">"mousemove"</span>, <span class="hljs-string">"mouseout"</span>, <span class="hljs-string">"mouseover"</span>,
 		<span class="hljs-string">"mouseup"</span>, <span class="hljs-string">"reset"</span>, <span class="hljs-string">"resize"</span>, <span class="hljs-string">"scroll"</span>, <span class="hljs-string">"select"</span>, <span class="hljs-string">"submit"</span>, <span class="hljs-string">"focusin"</span>,
 		<span class="hljs-string">"focusout"</span>, <span class="hljs-string">"mouseenter"</span>, <span class="hljs-string">"mouseleave"</span>,
-		<span class="hljs-string">"touchstart"</span>, <span class="hljs-string">"touchmove"</span>, <span class="hljs-string">"touchcancel"</span>, <span class="hljs-string">"touchend"</span>, <span class="hljs-string">"touchleave"</span>
-	], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(v)</span> {</span>
+		<span class="hljs-string">"touchstart"</span>, <span class="hljs-string">"touchmove"</span>, <span class="hljs-string">"touchcancel"</span>, <span class="hljs-string">"touchend"</span>, <span class="hljs-string">"touchleave"</span>,
+		<span class="hljs-string">"inserted"</span>,<span class="hljs-string">"removed"</span>
+	], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(v)</span> </span>{
 		processors[v] = basicProcessor;
 	});
 

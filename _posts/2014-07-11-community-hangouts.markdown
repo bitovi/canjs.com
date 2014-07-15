@@ -4,7 +4,7 @@ category: news
 author: Chris Stegner
 twitterHandle: cstegner
 githubHandle: cstegner
-banner_img: /img/canjs-banner-background.jpg
+banner_img: /img/header-blog-7-11-14.jpg
 lead: Join us for our weekly community hangouts every Friday at 3PM CST.
 layout: post
 ---

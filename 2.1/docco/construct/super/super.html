@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/construct'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, Construct)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/construct'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, Construct)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -46,7 +46,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> isFunction = can.isFunction,
-		fnTest = <span class="hljs-regexp">/xyz/</span>.test(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+		fnTest = <span class="hljs-regexp">/xyz/</span>.test(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.xyz;
 		}) ? <span class="hljs-regexp">/\b_super\b/</span> : <span class="hljs-regexp">/.*/</span>;</pre></div></div>
             
@@ -63,7 +63,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.Construct._overwrite = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(addTo, base, name, val)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>	can.Construct._overwrite = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(addTo, base, name, val)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -78,8 +78,8 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		addTo[name] = isFunction(val) &amp;&amp; isFunction(base[name]) &amp;&amp; fnTest.test(val) ? <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name, fn)</span> {</span>
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>		addTo[name] = isFunction(val) &amp;&amp; isFunction(base[name]) &amp;&amp; fnTest.test(val) ? <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name, fn)</span> </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">var</span> tmp = <span class="hljs-keyword">this</span>._super,
 					ret;</pre></div></div>
             
@@ -136,7 +136,7 @@ remove it when we’re done executing</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.Construct._inherit = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newProps, oldProps, addTo)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	can.Construct._inherit = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newProps, oldProps, addTo)</span> </span>{
 		addTo = addTo || newProps;
 		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> name <span class="hljs-keyword">in</span> newProps) {
 			can.Construct._overwrite(addTo, oldProps, name, newProps[name]);

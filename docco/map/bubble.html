@@ -56,9 +56,9 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can)</span>{</span>
-	
-	
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can)</span></span>{
+
+
 
 	<span class="hljs-keyword">var</span> bubble = can.bubble = {</pre></div></div>
             
@@ -76,27 +76,27 @@ If no binding should be done, undefined or null should be returned</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			event: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(map, eventName)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			event: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(map, eventName)</span> </span>{
 				<span class="hljs-keyword">return</span> map.constructor._bubbleRule(eventName, map);
 			},
-			childrenOf: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(parentMap, eventName)</span> {</span>
-	
-				parentMap._each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(child, prop)</span> {</span>
+			childrenOf: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(parentMap, eventName)</span> </span>{
+
+				parentMap._each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(child, prop)</span> </span>{
 					<span class="hljs-keyword">if</span> (child &amp;&amp; child.bind) {
 						bubble.toParent(child, parentMap, prop, eventName);
 					}
 				});
-				
+
 			},
-			teardownChildrenFrom: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parentMap, eventName)</span>{</span>
-				parentMap._each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(child)</span> {</span>
-					
+			teardownChildrenFrom: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parentMap, eventName)</span></span>{
+				parentMap._each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(child)</span> </span>{
+
 					bubble.teardownFromParent(parentMap, child, eventName);
-					
+
 				});
 			},
-			toParent: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(child, parent, prop, eventName)</span> {</span>
-				can.listenTo.call(parent, child, eventName, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">( <span class="hljs-comment">/* ev, attr */</span> )</span> {</span></pre></div></div>
+			toParent: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(child, parent, prop, eventName)</span> </span>{
+				can.listenTo.call(parent, child, eventName, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">( <span class="hljs-comment">/* ev, attr */</span> )</span> </span>{</pre></div></div>
             
         </li>
         
@@ -113,7 +113,7 @@ If no binding should be done, undefined or null should be returned</p>
             
             <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>),
 						ev = args.shift();
-					
+
 					args[<span class="hljs-number">0</span>] =
 						(can.List &amp;&amp; parent <span class="hljs-keyword">instanceof</span> can.List ?
 							parent.indexOf(child) :
@@ -128,7 +128,7 @@ If no binding should be done, undefined or null should be returned</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>track objects dispatched on this map        </p>
+              <p>track objects dispatched on this map</p>
 
             </div>
             
@@ -150,7 +150,7 @@ If no binding should be done, undefined or null should be returned</p>
             <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (ev.triggeredNS[parent._cid]) {
 						<span class="hljs-keyword">return</span>;
 					}
-		
+
 					ev.triggeredNS[parent._cid] = <span class="hljs-literal">true</span>;</pre></div></div>
             
         </li>
@@ -162,19 +162,22 @@ If no binding should be done, undefined or null should be returned</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>send change event with modified attr to parent    </p>
+              <p>send change event with modified attr to parent</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>					can.trigger(parent, ev, args);
 				});
 			},
-			teardownFromParent: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(parent, child, eventName )</span> {</span>
+			teardownFromParent: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(parent, child, eventName )</span> </span>{
 				<span class="hljs-keyword">if</span>(child &amp;&amp; child.unbind ) {
 					can.stopListening.call(parent, child, eventName);
 				}
 			},
-			bind: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, eventName)</span> {</span>
+			isBubbling: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, eventName)</span></span>{
+				<span class="hljs-keyword">return</span> parent._bubbleBindings &amp;&amp; parent._bubbleBindings[eventName];
+			},
+			bind: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, eventName)</span> </span>{
 				<span class="hljs-keyword">if</span> (!parent._init ) {
 					<span class="hljs-keyword">var</span> bubbleEvent = bubble.event(parent, eventName);
 					<span class="hljs-keyword">if</span>(bubbleEvent) {
@@ -201,18 +204,17 @@ If no binding should be done, undefined or null should be returned</p>
 						} <span class="hljs-keyword">else</span> {
 							parent._bubbleBindings[bubbleEvent]++;
 						}
-						
+
 					}
 				}
 			},
-			unbind: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, eventName)</span> {</span>
+			unbind: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, eventName)</span> </span>{
 				<span class="hljs-keyword">var</span> bubbleEvent = bubble.event(parent, eventName);
 				<span class="hljs-keyword">if</span>(bubbleEvent) {
 					<span class="hljs-keyword">if</span> (parent._bubbleBindings ) {
 						parent._bubbleBindings[bubbleEvent]--;
 					}
-					
-					<span class="hljs-keyword">if</span> (! parent._bubbleBindings[bubbleEvent] ) {
+					<span class="hljs-keyword">if</span> (parent._bubbleBindings &amp;&amp; !parent._bubbleBindings[bubbleEvent] ) {
 						<span class="hljs-keyword">delete</span> parent._bubbleBindings[bubbleEvent];
 						bubble.teardownChildrenFrom(parent, bubbleEvent);
 						<span class="hljs-keyword">if</span>(can.isEmptyObject(parent._bubbleBindings)) {
@@ -221,7 +223,7 @@ If no binding should be done, undefined or null should be returned</p>
 					}
 				}
 			},
-			add: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, child, prop)</span>{</span>
+			add: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, child, prop)</span></span>{
 				<span class="hljs-keyword">if</span>(child <span class="hljs-keyword">instanceof</span> can.Map &amp;&amp; parent._bubbleBindings) {
 					<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> eventName <span class="hljs-keyword">in</span> parent._bubbleBindings) {
 						<span class="hljs-keyword">if</span>( parent._bubbleBindings[eventName] ) {
@@ -231,12 +233,12 @@ If no binding should be done, undefined or null should be returned</p>
 					}
 				}
 			},
-			removeMany: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, children)</span>{</span>
+			removeMany: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, children)</span></span>{
 				<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = children.length; i &lt; len; i++) {
 					bubble.remove(parent, children[i]);
 				}
 			},
-			remove: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, child)</span>{</span>
+			remove: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, child)</span></span>{
 				<span class="hljs-keyword">if</span>(child <span class="hljs-keyword">instanceof</span> can.Map &amp;&amp; parent._bubbleBindings) {
 					<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> eventName <span class="hljs-keyword">in</span> parent._bubbleBindings) {
 						<span class="hljs-keyword">if</span>( parent._bubbleBindings[eventName] ) {
@@ -245,7 +247,7 @@ If no binding should be done, undefined or null should be returned</p>
 					}
 				}
 			},
-			set: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, prop, value, current)</span>{</span></pre></div></div>
+			set: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, prop, value, current)</span></span>{</pre></div></div>
             
         </li>
         
@@ -283,9 +285,9 @@ If no binding should be done, undefined or null should be returned</p>
 				<span class="hljs-keyword">return</span> value;
 			}
 		};
-	
+
 	<span class="hljs-keyword">return</span> bubble;
-	
+
 });</pre></div></div>
             
         </li>

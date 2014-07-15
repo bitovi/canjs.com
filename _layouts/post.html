@@ -90,10 +90,9 @@ slug: "blog"
 		<div id="{{page.slug}}" class="container api">
 			<article class="content docs blog-wrapper">
 				<a href="/blog" class="blog-archive">&laquo; Back to the blog archive</a>
-				<div class="title-and-lead-wrap">
-					<h1>{{page.title}}</h1>
-					<p>{{ page.lead }}</p>
-				</div>
+				<div class="title-and-lead-wrap" style="background-image: url({{ page.banner_img }})"></div>
+				<h1>{{page.title}}</h1>
+				<!-- <p>{{ page.lead }}</p> -->
 				<div class="date-and-tags-wrap cf">
 					<img id="gravatar" src="" alt="{{ page.githubHandle }}" style="display: none"> posted in 
 
@@ -104,7 +103,7 @@ slug: "blog"
 					{% endfor %}
 					
 					on {{ page.date | date: "%B %d, %Y" }}
-					<br>by
+					by
 					<span class="author">
 						{% if page.twitterHandle %}
 						<a href="http://twitter.com/{{ page.twitterHandle }}">{{ page.author }}</a>
@@ -117,8 +116,7 @@ slug: "blog"
 						{% endif %}
 					</span>
 					<a href="https://twitter.com/share" class="twitter-share-button" data-via="canjs" data-count="none" data-hashtags="canjs">Tweet</a>
-				</div>
-
+				</div>				
 				{{ content }}
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">

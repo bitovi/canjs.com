@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/model'</span>, <span class="hljs-string">'can/map/elements'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/model'</span>, <span class="hljs-string">'can/map/elements'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -61,7 +61,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>
-	<span class="hljs-keyword">var</span> getArgs = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args)</span> {</span>
+	<span class="hljs-keyword">var</span> getArgs = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args)</span> </span>{
 		<span class="hljs-keyword">if</span> (args[<span class="hljs-number">0</span>] &amp;&amp; can.isArray(args[<span class="hljs-number">0</span>])) {
 			<span class="hljs-keyword">return</span> args[<span class="hljs-number">0</span>];
 		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (args[<span class="hljs-number">0</span>] <span class="hljs-keyword">instanceof</span> can.Model.List) {
@@ -84,7 +84,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		getIds = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		getIds = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> </span>{
 			<span class="hljs-keyword">return</span> item.__get(item.constructor.id);
 		}, ajaxMaker = can.Model._ajax,
 		<span class="hljs-comment">/**
@@ -323,7 +323,7 @@
 		 */</span>
 		ajaxMethods = {
 			update: {
-				data: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ids, attrs)</span> {</span>
+				data: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ids, attrs)</span> </span>{
 					<span class="hljs-keyword">return</span> {
 						ids: ids,
 						attrs: attrs
@@ -336,28 +336,28 @@
 			}
 		};
 	<span class="hljs-keyword">var</span> oldSetup = can.Model.List.setup;
-	can.Model.List.setup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+	can.Model.List.setup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 		oldSetup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 		<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
-		can.each(ajaxMethods, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method, name)</span> {</span>
+		can.each(ajaxMethods, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method, name)</span> </span>{
 			<span class="hljs-keyword">if</span> (!can.isFunction(self[name])) {
 				self[name] = ajaxMaker(method, self[name]);
 			}
 		});
 	};
 	can.extend(can.Model.List.prototype, {
-		slice: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+		slice: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.constructor(<span class="hljs-built_in">Array</span>.prototype.slice.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>));
 		},
-		match: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(property, value)</span> {</span>
-			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.grep(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(inst)</span> {</span>
+		match: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(property, value)</span> </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.grep(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(inst)</span> </span>{
 				<span class="hljs-keyword">return</span> inst[property] === value;
 			});
 		},
-		grep: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(callback, args)</span> {</span>
+		grep: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(callback, args)</span> </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.constructor($.grep(<span class="hljs-keyword">this</span>, callback, args));
 		},
-		get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+		get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 			<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.length) {
 				<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.constructor([]);
 			}
@@ -382,7 +382,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					val = <span class="hljs-keyword">this</span>.grep(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> {</span>
+            <div class="content"><div class='highlight'><pre>					val = <span class="hljs-keyword">this</span>.grep(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> </span>{
 						<span class="hljs-keyword">return</span> getIds(item) === matches[<span class="hljs-number">1</span>];
 					})[<span class="hljs-number">0</span>];
 				} <span class="hljs-keyword">else</span> {</pre></div></div>
@@ -400,7 +400,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					val = <span class="hljs-keyword">this</span>.grep(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> {</span>
+            <div class="content"><div class='highlight'><pre>					val = <span class="hljs-keyword">this</span>.grep(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> </span>{
 						<span class="hljs-keyword">return</span> getIds(item) === args[i];
 					})[<span class="hljs-number">0</span>];
 				}
@@ -410,7 +410,7 @@
 			}
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.constructor(list);
 		},
-		remove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args)</span> {</span>
+		remove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args)</span> </span>{
 			<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.length) {
 				<span class="hljs-keyword">return</span> [];
 			}
@@ -473,7 +473,7 @@
 			}
 			<span class="hljs-keyword">return</span> ret;
 		},
-		elements: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(context)</span> {</span></pre></div></div>
+		elements: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(context)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -488,33 +488,33 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> $(<span class="hljs-keyword">this</span>.map(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> $(<span class="hljs-keyword">this</span>.map(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> </span>{
 					<span class="hljs-keyword">return</span> <span class="hljs-string">'.'</span> + item.identity();
 				})
 				.join(<span class="hljs-string">','</span>), context);
 		},
-		model: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+		model: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.constructor.namespace;
 		},
-		findAll: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params, success, error)</span> {</span>
+		findAll: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params, success, error)</span> </span>{
 			<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
 			<span class="hljs-keyword">this</span>.model()
-				.findAll(params, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items)</span> {</span>
+				.findAll(params, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items)</span> </span>{
 					self.push.apply(self, can.makeArray(items));
 					<span class="hljs-keyword">if</span> (success) {
 						success(self);
 					}
 				}, error);
 		},
-		destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(success, error)</span> {</span>
+		destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(success, error)</span> </span>{
 			<span class="hljs-keyword">var</span> ids = <span class="hljs-keyword">this</span>.map(getIds),
 				items = can.makeArray(<span class="hljs-keyword">this</span>),
 				construct = <span class="hljs-keyword">this</span>.constructor,
 				list = <span class="hljs-keyword">this</span>;
 			<span class="hljs-keyword">if</span> (ids.length) {
 				<span class="hljs-keyword">this</span>.constructor.destroy(ids)
-					.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-						can.each(items, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> {</span></pre></div></div>
+					.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+						can.each(items, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -543,12 +543,12 @@
 			}
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 		},
-		update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrs, success, error)</span> {</span>
+		update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrs, success, error)</span> </span>{
 			<span class="hljs-keyword">var</span> ids = <span class="hljs-keyword">this</span>.map(getIds),
 				items = <span class="hljs-keyword">this</span>.slice(<span class="hljs-number">0</span>, <span class="hljs-keyword">this</span>.length);
 			<span class="hljs-keyword">if</span> (ids.length) {
 				<span class="hljs-keyword">this</span>.constructor.update(ids, attrs)
-					.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newAttrs)</span> {</span></pre></div></div>
+					.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newAttrs)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -564,7 +564,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> attributes = $.extend(attrs, newAttrs || {});
-						can.each(items, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> {</span>
+						can.each(items, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> </span>{
 							item.updated(attributes);
 						});
 						<span class="hljs-keyword">if</span> (success) {
@@ -578,12 +578,12 @@
 			}
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 		},
-		_updateAttrs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items, remove)</span> {</span>
+		_updateAttrs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items, remove)</span> </span>{
 			<span class="hljs-keyword">var</span> len = items.length,
 				newVal, curVal, itemsNotInList = [];
 			<span class="hljs-keyword">var</span> id = <span class="hljs-keyword">this</span>.constructor.id;
 
-			<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getId</span><span class="hljs-params">(obj)</span> {</span>
+			<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getId</span><span class="hljs-params">(obj)</span> </span>{
 				<span class="hljs-keyword">return</span> obj.attr ? obj.attr(id) : obj[id];
 			}
 			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
@@ -622,13 +622,13 @@
 				].concat(itemsNotInList));
 			}
 			<span class="hljs-keyword">if</span> (remove) {
-				<span class="hljs-keyword">var</span> existingIds = <span class="hljs-keyword">this</span>.map(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(element)</span> {</span>
+				<span class="hljs-keyword">var</span> existingIds = <span class="hljs-keyword">this</span>.map(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(element)</span> </span>{
 					<span class="hljs-keyword">return</span> getId(element);
 				}),
-					itemIds = can.map(items, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(element)</span> {</span>
+					itemIds = can.map(items, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(element)</span> </span>{
 						<span class="hljs-keyword">return</span> getId(element);
 					});
-				can.each(existingIds, $.proxy(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> {</span>
+				can.each(existingIds, $.proxy(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> </span>{
 					<span class="hljs-keyword">if</span> (!~can.inArray(id, itemIds)) {
 						<span class="hljs-keyword">this</span>.remove(id);
 					}
@@ -636,8 +636,8 @@
 			}
 		}
 	});
-	can.each([<span class="hljs-string">'map'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
-		can.Model.List.prototype[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(callback, args)</span> {</span>
+	can.each([<span class="hljs-string">'map'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
+		can.Model.List.prototype[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(callback, args)</span> </span>{
 			<span class="hljs-keyword">return</span> $[name](<span class="hljs-keyword">this</span>, callback, args);
 		};
 	});

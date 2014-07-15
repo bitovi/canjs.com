@@ -29,7 +29,7 @@
             
             <div class="content"><div class='highlight'><pre>
 
-steal(<span class="hljs-string">"can/util/can.js"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span></pre></div></div>
+steal(<span class="hljs-string">"can/util/can.js"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -45,7 +45,7 @@ the triggering of <code>attributes</code> event async.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> setImmediate = window.setImmediate || <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cb)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> setImmediate = <span class="hljs-built_in">window</span>.setImmediate || <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cb)</span> </span>{
 			<span class="hljs-keyword">return</span> setTimeout(cb, <span class="hljs-number">0</span>);
 		},
 		attr = {</pre></div></div>
@@ -65,7 +65,7 @@ Otherwise this module handles triggering an <code>attributes</code> event on the
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			MutationObserver: window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver,
+            <div class="content"><div class='highlight'><pre>			MutationObserver: <span class="hljs-built_in">window</span>.MutationObserver || <span class="hljs-built_in">window</span>.WebKitMutationObserver || <span class="hljs-built_in">window</span>.MozMutationObserver,
 
 			<span class="hljs-comment">/**
 			 * @property {Object.&lt;String,(String|Boolean|function)&gt;} can.view.attr.map
@@ -112,7 +112,7 @@ An <code>img</code> tag attempts to fetch the <code>src</code> when it is set, s
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				src: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, val)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				src: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, val)</span> </span>{
 					<span class="hljs-keyword">if</span> (val == <span class="hljs-literal">null</span> || val === <span class="hljs-string">""</span>) {
 						el.removeAttribute(<span class="hljs-string">"src"</span>);
 						<span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
@@ -121,7 +121,7 @@ An <code>img</code> tag attempts to fetch the <code>src</code> when it is set, s
 						<span class="hljs-keyword">return</span> val;
 					}
 				},
-				style: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, val)</span> {</span>
+				style: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, val)</span> </span>{
 					<span class="hljs-keyword">return</span> el.style.cssText = val || <span class="hljs-string">""</span>;
 				}
 			},</pre></div></div>
@@ -155,7 +155,7 @@ An <code>img</code> tag attempts to fetch the <code>src</code> when it is set, s
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName, val)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName, val)</span> </span>{
 				<span class="hljs-keyword">var</span> oldValue;</pre></div></div>
             
         </li>
@@ -247,9 +247,9 @@ An <code>img</code> tag attempts to fetch the <code>src</code> when it is set, s
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			trigger: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName, oldValue)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			trigger: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName, oldValue)</span> </span>{
 				<span class="hljs-keyword">if</span> (can.data(can.$(el), <span class="hljs-string">"canHasAttributesBindings"</span>)) {
-					<span class="hljs-keyword">return</span> setImmediate(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+					<span class="hljs-keyword">return</span> setImmediate(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 						can.trigger(el, {
 							type: <span class="hljs-string">"attributes"</span>,
 							attributeName: attrName,
@@ -275,7 +275,7 @@ An <code>img</code> tag attempts to fetch the <code>src</code> when it is set, s
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName)</span> </span>{
 				<span class="hljs-keyword">var</span> prop = attr.map[attrName];
 				<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> prop === <span class="hljs-string">"string"</span> &amp;&amp; el[prop]) {
 					<span class="hljs-keyword">return</span> el[prop];
@@ -299,7 +299,7 @@ An <code>img</code> tag attempts to fetch the <code>src</code> when it is set, s
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			remove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			remove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName)</span> </span>{
 				<span class="hljs-keyword">var</span> oldValue;
 				<span class="hljs-keyword">if</span> (!attr.MutationObserver) {
 					oldValue = attr.get(el, attrName);
@@ -337,14 +337,14 @@ For browsers that support <code>hasAttribute</code>, creates a function that cal
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			has: (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-				<span class="hljs-keyword">var</span> el = document.createElement(<span class="hljs-string">'div'</span>);
+            <div class="content"><div class='highlight'><pre>			has: (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				<span class="hljs-keyword">var</span> el = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);
 				<span class="hljs-keyword">if</span> (el.hasAttribute) {
-					<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, name)</span> {</span>
+					<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, name)</span> </span>{
 						<span class="hljs-keyword">return</span> el.hasAttribute(name);
 					};
 				} <span class="hljs-keyword">else</span> {
-					<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, name)</span> {</span>
+					<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, name)</span> </span>{
 						<span class="hljs-keyword">return</span> el.getAttribute(name) !== <span class="hljs-literal">null</span>;
 					};
 				}

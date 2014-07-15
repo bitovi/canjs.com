@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/route'</span>, <span class="hljs-string">'can/control'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/route'</span>, <span class="hljs-string">'can/control'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -47,7 +47,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>
-	can.Control.processors.route = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, event, selector, funcName, controller)</span> {</span>
+	can.Control.processors.route = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, event, selector, funcName, controller)</span> </span>{
 		selector = selector || <span class="hljs-string">""</span>;
 		<span class="hljs-keyword">if</span> (!can.route.routes[selector]) {
 			<span class="hljs-keyword">if</span> (selector[<span class="hljs-number">0</span>] === <span class="hljs-string">'/'</span>) {
@@ -56,7 +56,7 @@
 			can.route(selector);
 		}
 		<span class="hljs-keyword">var</span> batchNum,
-			check = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, attr, how)</span> {</span>
+			check = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, attr, how)</span> </span>{
 				<span class="hljs-keyword">if</span> (can.route.attr(<span class="hljs-string">'route'</span>) === (selector) &amp;&amp;
 					(ev.batchNum === <span class="hljs-literal">undefined</span> || ev.batchNum !== batchNum)) {
 
@@ -73,7 +73,7 @@
 				}
 			};
 		can.route.bind(<span class="hljs-string">'change'</span>, check);
-		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 			can.route.unbind(<span class="hljs-string">'change'</span>, check);
 		};
 	};

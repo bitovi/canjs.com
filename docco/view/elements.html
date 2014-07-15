@@ -61,10 +61,10 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">"can/view"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">"can/view"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
 
-	<span class="hljs-keyword">var</span> selectsCommentNodes = (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
-		<span class="hljs-keyword">return</span> can.$(document.createComment(<span class="hljs-string">'~'</span>)).length === <span class="hljs-number">1</span>;
+	<span class="hljs-keyword">var</span> selectsCommentNodes = (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		<span class="hljs-keyword">return</span> can.$(<span class="hljs-built_in">document</span>.createComment(<span class="hljs-string">'~'</span>)).length === <span class="hljs-number">1</span>;
 	})();
 
 	<span class="hljs-comment">/**
@@ -76,7 +76,7 @@
 	 */</span>
 	<span class="hljs-keyword">var</span> elements = {
 		tagToContentPropMap: {
-			option: <span class="hljs-string">'textContent'</span> <span class="hljs-keyword">in</span> document.createElement(<span class="hljs-string">'option'</span>) ? <span class="hljs-string">'textContent'</span> : <span class="hljs-string">'innerText'</span>,
+			option: <span class="hljs-string">'textContent'</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'option'</span>) ? <span class="hljs-string">'textContent'</span> : <span class="hljs-string">'innerText'</span>,
 			textarea: <span class="hljs-string">'value'</span>
 		},
 		<span class="hljs-comment">/**
@@ -169,6 +169,7 @@
 		 */</span>
 		tagMap: {
 			<span class="hljs-string">''</span>: <span class="hljs-string">'span'</span>,
+			colgroup: <span class="hljs-string">'col'</span>,
 			table: <span class="hljs-string">'tbody'</span>,
 			tr: <span class="hljs-string">'td'</span>,
 			ol: <span class="hljs-string">'li'</span>,
@@ -194,6 +195,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>		reverseTagMap: {
+			col: <span class="hljs-string">'colgroup'</span>,
 			tr: <span class="hljs-string">'tbody'</span>,
 			option: <span class="hljs-string">'select'</span>,
 			td: <span class="hljs-string">'tr'</span>,
@@ -214,7 +216,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		getParentNode: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, defaultParentNode)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		getParentNode: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, defaultParentNode)</span> </span>{
 			<span class="hljs-keyword">return</span> defaultParentNode &amp;&amp; el.parentNode.nodeType === <span class="hljs-number">11</span> ? defaultParentNode : el.parentNode;
 		},</pre></div></div>
             
@@ -276,7 +278,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		contentText: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(text)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		contentText: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(text)</span> </span>{
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> text === <span class="hljs-string">'string'</span>) {
 				<span class="hljs-keyword">return</span> text;
 			}</pre></div></div>
@@ -308,7 +310,7 @@
 		 * @param {Array.&lt;HTMLElement&gt;} oldElements
 		 * @param {DocumentFragment} newFrag
 		 */</span>
-		after: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oldElements, newFrag)</span> {</span>
+		after: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oldElements, newFrag)</span> </span>{
 			<span class="hljs-keyword">var</span> last = oldElements[oldElements.length - <span class="hljs-number">1</span>];</pre></div></div>
             
         </li>
@@ -339,10 +341,10 @@
 		 * @param {Array.&lt;HTMLElement&gt;} oldElements
 		 * @param {DocumentFragment} newFrag
 		 */</span>
-		replace: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oldElements, newFrag)</span> {</span>
+		replace: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oldElements, newFrag)</span> </span>{
 			elements.after(oldElements, newFrag);
 			<span class="hljs-keyword">if</span>(can.remove(can.$(oldElements)).length &lt; oldElements.length &amp;&amp; !selectsCommentNodes) {
-				can.each(oldElements, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> {</span>
+				can.each(oldElements, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{
 					<span class="hljs-keyword">if</span>(el.nodeType === <span class="hljs-number">8</span>) {
 						el.parentNode.removeChild(el);
 					}
