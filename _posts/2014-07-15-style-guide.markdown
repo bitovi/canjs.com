@@ -69,15 +69,9 @@ var s = "JavaScript syntax highlighting";
 alert(s);
 </pre>
  
-```python
-s = "Python syntax highlighting"
-print s
-```
- 
-```
-No language indicated, so no syntax highlighting. 
-But let's throw in a <b>tag</b>.
-```
+
+Wrap all of your code snippets in ```<pre class="prettyprint"></pre>``` and there is javascript that will take care of the rest.
+
 
 ---
 
@@ -98,7 +92,3 @@ The outer pipes (|) are optional, and you don't need to make the raw Markdown li
 
 > Blockquotes are very handy in email to emulate reply text.
 > This line is part of the same quote.
-
-Quote break.
-
-> This is a very long line that will still be quoted properly when it wraps. Oh boy let's keep writing to make sure this is long enough to actually wrap for everyone. Oh, you can *put* **Markdown** into a blockquote. 
