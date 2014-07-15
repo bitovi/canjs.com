@@ -1,4 +1,4 @@
-steal('jquery', function($){
+steal('jquery', '../lib/prettify.js', function($){
 	$('#gravatar').each(function(){
 		var $this = $(this);
 		$.getJSON('https://api.github.com/users/' + $this.attr('alt'), function(data){
