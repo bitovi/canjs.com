@@ -41,23 +41,6 @@
 .cjs-icon-github:before {
 	content: "\e606";
 }
-.blog {
-	border-top: 1px solid #ccc;
-	margin-top: 20px;
-	padding-top: 20px;
-
-	.date {
-		font-size: 12px;
-		background: #767676;
-		border-radius: 4px;
-		padding: 2px 8px;
-		float: left;
-		color: white;
-		margin: 3px 5px 0 0;
-		line-height: 18px;
-	}
-
-}
 .sidebar .api .social-links a {
 	margin-top: 0;
 	padding-top: 0;
@@ -77,6 +60,9 @@
 			margin-right:0;
 		}
 	}
+	.inline-list-title {
+		padding: 7px 0 0 0;
+	}
 }
 .btn {
 	background: #165489;
@@ -85,31 +71,40 @@
 	color: #fff;
 	text-decoration: none;
 	border-radius: 5px;
-	font-size:12px
+	font-size:12px;
+	display: inline-block;
 }
 .no-decoration {
 	text-decoration: none;
 }
+.blog-home  {
+	.date {
 
-#blog {
-	.rss-link {
-		background: #FFA200;
-		color: white;
-		text-decoration: none;
-		font-size: 14px;
-		padding: 3px 5px;
-		float: right;
-		margin: 7px 0 0 0;
-		border-radius: 3px;
-		&:hover {
-			background: #E99400;
-		}
 	}
+}
+#blog {
+
 	font-size: 100%;
-	font-family: 'Lato',Arial,Helvetica,sans-serif;
+	font-family: 'Lato',Arial,Helvetica,sans-serif !important;
 	font-weight: 400;
 	font-style: normal;
 
+	.content.blog-home {
+		padding-top:0;
+	}
+	.blog-home {
+		.blog-nav {
+			border-bottom: 1px solid #d5d5d5;		
+		}
+	}
+	.blog-category-item {
+		border-bottom: 1px solid #d5d5d5;
+		padding-bottom: 20px;
+		margin-top: 20px;
+		&:last-child {
+			border: 0;
+		}
+	}
 	.date {
 		margin-top: 0;
 	}
@@ -125,12 +120,26 @@
 		border-top: 1px solid  #d5d5d5;
 		margin: 0 -20px 30px -20px;
 		min-height: 230px;
+		
 		p {
 			text-align: center;
 		}
 		h1 {
 			color: #fff;
+			text-align: center;
+			font-weight: 300;
+			font-style: normal;
+			padding: 83px 0;
+			display: block;
+			font-size: 44px;
 		}
+	}
+	.blog-home .title-and-lead-wrap {
+		margin: -2px -20px 0px -20px;
+	}
+	.title-and-lead-wrap,
+	.sidebar   {
+		display: block !important;
 	}
 	.date-and-tags-wrap {
 		margin: 0;
@@ -198,13 +207,17 @@
 		border-top: 1px solid #ccc;
 	}
 }
-#blog-content  {
+#blog-content,
+.blog-category-lists {
 	h1, h2, h3, h4, h5, h6 {
 		display: block;
 		text-align: left;
 		color:#165489;
 		margin-bottom: 5px;
 		font-weight: normal;
+		a {
+			text-decoration: none;
+		}
 	}
 	h1 { font-size: 3em; }
 	h2 { font-size: 2em; }
@@ -262,6 +275,13 @@
 	iframe {
 		margin: 20px auto;
 		display: block;
+	}
+	.date {
+		font-size: 16px;
+		margin:0;
+	}
+	.category-nav-list a.active {
+		background: #efa81e;
 	}
 }
 

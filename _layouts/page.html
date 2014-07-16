@@ -90,38 +90,58 @@
   {% else %}
     {% assign posts = site.posts %}
   {% endif %}
-  <main>
+  
     <div class="container api">
-      <nav class="sidebar">
-        <ul class="api">
-            <li class="search-container active">
-              <a href="javascript://">Categories</a>
-              <ul class="primary-grouping">
-                <li class="search-container {% if page.page_category == nil %}active{% endif %}"><a href="/blog">All</a></li>
-                <li class="search-container {% if page.page_category == "news" %}active{% endif %}"><a href="/blog/news">News</a></li>
-                <li class="search-container {% if page.page_category == "learning" %}active{% endif %}"><a href="/blog/learning">Learning</a></li>
-              </ul>
+      <article class="content docs blog-wrapper blog-home">
+      <div class="title-and-lead-wrap"><h1>Welcome to the Blog</h1></div>
+      <nav class="blog-nav">
+        <ul class="api inline-nav-list category-nav-list">
+            <li class="inline-list-title"><strong>Categories:</strong></li>
+            <li class="search-container {% if page.page_category == nil %}active{% endif %}"><a class="no-decoration btn" href="/blog">All</a></li>
+            <li class="search-container {% if page.page_category == "news" %}active{% endif %}"><a class="no-decoration btn" href="/blog/news">News</a></li>
+            <li class="search-container {% if page.page_category == "learning" %}active{% endif %}"><a class="no-decoration btn" href="/blog/learning">Learning</a></li>
+          </ul>
+          <ul class="inline-nav-list pull-right blog-social-icons">
+            <li>
+              <a class="no-decoration" href="https://github.com/bitovi/canjs" target="_blank">
+                <span class="cjs-icon-github"></span>
+              </a>
             </li>
+            <li>
+              <a class="no-decoration" href="https://twitter.com/canjs" target="_blank">
+                <span class="cjs-icon-twitter"></span>
+              </a>
+            </li>
+            <li>
+              <a class="no-decoration" href="https://plus.google.com/108820831381167297339/posts" target="_blank">
+                <span class="cjs-icon-googleplus"></span>
+              </a>
+            </li>
+            <li>
+              <a class="no-decoration" href="/blog.rss" target="_blank">
+                <span class="cjs-icon-feed"></span>
+              </a>
+            </li>                             
           </ul>
       </nav>
-      <article class="content docs">
-        <div class="heading">
-          <h1>{{ page.title }} <a class="rss-link" href="/blog.rss">RSS</a></h1>
-        </div>
-        <div class="blog">
+  
+        <div class="blog blog-category-lists">
           {% for post in posts %}
-            <h2>
-              <span class="date">{{ post.date | date: "%m/%d/%Y" }}</span>
-              <a href="{{post.url}}">{{ post.title }}</a>
-            </h2>
-            <p>{{ post.lead }} <a href="{{post.url}}">Read More &raquo;</a></p>
+            <div class="blog-category-item">
+              <p class="date">{{ post.date | date: "%m/%d/%Y" }}</p>
+              <h2>
+                <a href="{{post.url}}">{{ post.title }}</a>
+              </h2>
+              <p>{{ post.lead }} <a href="{{post.url}}">Read More &raquo;</a></p>
+            </div>
           {% else %}
-            Currently there are no posts in this category.
+            <br />
+            <p>Currently there are no posts in this category.</p>
           {% endfor %}
         </div>
       </article>
     </div>
-  </main>
+  
   <!--end blog list-->
 </div>
 
