@@ -93,13 +93,14 @@
   
     <div class="container api">
       <article class="content docs blog-wrapper blog-home">
-      <div class="title-and-lead-wrap"><h1>Welcome to the Blog</h1></div>
+      <div class="title-and-lead-wrap blog-home-banner"></div>
       <nav class="blog-nav">
         <ul class="api inline-nav-list category-nav-list">
-            <li class="inline-list-title"><strong>Categories:</strong></li>
-            <li class="search-container {% if page.page_category == nil %}active{% endif %}"><a class="no-decoration btn" href="/blog">All</a></li>
-            <li class="search-container {% if page.page_category == "news" %}active{% endif %}"><a class="no-decoration btn" href="/blog/news">News</a></li>
-            <li class="search-container {% if page.page_category == "learning" %}active{% endif %}"><a class="no-decoration btn" href="/blog/learning">Learning</a></li>
+            <li class="search-container {% if page.page_category == nil %}active{% endif %}"><a href="/blog">All</a></li>
+            <li> | </li>
+            <li class="search-container {% if page.page_category == "news" %}active{% endif %}"><a href="/blog/news">News</a></li>
+            <li> | </li>
+            <li class="search-container {% if page.page_category == "learning" %}active{% endif %}"><a href="/blog/learning">Learning</a></li>
           </ul>
           <ul class="inline-nav-list pull-right blog-social-icons">
             <li>
@@ -128,11 +129,26 @@
         <div class="blog blog-category-lists">
           {% for post in posts %}
             <div class="blog-category-item">
-              <p class="date">{{ post.date | date: "%m/%d/%Y" }}</p>
               <h2>
                 <a href="{{post.url}}">{{ post.title }}</a>
               </h2>
-              <p>{{ post.lead }} <a href="{{post.url}}">Read More &raquo;</a></p>
+              <div class="date-and-tags-wrap cf">
+                <p class="date">
+                  <img id="gravatar" src="" alt="{{ page.githubHandle }}" style="display: none"> posted in 
+                  {% for category in page.categories %}
+                  {% if forloop.index < forloop.length and forloop.length > 1 and forloop.index > 1 %},{% endif %}
+                  {% if forloop.index == forloop.length and forloop.length > 1 and forloop.index > 1%} and {% endif %}
+                  <a href="/blog/{{category}}">{{ category }}</a>
+                  {% endfor %}
+                  
+                  on {{ post.date | date: "%m/%d/%Y" }}
+                  by
+                  <span class="author"> 
+                    {{ post.author }}
+                  </span>
+                </p>
+            </div>  
+              <p>{{ post.lead }}</p>
             </div>
           {% else %}
             <br />

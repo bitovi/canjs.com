@@ -60,9 +60,6 @@
 			margin-right:0;
 		}
 	}
-	.inline-list-title {
-		padding: 7px 0 0 0;
-	}
 }
 .btn {
 	background: #165489;
@@ -77,11 +74,6 @@
 .no-decoration {
 	text-decoration: none;
 }
-.blog-home  {
-	.date {
-
-	}
-}
 #blog {
 
 	font-size: 100%;
@@ -94,7 +86,8 @@
 	}
 	.blog-home {
 		.blog-nav {
-			border-bottom: 1px solid #d5d5d5;		
+			border-bottom: 1px solid #d5d5d5;
+			border-top: 1px solid #d5d5d5;		
 		}
 	}
 	.blog-category-item {
@@ -112,31 +105,34 @@
 		float: right;
 	}
 
-	.title-and-lead-wrap {
+	.title-and-lead-wrap,
+	.blog-home-banner  {
 		color: white;
-		background: url(/img/canjs-background-blue.gif);
-		background-position: 50% 50%;
 		border-bottom: 1px solid  #d5d5d5;
 		border-top: 1px solid  #d5d5d5;
 		margin: 0 -20px 30px -20px;
 		min-height: 230px;
-		
-		p {
-			text-align: center;
+	}
+	.title-and-lead-wrap {
+		background: url(/img/canjs-background-blue.gif);
+		background-position: 50% 50%;
+	}
+	.blog-home-banner  {
+		background: url(/img/header-blog-home.png);
+		background-position: -110px -45px;
+	}		
+	.blog-home {
+		.title-and-lead-wrap {
+			margin: -2px -20px 0px -20px;
 		}
 		h1 {
-			color: #fff;
-			text-align: center;
-			font-weight: 300;
-			font-style: normal;
-			padding: 83px 0;
-			display: block;
-			font-size: 44px;
-		}
+			margin-bottom:0
+		}	
 	}
-	.blog-home .title-and-lead-wrap {
-		margin: -2px -20px 0px -20px;
-	}
+	.date {
+		font-size: 13px;
+		margin-bottom:10px;
+	}	
 	.title-and-lead-wrap,
 	.sidebar   {
 		display: block !important;
@@ -156,9 +152,7 @@
 			border-radius: 20px;
 		}
 		.twitter-share-button {
-			position: absolute;
-			right: 20px;
-			top: 15px;
+
 		}
 	}
 	.blog-nav {
@@ -180,9 +174,20 @@
 				}
 			}
 		}
-		.category-nav-list li.active a {
-			background: #efa81e;
-		}
+		.category-nav-list {
+			margin: 0 0 0 13px;
+			line-height: 26px;
+			li {
+				color: #ccc
+			}
+			li.active a {
+				text-decoration: none;
+				color: #999;
+			}
+			a {
+				font-family: 'Lato',Arial,Helvetica,sans-serif !important;
+			}
+		}	
 	}
 	ul.tags {
 		float: right;
@@ -279,9 +284,9 @@
 		margin: 20px auto;
 		display: block;
 	}
-	.date {
-		font-size: 16px;
-		margin:0;
+	iframe.twitter-share-button {
+		display: inline-block;
+		margin: 0 0 0 5px;
 	}
 }
 
