@@ -4,7 +4,7 @@ category: news
 author: Brian Moschel
 twitterHandle: brianmoschel
 githubHandle: moschel
-banner_img: /img/canjs-background-blue.gif
+banner_img: /img/header-blog-6-23-14.jpg
 lead: CanJS has a blog! Here's what we plan on doing with this space.
 layout: post
 ---
