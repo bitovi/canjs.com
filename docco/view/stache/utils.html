@@ -71,7 +71,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
 	<span class="hljs-keyword">return</span> {</pre></div></div>
             
         </li>
@@ -87,7 +87,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		isArrayLike: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		isArrayLike: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> </span>{
 			<span class="hljs-keyword">return</span> obj &amp;&amp; obj.splice &amp;&amp; <span class="hljs-keyword">typeof</span> obj.length === <span class="hljs-string">'number'</span>;
 		},</pre></div></div>
             
@@ -104,7 +104,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		isObserveLike: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		isObserveLike: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> </span>{
 			<span class="hljs-keyword">return</span> obj <span class="hljs-keyword">instanceof</span> can.Map || (obj &amp;&amp; !! obj._get);
 		},</pre></div></div>
             
@@ -121,7 +121,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		emptyHandler: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		emptyHandler: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{},</pre></div></div>
             
         </li>
         
@@ -137,7 +137,7 @@ This doesn’t have to do full JSON, so removing eval would be good.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		jsonParse: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str)</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>		jsonParse: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str)</span></span>{</pre></div></div>
             
         </li>
         
@@ -156,20 +156,20 @@ This doesn’t have to do full JSON, so removing eval would be good.</p>
 				<span class="hljs-keyword">return</span> str.substr(<span class="hljs-number">1</span>, str.length -<span class="hljs-number">2</span>);
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(str === <span class="hljs-string">"undefined"</span>) {
 				<span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
-			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(window.JSON) {
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-built_in">window</span>.JSON) {
 				<span class="hljs-keyword">return</span> <span class="hljs-built_in">JSON</span>.parse(str);
 			} <span class="hljs-keyword">else</span> {
 				<span class="hljs-keyword">return</span> <span class="hljs-built_in">eval</span>(<span class="hljs-string">"("</span>+str+<span class="hljs-string">")"</span>);
 			}
 		},
 		mixins: {
-			last: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+			last: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
 				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.stack[<span class="hljs-keyword">this</span>.stack.length - <span class="hljs-number">1</span>];
 			},
-			add: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(chars)</span>{</span>
+			add: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(chars)</span></span>{
 				<span class="hljs-keyword">this</span>.last().add(chars);
 			},
-			subSectionDepth: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+			subSectionDepth: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
 				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.stack.length - <span class="hljs-number">1</span>;
 			}
 		}

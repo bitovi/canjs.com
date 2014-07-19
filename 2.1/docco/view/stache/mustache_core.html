@@ -75,10 +75,14 @@ steal(<span class="hljs-string">"can/util"</span>,
 	<span class="hljs-string">"./mustache_helpers"</span>,
 	<span class="hljs-string">"can/view/live"</span>,
 	<span class="hljs-string">"can/view/elements.js"</span>,
-	<span class="hljs-string">"can/view/scope"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can, utils, mustacheHelpers, live, elements, Scope )</span>{</span>
+	<span class="hljs-string">"can/view/scope"</span>,
+	<span class="hljs-string">"can/view/node_lists"</span>,
+	<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can, utils, mustacheHelpers, live, elements, Scope, nodeLists )</span></span>{
 
 	live = live || can.view.live;
-	elements = elements || can.view.elements;</pre></div></div>
+	elements = elements || can.view.elements;
+	Scope = Scope || can.view.Scope;
+	nodeLists = nodeLists || can.view.nodeLists;</pre></div></div>
             
         </li>
         
@@ -108,7 +112,7 @@ steal(<span class="hljs-string">"can/util"</span>,
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-comment">/**
 	 * @hide
-	 * @typedef {{get: String}} can.Mustache.Lookup
+	 * @typedef {{get: String}} can.mustache.Lookup
 	 * @option {String} get A value in the scope to look up.
 	 */</span></pre></div></div>
             
@@ -183,7 +187,7 @@ steal(<span class="hljs-string">"can/util"</span>,
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		isLookup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		isLookup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> </span>{
 			<span class="hljs-keyword">return</span> obj &amp;&amp; <span class="hljs-keyword">typeof</span> obj.get === <span class="hljs-string">"string"</span>;
 		},</pre></div></div>
             
@@ -200,8 +204,8 @@ steal(<span class="hljs-string">"can/util"</span>,
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		getItemsFragContent = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(items, isObserveList, helperOptions, options)</span>{</span>
-			<span class="hljs-keyword">var</span> frag = document.createDocumentFragment();
+            <div class="content"><div class='highlight'><pre>		getItemsFragContent = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(items, isObserveList, helperOptions, options)</span></span>{
+			<span class="hljs-keyword">var</span> frag = <span class="hljs-built_in">document</span>.createDocumentFragment();
 			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = items.length; i &lt; len; i++) {
 				append(frag, helperOptions.fn( isObserveList ? items.attr(<span class="hljs-string">''</span> + i) : items[i], options) );
 			}
@@ -221,9 +225,9 @@ steal(<span class="hljs-string">"can/util"</span>,
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		append = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(frag, content)</span>{</span>
+            <div class="content"><div class='highlight'><pre>		append = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(frag, content)</span></span>{
 			<span class="hljs-keyword">if</span>(content) {
-				frag.appendChild(<span class="hljs-keyword">typeof</span> content === <span class="hljs-string">"string"</span> ? document.createTextNode(content) : content);
+				frag.appendChild(<span class="hljs-keyword">typeof</span> content === <span class="hljs-string">"string"</span> ? <span class="hljs-built_in">document</span>.createTextNode(content) : content);
 			}
 		},</pre></div></div>
             
@@ -240,14 +244,14 @@ steal(<span class="hljs-string">"can/util"</span>,
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		getItemsStringContent = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(items, isObserveList, helperOptions, options)</span>{</span>
+            <div class="content"><div class='highlight'><pre>		getItemsStringContent = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(items, isObserveList, helperOptions, options)</span></span>{
 			<span class="hljs-keyword">var</span> txt = <span class="hljs-string">""</span>;
 			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = items.length; i &lt; len; i++) {
 				txt += helperOptions.fn( isObserveList ? items.attr(<span class="hljs-string">''</span> + i) : items[i], options);
 			}
 			<span class="hljs-keyword">return</span> txt;
 		},
-		getKeyComputeData = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, scope, isArgument)</span> {</span></pre></div></div>
+		getKeyComputeData = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, scope, isArgument)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -285,7 +289,7 @@ steal(<span class="hljs-string">"can/util"</span>,
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		getKeyArgValue = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key, scope)</span>{</span>
+            <div class="content"><div class='highlight'><pre>		getKeyArgValue = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key, scope)</span></span>{
 			<span class="hljs-keyword">var</span> data = getKeyComputeData(key, scope, <span class="hljs-literal">true</span>);</pre></div></div>
             
         </li>
@@ -322,7 +326,7 @@ they can reference the current scope and options.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		convertToScopes = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(helperOptions, scope, options, truthyRenderer, falseyRenderer)</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>		convertToScopes = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer)</span></span>{</pre></div></div>
             
         </li>
         
@@ -338,10 +342,10 @@ they can reference the current scope and options.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(truthyRenderer) {
-				helperOptions.fn = makeRendererConvertScopes(truthyRenderer, scope, options);
+				helperOptions.fn = makeRendererConvertScopes(truthyRenderer, scope, options, nodeList);
 			}
 			<span class="hljs-keyword">if</span>(falseyRenderer) {
-				helperOptions.inverse = makeRendererConvertScopes(falseyRenderer, scope, options);
+				helperOptions.inverse = makeRendererConvertScopes(falseyRenderer, scope, options, nodeList);
 			}
 		},</pre></div></div>
             
@@ -359,11 +363,11 @@ to it are converted to a can.view.Scope and a can.view.Options.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		makeRendererConvertScopes = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(renderer, parentScope, parentOptions)</span> {</span>
-			<span class="hljs-keyword">var</span> rendererWithScope = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ctx, opts)</span>{</span>
-				<span class="hljs-keyword">return</span> renderer(ctx || parentScope, opts);
+            <div class="content"><div class='highlight'><pre>		makeRendererConvertScopes = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(renderer, parentScope, parentOptions, nodeList)</span> </span>{
+			<span class="hljs-keyword">var</span> rendererWithScope = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ctx, opts, parentNodeList)</span></span>{
+				<span class="hljs-keyword">return</span> renderer(ctx || parentScope, opts, parentNodeList);
 			};
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newScope, newOptions)</span> {</span></pre></div></div>
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newScope, newOptions, parentNodeList)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -373,6 +377,21 @@ to it are converted to a can.view.Scope and a can.view.Options.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>prevent binding on fn.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> reads = can.__clearReading();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>If a non-scope value is passed, add that to the parent scope.</p>
 
@@ -384,7 +403,9 @@ to it are converted to a can.view.Scope and a can.view.Options.</p>
 				<span class="hljs-keyword">if</span> (newOptions !== <span class="hljs-literal">undefined</span> &amp;&amp; !(newOptions <span class="hljs-keyword">instanceof</span> core.Options)) {
 					newOptions = parentOptions.add(newOptions);
 				}
-				<span class="hljs-keyword">return</span> rendererWithScope(newScope, newOptions || parentOptions);
+				<span class="hljs-keyword">var</span> result = rendererWithScope(newScope, newOptions || parentOptions, parentNodeList|| nodeList );
+				can.__setReading(reads);
+				<span class="hljs-keyword">return</span> result;
 			};
 		};
 	
@@ -395,11 +416,11 @@ to it are converted to a can.view.Scope and a can.view.Options.</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <h2 id="mustachecore-expressiondata">mustacheCore.expressionData</h2>
 <p>Returns processed information about the arguments and hash in a mustache expression.</p>
@@ -409,28 +430,28 @@ to it are converted to a can.view.Scope and a can.view.Options.</p>
             <div class="content"><div class='highlight'><pre>		<span class="hljs-comment">/**
 		 * @hide
 		 * Returns processed information about the arguments and hash in a mustache expression.
-		 * @param {can.Mustache.Expression} An expression minus the mode like: `each items animate="in"`
+		 * @param {can.mustache.Expression} An expression minus the mode like: `each items animate="in"`
 		 * @return {Object} Packaged info about the expression for faster processing.
-		 * @option {can.Mustache.Lookup|*} name The first key which is usually the name of a value or a helper to lookup.
-		 * @option {Array&lt;can.Mustache.Lookup|*&gt;} args An array of lookup values or JS literal values.
-		 * @option {Object.&lt;String,can.Mustache.Lookup|*&gt;} hashes A mapping of hash name to lookup values or JS literal values.
+		 * @option {can.mustache.Lookup|*} name The first key which is usually the name of a value or a helper to lookup.
+		 * @option {Array&lt;can.mustache.Lookup|*&gt;} args An array of lookup values or JS literal values.
+		 * @option {Object.&lt;String,can.mustache.Lookup|*&gt;} hashes A mapping of hash name to lookup values or JS literal values.
 		 */</span>
-		expressionData: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(expression)</span>{</span>
+		expressionData: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(expression)</span></span>{
 			<span class="hljs-keyword">var</span> args = [],
 				hashes = {},
 				i = <span class="hljs-number">0</span>;
 			
-			(can.trim(expression) + <span class="hljs-string">' '</span>).replace(argumentsRegExp, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(whole, arg)</span> {</span>
+			(can.trim(expression) + <span class="hljs-string">' '</span>).replace(argumentsRegExp, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(whole, arg)</span> </span>{
 				<span class="hljs-keyword">var</span> m;</pre></div></div>
             
         </li>
         
         
-        <li id="section-20">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Check for special helper arguments (string/number/boolean/hashes).</p>
 
@@ -444,11 +465,11 @@ to it are converted to a can.view.Scope and a can.view.Options.</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>Found a hash object.</p>
 
@@ -459,11 +480,11 @@ to it are converted to a can.view.Scope and a can.view.Options.</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>Addd to the hash object.</p>
 
@@ -476,11 +497,11 @@ to it are converted to a can.view.Scope and a can.view.Options.</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Otherwise output a normal interpolation reference.</p>
 
@@ -502,11 +523,11 @@ to it are converted to a can.view.Scope and a can.view.Options.</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <h2 id="mustachecore-makeevaluator">mustacheCore.makeEvaluator</h2>
 <p>Given a scope and expression, returns a function that evaluates that expression in the scope. </p>
@@ -529,22 +550,7 @@ a function that can quickly evaluate the expression.</p>
 		 * @param {String} [stringOnly] A flag to indicate that only strings will be returned by subsections.
 		 * @return {Function} An 'evaluator' function that evaluates the expression.
 		 */</span>
-		makeEvaluator: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(scope, options, mode, exprData, truthyRenderer, falseyRenderer, stringOnly)</span> {</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-25">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
-              </div>
-              <p>Arguments for the helper.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> args = [],</pre></div></div>
+		makeEvaluator: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(scope, options, nodeList, mode, exprData, truthyRenderer, falseyRenderer, stringOnly)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -555,11 +561,11 @@ a function that can quickly evaluate the expression.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
-              <p>Hash values for helper.</p>
+              <p>Arguments for the helper.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				hash = {},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> args = [],</pre></div></div>
             
         </li>
         
@@ -570,14 +576,11 @@ a function that can quickly evaluate the expression.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
-              <p>Helper options object.</p>
+              <p>Hash values for helper.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				helperOptions = {
-					fn: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>},
-					inverse: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>}
-				},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				hash = {},</pre></div></div>
             
         </li>
         
@@ -588,11 +591,14 @@ a function that can quickly evaluate the expression.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
-              <p>The current context.</p>
+              <p>Helper options object.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				context = scope.attr(<span class="hljs-string">"."</span>),</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				helperOptions = {
+					fn: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{},
+					inverse: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{}
+				},</pre></div></div>
             
         </li>
         
@@ -603,11 +609,11 @@ a function that can quickly evaluate the expression.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
-              <p>The main value.</p>
+              <p>The current context.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				name = exprData.name,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				context = scope.attr(<span class="hljs-string">"."</span>),</pre></div></div>
             
         </li>
         
@@ -618,11 +624,11 @@ a function that can quickly evaluate the expression.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
-              <p>If name is a helper, this gets set to the helper.</p>
+              <p>The main value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				helper,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				name = exprData.name,</pre></div></div>
             
         </li>
         
@@ -633,11 +639,11 @@ a function that can quickly evaluate the expression.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
-              <p><code>true</code> if the expression looks like a helper.</p>
+              <p>If name is a helper, this gets set to the helper.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				looksLikeAHelper = exprData.args.length || !can.isEmptyObject(exprData.hash),</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				helper,</pre></div></div>
             
         </li>
         
@@ -648,11 +654,11 @@ a function that can quickly evaluate the expression.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
-              <p>The “peaked” at value of the name.</p>
+              <p><code>true</code> if the expression looks like a helper.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				initialValue;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				looksLikeAHelper = exprData.args.length || !can.isEmptyObject(exprData.hash),</pre></div></div>
             
         </li>
         
@@ -662,6 +668,21 @@ a function that can quickly evaluate the expression.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>The “peaked” at value of the name.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				initialValue;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>Convert lookup values in arguments to actual values.</p>
 
@@ -679,11 +700,11 @@ a function that can quickly evaluate the expression.</p>
         </li>
         
         
-        <li id="section-34">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>Convert lookup values in hash to actual values.</p>
 
@@ -700,11 +721,11 @@ a function that can quickly evaluate the expression.</p>
         </li>
         
         
-        <li id="section-35">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>Lookup value in name.  Also determine if name is a helper.</p>
 
@@ -715,11 +736,11 @@ a function that can quickly evaluate the expression.</p>
         </li>
         
         
-        <li id="section-36">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>If the expression looks like a helper, try to get a helper right away.</p>
 
@@ -730,11 +751,11 @@ a function that can quickly evaluate the expression.</p>
         </li>
         
         
-        <li id="section-37">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>Try to find a registered helper.</p>
 
@@ -745,11 +766,11 @@ a function that can quickly evaluate the expression.</p>
         </li>
         
         
-        <li id="section-38">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>If a function is on top of the context, call that as a helper.</p>
 
@@ -764,11 +785,11 @@ a function that can quickly evaluate the expression.</p>
         </li>
         
         
-        <li id="section-39">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>If a helper has not been found, either because this does not look like a helper
 or because a helper was not found, get the value of name and determine 
@@ -782,11 +803,11 @@ if it’s a value or not.</p>
         </li>
         
         
-        <li id="section-40">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p>Get info about the compute that represents this lookup.
 This way, we can get the initial value without “reading” the compute.</p>
@@ -796,16 +817,19 @@ This way, we can get the initial value without “reading” the compute.</p>
             <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> computeData = getKeyComputeData(name.get, scope, <span class="hljs-literal">false</span>),
 						compute = computeData.compute;
 						
-					initialValue = computeData.initialValue;</pre></div></div>
+					initialValue = computeData.initialValue;
+					<span class="hljs-keyword">if</span>(computeData.reads &amp;&amp; computeData.reads.length === <span class="hljs-number">1</span> &amp;&amp; computeData.root <span class="hljs-keyword">instanceof</span> can.Map) {
+						compute = can.compute(computeData.root, computeData.reads[<span class="hljs-number">0</span>]);
+					}</pre></div></div>
             
         </li>
         
         
-        <li id="section-41">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p>Set name to be the compute if the compute reads observables,
 or the value of the value of the compute if no observables are found.</p>
@@ -821,11 +845,11 @@ or the value of the value of the compute if no observables are found.</p>
         </li>
         
         
-        <li id="section-42">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <p>If it doesn’t look like a helper and there is no value, check helpers
 anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
@@ -839,11 +863,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-43">
+        <li id="section-44">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <p>Otherwise, if the value is a function, we’ll call that as a helper.</p>
 
@@ -860,11 +884,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-44">
+        <li id="section-45">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               <p>!steal-remove-start</p>
 
@@ -881,11 +905,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-45">
+        <li id="section-46">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p>!steal-remove-end</p>
 
@@ -896,11 +920,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-46">
+        <li id="section-47">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <p>If inverse mode, reverse renderers.</p>
 
@@ -915,11 +939,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-47">
+        <li id="section-48">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <p>Check for a registered helper or a helper-like function.</p>
 
@@ -930,45 +954,27 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-48">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
-              </div>
-              <p>Add additional data to be used by helper functions</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				convertToScopes(helperOptions, scope, options, truthyRenderer, falseyRenderer);
-
-				can.extend(helperOptions, {
-					context: context,
-					scope: scope,
-					contexts: scope,
-					hash: hash
-				});
-
-				args.push(helperOptions);</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-49">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
-              <p>Call the helper.</p>
+              <p>Add additional data to be used by helper functions</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-					<span class="hljs-keyword">return</span> helper.fn.apply(context, args) || <span class="hljs-string">''</span>;
-				};
+            <div class="content"><div class='highlight'><pre>				convertToScopes(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer);
 
-			}</pre></div></div>
+				can.simpleExtend(helperOptions, {
+					context: context,
+					scope: scope,
+					contexts: scope,
+					hash: hash,
+					nodeList: nodeList
+				});
+
+				args.push(helperOptions);</pre></div></div>
             
         </li>
         
@@ -979,11 +985,15 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
-              <p>Return evaluators for no mode.</p>
+              <p>Call the helper.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(!mode) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+					<span class="hljs-keyword">return</span> helper.fn.apply(context, args) || <span class="hljs-string">''</span>;
+				};
+
+			}</pre></div></div>
             
         </li>
         
@@ -994,15 +1004,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
-              <p>If it’s computed, return a function that just reads the compute.</p>
+              <p>Return evaluators for no mode.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(name &amp;&amp; name.isComputed) {
-					<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
-						<span class="hljs-keyword">return</span> name();
-					};
-				}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(!mode) {</pre></div></div>
             
         </li>
         
@@ -1013,17 +1019,13 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
-              <p>Just return name as the value</p>
+              <p>If it’s computed, return a function that just reads the compute.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> {
-					
-					<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
-						<span class="hljs-keyword">return</span> <span class="hljs-string">''</span> + (name != <span class="hljs-literal">null</span> ? name : <span class="hljs-string">''</span>);
-					};
-				}
-			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( mode === <span class="hljs-string">"#"</span> || mode === <span class="hljs-string">"^"</span> ) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(name &amp;&amp; name.isComputed) {
+					<span class="hljs-keyword">return</span> name;
+				}</pre></div></div>
             
         </li>
         
@@ -1034,12 +1036,17 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
-              <p>Setup renderers.</p>
+              <p>Just return name as the value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				convertToScopes(helperOptions, scope, options, truthyRenderer, falseyRenderer);
-				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> {
+					
+					<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+						<span class="hljs-keyword">return</span> <span class="hljs-string">''</span> + (name != <span class="hljs-literal">null</span> ? name : <span class="hljs-string">''</span>);
+					};
+				}
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( mode === <span class="hljs-string">"#"</span> || mode === <span class="hljs-string">"^"</span> ) {</pre></div></div>
             
         </li>
         
@@ -1049,6 +1056,22 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-54">&#182;</a>
+              </div>
+              <p>Setup renderers.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				convertToScopes(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer);
+				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-55">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               <p>Get the value</p>
 
@@ -1064,11 +1087,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-55">
+        <li id="section-56">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
+                <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
               <p>If it’s an array, render.</p>
 
@@ -1088,11 +1111,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-56">
+        <li id="section-57">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
+                <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
               <p>If truthy, render fn, otherwise, inverse.</p>
 
@@ -1107,11 +1130,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-57">
+        <li id="section-58">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-57">&#182;</a>
+                <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
               <p>not supported!</p>
 
@@ -1123,11 +1146,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-58">
+        <li id="section-59">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-58">&#182;</a>
+                <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
               <h2 id="mustachecore-makelivebindingpartialrenderer">mustacheCore.makeLiveBindingPartialRenderer</h2>
 <p>Returns a renderer function that live binds a partial.</p>
@@ -1141,18 +1164,19 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
 		 * @return {function(this:HTMLElement,can.view.Scope,can.view.Options)} A renderer function 
 		 * live binds a partial.
 		 */</span>
-		makeLiveBindingPartialRenderer: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(partialName)</span>{</span>
+		makeLiveBindingPartialRenderer: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(partialName, state)</span></span>{
 			partialName = can.trim(partialName);
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(scope, options)</span>{</span></pre></div></div>
+
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(scope, options, parentSectionNodeList)</span></span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-59">
+        <li id="section-60">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-59">&#182;</a>
+                <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
               <p>Look up partials in options first.</p>
 
@@ -1168,11 +1192,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-60">
+        <li id="section-61">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-60">&#182;</a>
+                <a class="pilcrow" href="#section-61">&#182;</a>
               </div>
               <p>Use can.view to get and render the partial.</p>
 
@@ -1180,21 +1204,27 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
             
             <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> {
 					
-					res = can.view.render(partialName, scope <span class="hljs-comment">/*, options*/</span> );
+					res = can.view.render(partialName, scope, options );
 				}
-				
-				live.replace([<span class="hljs-keyword">this</span>], res);
+
+				res = can.frag(res);
+
+				<span class="hljs-keyword">var</span> nodeList = [<span class="hljs-keyword">this</span>];
+
+				nodeLists.register(nodeList, <span class="hljs-literal">null</span>, state.directlyNested ? parentSectionNodeList || <span class="hljs-literal">true</span> :  <span class="hljs-literal">true</span>);
+				nodeLists.update(nodeList, res.childNodes);
+				elements.replace([<span class="hljs-keyword">this</span>], res);
 			};
 		},</pre></div></div>
             
         </li>
         
         
-        <li id="section-61">
+        <li id="section-62">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-61">&#182;</a>
+                <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
               <h2 id="mustachecore-makestringbranchrenderer">mustacheCore.makeStringBranchRenderer</h2>
 <p>Return a renderer function that evalutes to a string and caches
@@ -1206,27 +1236,11 @@ the evaluator on the scope.</p>
 		 * @hide
 		 * Return a renderer function that evaluates to a string.
 		 * @param {String} mode
-		 * @param {can.Mustache.Expression} expression
+		 * @param {can.mustache.Expression} expression
 		 * @return {function(can.view.Scope,can.view.Options, can.view.renderer, can.view.renderer)} 
 		 */</span>
-		makeStringBranchRenderer: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(mode, expression)</span>{</span>
-			
+		makeStringBranchRenderer: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(mode, expression)</span></span>{
 			<span class="hljs-keyword">var</span> exprData = expressionData(expression),</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-62">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-62">&#182;</a>
-              </div>
-              <p>Use the full mustache expression as the cache key.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				fullExpression = mode+expression;</pre></div></div>
             
         </li>
         
@@ -1237,11 +1251,11 @@ the evaluator on the scope.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-63">&#182;</a>
               </div>
-              <p>A branching renderer takes truthy and falsey renderer.</p>
+              <p>Use the full mustache expression as the cache key.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">branchRenderer</span><span class="hljs-params">(scope, options, truthyRenderer, falseyRenderer)</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>				fullExpression = mode+expression;</pre></div></div>
             
         </li>
         
@@ -1252,15 +1266,11 @@ the evaluator on the scope.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
-              <p>TODO: What happens if same mode/expresion, but different sub-sections?
-Check the scope’s cache if the evaluator already exists for performance.</p>
+              <p>A branching renderer takes truthy and falsey renderer.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> evaluator = scope.__cache[fullExpression];
-				<span class="hljs-keyword">if</span>(!evaluator) {
-					evaluator = scope.__cache[fullExpression] = makeEvaluator( scope, options, mode, exprData, truthyRenderer, falseyRenderer, <span class="hljs-literal">true</span>);
-				}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">branchRenderer</span><span class="hljs-params">(scope, options, truthyRenderer, falseyRenderer)</span></span>{</pre></div></div>
             
         </li>
         
@@ -1270,6 +1280,27 @@ Check the scope’s cache if the evaluator already exists for performance.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-65">&#182;</a>
+              </div>
+              <p>Check the scope’s cache if the evaluator already exists for performance.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> evaluator = scope.__cache[fullExpression];
+				<span class="hljs-keyword">if</span>(mode || !evaluator) {
+					evaluator = makeEvaluator( scope, options, <span class="hljs-literal">null</span>, mode, exprData, truthyRenderer, falseyRenderer, <span class="hljs-literal">true</span>);
+					<span class="hljs-keyword">if</span>(!mode) {
+						scope.__cache[fullExpression] = evaluator;
+					}
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-66">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-66">&#182;</a>
               </div>
               <p>Run the evaluator and return the result.</p>
 
@@ -1283,11 +1314,11 @@ Check the scope’s cache if the evaluator already exists for performance.</p>
         </li>
         
         
-        <li id="section-66">
+        <li id="section-67">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-66">&#182;</a>
+                <a class="pilcrow" href="#section-67">&#182;</a>
               </div>
               <h2 id="mustachecore-makelivebindingbranchrenderer">mustacheCore.makeLiveBindingBranchRenderer</h2>
 <p>Return a renderer function that evaluates the mustache expression and 
@@ -1303,25 +1334,10 @@ it updates the element’s property based on the compute’s value.</p>
 		 * @hide
 		 * Returns a renderer function that evaluates the mustache expression.
 		 * @param {String} mode
-		 * @param {can.Mustache.Expression} expression
+		 * @param {can.mustache.Expression} expression
 		 * @param {Object} state The html state of where the expression was found.
 		 */</span>
-		makeLiveBindingBranchRenderer: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(mode, expression, state)</span>{</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-67">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-67">&#182;</a>
-              </div>
-              <p>Pre-process the expression.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> exprData = expressionData(expression);</pre></div></div>
+		makeLiveBindingBranchRenderer: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(mode, expression, state)</span></span>{</pre></div></div>
             
         </li>
         
@@ -1332,11 +1348,11 @@ it updates the element’s property based on the compute’s value.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-68">&#182;</a>
               </div>
-              <p>A branching renderer takes truthy and falsey renderer.</p>
+              <p>Pre-process the expression.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">branchRenderer</span><span class="hljs-params">(scope, options, truthyRenderer, falseyRenderer)</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> exprData = expressionData(expression);</pre></div></div>
             
         </li>
         
@@ -1347,12 +1363,14 @@ it updates the element’s property based on the compute’s value.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-69">&#182;</a>
               </div>
-              <p>Get the evaluator. This does not need to be cached (probably) because if there
-an observable value, it will be handled by <code>can.view.live</code>.</p>
+              <p>A branching renderer takes truthy and falsey renderer.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> evaluator = makeEvaluator( scope, options, mode, exprData, truthyRenderer, falseyRenderer,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">branchRenderer</span><span class="hljs-params">(scope, options, parentSectionNodeList, truthyRenderer, falseyRenderer)</span></span>{
+				
+				<span class="hljs-keyword">var</span> nodeList = [<span class="hljs-keyword">this</span>];
+				nodeList.expression = expression;</pre></div></div>
             
         </li>
         
@@ -1363,11 +1381,12 @@ an observable value, it will be handled by <code>can.view.live</code>.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-70">&#182;</a>
               </div>
-              <p>If this is within a tag, make sure we only get string values. </p>
+              <p>register this nodeList.
+Regsiter it with its parent ONLY if this is directly nested.  Otherwise, it’s unencessary.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					state.tag );</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				nodeLists.register(nodeList, <span class="hljs-literal">null</span>, state.directlyNested ? parentSectionNodeList || <span class="hljs-literal">true</span> :  <span class="hljs-literal">true</span>);</pre></div></div>
             
         </li>
         
@@ -1378,15 +1397,12 @@ an observable value, it will be handled by <code>can.view.live</code>.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-71">&#182;</a>
               </div>
-              <p>Create a compute that can not be observed by other 
-comptues. This is important because this renderer is likely called by 
-parent expresions.  If this value changes, the parent expressions should
-not re-evaluate. We prevent that by making sure this compute is ignored by 
-everyone else.</p>
+              <p>Get the evaluator. This does not need to be cached (probably) because if there
+an observable value, it will be handled by <code>can.view.live</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> compute = can.compute(evaluator, <span class="hljs-literal">null</span>, <span class="hljs-literal">false</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> evaluator = makeEvaluator( scope, options, nodeList, mode, exprData, truthyRenderer, falseyRenderer,</pre></div></div>
             
         </li>
         
@@ -1396,6 +1412,40 @@ everyone else.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-72">&#182;</a>
+              </div>
+              <p>If this is within a tag, make sure we only get string values. </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					state.tag );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-73">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-73">&#182;</a>
+              </div>
+              <p>Create a compute that can not be observed by other 
+comptues. This is important because this renderer is likely called by 
+parent expresions.  If this value changes, the parent expressions should
+not re-evaluate. We prevent that by making sure this compute is ignored by 
+everyone else.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> compute = can.compute(evaluator, <span class="hljs-literal">null</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-74">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-74">&#182;</a>
               </div>
               <p>Bind on the compute to set the cached value. This helps performance
 so live binding can read a cached value instead of re-calculating.</p>
@@ -1408,11 +1458,11 @@ so live binding can read a cached value instead of re-calculating.</p>
         </li>
         
         
-        <li id="section-73">
+        <li id="section-75">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-73">&#182;</a>
+                <a class="pilcrow" href="#section-75">&#182;</a>
               </div>
               <p>If value is a function, it’s a helper that returned a function.</p>
 
@@ -1423,11 +1473,11 @@ so live binding can read a cached value instead of re-calculating.</p>
         </li>
         
         
-        <li id="section-74">
+        <li id="section-76">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-74">&#182;</a>
+                <a class="pilcrow" href="#section-76">&#182;</a>
               </div>
               <p>A helper function should do it’s own binding.  Similar to how
 we prevented this function’s compute from being noticed by parent expressions,
@@ -1446,11 +1496,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-75">
+        <li id="section-77">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-75">&#182;</a>
+                <a class="pilcrow" href="#section-77">&#182;</a>
               </div>
               <p>If the compute has observable dependencies, setup live binding.</p>
 
@@ -1461,11 +1511,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-76">
+        <li id="section-78">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-76">&#182;</a>
+                <a class="pilcrow" href="#section-78">&#182;</a>
               </div>
               <p>Depending on where the template is, setup live-binding differently.</p>
 
@@ -1478,21 +1528,21 @@ performed in value.</p>
 						live.attributes( <span class="hljs-keyword">this</span>, compute );
 					}
 					<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(state.text &amp;&amp; <span class="hljs-keyword">typeof</span> value !== <span class="hljs-string">"object"</span>){
-						live.text(<span class="hljs-keyword">this</span>, compute, <span class="hljs-keyword">this</span>.parentNode);
+						live.text(<span class="hljs-keyword">this</span>, compute, <span class="hljs-keyword">this</span>.parentNode, nodeList);
 					}
 					<span class="hljs-keyword">else</span> {
-						live.html(<span class="hljs-keyword">this</span>, compute, <span class="hljs-keyword">this</span>.parentNode);
+						live.html(<span class="hljs-keyword">this</span>, compute, <span class="hljs-keyword">this</span>.parentNode, nodeList);
 					}
 				}</pre></div></div>
             
         </li>
         
         
-        <li id="section-77">
+        <li id="section-79">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-77">&#182;</a>
+                <a class="pilcrow" href="#section-79">&#182;</a>
               </div>
               <p>If the compute has no observable dependencies, just set the value on the element.</p>
 
@@ -1517,11 +1567,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-78">
+        <li id="section-80">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-78">&#182;</a>
+                <a class="pilcrow" href="#section-80">&#182;</a>
               </div>
               <p>Unbind the compute. </p>
 
@@ -1534,11 +1584,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-79">
+        <li id="section-81">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-79">&#182;</a>
+                <a class="pilcrow" href="#section-81">&#182;</a>
               </div>
               <h2 id="mustachecore-splitmodefromexpression">mustacheCore.splitModeFromExpression</h2>
 <p>Returns the mustache mode split from the rest of the expression.</p>
@@ -1548,10 +1598,10 @@ performed in value.</p>
             <div class="content"><div class='highlight'><pre>		<span class="hljs-comment">/**
 		 * @hide
 		 * Returns the mustache mode split from the rest of the expression.
-		 * @param {can.Mustache.Expression} expression
+		 * @param {can.mustache.Expression} expression
 		 * @param {Object} state The state of HTML where the expression was found.
 		 */</span>
-		splitModeFromExpression: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(expression, state)</span>{</span>
+		splitModeFromExpression: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(expression, state)</span></span>{
 			expression = can.trim(expression);
 			<span class="hljs-keyword">var</span> mode = expression[<span class="hljs-number">0</span>];
 	
@@ -1564,11 +1614,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-80">
+        <li id="section-82">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-80">&#182;</a>
+                <a class="pilcrow" href="#section-82">&#182;</a>
               </div>
               <p>Triple braces do nothing within a tag.</p>
 
@@ -1586,11 +1636,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-81">
+        <li id="section-83">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-81">&#182;</a>
+                <a class="pilcrow" href="#section-83">&#182;</a>
               </div>
               <h2 id="mustachecore-cleanlineendings">mustacheCore.cleanLineEndings</h2>
 <p>Removes line breaks accoding to the mustache specification.</p>
@@ -1603,16 +1653,16 @@ performed in value.</p>
 		 * @param {String} template
 		 * @return {String}
 		 */</span>
-		cleanLineEndings: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(template)</span>{</span></pre></div></div>
+		cleanLineEndings: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(template)</span></span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-82">
+        <li id="section-84">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-82">&#182;</a>
+                <a class="pilcrow" href="#section-84">&#182;</a>
               </div>
               <p>Finds mustache tags with space around them or no space around them.</p>
 
@@ -1631,11 +1681,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-83">
+        <li id="section-85">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-83">&#182;</a>
+                <a class="pilcrow" href="#section-85">&#182;</a>
               </div>
               <p>A mustache magic tag that has no space around it.</p>
 
@@ -1648,11 +1698,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-84">
+        <li id="section-86">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-84">&#182;</a>
+                <a class="pilcrow" href="#section-86">&#182;</a>
               </div>
               <p>IE 8 will provide undefined</p>
 
@@ -1667,11 +1717,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-85">
+        <li id="section-87">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-85">&#182;</a>
+                <a class="pilcrow" href="#section-87">&#182;</a>
               </div>
               <p>If it’s a partial or tripple stache, leave in place.</p>
 
@@ -1684,11 +1734,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-86">
+        <li id="section-88">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-86">&#182;</a>
+                <a class="pilcrow" href="#section-88">&#182;</a>
               </div>
               <p>Return the magic tag and a trailing linebreak if this did not 
 start a new line and there was an end line.</p>
@@ -1703,11 +1753,11 @@ start a new line and there was an end line.</p>
         </li>
         
         
-        <li id="section-87">
+        <li id="section-89">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-87">&#182;</a>
+                <a class="pilcrow" href="#section-89">&#182;</a>
               </div>
               <p>There is no mode, return special with spaces around it.</p>
 
@@ -1722,11 +1772,11 @@ start a new line and there was an end line.</p>
         </li>
         
         
-        <li id="section-88">
+        <li id="section-90">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-88">&#182;</a>
+                <a class="pilcrow" href="#section-90">&#182;</a>
               </div>
               <h2 id="can-view-options">can.view.Options</h2>
 <p>This contains the local helpers, partials, and tags available to a template.</p>
@@ -1738,7 +1788,7 @@ start a new line and there was an end line.</p>
 		 * The Options scope.
 		 */</span>
 		Options: can.view.Scope.extend({
-			init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, parent)</span> {</span>
+			init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, parent)</span> </span>{
 				<span class="hljs-keyword">if</span> (!data.helpers &amp;&amp; !data.partials &amp;&amp; !data.tags) {
 					data = {
 						helpers: data
@@ -1752,11 +1802,11 @@ start a new line and there was an end line.</p>
         </li>
         
         
-        <li id="section-89">
+        <li id="section-91">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-89">&#182;</a>
+                <a class="pilcrow" href="#section-91">&#182;</a>
               </div>
               <h2 id="local-variable-cache">Local Variable Cache</h2>
 <p>The following creates slightly more quickly accessible references of the following

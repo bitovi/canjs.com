@@ -31,10 +31,10 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/* jshint maxdepth:7*/</span>
-steal(<span class="hljs-string">"can/view"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+steal(<span class="hljs-string">"can/view"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can)</span></span>{
 	
 	
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeMap</span><span class="hljs-params">(str)</span>{</span>
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeMap</span><span class="hljs-params">(str)</span></span>{
 		<span class="hljs-keyword">var</span> obj = {}, items = str.split(<span class="hljs-string">","</span>);
 		<span class="hljs-keyword">for</span> ( <span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; items.length; i++ ) {
 			obj[ items[i] ] = <span class="hljs-literal">true</span>;
@@ -163,9 +163,9 @@ steal(<span class="hljs-string">"can/view"</span>, <span class="hljs-function"><
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> special = makeMap(<span class="hljs-string">"script,style"</span>);
 
-	<span class="hljs-keyword">var</span> HTMLParser = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(html, handler)</span> {</span>
+	<span class="hljs-keyword">var</span> HTMLParser = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(html, handler)</span> </span>{
 		
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseStartTag</span><span class="hljs-params">(tag, tagName, rest, unary)</span> {</span>
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseStartTag</span><span class="hljs-params">(tag, tagName, rest, unary)</span> </span>{
 			tagName = tagName.toLowerCase();
 
 			<span class="hljs-keyword">if</span> (block[tagName]) {
@@ -206,7 +206,7 @@ steal(<span class="hljs-string">"can/view"</span>, <span class="hljs-function"><
 			
 		}
 
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseEndTag</span><span class="hljs-params">(tag, tagName)</span> {</span></pre></div></div>
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseEndTag</span><span class="hljs-params">(tag, tagName)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -287,7 +287,7 @@ steal(<span class="hljs-string">"can/view"</span>, <span class="hljs-function"><
 			}
 		}
 		
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseMustache</span><span class="hljs-params">(mustache, inside)</span>{</span>
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseMustache</span><span class="hljs-params">(mustache, inside)</span></span>{
 			<span class="hljs-keyword">if</span>(handler.special){
 				handler.special(inside);
 			}
@@ -295,7 +295,7 @@ steal(<span class="hljs-string">"can/view"</span>, <span class="hljs-function"><
 		
 		
 		<span class="hljs-keyword">var</span> index, chars, match, stack = [], last = html;
-		stack.last = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+		stack.last = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>[<span class="hljs-keyword">this</span>.length - <span class="hljs-number">1</span>];
 		};
 
@@ -405,7 +405,7 @@ steal(<span class="hljs-string">"can/view"</span>, <span class="hljs-function"><
 				}
 
 			} <span class="hljs-keyword">else</span> {
-				html = html.replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"([\\s\\S]*?)&lt;\/"</span> + stack.last() + <span class="hljs-string">"[^&gt;]*&gt;"</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(all, text)</span> {</span>
+				html = html.replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"([\\s\\S]*?)&lt;\/"</span> + stack.last() + <span class="hljs-string">"[^&gt;]*&gt;"</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(all, text)</span> </span>{
 					text = text.replace(<span class="hljs-regexp">/&lt;!--([\s\S]*?)--&gt;|&lt;!\[CDATA\[([\s\S]*?)]]&gt;/g</span>, <span class="hljs-string">"$1$2"</span>);
 					<span class="hljs-keyword">if</span> (handler.chars) {
 						handler.chars(text);
@@ -441,10 +441,10 @@ steal(<span class="hljs-string">"can/view"</span>, <span class="hljs-function"><
 		
 		handler.done();
 	};
-	HTMLParser.parseAttrs = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(rest, handler)</span>{</span>
+	HTMLParser.parseAttrs = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(rest, handler)</span></span>{
 		
 		
-		(rest != <span class="hljs-literal">null</span> ? rest : <span class="hljs-string">""</span>).replace(attr, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(text, name, special, dblQuote, singleQuote, val)</span> {</span>
+		(rest != <span class="hljs-literal">null</span> ? rest : <span class="hljs-string">""</span>).replace(attr, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(text, name, special, dblQuote, singleQuote, val)</span> </span>{
 			<span class="hljs-keyword">if</span>(special) {
 				handler.special(special);
 				

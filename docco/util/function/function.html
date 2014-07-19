@@ -30,38 +30,37 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
 	can.extend(can, {
-		debounce: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fn, time, context)</span> {</span>
+		debounce: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fn, time, context)</span> </span>{
 			<span class="hljs-keyword">var</span> timeout;
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">var</span> args = <span class="hljs-built_in">arguments</span>;
-				context = context || <span class="hljs-keyword">this</span>;
 				clearTimeout(timeout);
-				timeout = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-					fn.apply(context, args);
-				}, time);
+				timeout = setTimeout(can.proxy(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+					fn.apply(<span class="hljs-keyword">this</span>, args);
+				}, context || <span class="hljs-keyword">this</span>), time);
 			};
 		},
-		throttle: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fn, time, context)</span> {</span>
+		throttle: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fn, time, context)</span> </span>{
 			<span class="hljs-keyword">var</span> run;
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">var</span> args = <span class="hljs-built_in">arguments</span>;
-				context = context || <span class="hljs-keyword">this</span>;
+				<span class="hljs-keyword">var</span> ctx = context || <span class="hljs-keyword">this</span>;
 				<span class="hljs-keyword">if</span> (!run) {
 					run = <span class="hljs-literal">true</span>;
-					setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-						fn.apply(context, args);
+					setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+						fn.apply(ctx, args);
 						run = <span class="hljs-literal">false</span>;
 					}, time);
 				}
 			};
 		},
-		defer: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fn, context)</span> {</span>
+		defer: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fn, context)</span> </span>{
 			<span class="hljs-keyword">var</span> args = <span class="hljs-built_in">arguments</span>;
-			context = context || <span class="hljs-keyword">this</span>;
-			setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-				fn.apply(context, args);
+			<span class="hljs-keyword">var</span> ctx = context || <span class="hljs-keyword">this</span>;
+			setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				fn.apply(ctx, args);
 			}, <span class="hljs-number">0</span>);
 		}
 	});

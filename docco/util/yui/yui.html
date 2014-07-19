@@ -58,7 +58,7 @@ var yuilibs = [‘yui-base/yui-base.js’, ‘oop/oop.js’, ‘event-custom-bas
 steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-string">"can/util/attr"</span>, <span class="hljs-string">'yui'</span>, <span class="hljs-string">'can/event'</span>,
 	<span class="hljs-string">"can/util/fragment.js"</span>, <span class="hljs-string">'can/util/array/each.js'</span>,
 	<span class="hljs-string">'can/util/object/isplain'</span>, <span class="hljs-string">'can/util/deferred.js'</span>,
-	<span class="hljs-string">'../hashchange.js'</span>, <span class="hljs-string">"can/util/inserted"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, attr)</span> {</span></pre></div></div>
+	<span class="hljs-string">'../hashchange.js'</span>, <span class="hljs-string">"can/util/inserted"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, attr)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -73,10 +73,10 @@ steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-stri
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		YUI.add(<span class="hljs-string">'can-modifications'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Y, NAME)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		YUI.add(<span class="hljs-string">'can-modifications'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Y, NAME)</span> </span>{
 			<span class="hljs-keyword">var</span> addHTML = Y.DOM.addHTML;
 
-			Y.DOM.addHTML = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node, content, where)</span> {</span>
+			Y.DOM.addHTML = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node, content, where)</span> </span>{
 				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> content === <span class="hljs-string">"string"</span> || <span class="hljs-keyword">typeof</span> content === <span class="hljs-string">"number"</span>) {
 					content = can.buildFragment(content);
 				}
@@ -94,7 +94,7 @@ steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-stri
 			};
 
 			<span class="hljs-keyword">var</span> oldOn = Y.Node.prototype.on;
-			Y.Node.prototype.on = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type, fn)</span> {</span>
+			Y.Node.prototype.on = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type, fn)</span> </span>{
 				<span class="hljs-keyword">if</span> (type === <span class="hljs-string">"attributes"</span>) {</pre></div></div>
             
         </li>
@@ -115,7 +115,7 @@ steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-stri
 
 					<span class="hljs-keyword">var</span> handle = oldOn.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>),
 						oldDetach = handle.detach;
-					handle.detach = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+					handle.detach = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 						<span class="hljs-keyword">var</span> cur = can.data(el, <span class="hljs-string">"canHasAttributesBindings"</span>) || <span class="hljs-number">0</span>;
 						<span class="hljs-keyword">if</span> (cur &lt;= <span class="hljs-number">0</span>) {
 							can.cleanData(el, <span class="hljs-string">"canHasAttributesBindings"</span>);
@@ -178,7 +178,7 @@ steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-stri
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		can.trim = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(s)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		can.trim = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(s)</span> </span>{
 			<span class="hljs-keyword">return</span> Y.Lang.trim(s);
 		};</pre></div></div>
             
@@ -195,20 +195,20 @@ steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-stri
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		can.makeArray = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arr)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		can.makeArray = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arr)</span> </span>{
 			<span class="hljs-keyword">if</span> (!arr) {
 				<span class="hljs-keyword">return</span> [];
 			}
 			<span class="hljs-keyword">return</span> Y.Array(arr);
 		};
 		can.isArray = Y.Lang.isArray;
-		can.inArray = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, arr, fromIndex)</span> {</span>
+		can.inArray = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, arr, fromIndex)</span> </span>{
 			<span class="hljs-keyword">if</span> (!arr) {
 				<span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 			}
 			<span class="hljs-keyword">return</span> Y.Array.indexOf(arr, item, fromIndex);
 		};
-		can.map = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arr, fn)</span> {</span>
+		can.map = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arr, fn)</span> </span>{
 			<span class="hljs-keyword">return</span> Y.Array.map(can.makeArray(arr || []), fn);
 		};</pre></div></div>
             
@@ -225,7 +225,7 @@ steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-stri
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		can.extend = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(first)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		can.extend = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(first)</span> </span>{
 			<span class="hljs-keyword">var</span> deep = first === <span class="hljs-literal">true</span> ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>,
 				target = <span class="hljs-built_in">arguments</span>[deep],
 				i = deep + <span class="hljs-number">1</span>,
@@ -235,12 +235,12 @@ steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-stri
 			}
 			<span class="hljs-keyword">return</span> target;
 		};
-		can.param = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(object)</span> {</span>
+		can.param = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(object)</span> </span>{
 			<span class="hljs-keyword">return</span> Y.QueryString.stringify(object, {
 				arrayKey: <span class="hljs-literal">true</span>
 			});
 		};
-		can.isEmptyObject = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(object)</span> {</span>
+		can.isEmptyObject = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(object)</span> </span>{
 			<span class="hljs-keyword">return</span> Y.Object.isEmpty(object);
 		};</pre></div></div>
             
@@ -257,10 +257,10 @@ steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-stri
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		can.proxy = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(func, context)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		can.proxy = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(func, context)</span> </span>{
 			<span class="hljs-keyword">return</span> Y.bind.apply(Y, <span class="hljs-built_in">arguments</span>);
 		};
-		can.isFunction = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(f)</span> {</span>
+		can.isFunction = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(f)</span> </span>{
 			<span class="hljs-keyword">return</span> Y.Lang.isFunction(f);
 		};</pre></div></div>
             
@@ -277,16 +277,16 @@ steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-stri
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> prepareNodeList = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodelist)</span> {</span>
-			nodelist.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node, i)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> prepareNodeList = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodelist)</span> </span>{
+			nodelist.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node, i)</span> </span>{
 				nodelist[i] = node.getDOMNode();
 			});
 			nodelist.length = nodelist.size();
 			<span class="hljs-keyword">return</span> nodelist;
 		};
-		can.$ = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector)</span> {</span>
-			<span class="hljs-keyword">if</span> (selector === window) {
-				<span class="hljs-keyword">return</span> window;
+		can.$ = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector)</span> </span>{
+			<span class="hljs-keyword">if</span> (selector === <span class="hljs-built_in">window</span>) {
+				<span class="hljs-keyword">return</span> <span class="hljs-built_in">window</span>;
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (selector <span class="hljs-keyword">instanceof</span> Y.NodeList) {
 				<span class="hljs-keyword">return</span> prepareNodeList(selector);
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> selector === <span class="hljs-string">'object'</span> &amp;&amp; !can.isArray(selector) &amp;&amp; <span class="hljs-keyword">typeof</span> selector.nodeType === <span class="hljs-string">'undefined'</span> &amp;&amp; !selector.getDOMNode) {
@@ -295,21 +295,21 @@ steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-stri
 				<span class="hljs-keyword">return</span> prepareNodeList(Y.all(selector));
 			}
 		};
-		can.get = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, index)</span> {</span>
+		can.get = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, index)</span> </span>{
 			<span class="hljs-keyword">return</span> wrapped._nodes[index];
 		};
-		can.append = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, html)</span> {</span>
-			wrapped.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> {</span>
+		can.append = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, html)</span> </span>{
+			wrapped.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
 				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> html === <span class="hljs-string">'string'</span>) {
 					html = can.buildFragment(html, node);
 				}
 				node.append(html);
 			});
 		};
-		can.addClass = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, className)</span> {</span>
+		can.addClass = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, className)</span> </span>{
 			<span class="hljs-keyword">return</span> wrapped.addClass(className);
 		};
-		can.data = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, key, value)</span> {</span>
+		can.data = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, key, value)</span> </span>{
 			<span class="hljs-keyword">if</span> (value === <span class="hljs-literal">undefined</span>) {
 				<span class="hljs-keyword">return</span> wrapped.item(<span class="hljs-number">0</span>)
 					.getData(key);
@@ -318,10 +318,10 @@ steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-stri
 					.setData(key, value);
 			}
 		};
-		can.remove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped)</span> {</span>
+		can.remove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped)</span> </span>{
 			<span class="hljs-keyword">return</span> wrapped.remove() &amp;&amp; wrapped.destroy();
 		};
-		can.has = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, node)</span> {</span>
+		can.has = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, node)</span> </span>{
 			<span class="hljs-keyword">if</span> (Y.DOM.contains(wrapped[<span class="hljs-number">0</span>], node)) {
 				<span class="hljs-keyword">return</span> wrapped;
 			} <span class="hljs-keyword">else</span> {
@@ -343,7 +343,7 @@ steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-stri
             </div>
             
             <div class="content"><div class='highlight'><pre>		can._yNodeRemove = can._yNodeRemove || Y.Node.prototype.remove;
-		Y.Node.prototype.remove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+		Y.Node.prototype.remove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -406,7 +406,7 @@ does not work on text nodes</p>
 			success: <span class="hljs-literal">undefined</span>,
 			error: <span class="hljs-literal">undefined</span>
 		};
-		<span class="hljs-keyword">var</span> updateDeferred = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(request, d)</span> {</span></pre></div></div>
+		<span class="hljs-keyword">var</span> updateDeferred = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(request, d)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -425,7 +425,7 @@ does not work on text nodes</p>
 				<span class="hljs-keyword">var</span> xhr = request.io;
 				<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> xhr) {
 					<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> d[prop] === <span class="hljs-string">'function'</span>) {
-						d[prop] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+						d[prop] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 							xhr[prop].apply(xhr, <span class="hljs-built_in">arguments</span>);
 						};
 					} <span class="hljs-keyword">else</span> {
@@ -434,7 +434,7 @@ does not work on text nodes</p>
 				}
 			}
 		};
-		can.ajax = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> {</span>
+		can.ajax = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> </span>{
 			<span class="hljs-keyword">var</span> d = can.Deferred(),
 				requestOptions = can.extend({}, options);
 			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> option <span class="hljs-keyword">in</span> optionsMap) {
@@ -447,7 +447,7 @@ does not work on text nodes</p>
 			<span class="hljs-keyword">var</span> success = options.success,
 				error = options.error;
 			requestOptions.on = {
-				success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(transactionid, response)</span> {</span>
+				success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(transactionid, response)</span> </span>{
 					<span class="hljs-keyword">var</span> data = response.responseText;
 					<span class="hljs-keyword">if</span> (options.dataType === <span class="hljs-string">'json'</span>) {
 						data = <span class="hljs-built_in">eval</span>(<span class="hljs-string">'('</span> + data + <span class="hljs-string">')'</span>);
@@ -458,7 +458,7 @@ does not work on text nodes</p>
 						success(data, <span class="hljs-string">'success'</span>, request);
 					}
 				},
-				failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(transactionid, response)</span> {</span>
+				failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(transactionid, response)</span> </span>{
 					updateDeferred(request, d);
 					d.reject(request, <span class="hljs-string">'error'</span>);
 					<span class="hljs-keyword">if</span> (error) {
@@ -503,9 +503,9 @@ and adds events data that has a map of events to
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			addBinding = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodelist, selector, ev, cb)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			addBinding = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodelist, selector, ev, cb)</span> </span>{
 				<span class="hljs-keyword">if</span> (nodelist <span class="hljs-keyword">instanceof</span> Y.NodeList || !nodelist.on || nodelist.getDOMNode) {
-					nodelist.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> {</span>
+					nodelist.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
 						node = can.$(node);
 						<span class="hljs-keyword">var</span> events = can.data(node, <span class="hljs-string">'events'</span>),
 							eventName = ev + <span class="hljs-string">':'</span> + selector;
@@ -549,9 +549,9 @@ the remove object within the object’s data.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			removeBinding = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodelist, selector, ev, cb)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			removeBinding = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodelist, selector, ev, cb)</span> </span>{
 				<span class="hljs-keyword">if</span> (nodelist <span class="hljs-keyword">instanceof</span> Y.NodeList || !nodelist.on || nodelist.getDOMNode) {
-					nodelist.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> {</span>
+					nodelist.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
 						node = can.$(node);
 						<span class="hljs-keyword">var</span> events = can.data(node, <span class="hljs-string">'events'</span>);
 						<span class="hljs-keyword">if</span> (events) {
@@ -580,7 +580,7 @@ the remove object within the object’s data.</p>
 					}
 				}
 			};
-		can.bind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, cb)</span> {</span></pre></div></div>
+		can.bind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, cb)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -620,7 +620,7 @@ the remove object within the object’s data.</p>
 			}
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 		};
-		can.unbind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, cb)</span> {</span></pre></div></div>
+		can.unbind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, cb)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -674,7 +674,7 @@ the remove object within the object’s data.</p>
             
             <div class="content"><div class='highlight'><pre>		can.on = can.bind;
 		can.off = can.unbind;
-		can.trigger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, event, args, bubble)</span> {</span>
+		can.trigger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, event, args, bubble)</span> </span>{
 			<span class="hljs-keyword">if</span> (item <span class="hljs-keyword">instanceof</span> Y.NodeList) {
 				item = item.item(<span class="hljs-number">0</span>);
 			}
@@ -699,7 +699,7 @@ immediately disconnecting</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					item.once(event, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> {</span>
+            <div class="content"><div class='highlight'><pre>					item.once(event, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> </span>{
 						<span class="hljs-keyword">if</span> (ev.stopPropagation) {
 							ev.stopPropagation();
 						}
@@ -722,7 +722,7 @@ immediately disconnecting</p>
 					};
 				}
 				event.target = event.target || item;
-				can.dispatch.call(item, event, args);
+				can.dispatch.call(item, event, can.makeArray(args));
 			}
 		};</pre></div></div>
             
@@ -775,7 +775,7 @@ immediately disconnecting</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			on: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>			on: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>);
 				<span class="hljs-keyword">return</span> Y.Event._attach(args, {
 					facade: <span class="hljs-literal">false</span>
@@ -783,7 +783,7 @@ immediately disconnecting</p>
 			}
 		};
 
-		can.delegate = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector, ev, cb)</span> {</span>
+		can.delegate = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector, ev, cb)</span> </span>{
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.on || <span class="hljs-keyword">this</span>.nodeType) {
 				addBinding(can.$(<span class="hljs-keyword">this</span>), selector, ev, cb);
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.delegate) {
@@ -807,7 +807,7 @@ immediately disconnecting</p>
 			}
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 		};
-		can.undelegate = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector, ev, cb)</span> {</span>
+		can.undelegate = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector, ev, cb)</span> </span>{
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.on || <span class="hljs-keyword">this</span>.nodeType) {
 				removeBinding(can.$(<span class="hljs-keyword">this</span>), selector, ev, cb);
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.undelegate) {
@@ -835,7 +835,7 @@ immediately disconnecting</p>
 			_fix = function (_, p) {
 				return 'mouse' + (p === 'enter' ? 'over' : 'out');
 			},*/</span> realTrigger,
-			realTriggerHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(n, e, evdata)</span> {</span>
+			realTriggerHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(n, e, evdata)</span> </span>{
 				<span class="hljs-keyword">var</span> node = Y.Node(n),
 					handlers = can.Y.Event.getListeners(node._yuid, e),
 					i;
@@ -844,7 +844,7 @@ immediately disconnecting</p>
 						<span class="hljs-keyword">if</span> (handlers[i].fire) {
 							handlers[i].fire(evdata);
 						} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (handlers[i].handles) {
-							can.each(handlers[i].handles, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(handle)</span> {</span>
+							can.each(handlers[i].handles, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(handle)</span> </span>{
 								handle.evt.fire(evdata);
 							});
 						} <span class="hljs-keyword">else</span> {
@@ -853,7 +853,7 @@ immediately disconnecting</p>
 					}
 				}
 			},
-			fakeTrigger = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(n, e, a)</span>{</span>
+			fakeTrigger = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(n, e, a)</span></span>{
 				<span class="hljs-keyword">var</span> stop = <span class="hljs-literal">false</span>;</pre></div></div>
             
         </li>
@@ -873,13 +873,13 @@ immediately disconnecting</p>
 					type: e,
 					target: n,
 					faux: <span class="hljs-literal">true</span>,
-					_stopper: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+					_stopper: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 						stop = <span class="hljs-keyword">this</span>.cancelBubble;
 					},
-					stopPropagation: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+					stopPropagation: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 						stop = <span class="hljs-keyword">this</span>.cancelBubble;
 					},
-					preventDefault: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+					preventDefault: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
 						
 					}
 				}, a);
@@ -901,13 +901,13 @@ immediately disconnecting</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">while</span> (!stop &amp;&amp; n !== document &amp;&amp; n.parentNode) {
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">while</span> (!stop &amp;&amp; n !== <span class="hljs-built_in">document</span> &amp;&amp; n.parentNode) {
 					n = n.parentNode;
 					realTriggerHandler(n, e, evdata); <span class="hljs-comment">//can.isFunction(n[ev]) &amp;&amp; n[ev](evdata);</span>
 				}
 			};
-		<span class="hljs-keyword">if</span> (document.createEvent) {
-			realTrigger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(n, e, a)</span> {</span></pre></div></div>
+		<span class="hljs-keyword">if</span> (<span class="hljs-built_in">document</span>.createEvent) {
+			realTrigger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(n, e, a)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -933,7 +933,7 @@ immediately disconnecting</p>
 				n.dispatchEvent(ev);*/</span>
 			};
 		} <span class="hljs-keyword">else</span> {
-			realTrigger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(n, e, a)</span> {</span>
+			realTrigger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(n, e, a)</span> </span>{
 				fakeTrigger(n, e, a);
 				<span class="hljs-keyword">return</span>;
 				<span class="hljs-comment">/*

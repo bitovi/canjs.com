@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/view/elements.js'</span>, <span class="hljs-string">'can/view'</span>, <span class="hljs-string">'can/view/node_lists'</span>, <span class="hljs-string">'can/view/parser'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, elements, view, nodeLists, parser)</span> {</span>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/view/elements.js'</span>, <span class="hljs-string">'can/view'</span>, <span class="hljs-string">'can/view/node_lists'</span>, <span class="hljs-string">'can/view/parser'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, elements, view, nodeLists, parser)</span> </span>{
 
 	elements = elements || can.view.elements;
 	nodeLists = nodeLists || can.view.NodeLists;
@@ -58,7 +58,7 @@ if the element is “destroyed” (removed from the DOM).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> setup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, bind, unbind)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> setup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, bind, unbind)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -75,7 +75,7 @@ unregister the nodeList which calls teardown</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> tornDown = <span class="hljs-literal">false</span>,
-			teardown = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			teardown = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">if</span> (!tornDown) {
 					tornDown = <span class="hljs-literal">true</span>;
 					unbind(data);
@@ -83,7 +83,7 @@ unregister the nodeList which calls teardown</p>
 				}
 				<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 			}, data = {
-				teardownCheck: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(parent)</span> {</span>
+				teardownCheck: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(parent)</span> </span>{
 					<span class="hljs-keyword">return</span> parent ? <span class="hljs-literal">false</span> : teardown();
 				}
 			};
@@ -107,10 +107,10 @@ operate on a compute</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		listen = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, compute, change)</span> {</span>
-			<span class="hljs-keyword">return</span> setup(el, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>		listen = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, compute, change)</span> </span>{
+			<span class="hljs-keyword">return</span> setup(el, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				compute.bind(<span class="hljs-string">'change'</span>, change);
-			}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+			}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
 				compute.unbind(<span class="hljs-string">'change'</span>, change);
 				<span class="hljs-keyword">if</span> (data.nodeList) {
 					nodeLists.unregister(data.nodeList);
@@ -132,28 +132,28 @@ operate on a compute</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		getAttributeParts = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newVal)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		getAttributeParts = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newVal)</span> </span>{
 			<span class="hljs-keyword">var</span> attrs = {},
 				attr;
 			parser.parseAttrs(newVal,{
-				attrStart: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span>{</span>
+				attrStart: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span></span>{
 					attrs[name] = <span class="hljs-string">""</span>;
 					attr = name;
 				},
-				attrValue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span>{</span>
+				attrValue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span></span>{
 					attrs[attr] += value;
 				},
-				attrEnd: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>}
+				attrEnd: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{}
 			});
 			<span class="hljs-keyword">return</span> attrs;
 		},
 		splice = [].splice,
-		isNode = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span>{</span>
+		isNode = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span></span>{
 			<span class="hljs-keyword">return</span> obj &amp;&amp; obj.nodeType;
 		},
-		addTextNodeIfNoChildren = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(frag)</span>{</span>
+		addTextNodeIfNoChildren = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(frag)</span></span>{
 			<span class="hljs-keyword">if</span>(!frag.childNodes.length) {
-				frag.appendChild(document.createTextNode(<span class="hljs-string">""</span>));
+				frag.appendChild(<span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">""</span>));
 			}
 		};
 	<span class="hljs-comment">/**
@@ -225,7 +225,7 @@ operate on a compute</p>
 		 *       })
 		 *
 		 */</span>
-		list: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, compute, render, context, parentNode)</span> {</span></pre></div></div>
+		list: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, compute, render, context, parentNode, nodeList)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -242,7 +242,7 @@ that section is able to remove the items in this list.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> masterNodeList = [el],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> masterNodeList = nodeList || [el],</pre></div></div>
             
         </li>
         
@@ -272,7 +272,7 @@ that section is able to remove the items in this list.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				add = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, items, index)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>				add = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, items, index)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -287,7 +287,7 @@ that section is able to remove the items in this list.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> frag = document.createDocumentFragment(),
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> frag = <span class="hljs-built_in">document</span>.createDocumentFragment(),
 						newNodeLists = [],
 						newIndicies = [];</pre></div></div>
             
@@ -304,7 +304,13 @@ that section is able to remove the items in this list.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					can.each(items, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, key)</span> {</span>
+            <div class="content"><div class='highlight'><pre>					can.each(items, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, key)</span> </span>{
+						<span class="hljs-keyword">var</span> itemNodeList = [];
+
+						<span class="hljs-keyword">if</span>(nodeList) {
+							nodeLists.register(itemNodeList,<span class="hljs-literal">null</span>, <span class="hljs-literal">true</span>);
+						}
+						
 						<span class="hljs-keyword">var</span> itemIndex = can.compute(key + index),</pre></div></div>
             
         </li>
@@ -320,7 +326,7 @@ that section is able to remove the items in this list.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							itemHTML = render.call(context, item, itemIndex),
+            <div class="content"><div class='highlight'><pre>							itemHTML = render.call(context, item, itemIndex, itemNodeList),
 							gotText = <span class="hljs-keyword">typeof</span> itemHTML === <span class="hljs-string">"string"</span>,</pre></div></div>
             
         </li>
@@ -355,10 +361,12 @@ that section is able to remove the items in this list.</p>
 						itemFrag = gotText ? can.view.hookup(itemFrag) : itemFrag;
 						
 						<span class="hljs-keyword">var</span> childNodes = can.makeArray(itemFrag.childNodes);
-						
-						
-						
-						newNodeLists.push(nodeLists.register(childNodes));</pre></div></div>
+						<span class="hljs-keyword">if</span>(nodeList) {
+							nodeLists.update(itemNodeList, childNodes);
+							newNodeLists.push(itemNodeList);
+						} <span class="hljs-keyword">else</span> {
+							newNodeLists.push(nodeLists.register(childNodes));
+						}</pre></div></div>
             
         </li>
         
@@ -481,7 +489,7 @@ add it to the collection of all added elements.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				remove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, items, index, duringTeardown, fullTeardown)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>				remove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, items, index, duringTeardown, fullTeardown)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -503,7 +511,7 @@ If we did this during a teardown, it would cause an infinite loop.</p>
 					}
 					<span class="hljs-keyword">var</span> removedMappings = masterNodeList.splice(index+<span class="hljs-number">1</span>, items.length),
 						itemsToRemove = [];
-					can.each(removedMappings, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodeList)</span> {</span></pre></div></div>
+					can.each(removedMappings, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodeList)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -586,7 +594,7 @@ If we did this during a teardown, it would cause an infinite loop.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				text = document.createTextNode(<span class="hljs-string">''</span>),</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				text = <span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">''</span>),</pre></div></div>
             
         </li>
         
@@ -616,7 +624,7 @@ If we did this during a teardown, it would cause an infinite loop.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				teardownList = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fullTeardown)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>				teardownList = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fullTeardown)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -668,7 +676,7 @@ array</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				updateList = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newList, oldList)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				updateList = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newList, oldList)</span> </span>{
 					teardownList();</pre></div></div>
             
         </li>
@@ -720,18 +728,23 @@ array</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> data = setup(parentNode, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> data = setup(parentNode, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">if</span> (can.isFunction(compute)) {
 					compute.bind(<span class="hljs-string">'change'</span>, updateList);
 				}
-			}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">if</span> (can.isFunction(compute)) {
 					compute.unbind(<span class="hljs-string">'change'</span>, updateList);
 				}
 				teardownList(<span class="hljs-literal">true</span>);
 			});
-			
-			live.replace(masterNodeList, text, data.teardownCheck);</pre></div></div>
+			<span class="hljs-keyword">if</span>(!nodeList) {
+				live.replace(masterNodeList, text, data.teardownCheck);
+			} <span class="hljs-keyword">else</span> {
+				elements.replace(masterNodeList, text);
+				nodeLists.update(masterNodeList, [text]);
+				nodeList.unregistered = data.teardownCheck;
+			}</pre></div></div>
             
         </li>
         
@@ -778,10 +791,10 @@ array</p>
 		 *     can.view.live.html( placeholder,  greeting );
 		 *
 		 */</span>
-		html: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, compute, parentNode)</span> {</span>
+		html: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, compute, parentNode, nodeList)</span> </span>{
 			<span class="hljs-keyword">var</span> data;
 			parentNode = elements.getParentNode(el, parentNode);
-			data = listen(parentNode, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal, oldVal)</span> {</span></pre></div></div>
+			data = listen(parentNode, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal, oldVal)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -817,8 +830,8 @@ array</p>
 				data.teardownCheck(nodeLists.first(nodes).parentNode);
 			});
 
-			<span class="hljs-keyword">var</span> nodes = [el],
-				makeAndPut = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> {</span>
+			<span class="hljs-keyword">var</span> nodes = nodeList || [el],
+				makeAndPut = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> </span>{
 					<span class="hljs-keyword">var</span> isString = !isNode(val),
 						frag = can.frag(val),
 						oldNodes = can.makeArray(nodes);</pre></div></div>
@@ -873,7 +886,11 @@ array</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			nodeLists.register(nodes, data.teardownCheck);
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(!nodeList) {
+				nodeLists.register(nodes, data.teardownCheck);
+			} <span class="hljs-keyword">else</span> {
+				nodeList.unregistered = data.teardownCheck;
+			}
 			makeAndPut(compute());
 		},
 		<span class="hljs-comment">/**
@@ -890,7 +907,7 @@ array</p>
 		 *
 		 * @param {function} [teardown] A callback if these elements are torn down.
 		 */</span>
-		replace: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodes, val, teardown)</span> {</span>
+		replace: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodes, val, teardown)</span> </span>{
 			<span class="hljs-keyword">var</span> oldNodes = nodes.slice(<span class="hljs-number">0</span>),
 				frag = can.frag(val);
 			nodeLists.register(nodes, teardown);
@@ -939,7 +956,7 @@ array</p>
 		 * Replaces one element with some content while keeping [can.view.live.nodeLists nodeLists] data
 		 * correct.
 		 */</span>
-		text: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, compute, parentNode)</span> {</span>
+		text: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, compute, parentNode, nodeList)</span> </span>{
 			<span class="hljs-keyword">var</span> parent = elements.getParentNode(el, parentNode);</pre></div></div>
             
         </li>
@@ -955,7 +972,7 @@ array</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> data = listen(parent, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal, oldVal)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> data = listen(parent, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal, oldVal)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -990,7 +1007,7 @@ array</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>				data.teardownCheck(node.parentNode);
-			}),</pre></div></div>
+			});</pre></div></div>
             
         </li>
         
@@ -1005,7 +1022,15 @@ array</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				node = document.createTextNode(can.view.toStr(compute()));</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				
+			<span class="hljs-keyword">var</span> node = <span class="hljs-built_in">document</span>.createTextNode(can.view.toStr(compute()));
+			<span class="hljs-keyword">if</span>(nodeList) {
+				nodeList.unregistered = data.teardownCheck;
+				data.nodeList = nodeList;
+				
+				nodeLists.update(nodeList, [node]);
+				elements.replace([el], node);
+			} <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -1021,9 +1046,11 @@ Add that node to nodeList so we can remove it when the parent element is removed
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			data.nodeList = live.replace([el], node, data.teardownCheck);
+            <div class="content"><div class='highlight'><pre>				data.nodeList = live.replace([el], node, data.teardownCheck);
+			}
+			
 		},
-		setAttributes: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, newVal)</span> {</span>
+		setAttributes: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, newVal)</span> </span>{
 			<span class="hljs-keyword">var</span> attrs = getAttributeParts(newVal);
 			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> name <span class="hljs-keyword">in</span> attrs) {
 				can.attr.set(el, name, attrs[name]);
@@ -1047,10 +1074,10 @@ Add that node to nodeList so we can remove it when the parent element is removed
 		 *     can.view.live.attr(div,compute);
 		 * 
 		 */</span>
-		attributes: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, compute, currentValue)</span> {</span>
+		attributes: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, compute, currentValue)</span> </span>{
 			<span class="hljs-keyword">var</span> oldAttrs = {};
 			
-			<span class="hljs-keyword">var</span> setAttrs = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newVal)</span> {</span>
+			<span class="hljs-keyword">var</span> setAttrs = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newVal)</span> </span>{
 				<span class="hljs-keyword">var</span> newAttrs = getAttributeParts(newVal),
 					name;
 				<span class="hljs-keyword">for</span>( name <span class="hljs-keyword">in</span> newAttrs ) {
@@ -1066,7 +1093,7 @@ Add that node to nodeList so we can remove it when the parent element is removed
 				}
 				oldAttrs = newAttrs;
 			};
-			listen(el, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal)</span> {</span>
+			listen(el, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal)</span> </span>{
 				setAttrs(newVal);
 			});</pre></div></div>
             
@@ -1091,8 +1118,8 @@ Add that node to nodeList so we can remove it when the parent element is removed
 		},
 		attributePlaceholder: <span class="hljs-string">'__!!__'</span>,
 		attributeReplace: <span class="hljs-regexp">/__!!__/g</span>,
-		attribute: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attributeName, compute)</span> {</span>
-			listen(el, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal)</span> {</span>
+		attribute: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attributeName, compute)</span> </span>{
+			listen(el, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal)</span> </span>{
 				elements.setAttr(el, attributeName, hook.render());
 			});
 			<span class="hljs-keyword">var</span> wrapped = can.$(el),
@@ -1201,7 +1228,7 @@ they will be put in the right spot on first render</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>				hooks[attributeName] = {
-					render: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+					render: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 						<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>,</pre></div></div>
             
         </li>
@@ -1217,7 +1244,7 @@ they will be put in the right spot on first render</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							newAttr = attr ? attr.replace(live.attributeReplace, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>							newAttr = attr ? attr.replace(live.attributeReplace, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 								<span class="hljs-keyword">return</span> elements.contentText(hook.computes[i++]());
 							}) : elements.contentText(hook.computes[i++]());
 						<span class="hljs-keyword">return</span> newAttr;
@@ -1272,8 +1299,8 @@ they will be put in the right spot on first render</p>
             
             <div class="content"><div class='highlight'><pre>			elements.setAttr(el, attributeName, goodParts.join(<span class="hljs-string">''</span>));
 		},
-		specialAttribute: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attributeName, compute)</span> {</span>
-			listen(el, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal)</span> {</span>
+		specialAttribute: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attributeName, compute)</span> </span>{
+			listen(el, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal)</span> </span>{
 				elements.setAttr(el, attributeName, getValue(newVal));
 			});
 			elements.setAttr(el, attributeName, getValue(compute()));
@@ -1296,8 +1323,8 @@ they will be put in the right spot on first render</p>
 		 *     var compute = can.compute("foo bar");
 		 *     can.view.live.attr(div,"class", compute);
 		 */</span>
-		simpleAttribute: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, attributeName, compute)</span>{</span>
-			listen(el, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal)</span> {</span>
+		simpleAttribute: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, attributeName, compute)</span></span>{
+			listen(el, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal)</span> </span>{
 				elements.setAttr(el, attributeName, newVal);
 			});
 			elements.setAttr(el, attributeName, compute());
@@ -1306,7 +1333,7 @@ they will be put in the right spot on first render</p>
 	live.attr = live.simpleAttribute;
 	live.attrs = live.attributes;
 	<span class="hljs-keyword">var</span> newLine = <span class="hljs-regexp">/(\r|\n)+/g</span>;
-	<span class="hljs-keyword">var</span> getValue = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> {</span>
+	<span class="hljs-keyword">var</span> getValue = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> </span>{
 		<span class="hljs-keyword">var</span> regexp = <span class="hljs-regexp">/^["'].*["']$/</span>;
 		val = val.replace(elements.attrReg, <span class="hljs-string">''</span>)
 			.replace(newLine, <span class="hljs-string">''</span>);</pre></div></div>

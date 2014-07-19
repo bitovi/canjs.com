@@ -28,8 +28,8 @@ Given a list of elements, check if the first is in the DOM, and if so triggers t
             </div>
             
             <div class="content"><div class='highlight'><pre>
-steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span>
-	can.inserted = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elems)</span> {</span></pre></div></div>
+steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
+	can.inserted = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elems)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -60,7 +60,7 @@ steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-func
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			doc = can.$(document.contains ? document : document.body),
+            <div class="content"><div class='highlight'><pre>			doc = can.$(<span class="hljs-built_in">document</span>.contains ? <span class="hljs-built_in">document</span> : <span class="hljs-built_in">document</span>.body),
 			children;</pre></div></div>
             
         </li>
@@ -130,7 +130,7 @@ If the first element is not in the document (a Document Fragment) it will exit t
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.appendChild = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, child)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	can.appendChild = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, child)</span> </span>{
 		<span class="hljs-keyword">var</span> children;
 		<span class="hljs-keyword">if</span> (child.nodeType === <span class="hljs-number">11</span>) {
 			children = can.makeArray(child.childNodes);
@@ -155,7 +155,7 @@ If the first element is not in the document (a Document Fragment) it will exit t
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.insertBefore = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, child, ref)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	can.insertBefore = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, child, ref)</span> </span>{
 		<span class="hljs-keyword">var</span> children;
 		<span class="hljs-keyword">if</span> (child.nodeType === <span class="hljs-number">11</span>) {
 			children = can.makeArray(child.childNodes);

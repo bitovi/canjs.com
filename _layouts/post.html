@@ -89,37 +89,84 @@ slug: "blog"
 		<!--start blog-->
 		<div id="{{page.slug}}" class="container api">
 			<article class="content docs blog-wrapper">
-				<a href="/blog" class="blog-archive">&laquo; Back to the blog archive</a>
-				<div class="title-and-lead-wrap">
-					<h1>{{page.title}}</h1>
-					<p>{{ page.lead }}</p>
-				</div>
-				<div class="date-and-tags-wrap cf">
-					<img id="gravatar" src="" alt="{{ page.githubHandle }}" style="display: none"> posted in 
 
-					{% for category in page.categories %}
-					{% if forloop.index < forloop.length and forloop.length > 1 and forloop.index > 1 %},{% endif %}
-					{% if forloop.index == forloop.length and forloop.length > 1 and forloop.index > 1%} and {% endif %}
-					<a href="/blog/{{category}}">{{ category }}</a>
-					{% endfor %}
+				<section class="blog-nav">
+					<a href="/blog" class="btn pull-left">&laquo; Back to blog</a>
+<!-- 					<ul class="pull-left inline-nav-list blog-category-nav">
+						<li>
+							Categories:
+						</li>
+						<li>
+							<a class="no-decoration" href="/blog/news">News</a>
+						</li>
+						<li>
+							<a class="no-decoration" href="/blog/learning">Learning</a>
+						</li>
+					</ul> -->
+
 					
-					on {{ page.date | date: "%B %d, %Y" }}
-					<br>by
-					<span class="author">
-						{% if page.twitterHandle %}
-						<a href="http://twitter.com/{{ page.twitterHandle }}">{{ page.author }}</a>
-						{% else %}
-						{% if page.githubHandle %}
-						<a href="http://github.com/{{ page.githubHandle }}">{{ page.author }}</a>
-						{% else %}
-						{{ page.author }}
-						{% endif %}
-						{% endif %}
-					</span>
-					<a href="https://twitter.com/share" class="twitter-share-button" data-via="canjs" data-count="none" data-hashtags="canjs">Tweet</a>
-				</div>
+		          <ul class="inline-nav-list pull-right blog-social-icons">
+		            <li>
+		              <a title="CanJS GitHub" class="no-decoration" href="https://github.com/bitovi/canjs" target="_blank">
+		                <span class="cjs-icon-github"></span>
+		                Fork us on Github
+		              </a>
+		            </li>
+		            <li>
+		              <a title="Follow Us on Twitter" class="no-decoration" href="https://twitter.com/canjs" target="_blank">
+		                <span class="cjs-icon-twitter"></span>
+		                Follow us on Twitter
+		              </a>
+		            </li>
+		            <li>
+		              <a title="Join us on Google+" class="no-decoration" href="https://plus.google.com/108820831381167297339/posts" target="_blank">
+		                <span class="cjs-icon-googleplus"></span>
+		                Join us on Google+
+		              </a>
+		            </li>
+		            <li>
+		              <a title="Subscribe to RSS Feed" class="no-decoration" href="/blog.rss" target="_blank">
+		                <span class="cjs-icon-feed"></span>
+		                Subscribe to RSS
+		              </a>
+		            </li>                             
+		          </ul>
+				</section>
 
-				{{ content }}
+
+				<div class="title-and-lead-wrap" style="background-image: url({{ page.banner_img }})"></div>
+				<div id="blog-content">	
+					<h1>{{page.title}} 
+						<a href="https://twitter.com/share" class="twitter-share-button" data-via="canjs" data-count="none" data-hashtags="canjs">Tweet</a>
+					</h1>
+					<!-- <p>{{ page.lead }}</p> -->
+					<div class="date-and-tags-wrap cf">
+						<p class="date">
+						<img id="gravatar" src="" alt="{{ page.githubHandle }}" style="display: none"> posted in 
+
+						{% for category in page.categories %}
+						{% if forloop.index < forloop.length and forloop.length > 1 and forloop.index > 1 %},{% endif %}
+						{% if forloop.index == forloop.length and forloop.length > 1 and forloop.index > 1%} and {% endif %}
+						<a href="/blog/{{category}}">{{ category }}</a>
+						{% endfor %}
+						
+						on {{ page.date | date: "%B %d, %Y" }}
+						by
+						<span class="author">
+							{% if page.twitterHandle %}
+							<a href="http://twitter.com/{{ page.twitterHandle }}">{{ page.author }}</a>
+							{% else %}
+							{% if page.githubHandle %}
+							<a href="http://github.com/{{ page.githubHandle }}">{{ page.author }}</a>
+							{% else %}
+							{{ page.author }}
+							{% endif %}
+							{% endif %}
+						</span>
+						</p>
+					</div>		
+					{{ content }}
+				</div>
 				<div id="disqus_thread"></div>
 				<script type="text/javascript">
 				/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
@@ -159,7 +206,7 @@ slug: "blog"
 			</script>
 			<script src="/steal/steal.js?scripts/static/blog"></script>
 			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
+			<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 		</body>
 		  <script type="text/javascript">
 

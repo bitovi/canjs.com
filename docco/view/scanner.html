@@ -62,7 +62,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/* jshint maxdepth:7*/</span>
-steal(<span class="hljs-string">'can/view'</span>, <span class="hljs-string">'./elements'</span>, <span class="hljs-string">"can/view/callbacks"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, elements, viewCallbacks)</span> {</span>
+steal(<span class="hljs-string">'can/view'</span>, <span class="hljs-string">'./elements'</span>, <span class="hljs-string">"can/view/callbacks"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, elements, viewCallbacks)</span> </span>{
 
 	<span class="hljs-comment">/**
 	 * Helper(s)
@@ -83,7 +83,7 @@ steal(<span class="hljs-string">'can/view'</span>, <span class="hljs-string">'./
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		clean = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(content)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		clean = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(content)</span> </span>{
 			<span class="hljs-keyword">return</span> content
 				.split(<span class="hljs-string">'\\'</span>)
 				.join(<span class="hljs-string">"\\\\"</span>)
@@ -109,7 +109,7 @@ looks forward … could be slow, but we only do it when necessary</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		getTag = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tagName, tokens, i)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>		getTag = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tagName, tokens, i)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -150,12 +150,12 @@ looks forward … could be slow, but we only do it when necessary</p>
 			}
 			<span class="hljs-keyword">return</span> <span class="hljs-string">''</span>;
 		},
-		bracketNum = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(content)</span> {</span>
+		bracketNum = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(content)</span> </span>{
 			<span class="hljs-keyword">return</span> (--content.split(<span class="hljs-string">"{"</span>)
 				.length) - (--content.split(<span class="hljs-string">"}"</span>)
 				.length);
 		},
-		myEval = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(script)</span> {</span>
+		myEval = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(script)</span> </span>{
 			<span class="hljs-built_in">eval</span>(script);
 		},
 		attrReg = <span class="hljs-regexp">/([^\s]+)[\s]*=[\s]*$/</span>,</pre></div></div>
@@ -238,7 +238,7 @@ Are we inside a tag?</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>		rescan = <span class="hljs-literal">null</span>,
-		getAttrName = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+		getAttrName = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 			<span class="hljs-keyword">var</span> matches = beforeQuote.match(attrReg);
 			<span class="hljs-keyword">return</span> matches &amp;&amp; matches[<span class="hljs-number">1</span>];
 		},</pre></div></div>
@@ -256,7 +256,7 @@ Are we inside a tag?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		status = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>		status = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -289,7 +289,7 @@ Are we inside a tag?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		top = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(stack)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		top = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(stack)</span> </span>{
 			<span class="hljs-keyword">return</span> stack[stack.length - <span class="hljs-number">1</span>];
 		},
 		Scanner;
@@ -322,7 +322,7 @@ Are we inside a tag?</p>
 	 * @typedef {{0:String,}}
 	 */</span>
 
-	can.view.Scanner = Scanner = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> {</span></pre></div></div>
+	can.view.Scanner = Scanner = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -479,7 +479,7 @@ Are we inside a tag?</p>
             
             <div class="content"><div class='highlight'><pre>		helpers: [],
 
-		scan: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(source, name)</span> {</span>
+		scan: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(source, name)</span> </span>{
 			<span class="hljs-keyword">var</span> tokens = [],
 				last = <span class="hljs-number">0</span>,
 				simple = <span class="hljs-keyword">this</span>.tokenSimple,
@@ -489,7 +489,7 @@ Are we inside a tag?</p>
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.transform) {
 				source = <span class="hljs-keyword">this</span>.transform(source);
 			}
-			source.replace(<span class="hljs-keyword">this</span>.tokenReg, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(whole, part)</span> {</span></pre></div></div>
+			source.replace(<span class="hljs-keyword">this</span>.tokenReg, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(whole, part)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -629,7 +629,7 @@ push what’s in between</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				put = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(content, bonus)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				put = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(content, bonus)</span> </span>{
 					buff.push(put_cmd, <span class="hljs-string">'"'</span>, clean(content), <span class="hljs-string">'"'</span> + (bonus || <span class="hljs-string">''</span>) + <span class="hljs-string">');'</span>);
 				},</pre></div></div>
             
@@ -756,7 +756,7 @@ we store how the file should end here (either <code>))</code> or <code>;</code>)
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				popTagHookup = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>				popTagHookup = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -2005,7 +2005,7 @@ regex name value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.view.pending = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(viewData)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>	can.view.pending = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(viewData)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -2023,8 +2023,8 @@ a better system will always be called with the same stuff</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> hooks = can.view.getHooks();
-		<span class="hljs-keyword">return</span> can.view.hook(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> {</span>
-			can.each(hooks, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fn)</span> {</span>
+		<span class="hljs-keyword">return</span> can.view.hook(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> </span>{
+			can.each(hooks, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fn)</span> </span>{
 				fn(el);
 			});
 			viewData.templateType = <span class="hljs-string">"legacy"</span>;
@@ -2032,7 +2032,7 @@ a better system will always be called with the same stuff</p>
 				viewCallbacks.tagHandler(el, viewData.tagName, viewData);
 			}
 
-			can.each(viewData &amp;&amp; viewData.attrs || [], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attributeName)</span> {</span>
+			can.each(viewData &amp;&amp; viewData.attrs || [], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attributeName)</span> </span>{
 				viewData.attributeName = attributeName;
 				<span class="hljs-keyword">var</span> callback = viewCallbacks.attr(attributeName);
 				<span class="hljs-keyword">if</span>(callback) {
@@ -2044,7 +2044,7 @@ a better system will always be called with the same stuff</p>
 
 	};
 
-	can.view.tag(<span class="hljs-string">"content"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, tagData)</span> {</span>
+	can.view.tag(<span class="hljs-string">"content"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, tagData)</span> </span>{
 		<span class="hljs-keyword">return</span> tagData.scope;
 	});
 

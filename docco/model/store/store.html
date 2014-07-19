@@ -31,7 +31,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/* jshint maxdepth:5 */</span>
-steal(<span class="hljs-string">'can/model/list'</span>, <span class="hljs-string">'can/util/object'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+steal(<span class="hljs-string">'can/model/list'</span>, <span class="hljs-string">'can/util/object'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -64,7 +64,7 @@ steal(<span class="hljs-string">'can/model/list'</span>, <span class="hljs-strin
             <div class="content"><div class='highlight'><pre>
 	<span class="hljs-keyword">var</span> same = can.Object.same;
 	can.Construct(<span class="hljs-string">'can.Model.Store'</span>, {
-		init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+		init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.fullName === <span class="hljs-string">'can.Model.Store'</span>) {
 				<span class="hljs-keyword">return</span>;
 			}
@@ -90,7 +90,7 @@ steal(<span class="hljs-string">'can/model/list'</span>, <span class="hljs-strin
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.namespace.bind(<span class="hljs-string">'destroyed'</span>, <span class="hljs-keyword">this</span>.proxy(<span class="hljs-string">'remove'</span>));
 			<span class="hljs-keyword">this</span>.namespace.bind(<span class="hljs-string">'updated'</span>, <span class="hljs-keyword">this</span>.proxy(<span class="hljs-string">'updated'</span>));
 		},
-		updated: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, item)</span> {</span></pre></div></div>
+		updated: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, item)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -125,7 +125,7 @@ steal(<span class="hljs-string">'can/model/list'</span>, <span class="hljs-strin
 			console.log("Store - Updated, but no changes")
 		}*/</span>
 		},
-		remove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, id)</span> {</span>
+		remove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, id)</span> </span>{
 			<span class="hljs-keyword">var</span> idProp = <span class="hljs-keyword">this</span>.id;
 			<span class="hljs-keyword">if</span> (id[idProp] !== <span class="hljs-literal">undefined</span>) {
 				id = id[idProp];
@@ -170,7 +170,7 @@ steal(<span class="hljs-string">'can/model/list'</span>, <span class="hljs-strin
 		}*/</span>
 		},
 		id: <span class="hljs-string">'id'</span>,
-		add: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items, params)</span> {</span></pre></div></div>
+		add: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items, params)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -267,17 +267,17 @@ make sure item isn’t already in set?</p>
 		<span class="hljs-comment">/**
 		 * updates the properties of currentItem
 		 */</span>
-		update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(currentItem, newItem)</span> {</span>
+		update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(currentItem, newItem)</span> </span>{
 			currentItem.attrs(newItem.serialize());
 		},
 		<span class="hljs-comment">/**
 		 *
 		 * @param {Object} newItem
 		 */</span>
-		create: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newItem)</span> {</span>
+		create: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newItem)</span> </span>{
 			<span class="hljs-keyword">return</span> newItem;
 		},
-		has: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params)</span> {</span></pre></div></div>
+		has: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -304,7 +304,7 @@ make sure item isn’t already in set?</p>
 		 * @param {Object} item
 		 * @param {Object} params
 		 */</span>
-		filter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, params)</span> {</span></pre></div></div>
+		filter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, params)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -342,15 +342,15 @@ make sure item isn’t already in set?</p>
 			}
 		},
 		compare: {},
-		_compare: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, itemData, paramData)</span> {</span>
+		_compare: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, itemData, paramData)</span> </span>{
 			<span class="hljs-keyword">return</span> same(itemData, paramData, <span class="hljs-keyword">this</span>.compare[prop]);
 		},
-		sort: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items, params)</span> {</span>
+		sort: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items, params)</span> </span>{
 			$.each((params.order || [])
 				.slice(<span class="hljs-number">0</span>)
-				.reverse(), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(i, name)</span> {</span>
+				.reverse(), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(i, name)</span> </span>{
 					<span class="hljs-keyword">var</span> split = name.split(<span class="hljs-string">' '</span>);
-					items = items.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> {</span>
+					items = items.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> </span>{
 						<span class="hljs-keyword">if</span> (split[<span class="hljs-number">1</span>].toUpperCase() !== <span class="hljs-string">'ASC'</span>) {
 							<span class="hljs-keyword">if</span> (a[split[<span class="hljs-number">0</span>]] &lt; b[split[<span class="hljs-number">0</span>]]) {
 								<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
@@ -372,15 +372,15 @@ make sure item isn’t already in set?</p>
 				});
 			<span class="hljs-keyword">return</span> items;
 		},
-		pagination: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items, params)</span> {</span>
+		pagination: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items, params)</span> </span>{
 			<span class="hljs-keyword">var</span> offset = <span class="hljs-built_in">parseInt</span>(params.offset, <span class="hljs-number">10</span>) || <span class="hljs-number">0</span>,
 				limit = <span class="hljs-built_in">parseInt</span>(params.limit, <span class="hljs-number">10</span>) || items.length - offset;
 			<span class="hljs-keyword">return</span> items.slice(offset, offset + limit);
 		},
-		get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> {</span>
+		get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.data[id];
 		},
-		findOne: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, success, error)</span> {</span>
+		findOne: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, success, error)</span> </span>{
 			<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>,
 				def;</pre></div></div>
             
@@ -422,7 +422,7 @@ make sure item isn’t already in set?</p>
 				def = <span class="hljs-keyword">this</span>.namespace.findOne({
 					id: id
 				});
-				def.done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> {</span>
+				def.done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> </span>{
 					self[id] = item;
 				});
 			}
@@ -435,7 +435,7 @@ make sure item isn’t already in set?</p>
 		 * @param {Boolean} register registers this list as owning some content, but does not
 		 * actually do the request ...
 		 */</span>
-		findAll: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params, register, ready)</span> {</span></pre></div></div>
+		findAll: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params, register, ready)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -452,14 +452,14 @@ make sure item isn’t already in set?</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> parentLoadedSet, def, self = <span class="hljs-keyword">this</span>,
-				list, cb = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+				list, cb = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 					ready(list);
 				};
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> register === <span class="hljs-string">'function'</span>) {
 				ready = register;
 				register = <span class="hljs-literal">false</span>;
 			}
-			ready = ready || <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>};
+			ready = ready || <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{};
 			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-keyword">this</span>.sets.length; i++) {
 				<span class="hljs-keyword">var</span> set = <span class="hljs-keyword">this</span>.sets[i];
 				<span class="hljs-keyword">if</span> ($.<span class="hljs-built_in">Object</span>.subset(params, set.params, <span class="hljs-keyword">this</span>.compare)) {
@@ -510,7 +510,7 @@ make sure item isn’t already in set?</p>
             
             <div class="content"><div class='highlight'><pre>							def = <span class="hljs-keyword">this</span>.namespace.findAll(params);
 							set.def = def;
-							def.done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items)</span> {</span></pre></div></div>
+							def.done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -652,7 +652,7 @@ console.log(“Store - already loaded parent set”,params);</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					parentLoadedSet.def.done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>					parentLoadedSet.def.done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -705,7 +705,7 @@ console.log(“Store - loading data for the first time”, params, ready);</p>
             
             <div class="content"><div class='highlight'><pre>					def = <span class="hljs-keyword">this</span>.namespace.findAll(params);
 					sameSet.def = def;
-					def.done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items)</span> {</span>
+					def.done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items)</span> </span>{
 						self.add(items, params);
 						cb(); <span class="hljs-comment">//ready &amp;&amp; ready(sameSet.list);</span>
 					});
@@ -726,10 +726,10 @@ check later if no one is listening …</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>}, <span class="hljs-number">10</span>);
+            <div class="content"><div class='highlight'><pre>			setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{}, <span class="hljs-number">10</span>);
 			<span class="hljs-keyword">return</span> list;
 		},
-		findAllCached: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params)</span> {</span></pre></div></div>
+		findAllCached: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params)</span> </span>{</pre></div></div>
             
         </li>
         

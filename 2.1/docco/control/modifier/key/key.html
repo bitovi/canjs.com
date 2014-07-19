@@ -47,7 +47,7 @@
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
  * @documentjs-ignore
  */</span>
-steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Control)</span> {</span></pre></div></div>
+steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Control)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -94,7 +94,7 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
 	 * @copyright Copyright © 2011, Keith Cirkel
 	 *
 	 */</span>
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">realTypeOf</span><span class="hljs-params">(v, s)</span> {</span>
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">realTypeOf</span><span class="hljs-params">(v, s)</span> </span>{
 		<span class="hljs-keyword">return</span> v === <span class="hljs-literal">null</span> ? s === <span class="hljs-string">'null'</span> : v === <span class="hljs-literal">undefined</span> ? s === <span class="hljs-string">'undefined'</span> : v.is &amp;&amp; v <span class="hljs-keyword">instanceof</span> $ ? s === <span class="hljs-string">'element'</span> : <span class="hljs-built_in">Object</span>.prototype.toString.call(v)
 			.toLowerCase()
 			.indexOf(s) &gt; <span class="hljs-number">7</span>;
@@ -814,7 +814,7 @@ Period, or ., or full-stop</p>
 			.toLowerCase()] = i;
 	}
 
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">JwertyCode</span><span class="hljs-params">(jwertyCode)</span> {</span>
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">JwertyCode</span><span class="hljs-params">(jwertyCode)</span> </span>{
 		<span class="hljs-keyword">var</span> i, c, n, z, keyCombo, optionals, jwertyCodeFragment, rangeMatches, rangeI;</pre></div></div>
             
         </li>
@@ -1066,7 +1066,7 @@ and split it into one.</p>
 		 *      `callback` with (i.e this)
 		 *
 		 */</span>
-		event: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(jwertyCode, callbackFunction, callbackContext <span class="hljs-comment">/*? this */</span> )</span> {</span></pre></div></div>
+		event: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(jwertyCode, callbackFunction, callbackContext <span class="hljs-comment">/*? this */</span> )</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1083,7 +1083,7 @@ and split it into one.</p>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (realTypeOf(callbackFunction, <span class="hljs-string">'boolean'</span>)) {
 				<span class="hljs-keyword">var</span> bool = callbackFunction;
-				callbackFunction = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+				callbackFunction = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 					<span class="hljs-keyword">return</span> bool;
 				};
 			}
@@ -1119,7 +1119,7 @@ and split it into one.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event)</span> </span>{
 				jwertyCodeIs = jwerty.is(jwertyCode, event, i);</pre></div></div>
             
         </li>
@@ -1245,7 +1245,7 @@ in which case we should reset i to 1.</p>
 		 *      sequence
 		 *
 		 */</span>
-		is: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(jwertyCode, event, i <span class="hljs-comment">/*? 0*/</span> )</span> {</span>
+		is: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(jwertyCode, event, i <span class="hljs-comment">/*? 0*/</span> )</span> </span>{
 			jwertyCode = <span class="hljs-keyword">new</span> JwertyCode(jwertyCode);</pre></div></div>
             
         </li>
@@ -1422,7 +1422,7 @@ because it does annoything stuff to <code>metaKey</code></p>
             </div>
             
             <div class="content"><div class='highlight'><pre>	can.extend(can.Control, {
-		_shifter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(context, name)</span> {</span>
+		_shifter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(context, name)</span> </span>{
 			<span class="hljs-keyword">var</span> fn = originalShifter.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>),
 				parts = name.split(<span class="hljs-string">':'</span>);
 			<span class="hljs-keyword">if</span> (parts.length &gt; <span class="hljs-number">1</span> &amp;&amp; <span class="hljs-regexp">/key/</span>.test(parts[<span class="hljs-number">0</span>])) {

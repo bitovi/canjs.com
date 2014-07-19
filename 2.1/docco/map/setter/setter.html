@@ -30,9 +30,9 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
 
-	can.classize = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(s, join)</span> {</span></pre></div></div>
+	can.classize = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(s, join)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -58,7 +58,7 @@ used for getter setter</p>
 	<span class="hljs-keyword">var</span> classize = can.classize,
 		proto = can.Map.prototype,
 		old = proto.__set;
-	proto.__set = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, value, current, success, error)</span> {</span></pre></div></div>
+	proto.__set = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, value, current, success, error)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -105,7 +105,7 @@ used for getter setter</p>
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> cap = classize(prop),
 			setName = <span class="hljs-string">'set'</span> + cap,
-			errorCallback = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(errors)</span> {</span></pre></div></div>
+			errorCallback = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(errors)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -194,7 +194,7 @@ do not call update property and return right away</p>
             
             <div class="content"><div class='highlight'><pre>			can.batch.start();
 			
-			value = <span class="hljs-keyword">this</span>[setName](value, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> {</span>
+			value = <span class="hljs-keyword">this</span>[setName](value, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> </span>{
 				old.call(self, prop, value, current, success, errorCallback);</pre></div></div>
             
         </li>
@@ -243,7 +243,7 @@ do not call update property and return right away</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				asyncTimer = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+            <div class="content"><div class='highlight'><pre>				asyncTimer = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
 					can.dev.warn(<span class="hljs-string">'can/map/setter.js: Setter '</span> + setName+<span class="hljs-string">' did not return a value or call the setter callback.'</span>);
 				},can.dev.warnTimeout);</pre></div></div>
             

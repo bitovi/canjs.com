@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-string">'can/list'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-string">'can/list'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -64,7 +64,7 @@ through a function before resolving the deferred.</p>
             <div class="content"><div class='highlight'><pre>	<span class="hljs-comment">/**
 	 * @add can.Model
 	 */</span>
-	<span class="hljs-keyword">var</span> pipe = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(def, thisArg, func)</span> {</span></pre></div></div>
+	<span class="hljs-keyword">var</span> pipe = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(def, thisArg, func)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -80,7 +80,7 @@ through a function before resolving the deferred.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> d = <span class="hljs-keyword">new</span> can.Deferred();
-		def.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+		def.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 			<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>),
 				success = <span class="hljs-literal">true</span>;
 
@@ -135,7 +135,7 @@ through a function before resolving the deferred.</p>
             
             <div class="content"><div class='highlight'><pre>				d.resolveWith(d, args);
 			}
-		}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+		}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -167,7 +167,7 @@ through a function before resolving the deferred.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> def.abort === <span class="hljs-string">'function'</span>) {
-			d.abort = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			d.abort = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">return</span> def.abort();
 			};
 		}</pre></div></div>
@@ -218,7 +218,7 @@ through a function before resolving the deferred.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		getId = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(inst)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>		getId = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(inst)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -265,7 +265,7 @@ through a function before resolving the deferred.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		ajax = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ajaxOb, data, type, dataType, success, error)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		ajax = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ajaxOb, data, type, dataType, success, error)</span> </span>{
 
 			<span class="hljs-keyword">var</span> params = {};</pre></div></div>
             
@@ -373,7 +373,7 @@ through a function before resolving the deferred.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		makeRequest = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(modelObj, type, success, error, method)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		makeRequest = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(modelObj, type, success, error, method)</span> </span>{
 			<span class="hljs-keyword">var</span> args;</pre></div></div>
             
         </li>
@@ -461,7 +461,7 @@ the queued request, and we’re passing already-serialized data.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			deferred = pipe(jqXHR, modelObj, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>			deferred = pipe(jqXHR, modelObj, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -495,7 +495,7 @@ TODO: Do something smarter/more consistent here?</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (jqXHR.abort) {
-				deferred.abort = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+				deferred.abort = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 					jqXHR.abort();
 				};
 			}
@@ -521,8 +521,8 @@ TODO: Do something smarter/more consistent here?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			models: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop)</span> {</span>
-				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(instancesRawData, oldList)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>			models: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop)</span> </span>{
+				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(instancesRawData, oldList)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -705,7 +705,7 @@ So, we push them onto <code>tmp</code> first and then push everything at once, c
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					can.each(raw, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(rawPart)</span> {</span>
+            <div class="content"><div class='highlight'><pre>					can.each(raw, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(rawPart)</span> </span>{
 						tmp.push(self.model(rawPart));
 					});
 					modelList.push.apply(modelList, tmp);</pre></div></div>
@@ -724,7 +724,7 @@ So, we push them onto <code>tmp</code> first and then push everything at once, c
             </div>
             
             <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (!rawDataIsArray) {
-						can.each(instancesRawData, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val, prop)</span> {</span>
+						can.each(instancesRawData, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val, prop)</span> </span>{
 							<span class="hljs-keyword">if</span> (prop !== <span class="hljs-string">'data'</span>) {
 								modelList.attr(prop, val);
 							}
@@ -764,8 +764,8 @@ So, we push them onto <code>tmp</code> first and then push everything at once, c
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			model: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop)</span> {</span>
-				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attributes)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>			model: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop)</span> </span>{
+				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attributes)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -874,8 +874,8 @@ So, we push them onto <code>tmp</code> first and then push everything at once, c
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>		parserMaker = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop)</span> {</span>
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attributes)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		parserMaker = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop)</span> </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attributes)</span> </span>{
 				<span class="hljs-keyword">return</span> prop ? can.getObject(prop || <span class="hljs-string">"data"</span>, attributes) : attributes;
 			};
 		},</pre></div></div>
@@ -1368,7 +1368,7 @@ Each AJAX method is an object in <code>ajaxMethods</code> and can have the follo
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				data: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, attrs)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				data: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, attrs)</span> </span>{
 					attrs = attrs || {};</pre></div></div>
             
         </li>
@@ -1488,7 +1488,7 @@ indicate that in the request and replace the current ID property.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				data: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, attrs)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				data: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, attrs)</span> </span>{
 					attrs = attrs || {};</pre></div></div>
             
         </li>
@@ -1791,8 +1791,8 @@ and makes a function that calls that method with the given data.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		ajaxMaker = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ajaxMethod, str)</span> {</span>
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		ajaxMaker = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ajaxMethod, str)</span> </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
 				data = ajaxMethod.data ?</pre></div></div>
             
         </li>
@@ -1874,7 +1874,7 @@ Will create a can.Model that is identical to:
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		createURLFromResource = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(model, name)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		createURLFromResource = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(model, name)</span> </span>{
 			<span class="hljs-keyword">if</span> (!model.resource) { <span class="hljs-keyword">return</span>; }
 
 			<span class="hljs-keyword">var</span> resource = model.resource.replace(<span class="hljs-regexp">/\/+$/</span>, <span class="hljs-string">""</span>);
@@ -1938,7 +1938,7 @@ Will create a can.Model that is identical to:
 			 * Configures
 			 *
 			 */</span>
-			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(base, fullName, staticProps, protoProps)</span> {</span></pre></div></div>
+			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(base, fullName, staticProps, protoProps)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1973,9 +1973,7 @@ This is really unusual for a model though, since there’s so much configuration
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (!protoProps) {
-					protoProps = staticProps;
-				}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (!protoProps) {</pre></div></div>
             
         </li>
         
@@ -1985,6 +1983,37 @@ This is really unusual for a model though, since there’s so much configuration
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-69">&#182;</a>
+              </div>
+              <p>!steal-remove-start</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					can.dev.warn(<span class="hljs-string">"can/model/model.js: can.Model extended without static properties."</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-70">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-70">&#182;</a>
+              </div>
+              <p>!steal-remove-end</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					protoProps = staticProps;
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-71">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-71">&#182;</a>
               </div>
               <p>Create the model store here, in case someone wants to use can.Model without inheriting from it.</p>
 
@@ -2000,11 +2029,11 @@ This is really unusual for a model though, since there’s so much configuration
         </li>
         
         
-        <li id="section-70">
+        <li id="section-72">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-70">&#182;</a>
+                <a class="pilcrow" href="#section-72">&#182;</a>
               </div>
               <p><code>List</code> is just a regular can.Model.List that knows what kind of Model it’s hooked up to.</p>
 
@@ -2076,26 +2105,26 @@ This is really unusual for a model though, since there’s so much configuration
         </li>
         
         
-        <li id="section-71">
+        <li id="section-73">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-71">&#182;</a>
+                <a class="pilcrow" href="#section-73">&#182;</a>
               </div>
               <p>Go through <code>ajaxMethods</code> and set up static methods according to their configurations.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.each(ajaxMethods, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method, name)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>				can.each(ajaxMethods, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method, name)</span> </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-72">
+        <li id="section-74">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-72">&#182;</a>
+                <a class="pilcrow" href="#section-74">&#182;</a>
               </div>
               <p>Check the configuration for this ajaxMethod.
 If the configuration isn’t a function, it should be a string (like <code>&quot;GET /endpoint&quot;</code>)
@@ -2108,11 +2137,11 @@ or an object like <code>{url: &quot;/endpoint&quot;, type: &#39;GET&#39;}</code>
         </li>
         
         
-        <li id="section-73">
+        <li id="section-75">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-73">&#182;</a>
+                <a class="pilcrow" href="#section-75">&#182;</a>
               </div>
               <p>Etiher way, <code>ajaxMaker</code> will turn it into a function for us.</p>
 
@@ -2124,11 +2153,11 @@ or an object like <code>{url: &quot;/endpoint&quot;, type: &#39;GET&#39;}</code>
         </li>
         
         
-        <li id="section-74">
+        <li id="section-76">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-74">&#182;</a>
+                <a class="pilcrow" href="#section-76">&#182;</a>
               </div>
               <p>There may also be a “maker” function (like <code>makeFindAll</code>) that alters the behavior of acting upon models
 by changing when and how the function we just made with <code>ajaxMaker</code> gets called.
@@ -2141,11 +2170,11 @@ For example, you might cache responses and only make a call when you don’t hav
         </li>
         
         
-        <li id="section-75">
+        <li id="section-77">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-75">&#182;</a>
+                <a class="pilcrow" href="#section-77">&#182;</a>
               </div>
               <p>Use the “maker” function to make the new “ajaxMethod” function.</p>
 
@@ -2156,48 +2185,18 @@ For example, you might cache responses and only make a call when you don’t hav
         </li>
         
         
-        <li id="section-76">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-76">&#182;</a>
-              </div>
-              <p>Replace the “ajaxMethod” function in the configuration with the new one.
-(<code>_overwrite</code> just overwrites a property in a given Construct.)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>						can.Construct._overwrite(self, base, name, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-77">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-77">&#182;</a>
-              </div>
-              <p>Increment the numer of requests…</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>							can.Model._reqs++;</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-78">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-78">&#182;</a>
               </div>
-              <p>…make the AJAX call (and whatever else you’re doing)…</p>
+              <p>Replace the “ajaxMethod” function in the configuration with the new one.
+(<code>_overwrite</code> just overwrites a property in a given Construct.)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							<span class="hljs-keyword">var</span> def = newMethod.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>						can.Construct._overwrite(self, base, name, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -2208,11 +2207,11 @@ For example, you might cache responses and only make a call when you don’t hav
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-79">&#182;</a>
               </div>
-              <p>…and clean up the store.</p>
+              <p>Increment the numer of requests…</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							<span class="hljs-keyword">var</span> then = def.then(clean, clean);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>							can.Model._reqs++;</pre></div></div>
             
         </li>
         
@@ -2222,6 +2221,36 @@ For example, you might cache responses and only make a call when you don’t hav
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-80">&#182;</a>
+              </div>
+              <p>…make the AJAX call (and whatever else you’re doing)…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>							<span class="hljs-keyword">var</span> def = newMethod.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-81">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-81">&#182;</a>
+              </div>
+              <p>…and clean up the store.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>							<span class="hljs-keyword">var</span> then = def.then(clean, clean);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-82">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-82">&#182;</a>
               </div>
               <p>Pass along <code>abort</code> so you can still abort the AJAX call.</p>
 
@@ -2237,28 +2266,28 @@ For example, you might cache responses and only make a call when you don’t hav
         </li>
         
         
-        <li id="section-81">
+        <li id="section-83">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-81">&#182;</a>
+                <a class="pilcrow" href="#section-83">&#182;</a>
               </div>
               <p>Set up the methods that will set up <code>models</code> and <code>model</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.each(initializers, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(makeInitializer, name)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				can.each(initializers, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(makeInitializer, name)</span> </span>{
 					<span class="hljs-keyword">var</span> parseName = <span class="hljs-string">"parse"</span> + can.capitalize(name),
 						dataProperty = self[name];</pre></div></div>
             
         </li>
         
         
-        <li id="section-82">
+        <li id="section-84">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-82">&#182;</a>
+                <a class="pilcrow" href="#section-84">&#182;</a>
               </div>
               <p>If there was a different property to find the model’s data in than <code>data</code>,
 make <code>parseModel</code> and <code>parseModels</code> functions that look that up instead.</p>
@@ -2273,11 +2302,11 @@ make <code>parseModel</code> and <code>parseModels</code> functions that look th
         </li>
         
         
-        <li id="section-83">
+        <li id="section-85">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-83">&#182;</a>
+                <a class="pilcrow" href="#section-85">&#182;</a>
               </div>
               <p>If there was no prototype, or no <code>model</code> and no <code>parseModel</code>,
 we’ll have to create a <code>parseModel</code>.</p>
@@ -2292,26 +2321,26 @@ we’ll have to create a <code>parseModel</code>.</p>
         </li>
         
         
-        <li id="section-84">
+        <li id="section-86">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-84">&#182;</a>
+                <a class="pilcrow" href="#section-86">&#182;</a>
               </div>
               <p>With the overridden parse methods, set up <code>models</code> and <code>model</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.each(parsers, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(makeParser, name)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>				can.each(parsers, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(makeParser, name)</span> </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-85">
+        <li id="section-87">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-85">&#182;</a>
+                <a class="pilcrow" href="#section-87">&#182;</a>
               </div>
               <p>If there was a different property to find the model’s data in than <code>data</code>,
 make <code>model</code> and <code>models</code> functions that look that up instead.</p>
@@ -2326,11 +2355,11 @@ make <code>model</code> and <code>models</code> functions that look that up inst
         </li>
         
         
-        <li id="section-86">
+        <li id="section-88">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-86">&#182;</a>
+                <a class="pilcrow" href="#section-88">&#182;</a>
               </div>
               <p>Make sure we have a unique name for this Model.</p>
 
@@ -2349,28 +2378,28 @@ make <code>model</code> and <code>models</code> functions that look that up inst
         </li>
         
         
-        <li id="section-87">
+        <li id="section-89">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-87">&#182;</a>
+                <a class="pilcrow" href="#section-89">&#182;</a>
               </div>
               <h2 id="can-model-_clean">can.Model._clean</h2>
 <p><code>_clean</code> cleans up the model store after a request happens.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			_clean: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>			_clean: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				can.Model._reqs--;</pre></div></div>
             
         </li>
         
         
-        <li id="section-88">
+        <li id="section-90">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-88">&#182;</a>
+                <a class="pilcrow" href="#section-90">&#182;</a>
               </div>
               <p>Don’t clean up unless we have no pending requests.</p>
 
@@ -2382,11 +2411,11 @@ make <code>model</code> and <code>models</code> functions that look that up inst
         </li>
         
         
-        <li id="section-89">
+        <li id="section-91">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-89">&#182;</a>
+                <a class="pilcrow" href="#section-91">&#182;</a>
               </div>
               <p>Delete all items in the store without any event bindings.</p>
 
@@ -2498,26 +2527,26 @@ make <code>model</code> and <code>models</code> functions that look that up inst
         </li>
         
         
-        <li id="section-90">
+        <li id="section-92">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-90">&#182;</a>
+                <a class="pilcrow" href="#section-92">&#182;</a>
               </div>
               <h2 id="can-model-setup">can.Model#setup</h2>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrs)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrs)</span> </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-91">
+        <li id="section-93">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-91">&#182;</a>
+                <a class="pilcrow" href="#section-93">&#182;</a>
               </div>
               <p>Try to add things as early as possible to the store (#457).
 This is the earliest possible moment, even before any properties are set.</p>
@@ -2534,11 +2563,11 @@ This is the earliest possible moment, even before any properties are set.</p>
         </li>
         
         
-        <li id="section-92">
+        <li id="section-94">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-92">&#182;</a>
+                <a class="pilcrow" href="#section-94">&#182;</a>
               </div>
               <h2 id="can-model-isnew">can.Model#isNew</h2>
 <p>Something is new if its ID is <code>null</code> or <code>undefined</code>.</p>
@@ -2559,17 +2588,17 @@ This is the earliest possible moment, even before any properties are set.</p>
 			 *
 			 *     new Recipe({id: 1}).isNew() //-&gt; false
 			 */</span>
-			isNew: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			isNew: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">var</span> id = getId(<span class="hljs-keyword">this</span>);</pre></div></div>
             
         </li>
         
         
-        <li id="section-93">
+        <li id="section-95">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-93">&#182;</a>
+                <a class="pilcrow" href="#section-95">&#182;</a>
               </div>
               <p>0 is a valid ID.
 TODO: Why not <code>return id === null || id === undefined;</code>?</p>
@@ -2582,11 +2611,11 @@ TODO: Why not <code>return id === null || id === undefined;</code>?</p>
         </li>
         
         
-        <li id="section-94">
+        <li id="section-96">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-94">&#182;</a>
+                <a class="pilcrow" href="#section-96">&#182;</a>
               </div>
               <h2 id="can-model-save">can.Model#save</h2>
 <p><code>save</code> calls <code>create</code> or <code>update</code> as necessary, based on whether a model is new.</p>
@@ -2660,18 +2689,18 @@ TODO: Why not <code>return id === null || id === undefined;</code>?</p>
 			 *     });
 			 *
 			 */</span>
-			save: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(success, error)</span> {</span>
+			save: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(success, error)</span> </span>{
 				<span class="hljs-keyword">return</span> makeRequest(<span class="hljs-keyword">this</span>, <span class="hljs-keyword">this</span>.isNew() ? <span class="hljs-string">'create'</span> : <span class="hljs-string">'update'</span>, success, error);
 			},</pre></div></div>
             
         </li>
         
         
-        <li id="section-95">
+        <li id="section-97">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-95">&#182;</a>
+                <a class="pilcrow" href="#section-97">&#182;</a>
               </div>
               <h2 id="can-model-destroy">can.Model#destroy</h2>
 <p>Acts like can.Map.destroy but it also makes an AJAX call.</p>
@@ -2715,16 +2744,16 @@ TODO: Why not <code>return id === null || id === undefined;</code>?</p>
 			 *       recipe.destroy();
 			 *     })
 			 */</span>
-			destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(success, error)</span> {</span></pre></div></div>
+			destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(success, error)</span> </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-96">
+        <li id="section-98">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-96">&#182;</a>
+                <a class="pilcrow" href="#section-98">&#182;</a>
               </div>
               <p>If this model is new, don’t make an AJAX call.
 Instead, we have to construct the Deferred ourselves and return it.</p>
@@ -2736,7 +2765,7 @@ Instead, we have to construct the Deferred ourselves and return it.</p>
 					<span class="hljs-keyword">var</span> def = can.Deferred();
 					def.then(success, error);
 
-					<span class="hljs-keyword">return</span> def.done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+					<span class="hljs-keyword">return</span> def.done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
 						self.destroyed(data);
 					}).resolve(self);
 				}</pre></div></div>
@@ -2744,11 +2773,11 @@ Instead, we have to construct the Deferred ourselves and return it.</p>
         </li>
         
         
-        <li id="section-97">
+        <li id="section-99">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-97">&#182;</a>
+                <a class="pilcrow" href="#section-99">&#182;</a>
               </div>
               <p>If it isn’t new, though, go ahead and make a request.</p>
 
@@ -2760,11 +2789,11 @@ Instead, we have to construct the Deferred ourselves and return it.</p>
         </li>
         
         
-        <li id="section-98">
+        <li id="section-100">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-98">&#182;</a>
+                <a class="pilcrow" href="#section-100">&#182;</a>
               </div>
               <h2 id="can-model-bind-and-can-model-unbind">can.Model#bind and can.Model#unbind</h2>
 <p>These aren’t actually implemented here, but their setup needs to be changed to account for the store.</p>
@@ -2830,7 +2859,7 @@ Instead, we have to construct the Deferred ourselves and return it.</p>
 			 * the model instance.  When there are no bindings, the
 			 * model instance is removed from the store, freeing memory.
 			 */</span>
-			_bindsetup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			_bindsetup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">this</span>.constructor.store[<span class="hljs-keyword">this</span>.__get(<span class="hljs-keyword">this</span>.constructor.id)] = <span class="hljs-keyword">this</span>;
 				<span class="hljs-keyword">return</span> can.Map.prototype._bindsetup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 			},
@@ -2860,7 +2889,7 @@ Instead, we have to construct the Deferred ourselves and return it.</p>
 			 * Unbind will also remove the instance from the store
 			 * if there are no other listeners.
 			 */</span>
-			_bindteardown: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			_bindteardown: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.constructor.store[getId(<span class="hljs-keyword">this</span>)];
 				<span class="hljs-keyword">return</span> can.Map.prototype._bindteardown.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 			},</pre></div></div>
@@ -2868,27 +2897,27 @@ Instead, we have to construct the Deferred ourselves and return it.</p>
         </li>
         
         
-        <li id="section-99">
+        <li id="section-101">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-99">&#182;</a>
+                <a class="pilcrow" href="#section-101">&#182;</a>
               </div>
               <p>Change the behavior of <code>___set</code> to account for the store.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			___set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, val)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			___set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, val)</span> </span>{
 				can.Map.prototype.___set.call(<span class="hljs-keyword">this</span>, prop, val);</pre></div></div>
             
         </li>
         
         
-        <li id="section-100">
+        <li id="section-102">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-100">&#182;</a>
+                <a class="pilcrow" href="#section-102">&#182;</a>
               </div>
               <p>If we add or change the ID, update the store accordingly.
 TODO: shouldn’t this also delete the record from the old ID in the store?</p>
@@ -2904,29 +2933,29 @@ TODO: shouldn’t this also delete the record from the old ID in the store?</p>
         </li>
         
         
-        <li id="section-101">
+        <li id="section-103">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-101">&#182;</a>
+                <a class="pilcrow" href="#section-103">&#182;</a>
               </div>
               <p>Returns a function that knows how to prepare data from <code>findAll</code> or <code>findOne</code> calls.
 <code>name</code> should be either <code>model</code> or <code>models</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> makeGetterHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> makeGetterHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
 		<span class="hljs-keyword">var</span> parseName = <span class="hljs-string">"parse"</span> + can.capitalize(name);
-		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span></pre></div></div>
+		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-102">
+        <li id="section-104">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-102">&#182;</a>
+                <a class="pilcrow" href="#section-104">&#182;</a>
               </div>
               <p>If there’s a <code>parse...</code> function, use its output.</p>
 
@@ -2939,11 +2968,11 @@ TODO: shouldn’t this also delete the record from the old ID in the store?</p>
         </li>
         
         
-        <li id="section-103">
+        <li id="section-105">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-103">&#182;</a>
+                <a class="pilcrow" href="#section-105">&#182;</a>
               </div>
               <p>Run our maybe-parsed data through <code>model</code> or <code>models</code>.</p>
 
@@ -2956,17 +2985,17 @@ TODO: shouldn’t this also delete the record from the old ID in the store?</p>
         </li>
         
         
-        <li id="section-104">
+        <li id="section-106">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-104">&#182;</a>
+                <a class="pilcrow" href="#section-106">&#182;</a>
               </div>
               <p>Handle data returned from <code>create</code>, <code>update</code>, and <code>destroy</code> calls.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		createUpdateDestroyHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		createUpdateDestroyHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.parseModel) {
 				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.parseModel.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 			} <span class="hljs-keyword">else</span> {
@@ -3130,29 +3159,29 @@ TODO: shouldn’t this also delete the record from the old ID in the store?</p>
         </li>
         
         
-        <li id="section-105">
+        <li id="section-107">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-105">&#182;</a>
+                <a class="pilcrow" href="#section-107">&#182;</a>
               </div>
               <p>Go through the response handlers and make the actual “make” methods.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.each(responseHandlers, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method, name)</span> {</span>
-		can.Model[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oldMethod)</span> {</span>
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>	can.each(responseHandlers, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method, name)</span> </span>{
+		can.Model[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oldMethod)</span> </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>),</pre></div></div>
             
         </li>
         
         
-        <li id="section-106">
+        <li id="section-108">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-106">&#182;</a>
+                <a class="pilcrow" href="#section-108">&#182;</a>
               </div>
               <p>If args[1] is a function, we were only passed one argument before success and failure callbacks.</p>
 
@@ -3163,11 +3192,11 @@ TODO: shouldn’t this also delete the record from the old ID in the store?</p>
         </li>
         
         
-        <li id="section-107">
+        <li id="section-109">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-107">&#182;</a>
+                <a class="pilcrow" href="#section-109">&#182;</a>
               </div>
               <p>Call the AJAX method (<code>findAll</code> or <code>update</code>, etc.) and pipe it through the response handler from above.</p>
 
@@ -3184,11 +3213,11 @@ TODO: shouldn’t this also delete the record from the old ID in the store?</p>
         </li>
         
         
-        <li id="section-108">
+        <li id="section-110">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-108">&#182;</a>
+                <a class="pilcrow" href="#section-110">&#182;</a>
               </div>
               <h2 id="can-model-created-can-model-updated-and-can-model-destroyed">can.Model.created, can.Model.updated, and can.Model.destroyed</h2>
 <p>Livecycle methods for models.</p>
@@ -3220,39 +3249,7 @@ TODO: shouldn’t this also delete the record from the old ID in the store?</p>
 		 *
 		 */</span>
 		<span class="hljs-string">"destroyed"</span>
-	], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(funcName)</span> {</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-109">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-109">&#182;</a>
-              </div>
-              <p>Each of these is pretty much the same, except for the events they trigger.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		can.Model.prototype[funcName] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrs)</span> {</span>
-			<span class="hljs-keyword">var</span> stub,
-				constructor = <span class="hljs-keyword">this</span>.constructor;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-110">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-110">&#182;</a>
-              </div>
-              <p>Update attributes if attributes have been passed</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			stub = attrs &amp;&amp; <span class="hljs-keyword">typeof</span> attrs === <span class="hljs-string">'object'</span> &amp;&amp; <span class="hljs-keyword">this</span>.attr(attrs.attr ? attrs.attr() : attrs);</pre></div></div>
+	], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(funcName)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -3263,14 +3260,13 @@ TODO: shouldn’t this also delete the record from the old ID in the store?</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-111">&#182;</a>
               </div>
-              <p>triggers change event that bubble’s like
-handler( ‘change’,’1.destroyed’ ). This is used
-to remove items on destroyed from Model Lists.
-but there should be a better way.</p>
+              <p>Each of these is pretty much the same, except for the events they trigger.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.trigger(<span class="hljs-keyword">this</span>, <span class="hljs-string">"change"</span>, funcName);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		can.Model.prototype[funcName] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrs)</span> </span>{
+			<span class="hljs-keyword">var</span> stub,
+				constructor = <span class="hljs-keyword">this</span>.constructor;</pre></div></div>
             
         </li>
         
@@ -3281,11 +3277,11 @@ but there should be a better way.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-112">&#182;</a>
               </div>
-              <p>!steal-remove-start</p>
+              <p>Update attributes if attributes have been passed</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.dev.log(<span class="hljs-string">"Model.js - "</span> + constructor.shortName + <span class="hljs-string">" "</span> + funcName);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			stub = attrs &amp;&amp; <span class="hljs-keyword">typeof</span> attrs === <span class="hljs-string">'object'</span> &amp;&amp; <span class="hljs-keyword">this</span>.attr(attrs.attr ? attrs.attr() : attrs);</pre></div></div>
             
         </li>
         
@@ -3296,9 +3292,14 @@ but there should be a better way.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-113">&#182;</a>
               </div>
-              <p>!steal-remove-end</p>
+              <p>triggers change event that bubble’s like
+handler( ‘change’,’1.destroyed’ ). This is used
+to remove items on destroyed from Model Lists.
+but there should be a better way.</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.dispatch.call(<span class="hljs-keyword">this</span>, {type:<span class="hljs-string">"change"</span>, target: <span class="hljs-keyword">this</span>}, [funcName]);</pre></div></div>
             
         </li>
         
@@ -3309,13 +3310,11 @@ but there should be a better way.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-114">&#182;</a>
               </div>
-              <p>Call event on the instance’s Class</p>
+              <p>!steal-remove-start</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.trigger(constructor, funcName, <span class="hljs-keyword">this</span>);
-		};
-	});</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			can.dev.log(<span class="hljs-string">"Model.js - "</span> + constructor.shortName + <span class="hljs-string">" "</span> + funcName);</pre></div></div>
             
         </li>
         
@@ -3325,6 +3324,36 @@ but there should be a better way.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-115">&#182;</a>
+              </div>
+              <p>!steal-remove-end</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-116">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-116">&#182;</a>
+              </div>
+              <p>Call event on the instance’s Class</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.dispatch.call(constructor, funcName, [<span class="hljs-keyword">this</span>]);
+		};
+	});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-117">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-117">&#182;</a>
               </div>
               <h1 id="can-model-list">can.Model.List</h1>
 <p>Model Lists are just like <code>Map.List</code>s except that when their items are
@@ -3337,11 +3366,11 @@ destroyed, they automatically get removed from the List.</p>
         </li>
         
         
-        <li id="section-116">
+        <li id="section-118">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-116">&#182;</a>
+                <a class="pilcrow" href="#section-118">&#182;</a>
               </div>
               <h2 id="can-model-list-setup">can.Model.List.setup</h2>
 <p>On change or a nested named event, setup change bubbling.
@@ -3349,20 +3378,20 @@ On any other type of event, setup “destroyed” bubbling.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		_bubbleRule: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventName, list)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		_bubbleRule: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventName, list)</span> </span>{
 			<span class="hljs-keyword">return</span> can.List._bubbleRule(eventName, list) || <span class="hljs-string">"destroyed"</span>;
 		}
 	},{
-		setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params)</span> {</span></pre></div></div>
+		setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params)</span> </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-117">
+        <li id="section-119">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-117">&#182;</a>
+                <a class="pilcrow" href="#section-119">&#182;</a>
               </div>
               <p>If there was a plain object passed to the List constructor,
 we use those as parameters for an initial findAll.</p>
@@ -3377,11 +3406,11 @@ we use those as parameters for an initial findAll.</p>
         </li>
         
         
-        <li id="section-118">
+        <li id="section-120">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-118">&#182;</a>
+                <a class="pilcrow" href="#section-120">&#182;</a>
               </div>
               <p>Otherwise, set up the list like normal.</p>
 
@@ -3393,7 +3422,7 @@ we use those as parameters for an initial findAll.</p>
 			<span class="hljs-keyword">this</span>.bind(<span class="hljs-string">'destroyed'</span>, can.proxy(<span class="hljs-keyword">this</span>._destroyed, <span class="hljs-keyword">this</span>));
 			<span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>._init;
 		},
-		_destroyed: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, attr)</span> {</span>
+		_destroyed: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, attr)</span> </span>{
 			<span class="hljs-keyword">if</span> (<span class="hljs-regexp">/\w+/</span>.test(attr)) {
 				<span class="hljs-keyword">var</span> index;
 				<span class="hljs-keyword">while</span>((index = <span class="hljs-keyword">this</span>.indexOf(ev.target)) &gt; -<span class="hljs-number">1</span>) {

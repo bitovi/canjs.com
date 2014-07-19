@@ -52,14 +52,14 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-string">'can/util/attr'</span>, <span class="hljs-string">'dojo'</span>, <span class="hljs-string">'can/event'</span>, <span class="hljs-string">'can/util/fragment.js'</span>,
-	<span class="hljs-string">'can/util/array/each.js'</span>, <span class="hljs-string">'can/util/object/isplain'</span>, <span class="hljs-string">'can/util/deferred.js'</span>, <span class="hljs-string">'../hashchange.js'</span>, <span class="hljs-string">'can/util/inserted'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, attr)</span> {</span>
+	<span class="hljs-string">'can/util/array/each.js'</span>, <span class="hljs-string">'can/util/object/isplain'</span>, <span class="hljs-string">'can/util/deferred.js'</span>, <span class="hljs-string">'../hashchange.js'</span>, <span class="hljs-string">'can/util/inserted'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, attr)</span> </span>{
 		
-	<span class="hljs-keyword">var</span> dojo = window.dojo;
-	define(<span class="hljs-string">'plugd/trigger'</span>, [<span class="hljs-string">'dojo'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dojo)</span> {</span>
+	<span class="hljs-keyword">var</span> dojo = <span class="hljs-built_in">window</span>.dojo;
+	define(<span class="hljs-string">'plugd/trigger'</span>, [<span class="hljs-string">'dojo'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dojo)</span> </span>{
 		<span class="hljs-keyword">var</span> d = dojo;
 		<span class="hljs-keyword">var</span> isfn = d.isFunction;
 		<span class="hljs-keyword">var</span> leaveRe = <span class="hljs-regexp">/mouse(enter|leave)/</span>;
-		<span class="hljs-keyword">var</span> _fix = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(_, p)</span> {</span>
+		<span class="hljs-keyword">var</span> _fix = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(_, p)</span> </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-string">'mouse'</span> + (p === <span class="hljs-string">'enter'</span> ? <span class="hljs-string">'over'</span> : <span class="hljs-string">'out'</span>);
 		};
 		<span class="hljs-keyword">var</span> mix = d._mixin;</pre></div></div>
@@ -82,7 +82,7 @@ and an object of args to mix into the event. </p>
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> realTrigger;
 
 		<span class="hljs-keyword">if</span> (d.doc.createEvent) {
-			realTrigger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(n, e, a)</span> {</span></pre></div></div>
+			realTrigger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(n, e, a)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -120,7 +120,7 @@ and an object of args to mix into the event. </p>
 				n.dispatchEvent(ev);
 			};
 		} <span class="hljs-keyword">else</span> {
-			realTrigger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(n, e, a)</span> {</span></pre></div></div>
+			realTrigger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(n, e, a)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -159,7 +159,7 @@ createEvent path above, and also fails on <em>some</em> native-named events.
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> evObj = document.createEventObject();
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> evObj = <span class="hljs-built_in">document</span>.createEventObject();
 					<span class="hljs-keyword">if</span> (e === <span class="hljs-string">"inserted"</span> || e === <span class="hljs-string">"removed"</span>) {
 						evObj.cancelBubble = <span class="hljs-literal">true</span>;
 					}
@@ -199,7 +199,7 @@ some tests will fail until del._stopPropagation has support.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						_stopper: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>						_stopper: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 							stop = <span class="hljs-keyword">this</span>.cancelBubble;
 						}
 					}, a);
@@ -232,7 +232,7 @@ some tests will fail until del._stopPropagation has support.</p>
 				}
 			};
 		}
-		d._trigger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node, event, extraArgs)</span> {</span>
+		d._trigger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node, event, extraArgs)</span> </span>{
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> event !== <span class="hljs-string">'string'</span>) {
 				extraArgs = event;
 				event = extraArgs.type;
@@ -258,7 +258,7 @@ some tests will fail until del._stopPropagation has support.</p>
 				ev = event &amp;&amp; event.slice(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>) === <span class="hljs-string">'on'</span> ? event.slice(<span class="hljs-number">2</span>) : event;
 			realTrigger(n, ev, extraArgs);
 		};
-		d.trigger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj, event, extraArgs)</span> {</span></pre></div></div>
+		d.trigger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj, event, extraArgs)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -345,7 +345,7 @@ as all <span class="hljs-built_in">arguments</span> beyond the `event` are curri
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (d._Node &amp;&amp; !d._Node.prototype.trigger) {
 			d.extend(d._Node, {
-				trigger: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, data)</span> {</span></pre></div></div>
+				trigger: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, data)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -426,7 +426,7 @@ as all <span class="hljs-built_in">arguments</span> beyond the `event` are curri
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.trim = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(s)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	can.trim = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(s)</span> </span>{
 		<span class="hljs-keyword">return</span> s &amp;&amp; dojo.trim(s);
 	};</pre></div></div>
             
@@ -443,18 +443,18 @@ as all <span class="hljs-built_in">arguments</span> beyond the `event` are curri
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.makeArray = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arr)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	can.makeArray = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arr)</span> </span>{
 		<span class="hljs-keyword">var</span> array = [];
-		dojo.forEach(arr, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> {</span>
+		dojo.forEach(arr, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> </span>{
 			array.push(item);
 		});
 		<span class="hljs-keyword">return</span> array;
 	};
 	can.isArray = dojo.isArray;
-	can.inArray = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, arr, from)</span> {</span>
+	can.inArray = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, arr, from)</span> </span>{
 		<span class="hljs-keyword">return</span> dojo.indexOf(arr, item, from);
 	};
-	can.map = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arr, fn)</span> {</span>
+	can.map = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arr, fn)</span> </span>{
 		<span class="hljs-keyword">return</span> dojo.map(can.makeArray(arr || []), fn);
 	};</pre></div></div>
             
@@ -471,7 +471,7 @@ as all <span class="hljs-built_in">arguments</span> beyond the `event` are curri
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.extend = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(first)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	can.extend = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(first)</span> </span>{
 		<span class="hljs-keyword">if</span> (first === <span class="hljs-literal">true</span>) {
 			<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>);
 			args.shift();
@@ -479,7 +479,7 @@ as all <span class="hljs-built_in">arguments</span> beyond the `event` are curri
 		}
 		<span class="hljs-keyword">return</span> dojo.mixin.apply(dojo, <span class="hljs-built_in">arguments</span>);
 	};
-	can.isEmptyObject = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(object)</span> {</span>
+	can.isEmptyObject = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(object)</span> </span>{
 		<span class="hljs-keyword">var</span> prop;
 		<span class="hljs-keyword">for</span> (prop <span class="hljs-keyword">in</span> object) {
 			<span class="hljs-keyword">break</span>;
@@ -501,9 +501,9 @@ handles nested data instead of dojo.objectToQuery which doesn’t</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.param = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(object)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	can.param = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(object)</span> </span>{
 		<span class="hljs-keyword">var</span> pairs = [],
-			add = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, value)</span> {</span>
+			add = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, value)</span> </span>{
 				pairs.push(<span class="hljs-built_in">encodeURIComponent</span>(key) + <span class="hljs-string">'='</span> + <span class="hljs-built_in">encodeURIComponent</span>(value));
 			};
 		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> name <span class="hljs-keyword">in</span> object) {
@@ -512,7 +512,7 @@ handles nested data instead of dojo.objectToQuery which doesn’t</p>
 		<span class="hljs-keyword">return</span> pairs.join(<span class="hljs-string">'&amp;'</span>)
 			.replace(<span class="hljs-regexp">/%20/g</span>, <span class="hljs-string">'+'</span>);
 	};
-	can.buildParam = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prefix, obj, add)</span> {</span>
+	can.buildParam = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prefix, obj, add)</span> </span>{
 		<span class="hljs-keyword">if</span> (can.isArray(obj)) {
 			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, l = obj.length; i &lt; l; ++i) {
 				add(prefix + <span class="hljs-string">'[]'</span>, obj[i]);
@@ -539,10 +539,10 @@ handles nested data instead of dojo.objectToQuery which doesn’t</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.proxy = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(func, context)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	can.proxy = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(func, context)</span> </span>{
 		<span class="hljs-keyword">return</span> dojo.hitch(context, func);
 	};
-	can.isFunction = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(f)</span> {</span>
+	can.isFunction = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(f)</span> </span>{
 		<span class="hljs-keyword">return</span> dojo.isFunction(f);
 	};
 	<span class="hljs-comment">/**
@@ -588,8 +588,8 @@ callbackId to <code>remove</code> object.  It looks like
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		dojoAddBinding = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodelist, ev, cb)</span> {</span>
-			nodelist.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>		dojoAddBinding = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodelist, ev, cb)</span> </span>{
+			nodelist.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -636,8 +636,8 @@ the remove object within the object’s data.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		dojoRemoveBinding = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodelist, ev, cb)</span> {</span>
-			nodelist.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		dojoRemoveBinding = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodelist, ev, cb)</span> </span>{
+			nodelist.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
 				<span class="hljs-keyword">var</span> currentNode = <span class="hljs-keyword">new</span> dojo.NodeList(node),
 					events = can.data(currentNode, <span class="hljs-string">'events'</span>);
 				<span class="hljs-keyword">if</span> (!events) {
@@ -655,7 +655,7 @@ the remove object within the object’s data.</p>
 				}
 			});
 		};
-	can.bind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, cb)</span> {</span></pre></div></div>
+	can.bind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, cb)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -712,7 +712,7 @@ it in an array.</p>
 		}
 		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 	};
-	can.unbind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, cb)</span> {</span></pre></div></div>
+	can.unbind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, cb)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -766,8 +766,8 @@ it in an array.</p>
             
             <div class="content"><div class='highlight'><pre>	can.on = can.bind;
 	can.off = can.unbind;
-	can.trigger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, event, args, bubble)</span> {</span>
-		<span class="hljs-keyword">if</span> (!(item <span class="hljs-keyword">instanceof</span> dojo.NodeList) &amp;&amp; (item.nodeName || item === window)) {
+	can.trigger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, event, args, bubble)</span> </span>{
+		<span class="hljs-keyword">if</span> (!(item <span class="hljs-keyword">instanceof</span> dojo.NodeList) &amp;&amp; (item.nodeName || item === <span class="hljs-built_in">window</span>)) {
 			item = can.$(item);
 		}
 		<span class="hljs-keyword">if</span> (item.trigger) {
@@ -790,7 +790,7 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> connect = item.on(event, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> connect = item.on(event, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> </span>{
 					<span class="hljs-keyword">if</span> (ev.stopPropagation) {
 						ev.stopPropagation();
 					}
@@ -811,10 +811,10 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 				};
 			}
 			event.target = event.target || item;
-			can.dispatch.call(item, event, args);
+			can.dispatch.call(item, event, can.makeArray(args));
 		}
 	};
-	can.delegate = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector, ev, cb)</span> {</span>
+	can.delegate = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector, ev, cb)</span> </span>{
 		<span class="hljs-keyword">if</span> (!selector) {</pre></div></div>
             
         </li>
@@ -854,7 +854,7 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 		}
 		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 	};
-	can.undelegate = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector, ev, cb)</span> {</span>
+	can.undelegate = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector, ev, cb)</span> </span>{
 		<span class="hljs-keyword">if</span> (!selector) {</pre></div></div>
             
         </li>
@@ -883,10 +883,10 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 	<span class="hljs-comment">/**
 	 * Ajax
 	 */</span>
-	<span class="hljs-keyword">var</span> updateDeferred = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xhr, d)</span> {</span>
+	<span class="hljs-keyword">var</span> updateDeferred = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xhr, d)</span> </span>{
 		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> xhr) {
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> d[prop] === <span class="hljs-string">'function'</span>) {
-				d[prop] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+				d[prop] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 					xhr[prop].apply(xhr, <span class="hljs-built_in">arguments</span>);
 				};
 			} <span class="hljs-keyword">else</span> {
@@ -894,7 +894,7 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 			}
 		}
 	};
-	can.ajax = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> {</span>
+	can.ajax = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> </span>{
 		<span class="hljs-keyword">var</span> type = can.capitalize((options.type || <span class="hljs-string">'get'</span>)
 				.toLowerCase()),
 			method = dojo[<span class="hljs-string">'xhr'</span> + type];
@@ -908,13 +908,13 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 			headers: options.headers,
 			content: options.data
 		});
-		def.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, ioargs)</span> {</span>
+		def.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, ioargs)</span> </span>{
 			updateDeferred(xhr, d);
 			d.resolve(data, <span class="hljs-string">'success'</span>, xhr);
 			<span class="hljs-keyword">if</span> (success) {
 				success(data, <span class="hljs-string">'success'</span>, xhr);
 			}
-		}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, ioargs)</span> {</span>
+		}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, ioargs)</span> </span>{
 			updateDeferred(xhr, d);
 			d.reject(xhr, <span class="hljs-string">'error'</span>);
 			error(xhr, <span class="hljs-string">'error'</span>);
@@ -937,9 +937,9 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.$ = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector)</span> {</span>
-		<span class="hljs-keyword">if</span> (selector === window) {
-			<span class="hljs-keyword">return</span> window;
+            <div class="content"><div class='highlight'><pre>	can.$ = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector)</span> </span>{
+		<span class="hljs-keyword">if</span> (selector === <span class="hljs-built_in">window</span>) {
+			<span class="hljs-keyword">return</span> <span class="hljs-built_in">window</span>;
 		}
 		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> selector === <span class="hljs-string">'string'</span>) {
 			<span class="hljs-keyword">return</span> dojo.query(selector);
@@ -947,8 +947,8 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> dojo.NodeList(selector &amp;&amp; selector.nodeName ? [selector] : selector);
 		}
 	};
-	can.append = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, html)</span> {</span>
-		<span class="hljs-keyword">return</span> wrapped.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> {</span>
+	can.append = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, html)</span> </span>{
+		<span class="hljs-keyword">return</span> wrapped.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
 			dojo.place(html, node);
 		});
 	};
@@ -972,13 +972,13 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 	<span class="hljs-keyword">var</span> data = {}, uuid = can.uuid = +<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(),
 		exp = can.expando = <span class="hljs-string">'can'</span> + uuid;
 
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getData</span><span class="hljs-params">(node, name)</span> {</span>
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getData</span><span class="hljs-params">(node, name)</span> </span>{
 		<span class="hljs-keyword">var</span> id = node[exp],
 			store = id &amp;&amp; data[id];
 		<span class="hljs-keyword">return</span> name === <span class="hljs-literal">undefined</span> ? store || setData(node) : store &amp;&amp; store[name];
 	}
 
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setData</span><span class="hljs-params">(node, name, value)</span> {</span>
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setData</span><span class="hljs-params">(node, name, value)</span> </span>{
 		<span class="hljs-keyword">var</span> id = node[exp] || (node[exp] = ++uuid),
 			store = data[id] || (data[id] = {});
 		<span class="hljs-keyword">if</span> (name !== <span class="hljs-literal">undefined</span>) {
@@ -987,7 +987,7 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 		<span class="hljs-keyword">return</span> store;
 	}
 
-	<span class="hljs-keyword">var</span> cleanData = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elems)</span> {</span>
+	<span class="hljs-keyword">var</span> cleanData = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elems)</span> </span>{
 		<span class="hljs-keyword">var</span> nodes = [];
 
 		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = elems.length; i &lt; len; i++) {
@@ -1003,12 +1003,12 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 			<span class="hljs-keyword">delete</span> data[id];
 		}
 	};
-	can.data = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, name, value)</span> {</span>
-		<span class="hljs-keyword">return</span> value === <span class="hljs-literal">undefined</span> ? wrapped.length === <span class="hljs-number">0</span> ? <span class="hljs-literal">undefined</span> : getData(wrapped[<span class="hljs-number">0</span>], name) : wrapped.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> {</span>
+	can.data = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, name, value)</span> </span>{
+		<span class="hljs-keyword">return</span> value === <span class="hljs-literal">undefined</span> ? wrapped.length === <span class="hljs-number">0</span> ? <span class="hljs-literal">undefined</span> : getData(wrapped[<span class="hljs-number">0</span>], name) : wrapped.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
 			setData(node, name, value);
 		});
 	};
-	can.cleanData = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elem, prop)</span> {</span>
+	can.cleanData = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elem, prop)</span> </span>{
 		<span class="hljs-keyword">var</span> id = elem[exp];
 		<span class="hljs-keyword">delete</span> data[id][prop];
 	};</pre></div></div>
@@ -1026,7 +1026,7 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	dojo.empty = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	dojo.empty = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
 		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> c; c = node.lastChild;) {</pre></div></div>
             
         </li>
@@ -1046,7 +1046,7 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 		}
 	};
 	<span class="hljs-keyword">var</span> destroy = dojo.destroy;
-	dojo.destroy = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> {</span>
+	dojo.destroy = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
 		node = dojo.byId(node);</pre></div></div>
             
         </li>
@@ -1070,7 +1070,7 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 		<span class="hljs-keyword">return</span> destroy.apply(dojo, <span class="hljs-built_in">arguments</span>);
 	};
 	<span class="hljs-keyword">var</span> place = dojo.place;
-	dojo.place = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node, refNode, position)</span> {</span>
+	dojo.place = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node, refNode, position)</span> </span>{
 		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> node === <span class="hljs-string">'string'</span> &amp;&amp; <span class="hljs-regexp">/^\s*&lt;/</span>.test(node)) {
 			node = can.buildFragment(node);
 		}
@@ -1084,7 +1084,7 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 		can.inserted(elems);
 		<span class="hljs-keyword">return</span> ret;
 	};
-	can.addClass = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, className)</span> {</span>
+	can.addClass = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, className)</span> </span>{
 		<span class="hljs-keyword">return</span> wrapped.addClass(className);
 	};</pre></div></div>
             
@@ -1101,7 +1101,7 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.remove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>	can.remove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1117,7 +1117,7 @@ listening to <code>on</code> and then immediately disconnecting.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> nodes = [];
-		wrapped.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> {</span>
+		wrapped.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
 			nodes.push(node);
 			<span class="hljs-keyword">if</span> (node.getElementsByTagName) {
 				nodes.push.apply(nodes, can.makeArray(node.getElementsByTagName(<span class="hljs-string">'*'</span>)));
@@ -1127,10 +1127,10 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 		wrapped.forEach(destroy);
 		<span class="hljs-keyword">return</span> wrapped;
 	};
-	can.get = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, index)</span> {</span>
+	can.get = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, index)</span> </span>{
 		<span class="hljs-keyword">return</span> wrapped[index];
 	};
-	can.has = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, element)</span> {</span>
+	can.has = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, element)</span> </span>{
 		<span class="hljs-keyword">if</span> (dojo.isDescendant(element, wrapped[<span class="hljs-number">0</span>])) {
 			<span class="hljs-keyword">return</span> wrapped;
 		} <span class="hljs-keyword">else</span> {
@@ -1152,12 +1152,12 @@ listening to <code>on</code> and then immediately disconnecting.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>	can.extend(dojo.Deferred.prototype, {
-		pipe: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(done, fail)</span> {</span>
+		pipe: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(done, fail)</span> </span>{
 			<span class="hljs-keyword">var</span> d = <span class="hljs-keyword">new</span> dojo.Deferred();
-			<span class="hljs-keyword">this</span>.addCallback(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">this</span>.addCallback(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				d.resolve(done.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>));
 			});
-			<span class="hljs-keyword">this</span>.addErrback(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">this</span>.addErrback(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">if</span> (fail) {
 					d.reject(fail.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>));
 				} <span class="hljs-keyword">else</span> {
@@ -1172,10 +1172,10 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 
 	<span class="hljs-keyword">var</span> oldOn = dojo.NodeList.prototype.on;
 
-	dojo.NodeList.prototype.on = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event)</span> {</span>
+	dojo.NodeList.prototype.on = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event)</span> </span>{
 
 		<span class="hljs-keyword">if</span> (event === <span class="hljs-string">"attributes"</span>) {
-			<span class="hljs-keyword">this</span>.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> {</span>
+			<span class="hljs-keyword">this</span>.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
 				<span class="hljs-keyword">var</span> el = can.$(node);
 				can.data(el, <span class="hljs-string">"canHasAttributesBindings"</span>, (can.data(el, <span class="hljs-string">"canHasAttributesBindings"</span>) || <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
 			});
@@ -1185,9 +1185,9 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 		<span class="hljs-keyword">if</span> (event === <span class="hljs-string">"attributes"</span>) {
 			<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
 
-			can.each(handles, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(handle, i)</span> {</span>
+			can.each(handles, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(handle, i)</span> </span>{
 				<span class="hljs-keyword">var</span> oldRemove = handle.remove;
-				handle.remove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+				handle.remove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 					<span class="hljs-keyword">var</span> el = can.$(self[i]),
 						cur = can.data(el, <span class="hljs-string">"canHasAttributesBindings"</span>) || <span class="hljs-number">0</span>;
 					<span class="hljs-keyword">if</span> (cur &lt;= <span class="hljs-number">0</span>) {
@@ -1204,7 +1204,7 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 	};
 
 	<span class="hljs-keyword">var</span> oldSetAttr = dojo.setAttr;
-	dojo.setAttr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node, name, value)</span> {</span>
+	dojo.setAttr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node, name, value)</span> </span>{
 		<span class="hljs-keyword">var</span> oldValue = dojo.getAttr(node, name);
 
 		<span class="hljs-keyword">var</span> res = oldSetAttr.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
@@ -1219,7 +1219,7 @@ listening to <code>on</code> and then immediately disconnecting.</p>
 
 	<span class="hljs-keyword">var</span> oldRemoveAttr = dojo.removeAttr;
 
-	dojo.removeAttr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node, name)</span> {</span>
+	dojo.removeAttr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node, name)</span> </span>{
 		<span class="hljs-keyword">var</span> oldValue = dojo.getAttr(node, name),
 			res = oldRemoveAttr.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 

@@ -30,11 +30,11 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/list"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(list)</span> {</span>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/list"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(list)</span> </span>{
 
 	<span class="hljs-keyword">var</span> oldReplace = can.List.prototype.replace;
 
-	can.List.prototype.replace = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span></pre></div></div>
+	can.List.prototype.replace = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -103,7 +103,7 @@ because we are working on an array.</p>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> deferred = <span class="hljs-keyword">this</span>._deferred = <span class="hljs-keyword">new</span> can.Deferred();
 			
-			data.then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+			data.then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
 				self.attr(<span class="hljs-string">"state"</span>, data.state());</pre></div></div>
             
         </li>
@@ -120,7 +120,7 @@ because we are working on an array.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>				deferred.resolve(self);
-			},<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(reason)</span>{</span>
+			},<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(reason)</span></span>{
 				can.batch.start();
 				self.attr(<span class="hljs-string">"state"</span>, data.state());
 				self.attr(<span class="hljs-string">"reason"</span>, reason);
@@ -135,8 +135,8 @@ because we are working on an array.</p>
 		isResolved: <span class="hljs-string">"resolved"</span>,
 		isPending: <span class="hljs-string">"pending"</span>,
 		isRejected: <span class="hljs-string">"rejected"</span>
-	}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value, method)</span> {</span>
-		can.List.prototype[method] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+	}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value, method)</span> </span>{
+		can.List.prototype[method] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.attr(<span class="hljs-string">"state"</span>) === value;
 		};
 	});
@@ -148,8 +148,8 @@ because we are working on an array.</p>
 		<span class="hljs-string">"fail"</span>,
 		<span class="hljs-string">"always"</span>,
 		<span class="hljs-string">"promise"</span>
-	], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
-		can.List.prototype[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+	], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
+		can.List.prototype[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         

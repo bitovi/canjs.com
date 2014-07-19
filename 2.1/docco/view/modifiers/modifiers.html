@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'jquery'</span>, <span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/view'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($, can)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'jquery'</span>, <span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/view'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($, can)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -65,7 +65,7 @@ converts jquery functions to use views    </p>
 			<span class="hljs-string">'val'</span>: <span class="hljs-literal">true</span>,
 			<span class="hljs-string">'text'</span>: <span class="hljs-literal">true</span>
 		};
-	convert = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(func_name)</span> {</span></pre></div></div>
+	convert = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(func_name)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -95,7 +95,7 @@ converts jquery functions to use views    </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		$.fn[func_name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>		$.fn[func_name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 			<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>),
 				callbackNum, callback, self = <span class="hljs-keyword">this</span>,
 				result;</pre></div></div>
@@ -116,7 +116,7 @@ modify with the result</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (can.isDeferred(args[<span class="hljs-number">0</span>])) {
-				args[<span class="hljs-number">0</span>].done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(res)</span> {</span>
+				args[<span class="hljs-number">0</span>].done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(res)</span> </span>{
 					modify.call(self, [res], old);
 				});
 				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
@@ -138,7 +138,7 @@ modify with the result</p>
             
             <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (callbackNum = getCallback(args)) {
 					callback = args[callbackNum];
-					args[callbackNum] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+					args[callbackNum] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> </span>{
 						modify.call(self, [result], old);
 						callback.call(self, result);
 					};
@@ -205,7 +205,7 @@ modify with the result</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					result.done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(res)</span> {</span>
+            <div class="content"><div class='highlight'><pre>					result.done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(res)</span> </span>{
 						modify.call(self, [res], old);
 					});
 					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
@@ -229,7 +229,7 @@ but also will run any hookup</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	modify = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args, old)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	modify = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args, old)</span> </span>{
 		<span class="hljs-keyword">var</span> res;</pre></div></div>
             
         </li>
@@ -303,7 +303,7 @@ and the second arg is data</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	isTemplate = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>	isTemplate = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -379,7 +379,7 @@ and the second arg is data</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	isDOM = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arg)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	isDOM = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arg)</span> </span>{
 		<span class="hljs-keyword">return</span> arg.nodeType || arg[<span class="hljs-number">0</span>] &amp;&amp; arg[<span class="hljs-number">0</span>].nodeType;
 	};</pre></div></div>
             
@@ -396,7 +396,7 @@ and the second arg is data</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	isHTML = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arg)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	isHTML = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arg)</span> </span>{
 		<span class="hljs-keyword">if</span> (isDOM(arg)) {</pre></div></div>
             
         </li>
@@ -462,7 +462,7 @@ and the second arg is data</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	getCallback = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	getCallback = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args)</span> </span>{
 		<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> args[<span class="hljs-number">3</span>] === <span class="hljs-string">'function'</span> ? <span class="hljs-number">3</span> : <span class="hljs-keyword">typeof</span> args[<span class="hljs-number">2</span>] === <span class="hljs-string">'function'</span> &amp;&amp; <span class="hljs-number">2</span>;
 	};
 	<span class="hljs-comment">/**
@@ -477,7 +477,7 @@ and the second arg is data</p>
 	 * $(can.View('//views/recipes.ejs',recipeData)).hookup()
 	 * @codeend
 	 */</span>
-	$.fn.hookup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+	$.fn.hookup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 		can.view.frag(<span class="hljs-keyword">this</span>);
 		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 	};
@@ -624,7 +624,7 @@ and the second arg is data</p>
 		 *  been passed in data.
 		 */</span>
 		<span class="hljs-string">"replaceWith"</span>, <span class="hljs-string">"val"</span>
-	], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(func)</span> {</span>
+	], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(func)</span> </span>{
 		convert(func);
 	});
 	<span class="hljs-keyword">return</span> can;

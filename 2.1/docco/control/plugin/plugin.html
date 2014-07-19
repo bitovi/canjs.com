@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'jquery'</span>, <span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/control'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($, can)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'jquery'</span>, <span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/control'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($, can)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -46,7 +46,7 @@ controllers can be strings or classes</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> i, isAControllerOf = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(instance, controllers)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> i, isAControllerOf = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(instance, controllers)</span> </span>{
 			<span class="hljs-keyword">var</span> name = instance.constructor.pluginName || instance.constructor._shortName;
 			<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; controllers.length; i++) {
 				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> controllers[i] === <span class="hljs-string">'string'</span> ? name === controllers[i] : instance <span class="hljs-keyword">instanceof</span> controllers[i]) {
@@ -59,7 +59,7 @@ controllers can be strings or classes</p>
 	<span class="hljs-comment">/*
 	 * static
 	 */</span>
-	can.Control.setup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+	can.Control.setup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -161,7 +161,7 @@ controllers can be strings or classes</p>
 		 *	    $('.widgets').controls(MyClock) // -&gt; MyClock
 		 *
 		 */</span>
-		controls: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+		controls: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 			<span class="hljs-keyword">var</span> controllerNames = makeArray(<span class="hljs-built_in">arguments</span>),
 				instances = [],
 				controls, c;</pre></div></div>
@@ -179,7 +179,7 @@ controllers can be strings or classes</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				controls = can.$(<span class="hljs-keyword">this</span>)
 					.data(<span class="hljs-string">'controls'</span>);
 				<span class="hljs-keyword">if</span> (!controls) {
@@ -214,14 +214,14 @@ controllers can be strings or classes</p>
 		 *
 		 *		$('.widgets').controls() //-&gt; MyBox
 		 */</span>
-		control: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(control)</span> {</span>
+		control: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(control)</span> </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.controls.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>)[<span class="hljs-number">0</span>];
 		}
 	});
-	can.Control.plugin = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(pluginname)</span> {</span>
+	can.Control.plugin = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(pluginname)</span> </span>{
 		<span class="hljs-keyword">var</span> control = <span class="hljs-keyword">this</span>;
 		<span class="hljs-keyword">if</span> (!$.fn[pluginname]) {
-			$.fn[pluginname] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> {</span>
+			$.fn[pluginname] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> </span>{
 				<span class="hljs-keyword">var</span> args = makeArray(<span class="hljs-built_in">arguments</span>),</pre></div></div>
             
         </li>
@@ -240,7 +240,7 @@ controllers can be strings or classes</p>
             <div class="content"><div class='highlight'><pre>					isMethod = <span class="hljs-keyword">typeof</span> options === <span class="hljs-string">'string'</span> &amp;&amp; $.isFunction(control.prototype[options]),
 					meth = args[<span class="hljs-number">0</span>],
 					returns;
-				<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+				<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -385,7 +385,7 @@ controllers can be strings or classes</p>
 	 * [can.Control.prototype.options this.options].  Often this method
 	 * is called by the [can.Control.plugin jQuery helper function].
 	 */</span>
-	can.Control.prototype.update = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> {</span>
+	can.Control.prototype.update = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> </span>{
 		can.extend(<span class="hljs-keyword">this</span>.options, options);
 		<span class="hljs-keyword">this</span>.on();
 	};

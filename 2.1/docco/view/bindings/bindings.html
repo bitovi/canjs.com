@@ -28,7 +28,7 @@ for use within can.Component.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"can/view/mustache"</span>, <span class="hljs-string">"can/control"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"can/view/mustache"</span>, <span class="hljs-string">"can/control"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
 	<span class="hljs-comment">/**
 	 * @function isContentEditable
 	 * @hide
@@ -59,7 +59,7 @@ for use within can.Component.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> isContentEditable = (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> isContentEditable = (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{</pre></div></div>
             
         </li>
         
@@ -93,7 +93,7 @@ for use within can.Component.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> editable = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> editable = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span></span>{</pre></div></div>
             
         </li>
         
@@ -116,7 +116,7 @@ for use within can.Component.</p>
 			<span class="hljs-keyword">return</span> values[attr];
 		};
 
-		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span>{</span></pre></div></div>
+		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span></span>{</pre></div></div>
             
         </li>
         
@@ -153,7 +153,7 @@ for use within can.Component.</p>
 			}
 		};
 	})(),
-		removeCurly = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span>{</span>
+		removeCurly = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span></span>{
 			<span class="hljs-keyword">if</span>(value[<span class="hljs-number">0</span>] === <span class="hljs-string">"{"</span> &amp;&amp; value[value.length-<span class="hljs-number">1</span>] === <span class="hljs-string">"}"</span>) {
 				<span class="hljs-keyword">return</span> value.substr(<span class="hljs-number">1</span>, value.length - <span class="hljs-number">2</span>);
 			}
@@ -178,7 +178,7 @@ should be a string representing some value in the current scope to cross-bind to
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.view.attr(<span class="hljs-string">"can-value"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, data)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	can.view.attr(<span class="hljs-string">"can-value"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, data)</span> </span>{
 
 		<span class="hljs-keyword">var</span> attr = removeCurly(el.getAttribute(<span class="hljs-string">"can-value"</span>)),</pre></div></div>
             
@@ -364,7 +364,7 @@ supported, but this object might be exported so that it can be added to easily.<
 that returns the following: </p>
 <pre><code><span class="hljs-comment">// the real event name to bind to</span>
 event: <span class="hljs-string">"event-name"</span>,
-handler: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> {</span>
+handler: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> </span>{
     <span class="hljs-comment">// some logic that figures out if the original handler should be called or not, and if so...</span>
     <span class="hljs-keyword">return</span> original.call(<span class="hljs-keyword">this</span>, ev);
 }
@@ -372,10 +372,10 @@ handler: <span class="hljs-function"><span class="hljs-keyword">function</span> 
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> special = {
-		enter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, el, original)</span> {</span>
+		enter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, el, original)</span> </span>{
 			<span class="hljs-keyword">return</span> {
 				event: <span class="hljs-string">"keyup"</span>,
-				handler: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> {</span>
+				handler: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> </span>{
 					<span class="hljs-keyword">if</span> (ev.keyCode === <span class="hljs-number">13</span>) {
 						<span class="hljs-keyword">return</span> original.call(<span class="hljs-keyword">this</span>, ev);
 					}
@@ -401,7 +401,7 @@ that calls a method identified by the value of this attribute.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.view.attr(<span class="hljs-regexp">/can-[\w\.]+/</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, data)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>	can.view.attr(<span class="hljs-regexp">/can-[\w\.]+/</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, data)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -448,7 +448,7 @@ passed in the attribute and call it.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			handler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>			handler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -547,7 +547,7 @@ on an input, the callback above instantiates this Value control on the input ele
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> Value = can.Control.extend({
-		init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+		init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -584,7 +584,7 @@ on an input, the callback above instantiates this Value control on the input ele
             </div>
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-string">"{value} change"</span>: <span class="hljs-string">"set"</span>,
-		set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+		set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -633,7 +633,7 @@ on an input, the callback above instantiates this Value control on the input ele
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">"change"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">"change"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -685,7 +685,7 @@ on a checkbox, the callback above instantiates this Checked control on the check
             </div>
             
             <div class="content"><div class='highlight'><pre>		Checked = can.Control.extend({
-			init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+			init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -719,7 +719,7 @@ scope is someObj, value is the compute representing someObj.attr(‘foo’)</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">"{value} change"</span>: <span class="hljs-string">"check"</span>,
-			check: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+			check: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -791,7 +791,7 @@ the checked property based on their equality.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">"change"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">"change"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 
 				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.isCheckbox) {</pre></div></div>
             
@@ -849,7 +849,7 @@ can-false-value was used and checked is false, set value to the string value of 
             </div>
             
             <div class="content"><div class='highlight'><pre>		Multiselect = Value.extend({
-			init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">this</span>.delimiter = <span class="hljs-string">";"</span>;
 				<span class="hljs-keyword">this</span>.set();
 			},</pre></div></div>
@@ -867,7 +867,7 @@ can-false-value was used and checked is false, set value to the string value of 
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>			set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 
 				<span class="hljs-keyword">var</span> newVal = <span class="hljs-keyword">this</span>.options.value();</pre></div></div>
             
@@ -920,7 +920,7 @@ can-false-value was used and checked is false, set value to the string value of 
             </div>
             
             <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> isSelected = {};
-				can.each(newVal, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> {</span>
+				can.each(newVal, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> </span>{
 					isSelected[val] = <span class="hljs-literal">true</span>;
 				});</pre></div></div>
             
@@ -938,7 +938,7 @@ set its selected property if it was in the list of vals that were just set.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.each(<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].childNodes, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(option)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				can.each(<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].childNodes, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(option)</span> </span>{
 					<span class="hljs-keyword">if</span> (option.value) {
 						option.selected = !! isSelected[option.value];
 					}
@@ -961,11 +961,11 @@ values, like [“foo”, “bar”]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>			get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">var</span> values = [],
 					children = <span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].childNodes;
 
-				can.each(children, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(child)</span> {</span>
+				can.each(children, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(child)</span> </span>{
 					<span class="hljs-keyword">if</span> (child.selected &amp;&amp; child.value) {
 						values.push(child.value);
 					}
@@ -987,7 +987,7 @@ values, like [“foo”, “bar”]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'change'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'change'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1060,16 +1060,16 @@ values, like [“foo”, “bar”]</p>
 			}
 		}),
 		Content = can.Control.extend({
-			init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">this</span>.set();
 				<span class="hljs-keyword">this</span>.on(<span class="hljs-string">"blur"</span>, <span class="hljs-string">"setValue"</span>);
 			},
 			<span class="hljs-string">"{value} change"</span>: <span class="hljs-string">"set"</span>,
-			set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">var</span> val = <span class="hljs-keyword">this</span>.options.value();
 				<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].innerHTML = (<span class="hljs-keyword">typeof</span> val === <span class="hljs-string">'undefined'</span> ? <span class="hljs-string">''</span> : val);
 			},
-			setValue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			setValue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">this</span>.options.value(<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].innerHTML);
 			}
 		});

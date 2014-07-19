@@ -33,7 +33,7 @@ and window’s pathname.</p>
             <div class="content"><div class='highlight'><pre>
 <span class="hljs-comment">/*jshint maxdepth:6*/</span>
 
-steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/route'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span>
+steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/route'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
 <span class="hljs-pi">	"use strict"</span>;</pre></div></div>
             
         </li>
@@ -49,7 +49,7 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (window.history &amp;&amp; history.pushState) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.history &amp;&amp; history.pushState) {</pre></div></div>
             
         </li>
         
@@ -114,9 +114,7 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			root: <span class="hljs-string">"/"</span>,
-			paramsMatcher: <span class="hljs-regexp">/^\?(?:[^=]+=[^&amp;]*&amp;)*[^=]+=[^&amp;]*/</span>,
-			querySeparator: <span class="hljs-string">'?'</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			root: <span class="hljs-string">"/"</span>,</pre></div></div>
             
         </li>
         
@@ -127,9 +125,13 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <h2 id="bind">bind</h2>
+              <p>don’t greedily match slashes in routing rules</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>			matchSlashes: <span class="hljs-literal">false</span>,
+			paramsMatcher: <span class="hljs-regexp">/^\?(?:[^=]+=[^&amp;]*&amp;)*[^=]+=[^&amp;]*/</span>,
+			querySeparator: <span class="hljs-string">'?'</span>,</pre></div></div>
             
         </li>
         
@@ -140,11 +142,9 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Intercepts clicks on <code>&lt;a&gt;</code> elements and rewrites original <code>history</code> methods.</p>
+              <h2 id="bind">bind</h2>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>			bind: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
             
         </li>
         
@@ -155,11 +155,11 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Intercept routable links.</p>
+              <p>Intercepts clicks on <code>&lt;a&gt;</code> elements and rewrites original <code>history</code> methods.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.delegate.call(can.$(document.documentElement), <span class="hljs-string">'a'</span>, <span class="hljs-string">'click'</span>, anchorClickHandler);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			bind: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -170,13 +170,11 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>Rewrites original <code>pushState</code>/<code>replaceState</code> methods on <code>history</code> and keeps pointer to original methods</p>
+              <p>Intercept routable links.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.each(methodsToOverwrite, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method)</span> {</span>
-					originalMethods[method] = window.history[method];
-					window.history[method] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(state, title, url)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>				can.delegate.call(can.$(<span class="hljs-built_in">document</span>.documentElement), <span class="hljs-string">'a'</span>, <span class="hljs-string">'click'</span>, anchorClickHandler);</pre></div></div>
             
         </li>
         
@@ -187,12 +185,13 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>Avoid doubled history states (with pushState).</p>
+              <p>Rewrites original <code>pushState</code>/<code>replaceState</code> methods on <code>history</code> and keeps pointer to original methods</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> absolute = url.indexOf(<span class="hljs-string">"http"</span>) === <span class="hljs-number">0</span>;
-						<span class="hljs-keyword">var</span> searchHash = window.location.search + window.location.hash;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				can.each(methodsToOverwrite, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method)</span> </span>{
+					originalMethods[method] = <span class="hljs-built_in">window</span>.history[method];
+					<span class="hljs-built_in">window</span>.history[method] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(state, title, url)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -203,16 +202,12 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>If url differs from current call original histoy method and update <code>can.route</code> state.</p>
+              <p>Avoid doubled history states (with pushState).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span> ((!absolute &amp;&amp; url !== window.location.pathname + searchHash) || (absolute &amp;&amp; url !== window.location.href + searchHash)) {
-							originalMethods[method].apply(window.history, <span class="hljs-built_in">arguments</span>);
-							can.route.setState();
-						}
-					};
-				});</pre></div></div>
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> absolute = url.indexOf(<span class="hljs-string">"http"</span>) === <span class="hljs-number">0</span>;
+						<span class="hljs-keyword">var</span> searchHash = <span class="hljs-built_in">window</span>.location.search + <span class="hljs-built_in">window</span>.location.hash;</pre></div></div>
             
         </li>
         
@@ -223,12 +218,16 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>Bind to <code>popstate</code> event, fires on back/forward.</p>
+              <p>If url differs from current call original histoy method and update <code>can.route</code> state.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.bind.call(window, <span class="hljs-string">'popstate'</span>, can.route.setState);
-			},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span> ((!absolute &amp;&amp; url !== <span class="hljs-built_in">window</span>.location.pathname + searchHash) || (absolute &amp;&amp; url !== <span class="hljs-built_in">window</span>.location.href + searchHash)) {
+							originalMethods[method].apply(<span class="hljs-built_in">window</span>.history, <span class="hljs-built_in">arguments</span>);
+							can.route.setState();
+						}
+					};
+				});</pre></div></div>
             
         </li>
         
@@ -239,9 +238,12 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <h2 id="unbind">unbind</h2>
+              <p>Bind to <code>popstate</code> event, fires on back/forward.</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>				can.bind.call(<span class="hljs-built_in">window</span>, <span class="hljs-string">'popstate'</span>, can.route.setState);
+			},</pre></div></div>
             
         </li>
         
@@ -252,18 +254,9 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>Unbinds and restores original <code>history</code> methods</p>
+              <h2 id="unbind">unbind</h2>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>			unbind: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-				can.undelegate.call(can.$(document.documentElement), <span class="hljs-string">'click'</span>, <span class="hljs-string">'a'</span>, anchorClickHandler);
-
-				can.each(methodsToOverwrite, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method)</span> {</span>
-					window.history[method] = originalMethods[method];
-				});
-				can.unbind.call(window, <span class="hljs-string">'popstate'</span>, can.route.setState);
-			},</pre></div></div>
             
         </li>
         
@@ -274,9 +267,18 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <h2 id="matchingpartofurl">matchingPartOfURL</h2>
+              <p>Unbinds and restores original <code>history</code> methods</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>			unbind: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				can.undelegate.call(can.$(<span class="hljs-built_in">document</span>.documentElement), <span class="hljs-string">'click'</span>, <span class="hljs-string">'a'</span>, anchorClickHandler);
+
+				can.each(methodsToOverwrite, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method)</span> </span>{
+					<span class="hljs-built_in">window</span>.history[method] = originalMethods[method];
+				});
+				can.unbind.call(<span class="hljs-built_in">window</span>, <span class="hljs-string">'popstate'</span>, can.route.setState);
+			},</pre></div></div>
             
         </li>
         
@@ -287,17 +289,9 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>Returns matching part of url without root.</p>
+              <h2 id="matchingpartofurl">matchingPartOfURL</h2>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>			matchingPartOfURL: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-				<span class="hljs-keyword">var</span> root = cleanRoot(),
-					loc = (location.pathname + location.search),
-					index = loc.indexOf(root);
-
-				<span class="hljs-keyword">return</span> loc.substr(index + root.length);
-			},</pre></div></div>
             
         </li>
         
@@ -308,9 +302,17 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
-              <h2 id="seturl">setURL</h2>
+              <p>Returns matching part of url without root.</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>			matchingPartOfURL: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				<span class="hljs-keyword">var</span> root = cleanRoot(),
+					loc = (location.pathname + location.search),
+					index = loc.indexOf(root);
+
+				<span class="hljs-keyword">return</span> loc.substr(index + root.length);
+			},</pre></div></div>
             
         </li>
         
@@ -321,11 +323,9 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
-              <p>Updates URL by calling <code>pushState</code>.</p>
+              <h2 id="seturl">setURL</h2>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>			setURL: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(path)</span> {</span></pre></div></div>
             
         </li>
         
@@ -336,16 +336,11 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
-              <p>Keeps hash if not in path.</p>
+              <p>Updates URL by calling <code>pushState</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (includeHash &amp;&amp; path.indexOf(<span class="hljs-string">"#"</span>) === -<span class="hljs-number">1</span> &amp;&amp; window.location.hash) {
-					path += window.location.hash;
-				}
-				window.history.pushState(<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, can.route._call(<span class="hljs-string">"root"</span>) + path);
-			}
-		};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			setURL: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(path)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -356,9 +351,16 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
-              <h2 id="anchorclickhandler">anchorClickHandler</h2>
+              <p>Keeps hash if not in path.</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (includeHash &amp;&amp; path.indexOf(<span class="hljs-string">"#"</span>) === -<span class="hljs-number">1</span> &amp;&amp; <span class="hljs-built_in">window</span>.location.hash) {
+					path += <span class="hljs-built_in">window</span>.location.hash;
+				}
+				<span class="hljs-built_in">window</span>.history.pushState(<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, can.route._call(<span class="hljs-string">"root"</span>) + path);
+			}
+		};</pre></div></div>
             
         </li>
         
@@ -369,12 +371,9 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              <p>Handler function for <code>click</code> events.</p>
+              <h2 id="anchorclickhandler">anchorClickHandler</h2>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> anchorClickHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
-			<span class="hljs-keyword">if</span> (!(e.isDefaultPrevented ? e.isDefaultPrevented() : e.defaultPrevented === <span class="hljs-literal">true</span>)) {</pre></div></div>
             
         </li>
         
@@ -385,11 +384,12 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>YUI calls back events triggered with this as a wrapped object.</p>
+              <p>Handler function for <code>click</code> events.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> node = <span class="hljs-keyword">this</span>._node || <span class="hljs-keyword">this</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> anchorClickHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> </span>{
+			<span class="hljs-keyword">if</span> (!(e.isDefaultPrevented ? e.isDefaultPrevented() : e.defaultPrevented === <span class="hljs-literal">true</span>)) {</pre></div></div>
             
         </li>
         
@@ -400,11 +400,11 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>Fix for IE showing blank host, but blank host means current host.</p>
+              <p>YUI calls back events triggered with this as a wrapped object.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> linksHost = node.host || window.location.host;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> node = <span class="hljs-keyword">this</span>._node || <span class="hljs-keyword">this</span>;</pre></div></div>
             
         </li>
         
@@ -415,13 +415,11 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <p>If link is within the same domain and descendant of <code>root</code></p>
+              <p>Fix for IE showing blank host, but blank host means current host.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (window.location.host === linksHost) {
-					<span class="hljs-keyword">var</span> root = can.route._call(<span class="hljs-string">"root"</span>);
-					<span class="hljs-keyword">if</span> (node.pathname.indexOf(root) === <span class="hljs-number">0</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> linksHost = node.host || <span class="hljs-built_in">window</span>.location.host;</pre></div></div>
             
         </li>
         
@@ -432,11 +430,13 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              <p>Removes root from url.</p>
+              <p>If link is within the same domain and descendant of <code>root</code></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> url = (node.pathname + node.search).substr(root.length);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.location.host === linksHost) {
+					<span class="hljs-keyword">var</span> root = cleanRoot();
+					<span class="hljs-keyword">if</span> (node.pathname.indexOf(root) === <span class="hljs-number">0</span>) {</pre></div></div>
             
         </li>
         
@@ -446,6 +446,21 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>Removes root from url.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> url = (node.pathname + node.search).substr(root.length);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>If a route matches update the data.</p>
 
@@ -457,27 +472,27 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
         </li>
         
         
-        <li id="section-26">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>Makes it possible to have a link with a hash.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>							includeHash = <span class="hljs-literal">true</span>;
-							window.history.pushState(<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, node.href);</pre></div></div>
+							<span class="hljs-built_in">window</span>.history.pushState(<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, node.href);</pre></div></div>
             
         </li>
         
         
-        <li id="section-27">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>Test if you can preventDefault
 our tests can’t call .click() b/c this
@@ -497,38 +512,15 @@ freezes phantom.</p>
         </li>
         
         
-        <li id="section-28">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
-              </div>
-              <h2 id="cleanroot">cleanRoot</h2>
-
-            </div>
-            
-        </li>
-        
-        
         <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
-              <p>Always returns clean root, without domain.</p>
+              <h2 id="cleanroot">cleanRoot</h2>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>			cleanRoot = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-				<span class="hljs-keyword">var</span> domain = location.protocol + <span class="hljs-string">"//"</span> + location.host,
-					root = can.route._call(<span class="hljs-string">"root"</span>),
-					index = root.indexOf(domain);
-				<span class="hljs-keyword">if</span> (index === <span class="hljs-number">0</span>) {
-					<span class="hljs-keyword">return</span> can.route.root.substr(domain.length);
-				}
-				<span class="hljs-keyword">return</span> root;
-			},</pre></div></div>
             
         </li>
         
@@ -539,11 +531,19 @@ freezes phantom.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
-              <p>Original methods on <code>history</code> that will be overwritten</p>
+              <p>Always returns clean root, without domain.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			methodsToOverwrite = [<span class="hljs-string">'pushState'</span>, <span class="hljs-string">'replaceState'</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			cleanRoot = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				<span class="hljs-keyword">var</span> domain = location.protocol + <span class="hljs-string">"//"</span> + location.host,
+					root = can.route._call(<span class="hljs-string">"root"</span>),
+					index = root.indexOf(domain);
+				<span class="hljs-keyword">if</span> (index === <span class="hljs-number">0</span>) {
+					<span class="hljs-keyword">return</span> root.substr(domain.length);
+				}
+				<span class="hljs-keyword">return</span> root;
+			},</pre></div></div>
             
         </li>
         
@@ -554,11 +554,11 @@ freezes phantom.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
-              <p>A place to store pointers to original <code>history</code> methods.</p>
+              <p>Original methods on <code>history</code> that will be overwritten</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			originalMethods = {},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			methodsToOverwrite = [<span class="hljs-string">'pushState'</span>, <span class="hljs-string">'replaceState'</span>],</pre></div></div>
             
         </li>
         
@@ -569,11 +569,11 @@ freezes phantom.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
-              <p>Used to tell setURL to include the hash because we clicked on a link.</p>
+              <p>A place to store pointers to original <code>history</code> methods.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			includeHash = <span class="hljs-literal">false</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			originalMethods = {},</pre></div></div>
             
         </li>
         
@@ -583,6 +583,21 @@ freezes phantom.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>Used to tell setURL to include the hash because we clicked on a link.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			includeHash = <span class="hljs-literal">false</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>Enables plugin, by default <code>hashchange</code> binding is used.</p>
 

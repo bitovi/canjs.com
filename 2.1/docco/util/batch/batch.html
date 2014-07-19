@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -177,7 +177,7 @@ messages on the same batch.  This is mostly for event delegation.</p>
 		 * // The list changed.
 		 * @codeend
 		 */</span>
-		start: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(batchStopHandler)</span> {</span>
+		start: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(batchStopHandler)</span> </span>{
 			transactions++;
 			<span class="hljs-keyword">if</span> (batchStopHandler) {
 				stopCallbacks.push(batchStopHandler);
@@ -232,7 +232,7 @@ messages on the same batch.  This is mostly for event delegation.</p>
 		 * // Still in the batch.
 		 * @codeend
 		 */</span>
-		stop: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(force, callStart)</span> {</span>
+		stop: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(force, callStart)</span> </span>{
 			<span class="hljs-keyword">if</span> (force) {
 				transactions = <span class="hljs-number">0</span>;
 			} <span class="hljs-keyword">else</span> {
@@ -249,7 +249,7 @@ messages on the same batch.  This is mostly for event delegation.</p>
 					can.batch.start();
 				}
 				<span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>, len = items.length; i &lt; len; i++) {
-					can.trigger.apply(can, items[i]);
+					can.dispatch.apply(items[i][<span class="hljs-number">0</span>],items[i][<span class="hljs-number">1</span>]);
 				}
 				<span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>, len = callbacks.length; i &lt; callbacks.length; i++) {
 					callbacks[i]();
@@ -270,7 +270,7 @@ messages on the same batch.  This is mostly for event delegation.</p>
 		 * to the batch. If events are not currently being batched, the event is triggered
 		 * immediately.
 		 */</span>
-		trigger: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, event, args)</span> {</span></pre></div></div>
+		trigger: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, event, args)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -287,7 +287,7 @@ messages on the same batch.  This is mostly for event delegation.</p>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!item._init) {
 				<span class="hljs-keyword">if</span> (transactions === <span class="hljs-number">0</span>) {
-					<span class="hljs-keyword">return</span> can.trigger(item, event, args);
+					<span class="hljs-keyword">return</span> can.dispatch.call(item, event, args);
 				} <span class="hljs-keyword">else</span> {
 					event = <span class="hljs-keyword">typeof</span> event === <span class="hljs-string">'string'</span> ? {
 						type: event
@@ -295,8 +295,7 @@ messages on the same batch.  This is mostly for event delegation.</p>
 					event.batchNum = batchNum;
 					batchEvents.push([
 						item,
-						event,
-						args
+						[event, args]
 					]);
 				}
 			}

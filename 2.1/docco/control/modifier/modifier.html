@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/control'</span>, <span class="hljs-string">'can/util/function'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/control'</span>, <span class="hljs-string">'can/util/function'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -49,22 +49,22 @@
 		processors = can.Control.processors,
 		modifier = {
 			delim: <span class="hljs-string">':'</span>,
-			hasModifier: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
+			hasModifier: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
 				<span class="hljs-keyword">return</span> name.indexOf(modifier.delim) !== -<span class="hljs-number">1</span>;
 			},
-			modify: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name, fn, options)</span> {</span>
+			modify: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name, fn, options)</span> </span>{
 				<span class="hljs-keyword">var</span> parts = name.match(<span class="hljs-regexp">/([\w]+)\((.+)\)/</span>),
 					mod, args;
 				<span class="hljs-keyword">if</span> (parts) {
 					mod = can.getObject(parts[<span class="hljs-number">1</span>], [
 						options || {},
 						can,
-						window
+						<span class="hljs-built_in">window</span>
 					]);
 					args = can.sub(parts[<span class="hljs-number">2</span>], [
 						options || {},
 						can,
-						window
+						<span class="hljs-built_in">window</span>
 					])
 						.split(<span class="hljs-string">','</span>);
 					<span class="hljs-keyword">if</span> (mod) {
@@ -74,19 +74,19 @@
 				}
 				<span class="hljs-keyword">return</span> fn;
 			},
-			addProcessor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event, mod)</span> {</span>
+			addProcessor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event, mod)</span> </span>{
 				<span class="hljs-keyword">var</span> processorName = [
 					event,
 					mod
 				].join(modifier.delim);
-				processors[processorName] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, nil, selector, methodName, control)</span> {</span>
+				processors[processorName] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, nil, selector, methodName, control)</span> </span>{
 					<span class="hljs-keyword">var</span> callback = modifier.modify(mod, can.Control._shifter(control, methodName), control.options);
 					control[event] = callback;
 					<span class="hljs-keyword">if</span> (!selector) {
 						selector = can.trim(selector);
 					}
 					can.delegate.call(el, selector, event, callback);
-					<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+					<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 						can.undelegate.call(el, selector, event, callback);
 					};
 				};
@@ -108,8 +108,8 @@
             
             <div class="content"><div class='highlight'><pre>	can.extend(can.Control, {
 		modifier: modifier,
-		setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, options)</span> {</span>
-			can.each(<span class="hljs-keyword">this</span>.prototype, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fn, key, prototype)</span> {</span>
+		setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, options)</span> </span>{
+			can.each(<span class="hljs-keyword">this</span>.prototype, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fn, key, prototype)</span> </span>{
 				<span class="hljs-keyword">var</span> parts, event, mod;
 				<span class="hljs-keyword">if</span> (modifier.hasModifier(key)) {</pre></div></div>
             

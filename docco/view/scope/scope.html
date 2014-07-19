@@ -34,7 +34,7 @@ steal(
 	<span class="hljs-string">'can/map'</span>,
 	<span class="hljs-string">'can/list'</span>,
 	<span class="hljs-string">'can/view'</span>,
-	<span class="hljs-string">'can/compute'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span></pre></div></div>
+	<span class="hljs-string">'can/compute'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -94,7 +94,7 @@ Returns array of names by splitting provided string by periods and single escape
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			getNames = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			getNames = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr)</span> </span>{
 				<span class="hljs-keyword">var</span> names = [],
 					last = <span class="hljs-number">0</span>;</pre></div></div>
             
@@ -112,7 +112,7 @@ Returns array of names by splitting provided string by periods and single escape
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				attr.replace(escapeReg, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(first, second, index)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				attr.replace(escapeReg, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(first, second, index)</span> </span>{
 					<span class="hljs-comment">/* If period is double escaped then leave in place */</span>
 					<span class="hljs-keyword">if</span> (!second) {
 						names.push(
@@ -165,7 +165,7 @@ can.compute.read reads properties from a parent.  A much more complex version of
 			 * @prototype
 			 */</span>
 			{
-				init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(context, parent)</span> {</span>
+				init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(context, parent)</span> </span>{
 					<span class="hljs-keyword">this</span>._context = context;
 					<span class="hljs-keyword">this</span>._parent = parent;
 					<span class="hljs-keyword">this</span>.__cache = {};
@@ -185,7 +185,7 @@ can.compute.read reads properties from a parent.  A much more complex version of
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				attr: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>				attr: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -227,7 +227,7 @@ scope.attr(<span class="hljs-string">"name"</span>) <span class="hljs-comment">/
 </code></pre>
             </div>
             
-            <div class="content"><div class='highlight'><pre>				add: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(context)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				add: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(context)</span> </span>{
 					<span class="hljs-keyword">if</span> (context !== <span class="hljs-keyword">this</span>._context) {
 						<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.constructor(context, <span class="hljs-keyword">this</span>);
 					} <span class="hljs-keyword">else</span> {
@@ -250,7 +250,7 @@ and other information about where the value was found.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				computeData: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, options)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				computeData: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, options)</span> </span>{
 					options = options || {
 						args: []
 					};
@@ -273,7 +273,7 @@ key in the context of the scope.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							compute: can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newVal)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>							compute: can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newVal)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -353,6 +353,8 @@ directly from the observable.</p>
 									rootReads = data.reads;
 									computeData.scope = data.scope;
 									computeData.initialValue = data.value;
+									computeData.reads = data.reads;
+									computeData.root = rootObserve;
 									<span class="hljs-keyword">return</span> data.value;
 								}
 							})
@@ -374,7 +376,7 @@ directly from the observable.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				compute: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, options)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				compute: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, options)</span> </span>{
 					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.computeData(key, options)
 						.compute;
 				},</pre></div></div>
@@ -396,7 +398,7 @@ was found in, readsData and the current scope.</p>
             
             <div class="content"><div class='highlight'><pre>				<span class="hljs-comment">/**
 				 * @hide
-				 * @param {can.Mustache.key} attr A dot seperated path.  Use `"\."` if you have a property name that includes a dot.
+				 * @param {can.mustache.key} attr A dot seperated path.  Use `"\."` if you have a property name that includes a dot.
 				 * @param {can.view.Scope.readOptions} options that configure how this gets read.
 				 * @return {{}}
 				 * @option {Object} parent the value's immediate parent
@@ -404,7 +406,7 @@ was found in, readsData and the current scope.</p>
 				 * @option {Array&lt;String&gt;} reads An array of properties that can be used to read from the rootObserve to get the value.
 				 * @option {*} value the found value
 				 */</span>
-				read: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr, options)</span> {</span></pre></div></div>
+				read: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr, options)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -693,7 +695,7 @@ found in an observable the closest observable can be returned.</p>
 						<span class="hljs-keyword">if</span> (context !== <span class="hljs-literal">null</span>) {
 							<span class="hljs-keyword">var</span> data = can.compute.read(context, names, can.simpleExtend({
 								<span class="hljs-comment">/* Store found observable, incase we want to set it as the rootObserve. */</span>
-								foundObservable: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(observe, nameIndex)</span> {</span>
+								foundObservable: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(observe, nameIndex)</span> </span>{
 									currentObserve = observe;
 									currentReads = names.slice(nameIndex);
 								},</pre></div></div>
@@ -711,7 +713,7 @@ found in an observable the closest observable can be returned.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>								earlyExit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(parentValue, nameIndex)</span> {</span>
+            <div class="content"><div class='highlight'><pre>								earlyExit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(parentValue, nameIndex)</span> </span>{
 									<span class="hljs-comment">/* If this has more matching values */</span>
 									<span class="hljs-keyword">if</span> (nameIndex &gt; defaultPropertyDepth) {
 										defaultObserve = currentObserve;

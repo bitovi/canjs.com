@@ -27,7 +27,7 @@ file. This is used to develop independently from backend services.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/util/string'</span>, <span class="hljs-string">'can/util/object'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/util/string'</span>, <span class="hljs-string">'can/util/object'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -60,7 +60,7 @@ included before can.fixture in order to use it, otherwise it’ll error.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> getUrl = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(url)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> getUrl = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(url)</span> </span>{
 		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> steal !== <span class="hljs-string">'undefined'</span>) {
 			<span class="hljs-keyword">if</span> (can.isFunction(steal.config)) {
 				<span class="hljs-keyword">return</span> steal.config()
@@ -88,7 +88,7 @@ a function for a dynamic fixture.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> updateSettings = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings, originalOptions)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> updateSettings = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings, originalOptions)</span> </span>{
 		<span class="hljs-keyword">if</span> (!can.fixture.on) {
 			<span class="hljs-keyword">return</span>;
 		}</pre></div></div>
@@ -106,7 +106,7 @@ a function for a dynamic fixture.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> log = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> log = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -183,7 +183,7 @@ a function for a dynamic fixture.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (!settings.fixture) {
-			<span class="hljs-keyword">if</span> (window.location.protocol === <span class="hljs-string">"file:"</span>) {
+			<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.location.protocol === <span class="hljs-string">"file:"</span>) {
 				log(<span class="hljs-string">"ajax request to "</span> + settings.url + <span class="hljs-string">", no fixture found"</span>);
 			}
 			<span class="hljs-keyword">return</span>;
@@ -336,7 +336,7 @@ error.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				settings.error = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xhr, error, message)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				settings.error = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xhr, error, message)</span> </span>{
 					<span class="hljs-keyword">throw</span> <span class="hljs-string">"fixtures.js Error "</span> + error + <span class="hljs-string">" "</span> + message;
 				};
 			}</pre></div></div>
@@ -424,7 +424,7 @@ and moves some common args around to make it easier to call</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		extractResponse = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(status, statusText, responses, headers)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>		extractResponse = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(status, statusText, responses, headers)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -484,7 +484,7 @@ type that matches the first datatype (typically JSON)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		extractResponses = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings, responses)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		extractResponses = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings, responses)</span> </span>{
 			<span class="hljs-keyword">var</span> next = settings.dataTypes ? settings.dataTypes[<span class="hljs-number">0</span>] : (settings.dataType || <span class="hljs-string">'json'</span>);
 			<span class="hljs-keyword">if</span> (!responses || !responses[next]) {
 				<span class="hljs-keyword">var</span> tmp = {};
@@ -539,7 +539,7 @@ not CanJS is using jQuery or not.</p>
             
             <div class="content"><div class='highlight'><pre>		can.ajaxPrefilter(updateSettings);
 
-		can.ajaxTransport(<span class="hljs-string">"fixture"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(s, original)</span> {</span></pre></div></div>
+		can.ajaxTransport(<span class="hljs-string">"fixture"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(s, original)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -572,7 +572,7 @@ not CanJS is using jQuery or not.</p>
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> timeout, stopped = <span class="hljs-literal">false</span>;
 
 			<span class="hljs-keyword">return</span> {
-				send: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(headers, callback)</span> {</span></pre></div></div>
+				send: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(headers, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -587,7 +587,7 @@ not CanJS is using jQuery or not.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					timeout = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>					timeout = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -602,7 +602,7 @@ not CanJS is using jQuery or not.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> success = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> success = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 							<span class="hljs-keyword">if</span> (stopped === <span class="hljs-literal">false</span>) {
 								callback.apply(<span class="hljs-literal">null</span>, extractResponse.apply(s, <span class="hljs-built_in">arguments</span>));
 							}
@@ -641,7 +641,7 @@ not CanJS is using jQuery or not.</p>
 						}
 					}, can.fixture.delay);
 				},
-				abort: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+				abort: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 					stopped = <span class="hljs-literal">true</span>;
 					clearTimeout(timeout);
 				}
@@ -664,7 +664,7 @@ and ajaxTransport functions, so we need to monkey patch can.ajax.</p>
             
             <div class="content"><div class='highlight'><pre>	} <span class="hljs-keyword">else</span> {
 		<span class="hljs-keyword">var</span> AJAX = can.ajax;
-		can.ajax = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings)</span> {</span>
+		can.ajax = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings)</span> </span>{
 			updateSettings(settings, settings);</pre></div></div>
             
         </li>
@@ -698,7 +698,7 @@ with jQuery’s ajaxTransport.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				deferred.getResponseHeader = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				deferred.getResponseHeader = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{};</pre></div></div>
             
         </li>
         
@@ -728,7 +728,7 @@ with jQuery’s ajaxTransport.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				deferred.abort = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>				deferred.abort = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 					clearTimeout(timeout);
 					stopped = <span class="hljs-literal">true</span>;
 					deferred.reject(deferred);
@@ -747,7 +747,7 @@ with jQuery’s ajaxTransport.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				timeout = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>				timeout = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -762,7 +762,7 @@ with jQuery’s ajaxTransport.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> success = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> success = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 						<span class="hljs-keyword">var</span> response = extractResponse.apply(settings, <span class="hljs-built_in">arguments</span>),
 							status = response[<span class="hljs-number">0</span>];
 
@@ -869,7 +869,7 @@ with jQuery’s ajaxTransport.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		find = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings, exact)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		find = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings, exact)</span> </span>{
 			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; overwrites.length; i++) {
 				<span class="hljs-keyword">if</span> ($fixture._similar(settings, overwrites[i], exact)) {
 					<span class="hljs-keyword">return</span> i;
@@ -891,7 +891,7 @@ with jQuery’s ajaxTransport.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		overwrite = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		overwrite = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings)</span> </span>{
 			<span class="hljs-keyword">var</span> index = find(settings);
 			<span class="hljs-keyword">if</span> (index &gt; -<span class="hljs-number">1</span>) {
 				settings.fixture = overwrites[index].fixture;
@@ -913,7 +913,7 @@ with jQuery’s ajaxTransport.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		getId = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		getId = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings)</span> </span>{
 			<span class="hljs-keyword">var</span> id = settings.data.id;
 
 			<span class="hljs-keyword">if</span> (id === <span class="hljs-literal">undefined</span> &amp;&amp; <span class="hljs-keyword">typeof</span> settings.data === <span class="hljs-string">"number"</span>) {
@@ -948,7 +948,7 @@ with jQuery’s ajaxTransport.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				settings.url.replace(<span class="hljs-regexp">/\/(\d+)(\/|$|\.)/g</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(all, num)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				settings.url.replace(<span class="hljs-regexp">/\/(\d+)(\/|$|\.)/g</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(all, num)</span> </span>{
 					id = num;
 				});
 			}
@@ -968,7 +968,7 @@ with jQuery’s ajaxTransport.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				id = settings.url.replace(<span class="hljs-regexp">/\/(\w+)(\/|$|\.)/g</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(all, num)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>				id = settings.url.replace(<span class="hljs-regexp">/\/(\w+)(\/|$|\.)/g</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(all, num)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1024,7 +1024,7 @@ with jQuery’s ajaxTransport.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> $fixture = can.fixture = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings, fixture)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> $fixture = can.fixture = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings, fixture)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1137,7 +1137,7 @@ the new fixtures.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>		} <span class="hljs-keyword">else</span> {
-			can.each(settings, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fixture, url)</span> {</span>
+			can.each(settings, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fixture, url)</span> </span>{
 				$fixture(url, fixture);
 			});
 		}
@@ -1159,7 +1159,7 @@ the new fixtures.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		_similar: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings, overwrite, exact)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		_similar: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings, overwrite, exact)</span> </span>{
 			<span class="hljs-keyword">if</span> (exact) {
 				<span class="hljs-keyword">return</span> can.Object.same(settings, overwrite, {
 					fixture: <span class="hljs-literal">null</span>
@@ -1183,7 +1183,7 @@ the new fixtures.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>		_compare: {
-			url: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> {</span>
+			url: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> </span>{
 				<span class="hljs-keyword">return</span> !!$fixture._getData(b, a);
 			},
 			fixture: <span class="hljs-literal">null</span>,
@@ -1205,7 +1205,7 @@ equal to 5.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		_getData: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fixtureUrl, url)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		_getData: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fixtureUrl, url)</span> </span>{
 			<span class="hljs-keyword">var</span> order = [],</pre></div></div>
             
         </li>
@@ -1238,7 +1238,7 @@ runs it on the URL we passed in.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				res = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(fixtureUrlAdjusted.replace(replacer, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(whole, part)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				res = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(fixtureUrlAdjusted.replace(replacer, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(whole, part)</span> </span>{
 					order.push(part);
 					<span class="hljs-keyword">return</span> <span class="hljs-string">"([^\/]+)"</span>;
 				}) + <span class="hljs-string">"$"</span>)
@@ -1276,7 +1276,7 @@ runs it on the URL we passed in.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			res.shift();
-			can.each(order, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span></pre></div></div>
+			can.each(order, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1310,7 +1310,7 @@ runs it on the URL we passed in.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		store: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(count, make, filter)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		store: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(count, make, filter)</span> </span>{
 			<span class="hljs-comment">/*jshint eqeqeq:false */</span></pre></div></div>
             
         </li>
@@ -1327,7 +1327,7 @@ runs it on the URL we passed in.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span>	currentId = <span class="hljs-number">0</span>,
-				findOne = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> {</span>
+				findOne = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> </span>{
 					<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; items.length; i++) {
 						<span class="hljs-keyword">if</span> (id == items[i].id) {
 							<span class="hljs-keyword">return</span> items[i];
@@ -1354,7 +1354,7 @@ runs it on the URL we passed in.</p>
 			
 			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> count === <span class="hljs-string">"number"</span>) {
 				items = [];
-				reset = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+				reset = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 					items = [];
 					<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; (count); i++) {</pre></div></div>
             
@@ -1391,7 +1391,7 @@ runs it on the URL we passed in.</p>
 			} <span class="hljs-keyword">else</span> {
 				filter = make;
 				<span class="hljs-keyword">var</span> initialItems = count;
-				reset = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+				reset = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
 					items = initialItems.slice(<span class="hljs-number">0</span>);
 				};
 			}</pre></div></div>
@@ -1410,7 +1410,7 @@ runs it on the URL we passed in.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			can.extend(methods, {
-				findAll: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(request)</span> {</span>
+				findAll: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(request)</span> </span>{
 					request = request || {};</pre></div></div>
             
         </li>
@@ -1445,9 +1445,9 @@ order looks like [“age ASC”,”gender DESC”]</p>
             
             <div class="content"><div class='highlight'><pre>					can.each((request.data.order || [])
 						.slice(<span class="hljs-number">0</span>)
-						.reverse(), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
+						.reverse(), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
 							<span class="hljs-keyword">var</span> split = name.split(<span class="hljs-string">" "</span>);
-							retArr = retArr.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> {</span>
+							retArr = retArr.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> </span>{
 								<span class="hljs-keyword">if</span> (split[<span class="hljs-number">1</span>].toUpperCase() !== <span class="hljs-string">"ASC"</span>) {
 									<span class="hljs-keyword">if</span> (a[split[<span class="hljs-number">0</span>]] &lt; b[split[<span class="hljs-number">0</span>]]) {
 										<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
@@ -1483,9 +1483,9 @@ order looks like [“age ASC”,”gender DESC”]</p>
             
             <div class="content"><div class='highlight'><pre>					can.each((request.data.group || [])
 						.slice(<span class="hljs-number">0</span>)
-						.reverse(), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
+						.reverse(), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
 							<span class="hljs-keyword">var</span> split = name.split(<span class="hljs-string">" "</span>);
-							retArr = retArr.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> {</span>
+							retArr = retArr.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> </span>{
 								<span class="hljs-keyword">return</span> a[split[<span class="hljs-number">0</span>]] &gt; b[split[<span class="hljs-number">0</span>]];
 							});
 						});
@@ -1582,7 +1582,7 @@ order looks like [“age ASC”,”gender DESC”]</p>
 				 *     });
 				 *
 				 */</span>
-				findOne: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(request, response)</span> {</span>
+				findOne: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(request, response)</span> </span>{
 					<span class="hljs-keyword">var</span> item = findOne(getId(request));
 					
 					<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> item === <span class="hljs-string">"undefined"</span>) {
@@ -1606,7 +1606,7 @@ order looks like [“age ASC”,”gender DESC”]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(request, response)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(request, response)</span> </span>{
 					<span class="hljs-keyword">var</span> id = getId(request),
 						item = findOne(id);
 
@@ -1653,7 +1653,7 @@ order looks like [“age ASC”,”gender DESC”]</p>
 				 * }, function(){});
 				 * @codeend
 				 */</span>
-				destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(request, response)</span> {</span>
+				destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(request, response)</span> </span>{
 					<span class="hljs-keyword">var</span> id = getId(request),
 						item = findOne(id);
 						
@@ -1698,7 +1698,7 @@ order looks like [“age ASC”,”gender DESC”]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				create: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings, response)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				create: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings, response)</span> </span>{
 					<span class="hljs-keyword">var</span> item = make(items.length, items);
 
 					can.extend(item, settings.data);</pre></div></div>
@@ -1760,13 +1760,13 @@ a unique ID.</p>
             <div class="content"><div class='highlight'><pre>
 			<span class="hljs-keyword">return</span> can.extend({
 				getId: getId,
-				find: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings)</span> {</span>
+				find: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings)</span> </span>{
 					<span class="hljs-keyword">return</span> findOne(getId(settings));
 				},
 				reset: reset
 			}, methods);
 		},
-		rand: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">randomize</span><span class="hljs-params">(arr, min, max)</span> {</span>
+		rand: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">randomize</span><span class="hljs-params">(arr, min, max)</span> </span>{
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> arr === <span class="hljs-string">'number'</span>) {
 				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> min === <span class="hljs-string">'number'</span>) {
 					<span class="hljs-keyword">return</span> arr + <span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random() * (min - arr));
@@ -1846,13 +1846,13 @@ a unique ID.</p>
 			}
 			<span class="hljs-keyword">return</span> res;
 		},
-		xhr: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xhr)</span> {</span>
+		xhr: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xhr)</span> </span>{
 			<span class="hljs-keyword">return</span> can.extend({}, {
 				abort: can.noop,
-				getAllResponseHeaders: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+				getAllResponseHeaders: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 					<span class="hljs-keyword">return</span> <span class="hljs-string">""</span>;
 				},
-				getResponseHeader: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+				getResponseHeader: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 					<span class="hljs-keyword">return</span> <span class="hljs-string">""</span>;
 				},
 				open: can.noop,
@@ -1902,12 +1902,12 @@ the success callback gets called.</p>
             
             <div class="content"><div class='highlight'><pre>	can.fixture.rootUrl = getUrl(<span class="hljs-string">''</span>);
 
-	can.fixture[<span class="hljs-string">"-handleFunction"</span>] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings)</span> {</span>
+	can.fixture[<span class="hljs-string">"-handleFunction"</span>] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(settings)</span> </span>{
 		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> settings.fixture === <span class="hljs-string">"string"</span> &amp;&amp; can.fixture[settings.fixture]) {
 			settings.fixture = can.fixture[settings.fixture];
 		}
 		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> settings.fixture === <span class="hljs-string">"function"</span>) {
-			setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+			setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">if</span> (settings.success) {
 					settings.success.apply(<span class="hljs-literal">null</span>, settings.fixture(settings, <span class="hljs-string">"success"</span>));
 				}

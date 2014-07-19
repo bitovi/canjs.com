@@ -73,7 +73,7 @@ from the template engine’s rendering method</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> {</span>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
 
 	<span class="hljs-keyword">var</span> isFunction = can.isFunction,
 		makeArray = can.makeArray,</pre></div></div>
@@ -137,11 +137,11 @@ from the template engine’s rendering method</p>
 	 * @param textRenderer
 	 * @returns {renderer}
 	 */</span>
-	<span class="hljs-keyword">var</span> makeRenderer = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(textRenderer)</span> {</span>
-		<span class="hljs-keyword">var</span> renderer = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+	<span class="hljs-keyword">var</span> makeRenderer = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(textRenderer)</span> </span>{
+		<span class="hljs-keyword">var</span> renderer = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
 			<span class="hljs-keyword">return</span> $view.frag(textRenderer.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>));
 		};
-		renderer.render = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+		renderer.render = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
 			<span class="hljs-keyword">return</span> textRenderer.apply(textRenderer, <span class="hljs-built_in">arguments</span>);
 		};
 		<span class="hljs-keyword">return</span> renderer;
@@ -161,7 +161,7 @@ from the template engine’s rendering method</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> checkText = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(text, url)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> checkText = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(text, url)</span> </span>{
 		<span class="hljs-keyword">if</span> (!text.length) {</pre></div></div>
             
         </li>
@@ -231,7 +231,7 @@ from the template engine’s rendering method</p>
 	 * @param {Boolean} async If the ajax request should be asynchronous.
 	 * @returns {can.Deferred} a `view` renderer deferred.
 	 */</span>
-	<span class="hljs-keyword">var</span>	get = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj, async)</span> {</span>
+	<span class="hljs-keyword">var</span>	get = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj, async)</span> </span>{
 		<span class="hljs-keyword">var</span> url = <span class="hljs-keyword">typeof</span> obj === <span class="hljs-string">'string'</span> ? obj : obj.url,
 			suffix = (obj.engine &amp;&amp; <span class="hljs-string">'.'</span> + obj.engine) || url.match(<span class="hljs-regexp">/\.[\w\d]+$/</span>),
 			type,</pre></div></div>
@@ -301,7 +301,7 @@ This only supports <code>&lt;script&gt;</code> tags.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (el = document.getElementById(url)) {
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (el = <span class="hljs-built_in">document</span>.getElementById(url)) {
 			suffix = <span class="hljs-string">'.'</span> + el.type.match(<span class="hljs-regexp">/\/(x\-)?(.+)/</span>)[<span class="hljs-number">2</span>];
 		}</pre></div></div>
             
@@ -370,7 +370,7 @@ You should only be using <code>//</code> if you are using an AMD loader like <co
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (url.match(<span class="hljs-regexp">/^\/\//</span>)) {
 			url = url.substr(<span class="hljs-number">2</span>);
-			url = !window.steal ?
+			url = !<span class="hljs-built_in">window</span>.steal ?
 				url :
 				steal.config()
 					.root.mapJoin(<span class="hljs-string">""</span> + steal.id(url));
@@ -389,7 +389,7 @@ You should only be using <code>//</code> if you are using an AMD loader like <co
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (window.require) {
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.require) {
 			<span class="hljs-keyword">if</span> (<span class="hljs-built_in">require</span>.toUrl) {
 				url = <span class="hljs-built_in">require</span>.toUrl(url);
 			}
@@ -489,11 +489,11 @@ You should only be using <code>//</code> if you are using an AMD loader like <co
 				async: async,
 				url: url,
 				dataType: <span class="hljs-string">'text'</span>,
-				error: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(jqXHR)</span> {</span>
+				error: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(jqXHR)</span> </span>{
 					checkText(<span class="hljs-string">''</span>, url);
 					d.reject(jqXHR);
 				},
-				success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(text)</span> {</span></pre></div></div>
+				success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(text)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -536,7 +536,7 @@ This only goes one level deep.</p>
 	 * @param {Object|can.Deferred} data
 	 * @returns {Array} deferred objects
 	 */</span>
-	<span class="hljs-keyword">var</span> getDeferreds = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+	<span class="hljs-keyword">var</span> getDeferreds = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
 		<span class="hljs-keyword">var</span> deferreds = [];</pre></div></div>
             
         </li>
@@ -587,7 +587,7 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
 	 * @param {Array|*} resolved
 	 * @returns {*}
 	 */</span>
-	<span class="hljs-keyword">var</span> usefulPart = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(resolved)</span> {</span>
+	<span class="hljs-keyword">var</span> usefulPart = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(resolved)</span> </span>{
 		<span class="hljs-keyword">return</span> can.isArray(resolved) &amp;&amp; resolved[<span class="hljs-number">1</span>] === <span class="hljs-string">'success'</span> ? resolved[<span class="hljs-number">0</span>] : resolved;
 	};</pre></div></div>
             
@@ -608,7 +608,7 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
             <div class="content"><div class='highlight'><pre>	<span class="hljs-comment">/**
 	 * @add can.view
 	 */</span>
-	<span class="hljs-keyword">var</span> $view = can.view = can.template = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(view, data, helpers, callback)</span> {</span></pre></div></div>
+	<span class="hljs-keyword">var</span> $view = can.view = can.template = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(view, data, helpers, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -696,7 +696,7 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
 		 * @function can.view.frag frag
 		 * @parent can.view.static
 		 */</span>
-		frag: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result, parentNode)</span> {</span>
+		frag: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result, parentNode)</span> </span>{
 			<span class="hljs-keyword">return</span> $view.hookup($view.fragment(result), parentNode);
 		},</pre></div></div>
             
@@ -714,11 +714,11 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		fragment: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		fragment: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> </span>{
 			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> result !== <span class="hljs-string">"string"</span> &amp;&amp; result.nodeType === <span class="hljs-number">11</span>) {
 				<span class="hljs-keyword">return</span> result;
 			}
-			<span class="hljs-keyword">var</span> frag = can.buildFragment(result, document.body);</pre></div></div>
+			<span class="hljs-keyword">var</span> frag = can.buildFragment(result, <span class="hljs-built_in">document</span>.body);</pre></div></div>
             
         </li>
         
@@ -734,7 +734,7 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!frag.childNodes.length) {
-				frag.appendChild(document.createTextNode(<span class="hljs-string">''</span>));
+				frag.appendChild(<span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">''</span>));
 			}
 			<span class="hljs-keyword">return</span> frag;
 		},</pre></div></div>
@@ -753,9 +753,9 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		toId: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(src)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		toId: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(src)</span> </span>{
 			<span class="hljs-keyword">return</span> can.map(src.toString()
-				.split(<span class="hljs-regexp">/\/|\./g</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(part)</span> {</span></pre></div></div>
+				.split(<span class="hljs-regexp">/\/|\./g</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(part)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -791,7 +791,7 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		toStr: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(txt)</span>{</span>
+            <div class="content"><div class='highlight'><pre>		toStr: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(txt)</span></span>{
 			<span class="hljs-keyword">return</span> txt == <span class="hljs-literal">null</span> ? <span class="hljs-string">""</span> : <span class="hljs-string">""</span>+txt;
 		},</pre></div></div>
             
@@ -816,7 +816,7 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
 		 * @param parentNode
 		 * @returns {*}
 		 */</span>
-		hookup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fragment, parentNode)</span> {</span>
+		hookup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fragment, parentNode)</span> </span>{
 			<span class="hljs-keyword">var</span> hookupEls = [],
 				id,
 				func;</pre></div></div>
@@ -834,7 +834,7 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.each(fragment.childNodes ? can.makeArray(fragment.childNodes) : fragment, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			can.each(fragment.childNodes ? can.makeArray(fragment.childNodes) : fragment, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
 				<span class="hljs-keyword">if</span> (node.nodeType === <span class="hljs-number">1</span>) {
 					hookupEls.push(node);
 					hookupEls.push.apply(hookupEls, can.makeArray(node.getElementsByTagName(<span class="hljs-string">'*'</span>)));
@@ -854,7 +854,7 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.each(hookupEls, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			can.each(hookupEls, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> </span>{
 				<span class="hljs-keyword">if</span> (el.getAttribute &amp;&amp; (id = el.getAttribute(<span class="hljs-string">'data-view-id'</span>)) &amp;&amp; (func = $view.hookups[id])) {
 					func(el, parentNode, id);
 					<span class="hljs-keyword">delete</span> $view.hookups[id];
@@ -918,7 +918,7 @@ only implemented by EJS templates.</p>
 		 *         html = "&lt;div data-view-id='"+id+"'&gt;"
 		 *     $('.foo').html(html);
 		 */</span>
-		hook: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cb)</span> {</span>
+		hook: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cb)</span> </span>{
 			$view.hookups[++hookupId] = cb;
 			<span class="hljs-keyword">return</span> <span class="hljs-string">' data-view-id=\''</span> + hookupId + <span class="hljs-string">'\''</span>;
 		},
@@ -1008,7 +1008,7 @@ different templating solutions produce strings or document fragments via their r
 		 * })
 		 * @codeend
 		 */</span>
-		register: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(info)</span> {</span>
+		register: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(info)</span> </span>{
 			<span class="hljs-keyword">this</span>.types[<span class="hljs-string">'.'</span> + info.suffix] = info;</pre></div></div>
             
         </li>
@@ -1037,8 +1037,8 @@ different templating solutions produce strings or document fragments via their r
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (window.steal) {
-				steal.type(info.suffix + <span class="hljs-string">" view js"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, success, error)</span> {</span>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.steal) {
+				steal.type(info.suffix + <span class="hljs-string">" view js"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, success, error)</span> </span>{
 					<span class="hljs-keyword">var</span> type = $view.types[<span class="hljs-string">"."</span> + options.type],
 						id = $view.toId(options.id + <span class="hljs-string">''</span>);
 					options.text = type.script(id, options.text);
@@ -1060,7 +1060,9 @@ different templating solutions produce strings or document fragments via their r
             </div>
             
             <div class="content"><div class='highlight'><pre>
-			can[info.suffix] = $view[info.suffix] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, text)</span> {</span></pre></div></div>
+			can[info.suffix] = $view[info.suffix] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, text)</span> </span>{
+				<span class="hljs-keyword">var</span> renderer,
+					renderFunc;</pre></div></div>
             
         </li>
         
@@ -1075,7 +1077,9 @@ different templating solutions produce strings or document fragments via their r
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (!text) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (!text) {
+					renderFunc = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+						<span class="hljs-keyword">if</span>(!renderer){</pre></div></div>
             
         </li>
         
@@ -1090,17 +1094,34 @@ different templating solutions produce strings or document fragments via their r
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(info.fragRenderer) {
-						<span class="hljs-keyword">return</span> info.fragRenderer(<span class="hljs-literal">null</span>, id);
-					} <span class="hljs-keyword">else</span> {
-						<span class="hljs-keyword">return</span> makeRenderer(info.renderer(<span class="hljs-literal">null</span>, id));
-					}
-
+            <div class="content"><div class='highlight'><pre>							<span class="hljs-keyword">if</span>(info.fragRenderer) {
+								renderer = info.fragRenderer(<span class="hljs-literal">null</span>, id);
+							} <span class="hljs-keyword">else</span> {
+								renderer = makeRenderer(info.renderer(<span class="hljs-literal">null</span>, id));
+							}
+						}
+						<span class="hljs-keyword">return</span> renderer.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+					};
+					renderFunc.render = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+						<span class="hljs-keyword">var</span> textRenderer = info.renderer(<span class="hljs-literal">null</span>, id);
+						<span class="hljs-keyword">return</span> textRenderer.apply(textRenderer, <span class="hljs-built_in">arguments</span>);
+					};
+					<span class="hljs-keyword">return</span> renderFunc;
 				}
+				<span class="hljs-keyword">var</span> registeredRenderer = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+					<span class="hljs-keyword">if</span>(!renderer){
+						<span class="hljs-keyword">if</span>(info.fragRenderer) {
+							renderer = info.fragRenderer(id, text);
+						} <span class="hljs-keyword">else</span> {
+							renderer = info.renderer(id, text);
+						}
+					}
+					<span class="hljs-keyword">return</span> renderer.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+				};
 				<span class="hljs-keyword">if</span>(info.fragRenderer) {
-					<span class="hljs-keyword">return</span> $view.preload( id, info.fragRenderer(id, text) );
+					<span class="hljs-keyword">return</span> $view.preload( id, registeredRenderer );
 				} <span class="hljs-keyword">else</span> {
-					<span class="hljs-keyword">return</span> $view.preloadStringRenderer(id, info.renderer(id, text));
+					<span class="hljs-keyword">return</span> $view.preloadStringRenderer(id, registeredRenderer);
 				}
 
 			};
@@ -1141,7 +1162,7 @@ different templating solutions produce strings or document fragments via their r
 		 * @param {Object} id
 		 * @param {Object} src
 		 */</span>
-		registerScript: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type, id, src)</span> {</span>
+		registerScript: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type, id, src)</span> </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-string">'can.view.preloadStringRenderer(\''</span> + id + <span class="hljs-string">'\','</span> + $view.types[<span class="hljs-string">'.'</span> + type].script(id, src) + <span class="hljs-string">');'</span>;
 		},
 
@@ -1152,9 +1173,9 @@ different templating solutions produce strings or document fragments via their r
 		 * @param {String} id
 		 * @param {Function} renderer
 		 */</span>
-		preload: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, renderer)</span> {</span>
+		preload: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, renderer)</span> </span>{
 			<span class="hljs-keyword">var</span> def = $view.cached[id] = <span class="hljs-keyword">new</span> can.Deferred()
-				.resolve(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, helpers)</span> {</span>
+				.resolve(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, helpers)</span> </span>{
 					<span class="hljs-keyword">return</span> renderer.call(data, data, helpers);
 				});</pre></div></div>
             
@@ -1185,7 +1206,7 @@ different templating solutions produce strings or document fragments via their r
 		 * @param stringRenderer
 		 * @returns {*}
 		 */</span>
-		preloadStringRenderer: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, stringRenderer)</span> {</span>
+		preloadStringRenderer: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, stringRenderer)</span> </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.preload(id, makeRenderer(stringRenderer) );
 		},</pre></div></div>
             
@@ -1303,7 +1324,7 @@ always operates against resolved template files or hardcoded strings</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		render: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(view, data, helpers, callback)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		render: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(view, data, helpers, callback)</span> </span>{
 			<span class="hljs-keyword">return</span> can.view.renderAs(<span class="hljs-string">"string"</span>,view, data, helpers, callback);
 		},</pre></div></div>
             
@@ -1329,7 +1350,7 @@ always operates against resolved template files or hardcoded strings</p>
 		 * @param {Object} helpers helper methods for this template
 		 * @returns {*}
 		 */</span>
-		renderTo: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(format, renderer, data, helpers)</span>{</span>
+		renderTo: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(format, renderer, data, helpers)</span></span>{
 			<span class="hljs-keyword">return</span> (format === <span class="hljs-string">"string"</span> &amp;&amp; renderer.render ? renderer.render : renderer)(data, helpers);
 		},
 
@@ -1343,7 +1364,7 @@ always operates against resolved template files or hardcoded strings</p>
 		 * @param callback
 		 * @returns {*}
 		 */</span>
-		renderAs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(format, view, data, helpers, callback)</span> {</span></pre></div></div>
+		renderAs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(format, view, data, helpers, callback)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1426,7 +1447,7 @@ The deferred that resolves into the rendered content…</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>				can.when.apply(can, deferreds)
-					.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(resolved)</span> {</span></pre></div></div>
+					.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(resolved)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1557,7 +1578,7 @@ replace the defferreds with what they resolved to.</p>
             <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span> (callback) {
 							callback(result, dataCopy);
 						}
-					}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+					}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 						deferred.reject.apply(deferred, <span class="hljs-built_in">arguments</span>);
 					});</pre></div></div>
             
@@ -1670,7 +1691,7 @@ ff will be async so we need to temporarily reset</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					deferred.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(renderer)</span> {</span>
+            <div class="content"><div class='highlight'><pre>					deferred.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(renderer)</span> </span>{
 						callback(data ? can.view.renderTo(format, renderer, data, helpers) : renderer);
 					});
 				} <span class="hljs-keyword">else</span> {</pre></div></div>
@@ -1715,7 +1736,7 @@ set response to the result of the rendering.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						deferred.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(renderer)</span> {</span>
+            <div class="content"><div class='highlight'><pre>						deferred.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(renderer)</span> </span>{
 							response = data ? can.view.renderTo(format, renderer, data, helpers) : renderer;
 						});
 					}
@@ -1734,7 +1755,7 @@ set response to the result of the rendering.</p>
 		 * @param  {String} type
 		 * @param  {can.Deferred} def
 		 */</span>
-		registerView: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, text, type, def)</span> {</span></pre></div></div>
+		registerView: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, text, type, def)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -1822,7 +1843,7 @@ set response to the result of the rendering.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (window.steal) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.steal) {</pre></div></div>
             
         </li>
         
@@ -1838,7 +1859,7 @@ set response to the result of the rendering.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		steal.type(<span class="hljs-string">"view js"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, success, error)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		steal.type(<span class="hljs-string">"view js"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, success, error)</span> </span>{
 			<span class="hljs-keyword">var</span> type = $view.types[<span class="hljs-string">"."</span> + options.type],
 				id = $view.toId(options.id);
 			<span class="hljs-comment">/**

@@ -61,13 +61,13 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/view'</span>, <span class="hljs-string">'./elements'</span>, <span class="hljs-string">'can/view/live'</span>, <span class="hljs-string">'can/util/string'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, elements, live)</span> {</span>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/view'</span>, <span class="hljs-string">'./elements'</span>, <span class="hljs-string">'can/view/live'</span>, <span class="hljs-string">'can/util/string'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, elements, live)</span> </span>{
 
 	<span class="hljs-comment">/**
 	 * Helper(s)
 	 */</span>
 	<span class="hljs-keyword">var</span> pendingHookups = [],
-		tagChildren = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tagName)</span> {</span>
+		tagChildren = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tagName)</span> </span>{
 			<span class="hljs-keyword">var</span> newTag = elements.tagMap[tagName] || <span class="hljs-string">"span"</span>;
 			<span class="hljs-keyword">if</span> (newTag === <span class="hljs-string">"span"</span>) {</pre></div></div>
             
@@ -88,7 +88,7 @@
 			}
 			<span class="hljs-keyword">return</span> <span class="hljs-string">"&lt;"</span> + newTag + <span class="hljs-string">"&gt;"</span> + tagChildren(newTag) + <span class="hljs-string">"&lt;/"</span> + newTag + <span class="hljs-string">"&gt;"</span>;
 		},
-		contentText = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(input, tag)</span> {</span></pre></div></div>
+		contentText = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(input, tag)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -152,7 +152,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, id)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, id)</span> </span>{
 					input.hookup.call(input, el, id);
 				}) ||</pre></div></div>
             
@@ -224,7 +224,7 @@ add it to pending hookups.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		contentEscape = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(txt, tag)</span> {</span>
+            <div class="content"><div class='highlight'><pre>		contentEscape = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(txt, tag)</span> </span>{
 			<span class="hljs-keyword">return</span> (<span class="hljs-keyword">typeof</span> txt === <span class="hljs-string">'string'</span> || <span class="hljs-keyword">typeof</span> txt === <span class="hljs-string">'number'</span>) ?
 				can.esc(txt) :
 				contentText(txt, tag);
@@ -245,7 +245,7 @@ within <code>&lt;div {{#person}}{{name}}{{/person}}/&gt;</code>.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>		withinTemplatedSectionWithinAnElement = <span class="hljs-literal">false</span>,
-		emptyHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>};
+		emptyHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{};
 
 	<span class="hljs-keyword">var</span> lastHookups;
 
@@ -268,12 +268,12 @@ used to produce the content within the list</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		setupLists: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>		setupLists: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 
 			<span class="hljs-keyword">var</span> old = can.view.lists,
 				data;
 
-			can.view.lists = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(list, renderer)</span> {</span>
+			can.view.lists = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(list, renderer)</span> </span>{
 				data = {
 					list: list,
 					renderer: renderer
@@ -294,18 +294,18 @@ used to produce the content within the list</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				can.view.lists = old;
 				<span class="hljs-keyword">return</span> data;
 			};
 		},
-		getHooks: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+		getHooks: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 			<span class="hljs-keyword">var</span> hooks = pendingHookups.slice(<span class="hljs-number">0</span>);
 			lastHookups = hooks;
 			pendingHookups = [];
 			<span class="hljs-keyword">return</span> hooks;
 		},
-		onlytxt: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(self, func)</span> {</span>
+		onlytxt: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(self, func)</span> </span>{
 			<span class="hljs-keyword">return</span> contentEscape(func.call(self));
 		},
 		<span class="hljs-comment">/**
@@ -337,7 +337,7 @@ used to produce the content within the list</p>
 		 *   `(function(){return task.attr('name')})
 		 *
 		 */</span>
-		txt: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(escape, tagName, status, self, func)</span> {</span></pre></div></div>
+		txt: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(escape, tagName, status, self, func)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -454,7 +454,7 @@ when func is called</p>
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>				unbind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>				unbind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 					compute.unbind(<span class="hljs-string">"change"</span>, emptyHandler);
 				};</pre></div></div>
             
@@ -557,7 +557,7 @@ We do not want <code>{{#if items.length}}</code> changing the DOM if
 
 			<span class="hljs-keyword">if</span> (listData) {
 				unbind();
-				<span class="hljs-keyword">return</span> <span class="hljs-string">"&lt;"</span> + tag + can.view.hook(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, parentNode)</span> {</span>
+				<span class="hljs-keyword">return</span> <span class="hljs-string">"&lt;"</span> + tag + can.view.hook(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, parentNode)</span> </span>{
 					live.list(el, listData.list, listData.renderer, self, parentNode);
 				}) + <span class="hljs-string">"&gt;&lt;/"</span> + tag + <span class="hljs-string">"&gt;"</span>;
 			}</pre></div></div>
@@ -657,7 +657,7 @@ a text node who’s value is <code>func</code>‘s return value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, parentNode)</span> {</span>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, parentNode)</span> </span>{
 						live.text(el, compute, parentNode);
 						unbind();
 					} :</pre></div></div>
@@ -676,7 +676,7 @@ documentFragment created as with <code>func</code>‘s return value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, parentNode)</span> {</span>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, parentNode)</span> </span>{
 						live.html(el, compute, parentNode);
 						unbind();</pre></div></div>
             
@@ -723,7 +723,7 @@ documentFragment created as with <code>func</code>‘s return value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				pendingHookups.push(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> {</span>
+            <div class="content"><div class='highlight'><pre>				pendingHookups.push(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> </span>{
 					live.attributes(el, compute, compute());
 					unbind();
 				});
@@ -732,7 +732,7 @@ documentFragment created as with <code>func</code>‘s return value.</p>
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">escape</span> === <span class="hljs-number">2</span>) { <span class="hljs-comment">// In a special attribute like src or style</span>
 
 				attributeName = status;
-				pendingHookups.push(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> {</span>
+				pendingHookups.push(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> </span>{
 					live.specialAttribute(el, attributeName, compute);
 					unbind();
 				});
@@ -757,7 +757,7 @@ hookups.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>				(status === <span class="hljs-number">0</span> ? lastHookups : pendingHookups)
-					.push(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> {</span>
+					.push(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> </span>{
 						live.attribute(el, attributeName, compute);
 						unbind();
 					});

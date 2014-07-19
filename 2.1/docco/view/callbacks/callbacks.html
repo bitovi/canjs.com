@@ -30,10 +30,10 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"can/view"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can)</span>{</span>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"can/view"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can)</span></span>{
 
 
-	<span class="hljs-keyword">var</span> attr = can.view.attr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attributeName, attrHandler)</span> {</span>
+	<span class="hljs-keyword">var</span> attr = can.view.attr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attributeName, attrHandler)</span> </span>{
 		<span class="hljs-keyword">if</span>(attrHandler) {
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> attributeName === <span class="hljs-string">"string"</span>) {
 				attributes[attributeName] = attrHandler;
@@ -63,7 +63,7 @@
 		regExpAttributes = [],
 		automaticCustomElementCharacters = <span class="hljs-regexp">/[-\:]/</span>;
 
-	<span class="hljs-keyword">var</span> tag = can.view.tag = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tagName, tagHandler)</span> {</span>
+	<span class="hljs-keyword">var</span> tag = can.view.tag = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tagName, tagHandler)</span> </span>{
 		<span class="hljs-keyword">if</span>(tagHandler) {</pre></div></div>
             
         </li>
@@ -79,9 +79,9 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (window.html5) {
-				window.html5.elements += <span class="hljs-string">" "</span> + tagName;
-				window.html5.shivDocument();
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.html5) {
+				<span class="hljs-built_in">window</span>.html5.elements += <span class="hljs-string">" "</span> + tagName;
+				<span class="hljs-built_in">window</span>.html5.shivDocument();
 			}
 	
 			tags[tagName.toLowerCase()] = tagHandler;
@@ -102,7 +102,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				cb = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>};
+            <div class="content"><div class='highlight'><pre>				cb = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{};
 			}
 			<span class="hljs-keyword">return</span> cb;
 		}
@@ -130,12 +130,8 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		tagHandler: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, tagName, tagData)</span>{</span>
-			<span class="hljs-keyword">var</span> helperTagCallback = tagData.options.read(<span class="hljs-string">'tags.'</span> + tagName, {
-					isArgument: <span class="hljs-literal">true</span>,
-					proxyMethods: <span class="hljs-literal">false</span>
-				})
-					.value,
+            <div class="content"><div class='highlight'><pre>		tagHandler: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, tagName, tagData)</span></span>{
+			<span class="hljs-keyword">var</span> helperTagCallback = tagData.options.attr(<span class="hljs-string">'tags.'</span> + tagName),
 				tagCallback = helperTagCallback || tags[tagName];</pre></div></div>
             
         </li>
@@ -152,7 +148,15 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> scope = tagData.scope,
-				res = tagCallback ? tagCallback(el, tagData) : scope;</pre></div></div>
+				res;
+				
+			<span class="hljs-keyword">if</span>(tagCallback) {
+				<span class="hljs-keyword">var</span> reads = can.__clearReading();
+				res = tagCallback(el, tagData);
+				can.__setReading(reads);
+			} <span class="hljs-keyword">else</span> {
+				res = scope;
+			}</pre></div></div>
             
         </li>
         
