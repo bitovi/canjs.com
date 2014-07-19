@@ -1,6 +1,6 @@
 [submodule "can"]
 	path = can
-	url = git://github.com/bitovi/canjs.git
+	url = https://github.com/bitovi/canjs.git
 [submodule "shared"]
 	path = shared
 	url = git://github.com/bitovi/shared-web.git
