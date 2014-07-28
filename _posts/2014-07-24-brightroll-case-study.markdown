@@ -4,24 +4,26 @@ category: news
 author: Brian Moschel
 twitterHandle: brianmoschel
 githubHandle: moschel
-banner_img: /img/canjs-banner-background.jpg
+banner_img: /img/brightroll_header.png
 lead: BrightRoll wrote a case study about their experience developing a large complex application with CanJS.
 layout: post
 ---
 
 [BrightRoll](http://www.brightroll.com) is an online video advertising platform company who built their [Console](http://www.brightroll.com/technology/console/) purchasing application using CanJS. They wanted to share their experience.
 
-The following case study is written by their engineers, posted here with their permission. Feel free to email them at <a href='mailto:community@brightroll.com'>community@brightroll.com</a> or find them at twitter [@brightrolleng](http://twitter.com/brightrolleng).
+The following case study is written by their engineers, posted here with their permission. Feel free to email them at community@brightroll.com or find them at twitter [@brightrolleng](http://twitter.com/brightrolleng).
 
 To see other examples of applications written with CanJS, or to post one of your own, visit the [Bithub Apps](http://bithub.com/app) page.
 
 _______________________________________________________
 
-![BrightRoll Console](/img/blog/brightroll_console.png "BrightRoll Console")
-
 ### Intro
 
 BrightRoll adopted CanJS after comparing it against a number of different frameworks in order to update one of our user-facing applications. CanJS has met our needs by being fast, flexible, and easy to use. Below, we outline how we came to determine that CanJS best-suited our needs, and some of the benefits we’ve found using the framework.
+
+#### The BrightRoll Console:
+
+![BrightRoll Console](/img/brightroll_console.png "BrightRoll Console")
 
 ### Before CanJS
 
@@ -50,7 +52,6 @@ We have developed our application as a single-page web-app, with a strong model 
 At BrightRoll, new engineers have a designated buddy who helps train them on applications, languages, and frameworks that they may otherwise be unfamiliar with. They also are given a walkthrough of our architecture, and can depend on that buddy, as well as the rest of the engineering team, to answer any questions they have. We pride ourselves on having readable code that is approachable by anyone implementing features, so new developers can be productive quickly. Happily, CanJS is intuitive for anyone familiar with MVC, which makes the onboarding process that much simpler; new developers are typically able to deploy their first change to production in their first week.
 
 CanJS is an open-source project, so looking into its source code is as easy as cloning its git repository. CanJS's website has documentation on its API, which outlines a lot of fundamental concepts and usage patterns. Our engineers found many similarities between CanJS and other frameworks -- features like observable values, binding to changes on a variable with callbacks, etc., have a parallel in CanJS. CanJS also has an IRC channel where other developers/learners can openly ask questions about the framework itself or common usage patterns. Finally, we host a regular [Silicon Valley CanJS meetup](http://www.meetup.com/CanJS-Silicon-Valley/) that is open to the public at our Palo Alto, CA Engineering office, which is a great opportunity for people to ask questions and learn from experts.
-
 
 ### About BrightRoll 
 
