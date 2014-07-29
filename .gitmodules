@@ -3,10 +3,10 @@
 	url = https://github.com/bitovi/canjs.git
 [submodule "shared"]
 	path = shared
-	url = git://github.com/bitovi/shared-web.git
+	url = https://github.com/bitovi/shared-web.git
 [submodule "documentjs"]
 	path = documentjs
-	url = git://github.com/bitovi/documentjs.git
+	url = https://github.com/bitovi/documentjs.git
 [submodule "steal"]
 	path = steal
-	url = git://github.com/bitovi/legacy-steal.git
+	url = https://github.com/bitovi/legacy-steal.git
