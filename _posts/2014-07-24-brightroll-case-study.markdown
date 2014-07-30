@@ -27,7 +27,7 @@ BrightRoll adopted CanJS after comparing it against a number of different framew
 
 ### Before CanJS
 
-BrightRoll used CanJS to build its advanced programmatic buying console for digital video advertising. The original BrightRoll interface was architected without a front-end framework, and instead mainly used Rails with a bit of client-side jQuery. Unfortunately, this wasn’t providing our media team and clients with the kind of user experience they needed; console executes orders within our real-time marketplace and connects clients instantly to an ecosystem of more than 15,000 websites and mobile apps, more than 350 partners, 500 million monthly global unique viewers. At that scale, we needed to make the application utilize a more modern data flow as well as increase the speed and responsiveness overall. As a result, we opted to switch to a single-page app, and this ultimately made us realize we needed to investigate some new technologies.
+BrightRoll used CanJS to build its advanced programmatic buying console for digital video advertising. The original BrightRoll interface was architected without a front-end framework, and instead mainly used Rails with a bit of client-side jQuery. Unfortunately, this wasn’t providing our media team and clients with the kind of user experience they needed; console executes orders within our real-time marketplace and connects clients instantly to an ecosystem of more than 15,000 websites and mobile apps, more than 350 partners, and 500 million monthly global unique viewers. At that scale, we needed to make the application utilize a more modern data flow as well as increase the speed and responsiveness overall. As a result, we opted to switch to a single-page app, and this ultimately made us realize we needed to investigate some new technologies.
 
 ### Choosing a Framework
 
@@ -35,7 +35,7 @@ Once BrightRoll decided to switch the console to a single-page application, we d
 
 Specifically, we found Angular and Ember to both be too opinionated; additionally, Angular’s performance with the large data sets we were using was sub-par. We also considered Backbone, but it was insufficient for our needs because it is essentially a model layer that doesn’t handle templating and live binding. 
 
-In order to create a proving ground for CanJS, we initially built out a number of internal tools and UIs. This allowed us to internally explore all that it had to offer and allow us a more nuanced approach to designing our architecture. Then, we used what was learned to build the Console. The application runs as a single-page web application, and supports deep linking into a heavily data-driven UI. Typical users will open the app in their browser and keep it open all day, placing orders and reporting on outcomes as their video advertising campaigns run.
+In order to create a proving ground for CanJS, we initially built out a number of internal tools and UIs. This allowed us to internally explore all that it had to offer and allowed us a more nuanced approach to designing our architecture. Then, we used what was learned to build the Console. The application runs as a single-page web application, and supports deep linking into a heavily data-driven UI. Typical users will open the app in their browser and keep it open all day, placing orders and reporting on outcomes as their video advertising campaigns run.
 
 ### Development With CanJS 
 
