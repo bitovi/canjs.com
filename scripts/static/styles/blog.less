@@ -231,7 +231,7 @@
 #blog-content,
 .blog-category-lists {
 	
-	width:800px;
+	width:700px;
 	margin: 0 auto;
 
 	h1, h2, h3, h4, h5, h6 {
@@ -250,13 +250,20 @@
 	h5 { font-size: 1em; }
 	h6 { font-size: .75em; }
 
+	h3:first-child {
+		margin-top:0
+	}
+	h3 {
+		margin-top:30px;
+	}
+
 	p, ul, li,  {
 	color: #666666;
 	font-family: 'Lato', Arial, Helvetica, sans-serif;
 	font-weight: 300;
 	font-style: normal;
-	font-size: 25px;
-	line-height: normal
+	font-size: 22px;
+	line-height: 1.5em;
 	}
 	ul {
 	    list-style: none;
@@ -303,6 +310,10 @@
 	iframe.twitter-share-button {
 		display: inline-block;
 		margin: 0 0 0 5px;
+	}
+	img {
+		border:0;
+		background:none;
 	}
 }
 
