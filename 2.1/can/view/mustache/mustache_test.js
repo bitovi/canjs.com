@@ -420,6 +420,20 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		deepEqual(div.innerHTML, "foo");
 	});
 
+	test("String literals passed to helper should work (#1143)", 1, function() {
+		can.Mustache.registerHelper("concatStrings", function(arg1, arg2) {
+			return arg1 + arg2;
+		});
+
+		// Test with '=' because the regexp to find arguments uses that char
+		// to delimit a keyword-arg name from its value.
+		can.view.mustache('testStringArgs', '{{concatStrings "==" "word"}}');
+		var div = document.createElement('div');
+		div.appendChild(can.view('testStringArgs', {}));
+
+		equal(div.innerHTML, '==word');
+	});
+
 	test("Partials and observes", function () {
 		var template;
 		var div = document.createElement('div');
@@ -2898,6 +2912,37 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 			list: list
 		})
 			.childNodes[0].getElementsByTagName('li');
+
+		for (var i = 0; i < lis.length; i++) {
+			equal(lis[i].innerHTML, (i + ' ' + i), 'rendered index and value are correct');
+		}
+	});
+
+	test("Rendering indicies of an array with @index + offset (#1078)", function () {
+		var template = can.view.mustache("<ul>{{#each list}}<li>{{@index 5}} {{.}}</li>{{/each}}</ul>");
+		var list = [0, 1, 2, 3];
+
+		var lis = template({
+			list: list
+		})
+			.childNodes[0].getElementsByTagName('li');
+
+		for (var i = 0; i < lis.length; i++) {
+			equal(lis[i].innerHTML, (i+5 + ' ' + i), 'rendered index and value are correct');
+		}
+	});
+
+	test("Passing indices into helpers as values", function () {
+		var template = can.view.mustache("<ul>{{#each list}}<li>{{test @index}} {{.}}</li>{{/each}}</ul>");
+		var list = [0, 1, 2, 3];
+
+		var lis = template({
+			list: list
+		}, {
+			test: function(index) {
+				return ""+index;
+			}
+		}).childNodes[0].getElementsByTagName('li');
 
 		for (var i = 0; i < lis.length; i++) {
 			equal(lis[i].innerHTML, (i + ' ' + i), 'rendered index and value are correct');

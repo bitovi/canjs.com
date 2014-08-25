@@ -1096,7 +1096,7 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 			setup: function (base, fullName, staticProps, protoProps) {
 				// Assume `fullName` wasn't passed. (`can.Model.extend({ ... }, { ... })`)
 				// This is pretty usual.
-				if (fullName !== "string") {
+				if (typeof fullName !== "string") {
 					protoProps = staticProps;
 					staticProps = fullName;
 				}
@@ -1186,9 +1186,15 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 					// Check the configuration for this ajaxMethod.
 					// If the configuration isn't a function, it should be a string (like `"GET /endpoint"`)
 					// or an object like `{url: "/endpoint", type: 'GET'}`.
-					if (!can.isFunction(self[name])) {
-						// Etiher way, `ajaxMaker` will turn it into a function for us.
-						self[name] = ajaxMaker(method, self[name] ? self[name] : createURLFromResource(self, name));
+
+					//if we have a string(like `"GET /endpoint"`) or an object(ajaxSettings) set in the static definition(not inherited),
+					//convert it to a function.
+					if(staticProps && staticProps[name] && (typeof staticProps[name] === 'string' || typeof staticProps[name] === 'object')) {
+						self[name] = ajaxMaker(method, staticProps[name]);
+					}
+					//if we have a resource property set in the static definition
+					else if(staticProps && staticProps.resource) {
+						self[name] = ajaxMaker(method, createURLFromResource(self, name));
 					}
 
 					// There may also be a "maker" function (like `makeFindAll`) that alters the behavior of acting upon models
@@ -1228,7 +1234,7 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 
 					// If there was no prototype, or no `model` and no `parseModel`,
 					// we'll have to create a `parseModel`.
-					else if (!protoProps || (!protoProps[name] && !protoProps[parseName])) {
+					else if (!staticProps || (!staticProps[name] && !staticProps[parseName])) {
 						can.Construct._overwrite(self, base, parseName, parsers[parseName]());
 					}
 				});
@@ -1886,7 +1892,7 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 			// we use those as parameters for an initial findAll.
 			if (can.isPlainObject(params) && !can.isArray(params)) {
 				can.List.prototype.setup.apply(this);
-				this.replace(this.constructor.Map.findAll(params));
+				this.replace(can.isDeferred(params) ? params : this.constructor.Map.findAll(params));
 			} else {
 				// Otherwise, set up the list like normal.
 				can.List.prototype.setup.apply(this, arguments);
