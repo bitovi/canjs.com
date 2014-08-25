@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.2
+ * CanJS - 2.1.3
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 16 Jun 2014 20:44:18 GMT
+ * Mon, 25 Aug 2014 21:51:29 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -232,7 +232,7 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 					can.bind.call(el, "attributes", function (ev) {
 						// Convert attribute name from the `attribute-name` to the `attributeName` format.
 						var camelized = can.camelize(ev.attributeName);
-						if (!twoWayBindings[camelized]) {
+						if (!twoWayBindings[camelized] && !ignoreAttributesRegExp.test(camelized) ) {
 							// If there is a mapping for this attribute, update the `componentScope` attribute
 							componentScope.attr(camelized, el.getAttribute(ev.attributeName));
 						}

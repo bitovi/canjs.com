@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.2
+ * CanJS - 2.1.3
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 16 Jun 2014 20:44:18 GMT
+ * Mon, 25 Aug 2014 21:51:29 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -241,7 +241,9 @@ steal('can/util', 'can/util/bind', 'can/util/batch', function (can, bind) {
 					onchanged = function(ev){
 						if (compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum) ) {
 							// Get the new value
+							var reads = can.__clearReading();
 							var newValue = func.call(context);
+							can.__setReading(reads);
 							// Call the updater with old and new values
 							updater(newValue, oldValue, ev.batchNum);
 							oldValue = newValue;
@@ -652,7 +654,7 @@ steal('can/util', 'can/util/bind', 'can/util/batch', function (can, bind) {
 				if (options.foundObservable) {
 					options.foundObservable(prev, i);
 				}
-				prev = prev();
+				prev = cur = prev();
 			}
 			// Look to read a property from something.
 			if (isObserve(prev)) {
@@ -705,7 +707,7 @@ steal('can/util', 'can/util/bind', 'can/util/batch', function (can, bind) {
 		}
 		// handle an ending function
 		// unless it is a can.Construct-derived constructor
-		if (typeof cur === 'function' && !(can.Construct && cur.prototype instanceof can.Construct)) {
+		if (typeof cur === 'function' && !(can.Construct && cur.prototype instanceof can.Construct) && !(can.route && cur === can.route)) {
 			if (options.isArgument) {
 				if (!cur.isComputed && options.proxyMethods !== false) {
 					cur = can.proxy(cur, prev);

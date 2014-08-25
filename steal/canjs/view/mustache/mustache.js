@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.2
+ * CanJS - 2.1.3
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 16 Jun 2014 20:44:18 GMT
+ * Mon, 25 Aug 2014 21:51:29 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -43,7 +43,7 @@ steal('can/util',
 			ARG_NAMES = SCOPE + ",options",
 
 			// matches arguments inside a {{ }}
-			argumentsRegExp = /((([^\s]+?=)?('.*?'|".*?"))|.*?)\s/g,
+			argumentsRegExp = /((([^'"\s]+?=)?('.*?'|".*?"))|.*?)\s/g,
 
 			// matches a literal number, string, null or regexp
 			literalNumberStringBooleanRegExp = /^(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false|null|undefined)|((.+?)=(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false)|(.+))))$/,
@@ -1367,7 +1367,7 @@ steal('can/util',
 						}
 					}
 				} else if (arg && isLookup(arg)) {
-					args.push(Mustache.get(arg.get, scopeAndOptions, false, true));
+					args.push(Mustache.get(arg.get, scopeAndOptions, false, true, true));
 				} else {
 					args.push(arg);
 				}
@@ -1520,7 +1520,7 @@ steal('can/util',
 		 * @param {Object} context The context to use for checking for a reference if it doesn't exist in the object.
 		 * @param {Boolean} [isHelper] Whether the reference is seen as a helper.
 		 */
-		Mustache.get = function (key, scopeAndOptions, isHelper, isArgument) {
+		Mustache.get = function (key, scopeAndOptions, isHelper, isArgument, isLookup) {
 
 			// Cache a reference to the current context and options, we will use them a bunch.
 			var context = scopeAndOptions.scope.attr('.'),
@@ -1563,7 +1563,7 @@ steal('can/util',
 			//!steal-remove-end
 
 			// Use helper over the found value if the found value isn't in the current context
-			if ((initialValue === undefined || computeData.scope !== scopeAndOptions.scope) && Mustache.getHelper(key, options)) {
+			if (!isLookup && (initialValue === undefined || computeData.scope !== scopeAndOptions.scope) && Mustache.getHelper(key, options)) {
 				return key;
 			}
 
@@ -2062,7 +2062,7 @@ steal('can/util',
 						console.log(expr, options.context);
 					}
 				}
-			}
+			},
 			/**
 			 * @function can.mustache.helpers.elementCallback {{(el)->CODE}}
 			 *
@@ -2125,7 +2125,14 @@ steal('can/util',
 			 *     </ul>
 			 *
 			 */
-			//
+			"@index": function(offset, options) {
+				if (!options) {
+					options = offset;
+					offset = 0;
+				}
+				var index = options.scope.attr("@index");
+				return ""+((can.isFunction(index) ? index() : index) + offset);
+			}
 			/**
 			 * @function can.mustache.helpers.key {{@key}}
 			 *

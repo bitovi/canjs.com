@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.2
+ * CanJS - 2.1.3
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 16 Jun 2014 20:44:18 GMT
+ * Mon, 25 Aug 2014 21:51:29 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -40,7 +40,7 @@ steal("can/util",
 	// ## Helpers
 	
 	// Breaks up the name and arguments of a mustache expression.
-	var argumentsRegExp = /((([^\s]+?=)?('.*?'|".*?"))|.*?)\s/g,
+	var argumentsRegExp = /((([^'"\s]+?=)?('.*?'|".*?"))|.*?)\s/g,
 		// Identifies the type of an argument or hash in a mustache expression.
 		literalNumberStringBooleanRegExp = /^(?:(?:('.*?'|".*?")|([0-9]+\.?[0-9]*|true|false|null|undefined))|(?:(.+?)=(?:(?:('.*?'|".*?")|([0-9]+\.?[0-9]*|true|false|null|undefined))|(.+))))$/,
 		// Finds mustache tags and their surrounding whitespace.
@@ -257,7 +257,14 @@ steal("can/util",
 						compute = computeData.compute;
 						
 					initialValue = computeData.initialValue;
-					if(computeData.reads && computeData.reads.length === 1 && computeData.root instanceof can.Map) {
+					// Optimize for a simple attribute read.
+					if(computeData.reads &&
+						// a single property read
+						computeData.reads.length === 1 &&
+						// on a map
+						computeData.root instanceof can.Map &&
+						// that isn't calling a function
+						!can.isFunction(computeData.root[computeData.reads[0]]) ) {
 						compute = can.compute(computeData.root, computeData.reads[0]);
 					}
 					

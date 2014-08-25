@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.2
+ * CanJS - 2.1.3
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 16 Jun 2014 20:44:18 GMT
+ * Mon, 25 Aug 2014 21:51:29 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -277,7 +277,11 @@ define(["can/util/string"], function (can) {
 		 * @return {function} The constructor function.
 		 *
 		 */
-		extend: function (fullName, klass, proto) {
+		extend: function (name, staticProperties, instanceProperties) {
+			var fullName = name,
+				klass = staticProperties,
+				proto = instanceProperties;
+
 			// Figure out what was passed and normalize it.
 			if (typeof fullName !== 'string') {
 				proto = klass;
@@ -291,7 +295,7 @@ define(["can/util/string"], function (can) {
 			proto = proto || {};
 			var _super_class = this,
 				_super = this.prototype,
-				parts, current, _fullName, _shortName, name, shortName, namespace, prototype;
+				parts, current, _fullName, _shortName, propName, shortName, namespace, prototype;
 			// Instantiate a base class (but only create the instance,
 			// don't run the init constructor).
 			prototype = this.instance();
@@ -311,9 +315,9 @@ define(["can/util/string"], function (can) {
 				}
 			}
 			// Copy old stuff onto class (can probably be merged w/ inherit)
-			for (name in _super_class) {
-				if (_super_class.hasOwnProperty(name)) {
-					Constructor[name] = _super_class[name];
+			for (propName in _super_class) {
+				if (_super_class.hasOwnProperty(propName)) {
+					Constructor[propName] = _super_class[propName];
 				}
 			}
 			// Copy new static properties on class.

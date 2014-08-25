@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.2
+ * CanJS - 2.1.3
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 16 Jun 2014 20:44:29 GMT
+ * Mon, 25 Aug 2014 21:51:37 GMT
  * Licensed MIT
  * Includes: can/component,can/construct,can/map,can/list,can/observe,can/compute,can/model,can/view,can/control,can/route,can/control/route,can/view/mustache,can/view/bindings,can/view/live,can/view/scope,can/util/string,can/util/attr
  * Download from: http://canjs.com
@@ -33,7 +33,7 @@
             }
             return object._cid;
         };
-        can.VERSION = '2.1.2';
+        can.VERSION = '2.1.3';
 
         can.simpleExtend = function(d, s) {
             for (var prop in s) {
@@ -2407,7 +2407,11 @@
                 },
                 // Extends classes.
 
-                extend: function(fullName, klass, proto) {
+                extend: function(name, staticProperties, instanceProperties) {
+                    var fullName = name,
+                        klass = staticProperties,
+                        proto = instanceProperties;
+
                     // Figure out what was passed and normalize it.
                     if (typeof fullName !== 'string') {
                         proto = klass;
@@ -2421,7 +2425,7 @@
                     proto = proto || {};
                     var _super_class = this,
                         _super = this.prototype,
-                        parts, current, _fullName, _shortName, name, shortName, namespace, prototype;
+                        parts, current, _fullName, _shortName, propName, shortName, namespace, prototype;
                     // Instantiate a base class (but only create the instance,
                     // don't run the init constructor).
                     prototype = this.instance();
@@ -2448,9 +2452,9 @@
                         }
                     }
                     // Copy old stuff onto class (can probably be merged w/ inherit)
-                    for (name in _super_class) {
-                        if (_super_class.hasOwnProperty(name)) {
-                            Constructor[name] = _super_class[name];
+                    for (propName in _super_class) {
+                        if (_super_class.hasOwnProperty(propName)) {
+                            Constructor[propName] = _super_class[propName];
                         }
                     }
                     // Copy new static properties on class.
@@ -3255,6 +3259,10 @@
 
             {
                 setup: function(obj) {
+                    if (obj instanceof can.Map) {
+                        obj = obj.serialize();
+                    }
+
                     // `_data` is where we keep the properties.
                     this._data = {};
 
@@ -4206,7 +4214,9 @@
                         onchanged = function(ev) {
                             if (compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
                                 // Get the new value
+                                var reads = can.__clearReading();
                                 var newValue = func.call(context);
+                                can.__setReading(reads);
                                 // Call the updater with old and new values
                                 updater(newValue, oldValue, ev.batchNum);
                                 oldValue = newValue;
@@ -4571,7 +4581,7 @@
                     if (options.foundObservable) {
                         options.foundObservable(prev, i);
                     }
-                    prev = prev();
+                    prev = cur = prev();
                 }
                 // Look to read a property from something.
                 if (isObserve(prev)) {
@@ -4624,7 +4634,7 @@
             }
             // handle an ending function
             // unless it is a can.Construct-derived constructor
-            if (typeof cur === 'function' && !(can.Construct && cur.prototype instanceof can.Construct)) {
+            if (typeof cur === 'function' && !(can.Construct && cur.prototype instanceof can.Construct) && !(can.route && cur === can.route)) {
                 if (options.isArgument) {
                     if (!cur.isComputed && options.proxyMethods !== false) {
                         cur = can.proxy(cur, prev);
@@ -5994,7 +6004,7 @@
         }
 
         var alphaNumericHU = "-A-Za-z0-9_",
-            attributeNames = "[a-zA-Z_:][" + alphaNumericHU + ":.]+",
+            attributeNames = "[a-zA-Z_:][" + alphaNumericHU + ":.]*",
             spaceEQspace = "\\s*=\\s*",
             dblQuote2dblQuote = "\"((?:\\\\.|[^\"])*)\"",
             quote2quote = "'((?:\\\\.|[^'])*)'",
@@ -6946,7 +6956,7 @@
             ARG_NAMES = SCOPE + ",options",
 
             // matches arguments inside a {{ }}
-            argumentsRegExp = /((([^\s]+?=)?('.*?'|".*?"))|.*?)\s/g,
+            argumentsRegExp = /((([^'"\s]+?=)?('.*?'|".*?"))|.*?)\s/g,
 
             // matches a literal number, string, null or regexp
             literalNumberStringBooleanRegExp = /^(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false|null|undefined)|((.+?)=(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false)|(.+))))$/,
@@ -7487,7 +7497,7 @@
                         }
                     }
                 } else if (arg && isLookup(arg)) {
-                    args.push(Mustache.get(arg.get, scopeAndOptions, false, true));
+                    args.push(Mustache.get(arg.get, scopeAndOptions, false, true, true));
                 } else {
                     args.push(arg);
                 }
@@ -7600,7 +7610,7 @@
         };
 
 
-        Mustache.get = function(key, scopeAndOptions, isHelper, isArgument) {
+        Mustache.get = function(key, scopeAndOptions, isHelper, isArgument, isLookup) {
 
             // Cache a reference to the current context and options, we will use them a bunch.
             var context = scopeAndOptions.scope.attr('.'),
@@ -7643,7 +7653,7 @@
             //!steal-remove-end
 
             // Use helper over the found value if the found value isn't in the current context
-            if ((initialValue === undefined || computeData.scope !== scopeAndOptions.scope) && Mustache.getHelper(key, options)) {
+            if (!isLookup && (initialValue === undefined || computeData.scope !== scopeAndOptions.scope) && Mustache.getHelper(key, options)) {
                 return key;
             }
 
@@ -7857,6 +7867,15 @@
                             console.log(expr, options.context);
                         }
                     }
+                },
+
+                "@index": function(offset, options) {
+                    if (!options) {
+                        options = offset;
+                        offset = 0;
+                    }
+                    var index = options.scope.attr("@index");
+                    return "" + ((can.isFunction(index) ? index() : index) + offset);
                 }
 
             }, function(fn, name) {
@@ -8458,7 +8477,7 @@
                         can.bind.call(el, "attributes", function(ev) {
                             // Convert attribute name from the `attribute-name` to the `attributeName` format.
                             var camelized = can.camelize(ev.attributeName);
-                            if (!twoWayBindings[camelized]) {
+                            if (!twoWayBindings[camelized] && !ignoreAttributesRegExp.test(camelized)) {
                                 // If there is a mapping for this attribute, update the `componentScope` attribute
                                 componentScope.attr(camelized, el.getAttribute(ev.attributeName));
                             }
@@ -9052,7 +9071,7 @@
                 setup: function(base, fullName, staticProps, protoProps) {
                     // Assume `fullName` wasn't passed. (`can.Model.extend({ ... }, { ... })`)
                     // This is pretty usual.
-                    if (fullName !== "string") {
+                    if (typeof fullName !== "string") {
                         protoProps = staticProps;
                         staticProps = fullName;
                     }
@@ -9092,9 +9111,15 @@
                         // Check the configuration for this ajaxMethod.
                         // If the configuration isn't a function, it should be a string (like `"GET /endpoint"`)
                         // or an object like `{url: "/endpoint", type: 'GET'}`.
-                        if (!can.isFunction(self[name])) {
-                            // Etiher way, `ajaxMaker` will turn it into a function for us.
-                            self[name] = ajaxMaker(method, self[name] ? self[name] : createURLFromResource(self, name));
+
+                        //if we have a string(like `"GET /endpoint"`) or an object(ajaxSettings) set in the static definition(not inherited),
+                        //convert it to a function.
+                        if (staticProps && staticProps[name] && (typeof staticProps[name] === 'string' || typeof staticProps[name] === 'object')) {
+                            self[name] = ajaxMaker(method, staticProps[name]);
+                        }
+                        //if we have a resource property set in the static definition
+                        else if (staticProps && staticProps.resource) {
+                            self[name] = ajaxMaker(method, createURLFromResource(self, name));
                         }
 
                         // There may also be a "maker" function (like `makeFindAll`) that alters the behavior of acting upon models
@@ -9134,7 +9159,7 @@
 
                         // If there was no prototype, or no `model` and no `parseModel`,
                         // we'll have to create a `parseModel`.
-                        else if (!protoProps || (!protoProps[name] && !protoProps[parseName])) {
+                        else if (!staticProps || (!staticProps[name] && !staticProps[parseName])) {
                             can.Construct._overwrite(self, base, parseName, parsers[parseName]());
                         }
                     });
@@ -9348,7 +9373,7 @@
                     // we use those as parameters for an initial findAll.
                     if (can.isPlainObject(params) && !can.isArray(params)) {
                         can.List.prototype.setup.apply(this);
-                        this.replace(this.constructor.Map.findAll(params));
+                        this.replace(can.isDeferred(params) ? params : this.constructor.Map.findAll(params));
                     } else {
                         // Otherwise, set up the list like normal.
                         can.List.prototype.setup.apply(this, arguments);
@@ -9522,10 +9547,13 @@
                     var serialized = can.route.data.serialize(),
                         path = can.route.param(serialized, true);
                     can.route._call("setURL", path);
-
+                    // trigger a url change so its possible to live-bind on url-based changes
+                    can.batch.trigger(eventsObject, "__url", [path, lastHash]);
                     lastHash = path;
                 }, 10);
-            };
+            },
+            // A dummy events object used to dispatch url change events on.
+            eventsObject = can.extend({}, can.event);
 
         can.route = function(url, defaults) {
             // if route ends with a / and url starts with a /, remove the leading / of the url
@@ -9743,6 +9771,8 @@
                 },
 
                 current: function(options) {
+                    // "reads" the url so the url is live-bindable.
+                    can.__reading(eventsObject, "__url");
                     return this._call("matchingPartOfURL") === can.route.param(options);
                 },
                 bindings: {
@@ -9817,7 +9847,7 @@
 
         // The functions in the following list applied to `can.route` (e.g. `can.route.attr('...')`) will
         // instead act on the `can.route.data` observe.
-        each(['bind', 'unbind', 'on', 'off', 'delegate', 'undelegate', 'removeAttr', 'compute', '_get', '__get'], function(name) {
+        each(['bind', 'unbind', 'on', 'off', 'delegate', 'undelegate', 'removeAttr', 'compute', '_get', '__get', 'each'], function(name) {
             can.route[name] = function() {
                 // `delegate` and `undelegate` require
                 // the `can/map/delegate` plugin
@@ -9875,6 +9905,8 @@
                     }
                 }
                 can.route.attr(curParams);
+                // trigger a url change so its possible to live-bind on url-based changes
+                can.batch.trigger(eventsObject, "__url", [hash, lastHash]);
                 can.batch.stop();
             }
         };

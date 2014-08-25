@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.2
+ * CanJS - 2.1.3
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 16 Jun 2014 20:44:30 GMT
+ * Mon, 25 Aug 2014 21:51:38 GMT
  * Licensed MIT
  * Includes: can/view/stache
  * Download from: http://canjs.com
@@ -322,6 +322,14 @@
                 return result;
 
             },
+            "@index": function(offset, options) {
+                if (!options) {
+                    options = offset;
+                    offset = 0;
+                }
+                var index = options.scope.attr("@index");
+                return "" + ((can.isFunction(index) ? index() : index) + offset);
+            },
             'if': function(expr, options) {
                 var value;
                 // if it's a function, wrap its value in a compute
@@ -406,7 +414,7 @@
         // ## Helpers
 
         // Breaks up the name and arguments of a mustache expression.
-        var argumentsRegExp = /((([^\s]+?=)?('.*?'|".*?"))|.*?)\s/g,
+        var argumentsRegExp = /((([^'"\s]+?=)?('.*?'|".*?"))|.*?)\s/g,
             // Identifies the type of an argument or hash in a mustache expression.
             literalNumberStringBooleanRegExp = /^(?:(?:('.*?'|".*?")|([0-9]+\.?[0-9]*|true|false|null|undefined))|(?:(.+?)=(?:(?:('.*?'|".*?")|([0-9]+\.?[0-9]*|true|false|null|undefined))|(.+))))$/,
             // Finds mustache tags and their surrounding whitespace.
@@ -609,7 +617,14 @@
                             compute = computeData.compute;
 
                         initialValue = computeData.initialValue;
-                        if (computeData.reads && computeData.reads.length === 1 && computeData.root instanceof can.Map) {
+                        // Optimize for a simple attribute read.
+                        if (computeData.reads &&
+                            // a single property read
+                            computeData.reads.length === 1 &&
+                            // on a map
+                            computeData.root instanceof can.Map &&
+                            // that isn't calling a function
+                            !can.isFunction(computeData.root[computeData.reads[0]])) {
                             compute = can.compute(computeData.root, computeData.reads[0]);
                         }
 
