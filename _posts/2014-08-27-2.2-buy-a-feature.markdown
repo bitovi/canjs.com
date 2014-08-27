@@ -20,7 +20,9 @@ some of the features listed in github.
 Each feature has a price in Bithub points. 
 
 Everyone attending the sale in person or online will get 5 points plus 
-their [Bithub points](http://bithub.com/leaderboard) towards purchasing features.  
+their [Bithub points](http://bithub.com/leaderboard) towards purchasing features.  Bithub
+tracks our community's activity across github, twitter, and other sites. People
+earn points by submitting and closing issues, creating content and getting upvoted for it.
 
 There's only enough points to buy about half the features, 
 so you will have to pool your money to get what you want.
@@ -112,27 +114,18 @@ and prepared to your liking.
 
 ## Event Agenda
 
-Our hope is that this will create a lot of discussion around what 
+Our hope is githat this will create a lot of discussion around what 
 features are important to which people.  
 
 The following is the event plan:
 
  - `6:00 PM CST` - I will go over each feature and what it means.  Questions can be asked over IRC.
- - `7:00 PM CST` - Floor will be open for 10 minutes for people to try to convince people to purchase their favorite features.
- - `7:00 PM CST` - Once all features have been explained, we 
-   will cycle through each participant. 
-   - The participant will put all their points behind a feature.
-   - If the purchase amount is matched, the feature is purchased. 
-     Everyone who put points behind that feature is done playing 
-     the game.
-   - If the purchase amount is not matched, the participant 
-     will have one minute to try to convince people to 
-     put their money in the same feature.
-   - Once all participants have played, the first round 
-     is complete.  
-   - Before the second round, the floor will be opened 
-     again for 10 minutes.  Participants should try to 
-     negotiate for the features they want. 
-   - We will continue with additional round until all 
-     money is used up or a stalemate. 
-     
+ - `7:00 PM CST` - Floor will be open for 20 minutes for people to try to convince 
+   people to purchase their favorite features.  
+ - `7:20 PM CST` - Once all features have been explained, we 
+   will cycle through each feature. 
+   - Everyone will have the opportunity to put some of their points behind a feature. 
+   - Each person will have 60 seconds to explain their decision.
+   - Features have to be fully funded to be on our roadmap for 2.2.
+   - Once all features have been discussed, people will be able to remove their points from a feature.
+   - We will repeat this process until everyone's points are used up or we reach a stalemate.
