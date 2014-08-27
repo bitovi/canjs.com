@@ -114,7 +114,7 @@ and prepared to your liking.
 
 ## Event Agenda
 
-Our hope is githat this will create a lot of discussion around what 
+Our hope is that this will create a lot of discussion around what 
 features are important to which people.  
 
 The following is the event plan:
