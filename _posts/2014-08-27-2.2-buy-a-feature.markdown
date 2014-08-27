@@ -41,25 +41,25 @@ and prepared to your liking.
 
 ### Modeling
 
-`$190` - Validation improvements. [issue](https://github.com/bitovi/canjs/issues/1111), [+1](http://bithub.com/event/40885)
+`$190` - Validation improvements. [issue](https://github.com/bitovi/canjs/issues/1111), [upvote](http://bithub.com/event/40885)
 
 `$205` - can.connect for advanced persistent data behavior. 
-[issue](https://github.com/bitovi/canjs/issues/1213), [+1](http://bithub.com/event/43923)
+[issue](https://github.com/bitovi/canjs/issues/1213), [upvote](http://bithub.com/event/43923)
 
-`$150` - List helpers. [issue](https://github.com/bitovi/canjs/issues/192), [+1](http://bithub.com/event/25910)
+`$150` - List helpers. [issue](https://github.com/bitovi/canjs/issues/192), [upvote](http://bithub.com/event/25910)
 
-`$160` - Dirty Checking. [issue](https://github.com/bitovi/canjs/issues/1214), [+1](http://bithub.com/event/43945)
+`$160` - Dirty Checking. [issue](https://github.com/bitovi/canjs/issues/1214), [upvote](http://bithub.com/event/43945)
 
 ### Components
 
 `$160` - Improving communication and message passing between components. 
-[issue](https://github.com/bitovi/canjs/issues/1209), [+1](http://bithub.com/event/43589)
+[issue](https://github.com/bitovi/canjs/issues/1209), [upvote](http://bithub.com/event/43589)
 
-`$170` - Support custom elements outside a template and bridge to web component technology. [issue](https://github.com/bitovi/canjs/issues/730), [+1](http://bithub.com/event/25826)
+`$170` - Support custom elements outside a template and bridge to web component technology. [issue](https://github.com/bitovi/canjs/issues/730), [upvote](http://bithub.com/event/25826)
 
-`$130` - Mixin component behavior as attributes. [issue](https://github.com/bitovi/canjs/issues/648), [+1](http://bithub.com/event/25859)
+`$130` - Mixin component behavior as attributes. [issue](https://github.com/bitovi/canjs/issues/648), [upvote](http://bithub.com/event/25859)
 
-`$210` - Implement content select attribute. [issue](https://github.com/bitovi/canjs/issues/500), [+1](http://bithub.com/event/25882)
+`$210` - Implement content select attribute. [issue](https://github.com/bitovi/canjs/issues/500), [upvote](http://bithub.com/event/25882)
 
 
 ### Bindings
@@ -67,30 +67,30 @@ and prepared to your liking.
 `$170` - Assorted Binding Improvements:
 
  - can-checked replaces can-value where appropriate. [issue](https://github.com/bitovi/canjs/issues/1205)
- - can-href link helper. [issue](https://github.com/bitovi/canjs/issues/1103), [+1](http://bithub.com/event/40391)
- - can-EVENT arguments. [issue](https://github.com/bitovi/canjs/issues/1219), [+1](http://bithub.com/event/44023)
+ - can-href link helper. [issue](https://github.com/bitovi/canjs/issues/1103), [upvote](http://bithub.com/event/40391)
+ - can-EVENT arguments. [issue](https://github.com/bitovi/canjs/issues/1219), [upvote](http://bithub.com/event/44023)
 
-`$190` - can-animate. [issue](https://github.com/bitovi/canjs/issues/1005), [+1](http://bithub.com/event/36984)
+`$190` - can-animate. [issue](https://github.com/bitovi/canjs/issues/1005), [upvote](http://bithub.com/event/36984)
 
-`$110` - Expose keyboard mappings to allow matching key events besides can-enter. [issue](https://github.com/bitovi/canjs/issues/728), [+1](http://bithub.com/event/25827)
+`$110` - Expose keyboard mappings to allow matching key events besides can-enter. [issue](https://github.com/bitovi/canjs/issues/728), [upvote](http://bithub.com/event/25827)
 
 ### Stache
 
-`$140` - Make deferreds observable. [issue](https://github.com/bitovi/canjs/issues/179), [+1](http://bithub.com/event/25912)
+`$140` - Make deferreds observable. [issue](https://github.com/bitovi/canjs/issues/179), [upvote](http://bithub.com/event/25912)
 
-`$150` - Dynamic property access with mustache and stache. [issue](https://github.com/bitovi/canjs/issues/1157), [+1](http://bithub.com/event/41611)
+`$150` - Dynamic property access with mustache and stache. [issue](https://github.com/bitovi/canjs/issues/1157), [upvote](http://bithub.com/event/41611)
 
-`$200` - In page templates. [issue](https://github.com/bitovi/canjs/issues/1215), [+1](http://bithub.com/event/43978)
+`$200` - In page templates. [issue](https://github.com/bitovi/canjs/issues/1215), [upvote](http://bithub.com/event/43978)
 
 ### Tools and Debugging
 
-`$190` - CanJS Inspector. [issue](https://github.com/bitovi/canjs/issues/1144), [+1](http://bithub.com/event/41401)
+`$190` - CanJS Inspector. [issue](https://github.com/bitovi/canjs/issues/1144), [upvote](http://bithub.com/event/41401)
 
-`$110` - Misc: Constructor names visible in debugger. [issue](https://github.com/bitovi/canjs/issues/1000), Turn off enumerable values. [+1](http://bithub.com/event/36871)
+`$110` - Misc: Constructor names visible in debugger. [issue](https://github.com/bitovi/canjs/issues/1000), Turn off enumerable values. [upvote](http://bithub.com/event/36871)
 
 ### Routing
 
-`$200` - High-level routing and component glue. [issue](https://github.com/bitovi/canjs/issues/1216), [+1](http://bithub.com/event/43980)
+`$200` - High-level routing and component glue. [issue](https://github.com/bitovi/canjs/issues/1216), [upvote](http://bithub.com/event/43980)
 
 
 ### Performance
