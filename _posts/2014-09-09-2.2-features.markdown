@@ -1,0 +1,52 @@
+---
+title: 2.2 Features
+category: news
+author: Justin Meyer
+twitterHandle: justinbmeyer
+githubHandle: justinbmeyer
+banner_img: /img/header-blog-7-11-14.jpg
+lead: What's planned for 2.2
+layout: post
+---
+
+Thanks to everyone who joined us for the 
+[2.2 buy a feature](/blog/2014/08/2.2-buy-a-feature.html). Learning 
+what our community values will help us make a better 
+product. 
+
+## Features
+
+Here's the list of features purchased for 2.2:
+
+ - Dirty Checking. [issue](https://github.com/bitovi/canjs/issues/1214), [upvote](http://bithub.com/event/43945)
+ - Support custom elements outside a template and bridge to web component technology. [issue](https://github.com/bitovi/canjs/issues/730), [upvote](http://bithub.com/event/25826)
+ - Implement content select attribute. [issue](https://github.com/bitovi/canjs/issues/500), [upvote](http://bithub.com/event/25882)
+ - can-animate. [issue](https://github.com/bitovi/canjs/issues/1005), [upvote](http://bithub.com/event/36984)
+ - Make deferreds observable. [issue](https://github.com/bitovi/canjs/issues/179), [upvote](http://bithub.com/event/25912)
+ - CanJS Inspector. [issue](https://github.com/bitovi/canjs/issues/1144), [upvote](http://bithub.com/event/41401)
+ - High-level routing and component glue. [issue](https://github.com/bitovi/canjs/issues/1216), [upvote](http://bithub.com/event/43980)
+ - Template 1st render performance.
+ - Improved Guides
+ - Improved Docs
+
+## On Deck
+
+The following two features were popular, but couldn't get enough points to 
+be fully purchased.  Look for these as nice-to-haves:
+
+ - Assorted Binding Improvements:
+   - can-checked replaces can-value where appropriate. [issue](https://github.com/bitovi/canjs/issues/1205)
+   - can-href link helper. [issue](https://github.com/bitovi/canjs/issues/1103), [upvote](http://bithub.com/event/40391)
+   - can-EVENT arguments. [issue](https://github.com/bitovi/canjs/issues/1219), [upvote](http://bithub.com/event/44023)
+
+ - In page templates. [issue](https://github.com/bitovi/canjs/issues/1215), [upvote](http://bithub.com/event/43978)
+
+## Timeline
+
+It's possible that these features are not released together.  For example,
+if dirty checking lands, we might immediately release 2.2 and other features
+in a later release.  
+
+We are going to have someone working full-time on these features at the end of 
+this month.  I'd expect them all to be done by year end.  
+
