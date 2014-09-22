@@ -441,7 +441,10 @@ include option merging logic.</p>
 		 * @return {function} The constructor function.
 		 *
 		 */</span>
-		extend: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fullName, klass, proto)</span> </span>{</pre></div></div>
+		extend: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name, staticProperties, instanceProperties)</span> </span>{
+			<span class="hljs-keyword">var</span> fullName = name,
+				klass = staticProperties,
+				proto = instanceProperties;</pre></div></div>
             
         </li>
         
@@ -468,7 +471,7 @@ include option merging logic.</p>
 			proto = proto || {};
 			<span class="hljs-keyword">var</span> _super_class = <span class="hljs-keyword">this</span>,
 				_super = <span class="hljs-keyword">this</span>.prototype,
-				parts, current, _fullName, _shortName, name, shortName, namespace, prototype;</pre></div></div>
+				parts, current, _fullName, _shortName, propName, shortName, namespace, prototype;</pre></div></div>
             
         </li>
         
@@ -624,9 +627,9 @@ don’t run the init constructor).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">for</span> (name <span class="hljs-keyword">in</span> _super_class) {
-				<span class="hljs-keyword">if</span> (_super_class.hasOwnProperty(name)) {
-					Constructor[name] = _super_class[name];
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">for</span> (propName <span class="hljs-keyword">in</span> _super_class) {
+				<span class="hljs-keyword">if</span> (_super_class.hasOwnProperty(propName)) {
+					Constructor[propName] = _super_class[propName];
 				}
 			}</pre></div></div>
             

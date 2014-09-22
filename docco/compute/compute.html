@@ -630,7 +630,9 @@ that are no longer being bound and unbind them.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							<span class="hljs-keyword">var</span> newValue = func.call(context);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>							<span class="hljs-keyword">var</span> reads = can.__clearReading();
+							<span class="hljs-keyword">var</span> newValue = func.call(context);
+							can.__setReading(reads);</pre></div></div>
             
         </li>
         
@@ -1718,7 +1720,7 @@ While binding, this should not count as a read</p>
 				<span class="hljs-keyword">if</span> (options.foundObservable) {
 					options.foundObservable(prev, i);
 				}
-				prev = prev();
+				prev = cur = prev();
 			}</pre></div></div>
             
         </li>
@@ -1901,7 +1903,7 @@ unless it is a can.Construct-derived constructor</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> cur === <span class="hljs-string">'function'</span> &amp;&amp; !(can.Construct &amp;&amp; cur.prototype <span class="hljs-keyword">instanceof</span> can.Construct)) {
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> cur === <span class="hljs-string">'function'</span> &amp;&amp; !(can.Construct &amp;&amp; cur.prototype <span class="hljs-keyword">instanceof</span> can.Construct) &amp;&amp; !(can.route &amp;&amp; cur === can.route)) {
 			<span class="hljs-keyword">if</span> (options.isArgument) {
 				<span class="hljs-keyword">if</span> (!cur.isComputed &amp;&amp; options.proxyMethods !== <span class="hljs-literal">false</span>) {
 					cur = can.proxy(cur, prev);

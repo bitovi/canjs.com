@@ -142,7 +142,7 @@ steal(<span class="hljs-string">"can/util"</span>,
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> argumentsRegExp = <span class="hljs-regexp">/((([^\s]+?=)?('.*?'|".*?"))|.*?)\s/g</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> argumentsRegExp = <span class="hljs-regexp">/((([^'"\s]+?=)?('.*?'|".*?"))|.*?)\s/g</span>,</pre></div></div>
             
         </li>
         
@@ -817,10 +817,7 @@ This way, we can get the initial value without “reading” the compute.</p>
             <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> computeData = getKeyComputeData(name.get, scope, <span class="hljs-literal">false</span>),
 						compute = computeData.compute;
 						
-					initialValue = computeData.initialValue;
-					<span class="hljs-keyword">if</span>(computeData.reads &amp;&amp; computeData.reads.length === <span class="hljs-number">1</span> &amp;&amp; computeData.root <span class="hljs-keyword">instanceof</span> can.Map) {
-						compute = can.compute(computeData.root, computeData.reads[<span class="hljs-number">0</span>]);
-					}</pre></div></div>
+					initialValue = computeData.initialValue;</pre></div></div>
             
         </li>
         
@@ -830,6 +827,68 @@ This way, we can get the initial value without “reading” the compute.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <p>Optimize for a simple attribute read.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(computeData.reads &amp;&amp;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <p>a single property read</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						computeData.reads.length === <span class="hljs-number">1</span> &amp;&amp;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <p>on a map</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						computeData.root <span class="hljs-keyword">instanceof</span> can.Map &amp;&amp;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              <p>that isn’t calling a function</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						!can.isFunction(computeData.root[computeData.reads[<span class="hljs-number">0</span>]]) ) {
+						compute = can.compute(computeData.root, computeData.reads[<span class="hljs-number">0</span>]);
+					}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p>Set name to be the compute if the compute reads observables,
 or the value of the value of the compute if no observables are found.</p>
@@ -845,11 +904,11 @@ or the value of the value of the compute if no observables are found.</p>
         </li>
         
         
-        <li id="section-43">
+        <li id="section-47">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <p>If it doesn’t look like a helper and there is no value, check helpers
 anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
@@ -863,11 +922,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-44">
+        <li id="section-48">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <p>Otherwise, if the value is a function, we’ll call that as a helper.</p>
 
@@ -884,11 +943,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-45">
+        <li id="section-49">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
               <p>!steal-remove-start</p>
 
@@ -905,11 +964,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-46">
+        <li id="section-50">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
               <p>!steal-remove-end</p>
 
@@ -920,11 +979,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-47">
+        <li id="section-51">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
+                <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
               <p>If inverse mode, reverse renderers.</p>
 
@@ -939,11 +998,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-48">
+        <li id="section-52">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
+                <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
               <p>Check for a registered helper or a helper-like function.</p>
 
@@ -954,11 +1013,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-49">
+        <li id="section-53">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
+                <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
               <p>Add additional data to be used by helper functions</p>
 
@@ -979,11 +1038,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-50">
+        <li id="section-54">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               <p>Call the helper.</p>
 
@@ -998,11 +1057,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-51">
+        <li id="section-55">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               <p>Return evaluators for no mode.</p>
 
@@ -1013,11 +1072,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-52">
+        <li id="section-56">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
+                <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
               <p>If it’s computed, return a function that just reads the compute.</p>
 
@@ -1030,11 +1089,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-53">
+        <li id="section-57">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
+                <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
               <p>Just return name as the value</p>
 
@@ -1051,11 +1110,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-54">
+        <li id="section-58">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
+                <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
               <p>Setup renderers.</p>
 
@@ -1067,11 +1126,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-55">
+        <li id="section-59">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
+                <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
               <p>Get the value</p>
 
@@ -1087,11 +1146,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-56">
+        <li id="section-60">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
+                <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
               <p>If it’s an array, render.</p>
 
@@ -1111,11 +1170,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-57">
+        <li id="section-61">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-57">&#182;</a>
+                <a class="pilcrow" href="#section-61">&#182;</a>
               </div>
               <p>If truthy, render fn, otherwise, inverse.</p>
 
@@ -1130,11 +1189,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-58">
+        <li id="section-62">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-58">&#182;</a>
+                <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
               <p>not supported!</p>
 
@@ -1146,11 +1205,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-59">
+        <li id="section-63">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-59">&#182;</a>
+                <a class="pilcrow" href="#section-63">&#182;</a>
               </div>
               <h2 id="mustachecore-makelivebindingpartialrenderer">mustacheCore.makeLiveBindingPartialRenderer</h2>
 <p>Returns a renderer function that live binds a partial.</p>
@@ -1172,11 +1231,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-60">
+        <li id="section-64">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-60">&#182;</a>
+                <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
               <p>Look up partials in options first.</p>
 
@@ -1192,11 +1251,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-61">
+        <li id="section-65">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-61">&#182;</a>
+                <a class="pilcrow" href="#section-65">&#182;</a>
               </div>
               <p>Use can.view to get and render the partial.</p>
 
@@ -1220,11 +1279,11 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
         </li>
         
         
-        <li id="section-62">
+        <li id="section-66">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-62">&#182;</a>
+                <a class="pilcrow" href="#section-66">&#182;</a>
               </div>
               <h2 id="mustachecore-makestringbranchrenderer">mustacheCore.makeStringBranchRenderer</h2>
 <p>Return a renderer function that evalutes to a string and caches
@@ -1245,11 +1304,11 @@ the evaluator on the scope.</p>
         </li>
         
         
-        <li id="section-63">
+        <li id="section-67">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-63">&#182;</a>
+                <a class="pilcrow" href="#section-67">&#182;</a>
               </div>
               <p>Use the full mustache expression as the cache key.</p>
 
@@ -1260,11 +1319,11 @@ the evaluator on the scope.</p>
         </li>
         
         
-        <li id="section-64">
+        <li id="section-68">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-64">&#182;</a>
+                <a class="pilcrow" href="#section-68">&#182;</a>
               </div>
               <p>A branching renderer takes truthy and falsey renderer.</p>
 
@@ -1275,11 +1334,11 @@ the evaluator on the scope.</p>
         </li>
         
         
-        <li id="section-65">
+        <li id="section-69">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-65">&#182;</a>
+                <a class="pilcrow" href="#section-69">&#182;</a>
               </div>
               <p>Check the scope’s cache if the evaluator already exists for performance.</p>
 
@@ -1296,11 +1355,11 @@ the evaluator on the scope.</p>
         </li>
         
         
-        <li id="section-66">
+        <li id="section-70">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-66">&#182;</a>
+                <a class="pilcrow" href="#section-70">&#182;</a>
               </div>
               <p>Run the evaluator and return the result.</p>
 
@@ -1314,11 +1373,11 @@ the evaluator on the scope.</p>
         </li>
         
         
-        <li id="section-67">
+        <li id="section-71">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-67">&#182;</a>
+                <a class="pilcrow" href="#section-71">&#182;</a>
               </div>
               <h2 id="mustachecore-makelivebindingbranchrenderer">mustacheCore.makeLiveBindingBranchRenderer</h2>
 <p>Return a renderer function that evaluates the mustache expression and 
@@ -1342,11 +1401,11 @@ it updates the element’s property based on the compute’s value.</p>
         </li>
         
         
-        <li id="section-68">
+        <li id="section-72">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-68">&#182;</a>
+                <a class="pilcrow" href="#section-72">&#182;</a>
               </div>
               <p>Pre-process the expression.</p>
 
@@ -1357,11 +1416,11 @@ it updates the element’s property based on the compute’s value.</p>
         </li>
         
         
-        <li id="section-69">
+        <li id="section-73">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-69">&#182;</a>
+                <a class="pilcrow" href="#section-73">&#182;</a>
               </div>
               <p>A branching renderer takes truthy and falsey renderer.</p>
 
@@ -1375,11 +1434,11 @@ it updates the element’s property based on the compute’s value.</p>
         </li>
         
         
-        <li id="section-70">
+        <li id="section-74">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-70">&#182;</a>
+                <a class="pilcrow" href="#section-74">&#182;</a>
               </div>
               <p>register this nodeList.
 Regsiter it with its parent ONLY if this is directly nested.  Otherwise, it’s unencessary.</p>
@@ -1391,11 +1450,11 @@ Regsiter it with its parent ONLY if this is directly nested.  Otherwise, it’s 
         </li>
         
         
-        <li id="section-71">
+        <li id="section-75">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-71">&#182;</a>
+                <a class="pilcrow" href="#section-75">&#182;</a>
               </div>
               <p>Get the evaluator. This does not need to be cached (probably) because if there
 an observable value, it will be handled by <code>can.view.live</code>.</p>
@@ -1407,11 +1466,11 @@ an observable value, it will be handled by <code>can.view.live</code>.</p>
         </li>
         
         
-        <li id="section-72">
+        <li id="section-76">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-72">&#182;</a>
+                <a class="pilcrow" href="#section-76">&#182;</a>
               </div>
               <p>If this is within a tag, make sure we only get string values. </p>
 
@@ -1422,11 +1481,11 @@ an observable value, it will be handled by <code>can.view.live</code>.</p>
         </li>
         
         
-        <li id="section-73">
+        <li id="section-77">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-73">&#182;</a>
+                <a class="pilcrow" href="#section-77">&#182;</a>
               </div>
               <p>Create a compute that can not be observed by other 
 comptues. This is important because this renderer is likely called by 
@@ -1441,11 +1500,11 @@ everyone else.</p>
         </li>
         
         
-        <li id="section-74">
+        <li id="section-78">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-74">&#182;</a>
+                <a class="pilcrow" href="#section-78">&#182;</a>
               </div>
               <p>Bind on the compute to set the cached value. This helps performance
 so live binding can read a cached value instead of re-calculating.</p>
@@ -1458,11 +1517,11 @@ so live binding can read a cached value instead of re-calculating.</p>
         </li>
         
         
-        <li id="section-75">
+        <li id="section-79">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-75">&#182;</a>
+                <a class="pilcrow" href="#section-79">&#182;</a>
               </div>
               <p>If value is a function, it’s a helper that returned a function.</p>
 
@@ -1473,11 +1532,11 @@ so live binding can read a cached value instead of re-calculating.</p>
         </li>
         
         
-        <li id="section-76">
+        <li id="section-80">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-76">&#182;</a>
+                <a class="pilcrow" href="#section-80">&#182;</a>
               </div>
               <p>A helper function should do it’s own binding.  Similar to how
 we prevented this function’s compute from being noticed by parent expressions,
@@ -1496,11 +1555,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-77">
+        <li id="section-81">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-77">&#182;</a>
+                <a class="pilcrow" href="#section-81">&#182;</a>
               </div>
               <p>If the compute has observable dependencies, setup live binding.</p>
 
@@ -1511,11 +1570,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-78">
+        <li id="section-82">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-78">&#182;</a>
+                <a class="pilcrow" href="#section-82">&#182;</a>
               </div>
               <p>Depending on where the template is, setup live-binding differently.</p>
 
@@ -1538,11 +1597,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-79">
+        <li id="section-83">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-79">&#182;</a>
+                <a class="pilcrow" href="#section-83">&#182;</a>
               </div>
               <p>If the compute has no observable dependencies, just set the value on the element.</p>
 
@@ -1567,11 +1626,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-80">
+        <li id="section-84">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-80">&#182;</a>
+                <a class="pilcrow" href="#section-84">&#182;</a>
               </div>
               <p>Unbind the compute. </p>
 
@@ -1584,11 +1643,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-81">
+        <li id="section-85">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-81">&#182;</a>
+                <a class="pilcrow" href="#section-85">&#182;</a>
               </div>
               <h2 id="mustachecore-splitmodefromexpression">mustacheCore.splitModeFromExpression</h2>
 <p>Returns the mustache mode split from the rest of the expression.</p>
@@ -1614,11 +1673,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-82">
+        <li id="section-86">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-82">&#182;</a>
+                <a class="pilcrow" href="#section-86">&#182;</a>
               </div>
               <p>Triple braces do nothing within a tag.</p>
 
@@ -1636,11 +1695,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-83">
+        <li id="section-87">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-83">&#182;</a>
+                <a class="pilcrow" href="#section-87">&#182;</a>
               </div>
               <h2 id="mustachecore-cleanlineendings">mustacheCore.cleanLineEndings</h2>
 <p>Removes line breaks accoding to the mustache specification.</p>
@@ -1658,11 +1717,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-84">
+        <li id="section-88">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-84">&#182;</a>
+                <a class="pilcrow" href="#section-88">&#182;</a>
               </div>
               <p>Finds mustache tags with space around them or no space around them.</p>
 
@@ -1681,11 +1740,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-85">
+        <li id="section-89">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-85">&#182;</a>
+                <a class="pilcrow" href="#section-89">&#182;</a>
               </div>
               <p>A mustache magic tag that has no space around it.</p>
 
@@ -1698,11 +1757,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-86">
+        <li id="section-90">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-86">&#182;</a>
+                <a class="pilcrow" href="#section-90">&#182;</a>
               </div>
               <p>IE 8 will provide undefined</p>
 
@@ -1717,11 +1776,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-87">
+        <li id="section-91">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-87">&#182;</a>
+                <a class="pilcrow" href="#section-91">&#182;</a>
               </div>
               <p>If it’s a partial or tripple stache, leave in place.</p>
 
@@ -1734,11 +1793,11 @@ performed in value.</p>
         </li>
         
         
-        <li id="section-88">
+        <li id="section-92">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-88">&#182;</a>
+                <a class="pilcrow" href="#section-92">&#182;</a>
               </div>
               <p>Return the magic tag and a trailing linebreak if this did not 
 start a new line and there was an end line.</p>
@@ -1753,11 +1812,11 @@ start a new line and there was an end line.</p>
         </li>
         
         
-        <li id="section-89">
+        <li id="section-93">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-89">&#182;</a>
+                <a class="pilcrow" href="#section-93">&#182;</a>
               </div>
               <p>There is no mode, return special with spaces around it.</p>
 
@@ -1772,11 +1831,11 @@ start a new line and there was an end line.</p>
         </li>
         
         
-        <li id="section-90">
+        <li id="section-94">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-90">&#182;</a>
+                <a class="pilcrow" href="#section-94">&#182;</a>
               </div>
               <h2 id="can-view-options">can.view.Options</h2>
 <p>This contains the local helpers, partials, and tags available to a template.</p>
@@ -1802,11 +1861,11 @@ start a new line and there was an end line.</p>
         </li>
         
         
-        <li id="section-91">
+        <li id="section-95">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-91">&#182;</a>
+                <a class="pilcrow" href="#section-95">&#182;</a>
               </div>
               <h2 id="local-variable-cache">Local Variable Cache</h2>
 <p>The following creates slightly more quickly accessible references of the following

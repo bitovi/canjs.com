@@ -150,6 +150,14 @@
 			<span class="hljs-keyword">return</span> result;
 			
 		},
+		<span class="hljs-string">"@index"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(offset, options)</span> </span>{
+			<span class="hljs-keyword">if</span> (!options) {
+				options = offset;
+				offset = <span class="hljs-number">0</span>;
+			}
+			<span class="hljs-keyword">var</span> index = options.scope.attr(<span class="hljs-string">"@index"</span>);
+			<span class="hljs-keyword">return</span> <span class="hljs-string">""</span>+((can.isFunction(index) ? index() : index) + offset);
+		},
 		<span class="hljs-string">'if'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(expr, options)</span> </span>{
 			<span class="hljs-keyword">var</span> value;</pre></div></div>
             

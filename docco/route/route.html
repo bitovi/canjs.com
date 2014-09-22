@@ -394,13 +394,7 @@ This might be able to use batchNum and avoid this.</p>
             <div class="content"><div class='highlight'><pre>				changingData = <span class="hljs-number">0</span>;
 				<span class="hljs-keyword">var</span> serialized = can.route.data.serialize(),
 					path = can.route.param(serialized, <span class="hljs-literal">true</span>);
-				can.route._call(<span class="hljs-string">"setURL"</span>, path);
-
-				lastHash = path;
-			}, <span class="hljs-number">10</span>);
-		};
-
-	can.route = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(url, defaults)</span> </span>{</pre></div></div>
+				can.route._call(<span class="hljs-string">"setURL"</span>, path);</pre></div></div>
             
         </li>
         
@@ -410,6 +404,41 @@ This might be able to use batchNum and avoid this.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>trigger a url change so its possible to live-bind on url-based changes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				can.batch.trigger(eventsObject,<span class="hljs-string">"__url"</span>,[path, lastHash]);
+				lastHash = path;
+			}, <span class="hljs-number">10</span>);
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>A dummy events object used to dispatch url change events on.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		eventsObject = can.extend({}, can.event);
+
+	can.route = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(url, defaults)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>if route ends with a / and url starts with a /, remove the leading / of the url</p>
 
@@ -427,11 +456,11 @@ This might be able to use batchNum and avoid this.</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Extract the variable names and replace with <code>RegExp</code> that will match
 an atual URL with values.</p>
@@ -449,11 +478,11 @@ an atual URL with values.</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>res will be something like [“:foo”,”foo”]</p>
 
@@ -466,11 +495,11 @@ an atual URL with values.</p>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>if matchSlashes is false (the default) don’t greedily match any slash in the string, assume its part of the URL</p>
 
@@ -481,11 +510,11 @@ an atual URL with values.</p>
         </li>
         
         
-        <li id="section-26">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>a name without a default value HAS to have a value
 a name that has a default value can be empty
@@ -502,11 +531,11 @@ The <code>\\</code> is for string-escaping giving single <code>\</code> for <cod
         </li>
         
         
-        <li id="section-27">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>Add route in a form that can be easily figured out.</p>
 
@@ -517,11 +546,11 @@ The <code>\\</code> is for string-escaping giving single <code>\</code> for <cod
         </li>
         
         
-        <li id="section-28">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>A regular expression that will match the route when variable values
 are present; i.e. for <code>:page/:type</code> the <code>RegExp</code> is <code>/([\w\.]*)/([\w\.]*)/</code> which
@@ -534,11 +563,11 @@ will match for any value of <code>:page</code> and <code>:type</code> (word char
         </li>
         
         
-        <li id="section-29">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>The original URL, same as the index for this entry in routes.</p>
 
@@ -549,11 +578,11 @@ will match for any value of <code>:page</code> and <code>:type</code> (word char
         </li>
         
         
-        <li id="section-30">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>An <code>array</code> of all the variable names in this route.</p>
 
@@ -564,11 +593,11 @@ will match for any value of <code>:page</code> and <code>:type</code> (word char
         </li>
         
         
-        <li id="section-31">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>Default values provided for the variables.</p>
 
@@ -579,11 +608,11 @@ will match for any value of <code>:page</code> and <code>:type</code> (word char
         </li>
         
         
-        <li id="section-32">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>The number of parts in the URL separated by <code>/</code>.</p>
 
@@ -629,11 +658,11 @@ will match for any value of <code>:page</code> and <code>:type</code> (word char
         </li>
         
         
-        <li id="section-33">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>Check if the provided data keys match the names in any routes;
 Get the one with the most matches.</p>
@@ -645,11 +674,11 @@ Get the one with the most matches.</p>
         </li>
         
         
-        <li id="section-34">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>Need to have at least 1 match.</p>
 
@@ -669,11 +698,11 @@ Get the one with the most matches.</p>
         </li>
         
         
-        <li id="section-35">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>Otherwise find route.</p>
 
@@ -684,11 +713,11 @@ Get the one with the most matches.</p>
         </li>
         
         
-        <li id="section-36">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>best route is the first with all defaults matching</p>
 
@@ -708,11 +737,11 @@ Get the one with the most matches.</p>
         </li>
         
         
-        <li id="section-37">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>If we have a route name in our <code>can.route</code> data, and it’s
 just as good as what currently matches, use that</p>
@@ -726,11 +755,11 @@ just as good as what currently matches, use that</p>
         </li>
         
         
-        <li id="section-38">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>If this is match…</p>
 
@@ -742,11 +771,11 @@ just as good as what currently matches, use that</p>
         </li>
         
         
-        <li id="section-39">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p>Create the url by replacing the var names with the provided data.
 If the default value is found an empty string is inserted.</p>
@@ -763,11 +792,11 @@ If the default value is found an empty string is inserted.</p>
         </li>
         
         
-        <li id="section-40">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p>Remove matching default values</p>
 
@@ -782,11 +811,11 @@ If the default value is found an empty string is inserted.</p>
         </li>
         
         
-        <li id="section-41">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <p>The remaining elements of data are added as
 <code>&amp;amp;</code> separated parameters to the url.</p>
@@ -798,11 +827,11 @@ If the default value is found an empty string is inserted.</p>
         </li>
         
         
-        <li id="section-42">
+        <li id="section-44">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <p>if we are paraming for setting the hash
 we also want to make sure the route value is updated</p>
@@ -818,11 +847,11 @@ we also want to make sure the route value is updated</p>
         </li>
         
         
-        <li id="section-43">
+        <li id="section-45">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               <p>If no route was found, there is no hash URL, only paramters.</p>
 
@@ -869,11 +898,11 @@ we also want to make sure the route value is updated</p>
         </li>
         
         
-        <li id="section-44">
+        <li id="section-46">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p>remove the url</p>
 
@@ -888,11 +917,11 @@ we also want to make sure the route value is updated</p>
         </li>
         
         
-        <li id="section-45">
+        <li id="section-47">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <p>See if the url matches any routes by testing it against the <code>route.test</code> <code>RegExp</code>.
 By comparing the URL length the most specialized route that matches is used.</p>
@@ -914,11 +943,11 @@ By comparing the URL length the most specialized route that matches is used.</p>
         </li>
         
         
-        <li id="section-46">
+        <li id="section-48">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <p>If a route was matched.</p>
 
@@ -931,11 +960,11 @@ By comparing the URL length the most specialized route that matches is used.</p>
         </li>
         
         
-        <li id="section-47">
+        <li id="section-49">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
               <p>the parts will contain the full matched string and each variable (back-referenced) value.</p>
 
@@ -946,11 +975,11 @@ By comparing the URL length the most specialized route that matches is used.</p>
         </li>
         
         
-        <li id="section-48">
+        <li id="section-50">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
+                <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
               <p>Start will contain the full matched string; parts contain the variable values.</p>
 
@@ -961,11 +990,11 @@ By comparing the URL length the most specialized route that matches is used.</p>
         </li>
         
         
-        <li id="section-49">
+        <li id="section-51">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
+                <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
               <p>The remainder will be the <code>&amp;amp;key=value</code> list at the end of the URL.</p>
 
@@ -976,11 +1005,11 @@ By comparing the URL length the most specialized route that matches is used.</p>
         </li>
         
         
-        <li id="section-50">
+        <li id="section-52">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
+                <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
               <p>If there is a remainder and it contains a <code>&amp;amp;key=value</code> list deparam it.</p>
 
@@ -991,11 +1020,11 @@ By comparing the URL length the most specialized route that matches is used.</p>
         </li>
         
         
-        <li id="section-51">
+        <li id="section-53">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
+                <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
               <p>Add the default values for this route.</p>
 
@@ -1006,11 +1035,11 @@ By comparing the URL length the most specialized route that matches is used.</p>
         </li>
         
         
-        <li id="section-52">
+        <li id="section-54">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               <p>Overwrite each of the default values in <code>obj</code> with those in
 parts if that part is not empty.</p>
@@ -1029,11 +1058,11 @@ parts if that part is not empty.</p>
         </li>
         
         
-        <li id="section-53">
+        <li id="section-55">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               <p>If no route was matched, it is parsed as a <code>&amp;amp;key=value</code> list.</p>
 
@@ -1055,11 +1084,11 @@ parts if that part is not empty.</p>
         </li>
         
         
-        <li id="section-54">
+        <li id="section-56">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
+                <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
               <p>appState is a can.Map constructor function</p>
 
@@ -1072,11 +1101,11 @@ parts if that part is not empty.</p>
         </li>
         
         
-        <li id="section-55">
+        <li id="section-57">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
+                <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
               <p>appState is an instance of can.Map</p>
 
@@ -1246,7 +1275,22 @@ parts if that part is not empty.</p>
 		 *            // location.hash -&gt; #!id=5&amp;type=videos
 		 *     can.route.current({ id: 5, type: 'videos' }) // -&gt; true
 		 */</span>
-		current: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> </span>{
+		current: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-58">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-58">&#182;</a>
+              </div>
+              <p>“reads” the url so the url is live-bindable.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.__reading(eventsObject,<span class="hljs-string">"__url"</span>);
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._call(<span class="hljs-string">"matchingPartOfURL"</span>) === can.route.param(options);
 		},
 		bindings: {
@@ -1257,11 +1301,11 @@ parts if that part is not empty.</p>
         </li>
         
         
-        <li id="section-56">
+        <li id="section-59">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
+                <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
               <p>don’t greedily match slashes in routing rules</p>
 
@@ -1278,11 +1322,11 @@ parts if that part is not empty.</p>
         </li>
         
         
-        <li id="section-57">
+        <li id="section-60">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-57">&#182;</a>
+                <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
               <p>Gets the part of the url we are determinging the route from.
 For hashbased routing, it’s everything after the #, for
@@ -1297,11 +1341,11 @@ pushState it’s configurable</p>
         </li>
         
         
-        <li id="section-58">
+        <li id="section-61">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-58">&#182;</a>
+                <a class="pilcrow" href="#section-61">&#182;</a>
               </div>
               <p>gets called with the serialized can.route data after a route has changed
 returns what the url has been updated to (for matching purposes)</p>
@@ -1321,11 +1365,11 @@ returns what the url has been updated to (for matching purposes)</p>
         </li>
         
         
-        <li id="section-59">
+        <li id="section-62">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-59">&#182;</a>
+                <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
               <p>ready calls setup
 setup binds and listens to data changes
@@ -1337,11 +1381,11 @@ data changes tries to set the path</p>
         </li>
         
         
-        <li id="section-60">
+        <li id="section-63">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-60">&#182;</a>
+                <a class="pilcrow" href="#section-63">&#182;</a>
               </div>
               <p>we need to be able to
 easily kick off calling setState
@@ -1353,11 +1397,11 @@ easily kick off calling setState
         </li>
         
         
-        <li id="section-61">
+        <li id="section-64">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-61">&#182;</a>
+                <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
               <p>called when the route is ready</p>
 
@@ -1383,11 +1427,11 @@ easily kick off calling setState
         </li>
         
         
-        <li id="section-62">
+        <li id="section-65">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-62">&#182;</a>
+                <a class="pilcrow" href="#section-65">&#182;</a>
               </div>
               <p>a helper to get stuff from the current or default bindings</p>
 
@@ -1409,28 +1453,28 @@ easily kick off calling setState
         </li>
         
         
-        <li id="section-63">
+        <li id="section-66">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-63">&#182;</a>
+                <a class="pilcrow" href="#section-66">&#182;</a>
               </div>
               <p>The functions in the following list applied to <code>can.route</code> (e.g. <code>can.route.attr(&#39;...&#39;)</code>) will
 instead act on the <code>can.route.data</code> observe.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	each([<span class="hljs-string">'bind'</span>, <span class="hljs-string">'unbind'</span>, <span class="hljs-string">'on'</span>, <span class="hljs-string">'off'</span>, <span class="hljs-string">'delegate'</span>, <span class="hljs-string">'undelegate'</span>, <span class="hljs-string">'removeAttr'</span>, <span class="hljs-string">'compute'</span>, <span class="hljs-string">'_get'</span>, <span class="hljs-string">'__get'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
+            <div class="content"><div class='highlight'><pre>	each([<span class="hljs-string">'bind'</span>, <span class="hljs-string">'unbind'</span>, <span class="hljs-string">'on'</span>, <span class="hljs-string">'off'</span>, <span class="hljs-string">'delegate'</span>, <span class="hljs-string">'undelegate'</span>, <span class="hljs-string">'removeAttr'</span>, <span class="hljs-string">'compute'</span>, <span class="hljs-string">'_get'</span>, <span class="hljs-string">'__get'</span>,<span class="hljs-string">'each'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
 		can.route[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-64">
+        <li id="section-67">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-64">&#182;</a>
+                <a class="pilcrow" href="#section-67">&#182;</a>
               </div>
               <p><code>delegate</code> and <code>undelegate</code> require
 the <code>can/map/delegate</code> plugin</p>
@@ -1448,11 +1492,11 @@ the <code>can/map/delegate</code> plugin</p>
         </li>
         
         
-        <li id="section-65">
+        <li id="section-68">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-65">&#182;</a>
+                <a class="pilcrow" href="#section-68">&#182;</a>
               </div>
               <p>Because everything in hashbang is in fact a string this will automaticaly convert new values to string. Works with single value, or deep hashes.
 Main motivation for this is to prevent double route event call for same value.
@@ -1471,11 +1515,11 @@ This wont happen again with this normalization</p>
         </li>
         
         
-        <li id="section-66">
+        <li id="section-69">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-66">&#182;</a>
+                <a class="pilcrow" href="#section-69">&#182;</a>
               </div>
               <p>Reading</p>
 
@@ -1487,11 +1531,11 @@ This wont happen again with this normalization</p>
         </li>
         
         
-        <li id="section-67">
+        <li id="section-70">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-67">&#182;</a>
+                <a class="pilcrow" href="#section-70">&#182;</a>
               </div>
               <p>Sets object</p>
 
@@ -1503,11 +1547,11 @@ This wont happen again with this normalization</p>
         </li>
         
         
-        <li id="section-68">
+        <li id="section-71">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-68">&#182;</a>
+                <a class="pilcrow" href="#section-71">&#182;</a>
               </div>
               <p>Sets key - value</p>
 
@@ -1525,11 +1569,11 @@ This wont happen again with this normalization</p>
         </li>
         
         
-        <li id="section-69">
+        <li id="section-72">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-69">&#182;</a>
+                <a class="pilcrow" href="#section-72">&#182;</a>
               </div>
               <p>values to the <code>can.route.data</code> removing existing values no longer in the hash.
 setState is called typically by hashchange which fires asynchronously
@@ -1547,11 +1591,11 @@ if the data is changing or the hash already matches the hash that was set.</p>
         </li>
         
         
-        <li id="section-70">
+        <li id="section-73">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-70">&#182;</a>
+                <a class="pilcrow" href="#section-73">&#182;</a>
               </div>
               <p>if the hash data is currently changing, or
 the hash is what we set it to anyway, do NOT change the hash</p>
@@ -1565,7 +1609,22 @@ the hash is what we set it to anyway, do NOT change the hash</p>
 					can.route.removeAttr(attr);
 				}
 			}
-			can.route.attr(curParams);
+			can.route.attr(curParams);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-74">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-74">&#182;</a>
+              </div>
+              <p>trigger a url change so its possible to live-bind on url-based changes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.batch.trigger(eventsObject,<span class="hljs-string">"__url"</span>,[hash, lastHash]);
 			can.batch.stop();
 		}
 	};
