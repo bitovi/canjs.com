@@ -1,0 +1,29 @@
+{{#if children.length}}
+	<ul {{#ifFirstLevelChild}}class="primary-grouping"{{/ifFirstLevelChild}}>
+		{{#eachOrderedChildren children}}
+			{{^if hide}}
+				{{#ifGroup}}
+					
+					<li class="heading search-container">
+						<span>{{makeTitle}}</span>
+						{{> active-menu.mustache}}
+					</li>
+					
+				{{/ifGroup}}
+				{{^ifGroup}}
+					<li class="search-container{{#ifActive}} active{{/ifActive}} {{#children.length}}parent{{/children.length}} {{#ifHasActive}}expanded{{/ifHasActive}}">
+						<a 	class="{{type}}" 
+							href="{{urlTo name}}" 
+							data-search="{{#if title}}{{title}}{{else}}{{{name}}}{{/if}}">
+							{{makeTitle}}
+						</a>
+						{{#ifHasOrIsActive}}
+							{{> active-menu.mustache}}
+						{{/ifHasOrIsActive}}
+					</li>
+				{{/ifGroup}}
+			
+			{{/if}}
+		{{/eachOrderedChildren}}
+	</ul>
+{{/if}}

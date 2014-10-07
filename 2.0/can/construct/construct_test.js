@@ -128,4 +128,30 @@ steal('can/construct', function () {
 		new Foo()
 			.dude(true);
 	});
+	
+	//!steal-remove-start
+	if (can.dev) {
+		test('console warning if extend is not used without new (#932)', function () {
+			
+			var oldlog = can.dev.warn;
+			can.dev.warn = function (text) {
+				ok(text, "got a message");
+				can.dev.warn = oldlog;
+			};
+			var K1 = can.Construct({});
+			K1({});
+		});
+	}
+	//!steal-remove-end
+	
+	test("setup called with original arguments", function(){
+		var o1 = {
+			setup: function(base, arg1, arg2){
+				equal(o1, arg1, "first argument is correct");
+				equal(o2, arg2, "second argument is correct");
+			}
+		};
+		var o2 = {};
+		can.Construct.extend(o1,o2);
+	});
 });

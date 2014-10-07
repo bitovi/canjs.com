@@ -1,0 +1,13 @@
+.tmp*
+/dist
+*.swp
+*.orig
+util/can.*.js
+*node_modules*
+standalone*
+docs*
+*.DS_Store
+.idea
+bower_components/
+test/pluginified/latest.js
+docco

@@ -1,12 +1,3 @@
-[submodule "can"]
-	path = can
-	url = https://github.com/bitovi/canjs.git
 [submodule "shared"]
 	path = shared
 	url = https://github.com/bitovi/shared-web.git
-[submodule "documentjs"]
-	path = documentjs
-	url = https://github.com/bitovi/documentjs.git
-[submodule "steal"]
-	path = steal
-	url = https://github.com/bitovi/legacy-steal.git

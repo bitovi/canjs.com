@@ -1,0 +1,20 @@
+<div class="container">
+{{#each blogList}}
+    <div>
+    {{#isBlogLimit pageSize @index}}
+    <article class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>
+                <a href="{{url}}">{{{title}}}</a>
+            </h2>
+            <small class="meta">posted in {{#isDesignDevelopment categories}}{{.}}{{/isDesignDevelopment}} on {{dateFormat published}} by {{author}}</small>
+            <p>
+                {{{description}}}
+            </p>
+        </div>
+    </article>
+    {{/isBlogLimit}}
+    </div>
+{{/each}}
+</div>
+

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS  - jQuery.Model.List</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	
+	<link rel="stylesheet" type="text/css" href="./static/bundles/static.css">
+	
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs ">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
+		          <li><a href="http://jquerypp.com">jQuery++</a></li>
+		          <li><a href="http://stealjs.com">StealJS</a></li>
+		          <li><a href="http://funcunit.com">FuncUnit</a></li>
+		          <li><a href="http://documentjs.com">DocumentJS</a></li>
+		        </ul>
+			</div>
+			
+			<ul class="nav">
+		        <li >
+	              <a href="../index.html">Home</a>
+                </li>
+		       <li><a href='../guides/index.html'>guides</a></li>
+		       <li class='active'><a href='index.html'>api</a></li>
+		        <li class=" community-menu">
+		          <a href="../community.html#!forums">Community</a>
+		          <ul class="dropdown-menu">
+		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
+		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
+		            <li><a href="http://bithub.com/canjs/app/">Apps</a></li>
+		            <li><a href="http://bithub.com/canjs/plugin/">Plugins</a></li>
+		            <li><a href="http://bithub.com/canjs/article/">Articles</a></li>
+		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		          </ul>
+		        </li>
+		        <li >
+	              <a href="../blog/index.html">Blog</a>
+                </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+                </li>
+	      	</ul>
+			
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+			
+		</nav>
+	</header>
+
+	
+<div class="container api">
+
+	
+	<nav class="sidebar">
+		
+		<h2 id="version">
+	<select id='versions'></select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Construct.html" data-search="can.Construct">
+				can.Construct
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Control.html" data-search="can.Control">
+				can.Control
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Model.html" data-search="can.Model">
+				can.Model
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Model.List.html" data-search="can.Model.List">
+				can.Model.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.compute.html" data-search="can.compute">
+				can.compute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.ejs.html" data-search="can.ejs">
+				can.ejs
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.event.html" data-search="can.event">
+				can.event
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.fixture.html" data-search="can.fixture">
+				can.fixture
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.mustache.html" data-search="can.mustache">
+				can.mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.route.html" data-search="can.route">
+				can.route
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.stache.html" data-search="can.stache">
+				can.stache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.util.html" data-search="can.util">
+				can.util
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.view.html" data-search="can.view">
+				can.view
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
+				can.view.bindings
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	
+	
+	
+	<article class="content docs">
+	
+	
+		
+		<section class="title">
+			<div class="heading">
+<h1>List</h1>
+	<ul class="tags">
+		<li>constructor</li>
+	</ul>
+	<span class="module">jquery/model/list</span>
+	
+</div>
+
+<div class="sub-heading">
+	
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+    
+	
+		<li><a href="">source</a></li>
+	
+	
+		<li><a href="../http:/jmvcsite.heroku.com/pluginify?plugins[]=jquery/model/list/list.js">download</a></li>
+	
+	
+		<li><a href="../jquery/model/list/qunit.html">tests</a></li>
+	
+</ul>
+<br />
+		</section>
+		
+		
+		
+		<section class="contents">
+		</section>
+		
+		
+		
+
+		
+		<section class="description">
+			<p>Model.Lists manage a lists (or arrays) of
+model instances.  Similar to [jQuery.Model $.Model],
+they are used to:</p>
+
+		</section>
+		
+
+		
+			
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<ul>
+<li>create events when a list changes</li>
+<li>make Ajax requests on multiple instances</li>
+<li>add helper function for multiple instances (ACLs)</li>
+</ul>
+<p>The [todo] app demonstrates using a can.Control to
+implement an interface for a $.Model.List.</p>
+<h2>Creating A List Class</h2>
+<p>Create a `$.Model.List [jQuery.Class class] for a $.Model
+like:</p>
+<pre><code>$.Model('Todo')
+$.Model.List('Todo.List',{
+  // static properties
+},{
+  // prototype properties
+})
+</code></pre>
+<p>This creates a <code>Todo.List</code> class for the <code>Todo</code>
+class. This creates some nifty magic that we will see soon.</p>
+<p><code>static</code> properties are typically used to describe how
+a list makes requests.  <code>prototype</code> properties are
+helper functions that operate on an instance of
+a list.</p>
+<h2>Make a Helper Function</h2>
+<p>Often, a user wants to select multiple items on a
+page and perform some action on them (for example,
+deleting them). The app
+needs to indicate if this is possible (for example,
+by enabling a &quot;DELETE&quot; button).</p>
+<p>If we get todo data back like:</p>
+<pre><code>// GET /todos.json -&gt;
+[{
+  &quot;id&quot; : 1,
+  &quot;name&quot; : &quot;dishes&quot;,
+  &quot;acl&quot; : &quot;rwd&quot;
+},{
+  &quot;id&quot; : 2,
+  &quot;name&quot; : &quot;laundry&quot;,
+  &quot;acl&quot; : &quot;r&quot;
+}, ... ]
+</code></pre>
+<p>We can add a helper function to let us know if we can
+delete all the instances:</p>
+<pre><code>$.Model.List('Todo.List',{
+
+},{
+   canDelete : function(){
+     return this.grep(function(todo){
+       return todo.acl.indexOf(&quot;d&quot;) != 0
+     }).length == this.length
+   }
+})
+</code></pre>
+<p><code>canDelete</code> gets a list of all todos that have
+<strong>d</strong> in their acl.  If all todos have <strong>d</strong>,
+then <code>canDelete</code> returns true.</p>
+<h2>Get a List Instance</h2>
+<p>You can create a model list instance by using
+<code>new Todo.List( instances )</code> like:</p>
+<pre><code>var todos = new Todo.List([
+  new Todo({id: 1, name: ...}),
+  new Todo({id: 2, name: ...}),
+]);
+</code></pre>
+<p>And call <code>canDelete</code> on it like:</p>
+<pre><code>todos.canDelete() //-&gt; boolean
+</code></pre>
+<p>BUT! $.Model, [jQuery.fn.models $.fn.models], and $.Model.List are designed
+to work with each other.</p>
+<p>When you use <code>Todo.findAll</code>, it will callback with an instance
+of <code>Todo.List</code>:</p>
+<pre><code>Todo.findAll({}, function(todos){
+   todos.canDelete() //-&gt; boolean
+})
+</code></pre>
+<p>If you are adding the model instance to elements and
+retrieving them back with <code>$().models()</code>, it will
+return a instance of <code>Todo.List</code>.  The following
+returns if the checked <code>.todo</code> elements are
+deletable:</p>
+<pre><code>// get the checked inputs
+$('.todo input:checked')
+   // get the todo elements
+   .closest('.todo')
+   // get the model list
+   .models()
+   // check canDelete
+   .canDelete()
+</code></pre>
+<h2>Make Ajax Requests with Lists</h2>
+<p>After checking if we can delete the todos,
+we should delete them from the server. Like
+<code>$.Model</code>, we can add a
+static [jQuery.Model.List.static.destroy destroy] url:</p>
+<pre><code>$.Model.List('Todo.List',{
+   destroy : 'POST /todos/delete'
+},{
+   canDelete : function(){
+     return this.grep(function(todo){
+       return todo.acl.indexOf(&quot;d&quot;) != 0
+     }).length == this.length
+   }
+})
+</code></pre>
+<p>and call [jQuery.Model.List.prototype.destroy destroy] on
+our list.</p>
+<pre><code>// get the checked inputs
+var todos = $('.todo input:checked')
+   // get the todo elements
+   .closest('.todo')
+   // get the model list
+   .models()
+
+if( todos.canDelete() ) {
+   todos.destroy()
+}
+</code></pre>
+<p>By default, destroy will create an AJAX request to
+delete these instances on the server, when
+the AJAX request is successful, the instances are removed
+from the list and events are dispatched.</p>
+<h2>Listening to events on Lists</h2>
+<p>Use [jQuery.Model.List.prototype.bind bind]<code>(eventName, handler(event, data))</code>
+to listen to <strong>add</strong>, <strong>remove</strong>, and <strong>updated</strong> events on a
+list.</p>
+<p>When a model instance is destroyed, it is removed from
+all lists.  In the todo example, we can bind to remove to know
+when a todo has been destroyed.  The following
+removes all the todo elements from the page when they are removed
+from the list:</p>
+<pre><code>todos.bind('remove', function(ev, removedTodos){
+  removedTodos.elements().remove();
+})
+</code></pre>
+<h2>Demo</h2>
+<p>The following demo illustrates the previous features with
+a contacts list.  Check
+multiple Contacts and click &quot;DESTROY ALL&quot;</p>
+<div class='demo_wrapper' data-demo-src='jquery/model/list/list.html'></div>
+## Other List Features
+<ul>
+<li>Store and retrieve multiple instances</li>
+<li>Fast HTML inserts</li>
+</ul>
+<h3>Store and retrieve multiple instances</h3>
+<p>Once you have a collection of models, you often want to retrieve and update
+that list with new instances.  Storing and retrieving is a powerful feature
+you can leverage to manage and maintain a list of models.</p>
+<p>To store a new model instance in a list...</p>
+<pre><code>listInstance.push(new Animal({ type: dog, id: 123 }))
+</code></pre>
+<p>To later retrieve that instance in your list...</p>
+<pre><code>var animal = listInstance.get(123);
+</code></pre>
+<h3>Faster Inserts</h3>
+<p>The 'easy' way to add a model to an element is simply inserting
+the model into the view like:</p>
+<pre><code class="lang-xml">&lt;div &lt;%= task %>> A task &lt;/div></code></pre>
+And then you can use [jQuery.fn.models $('.task').models()].
+<p>This pattern is fast enough for 90% of all widgets.  But it
+does require an extra query.  Lists help you avoid this.</p>
+<p>The [jQuery.Model.List.prototype.get get] method takes elements and
+uses their className to return matched instances in the list.</p>
+<p>To use get, your elements need to have the instance's
+identity in their className.  So to setup a div to reprsent
+a task, you would have the following in a view:</p>
+<pre><code class="lang-xml">&lt;div class='task &lt;%= task.identity() %>'> A task &lt;/div></code></pre>
+Then, with your model list, you could use get to get a list of
+tasks:
+<pre><code class="lang-javascript">taskList.get($('.task'))</code></pre>
+The following demonstrates how to use this technique:
+<div class='demo_wrapper' data-demo-src='jquery/model/list/list-insert.html'></div>
+
+		</section>
+		
+		
+
+		
+	
+	
+	</article>
+	
+	
+
+</div>
+
+
+
+
+
+	
+	
+	<footer>
+		<nav class="container">
+			<a class="brand" href="index.html"></a>
+			<ul class='nav'>
+				<li >
+	              <a href="../index.html">Home</a>
+	            </li>
+		        <li><a href='../guides/index.html'>guides</a></li>
+		        <li class='active'><a href='index.html'>api</a></li>
+		        <li class="">
+		          <a href="../community.html#!forums">Community</a>
+		        </li>
+		        <li >
+	              <a href="../blog/index.html">Blog</a>
+	            </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+	            </li>
+            </ul>
+		</nav>
+	</footer>
+	
+
+    
+    <!--<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-2302003-11']);
+	  _gaq.push(['_setDomainName', 'canjs.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	
+	</script>-->
+	
+	<script type="text/javascript">
+		var docObject = {"parent":"jQuery.Model","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs"},"name":"jQuery.Model.List","type":"constructor","description":"<p>Model.Lists manage a lists (or arrays) of\nmodel instances.  Similar to [jQuery.Model $.Model],\nthey are used to:</p>\n","title":"","download":"http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/model/list/list.js","test":"jquery/model/list/qunit.html","plugin":"jquery/model/list","src":"model/list/list.js"};
+	</script>
+	
+	
+		<script type='text/javascript' 
+				data-main="static"
+				src="./static/steal.production.js"
+		    		bundles-path="bundles"></script>
+	
+	
+</body>
+
+</html>

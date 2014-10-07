@@ -16,85 +16,88 @@
 <html class="no-js" lang="en">
 <!--<![endif]-->
 <head>
-  <meta charset="utf-8">
-  <title>can.Map.prototype.define - CanJS API</title>
-  <meta name="description" content="">
-  <meta name="author" content="">
+	<meta charset="utf-8">
+	<title>CanJS - define </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-  <link rel="stylesheet" type="text/css" 
-    
-      href='./static/production.css'
-     />
-  <!--[if lt IE 9]>
-   <script type="text/javascript" src="../scripts/static/lib/html5shiv.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="./static/bundles/static.css">
+	
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
     <!--<![endif]-->
 </head>
 
-<body class="docs">
-  <header>
-    <nav class="container">
+<body class="docs ">
+	<header>
+		<nav class="container">
 
-      <div class="logo-menu">
-        <a class="brand canjs" href="../index.html">CanJS</a>
-        <ul class="dropdown-menu">
-          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
-          <li class="active"><a href="../index.html">CanJS</a></li>
-          <li><a href="http://jquerypp.com">jQuery++</a></li>
-          <li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
-          <li><a href="http://funcunit.com">FuncUnit</a></li>
-          <li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
-        </ul>
-      </div>
-      <ul class="nav">
-        <li class=""><a href="../index.html">Home</a></li>
-        <li class=""><a href="../guides/index.html">Guides</a></li>
-        <li class="active"><a href="../docs/index.html">Api</a></li>
-        <li class=" community-menu">
-          <a href="../community.html#!forums">Community</a>
-          <ul class="dropdown-menu">
-            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
-            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
-            <li><a href="http://bithub.com/canjs/app/">Apps</a></li>
-            <li><a href="http://bithub.com/canjs/plugin/">Plugins</a></li>
-            <li><a href="http://bithub.com/canjs/article/">Articles</a></li>
-            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
-            <li><a href="http://twitter.com/canjs">Twitter</a></li>
-            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
-          </ul>
-        </li>
-        <li class=""><a href="../blog/index.html">Blog</a></li>
-        <li class=""><a href="../download.html">Download</a></li>
-      </ul>
-      <div class="pull-right">
-        <div class="bitovi-menu">
-          <a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
-          <ul class="dropdown-menu">
-            <li><a href="http://bitovi.com">Bitovi.com</a></li>
-            <li><a href="http://bitovi.com/blog/">Blog</a></li>
-            <li><a href="http://bitovi.com/consulting/">Consulting</a></li>
-            <li><a href="http://bitovi.com/training/">Training</a></li>
-            <li><a href="http://bitovi.com/open-source/">Open Source</a></li>
-            <li><a href="http://bitovi.com/people/">People</a></li>
-            <li><a href="http://bitovi.com/contact/">Contact Us</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
+			<div class="logo-menu">
+				<a class="brand" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
+		          <li><a href="http://jquerypp.com">jQuery++</a></li>
+		          <li><a href="http://stealjs.com">StealJS</a></li>
+		          <li><a href="http://funcunit.com">FuncUnit</a></li>
+		          <li><a href="http://documentjs.com">DocumentJS</a></li>
+		        </ul>
+			</div>
+			
+			<ul class="nav">
+		        <li >
+	              <a href="../index.html">Home</a>
+                </li>
+		       <li><a href='../guides/index.html'>guides</a></li>
+		       <li class='active'><a href='index.html'>api</a></li>
+		        <li class=" community-menu">
+		          <a href="../community.html#!forums">Community</a>
+		          <ul class="dropdown-menu">
+		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
+		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
+		            <li><a href="http://bithub.com/canjs/app/">Apps</a></li>
+		            <li><a href="http://bithub.com/canjs/plugin/">Plugins</a></li>
+		            <li><a href="http://bithub.com/canjs/article/">Articles</a></li>
+		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		          </ul>
+		        </li>
+		        <li >
+	              <a href="../blog/index.html">Blog</a>
+                </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+                </li>
+	      	</ul>
+			
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+			
+		</nav>
+	</header>
 
-  <div class="container api">
+	
+<div class="container api">
+
+	
 	<nav class="sidebar">
 		
-		<div class="search-wrapper">
-			<div class="search">
-				<input type="text"/>
-			</div>
-		</div>
-		
 		<h2 id="version">
-<select id="versions">
-	<option value="">CanJS v2.1</option>
-</select>
+	<select id='versions'></select>
 </h2>
 <ul class="api">
 	<!-- First Level -->
@@ -139,7 +142,7 @@
 				
 					
 					<li class="heading search-container">
-						<span>Prototype</span>
+						<span>prototype</span>
 						
 	<ul >
 		
@@ -293,7 +296,7 @@
 				
 					
 					<li class="heading search-container">
-						<span>Static</span>
+						<span>static</span>
 						
 	<ul >
 		
@@ -677,7 +680,13 @@
 	
 </ul>
 	</nav>
+	
+	
+	
 	<article class="content docs">
+	
+	
+		
 		<section class="title">
 			<div class="heading">
 <h1>define</h1>
@@ -686,15 +695,14 @@
 	</ul>
 	
 	
+</div>
+
+<div class="sub-heading">
+	
 	
 		<span class="module">can.Map.prototype.define</span>
 	
 	
-	
-	
-</div>
-
-<div class="sub-heading">
 	
 	<h2><code>{Object&lt;String,<a href="can.Map.prototype.define.attrDefinition.html" >attrDefinition</a>&gt;}</code></h2>
 	
@@ -704,39 +712,43 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/v2.1.3/map/define/doc/define.md">source</a></li>
+		<li><a href="">source</a></li>
 	
-	
-		
 	
 	
 </ul>
 <br />
 		</section>
-
+		
+		
+		
 		<section class="contents">
 		</section>
-
+		
+		
 		
 
+		
 		<section class="description">
 			<p>Defines the
-type, initial value, get, set, remove, and serialize behavior for attributes 
+type, initial value, get, set, remove, and serialize behavior for attributes
 of a <a href="can.Map.html">can.Map</a>.</p>
+
 		</section>
-
 		
 
 		
-		<section class='primary-options'>
 			
+			<section class='primary-options'>
+				
 
   <h2 id="sig_">Object&lt;String,<a href="can.Map.prototype.define.attrDefinition.html" >attrDefinition</a>&gt;
 </h2>
 <div class="signature-wrapper">
-<p>A map of 
+<p>A map of
 attribute names to <a href="can.Map.prototype.define.attrDefinition.html">attribute definition</a>
 objects.</p>
+
 
 
 
@@ -747,7 +759,8 @@ objects.</p>
 
   
 
-		</section>
+			</section>
+			
 		
 		
 		
@@ -756,17 +769,15 @@ objects.</p>
 		
 		<section class="comment">
 			<h2>Use</h2>
-
 <p>The <a href="can.Map.prototype.define.html">can.Map.define</a> plugin allows you to completely control the behavior
-of attributes on a <a href="can.Map.html">can.Map</a>. To use it, you specify 
-an define object that is a mapping of properties 
-to <a href="can.Map.prototype.define.attrDefinition.html">attribute definitions</a>. The following example 
+of attributes on a <a href="can.Map.html">can.Map</a>. To use it, you specify
+an define object that is a mapping of properties
+to <a href="can.Map.prototype.define.attrDefinition.html">attribute definitions</a>. The following example
 specifies a Paginate Map:</p>
-
 <pre><code>var Paginate = can.Map.extend({
   define: {
     count: {
-      type: "number",
+      type: &quot;number&quot;,
       value: Infinity,
       // Keeps count above 0.
       set: function(newCount){
@@ -774,11 +785,11 @@ specifies a Paginate Map:</p>
       }
     },
     offset: {
-      type: "number",
+      type: &quot;number&quot;,
       value: 0,
       // Keeps offset between 0 and count
       set: function(newOffset){
-        var count = this.attr("count");
+        var count = this.attr(&quot;count&quot;);
         return newOffset &lt; 0 ?
           0 :
           Math.min(newOffset, !isNaN( count - 1) ?
@@ -787,7 +798,7 @@ specifies a Paginate Map:</p>
       }
     },
     limit: {
-      type: "number",
+      type: &quot;number&quot;,
       value: 5
     },
     page: {
@@ -805,13 +816,9 @@ specifies a Paginate Map:</p>
   }
 });
 </code></pre>
-
 <h2>Overview</h2>
-
 <p>This plugin is a replacement for the now deprecated <a href="can.Map.attributes.html">attributes</a> and <a href="can.Map.setter.html">setter</a> plugins. It intends to provide a single place to define the behavior of all the properties of a can.Map.</p>
-
 <p>Here is the cliffnotes version of this plugin.  To define...</p>
-
 <ul>
 <li>The default value for a property - use <a href="can.Map.prototype.define.value.html">value</a></li>
 <li>That default value as a constructor function - use <a href="can.Map.prototype.define.ValueConstructor.html">Value</a></li>
@@ -822,75 +829,80 @@ specifies a Paginate Map:</p>
 <li>A custom converter method or a pre-defined standard converter called whenever a property is set - use <a href="can.Map.prototype.define.type.html">type</a></li>
 <li>That custom converter method as a constructor function - use <a href="can.Map.prototype.define.TypeConstructor.html">Type</a></li>
 </ul>
-
 <h2>Demo</h2>
-
 <p>The following shows picking cars by make / model / year:</p>
-
 <div class='demo_wrapper' data-demo-src='can/map/define/doc/examples/makemodelyear.html'></div>
+
 		</section>
 		
+		
 
 		
+	
+	
 	</article>
+	
+	
+
 </div>
 
-<script type="text/javascript">
-	var docData = {"type":"property","name":"can.Map.prototype.define","description":"<p>Defines the\ntype, initial value, get, set, remove, and serialize behavior for attributes \nof a [can.Map].</p>","types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"can.Map.prototype.define.attrDefinition"}]}],"description":"<p>A map of \nattribute names to [can.Map::define.attrDefinition attribute definition]\nobjects.</p>"}],"title":"define","parent":"can.Map.plugins","comment":" ","src":"can/map/define/doc/define.md","id":74,"children":[{"type":"function","name":"can.Map.prototype.define.TypeConstructor","description":"<p>Provides a constructor function to be used to convert any value passed into [can.Map::attr attr] into an appropriate value</p>","title":"Type","parent":"can.Map.prototype.define","signatures":[{"code":"constructorFunc","description":"<p>A constructor function can be provided that is called to convert incoming values set on this property, like:</p>\n\n<pre><code>define: {\n  prop: {\n    Type: Person\n  }\n}\n</code></pre>","params":[]}],"comment":" ","src":"can/map/define/doc/TypeConstructor.md","id":80},{"type":"function","name":"can.Map.prototype.define.ValueConstructor","description":"<p>Provides a constructor function to be used to provide a default value for a certain property of a can.Map.  This constructor will be invoked with <code>new</code> each time a new instance of the map is created.</p>","title":"Value","parent":"can.Map.prototype.define","signatures":[{"code":"constructorFunc","description":"<p>A constructor function can be provided that is called to create a default value used for this property, like:</p>\n\n<pre><code>define: {\n  prop: {\n    Value: Array\n  },\n  person: {\n      Value: Person\n  }\n}\n</code></pre>","params":[]}],"comment":" ","src":"can/map/define/doc/ValueConstructor.md","id":82},{"type":"typedef","name":"can.Map.prototype.define.attrDefinition","description":"<p>Defines the type, initial value, and get, set, and remove behavior for an attribute of a [can.Map].</p>","title":"attrDefinition","types":[{"type":"Object","options":[{"name":"value","description":"<p>Specifies the initial value of the attribute or\na function that returns the initial value. For example, a default value of <code>0</code> can be \nspecified like:</p>\n\n<pre><code>define: {\n  prop: {\n    value: 0\n  }\n}\n</code></pre>\n\n<p><code>Object</code> types should not be specified directly on <code>value</code> because that same object will\nbe shared on every instance of the Map.  Instead, a [can.Map::define.value value function] that \nreturns a fresh copy can be provided:</p>\n\n<pre><code>define: {\n  prop: {\n    value: function(){\n      return {foo: \"bar\"}\n    }\n  }\n}\n</code></pre>","types":[{"type":"can.Map.prototype.define.value"},{"type":"*"}]},{"name":"Value","description":"<p>Specifies a function that will be called with <code>new</code> whose result is\nset as the initial value of the attribute. For example, if the default value should be a can.List:</p>\n\n<pre><code>define: {\n  prop: {\n    Value: can.List\n  }\n}\n</code></pre>","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]},{"name":"type","description":"<p>Specifies the type of the \nattribute.  The type can be specified as either a [can.Map.prototype.define.type type function] \nthat returns the type coerced value or one of the following strings:</p>\n\n<ul>\n<li><code>\"string\"</code> - Converts the value to a string.</li>\n<li><code>\"date\"</code> - Converts the value to a date or `null if the date can not be converted.</li>\n<li><code>\"number\"</code> - Passes the value through <code>parseFloat</code>.</li>\n<li><code>\"boolean\"</code> - Converts falsey, <code>\"false\"</code> or <code>\"0\"</code> to <code>false</code> and everything else to true.</li>\n<li><code>\"*\"</code> - Prevents the default type coersion of converting Objects to [can.Map]s and Arrays to [can.List]s.</li>\n</ul>\n\n<p>The following example converts the <code>count</code> property to a number and the <code>items</code> property to an array:</p>\n\n<pre><code> define: {\n   count: {type: \"number\"},\n   items: {\n     type: function(newValue){\n       if(typeof newValue === \"string\") {\n         return newValue.split(\",\")\n       } else if( can.isArray(newValue) ) {\n         return newValue;\n       }\n     }\n   }\n }\n</code></pre>","types":[{"type":"can.Map.prototype.define.type"},{"type":"String"}]},{"name":"Type","description":"<p>A constructor function that takes \nthe value passed to [can.Map::attr attr] as the first argument and called with \nnew. For example, if you want whatever\ngets passed to go through <code>new Array(newValue)</code> you can do that like:</p>\n\n<pre><code>define: {\n  items: {\n    Type: Array\n  }\n}\n</code></pre>\n\n<p>If the value passed to [can.Map::attr attr] is already an Array, it will be left as is.</p>","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]},{"name":"set","description":"<p>A set function that specifies what should happen when an attribute\nis set on a [can.Map]. <code>set</code> is called with the result of <code>type</code> or <code>Type</code>. The following\ndefines a <code>page</code> setter that updates the map's offset:</p>\n\n<pre><code>define: {\n  page: {\n    set: function(newVal){\n      this.attr('offset', (parseInt(newVal) - 1) * \n                           this.attr('limit'));\n    }\n  }\n}\n</code></pre>","types":[{"type":"can.Map.prototype.define.set"}]},{"name":"get","description":"<p>A function that specifies how the value is retrieved.  The get function is \nconverted to an [can.compute.async async compute].  It should derive its value from other values\non the map. The following\ndefines a <code>page</code> getter that reads from a map's offset and limit:</p>\n\n<pre><code>define: {\n  page: {\n    get: function (newVal) {\n      return Math.floor(this.attr('offset') / \n                        this.attr('limit')) + 1;\n    }\n  }\n}\n</code></pre>\n\n<p>A <code>get</code> definition makes the property <strong>computed</strong> which means it will not be serialized by default.</p>","types":[{"type":"can.Map.prototype.define.get"}]},{"name":"remove","description":"<p>A function that specifies what should happen when an attribute is removed\nwith [can.Map::removeAttr removeAttr]. The following removes a <code>modelId</code> when <code>makeId</code> is removed:</p>\n\n<pre><code>define: {\n  makeId: {\n    remove: function(){\n      this.removeAttr(\"modelId\");\n    }\n  }\n}\n</code></pre>","types":[{"type":"can.Map.prototype.define.remove"}]},{"name":"serialize","description":"<p>Specifies the behavior of the \nproperty when [can.Map::serialize serialize] is called. </p>\n\n<p>By default, serialize does not include computed values. Properties with a <code>get</code> definition\nare computed and therefore are not added to the result.  Non-computed properties values are\nserialized if possible and added to the result.</p>\n\n<pre><code>Paginate = can.Map.extend({\n  define: {\n    pageNum: {\n      get: function(){ return this.offset() / 20 }\n    }\n  }\n});\n\np = new Paginate({offset: 40});\np.serialize() //-&gt; {offset: 40}\n</code></pre>\n\n<p>If <code>true</code> is specified, computed properties will be serialized and added to the result.</p>\n\n<pre><code>Paginate = can.Map.extend({\n  define: {\n    pageNum: { \n      get: function(){ return this.offset() / 20 },\n      serialize: true\n    }\n  }\n});\n\np = new Paginate({offset: 40});\np.serialize() //-&gt; {offset: 40, pageNum: 2}\n</code></pre>\n\n<p>If <code>false</code> is specified, non-computed properties will not be added to the result.</p>\n\n<pre><code>Paginate = can.Map.extend({\n  define: {\n    offset: {\n      serialize: false\n    }\n  }\n});\n\np = new Paginate({offset: 40});\np.serialize() //-&gt; {}\n</code></pre>\n\n<p>If a [can.Map.prototype.define.serialize serialize function] is specified, the result\nof the function is added to the result.</p>\n\n<pre><code>Paginate = can.Map.extend({\n  define: {\n    offset: {\n      serialize: function(offset){\n        return (offset / 20)+1\n      }\n    }\n  }\n});\n\np = new Paginate({offset: 40});\np.serialize() //-&gt; {offset: 3}\n</code></pre>","types":[{"type":"can.Map.prototype.define.serialize"},{"type":"Boolean"}]}]}],"parent":"can.Map.prototype.define","src":"can/map/define/doc/attrDefinition.md","id":73},{"type":"function","name":"can.Map.prototype.define.get","description":"<p>Specify what happens when a certain property is read on a map.</p>","title":"get","parent":"can.Map.prototype.define","signatures":[{"code":"get( )","description":"<p>A get function defines the behavior of what happens when a value is read on a\n[can.Map]. It is typically used to provide properties that derive their value from other properties of the map.</p>","params":[],"returns":{"types":[{"type":"*"}],"description":"<p>Anything can be returned from a getter.</p>"}}],"comment":" ","src":"can/map/define/doc/get.md","id":75},{"type":"function","name":"can.Map.prototype.define.remove","description":"<p>Called when an attribute is removed.</p>","title":"remove","parent":"can.Map.prototype.define","signatures":[{"code":"remover( currentValue )","description":"","params":[],"returns":{"types":[{"type":"*"},{"type":"false"}],"description":"<p>If <code>false</code> is returned, the value is not removed.</p>"}}],"comment":" ","src":"can/map/define/doc/remove.md","id":76},{"type":"function","name":"can.Map.prototype.define.serialize","description":"<p>Called when an attribute is removed.</p>","title":"serialize","parent":"can.Map.prototype.define","signatures":[{"code":"serializer( currentValue )","description":"","params":[{"types":[{"type":"*"}],"name":"value","description":"<p>The current value of the attribute.</p>"},{"types":[{"type":"String"}],"name":"attr","description":"<p>The name of the attribute being serialized.</p>"}],"returns":{"types":[{"type":"*"},{"type":"undefined"}],"description":"<p>If <code>undefined</code> is returned, the value is not serialized.</p>"},"context":{"types":[{"type":"can.Map"}],"description":"<p>The map instance being serialized.</p>"}}],"comment":" ","src":"can/map/define/doc/serialize.md","id":77},{"type":"function","name":"can.Map.prototype.define.set","description":"<p>Specify what happens when a value is set on a map attribute.</p>","title":"set","parent":"can.Map.prototype.define","signatures":[{"code":"set( [newVal,] [setValue] )","description":"<p>A set function defines the behavior of what happens when a value is set on a\n[can.Map]. It is typically used to:</p>\n\n<ul>\n<li>Add or remove other attributes as side effects</li>\n<li>Coerce the set value into an appropriate action</li>\n</ul>\n\n<p>The behavior of the setter depends on the number of arguments specified. This means that a\nsetter like:</p>\n\n<pre><code>define: {\n  prop: {\n    set: function(){}\n  }\n}\n</code></pre>\n\n<p>behaves differently than:</p>\n\n<pre><code>define: {\n  prop: {\n    set: function(newVal){}\n  }\n}\n</code></pre>","params":[{"types":[{"type":"*"}],"optional":true,"name":"newVal","description":"<p>The [can.Map::define.type type function] coerced value the user intends to set on the\ncan.Map.</p>"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"*"}],"name":"newValue"}]}],"optional":true,"name":"setValue","description":"<p>A callback that can set the value of the property \nasyncronously.</p>"}],"returns":{"types":[{"type":"*"},{"type":"undefined"}],"description":"<p>If a non-undefined value is returned, that value is set as \nthe attribute value. </p>\n\n<p>If an <code>undefined</code> value is returned, the behavior depends on the number of\narguments the setter declares:</p>\n\n<ul>\n<li>If the setter <em>does not</em> specify the <code>newValue</code> argument, the attribute value is set\nto whatever was passed to [can.Map::attr attr].</li>\n<li>If the setter specifies the <code>newValue</code> argument only, the attribute value will be removed.</li>\n<li>If the setter specifies both <code>newValue</code> and <code>setValue</code>, the value of the property will not be \nupdated until <code>setValue</code> is called.</li>\n</ul>"}}],"comment":" ","src":"can/map/define/doc/set.md","id":78},{"type":"function","name":"can.Map.prototype.define.type","description":"<p>Converts a value passed to [can.Map::attr attr] into an appropriate value.</p>","title":"type","parent":"can.Map.prototype.define","params":[{"types":[{"type":"*"}],"name":"newValue","description":"<p>The value passed to <code>attr</code>.</p>"},{"types":[{"type":"String"}],"name":"attrName","description":"<p>The attribute name being set.</p>"}],"context":{"types":[{"type":"can.Map"}],"description":"<p>the instance of the can.Map.</p>"},"returns":{"types":[{"type":"*"}],"description":"<p>The value that should be passed to <code>set</code> or (if there is no <code>set</code> property) the value to set on the map instance.</p>"},"comment":" ","src":"can/map/define/doc/type.md","id":79},{"type":"function","name":"can.Map.prototype.define.value","description":"<p>Returns the default value for instances of this can.Map.  This is called before <code>init</code>.</p>","title":"value","parent":"can.Map.prototype.define","signatures":[{"code":"defaulter()","description":"<p>A function can be provided that returns the default value used for this property, like:</p>\n\n<pre><code>define: {\n  prop: {\n    value: function(){ return []; }\n  }\n}\n</code></pre>\n\n<p>If the default value should be an object of some type, it should be specified as the return value of a function (the above call signature) so that all instances of this map don't point to the same object.  For example, if the property <code>value</code> above had not returned an empty array but instead just specified an array using the next call signature below, all instances of that map would point to the same array (because JavaScript passes objects by reference).</p>","params":[],"context":{"types":[{"type":"can.Map"}],"description":"<p>the instance of the can.Map.</p>"},"returns":{"types":[{"type":"*"}],"description":"<p>The default value.  This will be passed through setter and type.</p>"}},{"code":"defaulVal","description":"<p>Any value can be provided as the default value used for this property, like:</p>\n\n<pre><code>define: {\n  prop: {\n    value: 'foo'\n  }\n}\n</code></pre>","params":[{"types":[{"type":"*"}],"name":"defaultVal","description":"<p>The default value, which will be passed through setter and type.</p>"}]}],"comment":" ","src":"can/map/define/doc/value.md","id":81}]};
-
-	console.log(docData);
-</script>
 
 
 
-  <footer>
-    <nav class="container">
-      <a class="brand javascriptmvc" href="index.html"></a>
-      <ul class="nav">
-        <li class=""><a href="../index.html">Home</a></li>
-        <li class=""><a href="../guides/index.html">Guides</a></li>
-        <li class="active"><a href="../docs/index.html">Api</a></li>
-        <li class=""><a href="../community.html#!forums">Community</a></li>
-        <li class=""><a href="../blog/index.html">Blog</a></li>
-        <li class=""><a href="../download.html">Download</a></li>
-      </ul>
-    </nav>
-  </footer>
-  <script type="text/javascript">
-    window.docConfig = {"debug":false,"enableSearch":true,"parent":"canjs","layout":"shared/_templates/page.mustache","docs":"shared/_templates/docs.mustache","root":"..","out":"docs","page":"docs","markdown":["can"],"package":{"name":"CanJS","description":"MIT-licensed, client-side, JavaScript framework that makes building rich web applications easy.","version":"2.1.3","author":{"name":"Bitovi","email":"contact@bitovi.com","web":"http://bitovi.com/"},"homepage":"http://canjs.us/","repository":{"type":"git","url":"git@github.com:bitovi/canjs.git","github":"https://github.com/bitovi/canjs"},"devDependencies":{"grunt":"~0.4.0","grunt-string-replace":"~0.2.2","grunt-contrib-qunit":"~0.5.1","grunt-contrib-connect":"~0.3.0","bitovi-tools":"https://github.com/bitovi/bitovi-tools/tarball/master","steal":"https://github.com/bitovi/steal-build/tarball/master","grunt-contrib-uglify":"~0.2.1","grunt-contrib-clean":"~0.5.0","grunt-shell":"~0.5.0","grunt-release-steps":"~0.3.7","bower":"~1.3.8","grunt-contrib-jshint":"~0.8.0","grunt-jsbeautifier":"~0.2.6","grunt-docco2":"git://github.com/shcarrico/grunt-docco.git#e4de54886ed5c421b2e26e7a2aeba1f73e889733","grunt-plato":"~0.2.1"},"scripts":{"test":"grunt test","install":"node node_modules/bower/bin/bower install"},"demos":["http://canjs.us/#examples","http://canjs.us/recipes"],"licenses":[{"type":"MIT","url":"http://opensource.org/licenses/mit-license.php"}],"dependencies":{"grunt-cli":"~0.1.7"}},"self":{"name":"canjs.com","description":"We can do JS better.","version":"0.2.0","homepage":"http://canjs.com","author":{"name":"Bitovi","url":"http://bitovi.com/"},"repository":{"type":"git","url":"git://github.com/bitovi/canjs.com.git","github":"https://github.com/bitovi/canjs.com"},"bugs":{"url":"https://github.com/bitovi/canjs.com/issues"},"licenses":[{"type":"MIT","url":"https://github.com/bitovi/canjs.com/blob/master/LICENSE-MIT"}],"engines":{"node":">= 0.10.0"},"devDependencies":{"grunt":"~0.4.1","grunt-contrib-watch":"~0.3.1","grunt-contrib-less":"~0.5.0","documentjs":"https://github.com/bitovi/documentjs/tarball/node-generator","grunt-contrib-clean":"~0.4.1","grunt-docco2":"git://github.com/shcarrico/grunt-docco.git#options-passing","grunt-plato":"~0.2.1","grunt-jsbeautifier":"~0.2.6","grunt-shell":"~0.6.4","sqlite3":"~2.2.3","q":"~1.0.1"}},"builder":{"filename":"can.custom.js","banner":"/*!\n * <%= pkg.title || pkg.name %> - <%= pkg.version %>\n * <%= pkg.homepage %>\n * Copyright (c) <%= new Date().getFullYear() %> <%= pkg.author.name %>\n * <%= new Date().toUTCString() %>\n * Licensed <%= pkg.licenses[0].type %><% if(typeof url !== \"undefined\") { %>\n * Includes: <%= ids %>\n * Download from: <%= url %>\n<% } %> */\n","modules":{"can/component":{"name":"can.Component","description":"Custom elements and widgets","type":"core","isDefault":true},"can/construct":{"name":"can.Construct","description":"Inheritable constructor functions","type":"core","isDefault":true},"can/map":{"name":"can.Map","description":"Observables and key-value bindings","type":"core","isDefault":true},"can/list":{"name":"can.List","description":"Observables lists","type":"core","isDefault":true},"can/list/promise":{"name":"can.List.promise","description":"Promises on lists","type":"plugin"},"can/observe":{"name":"can.Observe","description":"Observables and key-value bindings","type":"core","isDefault":true,"hidden":true},"can/compute":{"name":"can.compute","description":"can.compute lets you make observable values","type":"core","isDefault":true},"can/model":{"name":"can.Model","description":"Observes connected to a RESTful JSON interface","type":"core","isDefault":true},"can/view":{"name":"can.view","description":"Template loading, caching, rendering","type":"core","isDefault":true},"can/view/ejs":{"name":"can.ejs","description":"Live-binding Embedded JavaScript","type":"plugin"},"can/view/stache":{"name":"can.stache","description":"High performance Mustache templates","type":"plugin"},"can/control":{"name":"can.Control","description":"Declarative event bindings","type":"core","isDefault":true},"can/route":{"name":"can.route","description":"Back button and bookmarking support","type":"core","isDefault":true},"can/control/route":{"name":"can.Control.route","description":"Declare routes in your Control","type":"core","isDefault":true},"can/view/mustache":{"name":"can.mustache","description":"Live-binding Handlebars and Mustache views","type":"core","isDefault":true},"can/route/pushstate":{"name":"can.route.pushstate","description":"can.route with pushstate","type":"plugin"},"can/model/queue":{"name":"can.Model.Queue","type":"plugin","description":"Queued requests to the server."},"can/construct/super":{"name":"can.Construct.super","type":"plugin","description":"Call super methods"},"can/construct/proxy":{"name":"can.Construct.proxy","type":"plugin","description":"Proxy construct methods"},"can/map/lazy":{"name":"can.Map.Lazy","type":"plugin","description":"Lazy initializing maps and lists"},"can/map/delegate":{"name":"can.Map.delegate","type":"plugin","description":"Listen to Observe attributes"},"can/map/setter":{"name":"can.Map.setter","type":"plugin","description":"Use setter methods on can.Map"},"can/map/attributes":{"name":"can.Map.attributes","type":"plugin","deprecated":true,"description":"Define Observe attributes"},"can/map/validations":{"name":"can.Map.validations","type":"plugin","description":"Validate Observe attributes"},"can/map/backup":{"name":"can.Map.backup","type":"plugin","description":"Backup and restore an Observes state"},"can/map/list":{"name":"can.Map.List","type":"plugin","description":"Live-updating mapped and filtered observe lists"},"can/map/define":{"name":"can.Map.define","type":"plugin","description":"Define rich attribute behavior"},"can/map/sort":{"name":"can.List.Sort","type":"plugin","description":"Sort observable lists"},"can/control/plugin":{"name":"can.Control.plugin","type":"plugin","description":"Registers a jQuery plugin function for Controls","configurations":["jquery","jquery-2"]},"can/view/modifiers":{"name":"can.view.modifiers","type":"plugin","description":"Use jQuery modifiers to render views","configurations":["jquery","jquery-2"]},"can/util/object":{"name":"can.Object","type":"plugin","description":"Helper methods for object comparison"},"can/util/fixture":{"name":"can.fixture","type":"plugin","description":"Intercepts an AJAX request and simulates the response with a file or function"},"can/view/bindings":{"name":"can.view.bindings","type":"core","isDefault":true,"hidden":true},"can/view/live":{"name":"can.view.live","type":"core","isDefault":true,"hidden":true},"can/view/scope":{"name":"can.view.Scope","type":"core","isDefault":true,"hidden":true},"can/util/string":{"name":"can.util.string","type":"core","isDefault":true,"hidden":true},"can/util/attr":{"name":"can.util.attr","type":"core","isDefault":true,"hidden":true}},"types":{"core":"CanJS core","plugin":"Plugins"},"pluginify":{"shim":{"can/lib/jquery.2.0.3.js":"jQuery","can/lib/jquery.1.10.2.js":"jQuery","can/bower_components/zepto/zepto.js":"Zepto","can/lib/mootools-core-1.4.5.js":"{}","can/util/dojo/dojo-1.8.1.js":"{}","can/lib/yui-3.7.3.js":"YUI"},"exports":{"can/util/can.js":"can"}},"configurations":{"jquery":{"description":"jQuery","isDefault":true,"library":"lib/jquery.1.10.2.js","steal":{"map":{"*":{"can/util/util.js":"can/util/jquery/jquery.js","jquery/jquery.js":"can/lib/jquery.1.10.2.js"}}}},"jquery-2":{"description":"jQuery (2.x)","hidden":true,"library":"lib/jquery.2.0.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/jquery/jquery.js","jquery/jquery.js":"can/lib/jquery.2.0.3.js"}}}},"zepto":{"description":"Zepto","library":"bower_components/zepto/zepto.js","steal":{"map":{"*":{"can/util/util.js":"can/util/zepto/zepto.js","zepto/zepto.js":"can/bower_components/zepto/zepto.js"}}}},"mootools":{"description":"Mootools","library":"lib/mootools-core-1.4.5.js","steal":{"map":{"*":{"can/util/util.js":"can/util/mootools/mootools.js","mootools/mootools.js":"can/lib/mootools-core-1.4.5.js"}}}},"yui":{"description":"YUI","library":"lib/yui-3.7.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/yui/yui.js","yui/yui.js":"can/lib/yui-3.7.3.js"}}}},"dojo":{"description":"Dojo","library":"util/dojo/dojo-1.8.1.js","steal":{"map":{"*":{"can/util/util.js":"can/util/dojo/dojo.js","dojo/dojo.js":"can/util/dojo/dojo-1.8.1.js"}}}}}},"url":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"static":"scripts/static","templates":"scripts/templates","forceBuild":true,"minifyBuild":true,"versionsSrc":"../versions.json","version":"2.1","isVersioned":false,"versions":[{"number":"2.1","branch":"master"},{"number":"2.0"},{"number":"1.1"}],"statics":{"src":"_pages"}};
-    window.Bitovi = {
-      URL: {
-        BUILDER: 'http://bitbuilder.herokuapp.com/can.custom.js',
-        BUILDER_DATA: 'http://bitbuilder.herokuapp.com/canjs',
-        BITHUB: 'http://api.bithub.com/api/v1/events/',
-        CDN: '//canjs.com/release/'
-      }
-    }
-    steal = {
-      productionId: "production.js",
-      executed: ["documentjs/site/static/build/production.css"]
-    }
-  </script>
-  <script 
-  
-    src="./static/steal.production.js"
-  
-    ></script>
-  <script type="text/javascript">
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-2302003-11']);
-  _gaq.push(['_setDomainName', 'canjs.com']);
-  _gaq.push(['_setAllowLinker', true]);
-  _gaq.push(['_trackPageview']);
+	
+	
+	<footer>
+		<nav class="container">
+			<a class="brand" href="index.html"></a>
+			<ul class='nav'>
+				<li >
+	              <a href="../index.html">Home</a>
+	            </li>
+		        <li><a href='../guides/index.html'>guides</a></li>
+		        <li class='active'><a href='index.html'>api</a></li>
+		        <li class="">
+		          <a href="../community.html#!forums">Community</a>
+		        </li>
+		        <li >
+	              <a href="../blog/index.html">Blog</a>
+	            </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+	            </li>
+            </ul>
+		</nav>
+	</footer>
+	
 
-  (function() {
-  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+    
+    <!--<script type="text/javascript">
 
-  </script>
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-2302003-11']);
+	  _gaq.push(['_setDomainName', 'canjs.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	
+	</script>-->
+	
+	<script type="text/javascript">
+		var docObject = {"parent":"can.Map.plugins","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs"},"type":"property","name":"can.Map.prototype.define","description":"<p>Defines the\ntype, initial value, get, set, remove, and serialize behavior for attributes\nof a [can.Map].</p>\n","types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"can.Map.prototype.define.attrDefinition"}]}],"description":"<p>A map of\nattribute names to [can.Map::define.attrDefinition attribute definition]\nobjects.</p>\n"}],"title":"define","comment":" ","src":"map/define/doc/define.md","children":[{"type":"function","name":"can.Map.prototype.define.TypeConstructor","description":"<p>Provides a constructor function to be used to convert any value passed into [can.Map::attr attr] into an appropriate value</p>\n","title":"Type","parent":"can.Map.prototype.define","signatures":[{"code":"constructorFunc","description":"<p>A constructor function can be provided that is called to convert incoming values set on this property, like:</p>\n<pre><code>define: {\n  prop: {\n    Type: Person\n  }\n}\n</code></pre>\n","params":[]}],"comment":" ","src":"map/define/doc/TypeConstructor.md"},{"type":"function","name":"can.Map.prototype.define.ValueConstructor","description":"<p>Provides a constructor function to be used to provide a default value for a certain property of a can.Map.  This constructor will be invoked with <code>new</code> each time a new instance of the map is created.</p>\n","title":"Value","parent":"can.Map.prototype.define","signatures":[{"code":"constructorFunc","description":"<p>A constructor function can be provided that is called to create a default value used for this property, like:</p>\n<pre><code>define: {\n  prop: {\n    Value: Array\n  },\n  person: {\n    Value: Person\n  }\n}\n</code></pre>\n","params":[]}],"comment":" ","src":"map/define/doc/ValueConstructor.md"},{"type":"typedef","name":"can.Map.prototype.define.attrDefinition","description":"<p>Defines the type, initial value, and get, set, and remove behavior for an attribute of a [can.Map].</p>\n","title":"attrDefinition","types":[{"type":"Object","options":[{"name":"value","description":"<p>Specifies the initial value of the attribute or\na function that returns the initial value. For example, a default value of <code>0</code> can be\nspecified like:</p>\n<pre><code>define: {\n  prop: {\n    value: 0\n  }\n}\n</code></pre>\n<p><code>Object</code> types should not be specified directly on <code>value</code> because that same object will\nbe shared on every instance of the Map.  Instead, a [can.Map::define.value value function] that\nreturns a fresh copy can be provided:</p>\n<pre><code>define: {\n  prop: {\n    value: function(){\n      return {foo: &quot;bar&quot;}\n    }\n  }\n}\n</code></pre>\n","types":[{"type":"can.Map.prototype.define.value"},{"type":"*"}]},{"name":"Value","description":"<p>Specifies a function that will be called with <code>new</code> whose result is\nset as the initial value of the attribute. For example, if the default value should be a can.List:</p>\n<pre><code>define: {\n  prop: {\n    Value: can.List\n  }\n}\n</code></pre>\n","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]},{"name":"type","description":"<p>Specifies the type of the\nattribute.  The type can be specified as either a [can.Map.prototype.define.type type function]\nthat returns the type coerced value or one of the following strings:</p>\n<ul>\n<li><code>&quot;string&quot;</code> - Converts the value to a string.</li>\n<li><code>&quot;date&quot;</code> - Converts the value to a date or `null if the date can not be converted.</li>\n<li><code>&quot;number&quot;</code> - Passes the value through <code>parseFloat</code>.</li>\n<li><code>&quot;boolean&quot;</code> - Converts falsey, <code>&quot;false&quot;</code> or <code>&quot;0&quot;</code> to <code>false</code> and everything else to true.</li>\n<li><code>&quot;*&quot;</code> - Prevents the default type coersion of converting Objects to [can.Map]s and Arrays to [can.List]s.</li>\n</ul>\n<p>The following example converts the <code>count</code> property to a number and the <code>items</code> property to an array:</p>\n<pre><code> define: {\n   count: {type: &quot;number&quot;},\n   items: {\n     type: function(newValue){\n       if(typeof newValue === &quot;string&quot;) {\n         return newValue.split(&quot;,&quot;)\n       } else if( can.isArray(newValue) ) {\n         return newValue;\n       }\n     }\n   }\n }\n</code></pre>\n","types":[{"type":"can.Map.prototype.define.type"},{"type":"String"}]},{"name":"Type","description":"<p>A constructor function that takes\nthe value passed to [can.Map::attr attr] as the first argument and called with\nnew. For example, if you want whatever\ngets passed to go through <code>new Array(newValue)</code> you can do that like:</p>\n<pre><code>define: {\n  items: {\n    Type: Array\n  }\n}\n</code></pre>\n<p>If the value passed to [can.Map::attr attr] is already an Array, it will be left as is.</p>\n","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]},{"name":"set","description":"<p>A set function that specifies what should happen when an attribute\nis set on a [can.Map]. <code>set</code> is called with the result of <code>type</code> or <code>Type</code>. The following\ndefines a <code>page</code> setter that updates the map's offset:</p>\n<pre><code>define: {\n  page: {\n    set: function(newVal){\n      this.attr('offset', (parseInt(newVal) - 1) * \n                           this.attr('limit'));\n    }\n  }\n}\n</code></pre>\n","types":[{"type":"can.Map.prototype.define.set"}]},{"name":"get","description":"<p>A function that specifies how the value is retrieved.  The get function is\nconverted to an [can.compute.async async compute].  It should derive its value from other values\non the map. The following\ndefines a <code>page</code> getter that reads from a map's offset and limit:</p>\n<pre><code>define: {\n  page: {\n    get: function (newVal) {\n      return Math.floor(this.attr('offset') / \n                        this.attr('limit')) + 1;\n    }\n  }\n}\n</code></pre>\n<p>A <code>get</code> definition makes the property <strong>computed</strong> which means it will not be serialized by default.</p>\n","types":[{"type":"can.Map.prototype.define.get"}]},{"name":"remove","description":"<p>A function that specifies what should happen when an attribute is removed\nwith [can.Map::removeAttr removeAttr]. The following removes a <code>modelId</code> when <code>makeId</code> is removed:</p>\n<pre><code>define: {\n  makeId: {\n    remove: function(){\n      this.removeAttr(&quot;modelId&quot;);\n    }\n  }\n}\n</code></pre>\n","types":[{"type":"can.Map.prototype.define.remove"}]},{"name":"serialize","description":"<p>Specifies the behavior of the\nproperty when [can.Map::serialize serialize] is called.</p>\n<p>By default, serialize does not include computed values. Properties with a <code>get</code> definition\nare computed and therefore are not added to the result.  Non-computed properties values are\nserialized if possible and added to the result.</p>\n<pre><code>Paginate = can.Map.extend({\n  define: {\n    pageNum: {\n      get: function(){ return this.offset() / 20 }\n    }\n  }\n});\n\np = new Paginate({offset: 40});\np.serialize() //-&gt; {offset: 40}\n</code></pre>\n<p>If <code>true</code> is specified, computed properties will be serialized and added to the result.</p>\n<pre><code>Paginate = can.Map.extend({\n  define: {\n    pageNum: { \n      get: function(){ return this.offset() / 20 },\n      serialize: true\n    }\n  }\n});\n\np = new Paginate({offset: 40});\np.serialize() //-&gt; {offset: 40, pageNum: 2}\n</code></pre>\n<p>If <code>false</code> is specified, non-computed properties will not be added to the result.</p>\n<pre><code>Paginate = can.Map.extend({\n  define: {\n    offset: {\n      serialize: false\n    }\n  }\n});\n\np = new Paginate({offset: 40});\np.serialize() //-&gt; {}\n</code></pre>\n<p>If a [can.Map.prototype.define.serialize serialize function] is specified, the result\nof the function is added to the result.</p>\n<pre><code>Paginate = can.Map.extend({\n  define: {\n    offset: {\n      serialize: function(offset){\n        return (offset / 20)+1\n      }\n    }\n  }\n});\n\np = new Paginate({offset: 40});\np.serialize() //-&gt; {offset: 3}\n</code></pre>\n","types":[{"type":"can.Map.prototype.define.serialize"},{"type":"Boolean"}]}]}],"parent":"can.Map.prototype.define","src":"map/define/doc/attrDefinition.md"},{"type":"function","name":"can.Map.prototype.define.get","description":"<p>Specify what happens when a certain property is read on a map.</p>\n","title":"get","parent":"can.Map.prototype.define","signatures":[{"code":"get( )","description":"<p>A get function defines the behavior of what happens when a value is read on a\n[can.Map]. It is typically used to provide properties that derive their value from other properties of the map.</p>\n","params":[],"returns":{"types":[{"type":"*"}],"description":"<p>Anything can be returned from a getter.</p>\n"}}],"comment":" ","src":"map/define/doc/get.md"},{"type":"function","name":"can.Map.prototype.define.remove","description":"<p>Called when an attribute is removed.</p>\n","title":"remove","parent":"can.Map.prototype.define","signatures":[{"code":"remover( currentValue )","description":"","params":[],"returns":{"types":[{"type":"*"},{"type":"false"}],"description":"<p>If <code>false</code> is returned, the value is not removed.</p>\n"}}],"comment":" ","src":"map/define/doc/remove.md"},{"type":"function","name":"can.Map.prototype.define.serialize","description":"<p>Called when an attribute is removed.</p>\n","title":"serialize","parent":"can.Map.prototype.define","signatures":[{"code":"serializer( currentValue )","description":"","params":[{"types":[{"type":"*"}],"name":"value","description":"<p>The current value of the attribute.</p>\n"},{"types":[{"type":"String"}],"name":"attr","description":"<p>The name of the attribute being serialized.</p>\n"}],"returns":{"types":[{"type":"*"},{"type":"undefined"}],"description":"<p>If <code>undefined</code> is returned, the value is not serialized.</p>\n"},"context":{"types":[{"type":"can.Map"}],"description":"<p>The map instance being serialized.</p>\n"}}],"comment":" ","src":"map/define/doc/serialize.md"},{"type":"function","name":"can.Map.prototype.define.set","description":"<p>Specify what happens when a value is set on a map attribute.</p>\n","title":"set","parent":"can.Map.prototype.define","signatures":[{"code":"set( [newVal,] [setValue] )","description":"<p>A set function defines the behavior of what happens when a value is set on a\n[can.Map]. It is typically used to:</p>\n<ul>\n<li>Add or remove other attributes as side effects</li>\n<li>Coerce the set value into an appropriate action</li>\n</ul>\n<p>The behavior of the setter depends on the number of arguments specified. This means that a\nsetter like:</p>\n<pre><code>define: {\n  prop: {\n    set: function(){}\n  }\n}\n</code></pre>\n<p>behaves differently than:</p>\n<pre><code>define: {\n  prop: {\n    set: function(newVal){}\n  }\n}\n</code></pre>\n","params":[{"types":[{"type":"*"}],"optional":true,"name":"newVal","description":"<p>The [can.Map::define.type type function] coerced value the user intends to set on the\ncan.Map.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"*"}],"name":"newValue"}]}],"optional":true,"name":"setValue","description":"<p>A callback that can set the value of the property\nasyncronously.</p>\n"}],"returns":{"types":[{"type":"*"},{"type":"undefined"}],"description":"<p>If a non-undefined value is returned, that value is set as\nthe attribute value.</p>\n<p>If an <code>undefined</code> value is returned, the behavior depends on the number of\narguments the setter declares:</p>\n<ul>\n<li>If the setter <em>does not</em> specify the <code>newValue</code> argument, the attribute value is set\nto whatever was passed to [can.Map::attr attr].</li>\n<li>If the setter specifies the <code>newValue</code> argument only, the attribute value will be removed.</li>\n<li>If the setter specifies both <code>newValue</code> and <code>setValue</code>, the value of the property will not be\nupdated until <code>setValue</code> is called.</li>\n</ul>\n"}}],"comment":" ","src":"map/define/doc/set.md"},{"type":"function","name":"can.Map.prototype.define.type","description":"<p>Converts a value passed to [can.Map::attr attr] into an appropriate value.</p>\n","title":"type","parent":"can.Map.prototype.define","params":[{"types":[{"type":"*"}],"name":"newValue","description":"<p>The value passed to <code>attr</code>.</p>\n"},{"types":[{"type":"String"}],"name":"attrName","description":"<p>The attribute name being set.</p>\n"}],"context":{"types":[{"type":"can.Map"}],"description":"<p>the instance of the can.Map.</p>\n"},"returns":{"types":[{"type":"*"}],"description":"<p>The value that should be passed to <code>set</code> or (if there is no <code>set</code> property) the value to set on the map instance.</p>\n"},"comment":" ","src":"map/define/doc/type.md"},{"type":"function","name":"can.Map.prototype.define.value","description":"<p>Returns the default value for instances of this can.Map.  This is called before <code>init</code>.</p>\n","title":"value","parent":"can.Map.prototype.define","signatures":[{"code":"defaulter()","description":"<p>A function can be provided that returns the default value used for this property, like:</p>\n<pre><code>define: {\n  prop: {\n    value: function(){ return []; }\n  }\n}\n</code></pre>\n<p>If the default value should be an object of some type, it should be specified as the return value of a function (the above call signature) so that all instances of this map don't point to the same object.  For example, if the property <code>value</code> above had not returned an empty array but instead just specified an array using the next call signature below, all instances of that map would point to the same array (because JavaScript passes objects by reference).</p>\n","params":[],"context":{"types":[{"type":"can.Map"}],"description":"<p>the instance of the can.Map.</p>\n"},"returns":{"types":[{"type":"*"}],"description":"<p>The default value.  This will be passed through setter and type.</p>\n"}},{"code":"defaulVal","description":"<p>Any value can be provided as the default value used for this property, like:</p>\n<pre><code>define: {\n  prop: {\n    value: 'foo'\n  }\n}\n</code></pre>\n","params":[{"types":[{"type":"*"}],"name":"defaultVal","description":"<p>The default value, which will be passed through setter and type.</p>\n"}]}],"comment":" ","src":"map/define/doc/value.md"}]};
+	</script>
+	
+	
+		<script type='text/javascript' 
+				data-main="static"
+				src="./static/steal.production.js"
+		    		bundles-path="bundles"></script>
+	
+	
 </body>
 
 </html>

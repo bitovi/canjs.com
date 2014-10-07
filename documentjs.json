@@ -1,0 +1,83 @@
+{
+	"versions": {
+		"1.1" : {
+			"source": "git://github.com/bitovi/canjs#1.1-legacy",
+			"sites": {
+				"docs": {
+					"glob": {
+						"ignore": "guides/*.md"
+					},
+					"parent" : "canjs"
+				},
+				"guides": {
+					"glob": {
+						"pattern": "{guides/*.md,*.md}"
+					},
+					"parent": "guides"
+				}
+			}
+		},
+		"2.0" : {
+			"source": "https://github.com/bitovi/canjs/tree/v2.0.7",
+			"sites": {
+				"docs": {
+					"glob": {
+						"ignore": "guides/*.md"
+					},
+					"parent" : "canjs"
+				},
+				"guides": {
+					"glob": {
+						"pattern": "{guides/*.md,*.md}"
+					},
+					"parent": "guides"
+				}
+			}
+		},
+		"2.1" : {
+			"source": "git://github.com/bitovi/canjs#master",
+			"sites": {
+				"docs": {
+					"glob": {
+						"ignore": "guides/*.md"
+					},
+					"parent" : "canjs"
+				},
+				"guides": {
+					"glob": {
+						"pattern": "{guides/*.md,*.md}"
+					},
+					"parent": "guides"
+				}
+			}
+		}
+	},
+	"defaultVersion" : "2.1",
+	"siteDefaults": {
+		"parent" : "canjs",
+		"templates" : "theme/templates",
+		"static": "theme/static",
+		"pageConfig": {
+			"urls": {
+				"builderData": "http://bitbuilder.herokuapp.com/canjs",
+				"builder": "http://bitbuilder.herokuapp.com/can.custom.js",
+				"bithub": "http://api.bithub.com/api/v1/events/",
+				"cdn": "//canjs.com/release/"
+			},
+			"versions": [
+				{"branch": "master","number": "2.1"},
+				{"number": "2.0"},
+				{"number": "1.1"}]
+		},
+		"versionsSelectText" : "CanJS v<%= version %>"
+	},
+	"defaultDest" : "./can",
+	"versionDest" : "./<%=version%>/can",
+	"sites": {
+		"pages" : {
+			"dest" : ".",
+			"glob" : "_pages/*.mustache",
+			"parent" : "index"
+		}
+	}
+}
