@@ -382,11 +382,11 @@ pass the data to populate the template with.</p>
 <p>In order to register a template with can.view, create a script tag on the page
 with an ID, a <code>type</code> attribute that matches the templating language, and the
 content of the template inside:</p>
-<pre><code class="language-js">&amp;lt;script type=&quot;text/ejs&quot; id=&quot;todoList&quot;&gt;
+<pre><code class="language-js">&lt;script type=&quot;text/ejs&quot; id=&quot;todoList&quot;&gt;
 &lt;% can.each(this, function(val, key) { %&gt;
-    &amp;lt;li&gt;&lt;%= val.attr('description') %&gt;&amp;lt;/li&gt;
+    &lt;li&gt;&lt;%= val.attr('description') %&gt;&lt;/li&gt;
 &lt;% }); %&gt;
-&amp;lt;/script&gt;
+&lt;/script&gt;
 </code></pre>
 <p>Then load the template using the script tag's ID and pass the template data:</p>
 <pre><code class="language-js">Todo.findAll({}, function(todos) {
@@ -417,7 +417,7 @@ then render the resulting documentFragment after everything has been loaded:</p>
 <p>To render to a string instead of a documentFragment, use <code>can.view.render</code>. This
 is mainly used to nest templates inside of other templates:</p>
 <pre><code class="language-js">&lt;% can.each(todos, function(todo, key) { %&gt;
-    &amp;lt;li&gt;&lt;%== can.view.render('todos.ejs', todo); %&gt;&amp;lt;/li&gt;
+    &lt;li&gt;&lt;%== can.view.render('todos.ejs', todo); %&gt;&lt;/li&gt;
 &lt;% }) %&gt;
 </code></pre>
 
@@ -481,7 +481,7 @@ is mainly used to nest templates inside of other templates:</p>
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"Tutorial","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"forceBuild":true,"debug":true,"dest":"/Users/justin/dev/canjs.com/1.1/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"type":"page","name":"Templates","description":"","title":"Templates","order":3,"comment":" ","src":"guides/views.md"};
+		var docObject = {"parent":"Tutorial","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/1.1/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"type":"page","name":"Templates","description":"","title":"Templates","order":3,"comment":" ","src":"guides/views.md"};
 	</script>
 	
 	

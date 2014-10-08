@@ -444,7 +444,7 @@ you can leverage to manage and maintain a list of models.</p>
 <h3>Faster Inserts</h3>
 <p>The 'easy' way to add a model to an element is simply inserting
 the model into the view like:</p>
-<pre><code class="language-xml">&amp;lt;div &amp;lt;%= task %&gt;&gt; A task &amp;lt;/div&gt;
+<pre><code class="language-xml">&lt;div &lt;%= task %&gt;&gt; A task &lt;/div&gt;
 </code></pre>
 <p>And then you can use [jQuery.fn.models $('.task').models()].</p>
 <p>This pattern is fast enough for 90% of all widgets.  But it
@@ -454,7 +454,7 @@ uses their className to return matched instances in the list.</p>
 <p>To use get, your elements need to have the instance's
 identity in their className.  So to setup a div to reprsent
 a task, you would have the following in a view:</p>
-<pre><code class="language-xml">&amp;lt;div class='task &amp;lt;%= task.identity() %&gt;'&gt; A task &amp;lt;/div&gt;
+<pre><code class="language-xml">&lt;div class='task &lt;%= task.identity() %&gt;'&gt; A task &lt;/div&gt;
 </code></pre>
 <p>Then, with your model list, you could use get to get a list of
 tasks:</p>

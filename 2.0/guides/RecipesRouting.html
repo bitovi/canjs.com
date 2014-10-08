@@ -322,10 +322,10 @@ panel it should show.  This means that even if JavaScript was disabled,
 clicking a button would send the user to the tab panel (even though
 HistoryTabs overwrites this behavior).</p>
 <p>For example:</p>
-<pre><code class="language-js">&amp;lt;li&gt;&amp;lt;a href=&quot;#model&quot;&gt;can.Model&amp;lt;/a&gt;&amp;lt;/li&gt;
+<pre><code class="language-js">&lt;li&gt;&lt;a href=&quot;#model&quot;&gt;can.Model&lt;/a&gt;&lt;/li&gt;
 </code></pre>
 <p>references:</p>
-<pre><code class="language-js">&amp;lt;div id=&quot;model&quot; class=&quot;tab&quot;&gt;
+<pre><code class="language-js">&lt;div id=&quot;model&quot; class=&quot;tab&quot;&gt;
 </code></pre>
 <p>The JavaScript code begins by creating a <code>HistoryTabs</code>
 control.  When a new <code>HistoryTabs</code> instance is created, it gets
@@ -383,7 +383,7 @@ and select a issue and see details about that issue.</p>
 into <strong>Nav</strong>, <strong>Issues</strong>, and <strong>Details</strong> can.controls.  Here's how
 each part works:</p>
 <p><code>Nav</code> creates links using <code>can.route.link</code> that update the hash like:</p>
-<pre><code class="language-js">&amp;lt;%== can.route.link(&quot;Critical&quot;,{filter: &quot;critical&quot;}) %&gt;
+<pre><code class="language-js">&lt;%== can.route.link(&quot;Critical&quot;,{filter: &quot;critical&quot;}) %&gt;
 </code></pre>
 <p>When these are clicked on, they update the route's filter data.</p>
 <p><code>Issues</code> listens to filter changes like:</p>

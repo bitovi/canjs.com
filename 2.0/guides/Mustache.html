@@ -407,11 +407,11 @@ special tags used for injecting your data into the HTML. The number of ways
 you can inject data is limited by design for simplicity and maintainability,
 but can be enhanced through the use of helpers.</p>
 <p>Here's an example of a template that might render a list of Todos:</p>
-<pre><code class="language-js">&amp;lt;script type=&quot;text/mustache&quot; id=&quot;todosList&quot;&gt;
+<pre><code class="language-js">&lt;script type=&quot;text/mustache&quot; id=&quot;todosList&quot;&gt;
 {{#todos}}
-&amp;lt;li&gt;{{description}}&amp;lt;/li&gt;
+&lt;li&gt;{{description}}&lt;/li&gt;
 {{/todos}}
-&amp;lt;/script&gt;
+&lt;/script&gt;
 </code></pre>
 <p>You can use <code>can.view</code> to render the template:</p>
 <pre><code class="language-js">Todo.findAll({}, function(todos) {
@@ -457,7 +457,7 @@ this set of data:</p>
 a falsey value and the section is not rendered at all. Neither of these sections
 will render:</p>
 <pre><code class="language-js">{{#enemies}}
-&amp;lt;li&gt;{{.}}&amp;lt;/li&gt;
+&lt;li&gt;{{.}}&lt;/li&gt;
 {{/enemies}}
 </code></pre>
 <pre><code class="language-js">{{#nickname}}{{.}}{{/nickname}}
@@ -466,30 +466,30 @@ will render:</p>
 element in the array. If it is truthy but not an array, the section is rendered
 once.</p>
 <p>This template:</p>
-<pre><code class="language-js">&amp;lt;h1&gt;{{#name}}{{.}}{{/name}}&amp;lt;/h1&gt;
-&amp;lt;ul&gt;
+<pre><code class="language-js">&lt;h1&gt;{{#name}}{{.}}{{/name}}&lt;/h1&gt;
+&lt;ul&gt;
     {{#friends}}
-    &amp;lt;li&gt;{{.}}&amp;lt;/li&gt;
+    &lt;li&gt;{{.}}&lt;/li&gt;
     {{/friends}}
-&amp;lt;/ul&gt;
+&lt;/ul&gt;
 </code></pre>
 <p>will render like this:</p>
-<pre><code class="language-js">&amp;lt;h1&gt;Alice Liddell&amp;lt;/h1&gt;
-&amp;lt;ul&gt;
-    &amp;lt;li&gt;Bob&amp;lt;/li&gt;
-    &amp;lt;li&gt;Eve&amp;lt;/li&gt;
-&amp;lt;/ul&gt;
+<pre><code class="language-js">&lt;h1&gt;Alice Liddell&lt;/h1&gt;
+&lt;ul&gt;
+    &lt;li&gt;Bob&lt;/li&gt;
+    &lt;li&gt;Eve&lt;/li&gt;
+&lt;/ul&gt;
 </code></pre>
 <p>You can also make inverted sections that render if the variable referenced in the
 opening tag is falsey:</p>
-<pre><code class="language-js">&amp;lt;ul&gt;
+<pre><code class="language-js">&lt;ul&gt;
     {{#friends}}
-    &amp;lt;li&gt;{{.}}&amp;lt;/li&gt;
+    &lt;li&gt;{{.}}&lt;/li&gt;
     {{/friends}}
     {{^friends}}
-    &amp;lt;li&gt;You have no friends.&amp;lt;/li&gt;
+    &lt;li&gt;You have no friends.&lt;/li&gt;
     {{/friends}}
-&amp;lt;/ul&gt;
+&lt;/ul&gt;
 </code></pre>
 <h3>Context</h3>
 <p>When Mustache is resolving an object in a section, it sets the current context
@@ -536,17 +536,17 @@ and the value is the helper function:</p>
 });
 </code></pre>
 <p>This might be used in a template like this:</p>
-<pre><code class="language-js">&amp;lt;script type=&quot;text/mustache&quot; id=&quot;todosList&quot;&gt;
+<pre><code class="language-js">&lt;script type=&quot;text/mustache&quot; id=&quot;todosList&quot;&gt;
 {{#todos}}
-&amp;lt;li&gt;{{uppercase description}}&amp;lt;/li&gt;
+&lt;li&gt;{{uppercase description}}&lt;/li&gt;
 {{/todos}}
-&amp;lt;/script&gt;
+&lt;/script&gt;
 </code></pre>
 <p>If a property of an observe is passed to a helper function, the helper will
 become a <a href="../docs/can.compute.html">can.compute</a>. As an example, if you had this template:</p>
-<pre><code class="language-js">&amp;lt;script type=&quot;text/mustache&quot; id=&quot;prefixedName&quot;&gt;
-&amp;lt;div&gt;{{addMs lastName}}&amp;lt;/div&gt;
-&amp;lt;/script&gt;
+<pre><code class="language-js">&lt;script type=&quot;text/mustache&quot; id=&quot;prefixedName&quot;&gt;
+&lt;div&gt;{{addMs lastName}}&lt;/div&gt;
+&lt;/script&gt;
 </code></pre>
 <p>And you ran this code:</p>
 <pre><code class="language-js">var name = new can.Observe({firstName: 'Alice', lastName: 'Liddell'});
@@ -570,9 +570,9 @@ name.attr({firstName: 'Allison', lastName: 'Wonderland'});
 helper will associate the current context (<code>.</code>) with a variable you pass to the
 helper.</p>
 <p>For example, this template:</p>
-<pre><code class="language-js">&amp;lt;script type=&quot;text/mustache&quot; id=&quot;nameDiv&quot;&gt;
-&amp;lt;div id=&quot;person&quot; {{data 'name'}}&gt;{{firstName}} {{lastName}}&amp;lt;/div&gt;
-&amp;lt;/script&gt;
+<pre><code class="language-js">&lt;script type=&quot;text/mustache&quot; id=&quot;nameDiv&quot;&gt;
+&lt;div id=&quot;person&quot; {{data 'name'}}&gt;{{firstName}} {{lastName}}&lt;/div&gt;
+&lt;/script&gt;
 </code></pre>
 <p>lets you do this in code:</p>
 <pre><code class="language-js">document.body.appendChild(can.view('nameDiv', {
@@ -589,23 +589,23 @@ the context from which they are called. They are evaluated at render time, so yo
 should be careful to avoid infinite loops. To include a partial, put its URL or
 ID inside <code>{{&gt; }}</code>.</p>
 <p>With these templates:</p>
-<pre><code class="language-js">&amp;lt;script type=&quot;text/mustache&quot; id=&quot;names&quot;&gt;
-&amp;lt;ul&gt;
+<pre><code class="language-js">&lt;script type=&quot;text/mustache&quot; id=&quot;names&quot;&gt;
+&lt;ul&gt;
 {{#names}}
     {{&gt;user}}
 {{/names}}
-&amp;lt;/ul&gt;
-&amp;lt;/script&gt;
-&amp;lt;script type=&quot;text/mustache&quot; id=&quot;user&quot;&gt;
-&amp;lt;li&gt;{{firstName}} {{lastName}}&amp;lt;/li&gt;
-&amp;lt;/script&gt;
+&lt;/ul&gt;
+&lt;/script&gt;
+&lt;script type=&quot;text/mustache&quot; id=&quot;user&quot;&gt;
+&lt;li&gt;{{firstName}} {{lastName}}&lt;/li&gt;
+&lt;/script&gt;
 </code></pre>
 <p>the expanded template at render time would look similar to:</p>
-<pre><code class="language-js">&amp;lt;ul&gt;
+<pre><code class="language-js">&lt;ul&gt;
 {{#names}}
-    &amp;lt;li&gt;{{firstName}} {{lastName}}&amp;lt;/li&gt;
+    &lt;li&gt;{{firstName}} {{lastName}}&lt;/li&gt;
 {{/names}}
-&amp;lt;/ul&gt;
+&lt;/ul&gt;
 </code></pre>
 
 		</section>

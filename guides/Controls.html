@@ -475,14 +475,14 @@ need to rebind handlers when you add or remove elements.</p>
 <p>One of the things that we want to do with our to-do list is delete Todos. This
 is made easy with event handling in can.Control. Let's say that our view
 template looks like this:</p>
-<pre><code class="language-js">&amp;lt;script type=&quot;text/ejs&quot; id=&quot;todoList&quot;&gt;
+<pre><code class="language-js">&lt;script type=&quot;text/ejs&quot; id=&quot;todoList&quot;&gt;
 &lt;% this.each(function(todo) { %&gt;
-&amp;lt;li &lt;%= (el) -&gt; el.data('todo', todo) %&gt;&gt;
+&lt;li &lt;%= (el) -&gt; el.data('todo', todo) %&gt;&gt;
     &lt;%= todo.attr('description'); %&gt;
-    &amp;lt;a class=&quot;destroy&quot;&gt;X&amp;lt;/a&gt;
-&amp;lt;/li&gt;
+    &lt;a class=&quot;destroy&quot;&gt;X&lt;/a&gt;
+&lt;/li&gt;
 &lt;% }) %&gt;
-&amp;lt;/script&gt;
+&lt;/script&gt;
 </code></pre>
 <p>We should put an event listener on our Todos Control to remove a Todo when its
 destruction link is clicked:</p>

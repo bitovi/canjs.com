@@ -308,10 +308,10 @@ panel it should show.  This means that even if JavaScript was disabled,
 clicking a button would send the user to the tab panel (even though
 HistoryTabs overwrites this behavior).</p>
 <p>For example:</p>
-<pre><code class="language-js">&amp;lt;li&gt;&amp;lt;a href=&quot;#model&quot;&gt;can.Model&amp;lt;/a&gt;&amp;lt;/li&gt;
+<pre><code class="language-js">&lt;li&gt;&lt;a href=&quot;#model&quot;&gt;can.Model&lt;/a&gt;&lt;/li&gt;
 </code></pre>
 <p>references:</p>
-<pre><code class="language-js">&amp;lt;div id=&quot;model&quot; class=&quot;tab&quot;&gt;
+<pre><code class="language-js">&lt;div id=&quot;model&quot; class=&quot;tab&quot;&gt;
 </code></pre>
 <p>The JavaScript code begins by creating a <code>HistoryTabs</code>
 control.  When a new <code>HistoryTabs</code> instance is created, it gets
@@ -369,7 +369,7 @@ and select a issue and see details about that issue.</p>
 into <strong>Nav</strong>, <strong>Issues</strong>, and <strong>Details</strong> can.controls.  Here's how
 each part works:</p>
 <p><code>Nav</code> creates links using <code>can.route.link</code> that update the hash like:</p>
-<pre><code class="language-js">&amp;lt;%== can.route.link(&quot;Critical&quot;,{filter: &quot;critical&quot;}) %&gt;
+<pre><code class="language-js">&lt;%== can.route.link(&quot;Critical&quot;,{filter: &quot;critical&quot;}) %&gt;
 </code></pre>
 <p>When these are clicked on, they update the route's filter data.</p>
 <p><code>Issues</code> listens to filter changes like:</p>
@@ -449,7 +449,7 @@ issue in the list like:</p>
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"Recipes","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"forceBuild":true,"debug":true,"dest":"/Users/justin/dev/canjs.com/1.1/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"type":"page","name":"RecipesRouting","description":"","title":"Routing","order":2,"comment":" ","src":"guides/recipes_routing.md"};
+		var docObject = {"parent":"Recipes","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/1.1/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"type":"page","name":"RecipesRouting","description":"","title":"Routing","order":2,"comment":" ","src":"guides/recipes_routing.md"};
 	</script>
 	
 	

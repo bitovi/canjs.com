@@ -411,11 +411,11 @@ pass the data to populate the template with.</p>
 <p>In order to register a template with can.view, create a script tag on the page
 with an ID, a <code>type</code> attribute that matches the templating language, and the
 content of the template inside:</p>
-<pre><code class="language-js">&amp;lt;script type=&quot;text/ejs&quot; id=&quot;todoList&quot;&gt;
+<pre><code class="language-js">&lt;script type=&quot;text/ejs&quot; id=&quot;todoList&quot;&gt;
 &lt;% can.each(this, function(val, key) { %&gt;
-    &amp;lt;li&gt;&lt;%= val.attr('description') %&gt;&amp;lt;/li&gt;
+    &lt;li&gt;&lt;%= val.attr('description') %&gt;&lt;/li&gt;
 &lt;% }); %&gt;
-&amp;lt;/script&gt;
+&lt;/script&gt;
 </code></pre>
 <p>Then load the template using the script tag's ID and pass the template data:</p>
 <pre><code class="language-js">Todo.findAll({}, function(todos) {
@@ -446,7 +446,7 @@ then render the resulting documentFragment after everything has been loaded:</p>
 <p>To render to a string instead of a documentFragment, use <code>can.view.render</code>. This
 is mainly used to nest templates inside of other templates:</p>
 <pre><code class="language-js">&lt;% can.each(todos, function(todo, key) { %&gt;
-    &amp;lt;li&gt;&lt;%== can.view.render('todos.ejs', todo); %&gt;&amp;lt;/li&gt;
+    &lt;li&gt;&lt;%== can.view.render('todos.ejs', todo); %&gt;&lt;/li&gt;
 &lt;% }) %&gt;
 </code></pre>
 

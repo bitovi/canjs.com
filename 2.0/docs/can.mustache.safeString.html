@@ -910,15 +910,15 @@ you will want to manually escape parameters with <code><a href="can.esc.html">ca
   text = can.esc(text);
   url  = can.esc(url);
 
-  var result = '&amp;lt;a href=&quot;' + url + '&quot;&amp;gt;' + text + '&amp;lt;/a&amp;gt;';
+  var result = '&lt;a href=&quot;' + url + '&quot;&gt;' + text + '&lt;/a&gt;';
   return can.Mustache.safeString(result);
 });
 </code></pre>
 <p>Rendering:</p>
-<pre><code class="language-js">&amp;lt;div&amp;gt;{{link &quot;Google&quot;, &quot;http://google.com&quot;}}&amp;lt;/div&amp;gt;
+<pre><code class="language-js">&lt;div&gt;{{link &quot;Google&quot;, &quot;http://google.com&quot;}}&lt;/div&gt;
 </code></pre>
 <p>Results in:</p>
-<pre><code class="language-js">&amp;lt;div&amp;gt;&amp;lt;a href=&quot;http://google.com&quot;&amp;gt;Google&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
+<pre><code class="language-js">&lt;div&gt;&lt;a href=&quot;http://google.com&quot;&gt;Google&lt;/a&gt;&lt;/div&gt;
 </code></pre>
 <p>As an anchor tag whereas if we would have just returned the result rather than a
 <code>can.Mustache.safeString</code> our template would have rendered a div with the escaped anchor tag.</p>

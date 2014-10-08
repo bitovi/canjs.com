@@ -406,7 +406,7 @@ create plugins for CanJS that work no matter what library someone else is using.
 <pre><code class="language-js">can.trim(' foo '); // 'foo'
 </code></pre>
 <p><code>can.esc</code> escapes HTML code.</p>
-<pre><code class="language-js">can.esc('&amp;lt;foo&gt;&amp;lt;bar&gt;'); // '&amp;amp;lt;foo&amp;amp;gt;&amp;amp;&amp;amp;lt;bar&amp;amp;gt;'
+<pre><code class="language-js">can.esc('&lt;foo&gt;&lt;bar&gt;'); // '&amp;lt;foo&amp;gt;&amp;&amp;lt;bar&amp;gt;'
 </code></pre>
 <p><code>can.getObject</code> looks up an object by path.</p>
 <pre><code class="language-js">can.('foo.bar', [{foo: {bar: 'baz'}}]); // 'baz'

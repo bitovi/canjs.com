@@ -276,7 +276,7 @@ person.attr( 'name.last', 'Meyer' );
 })
 
 // create a Tooltip
-var tooltipElement = $( '&amp;lt;div&gt;INFO&amp;lt;/div&gt;' ).appendTo( el )
+var tooltipElement = $( '&lt;div&gt;INFO&lt;/div&gt;' ).appendTo( el )
 var tooltipInstance = new Tooltip( tooltipElement );
 </code></pre>
 <p><code>window</code> now has a reference to the control which keeps the <code>tooltipInstance</code> and everything the tooltip instance might reference in memory. CanJS overwrites each library’s element remove functionality to <a href="../docs/can.Control.prototype.destroy.html">destroy</a> controls. Destroying a control unbinds all of its event handlers, removing any memory leaks auto-magically.</p>
@@ -290,18 +290,18 @@ var tooltipInstance = new Tooltip( tooltipElement );
 })
 </code></pre>
 <p><code>todosList.ejs</code> might look like:</p>
-<pre><code class="language-js">&amp;lt;h2&gt;Due Today&amp;lt;/h2&gt;
-&amp;lt;% list( todaysTodos, function( todo ) { %&gt;
-  &amp;lt;li &amp;lt;%= (el) -&gt; el.data( 'todo', todo ) %&gt;&gt;
-    &amp;lt;%= todo.attr( 'name' ) %&gt;
-  &amp;lt;/li&gt;
-&amp;lt;% } ) %&gt;
-&amp;lt;h2&gt;Critical Todos&lt;/h2&gt;
-&amp;lt;% list( criticalTodos, function( todo ) { %&gt;
-  &amp;lt;li &lt;%= (el) -&gt; el.data( 'todo', todo ) %&gt;&gt;
-    &amp;lt;%= todo.attr( 'name' ) %&gt;
-  &amp;lt;/li&gt;
-&amp;lt;% } ) %&gt;
+<pre><code class="language-js">&lt;h2&gt;Due Today&lt;/h2&gt;
+&lt;% list( todaysTodos, function( todo ) { %&gt;
+  &lt;li &lt;%= (el) -&gt; el.data( 'todo', todo ) %&gt;&gt;
+    &lt;%= todo.attr( 'name' ) %&gt;
+  &lt;/li&gt;
+&lt;% } ) %&gt;
+&lt;h2&gt;Critical Todos&lt;/h2&gt;
+&lt;% list( criticalTodos, function( todo ) { %&gt;
+  &lt;li &lt;%= (el) -&gt; el.data( 'todo', todo ) %&gt;&gt;
+    &lt;%= todo.attr( 'name' ) %&gt;
+  &lt;/li&gt;
+&lt;% } ) %&gt;
 </code></pre>
 <p>If the result for of <code>Todo.findAll( { due: 'today' } )</code> and <code>Todo.findAll( { type: 'critical' } )</code> both share a todo instance like:</p>
 <pre><code class="language-js">{ 
@@ -352,10 +352,10 @@ var tooltipInstance = new Tooltip( tooltipElement );
 </code></pre>
 <h4>Opt-in data binding</h4>
 <p>Although <a href="EJS.html">can.EJS’s</a> live-binding is super fast, setting up live data binding can be too slow in certain situations (like rendering a list of 1000 items). EJS’s live binding is opt-in. It only turns on if you are using the <code>attr</code> method. If the following template binds to a <code>todo</code>'s <code>name</code> …</p>
-<pre><code class="language-js">&amp;lt;li&gt; &amp;lt;%= todo.attr('name') %&gt; &amp;lt;/li&gt;
+<pre><code class="language-js">&lt;li&gt; &lt;%= todo.attr('name') %&gt; &lt;/li&gt;
 </code></pre>
 <p>… the following doesn’t setup live-binding and renders much faster …</p>
-<pre><code class="language-js">&amp;lt;li&gt; &amp;lt;%= todo.name %&gt; &amp;lt;/li&gt;
+<pre><code class="language-js">&lt;li&gt; &lt;%= todo.name %&gt; &lt;/li&gt;
 </code></pre>
 
 		</section>

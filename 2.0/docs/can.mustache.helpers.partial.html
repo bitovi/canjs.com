@@ -927,43 +927,43 @@ the page.</p>
 <p>Partials render at runtime, so recursive partials are possible but make sure you avoid infinite loops.</p>
 <p>For example, this template and partial:</p>
 <p><strong>base.mustache</strong></p>
-<pre><code class="language-js">&amp;lt;h2&gt;Names&amp;lt;/h2&gt;
+<pre><code class="language-js">&lt;h2&gt;Names&lt;/h2&gt;
 {{#names}}
     {{&gt;user.mustache}}
 {{/names}}
 </code></pre>
 <p><strong>user.mustache</strong></p>
-<pre><code class="language-js">&amp;lt;strong&gt;{{name}}&amp;lt;/strong&gt;
+<pre><code class="language-js">&lt;strong&gt;{{name}}&lt;/strong&gt;
 </code></pre>
 <p>The resulting expanded template at render time would look like:</p>
-<pre><code class="language-js">&amp;lt;h2&gt;Names&amp;lt;/h2&gt;
+<pre><code class="language-js">&lt;h2&gt;Names&lt;/h2&gt;
 {{#names}}
-    &amp;lt;strong&gt;{{name}}&amp;lt;/strong&gt;
+    &lt;strong&gt;{{name}}&lt;/strong&gt;
 {{/names}}
 </code></pre>
 <h2>Acquiring Partials</h2>
 <p><strong>Referencing Files</strong></p>
 <p>Partials can reference a file path and file name in the template.</p>
 <p>The following template uses a relative path (relative to the current page):</p>
-<pre><code class="language-js">&amp;lt;script id=&quot;template&quot; type=&quot;text/mustache&quot;&gt;
+<pre><code class="language-js">&lt;script id=&quot;template&quot; type=&quot;text/mustache&quot;&gt;
     {{&gt;views/test_template.mustache}}
-&amp;lt;/script&gt;
+&lt;/script&gt;
 </code></pre>
 <p>The following template uses an absolute path (rooted to steal's root directory):</p>
-<pre><code class="language-js">&amp;lt;script id=&quot;template&quot; type=&quot;text/mustache&quot;&gt;
+<pre><code class="language-js">&lt;script id=&quot;template&quot; type=&quot;text/mustache&quot;&gt;
     {{&gt;//myapp/accordion/views/test_template.mustache}}
-&amp;lt;/script&gt;
+&lt;/script&gt;
 </code></pre>
 <p><strong>Referencing by ID</strong></p>
 <p>Partials can reference templates that exist in script tags on the page by
 referencing the <code>id</code> of the partial in the template.  For example:</p>
-<pre><code class="language-js">&amp;lt;script id=&quot;mytemplate&quot; type=&quot;text/mustache&quot;&gt;
+<pre><code class="language-js">&lt;script id=&quot;mytemplate&quot; type=&quot;text/mustache&quot;&gt;
     {{&gt;mypartial}}
-&amp;lt;/script&gt;
+&lt;/script&gt;
 </code></pre>
-<pre><code class="language-js">&amp;lt;script id=&quot;mypartial&quot; type=&quot;text/mustache&quot;&gt;
+<pre><code class="language-js">&lt;script id=&quot;mypartial&quot; type=&quot;text/mustache&quot;&gt;
     I am a partial.
-&amp;lt;/script&gt;
+&lt;/script&gt;
 </code></pre>
 <pre><code class="language-js">var template = can.view(&quot;#mytemplate&quot;, {});
 </code></pre>
@@ -987,11 +987,11 @@ For example:</p>
 can.$(document.body).append(template);
 </code></pre>
 <p>then reference the partial in the template just like:</p>
-<pre><code class="language-js">&amp;lt;ul&gt;
+<pre><code class="language-js">&lt;ul&gt;
 {{#items}}
-    &amp;lt;li&gt;{{&gt;itemsTemplate}}&amp;lt;/li&gt;
+    &lt;li&gt;{{&gt;itemsTemplate}}&lt;/li&gt;
 {{/items}}
-&amp;lt;/ul&gt;
+&lt;/ul&gt;
 </code></pre>
 
 		</section>

@@ -424,7 +424,7 @@ deferreds.</p>
 <pre><code class="language-js">Contact.findAll({},function(contacts){
   var html = [];
   for(var i =0; i &lt; contacts.length; i++){
-    html.push('&amp;lt;li&gt;'+contacts[i].name + '&amp;lt;/li&gt;')
+    html.push('&lt;li&gt;'+contacts[i].name + '&lt;/li&gt;')
   }
   $('#contacts').html( html.join('') );
 });
