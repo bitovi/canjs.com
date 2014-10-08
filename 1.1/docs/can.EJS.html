@@ -418,16 +418,19 @@
 <p>The following renders a Teacher's name and students into an element.  First,
 create a teacher template in a script tag like:</p>
 <pre><code>&lt;script type='text/ejs' id='teacherEJS'&gt;
-<p>&lt;h2 class='&lt;%= teacher.grade &lt; 'c'? &quot;good&quot; : &quot;bad&quot; %&gt;'&gt;
-&lt;%= teacher.name %&gt;
-&lt;/h2&gt;</p>
-<p>&lt;ul&gt;
-&lt;% for(var i =0; i&lt; teacher.students.length; i++){ %&gt;
-&lt;li&gt;&lt;%= teacher.students[i].name %&gt;&lt;/li&gt;
-&lt;% } %&gt;
-&lt;/ul&gt;</p>
-<p>&lt;/script&gt;
-</code></pre></p>
+
+  &lt;h2 class='&lt;%= teacher.grade &lt; 'c'? &quot;good&quot; : &quot;bad&quot; %&gt;'&gt;
+    &lt;%= teacher.name %&gt;
+  &lt;/h2&gt;
+  
+  &lt;ul&gt;
+    &lt;% for(var i =0; i&lt; teacher.students.length; i++){ %&gt;
+      &lt;li&gt;&lt;%= teacher.students[i].name %&gt;&lt;/li&gt;
+    &lt;% } %&gt;
+  &lt;/ul&gt;
+  
+&lt;/script&gt;
+</code></pre>
 <p>Notice the magic tags?  Those are things that look like <code>&lt;% %&gt;</code> and
 <code>&lt;%= %&gt;</code>.  Code between <code>&lt;% %&gt;</code> is run and the return value of code
 between <code>&lt;%= %&gt;</code> is inserted into the page.</p>
@@ -442,22 +445,24 @@ between <code>&lt;%= %&gt;</code> is inserted into the page.</p>
     {name : &quot;Alexis&quot;}
   ]
 };
-<p>document.getElementById('teacher')
-.appendChild( can.view(&quot;teacherEJS&quot;, teacher) )
-</code></pre></p>
+
+document.getElementById('teacher')
+  .appendChild( can.view(&quot;teacherEJS&quot;, teacher) )
+</code></pre>
 <p>This results in HTML like:</p>
 <pre><code>&lt;div id='teachers'&gt;
   &lt;h2 class='good'&gt;
     Mr. Smith
   &lt;/h2&gt;
-<p>&lt;ul&gt;
-&lt;li&gt;Suzy&lt;/li&gt;
-&lt;li&gt;Payal&lt;/li&gt;
-&lt;li&gt;Curtis&lt;/li&gt;
-&lt;li&gt;Alexis&lt;/li&gt;
-&lt;/ul&gt;
+
+  &lt;ul&gt;
+     &lt;li&gt;Suzy&lt;/li&gt;
+     &lt;li&gt;Payal&lt;/li&gt;
+     &lt;li&gt;Curtis&lt;/li&gt;
+     &lt;li&gt;Alexis&lt;/li&gt;
+  &lt;/ul&gt;
 &lt;/div&gt;
-</code></pre></p>
+</code></pre>
 <p>This is nice, but what if we change properties of the teacher?</p>
 <h2>Basic Live Binding Example</h2>
 <p>EJS sets up live templating binding when a <a href="can.Observe.html">can.Observe</a>'s properties are read
@@ -466,16 +471,19 @@ respond to changes in the teacher data, first rewrite the template
 to use the attr method to read properties and <code>list( observeList, cb(item, i) )</code>
 to iterate through a list like:</p>
 <pre><code>&lt;script type='text/ejs' id='teacherEJS'&gt;
-<p>&lt;h2 class='&lt;%= teacher.attr('grade') &lt; 'c'? &quot;good&quot; : &quot;bad&quot; %&gt;'&gt;
-&lt;%= teacher.attr('name') %&gt;
-&lt;/h2&gt;</p>
-<p>&lt;ul&gt;
-&lt;% list(teacher.students, function(student){ %&gt;
-&lt;li&gt;&lt;%= student.attr('name') %&gt;&lt;/li&gt;
-&lt;% }) %&gt;
-&lt;/ul&gt;</p>
-<p>&lt;/script&gt;
-</code></pre></p>
+
+  &lt;h2 class='&lt;%= teacher.attr('grade') &lt; 'c'? &quot;good&quot; : &quot;bad&quot; %&gt;'&gt;
+    &lt;%= teacher.attr('name') %&gt;
+  &lt;/h2&gt;
+  
+  &lt;ul&gt;
+    &lt;% list(teacher.students, function(student){ %&gt;
+      &lt;li&gt;&lt;%= student.attr('name') %&gt;&lt;/li&gt;
+    &lt;% }) %&gt;
+  &lt;/ul&gt;
+  
+&lt;/script&gt;
+</code></pre>
 <p><strong>Note:</strong> The end of this page discusses why using <code>list</code> is
 helpful, but it does nothing fancy.</p>
 <p>Next, turn your teacher into a <code>new can.Observe(object)</code> and pass
@@ -490,9 +498,10 @@ that to <code>can.view</code>:</p>
     {name : &quot;Alexis&quot;}
   ]
 });
-<p>document.getElementById('teacher')
-.appendChild( can.view(&quot;teacherEJS&quot;, teacher) );
-</code></pre></p>
+
+document.getElementById('teacher')
+  .appendChild( can.view(&quot;teacherEJS&quot;, teacher) );
+</code></pre>
 <p>Finally, update some properties of teacher and slap your
 head with disbelief ...</p>
 <pre><code>teacher.attr('name',&quot;Prof. Snape&quot;)
@@ -529,16 +538,22 @@ for sub-templates.</p>
 <p>EJS allows live binding by wrapping magic tag content within a function. When <code>attr()</code> is called
 to update an observable object, these functions are executed to return the new value.</p>
 <pre><code>// Suppose an observable &quot;foo&quot;:
-<p>var foo = new can.Observe({
-bar: 'baz'
-});</p>
-<p>// Suppose also, the above observable is passed to our view:</p>
-<p>&lt;%= foo.attr('bar') %&gt;</p>
-<p>// EJS locates the magic tag and turns the above into:</p>
-<p>function() { return foo.attr('bar'); }</p>
-<p>// As &quot;foo&quot; is updated using attr(), this function is called again to
+
+var foo = new can.Observe({
+  bar: 'baz'
+});
+
+// Suppose also, the above observable is passed to our view:
+
+&lt;%= foo.attr('bar') %&gt;
+
+// EJS locates the magic tag and turns the above into:
+
+function() { return foo.attr('bar'); }
+
+// As &quot;foo&quot; is updated using attr(), this function is called again to
 // render the view with the new value.
-</code></pre></p>
+</code></pre>
 <p>This means that each function tag has a closure will reference variables in it's
 parent functions. This can cause problems if you don't understand closures in
 JavaScript. For example, the following binding does not work:</p>
@@ -568,18 +583,18 @@ returns the total number of completed items in the list.  It can be used in a te
 <pre><code>Todo.List = can.Model.List({
   completed: function() {
     var count = 0;
-<pre><code>this.attr('length');
-this.each(function(i, todo) {
-  if(this.attr('completed')) {
-    count++;
+
+    this.attr('length');
+    this.each(function(i, todo) {
+      if(this.attr('completed')) {
+        count++;
+      }
+    });
+
+    return count;
   }
 });
-
-return count;
 </code></pre>
-<p>}
-});
-</code></pre></p>
 <p><code>completed</code> listens on changes to the list (via <code>this.attr('length')</code>) and
 each item's <code>'completed'</code> property.  EJS keeps track of which observe/attribute pairs are called
 by <code>.complete()</code>.  If they change, EJS will automatically unbind.</p>
@@ -674,7 +689,7 @@ can.view('//todo/views/init.ejs', todos)
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"type":"constructor","name":"can.EJS","description":"<p>EJS provides <strong>live</strong> ERB-style client-side templates.</p>\n","title":"","signatures":[{"code":"new can.EJS(options)","description":"<p>Creates an EmbeddedJS template. Use EJS with [can.view] or [can.view.ejs].</p>\n","params":[]}],"comment":" ","src":"view/ejs/ejs.js","children":[{"name":"can.EJS.Helpers","type":"page","parent":"can.EJS","description":"","title":"Helpers","comment":" ","src":"view/ejs/ejs.js"},{"type":"prototype","name":"can.EJS.prototype","parent":"can.EJS","children":[{"name":"can.EJS.prototype.render","type":"function","description":"<p>Render a view object with data and helpers.</p>\n","title":"render","parent":"can.EJS.prototype","signatures":[{"code":"ejs.render(data[, helpers])","description":"","params":[{"types":[{"type":"Object","options":[]}],"optional":true,"name":"data","description":"<p>The data to populate the template with.</p>\n"},{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]}]}],"optional":true,"name":"helpers","description":"<p>Helper methods referenced in the template.</p>\n"}],"returns":{"types":[{"type":"String"}],"description":"<p>The template with interpolated data.</p>\n"}}],"comment":" ","src":"view/ejs/ejs.js","children":[{"name":"can.EJS.prototype.render.scanner","type":"property","parent":"can.EJS.prototype.render","description":"<p>Singleton scanner instance for parsing templates.</p>\n","hide":true,"src":"view/ejs/ejs.js"},{"name":"can.EJS.prototype.render.tokens","type":"property","parent":"can.EJS.prototype.render","description":"<p>An ordered token registry for the scanner.\nThis needs to be ordered by priority to prevent token parsing errors.\nEach token is defined as: [&quot;token-name&quot;, &quot;string representation&quot;, &quot;optional regexp override&quot;]</p>\n","hide":true,"src":"view/ejs/ejs.js"},{"type":"function","name":"transform","params":[{"name":"source","types":[{"type":"*"}]}],"parent":"can.EJS.prototype.render","description":"<p>Transforms the EJS template to add support for shared blocks.\nEssentially, this breaks up EJS tags into multiple EJS tags\nif they contained unmatched brackets.</p>\n","hide":true,"src":"view/ejs/ejs.js"}]}]},{"name":"can.EJS.tags","title":"Tags","type":"group","parent":"can.EJS","description":"","order":0,"children":[{"type":"function","name":"can.EJS.tags.scriptlet","description":"","title":"<% CODE %>","parent":"can.EJS.tags","order":0,"signatures":[{"code":"<% CODE %>","description":"<p>Runs JavaScript Code.</p>\n<p>This type of magic tag does not modify the template but is used for JS control statements\nlike for-loops, if/else, switch, etc.  An example:</p>\n<pre><code>&lt;% if( items.attr('length') === 0 ) { %&gt;\n    &lt;tr&gt;&lt;td&gt;You have no items&lt;/td&gt;&lt;/tr&gt;\n&lt;% } else { %&gt;\n    &lt;% items.each(function(item){ %&gt;\n      &lt;tr&gt; .... &lt;/tr&gt;\n    &lt;% }) %&gt;\n&lt;% } %&gt;\n</code></pre>\n<p>Variable declarations and control blocks should always be defined in\ntheir own dedicated tags. Live binding leverages this hinting to ensure that logic is declared and executed at its intended scope.</p>\n<pre><code>&lt;!-- Each statement has its own dedicated EJS tag --&gt;\n&lt;% var address = person.attr('address') %&gt;\n&lt;% items.each(function(item){ %&gt;\n    &lt;tr&gt; .... &lt;/tr&gt;\n&lt;% }) %&gt;\n&lt;span&gt;&lt;%= address.attr('street') %&gt;&lt;span&gt;\n\n&lt;!-- This won't work! --&gt;\n&lt;%\n  var address = person.attr('address');\n  items.each(function(item) {\n%&gt;\n    &lt;tr&gt; .... &lt;/tr&gt;\n&lt;% }) %&gt;\n&lt;span&gt;&lt;%= address.attr('street') %&gt;&lt;span&gt;\n</code></pre>\n","params":[]}],"src":"view/ejs/tags.scriptlet.md"},{"type":"function","name":"can.EJS.tags.escaped","description":"","title":"<%= CODE %>","parent":"can.EJS.tags","order":1,"signatures":[{"code":"<%= CODE %>","description":"<p>Runs JS Code and writes the <em>escaped</em> result into the result of the template. This is useful for when you want to show code in your page.</p>\n<p>The following results in the user seeing &quot;my favorite element is &lt;blink&gt;BLINK&lt;blink&gt;&quot; and not\n<blink>BLINK</blink>.</p>\n<pre><code> &lt;div&gt;my favorite element is &lt;%= '&lt;blink&gt;BLINK&lt;/blink&gt;' %&gt;.&lt;/div&gt;\n</code></pre>\n","params":[]}],"src":"view/ejs/tags.escaped.md"},{"type":"function","name":"can.EJS.tags.unescaped","description":"","title":"<%== CODE %>","parent":"can.EJS.tags","order":2,"signatures":[{"code":"<%== CODE %>","description":"<p>Runs JS Code and writes the <em>unescaped</em> result into the result of the template.</p>\n<p>The following results in &quot;my favorite element is <B>B</B>.&quot;. Using <code>&lt;%==</code> is useful\nfor sub-templates.</p>\n<pre><code>     &lt;div&gt;my favorite element is &lt;%== '&lt;B&gt;B&lt;/B&gt;' %&gt;.&lt;/div&gt;\n</code></pre>\n","params":[]}],"src":"view/ejs/tags.unescaped.md"},{"type":"function","name":"can.EJS.tags.templated","description":"","title":"<%% CODE %>","parent":"can.EJS.tags","order":3,"signatures":[{"code":"<%% CODE %>","description":"<p>Renders &lt;% CODE %&gt; as text in result of the template rather than running CODE itself. This is useful for generators.</p>\n<p>The following results in &quot;&lt;%= 'hello world' %&gt;&quot; rather than the string &quot;hello world.&quot;</p>\n<pre><code>     &lt;%%= 'hello world' %&gt;\n</code></pre>\n","params":[]}],"src":"view/ejs/tags.templated.md"},{"type":"function","name":"can.EJS.tags.comment","description":"","title":"<%# CODE %>","parent":"can.EJS.tags","order":4,"signatures":[{"code":"<%# CODE %>","description":"<p>Used for explicitly for comments.  This will not render anything.</p>\n<pre><code>     &lt;%# 'hello world' %&gt;\n</code></pre>\n","params":[]}],"src":"view/ejs/tags.comment.md"}]}]};
+		var docObject = {"parent":"canjs","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"type":"constructor","name":"can.EJS","description":"<p>EJS provides <strong>live</strong> ERB-style client-side templates.</p>\n","title":"","signatures":[{"code":"new can.EJS(options)","description":"<p>Creates an EmbeddedJS template. Use EJS with [can.view] or [can.view.ejs].</p>\n","params":[]}],"comment":" ","src":"view/ejs/ejs.js","children":[{"name":"can.EJS.Helpers","type":"page","parent":"can.EJS","description":"","title":"Helpers","comment":" ","src":"view/ejs/ejs.js"},{"type":"prototype","name":"can.EJS.prototype","parent":"can.EJS","children":[{"name":"can.EJS.prototype.render","type":"function","description":"<p>Render a view object with data and helpers.</p>\n","title":"render","parent":"can.EJS.prototype","signatures":[{"code":"ejs.render(data[, helpers])","description":"","params":[{"types":[{"type":"Object","options":[]}],"optional":true,"name":"data","description":"<p>The data to populate the template with.</p>\n"},{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]}]}],"optional":true,"name":"helpers","description":"<p>Helper methods referenced in the template.</p>\n"}],"returns":{"types":[{"type":"String"}],"description":"<p>The template with interpolated data.</p>\n"}}],"comment":" ","src":"view/ejs/ejs.js","children":[{"name":"can.EJS.prototype.render.scanner","type":"property","parent":"can.EJS.prototype.render","description":"<p>Singleton scanner instance for parsing templates.</p>\n","hide":true,"src":"view/ejs/ejs.js"},{"name":"can.EJS.prototype.render.tokens","type":"property","parent":"can.EJS.prototype.render","description":"<p>An ordered token registry for the scanner.\nThis needs to be ordered by priority to prevent token parsing errors.\nEach token is defined as: [&quot;token-name&quot;, &quot;string representation&quot;, &quot;optional regexp override&quot;]</p>\n","hide":true,"src":"view/ejs/ejs.js"},{"type":"function","name":"transform","params":[{"name":"source","types":[{"type":"*"}]}],"parent":"can.EJS.prototype.render","description":"<p>Transforms the EJS template to add support for shared blocks.\nEssentially, this breaks up EJS tags into multiple EJS tags\nif they contained unmatched brackets.</p>\n","hide":true,"src":"view/ejs/ejs.js"}]}]},{"name":"can.EJS.tags","title":"Tags","type":"group","parent":"can.EJS","description":"","order":0,"children":[{"type":"function","name":"can.EJS.tags.scriptlet","description":"","title":"<% CODE %>","parent":"can.EJS.tags","order":0,"signatures":[{"code":"<% CODE %>","description":"<p>Runs JavaScript Code.</p>\n<p>This type of magic tag does not modify the template but is used for JS control statements\nlike for-loops, if/else, switch, etc.  An example:</p>\n<pre><code>&lt;% if( items.attr('length') === 0 ) { %&gt;\n    &lt;tr&gt;&lt;td&gt;You have no items&lt;/td&gt;&lt;/tr&gt;\n&lt;% } else { %&gt;\n    &lt;% items.each(function(item){ %&gt;\n      &lt;tr&gt; .... &lt;/tr&gt;\n    &lt;% }) %&gt;\n&lt;% } %&gt;\n</code></pre>\n<p>Variable declarations and control blocks should always be defined in\ntheir own dedicated tags. Live binding leverages this hinting to ensure that logic is declared and executed at its intended scope.</p>\n<pre><code>&lt;!-- Each statement has its own dedicated EJS tag --&gt;\n&lt;% var address = person.attr('address') %&gt;\n&lt;% items.each(function(item){ %&gt;\n    &lt;tr&gt; .... &lt;/tr&gt;\n&lt;% }) %&gt;\n&lt;span&gt;&lt;%= address.attr('street') %&gt;&lt;span&gt;\n\n&lt;!-- This won't work! --&gt;\n&lt;%\n  var address = person.attr('address');\n  items.each(function(item) {\n%&gt;\n    &lt;tr&gt; .... &lt;/tr&gt;\n&lt;% }) %&gt;\n&lt;span&gt;&lt;%= address.attr('street') %&gt;&lt;span&gt;\n</code></pre>\n","params":[]}],"src":"view/ejs/tags.scriptlet.md"},{"type":"function","name":"can.EJS.tags.escaped","description":"","title":"<%= CODE %>","parent":"can.EJS.tags","order":1,"signatures":[{"code":"<%= CODE %>","description":"<p>Runs JS Code and writes the <em>escaped</em> result into the result of the template. This is useful for when you want to show code in your page.</p>\n<p>The following results in the user seeing &quot;my favorite element is &lt;blink&gt;BLINK&lt;blink&gt;&quot; and not\n<blink>BLINK</blink>.</p>\n<pre><code> &lt;div&gt;my favorite element is &lt;%= '&lt;blink&gt;BLINK&lt;/blink&gt;' %&gt;.&lt;/div&gt;\n</code></pre>\n","params":[]}],"src":"view/ejs/tags.escaped.md"},{"type":"function","name":"can.EJS.tags.unescaped","description":"","title":"<%== CODE %>","parent":"can.EJS.tags","order":2,"signatures":[{"code":"<%== CODE %>","description":"<p>Runs JS Code and writes the <em>unescaped</em> result into the result of the template.</p>\n<p>The following results in &quot;my favorite element is <B>B</B>.&quot;. Using <code>&lt;%==</code> is useful\nfor sub-templates.</p>\n<pre><code>     &lt;div&gt;my favorite element is &lt;%== '&lt;B&gt;B&lt;/B&gt;' %&gt;.&lt;/div&gt;\n</code></pre>\n","params":[]}],"src":"view/ejs/tags.unescaped.md"},{"type":"function","name":"can.EJS.tags.templated","description":"","title":"<%% CODE %>","parent":"can.EJS.tags","order":3,"signatures":[{"code":"<%% CODE %>","description":"<p>Renders &lt;% CODE %&gt; as text in result of the template rather than running CODE itself. This is useful for generators.</p>\n<p>The following results in &quot;&lt;%= 'hello world' %&gt;&quot; rather than the string &quot;hello world.&quot;</p>\n<pre><code>     &lt;%%= 'hello world' %&gt;\n</code></pre>\n","params":[]}],"src":"view/ejs/tags.templated.md"},{"type":"function","name":"can.EJS.tags.comment","description":"","title":"<%# CODE %>","parent":"can.EJS.tags","order":4,"signatures":[{"code":"<%# CODE %>","description":"<p>Used for explicitly for comments.  This will not render anything.</p>\n<pre><code>     &lt;%# 'hello world' %&gt;\n</code></pre>\n","params":[]}],"src":"view/ejs/tags.comment.md"}]}]};
 	</script>
 	
 	
