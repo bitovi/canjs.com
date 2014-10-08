@@ -1,10 +1,9 @@
 /* jshint asi:true,multistr:true*/
 /*global Mustache*/
-steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/specs",function () {
+steal("can/model", "can/view/mustache", "can/test", function () {
 
 	module("can/view/mustache, rendering", {
 		setup: function () {
-			can.view.ext = '.mustache';
 
 			this.animals = ['sloth', 'bear', 'monkey']
 			if (!this.animals.each) {
@@ -50,43 +49,48 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 	};
 
 	// Add mustache specs to the test
-	can.each(window.MUSTACHE_SPECS, function(specData){
-		var spec = specData.name;
-		can.each(specData.data.tests, function (t) {
-			test('specs/' + spec + ' - ' + t.name + ': ' + t.desc, function () {
-				// can uses &#34; to escape double quotes, mustache expects &quot;.
-				// can uses \n for new lines, mustache expects \r\n.
-				var expected = (override[spec] && override[spec][t.name]) || t.expected.replace(/&quot;/g, '&#34;')
-					.replace(/\r\n/g, '\n');
+	can.each(['comments', /*'delimiters',*/ 'interpolation', 'inverted', 'partials', 'sections' /*, '~lambdas'*/ ], function (spec) {
+		can.ajax({
+			url: can.test.path('view/mustache/spec/specs/' + spec + '.json'),
+			dataType: 'json',
+			async: false
+		})
+			.done(function (data) {
+				can.each(data.tests, function (t) {
+					test('specs/' + spec + ' - ' + t.name + ': ' + t.desc, function () {
+						// can uses &#34; to escape double quotes, mustache expects &quot;.
+						// can uses \n for new lines, mustache expects \r\n.
+						var expected = (override[spec] && override[spec][t.name]) || t.expected.replace(/&quot;/g, '&#34;')
+							.replace(/\r\n/g, '\n');
 
-				// Mustache's "Recursion" spec generates invalid HTML
-				if (spec === 'partials' && t.name === 'Recursion') {
-					t.partials.node = t.partials.node.replace(/</g, '[')
-						.replace(/\}>/g, '}]');
-					expected = expected.replace(/</g, '[')
-						.replace(/>/g, ']');
-				}
+						// Mustache's "Recursion" spec generates invalid HTML
+						if (spec === 'partials' && t.name === 'Recursion') {
+							t.partials.node = t.partials.node.replace(/</g, '[')
+								.replace(/\}>/g, '}]');
+							expected = expected.replace(/</g, '[')
+								.replace(/>/g, ']');
+						}
 
-				// register the partials in the spec
-				if (t.partials) {
-					for (var name in t.partials) {
-						can.view.registerView(name, t.partials[name], ".mustache");
-					}
-				}
+						// register the partials in the spec
+						if (t.partials) {
+							for (var name in t.partials) {
+								can.view.registerView(name, t.partials[name])
+							}
+						}
 
-				// register lambdas
-				if (t.data.lambda && t.data.lambda.js) {
-					t.data.lambda = eval('(' + t.data.lambda.js + ')');
-				}
+						// register lambdas
+						if (t.data.lambda && t.data.lambda.js) {
+							t.data.lambda = eval('(' + t.data.lambda.js + ')');
+						}
 
-				deepEqual(new can.Mustache({
-						text: t.template
-					})
-					.render(t.data), expected);
+						deepEqual(new can.Mustache({
+								text: t.template
+							})
+							.render(t.data), expected);
+					});
+				});
 			});
-		});
 	});
-	
 
 	var getAttr = function (el, attrName) {
 		return attrName === "class" ?
@@ -216,8 +220,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		// now update the named attribute
 		obsvr.attr('named', true);
 		deepEqual(can.$('#completed')[0].innerHTML, "", 'hidden gone');
-
-		can.remove(can.$('#qunit-test-area>*'));
 	});
 
 	test("Mustache live-binding with escaping", function () {
@@ -240,8 +242,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 
 		deepEqual(can.$('#binder1')[0].innerHTML, "&lt;i&gt;Mr Scott&lt;/i&gt;");
 		deepEqual(can.$('#binder2')[0].getElementsByTagName('i')[0].innerHTML, "Mr Scott")
-
-		can.remove(can.$('#qunit-test-area>*'));
 	});
 
 	test("Mustache truthy", function () {
@@ -420,20 +420,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		deepEqual(div.innerHTML, "foo");
 	});
 
-	test("String literals passed to helper should work (#1143)", 1, function() {
-		can.Mustache.registerHelper("concatStrings", function(arg1, arg2) {
-			return arg1 + arg2;
-		});
-
-		// Test with '=' because the regexp to find arguments uses that char
-		// to delimit a keyword-arg name from its value.
-		can.view.mustache('testStringArgs', '{{concatStrings "==" "word"}}');
-		var div = document.createElement('div');
-		div.appendChild(can.view('testStringArgs', {}));
-
-		equal(div.innerHTML, '==word');
-	});
-
 	test("Partials and observes", function () {
 		var template;
 		var div = document.createElement('div');
@@ -472,7 +458,7 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 			}
 		};
 		for (var name in t.partials) {
-			can.view.registerView(name, t.partials[name], ".mustache")
+			can.view.registerView(name, t.partials[name])
 		}
 
 		deepEqual(new can.Mustache({
@@ -496,7 +482,7 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 			}
 		};
 		for (var name in t.partials) {
-			can.view.registerView(name, t.partials[name], ".mustache")
+			can.view.registerView(name, t.partials[name])
 		}
 
 		deepEqual(new can.Mustache({
@@ -538,10 +524,7 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 			expected: "Andy is missing!",
 			data: {
 				name: 'Andy'
-			},
-			liveData: new can.Map({
-				name: 'Andy'
-			})
+			}
 		};
 
 		var expected = t.expected.replace(/&quot;/g, '&#34;')
@@ -550,13 +533,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 				text: t.template
 			})
 			.render(t.data), expected);
-
-		// #1019 #unless does not live bind
-		var div = document.createElement('div');
-		div.appendChild(can.view.mustache(t.template)(t.liveData));
-		deepEqual(div.innerHTML, expected, '#unless condition false');
-		t.liveData.attr('missing', true);
-		deepEqual(div.innerHTML, '', '#unless condition true');
 	});
 
 	test("Handlebars helper: each", function () {
@@ -612,7 +588,7 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 				animals: this.animals
 			})
 		equal(compiled, "<ul><li>sloth</li><li>bear</li><li>monkey</li></ul>", "renders with bracket")
-	});
+	})
 	test("render with with", function () {
 		var compiled = new can.Mustache({
 			text: this.squareBracketsNoThis,
@@ -622,7 +598,7 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 				animals: this.animals
 			});
 		equal(compiled, "<ul><li>sloth</li><li>bear</li><li>monkey</li></ul>", "renders bracket with no this")
-	});
+	})
 	test("default carrot", function () {
 		var compiled = new can.Mustache({
 			text: this.angleBracketsNoThis
@@ -681,9 +657,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 				});
 
 		ok(result.indexOf("<img\n class=\"a\"") !== -1, "Multi-line elements render correctly.");
-		
-		// clear hookups b/c we are using .render;
-		can.view.hookups = {};
 	})
 
 	test("escapedContent", function () {
@@ -704,8 +677,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		equal(div.getElementsByTagName('strong')[0].firstChild.nodeValue, 123);
 		equal(div.getElementsByTagName('input')[0].value, "I use 'quote' fingers & &amp;ersands \"a lot\"", "attributes are always safe, and strings are kept as-is without additional escaping");
 		equal(div.getElementsByTagName('label')[0].innerHTML, "&amp;");
-		// clear hookups b/c we are using .render;
-		can.view.hookups = {};
 	})
 
 	test("unescapedContent", function () {
@@ -725,8 +696,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		equal(div.getElementsByTagName('div')[0].innerHTML.toLowerCase(), "<strong>foo</strong><strong>bar</strong>");
 		equal(div.getElementsByTagName('span')[0].innerHTML.toLowerCase(), "<strong>foo</strong><strong>bar</strong>");
 		equal(div.getElementsByTagName('input')[0].value, "I use 'quote' fingers \"a lot\"", "escaped no matter what");
-		// clear hookups b/c we are using .render;
-		can.view.hookups = {};
 	});
 
 	/*
@@ -770,8 +739,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 
 		equal(can.data(can.$(span), 'foo'), 'bar', "first hookup");
 		equal(can.data(can.$(span), 'baz'), 'qux', "second hookup");
-		// clear hookups b/c we are using .render;
-		can.view.hookups = {};
 
 	})
 
@@ -827,9 +794,7 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 
 		task.attr('completed', true);
 
-		equal(div.getElementsByTagName('div')[0].className, "complete", "class changed to complete");
-		// clear hookups b/c we are using .render;
-		can.view.hookups = {};
+		equal(div.getElementsByTagName('div')[0].className, "complete", "class changed to complete")
 	});
 
 	test("event binding / triggering on options", function () {
@@ -918,10 +883,7 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 
 		Todos.splice(0, 2);
 		equal(div.getElementsByTagName('option')
-			.length, 0, '0 items in list');
-			
-		// clear hookups b/c we are using .render;
-		can.view.hookups = {};
+			.length, 0, '0 items in list')
 	});
 
 	test('multiple hookups in a single attribute', function () {
@@ -963,9 +925,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		obs.nest.attr('what', 'g');
 
 		equal(getAttr(innerDiv, 'class'), "afcg", 'nested observe');
-		
-		// clear hookups b/c we are using .render;
-		can.view.hookups = {};
 	});
 
 	test('adding and removing multiple html content within a single element', function () {
@@ -1006,9 +965,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		});
 
 		equal(div.childNodes[0].innerHTML, 'c', 'updated values');
-		
-		// clear hookups b/c we are using .render;
-		can.view.hookups = {};
 	});
 
 	test('live binding and removeAttr', function () {
@@ -1078,9 +1034,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		equal(p.getAttribute("some"), "newText", 'value in block statement updated attr');
 		equal(getAttr(p, "class"), "newClass", 'value in block statement updated class');
 		equal(span.innerHTML, 'Warp drive, Mr. Sulu', 'value in block statement updated innerHTML');
-		
-		// clear hookups b/c we are using .render;
-		can.view.hookups = {};
 
 	});
 
@@ -1118,9 +1071,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		obs.attr('baz', '');
 		equal(getAttr(anchor, 'class'), "", 'anchor class blank');
 		equal(anchor.getAttribute('some'), undefined, 'attribute "some" is undefined');
-		
-		// clear hookups b/c we are using .render;
-		can.view.hookups = {};
 	});
 
 	test('single escaped tag, removeAttr', function () {
@@ -1148,9 +1098,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 
 		obs.attr('foo', 'data-bar="baz"');
 		equal(anchor.getAttribute('data-bar'), 'baz');
-		
-		// clear hookups b/c we are using .render;
-		can.view.hookups = {};
 	});
 
 	test('html comments', function () {
@@ -1170,9 +1117,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		var div = document.createElement('div');
 		div.appendChild(can.view.frag(compiled));
 		equal(div.getElementsByTagName('div')[0].innerHTML, 'foo', 'Element as expected');
-		
-		// clear hookups b/c we are using .render;
-		can.view.hookups = {};
 	})
 
 	test("hookup and live binding", function () {
@@ -1205,10 +1149,7 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		});
 
 		ok(child.className.indexOf("true") !== -1, "is complete")
-		equal(child.innerHTML, "New Name", "has new name");
-		
-		// clear hookups b/c we are using .render;
-		can.view.hookups = {};
+		equal(child.innerHTML, "New Name", "has new name")
 
 	})
 
@@ -1818,7 +1759,7 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 
 	// https://github.com/bitovi/canjs/issues/227
 	test("Contexts are not always passed to partials properly", function () {
-		can.view.registerView('inner', '{{#if other_first_level}}{{other_first_level}}{{else}}{{second_level}}{{/if}}', ".mustache")
+		can.view.registerView('inner', '{{#if other_first_level}}{{other_first_level}}{{else}}{{second_level}}{{/if}}')
 
 		var renderer = can.view.mustache('{{#first_level}}<span>{{> inner}}</span> should equal <span>{{other_first_level}}</span>{{/first_level}}'),
 			data = {
@@ -1887,22 +1828,22 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 			div = document.createElement('div');
 
 		div.appendChild(renderer2(plainData));
-		
+
 		equal(div.getElementsByTagName('span')[0].innerHTML, "Dishes", 'Array item rendered with DOM container');
 		equal(div.getElementsByTagName('span')[1].innerHTML, "Forks", 'Array item rendered with DOM container');
 
-		div = document.createElement('div')
+		div.innerHTML = '';
 		div.appendChild(renderer2(liveData));
-		
+
 		equal(div.getElementsByTagName('span')[0].innerHTML, "Dishes", 'List item rendered with DOM container');
 		equal(div.getElementsByTagName('span')[1].innerHTML, "Forks", 'List item rendered with DOM container');
-		
-		div = document.createElement('div');
+
+		div.innerHTML = '';
 
 		div.appendChild(renderer(plainData));
 		equal(div.innerHTML, "DishesForks", 'Array item rendered without DOM container');
 
-		div = document.createElement('div');
+		div.innerHTML = '';
 
 		div.appendChild(renderer(liveData));
 		equal(div.innerHTML, "DishesForks", 'List item rendered without DOM container');
@@ -2043,7 +1984,7 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 	test("can pass in partials", function () {
 		var hello = can.view(can.test.path('view/mustache/test/hello.mustache'));
 		var fancyName = can.view(can.test.path('view/mustache/test/fancy_name.mustache'));
-		var result = hello.render({
+		var result = hello({
 			name: "World"
 		}, {
 			partials: {
@@ -2055,8 +1996,8 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 	});
 
 	test("can pass in helpers", function () {
-		var helpers = can.view.render(can.test.path('view/mustache/test/helper.mustache'));
-		var result = helpers.render({
+		var helpers = can.view(can.test.path('view/mustache/test/helper.mustache'));
+		var result = helpers({
 			name: "world"
 		}, {
 			helpers: {
@@ -2142,9 +2083,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 				"<option data-view-id='[0-9]+'>Two</option></select></textarea>$";
 
 		ok(compiled.search(expected) === 0, "Rendered output is as expected");
-		
-		// clear hookups b/c we are using .render;
-		can.view.hookups = {};
 	});
 
 	test("Empty strings in arrays within Observes that are iterated should return blank strings", function () {
@@ -2193,7 +2131,7 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 			'nested_data3': '{{#bar}}<span id="has_data" {{data "attr"}}></span>{{/bar}}'
 		};
 		for (var name in partials) {
-			can.view.registerView(name, partials[name],".mustache")
+			can.view.registerView(name, partials[name])
 		}
 
 		var renderer = can.view.mustache("{{#bar}}{{> #nested_data}}{{/bar}}"),
@@ -2240,40 +2178,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		div.appendChild(renderer(data));
 		span = can.$(div.getElementsByTagName('span')[0]);
 		equal(div.innerHTML, 'No ducks!', 'The function evaluated should evaluate false');
-	});
-
-	test("avoid global helpers", function () {
-		var noglobals = can.view.mustache("{{sometext person.name}}");
-
-		var div = document.createElement('div'),
-			div2 = document.createElement('div');
-
-		var person = new can.Map({
-			name: "Brian"
-		});
-		var result = noglobals({
-			person: person
-		}, {
-			sometext: function (name) {
-				return "Mr. " + name()
-			}
-		});
-
-		var result2 = noglobals({
-			person: person
-		}, {
-			sometext: function (name) {
-				return name() + " rules"
-			}
-		});
-
-		div.appendChild(result);
-		div2.appendChild(result2);
-
-		person.attr("name", "Ajax")
-
-		equal(div.innerHTML, "Mr. Ajax");
-		equal(div2.innerHTML, "Ajax rules");
 	});
 
 	test("Helpers always have priority (#258)", function () {
@@ -2685,9 +2589,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		data.attr("image", url);
 		notEqual(img.src, "", 'Image should have src');
 		equal(img.src, url, "images src is correct");
-		
-		// clear hookups b/c we are using .render;
-		can.view.hookups = {};
 	});
 
 	test("hiding image srcs with complex content (#494)", function () {
@@ -2711,9 +2612,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		data.attr("image", imgData);
 		notEqual(img.src, "", 'Image should have src');
 		equal(img.src, url, "images src is correct");
-		
-		// clear hookups b/c we are using .render;
-		can.view.hookups = {};
 	});
 
 	test("style property is live-bindable in IE (#494)", 4, function () {
@@ -2831,14 +2729,14 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 
 	});
 
-	test("can.mustache.safeString", function () {
+	test("can.Mustache.safeString", function () {
 		var text = "Google",
 			url = "http://google.com/",
 			templateEscape = can.view.mustache('{{link "' + text + '" "' + url + '"}}'),
 			templateUnescape = can.view.mustache('{{{link "' + text + '" "' + url + '"}}}');
-		can.mustache.registerHelper('link', function (text, url) {
+		can.Mustache.registerHelper('link', function (text, url) {
 			var link = '<a href="' + url + '">' + text + '</a>';
-			return can.mustache.safeString(link);
+			return can.Mustache.safeString(link);
 		});
 
 		var div = document.createElement('div');
@@ -2912,37 +2810,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 			list: list
 		})
 			.childNodes[0].getElementsByTagName('li');
-
-		for (var i = 0; i < lis.length; i++) {
-			equal(lis[i].innerHTML, (i + ' ' + i), 'rendered index and value are correct');
-		}
-	});
-
-	test("Rendering indicies of an array with @index + offset (#1078)", function () {
-		var template = can.view.mustache("<ul>{{#each list}}<li>{{@index 5}} {{.}}</li>{{/each}}</ul>");
-		var list = [0, 1, 2, 3];
-
-		var lis = template({
-			list: list
-		})
-			.childNodes[0].getElementsByTagName('li');
-
-		for (var i = 0; i < lis.length; i++) {
-			equal(lis[i].innerHTML, (i+5 + ' ' + i), 'rendered index and value are correct');
-		}
-	});
-
-	test("Passing indices into helpers as values", function () {
-		var template = can.view.mustache("<ul>{{#each list}}<li>{{test @index}} {{.}}</li>{{/each}}</ul>");
-		var list = [0, 1, 2, 3];
-
-		var lis = template({
-			list: list
-		}, {
-			test: function(index) {
-				return ""+index;
-			}
-		}).childNodes[0].getElementsByTagName('li');
 
 		for (var i = 0; i < lis.length; i++) {
 			equal(lis[i].innerHTML, (i + ' ' + i), 'rendered index and value are correct');
@@ -3200,9 +3067,9 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 
 		var num = can.compute(1)
 
-		can.mustache.registerHelper("safeHelper", function () {
+		can.Mustache.registerHelper("safeHelper", function () {
 
-			return can.mustache.safeString(
+			return can.Mustache.safeString(
 				"<p>" + num() + "</p>"
 			)
 
@@ -3593,36 +3460,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 
 			can.dev.warn = oldlog;
 		});
-
-		test("Logging: Helper not found in mustache template(#726)", function () {
-			var oldlog = can.dev.warn,
-					message = 'can/view/mustache/mustache.js: Unable to find helper "helpme".';
-
-			can.dev.warn = function (text) {
-				equal(text, message, 'Got expected message logged.');
-			}
-
-			can.view.mustache('<li>{{helpme name}}</li>')({
-				name: 'Hulk Hogan'
-			});
-
-			can.dev.warn = oldlog;
-		});
-
-		test("Logging: Variable not found in mustache template (#720)", function () {
-			var oldlog = can.dev.warn,
-					message = 'can/view/mustache/mustache.js: Unable to find key "user.name".';
-
-			can.dev.warn = function (text) {
-				equal(text, message, 'Got expected message logged.');
-			}
-
-			can.view.mustache('<li>{{user.name}}</li>')({
-				user: {}
-			});
-
-			can.dev.warn = oldlog;
-		});
 	}
 	//!steal-remove-end
 
@@ -3648,206 +3485,6 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 
 		equal(ul.innerHTML, '', 'list is empty');
 		map.attr('showPeople', true);
-		equal(ul.childNodes.length, 3, 'List got updated');
-		equal(ul.getElementsByTagName('li')[0].innerHTML, 'Curtis', 'List got updated');
-		equal(ul.getElementsByTagName('li')[1].innerHTML, 'Stan', 'List got updated');
-		equal(ul.getElementsByTagName('li')[2].innerHTML, 'David', 'List got updated');
-	});
-
-	test('each with child objects (#750)', function() {
-		var list = new can.List([{
-			i: 0
-		}, {
-			i: 1
-		}, {
-			i: 2
-		}]);
-
-		var template = can.view.mustache('{{#each list}}{{i}}{{/each}}');
-
-		var frag = template({
-			list: list
-		});
-
-		var div = document.createElement('div');
-		div.appendChild(frag);
-
-		equal(div.innerHTML, '012');
-
-		list.pop();
-		equal(div.innerHTML, '01');
-	});
-
-	test('Mustache helper: if w/ each removing all content', function () {
-		var expected = '123content',
-		container = new can.Map({
-			items: [1,2,3]
-		});
-
-		var template = can.view.mustache('{{#if items.length}}{{#each items}}{{this}}{{/each}}content{{/if}}');
-		var frag = template(container);
-
-		var div = document.createElement('div');
-		div.appendChild(frag);
-
-		equal(div.innerHTML, expected);
-
-		container.attr('items').replace([]);
-		equal(div.innerHTML, '');
-	});
-
-	test("Inverse ^if should work with an else clause (#751)", function() {
-		var tmpl = "{{^if show}}" +
-			"<div>Not showing</div>" +
-			"{{else}}" +
-			"<div>Is showing</div>" +
-			"{{/if}}";
-
-		var data = new can.Map({show: false});
-		var frag = can.view.mustache(tmpl)(data);
-
-		// Should not be showing at first.
-		var node = frag.childNodes[0];
-		equal(node.innerHTML, "Not showing", "Inverse resolved to true");
-
-		// Switch show to true and should show {{else}} section
-		data.attr("show", true);
-		equal(frag.childNodes[0].innerHTML, "Is showing", "Not showing the else");
-	});
-
-	test("Expandos (#744)", function(){
-		var template =  can.mustache("{{#each items}}<div>{{name}}</div>{{/each}}"+
-			"{{#if items.spliced}}<strong>List was spliced</strong>{{/if}}");
-		var items = new can.List([
-			{ name: 1}
-		]);
-
-		var frag = template({
-			items: items
-		});
-		//items.splice(0,2);
-		items.attr('spliced', true);
-		// 2 because {{#each}} keeps a textnode placeholder
-		equal(frag.childNodes[2].nodeName.toLowerCase(),"strong", "worked");
-	});
-
-
-	test("Calling .fn without arguments should forward scope by default (#658)", function(){
-		var tmpl = "{{#foo}}<span>{{bar}}</span>{{/foo}}";
-		var frag = can.mustache(tmpl)(new can.Map({
-			bar : 'baz'
-		}), {
-			foo : function(opts){
-				return opts.fn();
-			}
-		});
-		var node = frag.childNodes[0];
-
-		equal(node.innerHTML, 'baz', 'Context is forwarded correctly');
-	});
-
-	test("Calling .fn with falsy value as the context will render correctly (#658)", function(){
-		var tmpl = "{{#zero}}<span>{{ . }}</span>{{/zero}}{{#emptyString}}<span>{{ . }}</span>{{/emptyString}}{{#nullVal}}<span>{{ . }}</span>{{/nullVal}}";
-
-		var frag = can.mustache(tmpl)({ foo: 'bar' }, {
-			zero : function(opts){
-				return opts.fn(0);
-			},
-			emptyString : function(opts){
-				return opts.fn("");
-			},
-			nullVal : function(opts){
-				return opts.fn(null);
-			}
-		});
-
-		equal(frag.childNodes[0].innerHTML, '0', 'Context is set correctly for falsy values');
-		equal(frag.childNodes[1].innerHTML, '', 'Context is set correctly for falsy values');
-		equal(frag.childNodes[2].innerHTML, '', 'Context is set correctly for falsy values');
-	})
-
-	test("can.Construct derived classes should be considered objects, not functions (#450)", 8, function() {
-		
-		can.Mustache.registerHelper("cat", function(options) {
-			var clazz = options.hash ? options.hash.clazz : options;
-			// When using the anonymous function containing foostructor, it will need to be executed
-			return clazz.text || clazz().text;
-		});
-
-		var foostructor = can.Map({ text: "bar" }, {}),
-			obj = {
-				next_level: {
-					thing: foostructor,
-					text: "In the inner context"
-				}
-			},
-			div = document.createElement("div"),
-			description;
-			
-		foostructor.self = foostructor;
-		window.other_text = "Window context";
-
-		for (var i = 0; i < 2; i++) {
-			if (i === 1) {
-				foostructor.self = function() { return foostructor; };
-			}
-
-			// // Fully dotted
-			div.appendChild(can.view.mustache("<div>{{next_level.thing.self.text}}</div>")(obj));
-
-			// // With attribute nested
-			div.appendChild(can.view.mustache("<div>{{#next_level.thing.self}}{{text}}{{/next_level.thing}}</div>")(obj));
-
-			// Passed as an argument to helper
-			div.appendChild(can.view.mustache("<div>{{cat next_level.thing.self}}</div>")(obj));
-
-			// Passed as a hash to helper
-			div.appendChild(can.view.mustache("<div>{{cat clazz=next_level.thing.self}}</div>")(obj));
-		}
-
-		var content = div.getElementsByTagName('div');
-
-		description = " (constructor by itself)";
-		
-		equal(content[0].innerHTML, "bar", "fully dotted" + description);
-		equal(content[1].innerHTML.replace(/<\/?span>/ig,''), "", "with attribute nested" + description);
-		equal(content[2].innerHTML, "bar", "passed as an argument to helper" + description);
-		equal(content[3].innerHTML, "bar", "passed as a hash to helper" + description);
-
-		description = " (constructor as function returning itself)";
-		equal(content[4].innerHTML, "bar", "fully dotted" + description);
-		equal(content[5].innerHTML.replace(/<\/?span>/ig,''), "", "with attribute nested" + description);
-		equal(content[6].innerHTML, "bar", "passed as an argument to helper" + description);
-		equal(content[7].innerHTML, "bar", "passed as a hash to helper" + description);
-	});
-
-	test("Partials are passed helpers (#791)", function () {
-		var t = {
-			template: "{{>partial}}",
-			expected: "foo",
-			partials: {
-				partial: '{{ help }}'
-			},
-			helpers: {
-				'help': function(){
-					return 'foo';
-				}
-			}
-		};
-		for (var name in t.partials) {
-			can.view.registerView(name, t.partials[name], ".mustache")
-		}
-
-		deepEqual(new can.Mustache({
-				text: t.template
-			})
-			.render({}, t.helpers), t.expected);
-	});
-
-	test("{{else}} with {{#unless}} (#988)", function(){
-		var tmpl = "<div>{{#unless noData}}data{{else}}no data{{/unless}}</div>";
-
-		var frag = can.mustache(tmpl)({ noData: true });
-		equal(frag.childNodes[0].innerHTML, 'no data', 'else with unless worked');
+		equal(ul.innerHTML, '<li>Curtis</li><li>Stan</li><li>David</li>', 'List got updated');
 	});
 });

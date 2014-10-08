@@ -636,31 +636,37 @@ property's current value is an Observe or List, and an Observe or List is return
 from a setter, the effect will not be to merge the values into the current value as
 if the return value was fed straight into <code>attr</code>, but to replace the value with the
 new Observe or List completely:</p>
-<pre><code class="lang-javascript">var Contact = can.Observe.extend({
+<pre><code class="language-js">var Contact = can.Observe.extend({
     setInfo: function(raw) {
       return raw;
     }
 });
-<p>var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
+
+var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
 alice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}
-alice.info._cid; // '.observe1'</p>
-<p>alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
+alice.info._cid; // '.observe1'
+
+alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
 alice.attr(); // {name: 'Allison Wonderland', 'phone': '888-888-8888'}
-alice.info._cid; // '.observe2'</code></pre>
-If you would rather have the new Observe or List merged into the current value, call
+alice.info._cid; // '.observe2'
+</code></pre>
+<p>If you would rather have the new Observe or List merged into the current value, call
 <code>attr</code> inside the setter:</p>
-<pre><code class="lang-javascript">var Contact = can.Observe.extend({
+<pre><code class="language-js">var Contact = can.Observe.extend({
     setInfo: function(raw) {
       this.info.attr(raw);
       return this.info;
     }
 });
-<p>var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
+
+var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
 alice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}
-alice.info._cid; // '.observe1'</p>
-<p>alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
+alice.info._cid; // '.observe1'
+
+alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
 alice.attr(); // {name: 'Allison Wonderland', email: 'alice@liddell.com', 'phone': '888-888-8888'}
-alice.info._cid; // '.observe1'</code></pre></p>
+alice.info._cid; // '.observe1'
+</code></pre>
 <h2>Error Handling</h2>
 <p>Setters can trigger errors if values passed didn't meet your defined validation(s).</p>
 <p>Below is an example of a <em>School</em> observable that accepts a name property and errors
@@ -749,7 +755,7 @@ the offsets when the <em>Prev</em> or <em>Next</em> button is clicked.</p>
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Observe.plugins","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"type":"page","name":"can.Observe.setter","description":"<p><code>can.Observe.setter(name, success(value), error(errors))</code> extends the Observe object\nto provide convenient helper methods for setting attributes on a observable.</p>\n","title":"setter","plugin":"can/observe/setter","test":"can/observe/setter/test.html","comment":" ","src":"observe/setter/setter.md","children":[{"name":"can.classize","type":"constructor","description":"<p>Like [can.camelize camelize], but the first part is also capitalized</p>\n","title":"can.classize","parent":"can.Observe.setter","plugin":"can/observe/setter","signatures":[{"code":"can.classize(str)","description":"<p><code>can.classize</code> splits a string by underscores or\ndashes and capitalizes each part before joining\nthem back together. This method is useful for\ntaking HTML class names and getting the original\nControl name from them.</p>\n<pre><code class=\"lang-javascript\">can.classize('my_control_name'); // 'MyControlName'</code></pre>\n","params":[{"types":[{"type":"String"}],"name":"str","description":"<p>The string to transform.</p>\n"}],"returns":{"types":[{"type":"String"}],"description":"<p>The string as a class name.</p>\n"}}],"src":"observe/setter/setter.js","params":[{"types":[{"type":"String"}],"name":"s","description":""}],"returns":{"types":[{"type":"String"}],"description":"<p>the classized string</p>\n"}}]};
+		var docObject = {"parent":"can.Observe.plugins","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"forceBuild":true,"debug":true,"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"type":"page","name":"can.Observe.setter","description":"<p><code>can.Observe.setter(name, success(value), error(errors))</code> extends the Observe object\nto provide convenient helper methods for setting attributes on a observable.</p>\n","title":"setter","plugin":"can/observe/setter","test":"can/observe/setter/test.html","comment":" ","src":"observe/setter/setter.md","children":[{"name":"can.classize","type":"constructor","description":"<p>Like [can.camelize camelize], but the first part is also capitalized</p>\n","title":"can.classize","parent":"can.Observe.setter","plugin":"can/observe/setter","signatures":[{"code":"can.classize(str)","description":"<p><code>can.classize</code> splits a string by underscores or\ndashes and capitalizes each part before joining\nthem back together. This method is useful for\ntaking HTML class names and getting the original\nControl name from them.</p>\n<pre><code class=\"language-js\">can.classize('my_control_name'); // 'MyControlName'\n</code></pre>\n","params":[{"types":[{"type":"String"}],"name":"str","description":"<p>The string to transform.</p>\n"}],"returns":{"types":[{"type":"String"}],"description":"<p>The string as a class name.</p>\n"}}],"src":"observe/setter/setter.js","params":[{"types":[{"type":"String"}],"name":"s","description":""}],"returns":{"types":[{"type":"String"}],"description":"<p>the classized string</p>\n"}}]};
 	</script>
 	
 	

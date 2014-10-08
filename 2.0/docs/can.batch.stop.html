@@ -124,6 +124,13 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -152,22 +159,15 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.ejs.html" data-search="can.ejs">
-				can.ejs
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.event.html" data-search="can.event">
-				can.event
 			</a>
 			
 	   </li>
@@ -180,22 +180,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.mustache.html" data-search="can.mustache">
-				can.mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.route.html" data-search="can.route">
 				can.route
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.stache.html" data-search="can.stache">
-				can.stache
 			</a>
 			
 	   </li>
@@ -258,7 +244,7 @@
 			
 				
 				
-					<li class="search-container parent ">
+					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.Object.subset.html" 
 							data-search="can.Object.subset">
@@ -521,41 +507,11 @@
 			
 				
 				
-					<li class="search-container parent ">
-						<a 	class="page" 
-							href="can.events.html" 
-							data-search="can.events">
-							can.events
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
 					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.extend.html" 
 							data-search="can.extend">
 							can.extend
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.frag.html" 
-							data-search="can.frag">
-							can.frag
 						</a>
 						
 					</li>
@@ -845,13 +801,6 @@
 			
 	   </li>
 	
-	   <li class="search-container">
-	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
-				can.view.bindings
-			</a>
-			
-	   </li>
-	
 </ul>
 	</nav>
 	
@@ -964,29 +913,35 @@ called. If _force and <em>callStart</em> are both true, a new batch will be star
 the events and callbacks have been fired.</p>
 <p>See <code><a href="can.batch.start.html">can.batch.start</a></code> for examples of <code>can.batch.start</code> and <code>can.batch.stop</code> in normal use.</p>
 <p>In this example, the batch is forceably ended in the <code>addPeople</code> function.</p>
-<pre><code class="lang-javascript">var addPeople = function(observable) {
+<pre><code class="language-js">var addPeople = function(observable) {
     can.batch.start();
     observable.attr('a', 'Alice');
     observable.attr('b', 'Bob');
     observable.attr('e', 'Eve');
     can.batch.stop(true);
 };
-<p>// In a completely different place:
+
+// In a completely different place:
 var list = new can.Map();
 list.bind('change', function() {
-console.log('The list changed.');
-});</p>
-<p>can.batch.start();
+    console.log('The list changed.');
+});
+
+can.batch.start();
 addPeople(list);
-console.log('Still in the batch.');</p>
-<p>// Here, the console has:
-// Still in the batch.</p>
-<p>can.batch.stop();</p>
-<p>// Here, the console has:
+console.log('Still in the batch.');
+
+// Here, the console has:
+// Still in the batch.
+
+can.batch.stop();
+
+// Here, the console has:
 // The list changed.
 // The list changed.
 // The list changed.
-// Still in the batch.</code></pre></p>
+// Still in the batch.
+</code></pre>
 
 		</section>
 		
@@ -1048,7 +1003,7 @@ console.log('Still in the batch.');</p>
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.batch","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"function","name":"can.batch.stop","description":"<p>End an event batch.</p>\n","title":"","signatures":[{"code":"can.batch.stop([force[, callStart]])","description":"","params":[{"types":[{"type":"bool"}],"optional":true,"name":"force","defaultValue":"false","description":"<p>whether to stop batching events immediately</p>\n"},{"types":[{"type":"bool"}],"optional":true,"name":"callStart","defaultValue":"false","description":"<p>whether to call <code>[can.batch.start can.batch.start]</code> after firing batched events</p>\n"}]}],"comment":" ","src":"util/batch/batch.js"};
+		var docObject = {"parent":"can.batch","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"type":"function","name":"can.batch.stop","description":"<p>End an event batch.</p>\n","title":"","signatures":[{"code":"can.batch.stop([force[, callStart]])","description":"","params":[{"types":[{"type":"bool"}],"optional":true,"name":"force","defaultValue":"false","description":"<p>whether to stop batching events immediately</p>\n"},{"types":[{"type":"bool"}],"optional":true,"name":"callStart","defaultValue":"false","description":"<p>whether to call <code>[can.batch.start can.batch.start]</code> after firing batched events</p>\n"}]}],"comment":" ","src":"util/batch/batch.js"};
 	</script>
 	
 	

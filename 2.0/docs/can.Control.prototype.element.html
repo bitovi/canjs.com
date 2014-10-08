@@ -167,6 +167,8 @@
 			
 		
 			
+		
+			
 				
 				
 					<li class="search-container  ">
@@ -273,6 +275,12 @@
 			
 			
 		
+			
+		
+			
+		
+			
+		
 	</ul>
 
 					</li>
@@ -335,6 +343,13 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -363,22 +378,15 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.ejs.html" data-search="can.ejs">
-				can.ejs
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.event.html" data-search="can.event">
-				can.event
 			</a>
 			
 	   </li>
@@ -391,22 +399,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.mustache.html" data-search="can.mustache">
-				can.mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.route.html" data-search="can.route">
 				can.route
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.stache.html" data-search="can.stache">
-				can.stache
 			</a>
 			
 	   </li>
@@ -421,13 +415,6 @@
 	   <li class="search-container">
 	   		<a href="can.view.html" data-search="can.view">
 				can.view
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
-				can.view.bindings
 			</a>
 			
 	   </li>
@@ -484,7 +471,7 @@
 
 		
 		<section class="description">
-			<p>The element passed to the Control when creating a new instance.</p>
+			<p>The element the Control is associated with.</p>
 
 		</section>
 		
@@ -518,15 +505,15 @@
 		
 		<section class="comment">
 			<p>The control instance's HTMLElement (or window) wrapped by the
-util library for ease of use.</p>
-<p>It is set by the first parameter to <code>new can.Construct( element, options )</code>
+util library for ease of use. It is set by the first
+parameter to <code>new can.Construct( element, options )</code>
 in <a href="can.Control.prototype.setup.html">setup</a>.  By default, a control listens to events on <code>this.element</code>.</p>
-<h3>Example - NodeList</h3>
+<h3>Quick Example</h3>
 <p>The following <code>HelloWorld</code> control sets the control`s text to &quot;Hello World&quot;:</p>
 <pre><code>HelloWorld = can.Control({
-    init: function(){
-        this.element.text( 'Hello World' );
-    }
+  init: function(){
+this.element.text( 'Hello World' );
+  }
 });
 
 // create the controller on the element
@@ -541,18 +528,23 @@ NodeList.  To get the raw HTMLElement, write:</p>
 <p>The following details the NodeList used by each library with
 an example of updating its text:</p>
 <p><strong>jQuery</strong> <code>jQuery( HTMLElement )</code></p>
-<p>this.element.text(&quot;Hello World&quot;)</p>
+<pre><code>this.element.text(&quot;Hello World&quot;)
+</code></pre>
 <p><strong>Zepto</strong> <code>Zepto( HTMLElement )</code></p>
-<p>this.element.text(&quot;Hello World&quot;)</p>
+<pre><code>this.element.text(&quot;Hello World&quot;)
+</code></pre>
 <p><strong>Dojo</strong> <code>new dojo.NodeList( HTMLElement )</code></p>
-<p>this.element.text(&quot;Hello World&quot;)</p>
+<pre><code>this.element.text(&quot;Hello World&quot;)
+</code></pre>
 <p><strong>Mootools</strong> <code>$$( HTMLElement )</code></p>
-<p>this.element.empty().appendText(&quot;Hello World&quot;)</p>
+<pre><code>this.element.empty().appendText(&quot;Hello World&quot;)
+</code></pre>
 <p><strong>YUI</strong></p>
-<p>this.element.set(&quot;text&quot;, &quot;Hello World&quot;)</p>
+<pre><code>this.element.set(&quot;text&quot;, &quot;Hello World&quot;)
+</code></pre>
 <h2>Changing <code>this.element</code></h2>
 <p>Sometimes you don't want what's passed to <code>new can.Control</code>
-to be <code>this.element</code>.  You can change this by overwriting
+to be this.element.  You can change this by overwriting
 setup or by unbinding, setting this.element, and rebinding.</p>
 <h3>Overwriting Setup</h3>
 <p>The following Combobox overwrites setup to wrap a
@@ -560,33 +552,33 @@ select element with a div.  That div is used
 as <code>this.element</code>. Notice how <code>destroy</code> sets back the
 original element.</p>
 <pre><code>Combobox = can.Control({
-    setup: function( el, options ) {
-        this.oldElement = $( el );
-        var newEl = $( '&lt;div/&gt;' );
-        this.oldElement.wrap( newEl );
-        can.Control.prototype.setup.call( this, newEl, options );
-    },
-    init: function() {
-        this.element //-&gt; the div
-    },
-    &quot;.option click&quot;: function() {
-        // event handler bound on the div
-    },
-    destroy: function() {
-        var div = this.element; //save reference
-        can.Control.prototype.destroy.call( this );
-        div.replaceWith( this.oldElement );
-    }
+  setup: function( el, options ) {
+     this.oldElement = $( el );
+     var newEl = $( '&lt;div/&gt;' );
+     this.oldElement.wrap( newEl );
+     can.Control.prototype.setup.call( this, newEl, options );
+  },
+  init: function() {
+     this.element //-&gt; the div
+  },
+  &quot;.option click&quot;: function() {
+    // event handler bound on the div
+  },
+  destroy: function() {
+     var div = this.element; //save reference
+     can.Control.prototype.destroy.call( this );
+     div.replaceWith( this.oldElement );
+  }
 });
 </code></pre>
-<h3>Unbinding, setting, and rebinding.</h3>
+<h3>unbinding, setting, and rebinding.</h3>
 <p>You could also change this.element by calling
-[can.Control::off], setting this.element, and
+<a href="can.Control.prototype.off.html">can.Control.prototype.off</a>, setting this.element, and
 then calling <a href="can.Control.prototype.on.html">on</a> like:</p>
 <pre><code>move: function( newElement ) {
-    this.off();
-    this.element = $( newElement );
-    this.on();
+   this.off();
+   this.element = $( newElement );
+   this.on();
 }
 </code></pre>
 
@@ -650,7 +642,7 @@ then calling <a href="can.Control.prototype.on.html">on</a> like:</p>
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Control.prototype","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"property","name":"can.Control.prototype.element","description":"<p>The element passed to the Control when creating a new instance.</p>\n","types":[{"type":"can.NodeList"}],"title":"element","comment":" ","src":"control/doc/element.md"};
+		var docObject = {"parent":"can.Control.prototype","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"description":"<p>The element the Control is associated with.</p>\n","types":[{"type":"can.NodeList"}],"title":"element","name":"can.Control.prototype.element","type":"property","comment":" ","src":"control/control.js"};
 	</script>
 	
 	

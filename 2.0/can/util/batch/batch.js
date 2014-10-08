@@ -169,20 +169,19 @@ steal('can/util/can.js', function (can) {
 			}
 			if (transactions === 0) {
 				var items = batchEvents.slice(0),
-					callbacks = stopCallbacks.slice(0),
-					i, len;
+					callbacks = stopCallbacks.slice(0);
 				batchEvents = [];
 				stopCallbacks = [];
 				batchNum++;
 				if (callStart) {
 					can.batch.start();
 				}
-				for(i = 0, len = items.length; i < len; i++) {
-					can.dispatch.apply(items[i][0],items[i][1]);
-				}
-				for(i = 0, len = callbacks.length; i < callbacks.length; i++) {
-					callbacks[i]();
-				}
+				can.each(items, function (args) {
+					can.trigger.apply(can, args);
+				});
+				can.each(callbacks, function (cb) {
+					cb();
+				});
 			}
 		},
 		/**
@@ -203,7 +202,7 @@ steal('can/util/can.js', function (can) {
 			// Don't send events if initalizing.
 			if (!item._init) {
 				if (transactions === 0) {
-					return can.dispatch.call(item, event, args);
+					return can.trigger(item, event, args);
 				} else {
 					event = typeof event === 'string' ? {
 						type: event
@@ -211,7 +210,8 @@ steal('can/util/can.js', function (can) {
 					event.batchNum = batchNum;
 					batchEvents.push([
 						item,
-						[event, args]
+						event,
+						args
 					]);
 				}
 			}

@@ -123,6 +123,13 @@
 			
 	   </li>
 	
+	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
 	   <li class="search-container active">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
@@ -162,36 +169,6 @@
 							href="can.List.prototype.concat.html" 
 							data-search="concat">
 							concat
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.List.prototype.each.html" 
-							data-search="each">
-							each
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.List.prototype.filter.html" 
-							data-search="filter">
-							filter
 						</a>
 						
 					</li>
@@ -413,53 +390,6 @@
 			
 			
 		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="extend.html" 
-							data-search="extend">
-							extend
-						</a>
-						
-					</li>
-				
-			
-			
-		
-	</ul>
-
-					</li>
-					
-				
-				
-			
-			
-		
-			
-				
-					
-					<li class="heading search-container">
-						<span>plugins</span>
-						
-	<ul >
-		
-			
-				
-				
-					<li class="search-container parent ">
-						<a 	class="function" 
-							href="can.List.plugins.promise.html" 
-							data-search="promise">
-							promise
-						</a>
-						
-					</li>
-				
-			
-			
-		
 	</ul>
 
 					</li>
@@ -496,22 +426,15 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.ejs.html" data-search="can.ejs">
-				can.ejs
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.event.html" data-search="can.event">
-				can.event
 			</a>
 			
 	   </li>
@@ -524,22 +447,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.mustache.html" data-search="can.mustache">
-				can.mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.route.html" data-search="can.route">
 				can.route
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.stache.html" data-search="can.stache">
-				can.stache
 			</a>
 			
 	   </li>
@@ -554,13 +463,6 @@
 	   <li class="search-container">
 	   		<a href="can.view.html" data-search="can.view">
 				can.view
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
-				can.view.bindings
 			</a>
 			
 	   </li>
@@ -677,7 +579,7 @@
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.List","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"static","description":"","name":"can.List.static","src":"list/list.js","children":[{"name":"can.List.Map","type":"property","parent":"can.List.static","description":"<p>Specify the Map type used to make objects added to this list observable.</p>\n","types":[{"type":"can.Map","description":"<p>When objects are added to a can.List, those objects are converted into can.Map instances. For example:</p>\n<pre><code> var list = new can.List();\n list.push({name: &quot;Justin&quot;});\n\n var map = list.attr(0);\n map.attr(&quot;name&quot;) //-&gt; &quot;Justin&quot;\n</code></pre>\n<p>By changing [can.List.Map], you can specify a different type of Map instance to create. For example:</p>\n<pre><code> var User = can.Map.extend({\n   fullName: function(){\n     return this.attr(&quot;first&quot;)+&quot; &quot;+this.attr(&quot;last&quot;)\n   }\n });\n\n User.List = can.List.extend({\n   Map: User\n }, {});\n\n var list = new User.List();\n list.push({first: &quot;Justin&quot;, last: &quot;Meyer&quot;});\n\n var user = list.attr(0);\n user.fullName() //-&gt; &quot;Justin Meyer&quot;\n</code></pre>\n"}],"title":"","src":"list/list.js"},{"type":"function","name":"extend","description":"","title":"","parent":"can.List.static","signatures":[{"code":"can.List.extend([name,] [staticProperties,] instanceProperties)","description":"<p>Creates a new extended constructor function. Learn more at [can.Construct.extend].</p>\n","params":[{"types":[{"type":"String"}],"optional":true,"name":"name","description":"<p>If provided, adds the extened List constructor function to the window at the given name.</p>\n"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"staticProperties","description":"<p>Properties and methods directly on the constructor function. The most common property to set is [can.List.Map].</p>\n"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"instanceProperties","description":"<p>Properties and methods on instances of this list type.</p>\n"}]}],"src":"list/doc/extend.md"}]};
+		var docObject = {"parent":"can.List","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"type":"static","description":"","name":"can.List.static","src":"list/list.js","children":[{"name":"can.List.Map","type":"property","parent":"can.List.static","description":"<p>Specify the Map type used to make objects added to this list observable.</p>\n","types":[{"type":"can.Map","description":"<p>When objects are added to a can.List, those objects are\nconverted into can.Map instances.  For example:</p>\n<pre><code>var list = new can.List();\nlist.push({name: &quot;Justin&quot;});\n\nvar map = list.attr(0);\nmap.attr(&quot;name&quot;) //-&gt; &quot;Justin&quot;\n</code></pre>\n<p>By changing [can.List.Map], you can specify a different type of Map instance to\ncreate. For example:</p>\n<pre><code>var User = can.Map.extend({\n  fullName: function(){\n    return this.attr(&quot;first&quot;)+&quot; &quot;+this.attr(&quot;last&quot;)\n  }\n});\n\nUser.List = can.List.extend({\n  Map: User\n}, {});\n\nvar list = new User.List();\nlist.push({first: &quot;Justin&quot;, last: &quot;Meyer&quot;});\n\nvar user = list.attr(0);\nuser.fullName() //-&gt; &quot;Justin Meyer&quot;\n</code></pre>\n"}],"title":"","src":"list/list.js"}]};
 	</script>
 	
 	

@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	<title>Guides - Setting up CanJS </title>
+	<title>Guides - Using CanJS </title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -110,75 +110,11 @@
 	   </li>
 	
 	   <li class="search-container active">
-	   		<a href="Using.html" data-search="Setting up CanJS">
-				Setting up CanJS
+	   		<a href="Using.html" data-search="Using CanJS">
+				Using CanJS
 			</a>
 			
 				
-	<ul class="primary-grouping">
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="page" 
-							href="using-download.html" 
-							data-search="Download">
-							Download
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="page" 
-							href="using-loading.html" 
-							data-search="Loading">
-							Loading
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="page" 
-							href="using-production.html" 
-							data-search="In Production">
-							In Production
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="page" 
-							href="using-examples.html" 
-							data-search="Examples">
-							Examples
-						</a>
-						
-					</li>
-				
-			
-			
-		
-	</ul>
-
 			
 	   </li>
 	
@@ -242,7 +178,7 @@
 		
 		<section class="title">
 			<div class="heading">
-<h1>Setting up CanJS</h1>
+<h1>Using CanJS</h1>
 	<ul class="tags">
 		<li>page</li>
 	</ul>
@@ -281,7 +217,7 @@
 
 		
 		<section class="description">
-			<p>CanJS is designed and packaged so that it can easily fit into your development workflow. You can use it with <a href="http://jquery.com">jQuery</a>, <a href="http://dojotoolkit.org/">Dojo</a>, <a href="http://mootools.net/">Mootools</a>, <a href="http://yuilibrary.com/">YUI</a> and <a href="http://zeptojs.com/">Zepto</a>. The following pages contain guides on</p>
+			<p>CanJS can be used with <a href="#section_jQuery">jQuery</a>, <a href="#section_Dojo">Dojo</a>, <a href="#section_Mootools">Mootools</a>, <a href="#section_YUI">YUI</a> and <a href="#section_Zepto">Zepto</a>. You can either include it as an inline script or load it as an <a href="#section_AMD">AMD</a> module with any of these libraries.</p>
 
 		</section>
 		
@@ -295,36 +231,233 @@
 
 		
 		<section class="comment">
-			<ul>
-<li><a href="using-download.html">Download</a> - How to get CanJS using the <a href="using-download.html#section_TheCanJSdownload">big download</a>, a <a href="using-download.html#section_Thedownloadbuilder">customized build</a>, <a href="using-download.html#section_Bower">Bower</a> or our <a href="using-download.html#section_TheGitHubCDN">CDN</a></li>
-<li><a href="using-loading.html">Loading</a> - How to load CanJS via a <a href="using-loading.html#section_Ina_script_tag">script tag</a>, <a href="using-loading.html#section_AMD">AMD</a> (RequireJS) or <a href="using-loading.html#section_StealJS">StealJS</a></li>
-<li><a href="using-production.html">In Production</a> - Tips on how to set up CanJS in a production environment.</li>
-<li><a href="using-examples.html">Examples</a> - Some examples on how it all works combined</li>
-</ul>
-<p>If you are looking for a quick start using our <a href="">CDN</a> just create an HTML page like this:</p>
-<pre><code>&lt;html&gt;
-&lt;head&gt;
-    &lt;title&gt;CanJS Test&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;http://canjs.com/release/latest/can.jquery.js&quot;&gt;&lt;/script&gt;
-    &lt;script type=&quot;text/javascript&quot;&gt;
-        $(function() {
-            // Your CanJS code here
-        });
-    &lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;
+			<h2 id="AMD">AMD</h2>
+<p>The <a href="../download.html">CanJS Download</a> contains an <code>amd</code> folder which allows
+you to load any CanJS component and plugin using an AMD module loader like <a href="http://requirejs.org/">RequireJS</a>.
+jQuery will be the default library so make sure the <code>jquery</code> module id points to the jQuery source.
+Here is an example for jQuery and RequireJS:</p>
+<pre><code class="language-js">&amp;lt;script type=&quot;text/javascript&quot; src=&quot;require.js&quot;&gt;&amp;lt;/script&gt;
+&amp;lt;script type=&quot;text/javascript&quot;&gt;
+  require.config({
+    paths : {
+      &quot;jquery&quot; : &quot;http://code.jquery.com/jquery-1.8.2&quot;
+    }
+  });
+
+  require(['can/view/ejs', 'can/control'], function(can) {
+    // Use EJS and Control
+  });
+&amp;lt;/script&gt;
 </code></pre>
-<p>Or fork one the <a href="http://jsfiddle.com">JSFiddle</a> with your library of choice:</p>
-<ul>
-<li><a href="http://jsfiddle.net/donejs/qYdwR/">jQuery</a></li>
-<li><a href="http://jsfiddle.net/donejs/7Yaxk/">Zepto</a></li>
-<li><a href="http://jsfiddle.net/donejs/9x96n/">Dojo</a></li>
-<li><a href="http://jsfiddle.net/donejs/w6m73/">YUI</a></li>
-<li><a href="http://jsfiddle.net/donejs/mnNJX/">Mootools</a></li>
-</ul>
+<p>The <code>can</code> module is a shortcut that loads CanJS's core plugins (Construct, Control, route, Model, view, and EJS)
+and returns the <code>can</code> namespace.</p>
+<pre><code class="language-js">require(['can'], function(can) {
+  // Use can.Control, can.view, can.Model etc.
+});
+</code></pre>
+<p>If you would like to use another library, map the <code>can/util/library</code> module to <code>can/util/dojo</code>, <code>can/util/zepto</code>,
+<code>can/util/yui</code> or <code>can/util/mootools</code>.</p>
+<p>With RequireJS and Zepto, it loks like this:</p>
+<pre><code class="language-js">require.config({
+  map : {
+    '*' : {
+      &quot;can/util/library&quot; : &quot;can/util/zepto&quot;
+    }
+  },
+  paths: {
+    &quot;zepto&quot; : &quot;http://cdnjs.cloudflare.com/ajax/libs/zepto/1.0rc1/zepto.min&quot;
+  }
+});
+</code></pre>
+<h2 id="jQuery">jQuery</h2>
+<p>CanJS supports jQuery 1.8+. Include a copy of jQuery along with CanJS to get started.</p>
+<pre><code class="language-js">&amp;lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.js&quot;&gt;
+&amp;lt;/script&gt;
+&amp;lt;script src=&quot;can.jquery.js&quot;&gt;&amp;lt;/script&gt;
+&amp;lt;script&gt;
+  // start using CanJS
+  can.Model('Todo', {
+    ...
+  });
+&amp;lt;/script&gt;
+</code></pre>
+<p>CanJS supports binding to any jQuery objects (like jQuery UI widgets) that use standard
+jQuery events. The jQuery UI Datepicker doesn't have built-in support for standard
+jQuery events, so for those cases, a workaround should be applied:</p>
+<pre><code class="language-js">&amp;lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.js&quot;&gt;
+&amp;lt;/script&gt;
+&amp;lt;script src=&quot;jquery.ui.core.js&quot;&gt;&amp;lt;/script&gt;
+&amp;lt;script src=&quot;jquery.ui.datepicker.js&quot;&gt;&amp;lt;/script&gt;
+&amp;lt;script src=&quot;can.jquery.js&quot;&gt;&amp;lt;/script&gt;
+&amp;lt;script&gt;
+  // create models
+  Todo = can.Model({ ... });
+  Todo.List = can.Model.List({ ... });
+
+  // create control
+  Todos = can.Control({
+    // listen to the calendar widget's datepickerselect event
+    '{calendar} datepickerselect': function(calendar, ev){
+      // do something with the selected date
+      var selectedDate = this.options.calendar.datepicker('getDate');
+      ...
+    }
+  });
+
+  // Initialize the app
+  Todo.findAll({}, function(todos) {
+    new Todos('#todoapp', {
+      todos: todos,
+      calendar: $('#calendar').hide().datepicker({
+        // Adding a workaround for date selection since the
+        // jQuery UI datepicker widget doesn't fire the
+        // &quot;datepickerselect&quot; event
+        onSelect: function(dateText, datepicker) {
+          $(this).trigger({
+            type: 'datepickerselect',
+            text: dateText,
+            target: datepicker
+          });
+        }
+      })
+    });
+  });
+&amp;lt;/script&gt;
+</code></pre>
+<h2 id="Dojo">Dojo</h2>
+<p>CanJS supports Dojo 1.8+ using its new AMD loader in asynchronous or synchronous mode. Everything described in the <a href="#section_AMD">using CanJS and AMD</a> section applies to Dojo as well. An example configuration that uses the AMD files from the CanJS CDN can look like this:</p>
+<pre><code class="language-js">require({
+    aliases:[
+        ['can/util/library', 'can/util/dojo']
+    ],
+    baseUrl : 'http://canjs.com/release/latest/amd/can.js',
+});
+
+require(['can/control'], function(Control) {
+  // Use Control
+});
+</code></pre>
+<h2 id="Mootools">Mootools</h2>
+<p>CanJS supports Mootools 1.4+. Include a copy of Mootools Core along with CanJS to get started.</p>
+<p>Mootools Core has an issue where <strong>focus</strong> and <strong>blur</strong> events are not fired for delegate event listeners.
+Include Mootools More's Event.Pseudos module for <strong>focus</strong> and <strong>blur</strong> support.</p>
+<pre><code class="language-js">&amp;lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/mootools/1.4.5/
+mootools.js&quot;&gt;&amp;lt;/script&gt;
+&amp;lt;!-- Mootools More Event.Pseudos module --&gt;
+&amp;lt;script src=&quot;mootools-more-event_pseudos-1.4.0.1.js&quot;&gt;&amp;lt;/script&gt;
+&amp;lt;script src=&quot;can.mootools.js&quot;&gt;&amp;lt;/script&gt;
+&amp;lt;script&gt;
+  // start using CanJS
+  Todo = can.Model({
+    ...
+  });
+&amp;lt;/script&gt;
+</code></pre>
+<h2 id="YUI">YUI</h2>
+<p>CanJS supports YUI 3.4+ with both dynamically or statically loaded modules.
+CanJS depends on the following YUI modules: <strong>node</strong>, <strong>io-base</strong>, <strong>querystring</strong>, <strong>event-focus</strong>, and <strong>array-extras</strong>. The <strong>selector-css2</strong> and <strong>selector-css3</strong> YUI modules are optional, but necessary for IE7 and other browsers that don't support <strong>querySelectorAll</strong>.</p>
+<p>To use with dynamically loaded modules, include the YUI loader along with CanJS.
+Add <code>'can'</code> to your normal list of modules with <code>YUI().use('can', ...)</code> wherever CanJS will be used.</p>
+<pre><code class="language-js">&amp;lt;script src=&quot;http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js&quot;&gt;&amp;lt;/script&gt;
+&amp;lt;script src=&quot;can.yui.js&quot;&gt;&amp;lt;/script&gt;
+&amp;lt;script&gt;
+  // CanJS with support for modern browsers
+  YUI().use('can', function(Y) {
+    // start using CanJS
+    Todo = can.Model({
+      ...
+    });
+  });
+
+  // CanJS with support for IE7 and other browsers without querySelectorAll
+  YUI({ loadOptional: true }).use('can', function(Y) {
+    // start using CanJS
+    Todo = can.Model({
+      ...
+    });
+  });
+&amp;lt;/script&gt;
+</code></pre>
+<p>To use with statically loaded modules, include a static copy of YUI (with the
+previously mentioned YUI dependencies) along with CanJS. CanJS will automatically
+be included wherever <code>YUI().use('*')</code> is used.</p>
+<pre><code class="language-js">&amp;lt;!-- YUI Configurator: http://yuilibrary.com/yui/configurator/ --&gt;
+&amp;lt;script src=&quot;http://yui.yahooapis.com/combo?3.7.3/build/yui-base/yui-base-min.
+js&amp;3.7.3/build/oop/oop-min.js&amp;3.7.3/build/event-custom-base/event-custom-base-
+min.js&amp;3.7.3/build/features/features-min.js&amp;3.7.3/build/dom-core/dom-core-min.
+js&amp;3.7.3/build/dom-base/dom-base-min.js&amp;3.7.3/build/selector-native/selector-n
+ative-min.js&amp;3.7.3/build/selector/selector-min.js&amp;3.7.3/build/node-core/node-c
+ore-min.js&amp;3.7.3/build/node-base/node-base-min.js&amp;3.7.3/build/event-base/event
+-base-min.js&amp;3.7.3/build/event-delegate/event-delegate-min.js&amp;3.7.3/build/node
+-event-delegate/node-event-delegate-min.js&amp;3.7.3/build/pluginhost-base/pluginh
+ost-base-min.js&amp;3.7.3/build/pluginhost-config/pluginhost-config-min.js&amp;3.7.3/b
+uild/node-pluginhost/node-pluginhost-min.js&amp;3.7.3/build/dom-style/dom-style-mi
+n.js&amp;3.7.3/build/dom-screen/dom-screen-min.js&amp;3.7.3/build/node-screen/node-scr
+een-min.js&amp;3.7.3/build/node-style/node-style-min.js&amp;3.7.3/build/querystring-st
+ringify-simple/querystring-stringify-simple-min.js&amp;3.7.3/build/io-base/io-base
+-min.js&amp;3.7.3/build/array-extras/array-extras-min.js&amp;3.7.3/build/querystring-p
+arse/querystring-parse-min.js&amp;3.7.3/build/querystring-stringify/querystring-st
+ringify-min.js&amp;3.7.3/build/event-custom-complex/event-custom-complex-min.js&amp;3.
+4.1/build/event-synthetic/event-synthetic-min.js&amp;3.7.3/build/event-focus/event
+-focus-min.js&quot;&gt;&amp;lt;/script&gt;
+&amp;lt;script src=&quot;can.yui.js&quot;&gt;&amp;lt;/script&gt;
+&amp;lt;script&gt;
+    // start using CanJS
+    Todo = can.Model({
+      ...
+    });
+&amp;lt;/script&gt;
+</code></pre>
+<p>CanJS can also bind to YUI widget events. The following example shows how to
+bind to the <strong>selectionChange</strong> event for a YUI Calendar widget:</p>
+<pre><code class="language-js">YUI().use('can', 'calendar', function(Y) {
+  // create models
+  Todo = can.Model({ ... });
+  Todo.List = can.Model.List({ ... });
+
+  // create control
+  Todos = can.Control({
+    // listen to the calendar widget's selectionChange event
+    '{calendar} selectionChange': function(calendar, ev){
+      // do something with the selected date
+      var selectedDate = ev.newSelection[0];
+      ...
+    }
+  });
+
+  // initialize the app
+  Todo.findAll({}, function(todos) {
+    new Todos('#todoapp', {
+      todos: todos,
+      calendar: new Y.Calendar({
+        contentBox: &quot;#calendar&quot;
+      }).render()
+    });
+  });
+});
+</code></pre>
+<h2 id="Zepto">Zepto</h2>
+<p>CanJS supports Zepto 0.8+. Include a copy of Zepto along with CanJS to get started.</p>
+<p>Zepto 0.8 has an issue where <strong>focus</strong> and <strong>blur</strong> events are not fired for delegate event listeners.
+There is a fix included for Zepto &gt; 0.8, but you can apply
+<a href="https://github.com/madrobby/zepto/commit/ab2a3ef0d18beaf768903f0943efd019a29803f0">this patch</a>
+to <strong>zepto.js</strong> when using Zepto 0.8.</p>
+<pre><code class="language-js">&amp;lt;!-- Zepto 0.8 with focus/blur patch applied --&gt;
+&amp;lt;script src=&quot;zepto.0.8-focusblur.js&quot;&gt;&amp;lt;/script&gt;
+&amp;lt;script src=&quot;can.zepto.js&quot;&gt;&amp;lt;/script&gt;
+&amp;lt;script&gt;
+  // start using CanJS
+  Todo = can.Model({
+    ...
+  });
+&amp;lt;/script&gt;
+</code></pre>
+<h2 id="IE">IE 8 Support</h2>
+<p>While CanJS does support Internet Exporer 8 out of the box, if you decide
+to use <a href="/docs/can.Component.html">can.Components</a> then you will need to use the <a href="https://github.com/aFarkas/html5shiv">HTML5 Shiv</a>
+in order for your custom tags to work properly. Unfortunately, at the moment, the official HTML5 Shiv
+does not work with namespaced tag names (e.g. &lt;can:example&gt;). Thankfully, CanJS comes with a version that
+fixes this and we've already submitted a pull request so future users of HTML5 Shiv won't run into this issue.</p>
 
 		</section>
 		
@@ -386,7 +519,7 @@
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"guides","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"page","name":"Using","description":"<p>CanJS is designed and packaged so that it can easily fit into your development workflow. You can use it with <a href=\"http://jquery.com\">jQuery</a>, <a href=\"http://dojotoolkit.org/\">Dojo</a>, <a href=\"http://mootools.net/\">Mootools</a>, <a href=\"http://yuilibrary.com/\">YUI</a> and <a href=\"http://zeptojs.com/\">Zepto</a>. The following pages contain guides on</p>\n","title":"Setting up CanJS","order":2,"src":"guides/using.md","children":[{"type":"page","name":"using-download","description":"","title":"Download","parent":"Using","order":0,"src":"guides/using-download.md"},{"type":"page","name":"using-examples","description":"","title":"Examples","parent":"Using","order":3,"src":"guides/using-examples.md"},{"type":"page","name":"using-loading","description":"<p>There are several ways to load CanJS in your application. Most likely you will use one of the pre-built versions like <code>can.jquery.js</code> but it is also possible to load each module individually using AMD or Steal.</p>\n","title":"Loading","parent":"Using","order":1,"src":"guides/using-loading.md"},{"type":"page","name":"using-production","description":"<p>While it makes sense to use uniminified JavaScript split into separate files and a CanJS debugging version (like <code>can.jquery.dev.js</code>) during development, you should concatenate and minify all your resources for use in production. If you are using CanJS [using-standalone standalone] this can be done through a build tool like <a href=\"http://gruntjs.com/\">Grunt</a> or <a href=\"http://gulpjs.com/\">Gulp</a> or tools part of your server side framework like the <a href=\"http://guides.rubyonrails.org/asset_pipeline.html\">Ruby on Rails asset pipeline</a>.</p>\n","title":"In Production","parent":"Using","order":2,"src":"guides/using-production.md"}]};
+		var docObject = {"parent":"guides","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"type":"page","name":"Using","description":"<p>CanJS can be used with <a href=\"#section_jQuery\">jQuery</a>, <a href=\"#section_Dojo\">Dojo</a>, <a href=\"#section_Mootools\">Mootools</a>, <a href=\"#section_YUI\">YUI</a> and <a href=\"#section_Zepto\">Zepto</a>. You can either include it as an inline script or load it as an <a href=\"#section_AMD\">AMD</a> module with any of these libraries.</p>\n","title":"Using CanJS","order":2,"src":"guides/using.md"};
 	</script>
 	
 	

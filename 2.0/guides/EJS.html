@@ -283,8 +283,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="Using.html" data-search="Setting up CanJS">
-				Setting up CanJS
+	   		<a href="Using.html" data-search="Using CanJS">
+				Using CanJS
 			</a>
 			
 	   </li>
@@ -397,38 +397,42 @@
 
 		
 		<section class="comment">
-			<p><a href="../docs/can.ejs.html">EJS</a> is CanJS's default template language, which provides live
+			<p><a href="../docs/can.EJS.html">EJS</a> is CanJS's default template language, which provides live
 binding when used with Observes. EJS is very easy to use; you write the HTML you
 want to be in the template, along with a few magic tags where you want dynamic
 behavior.</p>
 <p>Here's an example of a template that might render a list of Todos:</p>
-<pre><code class="lang-javascript">&lt;script type="text/ejs" id="todoList">
-<% for(var i = 0; i < todos.length; ++i) { %>
-    &lt;li><%= this[i].attr('description') &lt;/li>
-<% } %>
-&lt;/script></code></pre>
-And you can use `can.view` to render the template:
-<pre><code class="lang-javascript">Todo.findAll({}, function(todos) {
+<pre><code class="language-js">&amp;lt;script type=&quot;text/ejs&quot; id=&quot;todoList&quot;&gt;
+&lt;% for(var i = 0; i &lt; todos.length; ++i) { %&gt;
+    &amp;lt;li&gt;&lt;%= this[i].attr('description') &amp;lt;/li&gt;
+&lt;% } %&gt;
+&amp;lt;/script&gt;
+</code></pre>
+<p>And you can use <code>can.view</code> to render the template:</p>
+<pre><code class="language-js">Todo.findAll({}, function(todos) {
     document.getElementById('list')
         .appendChild(can.view('todoList', todos));
-});</code></pre>
-As you can see from the template and the call to `can.view`, the `todos`
-object becomes `this` inside the template. EJS can also access the properties
-of the `this` object without having to prefix it with `this.`:
-<pre><code class="lang-javascript">&lt;script type="text/ejs" id="todosAndUser">
-&lt;h2> <%= user.attr('name') %>&lt;/h2>
-<% for(var i = 0; i < todos.length; ++i) { %>
-    &lt;li><%= this[i].attr('description') &lt;/li>
-<% } %>
-&lt;/script></code></pre>
-Which can be inserted in the document with:
-<pre><code class="lang-javascript">can.view('todosAndUser', {
+});
+</code></pre>
+<p>As you can see from the template and the call to <code>can.view</code>, the <code>todos</code>
+object becomes <code>this</code> inside the template. EJS can also access the properties
+of the <code>this</code> object without having to prefix it with <code>this.</code>:</p>
+<pre><code class="language-js">&amp;lt;script type=&quot;text/ejs&quot; id=&quot;todosAndUser&quot;&gt;
+&amp;lt;h2&gt; &lt;%= user.attr('name') %&gt;&amp;lt;/h2&gt;
+&lt;% for(var i = 0; i &lt; todos.length; ++i) { %&gt;
+    &amp;lt;li&gt;&lt;%= this[i].attr('description') &amp;lt;/li&gt;
+&lt;% } %&gt;
+&amp;lt;/script&gt;
+</code></pre>
+<p>Which can be inserted in the document with:</p>
+<pre><code class="language-js">can.view('todosAndUser', {
     todos: Todo.findAll(),
     user: User.findOne({id: 5})
 }).then(function(frag) {
     document.getElementById('todos').appendChild(fragment);
-});</code></pre>
-## Magic tags
+});
+</code></pre>
+<h2>Magic tags</h2>
 <p>There are five kinds of magic tags used in EJS:</p>
 <p><code>&lt;% %&gt;</code> will run any JavaScript code inside of it. This tag doesn't modify or
 populate the template, but allows you to use for loops, if/else statements,
@@ -437,74 +441,87 @@ almost any JavaScript code is valid in <code>&lt;% %&gt;</code>, EJS is incredib
 <p>Due to constraints necessary for live binding to function, it is heavily
 encouraged to only have one line of JS code per pair of EJS tags in order to
 ensure that the correct scope is maintained.</p>
-<pre><code class="lang-javascript"><% if(todos.attr('length') > 0) { %>
-    &lt;div>You have no to-dos.&lt;/div>
-<% } else { %>
-    &lt;ul>
-        <% todos.each(function(todo) { %>
-        &lt;li><%= todo.attr('description') %>&lt;/li>
-        <% }); %>
-    &lt;/ul>
-<% } %></code></pre>
-`<%= %>` will evaluate a JavaScript statement and write the HTML-escaped result
-into the populated template. For example, an EJS template like this:
-<pre><code class="lang-javascript">&lt;div>My favorite element is <%= '&lt;b>blink&lt;/b>' %>.&lt;/div></code></pre>
-will result in HTML like this:
-<pre><code class="lang-javascript">&lt;div>My favorite element is &amp;lt;b&amp;gt;blink&amp;lt;/b&amp;gt;.&lt;/div></code></pre>
-This is almost always the tag you want to use when writing values to your
-template, because it protects you against [cross-site scripting attacks](http://en.wikipedia.org/wiki/Cross-site_scripting).
+<pre><code class="language-js">&lt;% if(todos.attr('length') &gt; 0) { %&gt;
+    &amp;lt;div&gt;You have no to-dos.&amp;lt;/div&gt;
+&lt;% } else { %&gt;
+    &amp;lt;ul&gt;
+        &lt;% todos.each(function(todo) { %&gt;
+        &amp;lt;li&gt;&lt;%= todo.attr('description') %&gt;&amp;lt;/li&gt;
+        &lt;% }); %&gt;
+    &amp;lt;/ul&gt;
+&lt;% } %&gt;
+</code></pre>
+<p><code>&lt;%= %&gt;</code> will evaluate a JavaScript statement and write the HTML-escaped result
+into the populated template. For example, an EJS template like this:</p>
+<pre><code class="language-js">&amp;lt;div&gt;My favorite element is &lt;%= '&amp;lt;b&gt;blink&amp;lt;/b&gt;' %&gt;.&amp;lt;/div&gt;
+</code></pre>
+<p>will result in HTML like this:</p>
+<pre><code class="language-js">&amp;lt;div&gt;My favorite element is &amp;amp;lt;b&amp;amp;gt;blink&amp;amp;lt;/b&amp;amp;gt;.&amp;lt;/div&gt;
+</code></pre>
+<p>This is almost always the tag you want to use when writing values to your
+template, because it protects you against <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">cross-site scripting attacks</a>.</p>
 <p><code>&lt;%== %&gt;</code> will evaluate a JavaScript statement and write the raw result into the
 populated template. This is like <code>&lt;%= %&gt;</code> but without escaping the result first.
 For example, an EJS template like this:</p>
-<pre><code class="lang-javascript">&lt;div>My favorite element is <%== '&lt;b>blink&lt;/b>' %>.&lt;/div></code></pre>
-will result in HTML like this:
-<pre><code class="lang-javascript">&lt;div>My favorite element is &lt;b>blink&lt;/b>.&lt;/div></code></pre>
-The most common use of `<%== %>` is to include templates in other templates:
-<pre><code class="lang-javascript"><% todos.each(function(todo) { %>
-    &lt;li><%== can.view.render('todoEJS', todo); %>&lt;/li>
-<% }); %></code></pre>
-The other two magic tags are less commonly used and can be found in the
-[documentation for EJS](../docs/can.ejs.html).
+<pre><code class="language-js">&amp;lt;div&gt;My favorite element is &lt;%== '&amp;lt;b&gt;blink&amp;lt;/b&gt;' %&gt;.&amp;lt;/div&gt;
+</code></pre>
+<p>will result in HTML like this:</p>
+<pre><code class="language-js">&amp;lt;div&gt;My favorite element is &amp;lt;b&gt;blink&amp;lt;/b&gt;.&amp;lt;/div&gt;
+</code></pre>
+<p>The most common use of <code>&lt;%== %&gt;</code> is to include templates in other templates:</p>
+<pre><code class="language-js">&lt;% todos.each(function(todo) { %&gt;
+    &amp;lt;li&gt;&lt;%== can.view.render('todoEJS', todo); %&gt;&amp;lt;/li&gt;
+&lt;% }); %&gt;
+</code></pre>
+<p>The other two magic tags are less commonly used and can be found in the
+<a href="../docs/can.EJS.html">documentation for EJS</a>.</p>
 <h2>Live binding</h2>
 <p>Live binding will automatically update your EJS templates in the DOM whenever
 the data they are populated with changes. To do this, populate your templates
 with Observes and use <code>attr</code> to read properties. In this template, using
 <code>attr</code> sets up live binding on the <code>description</code> property of <code>todo</code>:</p>
-<pre><code class="lang-javascript">&lt;li><%= todo.attr('description') %>&lt;/li></code></pre>
-If you change the Todo's description, the template's output will automatically
-update:
-<pre><code class="lang-javascript">todo.attr('description', 'Clean up the bathroom.');</code></pre>
-Live binding works by wrapping the code inside the magic tags with a function
+<pre><code class="language-js">&amp;lt;li&gt;&lt;%= todo.attr('description') %&gt;&amp;lt;/li&gt;
+</code></pre>
+<p>If you change the Todo's description, the template's output will automatically
+update:</p>
+<pre><code class="language-js">todo.attr('description', 'Clean up the bathroom.');
+</code></pre>
+<p>Live binding works by wrapping the code inside the magic tags with a function
 to call when the attributes inside the magic tags change. This means that a
-template like this will not work:
-<pre><code class="lang-javascript"><% for(var i = 0; i < todos.length; ++i) { %>
-    &lt;li><%= todos[i].attr('name') %>&lt;/li>
-<% } %></code></pre>
-This will not work because when the function wrapping `todos[i].attr('name')` is
-called, `i` will still be _3_ (as that is what `i` is set to after the loop is
-run). You can fix this by using a closure and the `each` method of Observes:
-<pre><code class="lang-javascript"><% todos.each(function() { %>
-    &lt;li><%= todo.attr('name') %>&lt;/li>
-<% }); %></code></pre>
-`each` will also watch the length of the list it is passed, so elements are
-added or removed from it, it will update the output of the template.
+template like this will not work:</p>
+<pre><code class="language-js">&lt;% for(var i = 0; i &lt; todos.length; ++i) { %&gt;
+    &amp;lt;li&gt;&lt;%= todos[i].attr('name') %&gt;&amp;lt;/li&gt;
+&lt;% } %&gt;
+</code></pre>
+<p>This will not work because when the function wrapping <code>todos[i].attr('name')</code> is
+called, <code>i</code> will still be <em>3</em> (as that is what <code>i</code> is set to after the loop is
+run). You can fix this by using a closure and the <code>each</code> method of Observes:</p>
+<pre><code class="language-js">&lt;% todos.each(function() { %&gt;
+    &amp;lt;li&gt;&lt;%= todo.attr('name') %&gt;&amp;lt;/li&gt;
+&lt;% }); %&gt;
+</code></pre>
+<p><code>each</code> will also watch the length of the list it is passed, so elements are
+added or removed from it, it will update the output of the template.</p>
 <h2>Element callbacks</h2>
 <p>If the code inside <code>&lt;%= %&gt;</code> or <code>&lt;%== %&gt;</code> evaluates to a function, the function
 will be called back with the element it's inside as its first argument. This is
 useful to initialize functionality on an element within the template, like
 starting an element hidden:</p>
-<pre><code class="lang-javascript">&lt;img src="surprise.gif" <%= function(element) { element.style.display = 'none'; } %>/></code></pre>
-This is so common that EJS also supports [ECMAScript 5 arrow functions](http://wiki.ecmascript.org/doku.php?id=strawman:arrow_function_syntax)
+<pre><code class="language-js">&amp;lt;img src=&quot;surprise.gif&quot; &lt;%= function(element) { element.style.display = 'none'; } %&gt;/&gt;
+</code></pre>
+<p>This is so common that EJS also supports <a href="http://wiki.ecmascript.org/doku.php?id=strawman:arrow_function_syntax">ECMAScript 5 arrow functions</a>
 that get passed a library-wrapped NodeList containing the element. Because we
-are using jQuery, the example above can be more simply written like this:
-<pre><code class="lang-javascript">&lt;img src="surprise.gif" <%= (el) -> el.hide() %>/></code></pre>
-You can use this functionality to easily attach data to an element. A common
-reason to do this is to attach a Model to the element that represents it:
-<pre><code class="lang-javascript"><% todos.each(function(todo) { %>
-&lt;li <%= (el) -> can.data(el, 'todo', todo) %>>
-    <%= todo.attr('description') %>
-&lt;/li>
-<% }) %></code></pre>
+are using jQuery, the example above can be more simply written like this:</p>
+<pre><code class="language-js">&amp;lt;img src=&quot;surprise.gif&quot; &lt;%= (el) -&gt; el.hide() %&gt;/&gt;
+</code></pre>
+<p>You can use this functionality to easily attach data to an element. A common
+reason to do this is to attach a Model to the element that represents it:</p>
+<pre><code class="language-js">&lt;% todos.each(function(todo) { %&gt;
+&amp;lt;li &lt;%= (el) -&gt; can.data(el, 'todo', todo) %&gt;&gt;
+    &lt;%= todo.attr('description') %&gt;
+&amp;lt;/li&gt;
+&lt;% }) %&gt;
+</code></pre>
 
 		</section>
 		
@@ -566,7 +583,7 @@ reason to do this is to attach a Model to the element that represents it:
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"Tutorial","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"page","name":"EJS","description":"","title":"EJS","order":4,"comment":" ","src":"guides/ejs.md"};
+		var docObject = {"parent":"Tutorial","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"type":"page","name":"EJS","description":"","title":"EJS","order":4,"comment":" ","src":"guides/ejs.md"};
 	</script>
 	
 	

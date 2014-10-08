@@ -124,6 +124,13 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -398,66 +405,6 @@
 			
 		
 			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.Model.parseModel.html" 
-							data-search="parseModel">
-							parseModel
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.Model.parseModels.html" 
-							data-search="parseModels">
-							parseModels
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="property" 
-							href="can.Model.removeAttr.html" 
-							data-search="removeAttr">
-							removeAttr
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="property" 
-							href="can.Model.resource.html" 
-							data-search="resource">
-							resource
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
 		
 			
 				
@@ -526,22 +473,15 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.ejs.html" data-search="can.ejs">
-				can.ejs
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.event.html" data-search="can.event">
-				can.event
 			</a>
 			
 	   </li>
@@ -554,22 +494,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.mustache.html" data-search="can.mustache">
-				can.mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.route.html" data-search="can.route">
 				can.route
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.stache.html" data-search="can.stache">
-				can.stache
 			</a>
 			
 	   </li>
@@ -584,13 +510,6 @@
 	   <li class="search-container">
 	   		<a href="can.view.html" data-search="can.view">
 				can.view
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
-				can.view.bindings
 			</a>
 			
 	   </li>
@@ -665,11 +584,13 @@
 		
 		<li class="parameter">
 			<h4>id
-				</h4>
+				<code>{*}</code></h4>
 			<div class="description">
 				<p>The ID of the resource to destroy.</p>
 
 			</div>
+			
+			
 			
 		</li>
 		
@@ -737,25 +658,29 @@ instance on the server. (See below for more details.)</p>
 instance from the server.</p>
 <h2>Implement with a URL</h2>
 <p>You can implement destroy with a string like:</p>
-<p>Recipe = can.Model.extend({
-destroy : &quot;/recipe/{id}&quot;
-},{})</p>
+<pre><code>Recipe = can.Model.extend({
+  destroy : &quot;/recipe/{id}&quot;
+},{})
+</code></pre>
 <p>And use <a href="can.Model.prototype.destroy.html">destroy</a> to destroy it like:</p>
-<p>Recipe.findOne({id: 1}, function(recipe){
-recipe.destroy();
-});</p>
+<pre><code>Recipe.findOne({id: 1}, function(recipe){
+     recipe.destroy();
+});
+</code></pre>
 <p>This sends a <code>DELETE</code> request to <code>/thing/destroy/1</code>.</p>
 <p>If your server does not support <code>DELETE</code> you can override it like:</p>
-<p>Recipe = can.Model.extend({
-destroy : &quot;POST /recipe/destroy/{id}&quot;
-},{})</p>
+<pre><code>Recipe = can.Model.extend({
+  destroy : &quot;POST /recipe/destroy/{id}&quot;
+},{})
+</code></pre>
 <h2>Implement with a function</h2>
 <p>Implement destroy with a function like:</p>
-<p>Recipe = can.Model.extend({
-destroy : function(id){
-return $.post(&quot;/recipe/destroy/&quot;+id,{});
-}
-},{})</p>
+<pre><code>Recipe = can.Model.extend({
+  destroy : function(id){
+    return $.post(&quot;/recipe/destroy/&quot;+id,{});
+  }
+},{})
+</code></pre>
 <p>Destroy just needs to return a deferred that resolves.</p>
 
 		</section>
@@ -818,7 +743,7 @@ return $.post(&quot;/recipe/destroy/&quot;+id,{});
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Model.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"name":"can.Model.destroy","type":"function","description":"<p>Destroy a resource on the server.</p>\n","title":"destroy","signatures":[{"code":"can.Model.destroy: function(id) -> deferred","description":"<p>If you provide a function, the Model will expect you to do your own AJAX requests.</p>\n","params":[{"name":"id","description":"<p>The ID of the resource to destroy.</p>\n"}],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A Deferred that resolves to the destroyed model.</p>\n"}},{"code":"can.Model.destroy: \"[METHOD] /path/to/resource\"","description":"<p>If you provide a URL, the Model will send a request to that URL using\nthe method specified (or DELETE if none is specified) when deleting an\ninstance on the server. (See below for more details.)</p>\n","params":[],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A Deferred that resolves to the destroyed model.</p>\n"}}],"comment":" ","src":"model/model.js"};
+		var docObject = {"parent":"can.Model.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"name":"can.Model.destroy","type":"function","description":"<p>Destroy a resource on the server.</p>\n","title":"destroy","signatures":[{"code":"can.Model.destroy: function(id) -> deferred","description":"<p>If you provide a function, the Model will expect you to do your own AJAX requests.</p>\n","params":[{"types":[{"type":"*"}],"name":"id","description":"<p>The ID of the resource to destroy.</p>\n"}],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A Deferred that resolves to the destroyed model.</p>\n"}},{"code":"can.Model.destroy: \"[METHOD] /path/to/resource\"","description":"<p>If you provide a URL, the Model will send a request to that URL using\nthe method specified (or DELETE if none is specified) when deleting an\ninstance on the server. (See below for more details.)</p>\n","params":[],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A Deferred that resolves to the destroyed model.</p>\n"}}],"comment":" ","src":"model/model.js"};
 	</script>
 	
 	

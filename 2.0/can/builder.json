@@ -26,11 +26,6 @@
 			"type": "core",
 			"isDefault": true
 		},
-		"can/list/promise": {
-			"name": "can.List.promise",
-			"description": "Promises on lists",
-			"type": "plugin"
-		},
 		"can/observe": {
 			"name": "can.Observe",
 			"description": "Observables and key-value bindings",
@@ -57,13 +52,8 @@
 			"isDefault": true
 		},
 		"can/view/ejs": {
-			"name": "can.ejs",
+			"name": "can.EJS",
 			"description": "Live-binding Embedded JavaScript",
-			"type": "plugin"
-		},
-		"can/view/stache": {
-			"name": "can.stache",
-			"description": "High performance Mustache templates",
 			"type": "plugin"
 		},
 		"can/control": {
@@ -85,7 +75,7 @@
 			"isDefault": true
 		},
 		"can/view/mustache": {
-			"name": "can.mustache",
+			"name": "can.Mustache",
 			"description": "Live-binding Handlebars and Mustache views",
 			"type": "core",
 			"isDefault": true
@@ -110,11 +100,6 @@
 			"type": "plugin",
 			"description": "Proxy construct methods"
 		},
-		"can/map/lazy": {
-			"name": "can.Map.Lazy",
-			"type": "plugin",
-			"description": "Lazy initializing maps and lists"
-		},
 		"can/map/delegate": {
 			"name": "can.Map.delegate",
 			"type": "plugin",
@@ -123,12 +108,11 @@
 		"can/map/setter": {
 			"name": "can.Map.setter",
 			"type": "plugin",
-			"description": "Use setter methods on can.Map"
+			"description": "Use setter methods on Observes"
 		},
 		"can/map/attributes": {
 			"name": "can.Map.attributes",
 			"type": "plugin",
-			"deprecated": true,
 			"description": "Define Observe attributes"
 		},
 		"can/map/validations": {
@@ -145,11 +129,6 @@
 			"name": "can.Map.List",
 			"type": "plugin",
 			"description": "Live-updating mapped and filtered observe lists"
-		},
-		"can/map/define": {
-			"name": "can.Map.define",
-			"type": "plugin",
-			"description": "Define rich attribute behavior"
 		},
 		"can/map/sort": {
 			"name": "can.List.Sort",
@@ -198,12 +177,6 @@
 		},
 		"can/util/string": {
 			"name": "can.util.string",
-			"type": "core",
-			"isDefault": true,
-			"hidden": true
-		},
-		"can/util/attr": {
-			"name": "can.util.attr",
 			"type": "core",
 			"isDefault": true,
 			"hidden": true

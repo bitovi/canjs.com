@@ -124,6 +124,13 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -174,6 +181,8 @@
 					</li>
 				
 			
+			
+		
 			
 		
 			
@@ -281,8 +290,6 @@
 			
 			
 		
-			
-		
 	</ul>
 
 					</li>
@@ -315,8 +322,6 @@
 			
 			
 		
-			
-		
 	</ul>
 
 					</li>
@@ -330,24 +335,9 @@
 				
 					
 					<li class="heading search-container">
-						<span>Plugins</span>
+						<span>plugins</span>
 						
 	<ul >
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="constructor" 
-							href="can.LazyMap.html" 
-							data-search="can.LazyMap">
-							can.LazyMap
-						</a>
-						
-					</li>
-				
-			
-			
 		
 			
 				
@@ -361,10 +351,6 @@
 						
 							
 	<ul >
-		
-			
-		
-			
 		
 			
 				
@@ -462,6 +448,10 @@
 			
 			
 		
+			
+		
+			
+		
 	</ul>
 
 						
@@ -504,22 +494,7 @@
 				
 				
 					<li class="search-container parent ">
-						<a 	class="property" 
-							href="can.Map.prototype.define.html" 
-							data-search="define">
-							define
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container parent ">
-						<a 	class="function" 
+						<a 	class="page" 
 							href="can.Map.setter.html" 
 							data-search="setter">
 							setter
@@ -574,22 +549,15 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.ejs.html" data-search="can.ejs">
-				can.ejs
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.event.html" data-search="can.event">
-				can.event
 			</a>
 			
 	   </li>
@@ -602,22 +570,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.mustache.html" data-search="can.mustache">
-				can.mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.route.html" data-search="can.route">
 				can.route
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.stache.html" data-search="can.stache">
-				can.stache
 			</a>
 			
 	   </li>
@@ -632,13 +586,6 @@
 	   <li class="search-container">
 	   		<a href="can.view.html" data-search="can.view">
 				can.view
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
-				can.view.bindings
 			</a>
 			
 	   </li>
@@ -714,20 +661,22 @@ the types specified in <a href="can.Map.attributes.html">attributes</a>.</p>
 that will return the value if the property holds a primitive value (string, number, ...),
 or it will call the &quot;serialize&quot; method if the property holds an object with the &quot;serialize&quot; method set.</p>
 <p>For example, to serialize all dates to ISO format:</p>
-<pre><code class="lang-javascript">var Contact = can.Map.extend({
-attributes : {
- birthday : 'date'
-},
-serialize : {
- date : function(val, type){
-   return new Date(val).toISOString();
- }
-}
+<pre><code class="language-js">var Contact = can.Map.extend({
+  attributes : {
+    birthday : 'date'
+  },
+  serialize : {
+    date : function(val, type){
+      return new Date(val).toISOString();
+    }
+  }
 },{});
-<p>var contact = new Contact({
-birthday: new Date(&quot;Oct 25, 1973&quot;)
+
+var contact = new Contact({
+  birthday: new Date(&quot;Oct 25, 1973&quot;)
 }).serialize();
-//-&gt; { &quot;birthday&quot; : &quot;1973-10-25T05:00:00.000Z&quot; }</code></pre></p>
+//-&gt; { &quot;birthday&quot; : &quot;1973-10-25T05:00:00.000Z&quot; }
+</code></pre>
 
 		</section>
 		
@@ -789,7 +738,7 @@ birthday: new Date(&quot;Oct 25, 1973&quot;)
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Map.attributes.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"property","name":"can.Map.attributes.static.serialize","description":"<p><code>can.Map.serialize</code> is an object of name-function pairs that are used to\nserialize attributes.</p>\n","title":"serialize","order":2,"src":"map/attributes/doc/static.serialize.md"};
+		var docObject = {"parent":"can.Map.attributes.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"name":"can.Map.attributes.static.serialize","type":"property","description":"<p><code>can.Map.serialize</code> is an object of name-function pairs that are used to\nserialize attributes.</p>\n","title":"serialize","src":"map/attributes/attributes.js"};
 	</script>
 	
 	

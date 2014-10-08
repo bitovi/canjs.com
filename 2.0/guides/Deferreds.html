@@ -283,8 +283,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="Using.html" data-search="Setting up CanJS">
-				Setting up CanJS
+	   		<a href="Using.html" data-search="Using CanJS">
+				Using CanJS
 			</a>
 			
 	   </li>
@@ -400,37 +400,43 @@
 			<p>Deferreds in CanJS are explained in greater detail in the <a href="../docs/can.Deferred.html">API</a>.
 Below is a quick tour through can.Deferred, which should look familiar to you
 if you have experience with the Deferred pattern.</p>
-<pre><code class="lang-javascript">// Create a new Deferred:
+<pre><code class="language-js">// Create a new Deferred:
 var dfd = new can.Deferred();
-<p>// Add a done callback:
+
+// Add a done callback:
 dfd.done(function(foo) {
-console.log('Resolved!');
+    console.log('Resolved!');
 });
 // Add a fail callback:
 dfd.fail(function(bar) {
-console.log('Rejected!');
+    console.log('Rejected!');
 });
 // Add a callback that fires whether the
 // Deferred is resolve or rejected.
 dfd.always(function(obj) {
-console.log('Apathetic!');
-});</p>
-<p>var dfd2 = new can.Deferred();
+    console.log('Apathetic!');
+});
+
+var dfd2 = new can.Deferred();
 // Add done and fail callbacks:
 dfd2.then(functon(foo) {
-console.log('Also resolved.');
+    console.log('Also resolved.');
 }, function(bar) {
-console.log('Also rejected.');
-});</p>
-<p>// Create a Deferred that resolves when
+    console.log('Also rejected.');
+});
+
+// Create a Deferred that resolves when
 // all passed Deferreds resolve:
 var endDfd = can.when(dfd, dfd2).then(function() {
-console.log('I open at the close.');
-});</p>
-<p>// Resolve a Deferred (and call all its done callbacks):
-dfd.resolve('foo');</p>
-<p>// Reject a Deferred (and call all its fail callbacks):
-dfd.reject('bar');</code></pre></p>
+    console.log('I open at the close.');
+});
+
+// Resolve a Deferred (and call all its done callbacks):
+dfd.resolve('foo');
+
+// Reject a Deferred (and call all its fail callbacks):
+dfd.reject('bar');
+</code></pre>
 
 		</section>
 		
@@ -492,7 +498,7 @@ dfd.reject('bar');</code></pre></p>
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"Tutorial","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"page","name":"Deferreds","description":"","title":"Deferreds","order":8,"comment":" ","src":"guides/deferred.md"};
+		var docObject = {"parent":"Tutorial","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"type":"page","name":"Deferreds","description":"","title":"Deferreds","order":8,"comment":" ","src":"guides/deferred.md"};
 	</script>
 	
 	

@@ -4,16 +4,14 @@ steal("can/map", "can/view/ejs", "can/view/modifiers", "can/test", function () {
 		return;
 	}
 	module('can/view/modifiers');
-	
 	test('modifier with a deferred', function () {
-	
-		$('#qunit-test-area')
+		can.$('#qunit-test-area')
 			.html('');
 			
 		stop();
 		var foo = can.Deferred();
 		
-		$('#qunit-test-area')
+		can.$('#qunit-test-area')
 			.html(can.test.path('view/test/deferred.ejs'), foo);
 	
 		var templateLoaded = new can.Deferred(),
@@ -37,15 +35,15 @@ steal("can/map", "can/view/ejs", "can/view/modifiers", "can/test", function () {
 
 		can.when(foo, templateLoaded).then(function(foo){
 			setTimeout(function(){
-				equal($('#qunit-test-area')
+				equal(can.$('#qunit-test-area')
 					.html(), 'FOO', 'worked!');
 				start();
-			},10);
+				
+			},1);
 			
 		});
 		
 	});
-	
 	/*test("non-HTML content in hookups", function(){
 	 $("#qunit-test-area").html("<textarea></textarea>");
 	 can.render.hookup(function(){});
@@ -92,8 +90,5 @@ steal("can/map", "can/view/ejs", "can/view/modifiers", "can/test", function () {
 			.html(), 'OK');
 		can.$('#qunit-test-area')
 			.html('');
-			
-		// clear hookups we check that;
-		can.view.hookups = {};
 	});
 });

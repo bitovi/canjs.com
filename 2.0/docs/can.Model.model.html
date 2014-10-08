@@ -124,6 +124,13 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -398,66 +405,6 @@
 			
 		
 			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.Model.parseModel.html" 
-							data-search="parseModel">
-							parseModel
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.Model.parseModels.html" 
-							data-search="parseModels">
-							parseModels
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="property" 
-							href="can.Model.removeAttr.html" 
-							data-search="removeAttr">
-							removeAttr
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="property" 
-							href="can.Model.resource.html" 
-							data-search="resource">
-							resource
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
 		
 			
 				
@@ -526,22 +473,15 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.ejs.html" data-search="can.ejs">
-				can.ejs
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.event.html" data-search="can.event">
-				can.event
 			</a>
 			
 	   </li>
@@ -554,22 +494,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.mustache.html" data-search="can.mustache">
-				can.mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.route.html" data-search="can.route">
 				can.route
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.stache.html" data-search="can.stache">
-				can.stache
 			</a>
 			
 	   </li>
@@ -584,13 +510,6 @@
 	   <li class="search-container">
 	   		<a href="can.view.html" data-search="can.view">
 				can.view
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
-				can.view.bindings
 			</a>
 			
 	   </li>
@@ -642,26 +561,10 @@
 		
 		
 		
-			<section class='warnings'>
-				
-					<div class='deprecated warning'>
-						<h3>Deprecated 2.1</h3>
-						<div class='signature-wrapper'>
-							<p>Prior to 2.1, <code>.model</code> was used to convert ajax
-responses into a data format useful for converting them into a can.Model instance
-AND for converting them into that instance. In 2.1, <a href="can.Model.parseModel.html">parseModel</a> should
-be used to convert the ajax response into a data format useful to <a href="can.Model.model.html">model</a>.</p>
-
-						</div>
-					</div>
-				
-			</section>
-		
 
 		
 		<section class="description">
-			<p>Convert raw data into a can.Model instance. If data's <a href="can.Model.id.html">id</a> matches a item in the store's <code>id</code>, <code>data</code> is merged with the instance and the
-instance is returned.</p>
+			<p>Convert raw data into a can.Model instance.</p>
 
 		</section>
 		
@@ -713,6 +616,23 @@ instance is returned.</p>
 
 				</section>
 			
+				<section class="signature">
+					<h2 id="sig_model___34_PROPERTY__34_">model: &#34;PROPERTY&#34;
+</h2>
+<div class="signature-wrapper">
+<p>Creates a <code>model</code> function that looks for the attributes object in the PROPERTY
+property of raw instance data.</p>
+
+
+
+
+
+
+
+</div>
+
+				</section>
+			
 		
 		
 		
@@ -720,18 +640,50 @@ instance is returned.</p>
 
 		
 		<section class="comment">
-			<h2>Use</h2>
-<p><code>.models(data)</code> is used to create or retrieve a <a href="can.Model.html">can.Model</a> instance
-with the data provided. If data matches an instance in the [can.Model.store],
-that instance will be merged with the item's data and returneds</p>
-<p>For example</p>
-<p>Task = can.Model.extend({},{})</p>
-<p>var t1 = new Task({id: 1, name: &quot;dishes&quot;})</p>
-<p>// Binding on a model puts it in the store
-t1.bind(&quot;change&quot;, function(){})</p>
-<p>var task = Task.model({id: 1, name : &quot;dishes&quot;, complete : false})</p>
-<p>t1 === task //-&gt; true
-t1.attr(&quot;complete&quot;)  //-&gt; false</p>
+			<p><code>can.Model.model(attributes)</code> is used to convert data from the server into
+a model instance.  It is rarely called directly.  Instead it is invoked as
+a result of <a href="can.Model.findOne.html">findOne</a> or <a href="can.Model.findAll.html">findAll</a>.</p>
+<p>If your server is returning data in non-standard way,
+overwriting <code>can.Model.model</code> is a good way to normalize it.</p>
+<h2>Example</h2>
+<p>The following uses <code>model</code> to convert to a model
+instance.</p>
+<pre><code>Task = can.Model.extend({},{})
+var task = Task.model({id: 1, name : &quot;dishes&quot;, complete : false})
+
+tasks.attr(&quot;complete&quot;, true)
+</code></pre>
+<p><code>Task.model(attrs)</code> is very similar to simply calling <code>new Model(attrs)</code> except
+that it checks the model's store if the instance has already been created.  The model's
+store is a collection of instances that have event handlers.</p>
+<p>This means that if the model's store already has an instance, you'll get the same instance
+back.  Example:</p>
+<pre><code>// create a task
+var taskA = new Task({id: 5, complete: true});
+
+// bind to it, which puts it in the store
+ taskA.bind(&quot;complete&quot;, function(){});
+
+// use model to create / retrieve a task
+var taskB = Task.model({id: 5, complete: true});
+
+taskA === taskB //-&gt; true
+</code></pre>
+<h2>Non-standard Services</h2>
+<p><code>can.Model.model</code> expects to retreive attributes of the model
+instance like:</p>
+<pre><code>{id: 5, name : &quot;dishes&quot;}
+</code></pre>
+<p>If the service returns data formatted differently, like:</p>
+<pre><code>{todo: {name: &quot;dishes&quot;, id: 5}}
+</code></pre>
+<p>Overwrite <code>model</code> like:</p>
+<pre><code>Task = can.Model.extend({
+  model : function(data){
+    return can.Model.model.call(this,data.todo);
+  }
+},{});
+</code></pre>
 
 		</section>
 		
@@ -793,7 +745,7 @@ t1.attr(&quot;complete&quot;)  //-&gt; false</p>
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Model.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"name":"can.Model.model","type":"function","description":"<p>Convert raw data into a can.Model instance. If data's [can.Model.id id] matches a item in the store's <code>id</code>, <code>data</code> is merged with the instance and the\ninstance is returned.</p>\n","title":"model","deprecated":[{"version":"2.1","description":"<p>Prior to 2.1, <code>.model</code> was used to convert ajax\nresponses into a data format useful for converting them into a can.Model instance\nAND for converting them into that instance. In 2.1, [can.Model.parseModel] should\nbe used to convert the ajax response into a data format useful to [can.Model.model].</p>\n"}],"signatures":[{"code":"can.Model.model(data)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"data","description":"<p>The data to convert to a can.Model instance.</p>\n"}],"returns":{"types":[{"type":"can.Model"}],"description":"<p>An instance of can.Model made with the given data.</p>\n"}}],"comment":" ","src":"model/model.js"};
+		var docObject = {"parent":"can.Model.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"name":"can.Model.model","type":"function","description":"<p>Convert raw data into a can.Model instance.</p>\n","title":"model","signatures":[{"code":"can.Model.model(data)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"data","description":"<p>The data to convert to a can.Model instance.</p>\n"}],"returns":{"types":[{"type":"can.Model"}],"description":"<p>An instance of can.Model made with the given data.</p>\n"}},{"code":"model: \"PROPERTY\"","description":"<p>Creates a <code>model</code> function that looks for the attributes object in the PROPERTY\nproperty of raw instance data.</p>\n","params":[]}],"comment":" ","src":"model/model.js"};
 	</script>
 	
 	

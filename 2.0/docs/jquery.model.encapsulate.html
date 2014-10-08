@@ -124,6 +124,13 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -152,22 +159,15 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.ejs.html" data-search="can.ejs">
-				can.ejs
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.event.html" data-search="can.event">
-				can.event
 			</a>
 			
 	   </li>
@@ -180,22 +180,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.mustache.html" data-search="can.mustache">
-				can.mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.route.html" data-search="can.route">
 				can.route
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.stache.html" data-search="can.stache">
-				can.stache
 			</a>
 			
 	   </li>
@@ -210,13 +196,6 @@
 	   <li class="search-container">
 	   		<a href="can.view.html" data-search="can.view">
 				can.view
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
-				can.view.bindings
 			</a>
 			
 	   </li>
@@ -312,12 +291,15 @@ data:</p>
 <pre><code>Contact.findAll({type: 'old'}, successCallback);
 </code></pre>
 <p>And instead of raw data, findAll returns contact instances that let you do things like:</p>
-<pre><code class="lang-javascript">// destroy the contact
+<pre><code class="language-js">// destroy the contact
 contact.destroy() 
-<p>// update the contact
-contact.update({name: &quot;Jeremy&quot;})</p>
-<p>// create a contact
-new Contact({name: &quot;Alex&quot;}).save();</code></pre></p>
+
+// update the contact
+contact.update({name: &quot;Jeremy&quot;})
+
+// create a contact
+new Contact({name: &quot;Alex&quot;}).save();
+</code></pre>
 <h2>Encapsulation Demo</h2>
 <p>The Grid demo shows using two different models with the same widget.</p>
 <div class='demo_wrapper' data-demo-src='jquery/model/demo-encapsulate.html'></div>
@@ -401,29 +383,31 @@ to have an understanding of jQuery's Ajax converters and
 deferreds.</p>
 <p>Lets see how we might fill out the
 <code>Contact.findAll</code> function to work with JSONP:</p>
-<pre><code class="lang-javascript">$.Model('Contact',
+<pre><code class="language-js">$.Model('Contact',
 {
   findAll : function(params, success, error){
-<pre><code>// do the ajax request
-return $.get('/contacts.jsonp',
-  params, 
-  success,
-  'jsonp contact.models');
-</code></pre>
-<p>}
+  
+    // do the ajax request
+    return $.get('/contacts.jsonp',
+      params, 
+      success,
+      'jsonp contact.models');
+  }
 },
 {
-// Prototype properties of Contact.
-// We'll learn about this soon!
-});</code></pre></p>
+  // Prototype properties of Contact.
+  // We'll learn about this soon!
+});
+</code></pre>
 <p>If we wanted to make a list of contacts, we could do it like:</p>
-<pre><code class="lang-javascript">Contact.findAll({},function(contacts){
+<pre><code class="language-js">Contact.findAll({},function(contacts){
   var html = [];
-  for(var i =0; i < contacts.length; i++){
-    html.push('&lt;li>'+contacts[i].name + '&lt;/li>')
+  for(var i =0; i &lt; contacts.length; i++){
+    html.push('&amp;lt;li&gt;'+contacts[i].name + '&amp;lt;/li&gt;')
   }
   $('#contacts').html( html.join('') );
-});</code></pre>
+});
+</code></pre>
 
 		</section>
 		
@@ -485,7 +469,7 @@ return $.get('/contacts.jsonp',
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"jQuery.Model","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"page","name":"jquery.model.encapsulate","description":"<p>Models encapsulate your application's raw data.  This promotes reuse and provide a\nstandard interface for widgets to talk to services.</p>\n","title":"Service Encapsulation","src":"model/pages/encapsulate.md"};
+		var docObject = {"parent":"jQuery.Model","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"type":"page","name":"jquery.model.encapsulate","description":"<p>Models encapsulate your application's raw data.  This promotes reuse and provide a\nstandard interface for widgets to talk to services.</p>\n","title":"Service Encapsulation","src":"model/pages/encapsulate.md"};
 	</script>
 	
 	

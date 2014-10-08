@@ -949,27 +949,32 @@ at all.</p>
 		<section class="comment">
 			<p>This function does not work with objects that create circular references.</p>
 <h2>Examples</h2>
-<pre><code class="lang-javascript">can.Object.same({name: "Justin"}, {name: "JUSTIN"}) //-> false
-<p>// ignore the name property
-can.Object.same({name: &quot;Brian&quot;}, {name: &quot;JUSTIN&quot;}, {name: null}) //-&gt; true</p>
-<p>// ignore case
-can.Object.same({name: &quot;Justin&quot;}, {name: &quot;JUSTIN&quot;}, {name: &quot;i&quot;}) //-&gt; true</p>
-<p>// deep rule
+<pre><code class="language-js">can.Object.same({name: &quot;Justin&quot;}, {name: &quot;JUSTIN&quot;}) //-&gt; false
+
+// ignore the name property
+can.Object.same({name: &quot;Brian&quot;}, {name: &quot;JUSTIN&quot;}, {name: null}) //-&gt; true
+
+// ignore case
+can.Object.same({name: &quot;Justin&quot;}, {name: &quot;JUSTIN&quot;}, {name: &quot;i&quot;}) //-&gt; true
+
+// deep rule
 can.Object.same({ person : { name: &quot;Justin&quot; } },
-{ person : { name: &quot;JUSTIN&quot; } },
-{ person : { name: &quot;i&quot;      } }) //-&gt; true</p>
-<p>// supplied compare function
+    { person : { name: &quot;JUSTIN&quot; } },
+    { person : { name: &quot;i&quot;      } }) //-&gt; true
+
+// supplied compare function
 can.Object.same({age: &quot;Thirty&quot;},
-{age: 30},
-{age: function( a, b ){
-if( a == &quot;Thirty&quot; ) {
-a = 30
-}
-if( b == &quot;Thirty&quot; ) {
-b = 30
-}
-return a === b;
-}})      //-&gt; true</code></pre></p>
+    {age: 30},
+    {age: function( a, b ){
+    if( a == &quot;Thirty&quot; ) {
+        a = 30
+    }
+    if( b == &quot;Thirty&quot; ) {
+        b = 30
+    }
+    return a === b;
+}})      //-&gt; true
+</code></pre>
 
 		</section>
 		
@@ -1031,7 +1036,7 @@ return a === b;
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.util","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs"},"name":"can.Object.same","type":"function","description":"<p>Checks if two objects are the same.</p>\n","title":"","signatures":[{"code":"can.Object.same(a, b, compares, aParent, bParent, deep)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"a","description":"<p>An object to compare against <code>b</code>.</p>\n"},{"types":[{"type":"Object","options":[]}],"name":"b","description":"<p>An object to compare against <code>a</code>.</p>\n"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"compares","description":"<p>An object that specifies how to compare properties.\nThe keys of the <code>compares</code> object are names of properties in the objects to compare,\nand the values are functions that compare those properties. You can also pass <code>'i'</code>\nto compare values as case-insensitive strings, or <code>null</code> not to compare the properties\nat all.</p>\n"}],"returns":{"types":[{"type":"Object","options":[{"name":"boolean"}]}],"description":"<p>Whether the two objects have the same properties and values.</p>\n"}}],"comment":" ","src":"util/object/object.js"};
+		var docObject = {"parent":"can.util","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs"},"name":"can.Object.same","type":"function","description":"<p>Checks if two objects are the same.</p>\n","title":"","signatures":[{"code":"can.Object.same(a, b, compares, aParent, bParent, deep)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"a","description":"<p>An object to compare against <code>b</code>.</p>\n"},{"types":[{"type":"Object","options":[]}],"name":"b","description":"<p>An object to compare against <code>a</code>.</p>\n"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"compares","description":"<p>An object that specifies how to compare properties.\nThe keys of the <code>compares</code> object are names of properties in the objects to compare,\nand the values are functions that compare those properties. You can also pass <code>'i'</code>\nto compare values as case-insensitive strings, or <code>null</code> not to compare the properties\nat all.</p>\n"}],"returns":{"types":[{"type":"Object","options":[{"name":"boolean"}]}],"description":"<p>Whether the two objects have the same properties and values.</p>\n"}}],"comment":" ","src":"util/object/object.js"};
 	</script>
 	
 	

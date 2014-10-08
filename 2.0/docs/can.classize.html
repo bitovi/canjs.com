@@ -124,6 +124,13 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -174,6 +181,8 @@
 					</li>
 				
 			
+			
+		
 			
 		
 			
@@ -281,8 +290,6 @@
 			
 			
 		
-			
-		
 	</ul>
 
 					</li>
@@ -315,8 +322,6 @@
 			
 			
 		
-			
-		
 	</ul>
 
 					</li>
@@ -330,24 +335,9 @@
 				
 					
 					<li class="heading search-container">
-						<span>Plugins</span>
+						<span>plugins</span>
 						
 	<ul >
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="constructor" 
-							href="can.LazyMap.html" 
-							data-search="can.LazyMap">
-							can.LazyMap
-						</a>
-						
-					</li>
-				
-			
-			
 		
 			
 				
@@ -397,23 +387,8 @@
 			
 				
 				
-					<li class="search-container parent ">
-						<a 	class="property" 
-							href="can.Map.prototype.define.html" 
-							data-search="define">
-							define
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
 					<li class="search-container parent expanded">
-						<a 	class="function" 
+						<a 	class="page" 
 							href="can.Map.setter.html" 
 							data-search="setter">
 							setter
@@ -426,7 +401,7 @@
 				
 				
 					<li class="search-container active  expanded">
-						<a 	class="function" 
+						<a 	class="constructor" 
 							href="can.classize.html" 
 							data-search="can.classize">
 							can.classize
@@ -491,22 +466,15 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.ejs.html" data-search="can.ejs">
-				can.ejs
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.event.html" data-search="can.event">
-				can.event
 			</a>
 			
 	   </li>
@@ -519,22 +487,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.mustache.html" data-search="can.mustache">
-				can.mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.route.html" data-search="can.route">
 				can.route
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.stache.html" data-search="can.stache">
-				can.stache
 			</a>
 			
 	   </li>
@@ -553,13 +507,6 @@
 			
 	   </li>
 	
-	   <li class="search-container">
-	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
-				can.view.bindings
-			</a>
-			
-	   </li>
-	
 </ul>
 	</nav>
 	
@@ -573,7 +520,7 @@
 			<div class="heading">
 <h1>can.classize</h1>
 	<ul class="tags">
-		<li>function</li>
+		<li>constructor</li>
 	</ul>
 	<span class="module">can/map/setter</span>
 	
@@ -608,7 +555,7 @@
 
 		
 		<section class="description">
-			<p>Make a string into a class name.</p>
+			<p>Like [can.camelize camelize], but the first part is also capitalized</p>
 
 		</section>
 		
@@ -624,7 +571,8 @@ dashes and capitalizes each part before joining
 them back together. This method is useful for
 taking HTML class names and getting the original
 Control name from them.</p>
-<pre><code class="lang-javascript">can.classize('my_control_name'); // 'MyControlName'</code></pre>
+<pre><code class="language-js">can.classize('my_control_name'); // 'MyControlName'
+</code></pre>
 
 
 	<h3>Parameters</h3>
@@ -668,6 +616,51 @@ Control name from them.</p>
 			
 		
 		
+		
+			<section class="signature">
+				<h2 id="sig_">new setter.classize(s)
+</h2>
+<div class="signature-wrapper">
+<p>Like [can.camelize camelize], but the first part is also capitalized</p>
+
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>s
+				<code>{String}</code></h4>
+			<div class="description">
+				
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{String}</code></h4>
+		<div class="description">
+			<p>the classized string</p>
+
+		</div>
+		
+		
+	</div>
+	
+
+
+
+
+
+</div>
+
+			</section>
 		
 		
 
@@ -730,7 +723,7 @@ Control name from them.</p>
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Map.setter","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"function","name":"can.classize","description":"<p>Make a string into a class name.</p>\n","title":"can.classize","order":0,"plugin":"can/map/setter","signatures":[{"code":"can.classize(str)","description":"<p><code>can.classize</code> splits a string by underscores or\ndashes and capitalizes each part before joining\nthem back together. This method is useful for\ntaking HTML class names and getting the original\nControl name from them.</p>\n<pre><code class=\"lang-javascript\">can.classize('my_control_name'); // 'MyControlName'</code></pre>\n","params":[{"types":[{"type":"String"}],"name":"str","description":"<p>The string to transform.</p>\n"}],"returns":{"types":[{"type":"String"}],"description":"<p>The string as a class name.</p>\n"}}],"src":"map/setter/doc/can.classize.md"};
+		var docObject = {"parent":"can.Map.setter","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"name":"can.classize","type":"constructor","description":"<p>Like [can.camelize camelize], but the first part is also capitalized</p>\n","title":"can.classize","plugin":"can/map/setter","signatures":[{"code":"can.classize(str)","description":"<p><code>can.classize</code> splits a string by underscores or\ndashes and capitalizes each part before joining\nthem back together. This method is useful for\ntaking HTML class names and getting the original\nControl name from them.</p>\n<pre><code class=\"language-js\">can.classize('my_control_name'); // 'MyControlName'\n</code></pre>\n","params":[{"types":[{"type":"String"}],"name":"str","description":"<p>The string to transform.</p>\n"}],"returns":{"types":[{"type":"String"}],"description":"<p>The string as a class name.</p>\n"}}],"src":"map/setter/setter.js","params":[{"types":[{"type":"String"}],"name":"s","description":""}],"returns":{"types":[{"type":"String"}],"description":"<p>the classized string</p>\n"}};
 	</script>
 	
 	

@@ -124,6 +124,13 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -152,22 +159,15 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.ejs.html" data-search="can.ejs">
-				can.ejs
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.event.html" data-search="can.event">
-				can.event
 			</a>
 			
 	   </li>
@@ -180,22 +180,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.mustache.html" data-search="can.mustache">
-				can.mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.route.html" data-search="can.route">
 				can.route
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.stache.html" data-search="can.stache">
-				can.stache
 			</a>
 			
 	   </li>
@@ -210,13 +196,6 @@
 	   <li class="search-container">
 	   		<a href="can.view.html" data-search="can.view">
 				can.view
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
-				can.view.bindings
 			</a>
 			
 	   </li>
@@ -286,7 +265,7 @@
 		
 		<section class="comment">
 			<p>--&gt;</p>
-<p>Thank you for contributing to CanJS!  If you need any help setting up a CanJS development environment and fixing CanJS bugs, please reach out to us on the <a href="http://webchat.freenode.net/?channels=canjs">#canjs IRC channel</a> or email (contact@bitovi.com).  We will happily walk you through setting up a the environment, creating a test, and submitting a pull request.</p>
+<p>Thank you for contributing to CanJS!  If you need any help setting up a CanJS development environment and fixing CanJS bugs, please reach out to us on IRC or email (contact@bitovi.com).  We will happily walk you throuygh setting up a the environment, creating a test, and submitting a pull request.</p>
 <h2>Reporting Bugs</h2>
 <p>To report a bug, please visit <a href="https://github.com/bitovi/canjs/issues">GitHub Issues</a>.</p>
 <p>When filing a bug, it is helpful to include:</p>
@@ -302,13 +281,13 @@
 <li>Breaking unit tests (optional)</li>
 <li>Proposed fix solutions (optional)</li>
 </ul>
-<p>Search for previous tickets, if there is one add to that one rather than creating another. You can also post on the <a href="https://forum.javascriptmvc.com/canjs">Forums</a> or talk to us in <a href="http://webchat.freenode.net/?channels=canjs">#canjs IRC channel</a>.</p>
+<p>Search for previous tickets, if there is one add to that one rather than creating another. You can also post on the <a href="https://forum.javascriptmvc.com/canjs">Forums</a> or talk to us in <a href="http://webchat.freenode.net/?channels=canjs">IRC #canjs channel</a>.</p>
 <h2>Installing</h2>
-<ol>
-<li><a href="https://github.com/bitovi/canjs/fork" target="_blank">Fork Canjs on GitHub.</a></li>
-<li>Clone it with: <code>git clone git@github.com:&lt;your username&gt;/canjs</code></li>
-</ol>
-<h2>Structure</h2>
+<p>1.) <a href="https://github.com/bitovi/canjs/fork" target="_blank">Fork Canjs on GitHub.</a></p>
+<p>2.) Clone it with:</p>
+<pre><code>git clone git@github.com:&lt;your username&gt;/canjs
+</code></pre>
+<h2>Developing</h2>
 <p>After installing CanJS, you’ll find a folder for each feature of CanJS: <code>construct</code>, <code>control</code>, <code>model</code>, etc.</p>
 <p>Within each feature folder, for example <code>construct</code>, you’ll find a file for:</p>
 <ul>
@@ -327,42 +306,43 @@
 <li>an <code>amd</code> folder which runs the same tests for the AMD modules using RequireJS</li>
 </ul>
 <p>The <code>can/util</code> folder contains the compatibility layer for each library.</p>
+<p>To develop CanJS:</p>
+<ol>
+<li>Edit the feature’s file.</li>
+<li>Add tests to the feature’s test file.</li>
+<li>Open the feature’s test page. Make sure it passes.</li>
+<li>Open can/test/index.html in every browser to test everything.</li>
+<li>Submit a pull request!</li>
+</ol>
 <h2>Contributing</h2>
-<p>When contributing, please include tests with new features or bug fixes in a feature branch until you're ready to submit the code for consideration; then push to the fork, and submit a pull request. More detailed steps are as follows:</p>
-<ol>
-<li>Navigate to your clone of the CanJS repository - <code>cd /path/to/canjs</code></li>
-<li>Create a new feature branch - <code>git checkout -b html5-fix</code></li>
-<li>Make some changes</li>
-<li>Update tests to accomodate your changes</li>
-<li>Run tests and make sure they pass in all browsers</li>
-<li>Update documentation if necessary</li>
-<li>Push your changes to your remote branch - <code>git push origin html5-fix</code></li>
-<li>Submit a pull request! Navigate to <a href="https://github.com/bitovi/canjs/pulls">Pull Requests</a> and click the 'New Pull Request' button. Fill in some details about your potential patch including a meaningful title. When finished, press &quot;Send pull request&quot;. The core team will be notified about your submission and let you know of any problems or targeted release date.</li>
-</ol>
-<h2>Testing</h2>
-<p>CanJS has a pretty comprehensive test suite that is constantly being added to. Each module has its own tests, that can be run by opening the <code>test.html</code> in each folder. It's important that all tests pass before sending a pull request. <a href="https://travis-ci.org/bitovi/canjs">TravisCI</a> will determine if your commits pass the tests, but while you're developing you can run the QUnit tests locally.</p>
-<p>There are 3 ways of running your tests locally, all of which will require you to have <a href="http://nodejs.org/">NodeJS</a>, <a href="http://npmjs.org/">npm</a>, <a href="http://gruntjs.com/">Grunt</a> and all of the CanJS dev dependencies installed.</p>
-<h3>Getting Set Up</h3>
-<ol>
-<li>Install NodeJS &amp; npm - <a href="http://nodejs.org/">NodeJS</a> or use <code>brew install nodejs</code></li>
-<li>Install Grunt - <code>npm install grunt-cli -g</code></li>
-<li>Navigate to your local clone of CanJS - <code>cd /path/to/canjs</code></li>
-<li>Install dependencies - <code>npm install</code></li>
-</ol>
-<h3>Running All Tests From CLI</h3>
-<ol>
-<li>Once you completed the steps above simply run <code>grunt test</code>.</li>
-</ol>
-<h3>Running All Tests In Browser</h3>
-<ol>
-<li><code>grunt connect:server:keepalive</code></li>
-<li>Open <a href="http://localhost:8000/test/">http://localhost:8000/test/</a> in your browser.</li>
-</ol>
-<h3>Running Individual Test Files</h3>
-<ol>
-<li><code>grunt connect:server:keepalive</code></li>
-<li>Open <a href="http://localhost:8000/">http://localhost:8000/</a> in your browser and then navigate to your intended file.</li>
-</ol>
+<p>When contributing, include tests with new features or bug fixes in a feature branch until you're ready to submit the code for consideration; then push to the fork, and submit a pull request.</p>
+<p>Move into the directory of your cloned repository and create a new feature branch.</p>
+<pre><code>cd canjs
+git checkout -b html5-fix
+</code></pre>
+<p>Once your happy with your changes, push to the feature branch.</p>
+<pre><code>git push origin html5-fix
+</code></pre>
+<p>Now you'll need to submit a Pull Request. Navigate to <a href="https://github.com/bitovi/canjs/pulls">Pull Requests</a> and click the 'New Pull Request' button. Fill in some details about your potential patch including a meaningful title. When finished, press &quot;Send pull request&quot;. The core team will be notified about your submission and let you know of any problems or targeted release date.</p>
+<h2>Documentation</h2>
+<p>If your pull request affects the public API, make relevant changes to the documentation.
+Documentation is found either inline or in markdown files in the respective directory.
+In order to view your changes in documentation you will need to run <a href="http://canjs.com">CanJS.com</a> locally and regenerate the docs.
+Note that you will need to modify the <code>can</code> folder in the <code>canjs.com</code> clone to point at your local clone of CanJS. This can be
+accomplished by replacing the <code>can</code> folder in your <code>canjs.com</code> clone with a symlink, ie <code>mv can can.submodule &amp;&amp; ln -s &lt;local path to canjs&gt; can</code>.</p>
+<pre><code>    git clone git@github.com:bitovi/canjs.com.git
+    cd canjs.com
+    git checkout gh-pages
+    git submodule update --init --recursive
+    npm install
+    grunt
+    ./js scripts/doc.js
+</code></pre>
+<p>Once the documentation is finished rendering, all the HTML files will be located in the <code>docs</code> folder. Open the documentation file you made changes to and make sure everything rendered correctly.</p>
+<h2>Running Tests Locally</h2>
+<p>Its important that all tests pass before sending a pull request. TravisCI will determine if your commits pass the tests, but while your developing you can run the QUnit tests locally. To run tests locally you need <a href="http://nodejs.org/">NodeJS</a> installed and run</p>
+<p>npm install</p>
+<p>Then open <code>~/can/test/test.html</code> in a web browser to run all tests for all libraries.  Each module has its own tests too, you can run them by opening the <code>test.html</code> in each folder.</p>
 <p>CanJS supports the following browsers:</p>
 <ul>
 <li>Chrome Current-1</li>
@@ -371,32 +351,17 @@
 <li>IE 7+</li>
 <li>Opera Current-1</li>
 </ul>
-<h2>Documentation</h2>
-<p>If your changes affect the public API, please make relevant changes to the documentation. Documentation is found either inline or in markdown files in the respective directory. In order to view your changes in documentation you will need to run the <a href="https://github.com/bitovi/canjs.com">CanJS.com site</a> locally and regenerate the docs.</p>
-<h4>Note:</h4>
-<blockquote>
-<p><em>You will need to make sure that the <code>can</code> folder in your clone of <code>canjs.com</code> points to your local copy of CanJS where you made the documentation changes. This can be
-accomplished by replacing the <code>can</code> folder in your <code>canjs.com</code> clone with a symlink, using: <code>mv can can.submodule &amp;&amp; ln -s &lt;local path to canjs&gt; can</code>.</em></p>
-</blockquote>
-<pre><code>git clone git@github.com:bitovi/canjs.com.git
-cd canjs.com
-git checkout gh-pages
-git submodule update --init --recursive
-npm install
-grunt
-./js scripts/doc.js
-</code></pre>
-<p>Once the documentation is finished rendering, all the HTML files will be located in the <code>docs</code> folder. Open the documentation file you made changes to and make sure everything rendered correctly.</p>
 <h2>Making a build</h2>
-<p>To make a build (standalone and AMD version) you will also need to have [<a href="http://nodejs.org/">NodeJS</a>, <a href="http://npmjs.org/">npm</a>, <a href="http://gruntjs.com/">Grunt</a> and all of the CanJS dev dependencies installed.</p>
-<h3>Getting Set Up</h3>
-<ol>
-<li>Install NodeJS &amp; npm - <a href="http://nodejs.org/">NodeJS</a> or use <code>brew install nodejs</code></li>
-<li>Install Grunt - <code>npm install grunt-cli -g</code></li>
-<li>Navigate to your local clone of CanJS - <code>cd /path/to/canjs</code></li>
-<li>Install dependencies - <code>npm install</code></li>
-</ol>
-<p>After you have completed those steps simply run <code>grunt build</code> and it will put the built files in the <code>can/dist</code> directory, making them ready for download.</p>
+<p>To make a build (standalone and AMD version) and run tests from the command line you will need <a href="http://nodejs.com">NodeJS</a> and <a href="http://gruntjs.com">Grunt</a> (<code>npm install grunt-cli -g</code>) installed. Then, in the CanJS repository folder run:</p>
+<pre><code>npm install
+</code></pre>
+<p>Then you can run:</p>
+<pre><code>grunt build
+</code></pre>
+<p>It puts the downloads in <code>can/dist</code>.</p>
+<p>You can also run the tests from the command line by executing:</p>
+<pre><code>grunt test
+</code></pre>
 <h2>Style Guide</h2>
 <h3>Linting</h3>
 <p>Grunt provides a <code>quality</code> task to verify some basic, practical soundness of the codebase. The options are preset.</p>
@@ -421,8 +386,8 @@ var b;
 
 // Good
 var a, b,
-  foo = true,
-  bar = false;
+    foo = true,
+    bar = false;
 </code></pre>
 <h3>Equality</h3>
 <p>Strict equality checks <code>===</code> should be used in favor of <code>==</code>. The only exception is when checking for undefined and null by way of null.</p>
@@ -434,15 +399,15 @@ if(bar === &quot;can&quot;){ ... }
 </code></pre>
 <p>If the statement is a truthey or falsey, use implied operators.  Falseys are when variables return <code>false</code>, <code>undefined</code>, <code>null</code>, or <code>0</code>.  Trutheys are when variables return <code>true</code>, <code>1</code>, or anything defined.</p>
 <p>For example:</p>
-<pre><code>// Bad
-if(bar === false){ ... }
+<pre><code>    // Bad
+    if(bar === false){ ... }
 
-// Good 
-if(bar){ ... }
+    // Good 
+    if(bar){ ... }
 
-// Good
-var foo = [];
-if(!foo.length){ ... }
+    // Good
+    var foo = [];
+    if(!foo.length){ ... }
 </code></pre>
 <h3>Quotes</h3>
 <p>Use double quotes.</p>
@@ -453,13 +418,13 @@ if(!foo.length){ ... }
 </code></pre>
 <h3>Comments</h3>
 <p>Single line comments go OVER the line they refer to:</p>
-<pre><code>// We need an explicit &quot;bar&quot;, because later in the code foo is checked.
-var foo = &quot;bar&quot;;
+<pre><code>    // We need an explicit &quot;bar&quot;, because later in the code foo is checked.
+    var foo = &quot;bar&quot;;
 </code></pre>
 <p>For long comments, use:</p>
-<pre><code>/* myFn
- * Four score and seven—pause—minutes ago...
- */
+<pre><code>    /* myFn
+     * Four score and seven—pause—minutes ago...
+     */
 </code></pre>
 <h2>List of heroes</h2>
 <p>The following lists everyone who's contributed something to CanJS.  If we've forgotten you, please add yourself.</p>
@@ -511,7 +476,6 @@ off JavaScriptMVC.  This page is for contributors after CanJS's launch. Thank yo
 <a href="https://github.com/bitovi/canjs/pull/332">2</a>)</li>
 <li><a href="https://github.com/onyxrev">Dan Connor</a> (<a href="https://github.com/bitovi/canjs/pull/284">1</a>)</li>
 <li><a href="https://github.com/jebaird">Jesse Baird</a> (<a href="https://github.com/bitovi/canjs/pull/319">1</a>)</li>
-<li><a href="https://github.com/ekryski">Eric Kryski</a> (<a href="https://github.com/bitovi/canjs/pull/917">1</a>)</li>
 </ul>
 <p>for helping us with new features, bug fixes, and getting this out the door.</p>
 
@@ -575,7 +539,7 @@ off JavaScriptMVC.  This page is for contributors after CanJS's launch. Thank yo
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"guides","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"page","name":"contributing","description":"<!--\n","title":"How to Contribute","order":4,"comment":" ","src":"contributing.md"};
+		var docObject = {"parent":"guides","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"type":"page","name":"contributing","description":"<!--\n","title":"How to Contribute","order":4,"comment":" ","src":"contributing.md"};
 	</script>
 	
 	

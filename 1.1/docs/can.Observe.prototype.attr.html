@@ -768,63 +768,82 @@ To remove keys without setting other keys, use <code><a href="can.Observe.protot
 		<section class="comment">
 			<p><code>attr</code> gets or sets properties on the <code>can.Observe</code> it's called on. Here's a tour through
 how all of its forms work:</p>
-<pre><code class="lang-javascript">var people = new can.Observe({});
-<p>// set a property:
-people.attr('a', 'Alex');</p>
-<p>// get a property:
-people.attr('a'); // 'Alex'</p>
-<p>// set and merge multiple properties:
+<pre><code class="language-js">var people = new can.Observe({});
+
+// set a property:
+people.attr('a', 'Alex');
+
+// get a property:
+people.attr('a'); // 'Alex'
+
+// set and merge multiple properties:
 people.attr({
-a: 'Alice',
-b: 'Bob'
-});</p>
-<p>// get all properties:
-people.attr(); // {a: 'Alice', b: 'Bob'}</p>
-<p>// set properties while removing others:
+    a: 'Alice',
+    b: 'Bob'
+});
+
+// get all properties:
+people.attr(); // {a: 'Alice', b: 'Bob'}
+
+// set properties while removing others:
 people.attr({
-b: 'Bill',
-e: 'Eve'
-}, true);</p>
-<p>people.attr(); // {b: 'Bill', e: 'Eve'}</code></pre></p>
+    b: 'Bill',
+    e: 'Eve'
+}, true);
+
+people.attr(); // {b: 'Bill', e: 'Eve'}
+</code></pre>
 <h2>Deep properties</h2>
 <p><code>attr</code> can also set and read deep properties. All you have to do is specify
 the property name as you normally would if you weren't using <code>attr</code>.</p>
-<pre><code class="lang-javascript">var people = new can.Observe({names: {}});
-<p>// set a property:
-people.attr('names.a', 'Alice');</p>
-<p>// get a property:
+<pre><code class="language-js">var people = new can.Observe({names: {}});
+
+// set a property:
+people.attr('names.a', 'Alice');
+
+// get a property:
 people.attr('names.a'); // 'Alice'
-people.names.attr('a'); // 'Alice'</p>
-<p>// get all properties:
-people.attr(); // {names: {a: 'Alice'}}</code></pre>
-Objects that are added to Observes become Observes themselves behind the scenes,
+people.names.attr('a'); // 'Alice'
+
+// get all properties:
+people.attr(); // {names: {a: 'Alice'}}
+</code></pre>
+<p>Objects that are added to Observes become Observes themselves behind the scenes,
 so changes to deep properties fire events at each level, and you can bind at any
 level. As this example shows, all the same events are fired no matter what level
 you call <code>attr</code> at:</p>
-<pre><code class="lang-javascript">var people = new can.Observe({names: {}});
-<p>people.bind('change', function(ev, attr, how, newVal, oldVal) {
-console.log('people change: ' + attr + ', ' + how + ', ' + newVal + ', ' + oldVal);
-});</p>
-<p>people.names.bind('change', function(ev, attr, how, newVal, oldVal) {
-console.log('people.names change' + attr + ', ' + how + ', ' + newVal + ', ' + oldVal);
-});</p>
-<p>people.bind('names', function(ev, newVal, oldVal) {
-console.log('people names: ' + newVal + ', ' + oldVal);
-});</p>
-<p>people.names.bind('a', function(ev, newVal, oldVal) {
-console.log('people.names a: ' + newVal + ', ' + oldVal);
-});</p>
-<p>people.bind('names.a', function(ev, newVal, oldVal) {
-console.log('people names.a: ' + newVal + ', ' + oldVal);
-});</p>
-<p>people.attr('names.a', 'Alice'); // people change: names.a, add, Alice, undefined
-// people.names change: a, add, Alice, undefined
-// people.names a: Alice, undefined
-// people names.a: Alice, undefined</p>
-<p>people.names.attr('b', 'Bob');   // people change: names.b, add, Bob, undefined
-// people.names change: b, add, Bob, undefined
-// people.names b: Bob, undefined
-// people names.b: Bob, undefined</code></pre></p>
+<pre><code class="language-js">var people = new can.Observe({names: {}});
+
+people.bind('change', function(ev, attr, how, newVal, oldVal) {
+  console.log('people change: ' + attr + ', ' + how + ', ' + newVal + ', ' + oldVal);
+});
+
+people.names.bind('change', function(ev, attr, how, newVal, oldVal) {
+   console.log('people.names change' + attr + ', ' + how + ', ' + newVal + ', ' + oldVal);
+});
+
+people.bind('names', function(ev, newVal, oldVal) {
+    console.log('people names: ' + newVal + ', ' + oldVal);
+});
+
+people.names.bind('a', function(ev, newVal, oldVal) {
+    console.log('people.names a: ' + newVal + ', ' + oldVal);
+});
+
+people.bind('names.a', function(ev, newVal, oldVal) {
+    console.log('people names.a: ' + newVal + ', ' + oldVal);
+});
+
+people.attr('names.a', 'Alice'); // people change: names.a, add, Alice, undefined
+                                 // people.names change: a, add, Alice, undefined
+                                 // people.names a: Alice, undefined
+                                 // people names.a: Alice, undefined
+
+people.names.attr('b', 'Bob');   // people change: names.b, add, Bob, undefined
+                                 // people.names change: b, add, Bob, undefined
+                                 // people.names b: Bob, undefined
+                                 // people names.b: Bob, undefined
+</code></pre>
 <h2>See also</h2>
 <p>For information on the events that are fired on property changes and how
 to listen for those events, see <a href="can.Observe.prototype.bind.html">bind</a>.</p>
@@ -889,7 +908,7 @@ to listen for those events, see <a href="can.Observe.prototype.bind.html">bind</
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Observe.prototype","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"type":"function","name":"can.Observe.prototype.attr","description":"<p>Get or set properties on an Observe.</p>\n","title":"attr","signatures":[{"code":"observe.attr()","description":"<p>Gets a collection of all the properties in this <code>can.Observe</code>.</p>\n","params":[],"returns":{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"*"}]}]}],"description":"<p>an object with all the properties in this <code>can.Observe</code>.</p>\n"}},{"code":"observe.attr(key)","description":"<p>Reads a property from this <code>can.Observe</code>.</p>\n","params":[{"types":[{"type":"String"}],"name":"key","description":"<p>the property to read</p>\n"}],"returns":{"types":[{"type":"*"}],"description":"<p>the value assigned to <em>key</em>.</p>\n"}},{"code":"observe.attr(key, value)","description":"<p>Assigns <em>value</em> to a property on this <code>can.Observe</code> called <em>key</em>.</p>\n","params":[{"types":[{"type":"String"}],"name":"key","description":"<p>the property to set</p>\n"},{"types":[{"type":"*"}],"name":"value","description":"<p>the value to assign to <em>key</em>.</p>\n"}],"returns":{"types":[{"type":"can.Observe"}],"description":"<p>this Observe, for chaining</p>\n"}},{"code":"observe.attr(obj[, removeOthers])","description":"<p>Assigns each value in <em>obj</em> to a property on this <code>can.Observe</code> named after the\ncorresponding key in <em>obj</em>, effectively merging <em>obj</em> into the Observe.</p>\n","params":[{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"*"}]}]}],"name":"obj","description":"<p>a collection of key-value pairs to set.\nIf any properties already exist on the <code>can.Observe</code>, they will be overwritten.</p>\n"},{"types":[{"type":"bool"}],"optional":true,"name":"removeOthers","defaultValue":"false","description":"<p>whether to remove keys not present in <em>obj</em>.\nTo remove keys without setting other keys, use <code>[can.Observe::removeAttr removeAttr]</code>.</p>\n"}],"returns":{"types":[{"type":"can.Observe"}],"description":"<p>this Observe, for chaining</p>\n"}}],"comment":" ","src":"observe/observe.js"};
+		var docObject = {"parent":"can.Observe.prototype","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"forceBuild":true,"debug":true,"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"type":"function","name":"can.Observe.prototype.attr","description":"<p>Get or set properties on an Observe.</p>\n","title":"attr","signatures":[{"code":"observe.attr()","description":"<p>Gets a collection of all the properties in this <code>can.Observe</code>.</p>\n","params":[],"returns":{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"*"}]}]}],"description":"<p>an object with all the properties in this <code>can.Observe</code>.</p>\n"}},{"code":"observe.attr(key)","description":"<p>Reads a property from this <code>can.Observe</code>.</p>\n","params":[{"types":[{"type":"String"}],"name":"key","description":"<p>the property to read</p>\n"}],"returns":{"types":[{"type":"*"}],"description":"<p>the value assigned to <em>key</em>.</p>\n"}},{"code":"observe.attr(key, value)","description":"<p>Assigns <em>value</em> to a property on this <code>can.Observe</code> called <em>key</em>.</p>\n","params":[{"types":[{"type":"String"}],"name":"key","description":"<p>the property to set</p>\n"},{"types":[{"type":"*"}],"name":"value","description":"<p>the value to assign to <em>key</em>.</p>\n"}],"returns":{"types":[{"type":"can.Observe"}],"description":"<p>this Observe, for chaining</p>\n"}},{"code":"observe.attr(obj[, removeOthers])","description":"<p>Assigns each value in <em>obj</em> to a property on this <code>can.Observe</code> named after the\ncorresponding key in <em>obj</em>, effectively merging <em>obj</em> into the Observe.</p>\n","params":[{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"*"}]}]}],"name":"obj","description":"<p>a collection of key-value pairs to set.\nIf any properties already exist on the <code>can.Observe</code>, they will be overwritten.</p>\n"},{"types":[{"type":"bool"}],"optional":true,"name":"removeOthers","defaultValue":"false","description":"<p>whether to remove keys not present in <em>obj</em>.\nTo remove keys without setting other keys, use <code>[can.Observe::removeAttr removeAttr]</code>.</p>\n"}],"returns":{"types":[{"type":"can.Observe"}],"description":"<p>this Observe, for chaining</p>\n"}}],"comment":" ","src":"observe/observe.js"};
 	</script>
 	
 	

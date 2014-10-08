@@ -124,6 +124,13 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -174,6 +181,8 @@
 					</li>
 				
 			
+			
+		
 			
 		
 			
@@ -281,8 +290,6 @@
 			
 			
 		
-			
-		
 	</ul>
 
 					</li>
@@ -315,8 +322,6 @@
 			
 			
 		
-			
-		
 	</ul>
 
 					</li>
@@ -330,24 +335,9 @@
 				
 					
 					<li class="heading search-container">
-						<span>Plugins</span>
+						<span>plugins</span>
 						
 	<ul >
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="constructor" 
-							href="can.LazyMap.html" 
-							data-search="can.LazyMap">
-							can.LazyMap
-						</a>
-						
-					</li>
-				
-			
-			
 		
 			
 				
@@ -361,10 +351,6 @@
 						
 							
 	<ul >
-		
-			
-		
-			
 		
 			
 				
@@ -462,6 +448,10 @@
 			
 			
 		
+			
+		
+			
+		
 	</ul>
 
 						
@@ -504,22 +494,7 @@
 				
 				
 					<li class="search-container parent ">
-						<a 	class="property" 
-							href="can.Map.prototype.define.html" 
-							data-search="define">
-							define
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container parent ">
-						<a 	class="function" 
+						<a 	class="page" 
 							href="can.Map.setter.html" 
 							data-search="setter">
 							setter
@@ -574,22 +549,15 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.ejs.html" data-search="can.ejs">
-				can.ejs
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.event.html" data-search="can.event">
-				can.event
 			</a>
 			
 	   </li>
@@ -602,22 +570,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.mustache.html" data-search="can.mustache">
-				can.mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.route.html" data-search="can.route">
 				can.route
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.stache.html" data-search="can.stache">
-				can.stache
 			</a>
 			
 	   </li>
@@ -632,13 +586,6 @@
 	   <li class="search-container">
 	   		<a href="can.view.html" data-search="can.view">
 				can.view
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
-				can.view.bindings
 			</a>
 			
 	   </li>
@@ -771,45 +718,53 @@ new Observe or List completely. Because of this, any bindings you have on the pr
 observable object will break.</p>
 <p>If you would rather have the new Observe or List merged into the current value, call
 <code>attr</code> directly on the property instead of on the Observe:</p>
-<pre><code class="lang-javascript">var Contact = can.Map.extend({
-attributes: {
- info: 'info'
-},
-convert: {
- 'info': function(data, oldVal) {
-   return data;
+<pre><code class="language-js">var Contact = can.Map.extend({
+  attributes: {
+    info: 'info'
+  },
+  convert: {
+    'info': function(data, oldVal) {
+      return data;
 }
-}
+  }
 }, {});
-<p>var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
+
+var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
 alice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}
-alice.info._cid; // '.observe1'</p>
-<p>alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
+alice.info._cid; // '.observe1'
+
+alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
 alice.attr(); // {name: 'Allison Wonderland', 'phone': '888-888-8888'}
-alice.info._cid; // '.observe2'</p>
-<p>alice.info.attr({email: 'alice@wonderland.com', phone: '000-000-0000'});
+alice.info._cid; // '.observe2'
+
+alice.info.attr({email: 'alice@wonderland.com', phone: '000-000-0000'});
 alice.attr(); // {name: 'Allison Wonderland', email: 'alice@wonderland.com', 'phone': '000-000-0000'}
-alice.info._cid; // '.observe2'</code></pre></p>
+alice.info._cid; // '.observe2'
+</code></pre>
 <h2>Assocations and Convert</h2>
 <p>If you have assocations defined within your model(s), you can use convert to automatically
 call serialize on those models.</p>
-<pre><code class="lang-javascript">var Contact = can.Model.extend({
-attributes : {
- tasks: Task
-}
+<pre><code class="language-js">var Contact = can.Model.extend({
+  attributes : {
+    tasks: Task
+  }
 }, {});
-<p>var Task = can.Model.extend({
-attributes : {
-due : 'date'
-}
-},{});</p>
-<p>var contact = new Contact({
-tasks: [ new Task({
-due: new Date()
-}) ]
-});</p>
-<p>contact.serialize();
-//-&gt; { tasks: [ { due: 1333219754627 } ] }</code></pre></p>
+
+var Task = can.Model.extend({
+  attributes : {
+    due : 'date'
+  }
+},{});
+
+var contact = new Contact({
+  tasks: [ new Task({
+    due: new Date()
+  }) ]
+});
+
+contact.serialize();
+//-&gt; { tasks: [ { due: 1333219754627 } ] }
+</code></pre>
 
 		</section>
 		
@@ -871,7 +826,7 @@ due: new Date()
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Map.attributes.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"property","name":"can.Map.attributes.static.convert","description":"<p>You often want to convert from what the observe sends you to a form more useful to JavaScript.\nFor example, contacts might be returned from the server with dates that look like: &quot;1982-10-20&quot;.\nWe can observe to convert it to something closer to <code>new Date(1982,10,20)</code>.</p>\n","title":"convert","order":1,"src":"map/attributes/doc/static.convert.md"};
+		var docObject = {"parent":"can.Map.attributes.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"name":"can.Map.attributes.static.convert","type":"property","description":"<p>You often want to convert from what the observe sends you to a form more useful to JavaScript.\nFor example, contacts might be returned from the server with dates that look like: &quot;1982-10-20&quot;.\nWe can observe to convert it to something closer to <code>new Date(1982,10,20)</code>.</p>\n","title":"convert","src":"map/attributes/attributes.js"};
 	</script>
 	
 	

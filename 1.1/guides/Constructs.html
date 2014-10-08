@@ -379,35 +379,40 @@ fundamental to understanding CanJS.</p>
 properties (which will be attached directly to the constructor object) along
 with an object of instance properties (which will be attached to the
 constructor's prototype):</p>
-<pre><code class="lang-javascript">var Todo = can.Construct.extend({}, {
+<pre><code class="language-js">var Todo = can.Construct.extend({}, {
     description: 'Something to do.',
     author: 'Unknown',
     allowedToEdit: function() {
         return true;
     }
 });
-<p>var t = new Todo();</p>
-<p>t.description; // 'Something to do.'
+
+var t = new Todo();
+
+t.description; // 'Something to do.'
 t.author; // 'Unknown'
-t.allowedToEdit(); // true</code></pre>
-<em>Please note, that starting in CanJS 1.2 releases, you will not be able to create a class simply by using <code>can.Construct</code>, as that will instead try to create a new instance of a class.</em> There are a few other ways to create classes with  <code>can.Construct</code>; see
+t.allowedToEdit(); // true
+</code></pre>
+<p><em>Please note, that starting in CanJS 1.2 releases, you will not be able to create a class simply by using <code>can.Construct</code>, as that will instead try to create a new instance of a class.</em> There are a few other ways to create classes with  <code>can.Construct</code>; see
 <a href="../docs">the API</a> for all of the details.</p>
 <h2>Inheritance</h2>
 <p>can.Construct automatically sets up the prototype chain so that
 Constructs are easy to subclass. To subclass one of your Constructs, call the
 constructor function, passing it the same arguments that you would pass to
 <code>can.Construct</code>:</p>
-<pre><code class="lang-javascript">// If only one argument is passed, they are considered prototype properties.
+<pre><code class="language-js">// If only one argument is passed, they are considered prototype properties.
 var PrivateTodo = Todo.extend({
     description: 'Something secret!',
     allowedToEdit: function(account) {
         return account.owns(this);
     }
 });
-<p>var p = new PrivateTodo();
+
+var p = new PrivateTodo();
 p.author; // 'Unknown'
 p.description; // 'Something secret!'
-p.allowedToEdit({owns: function(){ return false; }}); // false</code></pre></p>
+p.allowedToEdit({owns: function(){ return false; }}); // false
+</code></pre>
 <h2>Initialization</h2>
 <p>As you can see above, when a constructor function is called
 with <code>new</code>, can.Construct creates a new instance of that class. If you've
@@ -416,25 +421,28 @@ supplied an prototype method called
 initialize the class using that method along with the arguments passed to the
 constructor.</p>
 <p>This helps make our Todo a little more configurable:</p>
-<pre><code class="lang-javascript">var Todo = can.Construct.extend({
+<pre><code class="language-js">var Todo = can.Construct.extend({
     description: 'Something to do.',
     author: 'Unknown',
-<pre><code>init: function(options) {
-    this.author = options.author || this.author;
-    this.description = options.description || this.description;
-}
-</code></pre>
-<p>});</p>
-<p>var t = new Todo({author: 'Me!'});
+
+    init: function(options) {
+        this.author = options.author || this.author;
+        this.description = options.description || this.description;
+    }
+});
+
+var t = new Todo({author: 'Me!'});
 t.author; // 'Me!'
-t.description; // 'Something to do.'</code></pre>
-If you're extending a Construct, you probably want to make sure you call the
+t.description; // 'Something to do.'
+</code></pre>
+<p>If you're extending a Construct, you probably want to make sure you call the
 base's <code>init</code> method inside the child's <code>init</code>:</p>
-<pre><code class="lang-javascript">var PrivateTodo = can.Construct.extend({
+<pre><code class="language-js">var PrivateTodo = can.Construct.extend({
     init: function(options) {
         can.Construct.prototype.init.apply(this, arguments);
     }
-});</code></pre>
+});
+</code></pre>
 
 		</section>
 		
@@ -496,7 +504,7 @@ base's <code>init</code> method inside the child's <code>init</code>:</p>
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"Tutorial","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"type":"page","name":"Constructs","description":"","title":"Constructor Classes","order":0,"comment":" ","src":"guides/constructs.md"};
+		var docObject = {"parent":"Tutorial","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"forceBuild":true,"debug":true,"dest":"/Users/justin/dev/canjs.com/1.1/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"type":"page","name":"Constructs","description":"","title":"Constructor Classes","order":0,"comment":" ","src":"guides/constructs.md"};
 	</script>
 	
 	

@@ -562,31 +562,35 @@ after <a href="can.Construct.prototype.setup.html">setup</a>. The <code>init</co
 should go, and a common thing to do in <code>init</code> is to save the arguments passed into the constructor.</p>
 <h2>Examples</h2>
 <p>First, we'll make a Person constructor that has a first and last name:</p>
-<pre><code class="lang-javascript">var Person = can.Construct.extend({
+<pre><code class="language-js">var Person = can.Construct.extend({
     init: function(first, last) {
         this.first = first;
         this.last  = last;
     }
 });
-<p>var justin = new Person(&quot;Justin&quot;, &quot;Meyer&quot;);
+
+var justin = new Person(&quot;Justin&quot;, &quot;Meyer&quot;);
 justin.first; // &quot;Justin&quot;
-justin.last; // &quot;Meyer&quot;</code></pre>
-Then we'll extend Person into Programmer and add a favorite language:</p>
-<pre><code class="lang-javascript">var Programmer = Person.extend({
+justin.last; // &quot;Meyer&quot;
+</code></pre>
+<p>Then we'll extend Person into Programmer and add a favorite language:</p>
+<pre><code class="language-js">var Programmer = Person.extend({
     init: function(first, last, language) {
         // call base's init
         Person.prototype.init.apply(this, arguments);
-<pre><code>    // other initialization code
-    this.language = language;
-},
-bio: function() {
-    return &quot;Hi! I'm &quot;&quot; + this.first + &quot; &quot; + this.last +
-        &quot; and I write &quot; + this.language + &quot;.&quot;;
-}
+
+        // other initialization code
+        this.language = language;
+    },
+    bio: function() {
+        return &quot;Hi! I'm &quot;&quot; + this.first + &quot; &quot; + this.last +
+            &quot; and I write &quot; + this.language + &quot;.&quot;;
+    }
+});
+
+var brian = new Programmer(&quot;Brian&quot;, &quot;Moschel&quot;, 'ECMAScript');
+brian.bio(); // &quot;Hi! I'm Brian Moschel and I write ECMAScript.&quot;;
 </code></pre>
-<p>});</p>
-<p>var brian = new Programmer(&quot;Brian&quot;, &quot;Moschel&quot;, 'ECMAScript');
-brian.bio(); // &quot;Hi! I'm Brian Moschel and I write ECMAScript.&quot;;</code></pre></p>
 <h2>Modified Arguments</h2>
 <p><a href="can.Construct.prototype.setup.html">setup</a> is able to modify the arguments passed to <code>init</code>.
 If you aren't receiving the exact arguments as those passed to <code>new Construct(args)</code>,
@@ -653,7 +657,7 @@ the inheritance chain.</p>
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Construct.prototype","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs"},"type":"function","name":"can.Construct.prototype.init","description":"<p>Called when a new instance of a can.Construct is created.</p>\n","title":"init","signatures":[{"code":"construct.init(...args)","description":"","params":[{"types":[{"type":"*"}],"name":"args","description":"<p>the arguments passed to the constructor (or the items of the array returned from [can.Construct::setup])</p>\n"}]}],"comment":" ","src":"construct/construct.js"};
+		var docObject = {"parent":"can.Construct.prototype","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs"},"type":"function","name":"can.Construct.prototype.init","description":"<p>Called when a new instance of a can.Construct is created.</p>\n","title":"init","signatures":[{"code":"construct.init(...args)","description":"","params":[{"types":[{"type":"*"}],"name":"args","description":"<p>the arguments passed to the constructor (or the items of the array returned from [can.Construct::setup])</p>\n"}]}],"comment":" ","src":"construct/construct.js"};
 	</script>
 	
 	

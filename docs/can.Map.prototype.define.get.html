@@ -776,18 +776,21 @@
 			<h2>Use</h2>
 <p>Getter methods are useful for defining virtual properties on a map. These are properties that don't actually store any value, but derive their value from some other properties on the map.</p>
 <p>Whenever a getter is provided, it is wrapped in a <a href="can.compute.html">can.compute</a>, which ensures that whenever its dependent properties change, a change event will fire for this property also.</p>
-<pre><code class="lang-javascript">var Person = can.Map.extend({
+<pre><code class="language-js">var Person = can.Map.extend({
     define: {
         fullName: {
             get: function () {
-                return this.attr("first") + " " + this.attr("last");
+                return this.attr(&quot;first&quot;) + &quot; &quot; + this.attr(&quot;last&quot;);
             }
         }
     }
 });
-<p>var p = new Person({first: &quot;Justin&quot;, last: &quot;Meyer&quot;});</p>
-<p>p.attr(&quot;fullName&quot;); // &quot;Justin Meyer&quot;</code></pre>
-Below is another example of using get to create a dependent &quot;virtual&quot; property. This map has a locations property, which is a can.List containing location objects. Another property called locationIds is required, which is just an array of ids from each of the locations in the real location list. The value of locationIds is tied to locations, so a getter is useful. A user could bind to 'locationIds' and its event handler would be triggered if new locations were added, causing a change in the locationIds array.</p>
+
+var p = new Person({first: &quot;Justin&quot;, last: &quot;Meyer&quot;});
+
+p.attr(&quot;fullName&quot;); // &quot;Justin Meyer&quot;
+</code></pre>
+<p>Below is another example of using get to create a dependent &quot;virtual&quot; property. This map has a locations property, which is a can.List containing location objects. Another property called locationIds is required, which is just an array of ids from each of the locations in the real location list. The value of locationIds is tied to locations, so a getter is useful. A user could bind to 'locationIds' and its event handler would be triggered if new locations were added, causing a change in the locationIds array.</p>
 <p>var Store = can.Map.extend({
 define: {
 locationIds: {
@@ -862,7 +865,7 @@ return ids;
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Map.prototype.define","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs"},"type":"function","name":"can.Map.prototype.define.get","description":"<p>Specify what happens when a certain property is read on a map.</p>\n","title":"get","signatures":[{"code":"get( )","description":"<p>A get function defines the behavior of what happens when a value is read on a\n[can.Map]. It is typically used to provide properties that derive their value from other properties of the map.</p>\n","params":[],"returns":{"types":[{"type":"*"}],"description":"<p>Anything can be returned from a getter.</p>\n"}}],"comment":" ","src":"map/define/doc/get.md"};
+		var docObject = {"parent":"can.Map.prototype.define","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs"},"type":"function","name":"can.Map.prototype.define.get","description":"<p>Specify what happens when a certain property is read on a map.</p>\n","title":"get","signatures":[{"code":"get( )","description":"<p>A get function defines the behavior of what happens when a value is read on a\n[can.Map]. It is typically used to provide properties that derive their value from other properties of the map.</p>\n","params":[],"returns":{"types":[{"type":"*"}],"description":"<p>Anything can be returned from a getter.</p>\n"}}],"comment":" ","src":"map/define/doc/get.md"};
 	</script>
 	
 	

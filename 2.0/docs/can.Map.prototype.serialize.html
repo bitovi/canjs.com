@@ -124,6 +124,13 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -174,6 +181,8 @@
 					</li>
 				
 			
+			
+		
 			
 		
 			
@@ -283,8 +292,6 @@
 			
 			
 		
-			
-		
 	</ul>
 
 					</li>
@@ -317,8 +324,6 @@
 			
 			
 		
-			
-		
 	</ul>
 
 					</li>
@@ -332,24 +337,9 @@
 				
 					
 					<li class="heading search-container">
-						<span>Plugins</span>
+						<span>plugins</span>
 						
 	<ul >
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="constructor" 
-							href="can.LazyMap.html" 
-							data-search="can.LazyMap">
-							can.LazyMap
-						</a>
-						
-					</li>
-				
-			
-			
 		
 			
 				
@@ -400,22 +390,7 @@
 				
 				
 					<li class="search-container parent ">
-						<a 	class="property" 
-							href="can.Map.prototype.define.html" 
-							data-search="define">
-							define
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container parent ">
-						<a 	class="function" 
+						<a 	class="page" 
 							href="can.Map.setter.html" 
 							data-search="setter">
 							setter
@@ -470,22 +445,15 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.ejs.html" data-search="can.ejs">
-				can.ejs
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.event.html" data-search="can.event">
-				can.event
 			</a>
 			
 	   </li>
@@ -498,22 +466,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.mustache.html" data-search="can.mustache">
-				can.mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.route.html" data-search="can.route">
 				can.route
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.stache.html" data-search="can.stache">
-				can.stache
 			</a>
 			
 	   </li>
@@ -528,13 +482,6 @@
 	   <li class="search-container">
 	   		<a href="can.view.html" data-search="can.view">
 				can.view
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
-				can.view.bindings
 			</a>
 			
 	   </li>
@@ -602,13 +549,15 @@
 <div class="signature-wrapper">
 <p>Get the serialized Object form of the map.  Serialized
 data is typically used to send back to a server.</p>
-<p>o.serialize() //-&gt; { name: 'Justin' }</p>
+<pre><code>o.serialize() //-&gt; { name: 'Justin' }
+</code></pre>
 <p>Serialize currently returns the same data
 as [can.Map.prototype.attrs].  However, in future
 versions, serialize will be able to return serialized
 data similar to <a href="can.Model.html">can.Model</a>.  The following will work:</p>
-<p>new Map({time: new Date()})
-.serialize() //-&gt; { time: 1319666613663 }</p>
+<pre><code>new Map({time: new Date()})
+  .serialize() //-&gt; { time: 1319666613663 }
+</code></pre>
 
 
 
@@ -697,7 +646,7 @@ serialized with <code>JSON.stringify</code> or other methods.</p>
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Map.prototype","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"function","name":"can.Map.prototype.serialize","description":"<p>Serialize this object to something that can be passed to <code>JSON.stringify</code>.</p>\n","title":"serialize","order":7,"signatures":[{"code":"map.serialize()","description":"<p>Get the serialized Object form of the map.  Serialized\ndata is typically used to send back to a server.</p>\n<p>o.serialize() //-&gt; { name: 'Justin' }</p>\n<p>Serialize currently returns the same data\nas [can.Map.prototype.attrs].  However, in future\nversions, serialize will be able to return serialized\ndata similar to [can.Model].  The following will work:</p>\n<p>new Map({time: new Date()})\n.serialize() //-&gt; { time: 1319666613663 }</p>\n","params":[],"returns":{"types":[{"type":"Object","options":[]}],"description":"<p>a JavaScript Object that can be\nserialized with <code>JSON.stringify</code> or other methods.</p>\n"}}],"src":"map/doc/prototype.serialize.md"};
+		var docObject = {"parent":"can.Map.prototype","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"type":"function","name":"can.Map.prototype.serialize","description":"<p>Serialize this object to something that can be passed to <code>JSON.stringify</code>.</p>\n","title":"serialize","signatures":[{"code":"map.serialize()","description":"<p>Get the serialized Object form of the map.  Serialized\ndata is typically used to send back to a server.</p>\n<pre><code>o.serialize() //-&gt; { name: 'Justin' }\n</code></pre>\n<p>Serialize currently returns the same data\nas [can.Map.prototype.attrs].  However, in future\nversions, serialize will be able to return serialized\ndata similar to [can.Model].  The following will work:</p>\n<pre><code>new Map({time: new Date()})\n  .serialize() //-&gt; { time: 1319666613663 }\n</code></pre>\n","params":[],"returns":{"types":[{"type":"Object","options":[]}],"description":"<p>a JavaScript Object that can be\nserialized with <code>JSON.stringify</code> or other methods.</p>\n"}}],"src":"map/map.js"};
 	</script>
 	
 	

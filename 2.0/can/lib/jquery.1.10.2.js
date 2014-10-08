@@ -9787,21 +9787,3 @@
 	}
 
 })( window );
-
-
-/*
-if(Object.defineProperty) {
-	(function(){
-		var html = $.fn.html;
-		Object.defineProperty($.fn,"html",{
-			get: function(){
-				return html;
-			},
-			set: function(){
-				console.log("setting")
-			}
-			
-		})
-	})()
-	
-}*/

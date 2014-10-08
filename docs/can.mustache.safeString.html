@@ -898,18 +898,22 @@ not become escaped, even if you use <a href="can.mustache.tags.unescaped.html">{
 			<p>If you write a helper that generates its own HTML, you will
 usually want to return a <code>can.mustache.safeString.</code> In this case,
 you will want to manually escape parameters with <code><a href="can.esc.html">can.esc</a>.</code></p>
-<pre><code class="lang-javascript">can.mustache.registerHelper('link', function(text, url) {
+<pre><code class="language-js">can.mustache.registerHelper('link', function(text, url) {
   text = can.esc(text);
   url  = can.esc(url);
-<p>var result = '&lt;a href=&quot;' + url + '&quot;&gt;' + text + '&lt;/a&gt;';
-return can.mustache.safeString(result);
-});</code></pre>
-Rendering:</p>
-<pre><code class="lang-javascript">&lt;div&gt;{{link "Google", "http://google.com"}}&lt;/div&gt;</code></pre>
-Results in:
-<pre><code class="lang-javascript">&lt;div&gt;&lt;a href="http://google.com"&gt;Google&lt;/a&gt;&lt;/div&gt;</code></pre>
-As an anchor tag whereas if we would have just returned the result rather than a
-`can.mustache.safeString` our template would have rendered a div with the escaped anchor tag.
+
+  var result = '&amp;lt;a href=&quot;' + url + '&quot;&amp;gt;' + text + '&amp;lt;/a&amp;gt;';
+  return can.mustache.safeString(result);
+});
+</code></pre>
+<p>Rendering:</p>
+<pre><code class="language-js">&amp;lt;div&amp;gt;{{link &quot;Google&quot;, &quot;http://google.com&quot;}}&amp;lt;/div&amp;gt;
+</code></pre>
+<p>Results in:</p>
+<pre><code class="language-js">&amp;lt;div&amp;gt;&amp;lt;a href=&quot;http://google.com&quot;&amp;gt;Google&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
+</code></pre>
+<p>As an anchor tag whereas if we would have just returned the result rather than a
+<code>can.mustache.safeString</code> our template would have rendered a div with the escaped anchor tag.</p>
 
 		</section>
 		
@@ -971,7 +975,7 @@ As an anchor tag whereas if we would have just returned the result rather than a
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.mustache.methods","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs"},"type":"function","name":"can.mustache.safeString","description":"","title":"","signatures":[{"code":"can.mustache.safeString(str)","description":"","params":[{"types":[{"type":"String"}],"name":"str","description":"<p>A string you don't want to become escaped.</p>\n"}],"returns":{"types":[{"type":"String"}],"description":"<p>A string flagged by <code>can.mustache</code> as safe, which will\nnot become escaped, even if you use [can.mustache.tags.unescaped](triple slash).</p>\n"}}],"comment":" ","src":"view/mustache/mustache.js"};
+		var docObject = {"parent":"can.mustache.methods","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs"},"type":"function","name":"can.mustache.safeString","description":"","title":"","signatures":[{"code":"can.mustache.safeString(str)","description":"","params":[{"types":[{"type":"String"}],"name":"str","description":"<p>A string you don't want to become escaped.</p>\n"}],"returns":{"types":[{"type":"String"}],"description":"<p>A string flagged by <code>can.mustache</code> as safe, which will\nnot become escaped, even if you use [can.mustache.tags.unescaped](triple slash).</p>\n"}}],"comment":" ","src":"view/mustache/mustache.js"};
 	</script>
 	
 	

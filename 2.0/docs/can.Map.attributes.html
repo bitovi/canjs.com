@@ -124,6 +124,13 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -174,6 +181,8 @@
 					</li>
 				
 			
+			
+		
 			
 		
 			
@@ -281,8 +290,6 @@
 			
 			
 		
-			
-		
 	</ul>
 
 					</li>
@@ -315,8 +322,6 @@
 			
 			
 		
-			
-		
 	</ul>
 
 					</li>
@@ -330,24 +335,9 @@
 				
 					
 					<li class="heading search-container">
-						<span>Plugins</span>
+						<span>plugins</span>
 						
 	<ul >
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="constructor" 
-							href="can.LazyMap.html" 
-							data-search="can.LazyMap">
-							can.LazyMap
-						</a>
-						
-					</li>
-				
-			
-			
 		
 			
 				
@@ -361,10 +351,6 @@
 						
 							
 	<ul >
-		
-			
-		
-			
 		
 			
 				
@@ -460,6 +446,10 @@
 			
 			
 		
+			
+		
+			
+		
 	</ul>
 
 						
@@ -502,22 +492,7 @@
 				
 				
 					<li class="search-container parent ">
-						<a 	class="property" 
-							href="can.Map.prototype.define.html" 
-							data-search="define">
-							define
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container parent ">
-						<a 	class="function" 
+						<a 	class="page" 
 							href="can.Map.setter.html" 
 							data-search="setter">
 							setter
@@ -572,22 +547,15 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.ejs.html" data-search="can.ejs">
-				can.ejs
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.event.html" data-search="can.event">
-				can.event
 			</a>
 			
 	   </li>
@@ -600,22 +568,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.mustache.html" data-search="can.mustache">
-				can.mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.route.html" data-search="can.route">
 				can.route
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.stache.html" data-search="can.stache">
-				can.stache
 			</a>
 			
 	   </li>
@@ -630,13 +584,6 @@
 	   <li class="search-container">
 	   		<a href="can.view.html" data-search="can.view">
 				can.view
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
-				can.view.bindings
 			</a>
 			
 	   </li>
@@ -690,23 +637,16 @@
 		
 		
 		
-			<section class='warnings'>
-				
-					<div class='deprecated warning'>
-						<h3>Deprecated 2.1</h3>
-						<div class='signature-wrapper'>
-							<p>The attributes plugin (and the setter plugin) have been deprecated in
-favor of the new <a href="can.Map.prototype.define.html">define</a> plugin, which provides the same
-functionality. It will still be maintained up to 3.0 and potentially after.
-Projects using converters or serializers should consider switching to <a href="can.Map.prototype.define.type.html">define's type</a>
-and <a href="can.Map.prototype.define.serialize.html">define's serialize</a>.</p>
 
-						</div>
-					</div>
-				
-			</section>
 		
+		<section class="description">
+			<p>can.Map.attributes is a plugin that helps convert and normalize data being set on an Map
+and allows you to specify the way complex types get serialized. The attributes plugin is most
+helpful when used with <a href="can.Model.html">can.Model</a> (because the serialization aids in sending data to a server),
+but you can use it with any Map you plan to make instances
+from.</p>
 
+		</section>
 		
 
 		
@@ -718,13 +658,7 @@ and <a href="can.Map.prototype.define.serialize.html">define's serialize</a>.</p
 
 		
 		<section class="comment">
-			<h2>Use</h2>
-<p>can.Map.attributes is a plugin that helps convert and normalize data being set on an Map
-and allows you to specify the way complex types get serialized. The attributes plugin is most
-helpful when used with <a href="can.Model.html">can.Model</a> (because the serialization aids in sending data to a server),
-but you can use it with any Map you plan to make instances
-from.</p>
-<p>There are three important static properties to give the class you want to use attributes with:</p>
+			<p>There are three important static properties to give the class you want to use attributes with:</p>
 <ul>
 <li><code><a href="can.Map.attributes.static.attributes.html">attributes</a></code> lists the properties that will be normalized
 and the types those properties should be.</li>
@@ -760,7 +694,7 @@ listens for changes in the input box and updates the Map using
 the <code>attr</code> method which then converts the string into a JavaScript date object.</p>
 <p>Additionally, the control also listens for changes on the Map and
 updates the age in the page for the new birthdate of the contact.</p>
-<div class='demo_wrapper' data-demo-src='can/map/attributes/doc/attributes.html'></div>
+<div class='demo_wrapper' data-demo-src='can/map/attributes/attributes.html'></div>
 ### Reference types
 <p>Types listed in <code>attributes</code> can also be a functions, such as the <code>model</code> or
 <code>models</code> methods of a <a href="can.Model.html">can.Model</a>. When data of this kind of type is set, this
@@ -914,7 +848,7 @@ var Zelda = can.Model.extend({
 <h3>Demo</h3>
 <p>Below is a demo that showcases associations between 2 different models to show the tasks
 for each contact and how much time they have left to complete the task(s) using converters.</p>
-<div class='demo_wrapper' data-demo-src='can/map/attributes/doc/attributes-assocations.html'></div>
+<div class='demo_wrapper' data-demo-src='can/map/attributes/attributes-assocations.html'></div>
 
 		</section>
 		
@@ -976,7 +910,7 @@ for each contact and how much time they have left to complete the task(s) using 
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Map.plugins","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"page","name":"can.Map.attributes","description":"","title":"attributes","plugin":"can/map/attributes","test":"can/map/attributes/test.html","download":"http://donejs.com/can/dist/can.map.attributes.js","deprecated":[{"version":"2.1","description":"<p>The attributes plugin (and the setter plugin) have been deprecated in\nfavor of the new [can.Map.prototype.define define] plugin, which provides the same\nfunctionality. It will still be maintained up to 3.0 and potentially after.\nProjects using converters or serializers should consider switching to [can.Map.prototype.define.type define's type]\nand [can.Map.prototype.define.serialize define's serialize].</p>\n"}],"comment":" ","src":"map/attributes/doc/attributes.md","children":[{"name":"can.Map.attributes.prototype","title":"prototype","type":"group","parent":"can.Map.attributes","description":"","order":0,"children":[{"type":"function","name":"can.Map.prototype.attributes.serialize","description":"<p>Serializes the observe's properties using the [can.Map.attributes attribute plugin].</p>\n","title":"serialize","parent":"can.Map.attributes.prototype","order":0,"signatures":[{"code":"observe.serialize([attrName])","description":"","params":[{"types":[{"type":"String"}],"optional":true,"name":"attrName","description":"<p>If passed, returns only a serialization of the named attribute.</p>\n"}],"returns":{"types":[{"type":"String"}],"description":"<p>A serialization of this Observe.</p>\n"}}],"comment":" ","src":"map/attributes/doc/prototype.serialize.md"}]},{"name":"can.Map.attributes.static","title":"static","type":"group","parent":"can.Map.attributes","description":"","order":0,"children":[{"type":"property","name":"can.Map.attributes.static.attributes","description":"<p><code>can.Map.attributes</code> is a property that contains key/value pair(s) of an attribute's name and its\nrespective type for using in [can.Map.attributes.static.convert convert] and [can.Map.prototype.serialize serialize].</p>\n","title":"attributes","parent":"can.Map.attributes.static","order":0,"src":"map/attributes/doc/static.attributes.md"},{"type":"property","name":"can.Map.attributes.static.convert","description":"<p>You often want to convert from what the observe sends you to a form more useful to JavaScript.\nFor example, contacts might be returned from the server with dates that look like: &quot;1982-10-20&quot;.\nWe can observe to convert it to something closer to <code>new Date(1982,10,20)</code>.</p>\n","title":"convert","parent":"can.Map.attributes.static","order":1,"src":"map/attributes/doc/static.convert.md"},{"type":"property","name":"can.Map.attributes.static.serialize","description":"<p><code>can.Map.serialize</code> is an object of name-function pairs that are used to\nserialize attributes.</p>\n","title":"serialize","parent":"can.Map.attributes.static","order":2,"src":"map/attributes/doc/static.serialize.md"}]},{"name":"can.Map.prototype.convert","type":"function","description":"","hide":true,"title":"","parent":"can.Map.attributes","src":"map/attributes/attributes.js"},{"name":"can.Map.setup","type":"function","description":"<p><code>can.Map.static.setup</code> overrides default <code>can.Map</code> setup to provide\nfunctionality for attributes.</p>\n","hide":true,"title":"","parent":"can.Map.attributes","src":"map/attributes/attributes.js"}]};
+		var docObject = {"parent":"can.Map.plugins","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"type":"page","name":"can.Map.attributes","description":"<p>can.Map.attributes is a plugin that helps convert and normalize data being set on an Map\nand allows you to specify the way complex types get serialized. The attributes plugin is most\nhelpful when used with [can.Model] (because the serialization aids in sending data to a server),\nbut you can use it with any Map you plan to make instances\nfrom.</p>\n","title":"attributes","plugin":"can/map/attributes","test":"can/map/attributes/test.html","download":"http://donejs.com/can/dist/can.map.attributes.js","comment":" ","src":"map/attributes/attributes.md","children":[{"name":"can.Map.prototype.convert","type":"function","description":"","hide":true,"title":"","parent":"can.Map.attributes","src":"map/attributes/attributes.js"},{"name":"can.Map.setup","type":"function","description":"<p><code>can.Map.static.setup</code> overrides default <code>can.Map</code> setup to provide\nfunctionality for attributes.</p>\n","hide":true,"title":"","parent":"can.Map.attributes","src":"map/attributes/attributes.js"},{"name":"can.Map.attributes.prototype","title":"prototype","type":"group","parent":"can.Map.attributes","description":"","order":0,"children":[{"name":"can.Map.prototype.attributes.serialize","type":"function","description":"<p>Serializes the observe's properties using the [can.Map.attributes attribute plugin].</p>\n","title":"serialize","parent":"can.Map.attributes.prototype","signatures":[{"code":"observe.serialize([attrName])","description":"","params":[{"types":[{"type":"String"}],"optional":true,"name":"attrName","description":"<p>If passed, returns only a serialization of the named attribute.</p>\n"}],"returns":{"types":[{"type":"String"}],"description":"<p>A serialization of this Observe.</p>\n"}}],"comment":" ","src":"map/attributes/attributes.js"}]},{"name":"can.Map.attributes.static","title":"static","type":"group","parent":"can.Map.attributes","description":"","order":0,"children":[{"name":"can.Map.attributes.static.attributes","type":"property","parent":"can.Map.attributes.static","description":"<p><code>can.Map.attributes</code> is a property that contains key/value pair(s) of an attribute's name and its\nrespective type for using in [can.Map.attributes.static.convert convert] and [can.Map.prototype.serialize serialize].</p>\n","title":"attributes","src":"map/attributes/attributes.js"},{"name":"can.Map.attributes.static.convert","type":"property","parent":"can.Map.attributes.static","description":"<p>You often want to convert from what the observe sends you to a form more useful to JavaScript.\nFor example, contacts might be returned from the server with dates that look like: &quot;1982-10-20&quot;.\nWe can observe to convert it to something closer to <code>new Date(1982,10,20)</code>.</p>\n","title":"convert","src":"map/attributes/attributes.js"},{"name":"can.Map.attributes.static.serialize","type":"property","parent":"can.Map.attributes.static","description":"<p><code>can.Map.serialize</code> is an object of name-function pairs that are used to\nserialize attributes.</p>\n","title":"serialize","src":"map/attributes/attributes.js"}]}]};
 	</script>
 	
 	

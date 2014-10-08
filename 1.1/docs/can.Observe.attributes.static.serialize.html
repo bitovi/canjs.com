@@ -684,7 +684,7 @@ the types specified in <a href="can.Observe.attributes.html">attributes</a>.</p>
 that will return the value if the property holds a primitive value (string, number, ...),
 or it will call the &quot;serialize&quot; method if the property holds an object with the &quot;serialize&quot; method set.</p>
 <p>For example, to serialize all dates to ISO format:</p>
-<pre><code class="lang-javascript">var Contact = can.Observe.extend({
+<pre><code class="language-js">var Contact = can.Observe.extend({
   attributes : {
     birthday : 'date'
   },
@@ -694,10 +694,12 @@ or it will call the &quot;serialize&quot; method if the property holds an object
     }
   }
 },{});
-<p>var contact = new Contact({
-birthday: new Date(&quot;Oct 25, 1973&quot;)
+        
+var contact = new Contact({ 
+  birthday: new Date(&quot;Oct 25, 1973&quot;) 
 }).serialize();
-//-&gt; { &quot;birthday&quot; : &quot;1973-10-25T05:00:00.000Z&quot; }</code></pre></p>
+//-&gt; { &quot;birthday&quot; : &quot;1973-10-25T05:00:00.000Z&quot; }
+</code></pre>
 
 		</section>
 		
@@ -759,7 +761,7 @@ birthday: new Date(&quot;Oct 25, 1973&quot;)
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Observe.attributes.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"name":"can.Observe.attributes.static.serialize","type":"property","description":"<p><code>can.Observe.serialize</code> is an object of name-function pairs that are used to\nserialize attributes.</p>\n","title":"serialize","src":"observe/attributes/attributes.js"};
+		var docObject = {"parent":"can.Observe.attributes.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"forceBuild":true,"debug":true,"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"name":"can.Observe.attributes.static.serialize","type":"property","description":"<p><code>can.Observe.serialize</code> is an object of name-function pairs that are used to\nserialize attributes.</p>\n","title":"serialize","src":"observe/attributes/attributes.js"};
 	</script>
 	
 	

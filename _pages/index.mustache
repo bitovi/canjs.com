@@ -4,10 +4,12 @@
     <h1>Build better apps, faster</h1>
 
     <div id="hero-download" class="pull-right">
-      <a href="{{self.repository.github}}/archive/v{{package.version}}.zip">
-        <button class="download">Download {{package.version}}<span>(One file. Everything you need.)</span></button>
+      <a href="{{urls.github}}/archive/v{{defaultDownloadVersion}}.zip">
+        <button class="download">Download {{defaultDownloadVersion}}<span>(One file. Everything you need.)</span></button>
       </a>
-      {{! heroDownloadContainer.mustache}}
+      <button class="customize">Customize <span class="arrow down"></span></button>
+      <div class="customize-box customize-replace"></div>
+      <p class="button-desc">Works with: jQuery, Zepto, Dojo, Mootools, YUI</p>
     </div>
 
   </div>
@@ -53,11 +55,8 @@
   <div class="dark social">
     <div class="container">
         <ul class="social-stats">
-    		<li class="irc"><a href="http://bithub.com/greatest/canjs/article">articles</a></li>
-    		<li class="apps"><a href="http://bithub.com/greatest/canjs/app">apps submitted</a></li>
-  			<li class="plugins"><a href="http://bithub.com/greatest/canjs/plugin">plugins submitted</a></li>
-    		<li class="forums"><a href="http://bithub.com/greatest/canjs/question">forum posts</a></li>
-  			<li class="commits"><a href="http://bithub.com/greatest/canjs/code">commits</a></li>
+    			<li class="irc" style="visibility: hidden"><a href="http://bithub.com/greatest/canjs/article">articles</a></li>
+    			
   		</ul>
     </div>
   </div>

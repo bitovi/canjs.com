@@ -20,12 +20,18 @@ define(["can/"], function(can){
 					self.element.find('[name=' + type + ']:checkbox:first').change();
 				});
 			});
-	
-			this.element.append(can.view(this.options.view, this.options, {
+			var frag = can.view(this.options.view, this.options, {
 				versionNumber: function(version) {
 					return version() ? version() : '';
 				}
-			}));
+			});
+			var replace = this.element.find(".customize-replace");
+			if(replace.length) {
+				replace.replaceWith(frag);
+			} else {
+				this.element.append(frag);
+			}
+			
 		},
 		_collectDependedOn: function(config) {
 			var isDependedOnBy = {};

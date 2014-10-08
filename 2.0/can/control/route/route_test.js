@@ -1,6 +1,6 @@
 /* jshint asi:true*/
 /*global Router*/
-steal("can/control/route",  "can/test",function () {
+steal("can/control/route", function () {
 
 	module("can/control/route", {
 		setup: function () {

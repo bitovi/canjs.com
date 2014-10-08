@@ -1,10 +1,10 @@
-@typedef {function(this:can.mustache.context,...*,can.mustache.sectionOptions){}} can.mustache.helper(arg,options)
-@parent can.mustache.types 
+@typedef {function(this:can.Mustache.context,...*,can.Mustache.sectionOptions){}} can.Mustache.helper(arg,options)
+@parent can.Mustache.types 
 
-@description A helper function passed to [can.mustache.registerHelper].
+@description A helper function passed to [can.Mustache.registerHelper].
 
 @param {...*} [arg] Arguments passed from the tag. After the helper
-name, any space seperated [can.mustache.key keys], numbers or 
+name, any space seperated [can.Mustache.key keys], numbers or 
 strings are passed as arguments. 
 
 The following template:
@@ -17,7 +17,7 @@ Rendered with
 
 Will call a `madLib` helper with the following arguements.
 
-    can.mustache.registerHelper('madLib', 
+    can.Mustache.registerHelper('madLib', 
       function(subject, verb, number){
         // subject -> "Lebron James"
         // verb -> "swept"
@@ -31,14 +31,14 @@ tag. Whenever a [can.compute] or function
 object is an argument for a helper, the original object is used 
 as the argument instead of the value that the function returns.
 
-If a [can.mustache.key] represents a [can.Map] attribute,
+If a [can.Mustache.key] represents a [can.Map] attribute,
 it is converted to a [can.compute] getter/setter 
 function. This enables 2-way binding helpers.  
 
 For example, the following helper two-way binds an input element's
 value to a [can.compute]:
 
-    can.mustache.registerHelper('value',function(value){
+    can.Mustache.registerHelper('value',function(value){
         return function(el){
           value.bind("change",function(ev, newVal){
             el.value = newVal;
@@ -58,13 +58,13 @@ And rendered with:
     
     {me: new can.Map({name: "Payal"})}
 
-@param {can.mustache.helperOptions} options An options object
+@param {can.Mustache.helperOptions} options An options object
 that gets populated with optional:
 
 - `fn` and `inverse` section rendering functions 
 - a `hash` object of the maps passed to the helper 
 
-@this {can.mustache.context} The context the helper was 
+@this {can.Mustache.context} The context the helper was 
 called within.
 
 @return {String|function(HTMLElement)} The content to be inserted into
@@ -84,7 +84,7 @@ If the helper is called __within a tag__ like:
 
 The returned function is called with the `<ul>` element:
 
-    can.mustache.registerHelper("sortable",function(){
+    can.Mustache.registerHelper("sortable",function(){
       return function(el){
         $(el).slider();
       }
@@ -97,7 +97,7 @@ If the helper is called __between tags__ like:
 The returned function is called with a temporary element. The 
 following helper would be called with a temporary `<li>` element:
 
-    can.mustache.registerHelper("items",function(){
+    can.Mustache.registerHelper("items",function(){
       return function(li){
         
       }

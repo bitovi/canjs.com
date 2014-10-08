@@ -612,65 +612,77 @@ lots of changes to make to can.Observes, batching them together can help perform
 those can.Observes are live-bound to the DOM.</p>
 <p>In this example, you can see how the <em>first</em> and <em>change</em> events are not fired (and their handlers
 are not called) until <code>stopBatch</code> is called.</p>
-<pre><code class="lang-javascript">var person = new can.Observe({
+<pre><code class="language-js">var person = new can.Observe({
     first: 'Alexis',
     last: 'Abril'
 });
-<p>person.bind('first', function() {
-console.log(&quot;First name changed.&quot;);
+
+person.bind('first', function() {
+    console.log(&quot;First name changed.&quot;);
 }).bind('change', function() {
-console.log(&quot;Something changed.&quot;);
-});</p>
-<p>can.Observe.startBatch();
+    console.log(&quot;Something changed.&quot;);
+});
+
+can.Observe.startBatch();
 person.attr('first', 'Alex');
 console.log('Still in the batch.');
-can.Observe.stopBatch();</p>
-<p>// the log has:
+can.Observe.stopBatch();
+
+// the log has:
 // Still in the batch.
 // First name changed.
-// Something changed.</code></pre>
-You can also pass a callback to <code>startBatch</code> which will be called after all the events have
+// Something changed.
+</code></pre>
+<p>You can also pass a callback to <code>startBatch</code> which will be called after all the events have
 been fired:</p>
-<pre><code class="lang-javascript">can.Observe.startBatch(function() {
+<pre><code class="language-js">can.Observe.startBatch(function() {
     console.log('The batch is over.');
 });
 person.attr('first', 'Izzy');
 console.log('Still in the batch.');
 can.Observe.stopBatch();
-<p>// The console has:
+
+// The console has:
 // Still in the batch.
 // First name changed.
 // Something changed.
-// The batch is over.</code></pre></p>
+// The batch is over.
+</code></pre>
 <h2>Calling <code>startBatch</code> multiple times</h2>
 <p>If you call <code>startBatch</code> more than once, <code>stopBatch</code> needs to be called
 the same number of times before any batched events will fire. For ways
 to circumvent this process, see <a href="can.Observe.stopBatch.html">stopBatch</a>.</p>
 <p>Here is an example that demonstrates how events are affected by calling
 <code>startBatch</code> multiple times.</p>
-<pre><code class="lang-javascript">var addPeople = function(observable) {
+<pre><code class="language-js">var addPeople = function(observable) {
     can.Observe.startBatch();
     observable.attr('a', 'Alice');
     observable.attr('b', 'Bob');
     observable.attr('e', 'Eve');
     can.Observe.stopBatch();
 };
-<p>// In a completely different place:
+
+// In a completely different place:
 var list = new can.Observe();
 list.bind('change', function() {
-console.log('The list changed.');
-});</p>
-<p>can.Observe.startBatch();
+    console.log('The list changed.');
+});
+
+can.Observe.startBatch();
 addPeople(list);
-console.log('Still in the batch.');</p>
-<p>// Here, the console has:
-// Still in the batch.</p>
-<p>can.Observe.stopBatch();</p>
-<p>// Here, the console has:
+console.log('Still in the batch.');
+
+// Here, the console has:
+// Still in the batch.
+
+can.Observe.stopBatch();
+
+// Here, the console has:
 // Still in the batch.
 // The list changed.
 // The list changed.
-// The list changed.</code></pre></p>
+// The list changed.
+</code></pre>
 
 		</section>
 		
@@ -732,7 +744,7 @@ console.log('Still in the batch.');</p>
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Observe.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"type":"function","name":"can.Observe.startBatch","description":"<p>Begin an event batch.</p>\n","title":"startBatch","signatures":[{"code":"can.Observe.startBatch([batchStopHandler])","description":"","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"batchStopHandler","description":"<p>a callback that gets called after all batched events have been called</p>\n"}]}],"comment":" ","src":"observe/observe.js"};
+		var docObject = {"parent":"can.Observe.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"forceBuild":true,"debug":true,"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"type":"function","name":"can.Observe.startBatch","description":"<p>Begin an event batch.</p>\n","title":"startBatch","signatures":[{"code":"can.Observe.startBatch([batchStopHandler])","description":"","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"batchStopHandler","description":"<p>a callback that gets called after all batched events have been called</p>\n"}]}],"comment":" ","src":"observe/observe.js"};
 	</script>
 	
 	

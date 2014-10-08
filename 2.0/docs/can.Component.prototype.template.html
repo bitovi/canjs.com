@@ -256,6 +256,13 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -284,22 +291,15 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.ejs.html" data-search="can.ejs">
-				can.ejs
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.event.html" data-search="can.event">
-				can.event
 			</a>
 			
 	   </li>
@@ -312,22 +312,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.mustache.html" data-search="can.mustache">
-				can.mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.route.html" data-search="can.route">
 				can.route
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.stache.html" data-search="can.stache">
-				can.stache
 			</a>
 			
 	   </li>
@@ -342,13 +328,6 @@
 	   <li class="search-container">
 	   		<a href="can.view.html" data-search="can.view">
 				can.view
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
-				can.view.bindings
 			</a>
 			
 	   </li>
@@ -416,7 +395,7 @@ the source elements within the component's tag.</p>
   <h2 id="sig_">String
 </h2>
 <div class="signature-wrapper">
-<p>The string contents of a <a href="can.mustache.html">can.mustache</a> template.  For example:</p>
+<p>The string contents of a <a href="can.Mustache.html">can.Mustache</a> template.  For example:</p>
 <pre><code>can.Component({
   tag: &quot;my-tabs&quot;,
   template: &quot;&lt;ul&gt;{{#panels}}&lt;li&gt;{{title}}&lt;/li&gt; ...&quot;
@@ -437,7 +416,7 @@ the source elements within the component's tag.</p>
   <h2 id="sig_"><a href="can.view.renderer.html" >renderer</a>(data, helpers)
 </h2>
 <div class="signature-wrapper">
-<p>A <a href="can.view.renderer.html">renderer</a> returned by <a href="can.mustache.html">can.mustache</a> or
+<p>A <a href="can.view.renderer.html">renderer</a> returned by <a href="can.view.mustache.html">mustache</a> or
 <a href="can.view.html">can.view</a>. For example:</p>
 <pre><code>can.Component({
   tag: &quot;my-tabs&quot;,
@@ -644,7 +623,7 @@ change the component to look like:</p>
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Component.prototype","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"property","name":"can.Component.prototype.template","description":"<p>Provides a template to render directly within the component's tag. The template is rendered with the\ncomponent's [can.Component::scope scope].  <code>&lt;content&gt;</code> elements within the template are replaced by\nthe source elements within the component's tag.</p>\n","types":[{"type":"String","description":"<p>The string contents of a [can.mustache] template.  For example:</p>\n<pre><code>can.Component({\n  tag: &quot;my-tabs&quot;,\n  template: &quot;&lt;ul&gt;{{#panels}}&lt;li&gt;{{title}}&lt;/li&gt; ...&quot;\n})\n</code></pre>\n"},{"type":"can.view.renderer","description":"<p>A [can.view.renderer] returned by [can.mustache] or\n[can.view]. For example:</p>\n<pre><code>can.Component({\n  tag: &quot;my-tabs&quot;,\n  template: can.view(&quot;/ui/components/my-tabs.mustache&quot;)\n})\n</code></pre>\n"}],"title":"","comment":" ","src":"component/template.md"};
+		var docObject = {"parent":"can.Component.prototype","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"type":"property","name":"can.Component.prototype.template","description":"<p>Provides a template to render directly within the component's tag. The template is rendered with the\ncomponent's [can.Component::scope scope].  <code>&lt;content&gt;</code> elements within the template are replaced by\nthe source elements within the component's tag.</p>\n","types":[{"type":"String","description":"<p>The string contents of a [can.Mustache] template.  For example:</p>\n<pre><code>can.Component({\n  tag: &quot;my-tabs&quot;,\n  template: &quot;&lt;ul&gt;{{#panels}}&lt;li&gt;{{title}}&lt;/li&gt; ...&quot;\n})\n</code></pre>\n"},{"type":"can.view.renderer","description":"<p>A [can.view.renderer] returned by [can.view.mustache] or\n[can.view]. For example:</p>\n<pre><code>can.Component({\n  tag: &quot;my-tabs&quot;,\n  template: can.view(&quot;/ui/components/my-tabs.mustache&quot;)\n})\n</code></pre>\n"}],"title":"","comment":" ","src":"component/template.md"};
 	</script>
 	
 	

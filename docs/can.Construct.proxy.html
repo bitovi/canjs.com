@@ -653,7 +653,7 @@ function.</p>
 			<p><code>can.Construct.prototype.proxy</code> takes a function and returns a new function that, when invoked,
 calls the given function with the same <code>this</code> as <code>proxy</code> was called with.</p>
 <p>Here is a counter that increments its count after a second:</p>
-<pre><code class="lang-javascript">var DelayedCounter = can.Construct.extend({
+<pre><code class="language-js">var DelayedCounter = can.Construct.extend({
     init: function() {
         this.count = 0;
         setTimeout(this.proxy(function() {
@@ -661,16 +661,18 @@ calls the given function with the same <code>this</code> as <code>proxy</code> w
         }), 1000);
     }
 });
-<p>var counter = new DelayedCounter();
+
+var counter = new DelayedCounter();
 // check counter's value later
 setTimeout(function() {
-counter.count; // 1
-}, 5000);</code></pre>
-(Recall that setTimeout executes its callback in the global scope.)</p>
+    counter.count; // 1
+}, 5000);
+</code></pre>
+<p>(Recall that setTimeout executes its callback in the global scope.)</p>
 <p>If you pass the name of a function on the <code>this</code> that <code>proxy</code> is called with,
 <code>proxy</code> will use that function. Here's how you write the previous example using
 this technique:</p>
-<pre><code class="lang-javascript">var DelayedCounter = can.Construct.extend({
+<pre><code class="language-js">var DelayedCounter = can.Construct.extend({
     init: function() {
         this.count = 0;
         setTimeout(this.proxy('increment'), 1000);
@@ -679,17 +681,19 @@ this technique:</p>
         this.count++;
     }
 });
-<p>var counter = new DelayedCounter();
+
+var counter = new DelayedCounter();
 // check counter's value later
 setTimeout(function() {
-counter.count; // 1
-}, 5000);</code></pre></p>
+    counter.count; // 1
+}, 5000);
+</code></pre>
 <h2>Currying arguments</h2>
 <p>If you pass more than one parameter to <code>proxy</code>, the additional parameters will
 be passed as parameters to the callback before any parameters passed to the
 proxied function.</p>
 <p>Here's a delayed counter that increments by a given amount:</p>
-<pre><code class="lang-javascript">var IncrementalCounter = can.Construct.extend({
+<pre><code class="language-js">var IncrementalCounter = can.Construct.extend({
     init: function(amount) {
         this.count = 0;
         setTimeout(this.proxy(function(amount) {
@@ -697,17 +701,19 @@ proxied function.</p>
         }, amount), 1000);
     }
 });
-<p>var counter = new IncrementalCounter(5);
+
+var counter = new IncrementalCounter(5);
 // check counter's value later
-setTimeout(function() {
-counter.count; // 5
-}, 5000);</code></pre></p>
+setTimeout(function() { 
+    counter.count; // 5
+}, 5000);
+</code></pre>
 <h2>Piping callbacks</h2>
 <p>If you pass an array of functions and strings as the first parameter to <code>proxy</code>,
 <code>proxy</code> will call the callbacks in sequence, passing the return value of each
 as a parameter to the next. This is useful to avoid having to curry callbacks.</p>
 <p>Here's a delayed counter that takes a callback to call after incrementing by a given amount:</p>
-<pre><code class="lang-javascript">var IncrementalCounter = can.Construct.extend({
+<pre><code class="language-js">var IncrementalCounter = can.Construct.extend({
     init: function(amount, callback) {
         this.count = 0;
         setTimeout(this.proxy([function(amount) {
@@ -716,15 +722,18 @@ as a parameter to the next. This is useful to avoid having to curry callbacks.</
         }, callback], amount), 1000);
     }
 });
-<p>var counter = new IncrementalCounter(5, function(count) {
-console.log('The count is ' + count + '.');
-});</p>
-<p>// after 1 second, the log says &quot;The count is 5.&quot;</code></pre></p>
+
+var counter = new IncrementalCounter(5, function(count) {
+    console.log('The count is ' + count + '.');
+});
+
+// after 1 second, the log says &quot;The count is 5.&quot;
+</code></pre>
 <h2><code>proxy</code> on constructors</h2>
 <p>can.Construct.proxy also adds <code>proxy</code> to the constructor, so you can use it
 in static functions with the constructor as <code>this</code>.</p>
 <p>Here's a counter construct that keeps its count staticly and increments after one second:</p>
-<pre><code class="lang-javascript">var DelayedStaticCounter = can.Construct.extend({
+<pre><code class="language-js">var DelayedStaticCounter = can.Construct.extend({
     setup: function() {
         this.count = 0;
     }
@@ -734,7 +743,9 @@ in static functions with the constructor as <code>this</code>.</p>
         }), 1000);
     }
 }, {});
-<p>DelayedStaticCounter.incrementSoon();</code></pre></p>
+
+DelayedStaticCounter.incrementSoon();
+</code></pre>
 <h2>See also</h2>
 <p><a href="can.proxy.html">can.proxy</a> is a way to proxy callbacks outside of <code>can.Construct</code>s.</p>
 
@@ -798,7 +809,7 @@ in static functions with the constructor as <code>this</code>.</p>
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Construct.plugins","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs"},"type":"page","name":"can.Construct.proxy","description":"<p>Creates callback functions that have <code>this</code> set correctly.</p>\n","test":"can/construct/proxy/test.html","download":"http://donejs.com/can/dist/can.construct.proxy.js","signatures":[{"code":"can.Construct.proxy(callback, [...args])","description":"<p>Creates a static callback function that has <code>this</code> set to the constructor\nfunction.</p>\n","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"},{"type":"Array","template":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"}]}]}],"name":"callback","description":"<p>the function or functions to proxy</p>\n"},{"variable":true,"types":[{"type":"["}],"name":"args","description":"<p>parameters to curry into the proxied functions</p>\n"}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"<p>a function that calls <code>callback</code> with the same context as the current context</p>\n"}},{"code":"construct.proxy(callback, [...args])","description":"<p>Creates a static callback function that has <code>this</code> set to an instance of the constructor\nfunction.</p>\n","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"},{"type":"Array","template":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"}]}]}],"name":"callback","description":"<p>the function or functions to proxy.</p>\n"},{"variable":true,"types":[{"type":"["}],"name":"args","description":"<p>parameters to curry into the proxied functions</p>\n"}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"<p>a function that calls <code>callback</code> with the same context as the current context</p>\n"}}],"comment":" ","src":"construct/proxy/proxy.md"};
+		var docObject = {"parent":"can.Construct.plugins","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs"},"type":"page","name":"can.Construct.proxy","description":"<p>Creates callback functions that have <code>this</code> set correctly.</p>\n","test":"can/construct/proxy/test.html","download":"http://donejs.com/can/dist/can.construct.proxy.js","signatures":[{"code":"can.Construct.proxy(callback, [...args])","description":"<p>Creates a static callback function that has <code>this</code> set to the constructor\nfunction.</p>\n","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"},{"type":"Array","template":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"}]}]}],"name":"callback","description":"<p>the function or functions to proxy</p>\n"},{"variable":true,"types":[{"type":"["}],"name":"args","description":"<p>parameters to curry into the proxied functions</p>\n"}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"<p>a function that calls <code>callback</code> with the same context as the current context</p>\n"}},{"code":"construct.proxy(callback, [...args])","description":"<p>Creates a static callback function that has <code>this</code> set to an instance of the constructor\nfunction.</p>\n","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"},{"type":"Array","template":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"}]}]}],"name":"callback","description":"<p>the function or functions to proxy.</p>\n"},{"variable":true,"types":[{"type":"["}],"name":"args","description":"<p>parameters to curry into the proxied functions</p>\n"}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"<p>a function that calls <code>callback</code> with the same context as the current context</p>\n"}}],"comment":" ","src":"construct/proxy/proxy.md"};
 	</script>
 	
 	

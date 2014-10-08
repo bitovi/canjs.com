@@ -229,26 +229,30 @@
 <h3>Engineered limber</h3>
 <p>CanJS’s tools are designed to work under almost every situation. Your server sends back XML with strange urls? That’s ok, overwrite <a href="../docs/can.Model.static.findAll.html">can.Model.findAll</a> or <a href="../docs/can.Model.static.models.html">can.Model.models</a>. Want some special teardown code for a control? Overwrite <a href="../docs/can.Control.prototype.destroy.html">can.Control:destroy</a>.</p>
 <p>But our favorite bit of flexibility is how <a href="../docs/can.Observe.html">can.Observe</a> works with nested data. It converts nested objects into observes automatically. For example:</p>
-<pre><code class="lang-javascript">var person = new can.Observe({
+<pre><code class="language-js">var person = new can.Observe({
   name: { first: 'Justin', last: 'Meyer' },
   hobbies: [ 'programming', 'party rocking' ]
 })
-<p>person.attr( 'name.first' ) //-&gt; 'Justin'
-person.attr( 'hobbies.0' ) //-&gt; 'programming'</code></pre>
-But most important, <code>change</code> events bubble, letting observes listen for when a nested property changes:</p>
-<pre><code class="lang-javascript">person.bind( 'change', function( ev, attr, how, newVal, oldVal ) {
-  attr   //-> 'name.last'
-  how    //-> 'set'
-  newVal //-> 'Meyer'
-  oldVal //-> 'Myer'
+
+person.attr( 'name.first' ) //-&gt; 'Justin'
+person.attr( 'hobbies.0' ) //-&gt; 'programming'
+</code></pre>
+<p>But most important, <code>change</code> events bubble, letting observes listen for when a nested property changes:</p>
+<pre><code class="language-js">person.bind( 'change', function( ev, attr, how, newVal, oldVal ) {
+  attr   //-&gt; 'name.last'
+  how    //-&gt; 'set'
+  newVal //-&gt; 'Meyer'
+  oldVal //-&gt; 'Myer'
 });
-<p>person.attr( 'name.last', 'Meyer' );</code></pre></p>
+
+person.attr( 'name.last', 'Meyer' );
+</code></pre>
 <h2 id="Powerful">Powerful</h2>
 <h3>Safety</h3>
 <p>Memory safety is really important, especially in long-lived, dynamic pages. CanJS combats this menace in two important and unique ways:</p>
 <h4>Controls that unbind event handlers auto-magically</h4>
 <p>Using templated event binding, Controls can listen to events on objects other than their element. For example, a tooltip listening to the window looks like:</p>
-<pre><code class="lang-javascript">var Tooltip = can.Control.extend({
+<pre><code class="language-js">var Tooltip = can.Control.extend({
   '{window} click': function( el, ev ) {
     // hide only if we clicked outside the tooltip
     if (!this.element.has( ev.target ) {
@@ -256,39 +260,44 @@ But most important, <code>change</code> events bubble, letting observes listen f
     }
   }
 })
-<p>// create a Tooltip
-var tooltipElement = $( '&lt;div&gt;INFO&lt;/div&gt;' ).appendTo( el )
-var tooltipInstance = new Tooltip( tooltipElement );</code></pre>
-<code>window</code> now has a reference to the control which keeps the <code>tooltipInstance</code> and everything the tooltip instance might reference in memory. CanJS overwrites each library’s element remove functionality to <a href="../docs/can.Control.prototype.destroy.html">destroy</a> controls. Destroying a control unbinds all of its event handlers, removing any memory leaks auto-magically.</p>
+
+// create a Tooltip
+var tooltipElement = $( '&amp;lt;div&gt;INFO&amp;lt;/div&gt;' ).appendTo( el )
+var tooltipInstance = new Tooltip( tooltipElement );
+</code></pre>
+<p><code>window</code> now has a reference to the control which keeps the <code>tooltipInstance</code> and everything the tooltip instance might reference in memory. CanJS overwrites each library’s element remove functionality to <a href="../docs/can.Control.prototype.destroy.html">destroy</a> controls. Destroying a control unbinds all of its event handlers, removing any memory leaks auto-magically.</p>
 <h4>A model store that does not leak</h4>
 <p>It’s relatively common to load the same model instance multiple times on a single page. For example, an app might request todos due today and high-priority todos and render them like:</p>
-<pre><code class="lang-javascript">can.view( 'todosList.ejs', {
+<pre><code class="language-js">can.view( 'todosList.ejs', {
   todaysTodos: Todo.findAll( { due: 'today' } ),
   criticalTodos: Todo.findAll( { type: 'critical' } )
 }).then(function( frag ) {
   $( '#todos' ).html( frag );
-})</code></pre>
-`todosList.ejs` might look like:
-<pre><code class="lang-javascript">&lt;h2>Due Today&lt;/h2>
-&lt;% list( todaysTodos, function( todo ) { %>
-  &lt;li &lt;%= (el) -> el.data( 'todo', todo ) %>>
-    &lt;%= todo.attr( 'name' ) %>
-  &lt;/li>
-&lt;% } ) %>
-&lt;h2>Critical Todos</h2>
-&lt;% list( criticalTodos, function( todo ) { %>
-  &lt;li <%= (el) -> el.data( 'todo', todo ) %>>
-    &lt;%= todo.attr( 'name' ) %>
-  &lt;/li>
-&lt;% } ) %></code></pre>
-If the result for of `Todo.findAll( { due: 'today' } )` and `Todo.findAll( { type: 'critical' } )` both share a todo instance like:
-<pre><code class="lang-javascript">{ 
-    "id" : 5, 
-    "name" : "do dishes",
-    "due" : "today",
-    "type" : "critical"
-}</code></pre>
-<a href="Models.html">can.Model</a> knows that this data represents the same todo and only creates one instance. This means that a single model instance is in both lists. By changing the todo’s name or destroying it, both lists will be changed.
+})
+</code></pre>
+<p><code>todosList.ejs</code> might look like:</p>
+<pre><code class="language-js">&amp;lt;h2&gt;Due Today&amp;lt;/h2&gt;
+&amp;lt;% list( todaysTodos, function( todo ) { %&gt;
+  &amp;lt;li &amp;lt;%= (el) -&gt; el.data( 'todo', todo ) %&gt;&gt;
+    &amp;lt;%= todo.attr( 'name' ) %&gt;
+  &amp;lt;/li&gt;
+&amp;lt;% } ) %&gt;
+&amp;lt;h2&gt;Critical Todos&lt;/h2&gt;
+&amp;lt;% list( criticalTodos, function( todo ) { %&gt;
+  &amp;lt;li &lt;%= (el) -&gt; el.data( 'todo', todo ) %&gt;&gt;
+    &amp;lt;%= todo.attr( 'name' ) %&gt;
+  &amp;lt;/li&gt;
+&amp;lt;% } ) %&gt;
+</code></pre>
+<p>If the result for of <code>Todo.findAll( { due: 'today' } )</code> and <code>Todo.findAll( { type: 'critical' } )</code> both share a todo instance like:</p>
+<pre><code class="language-js">{ 
+    &quot;id&quot; : 5, 
+    &quot;name&quot; : &quot;do dishes&quot;,
+    &quot;due&quot; : &quot;today&quot;,
+    &quot;type&quot; : &quot;critical&quot;
+}
+</code></pre>
+<p><a href="Models.html">can.Model</a> knows that this data represents the same todo and only creates one instance. This means that a single model instance is in both lists. By changing the todo’s name or destroying it, both lists will be changed.</p>
 <p>However, model only stores these model instances while something is binding to them. Once nothing is bound to the model instance, they are removed from the store, freeing their memory for garbage collection.</p>
 <h3>Ease of use</h3>
 <p>This site highlights the most important features of CanJS. The library comes with thorough documentation and examples on the <a href="/docs">CanJS documentation page</a>. There are example apps for each library and several example for jQuery.</p>
@@ -320,16 +329,20 @@ If the result for of `Todo.findAll( { due: 'today' } )` and `Todo.findAll( { typ
 <p><em>Note: AngularJS throttles updates, which means it doesn’t fit well with these tests.</em></p>
 <h4>Model and view deferred support for parallel loading</h4>
 <p><a href="Deferreds.html">Deferreds</a> are simply awesome for handling asynchronous behavior. <a href="Models.html">can.Model</a> produces deferreds and <a href="../docs/can.view.html">can.view</a> consumes them. With the view modifiers plugin, you can load a template and its data in parallel and render it into an element with:</p>
-<pre><code class="lang-javascript">$( '#todos' ).html( 'todos.ejs', Todo.findAll() );</code></pre>
-Hot. You can do this without the view modifiers plugin like:
-<pre><code class="lang-javascript">can.view( 'todos.ejs', Todo.findAll() ).then(function( frag ) {
+<pre><code class="language-js">$( '#todos' ).html( 'todos.ejs', Todo.findAll() );
+</code></pre>
+<p>Hot. You can do this without the view modifiers plugin like:</p>
+<pre><code class="language-js">can.view( 'todos.ejs', Todo.findAll() ).then(function( frag ) {
   $( '#todos' ).html( frag );
-})</code></pre>
-#### Opt-in data binding
+})
+</code></pre>
+<h4>Opt-in data binding</h4>
 <p>Although <a href="EJS.html">can.EJS’s</a> live-binding is super fast, setting up live data binding can be too slow in certain situations (like rendering a list of 1000 items). EJS’s live binding is opt-in. It only turns on if you are using the <code>attr</code> method. If the following template binds to a <code>todo</code>'s <code>name</code> …</p>
-<pre><code class="lang-javascript">&lt;li> &lt;%= todo.attr('name') %> &lt;/li></code></pre>
-… the following doesn’t setup live-binding and renders much faster …
-<pre><code class="lang-javascript">&lt;li> &lt;%= todo.name %> &lt;/li></code></pre>
+<pre><code class="language-js">&amp;lt;li&gt; &amp;lt;%= todo.attr('name') %&gt; &amp;lt;/li&gt;
+</code></pre>
+<p>… the following doesn’t setup live-binding and renders much faster …</p>
+<pre><code class="language-js">&amp;lt;li&gt; &amp;lt;%= todo.name %&gt; &amp;lt;/li&gt;
+</code></pre>
 
 		</section>
 		
@@ -391,7 +404,7 @@ Hot. You can do this without the view modifiers plugin like:
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"guides","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"type":"page","name":"Why","description":"","title":"Why CanJS?","order":3,"comment":" ","src":"guides/why.md"};
+		var docObject = {"parent":"guides","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"forceBuild":true,"debug":true,"dest":"/Users/justin/dev/canjs.com/1.1/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs"},"type":"page","name":"Why","description":"","title":"Why CanJS?","order":3,"comment":" ","src":"guides/why.md"};
 	</script>
 	
 	

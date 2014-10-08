@@ -5,7 +5,7 @@ define(["can/",
 
 	return DownloadCustomizer.extend('Bitovi.OSS.HeroDownloadCustomizer', {
 		defaults: {
-			view: 'docs/static/templates/heroDownloadCustomizer.mustache'
+			view: 'static/templates/heroDownloadCustomizer.mustache'
 		}
 	}, can.extend({
 		init: function() {

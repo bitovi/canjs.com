@@ -703,10 +703,12 @@ If <em>howMany</em> is not provided, <code>splice</code> will all elements from 
 		<section class="comment">
 			<p><code>splice</code> lets you remove elements from and insert elements into a List.</p>
 <p>This example demonstrates how to do surgery on a list of numbers:</p>
-<pre><code class="lang-javascript"> var list = new can.List([0, 1, 2, 3]);
-<p>// starting at index 2, remove one element and insert 'Alice' and 'Bob':
-list.splice(2, 1, 'Alice', 'Bob');
-list.attr(); // [0, 1, 'Alice', 'Bob', 3]</code></pre></p>
+<pre><code class="language-js"> var list = new can.List([0, 1, 2, 3]);
+
+ // starting at index 2, remove one element and insert 'Alice' and 'Bob':
+ list.splice(2, 1, 'Alice', 'Bob');
+ list.attr(); // [0, 1, 'Alice', 'Bob', 3]
+</code></pre>
 <h2>Events</h2>
 <p><code>splice</code> causes the List it's called on to emit <em>change</em> events,
 <em>add</em> events, <em>remove</em> events, and <em>length</em> events. If there are
@@ -716,7 +718,7 @@ separate <em>change</em> event, an <em>add</em> event, and a separate <em>length
 will be fired.</p>
 <p>This slightly-modified version of the above example should help
 make it clear how <code>splice</code> causes events to be emitted:</p>
-<pre><code class="lang-javascript"> var list = new can.List(['a', 'b', 'c', 'd']);
+<pre><code class="language-js"> var list = new can.List(['a', 'b', 'c', 'd']);
  list.bind('change', function(ev, attr, how, newVals, oldVals) {
      console.log('change: ' + attr + ', ' + how + ', ' + newVals + ', ' + oldVals);
  });
@@ -729,14 +731,16 @@ make it clear how <code>splice</code> causes events to be emitted:</p>
  list.bind('length', function(ev, length) {
      console.log('length: ' + length + ', ' + this.attr());
  });
-<p>// starting at index 2, remove one element and insert 'Alice' and 'Bob':
-list.splice(2, 1, 'Alice', 'Bob'); // change: 2, 'remove', undefined, ['c']
-// remove: ['c'], 2
-// length: 5, ['a', 'b', 'Alice', 'Bob', 'd']
-// change: 2, 'add', ['Alice', 'Bob'], ['c']
-// add: ['Alice', 'Bob'], 2
-// length: 5, ['a', 'b', 'Alice', 'Bob', 'd']</code></pre>
-More information about binding to these events can be found under [can.List.attr attr].</p>
+
+ // starting at index 2, remove one element and insert 'Alice' and 'Bob':
+ list.splice(2, 1, 'Alice', 'Bob'); // change: 2, 'remove', undefined, ['c']
+                                    // remove: ['c'], 2
+                                    // length: 5, ['a', 'b', 'Alice', 'Bob', 'd']
+                                    // change: 2, 'add', ['Alice', 'Bob'], ['c']
+                                    // add: ['Alice', 'Bob'], 2
+                                    // length: 5, ['a', 'b', 'Alice', 'Bob', 'd']
+</code></pre>
+<p>More information about binding to these events can be found under [can.List.attr attr].</p>
 
 		</section>
 		
@@ -798,7 +802,7 @@ More information about binding to these events can be found under [can.List.attr
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.List.prototype","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs"},"type":"function","name":"can.List.prototype.splice","description":"<p>Insert and remove elements from a List.</p>\n","title":"splice","signatures":[{"code":"list.splice(index[, howMany[, ...newElements]])","description":"","params":[{"types":[{"type":"Number"}],"name":"index","description":"<p>where to start removing or inserting elements</p>\n"},{"types":[{"type":"Number"}],"optional":true,"name":"howMany","description":"<p>the number of elements to remove\nIf <em>howMany</em> is not provided, <code>splice</code> will all elements from <code>index</code> to the end of the List.</p>\n"},{"types":[{"type":"*"}],"name":"newElements","description":"<p>elements to insert into the List</p>\n"}],"returns":{"types":[{"type":"Array","options":[]}],"description":"<p>the elements removed by <code>splice</code></p>\n"}}],"comment":" ","src":"list/list.js"};
+		var docObject = {"parent":"can.List.prototype","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs"},"type":"function","name":"can.List.prototype.splice","description":"<p>Insert and remove elements from a List.</p>\n","title":"splice","signatures":[{"code":"list.splice(index[, howMany[, ...newElements]])","description":"","params":[{"types":[{"type":"Number"}],"name":"index","description":"<p>where to start removing or inserting elements</p>\n"},{"types":[{"type":"Number"}],"optional":true,"name":"howMany","description":"<p>the number of elements to remove\nIf <em>howMany</em> is not provided, <code>splice</code> will all elements from <code>index</code> to the end of the List.</p>\n"},{"types":[{"type":"*"}],"name":"newElements","description":"<p>elements to insert into the List</p>\n"}],"returns":{"types":[{"type":"Array","options":[]}],"description":"<p>the elements removed by <code>splice</code></p>\n"}}],"comment":" ","src":"list/list.js"};
 	</script>
 	
 	

@@ -124,6 +124,13 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -152,22 +159,15 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.ejs.html" data-search="can.ejs">
-				can.ejs
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.event.html" data-search="can.event">
-				can.event
 			</a>
 			
 	   </li>
@@ -179,6 +179,68 @@
 			
 				
 	<ul class="primary-grouping">
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>Types</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container parent ">
+						<a 	class="typedef" 
+							href="can.fixture.types.Store.html" 
+							data-search="Store">
+							Store
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="typedef" 
+							href="can.fixture.types.requestHandler.html" 
+							data-search="requestHandler">
+							requestHandler
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="typedef" 
+							href="can.fixture.types.responseHandler.html" 
+							data-search="responseHandler">
+							responseHandler
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
 		
 			
 				
@@ -255,90 +317,14 @@
 			
 			
 		
-			
-				
-					
-					<li class="heading search-container">
-						<span>Types</span>
-						
-	<ul >
-		
-			
-				
-				
-					<li class="search-container parent ">
-						<a 	class="typedef" 
-							href="can.fixture.types.Store.html" 
-							data-search="Store">
-							Store
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="typedef" 
-							href="can.fixture.types.requestHandler.html" 
-							data-search="requestHandler">
-							requestHandler
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="typedef" 
-							href="can.fixture.types.responseHandler.html" 
-							data-search="responseHandler">
-							responseHandler
-						</a>
-						
-					</li>
-				
-			
-			
-		
 	</ul>
 
-					</li>
-					
-				
-				
-			
-			
-		
-	</ul>
-
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.mustache.html" data-search="can.mustache">
-				can.mustache
-			</a>
 			
 	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.route.html" data-search="can.route">
 				can.route
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.stache.html" data-search="can.stache">
-				can.stache
 			</a>
 			
 	   </li>
@@ -353,13 +339,6 @@
 	   <li class="search-container">
 	   		<a href="can.view.html" data-search="can.view">
 				can.view
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
-				can.view.bindings
 			</a>
 			
 	   </li>
@@ -505,10 +484,10 @@ values get added to the <code>handler</code>'s request object's data.</p>
 		
 		<li class="parameter">
 			<h4>handler
-				<code>{<a href="can.fixture.types.requestHandler.html" >requestHandler</a>(request, <a href="can.fixture.types.responseHandler.html" >response</a>, requestHeaders)}</code></h4>
+				<code>{<a href="can.fixture.types.requestHandler.html" >requestHandler</a>(<a href="can.AjaxSettings.html" >request</a>, <a href="can.fixture.types.responseHandler.html" >response</a>, requestHeaders)}</code></h4>
 			<div class="description">
 				<p>Specifies the response of the fixture. <code>handler</code> gets called with
-the <a href="can.ajax.html">can.ajax</a> [can.AjaxSettings settings object] and a <a href="can.fixture.types.responseHandler.html">response handler</a>
+the <a href="can.ajax.html">can.ajax</a> <a href="can.AjaxSettings.html">settings object</a> and a <a href="can.fixture.types.responseHandler.html">response handler</a>
 that is used to specify the response.</p>
 
 			</div>
@@ -541,7 +520,7 @@ that is used to specify the response.</p>
 		
 		<li class="parameter">
 			<h4>fixtures
-				<code>{Object&lt;url,<a href="can.fixture.types.requestHandler.html" >requestHandler</a>(request, <a href="can.fixture.types.responseHandler.html" >response</a>, requestHeaders) | String&gt;}</code></h4>
+				<code>{Object&lt;url,<a href="can.fixture.types.requestHandler.html" >requestHandler</a>(<a href="can.AjaxSettings.html" >request</a>, <a href="can.fixture.types.responseHandler.html" >response</a>, requestHeaders) | String&gt;}</code></h4>
 			<div class="description">
 				<p>An mapping of templated urls to redirect urls
 or <a href="can.fixture.types.requestHandler.html">request handler functions</a>.</p>
@@ -637,13 +616,13 @@ can.fixture(&quot;GET /todos/{id}&quot;,
   function(request, response, headers){
     // return the JSON data
     // notice that id is pulled from the url and added to data
-    response(todos[request.data.id]);
+    response(todos[orig.data.id]);
   })
 
 can.fixture(&quot;PUT /todos/{id}&quot;,
   function(request, response, headers){
     // update the todo's data
-    can.extend(todos[request.data.id], request.data );
+    can.extend(todos[orig.data.id], orig.data );
     response({});
   })
 </code></pre>
@@ -824,7 +803,7 @@ sets of fixtures.  You can add something like the following to your fixtures.js 
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"function","name":"can.fixture","description":"<p>Simulate AJAX requests.</p>\n<blockquote>\n<p>Note: can.fixture depends on the can.object plugin. If you are not using the AMD or Steal version of CanJS you need to include <a href=\"http://canjs.com/release/latest/can.object.js\">can.object.js</a> <strong>before</strong> can.fixture.</p>\n</blockquote>\n","title":"can.fixture","test":"can/util/fixture/test.html","signatures":[{"code":"can.fixture( url, toUrl )","description":"<p>Trap requests from one url and redirect them from another.</p>\n","params":[{"types":[{"type":"String"}],"name":"url","description":"<p>Trap requests made by [can.ajax] to this url.</p>\n"},{"types":[{"type":"String"},{"type":"null"}],"name":"toUrl","description":"<p>Redirect requests to this url. If <code>null</code> is provided,\nthis removes a the fixture at <code>url</code>.</p>\n"}]},{"code":"can.fixture( url, handler(request, response, requestHeaders) )","description":"<p>Trap requests to a url and provide the response with a\ncallback function.</p>\n","params":[{"types":[{"type":"String"}],"name":"url","description":"<p>Trap requests made\nby [can.ajax] to this url.</p>\n<p>The url can be templated with tags that\nlook like <code>{TEMPLATE}</code>. For example: &quot;/users/{id}&quot;. Any templated\nvalues get added to the <code>handler</code>'s request object's data.</p>\n"},{"types":[{"type":"can.fixture.types.requestHandler"}],"name":"handler","description":"<p>Specifies the response of the fixture. <code>handler</code> gets called with\nthe [can.ajax] [can.AjaxSettings settings object] and a [can.fixture.types.responseHandler response handler]\nthat is used to specify the response.</p>\n"}]},{"code":"can.fixture(fixtures)","description":"<p>Configures multiple ajax traps.</p>\n","params":[{"types":[{"type":"Object","template":[{"types":[{"type":"url"}]},{"types":[{"type":"can.fixture.types.requestHandler"},{"type":"String"}]}]}],"name":"fixtures","description":"<p>An mapping of templated urls to redirect urls\nor [can.fixture.types.requestHandler request handler functions].</p>\n<pre><code>can.fixture({\n  &quot;/tasks&quot;: &quot;/fixtures/tasks.json&quot;,\n  &quot;DELETE /tasks/{id}&quot;: function(){\n    return {};\n  }\n})\n</code></pre>\n"}]}],"comment":" ","src":"util/fixture/doc/fixture.md","children":[{"name":"can.fixture.types","title":"Types","type":"group","parent":"can.fixture","description":"","order":0,"children":[{"type":"typedef","name":"can.fixture.types.Store","description":"<p>Contains an array of items and methods for\nfinding, adding, updating, and removing items from the store. Many of those\nmethods are designed to work with <code>can.fixture</code> and simulate [can.Model]'s CRUD\nbehavior.</p>\n","title":"Store","parent":"can.fixture.types","src":"util/fixture/doc/storeTypes.md","children":[{"type":"function","name":"can.fixture.types.Store.create","description":"<p>Simulate creating a Model with a fixture.</p>\n","title":"","parent":"can.fixture.types.Store","signatures":[{"code":"store.create(request, callback)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"request","description":"<p>Parameters for the request.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"callback","description":"<p>A function to call with the created item.</p>\n"}]}],"comment":" ","src":"util/fixture/doc/create.md"},{"type":"function","name":"can.fixture.types.Store.destroy","parent":"can.fixture.types.Store","description":"<p>Simulate destroying a Model on a fixture.</p>\n","title":"","signatures":[{"code":"store.destroy(request, callback)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"request","description":"<p>Parameters for the request.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"callback","description":"<p>A function to call after destruction.</p>\n"}]}],"comment":" ","src":"util/fixture/fixture.js"},{"type":"function","name":"can.fixture.types.Store.find","description":"<p>Get an item from the store by ID.</p>\n","title":"","parent":"can.fixture.types.Store","signatures":[{"code":"store.find(settings)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"settings","description":"<p>An object containing an <code>id</code> key corresponding to the item to find.</p>\n"}]}],"comment":" ","src":"util/fixture/doc/find.md"},{"type":"function","name":"can.fixture.types.Store.findAll","description":"<p>Simulate a findAll to a fixture.</p>\n","title":"","parent":"can.fixture.types.Store","signatures":[{"code":"store.findAll(request)","description":"<p><code>store.findAll(request)</code> simulates a request to\nget a list items from the server. It supports the\nfollowing params:</p>\n<ul>\n<li>order - <code>order=name ASC</code></li>\n<li>group - <code>group=name</code></li>\n<li>limit - <code>limit=20</code></li>\n<li>offset - <code>offset=60</code></li>\n<li>id filtering - <code>ownerId=5</code></li>\n</ul>\n","params":[{"types":[{"type":"Object","options":[{"name":"order","description":"<p>The order of the results.\n<code>order: 'name ASC'</code></p>\n","types":[{"type":"String"}]},{"name":"group","description":"<p>How to group the results.\n<code>group: 'name'</code></p>\n","types":[{"type":"String"}]},{"name":"limit","description":"<p>A limit on the number to retrieve.\n<code>limit: 20</code></p>\n","types":[{"type":"String"}]},{"name":"offset","description":"<p>The offset of the results.\n<code>offset: 60</code></p>\n","types":[{"type":"String"}]},{"name":"id","description":"<p>Filtering by ID.\n<code>id: 5</code></p>\n","types":[{"type":"String"}]}]}],"name":"request","description":"<p>The ajax request object. The available parameters are:</p>\n"}],"returns":{"types":[{"type":"Object","options":[]}],"description":"<p>a response object like:</p>\n<pre><code>{\n    count: 1000,\n    limit: 20,\n    offset: 60,\n    data: [item1, item2, ...]\n}\n</code></pre>\n<p>where:</p>\n<ul>\n<li>count - the number of items that match any filtering before limit and offset is taken into account</li>\n<li>offset - the offset passed</li>\n<li>limit - the limit passed</li>\n<li>data - an array of JS objects with each item's properties</li>\n</ul>\n"}}],"types":[],"src":"util/fixture/doc/findAll.md"},{"type":"function","name":"can.fixture.types.Store.findOne","parent":"can.fixture.types.Store","description":"<p>Simulate a findOne request on a fixture.</p>\n","title":"","signatures":[{"code":"store.findOne(request, callback)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"request","description":"<p>Parameters for the request.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"callback","description":"<p>A function to call with the retrieved item.</p>\n"}]}],"comment":" ","src":"util/fixture/fixture.js"},{"type":"function","name":"can.fixture.types.Store.reset","description":"<p>Reset the fixture store.</p>\n","title":"","parent":"can.fixture.types.Store","signatures":[{"code":"store.reset()","description":"","params":[]}],"comment":" ","src":"util/fixture/doc/reset.md"},{"type":"function","name":"can.fixture.types.Store.update","description":"<p>Simulate an update on a fixture.</p>\n","title":"","parent":"can.fixture.types.Store","signatures":[{"code":"store.update(request, callback)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"request","description":"<p>Parameters for the request.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"callback","description":"<p>A function to call with the updated item and headers.</p>\n"}]}],"comment":" ","src":"util/fixture/doc/update.md"}]},{"type":"typedef","name":"can.fixture.types.requestHandler","description":"<p>Specifies the response of a fixture. Used in [can.fixture].</p>\n","title":"requestHandler","types":[{"type":"function","returns":{"types":[{"type":"*"},{"type":"undefined"}],"description":"<p>If a value is returned, it is used as a JSON\nresponse body. If nothing is returned, it's expected that <code>responseHandler</code>\nwas used.</p>\n"},"params":[{"types":[{"type":"can.AjaxSettings"}],"name":"request","description":"<p>The ajax settings object that\nwas passed to [can.ajax] or a jQuery ajax method.  Any templated\nportions of the url passed to [can.fixture] are added as\ndata to <code>request.data</code>.  For example, calling:</p>\n<pre><code>$.get(&quot;/todos/5&quot;);\n</code></pre>\n<p>With the following fixture:</p>\n<pre><code>can.fixture(&quot;/todos/:id&quot;, function(request, response){ })\n</code></pre>\n<p><code>request.data.id</code> will be <code>5</code>.</p>\n"},{"types":[{"type":"can.fixture.types.responseHandler"}],"optional":true,"name":"response","description":"<p>Optionally called to specify the response of the fixture.</p>\n"},{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"String"}]}]}],"name":"requestHeaders","description":"<p>A map of request headers specified by [can.ajax]'s headers property.</p>\n"}]}],"parent":"can.fixture.types","comment":" ","src":"util/fixture/doc/requestHandler.md"},{"type":"typedef","name":"can.fixture.types.responseHandler","description":"<p>Specifies the response of an AJAX request.</p>\n","title":"responseHandler","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"Number"}],"name":"status"},{"types":[{"type":"String"}],"name":"statusText"},{"types":[{"type":"Object","template":[{"types":[{"type":"typeName"}]},{"types":[{"type":"*"}]}]}],"name":"responses"},{"types":[{"type":"headers"}],"name":"headers"}]}],"parent":"can.fixture.types","signatures":[{"code":"response(status [,statusText], responses, headers)","description":"<p>Specify a HTTP response.</p>\n","params":[{"types":[{"type":"Number"}],"name":"status","description":"<p>The <a href=\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html\">HTTP response code</a>. Ex: <code>200</code>.</p>\n"},{"types":[{"type":"String"}],"optional":true,"name":"statusText","description":"<p>the status text of the response. Ex: &quot;success&quot;\nfor 200.</p>\n"},{"types":[{"type":"Object","template":[{"types":[{"type":"typeName"}]},{"types":[{"type":"*"}]}]}],"name":"responses","description":"<p>An object of responses by type.  For example:</p>\n<pre><code>{\n  text: &quot;{\\&quot;age\\&quot;:5}&quot;\n}\n</code></pre>\n<p>If responses does not have a <code>typeName</code> property for the type of request, the\nentire responses object is used as the response data.</p>\n"},{"types":[{"type":"Object","template":[{"types":[{"type":"headerName"}]},{"types":[{"type":"String"}]}]}],"name":"headers","description":"<p>HTTP response headers and values.</p>\n"}]},{"code":"response(responses)","description":"<p>Specify the body of a successful HTTP response.</p>\n","params":[{"types":[{"type":"Object","template":[{"types":[{"type":"typeName"}]},{"types":[{"type":"*"}]}]}],"name":"responses","description":"<p>An object of responses by type.  For example:</p>\n<pre><code>{\n  text: &quot;{\\&quot;age\\&quot;:5}&quot;\n}\n</code></pre>\n<p>If responses does not have a <code>typeName</code> property for the type of request, the\nentire responses object is used as the response data.</p>\n"}]}],"src":"util/fixture/doc/responseHandler.md"}]},{"type":"property","name":"can.fixture.delay","description":"<p><code>can.fixture.delay</code> indicates the delay in milliseconds between an ajax request is made and\nthe success and complete handlers are called.  This only sets\nfunctional synchronous fixtures that return a result. By default, the delay is 200ms.</p>\n","types":[{"type":"Number"}],"title":"delay","parent":"can.fixture","src":"util/fixture/doc/delay.md"},{"type":"property","name":"can.fixture.on","description":"<p><code>can.fixture.on</code> lets you programatically turn off fixtures. This is mostly used for testing.</p>\n","types":[{"type":"Boolean"}],"title":"on","parent":"can.fixture","src":"util/fixture/doc/on.md"},{"type":"function","name":"can.fixture.rand","description":"<p>Create a random number or selection.</p>\n","title":"rand","parent":"can.fixture","signatures":[{"code":"can.fixture.rand([min,] max)","description":"","params":[{"types":[{"type":"Number"}],"optional":true,"name":"min","defaultValue":"0","description":"<p>The lower bound on integers to select.</p>\n"},{"types":[{"type":"Number"}],"name":"max","description":"<p>The upper bound on integers to select.</p>\n"}],"returns":{"types":[{"type":"Number"}],"description":"<p>A random integer in the range [<strong>min</strong>, <strong>max</strong>).</p>\n"}},{"code":"can.fixture.rand(choices, min[ ,max])","description":"","params":[{"types":[{"type":"Array","options":[]}],"name":"choices","description":"<p>An array of things to choose from.</p>\n"},{"types":[{"type":"Number"}],"name":"min","description":"<p>The minimum number of times to choose from <strong>choices</strong>.</p>\n"},{"types":[{"type":"Number"}],"optional":true,"name":"max","defaultValue":"min","description":"<p>The maximum number of times to choose from <strong>choices</strong>.</p>\n"}],"returns":{"types":[{"type":"Array","options":[]}],"description":"<p>An array of between <strong>min</strong> and <strong>max</strong> random choices from <strong>choices</strong>.</p>\n"}}],"comment":" ","src":"util/fixture/doc/rand.md"},{"type":"property","name":"can.fixture.rootUrl","description":"<p><code>can.fixture.rootUrl</code> contains the root URL for fixtures to use.\nIf you are using StealJS it will use the Steal root\nURL by default.</p>\n","types":[{"type":"String"}],"title":"rootUrl","parent":"can.fixture","src":"util/fixture/doc/rootUrl.md"},{"type":"function","name":"can.fixture.store","description":"<p>Make a store of objects to use when making requests against fixtures.</p>\n","title":"store","parent":"can.fixture","signatures":[{"code":"can.fixture.store(count, make[, filter])","description":"","params":[{"types":[{"type":"Number"}],"name":"count","description":"<p>The number of items to create.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"make","description":"<p>A function that will return the JavaScript object. The\nmake function is called back with the id and the current array of items.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"filter","description":"<p>A function used to further filter results. Used for to simulate\nserver params like searchText or startDate.\nThe function should return true if the item passes the filter,\nfalse otherwise. For example:</p>\n<pre><code>function(item, settings){\n    if(settings.data.searchText){\n        var regex = new RegExp(&quot;^&quot;+settings.data.searchText)\n        return regex.test(item.name);\n    }\n}\n</code></pre>\n"}],"returns":{"types":[{"type":"can.fixture.Store"}],"description":"<p>A generator object providing fixture functions for <em>findAll</em>, <em>findOne</em>, <em>create</em>, <em>update</em> and <em>destroy</em>.</p>\n"}}],"comment":" ","src":"util/fixture/doc/store.md"}]};
+		var docObject = {"parent":"canjs","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"type":"function","name":"can.fixture","description":"<p>Simulate AJAX requests.</p>\n<blockquote>\n<p>Note: can.fixture depends on the can.object plugin. If you are not using the AMD or Steal version of CanJS you need to include <a href=\"http://canjs.com/release/latest/can.object.js\">can.object.js</a> <strong>before</strong> can.fixture.</p>\n</blockquote>\n","title":"can.fixture","test":"can/util/fixture/test.html","signatures":[{"code":"can.fixture( url, toUrl )","description":"<p>Trap requests from one url and redirect them from another.</p>\n","params":[{"types":[{"type":"String"}],"name":"url","description":"<p>Trap requests made by [can.ajax] to this url.</p>\n"},{"types":[{"type":"String"},{"type":"null"}],"name":"toUrl","description":"<p>Redirect requests to this url. If <code>null</code> is provided,\nthis removes a the fixture at <code>url</code>.</p>\n"}]},{"code":"can.fixture( url, handler(request, response, requestHeaders) )","description":"<p>Trap requests to a url and provide the response with a\ncallback function.</p>\n","params":[{"types":[{"type":"String"}],"name":"url","description":"<p>Trap requests made\nby [can.ajax] to this url.</p>\n<p>The url can be templated with tags that\nlook like <code>{TEMPLATE}</code>. For example: &quot;/users/{id}&quot;. Any templated\nvalues get added to the <code>handler</code>'s request object's data.</p>\n"},{"types":[{"type":"can.fixture.types.requestHandler"}],"name":"handler","description":"<p>Specifies the response of the fixture. <code>handler</code> gets called with\nthe [can.ajax] [can.AjaxSettings settings object] and a [can.fixture.types.responseHandler response handler]\nthat is used to specify the response.</p>\n"}]},{"code":"can.fixture(fixtures)","description":"<p>Configures multiple ajax traps.</p>\n","params":[{"types":[{"type":"Object","template":[{"types":[{"type":"url"}]},{"types":[{"type":"can.fixture.types.requestHandler"},{"type":"String"}]}]}],"name":"fixtures","description":"<p>An mapping of templated urls to redirect urls\nor [can.fixture.types.requestHandler request handler functions].</p>\n<pre><code>can.fixture({\n  &quot;/tasks&quot;: &quot;/fixtures/tasks.json&quot;,\n  &quot;DELETE /tasks/{id}&quot;: function(){\n    return {};\n  }\n})\n</code></pre>\n"}]}],"comment":" ","src":"util/fixture/fixture.md","children":[{"name":"can.fixture.delay","type":"property","parent":"can.fixture","description":"<p><code>can.fixture.delay</code> indicates the delay in milliseconds between an ajax request is made and\nthe success and complete handlers are called.  This only sets\nfunctional synchronous fixtures that return a result. By default, the delay is 200ms.</p>\n","types":[{"type":"Number"}],"title":"delay","src":"util/fixture/fixture.js"},{"name":"can.fixture.on","type":"property","parent":"can.fixture","description":"<p><code>can.fixture.on</code> lets you programatically turn off fixtures. This is mostly used for testing.</p>\n","types":[{"type":"Boolean"}],"title":"on","src":"util/fixture/fixture.js"},{"name":"can.fixture.rand","type":"function","parent":"can.fixture","description":"<p>Create a random number or selection.</p>\n","title":"rand","signatures":[{"code":"can.fixture.rand([min,] max)","description":"","params":[{"types":[{"type":"Number"}],"optional":true,"name":"min","defaultValue":"0","description":"<p>The lower bound on integers to select.</p>\n"},{"types":[{"type":"Number"}],"name":"max","description":"<p>The upper bound on integers to select.</p>\n"}],"returns":{"types":[{"type":"Number"}],"description":"<p>A random integer in the range [<strong>min</strong>, <strong>max</strong>).</p>\n"}},{"code":"can.fixture.rand(choices, min[ ,max])","description":"","params":[{"types":[{"type":"Array","options":[]}],"name":"choices","description":"<p>An array of things to choose from.</p>\n"},{"types":[{"type":"Number"}],"name":"min","description":"<p>The minimum number of times to choose from <strong>choices</strong>.</p>\n"},{"types":[{"type":"Number"}],"optional":true,"name":"max","defaultValue":"min","description":"<p>The maximum number of times to choose from <strong>choices</strong>.</p>\n"}],"returns":{"types":[{"type":"Array","options":[]}],"description":"<p>An array of between <strong>min</strong> and <strong>max</strong> random choices from <strong>choices</strong>.</p>\n"}}],"comment":" ","src":"util/fixture/fixture.js"},{"name":"can.fixture.rootUrl","type":"property","parent":"can.fixture","description":"<p><code>can.fixture.rootUrl</code> contains the root URL for fixtures to use.\nIf you are using StealJS it will use the Steal root\nURL by default.</p>\n","types":[{"type":"String"}],"title":"rootUrl","src":"util/fixture/fixture.js"},{"type":"function","name":"can.fixture.store","parent":"can.fixture","description":"<p>Make a store of objects to use when making requests against fixtures.</p>\n","title":"store","signatures":[{"code":"can.fixture.store(count, make[, filter])","description":"","params":[{"types":[{"type":"Number"}],"name":"count","description":"<p>The number of items to create.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"make","description":"<p>A function that will return the JavaScript object. The\nmake function is called back with the id and the current array of items.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"filter","description":"<p>A function used to further filter results. Used for to simulate\nserver params like searchText or startDate.\nThe function should return true if the item passes the filter,\nfalse otherwise. For example:</p>\n<pre><code>function(item, settings){\n  if(settings.data.searchText){\n       var regex = new RegExp(&quot;^&quot;+settings.data.searchText)\n      return regex.test(item.name);\n  }\n}\n</code></pre>\n"}],"returns":{"types":[{"type":"can.fixture.Store"}],"description":"<p>A generator object providing fixture functions for <em>findAll</em>, <em>findOne</em>, <em>create</em>,\n<em>update</em> and <em>destroy</em>.</p>\n"}}],"comment":" ","src":"util/fixture/fixture.js"},{"name":"can.fixture.types","title":"Types","type":"group","parent":"can.fixture","description":"","order":0,"children":[{"type":"typedef","name":"can.fixture.types.Store","description":"<p>Contains an array of items and methods for\nfinding, adding, updating, and removing items from the store. Many of those\nmethods are designed to work with <code>can.fixture</code> and simulate [can.Model]'s CRUD\nbehavior.</p>\n","title":"Store","parent":"can.fixture.types","src":"util/fixture/store.md","children":[{"type":"function","name":"can.fixture.types.Store.create","parent":"can.fixture.types.Store","description":"<p>Simulate creating a Model with a fixture.</p>\n","title":"","signatures":[{"code":"store.create(request, callback)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"request","description":"<p>Parameters for the request.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"callback","description":"<p>A function to call with the created item.</p>\n"}]}],"comment":" ","src":"util/fixture/fixture.js"},{"type":"function","name":"can.fixture.types.Store.destroy","parent":"can.fixture.types.Store","description":"<p>Simulate destroying a Model on a fixture.</p>\n","title":"","signatures":[{"code":"store.destroy(request, callback)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"request","description":"<p>Parameters for the request.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"callback","description":"<p>A function to call after destruction.</p>\n"}]}],"comment":" ","src":"util/fixture/fixture.js"},{"type":"function","name":"can.fixture.types.Store.find","parent":"can.fixture.types.Store","description":"<p>Get an item from the store by ID.</p>\n","title":"","signatures":[{"code":"store.find(settings)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"settings","description":"<p>An object containing an <code>id</code> key\ncorresponding to the item to find.</p>\n"}]}],"comment":" ","src":"util/fixture/fixture.js"},{"type":"function","name":"can.fixture.types.Store.findAll","parent":"can.fixture.types.Store","description":"<p>Simulate a findAll to a fixture.</p>\n","title":"","signatures":[{"code":"store.findAll(request)","description":"<p><code>store.findAll(request)</code> simulates a request to\nget a list items from the server. It supports the\nfollowing params:</p>\n<ul>\n<li>order - <code>order=name ASC</code></li>\n<li>group - <code>group=name</code></li>\n<li>limit - <code>limit=20</code></li>\n<li>offset - <code>offset=60</code></li>\n<li>id filtering - <code>ownerId=5</code></li>\n</ul>\n","params":[{"types":[{"type":"Object","options":[{"name":"order","description":"<p>The order of the results.\n<code>order: 'name ASC'</code></p>\n","types":[{"type":"String"}]},{"name":"group","description":"<p>How to group the results.\n<code>group: 'name'</code></p>\n","types":[{"type":"String"}]},{"name":"limit","description":"<p>A limit on the number to retrieve.\n<code>limit: 20</code></p>\n","types":[{"type":"String"}]},{"name":"offset","description":"<p>The offset of the results.\n<code>offset: 60</code></p>\n","types":[{"type":"String"}]},{"name":"id","description":"<p>Filtering by ID.\n<code>id: 5</code></p>\n","types":[{"type":"String"}]}]}],"name":"request","description":"<p>The ajax request object. The available parameters are:</p>\n"}],"returns":{"types":[{"type":"Object","options":[]}],"description":"<p>a response object like:</p>\n<pre><code>{\n  count: 1000,\n  limit: 20,\n  offset: 60,\n  data: [item1, item2, ...]\n}\n</code></pre>\n<p>where:</p>\n<ul>\n<li>count - the number of items that match any filtering\nbefore limit and offset is taken into account</li>\n<li>offset - the offset passed</li>\n<li>limit - the limit passed</li>\n<li>data - an array of JS objects with each item's properties</li>\n</ul>\n"}}],"types":[],"src":"util/fixture/fixture.js"},{"type":"function","name":"can.fixture.types.Store.findOne","parent":"can.fixture.types.Store","description":"<p>Simulate a findOne request on a fixture.</p>\n","title":"","signatures":[{"code":"store.findOne(request, callback)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"request","description":"<p>Parameters for the request.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"callback","description":"<p>A function to call with the retrieved item.</p>\n"}]}],"comment":" ","src":"util/fixture/fixture.js"},{"name":"can.fixture.types.Store.reset","type":"function","parent":"can.fixture.types.Store","description":"<p>Reset the fixture store.</p>\n","title":"","signatures":[{"code":"store.reset()","description":"","params":[]}],"comment":" ","src":"util/fixture/fixture.js"},{"type":"function","name":"can.fixture.types.Store.update","parent":"can.fixture.types.Store","description":"<p>Simulate an update on a fixture.</p>\n","title":"","signatures":[{"code":"store.update(request, callback)","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"request","description":"<p>Parameters for the request.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"callback","description":"<p>A function to call with the updated item and headers.</p>\n"}]}],"comment":" ","src":"util/fixture/fixture.js"}]},{"type":"typedef","name":"can.fixture.types.requestHandler","description":"<p>Specifies the response of a fixture. Used in [can.fixture].</p>\n","title":"requestHandler","types":[{"type":"function","returns":{"types":[{"type":"*"},{"type":"undefined"}],"description":"<p>If a value is returned, it is used as a JSON\nresponse body. If nothing is returned, it's expected that <code>responseHandler</code>\nwas used.</p>\n"},"params":[{"types":[{"type":"can.AjaxSettings"}],"name":"request","description":"<p>The ajax settings object that\nwas passed to [can.ajax] or a jQuery ajax method.  Any templated\nportions of the url passed to [can.fixture] are added as\ndata to <code>request.data</code>.  For example, calling:</p>\n<pre><code>$.get(&quot;/todos/5&quot;);\n</code></pre>\n<p>With the following fixture:</p>\n<pre><code>can.fixture(&quot;/todos/:id&quot;, function(request, response){ })\n</code></pre>\n<p><code>request.data.id</code> will be <code>5</code>.</p>\n"},{"types":[{"type":"can.fixture.types.responseHandler"}],"optional":true,"name":"response","description":"<p>Optionally called to specify the response of the fixture.</p>\n"},{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"String"}]}]}],"name":"requestHeaders","description":"<p>A map of request headers specified by [can.ajax]'s headers property.</p>\n"}]}],"parent":"can.fixture.types","comment":" ","src":"util/fixture/requestHandler.md"},{"type":"typedef","name":"can.fixture.types.responseHandler","description":"<p>Specifies the response of an AJAX request.</p>\n","title":"responseHandler","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"Number"}],"name":"status"},{"types":[{"type":"String"}],"name":"statusText"},{"types":[{"type":"Object","template":[{"types":[{"type":"typeName"}]},{"types":[{"type":"*"}]}]}],"name":"responses"},{"types":[{"type":"headers"}],"name":"headers"}]}],"parent":"can.fixture.types","signatures":[{"code":"response(status [,statusText], responses, headers)","description":"<p>Specify a HTTP response.</p>\n","params":[{"types":[{"type":"Number"}],"name":"status","description":"<p>The <a href=\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html\">HTTP response code</a>. Ex: <code>200</code>.</p>\n"},{"types":[{"type":"String"}],"optional":true,"name":"statusText","description":"<p>the status text of the response. Ex: &quot;success&quot;\nfor 200.</p>\n"},{"types":[{"type":"Object","template":[{"types":[{"type":"typeName"}]},{"types":[{"type":"*"}]}]}],"name":"responses","description":"<p>An object of responses by type.  For example:</p>\n<pre><code>{\n  text: &quot;{\\&quot;age\\&quot;:5}&quot;\n}\n</code></pre>\n<p>If responses does not have a <code>typeName</code> property for the type of request, the\nentire responses object is used as the response data.</p>\n"},{"types":[{"type":"Object","template":[{"types":[{"type":"headerName"}]},{"types":[{"type":"String"}]}]}],"name":"headers","description":"<p>HTTP response headers and values.</p>\n"}]},{"code":"response(responses)","description":"<p>Specify the body of a successful HTTP response.</p>\n","params":[{"types":[{"type":"Object","template":[{"types":[{"type":"typeName"}]},{"types":[{"type":"*"}]}]}],"name":"responses","description":"<p>An object of responses by type.  For example:</p>\n<pre><code>{\n  text: &quot;{\\&quot;age\\&quot;:5}&quot;\n}\n</code></pre>\n<p>If responses does not have a <code>typeName</code> property for the type of request, the\nentire responses object is used as the response data.</p>\n"}]}],"src":"util/fixture/responseHandler.md"}]}]};
 	</script>
 	
 	

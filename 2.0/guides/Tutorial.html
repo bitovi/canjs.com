@@ -281,8 +281,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="Using.html" data-search="Setting up CanJS">
-				Setting up CanJS
+	   		<a href="Using.html" data-search="Using CanJS">
+				Using CanJS
 			</a>
 			
 	   </li>
@@ -398,24 +398,6 @@
 			<p>This tutorial will walk you though the basics of CanJS by building a small
 to-do app with CanJS and jQuery like this:</p>
 <iframe src="http://jsfiddle.net/donejs/c3bfy/embedded/result,html,js,css" frameborder="0" allowfullscreen style="width: 100%; height: 300px;"></iframe>
-<h2>Loading CanJS</h2>
-<p>The first step is to get and install CanJS. In this tutorial we will be using the [using-standalone standalone] version from our CDN (and jQuery from the <a href="https://developers.google.com/speed/libraries/devguide#jquery">Google API CDN</a>) so an <code>index.html</code> like this will get you started:</p>
-<pre><code>&lt;html&gt;
-&lt;head&gt;
-    &lt;title&gt;CanJS Tutorial&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;http://canjs.com/release/latest/can.jquery.js&quot;&gt;&lt;/script&gt;
-    &lt;script type=&quot;text/javascript&quot;&gt;
-        $(function() {
-            // Your tutorial code here
-        });
-    &lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<h2>Get started</h2>
 <p>To get started, click <a href="Constructs.html">Constructs</a> in the navigation to the left, or you can watch the video version.</p>
 <iframe width="560" height="315" src="http://www.youtube.com/embed/GdT4Oq6ZQ68" frameborder="0" allowfullscreen></iframe>
 <p>You can also take a look around and see some nifty <a href="Recipes.html">recipes</a> for building functionality with CanJS, check out
@@ -481,7 +463,7 @@ our <a href="../docs/index.html">API</a>, or dive right in and poke around the <
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"guides","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"page","name":"Tutorial","description":"","title":"Getting Started","order":1,"comment":" ","src":"guides/tutorial.md","children":[{"type":"page","name":"Constructs","description":"","title":"Constructor Functions","parent":"Tutorial","order":0,"comment":" ","src":"guides/constructs.md"},{"type":"page","name":"Controls","description":"","title":"Controls","parent":"Tutorial","order":6,"comment":" ","src":"guides/controls.md"},{"type":"page","name":"Deferreds","description":"","title":"Deferreds","parent":"Tutorial","order":8,"comment":" ","src":"guides/deferred.md"},{"type":"page","name":"Components","description":"<p>Now that you've learned about observables, templates, and controls, it's time to learn\nabout <a href=\"../docs/can.Component.html\">can.Component</a>. can.Component makes it easy to\ncombine the functionality of these features. We'll use it to rewrite the todo\nexample.</p>\n","title":"Components","parent":"Tutorial","order":9,"src":"guides/components.md"},{"type":"page","name":"EJS","description":"","title":"EJS","parent":"Tutorial","order":4,"comment":" ","src":"guides/ejs.md"},{"type":"page","name":"Models","description":"","title":"Models & Retrieving Data","parent":"Tutorial","order":2,"comment":" ","src":"guides/models.md"},{"type":"page","name":"Mustache","description":"","title":"Mustache","parent":"Tutorial","order":5,"comment":" ","src":"guides/mustache.md"},{"type":"page","name":"Observables","description":"","title":"Observables","parent":"Tutorial","order":1,"comment":" ","src":"guides/observables.md"},{"type":"page","name":"Routing","description":"<p><a href=\"../docs/can.route.html\">can.route</a> is the core of CanJS's routing functionality. It is a special\nObserve that updates <code>window.location.hash</code> when its properties change and\nupdates its properties when <code>window.location.hash</code> changes. You can give\n<code>can.route</code> a template to translate URLs into property values, but if no route\nis provided, it just serializes the route into standard URL-encoded notation.</p>\n","title":"Routing","parent":"Tutorial","order":9,"src":"guides/route.md"},{"type":"page","name":"Utilities","description":"","title":"Utility Functions","parent":"Tutorial","order":10,"comment":" ","src":"guides/util.md"},{"type":"page","name":"Templates","description":"","title":"Templates","parent":"Tutorial","order":3,"comment":" ","src":"guides/views.md"}]};
+		var docObject = {"parent":"guides","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"type":"page","name":"Tutorial","description":"","title":"Getting Started","order":1,"comment":" ","src":"guides/tutorial.md","children":[{"type":"page","name":"Components","description":"<p>Now that you've learned about observables, templates, and controls, it's time to learn\nabout <a href=\"../docs/can.Component.html\">can.Component</a>. can.Component makes it easy to\ncombine the functionality of these features. We'll use it to rewrite the todo\nexample.</p>\n","title":"Components","parent":"Tutorial","order":9,"src":"guides/components.md"},{"type":"page","name":"Constructs","description":"","title":"Constructor Functions","parent":"Tutorial","order":0,"comment":" ","src":"guides/constructs.md"},{"type":"page","name":"Controls","description":"","title":"Controls","parent":"Tutorial","order":6,"comment":" ","src":"guides/controls.md"},{"type":"page","name":"Deferreds","description":"","title":"Deferreds","parent":"Tutorial","order":8,"comment":" ","src":"guides/deferred.md"},{"type":"page","name":"EJS","description":"","title":"EJS","parent":"Tutorial","order":4,"comment":" ","src":"guides/ejs.md"},{"type":"page","name":"Models","description":"","title":"Models & Retrieving Data","parent":"Tutorial","order":2,"comment":" ","src":"guides/models.md"},{"type":"page","name":"Mustache","description":"","title":"Mustache","parent":"Tutorial","order":5,"comment":" ","src":"guides/mustache.md"},{"type":"page","name":"Observables","description":"","title":"Observables","parent":"Tutorial","order":1,"comment":" ","src":"guides/observables.md"},{"type":"page","name":"Routing","description":"<p><a href=\"../docs/can.route.html\">can.route</a> is the core of CanJS's routing functionality. It is a special\nObserve that updates <code>window.location.hash</code> when its properties change and\nupdates its properties when <code>window.location.hash</code> changes. You can give\n<code>can.route</code> a template to translate URLs into property values, but if no route\nis provided, it just serializes the route into standard URL-encoded notation.</p>\n","title":"Routing","parent":"Tutorial","order":9,"src":"guides/route.md"},{"type":"page","name":"Utilities","description":"","title":"Utility Functions","parent":"Tutorial","order":10,"comment":" ","src":"guides/util.md"},{"type":"page","name":"Templates","description":"","title":"Templates","parent":"Tutorial","order":3,"comment":" ","src":"guides/views.md"}]};
 	</script>
 	
 	

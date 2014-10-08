@@ -124,6 +124,13 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -154,22 +161,15 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.ejs.html" data-search="can.ejs">
-				can.ejs
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.event.html" data-search="can.event">
-				can.event
 			</a>
 			
 	   </li>
@@ -182,22 +182,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.mustache.html" data-search="can.mustache">
-				can.mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.route.html" data-search="can.route">
 				can.route
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.stache.html" data-search="can.stache">
-				can.stache
 			</a>
 			
 	   </li>
@@ -212,13 +198,6 @@
 	   <li class="search-container">
 	   		<a href="can.view.html" data-search="can.view">
 				can.view
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
-				can.view.bindings
 			</a>
 			
 	   </li>
@@ -297,42 +276,6 @@
 			<div class="description">
 				<p>An array of <a href="can.Model.html">can.Model</a> instances
 or Objects that will be converted to the list's <a href="can.List.Map.html">Map type</a>.</p>
-
-			</div>
-			
-			
-			
-		</li>
-		
-	</ol>
-
-
-
-
-
-
-</div>
-
-				</section>
-			
-				<section class="signature">
-					<h2 id="sig_newcan_Model_List_deferred_">new can.Model.List( deferred )
-</h2>
-<div class="signature-wrapper">
-<p>Create a model list with the results of <code>deferred</code>.</p>
-
-
-	<h3>Parameters</h3>
-
-	<ol class="parameters">
-		
-		<li class="parameter">
-			<h4>deferred
-				<code>{Deferred.Array&lt;<a href="can.Model.html" >can.Model</a> | Object&gt;}</code></h4>
-			<div class="description">
-				<p>A promise that will
-resolve to an array. Once the promise resolves, the <code>List</code> will have its
-contents replaced as if <code>new can.Model.List(array)</code> had been called.</p>
 
 			</div>
 			
@@ -552,7 +495,7 @@ todos.attr(0).destroy(); // console shows &quot;todo 0 removed&quot;
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"constructor","name":"can.Model.List","description":"<p>A list connected to can.Model's CRUD abilities.</p>\n","title":"","inherits":"can.List","download":"can/model","test":"can/model/qunit.html","signatures":[{"code":"new can.Model.List( [models] )","description":"<p>Create a model list with the provided model instances.</p>\n","params":[{"types":[{"type":"Array","template":[{"types":[{"type":"can.Model"},{"type":"Object","options":[]}]}]}],"optional":true,"name":"models","description":"<p>An array of [can.Model] instances\nor Objects that will be converted to the list's [can.List.Map Map type].</p>\n"}]},{"code":"new can.Model.List( deferred )","description":"<p>Create a model list with the results of <code>deferred</code>.</p>\n","params":[{"types":[{"type":"Deferred.Array","template":[{"types":[{"type":"can.Model"},{"type":"Object","options":[]}]}]}],"name":"deferred","description":"<p>A promise that will\nresolve to an array. Once the promise resolves, the <code>List</code> will have its\ncontents replaced as if <code>new can.Model.List(array)</code> had been called.</p>\n"}]},{"code":"new can.Model.List( params )","description":"<p>Create an initially empty model list, but use the model's [can.Model.findAll findAll]\nto get a list of models and add it to this empty list.</p>\n","params":[{"types":[{"type":"Object","options":[]}],"name":"params","description":"<p>Params that are passed to\nthe [can.List.Map Map property's] [can.Model.findAll findAll] method.</p>\n"}]}],"comment":" ","src":"model/model_list.md"};
+		var docObject = {"parent":"canjs","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"type":"constructor","name":"can.Model.List","description":"<p>A list connected to can.Model's CRUD abilities.</p>\n","title":"","inherits":"can.List","download":"can/model","test":"can/model/qunit.html","signatures":[{"code":"new can.Model.List( [models] )","description":"<p>Create a model list with the provided model instances.</p>\n","params":[{"types":[{"type":"Array","template":[{"types":[{"type":"can.Model"},{"type":"Object","options":[]}]}]}],"optional":true,"name":"models","description":"<p>An array of [can.Model] instances\nor Objects that will be converted to the list's [can.List.Map Map type].</p>\n"}]},{"code":"new can.Model.List( params )","description":"<p>Create an initially empty model list, but use the model's [can.Model.findAll findAll]\nto get a list of models and add it to this empty list.</p>\n","params":[{"types":[{"type":"Object","options":[]}],"name":"params","description":"<p>Params that are passed to\nthe [can.List.Map Map property's] [can.Model.findAll findAll] method.</p>\n"}]}],"comment":" ","src":"model/model_list.md"};
 	</script>
 	
 	

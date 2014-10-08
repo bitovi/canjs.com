@@ -10,4 +10,3 @@ docs*
 .idea
 bower_components/
 test/pluginified/latest.js
-docco

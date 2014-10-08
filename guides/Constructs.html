@@ -446,7 +446,7 @@ supplied an prototype method called
 call init with <code>this</code> as the new instance and the arguments passed to the
 constructor.</p>
 <p>This helps make our Todo configurable:</p>
-<pre><code class="lang-javascript">var Todo = can.Construct.extend({
+<pre><code class="language-js">var Todo = can.Construct.extend({
   init: function(owner) {
     this.owner = owner;
   },
@@ -454,20 +454,23 @@ constructor.</p>
     return true;
   }
 });
-<p>var t = new Todo(&quot;me&quot;);
-t.owner; // 'me'</code></pre>
-If you're extending a Construct, you probably want to make sure you call the
+
+var t = new Todo(&quot;me&quot;);
+t.owner; // 'me'
+</code></pre>
+<p>If you're extending a Construct, you probably want to make sure you call the
 base's <code>init</code> method inside the child's <code>init</code>:</p>
-<pre><code class="lang-javascript">var PrivateTodo = can.Construct.extend({
+<pre><code class="language-js">var PrivateTodo = can.Construct.extend({
   init: function(owner, isShared) {
     can.Construct.prototype.init.apply(this, arguments);
     this.isShared = isShared;
   },
   allowedToEdit: function(){
-    return this.owner === "me" || this.isShared;
+    return this.owner === &quot;me&quot; || this.isShared;
   }
-});</code></pre>
-If you find yourself using inheritence a lot, checkout can.Construct's [super plugin](../docs/can.Construct.super.html).
+});
+</code></pre>
+<p>If you find yourself using inheritence a lot, checkout can.Construct's <a href="../docs/can.Construct.super.html">super plugin</a>.</p>
 
 		</section>
 		
@@ -529,7 +532,7 @@ If you find yourself using inheritence a lot, checkout can.Construct's [super pl
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"Tutorial","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs"},"type":"page","name":"Constructs","description":"","title":"Constructor Functions","order":0,"comment":" ","src":"guides/constructs.md"};
+		var docObject = {"parent":"Tutorial","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs"},"type":"page","name":"Constructs","description":"","title":"Constructor Functions","order":0,"comment":" ","src":"guides/constructs.md"};
 	</script>
 	
 	

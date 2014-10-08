@@ -124,6 +124,13 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -174,6 +181,8 @@
 					</li>
 				
 			
+			
+		
 			
 		
 			
@@ -281,8 +290,6 @@
 			
 			
 		
-			
-		
 	</ul>
 
 					</li>
@@ -315,8 +322,6 @@
 			
 			
 		
-			
-		
 	</ul>
 
 					</li>
@@ -330,24 +335,9 @@
 				
 					
 					<li class="heading search-container">
-						<span>Plugins</span>
+						<span>plugins</span>
 						
 	<ul >
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="constructor" 
-							href="can.LazyMap.html" 
-							data-search="can.LazyMap">
-							can.LazyMap
-						</a>
-						
-					</li>
-				
-			
-			
 		
 			
 				
@@ -397,23 +387,8 @@
 			
 				
 				
-					<li class="search-container parent ">
-						<a 	class="property" 
-							href="can.Map.prototype.define.html" 
-							data-search="define">
-							define
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
 					<li class="search-container active parent expanded">
-						<a 	class="function" 
+						<a 	class="page" 
 							href="can.Map.setter.html" 
 							data-search="setter">
 							setter
@@ -426,7 +401,7 @@
 				
 				
 					<li class="search-container  ">
-						<a 	class="function" 
+						<a 	class="constructor" 
 							href="can.classize.html" 
 							data-search="can.classize">
 							can.classize
@@ -489,22 +464,15 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.ejs.html" data-search="can.ejs">
-				can.ejs
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.event.html" data-search="can.event">
-				can.event
 			</a>
 			
 	   </li>
@@ -517,22 +485,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="can.mustache.html" data-search="can.mustache">
-				can.mustache
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
 	   		<a href="can.route.html" data-search="can.route">
 				can.route
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.stache.html" data-search="can.stache">
-				can.stache
 			</a>
 			
 	   </li>
@@ -551,13 +505,6 @@
 			
 	   </li>
 	
-	   <li class="search-container">
-	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
-				can.view.bindings
-			</a>
-			
-	   </li>
-	
 </ul>
 	</nav>
 	
@@ -571,7 +518,7 @@
 			<div class="heading">
 <h1>setter</h1>
 	<ul class="tags">
-		<li>function</li>
+		<li>page</li>
 	</ul>
 	<span class="module">can/map/setter</span>
 	
@@ -605,117 +552,16 @@
 		
 		
 		
-			<section class='warnings'>
-				
-					<div class='deprecated warning'>
-						<h3>Deprecated 2.1</h3>
-						<div class='signature-wrapper'>
-							<p>The setter plugin (and the attributes plugin) have been deprecated in
-favor of the new <a href="can.Map.prototype.define.html">define</a> plugin, which provides the same
-functionality. It will still be maintained up to 3.0 and potentially after.
-Projects using setters should consider switching to <a href="can.Map.prototype.define.set.html">define setters</a>.</p>
-
-						</div>
-					</div>
-				
-			</section>
-		
 
 		
 		<section class="description">
-			<p>Specify setter methods on <a href="can.Map.html">can.Maps</a>.</p>
+			<p><code>can.Map.setter(name, success(value), error(errors))</code> extends the Map object
+to provide convenient helper methods for setting attributes on a observable.</p>
 
 		</section>
 		
 
 		
-			
-				<section class="signature">
-					<h2 id="sig_setATTR_function_newValue_setValue_setErrors_">setATTR: function(newValue,setValue,setErrors)
-</h2>
-<div class="signature-wrapper">
-<p>Specifies a setter method for the <code>ATTR</code> attribute.</p>
-
-
-	<h3>Parameters</h3>
-
-	<ol class="parameters">
-		
-		<li class="parameter">
-			<h4>ATTR
-				<code>{String}</code></h4>
-			<div class="description">
-				<p>The capitalized attribute name this setter will set.</p>
-
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>newValue
-				<code>{*}</code></h4>
-			<div class="description">
-				<p>The propsed value of the attribute specified by <a href="can.Map.prototype.attr.html">attr</a>.</p>
-
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>setValue
-				<code>{<a href="can.Map.setter.setValue.html" >setValue</a>(value)}</code></h4>
-			<div class="description">
-				<p>A callback function that can specify <code>undefined</code> values
-or the value at a later time.</p>
-
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>setErrors
-				<code>{<a href="can.Map.setter.setErrors.html" >setErrors</a>(errors)}</code></h4>
-			<div class="description">
-				<p>A callback function that can specify error data if
-the proposed value is in error.</p>
-
-			</div>
-			
-			
-			
-		</li>
-		
-	</ol>
-
-
-	<h3>Returns</h3>
-	<div class="returns">
-		<h4><code>{*}</code></h4>
-		<div class="description">
-			<p>If a non-undefined value is returned, that value is set as the attribute's value. If
-undefined is returned, it's assumed that the <code>setValue</code> callback will be called.  Use <code>setValue</code> to
-set undefined values.</p>
-<div class='demo_wrapper' data-demo-src='can/map/setter/setter-paginate.html'></div>
-
-		</div>
-		
-		
-	</div>
-	
-
-
-
-
-
-</div>
-
-				</section>
 			
 		
 		
@@ -724,30 +570,13 @@ set undefined values.</p>
 
 		
 		<section class="comment">
-			<h2>Use</h2>
-<p><code>can.Map.setter(name, setValue(value), setErrors(errors))</code> extends the Map object
-to provide convenient helper methods for setting attributes on a map.</p>
-<p>The <a href="can.Map.prototype.attr.html">attr</a> function looks for a camel-case <code>setATTR</code> function to handle setting
-the <code>ATTR</code> property. For example, the following makes sure the <code>birthday</code> attribute is
-always a Date type.</p>
-<pre><code>var Contact = can.Map.extend({
-    setBirthday : function(raw){
-        if(typeof raw === 'number'){
-            return new Date( raw )
-        }else if(raw instanceof Date){
-            return raw;
-        }
-    }
-});
-
-var contact = new Contact({ birthday: 1332777411799 });
-contact.attr('birthday') //-&gt; Date(Mon Mar 26 2012)
-</code></pre>
+			<p>The <code>attr</code> function looks for a <code>setATTRNAME</code> function to handle setting
+the <code>ATTRNAME</code> property.</p>
 <p>By providing a function that takes the raw data and returns a form useful for JavaScript,
 we can make our maps automatically convert data.</p>
 <pre><code>var Contact = can.Map.extend({
     setBirthday : function(raw){
-        if(typeof raw === 'number'){
+        if(typeof raw == 'number'){
             return new Date( raw )
         }else if(raw instanceof Date){
             return raw;
@@ -784,31 +613,37 @@ property's current value is an Map or List, and an Map or List is returned
 from a setter, the effect will not be to merge the values into the current value as
 if the return value was fed straight into <code>attr</code>, but to replace the value with the
 new Map or List completely:</p>
-<pre><code class="lang-javascript">var Contact = can.Map.extend({
+<pre><code class="language-js">var Contact = can.Map.extend({
     setInfo: function(raw) {
       return raw;
     }
 });
-<p>var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
+
+var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
 alice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}
-alice.info._cid; // '.map1'</p>
-<p>alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
+alice.info._cid; // '.map1'
+
+alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
 alice.attr(); // {name: 'Allison Wonderland', 'phone': '888-888-8888'}
-alice.info._cid; // '.map2'</code></pre>
-If you would rather have the new Map or List merged into the current value, call
+alice.info._cid; // '.map2'
+</code></pre>
+<p>If you would rather have the new Map or List merged into the current value, call
 <code>attr</code> inside the setter:</p>
-<pre><code class="lang-javascript">var Contact = can.Map.extend({
+<pre><code class="language-js">var Contact = can.Map.extend({
     setInfo: function(raw) {
       this.info.attr(raw);
       return this.info;
     }
 });
-<p>var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
+
+var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
 alice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}
-alice.info._cid; // '.Map1'</p>
-<p>alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
+alice.info._cid; // '.Map1'
+
+alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
 alice.attr(); // {name: 'Allison Wonderland', email: 'alice@liddell.com', 'phone': '888-888-8888'}
-alice.info._cid; // '.Map1'</code></pre></p>
+alice.info._cid; // '.Map1'
+</code></pre>
 <h2>Error Handling</h2>
 <p>Setters can trigger errors if values passed didn't meet your defined validation(s).</p>
 <p>Below is an example of a <em>School</em> observable that accepts a name property and errors
@@ -835,7 +670,7 @@ school.attr(&quot;name&quot;,&quot;&quot;);
 <h2>Demo</h2>
 <p>The example app is a pagination widget that updates
 the offsets when the <em>Prev</em> or <em>Next</em> button is clicked.</p>
-<p>Notice the <code>setCount</code> and <code>setOffset</code> setters.</p>
+<div class='demo_wrapper' data-demo-src='can/map/setter/setter-paginate.html'></div>
 
 		</section>
 		
@@ -897,7 +732,7 @@ the offsets when the <em>Prev</em> or <em>Next</em> button is clicked.</p>
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Map.plugins","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"function","name":"can.Map.setter","description":"<p>Specify setter methods on [can.Map can.Maps].</p>\n","title":"setter","plugin":"can/map/setter","test":"can/map/setter/test.html","deprecated":[{"version":"2.1","description":"<p>The setter plugin (and the attributes plugin) have been deprecated in\nfavor of the new [can.Map.prototype.define define] plugin, which provides the same\nfunctionality. It will still be maintained up to 3.0 and potentially after.\nProjects using setters should consider switching to [can.Map.prototype.define.set define setters].</p>\n"}],"signatures":[{"code":"setATTR: function(newValue,setValue,setErrors)","description":"<p>Specifies a setter method for the <code>ATTR</code> attribute.</p>\n","params":[{"types":[{"type":"String"}],"name":"ATTR","description":"<p>The capitalized attribute name this setter will set.</p>\n"},{"types":[{"type":"*"}],"name":"newValue","description":"<p>The propsed value of the attribute specified by [can.Map::attr].</p>\n"},{"types":[{"type":"can.Map.setter.setValue"}],"name":"setValue","description":"<p>A callback function that can specify <code>undefined</code> values\nor the value at a later time.</p>\n"},{"types":[{"type":"can.Map.setter.setErrors"}],"name":"setErrors","description":"<p>A callback function that can specify error data if\nthe proposed value is in error.</p>\n"}],"returns":{"types":[{"type":"*"}],"description":"<p>If a non-undefined value is returned, that value is set as the attribute's value. If\nundefined is returned, it's assumed that the <code>setValue</code> callback will be called.  Use <code>setValue</code> to\nset undefined values.</p>\n<div class='demo_wrapper' data-demo-src='can/map/setter/setter-paginate.html'></div>\n"}}],"comment":" ","src":"map/setter/doc/setter.md","children":[{"type":"function","name":"can.classize","description":"<p>Make a string into a class name.</p>\n","title":"can.classize","parent":"can.Map.setter","order":0,"plugin":"can/map/setter","signatures":[{"code":"can.classize(str)","description":"<p><code>can.classize</code> splits a string by underscores or\ndashes and capitalizes each part before joining\nthem back together. This method is useful for\ntaking HTML class names and getting the original\nControl name from them.</p>\n<pre><code class=\"lang-javascript\">can.classize('my_control_name'); // 'MyControlName'</code></pre>\n","params":[{"types":[{"type":"String"}],"name":"str","description":"<p>The string to transform.</p>\n"}],"returns":{"types":[{"type":"String"}],"description":"<p>The string as a class name.</p>\n"}}],"src":"map/setter/doc/can.classize.md"}]};
+		var docObject = {"parent":"can.Map.plugins","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"type":"page","name":"can.Map.setter","description":"<p><code>can.Map.setter(name, success(value), error(errors))</code> extends the Map object\nto provide convenient helper methods for setting attributes on a observable.</p>\n","title":"setter","plugin":"can/map/setter","test":"can/map/setter/test.html","comment":" ","src":"map/setter/setter.md","children":[{"name":"can.classize","type":"constructor","description":"<p>Like [can.camelize camelize], but the first part is also capitalized</p>\n","title":"can.classize","parent":"can.Map.setter","plugin":"can/map/setter","signatures":[{"code":"can.classize(str)","description":"<p><code>can.classize</code> splits a string by underscores or\ndashes and capitalizes each part before joining\nthem back together. This method is useful for\ntaking HTML class names and getting the original\nControl name from them.</p>\n<pre><code class=\"language-js\">can.classize('my_control_name'); // 'MyControlName'\n</code></pre>\n","params":[{"types":[{"type":"String"}],"name":"str","description":"<p>The string to transform.</p>\n"}],"returns":{"types":[{"type":"String"}],"description":"<p>The string as a class name.</p>\n"}}],"src":"map/setter/setter.js","params":[{"types":[{"type":"String"}],"name":"s","description":""}],"returns":{"types":[{"type":"String"}],"description":"<p>the classized string</p>\n"}}]};
 	</script>
 	
 	

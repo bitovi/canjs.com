@@ -124,6 +124,13 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.EJS.html" data-search="can.EJS">
+				can.EJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.List.html" data-search="can.List">
 				can.List
 			</a>
@@ -152,22 +159,15 @@
 	   </li>
 	
 	   <li class="search-container">
+	   		<a href="can.Mustache.html" data-search="can.Mustache">
+				can.Mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.ejs.html" data-search="can.ejs">
-				can.ejs
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.event.html" data-search="can.event">
-				can.event
 			</a>
 			
 	   </li>
@@ -179,6 +179,68 @@
 			
 				
 	<ul class="primary-grouping">
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>Types</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container parent ">
+						<a 	class="typedef" 
+							href="can.fixture.types.Store.html" 
+							data-search="Store">
+							Store
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="typedef" 
+							href="can.fixture.types.requestHandler.html" 
+							data-search="requestHandler">
+							requestHandler
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="typedef" 
+							href="can.fixture.types.responseHandler.html" 
+							data-search="responseHandler">
+							responseHandler
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
 		
 			
 				
@@ -257,90 +319,14 @@
 			
 			
 		
-			
-				
-					
-					<li class="heading search-container">
-						<span>Types</span>
-						
-	<ul >
-		
-			
-				
-				
-					<li class="search-container parent ">
-						<a 	class="typedef" 
-							href="can.fixture.types.Store.html" 
-							data-search="Store">
-							Store
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="typedef" 
-							href="can.fixture.types.requestHandler.html" 
-							data-search="requestHandler">
-							requestHandler
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="typedef" 
-							href="can.fixture.types.responseHandler.html" 
-							data-search="responseHandler">
-							responseHandler
-						</a>
-						
-					</li>
-				
-			
-			
-		
 	</ul>
 
-					</li>
-					
-				
-				
-			
-			
-		
-	</ul>
-
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.mustache.html" data-search="can.mustache">
-				can.mustache
-			</a>
 			
 	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.route.html" data-search="can.route">
 				can.route
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.stache.html" data-search="can.stache">
-				can.stache
 			</a>
 			
 	   </li>
@@ -355,13 +341,6 @@
 	   <li class="search-container">
 	   		<a href="can.view.html" data-search="can.view">
 				can.view
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
-				can.view.bindings
 			</a>
 			
 	   </li>
@@ -467,10 +446,10 @@ server params like searchText or startDate.
 The function should return true if the item passes the filter,
 false otherwise. For example:</p>
 <pre><code>function(item, settings){
-    if(settings.data.searchText){
-        var regex = new RegExp(&quot;^&quot;+settings.data.searchText)
-        return regex.test(item.name);
-    }
+  if(settings.data.searchText){
+       var regex = new RegExp(&quot;^&quot;+settings.data.searchText)
+      return regex.test(item.name);
+  }
 }
 </code></pre>
 
@@ -487,7 +466,8 @@ false otherwise. For example:</p>
 	<div class="returns">
 		<h4><code>{can.fixture.Store}</code></h4>
 		<div class="description">
-			<p>A generator object providing fixture functions for <em>findAll</em>, <em>findOne</em>, <em>create</em>, <em>update</em> and <em>destroy</em>.</p>
+			<p>A generator object providing fixture functions for <em>findAll</em>, <em>findOne</em>, <em>create</em>,
+<em>update</em> and <em>destroy</em>.</p>
 
 		</div>
 		
@@ -516,12 +496,12 @@ the store can do filtering, grouping, sorting, and paging.</p>
 <h2>Basic Example</h2>
 <p>The following creates a store for 100 todos:</p>
 <pre><code>var todoStore = can.fixture.store(100, function(i){
-    return {
-        id: i,
-        name: &quot;todo number &quot;+i,
-        description: &quot;a description of some todo&quot;,
-        ownerId: can.fixture.rand(10)
-    }
+  return {
+    id: i,
+    name: &quot;todo number &quot;+i,
+    description: &quot;a description of some todo&quot;,
+    ownerId: can.fixture.rand(10)
+  }
 })
 </code></pre>
 <p><code>todoStore</code>'s methods:</p>
@@ -533,22 +513,22 @@ the store can do filtering, grouping, sorting, and paging.</p>
 <li><a href="can.fixture.types.Store.destroy.html">destroy</a></li>
 </ul>
 <p>Can be used to simulate a REST service like:</p>
-<pre><code>can.fixture({
-    'GET /todos':         todoStore.findAll,
-    'GET /todos/{id}':    todoStore.findOne,
-    'POST /todos':        todoStore.create,
-    'PUT /todos/{id}':    todoStore.update,
-    'DELETE /todos/{id}': todoStore.destroy
-});
+<pre><code> can.fixture({
+   'GET /todos':         todoStore.findAll,
+   'GET /todos/{id}':    todoStore.findOne,
+   'POST /todos':        todoStore.create,
+   'PUT /todos/{id}':    todoStore.update,
+   'DELETE /todos/{id}': todoStore.destroy
+ });
 </code></pre>
 <p>These fixtures, combined with a <a href="can.Model.html">can.Model</a> that connects to these services like:</p>
-<pre><code>var Todo = can.Model.extend({
-    findAll : 'GET /todos',
-    findOne : 'GET /todos/{id}',
-    create  : 'POST /todos',
-    update  : 'PUT /todos/{id}',
-    destroy : 'DELETE /todos/{id}'
-}, {});
+<pre><code> var Todo = can.Model.extend({
+     findAll : 'GET /todos',
+     findOne : 'GET /todos/{id}',
+     create  : 'POST /todos',
+     update  : 'PUT /todos/{id}',
+     destroy : 'DELETE /todos/{id}'
+ }, {});
 </code></pre>
 <p>... allows you to simulate requests for all of owner 5's todos like:</p>
 <pre><code>Todo.findAll({ownerId: 5}, function(todos){
@@ -616,7 +596,7 @@ the store can do filtering, grouping, sorting, and paging.</p>
 	</script>-->
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.fixture","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"v2.0.7"},"type":"function","name":"can.fixture.store","description":"<p>Make a store of objects to use when making requests against fixtures.</p>\n","title":"store","signatures":[{"code":"can.fixture.store(count, make[, filter])","description":"","params":[{"types":[{"type":"Number"}],"name":"count","description":"<p>The number of items to create.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"make","description":"<p>A function that will return the JavaScript object. The\nmake function is called back with the id and the current array of items.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"filter","description":"<p>A function used to further filter results. Used for to simulate\nserver params like searchText or startDate.\nThe function should return true if the item passes the filter,\nfalse otherwise. For example:</p>\n<pre><code>function(item, settings){\n    if(settings.data.searchText){\n        var regex = new RegExp(&quot;^&quot;+settings.data.searchText)\n        return regex.test(item.name);\n    }\n}\n</code></pre>\n"}],"returns":{"types":[{"type":"can.fixture.Store"}],"description":"<p>A generator object providing fixture functions for <em>findAll</em>, <em>findOne</em>, <em>create</em>, <em>update</em> and <em>destroy</em>.</p>\n"}}],"comment":" ","src":"util/fixture/doc/store.md"};
+		var docObject = {"parent":"can.fixture","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs"},"type":"function","name":"can.fixture.store","description":"<p>Make a store of objects to use when making requests against fixtures.</p>\n","title":"store","signatures":[{"code":"can.fixture.store(count, make[, filter])","description":"","params":[{"types":[{"type":"Number"}],"name":"count","description":"<p>The number of items to create.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"make","description":"<p>A function that will return the JavaScript object. The\nmake function is called back with the id and the current array of items.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"filter","description":"<p>A function used to further filter results. Used for to simulate\nserver params like searchText or startDate.\nThe function should return true if the item passes the filter,\nfalse otherwise. For example:</p>\n<pre><code>function(item, settings){\n  if(settings.data.searchText){\n       var regex = new RegExp(&quot;^&quot;+settings.data.searchText)\n      return regex.test(item.name);\n  }\n}\n</code></pre>\n"}],"returns":{"types":[{"type":"can.fixture.Store"}],"description":"<p>A generator object providing fixture functions for <em>findAll</em>, <em>findOne</em>, <em>create</em>,\n<em>update</em> and <em>destroy</em>.</p>\n"}}],"comment":" ","src":"util/fixture/fixture.js"};
 	</script>
 	
 	

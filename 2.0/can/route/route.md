@@ -5,7 +5,7 @@
 @test can/route/test.html
 @parent canjs
 @group can.route.plugins plugins
-@link ../docco/route/route.html docco
+@link ../docco/route.html docco
 
 @description Manage browser history and
 client state by synchronizing the window.location.hash with
@@ -231,4 +231,4 @@ and show a specific recipe when __id__ was set, you could do something like:
 
 If we didn't only listen to when recipe is set, then every time we chose to
 show a single recipe, we would create and show the list of recipes again which 
-would not be very efficient.
+would not very efficient.
