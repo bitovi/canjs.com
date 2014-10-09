@@ -20,6 +20,22 @@ module.exports = function(docMap, options, getCurrent){
 		},
 		pageType: function(){
 			return getCurrent().type === "template" ? getCurrent().name : ""
+		},
+		urlDownload: function (docObject) {
+			if(docObject.download){
+				return "http://bitbuilder.herokuapp.com/can.custom.js?plugins="+docObject.download;
+			} else {
+				return "";
+			}
+		},
+		urlSource: function (src, type, line) {
+			
+			// line ? '#L' + line : ''
+			var source = getCurrent().project.source;
+			return source.replace("git://","https://").replace(/#(.*)/, function(whole, rest){
+				return "/tree/"+rest+"/"+src;
+			});
+			
 		}
 	};
 };
