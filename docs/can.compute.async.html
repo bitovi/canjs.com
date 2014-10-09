@@ -475,7 +475,7 @@ var todos = can.compute.async(new Todo.List(), function(todoList, setValue){
 	
 
     
-    <!--<script type="text/javascript">
+    <script type="text/javascript">
 
 	  var _gaq = _gaq || [];
 	  _gaq.push(['_setAccount', 'UA-2302003-11']);
@@ -489,7 +489,7 @@ var todos = can.compute.async(new Todo.List(), function(todoList, setValue){
 	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
 	
-	</script>-->
+	</script>
 	
 	<script type="text/javascript">
 		var docObject = {"parent":"can.compute","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.compute.async","description":"<p>Create a compute that can set its value after the computed function has been called.</p>\n","title":"","release":"2.1","hide":true,"signatures":[{"code":"can.compute.async(initialValue, computed(currentValue, setValue(newValue) )","description":"","params":[{"types":[{"type":"*"}],"name":"The","description":"<p>initial value of the compute.</p>\n"},{"types":[{"type":"can.compute.asyncComputer"}],"name":"computed","description":"<p>A function\nthat returns the current value of the compute and can optionally later call\nits <code>setValue</code> callback to update the value.</p>\n"}],"returns":{"types":[{"type":"can.computed"}],"description":"<p>Returns a compute, but a compute that will\npossibly not have the correct value unless it is bound to.</p>\n"}}],"comment":" ","src":"compute/async.md"};

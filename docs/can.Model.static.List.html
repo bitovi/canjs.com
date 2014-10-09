@@ -754,7 +754,7 @@ Task.List.Map //-&gt; Task</p>
 	
 
     
-    <!--<script type="text/javascript">
+    <script type="text/javascript">
 
 	  var _gaq = _gaq || [];
 	  _gaq.push(['_setAccount', 'UA-2302003-11']);
@@ -768,7 +768,7 @@ Task.List.Map //-&gt; Task</p>
 	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
 	
-	</script>-->
+	</script>
 	
 	<script type="text/javascript">
 		var docObject = {"parent":"can.Model.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"property","description":"<p>Specifies the type of List that [can.Model.findAll findAll] should return.</p>\n","types":[{"type":"can.Model.List","description":"<p>A can.Model's List property is the\ntype of [can.List List] returned\nfrom [can.Model.findAll findAll]. For example:</p>\n<p>Task = can.Model.extend({\nfindAll: &quot;/tasks&quot;\n},{})</p>\n<p>Task.findAll({}, function(tasks){\ntasks instanceof Task.List //-&gt; true\n})</p>\n<p>Overwrite a Model's <code>List</code> property to add custom\nbehavior to the lists provided to <code>findAll</code> like:</p>\n<p>Task = can.Model.extend({\nfindAll: &quot;/tasks&quot;\n},{})\nTask.List = Task.List.extend({\ncompleted: function(){\nvar count = 0;\nthis.each(function(task){\nif( task.attr(&quot;completed&quot;) ) count++;\n})\nreturn count;\n}\n})</p>\n<p>Task.findAll({}, function(tasks){\ntasks.completed() //-&gt; 3\n})</p>\n<p>When [can.Model] is extended,\n[can.Model.List] is extended and set as the extended Model's\n<code>List</code> property. The extended list's [can.List.Map Map] property\nis set to the extended Model.  For example:</p>\n<p>Task = can.Model.extend({\nfindAll: &quot;/tasks&quot;\n},{})\nTask.List.Map //-&gt; Task</p>\n"}],"title":"List","name":"can.Model.static.List","src":"model/model.js"};

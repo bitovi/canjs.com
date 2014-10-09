@@ -19,7 +19,7 @@ module.exports = function(docMap, options, getCurrent){
 			}
 		},
 		pageType: function(){
-			return getCurrent().type === "template" ? getCurrent().name : ""
+			return getCurrent().type === "template" ? getCurrent().name : "";
 		},
 		urlDownload: function (docObject) {
 			if(docObject.download){
