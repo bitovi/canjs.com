@@ -4,7 +4,7 @@ steal(
 	"./frame_helper.js",
 	"./versions.js",
 	"./styles/styles.less!",
-	"./prettify",
+	"prettify",
 	
 	// canjs.com's stuff
 	"./app.js",

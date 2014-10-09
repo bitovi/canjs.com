@@ -5,14 +5,16 @@
 			"jquery/jquery": "jquery",
 			"can/util/util": "can/util/jquery/jquery",
 			"benchmark/benchmark": "benchmark",
-			"mustache": "can/view/mustache/system"
+			"mustache": "can/view/mustache/system",
+			"prettify/prettify": "prettify"
 		},
 		paths: {
 			"jquery": isClient ? "can/lib/jquery.1.10.2.js" : "../../../../node_modules/canjs/lib/jquery.1.10.2.js",
 			"can/*": isClient ? "can/*.js" : "../../../../node_modules/canjs/*.js",
 			"jqueryui" : "lib/jquery-ui.1.10.3.js",
 			"moment": "lib/moment.js",
-			"grayscale": "lib/grayscale.js"
+			"grayscale": "lib/grayscale.js",
+			"prettify": "prettify.js"
 		},
 		meta: {
 			jquery: { exports: "jQuery" },
