@@ -592,10 +592,17 @@ can.view('//todo/views/init.ejs', todos)
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"constructor","name":"can.EJS-constructor","description":"<p>EJS provides <strong>live</strong> ERB-style client-side templates.</p>\n","title":"can.EJS","hide":true,"deprecated":[{"version":"2.1","description":"<p>EJS is incompatable with [can.Component] and should\nbe avoided for new projects. It will still be maintained up to\n3.0 and potentially after. Projects using EJS should consider\nswitching to [can.stache]. The EJS constructor funciton is also\nnow considered an internal API so you should use [can.ejs] to create your templates.</p>\n"}],"signatures":[{"code":"new can.ejs(options)","description":"<p>Creates an EmbeddedJS template. Use EJS with [can.view] or [can.view.ejs].</p>\n","params":[]}],"comment":" ","src":"view/ejs/doc/ejsConstructor.md"};
+		var docObject = {"parent":"canjs","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"forceBuild":true,"debug":true,"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"constructor","name":"can.EJS-constructor","description":"<p>EJS provides <strong>live</strong> ERB-style client-side templates.</p>\n","title":"can.EJS","hide":true,"deprecated":[{"version":"2.1","description":"<p>EJS is incompatable with [can.Component] and should\nbe avoided for new projects. It will still be maintained up to\n3.0 and potentially after. Projects using EJS should consider\nswitching to [can.stache]. The EJS constructor funciton is also\nnow considered an internal API so you should use [can.ejs] to create your templates.</p>\n"}],"signatures":[{"code":"new can.ejs(options)","description":"<p>Creates an EmbeddedJS template. Use EJS with [can.view] or [can.view.ejs].</p>\n","params":[]}],"comment":" ","src":"view/ejs/doc/ejsConstructor.md"};
 	</script>
 	
 	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
 		<script type='text/javascript' 
 				data-main="static"
 				src="./static/steal.production.js"

@@ -750,7 +750,7 @@ create the individual instances.</p>
 	
 
     
-    <!--<script type="text/javascript">
+    <script type="text/javascript">
 
 	  var _gaq = _gaq || [];
 	  _gaq.push(['_setAccount', 'UA-2302003-11']);
@@ -764,13 +764,20 @@ create the individual instances.</p>
 	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
 	
-	</script>-->
+	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Model.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"forceBuild":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"name":"can.Model.models","type":"function","description":"<p>Convert raw data into can.Model instances.</p>\n","title":"models","signatures":[{"code":"can.Model.models(data[, oldList])","description":"","params":[{"types":[{"type":"Array","template":[{"types":[{"type":"Object","options":[]}]}]}],"name":"data","description":"<p>The raw data from a <code>[can.Model.findAll findAll()]</code> request.</p>\n"},{"types":[{"type":"can.Model.List"}],"optional":true,"name":"oldList","description":"<p>If supplied, this List will be updated with the data from\n<strong>data</strong>.</p>\n"}],"returns":{"types":[{"type":"can.Model.List"}],"description":"<p>A List of Models made from the raw data.</p>\n"}},{"code":"models: \"PROPERTY\"","description":"<p>Creates a <code>models</code> function that looks for the array of instance data in the PROPERTY\nproperty of the raw response data of [can.Model.findAll].</p>\n","params":[]}],"comment":" ","src":"model/model.js"};
+		var docObject = {"parent":"can.Model.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"forceBuild":true,"debug":true,"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"name":"can.Model.models","type":"function","description":"<p>Convert raw data into can.Model instances.</p>\n","title":"models","signatures":[{"code":"can.Model.models(data[, oldList])","description":"","params":[{"types":[{"type":"Array","template":[{"types":[{"type":"Object","options":[]}]}]}],"name":"data","description":"<p>The raw data from a <code>[can.Model.findAll findAll()]</code> request.</p>\n"},{"types":[{"type":"can.Model.List"}],"optional":true,"name":"oldList","description":"<p>If supplied, this List will be updated with the data from\n<strong>data</strong>.</p>\n"}],"returns":{"types":[{"type":"can.Model.List"}],"description":"<p>A List of Models made from the raw data.</p>\n"}},{"code":"models: \"PROPERTY\"","description":"<p>Creates a <code>models</code> function that looks for the array of instance data in the PROPERTY\nproperty of the raw response data of [can.Model.findAll].</p>\n","params":[]}],"comment":" ","src":"model/model.js"};
 	</script>
 	
 	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
 		<script type='text/javascript' 
 				data-main="static"
 				src="./static/steal.production.js"

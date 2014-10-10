@@ -407,10 +407,17 @@ the content can be rendered with subtemplate.  For example:</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"typedef","name":"can.view.tagData","description":"<p>The data passed to [can.view.tag].</p>\n","title":"","types":[{"type":"Object","options":[{"name":"subtemplate","description":"<p>If the special tag has content,\nthe content can be rendered with subtemplate.  For example:</p>\n<pre><code>can.view.tag(&quot;foo-bar&quot;, function(el, tagData){\n  var frag = tagData.subtemplate(tagData.scope, tagData.options)\n  $(el).html( frag )\n})\n</code></pre>\n","types":[{"type":"can.view.renderer"}],"optional":true},{"name":"scope","description":"<p>The scope of the element.</p>\n","types":[{"type":"can.view.Scope"}]},{"name":"options","description":"<p>The mustache helpers and other non-data values passed to the template.</p>\n","types":[{"type":"can.view.Options"}]}]}],"src":"view/doc/tagData.md"};
+		var docObject = {"parent":"canjs","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"forceBuild":true,"debug":true,"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"typedef","name":"can.view.tagData","description":"<p>The data passed to [can.view.tag].</p>\n","title":"","types":[{"type":"Object","options":[{"name":"subtemplate","description":"<p>If the special tag has content,\nthe content can be rendered with subtemplate.  For example:</p>\n<pre><code>can.view.tag(&quot;foo-bar&quot;, function(el, tagData){\n  var frag = tagData.subtemplate(tagData.scope, tagData.options)\n  $(el).html( frag )\n})\n</code></pre>\n","types":[{"type":"can.view.renderer"}],"optional":true},{"name":"scope","description":"<p>The scope of the element.</p>\n","types":[{"type":"can.view.Scope"}]},{"name":"options","description":"<p>The mustache helpers and other non-data values passed to the template.</p>\n","types":[{"type":"can.view.Options"}]}]}],"src":"view/doc/tagData.md"};
 	</script>
 	
 	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
 		<script type='text/javascript' 
 				data-main="static"
 				src="./static/steal.production.js"

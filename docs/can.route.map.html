@@ -706,10 +706,17 @@ locations.done(function(){
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.route.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.route.map","description":"<p>Assign a can.Map instance that acts as can.route's internal can.Map.  The purpose for this is to cross-bind a top level state object (Application State) to the can.route.</p>\n","title":"map","signatures":[{"code":"can.route.map(mapConstructor)","description":"","params":[{"types":[{"type":"can.Map"}],"name":"mapConstructor","description":"<p>A can.Map constructor function.  A new can.Map instance will be created and used as the can.Map internal to can.route.</p>\n"}]},{"code":"can.route.map(mapInstance)","description":"","params":[{"types":[{"type":"can.Map"}],"name":"mapInstance","description":"<p>A can.Map instance, used as the can.Map internal to can.route.</p>\n"}]}],"comment":" ","src":"route/docs/map.md"};
+		var docObject = {"parent":"can.route.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"forceBuild":true,"debug":true,"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.route.map","description":"<p>Assign a can.Map instance that acts as can.route's internal can.Map.  The purpose for this is to cross-bind a top level state object (Application State) to the can.route.</p>\n","title":"map","signatures":[{"code":"can.route.map(mapConstructor)","description":"","params":[{"types":[{"type":"can.Map"}],"name":"mapConstructor","description":"<p>A can.Map constructor function.  A new can.Map instance will be created and used as the can.Map internal to can.route.</p>\n"}]},{"code":"can.route.map(mapInstance)","description":"","params":[{"types":[{"type":"can.Map"}],"name":"mapInstance","description":"<p>A can.Map instance, used as the can.Map internal to can.route.</p>\n"}]}],"comment":" ","src":"route/docs/map.md"};
 	</script>
 	
 	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
 		<script type='text/javascript' 
 				data-main="static"
 				src="./static/steal.production.js"

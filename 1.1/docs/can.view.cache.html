@@ -515,7 +515,7 @@ the views to reload from the server, you can set the <code>cache</code> attribut
 	
 
     
-    <!--<script type="text/javascript">
+    <script type="text/javascript">
 
 	  var _gaq = _gaq || [];
 	  _gaq.push(['_setAccount', 'UA-2302003-11']);
@@ -529,13 +529,20 @@ the views to reload from the server, you can set the <code>cache</code> attribut
 	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
 	
-	</script>-->
+	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.view.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"forceBuild":true,"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"},"name":"can.view.cache","type":"property","description":"<p>By default, views are cached on the client.  If you'd like the\nthe views to reload from the server, you can set the <code>cache</code> attribute to <code>false</code>.</p>\n","types":[{"type":"Boolean"}],"title":"cache","src":"view/view.js"};
+		var docObject = {"parent":"can.view.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"forceBuild":true,"debug":true,"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"},"name":"can.view.cache","type":"property","description":"<p>By default, views are cached on the client.  If you'd like the\nthe views to reload from the server, you can set the <code>cache</code> attribute to <code>false</code>.</p>\n","types":[{"type":"Boolean"}],"title":"cache","src":"view/view.js"};
 	</script>
 	
 	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
 		<script type='text/javascript' 
 				data-main="static"
 				src="./static/steal.production.js"
