@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>cookie.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>cookie.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'jquery/dom/cookie'</span>,<span class="hljs-string">'jquery/model/list'</span>).then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($)</span></span>{
+
+<span class="hljs-comment">/**
+ * @constructor jQuery.Model.List.Cookie
+ * @plugin jquery/model/list/cookie
+ * @test jquery/model/list/cookie/qunit.html
+ * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/model/list/cookie/cookie.js
+ * @parent jQuery.Model.List
+ * 
+ * Provides a store-able list of model instances.  The following 
+ * retrieves and saves a list of contacts:
+ * 
+ * @codestart
+ * var contacts = new Contact.List([]).retrieve("contacts");
+ * 
+ * // add each contact to the page
+ * contacts.each(function(){
+	addContact(this);
+ * });
+ * 
+ * // when a new cookie is crated
+ * $("#contact").submit(function(ev){
+ * 	ev.preventDefault();
+ * 	var data = $(this).formParams();
+ * 	
+ * 	// gives it a random id
+ * 	data.id = +new Date();
+ * 	var contact = new Contact(data);
+ * 	
+ * 	//add it to the list of contacts 
+ * 	contacts.push(contact);
+ * 	
+ * 	//store the current list
+ * 	contacts.store("contacts");
+ * 	
+ * 	//show the contact
+ * 	addContact(contact);
+ * })
+ * @codeend
+ * 
+ * You can see this in action in the following demo.  Create a contact, then
+ * refresh the page.
+ * 
+ * @demo jquery/model/list/cookie/cookie.html
+ */</span>
+$.Model.List(<span class="hljs-string">"jQuery.Model.List.Cookie"</span>,
+<span class="hljs-comment">/**
+ * @Prototype
+ */</span>
+{
+	days : <span class="hljs-literal">null</span>,
+	<span class="hljs-comment">/**
+	 * Deserializes a list of instances in the cookie with the provided name
+	 * @param {String} name the name of the cookie to use.
+	 * @return {jQuery.Model} returns this model instance.
+	 */</span>
+	retrieve : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span></span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>each also needs what they are referencd by ?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> props = $.cookie( name ) || {type : <span class="hljs-literal">null</span>, ids : []},
+			instances = [],
+			Class = props.type ? $.<span class="hljs-built_in">String</span>.getObject(props.type) :  <span class="hljs-literal">null</span>;
+		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i =<span class="hljs-number">0</span>; i &lt; props.ids.length;i++){
+			<span class="hljs-keyword">var</span> identity = props.ids[i],
+				instanceData = $.cookie( identity );
+			instances.push( <span class="hljs-keyword">new</span> Class(instanceData) )
+		}
+		<span class="hljs-keyword">this</span>.push.apply(<span class="hljs-keyword">this</span>,instances);
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+	},
+	<span class="hljs-comment">/**
+	 * Serializes and saves this list of model instances to the cookie in name.
+	 * @param {String} name the name of the cookie
+	 * @return {jQuery.Model} returns this model instance.
+	 */</span>
+	store : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span></span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p> go through and listen to instance updating</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> ids = [], days = <span class="hljs-keyword">this</span>.days;
+		<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(i, inst)</span></span>{
+			$.cookie(inst.identity(), $.toJSON(inst.attrs()), { expires: days });
+			ids.push(inst.identity());
+		});
+		
+		$.cookie(name, $.toJSON({
+			type: <span class="hljs-keyword">this</span>[<span class="hljs-number">0</span>] &amp;&amp; <span class="hljs-keyword">this</span>[<span class="hljs-number">0</span>].constructor.fullName,
+			ids: ids
+		}), { expires: <span class="hljs-keyword">this</span>.days });
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+	}
+})
+	
+})</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

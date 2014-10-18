@@ -1,126 +1,149 @@
 /*global module:false*/
 module.exports = function (grunt) {
-
+	var platoJSHint = grunt.file.readJSON('default_jshintrc.json');
+	
 	var _ = grunt.util._;
 	var path = require('path');
+	
+	var versions = {
+		"1.1" : {
+			"source": "git://github.com/bitovi/canjs#1.1-legacy",
+			"sites": {
+				"docs": {
+					"glob": {
+						"ignore": ["guides/*.md","{node_modules,bower_components}/**/*"]
+					},
+					"parent" : "canjs"
+				},
+				"guides": {
+					"glob": {
+						"pattern": "{guides/*.md,*.md}"
+					},
+					"parent": "guides"
+				}
+			}
+		},
+		"2.0" : {
+			"source": "https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac",
+			"sites": {
+				"docs": {
+					"glob": {
+						"ignore": "guides/*.md"
+					},
+					"parent" : "canjs"
+				},
+				"guides": {
+					"glob": {
+						"pattern": "{guides/*.md,*.md}"
+					},
+					"parent": "guides"
+				}
+			}
+		},
+		"2.1" : "git://github.com/bitovi/canjs#master"
+	};
+	var defaultVersion = "2.1";
+	var versionsNames = Object.keys(versions);
 
-
-	var canPkg = grunt.file.readJSON('can/package.json'),
-		minor = canPkg.version.split(".").slice(0,2).join("."),
-		versions = grunt.file.readJSON('versions.json'),
-		versionMap = {};
-
-	versions.forEach(function(version){
-		versionMap[version.number] = version;
-	});
-
+	
+	var doccoConfig = function(){
+		var config = {};
+		_.each(versions, function(value, versionNumber){
+			
+			var path = (versionNumber !== defaultVersion ? versionNumber+"/" : "");
+			
+			config[versionNumber] = {
+				options: {
+					dst: path+'docco',
+					layout: 'parallel',
+					css: 'scripts/docco.css'
+				},
+				files : [
+					{
+						src : [
+							'component/**/*.js',
+							'compute/**/*.js',
+							'construct/**/*.js',
+							'control/**/*.js',
+							'list/**/*.js',
+							'map/**/*.js',
+							'model/**/*.js',
+							'observe/**/*.js',
+							'route/**/*.js',
+							'util/**/*.js',
+							'view/**/*.js',
+							'!util/dojo/dojo-1.8.1.js',
+							'!util/dojo/nodelist-traverse.js',
+							'!**/*_test.js'
+						],
+						expand : true,
+						cwd : path+"can/"
+					}
+				]
+			};
+		});
+		return config;
+	};
+	
+	var platoConfig = function(){
+		var config = {};
+		_.each(versions, function(value, versionNumber){
+			
+			var path = (versionNumber !== defaultVersion ? versionNumber+"/" : "");
+			var files = [
+				path+'can/component/**/*.js',
+				path+'can/compute/**/*.js',
+				path+'can/construct/**/*.js',
+				path+'can/control/**/*.js',
+				path+'can/list/**/*.js',
+				path+'can/map/**/*.js',
+				path+'can/model/**/*.js',
+				path+'can/observe/**/*.js',
+				path+'can/route/**/*.js',
+				path+'can/util/**/*.js',
+				path+'can/view/**/*.js',
+				'!**/dojo-1.8.1.js',
+				'!**/nodelist-traverse.js',
+				'!**/*_test.js',
+				'!**/spec/specs/*.js'
+			];
+			
+			config[versionNumber] = {
+				options : {
+					jshint : platoJSHint,
+					title : "CanJS Source",
+					exclude : /bower_components\|dist\|docs\|guides\|lib\|node_modules\|src\|examples\|dojo\-\|demos/
+				},
+				files: {
+					
+				}
+			};
+			config[versionNumber].files[path+"plato"] = files;
+		});
+		return config;
+	};
+	var cleanConfig = function(){
+		var config = {};
+		
+		_.each(versions, function(value, versionNumber){
+			var path = (versionNumber !== defaultVersion ? versionNumber+"/" : "");
+			config[versionNumber] = [
+				process.cwd() + '/'+path+"can",
+				process.cwd() + '/'+path+"guides",
+				process.cwd() + '/'+path+"docs",
+				process.cwd() + '/'+path+"docco"
+			];
+		});
+		return config;
+	};
 
 	// Project configuration.
 	grunt.initConfig({
 		// Metadata.
 		pkg: grunt.file.readJSON('package.json'),
-		can: {
-			pkg: grunt.file.readJSON('can/package.json'),
-			path: 'can/'
-		},
-		docco: {
-			dev: {
-				options: {
-					dst:  minor+'/docco',
-					layout : 'parallel',
-					css : 'scripts/docco.css'
-				},
-				files : [
-					{
-						src : [
-							'component/**/*.js',
-							'compute/**/*.js',
-							'construct/**/*.js',
-							'control/**/*.js',
-							'list/**/*.js',
-							'map/**/*.js',
-							'model/**/*.js',
-							'observe/**/*.js',
-							'route/**/*.js',
-							'util/**/*.js',
-							'view/**/*.js',
-							'!util/dojo/dojo-1.8.1.js',
-							'!util/dojo/nodelist-traverse.js',
-							'!**/*_test.js'
-						],
-						expand : true,
-						cwd : "can/"
-					}
-				]
-			},
-			latest: {
-				options: {
-					dst:  'docco/',
-					layout : 'parallel',
-					css : 'scripts/docco.css'
-				},
-				files : [
-					{
-						src : [
-							'component/**/*.js',
-							'compute/**/*.js',
-							'construct/**/*.js',
-							'control/**/*.js',
-							'list/**/*.js',
-							'map/**/*.js',
-							'model/**/*.js',
-							'observe/**/*.js',
-							'route/**/*.js',
-							'util/**/*.js',
-							'view/**/*.js',
-							'!util/dojo/dojo-1.8.1.js',
-							'!util/dojo/nodelist-traverse.js',
-							'!**/*_test.js'
-						],
-						expand : true,
-						cwd : "can/"
-					}
-				]
-			}
-		},
-		plato: {
-			src : {
-				options : {
-					jshint : grunt.file.readJSON('can/.jshintrc'),
-					title : "CanJS Source",
-					exclude : /bower_components\|dist\|docs\|guides\|lib\|node_modules\|src\|examples\|dojo\-\|demos/
-				},
-				files: {
-					'plato/src': [
-						'can/component/**/*.js',
-						'can/compute/**/*.js',
-						'can/construct/**/*.js',
-						'can/control/**/*.js',
-						'can/list/**/*.js',
-						'can/map/**/*.js',
-						'can/model/**/*.js',
-						'can/observe/**/*.js',
-						'can/route/**/*.js',
-						'can/util/**/*.js',
-						'can/view/**/*.js',
-						'!util/dojo/dojo-1.8.1.js',
-						'!util/dojo/nodelist-traverse.js',
-						'!**/*_test.js'
-					]
-				}
-			}
-		},
-		shell: {
-			docjs: {
-				command: "./js ./scripts/doc.js -g",
-				options: {
-					stdout: true,
-					stderr: true,
-					failOnError: true
-				}
-			}
-		},
-		'dash-docset': {
+		docco: doccoConfig(),
+		plato: platoConfig(),
+		/*'dash-docset': {
 			dist: {
 				options: {
 					path: process.cwd() + '/' + minor + '/docset/',
@@ -141,9 +164,43 @@ module.exports = function (grunt) {
 					containingFolder: process.cwd() + '/' + minor + '/'
 				}
 			}
-		},
-		clean: [process.cwd() + '/' + minor + '/docset/',
-				process.cwd() + '/' + minor + '/']
+		},*/
+		clean: cleanConfig(),
+		
+		documentjs: {
+			"versions": versions,
+			"defaultVersion" : defaultVersion,
+			"siteDefaults": {
+				"parent" : "canjs",
+				"templates" : "theme/templates",
+				"static": "theme/static",
+				"pageConfig": {
+					"urls": {
+						"builderData": "http://bitbuilder.herokuapp.com/canjs",
+						"builder": "http://bitbuilder.herokuapp.com/can.custom.js",
+						"bithub": "http://api.bithub.com/api/v1/events/",
+						"cdn": "//canjs.com/release/",
+						"github":"https://github.com/bitovi/canjs.com"
+					},
+					"versions": [
+						{"branch": "master","number": "2.1"},
+						{"number": "2.0"},
+						{"number": "1.1"}
+					],
+					"defaultDownloadVersion": "2.1.3"
+				},
+				"versionsSelectText" : "CanJS v<%= version %>"
+			},
+			"defaultDest" : "./can",
+			"versionDest" : "./<%=version%>/can",
+			"sites": {
+				"pages" : {
+					"dest" : ".",
+					"glob" : "_pages/*.mustache",
+					"parent" : "index"
+				}
+			}
+		}
 	});
 
 	// These plugins provide necessary tasks.
@@ -154,18 +211,33 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-plato');
 	grunt.loadNpmTasks('grunt-jsbeautifier');
 	grunt.loadNpmTasks('grunt-shell');
+	grunt.loadNpmTasks('documentjs');
 	grunt.loadTasks("tasks");
 
 	var subTasks = ['docco:dev'];
-	if(versionMap[minor].branch === "master") {
-		subTasks.push("docco:latest");
-	}
+	//if(versionMap[minor].branch === "master") {
+	//	subTasks.push("docco:latest");
+	//}
+	
+	_.each(versions, function(value, versionNumber){
+			
+			grunt.registerTask('docjs:'+versionNumber, 
+				['clean:'+versionNumber, 
+				 'documentjs:'+versionNumber, 
+				 'docco:'+versionNumber, 
+				 'plato:'+versionNumber]);
+	
+	});
+	grunt.registerTask('docjs:default', 
+				['docjs:'+defaultVersion]);
+	
+	//grunt.registerTask('platoit',['documentjs:'+defaultVersion,'plato:'+defaultVersion]);
+	
+	//grunt.registerTask('doccoit',subTasks);
 
-	grunt.registerTask('doccoit',subTasks);
-
-	grunt.registerTask('docjs', ['clean', 'shell:docjs', 'doccoit', 'dash-docset', 'dash-repath']);
+	//grunt.registerTask('docjs', ['clean', 'documentjs:'+minor, 'doccoit', 'dash-docset', 'dash-repath']);
 
 	// Default task.
-	grunt.registerTask('default', [ 'doccoit' ]);
+	grunt.registerTask('default', [ 'docjs:default' ]);
 
 };

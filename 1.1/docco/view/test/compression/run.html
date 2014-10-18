@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>run.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="compression.html">
+                compression.js
+              </a>
+            
+              
+              <a class="source" href="run.html">
+                run.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>run.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>load(‘steal/compress/test/run.js’)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-comment">/**
+ * Tests compressing a very basic page and one that is using steal
+ */</span>
+
+load(<span class="hljs-string">'steal/rhino/rhino.js'</span>)
+steal(<span class="hljs-string">'steal/test'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(s)</span></span>{
+	
+	s.test.module(<span class="hljs-string">"jquery/view/compression"</span>)
+	STEALPRINT = <span class="hljs-literal">false</span>;
+	
+	s.test.test(<span class="hljs-string">"templates"</span> , <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(t)</span></span>{
+		
+		
+		steal.File(<span class="hljs-string">"jquery/view/test/compression/views/absolute.ejs"</span>).save(<span class="hljs-string">"&lt;h1&gt;Absolute&lt;/h1&gt;\n&lt;h2&gt;ok&lt;/h2&gt;"</span>);
+		steal.File(<span class="hljs-string">"jquery/view/test/compression/views/relative.ejs"</span>).save(<span class="hljs-string">"&lt;h1&gt;Relative&lt;/h1&gt;"</span>);
+		steal.File(<span class="hljs-string">"jquery/view/test/compression/views/tmplTest.tmpl"</span>).save(<span class="hljs-string">"&lt;h1&gt;${message}&lt;/h1&gt;"</span>);
+		s.test.clear();
+		
+		load(<span class="hljs-string">"steal/rhino/rhino.js"</span>);
+		steal(<span class="hljs-string">'steal/build'</span>,<span class="hljs-string">'steal/build/scripts'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+			steal.build(<span class="hljs-string">'jquery/view/test/compression/compression.html'</span>,{to: <span class="hljs-string">'jquery/view/test/compression'</span>});
+		});
+		s.test.clear();
+		s.test.remove(<span class="hljs-string">"jquery/view/test/compression/views/absolute.ejs"</span>)
+		s.test.remove(<span class="hljs-string">"jquery/view/test/compression/views/relative.ejs"</span>)
+		s.test.remove(<span class="hljs-string">"jquery/view/test/compression/views/tmplTest.tmpl"</span>)
+
+		
+		steal = {env: <span class="hljs-string">"production"</span>};
+		
+		s.test.open(<span class="hljs-string">'jquery/view/test/compression/compression.html'</span>)
+		s.test.ok(  <span class="hljs-regexp">/Relative/i</span>.test( $(<span class="hljs-built_in">document</span>.body).text() ), <span class="hljs-string">"Relative not in page!"</span> );
+
+		s.test.ok(  <span class="hljs-regexp">/Absolute/i</span>.test( $(<span class="hljs-built_in">document</span>.body).text() ), <span class="hljs-string">"Absolute not in page!"</span> );
+
+		s.test.ok(  <span class="hljs-regexp">/Jquery Tmpl/i</span>.test( $(<span class="hljs-built_in">document</span>.body).text() ), <span class="hljs-string">"Jquery Tmpl not in page!"</span> );
+		
+		s.test.clear();
+		s.test.remove(<span class="hljs-string">"jquery/view/test/compression/production.js"</span>)
+			
+	})
+	
+
+	
+	
+	
+	
+	
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

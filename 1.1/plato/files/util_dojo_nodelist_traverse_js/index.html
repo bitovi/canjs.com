@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>util/dojo/nodelist-traverse.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">76.43</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">512</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">63.06</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">1.33</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(function(){
+
+define(&quot;dojo/NodeList-traverse&quot;,[&quot;./query&quot;, &quot;./_base/lang&quot;, &quot;./_base/array&quot;], function(dquery, lang, array) {
+	// module:
+	//		dojo/NodeList-traverse
+	// summary:
+	//		TODOC
+
+var NodeList = dquery.NodeList;
+
+/*=====
+dojo[&quot;NodeList-traverse&quot;] = {
+	// summary: Adds a chainable methods to dojo.query() / Nodelist instances for traversing the DOM
+};
+
+// doc alias helpers:
+NodeList = dojo.NodeList;
+=====*/
+
+lang.extend(NodeList, {
+	_buildArrayFromCallback: function(callback){
+		// summary:
+		// 		builds a new array of possibly differing size based on the input list.
+		// 		Since the returned array is likely of different size than the input array,
+		// 		the array&#039;s map function cannot be used.
+		var ary = [];
+		for(var i = 0; i &lt; this.length; i++){
+			var items = callback.call(this[i], this[i], ary);
+			if(items){
+				ary = ary.concat(items);
+			}
+		}
+		return ary;	//Array
+	},
+
+	_getUniqueAsNodeList: function(nodes){
+		// summary:
+		// 		given a list of nodes, make sure only unique
+		// 		elements are returned as our NodeList object.
+		// 		Does not call _stash().
+		var ary = [];
+		//Using for loop for better speed.
+		for(var i = 0, node; node = nodes[i]; i++){
+			//Should be a faster way to do this. dojo.query has a private
+			//_zip function that may be inspirational, but there are pathways
+			//in query that force nozip?
+			if(node.nodeType == 1 &amp;&amp; array.indexOf(ary, node) == -1){
+				ary.push(node);
+			}
+		}
+		return this._wrap(ary, null, this._NodeListCtor);	 //dojo.NodeList
+	},
+
+	_getUniqueNodeListWithParent: function( nodes, query){
+		// summary:
+		// 		gets unique element nodes, filters them further
+		// 		with an optional query and then calls _stash to track parent NodeList.
+		var ary = this._getUniqueAsNodeList(nodes);
+		ary = (query ? dquery._filterResult(ary, query) : ary);
+		return ary._stash(this);  //dojo.NodeList
+	},
+
+	_getRelatedUniqueNodes: function( query,  callback){
+		// summary:
+		// 		cycles over all the nodes and calls a callback
+		// 		to collect nodes for a possible inclusion in a result.
+		// 		The callback will get two args: callback(node, ary),
+		// 		where ary is the array being used to collect the nodes.
+		return this._getUniqueNodeListWithParent(this._buildArrayFromCallback(callback), query);  //dojo.NodeList
+	},
+
+	children: function( query){
+		// summary:
+		// 		Returns all immediate child elements for nodes in this dojo.NodeList.
+		// 		Optionally takes a query to filter the child elements.
+		// description:
+		// 		.end() can be used on the returned dojo.NodeList to get back to the
+		// 		original dojo.NodeList.
+		// query:
+		//		a CSS selector.
+		// returns:
+		//		dojo.NodeList, all immediate child elements for the nodes in this dojo.NodeList.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	&lt;div class=&quot;container&quot;&gt;
+		// 	|		&lt;div class=&quot;red&quot;&gt;Red One&lt;/div&gt;
+		// 	|		Some Text
+		// 	|		&lt;div class=&quot;blue&quot;&gt;Blue One&lt;/div&gt;
+		// 	|		&lt;div class=&quot;red&quot;&gt;Red Two&lt;/div&gt;
+		// 	|		&lt;div class=&quot;blue&quot;&gt;Blue Two&lt;/div&gt;
+		//	|	&lt;/div&gt;
+		//		Running this code:
+		//	|	dojo.query(&quot;.container&quot;).children();
+		//		returns the four divs that are children of the container div.
+		//		Running this code:
+		//	|	dojo.query(&quot;.container&quot;).children(&quot;.red&quot;);
+		//		returns the two divs that have the class &quot;red&quot;.
+		return this._getRelatedUniqueNodes(query, function(node, ary){
+			return lang._toArray(node.childNodes);
+		}); //dojo.NodeList
+	},
+
+	closest: function( query, root){
+		// summary:
+		// 		Returns closest parent that matches query, including current node in this
+		// 		dojo.NodeList if it matches the query.
+		// description:
+		// 		.end() can be used on the returned dojo.NodeList to get back to the
+		// 		original dojo.NodeList.
+		// query:
+		//		a CSS selector.
+		// root:
+		//		If specified, query is relative to &quot;root&quot; rather than document body.
+		// returns:
+		//		dojo.NodeList, the closest parent that matches the query, including the current
+		//		node in this dojo.NodeList if it matches the query.
+		// example:
+		//		assume a DOM created by this markup:
+		//	|	&lt;div class=&quot;container&quot;&gt;
+		//	|		&lt;div class=&quot;red&quot;&gt;Red One&lt;/div&gt;
+		//	|		Some Text
+		//	|		&lt;div class=&quot;blue&quot;&gt;Blue One&lt;/div&gt;
+		//	|		&lt;div class=&quot;red&quot;&gt;Red Two&lt;/div&gt;
+		//	|		&lt;div class=&quot;blue&quot;&gt;Blue Two&lt;/div&gt;
+		//	|	&lt;/div&gt;
+		//		Running this code:
+		//	|	dojo.query(&quot;.red&quot;).closest(&quot;.container&quot;);
+		//		returns the div with class &quot;container&quot;.
+		return this._getRelatedUniqueNodes(null, function(node, ary){
+			do{
+				if(dquery._filterResult([node], query, root).length){
+					return node;
+				}
+			}while(node != root &amp;&amp; (node = node.parentNode) &amp;&amp; node.nodeType == 1);
+			return null; //To make rhino strict checking happy.
+		}); //dojo.NodeList
+	},
+
+	parent: function(query){
+		// summary:
+		// 		Returns immediate parent elements for nodes in this dojo.NodeList.
+		// 		Optionally takes a query to filter the parent elements.
+		// description:
+		// 		.end() can be used on the returned dojo.NodeList to get back to the
+		// 		original dojo.NodeList.
+		//	query:
+		//		a CSS selector.
+		// returns:
+		//		dojo.NodeList, immediate parent elements for nodes in this dojo.NodeList.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	&lt;div class=&quot;container&quot;&gt;
+		// 	|		&lt;div class=&quot;red&quot;&gt;Red One&lt;/div&gt;
+		// 	|		&lt;div class=&quot;blue first&quot;&gt;&lt;span class=&quot;text&quot;&gt;Blue One&lt;/span&gt;&lt;/div&gt;
+		// 	|		&lt;div class=&quot;red&quot;&gt;Red Two&lt;/div&gt;
+		// 	|		&lt;div class=&quot;blue&quot;&gt;&lt;span class=&quot;text&quot;&gt;Blue Two&lt;/span&gt;&lt;/div&gt;
+		//	|	&lt;/div&gt;
+		//		Running this code:
+		//	|	dojo.query(&quot;.text&quot;).parent();
+		//		returns the two divs with class &quot;blue&quot;.
+		//		Running this code:
+		//	|	dojo.query(&quot;.text&quot;).parent(&quot;.first&quot;);
+		//		returns the one div with class &quot;blue&quot; and &quot;first&quot;.
+		return this._getRelatedUniqueNodes(query, function(node, ary){
+			return node.parentNode;
+		}); //dojo.NodeList
+	},
+
+	parents: function(query){
+		// summary:
+		// 		Returns all parent elements for nodes in this dojo.NodeList.
+		// 		Optionally takes a query to filter the child elements.
+		// description:
+		// 		.end() can be used on the returned dojo.NodeList to get back to the
+		// 		original dojo.NodeList.
+		//	query:
+		//		a CSS selector.
+		// returns:
+		//		dojo.NodeList, all parent elements for nodes in this dojo.NodeList.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	&lt;div class=&quot;container&quot;&gt;
+		// 	|		&lt;div class=&quot;red&quot;&gt;Red One&lt;/div&gt;
+		// 	|		&lt;div class=&quot;blue first&quot;&gt;&lt;span class=&quot;text&quot;&gt;Blue One&lt;/span&gt;&lt;/div&gt;
+		// 	|		&lt;div class=&quot;red&quot;&gt;Red Two&lt;/div&gt;
+		// 	|		&lt;div class=&quot;blue&quot;&gt;&lt;span class=&quot;text&quot;&gt;Blue Two&lt;/span&gt;&lt;/div&gt;
+		//	|	&lt;/div&gt;
+		//		Running this code:
+		//	|	dojo.query(&quot;.text&quot;).parents();
+		//		returns the two divs with class &quot;blue&quot;, the div with class &quot;container&quot;,
+		// 	|	the body element and the html element.
+		//		Running this code:
+		//	|	dojo.query(&quot;.text&quot;).parents(&quot;.container&quot;);
+		//		returns the one div with class &quot;container&quot;.
+		return this._getRelatedUniqueNodes(query, function(node, ary){
+			var pary = [];
+			while(node.parentNode){
+				node = node.parentNode;
+				pary.push(node);
+			}
+			return pary;
+		}); //dojo.NodeList
+	},
+
+	siblings: function(query){
+		// summary:
+		// 		Returns all sibling elements for nodes in this dojo.NodeList.
+		// 		Optionally takes a query to filter the sibling elements.
+		// description:
+		// 		.end() can be used on the returned dojo.NodeList to get back to the
+		// 		original dojo.NodeList.
+		//	query:
+		//		a CSS selector.
+		// returns:
+		//		dojo.NodeList, all sibling elements for nodes in this dojo.NodeList.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	&lt;div class=&quot;container&quot;&gt;
+		// 	|		&lt;div class=&quot;red&quot;&gt;Red One&lt;/div&gt;
+		// 	|		Some Text
+		// 	|		&lt;div class=&quot;blue first&quot;&gt;Blue One&lt;/div&gt;
+		// 	|		&lt;div class=&quot;red&quot;&gt;Red Two&lt;/div&gt;
+		// 	|		&lt;div class=&quot;blue&quot;&gt;Blue Two&lt;/div&gt;
+		//	|	&lt;/div&gt;
+		//		Running this code:
+		//	|	dojo.query(&quot;.first&quot;).siblings();
+		//		returns the two divs with class &quot;red&quot; and the other div
+		// 	|	with class &quot;blue&quot; that does not have &quot;first&quot;.
+		//		Running this code:
+		//	|	dojo.query(&quot;.first&quot;).siblings(&quot;.red&quot;);
+		//		returns the two div with class &quot;red&quot;.
+		return this._getRelatedUniqueNodes(query, function(node, ary){
+			var pary = [];
+			var nodes = (node.parentNode &amp;&amp; node.parentNode.childNodes);
+			for(var i = 0; i &lt; nodes.length; i++){
+				if(nodes[i] != node){
+					pary.push(nodes[i]);
+				}
+			}
+			return pary;
+		}); //dojo.NodeList
+	},
+
+	next: function(query){
+		// summary:
+		// 		Returns the next element for nodes in this dojo.NodeList.
+		// 		Optionally takes a query to filter the next elements.
+		// description:
+		// 		.end() can be used on the returned dojo.NodeList to get back to the
+		// 		original dojo.NodeList.
+		//	query:
+		//		a CSS selector.
+		// returns:
+		//		dojo.NodeList, the next element for nodes in this dojo.NodeList.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	&lt;div class=&quot;container&quot;&gt;
+		// 	|		&lt;div class=&quot;red&quot;&gt;Red One&lt;/div&gt;
+		// 	|		Some Text
+		// 	|		&lt;div class=&quot;blue first&quot;&gt;Blue One&lt;/div&gt;
+		// 	|		&lt;div class=&quot;red&quot;&gt;Red Two&lt;/div&gt;
+		// 	|		&lt;div class=&quot;blue last&quot;&gt;Blue Two&lt;/div&gt;
+		//	|	&lt;/div&gt;
+		//		Running this code:
+		//	|	dojo.query(&quot;.first&quot;).next();
+		//		returns the div with class &quot;red&quot; and has innerHTML of &quot;Red Two&quot;.
+		//		Running this code:
+		//	|	dojo.query(&quot;.last&quot;).next(&quot;.red&quot;);
+		//		does not return any elements.
+		return this._getRelatedUniqueNodes(query, function(node, ary){
+			var next = node.nextSibling;
+			while(next &amp;&amp; next.nodeType != 1){
+				next = next.nextSibling;
+			}
+			return next;
+		}); //dojo.NodeList
+	},
+
+	nextAll: function(query){
+		// summary:
+		// 		Returns all sibling elements that come after the nodes in this dojo.NodeList.
+		// 		Optionally takes a query to filter the sibling elements.
+		// description:
+		// 		.end() can be used on the returned dojo.NodeList to get back to the
+		// 		original dojo.NodeList.
+		//	query:
+		//		a CSS selector.
+		// returns:
+		//		dojo.NodeList, all sibling elements that come after the nodes in this dojo.NodeList.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	&lt;div class=&quot;container&quot;&gt;
+		// 	|		&lt;div class=&quot;red&quot;&gt;Red One&lt;/div&gt;
+		// 	|		Some Text
+		// 	|		&lt;div class=&quot;blue first&quot;&gt;Blue One&lt;/div&gt;
+		// 	|		&lt;div class=&quot;red next&quot;&gt;Red Two&lt;/div&gt;
+		// 	|		&lt;div class=&quot;blue next&quot;&gt;Blue Two&lt;/div&gt;
+		//	|	&lt;/div&gt;
+		//		Running this code:
+		//	|	dojo.query(&quot;.first&quot;).nextAll();
+		//		returns the two divs with class of &quot;next&quot;.
+		//		Running this code:
+		//	|	dojo.query(&quot;.first&quot;).nextAll(&quot;.red&quot;);
+		//		returns the one div with class &quot;red&quot; and innerHTML &quot;Red Two&quot;.
+		return this._getRelatedUniqueNodes(query, function(node, ary){
+			var pary = [];
+			var next = node;
+			while((next = next.nextSibling)){
+				if(next.nodeType == 1){
+					pary.push(next);
+				}
+			}
+			return pary;
+		}); //dojo.NodeList
+	},
+
+	prev: function(query){
+		// summary:
+		// 		Returns the previous element for nodes in this dojo.NodeList.
+		// 		Optionally takes a query to filter the previous elements.
+		// description:
+		// 		.end() can be used on the returned dojo.NodeList to get back to the
+		// 		original dojo.NodeList.
+		//	query:
+		//		a CSS selector.
+		// returns:
+		//		dojo.NodeList, the previous element for nodes in this dojo.NodeList.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	&lt;div class=&quot;container&quot;&gt;
+		// 	|		&lt;div class=&quot;red&quot;&gt;Red One&lt;/div&gt;
+		// 	|		Some Text
+		// 	|		&lt;div class=&quot;blue first&quot;&gt;Blue One&lt;/div&gt;
+		// 	|		&lt;div class=&quot;red&quot;&gt;Red Two&lt;/div&gt;
+		// 	|		&lt;div class=&quot;blue&quot;&gt;Blue Two&lt;/div&gt;
+		//	|	&lt;/div&gt;
+		//		Running this code:
+		//	|	dojo.query(&quot;.first&quot;).prev();
+		//		returns the div with class &quot;red&quot; and has innerHTML of &quot;Red One&quot;.
+		//		Running this code:
+		//	|	dojo.query(&quot;.first&quot;).prev(&quot;.blue&quot;);
+		//		does not return any elements.
+		return this._getRelatedUniqueNodes(query, function(node, ary){
+			var prev = node.previousSibling;
+			while(prev &amp;&amp; prev.nodeType != 1){
+				prev = prev.previousSibling;
+			}
+			return prev;
+		}); //dojo.NodeList
+	},
+
+	prevAll: function(query){
+		// summary:
+		// 		Returns all sibling elements that come before the nodes in this dojo.NodeList.
+		// 		Optionally takes a query to filter the sibling elements.
+		// description:
+		// 		The returned nodes will be in reverse DOM order -- the first node in the list will
+		// 		be the node closest to the original node/NodeList.
+		// 		.end() can be used on the returned dojo.NodeList to get back to the
+		// 		original dojo.NodeList.
+		//	query:
+		//		a CSS selector.
+		// returns:
+		//		dojo.NodeList, all sibling elements that come before the nodes in this dojo.NodeList.
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	&lt;div class=&quot;container&quot;&gt;
+		// 	|		&lt;div class=&quot;red prev&quot;&gt;Red One&lt;/div&gt;
+		// 	|		Some Text
+		// 	|		&lt;div class=&quot;blue prev&quot;&gt;Blue One&lt;/div&gt;
+		// 	|		&lt;div class=&quot;red second&quot;&gt;Red Two&lt;/div&gt;
+		// 	|		&lt;div class=&quot;blue&quot;&gt;Blue Two&lt;/div&gt;
+		//	|	&lt;/div&gt;
+		//		Running this code:
+		//	|	dojo.query(&quot;.second&quot;).prevAll();
+		//		returns the two divs with class of &quot;prev&quot;.
+		//		Running this code:
+		//	|	dojo.query(&quot;.first&quot;).prevAll(&quot;.red&quot;);
+		//		returns the one div with class &quot;red prev&quot; and innerHTML &quot;Red One&quot;.
+		return this._getRelatedUniqueNodes(query, function(node, ary){
+			var pary = [];
+			var prev = node;
+			while((prev = prev.previousSibling)){
+				if(prev.nodeType == 1){
+					pary.push(prev);
+				}
+			}
+			return pary;
+		}); //dojo.NodeList
+	},
+
+	andSelf: function(){
+		// summary:
+		// 		Adds the nodes from the previous dojo.NodeList to the current dojo.NodeList.
+		// description:
+		// 		.end() can be used on the returned dojo.NodeList to get back to the
+		// 		original dojo.NodeList.
+		// returns:
+		//		dojo.NodeList
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	&lt;div class=&quot;container&quot;&gt;
+		// 	|		&lt;div class=&quot;red prev&quot;&gt;Red One&lt;/div&gt;
+		// 	|		Some Text
+		// 	|		&lt;div class=&quot;blue prev&quot;&gt;Blue One&lt;/div&gt;
+		// 	|		&lt;div class=&quot;red second&quot;&gt;Red Two&lt;/div&gt;
+		// 	|		&lt;div class=&quot;blue&quot;&gt;Blue Two&lt;/div&gt;
+		//	|	&lt;/div&gt;
+		//		Running this code:
+		//	|	dojo.query(&quot;.second&quot;).prevAll().andSelf();
+		//		returns the two divs with class of &quot;prev&quot;, as well as the div with class &quot;second&quot;.
+		return this.concat(this._parent);	//dojo.NodeList
+	},
+
+	//Alternate methods for the :first/:last/:even/:odd pseudos.
+	first: function(){
+		// summary:
+		// 		Returns the first node in this dojo.NodeList as a dojo.NodeList.
+		// description:
+		// 		.end() can be used on the returned dojo.NodeList to get back to the
+		// 		original dojo.NodeList.
+		// returns:
+		//		dojo.NodeList, with the first node in this dojo.NodeList
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	&lt;div class=&quot;container&quot;&gt;
+		// 	|		&lt;div class=&quot;red&quot;&gt;Red One&lt;/div&gt;
+		// 	|		&lt;div class=&quot;blue first&quot;&gt;Blue One&lt;/div&gt;
+		// 	|		&lt;div class=&quot;red&quot;&gt;Red Two&lt;/div&gt;
+		// 	|		&lt;div class=&quot;blue last&quot;&gt;Blue Two&lt;/div&gt;
+		//	|	&lt;/div&gt;
+		//		Running this code:
+		//	|	dojo.query(&quot;.blue&quot;).first();
+		//		returns the div with class &quot;blue&quot; and &quot;first&quot;.
+		return this._wrap(((this[0] &amp;&amp; [this[0]]) || []), this); //dojo.NodeList
+	},
+
+	last: function(){
+		// summary:
+		// 		Returns the last node in this dojo.NodeList as a dojo.NodeList.
+		// description:
+		// 		.end() can be used on the returned dojo.NodeList to get back to the
+		// 		original dojo.NodeList.
+		// returns:
+		//		dojo.NodeList, with the last node in this dojo.NodeList
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	&lt;div class=&quot;container&quot;&gt;
+		// 	|		&lt;div class=&quot;red&quot;&gt;Red One&lt;/div&gt;
+		// 	|		&lt;div class=&quot;blue first&quot;&gt;Blue One&lt;/div&gt;
+		// 	|		&lt;div class=&quot;red&quot;&gt;Red Two&lt;/div&gt;
+		// 	|		&lt;div class=&quot;blue last&quot;&gt;Blue Two&lt;/div&gt;
+		//	|	&lt;/div&gt;
+		//		Running this code:
+		//	|	dojo.query(&quot;.blue&quot;).last();
+		//		returns the last div with class &quot;blue&quot;,
+		return this._wrap((this.length ? [this[this.length - 1]] : []), this); //dojo.NodeList
+	},
+
+	even: function(){
+		// summary:
+		// 		Returns the even nodes in this dojo.NodeList as a dojo.NodeList.
+		// description:
+		// 		.end() can be used on the returned dojo.NodeList to get back to the
+		// 		original dojo.NodeList.
+		// returns:
+		//		dojo.NodeList, with the even nodes in this dojo.NodeList
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	&lt;div class=&quot;container&quot;&gt;
+		// 	|		&lt;div class=&quot;interior red&quot;&gt;Red One&lt;/div&gt;
+		// 	|		&lt;div class=&quot;interior blue&quot;&gt;Blue One&lt;/div&gt;
+		// 	|		&lt;div class=&quot;interior red&quot;&gt;Red Two&lt;/div&gt;
+		// 	|		&lt;div class=&quot;interior blue&quot;&gt;Blue Two&lt;/div&gt;
+		//	|	&lt;/div&gt;
+		//		Running this code:
+		//	|	dojo.query(&quot;.interior&quot;).even();
+		//		returns the two divs with class &quot;blue&quot;
+		return this.filter(function(item, i){
+			return i % 2 != 0;
+		}); //dojo.NodeList
+	},
+
+	odd: function(){
+		// summary:
+		// 		Returns the odd nodes in this dojo.NodeList as a dojo.NodeList.
+		// description:
+		// 		.end() can be used on the returned dojo.NodeList to get back to the
+		// 		original dojo.NodeList.
+		// returns:
+		//		dojo.NodeList, with the odd nodes in this dojo.NodeList
+		//	example:
+		//		assume a DOM created by this markup:
+		//	|	&lt;div class=&quot;container&quot;&gt;
+		// 	|		&lt;div class=&quot;interior red&quot;&gt;Red One&lt;/div&gt;
+		// 	|		&lt;div class=&quot;interior blue&quot;&gt;Blue One&lt;/div&gt;
+		// 	|		&lt;div class=&quot;interior red&quot;&gt;Red Two&lt;/div&gt;
+		// 	|		&lt;div class=&quot;interior blue&quot;&gt;Blue Two&lt;/div&gt;
+		//	|	&lt;/div&gt;
+		//		Running this code:
+		//	|	dojo.query(&quot;.interior&quot;).odd();
+		//		returns the two divs with class &quot;red&quot;
+		return this.filter(function(item, i){
+			return i % 2 == 0;
+		}); //dojo.NodeList
+	}
+});
+
+return NodeList;
+});
+return;
+})</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

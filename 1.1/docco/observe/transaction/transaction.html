@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>transaction.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>transaction.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can)</span></span>{
+	
+	
+	
+	
+	<span class="hljs-keyword">var</span> events = [],
+		transactionCount = <span class="hljs-number">0</span>,
+		originalBatchTrigger = can.Observe.triggerBatch,
+		changedBatchTrigger = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj, ev)</span></span>{
+			originalBatchTrigger.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+			<span class="hljs-keyword">if</span>(ev === <span class="hljs-string">"change"</span>){
+				<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>);
+				args[<span class="hljs-number">1</span>] = <span class="hljs-string">"changed"</span>;
+				originalBatchTrigger.apply(<span class="hljs-keyword">this</span>, args);
+			}
+		},
+		recordingBatchTrigger = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj, ev)</span></span>{
+			originalBatchTrigger.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+			<span class="hljs-keyword">if</span>(ev === <span class="hljs-string">"change"</span>){
+				<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>);
+				args[<span class="hljs-number">1</span>] = <span class="hljs-string">"changed"</span>;
+				events.push( args );
+			}
+		};
+	
+	can.Observe.triggerBatch = changedBatchTrigger;
+	
+	can.transaction = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		<span class="hljs-keyword">if</span>( transactionCount === <span class="hljs-number">0</span> ) {
+			can.Observe.triggerBatch = recordingBatchTrigger;
+		}
+		
+		
+		transactionCount++;
+		
+		
+		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+			transactionCount--;
+			<span class="hljs-keyword">if</span>( transactionCount === <span class="hljs-number">0</span> ) {
+				<span class="hljs-keyword">var</span> myEvents = events.slice(<span class="hljs-number">0</span>)
+				events = [];
+				can.Observe.triggerBatch = changedBatchTrigger;
+				can.each(myEvents, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventArgs)</span></span>{
+					originalBatchTrigger.apply(can, eventArgs);
+				});
+			}
+		}
+	};
+	
+	<span class="hljs-keyword">return</span> can.Observe;
+	
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -752,7 +752,10 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
 		 * @prototype
 		 */</span>
 		{
-			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> </span>{</pre></div></div>
+			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> </span>{
+				<span class="hljs-keyword">if</span>(obj <span class="hljs-keyword">instanceof</span> can.Map){
+					obj = obj.serialize();
+				}</pre></div></div>
             
         </li>
         

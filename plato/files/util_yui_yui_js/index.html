@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>util/yui/yui.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">66.67</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">521</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">76.74</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">5.29</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">/*
+ YUI modules: http://yuilibrary.com/yui/configurator/
+ node
+ io-base
+ querystring
+ event-focus
+ array-extras
+ */
+
+// This was used to build the custom YUI download. Re-run it to generate a new yui-&lt;version&gt;.js file
+//	var yuilibs = [&#039;yui-base/yui-base.js&#039;, &#039;oop/oop.js&#039;, &#039;event-custom-base/event-custom-base.js&#039;, &#039;features/features.js&#039;, &#039;dom-core/dom-core.js&#039;, &#039;dom-base/dom-base.js&#039;, &#039;selector-native/selector-native.js&#039;, &#039;selector-css2/selector-css2.js&#039;, &#039;selector/selector.js&#039;, &#039;node-core/node-core.js&#039;, &#039;node-base/node-base.js&#039;, &#039;event-base/event-base.js&#039;, &#039;event-delegate/event-delegate.js&#039;, &#039;node-event-delegate/node-event-delegate.js&#039;, &#039;pluginhost-base/pluginhost-base.js&#039;, &#039;pluginhost-config/pluginhost-config.js&#039;, &#039;node-pluginhost/node-pluginhost.js&#039;, &#039;dom-style/dom-style.js&#039;, &#039;dom-screen/dom-screen.js&#039;, &#039;node-screen/node-screen.js&#039;, &#039;node-style/node-style.js&#039;, &#039;querystring-stringify-simple/querystring-stringify-simple.js&#039;, &#039;io-base/io-base.js&#039;, &#039;array-extras/array-extras.js&#039;, &#039;querystring-parse/querystring-parse.js&#039;, &#039;querystring-stringify/querystring-stringify.js&#039;, &#039;event-custom-complex/event-custom-complex.js&#039;, &#039;event-synthetic/event-synthetic.js&#039;, &#039;event-focus/event-focus.js&#039;]
+//
+//	var url = &quot;http://yui.yahooapis.com/combo?3.7.3/build/&quot; + yuilibs.join(&quot;&amp;3.7.3/build/&quot;)
+
+steal(&#039;can/util/can.js&#039;, &quot;can/util/attr&quot;, &#039;yui&#039;, &#039;can/event&#039;,
+	&quot;can/util/fragment.js&quot;, &#039;can/util/array/each.js&#039;,
+	&#039;can/util/object/isplain&#039;, &#039;can/util/deferred.js&#039;,
+	&#039;../hashchange.js&#039;, &quot;can/util/inserted&quot;, function (can, attr) {
+
+		// lets overwrite 
+		YUI.add(&#039;can-modifications&#039;, function (Y, NAME) {
+			var addHTML = Y.DOM.addHTML;
+
+			Y.DOM.addHTML = function (node, content, where) {
+				if (typeof content === &quot;string&quot; || typeof content === &quot;number&quot;) {
+					content = can.buildFragment(content);
+				}
+				var elems;
+				if (content.nodeType === 11) {
+					elems = can.makeArray(content.childNodes);
+				} else {
+					elems = [content];
+				}
+				var ret = addHTML.call(this, node, content, where);
+
+				can.inserted(elems);
+
+				return ret;
+			};
+
+			var oldOn = Y.Node.prototype.on;
+			Y.Node.prototype.on = function (type, fn) {
+				if (type === &quot;attributes&quot;) {
+					// YUI changes where the extra data comes from
+					var el = can.$(this);
+					can.data(el, &quot;canHasAttributesBindings&quot;, (can.data(el, &quot;canHasAttributesBindings&quot;) || 0) + 1);
+
+					var handle = oldOn.apply(this, arguments),
+						oldDetach = handle.detach;
+					handle.detach = function () {
+						var cur = can.data(el, &quot;canHasAttributesBindings&quot;) || 0;
+						if (cur &lt;= 0) {
+							can.cleanData(el, &quot;canHasAttributesBindings&quot;);
+						} else {
+							can.data(el, &quot;canHasAttributesBindings&quot;, cur - 1);
+						}
+						return oldDetach.apply(this, arguments);
+					};
+					return handle;
+				} else {
+					return oldOn.apply(this, arguments);
+				}
+			};
+
+		}, &#039;3.7.3&#039;, {
+			&quot;requires&quot;: [&quot;node-base&quot;]
+		});
+
+		// ---------
+		// _YUI node list._
+		// `can.Y` is set as part of the build process.
+		// `YUI().use(&#039;*&#039;)` is called for when `YUI` is statically loaded (like when running tests).
+		var Y = can.Y = can.Y || YUI()
+			.use(&#039;*&#039;);
+		// Map string helpers.
+		can.trim = function (s) {
+			return Y.Lang.trim(s);
+		};
+		// Map array helpers.
+		can.makeArray = function (arr) {
+			if (!arr) {
+				return [];
+			}
+			return Y.Array(arr);
+		};
+		can.isArray = Y.Lang.isArray;
+		can.inArray = function (item, arr, fromIndex) {
+			if (!arr) {
+				return -1;
+			}
+			return Y.Array.indexOf(arr, item, fromIndex);
+		};
+		can.map = function (arr, fn) {
+			return Y.Array.map(can.makeArray(arr || []), fn);
+		};
+		// Map object helpers.
+		can.extend = function (first) {
+			var deep = first === true ? 1 : 0,
+				target = arguments[deep],
+				i = deep + 1,
+				arg;
+			for (; arg = arguments[i]; i++) {
+				Y.mix(target, arg, true, null, null, !!deep);
+			}
+			return target;
+		};
+		can.param = function (object) {
+			return Y.QueryString.stringify(object, {
+				arrayKey: true
+			});
+		};
+		can.isEmptyObject = function (object) {
+			return Y.Object.isEmpty(object);
+		};
+		// Map function helpers.
+		can.proxy = function (func, context) {
+			return Y.bind.apply(Y, arguments);
+		};
+		can.isFunction = function (f) {
+			return Y.Lang.isFunction(f);
+		};
+		// Element -- get the wrapped helper.
+		var prepareNodeList = function (nodelist) {
+			nodelist.each(function (node, i) {
+				nodelist[i] = node.getDOMNode();
+			});
+			nodelist.length = nodelist.size();
+			return nodelist;
+		};
+		can.$ = function (selector) {
+			if (selector === window) {
+				return window;
+			} else if (selector instanceof Y.NodeList) {
+				return prepareNodeList(selector);
+			} else if (typeof selector === &#039;object&#039; &amp;&amp; !can.isArray(selector) &amp;&amp; typeof selector.nodeType === &#039;undefined&#039; &amp;&amp; !selector.getDOMNode) {
+				return new Y.NodeList(selector);
+			} else {
+				return prepareNodeList(Y.all(selector));
+			}
+		};
+		can.get = function (wrapped, index) {
+			return wrapped._nodes[index];
+		};
+		can.append = function (wrapped, html) {
+			wrapped.each(function (node) {
+				if (typeof html === &#039;string&#039;) {
+					html = can.buildFragment(html, node);
+				}
+				node.append(html);
+			});
+		};
+		can.addClass = function (wrapped, className) {
+			return wrapped.addClass(className);
+		};
+		can.data = function (wrapped, key, value) {
+			if (value === undefined) {
+				return wrapped.item(0)
+					.getData(key);
+			} else {
+				return wrapped.item(0)
+					.setData(key, value);
+			}
+		};
+		can.remove = function (wrapped) {
+			return wrapped.remove() &amp;&amp; wrapped.destroy();
+		};
+		can.has = function (wrapped, node) {
+			if (Y.DOM.contains(wrapped[0], node)) {
+				return wrapped;
+			} else {
+				return [];
+			}
+		};
+		// Destroyed method.
+		can._yNodeRemove = can._yNodeRemove || Y.Node.prototype.remove;
+		Y.Node.prototype.remove = function () {
+			// make sure this is only fired on normal nodes, if it
+			// is fired on a text node, it will bubble because
+			// the method used to stop bubbling (listening to an event)
+			// does not work on text nodes
+			var node = this.getDOMNode();
+			if (node.nodeType === 1) {
+				can.trigger(this, &#039;removed&#039;, [], false);
+				var elems = node.getElementsByTagName(&#039;*&#039;);
+				for (var i = 0, elem;
+						 (elem = elems[i]) !== undefined; i++) {
+					can.trigger(elem, &#039;removed&#039;, [], false);
+				}
+			}
+			can._yNodeRemove.apply(this, arguments);
+		};
+		// Let `nodelist` know about the new destroy...
+		Y.NodeList.addMethod(&#039;remove&#039;, Y.Node.prototype.remove);
+		// Ajax
+		var optionsMap = {
+			type: &#039;method&#039;,
+			success: undefined,
+			error: undefined
+		};
+		var updateDeferred = function (request, d) {
+			// `YUI` only returns a request if it is asynchronous.
+			if (request &amp;&amp; request.io) {
+				var xhr = request.io;
+				for (var prop in xhr) {
+					if (typeof d[prop] === &#039;function&#039;) {
+						d[prop] = function () {
+							xhr[prop].apply(xhr, arguments);
+						};
+					} else {
+						d[prop] = prop[xhr];
+					}
+				}
+			}
+		};
+		can.ajax = function (options) {
+			var d = can.Deferred(),
+				requestOptions = can.extend({}, options);
+			for (var option in optionsMap) {
+				if (requestOptions[option] !== undefined) {
+					requestOptions[optionsMap[option]] = requestOptions[option];
+					delete requestOptions[option];
+				}
+			}
+			requestOptions.sync = !options.async;
+			var success = options.success,
+				error = options.error;
+			requestOptions.on = {
+				success: function (transactionid, response) {
+					var data = response.responseText;
+					if (options.dataType === &#039;json&#039;) {
+						data = eval(&#039;(&#039; + data + &#039;)&#039;);
+					}
+					updateDeferred(request, d);
+					d.resolve(data);
+					if (success) {
+						success(data, &#039;success&#039;, request);
+					}
+				},
+				failure: function (transactionid, response) {
+					updateDeferred(request, d);
+					d.reject(request, &#039;error&#039;);
+					if (error) {
+						error(request, &#039;error&#039;);
+					}
+				}
+			};
+			var request = Y.io(requestOptions.url, requestOptions);
+			updateDeferred(request, d);
+			return d;
+		};
+		// Events - The `id` of the `function` to be bound, used as an expando on the `function`
+		// so we can lookup it&#039;s `remove` object.
+		var yuiEventId = 0,
+		// Takes a node list, goes through each node
+		// and adds events data that has a map of events to
+		// `callbackId` to `remove` object.  It looks like
+		// `{click: {5: {remove: fn}}}`.
+			addBinding = function (nodelist, selector, ev, cb) {
+				if (nodelist instanceof Y.NodeList || !nodelist.on || nodelist.getDOMNode) {
+					nodelist.each(function (node) {
+						node = can.$(node);
+						var events = can.data(node, &#039;events&#039;),
+							eventName = ev + &#039;:&#039; + selector;
+						if (!events) {
+							can.data(node, &#039;events&#039;, events = {});
+						}
+						if (!events[eventName]) {
+							events[eventName] = {};
+						}
+						if (cb.__bindingsIds === undefined) {
+							cb.__bindingsIds = yuiEventId++;
+						}
+						events[eventName][cb.__bindingsIds] = selector ? node.item(0)
+							.delegate(ev, cb, selector) : node.item(0)
+							.on(ev, cb);
+					});
+				} else {
+					var obj = nodelist,
+						events = obj.__canEvents = obj.__canEvents || {};
+					if (!events[ev]) {
+						events[ev] = {};
+					}
+					if (cb.__bindingsIds === undefined) {
+						cb.__bindingsIds = yuiEventId++;
+					}
+					events[ev][cb.__bindingsIds] = obj.on(ev, cb);
+				}
+			},
+		// Removes a binding on a `nodelist` by finding
+		// the remove object within the object&#039;s data.
+			removeBinding = function (nodelist, selector, ev, cb) {
+				if (nodelist instanceof Y.NodeList || !nodelist.on || nodelist.getDOMNode) {
+					nodelist.each(function (node) {
+						node = can.$(node);
+						var events = can.data(node, &#039;events&#039;);
+						if (events) {
+							var eventName = ev + &#039;:&#039; + selector,
+								handlers = events[eventName],
+								handler = handlers[cb.__bindingsIds];
+							handler.detach();
+							delete handlers[cb.__bindingsIds];
+							if (can.isEmptyObject(handlers)) {
+								delete events[ev];
+							}
+							if (can.isEmptyObject(events)) {
+							}
+						}
+					});
+				} else {
+					var obj = nodelist,
+						events = obj.__canEvents || {}, handlers = events[ev],
+						handler = handlers[cb.__bindingsIds];
+					handler.detach();
+					delete handlers[cb.__bindingsIds];
+					if (can.isEmptyObject(handlers)) {
+						delete events[ev];
+					}
+					if (can.isEmptyObject(events)) {
+					}
+				}
+			};
+		can.bind = function (ev, cb) {
+			// If we can bind to it...
+			if (this.bind &amp;&amp; this.bind !== can.bind) {
+				this.bind(ev, cb);
+			} else if (this.on || this.nodeType) {
+				addBinding(can.$(this), undefined, ev, cb);
+			} else if (this.addEvent) {
+				this.addEvent(ev, cb);
+			} else {
+				// Make it bind-able...
+				can.addEvent.call(this, ev, cb);
+			}
+			return this;
+		};
+		can.unbind = function (ev, cb) {
+			// If we can bind to it...
+			if (this.unbind &amp;&amp; this.unbind !== can.unbind) {
+				this.unbind(ev, cb);
+			} else if (this.on || this.nodeType) {
+				removeBinding(can.$(this), undefined, ev, cb);
+			} else {
+				// Make it bind-able...
+				can.removeEvent.call(this, ev, cb);
+			}
+			return this;
+		};
+		// Alias on/off to bind/unbind respectively
+		can.on = can.bind;
+		can.off = can.unbind;
+		can.trigger = function (item, event, args, bubble) {
+			if (item instanceof Y.NodeList) {
+				item = item.item(0);
+			}
+			if (item.getDOMNode) {
+				item = item.getDOMNode();
+			}
+			if (item.nodeName) {
+				item = Y.Node(item);
+				if (bubble === false) {
+					// Force stop propagation by listening to `on` and then
+					// immediately disconnecting
+					item.once(event, function (ev) {
+						if (ev.stopPropagation) {
+							ev.stopPropagation();
+						}
+						ev.cancelBubble = true;
+						if (ev._stopper) {
+							ev._stopper();
+						}
+					});
+				}
+				if (typeof event !== &#039;string&#039;) {
+					args = event;
+					event = args.type;
+					delete args.type;
+				}
+				realTrigger(item.getDOMNode(), event, args || {});
+			} else {
+				if (typeof event === &#039;string&#039;) {
+					event = {
+						type: event
+					};
+				}
+				event.target = event.target || item;
+				can.dispatch.call(item, event, can.makeArray(args));
+			}
+		};
+		// Allow `dom` `destroyed` events.
+		Y.mix(Y.Node.DOM_EVENTS, {
+			removed: true,
+			inserted: true,
+			attributes: true,
+			// foo is here for testing
+			foo: true
+		});
+
+		Y.Env.evt.plugins.attributes = {
+			// forces YUI not to change this event signature
+			on: function () {
+				var args = can.makeArray(arguments);
+				return Y.Event._attach(args, {
+					facade: false
+				});
+			}
+		};
+
+		can.delegate = function (selector, ev, cb) {
+			if (this.on || this.nodeType) {
+				addBinding(can.$(this), selector, ev, cb);
+			} else if (this.delegate) {
+				this.delegate(selector, ev, cb);
+			} else {
+				// make it bind-able ...
+				can.bind.call(this, ev, cb);
+			}
+			return this;
+		};
+		can.undelegate = function (selector, ev, cb) {
+			if (this.on || this.nodeType) {
+				removeBinding(can.$(this), selector, ev, cb);
+			} else if (this.undelegate) {
+				this.undelegate(selector, ev, cb);
+			} else {
+				can.unbind.call(this, ev, cb);
+			}
+			return this;
+		};
+
+
+
+		// `realTrigger` taken from `dojo`.
+		var /*leaveRe = /mouse(enter|leave)/,
+			_fix = function (_, p) {
+				return &#039;mouse&#039; + (p === &#039;enter&#039; ? &#039;over&#039; : &#039;out&#039;);
+			},*/ realTrigger,
+			realTriggerHandler = function (n, e, evdata) {
+				var node = Y.Node(n),
+					handlers = can.Y.Event.getListeners(node._yuid, e),
+					i;
+				if (handlers) {
+					for (i = 0; i &lt; handlers.length; i++) {
+						if (handlers[i].fire) {
+							handlers[i].fire(evdata);
+						} else if (handlers[i].handles) {
+							can.each(handlers[i].handles, function (handle) {
+								handle.evt.fire(evdata);
+							});
+						} else {
+							throw &quot;can not fire event&quot;;
+						}
+					}
+				}
+			},
+			fakeTrigger = function(n, e, a){
+				var stop = false;
+				// a lame duck to work with. we&#039;re probably a &#039;custom event&#039;
+				var evdata = can.extend({
+					type: e,
+					target: n,
+					faux: true,
+					_stopper: function () {
+						stop = this.cancelBubble;
+					},
+					stopPropagation: function () {
+						stop = this.cancelBubble;
+					},
+					preventDefault: function(){
+						
+					}
+				}, a);
+				realTriggerHandler(n, e, evdata);
+				if (e === &quot;inserted&quot; || e === &quot;removed&quot;) {
+					return;
+				}
+
+				// handle bubbling of custom events, unless the event was stopped.
+				while (!stop &amp;&amp; n !== document &amp;&amp; n.parentNode) {
+					n = n.parentNode;
+					realTriggerHandler(n, e, evdata); //can.isFunction(n[ev]) &amp;&amp; n[ev](evdata);
+				}
+			};
+		if (document.createEvent) {
+			realTrigger = function (n, e, a) {
+				// the same branch
+				fakeTrigger(n, e, a);
+				return;
+				/*var ev = document.createEvent(&#039;HTMLEvents&#039;);
+				e = e.replace(leaveRe, _fix);
+				ev.initEvent(e, e === &#039;removed&#039; || e === &#039;inserted&#039; ? false : true, true);
+				if (a) {
+					can.extend(ev, a);
+				}
+				n.dispatchEvent(ev);*/
+			};
+		} else {
+			realTrigger = function (n, e, a) {
+				fakeTrigger(n, e, a);
+				return;
+				/*
+				// the janktastic branch
+				var ev = &#039;on&#039; + e;
+				if(e === &quot;focus&quot; || e === &quot;blur&quot;) {
+					fakeTrigger(n, e, a);
+				}
+				
+				try {
+					// FIXME: is this worth it? for mixed-case native event support:? Opera ends up in the
+					// createEvent path above, and also fails on _some_ native-named events.
+					// if(lc !== e &amp;&amp; d.indexOf(d.NodeList.events, lc) &gt;= 0){
+					// // if the event is one of those listed in our NodeList list
+					// // in lowercase form but is mixed case, throw to avoid
+					// // fireEvent. /me sighs. http://gist.github.com/315318
+					// throw(&quot;janktastic&quot;);
+					// }
+					var evObj = document.createEventObject();
+					if (e === &quot;inserted&quot; || e === &quot;removed&quot;) {
+						evObj.cancelBubble = true;
+					}
+					can.extend(evObj, a);
+					n.fireEvent(ev, evObj);
+
+				} catch (er) {
+					fakeTrigger(n,e,a);
+					
+				}*/
+			};
+		}
+
+		// setup attributes event
+		can.attr = attr;
+		delete attr.MutationObserver;
+
+		return can;
+	});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

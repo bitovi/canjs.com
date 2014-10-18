@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>observe/elements/elements.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">73.00</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">152</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">32.33</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">0.74</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/util&#039;, &#039;can/observe&#039;, function(can, Observe) {
+	
+var unique = function( items ) {
+		var collect = [];
+		// check unique property, if it isn&#039;t there, add to collect
+		can.each(items, function( item ) {
+			if (!item[&quot;__u Nique&quot;] ) {
+				collect.push(item);
+				item[&quot;__u Nique&quot;] = 1;
+			}
+		});
+		// remove unique 
+		return can.each(collect, function( item ) {
+			delete item[&quot;__u Nique&quot;];
+		});
+	}
+		
+	can.extend(can.Observe.prototype,{
+		/**
+		 * Returns a unique identifier for the observe instance.  For example:
+		 *
+		 * @codestart
+		 * new Todo({id: 5}).identity() //-&gt; &#039;todo_5&#039;
+		 * @codeend
+		 *
+		 * Typically this is used in an element&#039;s shortName property so you can find all elements
+		 * for a observe with [$.Observe.prototype.elements elements].
+		 *
+		 * If your observe id has special characters that are not permitted as CSS class names,
+		 * you can set the `escapeIdentity` on the observe instance&#039;s constructor
+		 * which will `encodeURIComponent` the `id` of the observe.
+		 *
+		 * @return {String} The unique identifier for this instance.
+		 */
+		identity: function() {
+			var constructor = this.constructor,
+				id = this[constructor.id] || this._cid.replace(/./, &#039;&#039;),
+				name = constructor._fullName ? constructor._fullName + &#039;_&#039; : &#039;&#039;;
+
+			return (name + (constructor.escapeIdentity ? encodeURIComponent(id) : id)).replace(/ /g, &#039;_&#039;);
+		},
+		/**
+		 * Returns elements that represent this observe instance.  For this to work, your element should
+		 * use the [$.Observe.prototype.identity identity] function in their class name.  Example:
+		 * 
+		 *     &lt;div class=&#039;todo &lt;%= todo.identity() %&gt;&#039;&gt; ... &lt;/div&gt;
+		 * 
+		 * This also works if you hooked up the observe:
+		 * 
+		 *     &lt;div &lt;%= todo %&gt;&gt; ... &lt;/div&gt;
+		 *     
+		 * Typically, you&#039;ll use this as a response to a Observe Event:
+		 * 
+		 *     &quot;{Todo} destroyed&quot;: function(Todo, event, todo){
+		 *       todo.elements(this.element).remove();
+		 *     }
+		 * 
+		 * 
+		 * @param {String|jQuery|element} context If provided, only elements inside this element
+		 * that represent this observe will be returned.
+		 * 
+		 * @return {jQuery} Returns a jQuery wrapped nodelist of elements that have this observe instances
+		 *  identity in their class name.
+		 */
+		elements: function( context ) {
+			var id = this.identity();
+			if( this.constructor.escapeIdentity ) {
+				id = id.replace(/([ #;&amp;,.+*~\&#039;%:&quot;!^$[\]()=&gt;|\/])/g,&#039;\\$1&#039;)
+			}
+			
+			return can.$(&quot;.&quot; + id, context);
+		},
+		hookup: function( el ) {
+			var shortName = this.constructor._shortName || &#039;&#039;,
+				$el = can.$(el),
+				observes;
+				
+			(observes = can.data($el, &quot;instances&quot;) )|| can.data($el, &quot;instances&quot;, observes = {});
+			can.addClass($el,shortName + &quot; &quot; + this.identity());
+			observes[shortName] = this;
+		}
+	});
+
+
+	/**
+	 *  @add jQuery.fn
+	 */
+	// break
+	/**
+	 * @function instances
+	 * Returns a list of observes.  If the observes are of the same
+	 * type, and have a [$.Observe.List], it will return 
+	 * the observes wrapped with the list.
+	 * 
+	 * @codestart
+	 * $(&quot;.recipes&quot;).instances() //-&gt; [recipe, ...]
+	 * @codeend
+	 * 
+	 * @param {jQuery.Class} [type] if present only returns observes of the provided type.
+	 * @return {Array|$.Observe.List} returns an array of observes instances that are represented by the contained elements.
+	 */
+	$.fn.instances = function( type ) {
+		//get it from the data
+		var collection = [],
+			kind, ret, retType;
+		this.each(function() {
+			can.each($.data(this, &quot;instances&quot;) || {}, function( instance, name ) {
+				//either null or the list type shared by all classes
+				kind = kind === undefined ? instance.constructor.List || null : (instance.constructor.List === kind ? kind : null);
+				collection.push(instance);
+			});
+		});
+
+		ret = kind ? new kind : new can.Observe.List;
+
+		ret.push.apply(ret, unique(collection));
+		return ret;
+	};
+	/**
+	 * @function instance
+	 * 
+	 * Returns the first observe instance found from [jQuery.fn.instances] or
+	 * sets the instance on an element.
+	 * 
+	 *     //gets an instance
+	 *     &quot;.edit click&quot; : function(el) {
+	 *       el.closest(&#039;.todo&#039;).instance().destroy()
+	 *     },
+	 *     // sets an instance
+	 *     list : function(items){
+	 *        var el = this.element;
+	 *        $.each(item, function(item){
+	 *          $(&#039;&lt;div/&gt;&#039;).instance(item)
+	 *            .appendTo(el)
+	 *        })
+	 *     }
+	 * 
+	 * @param {Object} [type] The type of instance to return.  If a instance is provided
+	 * it will add the instance to the element.
+	 */
+	$.fn.instance = function( type ) {
+		if ( type &amp;&amp; type instanceof can.Observe ) {
+			type.hookup(this[0]);
+			return this;
+		} else {
+			return this.instances.apply(this, arguments)[0];
+		}
+
+	};
+
+	return can.Observe;
+})</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

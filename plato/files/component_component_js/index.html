@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>component/component.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">65.08</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">439</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">56.75</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">3.44</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">// # can/component/component.js
+// 
+// This implements the `can.Component` which allows you to create widgets 
+// that use a template, a view-model and custom tags.
+// 
+// `can.Component` implements most of it&#039;s functionality in the `can.Component.setup`
+// and the `can.Component.prototype.setup` functions.
+// 
+// `can.Component.setup` prepares everything needed by the `can.Component.prototype.setup` 
+// to hookup the component.
+
+steal(&quot;can/util&quot;, &quot;can/view/callbacks&quot;,&quot;can/control&quot;, &quot;can/observe&quot;, &quot;can/view/mustache&quot;, &quot;can/view/bindings&quot;, function (can, viewCallbacks) {
+	// ## Helpers
+	// Attribute names to ignore for setting scope values.
+	var ignoreAttributesRegExp = /^(dataViewId|class|id)$/i,
+		paramReplacer = /\{([^\}]+)\}/g;
+
+	/**
+	 * @add can.Component
+	 */
+	var Component = can.Component = can.Construct.extend(
+		
+		// ## Static
+		/**
+		 * @static
+		 */
+		
+		{
+			// ### setup
+			// 
+			// When a component is extended, this sets up the component&#039;s internal constructor
+			// functions and templates for later fast initialization.
+			setup: function () {
+				can.Construct.setup.apply(this, arguments);
+
+				// When `can.Component.setup` function is ran for the first time, `can.Component` doesn&#039;t exist yet 
+				// which ensures that the following code is ran only in constructors that extend `can.Component`. 
+				if (can.Component) {
+					var self = this,
+						scope = this.prototype.scope;
+					
+					// Define a control using the `events` prototype property.
+					this.Control = ComponentControl.extend( this.prototype.events );
+					
+					// Look to convert `scope` to a Map constructor function.
+					if (!scope || (typeof scope === &quot;object&quot; &amp;&amp; ! (scope instanceof can.Map)  ) ) {
+						// If scope is an object, use that object as the prototype of an extended 
+						// Map constructor function.
+						// A new instance of that Map constructor function will be created and
+						// set a the constructor instance&#039;s scope.
+						this.Map = can.Map.extend(scope || {});
+					}
+					else if (scope.prototype instanceof can.Map) {
+						// If scope is a can.Map constructor function, just use that.
+						this.Map = scope;
+					}
+					
+					// Look for default `@` values. If a `@` is found, these
+					// attributes string values will be set and 2-way bound on the
+					// component instance&#039;s scope.
+					this.attributeScopeMappings = {};
+					can.each(this.Map ? this.Map.defaults : {}, function (val, prop) {
+						if (val === &quot;@&quot;) {
+							self.attributeScopeMappings[prop] = prop;
+						}
+					});
+
+					// Convert the template into a renderer function.
+					if (this.prototype.template) {
+						// If `this.prototype.template` is a function create renderer from it by
+						// wrapping it with the anonymous function that will pass it the arguments,
+						// otherwise create the render from the string
+						if (typeof this.prototype.template === &quot;function&quot;) {
+							var temp = this.prototype.template;
+							this.renderer = function () {
+								return can.view.frag(temp.apply(null, arguments));
+							};
+						} else {
+							this.renderer = can.view.mustache(this.prototype.template);
+						}
+					}
+
+					// Register this component to be created when its `tag` is found.
+					can.view.tag(this.prototype.tag, function (el, options) {
+						new self(el, options);
+					});
+				}
+
+			}
+		}, {
+			// ## Prototype
+			/**
+			 * @prototype
+			 */
+			// ### setup
+			// When a new component instance is created, setup bindings, render the template, etc.
+			setup: function (el, hookupOptions) {
+				// Setup values passed to component
+				var initalScopeData = {},
+					component = this,
+					twoWayBindings = {},
+					// what scope property is currently updating
+					scopePropertyUpdating,
+					// the object added to the scope
+					componentScope,
+					frag;
+
+				// ## Scope
+
+				// Add scope prototype properties marked with an &quot;@&quot; to the `initialScopeData` object
+				can.each(this.constructor.attributeScopeMappings, function (val, prop) {
+					initalScopeData[prop] = el.getAttribute(can.hyphenate(val));
+				});
+				
+				// Get the value in the scope for each attribute
+				// the hookup should probably happen after?
+				can.each(can.makeArray(el.attributes), function (node, index) {
+					var name = can.camelize(node.nodeName.toLowerCase()),
+						value = node.value;
+
+					//!steal-remove-start
+					// user tried to pass something like id=&quot;{foo}&quot;, so give them a good warning
+					if(ignoreAttributesRegExp.test(name) &amp;&amp; value[0] === &quot;{&quot; &amp;&amp; value[value.length-1] === &quot;}&quot;) {
+						can.dev.warn(&quot;can/component: looks like you&#039;re trying to pass &quot;+name+&quot; as an attribute into a component, &quot;+
+							&quot;but it is not a supported attribute&quot;);
+					}
+					//!steal-remove-end
+
+					// Ignore attributes already present in the ScopeMappings.
+					if (component.constructor.attributeScopeMappings[name] || ignoreAttributesRegExp.test(name) || viewCallbacks.attr(node.nodeName)) {
+						return;
+					}
+					// Only setup bindings if attribute looks like `foo=&quot;{bar}&quot;`
+					if(value[0] === &quot;{&quot; &amp;&amp; value[value.length-1] === &quot;}&quot;) {
+						value = value.substr(1, value.length - 2 );
+					} else {
+						// Legacy template types will crossbind &quot;foo=bar&quot;
+						if(hookupOptions.templateType !== &quot;legacy&quot;) {
+							initalScopeData[name] = value;
+							return;
+						}
+					}
+					// Cross-bind the value in the scope to this 
+					// component&#039;s scope
+					var computeData = hookupOptions.scope.computeData(value, {
+						args: []
+					}),
+						compute = computeData.compute;
+
+					// bind on this, check it&#039;s value, if it has dependencies
+					var handler = function (ev, newVal) {
+						scopePropertyUpdating = name;
+						componentScope.attr(name, newVal);
+						scopePropertyUpdating = null;
+					};
+
+					// Compute only returned if bindable
+					compute.bind(&quot;change&quot;, handler);
+
+					// Set the value to be added to the scope
+					initalScopeData[name] = compute();
+					
+					// We don&#039;t need to listen to the compute `change` if it doesn&#039;t have any dependencies
+					if (!compute.hasDependencies) {
+						compute.unbind(&quot;change&quot;, handler);
+					} else {
+						// Make sure we unbind (there&#039;s faster ways of doing this)
+						can.bind.call(el, &quot;removed&quot;, function () {
+							compute.unbind(&quot;change&quot;, handler);
+						});
+						// Setup the two-way binding
+						twoWayBindings[name] = computeData;
+					}
+
+				});
+				if (this.constructor.Map) {
+					// If `Map` property is set on the constructor use it to wrap the `initialScopeData`
+					componentScope = new this.constructor.Map(initalScopeData);
+				} else if (this.scope instanceof can.Map) {
+					// If `this.scope` is instance of `can.Map` assign it to the `componentScope`
+					componentScope = this.scope;
+				} else if (can.isFunction(this.scope)) {
+					// If `this.scope` is a function, call the function and 
+					var scopeResult = this.scope(initalScopeData, hookupOptions.scope, el);
+
+					if (scopeResult instanceof can.Map) {
+						// If the function returns a can.Map, use that as the scope
+						componentScope = scopeResult;
+					} else if (scopeResult.prototype instanceof can.Map) {
+						// If `scopeResult` is of a `can.Map` type, use it to wrap the `initialScopeData`
+						componentScope = new scopeResult(initalScopeData);
+					} else {
+						// Otherwise extend `can.Map` with the `scopeResult` and initialize it with the `initialScopeData`
+						componentScope = new(can.Map.extend(scopeResult))(initalScopeData);
+					}
+
+				}
+
+				// ## Two way bindings
+
+				// Object to hold the bind handlers so we can tear them down
+				var handlers = {};
+				// Setup reverse bindings
+				can.each(twoWayBindings, function (computeData, prop) {
+					handlers[prop] = function (ev, newVal) {
+						// Check that this property is not being changed because
+						// it&#039;s source value just changed
+						if (scopePropertyUpdating !== prop) {
+							computeData.compute(newVal);
+						}
+					};
+					componentScope.bind(prop, handlers[prop]);
+				});
+				// Teardown reverse bindings when the element is removed
+				can.bind.call(el, &quot;removed&quot;, function () {
+					can.each(handlers, function (handler, prop) {
+						componentScope.unbind(prop, handlers[prop]);
+					});
+				});
+				// Setup the attributes bindings
+				if (!can.isEmptyObject(this.constructor.attributeScopeMappings) || hookupOptions.templateType !== &quot;legacy&quot;) {
+					// Bind on the `attributes` event and update the scope.
+					can.bind.call(el, &quot;attributes&quot;, function (ev) {
+						// Convert attribute name from the `attribute-name` to the `attributeName` format.
+						var camelized = can.camelize(ev.attributeName);
+						if (!twoWayBindings[camelized] &amp;&amp; !ignoreAttributesRegExp.test(camelized) ) {
+							// If there is a mapping for this attribute, update the `componentScope` attribute
+							componentScope.attr(camelized, el.getAttribute(ev.attributeName));
+						}
+					});
+
+				}
+
+				// Set `componentScope` to `this.scope` and set it to the element&#039;s `data` object as a `scope` property
+				this.scope = componentScope;
+				can.data(can.$(el), &quot;scope&quot;, this.scope);
+
+				// Create a real Scope object out of the scope property
+				var renderedScope = hookupOptions.scope.add(this.scope),
+					options = {
+						helpers: {}
+					};
+
+				// ## Helpers
+
+
+				// Setup helpers to callback with `this` as the component
+				can.each(this.helpers || {}, function (val, prop) {
+					if (can.isFunction(val)) {
+						options.helpers[prop] = function () {
+							return val.apply(componentScope, arguments);
+						};
+					}
+				});
+
+				// ## `events` control
+
+				// Create a control to listen to events
+				this._control = new this.constructor.Control(el, {
+					// Pass the scope to the control so we can listen to it&#039;s changes from the controller.
+					scope: this.scope
+				});
+
+				// ## Rendering
+
+				// If this component has a template (that we&#039;ve already converted to a renderer)
+				if (this.constructor.renderer) {
+					// If `options.tags` doesn&#039;t exist set it to an empty object.
+					if (!options.tags) {
+						options.tags = {};
+					}
+
+					// We need be alerted to when a &lt;content&gt; element is rendered so we can put the original contents of the widget in its place
+					options.tags.content = function contentHookup(el, rendererOptions) {
+						// First check if there was content within the custom tag
+						// otherwise, render what was within &lt;content&gt;, the default code
+						var subtemplate = hookupOptions.subtemplate || rendererOptions.subtemplate;
+
+						if (subtemplate) {
+
+							// `rendererOptions.options` is a scope of helpers where `&lt;content&gt;` was found, so
+							// the right helpers should already be available.
+							// However, `_tags.content` is going to point to this current content callback.  We need to 
+							// remove that so it will walk up the chain
+
+							delete options.tags.content;
+
+							can.view.live.replace([el], subtemplate(
+								// This is the context of where `&lt;content&gt;` was found
+								// which will have the the component&#039;s context
+								rendererOptions.scope,
+
+								rendererOptions.options));
+
+							// Restore the content tag so it could potentially be used again (as in lists)
+							options.tags.content = contentHookup;
+						}
+					};
+					// Render the component&#039;s template
+					frag = this.constructor.renderer(renderedScope, hookupOptions.options.add(options));
+				} else {
+					// Otherwise render the contents between the 
+					if(hookupOptions.templateType === &quot;legacy&quot;) {
+						frag = can.view.frag(hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : &quot;&quot;);
+					} else {
+						frag = hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : document.createDocumentFragment();
+					}
+					
+				}
+				// Append the resulting document fragment to the element
+				can.appendChild(el, frag);
+			}
+		});
+
+	var ComponentControl = can.Control.extend({
+		// Change lookup to first look in the scope.
+		_lookup: function (options) {
+			return [options.scope, options, window];
+		},
+		_action: function (methodName, options, controlInstance ) {
+			var hasObjectLookup, readyCompute;
+
+			paramReplacer.lastIndex = 0;
+
+			hasObjectLookup = paramReplacer.test(methodName);
+
+			// If we don&#039;t have options (a `control` instance), we&#039;ll run this 
+			// later.
+			if( !controlInstance &amp;&amp; hasObjectLookup) {
+				return;
+			} else if( !hasObjectLookup ) {
+				return can.Control._action.apply(this, arguments);
+			} else {
+				// We have `hasObjectLookup` and `controlInstance`.
+
+				readyCompute = can.compute(function(){
+					var delegate;
+					
+					// Set the delegate target and get the name of the event we&#039;re listening to.
+					var name = methodName.replace(paramReplacer, function(matched, key){
+						var value;
+
+						// If we are listening directly on the `scope` set it as a delegate target.
+						if(key === &quot;scope&quot;) {
+							delegate = options.scope;
+							return &quot;&quot;;
+						}
+						
+						// Remove `scope.` from the start of the key and read the value from the `scope`.
+						key = key.replace(/^scope\./,&quot;&quot;);
+						value = can.compute.read(options.scope, key.split(&quot;.&quot;), {isArgument: true}).value;
+
+						// If `value` is undefined use `can.getObject` to get the value.
+						if(value === undefined) {
+							value = can.getObject(key);
+						}
+
+						// If `value` is a string we just return it, otherwise we set it as a delegate target.
+						if(typeof value === &quot;string&quot;) {
+							return value;
+						} else {
+							delegate = value;
+							return &quot;&quot;;
+						}
+	
+					});
+					
+					// Get the name of the `event` we&#039;re listening to.
+					var parts = name.split(/\s+/g),
+						event = parts.pop();
+
+					// Return everything needed to handle the event we&#039;re listening to.
+					return {
+						processor: this.processors[event] || this.processors.click,
+						parts: [name, parts.join(&quot; &quot;), event],
+						delegate: delegate || undefined
+					};
+					
+				}, this);
+
+				// Create a handler function that we&#039;ll use to handle the `change` event on the `readyCompute`.
+				var handler = function(ev, ready){
+					controlInstance._bindings.control[methodName](controlInstance.element);
+					controlInstance._bindings.control[methodName] = ready.processor(
+									ready.delegate || controlInstance.element,
+									ready.parts[2], ready.parts[1], methodName, controlInstance);
+				};
+
+				readyCompute.bind(&quot;change&quot;, handler);
+				
+				controlInstance._bindings.readyComputes[methodName] = {
+					compute: readyCompute,
+					handler: handler
+				};
+
+				return readyCompute();
+			}
+		}
+	},
+	// Extend `events` with a setup method that listens to changes in `scope` and
+	// rebinds all templated event handlers.
+	{
+		setup: function (el, options) {
+			this.scope = options.scope;
+			return can.Control.prototype.setup.call(this, el, options);
+		},
+		off: function(){
+			// If `this._bindings` exists we need to go through it&#039;s `readyComputes` and manually
+			// unbind `change` event listeners set by the controller.
+			if( this._bindings ) {
+				can.each(this._bindings.readyComputes || {}, function (value) {
+					value.compute.unbind(&quot;change&quot;, value.handler);
+				});
+			}
+			// Call `can.Control.prototype.off` function on this instance to cleanup the bindings.
+			can.Control.prototype.off.apply(this, arguments);
+			this._bindings.readyComputes = {};
+		}
+	});
+
+	// If there is a `$` object and it has the `fn` object, create the `scope` plugin that returns
+	// the scope object
+	if (window.$ &amp;&amp; $.fn) {
+		$.fn.scope = function (attr) {
+			// If `attr` is passed to the `scope` plugin return the value of that 
+			// attribute on the `scope` object, otherwise return the whole scope
+			if (attr) {
+				return this.data(&quot;scope&quot;)
+					.attr(attr);
+			} else {
+				return this.data(&quot;scope&quot;);
+			}
+		};
+	}
+
+	// Define the `can.scope` function that can be used to retrieve the `scope` from the element
+	can.scope = function (el, attr) {
+		el = can.$(el);
+		// If `attr` is passed to the `can.scope` function return the value of that
+		// attribute on the `scope` object otherwise return the whole scope
+		if (attr) {
+			return can.data(el, &quot;scope&quot;)
+				.attr(attr);
+		} else {
+			return can.data(el, &quot;scope&quot;);
+		}
+	};
+
+	return Component;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

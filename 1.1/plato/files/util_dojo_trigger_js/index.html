@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>util/dojo/trigger.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">69.90</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">168</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">28.96</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">0.72</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(function(){
+
+define(&quot;plugd/trigger&quot;,[&quot;dojo&quot;], function(dojo){
+    
+	var d = dojo, isfn = d.isFunction, 
+		leaveRe = /mouse(enter|leave)/, 
+		_fix = function(_, p){
+			return &quot;mouse&quot; + (p == &quot;enter&quot; ? &quot;over&quot; : &quot;out&quot;); 
+		},
+		mix = d._mixin,
+		
+		// the guts of the node triggering logic:
+		// the function accepts node (not string|node), &quot;on&quot;-less event name,
+		// and an object of args to mix into the event. 
+		realTrigger = d.doc.createEvent ? 
+			function(n, e, a){
+				// the sane branch
+				var ev = d.doc.createEvent(&quot;HTMLEvents&quot;);
+				e = e.replace(leaveRe, _fix);
+				// destroyed events should not bubble
+				ev.initEvent(e,  e === &quot;destroyed&quot; ? false : true, true);
+				a &amp;&amp; mix(ev, a);
+				n.dispatchEvent(ev);
+			} : 
+			function(n, e, a){
+				// the janktastic branch
+				var ev = &quot;on&quot; + e, stop = false, lc = e.toLowerCase(), node = n; 
+				try{
+// FIXME: is this worth it? for mixed-case native event support:? Opera ends up in the
+//	createEvent path above, and also fails on _some_ native-named events. 
+//					if(lc !== e &amp;&amp; d.indexOf(d.NodeList.events, lc) &gt;= 0){
+//						// if the event is one of those listed in our NodeList list
+//						// in lowercase form but is mixed case, throw to avoid
+//						// fireEvent. /me sighs. http://gist.github.com/315318
+//						throw(&quot;janktastic&quot;);
+//					}
+					n.fireEvent(ev);
+				}catch(er){
+					// a lame duck to work with. we&#039;re probably a &#039;custom event&#039;
+					var evdata = mix({ 
+						type: e, target: n, faux: true,
+						// HACK: [needs] added support for customStopper to _base/event.js
+						// some tests will fail until del._stopPropagation has support.
+						_stopper: function(){ stop = this.cancelBubble; }
+					}, a);
+				
+					isfn(n[ev]) &amp;&amp; n[ev](evdata);
+				
+					// handle bubbling of custom events, unless the event was stopped.
+					while(!stop &amp;&amp; n !== d.doc &amp;&amp; n.parentNode){
+						n = n.parentNode;
+						isfn(n[ev]) &amp;&amp; n[ev](evdata);
+					}
+				}
+			}
+	;
+	
+	d._trigger = function(node, event, extraArgs){
+		// summary:
+		//		Helper for `dojo.trigger`, which handles the DOM cases. We should never
+		//		be here without a domNode reference and a string eventname.
+		var n = d.byId(node), ev = event &amp;&amp; event.slice(0, 2) == &quot;on&quot; ? event.slice(2) : event;
+		realTrigger(n, ev, extraArgs);
+	};
+		
+	d.trigger = function(obj, event, extraArgs){
+		// summary: 
+		//		Trigger some event. It can be either a Dom Event, Custom Event, 
+		//		or direct function call. 
+		//
+		// description:
+		//		Trigger some event. It can be either a Dom Event, Custom Event, 
+		//		or direct function call. NOTE: This function does not trigger
+		//		default behavior, only triggers bound event listeneres. eg:
+		//		one cannot trigger(&quot;anchorNode&quot;, &quot;onclick&quot;) and expect the browser
+		//		to follow the href=&quot;&quot; attribute naturally.
+		//
+		// obj: String|DomNode|Object|Function
+		//		An ID, or DomNode reference, from which to trigger the event.
+		//		If an Object, fire the `event` in the scope of this object,
+		//		similar to calling dojo.hitch(obj, event)(). The return value
+		//		in this case is returned from `dojo.trigger`
+		//	 
+		// event: String|Function
+		//		The name of the event to trigger. can be any DOM level 2 event
+		//		and can be in either form: &quot;onclick&quot; or &quot;click&quot; for instance.
+		//		In the object-firing case, this method can be a function or
+		//		a string version of a member function, just like `dojo.hitch`.
+		//
+		// extraArgs: Object?
+		//		An object to mix into the `event` object passed to any bound 
+		//		listeners. Be careful not to override important members, like
+		//		`type`, or `preventDefault`. It will likely error.
+		//
+		//		Additionally, extraArgs is moot in the object-triggering case,
+		//		as all arguments beyond the `event` are curried onto the triggered
+		//		function.
+		//
+		// example: 
+		//	|	dojo.connect(node, &quot;onclick&quot;, function(e){ /* stuff */ });
+		//	|	// later:
+		//	|	dojo.trigger(node, &quot;onclick&quot;);
+		//
+		// example:
+		//	|	// or from within dojo.query: (requires dojo.NodeList)
+		//	|	dojo.query(&quot;a&quot;).onclick(function(){}).trigger(&quot;onclick&quot;);
+		//
+		// example:
+		//	|	// fire obj.method() in scope of obj
+		//	|	dojo.trigger(obj, &quot;method&quot;);
+		//
+		// example:
+		//	|	// fire an anonymous function:
+		//	|	dojo.trigger(d.global, function(){ /* stuff */ });
+		//
+		// example: 
+		//	|	// fire and anonymous function in the scope of obj
+		//	|	dojo.trigger(obj, function(){ this == obj; });
+		//
+		// example:
+		//	|	// with a connected function like:
+		//	|	dojo.connect(dojo.doc, &quot;onclick&quot;, function(e){
+		//	|		if(e &amp;&amp; e.manuallydone){
+		//	|			console.log(&quot;this was a triggered onclick, not natural&quot;);
+		//	|		}
+		//	|	});
+		//	|	// fire onclick, passing in a custom bit of info
+		//	|	dojo.trigger(&quot;someId&quot;, &quot;onclick&quot;, { manuallydone:true });
+		//
+		// returns: Anything
+		//		Will not return anything in the Dom event case, but will return whatever
+		//		return value is received from the triggered event. 
+		return (isfn(obj) || isfn(event) || isfn(obj[event])) ? 
+			d.hitch.apply(d, arguments)() : d._trigger.apply(d, arguments);
+	};
+	d.NodeList.prototype.trigger = d.NodeList._adaptAsForEach(d._trigger); 
+
+	// if the node.js module is available, extend trigger into that.
+	if(d._Node &amp;&amp; !d._Node.prototype.trigger){
+		d.extend(d._Node, {
+			trigger: function(ev, data){
+				// summary:
+				//		Fire some some event originating from this node.
+				//		Only available if both the `dojo.trigger` and `dojo.node` plugin 
+				//		are enabled. Allows chaining as all `dojo._Node` methods do.
+				//
+				// ev: String
+				//		Some string event name to fire. eg: &quot;onclick&quot;, &quot;submit&quot;
+				//
+				// data: Object
+				//		Just like `extraArgs` for `dojo.trigger`, additional data
+				//		to mix into the event object.
+				//
+				// example:
+				//	|	// fire onlick orginiating from a node with id=&quot;someAnchorId&quot;
+				//	|	dojo.node(&quot;someAnchorId&quot;).trigger(&quot;click&quot;);
+
+				d._trigger(this, ev, data);
+				return this; // dojo._Node
+			}
+		});
+	}
+
+	return d.trigger;
+	
+});
+return;
+})</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

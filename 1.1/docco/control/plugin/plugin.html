@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>plugin.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>plugin.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'jquery'</span>, <span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/control'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($, can)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>used to determine if a control instance is one of controllers
+controllers can be strings or classes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> i, 
+	isAControllerOf = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( instance, controllers )</span> </span>{
+		<span class="hljs-keyword">for</span> ( i = <span class="hljs-number">0</span>; i &lt; controllers.length; i++ ) {
+			<span class="hljs-keyword">if</span> ( <span class="hljs-keyword">typeof</span> controllers[i] == <span class="hljs-string">'string'</span> ? instance.constructor._shortName == controllers[i] : instance <span class="hljs-keyword">instanceof</span> controllers[i] ) {
+				<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+			}
+		}
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+	},
+	makeArray = can.makeArray,
+	old = can.Control.setup;
+
+<span class="hljs-comment">/*
+ * static
+ */</span>
+can.Control.setup = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>if you didn’t provide a name, or are control, don’t do anything</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> ( <span class="hljs-keyword">this</span> !== can.Control ) {
+
+		<span class="hljs-comment">/**
+		 * @property {String} can.Control.plugin.static.pluginName pluginName
+		 * @parent can.Control.plugin
+		 *
+		 * @description
+		 *
+		 * Allows you to define the name of the jQuery plugin.
+		 *
+		 * @body
+		 *
+		 * Setting the static `pluginName` property allows you to override the default name
+		 * with your own.
+		 *
+		 *		var Filler = can.Control({
+		 *		  pluginName: 'fillWith'
+		 *		},{});
+		 * 
+		 *		$("#foo").fillWith();
+		 *
+		 * If you don't provide a `pluginName`, the control falls back to the
+		 * [can.Construct.fullName fullName] attribute:
+		 *
+		 *		can.Control('Ui.Layout.FillWith', {}, {});
+		 *		$("#foo").ui_layout_fill_with();
+		 *
+		 */</span>
+		<span class="hljs-keyword">var</span> pluginName = <span class="hljs-keyword">this</span>.pluginName || <span class="hljs-keyword">this</span>._fullName;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>create jQuery plugin</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span>(pluginName !== <span class="hljs-string">'can_control'</span>){
+			<span class="hljs-keyword">this</span>.plugin(pluginName);
+		}
+			
+		old.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+	}
+};
+
+<span class="hljs-comment">/*
+ * prototype
+ */</span>
+$.fn.extend({
+
+	<span class="hljs-comment">/**
+	 * @function jQuery.fn.controls jQuery.fn.controls
+	 * @parent can.Control.plugin
+	 * @description Get the Controls associated with elements.
+	 * @signature `jQuery.fn.controls([type])`
+	 * @param {String|can.Control} [control] The type of Controls to find.
+	 * @return {can.Control} The controls associated with the given elements.
+	 *
+	 * @body 
+	 * When the widget is initialized, the plugin control creates an array 
+	 * of control instance(s) with the DOM element it was initialized on using 
+	 * [can.data] method.
+	 *
+	 * The `controls` method allows you to get the control instance(s) for any element.  
+	 *
+	 *		//- Inits the widgets
+	 *		$('.widgets:eq(0)').my_box();
+	 *		$('.widgets:eq(1)').my_clock();
+	 *
+	 *		&lt;div class="widgets my_box" /&gt;
+	 *		&lt;div class="widgets my_clock" /&gt;
+	 *
+	 *		$('.widgets').controls() //-&gt; [ MyBox, MyClock ]
+	 *
+	 * Additionally, you can invoke it passing the name of a control
+	 * to fetch a specific instance(s).
+	 *
+	 *		//- Inits the widgets
+	 *		$('.widgets:eq(0)').my_box();
+	 *		$('.widgets:eq(1)').my_clock();
+	 *
+	 *		&lt;div class="widgets my_box" /&gt;
+	 *		&lt;div class="widgets my_clock" /&gt;
+	 *
+	 *		$('.widgets').controls('MyBox') //-&gt; [ MyBox ]
+	 */</span>
+	controls: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-keyword">var</span> controllerNames = makeArray(<span class="hljs-built_in">arguments</span>),
+			instances = [],
+			controls, c, cname;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>check if arguments</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+
+			controls = can.$(<span class="hljs-keyword">this</span>).data(<span class="hljs-string">"controls"</span>);
+			<span class="hljs-keyword">if</span>(!controls){
+				<span class="hljs-keyword">return</span>;
+			}
+			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt;controls.length; i++){
+				c = controls[i];
+				<span class="hljs-keyword">if</span> (!controllerNames.length || isAControllerOf(c, controllerNames) ) {
+					instances.push(c);
+				}
+			}
+		});
+		<span class="hljs-keyword">return</span> instances;
+	},
+	
+	<span class="hljs-comment">/**
+	 * @function jQuery.fn.control jQuery.fn.control
+	 * @parent can.Control.plugin
+	 * @description Get the Control associated with elements.
+	 * @signature `jQuery.fn.control([type])`
+	 * @param {String|can.Control} [control] The type of Control to find.
+	 * @return {can.Control} The first control found.
+	 *
+	 * @body
+	 * This is the same as [jQuery.fn.controls $().controls] except that
+	 * it only returns the first Control found.
+	 *
+	 *		//- Init MyBox widget
+	 *		$('.widgets').my_box();
+	 *
+	 *		&lt;div class="widgets my_box" /&gt;
+	 *
+	 *		$('.widgets').controls() //-&gt; MyBox
+	 */</span>
+	control: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( control )</span> </span>{
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.controls.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>)[<span class="hljs-number">0</span>];
+	}
+});
+
+can.Control.plugin = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(pluginname)</span></span>{
+	<span class="hljs-keyword">var</span> control = <span class="hljs-keyword">this</span>;
+
+	<span class="hljs-keyword">if</span> (!$.fn[pluginname]) {
+		$.fn[pluginname] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span></span>{
+		
+			<span class="hljs-keyword">var</span> args = makeArray(<span class="hljs-built_in">arguments</span>),   <span class="hljs-comment">//if the arg is a method on this control</span>
+			isMethod = <span class="hljs-keyword">typeof</span> options == <span class="hljs-string">"string"</span> &amp;&amp; $.isFunction(control.prototype[options]), meth = args[<span class="hljs-number">0</span>],
+			returns;
+			<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>check if created</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> plugin = can.$(<span class="hljs-keyword">this</span>).control(control);
+				
+				<span class="hljs-keyword">if</span> (plugin) {
+					<span class="hljs-keyword">if</span> (isMethod) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>call a method on the control with the remaining args</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						returns = plugin[meth].apply(plugin, args.slice(<span class="hljs-number">1</span>));
+					}
+					<span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>call the plugin’s update method</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						plugin.update.apply(plugin, args);
+					}
+				}
+				<span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>create a new control instance</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					control.newInstance.apply(control, [<span class="hljs-keyword">this</span>].concat(args));
+				}
+			});
+			<span class="hljs-keyword">return</span> returns !== <span class="hljs-literal">undefined</span> ? returns : <span class="hljs-keyword">this</span>;
+		};
+	}
+}
+
+<span class="hljs-comment">/**
+ * @function can.Control.plugin.prototype.update update
+ * @parent can.Control.plugin
+ * 
+ * @description Reconfigure a control.
+ * @signature `update(newOptions)`
+ * @param {Object} newOptions Options to merge into the current options.
+ * 
+ * @body
+ * Update extends [can.Control.prototype.options options] 
+ * with the `options` argument and rebinds all events.  It 
+ * re-configures the control.
+ * 
+ * For example, the following control wraps a recipe form. When the form
+ * is submitted, it creates the recipe on the server.  When the recipe
+ * is `created`, it resets the form with a new instance.
+ * 
+ *		var Creator = can.Control({
+ *		  "{recipe} created" : function(){
+ *		    this.update({recipe : new Recipe()});
+ *		    this.element[0].reset();
+ *		    this.element.find("[type=submit]").val("Create Recipe")
+ *		  },
+ *		  "submit" : function(el, ev){
+ *		    ev.preventDefault();
+ *		    var recipe = this.options.recipe;
+ *			recipe.attrs( this.element.formParams() );
+ *			this.element.find("[type=submit]").val("Saving...")
+ *			recipe.save();
+ *		  }
+ *		});
+ *
+ *		$('#createRecipes').creator({ recipe : new Recipe() })
+ * 
+ * *Update* is called if a control's plugin helper is called with the plugin options on an element
+ * that already has a control instance of the same type. If you want to implement your
+ * own update method make sure to call the old one either using the [can.Construct.super super] plugin or
+ * by calling `can.Control.prototype.update.apply(this, arguments);`.
+ * For example, you can change the content of the control element every time the options change:
+ * 
+ *		var Plugin = can.Control({
+ *		    pluginName: 'myPlugin'
+ *		  }, {
+ *		    init : function(el, options) {
+ *			  this.updateCount = 0;
+ *			  this.update({
+ *			    text : 'Initialized'
+ *			  });
+ *			},
+ *			update : function(options) {
+ *			  // Call the can.Control update first.
+ *			  // Use this._super when using can/construct/super
+ *			  can.Control.prototype.update.call(this, options);
+ *			  this.element.html(this.options.text + ' ' +
+ *			    (++this.updateCount) + ' times');
+ *			}
+ *		});
+ *
+ *		$('#control').myPlugin();
+ *		$('#control').html();
+ *		// Initialized. Updated 1 times
+ *
+ *		$('#control').myPlugin({ text : 'Calling update. Updated' });
+ *		$('#control').html();
+ *		// Calling update. Updated 2 times
+ *
+ * @demo can/control/plugin/demo-update.html
+ * 
+ * @param {Object} options A list of options to merge with 
+ * [can.Control.prototype.options this.options].  Often this method
+ * is called by the [can.Control.plugin jQuery helper function].
+ */</span>
+can.Control.prototype.update = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( options )</span> </span>{
+		can.extend(<span class="hljs-keyword">this</span>.options, options);
+		<span class="hljs-keyword">this</span>.on();
+};
+
+<span class="hljs-keyword">return</span> can;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

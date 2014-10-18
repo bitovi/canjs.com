@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>elements.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>elements.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/observe'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can, Observe)</span> </span>{
+	
+<span class="hljs-keyword">var</span> unique = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( items )</span> </span>{
+		<span class="hljs-keyword">var</span> collect = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>check unique property, if it isn’t there, add to collect</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		can.each(items, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( item )</span> </span>{
+			<span class="hljs-keyword">if</span> (!item[<span class="hljs-string">"__u Nique"</span>] ) {
+				collect.push(item);
+				item[<span class="hljs-string">"__u Nique"</span>] = <span class="hljs-number">1</span>;
+			}
+		});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>remove unique </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">return</span> can.each(collect, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( item )</span> </span>{
+			<span class="hljs-keyword">delete</span> item[<span class="hljs-string">"__u Nique"</span>];
+		});
+	}
+		
+	can.extend(can.Observe.prototype,{
+		<span class="hljs-comment">/**
+		 * Returns a unique identifier for the observe instance.  For example:
+		 *
+		 * @codestart
+		 * new Todo({id: 5}).identity() //-&gt; 'todo_5'
+		 * @codeend
+		 *
+		 * Typically this is used in an element's shortName property so you can find all elements
+		 * for a observe with [$.Observe.prototype.elements elements].
+		 *
+		 * If your observe id has special characters that are not permitted as CSS class names,
+		 * you can set the `escapeIdentity` on the observe instance's constructor
+		 * which will `encodeURIComponent` the `id` of the observe.
+		 *
+		 * @return {String} The unique identifier for this instance.
+		 */</span>
+		identity: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">var</span> constructor = <span class="hljs-keyword">this</span>.constructor,
+				id = <span class="hljs-keyword">this</span>[constructor.id] || <span class="hljs-keyword">this</span>._cid.replace(<span class="hljs-regexp">/./</span>, <span class="hljs-string">''</span>),
+				name = constructor._fullName ? constructor._fullName + <span class="hljs-string">'_'</span> : <span class="hljs-string">''</span>;
+
+			<span class="hljs-keyword">return</span> (name + (constructor.escapeIdentity ? <span class="hljs-built_in">encodeURIComponent</span>(id) : id)).replace(<span class="hljs-regexp">/ /g</span>, <span class="hljs-string">'_'</span>);
+		},
+		<span class="hljs-comment">/**
+		 * Returns elements that represent this observe instance.  For this to work, your element should
+		 * use the [$.Observe.prototype.identity identity] function in their class name.  Example:
+		 * 
+		 *     &lt;div class='todo &lt;%= todo.identity() %&gt;'&gt; ... &lt;/div&gt;
+		 * 
+		 * This also works if you hooked up the observe:
+		 * 
+		 *     &lt;div &lt;%= todo %&gt;&gt; ... &lt;/div&gt;
+		 *     
+		 * Typically, you'll use this as a response to a Observe Event:
+		 * 
+		 *     "{Todo} destroyed": function(Todo, event, todo){
+		 *       todo.elements(this.element).remove();
+		 *     }
+		 * 
+		 * 
+		 * @param {String|jQuery|element} context If provided, only elements inside this element
+		 * that represent this observe will be returned.
+		 * 
+		 * @return {jQuery} Returns a jQuery wrapped nodelist of elements that have this observe instances
+		 *  identity in their class name.
+		 */</span>
+		elements: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( context )</span> </span>{
+			<span class="hljs-keyword">var</span> id = <span class="hljs-keyword">this</span>.identity();
+			<span class="hljs-keyword">if</span>( <span class="hljs-keyword">this</span>.constructor.escapeIdentity ) {
+				id = id.replace(<span class="hljs-regexp">/([ #;&amp;,.+*~\'%:"!^$[\]()=&gt;|\/])/g</span>,<span class="hljs-string">'\\$1'</span>)
+			}
+			
+			<span class="hljs-keyword">return</span> can.$(<span class="hljs-string">"."</span> + id, context);
+		},
+		hookup: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( el )</span> </span>{
+			<span class="hljs-keyword">var</span> shortName = <span class="hljs-keyword">this</span>.constructor._shortName || <span class="hljs-string">''</span>,
+				$el = can.$(el),
+				observes;
+				
+			(observes = can.data($el, <span class="hljs-string">"instances"</span>) )|| can.data($el, <span class="hljs-string">"instances"</span>, observes = {});
+			can.addClass($el,shortName + <span class="hljs-string">" "</span> + <span class="hljs-keyword">this</span>.identity());
+			observes[shortName] = <span class="hljs-keyword">this</span>;
+		}
+	});
+
+
+	<span class="hljs-comment">/**
+	 *  @add jQuery.fn
+	 */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>break</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-comment">/**
+	 * @function instances
+	 * Returns a list of observes.  If the observes are of the same
+	 * type, and have a [$.Observe.List], it will return 
+	 * the observes wrapped with the list.
+	 * 
+	 * @codestart
+	 * $(".recipes").instances() //-&gt; [recipe, ...]
+	 * @codeend
+	 * 
+	 * @param {jQuery.Class} [type] if present only returns observes of the provided type.
+	 * @return {Array|$.Observe.List} returns an array of observes instances that are represented by the contained elements.
+	 */</span>
+	$.fn.instances = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( type )</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>get it from the data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> collection = [],
+			kind, ret, retType;
+		<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			can.each($.data(<span class="hljs-keyword">this</span>, <span class="hljs-string">"instances"</span>) || {}, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( instance, name )</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>either null or the list type shared by all classes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				kind = kind === <span class="hljs-literal">undefined</span> ? instance.constructor.List || <span class="hljs-literal">null</span> : (instance.constructor.List === kind ? kind : <span class="hljs-literal">null</span>);
+				collection.push(instance);
+			});
+		});
+
+		ret = kind ? <span class="hljs-keyword">new</span> kind : <span class="hljs-keyword">new</span> can.Observe.List;
+
+		ret.push.apply(ret, unique(collection));
+		<span class="hljs-keyword">return</span> ret;
+	};
+	<span class="hljs-comment">/**
+	 * @function instance
+	 * 
+	 * Returns the first observe instance found from [jQuery.fn.instances] or
+	 * sets the instance on an element.
+	 * 
+	 *     //gets an instance
+	 *     ".edit click" : function(el) {
+	 *       el.closest('.todo').instance().destroy()
+	 *     },
+	 *     // sets an instance
+	 *     list : function(items){
+	 *        var el = this.element;
+	 *        $.each(item, function(item){
+	 *          $('&lt;div/&gt;').instance(item)
+	 *            .appendTo(el)
+	 *        })
+	 *     }
+	 * 
+	 * @param {Object} [type] The type of instance to return.  If a instance is provided
+	 * it will add the instance to the element.
+	 */</span>
+	$.fn.instance = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( type )</span> </span>{
+		<span class="hljs-keyword">if</span> ( type &amp;&amp; type <span class="hljs-keyword">instanceof</span> can.Observe ) {
+			type.hookup(<span class="hljs-keyword">this</span>[<span class="hljs-number">0</span>]);
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		} <span class="hljs-keyword">else</span> {
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.instances.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>)[<span class="hljs-number">0</span>];
+		}
+
+	};
+
+	<span class="hljs-keyword">return</span> can.Observe;
+})</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

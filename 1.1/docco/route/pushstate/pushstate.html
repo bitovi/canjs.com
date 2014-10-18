@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>pushstate.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>pushstate.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/route'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can)</span> </span>{
+<span class="hljs-pi">    "use strict"</span>;
+
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">window</span>.history &amp;&amp; history.pushState) {
+
+        <span class="hljs-keyword">var</span> getPath = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">return</span> location.pathname + location.search;
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>popstate only fires on back/forward.
+To detect when someone calls push/replaceState, we need to wrap each method.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        can.each([<span class="hljs-string">'pushState'</span>,<span class="hljs-string">'replaceState'</span>],<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(method)</span> </span>{
+            <span class="hljs-keyword">var</span> orig = history[method];
+            history[method] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(state)</span> </span>{
+                <span class="hljs-keyword">var</span> result = orig.apply(history, <span class="hljs-built_in">arguments</span>);
+                can.route.history.attr(<span class="hljs-string">'path'</span>,getPath());
+                can.route.history.attr(<span class="hljs-string">'type'</span>,method);
+                <span class="hljs-keyword">return</span> result;
+            };
+        });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Bind to popstate for back/forward</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        can.bind.call(<span class="hljs-built_in">window</span>, <span class="hljs-string">'popstate'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            can.route.history.attr(<span class="hljs-string">'path'</span>,getPath());
+            can.route.history.attr(<span class="hljs-string">'type'</span>,<span class="hljs-string">'popState'</span>);
+        });
+
+
+        <span class="hljs-keyword">var</span> param = can.route.param,
+            paramsMatcher = <span class="hljs-regexp">/^\?(?:[^=]+=[^&amp;]*&amp;)*[^=]+=[^&amp;]*/</span>;
+        can.extend(can.route, {
+            history: <span class="hljs-keyword">new</span> can.Observe({path:getPath()}),
+            _paramsMatcher: paramsMatcher,
+            _querySeparator: <span class="hljs-string">'?'</span>,
+            _setup: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>intercept routable links</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                can.$(<span class="hljs-string">'body'</span>).on(<span class="hljs-string">'click'</span>, <span class="hljs-string">'a'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> </span>{
+                	<span class="hljs-keyword">if</span>(!e.isDefaultPrevented()) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Fix for ie showing blank host, but blank host means current host.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	                    <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>.host) {
+	                      <span class="hljs-keyword">this</span>.host = <span class="hljs-built_in">window</span>.location.host;
+	                    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>HTML5 pushstate requires host to be the same. Don’t prevent default for other hosts.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	                    <span class="hljs-keyword">if</span>(can.route.updateWith(<span class="hljs-keyword">this</span>.pathname+<span class="hljs-keyword">this</span>.search) &amp;&amp; <span class="hljs-built_in">window</span>.location.host == <span class="hljs-keyword">this</span>.host) {
+	                        e.preventDefault();
+	                    }
+                	}
+                });
+                can.route.history.bind(<span class="hljs-string">'path'</span>,can.route.setState);
+            },
+            updateWith: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(pathname)</span> </span>{
+                <span class="hljs-keyword">var</span> curParams = can.route.deparam(pathname);
+
+                <span class="hljs-keyword">if</span>(curParams.route) {
+                    can.route.attr(curParams, <span class="hljs-literal">true</span>);
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                }
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+            },
+            _getHash: getPath,
+            _setHash: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(serialized)</span> </span>{
+                <span class="hljs-keyword">var</span> path = can.route.param(serialized, <span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">if</span>(path !== can.route._getHash()) {
+                    can.route.updateLocation(path);
+                }
+                <span class="hljs-keyword">return</span> path;
+            },
+            current: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( options )</span> </span>{
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._getHash() === can.route.param(options);
+            },
+            <span class="hljs-comment">/**
+             * This is a blunt hook for updating the window.location.
+             * You may prefer to use replaceState instead of pushState in some circumstances,
+             * in which case you can overwrite this method and handle the change yourself.
+             */</span>
+            updateLocation: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(path)</span> </span>{
+                history.pushState(<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, path);
+            },
+            url: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( options, merge )</span> </span>{
+                <span class="hljs-keyword">if</span> (merge) {
+                    options = can.extend({}, can.route.deparam( <span class="hljs-keyword">this</span>._getHash()), options);
+                }
+                <span class="hljs-keyword">return</span> can.route.param(options);
+            }
+        });
+    }
+
+	<span class="hljs-keyword">return</span> can;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

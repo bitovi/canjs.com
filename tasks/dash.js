@@ -12,7 +12,7 @@ var qfs = {
 
 module.exports = function(grunt) {
 	grunt.registerMultiTask('dash-docset', "Creates the docset for Dash from CanJS's documentation.", function() {
-		this.requires('shell:docjs');
+		this.requires('documentjs:2.1');
 
 		var done = this.async(),
 			task = this;
@@ -120,7 +120,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerMultiTask('dash-repath', "Renames the docset to the right name.", function() {
-		this.requires('shell:docjs', 'dash-docset');
+		this.requires('documentjs:2.1', 'dash-docset');
 		fs.renameSync(
 			this.options().containingFolder + 'docset',
 			this.options().containingFolder + 'CanJS.docset'

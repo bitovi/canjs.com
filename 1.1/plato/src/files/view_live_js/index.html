@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>view/live.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">70.79</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">313</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">53.51</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">2.32</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/util&#039;, &#039;./elements.js&#039;,&#039;can/view&#039;,&#039;./node_lists.js&#039;,
+	function(can, elements,view,nodeLists){
+	// ## live.js
+	// 
+	// The live module provides live binding for computes
+	// and can.Observe.List.
+	// 
+	// Currently, it&#039;s API is designed for `can/view/render`, but
+	// it could easily be used for other purposes.
+
+
+	// ### Helper methods
+	// 
+	// #### setup
+	// 
+	// `setup(HTMLElement, bind(data), unbind(data)) -&gt; data`
+	// 
+	// Calls bind right away, but will call unbind
+	// if the element is &quot;destroyed&quot; (removed from the DOM).
+	var setup = function(el, bind, unbind){
+		var teardown = function(){
+			unbind(data)
+			can.unbind.call(el,&#039;destroyed&#039;, teardown);
+		},
+			data = {
+				teardownCheck: function(parent){
+					if(!parent){
+						teardown();
+					}
+				}
+			}
+
+		can.bind.call(el,&#039;destroyed&#039;, teardown);
+		bind(data)
+		return data;
+	},
+		// #### listen
+		// Calls setup, but presets bind and unbind to 
+		// operate on a compute
+		listen = function(el, compute, change){
+			return setup(el, function(){
+				compute.bind(&quot;change&quot;, change);
+			},function(data){
+				compute.unbind(&quot;change&quot;, change);
+				if(data.nodeList){
+					nodeLists.unregister( data.nodeList );
+				}
+			});
+		},
+		// #### getAttributeParts
+		// Breaks up a string like foo=&#039;bar&#039; into [&quot;foo&quot;,&quot;&#039;bar&#039;&quot;&quot;]
+		getAttributeParts = function(newVal){
+			return (newVal|| &quot;&quot;).replace(/[&#039;&quot;]/g, &#039;&#039;).split(&#039;=&#039;)
+		}
+		// #### insertElementsAfter
+		// Appends elements after the last item in oldElements.
+		insertElementsAfter = function(oldElements, newFrag){
+			var last = oldElements[oldElements.length - 1];
+					
+			// Insert it in the `document` or `documentFragment`
+			if( last.nextSibling ){
+				last.parentNode.insertBefore(newFrag, last.nextSibling);
+			} else {
+				last.parentNode.appendChild(newFrag);
+			}
+		};
+
+
+	var live = {
+		nodeLists : nodeLists,
+		list: function(el, list, func, context, parentNode){
+			// A mapping of the index to an array
+			// of elements that represent the item.
+			// Each array is registered so child or parent
+			// live structures can update the elements
+			var nodesMap = [],
+
+				add = function(ev, items, index){
+
+					// Collect new html and mappings
+					var frag = document.createDocumentFragment(),
+						newMappings = [];
+					can.each(items, function(item){
+						var itemHTML = func.call(context,item),
+							itemFrag = can.view.frag(itemHTML, parentNode);
+
+						newMappings.push(can.makeArray(itemFrag.childNodes));
+						frag.appendChild(itemFrag);
+					})
+
+					// Inserting at the end of the list
+					if(!nodesMap[index]){
+						insertElementsAfter(
+							index == 0 ?
+								[text] :
+								nodesMap[index-1], frag)
+					} else {
+						var el = nodesMap[index][0];
+						el.parentNode.insertBefore(frag, el)
+					}
+					// register each item
+					can.each(newMappings,function(nodeList){
+						nodeLists.register(nodeList)
+					});
+					[].splice.apply(nodesMap, [index, 0].concat(newMappings));
+				},
+				remove = function(ev, items, index){
+					var removedMappings = nodesMap.splice(index, items.length),
+						itemsToRemove = [];
+
+					can.each(removedMappings,function(nodeList){
+						// add items that we will remove all at once
+						[].push.apply(itemsToRemove, nodeList)
+						// Update any parent lists to remove these items
+						nodeLists.replace(nodeList,[]);
+						// unregister the list
+						nodeLists.unregister(nodeList);
+
+					});
+					can.remove( can.$(itemsToRemove) );
+				},
+				parentNode = elements.getParentNode(el, parentNode),
+				text = document.createTextNode(&quot;&quot;);
+
+			// Setup binding and teardown to add and remove events
+			setup(parentNode, function(){
+				list.bind(&quot;add&quot;, add).bind(&quot;remove&quot;, remove)
+			},function(){
+				list.unbind(&quot;add&quot;, add).unbind(&quot;remove&quot;, remove);
+				can.each(nodesMap, function(nodeList){
+					nodeLists.unregister( nodeList );
+				})
+			})
+
+			insertElementsAfter([el],text);
+			can.remove( can.$(el) );
+			add({}, list, 0);
+/*
+			list.each(function(item, i){
+				
+				var itemFrag = func.call(context,item),
+					newNodes = can.makeArray(itemFrag.childNodes);
+
+				frag.appendChild(itemFrag);
+
+				nodesMap[i] = newNodes;
+				nodeLists.register(newNodes);
+			})
+			replaceElements([el], frag);*/
+		},
+		html: function(el, compute, parentNode){
+			var parentNode = elements.getParentNode(el, parentNode),
+
+				data = listen(parentNode, compute, function(ev, newVal, oldVal){
+				var attached = nodes[0].parentNode;
+				// update the nodes in the DOM with the new rendered value
+				if( attached ) {
+					makeAndPut(newVal);
+				}
+				data.teardownCheck(nodes[0].parentNode);
+			});
+
+			var nodes,
+				makeAndPut = function(val){
+					// create the fragment, but don&#039;t hook it up
+					// we need to insert it into the document first
+					var frag = can.view.frag(val, parentNode),
+						// keep a reference to each node
+						newNodes = can.makeArray(frag.childNodes);
+					// Insert it in the `document` or `documentFragment`
+					insertElementsAfter(nodes || [el], frag)
+					// nodes hasn&#039;t been set yet
+					if( !nodes ) {
+						can.remove( can.$(el) );
+						nodes = newNodes;
+						// set the teardown nodeList
+						data.nodeList = nodes;
+						nodeLists.register(nodes);
+					} else {
+						// Update node Array&#039;s to point to new nodes
+						// and then remove the old nodes.
+						// It has to be in this order for Mootools
+						// and IE because somehow, after an element
+						// is removed from the DOM, it loses its
+						// expando values.
+						var nodesToRemove = can.makeArray(nodes);
+						nodeLists.replace(nodes,newNodes);
+						can.remove( can.$(nodesToRemove) );
+					}
+				};
+				makeAndPut(compute(), [el]);
+
+		},
+		text: function(el, compute, parentNode){
+			var parent = elements.getParentNode(el, parentNode);
+
+			// setup listening right away so we don&#039;t have to re-calculate value
+			var data  = listen( el.parentNode !== parent ? el.parentNode : parent, compute, function(ev, newVal, oldVal){
+				// Sometimes this is &#039;unknown&#039; in IE and will throw an exception if it is
+				if ( typeof node.nodeValue != &#039;unknown&#039; ) {
+					node.nodeValue = &quot;&quot;+newVal;
+				}
+				data.teardownCheck(node.parentNode);
+			});
+
+			var node = document.createTextNode(compute());
+
+			if ( el.parentNode !== parent ) {
+				parent = el.parentNode;
+				parent.insertBefore(node, el);
+				parent.removeChild(el);
+			} else {
+				parent.insertBefore(node, el);
+				parent.removeChild(el);
+			}
+		},
+		attributes: function(el, compute, currentValue){
+			var setAttrs = function(newVal){
+				var parts = getAttributeParts(newVal),
+					newAttrName = parts.shift();
+				
+				// Remove if we have a change and used to have an `attrName`.
+				if((newAttrName != attrName) &amp;&amp; attrName){
+					elements.removeAttr(el,attrName);
+				}
+				// Set if we have a new `attrName`.
+				if(newAttrName){
+					elements.setAttr(el, newAttrName, parts.join(&#039;=&#039;));
+					attrName = newAttrName;
+				}
+			}
+
+			listen(el, compute, function(ev, newVal){
+				setAttrs(newVal)
+			})
+			// current value has been set
+			if(arguments.length &gt;= 3) {
+				var attrName = getAttributeParts(currentValue)[0]
+			} else {
+				setAttrs(compute())
+			}
+		},
+		attributePlaceholder: &#039;__!!__&#039;,
+		attributeReplace: /__!!__/g,
+		attribute: function(el, attributeName, compute){
+			listen(el, compute, function(ev, newVal){
+				elements.setAttr( el, attributeName, hook.render() );
+			})
+
+			var wrapped = can.$(el),
+				hooks;
+			
+			// Get the list of hookups or create one for this element.
+			// Hooks is a map of attribute names to hookup `data`s.
+			// Each hookup data has:
+			// `render` - A `function` to render the value of the attribute.
+			// `funcs` - A list of hookup `function`s on that attribute.
+			// `batchNum` - The last event `batchNum`, used for performance.
+			hooks = can.data(wrapped,&#039;hooks&#039;);
+			if ( ! hooks ) {
+				can.data(wrapped, &#039;hooks&#039;, hooks = {});
+			}
+			
+			// Get the attribute value.
+			var attr = elements.getAttr(el, attributeName ),
+				// Split the attribute value by the template.
+				// Only split out the first __!!__ so if we have multiple hookups in the same attribute, 
+				// they will be put in the right spot on first render
+				parts = attr.split(live.attributePlaceholder),
+				goodParts = [],
+				hook;
+				goodParts.push(parts.shift(), 
+							   parts.join(live.attributePlaceholder));
+
+			// If we already had a hookup for this attribute...
+			if(hooks[attributeName]) {
+				// Just add to that attribute&#039;s list of `function`s.
+				hooks[attributeName].computes.push(compute);
+			} else {
+				// Create the hookup data.
+				hooks[attributeName] = {
+					render: function() {
+						var i =0,
+							// attr doesn&#039;t have a value in IE
+							newAttr = attr
+								? attr.replace(live.attributeReplace, function() {
+										return elements.contentText( hook.computes[i++]() );
+									})
+								: elements.contentText( hook.computes[i++]() );
+						return newAttr;
+					},
+					computes: [compute],
+					batchNum : undefined
+				};
+			}
+
+			// Save the hook for slightly faster performance.
+			hook = hooks[attributeName];
+
+			// Insert the value in parts.
+			goodParts.splice(1,0,compute());
+
+			// Set the attribute.
+			elements.setAttr(el, attributeName, goodParts.join(&quot;&quot;) );
+
+
+
+
+		}
+	}
+	return live;
+
+})</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

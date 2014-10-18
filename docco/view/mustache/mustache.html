@@ -183,7 +183,7 @@ to helpers via <code>options.hash</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			argumentsRegExp = <span class="hljs-regexp">/((([^\s]+?=)?('.*?'|".*?"))|.*?)\s/g</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			argumentsRegExp = <span class="hljs-regexp">/((([^'"\s]+?=)?('.*?'|".*?"))|.*?)\s/g</span>,</pre></div></div>
             
         </li>
         
@@ -2141,7 +2141,7 @@ We could probably do this differently if we didn’t ‘break’ on every match.
 						}
 					}
 				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arg &amp;&amp; isLookup(arg)) {
-					args.push(Mustache.get(arg.get, scopeAndOptions, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>));
+					args.push(Mustache.get(arg.get, scopeAndOptions, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>));
 				} <span class="hljs-keyword">else</span> {
 					args.push(arg);
 				}
@@ -2496,7 +2496,7 @@ into issues like {{text}} / {text: ‘with’}</p>
 		 * @param {Object} context The context to use for checking for a reference if it doesn't exist in the object.
 		 * @param {Boolean} [isHelper] Whether the reference is seen as a helper.
 		 */</span>
-		Mustache.get = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, scopeAndOptions, isHelper, isArgument)</span> </span>{</pre></div></div>
+		Mustache.get = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, scopeAndOptions, isHelper, isArgument, isLookup)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -2686,7 +2686,7 @@ Check if there is a method directly in the “top” context.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> ((initialValue === <span class="hljs-literal">undefined</span> || computeData.scope !== scopeAndOptions.scope) &amp;&amp; Mustache.getHelper(key, options)) {
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!isLookup &amp;&amp; (initialValue === <span class="hljs-literal">undefined</span> || computeData.scope !== scopeAndOptions.scope) &amp;&amp; Mustache.getHelper(key, options)) {
 				<span class="hljs-keyword">return</span> key;
 			}</pre></div></div>
             
@@ -3381,7 +3381,7 @@ Assume it is intended to be a list</p>
 						<span class="hljs-built_in">console</span>.log(expr, options.context);
 					}
 				}
-			}
+			},
 			<span class="hljs-comment">/**
 			 * @function can.mustache.helpers.elementCallback {{(el)-&gt;CODE}}
 			 *
@@ -3455,21 +3455,16 @@ Assume it is intended to be a list</p>
 			 *       &lt;li&gt; 2 - David &lt;/li&gt;
 			 *     &lt;/ul&gt;
 			 *
-			 */</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-111">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-111">&#182;</a>
-              </div>
-              
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-comment">/**
+			 */</span>
+			<span class="hljs-string">"@index"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(offset, options)</span> </span>{
+				<span class="hljs-keyword">if</span> (!options) {
+					options = offset;
+					offset = <span class="hljs-number">0</span>;
+				}
+				<span class="hljs-keyword">var</span> index = options.scope.attr(<span class="hljs-string">"@index"</span>);
+				<span class="hljs-keyword">return</span> <span class="hljs-string">""</span>+((can.isFunction(index) ? index() : index) + offset);
+			}
+			<span class="hljs-comment">/**
 			 * @function can.mustache.helpers.key {{@key}}
 			 *
 			 * @parent can.mustache.htags 11
@@ -3512,11 +3507,11 @@ Assume it is intended to be a list</p>
         </li>
         
         
-        <li id="section-112">
+        <li id="section-111">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-112">&#182;</a>
+                <a class="pilcrow" href="#section-111">&#182;</a>
               </div>
               <h2 id="registration">Registration</h2>
 <p>Registers Mustache with can.view.</p>
@@ -3531,11 +3526,11 @@ Assume it is intended to be a list</p>
         </li>
         
         
-        <li id="section-113">
+        <li id="section-112">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-113">&#182;</a>
+                <a class="pilcrow" href="#section-112">&#182;</a>
               </div>
               <p>Returns a <code>function</code> that renders the view.</p>
 

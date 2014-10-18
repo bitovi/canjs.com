@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>fill.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="fill.html">
+                fill.js
+              </a>
+            
+              
+              <a class="source" href="zepto.html">
+                zepto.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>fill.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+	<span class="hljs-keyword">var</span> isFn = $.isFunction;
+	
+	$.makeArray = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(arr)</span></span>{
+		<span class="hljs-keyword">var</span> ret = []
+		$.each(arr, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(i,a)</span></span>{
+			ret[i] = a
+		})
+		<span class="hljs-keyword">return</span> ret;
+	};
+	
+	<span class="hljs-keyword">var</span> Deferred = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( func )</span> </span>{
+		<span class="hljs-keyword">if</span> ( ! ( <span class="hljs-keyword">this</span> <span class="hljs-keyword">instanceof</span> Deferred ))
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Deferred();
+
+		<span class="hljs-keyword">this</span>._doneFuncs = [];
+		<span class="hljs-keyword">this</span>._failFuncs = [];
+		<span class="hljs-keyword">this</span>._resultArgs = <span class="hljs-literal">null</span>;
+		<span class="hljs-keyword">this</span>._status = <span class="hljs-string">""</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>check for option function: call it with this as context and as first 
+parameter, as specified in jQuery api</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		func &amp;&amp; func.call(<span class="hljs-keyword">this</span>, <span class="hljs-keyword">this</span>);
+	};
+	
+	$.when = Deferred.when = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-keyword">var</span> args = $.makeArray( <span class="hljs-built_in">arguments</span> );
+		<span class="hljs-keyword">if</span> (args.length &lt; <span class="hljs-number">2</span>) {
+			<span class="hljs-keyword">var</span> obj = args[<span class="hljs-number">0</span>];
+			<span class="hljs-keyword">if</span> (obj &amp;&amp; ( isFn( obj.isResolved ) &amp;&amp; isFn( obj.isRejected ))) {
+				<span class="hljs-keyword">return</span> obj;			
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">return</span> Deferred().resolve(obj);
+			}
+		} <span class="hljs-keyword">else</span> {
+			
+			<span class="hljs-keyword">var</span> df = Deferred(),
+				done = <span class="hljs-number">0</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>resolve params: params of each resolve, we need to track down 
+them to be able to pass them in the correct order if the master 
+needs to be resolved</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				rp = [];
+
+			$.each(args, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(j, arg)</span></span>{
+				arg.done(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+					rp[j] = (<span class="hljs-built_in">arguments</span>.length &lt; <span class="hljs-number">2</span>) ? <span class="hljs-built_in">arguments</span>[<span class="hljs-number">0</span>] : <span class="hljs-built_in">arguments</span>;
+					<span class="hljs-keyword">if</span> (++done == args.length) {
+						df.resolve.apply(df, rp);
+					}
+				}).fail(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+					df.reject(<span class="hljs-built_in">arguments</span>);
+				});
+			});
+
+			<span class="hljs-keyword">return</span> df;
+			
+		}
+	}
+	
+	<span class="hljs-keyword">var</span> resolveFunc = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(type, _status)</span></span>{
+		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(context)</span></span>{
+			<span class="hljs-keyword">var</span> args = <span class="hljs-keyword">this</span>._resultArgs = (<span class="hljs-built_in">arguments</span>.length &gt; <span class="hljs-number">1</span>) ? <span class="hljs-built_in">arguments</span>[<span class="hljs-number">1</span>] : [];
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.exec(context, <span class="hljs-keyword">this</span>[type], args, _status);
+		}
+	},
+	doneFunc = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(type, _status)</span></span>{
+		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+			<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
+			$.each(<span class="hljs-built_in">arguments</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( i, v, args )</span> </span>{
+				<span class="hljs-keyword">if</span> ( ! v )
+					<span class="hljs-keyword">return</span>;
+				<span class="hljs-keyword">if</span> ( v.constructor === <span class="hljs-built_in">Array</span> ) {
+					args.callee.apply(self, v)
+				} <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>immediately call the function if the deferred has been resolved</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (self._status === _status)
+						v.apply(self, self._resultArgs || []);
+	
+					self[type].push(v);
+				}
+			});
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		}
+	};
+
+	$.extend( Deferred.prototype, {
+		pipe : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done, fail)</span></span>{
+			<span class="hljs-keyword">var</span> d = $.Deferred();
+			<span class="hljs-keyword">this</span>.done(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+				d.resolve( done.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>) );
+			});
+			
+			<span class="hljs-keyword">this</span>.fail(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+				<span class="hljs-keyword">if</span>(fail){
+					d.reject( fail.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>) );
+				} <span class="hljs-keyword">else</span> {
+					d.reject.apply(d, <span class="hljs-built_in">arguments</span>);
+				}
+			});
+			<span class="hljs-keyword">return</span> d;
+		},
+		resolveWith : resolveFunc(<span class="hljs-string">"_doneFuncs"</span>,<span class="hljs-string">"rs"</span>),
+		rejectWith : resolveFunc(<span class="hljs-string">"_failFuncs"</span>,<span class="hljs-string">"rj"</span>),
+		done : doneFunc(<span class="hljs-string">"_doneFuncs"</span>,<span class="hljs-string">"rs"</span>),
+		fail : doneFunc(<span class="hljs-string">"_failFuncs"</span>,<span class="hljs-string">"rj"</span>),
+		always : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">var</span> args = $.makeArray(<span class="hljs-built_in">arguments</span>);
+			<span class="hljs-keyword">if</span> (args.length &amp;&amp; args[<span class="hljs-number">0</span>])
+				<span class="hljs-keyword">this</span>.done(args[<span class="hljs-number">0</span>]).fail(args[<span class="hljs-number">0</span>]);
+
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		},
+
+		then : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">var</span> args = $.makeArray( <span class="hljs-built_in">arguments</span> );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>fail function(s)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (args.length &gt; <span class="hljs-number">1</span> &amp;&amp; args[<span class="hljs-number">1</span>])
+				<span class="hljs-keyword">this</span>.fail(args[<span class="hljs-number">1</span>]);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>done function(s)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (args.length &amp;&amp; args[<span class="hljs-number">0</span>])
+				<span class="hljs-keyword">this</span>.done(args[<span class="hljs-number">0</span>]);
+
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		},
+
+		isResolved : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._status === <span class="hljs-string">"rs"</span>;
+		},
+
+		isRejected : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._status === <span class="hljs-string">"rj"</span>;
+		},
+
+		reject : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.rejectWith(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+		},
+
+		resolve : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.resolveWith(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+		},
+
+		exec : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(context, dst, args, st)</span> </span>{
+			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._status !== <span class="hljs-string">""</span>)
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+
+			<span class="hljs-keyword">this</span>._status = st;
+
+			$.each(dst, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(i, d)</span></span>{
+				d.apply(context, args);
+			});
+
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		}
+	});
+	<span class="hljs-keyword">var</span> XHR = $.ajaxSettings.xhr;
+	$.ajaxSettings.xhr = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		<span class="hljs-keyword">var</span> xhr = XHR()
+		<span class="hljs-keyword">var</span> open = xhr.open;
+		xhr.open = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(type, url, async)</span></span>{
+			open.call(<span class="hljs-keyword">this</span>, type, url, ASYNC === <span class="hljs-literal">undefined</span> ? <span class="hljs-literal">true</span> : ASYNC)
+		}
+		<span class="hljs-keyword">return</span> xhr;
+	}
+	<span class="hljs-keyword">var</span> ASYNC;
+	<span class="hljs-keyword">var</span> AJAX = $.ajax;
+	<span class="hljs-keyword">var</span> updateDeferred = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(xhr, d)</span></span>{
+		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> xhr){
+			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> d[prop] == <span class="hljs-string">'function'</span>){
+				d[prop] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+					xhr[prop].apply(xhr, <span class="hljs-built_in">arguments</span>)
+				}
+			} <span class="hljs-keyword">else</span> {
+				d[prop] = prop[xhr]
+			}
+		}
+	}
+	$.ajax = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span></span>{
+		
+		<span class="hljs-keyword">var</span> success = options.success,
+			error = options.error;
+		<span class="hljs-keyword">var</span> d = Deferred();
+		
+		options.success = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+			
+			updateDeferred(xhr, d);
+			d.resolve.apply(d, <span class="hljs-built_in">arguments</span>);
+			success &amp;&amp; success.apply(<span class="hljs-keyword">this</span>,<span class="hljs-built_in">arguments</span>);
+		}
+		options.error = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+			updateDeferred(xhr, d);
+			d.reject.apply(d, <span class="hljs-built_in">arguments</span>);
+			error &amp;&amp; error.apply(<span class="hljs-keyword">this</span>,<span class="hljs-built_in">arguments</span>);
+		}
+		<span class="hljs-keyword">if</span>(options.async === <span class="hljs-literal">false</span>){
+			ASYNC = <span class="hljs-literal">false</span>
+		}
+		<span class="hljs-keyword">var</span> xhr = AJAX(options);
+		ASYNC = <span class="hljs-literal">undefined</span>;
+		updateDeferred(xhr, d);
+		<span class="hljs-keyword">return</span> d;
+	};
+	
+	$.Deferred = Deferred;
+	can.addEvent = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event, fn)</span></span>{
+		<span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>.__bindEvents){
+			<span class="hljs-keyword">this</span>.__bindEvents = {};
+		}
+		<span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>.__bindEvents[event]){
+			<span class="hljs-keyword">this</span>.__bindEvents[event] = [];
+		}
+		<span class="hljs-keyword">this</span>.__bindEvents[event].push(fn);
+	};
+	can.removeEvent = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event, fn)</span></span>{
+		<span class="hljs-keyword">var</span> i = <span class="hljs-keyword">this</span>.__bindEvents[event].indexOf(fn);
+		<span class="hljs-keyword">this</span>.__bindEvents[event].splice(i, <span class="hljs-number">1</span>);
+	};
+	can.dispatch = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span></span>{
+		<span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>.__bindEvents){
+			<span class="hljs-keyword">return</span>;
+		}
+		<span class="hljs-keyword">var</span> handlers = <span class="hljs-keyword">this</span>.__bindEvents[event.type] || [],
+			self= <span class="hljs-keyword">this</span>,
+			args = [event].concat(event.data || []);
+		$.each(handlers, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(i, handler)</span></span>{
+			event.data = args.slice(<span class="hljs-number">1</span>);
+			handler.apply(self, args);
+		});
+	}
+	$.proxy = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(f, ctx)</span></span>{
+		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+			<span class="hljs-keyword">return</span> f.apply(ctx, <span class="hljs-built_in">arguments</span>)
+		}
+	}
+	$.inArray =<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item, arr)</span></span>{
+		<span class="hljs-keyword">return</span> arr.indexOf(item)
+	}
+	
+	
+	
+	$.fn.empty = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{ 
+			$.cleanData(<span class="hljs-keyword">this</span>.getElementsByTagName(<span class="hljs-string">'*'</span>))
+			<span class="hljs-keyword">this</span>.innerHTML = <span class="hljs-string">''</span> 
+		}) 
+	}
+	
+	$.fn.remove= <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		$.cleanData(<span class="hljs-keyword">this</span>);
+		<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.parentNode != <span class="hljs-literal">null</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>might be a text node</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>.getElementsByTagName &amp;&amp; $.cleanData(<span class="hljs-keyword">this</span>.getElementsByTagName(<span class="hljs-string">'*'</span>))
+				<span class="hljs-keyword">this</span>.parentNode.removeChild(<span class="hljs-keyword">this</span>);
+			}
+		});
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    }
+    $.trim = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str)</span></span>{
+    	<span class="hljs-keyword">return</span> str.trim();
+    }
+	$.isEmptyObject = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(object)</span></span>{
+		<span class="hljs-keyword">var</span> name;
+		<span class="hljs-keyword">for</span>(name <span class="hljs-keyword">in</span> object){};
+		<span class="hljs-keyword">return</span> name !== <span class="hljs-literal">undefined</span>;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>make extend handle true for deep</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> old = $.extend;
+	$.extend = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(first)</span></span>{
+		<span class="hljs-keyword">if</span>(first === <span class="hljs-literal">true</span>){
+			<span class="hljs-keyword">var</span> args = $.makeArray(<span class="hljs-built_in">arguments</span>);
+			args.shift();
+			<span class="hljs-keyword">return</span> old.apply($, args)
+		}
+		<span class="hljs-keyword">return</span> old.apply($, <span class="hljs-built_in">arguments</span>)
+	}
+	<span class="hljs-keyword">var</span> table = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'table'</span>),
+    	tableRow = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'tr'</span>),
+		containers = {
+		  <span class="hljs-string">'tr'</span>: <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'tbody'</span>),
+		  <span class="hljs-string">'tbody'</span>: table, <span class="hljs-string">'thead'</span>: table, <span class="hljs-string">'tfoot'</span>: table,
+		  <span class="hljs-string">'td'</span>: tableRow, <span class="hljs-string">'th'</span>: tableRow,
+		  <span class="hljs-string">'*'</span>: <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>)
+		},
+   		fragmentRE = <span class="hljs-regexp">/^\s*&lt;(\w+)[^&gt;]*&gt;/</span>,
+   		fragment  = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(html, name)</span> </span>{
+		    <span class="hljs-keyword">if</span> (name === <span class="hljs-literal">undefined</span>) {
+		    	name = fragmentRE.test(html) &amp;&amp; <span class="hljs-built_in">RegExp</span>.$<span class="hljs-number">1</span>;
+		    }
+		    <span class="hljs-keyword">if</span> (!(name <span class="hljs-keyword">in</span> containers)) name = <span class="hljs-string">'*'</span>;
+		    <span class="hljs-keyword">var</span> container = containers[name];
+		    container.innerHTML = <span class="hljs-string">''</span> + html;
+		    <span class="hljs-keyword">return</span> [].slice.call(container.childNodes);
+		}
+	
+	$.buildFragment = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(html, node)</span></span>{
+		<span class="hljs-keyword">var</span> parts = fragment(html),
+			frag = <span class="hljs-built_in">document</span>.createDocumentFragment();
+		parts.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(part)</span></span>{
+			frag.appendChild(part);
+		})
+		<span class="hljs-keyword">return</span> frag
+	}
+	
+})</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>rsplit.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>rsplit.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/util/string'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can)</span> </span>{
+	<span class="hljs-comment">/**
+	 * @add jQuery.String
+	 */</span>
+	can.
+	<span class="hljs-comment">/**
+	 * Splits a string with a regex correctly cross browser
+	 * 
+	 *     can.rsplit("a.b.c.d", /\./) //-&gt; ['a','b','c','d']
+	 * 
+	 * @param {String} string The string to split
+	 * @param {RegExp} regex A regular expression
+	 * @return {Array} An array of strings
+	 */</span>
+	rsplit = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( string, regex )</span> </span>{
+		<span class="hljs-keyword">var</span> result = regex.exec(string),
+			retArr = [],
+			first_idx, last_idx;
+		<span class="hljs-keyword">while</span> ( result !== <span class="hljs-literal">null</span> ) {
+			first_idx = result.index;
+			last_idx = regex.lastIndex;
+			<span class="hljs-keyword">if</span> ( first_idx !== <span class="hljs-number">0</span> ) {
+				retArr.push(string.substring(<span class="hljs-number">0</span>, first_idx));
+				string = string.slice(first_idx);
+			}
+			retArr.push(result[<span class="hljs-number">0</span>]);
+			string = string.slice(result[<span class="hljs-number">0</span>].length);
+			result = regex.exec(string);
+		}
+		<span class="hljs-keyword">if</span> ( string !== <span class="hljs-string">''</span> ) {
+			retArr.push(string);
+		}
+		<span class="hljs-keyword">return</span> retArr;
+	};
+
+	<span class="hljs-keyword">return</span> can;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

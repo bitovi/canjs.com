@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>hashchange.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="hashchange.html">
+                hashchange.js
+              </a>
+            
+              
+              <a class="source" href="route.html">
+                route.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>hashchange.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/*!
+ * jQuery hashchange event - v1.3 - 7/21/2010
+ * http://benalman.com/projects/jquery-hashchange-plugin/
+ * 
+ * Copyright (c) 2010 "Cowboy" Ben Alman
+ * Dual licensed under the MIT and GPL licenses.
+ * http://benalman.com/about/license/
+ */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Script: jQuery hashchange event</p>
+<p><em>Version: 1.3, Last updated: 7/21/2010</em></p>
+<p>Project Home - <a href="http://benalman.com/projects/jquery-hashchange-plugin/">http://benalman.com/projects/jquery-hashchange-plugin/</a>
+GitHub       - <a href="http://github.com/cowboy/jquery-hashchange/">http://github.com/cowboy/jquery-hashchange/</a>
+Source       - <a href="http://github.com/cowboy/jquery-hashchange/raw/master/jquery.ba-hashchange.js">http://github.com/cowboy/jquery-hashchange/raw/master/jquery.ba-hashchange.js</a>
+(Minified)   - <a href="http://github.com/cowboy/jquery-hashchange/raw/master/jquery.ba-hashchange.min.js">http://github.com/cowboy/jquery-hashchange/raw/master/jquery.ba-hashchange.min.js</a> (0.8kb gzipped)</p>
+<p>About: License</p>
+<p>Copyright (c) 2010 “Cowboy” Ben Alman,
+Dual licensed under the MIT and GPL licenses.
+<a href="http://benalman.com/about/license/">http://benalman.com/about/license/</a></p>
+<p>About: Examples</p>
+<p>These working examples, complete with fully commented code, illustrate a few
+ways in which this plugin can be used.</p>
+<p>hashchange event - <a href="http://benalman.com/code/projects/jquery-hashchange/examples/hashchange/">http://benalman.com/code/projects/jquery-hashchange/examples/hashchange/</a>
+document.domain - <a href="http://benalman.com/code/projects/jquery-hashchange/examples/document_domain/">http://benalman.com/code/projects/jquery-hashchange/examples/document_domain/</a></p>
+<p>About: Support and Testing</p>
+<p>Information about what version or versions of jQuery this plugin has been
+tested with, what browsers it has been tested in, and where the unit tests
+reside (so you can test it yourself).</p>
+<p>jQuery Versions - 1.2.6, 1.3.2, 1.4.1, 1.4.2
+Browsers Tested - Internet Explorer 6-8, Firefox 2-4, Chrome 5-6, Safari 3.2-5,
+                  Opera 9.6-10.60, iPhone 3.1, Android 1.6-2.2, BlackBerry 4.6-5.
+Unit Tests      - <a href="http://benalman.com/code/projects/jquery-hashchange/unit/">http://benalman.com/code/projects/jquery-hashchange/unit/</a></p>
+<p>About: Known issues</p>
+<p>While this jQuery hashchange event implementation is quite stable and
+robust, there are a few unfortunate browser bugs surrounding expected
+hashchange event-based behaviors, independent of any JavaScript
+window.onhashchange abstraction. See the following examples for more
+information:</p>
+<p>Chrome: Back Button - <a href="http://benalman.com/code/projects/jquery-hashchange/examples/bug-chrome-back-button/">http://benalman.com/code/projects/jquery-hashchange/examples/bug-chrome-back-button/</a>
+Firefox: Remote XMLHttpRequest - <a href="http://benalman.com/code/projects/jquery-hashchange/examples/bug-firefox-remote-xhr/">http://benalman.com/code/projects/jquery-hashchange/examples/bug-firefox-remote-xhr/</a>
+WebKit: Back Button in an Iframe - <a href="http://benalman.com/code/projects/jquery-hashchange/examples/bug-webkit-hash-iframe/">http://benalman.com/code/projects/jquery-hashchange/examples/bug-webkit-hash-iframe/</a>
+Safari: Back Button from a different domain - <a href="http://benalman.com/code/projects/jquery-hashchange/examples/bug-safari-back-from-diff-domain/">http://benalman.com/code/projects/jquery-hashchange/examples/bug-safari-back-from-diff-domain/</a></p>
+<p>Also note that should a browser natively support the window.onhashchange 
+event, but not report that it does, the fallback polling loop will be used.</p>
+<p>About: Release History</p>
+<p>1.3   - (7/21/2010) Reorganized IE6/7 Iframe code to make it more
+        “removable” for mobile-only development. Added IE6/7 document.title
+        support. Attempted to make Iframe as hidden as possible by using
+        techniques from <a href="http://www.paciellogroup.com/blog/?p=604">http://www.paciellogroup.com/blog/?p=604</a>. Added 
+        support for the “shortcut” format $(window).hashchange( fn ) and
+        $(window).hashchange() like jQuery provides for built-in events.
+        Renamed jQuery.hashchangeDelay to <jQuery.fn.hashchange.delay> and
+        lowered its default value to 50. Added <jQuery.fn.hashchange.domain>
+        and <jQuery.fn.hashchange.src> properties plus document-domain.html
+        file to address access denied issues when setting document.domain in
+        IE6/7.
+1.2   - (2/11/2010) Fixed a bug where coming back to a page using this plugin
+        from a page on another domain would cause an error in Safari 4. Also,
+        IE6/7 Iframe is now inserted after the body (this actually works),
+        which prevents the page from scrolling when the event is first bound.
+        Event can also now be bound before DOM ready, but it won’t be usable
+        before then in IE6/7.
+1.1   - (1/21/2010) Incorporated document.documentMode test to fix IE8 bug
+        where browser version is incorrectly reported as 8.0, despite
+        inclusion of the X-UA-Compatible IE=EmulateIE7 meta tag.
+1.0   - (1/9/2010) Initial Release. Broke out the jQuery BBQ event.special
+        window.onhashchange functionality into a separate plugin for users
+        who want just the basic event &amp; back button support, without all the
+        extra awesomeness that BBQ provides. This plugin will be included as
+        part of jQuery BBQ, but also be available separately.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($,window,undefined)</span></span>{
+  <span class="hljs-string">'$:nomunge'</span>; <span class="hljs-comment">// Used by YUI compressor.</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Reused string.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> str_hashchange = <span class="hljs-string">'hashchange'</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Method / object references.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    doc = <span class="hljs-built_in">document</span>,
+    fake_onhashchange,
+    special = $.event.special,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Does the browser support window.onhashchange? Note that IE8 running in
+IE7 compatibility mode reports true for ‘onhashchange’ in window, even
+though the event isn’t supported, so also test document.documentMode.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    doc_mode = doc.documentMode,
+    supports_onhashchange = <span class="hljs-string">'on'</span> + str_hashchange <span class="hljs-keyword">in</span> <span class="hljs-built_in">window</span> &amp;&amp; ( doc_mode === <span class="hljs-literal">undefined</span> || doc_mode &gt; <span class="hljs-number">7</span> );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Get location.hash (or what you’d expect location.hash to be) sans any
+leading #. Thanks for making this necessary, Firefox!</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get_fragment</span><span class="hljs-params">( url )</span> </span>{
+    url = url || location.href;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'#'</span> + url.replace( <span class="hljs-regexp">/^[^#]*#?(.*)$/</span>, <span class="hljs-string">'$1'</span> );
+  };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Method: jQuery.fn.hashchange</p>
+<p>Bind a handler to the window.onhashchange event or trigger all bound
+window.onhashchange event handlers. This behavior is consistent with
+jQuery’s built-in event handlers.</p>
+<p>Usage:</p>
+<blockquote>
+<p>jQuery(window).hashchange( [ handler ] );</p>
+</blockquote>
+<p>Arguments:</p>
+<p> handler - (Function) Optional handler to be bound to the hashchange
+   event. This is a “shortcut” for the more verbose form:
+   jQuery(window).bind( ‘hashchange’, handler ). If handler is omitted,
+   all bound window.onhashchange event handlers will be triggered. This
+   is a shortcut for the more verbose
+   jQuery(window).trigger( ‘hashchange’ ). These forms are described in
+   the <hashchange event> section.</p>
+<p>Returns:</p>
+<p> (jQuery) The initial jQuery collection of elements.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Allow the “shortcut” format $(elem).hashchange( fn ) for binding and
+$(elem).hashchange() for triggering, like jQuery does for built-in events.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $.fn[ str_hashchange ] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( fn )</span> </span>{
+    <span class="hljs-keyword">return</span> fn ? <span class="hljs-keyword">this</span>.bind( str_hashchange, fn ) : <span class="hljs-keyword">this</span>.trigger( str_hashchange );
+  };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Property: jQuery.fn.hashchange.delay</p>
+<p>The numeric interval (in milliseconds) at which the <hashchange event>
+polling loop executes. Defaults to 50.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Property: jQuery.fn.hashchange.domain</p>
+<p>If you’re setting document.domain in your JavaScript, and you want hash
+history to work in IE6/7, not only must this property be set, but you must
+also set document.domain BEFORE jQuery is loaded into the page. This
+property is only applicable if you are supporting IE6/7 (or IE8 operating
+in “IE7 compatibility” mode).</p>
+<p>In addition, the <jQuery.fn.hashchange.src> property must be set to the
+path of the included “document-domain.html” file, which can be renamed or
+modified if necessary (note that the document.domain specified must be the
+same in both your main JavaScript as well as in this file).</p>
+<p>Usage:</p>
+<p>jQuery.fn.hashchange.domain = document.domain;</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Property: jQuery.fn.hashchange.src</p>
+<p>If, for some reason, you need to specify an Iframe src file (for example,
+when setting document.domain as in <jQuery.fn.hashchange.domain>), you can
+do so using this property. Note that when using this property, history
+won’t be recorded in IE6/7 until the Iframe src file loads. This property
+is only applicable if you are supporting IE6/7 (or IE8 operating in “IE7
+compatibility” mode).</p>
+<p>Usage:</p>
+<p>jQuery.fn.hashchange.src = ‘path/to/file.html’;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  
+  $.fn[ str_hashchange ].delay = <span class="hljs-number">50</span>;
+  <span class="hljs-comment">/*
+  $.fn[ str_hashchange ].domain = null;
+  $.fn[ str_hashchange ].src = null;
+  */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Event: hashchange event</p>
+<p>Fired when location.hash changes. In browsers that support it, the native
+HTML5 window.onhashchange event is used, otherwise a polling loop is
+initialized, running every <jQuery.fn.hashchange.delay> milliseconds to
+see if the hash has changed. In IE6/7 (and IE8 operating in “IE7
+compatibility” mode), a hidden Iframe is created to allow the back button
+and hash-based history to work.</p>
+<p>Usage as described in <jQuery.fn.hashchange>:</p>
+<blockquote>
+<p>// Bind an event handler.
+jQuery(window).hashchange( function(e) {
+  var hash = location.hash;
+  …
+});</p>
+<p>// Manually trigger the event handler.
+jQuery(window).hashchange();</p>
+</blockquote>
+<p>A more verbose usage that allows for event namespacing:</p>
+<blockquote>
+<p>// Bind an event handler.
+jQuery(window).bind( ‘hashchange’, function(e) {
+  var hash = location.hash;
+  …
+});</p>
+<p>// Manually trigger the event handler.
+jQuery(window).trigger( ‘hashchange’ );</p>
+</blockquote>
+<p>Additional Notes:</p>
+<ul>
+<li>The polling loop and Iframe are not created until at least one handler
+is actually bound to the ‘hashchange’ event.</li>
+<li>If you need the bound handler(s) to execute immediately, in cases where
+a location.hash exists on page load, via bookmark or page refresh for
+example, use jQuery(window).hashchange() or the more verbose 
+jQuery(window).trigger( ‘hashchange’ ).</li>
+<li>The event can be bound before DOM ready, but since it won’t be usable
+before then in IE6/7 (due to the necessary Iframe), recommended usage is
+to bind it inside a DOM ready handler.</li>
+</ul>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Override existing $.event.special.hashchange methods (allowing this plugin
+to be defined after jQuery BBQ in BBQ’s source code).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  special[ str_hashchange ] = $.extend( special[ str_hashchange ], {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Called only when the first ‘hashchange’ event is bound to window.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    setup: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>If window.onhashchange is supported natively, there’s nothing to do..</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> ( supports_onhashchange ) { <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Otherwise, we need to create our own. And we don’t want to call this
+until the user binds to the event, just in case they never do, since it
+will create a polling loop and possibly even a hidden Iframe.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $( fake_onhashchange.start );
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Called only when the last ‘hashchange’ event is unbound from window.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    teardown: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>If window.onhashchange is supported natively, there’s nothing to do..</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> ( supports_onhashchange ) { <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Otherwise, we need to stop ours (if possible).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $( fake_onhashchange.stop );
+    }
+    
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>fake_onhashchange does all the work of triggering the window.onhashchange
+event for browsers that don’t natively support it, including creating a
+polling loop to watch for hash changes and in IE 6/7 creating a hidden
+Iframe to enable back and forward.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  fake_onhashchange = (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">var</span> self = {},
+      timeout_id,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Remember the initial hash so it doesn’t get triggered immediately.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      last_hash = get_fragment(),
+      
+      fn_retval = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val)</span></span>{ <span class="hljs-keyword">return</span> val; },
+      history_set = fn_retval,
+      history_get = fn_retval;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>Start the polling loop.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    self.start = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+      timeout_id || poll();
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Stop the polling loop.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    self.stop = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+      timeout_id &amp;&amp; clearTimeout( timeout_id );
+      timeout_id = <span class="hljs-literal">undefined</span>;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>This polling loop checks every $.fn.hashchange.delay milliseconds to see
+if location.hash has changed, and triggers the ‘hashchange’ event on
+window when necessary.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">poll</span><span class="hljs-params">()</span> </span>{
+      <span class="hljs-keyword">var</span> hash = get_fragment(),
+        history_hash = history_get( last_hash );
+      
+      <span class="hljs-keyword">if</span> ( hash !== last_hash ) {
+        history_set( last_hash = hash, history_hash );
+        
+        $(<span class="hljs-built_in">window</span>).trigger( str_hashchange );
+        
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ( history_hash !== last_hash ) {
+        location.href = location.href.replace( <span class="hljs-regexp">/#.*/</span>, <span class="hljs-string">''</span> ) + history_hash;
+      }
+      
+      timeout_id = setTimeout( poll, $.fn[ str_hashchange ].delay );
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+vvvvvvvvvvvvvvvvvvv REMOVE IF NOT SUPPORTING IE6/7/8 vvvvvvvvvvvvvvvvvvv
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $.browser.msie &amp;&amp; !supports_onhashchange &amp;&amp; (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>Not only do IE6/7 need the “magical” Iframe treatment, but so does IE8
+when running in “IE7 compatibility” mode.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      
+      <span class="hljs-keyword">var</span> iframe,
+        iframe_src;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>When the event is bound and polling starts in IE 6/7, create a hidden
+Iframe for history handling.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      self.start = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-keyword">if</span> ( !iframe ) {
+          iframe_src = $.fn[ str_hashchange ].src;
+          iframe_src = iframe_src &amp;&amp; iframe_src + get_fragment();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>Create hidden Iframe. Attempt to make Iframe as hidden as possible
+by using techniques from <a href="http://www.paciellogroup.com/blog/?p=604">http://www.paciellogroup.com/blog/?p=604</a>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          iframe = $(<span class="hljs-string">'&lt;iframe tabindex="-1" title="empty"/&gt;'</span>).hide()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>When Iframe has completely loaded, initialize the history and
+start polling.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .one( <span class="hljs-string">'load'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+              iframe_src || history_set( get_fragment() );
+              poll();
+            })</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Load Iframe src if specified, otherwise nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .attr( <span class="hljs-string">'src'</span>, iframe_src || <span class="hljs-string">'javascript:0'</span> )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>Append Iframe after the end of the body to prevent unnecessary
+initial page scrolling (yes, this works).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            .insertAfter( <span class="hljs-string">'body'</span> )[<span class="hljs-number">0</span>].contentWindow;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>Whenever <code>document.title</code> changes, update the Iframe’s title to
+prettify the back/next history menu entries. Since IE sometimes
+errors with “Unspecified error” the very first time this is set
+(yes, very useful) wrap this with a try/catch block.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          doc.onpropertychange = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+            <span class="hljs-keyword">try</span> {
+              <span class="hljs-keyword">if</span> ( event.propertyName === <span class="hljs-string">'title'</span> ) {
+                iframe.document.title = doc.title;
+              }
+            } <span class="hljs-keyword">catch</span>(e) {}
+          };
+          
+        }
+      };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>Override the “stop” method since an IE6/7 Iframe was created. Even
+if there are no longer any bound event handlers, the polling loop
+is still necessary for back/next to work at all!</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      self.stop = fn_retval;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>Get history by looking at the hidden Iframe’s location.hash.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      history_get = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> get_fragment( iframe.location.href );
+      };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>Set a new history item by opening and then closing the Iframe
+document, <em>then</em> setting its location.hash. If document.domain has
+been set, update that as well.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      history_set = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( hash, history_hash )</span> </span>{
+        <span class="hljs-keyword">var</span> iframe_doc = iframe.document,
+          domain = $.fn[ str_hashchange ].domain;
+        
+        <span class="hljs-keyword">if</span> ( hash !== history_hash ) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>Update Iframe with any initial <code>document.title</code> that might be set.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          iframe_doc.title = doc.title;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>Opening the Iframe’s document after it has been closed is what
+actually adds a history entry.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          iframe_doc.open();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>Set document.domain for the Iframe document as well, if necessary.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          domain &amp;&amp; iframe_doc.write( <span class="hljs-string">'&lt;script&gt;document.domain="'</span> + domain + <span class="hljs-string">'"&lt;/script&gt;'</span> );
+          
+          iframe_doc.close();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>Update the Iframe’s hash, for great justice.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          iframe.location.hash = hash;
+        }
+      };
+      
+    })();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^ REMOVE IF NOT SUPPORTING IE6/7/8 ^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    
+    <span class="hljs-keyword">return</span> self;
+  })();
+  
+})(jQuery,<span class="hljs-keyword">this</span>);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

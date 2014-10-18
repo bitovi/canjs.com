@@ -822,7 +822,7 @@ it’s source value just changed</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> camelized = can.camelize(ev.attributeName);
-						<span class="hljs-keyword">if</span> (!twoWayBindings[camelized]) {</pre></div></div>
+						<span class="hljs-keyword">if</span> (!twoWayBindings[camelized] &amp;&amp; !ignoreAttributesRegExp.test(camelized) ) {</pre></div></div>
             
         </li>
         

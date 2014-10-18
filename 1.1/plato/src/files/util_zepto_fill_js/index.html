@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>util/zepto/fill.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">72.98</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">305</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">63.38</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">3.05</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(function(){
+	var isFn = $.isFunction;
+	
+	$.makeArray = function(arr){
+		var ret = []
+		$.each(arr, function(i,a){
+			ret[i] = a
+		})
+		return ret;
+	};
+	
+	var Deferred = function( func ) {
+		if ( ! ( this instanceof Deferred ))
+			return new Deferred();
+
+		this._doneFuncs = [];
+		this._failFuncs = [];
+		this._resultArgs = null;
+		this._status = &quot;&quot;;
+
+		// check for option function: call it with this as context and as first 
+		// parameter, as specified in jQuery api
+		func &amp;&amp; func.call(this, this);
+	};
+	
+	$.when = Deferred.when = function() {
+		var args = $.makeArray( arguments );
+		if (args.length &lt; 2) {
+			var obj = args[0];
+			if (obj &amp;&amp; ( isFn( obj.isResolved ) &amp;&amp; isFn( obj.isRejected ))) {
+				return obj;			
+			} else {
+				return Deferred().resolve(obj);
+			}
+		} else {
+			
+			var df = Deferred(),
+				done = 0,
+				// resolve params: params of each resolve, we need to track down 
+				// them to be able to pass them in the correct order if the master 
+				// needs to be resolved
+				rp = [];
+
+			$.each(args, function(j, arg){
+				arg.done(function() {
+					rp[j] = (arguments.length &lt; 2) ? arguments[0] : arguments;
+					if (++done == args.length) {
+						df.resolve.apply(df, rp);
+					}
+				}).fail(function() {
+					df.reject(arguments);
+				});
+			});
+
+			return df;
+			
+		}
+	}
+	
+	var resolveFunc = function(type, _status){
+		return function(context){
+			var args = this._resultArgs = (arguments.length &gt; 1) ? arguments[1] : [];
+			return this.exec(context, this[type], args, _status);
+		}
+	},
+	doneFunc = function(type, _status){
+		return function(){
+			var self = this;
+			$.each(arguments, function( i, v, args ) {
+				if ( ! v )
+					return;
+				if ( v.constructor === Array ) {
+					args.callee.apply(self, v)
+				} else {
+					// immediately call the function if the deferred has been resolved
+					if (self._status === _status)
+						v.apply(self, self._resultArgs || []);
+	
+					self[type].push(v);
+				}
+			});
+			return this;
+		}
+	};
+
+	$.extend( Deferred.prototype, {
+		pipe : function(done, fail){
+			var d = $.Deferred();
+			this.done(function(){
+				d.resolve( done.apply(this, arguments) );
+			});
+			
+			this.fail(function(){
+				if(fail){
+					d.reject( fail.apply(this, arguments) );
+				} else {
+					d.reject.apply(d, arguments);
+				}
+			});
+			return d;
+		},
+		resolveWith : resolveFunc(&quot;_doneFuncs&quot;,&quot;rs&quot;),
+		rejectWith : resolveFunc(&quot;_failFuncs&quot;,&quot;rj&quot;),
+		done : doneFunc(&quot;_doneFuncs&quot;,&quot;rs&quot;),
+		fail : doneFunc(&quot;_failFuncs&quot;,&quot;rj&quot;),
+		always : function() {
+			var args = $.makeArray(arguments);
+			if (args.length &amp;&amp; args[0])
+				this.done(args[0]).fail(args[0]);
+
+			return this;
+		},
+
+		then : function() {
+			var args = $.makeArray( arguments );
+			// fail function(s)
+			if (args.length &gt; 1 &amp;&amp; args[1])
+				this.fail(args[1]);
+
+			// done function(s)
+			if (args.length &amp;&amp; args[0])
+				this.done(args[0]);
+
+			return this;
+		},
+
+		isResolved : function() {
+			return this._status === &quot;rs&quot;;
+		},
+
+		isRejected : function() {
+			return this._status === &quot;rj&quot;;
+		},
+
+		reject : function() {
+			return this.rejectWith(this, arguments);
+		},
+
+		resolve : function() {
+			return this.resolveWith(this, arguments);
+		},
+
+		exec : function(context, dst, args, st) {
+			if (this._status !== &quot;&quot;)
+				return this;
+
+			this._status = st;
+
+			$.each(dst, function(i, d){
+				d.apply(context, args);
+			});
+
+			return this;
+		}
+	});
+	var XHR = $.ajaxSettings.xhr;
+	$.ajaxSettings.xhr = function(){
+		var xhr = XHR()
+		var open = xhr.open;
+		xhr.open = function(type, url, async){
+			open.call(this, type, url, ASYNC === undefined ? true : ASYNC)
+		}
+		return xhr;
+	}
+	var ASYNC;
+	var AJAX = $.ajax;
+	var updateDeferred = function(xhr, d){
+		for(var prop in xhr){
+			if(typeof d[prop] == &#039;function&#039;){
+				d[prop] = function(){
+					xhr[prop].apply(xhr, arguments)
+				}
+			} else {
+				d[prop] = prop[xhr]
+			}
+		}
+	}
+	$.ajax = function(options){
+		
+		var success = options.success,
+			error = options.error;
+		var d = Deferred();
+		
+		options.success = function(){
+			
+			updateDeferred(xhr, d);
+			d.resolve.apply(d, arguments);
+			success &amp;&amp; success.apply(this,arguments);
+		}
+		options.error = function(){
+			updateDeferred(xhr, d);
+			d.reject.apply(d, arguments);
+			error &amp;&amp; error.apply(this,arguments);
+		}
+		if(options.async === false){
+			ASYNC = false
+		}
+		var xhr = AJAX(options);
+		ASYNC = undefined;
+		updateDeferred(xhr, d);
+		return d;
+	};
+	
+	$.Deferred = Deferred;
+	can.addEvent = function(event, fn){
+		if(!this.__bindEvents){
+			this.__bindEvents = {};
+		}
+		if(!this.__bindEvents[event]){
+			this.__bindEvents[event] = [];
+		}
+		this.__bindEvents[event].push(fn);
+	};
+	can.removeEvent = function(event, fn){
+		var i = this.__bindEvents[event].indexOf(fn);
+		this.__bindEvents[event].splice(i, 1);
+	};
+	can.dispatch = function(event){
+		if(!this.__bindEvents){
+			return;
+		}
+		var handlers = this.__bindEvents[event.type] || [],
+			self= this,
+			args = [event].concat(event.data || []);
+		$.each(handlers, function(i, handler){
+			event.data = args.slice(1);
+			handler.apply(self, args);
+		});
+	}
+	$.proxy = function(f, ctx){
+		return function(){
+			return f.apply(ctx, arguments)
+		}
+	}
+	$.inArray =function(item, arr){
+		return arr.indexOf(item)
+	}
+	
+	
+	
+	$.fn.empty = function(){
+		return this.each(function(){ 
+			$.cleanData(this.getElementsByTagName(&#039;*&#039;))
+			this.innerHTML = &#039;&#039; 
+		}) 
+	}
+	
+	$.fn.remove= function () {
+		$.cleanData(this);
+		this.each(function () {
+			if (this.parentNode != null) {
+				// might be a text node
+				this.getElementsByTagName &amp;&amp; $.cleanData(this.getElementsByTagName(&#039;*&#039;))
+				this.parentNode.removeChild(this);
+			}
+		});
+		return this;
+    }
+    $.trim = function(str){
+    	return str.trim();
+    }
+	$.isEmptyObject = function(object){
+		var name;
+		for(name in object){};
+		return name !== undefined;
+	}
+	// make extend handle true for deep
+	var old = $.extend;
+	$.extend = function(first){
+		if(first === true){
+			var args = $.makeArray(arguments);
+			args.shift();
+			return old.apply($, args)
+		}
+		return old.apply($, arguments)
+	}
+	var table = document.createElement(&#039;table&#039;),
+    	tableRow = document.createElement(&#039;tr&#039;),
+		containers = {
+		  &#039;tr&#039;: document.createElement(&#039;tbody&#039;),
+		  &#039;tbody&#039;: table, &#039;thead&#039;: table, &#039;tfoot&#039;: table,
+		  &#039;td&#039;: tableRow, &#039;th&#039;: tableRow,
+		  &#039;*&#039;: document.createElement(&#039;div&#039;)
+		},
+   		fragmentRE = /^\s*&lt;(\w+)[^&gt;]*&gt;/,
+   		fragment  = function(html, name) {
+		    if (name === undefined) {
+		    	name = fragmentRE.test(html) &amp;&amp; RegExp.$1;
+		    }
+		    if (!(name in containers)) name = &#039;*&#039;;
+		    var container = containers[name];
+		    container.innerHTML = &#039;&#039; + html;
+		    return [].slice.call(container.childNodes);
+		}
+	
+	$.buildFragment = function(html, node){
+		var parts = fragment(html),
+			frag = document.createDocumentFragment();
+		parts.forEach(function(part){
+			frag.appendChild(part);
+		})
+		return frag
+	}
+	
+})</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

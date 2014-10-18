@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>ejs.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>ejs.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/view'</span>, <span class="hljs-string">'can/util/string'</span>, <span class="hljs-string">'can/compute'</span>, <span class="hljs-string">'can/view/scanner.js'</span>, <span class="hljs-string">'can/view/render.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2 id="ejs-js">ejs.js</h2>
+<p><code>can.EJS</code><br><em>Embedded JavaScript Templates.</em>
+Helper methods.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> extend = can.extend,
+		EJS = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Supports calling EJS without the constructor
+This returns a function that renders the template.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.constructor !== EJS) {
+				<span class="hljs-keyword">var</span> ejs = <span class="hljs-keyword">new</span> EJS(options);
+				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, helpers)</span> </span>{
+					<span class="hljs-keyword">return</span> ejs.render(data, helpers);
+				};
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>If we get a <code>function</code> directly, it probably is coming from
+a <code>steal</code>-packaged view.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options === <span class="hljs-string">'function'</span>) {
+				<span class="hljs-keyword">this</span>.template = {
+					fn: options
+				};
+				<span class="hljs-keyword">return</span>;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Set options on self.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			extend(<span class="hljs-keyword">this</span>, options);
+			<span class="hljs-keyword">this</span>.template = <span class="hljs-keyword">this</span>.scanner.scan(<span class="hljs-keyword">this</span>.text, <span class="hljs-keyword">this</span>.name);
+		};
+	can.EJS = EJS;
+	<span class="hljs-comment">/**
+	 * @add can.EJS
+	 * @prototype
+	 */</span>
+	EJS.prototype.
+	<span class="hljs-comment">/**
+	 * @function can.EJS.prototype.render render
+	 * @parent can.EJS.prototype
+	 * @description Render a view object with data and helpers.
+	 * @signature `ejs.render(data[, helpers])`
+	 * @param {Object} [data] The data to populate the template with.
+	 * @param {Object.&lt;String, function&gt;} [helpers] Helper methods referenced in the template.
+	 * @return {String} The template with interpolated data.
+	 *
+	 * @body
+	 * Renders an object with view helpers attached to the view.
+	 *
+	 *     var rendered = new can.EJS({text: "&lt;h1&gt;&lt;%= message %&gt;"&lt;/h1&gt;}).render({
+	 *       message: "foo"
+	 *     },{helper: function(){ ... }})
+	 *
+	 *     console.log(rendered); // "&lt;h1&gt;foo&lt;/h1&gt;"
+	 */</span>
+	render = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(object, extraHelpers)</span> </span>{
+		object = object || {};
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.template.fn.call(object, object, <span class="hljs-keyword">new</span> EJS.Helpers(object, extraHelpers || {}));
+	};
+	extend(EJS.prototype, {
+		<span class="hljs-comment">/**
+		 * @hide
+		 * Singleton scanner instance for parsing templates.
+		 */</span>
+		scanner: <span class="hljs-keyword">new</span> can.view.Scanner({
+			text: {
+				outStart: <span class="hljs-string">'with(_VIEW) { with (_CONTEXT) {'</span>,
+				outEnd: <span class="hljs-string">'}}'</span>,
+				argNames: <span class="hljs-string">'_CONTEXT,_VIEW'</span>
+			},
+			<span class="hljs-comment">/**
+			 * @hide
+			 * An ordered token registry for the scanner.
+			 * This needs to be ordered by priority to prevent token parsing errors.
+			 * Each token is defined as: ["token-name", "string representation", "optional regexp override"]
+			 */</span>
+			tokens: [
+				[<span class="hljs-string">"templateLeft"</span>, <span class="hljs-string">"&lt;%%"</span>], <span class="hljs-comment">// Template</span>
+				[<span class="hljs-string">"templateRight"</span>, <span class="hljs-string">"%&gt;"</span>], <span class="hljs-comment">// Right Template</span>
+				[<span class="hljs-string">"returnLeft"</span>, <span class="hljs-string">"&lt;%=="</span>], <span class="hljs-comment">// Return Unescaped</span>
+				[<span class="hljs-string">"escapeLeft"</span>, <span class="hljs-string">"&lt;%="</span>], <span class="hljs-comment">// Return Escaped</span>
+				[<span class="hljs-string">"commentLeft"</span>, <span class="hljs-string">"&lt;%#"</span>], <span class="hljs-comment">// Comment</span>
+				[<span class="hljs-string">"left"</span>, <span class="hljs-string">"&lt;%"</span>], <span class="hljs-comment">// Run --- this is hack for now</span>
+				[<span class="hljs-string">"right"</span>, <span class="hljs-string">"%&gt;"</span>], <span class="hljs-comment">// Right -&gt; All have same FOR Mustache ...</span>
+				[<span class="hljs-string">"returnRight"</span>, <span class="hljs-string">"%&gt;"</span>]
+			],
+			helpers: [
+				<span class="hljs-comment">/**
+				 * Check if its a func like `()-&gt;`.
+				 * @param {String} content
+				 */</span>
+				{
+					name: <span class="hljs-regexp">/\s*\(([\$\w]+)\)\s*-&gt;([^\n]*)/</span>,
+					fn: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(content)</span> </span>{
+						<span class="hljs-keyword">var</span> quickFunc = <span class="hljs-regexp">/\s*\(([\$\w]+)\)\s*-&gt;([^\n]*)/</span>,
+							parts = content.match(quickFunc);
+
+						<span class="hljs-keyword">return</span> <span class="hljs-string">"can.proxy(function(__){var "</span> + parts[<span class="hljs-number">1</span>] + <span class="hljs-string">"=can.$(__);"</span> + parts[<span class="hljs-number">2</span>] + <span class="hljs-string">"}, this);"</span>;
+					}
+				}
+			],
+			<span class="hljs-comment">/**
+			 * @hide
+			 * Transforms the EJS template to add support for shared blocks.
+			 * Essentially, this breaks up EJS tags into multiple EJS tags
+			 * if they contained unmatched brackets.
+			 *
+			 * For example, this doesn't work:
+			 *	&lt;% if (1) { %&gt;&lt;% if (1) { %&gt; hi &lt;% } } %&gt;
+			 * ...without isolated EJS blocks:
+			 *	&lt;% if (1) { %&gt;&lt;% if (1) { %&gt; hi &lt;% } %&gt;&lt;% } %&gt;
+			 * The result of transforming:
+			 *	&lt;% if (1) { %&gt;&lt;% %&gt;&lt;% if (1) { %&gt;&lt;% %&gt; hi &lt;% } %&gt;&lt;% } %&gt;
+			 */</span>
+			transform: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(source)</span> </span>{
+				<span class="hljs-keyword">return</span> source.replace(<span class="hljs-regexp">/&lt;%([\s\S]+?)%&gt;/gm</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(whole, part)</span> </span>{
+					<span class="hljs-keyword">var</span> brackets = [],
+						foundBracketPair, i;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Look for brackets (for removing self-contained blocks)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					part.replace(<span class="hljs-regexp">/[{}]/gm</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(bracket, offset)</span> </span>{
+						brackets.push([
+							bracket,
+							offset
+						]);
+					});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Remove bracket pairs from the list of replacements</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">do</span> {
+						foundBracketPair = <span class="hljs-literal">false</span>;
+						<span class="hljs-keyword">for</span> (i = brackets.length - <span class="hljs-number">2</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+							<span class="hljs-keyword">if</span> (brackets[i][<span class="hljs-number">0</span>] === <span class="hljs-string">'{'</span> &amp;&amp; brackets[i + <span class="hljs-number">1</span>][<span class="hljs-number">0</span>] === <span class="hljs-string">'}'</span>) {
+								brackets.splice(i, <span class="hljs-number">2</span>);
+								foundBracketPair = <span class="hljs-literal">true</span>;
+								<span class="hljs-keyword">break</span>;
+							}
+						}
+					} <span class="hljs-keyword">while</span> (foundBracketPair);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Unmatched brackets found, inject EJS tags</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (brackets.length &gt;= <span class="hljs-number">2</span>) {
+						<span class="hljs-keyword">var</span> result = [<span class="hljs-string">'&lt;%'</span>],
+							bracket, last = <span class="hljs-number">0</span>;
+						<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; bracket = brackets[i]; i++) {
+							result.push(part.substring(last, last = bracket[<span class="hljs-number">1</span>]));
+							<span class="hljs-keyword">if</span> (bracket[<span class="hljs-number">0</span>] === <span class="hljs-string">'{'</span> &amp;&amp; i &lt; brackets.length - <span class="hljs-number">1</span> || bracket[<span class="hljs-number">0</span>] === <span class="hljs-string">'}'</span> &amp;&amp; i &gt; <span class="hljs-number">0</span>) {
+								result.push(bracket[<span class="hljs-number">0</span>] === <span class="hljs-string">'{'</span> ? <span class="hljs-string">'{ %&gt;&lt;% '</span> : <span class="hljs-string">' %&gt;&lt;% }'</span>);
+							} <span class="hljs-keyword">else</span> {
+								result.push(bracket[<span class="hljs-number">0</span>]);
+							}
+							++last;
+						}
+						result.push(part.substring(last), <span class="hljs-string">'%&gt;'</span>);
+						<span class="hljs-keyword">return</span> result.join(<span class="hljs-string">''</span>);
+					} <span class="hljs-comment">// Otherwise return the original</span>
+					<span class="hljs-keyword">else</span> {
+						<span class="hljs-keyword">return</span> <span class="hljs-string">'&lt;%'</span> + part + <span class="hljs-string">'%&gt;'</span>;
+					}
+				});
+			}
+		})
+	});
+	EJS.Helpers = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, extras)</span> </span>{
+		<span class="hljs-keyword">this</span>._data = data;
+		<span class="hljs-keyword">this</span>._extras = extras;
+		extend(<span class="hljs-keyword">this</span>, extras);
+	};
+	<span class="hljs-comment">/**
+	 * @page can.EJS.Helpers Helpers
+	 * @parent can.EJS
+	 *
+	 * @body
+	 * By adding functions to can.EJS.Helpers.prototype, those functions will be available in the
+	 * views.
+	 *
+	 * The following helper converts a given string to upper case:
+	 *
+	 *	can.EJS.Helpers.prototype.toUpper = function(params)
+	 *	{
+	 *	return params.toUpperCase();
+	 *	}
+	 *
+	 * Use it like this in any EJS template:
+	 *
+	 *	&lt;%= toUpper('javascriptmvc') %&gt;
+	 *
+	 * To access the current DOM element return a function that takes the element as a parameter:
+	 *
+	 *	can.EJS.Helpers.prototype.upperHtml = function(params)
+	 *	{
+	 *		return function(el) {
+	 *			$(el).html(params.toUpperCase());
+	 *		}
+	 *	}
+	 *
+	 * In your EJS view you can then call the helper on an element tag:
+	 *
+	 *	&lt;div &lt;%= upperHtml('javascriptmvc') %&gt;&gt;&lt;/div&gt;
+	 */</span>
+	EJS.Helpers.prototype = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>TODO Deprecated!!</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		list: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(list, cb)</span> </span>{
+			can.each(list, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, i)</span> </span>{
+				cb(item, i, list);
+			});
+		},
+		each: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(list, cb)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Normal arrays don’t get live updated</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (can.isArray(list)) {
+				<span class="hljs-keyword">this</span>.list(list, cb);
+			} <span class="hljs-keyword">else</span> {
+				can.view.lists(list, cb);
+			}
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Options for <code>steal</code>‘s build.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.view.register({
+		suffix: <span class="hljs-string">'ejs'</span>,
+		script: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, src)</span> </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-string">'can.EJS(function(_CONTEXT,_VIEW) { '</span> + <span class="hljs-keyword">new</span> EJS({
+				text: src,
+				name: id
+			})
+				.template.out + <span class="hljs-string">' })'</span>;
+		},
+		renderer: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, text)</span> </span>{
+			<span class="hljs-keyword">return</span> EJS({
+				text: text,
+				name: id
+			});
+		}
+	});
+	<span class="hljs-keyword">return</span> can;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

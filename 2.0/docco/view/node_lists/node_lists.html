@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>node_lists.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>node_lists.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/view/elements.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>In some browsers, text nodes can not take expando properties.
+We test that here.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> canExpando = <span class="hljs-literal">true</span>;
+	<span class="hljs-keyword">try</span> {
+		<span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">''</span>)
+			._ = <span class="hljs-number">0</span>;
+	} <span class="hljs-keyword">catch</span> (ex) {
+		canExpando = <span class="hljs-literal">false</span>;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>A mapping of element ids to nodeList id</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> nodeMap = {},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>A mapping of ids to text nodes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		textNodeMap = {}, expando = <span class="hljs-string">'ejs_'</span> + <span class="hljs-built_in">Math</span>.random(),
+		_id = <span class="hljs-number">0</span>,
+		id = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
+			<span class="hljs-keyword">if</span> (canExpando || node.nodeType !== <span class="hljs-number">3</span>) {
+				<span class="hljs-keyword">if</span> (node[expando]) {
+					<span class="hljs-keyword">return</span> node[expando];
+				} <span class="hljs-keyword">else</span> {
+					++_id;
+					<span class="hljs-keyword">return</span> node[expando] = (node.nodeName ? <span class="hljs-string">'element_'</span> : <span class="hljs-string">'obj_'</span>) + _id;
+				}
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> textNodeID <span class="hljs-keyword">in</span> textNodeMap) {
+					<span class="hljs-keyword">if</span> (textNodeMap[textNodeID] === node) {
+						<span class="hljs-keyword">return</span> textNodeID;
+					}
+				}
+				++_id;
+				textNodeMap[<span class="hljs-string">'text_'</span> + _id] = node;
+				<span class="hljs-keyword">return</span> <span class="hljs-string">'text_'</span> + _id;
+			}
+		}, splice = [].splice;
+	<span class="hljs-comment">/**
+	 * @property {Object} can.view.nodeLists
+	 * @parent can.view.static
+	 *
+	 * Stores hierarchical node references.
+	 *
+	 * ## Use
+	 *
+	 * `can.view.nodeLists` is used to make sure "directly nested" live-binding
+	 * sections update content correctly.
+	 *
+	 * Consider a template like:
+	 *
+	 *     &lt;div&gt;
+	 *     {{#if items.length}}
+	 *        Items:
+	 *        {{#items}}
+	 *           &lt;label&gt;&lt;/label&gt;
+	 *        {{/items}}
+	 *     {{/if}}
+	 *     &lt;/div&gt;
+	 *
+	 *
+	 * The `{{#if}}` and `{{#items}}` seconds are "directly nested" because
+	 * they share the same `&lt;div&gt;` parent element.
+	 *
+	 * If `{{#items}}` changes the DOM by adding more `&lt;labels&gt;`,
+	 * `{{#if}}` needs to know about the `&lt;labels&gt;` to remove them
+	 * if `{{#if}}` is re-rendered.  `{{#if}}` would be re-rendered, for example, if
+	 * all items were removed.
+	 *
+	 *
+	 * To keep all live-bound sections knowing which elements they are managing,
+	 * all live-bound elments are [can.view.nodeLists.register registered] and
+	 * [can.view.nodeLists.update updated] when the change.
+	 *
+	 * For example, the above template, when rendered with data like:
+	 *
+	 *     data = new can.Map({
+	 *       items: ["first","second"]
+	 *     })
+	 *
+	 * This will first render the following content:
+	 *
+	 *     &lt;div&gt;
+	 *        &lt;span data-view-id='5'/&gt;
+	 *     &lt;/div&gt;
+	 *
+	 * When the `5` [can.view.hookup hookup] callback is called, this will register the `&lt;span&gt;` like:
+	 *
+	 *     var ifsNodes = [&lt;span 5&gt;]
+	 *     nodeLists.register(ifsNodes);
+	 *
+	 * And then render `{{if}}`'s contents and update `ifsNodes` with it:
+	 *
+	 *     nodeLists.update( ifsNodes, [&lt;"\nItems:\n"&gt;, &lt;span data-view-id="6"&gt;] );
+	 *
+	 * Next, hookup `6` is called which will regsiter the `&lt;span&gt;` like:
+	 *
+	 *     var eachsNodes = [&lt;span 6&gt;];
+	 *     nodeLists.register(eachsNodes);
+	 *
+	 * And then it will render `{{#each}}`'s content and update `eachsNodes` with it:
+	 *
+	 *     nodeLists.update(eachsNodes, [&lt;label&gt;,&lt;label&gt;]);
+	 *
+	 * As `nodeLists` knows that `eachsNodes` is inside `ifsNodes`, it also updates
+	 * `ifsNodes`'s nodes to look like:
+	 *
+	 *     [&lt;"\nItems:\n"&gt;,&lt;label&gt;,&lt;label&gt;]
+	 *
+	 * Now, if all items were removed, `{{#if}}` would be able to remove
+	 * all the `&lt;label&gt;` elements.
+	 *
+	 * When you regsiter a nodeList, you can also provide a callback to know when
+	 * that nodeList has been replaced by a parent nodeList.  This is
+	 * useful for tearing down live-binding.
+	 *
+	 *
+	 *
+	 *
+	 *
+	 */</span>
+	<span class="hljs-keyword">var</span> nodeLists = {
+		id: id,
+
+		<span class="hljs-comment">/**
+		 * @function can.view.nodeLists.update
+		 * @parent can.view.nodeLists
+		 *
+		 * Updates a nodeList with new items
+		 *
+		 * @param {Array.&lt;HTMLElement&gt;} nodeList A registered nodeList.
+		 *
+		 * @param {Array.&lt;HTMLElement&gt;} newNodes HTML nodes that should be placed in the nodeList.
+		 *
+		 */</span>
+		update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodeList, newNodes)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Unregister all childNodes.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.each(nodeList.childNodeLists, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodeList)</span> </span>{
+				nodeLists.unregister(nodeList);
+			});
+			nodeList.childNodeLists = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Remove old node pointers to this list.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.each(nodeList, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
+				<span class="hljs-keyword">delete</span> nodeMap[id(node)];
+			});
+			newNodes = can.makeArray(newNodes);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>indicate the new nodes belong to this list</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.each(newNodes, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
+				nodeMap[id(node)] = nodeList;
+			});
+			<span class="hljs-keyword">var</span> oldListLength = nodeList.length,
+				firstNode = nodeList[<span class="hljs-number">0</span>];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Replace oldNodeLists’s contents’</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			splice.apply(nodeList, [
+				<span class="hljs-number">0</span>,
+				oldListLength
+			].concat(newNodes));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>update all parent nodes so they are able to replace the correct elements</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> parentNodeList = nodeList;
+			<span class="hljs-keyword">while</span> (parentNodeList = parentNodeList.parentNodeList) {
+				splice.apply(parentNodeList, [
+					can.inArray(firstNode, parentNodeList),
+					oldListLength
+				].concat(newNodes));
+			}
+		},
+		<span class="hljs-comment">/**
+		 * @function can.view.nodeLists.register
+		 * @parent can.view.nodeLists
+		 *
+		 * Registers a nodeList.
+		 *
+		 * @param {Array.&lt;HTMLElement&gt;} nodeList An array of elements. This array will be kept live if child nodeLists
+		 * update themselves.
+		 *
+		 * @param {function} [unregistered] An optional callback that is called when the `nodeList` is
+		 * replaced due to a parentNode list being updated.
+		 *
+		 * @param {Array.&lt;HTMLElement&gt;} [parent] An optional parent nodeList.  If no parentNode list is found,
+		 * the first element in `nodeList`'s current nodeList will be used.
+		 *
+		 * @return {Array.&lt;HTMLElement&gt;} The `nodeList` passed to `register`.
+		 */</span>
+		register: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodeList, unregistered, parent)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>add an id to the nodeList</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			nodeList.unregistered = unregistered;
+			nodeList.childNodeLists = [];
+			<span class="hljs-keyword">if</span> (!parent) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>find the parent by looking up where this node is</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (nodeList.length &gt; <span class="hljs-number">1</span>) {
+					<span class="hljs-keyword">throw</span> <span class="hljs-string">'does not work'</span>;
+				}
+				<span class="hljs-keyword">var</span> nodeId = id(nodeList[<span class="hljs-number">0</span>]);
+				parent = nodeMap[nodeId];
+			}
+			nodeList.parentNodeList = parent;
+			<span class="hljs-keyword">if</span> (parent) {
+				parent.childNodeLists.push(nodeList);
+			}
+			<span class="hljs-keyword">return</span> nodeList;
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>removes node in all parent nodes and unregisters all childNodes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-comment">/**
+		 * @function can.view.nodeLists.unregister
+		 * @parent can.view.nodeLists
+		 *
+		 * Unregister's a nodeList.  Call if the nodeList is no longer being
+		 * updated.  This will unregister all child nodeLists.
+		 *
+		 *
+		 * @param {Array.&lt;HTMLElement&gt;} nodeList The nodelist to unregister.
+		 */</span>
+		unregister: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodeList)</span> </span>{
+			<span class="hljs-keyword">if</span> (!nodeList.isUnregistered) {
+				nodeList.isUnregistered = <span class="hljs-literal">true</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>unregister all childNodeLists</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">delete</span> nodeList.parentNodeList;
+				can.each(nodeList, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
+					<span class="hljs-keyword">var</span> nodeId = id(node);
+					<span class="hljs-keyword">delete</span> nodeMap[nodeId];
+				});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>this can unbind which will call itself</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (nodeList.unregistered) {
+					nodeList.unregistered();
+				}
+				can.each(nodeList.childNodeLists, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodeList)</span> </span>{
+					nodeLists.unregister(nodeList);
+				});
+			}
+		},
+		nodeMap: nodeMap
+	};
+	<span class="hljs-keyword">return</span> nodeLists;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>map/define/define.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">64.71</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">259</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">60.10</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">2.13</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/util&#039;, &#039;can/observe&#039;, function (can) {
+
+
+	can.Map.helpers.define = function (Map) {
+		var define = Map.prototype.define;
+		//!steal-remove-start
+		if(Map.define){
+			can.dev.warn(&quot;The define property should be on the map&#039;s prototype properties, &quot;+
+				&quot;not the static properies.&quot;);
+		}
+		//!steal-remove-end
+		Map.defaultGenerators = {};
+		for (var prop in define) {
+			if (&quot;value&quot; in define[prop]) {
+				if (typeof define[prop].value === &quot;function&quot;) {
+					Map.defaultGenerators[prop] = define[prop].value;
+				} else {
+					Map.defaults[prop] = define[prop].value;
+				}
+			}
+			if (typeof define[prop].Value === &quot;function&quot;) {
+				(function (Constructor) {
+					Map.defaultGenerators[prop] = function () {
+						return new Constructor();
+					};
+				})(define[prop].Value);
+			}
+		}
+	};
+
+
+	var oldSetupDefaults = can.Map.prototype._setupDefaults;
+	can.Map.prototype._setupDefaults = function () {
+		var defaults = oldSetupDefaults.call(this),
+			Map = this.constructor;
+		for (var prop in Map.defaultGenerators) {
+			defaults[prop] = Map.defaultGenerators[prop].call(this);
+		}
+		return defaults;
+	};
+
+
+	var proto = can.Map.prototype,
+		oldSet = proto.__set;
+	proto.__set = function (prop, value, current, success, error) {
+		//!steal-remove-start
+		var asyncTimer;
+		//!steal-remove-end
+
+		// check if there&#039;s a setter
+		var errorCallback = function (errors) {
+				//!steal-remove-start
+				clearTimeout(asyncTimer);
+				//!steal-remove-end
+
+				var stub = error &amp;&amp; error.call(self, errors);
+				// if &#039;validations&#039; is on the page it will trigger
+				// the error itself and we dont want to trigger
+				// the event twice. :)
+				if (stub !== false) {
+					can.trigger(self, &#039;error&#039;, [
+						prop,
+						errors
+					], true);
+				}
+				return false;
+			},
+			self = this,
+			define = this.define &amp;&amp; this.define[prop],
+			setter = define &amp;&amp; define.set,
+			getter = define &amp;&amp; define.get;
+
+
+		// if we have a setter
+		if (setter) {
+			// call the setter, if returned value is undefined,
+			// this means the setter is async so we
+			// do not call update property and return right away
+			can.batch.start();
+			var setterCalled = false,
+
+				setValue = setter.call(this, value, function (value) {
+					oldSet.call(self, prop, value, current, success, errorCallback);
+					setterCalled = true;
+					//!steal-remove-start
+					clearTimeout(asyncTimer);
+					//!steal-remove-end
+				}, errorCallback);
+			if (getter) {
+				// if there&#039;s a getter we do nothing
+				can.batch.stop();
+				return;
+			}
+			// if it took a setter and returned nothing, don&#039;t set the value
+			else if (setValue === undefined &amp;&amp; !setterCalled &amp;&amp; setter.length &gt;= 2) {
+				//!steal-remove-start
+				asyncTimer = setTimeout(function () {
+					can.dev.warn(&#039;can/map/setter.js: Setter &quot;&#039; + prop + &#039;&quot; did not return a value or call the setter callback.&#039;);
+				}, can.dev.warnTimeout);
+				//!steal-remove-end
+				can.batch.stop();
+				return;
+			} else {
+				if (!setterCalled) {
+					oldSet.call(self, prop,
+						// if no arguments, we are side-effects only
+						setter.length === 0 &amp;&amp; setValue === undefined ? value : setValue,
+						current,
+						success,
+						errorCallback);
+				}
+				can.batch.stop();
+				return this;
+			}
+
+		} else {
+			oldSet.call(self, prop, value, current, success, errorCallback);
+		}
+
+		return this;
+	};
+
+	var converters = {
+		&#039;date&#039;: function (str) {
+			var type = typeof str;
+			if (type === &#039;string&#039;) {
+				str = Date.parse(str);
+				return isNaN(str) ? null : new Date(str);
+			} else if (type === &#039;number&#039;) {
+				return new Date(str);
+			} else {
+				return str;
+			}
+		},
+		&#039;number&#039;: function (val) {
+			return +(val);
+		},
+		&#039;boolean&#039;: function (val) {
+			if (val === &#039;false&#039; || val === &#039;0&#039; || !val) {
+				return false;
+			}
+			return true;
+		},
+		&#039;*&#039;: function (val) {
+			return val;
+		},
+		&#039;string&#039;: function (val) {
+			return &#039;&#039; + val;
+		}
+	};
+	
+	// the old type sets up bubbling
+	var oldType = proto.__type;
+	proto.__type = function (value, prop) {
+		var def = this.define &amp;&amp; this.define[prop],
+			type = def &amp;&amp; def.type,
+			Type = def &amp;&amp; def.Type,
+			newValue = value;
+
+		if (typeof type === &quot;string&quot;) {
+			type = converters[type];
+		}
+
+		if (type || Type) {
+			// If there&#039;s a type, convert it.
+			if (type) {
+				newValue = type.call(this, newValue, prop);
+			}
+			// If there&#039;s a Type create a new instance of it
+			if (Type &amp;&amp; !(newValue instanceof Type)) {
+				newValue = new Type(newValue);
+			}
+			// If the newValue is a Map, we need to hook it up
+			return newValue;
+
+		}
+		return oldType.call(this, newValue, prop);
+	};
+
+	var oldRemove = proto._remove;
+	proto._remove = function (prop, current) {
+		var remove = this.define &amp;&amp; this.define[prop] &amp;&amp; this.define[prop].remove,
+			res;
+		if (remove) {
+			can.batch.start();
+			res = remove.call(this, current);
+
+			if (res === false) {
+				can.batch.stop();
+				return;
+			} else {
+
+				res = oldRemove.call(this, prop, current);
+				can.batch.stop();
+				return res;
+			}
+		}
+		return oldRemove.call(this, prop, current);
+	};
+
+	var oldSetupComputes = proto._setupComputes;
+	proto._setupComputes = function (defaultsValues) {
+		oldSetupComputes.apply(this, arguments);
+		for (var attr in this.define) {
+			var def = this.define[attr],
+				get = def.get;
+			if (get) {
+				this[attr] = can.compute.async(defaultsValues[attr], get, this);
+				this._computedBindings[attr] = {
+					count: 0
+				};
+			}
+		}
+	};
+	// Overwrite the invidual property serializer b/c we will overwrite it.
+	var oldSingleSerialize = can.Map.helpers._serialize;
+	can.Map.helpers._serialize = function(map, name, val){
+		return serializeProp(map, name, val);
+	};
+	// If the map has a define serializer for the given attr, run it.
+	var serializeProp = function(map, attr, val) {
+		var serializer = map.define &amp;&amp; map.define[attr] &amp;&amp; map.define[attr].serialize;
+		if(serializer === undefined) {
+			return oldSingleSerialize.apply(this, arguments);
+		} else if(serializer !== false){
+			return typeof serializer === &quot;function&quot; ? serializer.call(map, val, attr): oldSingleSerialize.apply(this, arguments);
+		}
+	};
+	
+	// Overwrite serialize to add in any missing define serialized properties.
+	var oldSerialize = proto.serialize;
+	proto.serialize = function (property) {
+		var serialized = oldSerialize.apply(this, arguments);
+		if(property){
+			return serialized;
+		}
+		// add in properties not already serialized
+		
+		var serializer,
+			val;
+		// Go through each property.
+		for(var attr in this.define){
+			// if it&#039;s not already defined
+			if(!(attr in serialized)) {
+				// check there is a serializer so we aren&#039;t doing extra work on serializer:false
+				serializer = this.define &amp;&amp; this.define[attr] &amp;&amp; this.define[attr].serialize;
+				if(serializer) {
+					val = serializeProp(this, attr, this.attr(attr));
+					if(val !== undefined) {
+						serialized[attr] = val;
+					}
+				}
+			}
+		}
+		return serialized;
+	};
+
+	return can.Map;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

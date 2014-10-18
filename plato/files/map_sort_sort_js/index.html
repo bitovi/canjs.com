@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>map/sort/sort.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">66.11</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">180</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">44.10</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">1.16</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/util&#039;, &#039;can/list&#039;, function (can) {
+
+	// Change bubble rule to bubble on change if their is a comparator
+	var oldBubbleRule = can.List._bubbleRule;
+	can.List._bubbleRule = function(eventName, list) {
+		if(list.comparator) {
+			return &quot;change&quot;;
+		}
+		return oldBubbleRule.apply(this, arguments);
+	};
+	if(can.Model) {
+		var oldModelListBubble = can.Model.List._bubbleRule;
+		can.Model.List._bubbleRule = function(eventName, list){
+			if(list.comparator) {
+				return &quot;change&quot;;
+			}
+			return oldModelListBubble.apply(this, arguments);
+		};
+	}
+		
+	var proto = can.List.prototype,
+		_changes = proto._changes,
+		setup = proto.setup;
+
+	//Add `move` as an event that lazy-bubbles
+
+	// extend the list for sorting support
+
+	can.extend(proto, {
+		comparator: undefined,
+		sortIndexes: [],
+
+		/**
+		 * @hide
+		 */
+		sortedIndex: function (item) {
+			var itemCompare = item.attr(this.comparator),
+				equaled = 0;
+			for (var i = 0, length = this.length; i &lt; length; i++) {
+				if (item === this[i]) {
+					equaled = -1;
+					continue;
+				}
+				if (itemCompare &lt;= this[i].attr(this.comparator)) {
+					return i + equaled;
+				}
+			}
+			return i + equaled;
+		},
+
+		/**
+		 * @hide
+		 */
+		sort: function (method, silent) {
+			var comparator = this.comparator,
+				args = comparator ? [
+
+					function (a, b) {
+						a = typeof a[comparator] === &#039;function&#039; ? a[comparator]() : a[comparator];
+						b = typeof b[comparator] === &#039;function&#039; ? b[comparator]() : b[comparator];
+						return a === b ? 0 : a &lt; b ? -1 : 1;
+					}
+				] : [method];
+			if (!silent) {
+				can.trigger(this, &#039;reset&#039;);
+			}
+			return Array.prototype.sort.apply(this, args);
+		}
+	});
+	// create push, pop, shift, and unshift
+	// converts to an array of arguments
+	var getArgs = function (args) {
+		return args[0] &amp;&amp; can.isArray(args[0]) ? args[0] : can.makeArray(args);
+	};
+	can.each({
+			/**
+			 * @function push
+			 * Add items to the end of the list.
+			 *
+			 *     var l = new can.List([]);
+			 *
+			 *     l.bind(&#039;change&#039;, function(
+			 *         ev,        // the change event
+			 *         attr,      // the attr that was changed, for multiple items, &quot;*&quot; is used
+			 *         how,       // &quot;add&quot;
+			 *         newVals,   // an array of new values pushed
+			 *         oldVals,   // undefined
+			 *         where      // the location where these items where added
+			 *         ) {
+			 *
+			 *     })
+			 *
+			 *     l.push(&#039;0&#039;,&#039;1&#039;,&#039;2&#039;);
+			 *
+			 * @param {...*} [...items] items to add to the end of the list.
+			 * @return {Number} the number of items in the array
+			 */
+			push: &quot;length&quot;,
+			/**
+			 * @function unshift
+			 * Add items to the start of the list.  This is very similar to
+			 * [can.List::push].  Example:
+			 *
+			 *     var l = new can.List([&quot;a&quot;,&quot;b&quot;]);
+			 *     l.unshift(1,2,3) //-&gt; 5
+			 *     l.attr() //-&gt; [1,2,3,&quot;a&quot;,&quot;b&quot;]
+			 *
+			 * @param {...*} [...items] items to add to the start of the list.
+			 * @return {Number} the length of the array.
+			 */
+			unshift: 0
+		},
+		/**
+		 * adds a method where
+		 * @param where items in the array should be added
+		 * @param name method name
+		 */
+		function (where, name) {
+			var proto = can.List.prototype,
+				old = proto[name];
+			proto[name] = function () {
+				// get the items being added
+				var args = getArgs(arguments),
+					// where we are going to add items
+					len = where ? this.length : 0;
+				// call the original method
+				var res = old.apply(this, arguments);
+				// cause the change where the args are:
+				// len - where the additions happened
+				// add - items added
+				// args - the items added
+				// undefined - the old value
+				if (this.comparator &amp;&amp; args.length) {
+					this.sort(null, true);
+					can.batch.trigger(this, &#039;reset&#039;, [args]);
+					this._triggerChange(&#039;&#039; + len, &#039;add&#039;, args, undefined);
+				}
+				return res;
+			};
+		});
+	//- override changes for sorting
+	proto._changes = function (ev, attr, how, newVal, oldVal) {
+		if (this.comparator &amp;&amp; /^\d+./.test(attr)) {
+			// get the index
+			var index = +/^\d+/.exec(attr)[0],
+				// and item
+				item = this[index];
+			if (typeof item !== &#039;undefined&#039;) {
+				// and the new item
+				var newIndex = this.sortedIndex(item);
+				if (newIndex !== index) {
+					// move ...
+					[].splice.call(this, index, 1);
+					[].splice.call(this, newIndex, 0, item);
+					can.trigger(this, &#039;move&#039;, [
+						item,
+						newIndex,
+						index
+					]);
+					can.trigger(this, &#039;change&#039;, [
+						attr.replace(/^\d+/, newIndex),
+						how,
+						newVal,
+						oldVal
+					]);
+					return;
+				}
+			}
+		}
+		_changes.apply(this, arguments);
+	};
+	//- override setup for sorting
+	proto.setup = function (instances, options) {
+		setup.apply(this, arguments);
+		if (this.comparator) {
+			this.sort();
+		}
+	};
+	return can.Map;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

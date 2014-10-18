@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>destroyed.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="all.html">
+                all.js
+              </a>
+            
+              
+              <a class="source" href="can.html">
+                can.js
+              </a>
+            
+              
+              <a class="source" href="deferred.html">
+                deferred.js
+              </a>
+            
+              
+              <a class="source" href="destroyed.html">
+                destroyed.js
+              </a>
+            
+              
+              <a class="source" href="event.html">
+                event.js
+              </a>
+            
+              
+              <a class="source" href="fragment.html">
+                fragment.js
+              </a>
+            
+              
+              <a class="source" href="func.html">
+                func.js
+              </a>
+            
+              
+              <a class="source" href="hashchange.html">
+                hashchange.js
+              </a>
+            
+              
+              <a class="source" href="library.html">
+                library.js
+              </a>
+            
+              
+              <a class="source" href="mvc.html">
+                mvc.js
+              </a>
+            
+              
+              <a class="source" href="util.html">
+                util.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>destroyed.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+ * @add can.event.special
+ */</span>
+steal(<span class="hljs-string">'jquery'</span>, <span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($, can)</span> </span>{
+	<span class="hljs-comment">/**
+	 * @property {Event} destroyed
+	 * @parent specialevents
+	 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/dom/destroyed/destroyed.js
+	 * @test jquery/event/destroyed/qunit.html
+	 * Provides a destroyed event on an element.
+	 * &lt;p&gt;
+	 * The destroyed event is called when the element
+	 * is removed as a result of jQuery DOM manipulators like remove, html,
+	 * replaceWith, etc. Destroyed events do not bubble, so make sure you don't use live or delegate with destroyed
+	 * events.
+	 * &lt;/p&gt;
+	 *
+	 * &lt;h2&gt;Quick Example&lt;/h2&gt;
+	 * @codestart
+	 * can.$(".foo").bind("destroyed", function(){
+	 *    //clean up code
+	 * })
+	 * @codeend
+	 *
+	 * &lt;h2&gt;Quick Demo&lt;/h2&gt;
+	 * @demo jquery/event/destroyed/destroyed.html
+	 * &lt;h2&gt;More Involved Demo&lt;/h2&gt;
+	 * @demo jquery/event/destroyed/destroyed_menu.html
+	 */</span>
+
+	<span class="hljs-keyword">var</span> oldClean = $.cleanData;
+
+	can.cleanData = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elems)</span> </span>{
+		can.each(elems, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elem)</span> </span>{
+			can.$(elem)
+				.triggerHandler(<span class="hljs-string">"removed"</span>);
+		});
+		oldClean(elems);
+	};
+
+	<span class="hljs-keyword">return</span> can;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>map/attributes/attributes.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">69.55</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">157</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">39.05</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">1.37</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/util&#039;, &#039;can/map&#039;, &#039;can/list&#039;, function (can, Map) {
+	
+	//!steal-remove-start
+	can.dev.warn(&quot;can/map/attributes is a deprecated plugin and will be removed in a future release. &quot;+
+		&quot;can/map/define provides the same functionality in a more complete API.&quot;);
+	//!steal-remove-end
+	
+	can.each([
+		can.Map,
+		can.Model
+	], function (clss) {
+
+		// in some cases model might not be defined quite yet.
+		if (clss === undefined) {
+			return;
+		}
+		var isObject = function (obj) {
+			return typeof obj === &#039;object&#039; &amp;&amp; obj !== null &amp;&amp; obj;
+		};
+		can.extend(clss, {
+
+			attributes: {},
+
+			convert: {
+				&#039;date&#039;: function (str) {
+					var type = typeof str;
+					if (type === &#039;string&#039;) {
+						str = Date.parse(str);
+						return isNaN(str) ? null : new Date(str);
+					} else if (type === &#039;number&#039;) {
+						return new Date(str);
+					} else {
+						return str;
+					}
+				},
+				&#039;number&#039;: function (val) {
+					return parseFloat(val);
+				},
+				&#039;boolean&#039;: function (val) {
+					if (val === &#039;false&#039; || val === &#039;0&#039; || !val) {
+						return false;
+					}
+					return true;
+				},
+				&#039;default&#039;: function (val, oldVal, error, type) {
+					// Convert can.Model types using .model and .models
+					if (can.Map.prototype.isPrototypeOf(type.prototype) &amp;&amp; typeof type.model === &#039;function&#039; &amp;&amp; typeof type.models === &#039;function&#039;) {
+						return type[can.isArray(val) ? &#039;models&#039; : &#039;model&#039;](val);
+					}
+					if (can.Map.prototype.isPrototypeOf(type.prototype)) {
+						if (can.isArray(val) &amp;&amp; typeof type.List === &#039;function&#039;) {
+							return new type.List(val);
+						}
+						return new type(val);
+					}
+					if (typeof type === &#039;function&#039;) {
+						return type(val, oldVal);
+					}
+					var construct = can.getObject(type),
+						context = window,
+						realType;
+					// if type has a . we need to look it up
+					if (type.indexOf(&#039;.&#039;) &gt;= 0) {
+						// get everything before the last .
+						realType = type.substring(0, type.lastIndexOf(&#039;.&#039;));
+						// get the object before the last .
+						context = can.getObject(realType);
+					}
+					return typeof construct === &#039;function&#039; ? construct.call(context, val, oldVal) : val;
+				}
+			},
+			serialize: {
+				&#039;default&#039;: function (val, type) {
+					return isObject(val) &amp;&amp; val.serialize ? val.serialize() : val;
+				},
+				&#039;date&#039;: function (val) {
+					return val &amp;&amp; val.getTime();
+				}
+			}
+		});
+		// overwrite setup to do this stuff
+		var oldSetup = clss.setup;
+		/**
+		 * @hide
+		 * @function can.Map.setup
+		 * @parent can.Map.attributes
+		 *
+		 * `can.Map.static.setup` overrides default `can.Map` setup to provide
+		 * functionality for attributes.
+		 *
+		 */
+		clss.setup = function (superClass, stat, proto) {
+			var self = this;
+			oldSetup.call(self, superClass, stat, proto);
+			can.each([&#039;attributes&#039;], function (name) {
+				if (!self[name] || superClass[name] === self[name]) {
+					self[name] = {};
+				}
+			});
+			can.each([
+				&#039;convert&#039;,
+				&#039;serialize&#039;
+			], function (name) {
+				if (superClass[name] !== self[name]) {
+					self[name] = can.extend({}, superClass[name], self[name]);
+				}
+			});
+		};
+	});
+	/**
+	 * @hide
+	 * @function can.Map.prototype.convert
+	 * @parent can.Map.attributes
+	 */
+	can.Map.prototype.__convert = function (prop, value) {
+		// check if there is a
+		var Class = this.constructor,
+			oldVal = this.__get(prop),
+			type, converter;
+		if (Class.attributes) {
+			// the type of the attribute
+			type = Class.attributes[prop];
+			converter = Class.convert[type] || Class.convert[&#039;default&#039;];
+		}
+		return value === null || !type ? value : converter.call(Class, value, oldVal, function () {}, type);
+	};
+	
+	var oldSerialize = can.Map.helpers._serialize;
+	can.Map.helpers._serialize = function(map, name, val){
+		
+		var constructor = map.constructor,
+			type = constructor.attributes ? constructor.attributes[name] : 0,
+			converter = constructor.serialize ? constructor.serialize[type] : 0;
+		
+		return val &amp;&amp; typeof val.serialize === &#039;function&#039; ?
+			// call attrs or serialize to get the original data back
+			oldSerialize.apply(this, arguments) :
+			// otherwise if we have  a converter
+			converter ?
+			// use the converter
+			converter(val, type) :
+			// or return the val
+			oldSerialize.apply(this, arguments);
+	};
+	// add support for single value serialize
+	var mapSerialize = can.Map.prototype.serialize;
+	can.Map.prototype.serialize = function (attrName) {
+		var baseResult = mapSerialize.apply(this, arguments);
+		if(attrName){
+			return baseResult[attrName];
+		} else {
+			return baseResult;
+		}
+	};
+	
+	return can.Map;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

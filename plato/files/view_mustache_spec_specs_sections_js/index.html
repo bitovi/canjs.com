@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>view/mustache/spec/specs/sections.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">30.41</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">1</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">8.44</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">1.54</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;./spec&#039;,function(){ window.MUSTACHE_SPECS.push({name:&#039;sections&#039;, data: {&quot;overview&quot;:&quot;Section tags and End Section tags are used in combination to wrap a section\nof the template for iteration\n\nThese tags&#039; content MUST be a non-whitespace character sequence NOT\ncontaining the current closing delimiter; each Section tag MUST be followed\nby an End Section tag with the same content within the same section.\n\nThis tag&#039;s content names the data to replace the tag.  Name resolution is as\nfollows:\n  1) Split the name on periods; the first part is the name to resolve, any\n  remaining parts should be retained.\n  2) Walk the context stack from top to bottom, finding the first context\n  that is a) a hash containing the name as a key OR b) an object responding\n  to a method with the given name.\n  3) If the context is a hash, the data is the value associated with the\n  name.\n  4) If the context is an object and the method with the given name has an\n  arity of 1, the method SHOULD be called with a String containing the\n  unprocessed contents of the sections; the data is the value returned.\n  5) Otherwise, the data is the value returned by calling the method with\n  the given name.\n  6) If any name parts were retained in step 1, each should be resolved\n  against a context stack containing only the result from the former\n  resolution.  If any part fails resolution, the result should be considered\n  falsey, and should interpolate as the empty string.\nIf the data is not of a list type, it is coerced into a list as follows: if\nthe data is truthy (e.g. `!!data == true`), use a single-element list\ncontaining the data, otherwise use an empty list.\n\nFor each element in the data list, the element MUST be pushed onto the\ncontext stack, the section MUST be rendered, and the element MUST be popped\noff the context stack.\n\nSection and End Section tags SHOULD be treated as standalone when\nappropriate.\n&quot;,&quot;tests&quot;:[{&quot;name&quot;:&quot;Truthy&quot;,&quot;desc&quot;:&quot;Truthy sections should have their contents rendered.&quot;,&quot;data&quot;:{&quot;boolean&quot;:true},&quot;template&quot;:&quot;\&quot;{{#boolean}}This should be rendered.{{/boolean}}\&quot;&quot;,&quot;expected&quot;:&quot;\&quot;This should be rendered.\&quot;&quot;},{&quot;name&quot;:&quot;Falsey&quot;,&quot;desc&quot;:&quot;Falsey sections should have their contents omitted.&quot;,&quot;data&quot;:{&quot;boolean&quot;:false},&quot;template&quot;:&quot;\&quot;{{#boolean}}This should not be rendered.{{/boolean}}\&quot;&quot;,&quot;expected&quot;:&quot;\&quot;\&quot;&quot;},{&quot;name&quot;:&quot;Context&quot;,&quot;desc&quot;:&quot;Objects and hashes should be pushed onto the context stack.&quot;,&quot;data&quot;:{&quot;context&quot;:{&quot;name&quot;:&quot;Joe&quot;}},&quot;template&quot;:&quot;\&quot;{{#context}}Hi {{name}}.{{/context}}\&quot;&quot;,&quot;expected&quot;:&quot;\&quot;Hi Joe.\&quot;&quot;},{&quot;name&quot;:&quot;Deeply Nested Contexts&quot;,&quot;desc&quot;:&quot;All elements on the context stack should be accessible.&quot;,&quot;data&quot;:{&quot;a&quot;:{&quot;one&quot;:1},&quot;b&quot;:{&quot;two&quot;:2},&quot;c&quot;:{&quot;three&quot;:3},&quot;d&quot;:{&quot;four&quot;:4},&quot;e&quot;:{&quot;five&quot;:5}},&quot;template&quot;:&quot;{{#a}}\n{{one}}\n{{#b}}\n{{one}}{{two}}{{one}}\n{{#c}}\n{{one}}{{two}}{{three}}{{two}}{{one}}\n{{#d}}\n{{one}}{{two}}{{three}}{{four}}{{three}}{{two}}{{one}}\n{{#e}}\n{{one}}{{two}}{{three}}{{four}}{{five}}{{four}}{{three}}{{two}}{{one}}\n{{/e}}\n{{one}}{{two}}{{three}}{{four}}{{three}}{{two}}{{one}}\n{{/d}}\n{{one}}{{two}}{{three}}{{two}}{{one}}\n{{/c}}\n{{one}}{{two}}{{one}}\n{{/b}}\n{{one}}\n{{/a}}\n&quot;,&quot;expected&quot;:&quot;1\n121\n12321\n1234321\n123454321\n1234321\n12321\n121\n1\n&quot;},{&quot;name&quot;:&quot;List&quot;,&quot;desc&quot;:&quot;Lists should be iterated; list items should visit the context stack.&quot;,&quot;data&quot;:{&quot;list&quot;:[{&quot;item&quot;:1},{&quot;item&quot;:2},{&quot;item&quot;:3}]},&quot;template&quot;:&quot;\&quot;{{#list}}{{item}}{{/list}}\&quot;&quot;,&quot;expected&quot;:&quot;\&quot;123\&quot;&quot;},{&quot;name&quot;:&quot;Empty List&quot;,&quot;desc&quot;:&quot;Empty lists should behave like falsey values.&quot;,&quot;data&quot;:{&quot;list&quot;:[]},&quot;template&quot;:&quot;\&quot;{{#list}}Yay lists!{{/list}}\&quot;&quot;,&quot;expected&quot;:&quot;\&quot;\&quot;&quot;},{&quot;name&quot;:&quot;Doubled&quot;,&quot;desc&quot;:&quot;Multiple sections per template should be permitted.&quot;,&quot;data&quot;:{&quot;bool&quot;:true,&quot;two&quot;:&quot;second&quot;},&quot;template&quot;:&quot;{{#bool}}\n* first\n{{/bool}}\n* {{two}}\n{{#bool}}\n* third\n{{/bool}}\n&quot;,&quot;expected&quot;:&quot;* first\n* second\n* third\n&quot;},{&quot;name&quot;:&quot;Nested (Truthy)&quot;,&quot;desc&quot;:&quot;Nested truthy sections should have their contents rendered.&quot;,&quot;data&quot;:{&quot;bool&quot;:true},&quot;template&quot;:&quot;| A {{#bool}}B {{#bool}}C{{/bool}} D{{/bool}} E |&quot;,&quot;expected&quot;:&quot;| A B C D E |&quot;},{&quot;name&quot;:&quot;Nested (Falsey)&quot;,&quot;desc&quot;:&quot;Nested falsey sections should be omitted.&quot;,&quot;data&quot;:{&quot;bool&quot;:false},&quot;template&quot;:&quot;| A {{#bool}}B {{#bool}}C{{/bool}} D{{/bool}} E |&quot;,&quot;expected&quot;:&quot;| A  E |&quot;},{&quot;name&quot;:&quot;Context Misses&quot;,&quot;desc&quot;:&quot;Failed context lookups should be considered falsey.&quot;,&quot;data&quot;:{},&quot;template&quot;:&quot;[{{#missing}}Found key &#039;missing&#039;!{{/missing}}]&quot;,&quot;expected&quot;:&quot;[]&quot;},{&quot;name&quot;:&quot;Implicit Iterator - String&quot;,&quot;desc&quot;:&quot;Implicit iterators should directly interpolate strings.&quot;,&quot;data&quot;:{&quot;list&quot;:[&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,&quot;e&quot;]},&quot;template&quot;:&quot;\&quot;{{#list}}({{.}}){{/list}}\&quot;&quot;,&quot;expected&quot;:&quot;\&quot;(a)(b)(c)(d)(e)\&quot;&quot;},{&quot;name&quot;:&quot;Implicit Iterator - Integer&quot;,&quot;desc&quot;:&quot;Implicit iterators should cast integers to strings and interpolate.&quot;,&quot;data&quot;:{&quot;list&quot;:[1,2,3,4,5]},&quot;template&quot;:&quot;\&quot;{{#list}}({{.}}){{/list}}\&quot;&quot;,&quot;expected&quot;:&quot;\&quot;(1)(2)(3)(4)(5)\&quot;&quot;},{&quot;name&quot;:&quot;Implicit Iterator - Decimal&quot;,&quot;desc&quot;:&quot;Implicit iterators should cast decimals to strings and interpolate.&quot;,&quot;data&quot;:{&quot;list&quot;:[1.1,2.2,3.3,4.4,5.5]},&quot;template&quot;:&quot;\&quot;{{#list}}({{.}}){{/list}}\&quot;&quot;,&quot;expected&quot;:&quot;\&quot;(1.1)(2.2)(3.3)(4.4)(5.5)\&quot;&quot;},{&quot;name&quot;:&quot;Dotted Names - Truthy&quot;,&quot;desc&quot;:&quot;Dotted names should be valid for Section tags.&quot;,&quot;data&quot;:{&quot;a&quot;:{&quot;b&quot;:{&quot;c&quot;:true}}},&quot;template&quot;:&quot;\&quot;{{#a.b.c}}Here{{/a.b.c}}\&quot; == \&quot;Here\&quot;&quot;,&quot;expected&quot;:&quot;\&quot;Here\&quot; == \&quot;Here\&quot;&quot;},{&quot;name&quot;:&quot;Dotted Names - Falsey&quot;,&quot;desc&quot;:&quot;Dotted names should be valid for Section tags.&quot;,&quot;data&quot;:{&quot;a&quot;:{&quot;b&quot;:{&quot;c&quot;:false}}},&quot;template&quot;:&quot;\&quot;{{#a.b.c}}Here{{/a.b.c}}\&quot; == \&quot;\&quot;&quot;,&quot;expected&quot;:&quot;\&quot;\&quot; == \&quot;\&quot;&quot;},{&quot;name&quot;:&quot;Dotted Names - Broken Chains&quot;,&quot;desc&quot;:&quot;Dotted names that cannot be resolved should be considered falsey.&quot;,&quot;data&quot;:{&quot;a&quot;:{}},&quot;template&quot;:&quot;\&quot;{{#a.b.c}}Here{{/a.b.c}}\&quot; == \&quot;\&quot;&quot;,&quot;expected&quot;:&quot;\&quot;\&quot; == \&quot;\&quot;&quot;},{&quot;name&quot;:&quot;Surrounding Whitespace&quot;,&quot;desc&quot;:&quot;Sections should not alter surrounding whitespace.&quot;,&quot;data&quot;:{&quot;boolean&quot;:true},&quot;template&quot;:&quot; | {{#boolean}}\t|\t{{/boolean}} | \n&quot;,&quot;expected&quot;:&quot; | \t|\t | \n&quot;},{&quot;name&quot;:&quot;Internal Whitespace&quot;,&quot;desc&quot;:&quot;Sections should not alter internal whitespace.&quot;,&quot;data&quot;:{&quot;boolean&quot;:true},&quot;template&quot;:&quot; | {{#boolean}} {{! Important Whitespace }}\n {{/boolean}} | \n&quot;,&quot;expected&quot;:&quot; |  \n  | \n&quot;},{&quot;name&quot;:&quot;Indented Inline Sections&quot;,&quot;desc&quot;:&quot;Single-line sections should not alter surrounding whitespace.&quot;,&quot;data&quot;:{&quot;boolean&quot;:true},&quot;template&quot;:&quot; {{#boolean}}YES{{/boolean}}\n {{#boolean}}GOOD{{/boolean}}\n&quot;,&quot;expected&quot;:&quot; YES\n GOOD\n&quot;},{&quot;name&quot;:&quot;Standalone Lines&quot;,&quot;desc&quot;:&quot;Standalone lines should be removed from the template.&quot;,&quot;data&quot;:{&quot;boolean&quot;:true},&quot;template&quot;:&quot;| This Is\n{{#boolean}}\n|\n{{/boolean}}\n| A Line\n&quot;,&quot;expected&quot;:&quot;| This Is\n|\n| A Line\n&quot;},{&quot;name&quot;:&quot;Indented Standalone Lines&quot;,&quot;desc&quot;:&quot;Indented standalone lines should be removed from the template.&quot;,&quot;data&quot;:{&quot;boolean&quot;:true},&quot;template&quot;:&quot;| This Is\n  {{#boolean}}\n|\n  {{/boolean}}\n| A Line\n&quot;,&quot;expected&quot;:&quot;| This Is\n|\n| A Line\n&quot;},{&quot;name&quot;:&quot;Standalone Line Endings&quot;,&quot;desc&quot;:&quot;\&quot;\\r\\n\&quot; should be considered a newline for standalone tags.&quot;,&quot;data&quot;:{&quot;boolean&quot;:true},&quot;template&quot;:&quot;|\r\n{{#boolean}}\r\n{{/boolean}}\r\n|&quot;,&quot;expected&quot;:&quot;|\r\n|&quot;},{&quot;name&quot;:&quot;Standalone Without Previous Line&quot;,&quot;desc&quot;:&quot;Standalone tags should not require a newline to precede them.&quot;,&quot;data&quot;:{&quot;boolean&quot;:true},&quot;template&quot;:&quot;  {{#boolean}}\n#{{/boolean}}\n/&quot;,&quot;expected&quot;:&quot;#\n/&quot;},{&quot;name&quot;:&quot;Standalone Without Newline&quot;,&quot;desc&quot;:&quot;Standalone tags should not require a newline to follow them.&quot;,&quot;data&quot;:{&quot;boolean&quot;:true},&quot;template&quot;:&quot;#{{#boolean}}\n/\n  {{/boolean}}&quot;,&quot;expected&quot;:&quot;#\n/\n&quot;},{&quot;name&quot;:&quot;Padding&quot;,&quot;desc&quot;:&quot;Superfluous in-tag whitespace should be ignored.&quot;,&quot;data&quot;:{&quot;boolean&quot;:true},&quot;template&quot;:&quot;|{{# boolean }}={{/ boolean }}|&quot;,&quot;expected&quot;:&quot;|=|&quot;}],&quot;__ATTN__&quot;:&quot;Do not edit this file; changes belong in the appropriate YAML file.&quot;}});});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

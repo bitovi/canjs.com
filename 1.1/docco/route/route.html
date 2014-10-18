@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>route.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="hashchange.html">
+                hashchange.js
+              </a>
+            
+              
+              <a class="source" href="route.html">
+                route.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>route.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>,<span class="hljs-string">'can/observe'</span>, <span class="hljs-string">'can/util/string/deparam'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2 id="route-js">route.js</h2>
+<p><code>can.route</code><br><em>Helps manage browser history (and client state) by synchronizing the 
+<code>window.location.hash</code> with a <code>can.Observe</code>.</em>  </p>
+<p>Helper methods used for matching routes.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p><code>RegExp</code> used to match route variables of the type ‘:name’.
+Any word character or a period is matched.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        matcher = <span class="hljs-regexp">/\:([\w\.]+)/g</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Regular expression for identifying &amp;key=value lists.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        paramsMatcher = <span class="hljs-regexp">/^(?:&amp;[^=]+=[^&amp;]*)+/</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Converts a JS Object into a list of parameters that can be 
+inserted into an html element tag.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		makeProps = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( props )</span> </span>{
+			<span class="hljs-keyword">var</span> tags = [];
+			can.each(props, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val, name)</span></span>{
+				tags.push( ( name === <span class="hljs-string">'className'</span> ? <span class="hljs-string">'class'</span>  : name )+ <span class="hljs-string">'="'</span> + 
+						(name === <span class="hljs-string">"href"</span> ? val : can.esc(val) ) + <span class="hljs-string">'"'</span>);
+			});
+			<span class="hljs-keyword">return</span> tags.join(<span class="hljs-string">" "</span>);
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Checks if a route matches the data provided. If any route variable
+is not present in the data, the route does not match. If all route
+variables are present in the data, the number of matches is returned 
+to allow discerning between general and more specific routes. </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		matchesData = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(route, data)</span> </span>{
+			<span class="hljs-keyword">var</span> count = <span class="hljs-number">0</span>, i = <span class="hljs-number">0</span>, defaults = {};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>look at default values, if they match …</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">for</span>( <span class="hljs-keyword">var</span> name <span class="hljs-keyword">in</span> route.defaults ) {
+				<span class="hljs-keyword">if</span>(route.defaults[name] === data[name]){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>mark as matched</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					defaults[name] = <span class="hljs-number">1</span>;
+					count++;
+				}
+			}
+			<span class="hljs-keyword">for</span> (; i &lt; route.names.length; i++ ) {
+				<span class="hljs-keyword">if</span> (!data.hasOwnProperty(route.names[i]) ) {
+					<span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+				}
+				<span class="hljs-keyword">if</span>(!defaults[route.names[i]]){
+					count++;
+				}
+				
+			}
+			
+			<span class="hljs-keyword">return</span> count;
+		},
+		onready = !<span class="hljs-number">0</span>,
+		location = <span class="hljs-built_in">window</span>.location,
+		wrapQuote = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str)</span> </span>{
+			<span class="hljs-keyword">return</span> (str+<span class="hljs-string">''</span>).replace(<span class="hljs-regexp">/([.?*+\^$\[\]\\(){}|\-])/g</span>, <span class="hljs-string">"\\$1"</span>);
+		},
+		each = can.each,
+		extend = can.extend;
+
+
+	can.route = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( url, defaults )</span> </span>{
+        defaults = defaults || {};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Extract the variable names and replace with <code>RegExp</code> that will match
+an atual URL with values.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> names = [],
+			test = url.replace(matcher, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( whole, name, i )</span> </span>{
+				names.push(name);
+				<span class="hljs-keyword">var</span> next = <span class="hljs-string">"\\"</span>+( url.substr(i+whole.length,<span class="hljs-number">1</span>) || can.route._querySeparator );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>a name without a default value HAS to have a value
+a name that has a default value can be empty
+The <code>\\</code> is for string-escaping giving single <code>\</code> for <code>RegExp</code> escaping.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">return</span> <span class="hljs-string">"([^"</span> +next+<span class="hljs-string">"]"</span>+(defaults[name] ? <span class="hljs-string">"*"</span> : <span class="hljs-string">"+"</span>)+<span class="hljs-string">")"</span>;
+			});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Add route in a form that can be easily figured out.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		can.route.routes[url] = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>A regular expression that will match the route when variable values 
+are present; i.e. for <code>:page/:type</code> the <code>RegExp</code> is <code>/([\w\.]*)/([\w\.]*)/</code> which
+will match for any value of <code>:page</code> and <code>:type</code> (word chars or period).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			test: <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"^"</span> + test+<span class="hljs-string">"($|"</span>+wrapQuote(can.route._querySeparator)+<span class="hljs-string">")"</span>),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>The original URL, same as the index for this entry in routes.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			route: url,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>An <code>array</code> of all the variable names in this route.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			names: names,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Default values provided for the variables.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			defaults: defaults,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>The number of parts in the URL separated by <code>/</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			length: url.split(<span class="hljs-string">'/'</span>).length
+		};
+		<span class="hljs-keyword">return</span> can.route;
+	};
+
+	<span class="hljs-comment">/**
+	 * @static
+	 */</span>
+	extend(can.route, {
+
+		_querySeparator: <span class="hljs-string">'&amp;'</span>,
+		_paramsMatcher: paramsMatcher,
+
+		<span class="hljs-comment">/**
+		 * @function can.route.param param
+		 * @parent can.route.static
+		 * @description Get a route path from given data.
+		 * @signature `can.route.param( data )`
+		 * @param {data} object The data to populate the route with.
+		 * @return {String} The route, with the data populated in it.
+		 *
+		 * @body
+		 * Parameterizes the raw JS object representation provided in data.
+		 *
+		 *     can.route.param( { type: "video", id: 5 } ) 
+		 *          // -&gt; "type=video&amp;id=5"
+		 *
+		 * If a route matching the provided data is found, that URL is built
+		 * from the data. Any remaining data is added at the end of the
+		 * URL as &amp;amp; separated key/value parameters.
+		 *
+		 *     can.route(":type/:id")
+		 *     
+		 *     can.route.param( { type: "video", id: 5 } ) // -&gt; "video/5"
+		 *     can.route.param( { type: "video", id: 5, isNew: false } ) 
+		 *          // -&gt; "video/5&amp;isNew=false"
+		 */</span>
+		param: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( data , _setRoute )</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Check if the provided data keys match the names in any routes;
+Get the one with the most matches.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> route,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Need to have at least 1 match.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				matches = <span class="hljs-number">0</span>,
+				matchCount,
+				routeName = data.route,
+				propCount = <span class="hljs-number">0</span>;
+				
+			<span class="hljs-keyword">delete</span> data.route;
+			
+			each(data, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+				propCount++;
+			});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Otherwise find route.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			each(can.route.routes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(temp, name)</span></span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>best route is the first with all defaults matching</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				
+				
+				matchCount = matchesData(temp, data);
+				<span class="hljs-keyword">if</span> ( matchCount &gt; matches ) {
+					route = temp;
+					matches = matchCount;
+				}
+				<span class="hljs-keyword">if</span>(matchCount &gt;= propCount){
+					<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+				}
+			});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>If we have a route name in our <code>can.route</code> data, and it’s
+just as good as what currently matches, use that</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (can.route.routes[routeName] &amp;&amp; matchesData(can.route.routes[routeName], data ) === matches) {
+				route = can.route.routes[routeName];
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>If this is match…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> ( route ) {
+				<span class="hljs-keyword">var</span> cpy = extend({}, data),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Create the url by replacing the var names with the provided data.
+If the default value is found an empty string is inserted.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					res = route.route.replace(matcher, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( whole, name )</span> </span>{
+                        <span class="hljs-keyword">delete</span> cpy[name];
+                        <span class="hljs-keyword">return</span> data[name] === route.defaults[name] ? <span class="hljs-string">""</span> : <span class="hljs-built_in">encodeURIComponent</span>( data[name] );
+                    }),
+                    after;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>Remove matching default values</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				each(route.defaults, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val,name)</span></span>{
+					<span class="hljs-keyword">if</span>(cpy[name] === val) {
+						<span class="hljs-keyword">delete</span> cpy[name];
+					}
+				});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>The remaining elements of data are added as 
+<code>&amp;amp;</code> separated parameters to the url.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				after = can.param(cpy);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>if we are paraming for setting the hash
+we also want to make sure the route value is updated</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(_setRoute){
+					can.route.attr(<span class="hljs-string">'route'</span>,route.route);
+				}
+				<span class="hljs-keyword">return</span> res + (after ? can.route._querySeparator + after : <span class="hljs-string">""</span>);
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>If no route was found, there is no hash URL, only paramters.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> can.isEmptyObject(data) ? <span class="hljs-string">""</span> : can.route._querySeparator + can.param(data);
+		},
+		<span class="hljs-comment">/**
+		 * @function can.route.deparam deparam
+		 * @parent can.route.static
+		 * @description Extract data from a route path.
+		 * @signature `can.route.deparam( url )`
+		 * @param {String} url A route fragment to extract data from.
+		 * @return {Object} An object containing the extracted data.
+		 * 
+		 * @body
+		 * Creates a data object based on the query string passed into it. This is 
+		 * useful to create an object based on the `location.hash`.
+		 *
+		 *     can.route.deparam("id=5&amp;type=videos") 
+		 *          // -&gt; { id: 5, type: "videos" }
+		 *
+		 * 
+		 * It's important to make sure the hash or exclamantion point is not passed
+		 * to `can.route.deparam` otherwise it will be included in the first property's
+		 * name.
+		 *
+		 *     can.route.attr("id", 5) // location.hash -&gt; #!id=5
+		 *     can.route.attr("type", "videos") 
+		 *          // location.hash -&gt; #!id=5&amp;type=videos
+		 *     can.route.deparam(location.hash) 
+		 *          // -&gt; { #!id: 5, type: "videos" }
+		 *
+		 * `can.route.deparam` will try and find a matching route and, if it does,
+		 * will deconstruct the URL and parse our the key/value parameters into the data object.
+		 *
+		 *     can.route(":type/:id")
+		 *
+		 *     can.route.deparam("videos/5");
+		 *          // -&gt; { id: 5, route: ":type/:id", type: "videos" }
+		 */</span>
+		deparam: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( url )</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>See if the url matches any routes by testing it against the <code>route.test</code> <code>RegExp</code>.
+By comparing the URL length the most specialized route that matches is used.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> route = {
+				length: -<span class="hljs-number">1</span>
+			};
+			each(can.route.routes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(temp, name)</span></span>{
+				<span class="hljs-keyword">if</span> ( temp.test.test(url) &amp;&amp; temp.length &gt; route.length ) {
+					route = temp;
+				}
+			});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>If a route was matched.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> ( route.length &gt; -<span class="hljs-number">1</span> ) { 
+
+				<span class="hljs-keyword">var</span> <span class="hljs-comment">// Since `RegExp` backreferences are used in `route.test` (parens)</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>the parts will contain the full matched string and each variable (back-referenced) value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    parts = url.match(route.test),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>Start will contain the full matched string; parts contain the variable values.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					start = parts.shift(),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>The remainder will be the <code>&amp;amp;key=value</code> list at the end of the URL.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					remainder = url.substr(start.length - (parts[parts.length-<span class="hljs-number">1</span>] === can.route._querySeparator ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>) ),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>If there is a remainder and it contains a <code>&amp;amp;key=value</code> list deparam it.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    obj = (remainder &amp;&amp; can.route._paramsMatcher.test(remainder)) ? can.deparam( remainder.slice(<span class="hljs-number">1</span>) ) : {};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>Add the default values for this route.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				obj = extend(<span class="hljs-literal">true</span>, {}, route.defaults, obj);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>Overwrite each of the default values in <code>obj</code> with those in 
+parts if that part is not empty.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				each(parts,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(part,  i)</span></span>{
+					<span class="hljs-keyword">if</span> ( part &amp;&amp; part !== can.route._querySeparator) {
+						obj[route.names[i]] = <span class="hljs-built_in">decodeURIComponent</span>( part );
+					}
+				});
+				obj.route = route.route;
+				<span class="hljs-keyword">return</span> obj;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>If no route was matched, it is parsed as a <code>&amp;amp;key=value</code> list.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> ( url.charAt(<span class="hljs-number">0</span>) !== can.route._querySeparator ) {
+				url = can.route._querySeparator + url;
+			}
+			<span class="hljs-keyword">return</span> can.route._paramsMatcher.test(url) ? can.deparam( url.slice(<span class="hljs-number">1</span>) ) : {};
+		},
+		<span class="hljs-comment">/**
+		 * @hide
+		 * A can.Observe that represents the state of the history.
+		 */</span>
+		data: <span class="hljs-keyword">new</span> can.Observe({}),
+        <span class="hljs-comment">/**
+         * @property {Object} routes
+		 * @hide
+		 * 
+         * A list of routes recognized by the router indixed by the url used to add it.
+         * Each route is an object with these members:
+         * 
+		 *  - test - A regular expression that will match the route when variable values 
+         *    are present; i.e. for :page/:type the `RegExp` is /([\w\.]*)/([\w\.]*)/ which
+         *    will match for any value of :page and :type (word chars or period).
+		 * 
+         *  - route - The original URL, same as the index for this entry in routes.
+         * 
+		 *  - names - An array of all the variable names in this route
+         * 
+		 *  - defaults - Default values provided for the variables or an empty object.
+         * 
+		 *  - length - The number of parts in the URL separated by '/'.
+         */</span>
+		routes: {},
+		<span class="hljs-comment">/**
+		 * @function can.route.ready ready
+		 * @parent can.route.static
+		 * 
+		 * @signature `can.route.ready( readyYet )`
+		 * 
+		 * Pause and resume the initialization of can.route.
+		 * 
+		 * @param {Boolean} [readyYet] Whether the ready event should be fired yet.
+		 * @return {can.route} The `can.route` object.
+		 *
+		 * @body
+		 * Indicates that all routes have been added and sets can.route.data
+		 * based upon the routes and the current hash.
+		 * 
+		 * By default, ready is fired on jQuery's ready event.  Sometimes
+		 * you might want it to happen sooner or earlier.  To do this, call:
+		 * 
+		 *     can.route.ready(false); //prevents firing by the ready event
+		 *     can.route.ready(true); // fire the first route change
+		 */</span>
+		ready: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val)</span> </span>{
+			<span class="hljs-keyword">if</span>( val === <span class="hljs-literal">false</span> ) {
+				onready = val;
+			}
+			<span class="hljs-keyword">if</span>( val === <span class="hljs-literal">true</span> || onready === <span class="hljs-literal">true</span> ) {
+				can.route._setup();
+				setState();
+			}
+			<span class="hljs-keyword">return</span> can.route;
+		},
+		<span class="hljs-comment">/**
+		 * @function can.route.url url
+		 * @parent can.route.static
+		 * @signature `can.route.url( data [, merge] )`
+		 * 
+		 * Make a URL fragment that when set to window.location.hash will update can.route's properties
+		 * to match those in `data`.
+		 * 
+		 * @param {Object} data The data to populate the route with.
+		 * @param {Boolean} [merge] Whether the given options should be merged into the current state of the route.
+		 * @return {String} The route URL and query string.
+		 *
+		 * @body 
+		 * Similar to [can.route.link], but instead of creating an anchor tag, `can.route.url` creates 
+		 * only the URL based on the route options passed into it.
+		 *
+		 *     can.route.url( { type: "videos", id: 5 } ) 
+		 *          // -&gt; "#!type=videos&amp;id=5"
+		 *
+		 * If a route matching the provided data is found the URL is built from the data. Any remaining
+		 * data is added at the end of the URL as &amp; separated key/value parameters.
+		 *
+		 *     can.route(":type/:id")
+		 *
+		 *     can.route.url( { type: "videos", id: 5 } ) // -&gt; "#!videos/5"
+		 *     can.route.url( { type: "video", id: 5, isNew: false } ) 
+		 *          // -&gt; "#!video/5&amp;isNew=false"
+		 */</span>
+		url: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( options, merge )</span> </span>{
+			<span class="hljs-keyword">if</span> (merge) {
+				options = extend({}, curParams, options)
+			}
+			<span class="hljs-keyword">return</span> <span class="hljs-string">"#!"</span> + can.route.param(options);
+		},
+		<span class="hljs-comment">/**
+		 * @function can.route.link link
+		 * @parent can.route.static
+		 * @signature `can.route.link( innerText, data, props [, merge] )`
+		 * 
+		 * Make an anchor tag (`&lt;A&gt;`) that when clicked on will update can.route's properties
+		 * to match those in `data`.
+		 * 
+		 * @param {Object} innerText The text inside the link.
+		 * @param {Object} data The data to populate the route with.
+		 * @param {Object} props Properties for the anchor other than `href`.
+		 * @param {Boolean} [merge] Whether the given options should be merged into the current state of the route.
+		 * @return {String} A string with an anchor tag that points to the populated route.
+		 * 
+		 * @body
+		 * Creates and returns an anchor tag with an href of the route 
+		 * attributes passed into it, as well as any properies desired
+		 * for the tag.
+		 *
+		 *     can.route.link( "My videos", { type: "videos" }, {}, false )
+		 *          // -&gt; &lt;a href="#!type=videos"&gt;My videos&lt;/a&gt;
+		 * 
+		 * Other attributes besides href can be added to the anchor tag
+		 * by passing in a data object with the attributes desired.
+		 *
+		 *     can.route.link( "My videos", { type: "videos" }, 
+		 *       { className: "new" }, false ) 
+		 *          // -&gt; &lt;a href="#!type=videos" class="new"&gt;My Videos&lt;/a&gt;
+		 *
+		 * It is possible to utilize the current route options when making anchor
+		 * tags in order to make your code more reusable. If merge is set to true,
+		 * the route options passed into `can.route.link` will be passed into the
+		 * current ones.
+		 *
+		 *     location.hash = "#!type=videos" 
+		 *     can.route.link( "The zoo", { id: 5 }, true )
+		 *          // -&gt; &lt;a href="#!type=videos&amp;id=5"&gt;The zoo&lt;/true&gt;
+		 *
+		 *     location.hash = "#!type=pictures" 
+		 *     can.route.link( "The zoo", { id: 5 }, true )
+		 *          // -&gt; &lt;a href="#!type=pictures&amp;id=5"&gt;The zoo&lt;/true&gt;
+		 *
+		 *
+		 */</span>
+		link: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( name, options, props, merge )</span> </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-string">"&lt;a "</span> + makeProps(
+			extend({
+				href: can.route.url(options, merge)
+			}, props)) + <span class="hljs-string">"&gt;"</span> + name + <span class="hljs-string">"&lt;/a&gt;"</span>;
+		},
+		<span class="hljs-comment">/**
+		 * @function can.route.current current
+		 * @parent can.route.static
+		 * @signature `can.route.current( data )`
+		 * 
+		 * Check if data represents the current route.
+		 * 
+		 * @param {Object} data Data to check agains the current route.
+         * @return {Boolean} Whether the data matches the current URL.
+		 * 
+		 * @body
+		 * Checks the page's current URL to see if the route represents the options passed 
+		 * into the function.
+		 *
+		 * Returns true if the options respresent the current URL.
+		 * 
+		 *     can.route.attr('id', 5) // location.hash -&gt; "#!id=5"
+		 *     can.route.current({ id: 5 }) // -&gt; true
+		 *     can.route.current({ id: 5, type: 'videos' }) // -&gt; false
+		 *     
+		 *     can.route.attr('type', 'videos') 
+		 *            // location.hash -&gt; #!id=5&amp;type=videos
+		 *     can.route.current({ id: 5, type: 'videos' }) // -&gt; true
+		 */</span>
+		current: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( options )</span> </span>{
+			<span class="hljs-keyword">return</span> location.hash == <span class="hljs-string">"#!"</span> + can.route.param(options)
+		},
+		_setup: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>If the hash changes, update the <code>can.route.data</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.bind.call(<span class="hljs-built_in">window</span>,<span class="hljs-string">'hashchange'</span>, setState);
+		},
+		_getHash: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">return</span> location.href.split(<span class="hljs-regexp">/#!?/</span>)[<span class="hljs-number">1</span>] || <span class="hljs-string">""</span>;
+		},
+		_setHash: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(serialized)</span> </span>{
+			<span class="hljs-keyword">var</span> path = (can.route.param(serialized, <span class="hljs-literal">true</span>));
+			location.hash = <span class="hljs-string">"#!"</span> + path;
+			<span class="hljs-keyword">return</span> path;
+		}
+	});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>The functions in the following list applied to <code>can.route</code> (e.g. <code>can.route.attr(&#39;...&#39;)</code>) will
+instead act on the <code>can.route.data</code> observe.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	each([<span class="hljs-string">'bind'</span>,<span class="hljs-string">'unbind'</span>,<span class="hljs-string">'delegate'</span>,<span class="hljs-string">'undelegate'</span>,<span class="hljs-string">'attr'</span>,<span class="hljs-string">'removeAttr'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span></span>{
+		can.route[name] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p><code>delegate</code> and <code>undelegate</code> require
+the <code>can/observe/delegate</code> plugin</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(!can.route.data[name]) {
+            	<span class="hljs-keyword">return</span>;
+			}
+
+			<span class="hljs-keyword">return</span> can.route.data[name].apply(can.route.data, <span class="hljs-built_in">arguments</span>);
+		}
+	})
+
+	<span class="hljs-keyword">var</span> <span class="hljs-comment">// A ~~throttled~~ debounced function called multiple times will only fire once the</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p>timer runs down. Each call resets the timer.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		timer,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p>Intermediate storage for <code>can.route.data</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        curParams,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <p>Deparameterizes the portion of the hash of interest and assign the
+values to the <code>can.route.data</code> removing existing values no longer in the hash.
+setState is called typically by hashchange which fires asynchronously
+So it’s possible that someone started changing the data before the 
+hashchange event fired.  For this reason, it will not set the route data
+if the data is changing or the hash already matches the hash that was set.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        setState = can.route.setState = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">var</span> hash = can.route._getHash();
+			curParams = can.route.deparam( hash );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <p>if the hash data is currently changing, or
+the hash is what we set it to anyway, do NOT change the hash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(!changingData || hash !== lastHash){
+				can.route.attr(curParams, <span class="hljs-literal">true</span>);
+			}
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <p>The last hash caused by a data change</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		lastHash,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              <p>Are data changes pending that haven’t yet updated the hash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		changingData;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              <p>If the <code>can.route.data</code> changes, update the hash.
+Using <code>.serialize()</code> retrieves the raw data contained in the <code>observable</code>.
+This function is <del>throttled</del> debounced so it only updates once even if multiple values changed.
+This might be able to use batchNum and avoid this.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.route.bind(<span class="hljs-string">"change"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev, attr)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              <p>indicate that data is changing</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		changingData = <span class="hljs-number">1</span>;
+		clearTimeout( timer );
+		timer = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <p>indicate that the hash is set to look like the data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			changingData = <span class="hljs-number">0</span>;
+			<span class="hljs-keyword">var</span> serialized = can.route.data.serialize();
+
+			lastHash = can.route._setHash(serialized);
+		}, <span class="hljs-number">1</span>);
+	});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <p><code>onready</code> event…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.bind.call(<span class="hljs-built_in">document</span>,<span class="hljs-string">"ready"</span>,can.route.ready);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
+              <p>Libraries other than jQuery don’t execute the document <code>ready</code> listener
+if we are already DOM ready</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span>( (<span class="hljs-built_in">document</span>.readyState === <span class="hljs-string">'complete'</span> || <span class="hljs-built_in">document</span>.readyState === <span class="hljs-string">"interactive"</span>) &amp;&amp; onready) {
+		can.route.ready();
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-51">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-51">&#182;</a>
+              </div>
+              <p>extend route to have a similar property 
+that is often checked in mustache to determine
+an object’s observability</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.route.constructor.canMakeObserve = can.Observe.canMakeObserve;
+
+	<span class="hljs-keyword">return</span> can.route;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

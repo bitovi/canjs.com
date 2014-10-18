@@ -370,7 +370,26 @@ var tooltipInstance = new Tooltip( tooltipElement );</code></pre>
 	<script type="text/javascript">
 		var docObject = {"parent":"index","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","dest":"/Users/justin/dev/canjs.com","glob":{"pattern":"_pages/*.mustache","cwd":"/Users/justin/dev/canjs.com"},"forceBuild":true,"debug":true,"generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"documentjs.json","project":{},"name":"about","type":"template","src":"_pages/about.mustache"};
 	</script>
-	
+		<script type='text/stache'>
+		{{#unless player.isValid}} <p>Not valid</p>
+		
+		<input name='age' can-value="{player.name}"/>
+		</script>
+		<script>
+			Player = can.Model.extend({
+				isValid: function(){
+					return !!this.attr("name");
+				}
+			});
+			can.Component.extend({
+				player: new Player,
+				createPlayer: function(context, el){
+					this.player.save().then(function(){
+						self.attr("player", new Player());
+					});
+				}
+			});
+		</script>
 	
 		<script>
 		  steal = {

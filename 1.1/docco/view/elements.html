@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>elements.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="elements.html">
+                elements.js
+              </a>
+            
+              
+              <a class="source" href="live.html">
+                live.js
+              </a>
+            
+              
+              <a class="source" href="node_lists.html">
+                node_lists.js
+              </a>
+            
+              
+              <a class="source" href="render.html">
+                render.js
+              </a>
+            
+              
+              <a class="source" href="scanner.html">
+                scanner.js
+              </a>
+            
+              
+              <a class="source" href="view.html">
+                view.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>elements.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+steal(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+	<span class="hljs-comment">/**
+	 * @typedef {{}} can/view/elements.js
+	 * 
+	 * Provides helper methods for and information about the behavior
+	 * of DOM elements.
+	 */</span>
+	<span class="hljs-keyword">var</span> elements = {
+		tagToContentPropMap: {
+			option: <span class="hljs-string">"textContent"</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"option"</span>) ? <span class="hljs-string">"textContent"</span> : <span class="hljs-string">"innerText"</span>,
+			textarea: <span class="hljs-string">"value"</span>
+		},
+		<span class="hljs-comment">/**
+		 * @property {Object.&lt;String,(String|Boolean)&gt;} attrMap a mapping of
+		 * special attributes to their JS property. For example:
+		 * 
+		 *     "class" : "className"
+		 * 
+		 * means call element.className. And: 
+		 * 
+		 *      "checked" : true
+		 * 
+		 * means call `element.checked = true`
+		 *     
+		 */</span>
+		attrMap: {
+			<span class="hljs-string">"class"</span> : <span class="hljs-string">"className"</span>,
+			<span class="hljs-string">"value"</span>: <span class="hljs-string">"value"</span>,
+			<span class="hljs-string">"innerText"</span> : <span class="hljs-string">"innerText"</span>,
+			<span class="hljs-string">"textContent"</span> : <span class="hljs-string">"textContent"</span>,
+			<span class="hljs-string">"checked"</span>: <span class="hljs-literal">true</span>,
+			<span class="hljs-string">"disabled"</span>: <span class="hljs-literal">true</span>,
+			<span class="hljs-string">"readonly"</span>: <span class="hljs-literal">true</span>,
+			<span class="hljs-string">"required"</span>: <span class="hljs-literal">true</span>
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>elements whos default value we should set</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		defaultValue : [<span class="hljs-string">"input"</span>,<span class="hljs-string">"textarea"</span>],</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>a map of parent element to child elements</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		tagMap : {
+			<span class="hljs-string">""</span>: <span class="hljs-string">"span"</span>, 
+			table: <span class="hljs-string">"tbody"</span>, 
+			tr: <span class="hljs-string">"td"</span>,
+			ol: <span class="hljs-string">"li"</span>, 
+			ul: <span class="hljs-string">"li"</span>, 
+			tbody: <span class="hljs-string">"tr"</span>,
+			thead: <span class="hljs-string">"tr"</span>,
+			tfoot: <span class="hljs-string">"tr"</span>,
+			select: <span class="hljs-string">"option"</span>,
+			optgroup: <span class="hljs-string">"option"</span>
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>a tag’s parent element</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		reverseTagMap: {
+			tr:<span class="hljs-string">"tbody"</span>,
+			option:<span class="hljs-string">"select"</span>,
+			td:<span class="hljs-string">"tr"</span>,
+			th:<span class="hljs-string">"tr"</span>,
+			li: <span class="hljs-string">"ul"</span>
+		},
+		
+		getParentNode: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, defaultParentNode)</span></span>{
+			<span class="hljs-keyword">return</span> defaultParentNode &amp;&amp; el.parentNode.nodeType === <span class="hljs-number">11</span> ? defaultParentNode : el.parentNode;
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>set an attribute on an element</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		setAttr: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName, val)</span> </span>{
+			<span class="hljs-keyword">var</span> tagName = el.nodeName.toString().toLowerCase(),
+				prop = elements.attrMap[attrName];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>if this is a special property</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(prop === <span class="hljs-literal">true</span>) {
+				el[attrName]  = <span class="hljs-literal">true</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (prop) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>set the value as true / false</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				el[prop] = val;
+				<span class="hljs-keyword">if</span>( prop === <span class="hljs-string">"value"</span> &amp;&amp; can.inArray(tagName, elements.defaultValue) &gt;= <span class="hljs-number">0</span> ) {
+					el.defaultValue = val;
+				}
+			} <span class="hljs-keyword">else</span> {
+				el.setAttribute(attrName, val);
+			}
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>gets the value of an attribute</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		getAttr: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, attrName)</span></span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Default to a blank string for IE7/8</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> (elements.attrMap[attrName] &amp;&amp; el[elements.attrMap[attrName]] ?
+				el[elements.attrMap[attrName]]:
+				el.getAttribute(attrName)) || <span class="hljs-string">''</span>;
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>removes the attribute</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		removeAttr: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, attrName)</span></span>{
+			<span class="hljs-keyword">if</span>( elements.attrMap[attrName] === <span class="hljs-literal">true</span> ) {
+				el[attrName] = <span class="hljs-literal">false</span>;
+			} <span class="hljs-keyword">else</span>{
+				el.removeAttribute(attrName);
+			}
+		},
+		contentText: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(text)</span></span>{
+			<span class="hljs-keyword">if</span> ( <span class="hljs-keyword">typeof</span> text == <span class="hljs-string">'string'</span> ) {
+				<span class="hljs-keyword">return</span> text;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>If has no value, return an empty string.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> ( !text &amp;&amp; text !== <span class="hljs-number">0</span> ) {
+				<span class="hljs-keyword">return</span> <span class="hljs-string">''</span>;
+			}
+			<span class="hljs-keyword">return</span> <span class="hljs-string">""</span> + text;
+		}
+	};
+	
+	<span class="hljs-keyword">return</span> elements;
+})</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

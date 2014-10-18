@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>util/json.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">56.74</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">192</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">45.37</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">1.78</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">/*
+ * jQuery JSON Plugin
+ * version: 2.1 (2009-08-14)
+ *
+ * This document is licensed as free software under the terms of the
+ * MIT License: http://www.opensource.org/licenses/mit-license.php
+ *
+ * Brantley Harris wrote this plugin. It is based somewhat on the JSON.org 
+ * website&#039;s http://www.json.org/json2.js, which proclaims:
+ * &quot;NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.&quot;, a sentiment that
+ * I uphold.
+ *
+ * It is also influenced heavily by MochiKit&#039;s serializeJSON, which is 
+ * copyrighted 2005 by Bob Ippolito.
+ */
+//
+
+steal(&#039;can/util&#039;, function (can) {
+	/**
+	 * @page can.toJSON
+	 * @parent can.util
+	 *
+	 *     can.toJSON( json-serializble )
+	 *
+	 * Converts the given argument into a JSON respresentation.
+	 *
+	 * If an object has a &quot;toJSON&quot; function, that will
+	 * be used to get the representation.
+	 * Non-integer/string keys are skipped in the
+	 * object, as are keys that point to a function.
+	 *
+	 * json-serializble:
+	 * The *thing* to be converted.
+	 */
+	can.toJSON = function (o, replacer, space, recurse) {
+		if (typeof(JSON) == &#039;object&#039; &amp;&amp; JSON.stringify)
+			return JSON.stringify(o, replacer, space);
+
+		if (!recurse &amp;&amp; can.isFunction(replacer))
+			o = replacer(&quot;&quot;, o);
+
+		if (typeof space == &quot;number&quot;)
+			space = &quot;          &quot;.substring(0, space);
+		space = (typeof space == &quot;string&quot;) ? space.substring(0, 10) : &quot;&quot;;
+
+		var type = typeof(o);
+
+		if (o === null)
+			return &quot;null&quot;;
+
+		if (type == &quot;undefined&quot; || type == &quot;function&quot;)
+			return undefined;
+
+		if (type == &quot;number&quot; || type == &quot;boolean&quot;)
+			return o + &quot;&quot;;
+
+		if (type == &quot;string&quot;)
+			return $.quoteString(o);
+
+		if (type == &#039;object&#039;) {
+			if (typeof o.toJSON == &quot;function&quot;)
+				return can.toJSON(o.toJSON(), replacer, space, true);
+
+			if (o.constructor === Date) {
+				var month = o.getUTCMonth() + 1;
+				if (month &lt; 10) month = &#039;0&#039; + month;
+
+				var day = o.getUTCDate();
+				if (day &lt; 10) day = &#039;0&#039; + day;
+
+				var year = o.getUTCFullYear();
+
+				var hours = o.getUTCHours();
+				if (hours &lt; 10) hours = &#039;0&#039; + hours;
+
+				var minutes = o.getUTCMinutes();
+				if (minutes &lt; 10) minutes = &#039;0&#039; + minutes;
+
+				var seconds = o.getUTCSeconds();
+				if (seconds &lt; 10) seconds = &#039;0&#039; + seconds;
+
+				var milli = o.getUTCMilliseconds();
+				if (milli &lt; 100) milli = &#039;0&#039; + milli;
+				if (milli &lt; 10) milli = &#039;0&#039; + milli;
+
+				return &#039;&quot;&#039; + year + &#039;-&#039; + month + &#039;-&#039; + day + &#039;T&#039; +
+					hours + &#039;:&#039; + minutes + &#039;:&#039; + seconds +
+					&#039;.&#039; + milli + &#039;Z&quot;&#039;;
+			}
+
+			var process = (can.isFunction(replacer)) ?
+					function (k, v) {
+						return replacer(k, v);
+					} :
+					function (k, v) {
+						return v;
+					},
+				nl = (space) ? &quot;\n&quot; : &quot;&quot;,
+				sp = (space) ? &quot; &quot; : &quot;&quot;;
+
+			if (o.constructor === Array) {
+				var ret = [];
+				for (var i = 0; i &lt; o.length; i++)
+					ret.push(( can.toJSON(process(i, o[i]), replacer, space, true) || &quot;null&quot; ).replace(/^/gm, space));
+
+				return &quot;[&quot; + nl + ret.join(&quot;,&quot; + nl) + nl + &quot;]&quot;;
+			}
+
+			var pairs = [], proplist;
+			if (can.isArray(replacer)) {
+				proplist = can.map(replacer, function (v) {
+					return (typeof v == &quot;string&quot; || typeof v == &quot;number&quot;) ?
+						v + &quot;&quot; :
+						null;
+				});
+			}
+			for (var k in o) {
+				var name, val, type = typeof k;
+
+				if (proplist &amp;&amp; $.inArray(k + &quot;&quot;, proplist) == -1)
+					continue;
+
+				if (type == &quot;number&quot;)
+					name = &#039;&quot;&#039; + k + &#039;&quot;&#039;;
+				else if (type == &quot;string&quot;)
+					name = $.quoteString(k);
+				else
+					continue;  //skip non-string or number keys
+
+				val = can.toJSON(process(k, o[k]), replacer, space, true);
+
+				if (typeof val == &quot;undefined&quot;)
+					continue;  //skip pairs where the value is a function.
+
+				pairs.push((name + &quot;:&quot; + sp + val).replace(/^/gm, space));
+			}
+
+			return &quot;{&quot; + nl + pairs.join(&quot;,&quot; + nl) + nl + &quot;}&quot;;
+		}
+	};
+
+	/**
+	 * @function can.evalJSON
+	 * Evaluates a given piece of json source.
+	 **/
+	can.evalJSON = function (src) {
+		if (typeof(JSON) == &#039;object&#039; &amp;&amp; JSON.parse)
+			return JSON.parse(src);
+		return eval(&quot;(&quot; + src + &quot;)&quot;);
+	};
+
+	/**
+	 * @function can.secureEvalJSON
+	 * Evals JSON in a way that is *more* secure.
+	 **/
+	can.secureEvalJSON = function (src) {
+		if (typeof(JSON) == &#039;object&#039; &amp;&amp; JSON.parse)
+			return JSON.parse(src);
+
+		var filtered = src;
+		filtered = filtered.replace(/\\[&quot;\\\/bfnrtu]/g, &#039;@&#039;);
+		filtered = filtered.replace(/&quot;[^&quot;\\\n\r]*&quot;|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, &#039;]&#039;);
+		filtered = filtered.replace(/(?:^|:|,)(?:\s*\[)+/g, &#039;&#039;);
+
+		if (/^[\],:{}\s]*$/.test(filtered))
+			return eval(&quot;(&quot; + src + &quot;)&quot;);
+		else
+			throw new SyntaxError(&quot;Error parsing JSON, source is not valid.&quot;);
+	};
+
+	/**
+	 * @function can.quoteString
+	 *
+	 * Returns a string-repr of a string, escaping quotes intelligently.
+	 * Mostly a support function for toJSON.
+	 *
+	 * Examples:
+	 *
+	 *      can.quoteString(&quot;apple&quot;) //-&gt; &quot;apple&quot;
+	 *
+	 *      can.quoteString(&#039;&quot;Where are we going?&quot;, she asked.&#039;)
+	 *        // -&gt; &quot;\&quot;Where are we going?\&quot;, she asked.&quot;
+	 **/
+	can.quoteString = function (string) {
+		if (string.match(_escapeable)) {
+			return &#039;&quot;&#039; + string.replace(_escapeable, function (a) {
+				var c = _meta[a];
+				if (typeof c === &#039;string&#039;) return c;
+				c = a.charCodeAt();
+				return &#039;\\u00&#039; + Math.floor(c / 16).toString(16) + (c % 16).toString(16);
+			}) + &#039;&quot;&#039;;
+		}
+		return &#039;&quot;&#039; + string + &#039;&quot;&#039;;
+	};
+
+	var _escapeable = /[&quot;\\\x00-\x1f\x7f-\x9f]/g;
+
+	var _meta = {
+		&#039;\b&#039; : &#039;\\b&#039;,
+		&#039;\t&#039; : &#039;\\t&#039;,
+		&#039;\n&#039; : &#039;\\n&#039;,
+		&#039;\f&#039; : &#039;\\f&#039;,
+		&#039;\r&#039; : &#039;\\r&#039;,
+		&#039;&quot;&#039; : &#039;\\&quot;&#039;,
+		&#039;\\&#039; : &#039;\\\\&#039;
+	};
+
+	return can;
+})</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

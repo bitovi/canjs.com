@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>map/attributes/attributes.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">68.67</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">377</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">47.01</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">1.55</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/util&#039;, &#039;can/map&#039;, &#039;can/list&#039;, function (can, Map) {
+	can.each([
+		can.Map,
+		can.Model
+	], function (clss) {
+		// in some cases model might not be defined quite yet.
+		if (clss === undefined) {
+			return;
+		}
+		var isObject = function (obj) {
+			return typeof obj === &#039;object&#039; &amp;&amp; obj !== null &amp;&amp; obj;
+		};
+		can.extend(clss, {
+			/**
+			 * @property can.Map.attributes.static.attributes attributes
+			 * @parent can.Map.attributes.static
+			 *
+			 * `can.Map.attributes` is a property that contains key/value pair(s) of an attribute&#039;s name and its
+			 * respective type for using in [can.Map.attributes.static.convert convert] and [can.Map.prototype.serialize serialize].
+			 *
+			 *		var Contact = can.Map.extend({
+			 *			attributes : {
+			 *				birthday : &#039;date&#039;,
+			 *				age: &#039;number&#039;,
+			 *				name: &#039;string&#039;
+			 *			}
+			 *		});
+			 *
+			 */
+			attributes: {},
+
+			/**
+			 * @property can.Map.attributes.static.convert convert
+			 * @parent can.Map.attributes.static
+			 *
+			 * You often want to convert from what the observe sends you to a form more useful to JavaScript.
+			 * For example, contacts might be returned from the server with dates that look like: &quot;1982-10-20&quot;.
+			 * We can observe to convert it to something closer to `new Date(1982,10,20)`.
+			 *
+			 * Convert comes with the following types:
+			 *
+			 * - __date__ Converts to a JS date. Accepts integers or strings that work with Date.parse
+			 * - __number__ An integer or number that can be passed to parseFloat
+			 * - __boolean__ Converts &quot;false&quot; to false, and puts everything else through Boolean()
+			 *
+			 * The following sets the birthday attribute to &quot;date&quot; and provides a date conversion function:
+			 *
+			 *		var Contact = can.Map.extend({
+			 *			attributes : {
+			 *				birthday : &#039;date&#039;
+			 *			},
+			 *			convert : {
+			 *				date : function(raw){
+			 *					if(typeof raw == &#039;string&#039;){
+			 *						//- Extracts dates formated &#039;YYYY-DD-MM&#039;
+			 *						var matches = raw.match(/(\d+)-(\d+)-(\d+)/);
+			 *
+			 *						//- Parses to date object and returns
+			 *						return new Date(matches[1],
+			 *								        (+matches[2])-1,
+			 *									    matches[3]);
+			 *
+			 *					}else if(raw instanceof Date){
+			 *						return raw;
+			 *					}
+			 *				}
+			 *			}
+			 *		},{});
+			 *
+			 *		var contact = new Contact();
+			 *
+			 *		//- calls convert on attribute set
+			 *		contact.attr(&#039;birthday&#039;, &#039;4-26-2012&#039;)
+			 *
+			 *		contact.attr(&#039;birthday&#039;); //-&gt; Date
+			 *
+			 * If a property is set with an object as a value, the corresponding converter is called with the unmerged data (the raw object)
+			 * as the first argument, and the old value (a can.Map) as the second:
+			 *
+			 *		var MyObserve = can.Map.extend({
+			 *			attributes: {
+			 *		nested: &quot;nested&quot;
+			 *			},
+			 *			convert: {
+			 *				nested: function(data, oldVal) {
+			 *					if(oldVal instanceof MyObserve) {
+			 *						return oldVal.attr(data);
+			 *					}
+			 *					return new MyObserve(data);
+			 *				}
+			 *			}
+			 *		},{});
+			 *
+			 * ## Differences From `attr`
+			 *
+			 * The way that return values from convertors affect the value of an Observe&#039;s property is
+			 * different from [can.Map::attr attr]&#039;s normal behavior. Specifically, when the
+			 * property&#039;s current value is an Observe or List, and an Observe or List is returned
+			 * from a convertor, the effect will not be to merge the values into the current value as
+			 * if the return value was fed straight into `attr`, but to replace the value with the
+			 * new Observe or List completely. Because of this, any bindings you have on the previous
+			 * observable object will break.
+			 *
+			 * If you would rather have the new Observe or List merged into the current value, call
+			 * `attr` directly on the property instead of on the Observe:
+			 *
+			 * @codestart
+			 * var Contact = can.Map.extend({
+			 *   attributes: {
+			 *     info: &#039;info&#039;
+			 *   },
+			 *   convert: {
+			 *     &#039;info&#039;: function(data, oldVal) {
+			 *       return data;
+			 *	}
+			 *   }
+			 * }, {});
+			 *
+			 * var alice = new Contact({info: {name: &#039;Alice Liddell&#039;, email: &#039;alice@liddell.com&#039;}});
+			 * alice.attr(); // {name: &#039;Alice Liddell&#039;, &#039;email&#039;: &#039;alice@liddell.com&#039;}
+			 * alice.info._cid; // &#039;.observe1&#039;
+			 *
+			 * alice.attr(&#039;info&#039;, {name: &#039;Allison Wonderland&#039;, phone: &#039;888-888-8888&#039;});
+			 * alice.attr(); // {name: &#039;Allison Wonderland&#039;, &#039;phone&#039;: &#039;888-888-8888&#039;}
+			 * alice.info._cid; // &#039;.observe2&#039;
+			 *
+			 * alice.info.attr({email: &#039;alice@wonderland.com&#039;, phone: &#039;000-000-0000&#039;});
+			 * alice.attr(); // {name: &#039;Allison Wonderland&#039;, email: &#039;alice@wonderland.com&#039;, &#039;phone&#039;: &#039;000-000-0000&#039;}
+			 * alice.info._cid; // &#039;.observe2&#039;
+			 * @codeend
+			 *
+			 * ## Assocations and Convert
+			 *
+			 * If you have assocations defined within your model(s), you can use convert to automatically
+			 * call serialize on those models.
+			 *
+			 * @codestart
+			 * var Contact = can.Model.extend({
+			 *   attributes : {
+			 *     tasks: Task
+			 *   }
+			 * }, {});
+			 *
+			 * var Task = can.Model.extend({
+			 *   attributes : {
+			 *     due : &#039;date&#039;
+			 *   }
+			 * },{});
+			 *
+			 * var contact = new Contact({
+			 *   tasks: [ new Task({
+			 *     due: new Date()
+			 *   }) ]
+			 * });
+			 *
+			 * contact.serialize();
+			 * //-&gt; { tasks: [ { due: 1333219754627 } ] }
+			 * @codeend
+			 */
+			convert: {
+				&#039;date&#039;: function (str) {
+					var type = typeof str;
+					if (type === &#039;string&#039;) {
+						str = Date.parse(str);
+						return isNaN(str) ? null : new Date(str);
+					} else if (type === &#039;number&#039;) {
+						return new Date(str);
+					} else {
+						return str;
+					}
+				},
+				&#039;number&#039;: function (val) {
+					return parseFloat(val);
+				},
+				&#039;boolean&#039;: function (val) {
+					if (val === &#039;false&#039; || val === &#039;0&#039; || !val) {
+						return false;
+					}
+					return true;
+				},
+				&#039;default&#039;: function (val, oldVal, error, type) {
+					// Convert can.Model types using .model and .models
+					if (can.Map.prototype.isPrototypeOf(type.prototype) &amp;&amp; typeof type.model === &#039;function&#039; &amp;&amp; typeof type.models === &#039;function&#039;) {
+						return type[can.isArray(val) ? &#039;models&#039; : &#039;model&#039;](val);
+					}
+					if (can.Map.prototype.isPrototypeOf(type.prototype)) {
+						if (can.isArray(val) &amp;&amp; typeof type.List === &#039;function&#039;) {
+							return new type.List(val);
+						}
+						return new type(val);
+					}
+					if (typeof type === &#039;function&#039;) {
+						return type(val, oldVal);
+					}
+					var construct = can.getObject(type),
+						context = window,
+						realType;
+					// if type has a . we need to look it up
+					if (type.indexOf(&#039;.&#039;) &gt;= 0) {
+						// get everything before the last .
+						realType = type.substring(0, type.lastIndexOf(&#039;.&#039;));
+						// get the object before the last .
+						context = can.getObject(realType);
+					}
+					return typeof construct === &#039;function&#039; ? construct.call(context, val, oldVal) : val;
+				}
+			},
+			/**
+			 * @property can.Map.attributes.static.serialize serialize
+			 * @parent can.Map.attributes.static
+			 *
+			 * `can.Map.serialize` is an object of name-function pairs that are used to
+			 * serialize attributes.
+			 *
+			 * Similar to [can.Map.attributes.static.convert can.Map.attributes.convert], in that the keys of this object correspond to
+			 * the types specified in [can.Map.attributes].
+			 *
+			 * By default every attribute will be passed through the &#039;default&#039; serialization method
+			 * that will return the value if the property holds a primitive value (string, number, ...),
+			 * or it will call the &quot;serialize&quot; method if the property holds an object with the &quot;serialize&quot; method set.
+			 *
+			 * For example, to serialize all dates to ISO format:
+			 *
+			 * @codestart
+			 * var Contact = can.Map.extend({
+			 *   attributes : {
+			 *     birthday : &#039;date&#039;
+			 *   },
+			 *   serialize : {
+			 *     date : function(val, type){
+			 *       return new Date(val).toISOString();
+			 *     }
+			 *   }
+			 * },{});
+			 *
+			 * var contact = new Contact({
+			 *   birthday: new Date(&quot;Oct 25, 1973&quot;)
+			 * }).serialize();
+			 * //-&gt; { &quot;birthday&quot; : &quot;1973-10-25T05:00:00.000Z&quot; }
+			 * @codeend
+			 *
+			 */
+			serialize: {
+				&#039;default&#039;: function (val, type) {
+					return isObject(val) &amp;&amp; val.serialize ? val.serialize() : val;
+				},
+				&#039;date&#039;: function (val) {
+					return val &amp;&amp; val.getTime();
+				}
+			}
+		});
+		// overwrite setup to do this stuff
+		var oldSetup = clss.setup;
+		/**
+		 * @hide
+		 * @function can.Map.setup
+		 * @parent can.Map.attributes
+		 *
+		 * `can.Map.static.setup` overrides default `can.Map` setup to provide
+		 * functionality for attributes.
+		 *
+		 */
+		clss.setup = function (superClass, stat, proto) {
+			var self = this;
+			oldSetup.call(self, superClass, stat, proto);
+			can.each([&#039;attributes&#039;], function (name) {
+				if (!self[name] || superClass[name] === self[name]) {
+					self[name] = {};
+				}
+			});
+			can.each([
+				&#039;convert&#039;,
+				&#039;serialize&#039;
+			], function (name) {
+				if (superClass[name] !== self[name]) {
+					self[name] = can.extend({}, superClass[name], self[name]);
+				}
+			});
+		};
+	});
+	/**
+	 * @hide
+	 * @function can.Map.prototype.convert
+	 * @parent can.Map.attributes
+	 */
+	can.Map.prototype.__convert = function (prop, value) {
+		// check if there is a
+		var Class = this.constructor,
+			oldVal = this.attr(prop),
+			type, converter;
+		if (Class.attributes) {
+			// the type of the attribute
+			type = Class.attributes[prop];
+			converter = Class.convert[type] || Class.convert[&#039;default&#039;];
+		}
+		return value === null || !type ? value : converter.call(Class, value, oldVal, function () {}, type);
+	};
+	/**
+	 * @function can.Map.prototype.attributes.serialize serialize
+	 * @parent can.Map.attributes.prototype
+	 *
+	 * @description Serializes the observe&#039;s properties using
+	 * the [can.Map.attributes attribute plugin].
+	 *
+	 * @signature `observe.serialize([attrName])`
+	 * @param {String} [attrName] If passed, returns only a serialization of the named attribute.
+	 * @return {String} A serialization of this Observe.
+	 *
+	 * @body
+	 * You can set the serialization methods similar to the convert methods:
+	 *
+	 *        var Contact = can.Map.extend({
+	 *			attributes : {
+	 *				birthday : &#039;date&#039;
+	 *			},
+	 *			serialize : {
+	 *				date : function( val, type ){
+	 *					return val.getYear() +
+	 *						&quot;-&quot; + (val.getMonth() + 1) +
+	 *						&quot;-&quot; + val.getDate();
+	 *				}
+	 *			}
+	 *		},{})
+	 *
+	 *        var contact = new Contact();
+	 *        contact.attr(&#039;birthday&#039;, new Date());
+	 *        contact.serialize()
+	 *        //-&gt; { birthday: &#039;YYYY-MM-DD&#039; }
+	 *
+	 * You can also get and serialize an individual property by passing the attribute
+	 * name to the `serialize` function.  Building on the above demo, we can serialize
+	 * the `birthday` attribute only.
+	 *
+	 *        contact.serialize(&#039;birthday&#039;) //-&gt; &#039;YYYY-MM-DD&#039;
+	 */
+	can.List.prototype.serialize = function (attrName, stack) {
+		return can.makeArray(can.Map.prototype.serialize.apply(this, arguments));
+	};
+	can.Map.prototype.serialize = function (attrName, stack) {
+		var where = {}, Class = this.constructor,
+			attrs = {};
+		stack = can.isArray(stack) ? stack : [];
+		stack.push(this._cid);
+		if (attrName !== undefined) {
+			attrs[attrName] = this[attrName];
+		} else {
+			attrs = this.__get();
+		}
+		can.each(attrs, function (val, name) {
+			var type, converter;
+			// If this is an observe, check that it wasn&#039;t serialized earlier in the stack.
+			if (val instanceof can.Map &amp;&amp; can.inArray(val._cid, stack) &gt; -1) {
+				// Since this object has already been serialized once,
+				// just reference the id (or undefined if it doesn&#039;t exist).
+				where[name] = val.attr(&#039;id&#039;);
+			} else {
+				type = Class.attributes ? Class.attributes[name] : 0;
+				converter = Class.serialize ? Class.serialize[type] : 0;
+				// if the value is an object, and has a attrs or serialize function
+				where[name] = val &amp;&amp; typeof val.serialize === &#039;function&#039; ?
+				// call attrs or serialize to get the original data back
+				val.serialize(undefined, stack) :
+				// otherwise if we have  a converter
+				converter ?
+				// use the converter
+				converter(val, type) :
+				// or return the val
+				val;
+			}
+		});
+		if (typeof attrs.length !== &#039;undefined&#039;) {
+			where.length = attrs.length;
+		}
+		return attrName !== undefined ? where[attrName] : where;
+	};
+	return can.Map;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>view/node_lists/node_lists.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">66.64</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">230</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">44.22</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">0.75</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/util&#039;, &#039;can/view/elements.js&#039;, function (can) {
+	// In some browsers, text nodes can not take expando properties.
+	// We test that here.
+	var canExpando = true;
+	try {
+		document.createTextNode(&#039;&#039;)
+			._ = 0;
+	} catch (ex) {
+		canExpando = false;
+	}
+	// A mapping of element ids to nodeList id
+	var nodeMap = {},
+		// A mapping of ids to text nodes
+		textNodeMap = {}, expando = &#039;ejs_&#039; + Math.random(),
+		_id = 0,
+		id = function (node) {
+			if (canExpando || node.nodeType !== 3) {
+				if (node[expando]) {
+					return node[expando];
+				} else {
+					++_id;
+					return node[expando] = (node.nodeName ? &#039;element_&#039; : &#039;obj_&#039;) + _id;
+				}
+			} else {
+				for (var textNodeID in textNodeMap) {
+					if (textNodeMap[textNodeID] === node) {
+						return textNodeID;
+					}
+				}
+				++_id;
+				textNodeMap[&#039;text_&#039; + _id] = node;
+				return &#039;text_&#039; + _id;
+			}
+		}, splice = [].splice;
+	/**
+	 * @property {Object} can.view.nodeLists
+	 * @parent can.view.static
+	 *
+	 * Stores hierarchical node references.
+	 *
+	 * ## Use
+	 *
+	 * `can.view.nodeLists` is used to make sure &quot;directly nested&quot; live-binding
+	 * sections update content correctly.
+	 *
+	 * Consider a template like:
+	 *
+	 *     &lt;div&gt;
+	 *     {{#if items.length}}
+	 *        Items:
+	 *        {{#items}}
+	 *           &lt;label&gt;&lt;/label&gt;
+	 *        {{/items}}
+	 *     {{/if}}
+	 *     &lt;/div&gt;
+	 *
+	 *
+	 * The `{{#if}}` and `{{#items}}` seconds are &quot;directly nested&quot; because
+	 * they share the same `&lt;div&gt;` parent element.
+	 *
+	 * If `{{#items}}` changes the DOM by adding more `&lt;labels&gt;`,
+	 * `{{#if}}` needs to know about the `&lt;labels&gt;` to remove them
+	 * if `{{#if}}` is re-rendered.  `{{#if}}` would be re-rendered, for example, if
+	 * all items were removed.
+	 *
+	 *
+	 * To keep all live-bound sections knowing which elements they are managing,
+	 * all live-bound elments are [can.view.nodeLists.register registered] and
+	 * [can.view.nodeLists.update updated] when the change.
+	 *
+	 * For example, the above template, when rendered with data like:
+	 *
+	 *     data = new can.Map({
+	 *       items: [&quot;first&quot;,&quot;second&quot;]
+	 *     })
+	 *
+	 * This will first render the following content:
+	 *
+	 *     &lt;div&gt;
+	 *        &lt;span data-view-id=&#039;5&#039;/&gt;
+	 *     &lt;/div&gt;
+	 *
+	 * When the `5` [can.view.hookup hookup] callback is called, this will register the `&lt;span&gt;` like:
+	 *
+	 *     var ifsNodes = [&lt;span 5&gt;]
+	 *     nodeLists.register(ifsNodes);
+	 *
+	 * And then render `{{if}}`&#039;s contents and update `ifsNodes` with it:
+	 *
+	 *     nodeLists.update( ifsNodes, [&lt;&quot;\nItems:\n&quot;&gt;, &lt;span data-view-id=&quot;6&quot;&gt;] );
+	 *
+	 * Next, hookup `6` is called which will regsiter the `&lt;span&gt;` like:
+	 *
+	 *     var eachsNodes = [&lt;span 6&gt;];
+	 *     nodeLists.register(eachsNodes);
+	 *
+	 * And then it will render `{{#each}}`&#039;s content and update `eachsNodes` with it:
+	 *
+	 *     nodeLists.update(eachsNodes, [&lt;label&gt;,&lt;label&gt;]);
+	 *
+	 * As `nodeLists` knows that `eachsNodes` is inside `ifsNodes`, it also updates
+	 * `ifsNodes`&#039;s nodes to look like:
+	 *
+	 *     [&lt;&quot;\nItems:\n&quot;&gt;,&lt;label&gt;,&lt;label&gt;]
+	 *
+	 * Now, if all items were removed, `{{#if}}` would be able to remove
+	 * all the `&lt;label&gt;` elements.
+	 *
+	 * When you regsiter a nodeList, you can also provide a callback to know when
+	 * that nodeList has been replaced by a parent nodeList.  This is
+	 * useful for tearing down live-binding.
+	 *
+	 *
+	 *
+	 *
+	 *
+	 */
+	var nodeLists = {
+		id: id,
+
+		/**
+		 * @function can.view.nodeLists.update
+		 * @parent can.view.nodeLists
+		 *
+		 * Updates a nodeList with new items
+		 *
+		 * @param {Array.&lt;HTMLElement&gt;} nodeList A registered nodeList.
+		 *
+		 * @param {Array.&lt;HTMLElement&gt;} newNodes HTML nodes that should be placed in the nodeList.
+		 *
+		 */
+		update: function (nodeList, newNodes) {
+			// Unregister all childNodes.
+			can.each(nodeList.childNodeLists, function (nodeList) {
+				nodeLists.unregister(nodeList);
+			});
+			nodeList.childNodeLists = [];
+			// Remove old node pointers to this list.
+			can.each(nodeList, function (node) {
+				delete nodeMap[id(node)];
+			});
+			newNodes = can.makeArray(newNodes);
+			// indicate the new nodes belong to this list
+			can.each(newNodes, function (node) {
+				nodeMap[id(node)] = nodeList;
+			});
+			var oldListLength = nodeList.length,
+				firstNode = nodeList[0];
+			// Replace oldNodeLists&#039;s contents&#039;
+			splice.apply(nodeList, [
+				0,
+				oldListLength
+			].concat(newNodes));
+			// update all parent nodes so they are able to replace the correct elements
+			var parentNodeList = nodeList;
+			while (parentNodeList = parentNodeList.parentNodeList) {
+				splice.apply(parentNodeList, [
+					can.inArray(firstNode, parentNodeList),
+					oldListLength
+				].concat(newNodes));
+			}
+		},
+		/**
+		 * @function can.view.nodeLists.register
+		 * @parent can.view.nodeLists
+		 *
+		 * Registers a nodeList.
+		 *
+		 * @param {Array.&lt;HTMLElement&gt;} nodeList An array of elements. This array will be kept live if child nodeLists
+		 * update themselves.
+		 *
+		 * @param {function} [unregistered] An optional callback that is called when the `nodeList` is
+		 * replaced due to a parentNode list being updated.
+		 *
+		 * @param {Array.&lt;HTMLElement&gt;} [parent] An optional parent nodeList.  If no parentNode list is found,
+		 * the first element in `nodeList`&#039;s current nodeList will be used.
+		 *
+		 * @return {Array.&lt;HTMLElement&gt;} The `nodeList` passed to `register`.
+		 */
+		register: function (nodeList, unregistered, parent) {
+			// add an id to the nodeList
+			nodeList.unregistered = unregistered;
+			nodeList.childNodeLists = [];
+			if (!parent) {
+				// find the parent by looking up where this node is
+				if (nodeList.length &gt; 1) {
+					throw &#039;does not work&#039;;
+				}
+				var nodeId = id(nodeList[0]);
+				parent = nodeMap[nodeId];
+			}
+			nodeList.parentNodeList = parent;
+			if (parent) {
+				parent.childNodeLists.push(nodeList);
+			}
+			return nodeList;
+		},
+		// removes node in all parent nodes and unregisters all childNodes
+		/**
+		 * @function can.view.nodeLists.unregister
+		 * @parent can.view.nodeLists
+		 *
+		 * Unregister&#039;s a nodeList.  Call if the nodeList is no longer being
+		 * updated.  This will unregister all child nodeLists.
+		 *
+		 *
+		 * @param {Array.&lt;HTMLElement&gt;} nodeList The nodelist to unregister.
+		 */
+		unregister: function (nodeList) {
+			if (!nodeList.isUnregistered) {
+				nodeList.isUnregistered = true;
+				// unregister all childNodeLists
+				delete nodeList.parentNodeList;
+				can.each(nodeList, function (node) {
+					var nodeId = id(node);
+					delete nodeMap[nodeId];
+				});
+				// this can unbind which will call itself
+				if (nodeList.unregistered) {
+					nodeList.unregistered();
+				}
+				can.each(nodeList.childNodeLists, function (nodeList) {
+					nodeLists.unregister(nodeList);
+				});
+			}
+		},
+		nodeMap: nodeMap
+	};
+	return nodeLists;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

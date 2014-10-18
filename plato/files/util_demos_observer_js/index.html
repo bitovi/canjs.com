@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>util/demos/observer.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">61.50</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">351</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">63.56</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">4.84</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/map&#039;, &#039;can/control&#039;, &#039;can/list&#039;, function () {
+	/* global EditOver */
+	window.Observer = can.Control({
+		defaults: {
+			observeName: &#039;observe&#039;,
+			end: function () {
+				return &#039;                          &#039;;
+			}
+		}
+	}, {
+		init: function () {
+			// draw
+			var data = this.options.observe.attr();
+			this.options.obs = new can.Map(data);
+			this.on();
+			this.render();
+		},
+		render: function () {
+			var frag = this.draw(0, undefined, this.options.obs);
+			this.element.html(frag)
+				.find(&#039;.end&#039;)
+				.eq(-1)
+				.replaceWith(&#039;&lt;span class=\&#039;end\&#039;&gt;})&#039; + this.options.end.call(this) + &#039;&lt;/span&gt;&#039;);
+		},
+		draw: function (indent, name, value) {
+			indent = indent || 0;
+			var space = new Array(indent * 4)
+				.join(&#039; &#039;),
+				frag = document.createDocumentFragment(),
+				propName;
+			var self = this,
+				namePart;
+			if (!name &amp;&amp; indent === 0) {
+				if (this.options.fullName) {
+					namePart = this.options.fullName;
+				} else {
+					namePart = this.options.observeName + &#039;.attr(&#039;;
+				}
+			} else if (typeof name === &#039;string&#039;) {
+				namePart = &#039;&lt;span class=\&#039;name\&#039;&gt;&#039; + name + &#039;&lt;/span&gt;&#039; + &#039; : &#039;;
+			} else {
+				namePart = &#039;&lt;span class=\&#039;name\&#039;&gt;&#039; + &#039;&lt;/span&gt;&#039; + &#039;&#039;;
+			}
+			if (namePart) {
+				propName = $(&#039;&lt;span&gt;&#039;)
+					.html((!name &amp;&amp; indent === 0 ? &#039;&#039; : &#039;\n&#039;) + &#039;&lt;span class=\&#039;remove\&#039;&gt;&#039; + space + &#039;&lt;/span&gt;&#039; + namePart);
+				if (name !== undefined) {
+					propName.addClass(&#039;propName&#039;)
+						.data(&#039;propName&#039;, name);
+				}
+			}
+			frag.appendChild(propName[0]);
+			if (value instanceof can.Map) {
+				var isList = value instanceof can.List,
+					obs = $(&#039;&lt;span&gt;&lt;span class=\&#039;start\&#039;&gt;&#039; + (isList ? &#039;[&#039; : &#039;{&#039;) + &#039;&lt;/span&gt;&lt;/span&gt;&#039;)
+						.addClass(&#039;observe&#039;)
+						.data(&#039;observe&#039;, value)
+						.data(&#039;indent&#039;, indent + 1);
+				var children = $();
+				value.each(function (val, name) {
+					var section = self.draw(indent + 1, name, val);
+					children.push(section);
+				});
+				// remove the last &quot;,&quot;
+				if (!children.length) {
+					obs.append(&#039;&lt;span class=\&#039;end\&#039;&gt;&#039; + (isList ? &#039;]&#039; : &#039;}&#039;) + &#039;,                    &lt;/span&gt;&#039;);
+				} else {
+					// remove the last &quot;,&quot;
+					if (children.eq(-1)[0].lastChild.className === &#039;comma&#039;) {
+						$(children.eq(-1)[0].lastChild)
+							.remove();
+					} else if (children.eq(-1)[0].lastChild.className === &#039;observe&#039;) {
+						var end = $(children.eq(-1)[0].lastChild)
+							.children(&#039;.end&#039;);
+						end[0].firstChild.nodeValue = end[0].firstChild.nodeValue.replace(&#039;,&#039;, &#039;&#039;);
+					}
+					obs.append(children);
+					obs.append(&#039;\n&#039; + space + &#039;&lt;span class=\&#039;end\&#039;&gt;&#039; + (isList ? &#039;]&#039; : &#039;}&#039;) + &#039;,                        &lt;/span&gt;&#039;);
+				}
+				frag.appendChild(obs[0]);
+			} else {
+				var val = $(&#039;&lt;span&gt;&#039;)
+					.addClass(&#039;value&#039;)
+					.data(&#039;propValue&#039;, value)
+					.text(JSON.stringify(value));
+				frag.appendChild(val[0]);
+				frag.appendChild($(&#039;&lt;span class=&quot;comma&quot;&gt;,&lt;/span&gt;&#039;)[0]);
+			}
+			return frag;
+		},
+		&#039;.name mouseenter&#039;: function (el, ev) {
+			if (ev.relatedTarget &amp;&amp; ev.relatedTarget.nodeName === &#039;INPUT&#039;) {
+				return;
+			}
+			this.newEditInput(el);
+			ev.stopImmediatePropagation();
+			this.editing = this.getObserveAndName(el);
+		},
+		&#039;{editOverInput} destroyed&#039;: function () {
+			if (this.editing.inserting &amp;&amp; !this.dontRemoveTemp) {
+				this.element.find(&#039;.temp&#039;)
+					.remove();
+			}
+			this.revert();
+		},
+		&#039;{editOverInput} keypress&#039;: function (el, ev) {
+			if (ev.keyCode === 9) {
+				ev.preventDefault();
+				if (this.editing.inserting) {
+					this.editing.name = this.options.editOverInput.val();
+					this.dontRemoveTemp = true;
+					this.options.editOverInput.remove();
+					this.editing.naming = $(&#039;&lt;span class=\&#039;naming\&#039;&gt; &lt;/span&gt;&#039;);
+					this.editing.inserting.parent()
+						.append(this.editing.naming);
+					this.newEditInput(this.editing.naming);
+					this.dontRemoveTemp = false;
+				}
+			} else if (ev.keyCode === 13) {
+				if (this.editing.inserting) {
+					if (this.editing.naming &amp;&amp; this.options.editOverInput.val()) {
+						try {
+							var value = JSON.parse(this.options.editOverInput.val());
+							this.editing.observe.attr(this.editing.name, value);
+							this.commit();
+							this.options.editOverInput.remove();
+						} catch (e) {
+							console.log(&#039;bad formatted&#039;, e);
+						}
+						return;
+					}
+				}
+				this.commit();
+				this.options.editOverInput.remove();
+			}
+		},
+		&#039;{editOverInput} keyup&#039;: function (el, ev) {
+			var value;
+			//submitting
+			if (!this.options.editOverInput.val() || ev.keyCode === 9) {
+				return;
+			}
+			if (this.editing.inserting) {
+				// do nothing ...
+				if (this.editing.isList) {
+					try {
+						value = can.evalJSON(this.options.editOverInput.val());
+						console.log(this.editing.index, value);
+						this.editing.observe.attr(this.editing.index, value);
+					} catch (e) {
+						console.log(&#039;bad formatted&#039;);
+					}
+				} else if (!this.editing.naming) {
+					this.editing.inserting.text(this.options.editOverInput.val());
+				} else {
+					// make naming right ...
+					this.editing.naming.text(this.options.editOverInput.val());
+					try {
+						value = can.evalJSON(this.options.editOverInput.val());
+						this.editing.observe.attr(this.editing.name, value);
+					} catch (e) {
+						console.log(&#039;bad formatted&#039;);
+					}
+				}
+			} else if (this.editing.value) {
+				try {
+					value = can.evalJSON(this.options.editOverInput.val());
+					this.editing.observe.attr(this.editing.name, value);
+				} catch (e) {
+					console.log(&#039;bad formatted&#039;);
+				}
+			} else {
+				var data = this.editing.observe.attr();
+				var ordered = {};
+				for (var name in data) {
+					if (name === this.editing.name) {
+						ordered[this.options.editOverInput.val()] = data[name];
+					} else {
+						ordered[name] = data[name];
+					}
+				}
+				this.editing.name = this.options.editOverInput.val();
+				this.editing.observe.attr({}, true);
+				this.editing.observe.attr(ordered);
+			}
+		},
+		newEditInput: function (el) {
+			if (this.options.editOverInput) {
+				this.options.editOverInput.remove();
+			}
+			this.options.editOverInput = $(&#039;&lt;input type=\&#039;text\&#039;&gt;&#039;);
+			new EditOver(this.options.editOverInput, {
+				el: el
+			});
+			this.on();
+		},
+		&#039;.value mouseenter&#039;: function (el, ev) {
+			if (ev.relatedTarget &amp;&amp; ev.relatedTarget.nodeName === &#039;INPUT&#039;) {
+				return;
+			}
+			this.newEditInput(el);
+			this.editing = this.getObserveAndName(el.prev()
+				.children()
+				.eq(0));
+			this.editing.value = true;
+			ev.stopImmediatePropagation();
+		},
+		getObserveAndName: function (el) {
+			var propParent = el.closest(&#039;.propName&#039;);
+			var propName = propParent.data(&#039;propName&#039;);
+			//get the observe
+			var observe = propParent.closest(&#039;.observe&#039;)
+				.data(&#039;observe&#039;) || this.options.obs;
+			return {
+				observe: observe,
+				name: propName,
+				oldName: propName
+			};
+		},
+		&#039;.remove click&#039;: function (el, ev) {
+			// get the propName
+			var propParent = el.closest(&#039;.propName&#039;);
+			var propName = propParent.data(&#039;propName&#039;);
+			//get the observe
+			var observe = propParent.parent(&#039;.observe&#039;)
+				.data(&#039;observe&#039;) || this.options.obs;
+			// remove the property
+			observe.removeAttr(propName);
+			if (this.options.editOverInput) {
+				this.options.editOverInput.remove();
+			}
+			ev.stopImmediatePropagation();
+		},
+		&#039;.end click&#039;: function (el, ev) {
+			//this.options.editOverInput &amp;&amp; this.options.editOverInput.remove();
+			var obsEl = el.closest(&#039;.observe&#039;);
+			var indent = obsEl.data(&#039;indent&#039;) || 0,
+				space = new Array(indent * 4)
+					.join(&#039; &#039;),
+				observe = obsEl.data(&#039;observe&#039;) || this.options.obs,
+				isList = observe instanceof can.List;
+			// get the element before end ... ad an input
+			el.prev()
+				.after(&#039;&lt;span class=\&#039;temp\&#039;&gt;\n&#039; + space + &#039;&lt;span class=\&#039;insert\&#039;&gt; &lt;/span&gt;&#039; + (isList ? &#039;&#039; : &#039; : &#039;) + &#039;&lt;/span&gt;&#039;);
+			var insert = el.prev(&#039;.temp&#039;)
+				.find(&#039;.insert&#039;);
+			this.newEditInput(insert);
+			this.editing = {
+				observe: observe,
+				inserting: insert,
+				isList: isList
+			};
+			if (isList) {
+				this.editing.index = observe.length;
+			}
+			ev.stopImmediatePropagation();
+		},
+		&#039;{obs} change&#039;: function () {
+			// redraw
+			var self = this;
+			clearTimeout(this.updateTimer);
+			this.updateTimer = setTimeout(function () {
+				self.render();
+			}, 1);
+		},
+		&#039;{observe} change&#039;: function () {
+			var data = this.options.observe.attr();
+			this.options.obs.attr(data, true);
+		},
+		commit: function () {
+			var data = this.options.obs.attr();
+			this.options.observe.attr(data, true);
+		},
+		revert: function () {
+			var data = this.options.observe.attr();
+			this.options.obs.attr(data, true);
+		}
+	});
+
+	function setEnd(txt) {
+		if (txt.createTextRange) {
+			//IE
+			var fieldRange = txt.createTextRange();
+			fieldRange.moveStart(&#039;character&#039;, txt.value.length);
+			fieldRange.collapse();
+			fieldRange.select();
+		} else {
+			//Firefox and Opera
+			txt.focus();
+			var length = txt.value.length;
+			txt.setSelectionRange(length, length);
+		}
+	}
+	// draws an input element over some other element
+	window.EditOver = can.Control({
+		init: function () {
+			this.element.addClass(&#039;edit-over&#039;);
+			this.element.val(this.options.el.text());
+			this.element.appendTo(document.body);
+			var offset = this.options.el.offset();
+			offset.top--;
+			offset.left -= 3;
+			this.element.width(this.options.el.width() + 6);
+			this.element.height(this.options.el.height() + 2);
+			var css = {
+				fontSize: this.options.el.css(&#039;fontSize&#039;),
+				fontFamily: this.options.el.css(&#039;fontFamily&#039;),
+				position: &#039;absolute&#039;
+			};
+			this.element.css(css);
+			this.element.offset(offset);
+			if (this.options.focus) {
+				this.element[0].focus();
+				setEnd(this.element[0]);
+			} else {
+				this.element[0].select();
+			}
+			var self = this;
+			setTimeout(function () {
+				self.ready = true;
+			}, 10);
+			this.measure = $(&#039;&lt;span&gt;&#039;)
+				.css(css)
+				.text(this.element.val());
+			this.measure.appendTo(document.body);
+			this.measure.css({
+				left: &#039;0px&#039;,
+				top: &#039;-1000px&#039;
+			});
+		},
+		&#039;{window} click&#039;: function (el, ev) {
+			if (this.ready &amp;&amp; ev.target !== this.element[0]) {
+				this.element.remove();
+			}
+		},
+		&#039;keypress&#039;: function (el, ev) {
+			if (ev.charCode) {
+				this.measure.text(this.element.val() + &#039;W&#039;);
+				this.element.width(this.measure.width() + 6);
+			}
+		},
+		&#039;keyup&#039;: function (el, ev) {
+			this.measure.text(this.element.val());
+			this.element.width(this.measure.width() + 6);
+		},
+		destroy: function () {
+			this.measure.remove();
+			can.Control.prototype.destroy.apply(this, arguments);
+		}
+	});
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

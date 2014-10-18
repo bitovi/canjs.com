@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>route/route.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">65.66</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">667</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">76.06</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">4.26</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/util&#039;, &#039;can/map&#039;, &#039;can/list&#039;,&#039;can/util/string/deparam&#039;, function (can) {
+
+	// ## route.js
+	// `can.route`
+	// _Helps manage browser history (and client state) by synchronizing the
+	// `window.location.hash` with a `can.Map`._
+	//
+	// Helper methods used for matching routes.
+	var
+	// `RegExp` used to match route variables of the type &#039;:name&#039;.
+	// Any word character or a period is matched.
+	matcher = /\:([\w\.]+)/g,
+		// Regular expression for identifying &amp;amp;key=value lists.
+		paramsMatcher = /^(?:&amp;[^=]+=[^&amp;]*)+/,
+		// Converts a JS Object into a list of parameters that can be
+		// inserted into an html element tag.
+		makeProps = function (props) {
+			var tags = [];
+			can.each(props, function (val, name) {
+				tags.push((name === &#039;className&#039; ? &#039;class&#039; : name) + &#039;=&quot;&#039; +
+					(name === &quot;href&quot; ? val : can.esc(val)) + &#039;&quot;&#039;);
+			});
+			return tags.join(&quot; &quot;);
+		},
+		// Checks if a route matches the data provided. If any route variable
+		// is not present in the data, the route does not match. If all route
+		// variables are present in the data, the number of matches is returned
+		// to allow discerning between general and more specific routes.
+		matchesData = function (route, data) {
+			var count = 0,
+				i = 0,
+				defaults = {};
+			// look at default values, if they match ...
+			for (var name in route.defaults) {
+				if (route.defaults[name] === data[name]) {
+					// mark as matched
+					defaults[name] = 1;
+					count++;
+				}
+			}
+			for (; i &lt; route.names.length; i++) {
+				if (!data.hasOwnProperty(route.names[i])) {
+					return -1;
+				}
+				if (!defaults[route.names[i]]) {
+					count++;
+				}
+
+			}
+
+			return count;
+		},
+		location = window.location,
+		wrapQuote = function (str) {
+			return (str + &#039;&#039;)
+				.replace(/([.?*+\^$\[\]\\(){}|\-])/g, &quot;\\$1&quot;);
+		},
+		each = can.each,
+		extend = can.extend,
+		// Helper for convert any object (or value) to stringified object (or value)
+		stringify = function (obj) {
+			// Object is array, plain object, Map or List
+			if (obj &amp;&amp; typeof obj === &quot;object&quot;) {
+				// Get native object or array from Map or List
+				if (obj instanceof can.Map) {
+					obj = obj.attr();
+					// Clone object to prevent change original values
+				} else {
+					obj = can.isFunction(obj.slice) ? obj.slice() : can.extend({}, obj);
+				}
+				// Convert each object property or array item into stringified new
+				can.each(obj, function (val, prop) {
+					obj[prop] = stringify(val);
+				});
+				// Object supports toString function
+			} else if (obj !== undefined &amp;&amp; obj !== null &amp;&amp; can.isFunction(obj.toString)) {
+				obj = obj.toString();
+			}
+
+			return obj;
+		},
+		removeBackslash = function (str) {
+			return str.replace(/\\/g, &quot;&quot;);
+		},
+		// A ~~throttled~~ debounced function called multiple times will only fire once the
+		// timer runs down. Each call resets the timer.
+		timer,
+		// Intermediate storage for `can.route.data`.
+		curParams,
+		// The last hash caused by a data change
+		lastHash,
+		// Are data changes pending that haven&#039;t yet updated the hash
+		changingData,
+		// If the `can.route.data` changes, update the hash.
+		// Using `.serialize()` retrieves the raw data contained in the `observable`.
+		// This function is ~~throttled~~ debounced so it only updates once even if multiple values changed.
+		// This might be able to use batchNum and avoid this.
+		onRouteDataChange = function (ev, attr, how, newval) {
+			// indicate that data is changing
+			changingData = 1;
+			clearTimeout(timer);
+			timer = setTimeout(function () {
+				// indicate that the hash is set to look like the data
+				changingData = 0;
+				var serialized = can.route.data.serialize(),
+					path = can.route.param(serialized, true);
+				can.route._call(&quot;setURL&quot;, path);
+				// trigger a url change so its possible to live-bind on url-based changes
+				can.batch.trigger(eventsObject,&quot;__url&quot;,[path, lastHash]);
+				lastHash = path;
+			}, 10);
+		},
+		// A dummy events object used to dispatch url change events on.
+		eventsObject = can.extend({}, can.event);
+
+	can.route = function (url, defaults) {
+		// if route ends with a / and url starts with a /, remove the leading / of the url
+		var root = can.route._call(&quot;root&quot;);
+
+		if (root.lastIndexOf(&quot;/&quot;) === root.length - 1 &amp;&amp;
+			url.indexOf(&quot;/&quot;) === 0) {
+			url = url.substr(1);
+		}
+
+		defaults = defaults || {};
+		// Extract the variable names and replace with `RegExp` that will match
+		// an atual URL with values.
+		var names = [],
+			res,
+			test = &quot;&quot;,
+			lastIndex = matcher.lastIndex = 0,
+			next,
+			querySeparator = can.route._call(&quot;querySeparator&quot;),
+			matchSlashes = can.route._call(&quot;matchSlashes&quot;);
+
+		// res will be something like [&quot;:foo&quot;,&quot;foo&quot;]
+		while (res = matcher.exec(url)) {
+			names.push(res[1]);
+			test += removeBackslash(url.substring(lastIndex, matcher.lastIndex - res[0].length));
+			// if matchSlashes is false (the default) don&#039;t greedily match any slash in the string, assume its part of the URL
+			next = &quot;\\&quot; + (removeBackslash(url.substr(matcher.lastIndex, 1)) || querySeparator+(matchSlashes? &quot;&quot;: &quot;|/&quot;));
+			// a name without a default value HAS to have a value
+			// a name that has a default value can be empty
+			// The `\\` is for string-escaping giving single `\` for `RegExp` escaping.
+			test += &quot;([^&quot; + next + &quot;]&quot; + (defaults[res[1]] ? &quot;*&quot; : &quot;+&quot;) + &quot;)&quot;;
+			lastIndex = matcher.lastIndex;
+		}
+		test += url.substr(lastIndex)
+			.replace(&quot;\\&quot;, &quot;&quot;);
+		// Add route in a form that can be easily figured out.
+		can.route.routes[url] = {
+			// A regular expression that will match the route when variable values
+			// are present; i.e. for `:page/:type` the `RegExp` is `/([\w\.]*)/([\w\.]*)/` which
+			// will match for any value of `:page` and `:type` (word chars or period).
+			test: new RegExp(&quot;^&quot; + test + &quot;($|&quot; + wrapQuote(querySeparator) + &quot;)&quot;),
+			// The original URL, same as the index for this entry in routes.
+			route: url,
+			// An `array` of all the variable names in this route.
+			names: names,
+			// Default values provided for the variables.
+			defaults: defaults,
+			// The number of parts in the URL separated by `/`.
+			length: url.split(&#039;/&#039;)
+				.length
+		};
+		return can.route;
+	};
+
+	/**
+	 * @static
+	 */
+	extend(can.route, {
+
+		/**
+		 * @function can.route.param param
+		 * @parent can.route.static
+		 * @description Get a route path from given data.
+		 * @signature `can.route.param( data )`
+		 * @param {data} object The data to populate the route with.
+		 * @return {String} The route, with the data populated in it.
+		 *
+		 * @body
+		 * Parameterizes the raw JS object representation provided in data.
+		 *
+		 *     can.route.param( { type: &quot;video&quot;, id: 5 } )
+		 *          // -&gt; &quot;type=video&amp;id=5&quot;
+		 *
+		 * If a route matching the provided data is found, that URL is built
+		 * from the data. Any remaining data is added at the end of the
+		 * URL as &amp;amp; separated key/value parameters.
+		 *
+		 *     can.route(&quot;:type/:id&quot;)
+		 *
+		 *     can.route.param( { type: &quot;video&quot;, id: 5 } ) // -&gt; &quot;video/5&quot;
+		 *     can.route.param( { type: &quot;video&quot;, id: 5, isNew: false } )
+		 *          // -&gt; &quot;video/5&amp;isNew=false&quot;
+		 */
+		param: function (data, _setRoute) {
+			// Check if the provided data keys match the names in any routes;
+			// Get the one with the most matches.
+			var route,
+				// Need to have at least 1 match.
+				matches = 0,
+				matchCount,
+				routeName = data.route,
+				propCount = 0;
+
+			delete data.route;
+
+			each(data, function () {
+				propCount++;
+			});
+			// Otherwise find route.
+			each(can.route.routes, function (temp, name) {
+				// best route is the first with all defaults matching
+
+				matchCount = matchesData(temp, data);
+				if (matchCount &gt; matches) {
+					route = temp;
+					matches = matchCount;
+				}
+				if (matchCount &gt;= propCount) {
+					return false;
+				}
+			});
+			// If we have a route name in our `can.route` data, and it&#039;s
+			// just as good as what currently matches, use that
+			if (can.route.routes[routeName] &amp;&amp; matchesData(can.route.routes[routeName], data) === matches) {
+				route = can.route.routes[routeName];
+			}
+			// If this is match...
+			if (route) {
+				var cpy = extend({}, data),
+					// Create the url by replacing the var names with the provided data.
+					// If the default value is found an empty string is inserted.
+					res = route.route.replace(matcher, function (whole, name) {
+						delete cpy[name];
+						return data[name] === route.defaults[name] ? &quot;&quot; : encodeURIComponent(data[name]);
+					})
+						.replace(&quot;\\&quot;, &quot;&quot;),
+					after;
+				// Remove matching default values
+				each(route.defaults, function (val, name) {
+					if (cpy[name] === val) {
+						delete cpy[name];
+					}
+				});
+
+				// The remaining elements of data are added as
+				// `&amp;amp;` separated parameters to the url.
+				after = can.param(cpy);
+				// if we are paraming for setting the hash
+				// we also want to make sure the route value is updated
+				if (_setRoute) {
+					can.route.attr(&#039;route&#039;, route.route);
+				}
+				return res + (after ? can.route._call(&quot;querySeparator&quot;) + after : &quot;&quot;);
+			}
+			// If no route was found, there is no hash URL, only paramters.
+			return can.isEmptyObject(data) ? &quot;&quot; : can.route._call(&quot;querySeparator&quot;) + can.param(data);
+		},
+		/**
+		 * @function can.route.deparam deparam
+		 * @parent can.route.static
+		 * @description Extract data from a route path.
+		 * @signature `can.route.deparam( url )`
+		 * @param {String} url A route fragment to extract data from.
+		 * @return {Object} An object containing the extracted data.
+		 *
+		 * @body
+		 * Creates a data object based on the query string passed into it. This is
+		 * useful to create an object based on the `location.hash`.
+		 *
+		 *     can.route.deparam(&quot;id=5&amp;type=videos&quot;)
+		 *          // -&gt; { id: 5, type: &quot;videos&quot; }
+		 *
+		 *
+		 * It&#039;s important to make sure the hash or exclamantion point is not passed
+		 * to `can.route.deparam` otherwise it will be included in the first property&#039;s
+		 * name.
+		 *
+		 *     can.route.attr(&quot;id&quot;, 5) // location.hash -&gt; #!id=5
+		 *     can.route.attr(&quot;type&quot;, &quot;videos&quot;)
+		 *          // location.hash -&gt; #!id=5&amp;type=videos
+		 *     can.route.deparam(location.hash)
+		 *          // -&gt; { #!id: 5, type: &quot;videos&quot; }
+		 *
+		 * `can.route.deparam` will try and find a matching route and, if it does,
+		 * will deconstruct the URL and parse our the key/value parameters into the data object.
+		 *
+		 *     can.route(&quot;:type/:id&quot;)
+		 *
+		 *     can.route.deparam(&quot;videos/5&quot;);
+		 *          // -&gt; { id: 5, route: &quot;:type/:id&quot;, type: &quot;videos&quot; }
+		 */
+		deparam: function (url) {
+
+			// remove the url
+			var root = can.route._call(&quot;root&quot;);
+			if (root.lastIndexOf(&quot;/&quot;) === root.length - 1 &amp;&amp;
+				url.indexOf(&quot;/&quot;) === 0) {
+				url = url.substr(1);
+			}
+
+			// See if the url matches any routes by testing it against the `route.test` `RegExp`.
+			// By comparing the URL length the most specialized route that matches is used.
+			var route = {
+				length: -1
+			},
+				querySeparator = can.route._call(&quot;querySeparator&quot;),
+				paramsMatcher = can.route._call(&quot;paramsMatcher&quot;);
+
+			each(can.route.routes, function (temp, name) {
+				if (temp.test.test(url) &amp;&amp; temp.length &gt; route.length) {
+					route = temp;
+				}
+			});
+			// If a route was matched.
+			if (route.length &gt; -1) {
+
+				var // Since `RegExp` backreferences are used in `route.test` (parens)
+				// the parts will contain the full matched string and each variable (back-referenced) value.
+				parts = url.match(route.test),
+					// Start will contain the full matched string; parts contain the variable values.
+					start = parts.shift(),
+					// The remainder will be the `&amp;amp;key=value` list at the end of the URL.
+					remainder = url.substr(start.length - (parts[parts.length - 1] === querySeparator ? 1 : 0)),
+					// If there is a remainder and it contains a `&amp;amp;key=value` list deparam it.
+					obj = (remainder &amp;&amp; paramsMatcher.test(remainder)) ? can.deparam(remainder.slice(1)) : {};
+
+				// Add the default values for this route.
+				obj = extend(true, {}, route.defaults, obj);
+				// Overwrite each of the default values in `obj` with those in
+				// parts if that part is not empty.
+				each(parts, function (part, i) {
+					if (part &amp;&amp; part !== querySeparator) {
+						obj[route.names[i]] = decodeURIComponent(part);
+					}
+				});
+				obj.route = route.route;
+				return obj;
+			}
+			// If no route was matched, it is parsed as a `&amp;amp;key=value` list.
+			if (url.charAt(0) !== querySeparator) {
+				url = querySeparator + url;
+			}
+			return paramsMatcher.test(url) ? can.deparam(url.slice(1)) : {};
+		},
+		/**
+		 * @hide
+		 * A can.Map that represents the state of the history.
+		 */
+		data: new can.Map({}),
+		map: function(data){
+			var appState;
+			// appState is a can.Map constructor function
+			if(data.prototype instanceof can.Map){
+				appState = new data();
+			}
+			// appState is an instance of can.Map
+			else {
+				appState = data;
+			}
+			can.route.data = appState;
+		},
+		/**
+		 * @property {Object} routes
+		 * @hide
+		 *
+		 * A list of routes recognized by the router indixed by the url used to add it.
+		 * Each route is an object with these members:
+		 *
+		 *  - test - A regular expression that will match the route when variable values
+		 *    are present; i.e. for :page/:type the `RegExp` is /([\w\.]*)/([\w\.]*)/ which
+		 *    will match for any value of :page and :type (word chars or period).
+		 *
+		 *  - route - The original URL, same as the index for this entry in routes.
+		 *
+		 *  - names - An array of all the variable names in this route
+		 *
+		 *  - defaults - Default values provided for the variables or an empty object.
+		 *
+		 *  - length - The number of parts in the URL separated by &#039;/&#039;.
+		 */
+		routes: {},
+		/**
+		 * @function can.route.ready ready
+		 * @parent can.route.static
+		 *
+		 * Initialize can.route.
+		 *
+		 * @signature `can.route.ready()`
+		 *
+		 * Sets up the two-way binding between the hash and the can.route observable map and
+		 * sets the can.route map to its initial values.
+		 *
+		 * @return {can.route} The `can.route` object.
+		 *
+		 * @body
+		 *
+		 * ## Use
+		 *
+		 * After setting all your routes, call can.route.ready().
+		 *
+		 *     can.route(&quot;overview/:dateStart-:dateEnd&quot;);
+		 *     can.route(&quot;:type/:id&quot;)
+		 *     can.route.ready()
+		 */
+		ready: function (val) {
+			if (val !== true) {
+				can.route._setup();
+				can.route.setState();
+			}
+			return can.route;
+		},
+		/**
+		 * @function can.route.url url
+		 * @parent can.route.static
+		 * @signature `can.route.url( data [, merge] )`
+		 *
+		 * Make a URL fragment that when set to window.location.hash will update can.route&#039;s properties
+		 * to match those in `data`.
+		 *
+		 * @param {Object} data The data to populate the route with.
+		 * @param {Boolean} [merge] Whether the given options should be merged into the current state of the route.
+		 * @return {String} The route URL and query string.
+		 *
+		 * @body
+		 * Similar to [can.route.link], but instead of creating an anchor tag, `can.route.url` creates
+		 * only the URL based on the route options passed into it.
+		 *
+		 *     can.route.url( { type: &quot;videos&quot;, id: 5 } )
+		 *          // -&gt; &quot;#!type=videos&amp;id=5&quot;
+		 *
+		 * If a route matching the provided data is found the URL is built from the data. Any remaining
+		 * data is added at the end of the URL as &amp; separated key/value parameters.
+		 *
+		 *     can.route(&quot;:type/:id&quot;)
+		 *
+		 *     can.route.url( { type: &quot;videos&quot;, id: 5 } ) // -&gt; &quot;#!videos/5&quot;
+		 *     can.route.url( { type: &quot;video&quot;, id: 5, isNew: false } )
+		 *          // -&gt; &quot;#!video/5&amp;isNew=false&quot;
+		 */
+		url: function (options, merge) {
+
+			if (merge) {
+				options = can.extend({}, can.route.deparam(can.route._call(&quot;matchingPartOfURL&quot;)), options);
+			}
+			return can.route._call(&quot;root&quot;) + can.route.param(options);
+		},
+		/**
+		 * @function can.route.link link
+		 * @parent can.route.static
+		 * @signature `can.route.link( innerText, data, props [, merge] )`
+		 *
+		 * Make an anchor tag (`&lt;A&gt;`) that when clicked on will update can.route&#039;s properties
+		 * to match those in `data`.
+		 *
+		 * @param {Object} innerText The text inside the link.
+		 * @param {Object} data The data to populate the route with.
+		 * @param {Object} props Properties for the anchor other than `href`.
+		 * @param {Boolean} [merge] Whether the given options should be merged into the current state of the route.
+		 * @return {String} A string with an anchor tag that points to the populated route.
+		 *
+		 * @body
+		 * Creates and returns an anchor tag with an href of the route
+		 * attributes passed into it, as well as any properies desired
+		 * for the tag.
+		 *
+		 *     can.route.link( &quot;My videos&quot;, { type: &quot;videos&quot; }, {}, false )
+		 *          // -&gt; &lt;a href=&quot;#!type=videos&quot;&gt;My videos&lt;/a&gt;
+		 *
+		 * Other attributes besides href can be added to the anchor tag
+		 * by passing in a data object with the attributes desired.
+		 *
+		 *     can.route.link( &quot;My videos&quot;, { type: &quot;videos&quot; },
+		 *       { className: &quot;new&quot; }, false )
+		 *          // -&gt; &lt;a href=&quot;#!type=videos&quot; class=&quot;new&quot;&gt;My Videos&lt;/a&gt;
+		 *
+		 * It is possible to utilize the current route options when making anchor
+		 * tags in order to make your code more reusable. If merge is set to true,
+		 * the route options passed into `can.route.link` will be passed into the
+		 * current ones.
+		 *
+		 *     location.hash = &quot;#!type=videos&quot;
+		 *     can.route.link( &quot;The zoo&quot;, { id: 5 }, true )
+		 *          // -&gt; &lt;a href=&quot;#!type=videos&amp;id=5&quot;&gt;The zoo&lt;/true&gt;
+		 *
+		 *     location.hash = &quot;#!type=pictures&quot;
+		 *     can.route.link( &quot;The zoo&quot;, { id: 5 }, true )
+		 *          // -&gt; &lt;a href=&quot;#!type=pictures&amp;id=5&quot;&gt;The zoo&lt;/true&gt;
+		 *
+		 *
+		 */
+		link: function (name, options, props, merge) {
+			return &quot;&lt;a &quot; + makeProps(
+				extend({
+					href: can.route.url(options, merge)
+				}, props)) + &quot;&gt;&quot; + name + &quot;&lt;/a&gt;&quot;;
+		},
+		/**
+		 * @function can.route.current current
+		 * @parent can.route.static
+		 * @signature `can.route.current( data )`
+		 *
+		 * Check if data represents the current route.
+		 *
+		 * @param {Object} data Data to check agains the current route.
+		 * @return {Boolean} Whether the data matches the current URL.
+		 *
+		 * @body
+		 * Checks the page&#039;s current URL to see if the route represents the options passed
+		 * into the function.
+		 *
+		 * Returns true if the options respresent the current URL.
+		 *
+		 *     can.route.attr(&#039;id&#039;, 5) // location.hash -&gt; &quot;#!id=5&quot;
+		 *     can.route.current({ id: 5 }) // -&gt; true
+		 *     can.route.current({ id: 5, type: &#039;videos&#039; }) // -&gt; false
+		 *
+		 *     can.route.attr(&#039;type&#039;, &#039;videos&#039;)
+		 *            // location.hash -&gt; #!id=5&amp;type=videos
+		 *     can.route.current({ id: 5, type: &#039;videos&#039; }) // -&gt; true
+		 */
+		current: function (options) {
+			// &quot;reads&quot; the url so the url is live-bindable.
+			can.__reading(eventsObject,&quot;__url&quot;);
+			return this._call(&quot;matchingPartOfURL&quot;) === can.route.param(options);
+		},
+		bindings: {
+			hashchange: {
+				paramsMatcher: paramsMatcher,
+				querySeparator: &quot;&amp;&quot;,
+				// don&#039;t greedily match slashes in routing rules
+				matchSlashes: false,
+				bind: function () {
+					can.bind.call(window, &#039;hashchange&#039;, setState);
+				},
+				unbind: function () {
+					can.unbind.call(window, &#039;hashchange&#039;, setState);
+				},
+				// Gets the part of the url we are determinging the route from.
+				// For hashbased routing, it&#039;s everything after the #, for
+				// pushState it&#039;s configurable
+				matchingPartOfURL: function () {
+					return location.href.split(/#!?/)[1] || &quot;&quot;;
+				},
+				// gets called with the serialized can.route data after a route has changed
+				// returns what the url has been updated to (for matching purposes)
+				setURL: function (path) {
+					location.hash = &quot;#!&quot; + path;
+					return path;
+				},
+				root: &quot;#!&quot;
+			}
+		},
+		defaultBinding: &quot;hashchange&quot;,
+		currentBinding: null,
+		// ready calls setup
+		// setup binds and listens to data changes
+		// bind listens to whatever you should be listening to
+		// data changes tries to set the path
+
+		// we need to be able to
+		// easily kick off calling setState
+		// 	teardown whatever is there
+		//  turn on a particular binding
+
+		// called when the route is ready
+		_setup: function () {
+			if (!can.route.currentBinding) {
+				can.route._call(&quot;bind&quot;);
+				can.route.bind(&quot;change&quot;, onRouteDataChange);
+				can.route.currentBinding = can.route.defaultBinding;
+			}
+		},
+		_teardown: function () {
+			if (can.route.currentBinding) {
+				can.route._call(&quot;unbind&quot;);
+				can.route.unbind(&quot;change&quot;, onRouteDataChange);
+				can.route.currentBinding = null;
+			}
+			clearTimeout(timer);
+			changingData = 0;
+		},
+		// a helper to get stuff from the current or default bindings
+		_call: function () {
+			var args = can.makeArray(arguments),
+				prop = args.shift(),
+				binding = can.route.bindings[can.route.currentBinding || can.route.defaultBinding],
+				method = binding[prop];
+			if (method.apply) {
+				return method.apply(binding, args);
+			} else {
+				return method;
+			}
+		}
+	});
+
+	// The functions in the following list applied to `can.route` (e.g. `can.route.attr(&#039;...&#039;)`) will
+	// instead act on the `can.route.data` observe.
+	each([&#039;bind&#039;, &#039;unbind&#039;, &#039;on&#039;, &#039;off&#039;, &#039;delegate&#039;, &#039;undelegate&#039;, &#039;removeAttr&#039;, &#039;compute&#039;, &#039;_get&#039;, &#039;__get&#039;,&#039;each&#039;], function (name) {
+		can.route[name] = function () {
+			// `delegate` and `undelegate` require
+			// the `can/map/delegate` plugin
+			if (!can.route.data[name]) {
+				return;
+			}
+
+			return can.route.data[name].apply(can.route.data, arguments);
+		};
+	});
+
+	// Because everything in hashbang is in fact a string this will automaticaly convert new values to string. Works with single value, or deep hashes.
+	// Main motivation for this is to prevent double route event call for same value.
+	// Example (the problem):
+	// When you load page with hashbang like #!&amp;some_number=2 and bind &#039;some_number&#039; on routes.
+	// It will fire event with adding of &quot;2&quot; (string) to &#039;some_number&#039; property
+	// But when you after this set can.route.attr({some_number: 2}) or can.route.attr(&#039;some_number&#039;, 2). it fires another event with change of &#039;some_number&#039; from &quot;2&quot; (string) to 2 (integer)
+	// This wont happen again with this normalization
+	can.route.attr = function (attr, val) {
+		var type = typeof attr,
+			newArguments;
+
+		// Reading
+		if (val === undefined) {
+			newArguments = arguments;
+			// Sets object
+		} else if (type !== &quot;string&quot; &amp;&amp; type !== &quot;number&quot;) {
+			newArguments = [stringify(attr), val];
+			// Sets key - value
+		} else {
+			newArguments = [attr, stringify(val)];
+		}
+
+		return can.route.data.attr.apply(can.route.data, newArguments);
+	};
+
+	var // Deparameterizes the portion of the hash of interest and assign the
+	// values to the `can.route.data` removing existing values no longer in the hash.
+	// setState is called typically by hashchange which fires asynchronously
+	// So it&#039;s possible that someone started changing the data before the
+	// hashchange event fired.  For this reason, it will not set the route data
+	// if the data is changing or the hash already matches the hash that was set.
+	setState = can.route.setState = function () {
+		var hash = can.route._call(&quot;matchingPartOfURL&quot;);
+		var oldParams = curParams;
+		curParams = can.route.deparam(hash);
+
+		// if the hash data is currently changing, or
+		// the hash is what we set it to anyway, do NOT change the hash
+		if (!changingData || hash !== lastHash) {
+			can.batch.start();
+			for(var attr in oldParams){
+				if(!curParams[attr]){
+					can.route.removeAttr(attr);
+				}
+			}
+			can.route.attr(curParams);
+			// trigger a url change so its possible to live-bind on url-based changes
+			can.batch.trigger(eventsObject,&quot;__url&quot;,[hash, lastHash]);
+			can.batch.stop();
+		}
+	};
+
+	return can.route;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>
