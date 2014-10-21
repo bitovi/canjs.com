@@ -197,7 +197,7 @@ module.exports = function (grunt) {
 				"pages" : {
 					"dest" : ".",
 					"glob" : "_pages/*.mustache",
-					"parent" : "index"
+					"parent" : "home"
 				}
 			}
 		}
