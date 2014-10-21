@@ -218,7 +218,7 @@ module.exports = function (grunt) {
 	//if(versionMap[minor].branch === "master") {
 	//	subTasks.push("docco:latest");
 	//}
-	var all = [];
+	var all = ["documentjs:pages"];
 	_.each(versions, function(value, versionNumber){
 			all.push('docjs:'+versionNumber)
 			grunt.registerTask('docjs:'+versionNumber, 
