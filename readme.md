@@ -11,14 +11,22 @@ Next, install the required NPM modules:
 
 	npm install
 
-If you need to re-generate the docs while testing some changes, run:
+## Generate documentation
 
-	./js scripts/doc.js		# for API docs
-	grunt doccoit			# for docco docs
+To generate all verison's docs, guides, docco, and plato pages, run:
 
-To simply re-generate the site, docset, and all other content, run:
+   grunt docjs:all
+   
+To generate just the latest version's docs, guides, docco, and plato pages, run:
 
-    grunt docjs
+   grunt docjs:default
+   
+To generate just the API docs for a specific version from a local CanJS repo, run:
+
+    grunt documentjs:2.1@../canjs
+    
+Where 2.1 is the version you want to document and `../canjs` is the path to the local CanJS repo.
+
 
 ## Additional instructions and options
 

@@ -218,9 +218,9 @@ module.exports = function (grunt) {
 	//if(versionMap[minor].branch === "master") {
 	//	subTasks.push("docco:latest");
 	//}
-	
+	var all = [];
 	_.each(versions, function(value, versionNumber){
-			
+			all.push('docjs:'+versionNumber)
 			grunt.registerTask('docjs:'+versionNumber, 
 				['clean:'+versionNumber, 
 				 'documentjs:'+versionNumber, 
@@ -230,7 +230,7 @@ module.exports = function (grunt) {
 	});
 	grunt.registerTask('docjs:default', 
 				['docjs:'+defaultVersion]);
-	
+	grunt.registerTask('docjs:all', all);
 	//grunt.registerTask('platoit',['documentjs:'+defaultVersion,'plato:'+defaultVersion]);
 	
 	//grunt.registerTask('doccoit',subTasks);

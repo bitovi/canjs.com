@@ -680,7 +680,7 @@ never set them directly. You can also read property values using <code>attr</cod
 Usually, you will want to do this when creating a <code><a href="can.compute.html">can.compute</a></code> or when
 live-binding properties in an <a href="can.ejs.html">EJS</a> template. (If you are using
 <a href="can.mustache.html">Mustache</a>, you don't need to use <code>attr</code>.)</p>
-<pre><code class="language-js">var aName = {a: 'Alexis'},
+<pre><code>var aName = {a: 'Alexis'},
     map = new can.Map(aName);
 
 // Observes are copies of data:
@@ -713,7 +713,7 @@ properties are changed that you can bind to.</p>
 <li>the <em>change</em> event fires on every change to an Observe.</li>
 <li>an event named after the property name fires on every change to that property.</li>
 </ul>
-<pre><code class="language-js">var o = new can.Map({});
+<pre><code>var o = new can.Map({});
 o.bind('change', function(ev, attr, how, newVal, oldVal) {
     console.log('Something on o changed.');
 });
@@ -734,7 +734,7 @@ o.removeAttr('a');     // 'Something on o changed.'
 <p>For more detail on how to use these events, see <a href="can.Map.prototype.bind.html">bind</a> and
 <a href="can.Map.prototype.unbind.html">unbind</a>. There is also a plugin called <a href="can.Map.delegate.html">delegate</a>
 that makes binding to specific types of events easier:</p>
-<pre><code class="language-js">var o = new can.Map({});
+<pre><code>var o = new can.Map({});
 o.delegate('a', 'add', function(ev, newVal, oldVal) {
     console.log('a was added.');
 });
@@ -753,7 +753,6 @@ o.attr('a', 'Alexis'); // 'a was added.'
 
 o.attr('a', 'Alice'); // 'a was set.'
                       // 'a was changed.'
-
 
 o.removeAttr('a'); // 'a was removed.'
                    // 'a was changed.'

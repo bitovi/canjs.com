@@ -634,12 +634,14 @@ even outside of the control itself.</p>
 <pre><code>// create the route
 can.route(&quot;#!content/:type&quot;)
 
-// the route has changed
-&quot;{can.route} change&quot;: function(ev, attr, how, newVal, oldVal) {
-    if (attr === &quot;type&quot;) {
-        // the route has a type
+can.Control({
+    // the route has changed
+    &quot;{can.route} change&quot;: function(ev, attr, how, newVal, oldVal) {
+        if (attr === &quot;type&quot;) {
+            // the route has a type
+        }
     }
-}
+});
 </code></pre>
 <h3>Creating and binding routes with <code>can.Control.route</code></h3>
 <p>Using <a href="can.Control.route.html">can.Control.route</a>, a builtin plugin to CanJS, cuts down on the amount
@@ -647,18 +649,20 @@ of code needed to work with <code>can.route</code> in <code>can.Control</code>. 
 to both create routes and bind to <code>can.route</code> at the same time. Instead of creating
 several routes to handle changes to <strong>type</strong> and <strong>id</strong>, write something like this
 in a control:</p>
-<pre><code>// the route is empty
-&quot;route&quot;: function(data) {
+<pre><code>can.Control({
+    // the route is empty
+    &quot;route&quot;: function(data) {
 
-},
-// the route has a type
-&quot;:type route&quot;: function(data) {
+    },
+    // the route has a type
+    &quot;:type route&quot;: function(data) {
 
-}, 
-// the route has a type and id
-&quot;:type/:id route&quot;: function(data) {
+    }, 
+    // the route has a type and id
+    &quot;:type/:id route&quot;: function(data) {
 
-}
+    }
+});
 </code></pre>
 <h3>Getting more specific with the <code>can.Map.delegate</code> plugin</h3>
 <p>Sometimes, you might only want to trigger a function when the route changes
@@ -667,13 +671,15 @@ only once, even if the route change gets called multiple times. By using the
 listen to change, set, add, and remove on <code>can.route</code>.</p>
 <p>If you wanted to, say, show a list of recipes when  <strong>type</strong> was set to recipe
 and show a specific recipe when <strong>id</strong> was set, you could do something like:</p>
-<pre><code>&quot;{can.route} type=recipe set&quot;: 
-        function( ev, prop, how, newVal, oldVal ) {
-    // show list of recipes
-},
-&quot;recipe/:id&quot;: function(data) {
-    // show a single recipe
-}
+<pre><code>can.Control({
+    &quot;{can.route} type=recipe set&quot;: 
+            function( ev, prop, how, newVal, oldVal ) {
+        // show list of recipes
+    },
+    &quot;recipe/:id&quot;: function(data) {
+        // show a single recipe
+    }
+});
 </code></pre>
 <p>If we didn't only listen to when recipe is set, then every time we chose to
 show a single recipe, we would create and show the list of recipes again which

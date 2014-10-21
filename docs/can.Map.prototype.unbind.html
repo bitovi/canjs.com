@@ -650,10 +650,10 @@
 		<section class="comment">
 			<p><code>unbind</code> unbinds event handlers previously bound with [can.Map.prototype.bind|<code>bind</code>].
 If no <em>handler</em> is passed, all handlers for the given event type will be unbound.</p>
-<pre><code class="language-js">var i = 0,
- increaseBy2 = function() { i += 2; },
- increaseBy3 = function() { i += 3; },
- o = new can.Map();
+<pre><code>var i = 0,
+    increaseBy2 = function() { i += 2; },
+    increaseBy3 = function() { i += 3; },
+    o = new can.Map();
 
 o.bind('change', increaseBy2);
 o.bind('change', increaseBy3);

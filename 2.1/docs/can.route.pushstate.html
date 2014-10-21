@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>can.route.pushstate - CanJS API</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="shortcut icon" type="image/png" href="/canjs-logo-32x32.png"/>
+  
+  <link rel="stylesheet" type="text/css" 
+    
+      href='./static/production.css'
+     />
+  <!--[if lt IE 9]>
+   <script type="text/javascript" src="../scripts/static/lib/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+  <header>
+    <nav class="container">
+
+      <div class="logo-menu">
+        <a class="brand canjs" href="../../index.html">CanJS</a>
+        <ul class="dropdown-menu">
+          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+          <li class="active"><a href="../../index.html">CanJS</a></li>
+          <li><a href="http://jquerypp.com">jQuery++</a></li>
+          <li><a href="http://javascriptmvc.com/docs.html#!stealjs">StealJS</a></li>
+          <li><a href="http://funcunit.com">FuncUnit</a></li>
+          <li><a href="http://javascriptmvc.com/docs.html#!DocumentJS">DocumentJS</a></li>
+        </ul>
+      </div>
+      <ul class="nav">
+        <li class=""><a href="../../index.html">Home</a></li>
+        <li class=""><a href="../guides/index.html">Guides</a></li>
+        <li class="active"><a href="../docs/index.html">Api</a></li>
+        <li class=" community-menu">
+          <a href="../../community.html#!forums">Community</a>
+          <ul class="dropdown-menu">
+            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
+            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
+            <li><a href="http://bithub.com/canjs/app/">Apps</a></li>
+            <li><a href="http://bithub.com/canjs/plugin/">Plugins</a></li>
+            <li><a href="http://bithub.com/canjs/article/">Articles</a></li>
+            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+          </ul>
+        </li>
+        <li class=""><a href="../../blog/index.html">Blog</a></li>
+        <li class=""><a href="../../download.html">Download</a></li>
+      </ul>
+      <div class="pull-right">
+        <div class="bitovi-menu">
+          <a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+          <ul class="dropdown-menu">
+            <li><a href="http://bitovi.com">Bitovi.com</a></li>
+            <li><a href="http://bitovi.com/blog/">Blog</a></li>
+            <li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+            <li><a href="http://bitovi.com/training/">Training</a></li>
+            <li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+            <li><a href="http://bitovi.com/people/">People</a></li>
+            <li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<h2 id="version">
+<select id="versions">
+	<option value="">CanJS v2.1</option>
+</select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Construct.html" data-search="can.Construct">
+				can.Construct
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Control.html" data-search="can.Control">
+				can.Control
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Model.html" data-search="can.Model">
+				can.Model
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Model.List.html" data-search="can.Model.List">
+				can.Model.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.compute.html" data-search="can.compute">
+				can.compute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.ejs.html" data-search="can.ejs">
+				can.ejs
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.event.html" data-search="can.event">
+				can.event
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.fixture.html" data-search="can.fixture">
+				can.fixture
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.mustache.html" data-search="can.mustache">
+				can.mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container active">
+	   		<a href="can.route.html" data-search="can.route">
+				can.route
+			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>plugins</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container active  expanded">
+						<a 	class="property" 
+							href="can.route.pushstate.html" 
+							data-search="can.route.pushstate">
+							pushstate
+						</a>
+						
+							
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>static</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.current.html" 
+							data-search="current">
+							current
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.deparam.html" 
+							data-search="deparam">
+							deparam
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.link.html" 
+							data-search="link">
+							link
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.map.html" 
+							data-search="map">
+							map
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.param.html" 
+							data-search="param">
+							param
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.ready.html" 
+							data-search="ready">
+							ready
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.url.html" 
+							data-search="url">
+							url
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
+		
+	</ul>
+
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.stache.html" data-search="can.stache">
+				can.stache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.util.html" data-search="can.util">
+				can.util
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.view.html" data-search="can.view">
+				can.view
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
+				can.view.bindings
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="heading">
+<h1>pushstate</h1>
+	<ul class="tags">
+		<li>property</li>
+	</ul>
+	
+	
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	<h2><code>{Object}</code></h2>
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+    
+        <li><a href="../docco/route/pushstate/pushstate.html">docco</a></li>
+    
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/v2.1.3/route/pushstate/pushstate.md">source</a></li>
+	
+	
+		<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/route/pushstate">download</a></li>
+	
+	
+		<li><a href="../can/route/pushstate/test.html">tests</a></li>
+	
+</ul>
+<br />
+		</section>
+
+		<section class="contents">
+		</section>
+
+		
+
+		<section class="description">
+			<p>Changes <a href="can.route.html">can.route</a> to use <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history">pushstate</a>
+to change the window's <a href="https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.pathname">pathname</a> instead
+of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.hash">hash</a>.</p>
+		</section>
+
+		
+
+		
+		<section class='primary-options'>
+			
+
+  <h2 id="sig_">Object
+</h2>
+<div class="signature-wrapper">
+<p>The pushstate object comprises several properties that configure the behavior of <a href="can.route.html">can.route</a> to work with <code>history.pushstate</code>.</p>
+
+
+
+
+
+
+</div>
+
+  
+
+		</section>
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<h2>Use</h2>
+
+<p>The pushstate plugin uses the same API as <a href="can.route.html">can.route</a>. To start using pushstate plugin all you need is to load <code>can/route/pushstate</code>, it will set itself as default binding on <a href="can.route.html">can.route</a>.</p>
+
+<p>You can check current binding by inspecting <code>can.route.currentBinding</code>, the default value is <code>"hashchange"</code>.</p>
+
+<h3>Creating and changing routes</h3>
+
+<p>To <a href="can.route.html#section_CreatingaRoute">create</a> route use <code>can.route(url, defaults)</code> like:</p>
+
+<pre><code>can.route(":page", {page: 'homepage'});
+can.route("contacts/:username");
+can.route("books/:genre/:author");
+can.route.ready(); // do not forget to initialize can.route
+</code></pre>
+
+<p>Do not forget to <a href="can.route.ready.html">initialize</a> <code>can.route</code> after creating all routes, do it by calling <code>can.route.ready()</code>.</p>
+
+<p>List of defined routes is contained in <code>can.route.routes</code>, you can examine current <code>can.route</code> state by calling:</p>
+
+<pre><code>can.route.attr(); //-&gt; {page: "homepage", route: ":page"}
+</code></pre>
+
+<p>After creating routes and initializing <code>can.route</code> you can update current route by calling <code>can.route.attr(attr, newVal)</code></p>
+
+<pre><code>can.route.attr('page', 'about');
+can.route.attr(); //-&gt; {page: "about", route: ":page"}
+
+// without cleaning current can.route state
+can.route.attr('username', 'veljko');
+can.route.attr(); //-&gt; {page: "about", route: ":page", username: 'veljko'}
+
+// with cleaning current can.route state
+can.route.attr({username: 'veljko'}, true);
+can.route.attr(); //-&gt; {username: "veljko", route: "contacts/:username"}
+</code></pre>
+
+<p>To update multiple attributes at once pass hash of attributes to <code>can.route.attr(hashOfAttrs, true)</code>. Pass <code>true</code> as second argument to clean up current state.</p>
+
+<pre><code>can.route.attr({genre: 'sf', author: 'adams'}, true);
+can.route.attr(); //-&gt; {genre: "sf", author: "adams", route: "books/:genre/:author"}
+</code></pre>
+
+<p><code>window.location</code> acts as expected:</p>
+
+<pre><code>window.location.pathname; //-&gt; "/books/sf/adams"
+window.location.hash; //-&gt; "", hash remains unchanged
+</code></pre>
+
+<p>To generate urls use <code>can.route.url({attrs})</code>:</p>
+
+<pre><code>can.route.url({username: 'justinbmeyer'}) //-&gt; '/contacts/justinbmeyer'
+</code></pre>
+
+<h3>Listening changes on matched route</h3>
+
+<p>As <code>can.route</code> is basically a <a href="can.Map.html">can.Map</a> that represents <code>window.location.pathname</code>, you can bind on it in the same way you would on any can.Map object.</p>
+
+<p>To listen on any changes on <code>can.route</code> use <code>can.route.bind('change', callback)</code>, the following params will be passed to callback function:</p>
+
+<pre><code>can.route.bind('change', function(ev, attr, how, newVal, oldVal) {
+  //-&gt; ev:     {EventObject}
+  //-&gt; attr:   'username'
+  //-&gt; how:    'change'
+  //-&gt; newVal: 'veljko'
+  //-&gt; oldVal: undefined
+});
+can.route.attr({username: 'veljko'}, true);
+</code></pre>
+
+<p>You can also bind to specific attribute on can.route:</p>
+
+<pre><code>can.route.bind('username', function(ev, newVal, oldVal) {
+  //-&gt; ev:     {EventObject}
+  //-&gt; newVal: 'nikica'
+  //-&gt; oldVal: 'veljko'
+});
+can.route.attr({username: nikica}, true);
+</code></pre>
+
+<h3>Using different pathname root</h3>
+
+<p>Pushstate plugin has one additional property, <code>can.route.bindings.pushstate.root</code>, which specifies the part of that pathname that should not change. For example, if we only want to have pathnames within <code>http://example.com/contacts/</code>, we can specify a root like:</p>
+
+<pre><code>can.route.bindings.pushstate.root = "/contacts/"
+can.route(":page");
+can.route.url({page: "list"}) //-&gt; "/contacts/list"
+can.route.url({foo: "bar"})   //-&gt; "/contacts/?foo=bar"
+</code></pre>
+
+<p>Now, all routes will start with <code>"/contacts/"</code>, the default <code>can.route.bindings.pushstate.root</code> value is <code>"/"</code>.</p>
+
+<h3>Using <code>can.route.pushstate.js</code> with the <code>can.Control.route</code> plugin</h3>
+
+<p>The <code>can.Control.route</code> plugin is a great way to simplify your code.  Not only will it bind the event listeners for routes, but it also automagically prevents clicks on matching links from reloading the entire page.</p>
+
+<p>Here are some examples of binding to pushstate-style routes in a can.Control using the <code>can.Control.route</code> plugin.  The first comment in each example is an href for a link that would trigger the route. The second is the contents of can.route.attr().  In each example, the contents of the data variable in the function will be the same as can.route.attr(), but without the route attribute.  All of these examples assume that pushstate.root is set to the default of '/':</p>
+
+<pre><code>// Listen to the root route.  See above section on pushstate.root
+"route": function(data) {
+        // &lt;a href="/"&gt;Go Home!&lt;/a&gt;
+        // {route:""}
+},
+
+// A route with a trailing slash
+"/files/ route": function(data) {
+        // &lt;a href="/files/"&gt;Pretend this is a folder full of files.&lt;/a&gt;
+        // {route:"files/"}
+},
+
+// A route with a file extension
+"/files/batman.pdf route": function(data) {
+        // &lt;a href="/files/batman.pdf"&gt;I'm Batman.&lt;/a&gt;
+        // {route:"files/batman.pdf"}
+},
+
+// A route without a trailing slash
+"/files route": function(data) {
+        // &lt;a href="/files"&gt;The files are in the computer?&lt;/a&gt;
+        // {route:"files"}
+},
+
+// A route with a wildcard parameter
+"/files/:file_name route": function(data) {
+        // &lt;a href="/files/robin.pdf"&gt;Holy roasted metal!&lt;/a&gt;
+        // {route:"files/robin.pdf", file_name:"robin.pdf"}
+
+        // Notice that the :file_name parameter in the route becomes a separate
+        // attribute of can.route.  This "wildcard" enables listening for
+        // any two-parameter route that begins with 'files'.  /files/test.html
+        // and /files/moose would also route here.
+},
+
+    // A useless route handler that will never be called.
+"/files/joker.pdf route": function(data){
+        // &lt;a href="/files/joker.pdf"&gt;Smile!&lt;/a&gt;
+        // {route:"files/joker.pdf"}
+
+        // Why is it useless? Because, while the above href could potentially
+        // trigger this route event, the directly preceding route with the
+        // :file_name parameter will respond because it comes first in the code.
+},
+
+// Three parameters, one a wildcard.
+"/admin/contestants/:id route": function(data){
+        // &lt;a href="/admin/contestants/1"&gt;The price is wrong, Bob.&lt;/a&gt;
+        // {route:"admin/contestants/:id", id:1}
+},
+
+    // Three parameters, two wildcards.
+"/admin/:page/:anchor route": function(data){
+        // &lt;a href="/admin/testimonials/steve"&gt;Steve's Testimonial&lt;/a&gt;
+        // {route:"admin/:page/:anchor", page:"testimonials", anchor:"steve"}
+
+        // Technically, if the route just before this one was taken out of the code,
+        // this route would respond to links like /admin/users/1.  In that case the
+        // route attributes would look like this:
+
+        // &lt;a href="/admin/contestants/1"&gt;The price is wrong, Bob.&lt;/a&gt;
+        // {route:"admin/:page/:anchor", page:"contestants", anchor:"1"}
+
+        // But, because the preceding route exists, this route will respond to all
+        // three-parameter routes that have the first parameter of admin except for ones
+        // where the second parameter is users (ones that start with '/admin/users/'),
+        // which are picked up by the preceding route.
+},
+</code></pre>
+
+<h2>Watch for errors inside route handlers.</h2>
+
+<p>Any error inside of a route handler will cause a page refresh before the error is shown.  For example:</p>
+
+<pre><code>    "/admin/users route": function(data){
+
+        // This will cause problems.
+        console.log(nonExistentVariable);
+
+        // This will cause problems
+        var users = someFunctionWithAnErrorInside();
+
+        // This one won't cause problems.
+        console.log(data);
+}
+</code></pre>
+
+<p>In an error-free route handler, all links matching the route would not result in a page refresh, but instead would result in a pushstate change.  The errors in the example will cause the page to refresh.  The code will run after the refresh and show the error message.</p>
+
+<h2>Planning route structure</h2>
+
+<p>Complications can arise if your route structure mimics the folder structure inside your app's public directory.  For example, if you have a folder structure like the one in this url for your admin app...</p>
+
+<p><code>/admin/users/list.js</code></p>
+
+<p>... using a route of /admin/users on the same page that uses the list.js file will require the use of a trailing slash on all routes and links.  The browser already learned that '/admin/users' is folder.  Because folders were originally denoted by a trailing slash in a url, the browser will correct the url to be '/admin/users/'.  While it is possible to add the trailing slash in routes and listen for them, any link to the page that omits the trailing slash will not trigger the route handler.</p>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+<script type="text/javascript">
+	var docData = {"type":"property","name":"can.route.pushstate","description":"<p>Changes [can.route] to use <a href=\"https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history\">pushstate</a>\nto change the window's <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.pathname\">pathname</a> instead\nof the <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.hash\">hash</a>.</p>","types":[{"type":"Object","options":[],"description":"<p>The pushstate object comprises several properties that configure the behavior of [can.route] to work with <code>history.pushstate</code>.</p>"}],"title":"","download":"can/route/pushstate","test":"can/route/pushstate/test.html","parent":"can.route.plugins","links":[{"href":"../docco/route/pushstate/pushstate.html","title":"docco"}],"comment":" ","src":"can/route/pushstate/pushstate.md","id":152};
+
+	console.log(docData);
+</script>
+
+
+
+  <footer>
+    <nav class="container">
+      <a class="brand javascriptmvc" href="index.html"></a>
+      <ul class="nav">
+        <li class=""><a href="../../index.html">Home</a></li>
+        <li class=""><a href="../guides/index.html">Guides</a></li>
+        <li class="active"><a href="../docs/index.html">Api</a></li>
+        <li class=""><a href="../../community.html#!forums">Community</a></li>
+        <li class=""><a href="../blog/index.html">Blog</a></li>
+        <li class=""><a href="../../download.html">Download</a></li>
+      </ul>
+    </nav>
+  </footer>
+  <script type="text/javascript">
+    window.docConfig = {"debug":false,"enableSearch":true,"parent":"canjs","layout":"shared/_templates/page.mustache","docs":"shared/_templates/docs.mustache","root":"..","out":"2.1/docs","page":"docs","markdown":["can"],"package":{"name":"CanJS","description":"MIT-licensed, client-side, JavaScript framework that makes building rich web applications easy.","version":"2.1.3","author":{"name":"Bitovi","email":"contact@bitovi.com","web":"http://bitovi.com/"},"homepage":"http://canjs.us/","repository":{"type":"git","url":"git@github.com:bitovi/canjs.git","github":"https://github.com/bitovi/canjs"},"devDependencies":{"grunt":"~0.4.0","grunt-string-replace":"~0.2.2","grunt-contrib-qunit":"~0.5.1","grunt-contrib-connect":"~0.3.0","bitovi-tools":"https://github.com/bitovi/bitovi-tools/tarball/master","steal":"https://github.com/bitovi/steal-build/tarball/master","grunt-contrib-uglify":"~0.2.1","grunt-contrib-clean":"~0.5.0","grunt-shell":"~0.5.0","grunt-release-steps":"~0.3.7","bower":"~1.3.8","grunt-contrib-jshint":"~0.8.0","grunt-jsbeautifier":"~0.2.6","grunt-docco2":"git://github.com/shcarrico/grunt-docco.git#e4de54886ed5c421b2e26e7a2aeba1f73e889733","grunt-plato":"~0.2.1"},"scripts":{"test":"grunt test","install":"node node_modules/bower/bin/bower install"},"demos":["http://canjs.us/#examples","http://canjs.us/recipes"],"licenses":[{"type":"MIT","url":"http://opensource.org/licenses/mit-license.php"}],"dependencies":{"grunt-cli":"~0.1.7"}},"self":{"name":"canjs.com","description":"We can do JS better.","version":"0.2.0","homepage":"http://canjs.com","author":{"name":"Bitovi","url":"http://bitovi.com/"},"repository":{"type":"git","url":"git://github.com/bitovi/canjs.com.git","github":"https://github.com/bitovi/canjs.com"},"bugs":{"url":"https://github.com/bitovi/canjs.com/issues"},"licenses":[{"type":"MIT","url":"https://github.com/bitovi/canjs.com/blob/master/LICENSE-MIT"}],"engines":{"node":">= 0.10.0"},"devDependencies":{"grunt":"~0.4.1","grunt-contrib-watch":"~0.3.1","grunt-contrib-less":"~0.5.0","documentjs":"https://github.com/bitovi/documentjs/tarball/node-generator","grunt-contrib-clean":"~0.4.1","grunt-docco2":"git://github.com/shcarrico/grunt-docco.git#options-passing","grunt-plato":"~0.2.1","grunt-jsbeautifier":"~0.2.6","grunt-shell":"~0.6.4","sqlite3":"~2.2.3","q":"~1.0.1"}},"builder":{"filename":"can.custom.js","banner":"/*!\n * <%= pkg.title || pkg.name %> - <%= pkg.version %>\n * <%= pkg.homepage %>\n * Copyright (c) <%= new Date().getFullYear() %> <%= pkg.author.name %>\n * <%= new Date().toUTCString() %>\n * Licensed <%= pkg.licenses[0].type %><% if(typeof url !== \"undefined\") { %>\n * Includes: <%= ids %>\n * Download from: <%= url %>\n<% } %> */\n","modules":{"can/component":{"name":"can.Component","description":"Custom elements and widgets","type":"core","isDefault":true},"can/construct":{"name":"can.Construct","description":"Inheritable constructor functions","type":"core","isDefault":true},"can/map":{"name":"can.Map","description":"Observables and key-value bindings","type":"core","isDefault":true},"can/list":{"name":"can.List","description":"Observables lists","type":"core","isDefault":true},"can/list/promise":{"name":"can.List.promise","description":"Promises on lists","type":"plugin"},"can/observe":{"name":"can.Observe","description":"Observables and key-value bindings","type":"core","isDefault":true,"hidden":true},"can/compute":{"name":"can.compute","description":"can.compute lets you make observable values","type":"core","isDefault":true},"can/model":{"name":"can.Model","description":"Observes connected to a RESTful JSON interface","type":"core","isDefault":true},"can/view":{"name":"can.view","description":"Template loading, caching, rendering","type":"core","isDefault":true},"can/view/ejs":{"name":"can.ejs","description":"Live-binding Embedded JavaScript","type":"plugin"},"can/view/stache":{"name":"can.stache","description":"High performance Mustache templates","type":"plugin"},"can/control":{"name":"can.Control","description":"Declarative event bindings","type":"core","isDefault":true},"can/route":{"name":"can.route","description":"Back button and bookmarking support","type":"core","isDefault":true},"can/control/route":{"name":"can.Control.route","description":"Declare routes in your Control","type":"core","isDefault":true},"can/view/mustache":{"name":"can.mustache","description":"Live-binding Handlebars and Mustache views","type":"core","isDefault":true},"can/route/pushstate":{"name":"can.route.pushstate","description":"can.route with pushstate","type":"plugin"},"can/model/queue":{"name":"can.Model.Queue","type":"plugin","description":"Queued requests to the server."},"can/construct/super":{"name":"can.Construct.super","type":"plugin","description":"Call super methods"},"can/construct/proxy":{"name":"can.Construct.proxy","type":"plugin","description":"Proxy construct methods"},"can/map/lazy":{"name":"can.Map.Lazy","type":"plugin","description":"Lazy initializing maps and lists"},"can/map/delegate":{"name":"can.Map.delegate","type":"plugin","description":"Listen to Observe attributes"},"can/map/setter":{"name":"can.Map.setter","type":"plugin","description":"Use setter methods on can.Map"},"can/map/attributes":{"name":"can.Map.attributes","type":"plugin","deprecated":true,"description":"Define Observe attributes"},"can/map/validations":{"name":"can.Map.validations","type":"plugin","description":"Validate Observe attributes"},"can/map/backup":{"name":"can.Map.backup","type":"plugin","description":"Backup and restore an Observes state"},"can/map/list":{"name":"can.Map.List","type":"plugin","description":"Live-updating mapped and filtered observe lists"},"can/map/define":{"name":"can.Map.define","type":"plugin","description":"Define rich attribute behavior"},"can/map/sort":{"name":"can.List.Sort","type":"plugin","description":"Sort observable lists"},"can/control/plugin":{"name":"can.Control.plugin","type":"plugin","description":"Registers a jQuery plugin function for Controls","configurations":["jquery","jquery-2"]},"can/view/modifiers":{"name":"can.view.modifiers","type":"plugin","description":"Use jQuery modifiers to render views","configurations":["jquery","jquery-2"]},"can/util/object":{"name":"can.Object","type":"plugin","description":"Helper methods for object comparison"},"can/util/fixture":{"name":"can.fixture","type":"plugin","description":"Intercepts an AJAX request and simulates the response with a file or function"},"can/view/bindings":{"name":"can.view.bindings","type":"core","isDefault":true,"hidden":true},"can/view/live":{"name":"can.view.live","type":"core","isDefault":true,"hidden":true},"can/view/scope":{"name":"can.view.Scope","type":"core","isDefault":true,"hidden":true},"can/util/string":{"name":"can.util.string","type":"core","isDefault":true,"hidden":true},"can/util/attr":{"name":"can.util.attr","type":"core","isDefault":true,"hidden":true}},"types":{"core":"CanJS core","plugin":"Plugins"},"pluginify":{"shim":{"can/lib/jquery.2.0.3.js":"jQuery","can/lib/jquery.1.10.2.js":"jQuery","can/bower_components/zepto/zepto.js":"Zepto","can/lib/mootools-core-1.4.5.js":"{}","can/util/dojo/dojo-1.8.1.js":"{}","can/lib/yui-3.7.3.js":"YUI"},"exports":{"can/util/can.js":"can"}},"configurations":{"jquery":{"description":"jQuery","isDefault":true,"library":"lib/jquery.1.10.2.js","steal":{"map":{"*":{"can/util/util.js":"can/util/jquery/jquery.js","jquery/jquery.js":"can/lib/jquery.1.10.2.js"}}}},"jquery-2":{"description":"jQuery (2.x)","hidden":true,"library":"lib/jquery.2.0.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/jquery/jquery.js","jquery/jquery.js":"can/lib/jquery.2.0.3.js"}}}},"zepto":{"description":"Zepto","library":"bower_components/zepto/zepto.js","steal":{"map":{"*":{"can/util/util.js":"can/util/zepto/zepto.js","zepto/zepto.js":"can/bower_components/zepto/zepto.js"}}}},"mootools":{"description":"Mootools","library":"lib/mootools-core-1.4.5.js","steal":{"map":{"*":{"can/util/util.js":"can/util/mootools/mootools.js","mootools/mootools.js":"can/lib/mootools-core-1.4.5.js"}}}},"yui":{"description":"YUI","library":"lib/yui-3.7.3.js","steal":{"map":{"*":{"can/util/util.js":"can/util/yui/yui.js","yui/yui.js":"can/lib/yui-3.7.3.js"}}}},"dojo":{"description":"Dojo","library":"util/dojo/dojo-1.8.1.js","steal":{"map":{"*":{"can/util/util.js":"can/util/dojo/dojo.js","dojo/dojo.js":"can/util/dojo/dojo-1.8.1.js"}}}}}},"url":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/"},"static":"scripts/static","templates":"scripts/templates","forceBuild":false,"minifyBuild":true,"versionsSrc":"../../versions.json","version":"2.1","isVersioned":true,"versions":[{"number":"2.1","branch":"master"},{"number":"2.0"},{"number":"1.1"}]};
+    window.Bitovi = {
+      URL: {
+        BUILDER: 'http://bitbuilder.herokuapp.com/can.custom.js',
+        BUILDER_DATA: 'http://bitbuilder.herokuapp.com/canjs',
+        BITHUB: 'http://api.bithub.com/api/v1/events/',
+        CDN: '//canjs.com/release/'
+      }
+    }
+    steal = {
+      productionId: "production.js",
+      executed: ["documentjs/site/static/build/production.css"]
+    }
+  </script>
+  <script 
+  
+    src="./static/steal.production.js"
+  
+    ></script>
+  <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2302003-11']);
+  _gaq.push(['_setDomainName', 'canjs.com']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  </script>
+</body>
+
+</html>
