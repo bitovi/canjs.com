@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">65.50</p>
+      <p class="stat">65.87</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">1082</p>
+      <p class="stat">1083</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">87.07</p>
+      <p class="stat">86.93</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">3.07</p>
+      <p class="stat">3.01</p>
     </div>
   </div>
 </div>
@@ -364,26 +364,22 @@
 			splice: function (index, howMany) {
 				var args = can.makeArray(arguments),
 					added =[],
-					i, j;
-				for (i = 2; i &lt; args.length; i++) {
-					args[i] = bubble.set(this, i, this.__type(args[i], i) );
+					i, len;
+
+				// converting the arguments to the right type
+				for (i = 2, len = args.length; i &lt; len; i++) {
+					args[i] = this.__type(args[i], i);
 					added.push(args[i]);
 				}
+
+				// default howMany if not provided
 				if (howMany === undefined) {
 					howMany = args[1] = this.length - index;
 				}
-				var removed = splice.apply(this, args),
-					cleanRemoved = removed;
 
-				// remove any items that were just added from the removed array
-				if(added.length &amp;&amp; removed.length){
-					for (j = 0; j &lt; removed.length; j++) {
-						if(can.inArray(removed[j], added) &gt;= 0) {
-							cleanRemoved.splice(j, 1);
-						}
-					}
-				}
+				var removed = splice.apply(this, args);
 
+				// delete properties for browsers who&#039;s splice sucks (old ie)
 				if (!spliceRemovesProps) {
 					for (i = this.length; i &lt; removed.length + this.length; i++) {
 						delete this[i];
@@ -392,11 +388,16 @@
 
 				can.batch.start();
 				if (howMany &gt; 0) {
-					this._triggerChange(&quot;&quot; + index, &quot;remove&quot;, undefined, removed);
+					// tears down bubbling
 					bubble.removeMany(this, removed);
+					this._triggerChange(&quot;&quot; + index, &quot;remove&quot;, undefined, removed);
 				}
 				if (args.length &gt; 2) {
-					this._triggerChange(&quot;&quot; + index, &quot;add&quot;, args.slice(2), removed);
+					// make added items bubble to this list
+					for (i = 0, len = added.length; i &lt; len; i++) {
+						bubble.set(this, i, added[i]);
+					}
+					this._triggerChange(&quot;&quot; + index, &quot;add&quot;, added, removed);
 				}
 				can.batch.stop();
 				return removed;

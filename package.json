@@ -36,6 +36,6 @@
     "grunt-shell": "~0.6.4",
     "sqlite3": "~2.2.3",
     "q": "~1.0.1",
-    "documentjs": "git://github.com/bitovi/documentjs#cleaned-version"
+    "documentjs": "git://github.com/bitovi/documentjs#master"
   }
 }
