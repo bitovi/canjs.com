@@ -54,7 +54,7 @@
 				{"number": "2.0"},
 				{"number": "1.1"}
 			],
-			"defaultDownloadVersion": "2.1.3"
+			"defaultDownloadVersion": "2.1.4"
 		},
 		"versionsSelectText" : "CanJS v<%= version %>"
 	},

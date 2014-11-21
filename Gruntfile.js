@@ -1,10 +1,10 @@
 /*global module:false*/
 module.exports = function (grunt) {
 	var platoJSHint = grunt.file.readJSON('default_jshintrc.json');
-	
+
 	var _ = grunt.util._;
 	var path = require('path');
-	
+
 	var versions = {
 		"1.1" : {
 			"source": "git://github.com/bitovi/canjs#1.1-legacy",
@@ -45,13 +45,13 @@ module.exports = function (grunt) {
 	var defaultVersion = "2.1";
 	var versionsNames = Object.keys(versions);
 
-	
+
 	var doccoConfig = function(){
 		var config = {};
 		_.each(versions, function(value, versionNumber){
-			
+
 			var path = (versionNumber !== defaultVersion ? versionNumber+"/" : "");
-			
+
 			config[versionNumber] = {
 				options: {
 					dst: path+'docco',
@@ -84,11 +84,11 @@ module.exports = function (grunt) {
 		});
 		return config;
 	};
-	
+
 	var platoConfig = function(){
 		var config = {};
 		_.each(versions, function(value, versionNumber){
-			
+
 			var path = (versionNumber !== defaultVersion ? versionNumber+"/" : "");
 			var files = [
 				path+'can/component/**/*.js',
@@ -107,7 +107,7 @@ module.exports = function (grunt) {
 				'!**/*_test.js',
 				'!**/spec/specs/*.js'
 			];
-			
+
 			config[versionNumber] = {
 				options : {
 					jshint : platoJSHint,
@@ -115,7 +115,7 @@ module.exports = function (grunt) {
 					exclude : /bower_components\|dist\|docs\|guides\|lib\|node_modules\|src\|examples\|dojo\-\|demos/
 				},
 				files: {
-					
+
 				}
 			};
 			config[versionNumber].files[path+"plato"] = files;
@@ -124,7 +124,7 @@ module.exports = function (grunt) {
 	};
 	var cleanConfig = function(){
 		var config = {};
-		
+
 		_.each(versions, function(value, versionNumber){
 			var path = (versionNumber !== defaultVersion ? versionNumber+"/" : "");
 			config[versionNumber] = [
@@ -166,7 +166,7 @@ module.exports = function (grunt) {
 			}
 		},*/
 		clean: cleanConfig(),
-		
+
 		documentjs: {
 			"versions": versions,
 			"defaultVersion" : defaultVersion,
@@ -187,7 +187,7 @@ module.exports = function (grunt) {
 						{"number": "2.0"},
 						{"number": "1.1"}
 					],
-					"defaultDownloadVersion": "2.1.3"
+					"defaultDownloadVersion": "2.1.4"
 				},
 				"versionsSelectText" : "CanJS v<%= version %>"
 			},
@@ -221,18 +221,18 @@ module.exports = function (grunt) {
 	var all = ["documentjs:pages"];
 	_.each(versions, function(value, versionNumber){
 			all.push('docjs:'+versionNumber)
-			grunt.registerTask('docjs:'+versionNumber, 
-				['clean:'+versionNumber, 
-				 'documentjs:'+versionNumber, 
-				 'docco:'+versionNumber, 
+			grunt.registerTask('docjs:'+versionNumber,
+				['clean:'+versionNumber,
+				 'documentjs:'+versionNumber,
+				 'docco:'+versionNumber,
 				 'plato:'+versionNumber]);
-	
+
 	});
-	grunt.registerTask('docjs:default', 
+	grunt.registerTask('docjs:default',
 				['docjs:'+defaultVersion]);
 	grunt.registerTask('docjs:all', all);
 	//grunt.registerTask('platoit',['documentjs:'+defaultVersion,'plato:'+defaultVersion]);
-	
+
 	//grunt.registerTask('doccoit',subTasks);
 
 	//grunt.registerTask('docjs', ['clean', 'documentjs:'+minor, 'doccoit', 'dash-docset', 'dash-repath']);
