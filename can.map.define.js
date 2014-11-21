@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.3
+ * CanJS - 2.1.4
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 25 Aug 2014 21:51:38 GMT
+ * Fri, 21 Nov 2014 22:25:59 GMT
  * Licensed MIT
  * Includes: can/map/define
  * Download from: http://canjs.com
@@ -35,12 +35,50 @@
         };
 
         var oldSetupDefaults = can.Map.prototype._setupDefaults;
-        can.Map.prototype._setupDefaults = function() {
+        can.Map.prototype._setupDefaults = function(obj) {
             var defaults = oldSetupDefaults.call(this),
-                Map = this.constructor;
+                propsCommittedToAttr = {},
+                Map = this.constructor,
+                originalGet = this._get;
+
+            // Overwrite this._get with a version that commits defaults to
+            // this.attr() as needed. Because calling this.attr() for each individual
+            // default would be expensive.
+            this._get = function(originalProp) {
+
+                // If a this.attr() was called using dot syntax (e.g number.0),
+                // disregard everything after the "." until we call the
+                // original this._get().
+                prop = (originalProp.indexOf('.') !== -1 ?
+                    originalProp.substr(0, originalProp.indexOf('.')) :
+                    prop);
+
+                // If this property has a default and we haven't yet committed it to
+                // this.attr()
+                if ((prop in defaults) && !(prop in propsCommittedToAttr)) {
+
+                    // Commit the property's default so that it can be read in
+                    // other defaultGenerators.
+                    this.attr(prop, defaults[prop]);
+
+                    // Make not so that we don't commit this property again.
+                    propsCommittedToAttr[prop] = true;
+                }
+
+                return originalGet.apply(this, arguments);
+            };
+
             for (var prop in Map.defaultGenerators) {
-                defaults[prop] = Map.defaultGenerators[prop].call(this);
+                // Only call the prop's value method if the property wasn't provided
+                // during instantiation.
+                if (!obj || !(prop in obj)) {
+                    defaults[prop] = Map.defaultGenerators[prop].call(this);
+                }
             }
+
+            // Replace original this.attr
+            this._get = originalGet;
+
             return defaults;
         };
 

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.3
+ * CanJS - 2.1.4
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 25 Aug 2014 21:51:29 GMT
+ * Fri, 21 Nov 2014 22:25:48 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -58,7 +58,13 @@ define(["can/util/library"], function (can) {
 	 * @param {Boolean} async If the ajax request should be asynchronous.
 	 * @returns {can.Deferred} a `view` renderer deferred.
 	 */
-	var	get = function (obj, async) {
+	var	getRenderer = function (obj, async) {
+		// If `obj` already is a renderer function just resolve a Deferred with it
+		if(isFunction(obj)) {
+			var def = can.Deferred();
+			return def.resolve(obj);
+		}
+
 		var url = typeof obj === 'string' ? obj : obj.url,
 			suffix = (obj.engine && '.' + obj.engine) || url.match(/\.[\w\d]+$/),
 			type,
@@ -193,15 +199,9 @@ define(["can/util/library"], function (can) {
 			callback = helpers;
 			helpers = undefined;
 		}
-		var result;
-		// Get the result, if a renderer function is passed in, then we just use that to render the data
-		if( isFunction(view) ) {
-			result = view(data, helpers, callback);
-		} else {
-			result = $view.renderAs("fragment",view, data, helpers, callback);
-		}
 
-		return result;
+		// Render the view as a fragment
+		return $view.renderAs("fragment",view, data, helpers, callback);
 	};
 
 	// can.view methods
@@ -610,7 +610,7 @@ define(["can/util/library"], function (can) {
 				dataCopy = can.extend({}, data);
 
 				// Add the view request to the list of deferreds.
-				deferreds.push(get(view, true));
+				deferreds.push(getRenderer(view, true));
 				// Wait for the view and all deferreds to finish...
 				can.when.apply(can, deferreds)
 					.then(function (resolved) {
@@ -657,7 +657,7 @@ define(["can/util/library"], function (can) {
 				// If there's a `callback` function
 				async = isFunction(callback);
 				// Get the `view` type
-				deferred = get(view, async);
+				deferred = getRenderer(view, async);
 
 				if (reading) {
 					can.__setReading(reading);

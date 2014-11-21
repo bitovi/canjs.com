@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.3
+ * CanJS - 2.1.4
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 25 Aug 2014 21:51:29 GMT
+ * Fri, 21 Nov 2014 22:25:48 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -529,7 +529,7 @@ define(["can/util/library", "can/view/stache/utils", "can/view/stache/mustache_h
 		 */
 		splitModeFromExpression: function(expression, state){
 			expression = can.trim(expression);
-			var mode = expression[0];
+			var mode = expression.charAt(0);
 	
 			if( "#/{&^>!".indexOf(mode) >= 0 ) {
 				expression = can.trim( expression.substr(1) );

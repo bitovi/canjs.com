@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.3
+ * CanJS - 2.1.4
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 25 Aug 2014 21:51:29 GMT
+ * Fri, 21 Nov 2014 22:25:48 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -60,7 +60,14 @@ define(["can/util/library", "can/util/bind", "can/map/bubble", "can/construct", 
 					//!steal-remove-end
 					for (var prop in this.prototype) {
 						// Non-functions are regular defaults.
-						if (prop !== "define" && typeof this.prototype[prop] !== "function") {
+						if (
+							prop !== "define" &&
+							prop !== "constructor" &&
+							(
+								typeof this.prototype[prop] !== "function" ||
+								this.prototype[prop].prototype instanceof can.Construct
+							)
+						) {
 							this.defaults[prop] = this.prototype[prop];
 						// Functions with an `isComputed` property are computes.
 						} else if (this.prototype[prop].isComputed) {
@@ -111,7 +118,7 @@ define(["can/util/library", "can/util/bind", "can/map/bubble", "can/construct", 
 				// Parses attribute name into its parts.
 				attrParts: function (attr, keepKey) {
 					//Keep key intact
-					
+
 					if (keepKey ) {
 						return [attr];
 					}
@@ -187,7 +194,7 @@ define(["can/util/library", "can/util/bind", "can/map/bubble", "can/construct", 
 						firstSerialize = false;
 					if(!serializeMap) {
 						firstSerialize = true;
-						// Serialize might call .attr() so we need to keep different map 
+						// Serialize might call .attr() so we need to keep different map
 						serializeMap = {
 							attr: {},
 							serialize: {}
@@ -255,7 +262,7 @@ define(["can/util/library", "can/util/bind", "can/map/bubble", "can/construct", 
 				if(obj instanceof can.Map){
 					obj = obj.serialize();
 				}
-				
+
 				// `_data` is where we keep the properties.
 				this._data = {};
 				/**
@@ -268,8 +275,10 @@ define(["can/util/library", "can/util/bind", "can/map/bubble", "can/construct", 
 				can.cid(this, ".map");
 				// Sets all `attrs`.
 				this._init = 1;
-				// It's handy if we pass this to comptues, because computes can have a default value.
-				var defaultValues = this._setupDefaults();
+				this._computedBindings = {};
+
+				// It's handy if we pass this to computes, because computes can have a default value.
+				var defaultValues = this._setupDefaults(obj);
 				this._setupComputes(defaultValues);
 				var teardownMapping = obj && can.Map.helpers.addToMap(obj, this);
 
@@ -289,7 +298,6 @@ define(["can/util/library", "can/util/bind", "can/map/bubble", "can/construct", 
 			// Sets up computed properties on a Map.
 			_setupComputes: function () {
 				var computes = this.constructor._computes;
-				this._computedBindings = {};
 
 				for (var i = 0, len = computes.length, prop; i < len; i++) {
 					prop = computes[i];
@@ -317,11 +325,11 @@ define(["can/util/library", "can/util/bind", "can/map/bubble", "can/construct", 
 					target: ev.target
 				}, [newVal, oldVal]);
 
-				
+
 			},
 			// Trigger a change event.
 			_triggerChange: function (attr, how, newVal, oldVal) {
-				// so this change can bubble ... a bubbling change triggers the 
+				// so this change can bubble ... a bubbling change triggers the
 				// _changes trigger
 				if(bubble.isBubbling(this, "change")) {
 					can.batch.trigger(this, {
@@ -331,7 +339,7 @@ define(["can/util/library", "can/util/bind", "can/map/bubble", "can/construct", 
 				} else {
 					can.batch.trigger(this, attr, [newVal, oldVal]);
 				}
-				
+
 				if(how === "remove" || how === "add") {
 					can.batch.trigger(this, {
 						type: "__keys",
@@ -412,8 +420,8 @@ define(["can/util/library", "can/util/bind", "can/map/bubble", "can/construct", 
 			_get: function (attr) {
 				attr = ""+attr;
 				var dotIndex = attr.indexOf('.');
-				
-				
+
+
 				// Handles the case of a key having a `.` in its name
 				// Otherwise we have to dig deeper into the Map to get the value.
 				if( dotIndex >= 0 ) {
@@ -475,9 +483,9 @@ define(["can/util/library", "can/util/bind", "can/map/bubble", "can/construct", 
 				if(!keepKey && dotIndex >= 0){
 					var first = attr.substr(0, dotIndex),
 						second = attr.substr(dotIndex+1);
-						
+
 					current =  this._init ? undefined : this.__get( first );
-					
+
 					if( Map.helpers.isObservable(current) ) {
 						current._set(second, value);
 					} else {

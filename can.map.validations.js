@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.3
+ * CanJS - 2.1.4
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 25 Aug 2014 21:51:38 GMT
+ * Fri, 21 Nov 2014 22:25:59 GMT
  * Licensed MIT
  * Includes: can/map/validations
  * Download from: http://canjs.com
@@ -168,11 +168,11 @@
                                     errors[attr].push(res);
                                 }
                             });
-                        }, validations = this.constructor.validations,
+                        }, validations = this.constructor.validations || {},
                         isTest = attrs && attrs.length === 1 && arguments.length === 2;
                     // go through each attribute or validation and
                     // add any errors
-                    can.each(attrs || validations || {}, function(funcs, attr) {
+                    can.each(attrs || validations, function(funcs, attr) {
                         // if we are iterating through an array, use funcs
                         // as the attr name
                         if (typeof attr === 'number') {

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.3
+ * CanJS - 2.1.4
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 25 Aug 2014 21:51:29 GMT
+ * Fri, 21 Nov 2014 22:25:48 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -19,7 +19,7 @@ define(["can/view"], function(can){
 		return obj;
 	}
 	
-	var alphaNumericHU = "-A-Za-z0-9_",
+	var alphaNumericHU = "-:A-Za-z0-9_",
 		attributeNames = "[a-zA-Z_:]["+alphaNumericHU+":.]*",
 		spaceEQspace = "\\s*=\\s*",
 		dblQuote2dblQuote = "\"((?:\\\\.|[^\"])*)\"",

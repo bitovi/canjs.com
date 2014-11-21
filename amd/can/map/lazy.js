@@ -1,20 +1,13 @@
 /*!
- * CanJS - 2.1.3
+ * CanJS - 2.1.4
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 25 Aug 2014 21:51:29 GMT
+ * Fri, 21 Nov 2014 22:25:48 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
  */
 define(["can/util/library", "can/map/lazy/bubble", "can/map", "can/list", "can/map/lazy/nested_reference"], function (can, bubble) {
-
-	// A map that temporarily houses a reference
-	// to maps that have already been made for a plain ole JS object
-	var madeMap = null;
-	var getMapFromObject = function (obj) {
-		return madeMap && madeMap[obj._cid] && madeMap[obj._cid].instance;
-	};
 
 	can.LazyMap = can.Map.extend({
 		_bubble: bubble
@@ -30,6 +23,7 @@ define(["can/util/library", "can/map/lazy/bubble", "can/map", "can/list", "can/m
 			can.cid(this, ".lazyMap");
 			// Sets all `attrs`.
 			this._init = 1;
+			this._computedBindings = {};
 			this._setupComputes();
 			var teardownMapping = obj && can.Map.helpers.addToMap(obj, this);
 
@@ -130,11 +124,7 @@ define(["can/util/library", "can/map/lazy/bubble", "can/map", "can/list", "can/m
 		__type: function(value, prop){
 			// If we are getting an object.
 			if (!( value instanceof can.LazyMap) && can.Map.helpers.canMakeObserve(value)  ) {
-				
-				var cached = getMapFromObject(value);
-				if(cached) {
-					return cached;
-				}
+
 				if( can.isArray(value) ) {
 					var List = can.LazyList;
 					return new List(value);

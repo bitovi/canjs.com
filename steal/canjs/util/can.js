@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.3
+ * CanJS - 2.1.4
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 25 Aug 2014 21:51:29 GMT
+ * Fri, 21 Nov 2014 22:25:48 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -30,7 +30,7 @@ steal(function () {
 		}
 		return object._cid;
 	};
-	can.VERSION = '2.1.3';
+	can.VERSION = '2.1.4';
 
 	can.simpleExtend = function (d, s) {
 		for (var prop in s) {

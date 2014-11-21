@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.3
+ * CanJS - 2.1.4
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 25 Aug 2014 21:51:38 GMT
+ * Fri, 21 Nov 2014 22:25:59 GMT
  * Licensed MIT
  * Includes: can/construct/super
  * Download from: http://canjs.com
@@ -15,11 +15,9 @@
         var isFunction = can.isFunction,
             fnTest = /xyz/.test(function() {
                 return this.xyz;
-            }) ? /\b_super\b/ : /.*/;
-        // overwrites a single property so it can still call super
-        can.Construct._overwrite = function(addTo, base, name, val) {
-            // Check if we're overwriting an existing function
-            addTo[name] = isFunction(val) && isFunction(base[name]) && fnTest.test(val) ? function(name, fn) {
+            }) ? /\b_super\b/ : /.*/,
+            getset = ['get', 'set'],
+            getSuper = function(base, name, fn) {
                 return function() {
                     var tmp = this._super,
                         ret;
@@ -32,17 +30,28 @@
                     this._super = tmp;
                     return ret;
                 };
-            }(name, val) : val;
-        };
-        // overwrites an object with methods, sets up _super
-        //   newProps - new properties
-        //   oldProps - where the old properties might be
-        //   addTo - what we are adding to
-        can.Construct._inherit = function(newProps, oldProps, addTo) {
-            addTo = addTo || newProps;
-            for (var name in newProps) {
-                can.Construct._overwrite(addTo, oldProps, name, newProps[name]);
+            };
+
+        can.Construct._defineProperty = function(addTo, base, name, descriptor) {
+            var _super = Object.getOwnPropertyDescriptor(base, name);
+            if (_super) {
+                can.each(getset, function(method) {
+                    if (isFunction(_super[method]) && isFunction(descriptor[method])) {
+                        descriptor[method] = getSuper(_super, method, descriptor[method]);
+                    } else if (!isFunction(descriptor[method])) {
+                        descriptor[method] = _super[method];
+                    }
+                });
             }
+
+            Object.defineProperty(addTo, name, descriptor);
+        };
+
+        // overwrites a single property so it can still call super
+        can.Construct._overwrite = function(addTo, base, name, val) {
+            // Check if we're overwriting an existing function
+            addTo[name] = isFunction(val) && isFunction(base[name]) && fnTest.test(val) ?
+                getSuper(base, name, val) : val;
         };
         return can;
     })(window.can, undefined);

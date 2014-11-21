@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.3
+ * CanJS - 2.1.4
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 25 Aug 2014 21:51:29 GMT
+ * Fri, 21 Nov 2014 22:25:48 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -1554,10 +1554,11 @@ steal('can/util',
 			can.compute.temporarilyBind(compute);
 
 			// computeData gives us an initial value
-			var initialValue = computeData.initialValue;
+			var initialValue = computeData.initialValue,
+				helperObj = Mustache.getHelper(key, options);
 			  
 			//!steal-remove-start
-			if (initialValue === undefined && !isHelper) {
+			if (initialValue === undefined && !isHelper && !helperObj) {
 				can.dev.warn('can/view/mustache/mustache.js: Unable to find key "' + key + '".');
 			}
 			//!steal-remove-end
@@ -1664,7 +1665,10 @@ steal('can/util',
 		 * Returns a helper given the name.
 		 */
 		Mustache.getHelper = function (name, options) {
-			var helper = options.attr("helpers." + name);
+			var helper;
+			if (options) {
+				helper = options.attr("helpers." + name);
+			}
 			return helper ? {
 				fn: helper
 			} : this._helpers[name];

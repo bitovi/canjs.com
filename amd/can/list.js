@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.3
+ * CanJS - 2.1.4
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 25 Aug 2014 21:51:29 GMT
+ * Fri, 21 Nov 2014 22:25:48 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -97,6 +97,7 @@ define(["can/util/library", "can/map", "can/map/bubble"], function (can, Map, bu
 				this.length = 0;
 				can.cid(this, ".map");
 				this._init = 1;
+				this._computedBindings = {};
 				this._setupComputes();
 				instances = instances || [];
 				var teardownMapping;
@@ -221,7 +222,7 @@ define(["can/util/library", "can/map", "can/map/bubble"], function (can, Map, bu
 			 * @param {Number} index where to start removing or inserting elements
 			 *
 			 * @param {Number} [howMany] the number of elements to remove
-			 * If _howMany_ is not provided, `splice` will all elements from `index` to the end of the List.
+			 * If _howMany_ is not provided, `splice` will remove all elements from `index` to the end of the List.
 			 *
 			 * @param {*} newElements elements to insert into the List
 			 *
@@ -281,26 +282,22 @@ define(["can/util/library", "can/map", "can/map/bubble"], function (can, Map, bu
 			splice: function (index, howMany) {
 				var args = can.makeArray(arguments),
 					added =[],
-					i, j;
-				for (i = 2; i < args.length; i++) {
-					args[i] = bubble.set(this, i, this.__type(args[i], i) );
+					i, len;
+
+				// converting the arguments to the right type
+				for (i = 2, len = args.length; i < len; i++) {
+					args[i] = this.__type(args[i], i);
 					added.push(args[i]);
 				}
+
+				// default howMany if not provided
 				if (howMany === undefined) {
 					howMany = args[1] = this.length - index;
 				}
-				var removed = splice.apply(this, args),
-					cleanRemoved = removed;
 
-				// remove any items that were just added from the removed array
-				if(added.length && removed.length){
-					for (j = 0; j < removed.length; j++) {
-						if(can.inArray(removed[j], added) >= 0) {
-							cleanRemoved.splice(j, 1);
-						}
-					}
-				}
+				var removed = splice.apply(this, args);
 
+				// delete properties for browsers who's splice sucks (old ie)
 				if (!spliceRemovesProps) {
 					for (i = this.length; i < removed.length + this.length; i++) {
 						delete this[i];
@@ -309,11 +306,16 @@ define(["can/util/library", "can/map", "can/map/bubble"], function (can, Map, bu
 
 				can.batch.start();
 				if (howMany > 0) {
-					this._triggerChange("" + index, "remove", undefined, removed);
+					// tears down bubbling
 					bubble.removeMany(this, removed);
+					this._triggerChange("" + index, "remove", undefined, removed);
 				}
 				if (args.length > 2) {
-					this._triggerChange("" + index, "add", args.slice(2), removed);
+					// make added items bubble to this list
+					for (i = 0, len = added.length; i < len; i++) {
+						bubble.set(this, i, added[i]);
+					}
+					this._triggerChange("" + index, "add", added, removed);
 				}
 				can.batch.stop();
 				return removed;

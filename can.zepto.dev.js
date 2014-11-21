@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.3
+ * CanJS - 2.1.4
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 25 Aug 2014 21:51:36 GMT
+ * Fri, 21 Nov 2014 22:25:57 GMT
  * Licensed MIT
  * Includes: can/component,can/construct,can/map,can/list,can/observe,can/compute,can/model,can/view,can/control,can/route,can/control/route,can/view/mustache,can/view/bindings,can/view/live,can/view/scope,can/util/string,can/util/attr
  * Download from: http://canjs.com
@@ -33,7 +33,7 @@
             }
             return object._cid;
         };
-        can.VERSION = '2.1.3';
+        can.VERSION = '2.1.4';
 
         can.simpleExtend = function(d, s) {
             for (var prop in s) {
@@ -1330,7 +1330,13 @@
         // ##### get
         // get a deferred renderer for provided url
 
-        var get = function(obj, async) {
+        var getRenderer = function(obj, async) {
+            // If `obj` already is a renderer function just resolve a Deferred with it
+            if (isFunction(obj)) {
+                var def = can.Deferred();
+                return def.resolve(obj);
+            }
+
             var url = typeof obj === 'string' ? obj : obj.url,
                 suffix = (obj.engine && '.' + obj.engine) || url.match(/\.[\w\d]+$/),
                 type,
@@ -1454,15 +1460,9 @@
                 callback = helpers;
                 helpers = undefined;
             }
-            var result;
-            // Get the result, if a renderer function is passed in, then we just use that to render the data
-            if (isFunction(view)) {
-                result = view(data, helpers, callback);
-            } else {
-                result = $view.renderAs("fragment", view, data, helpers, callback);
-            }
 
-            return result;
+            // Render the view as a fragment
+            return $view.renderAs("fragment", view, data, helpers, callback);
         };
 
         // can.view methods
@@ -1685,7 +1685,7 @@
                         dataCopy = can.extend({}, data);
 
                         // Add the view request to the list of deferreds.
-                        deferreds.push(get(view, true));
+                        deferreds.push(getRenderer(view, true));
                         // Wait for the view and all deferreds to finish...
                         can.when.apply(can, deferreds)
                             .then(function(resolved) {
@@ -1732,7 +1732,7 @@
                         // If there's a `callback` function
                         async = isFunction(callback);
                         // Get the `view` type
-                        deferred = get(view, async);
+                        deferred = getRenderer(view, async);
 
                         if (reading) {
                             can.__setReading(reading);
@@ -2063,6 +2063,33 @@
         // A private flag used to initialize a new class instance without
         // initializing it's bindings.
         var initializing = 0;
+        var getDescriptor = function(newProps, name) {
+            var descriptor = Object.getOwnPropertyDescriptor(newProps, name);
+            if (descriptor && (descriptor.get || descriptor.set)) {
+                return descriptor;
+            }
+            return null;
+        },
+            inheritGetterSetter = function(newProps, oldProps, addTo) {
+                addTo = addTo || newProps;
+                var descriptor;
+
+                for (var name in newProps) {
+                    if ((descriptor = getDescriptor(newProps, name))) {
+                        this._defineProperty(addTo, oldProps, name, descriptor);
+                    } else {
+                        can.Construct._overwrite(addTo, oldProps, name, newProps[name]);
+                    }
+                }
+            },
+            simpleInherit = function(newProps, oldProps, addTo) {
+                addTo = addTo || newProps;
+
+                for (var name in newProps) {
+                    can.Construct._overwrite(addTo, oldProps, name, newProps[name]);
+                }
+            };
+
 
         can.Construct = function() {
             if (arguments.length) {
@@ -2093,9 +2120,14 @@
                 // `newProps` - New properties to add.
                 // `oldProps` - Where the old properties might be (used with `super`).
                 // `addTo` - What we are adding to.
-                _inherit: function(newProps, oldProps, addTo) {
-                    can.extend(addTo || newProps, newProps || {});
+                _inherit: Object.getOwnPropertyDescriptor ? inheritGetterSetter : simpleInherit,
+
+                // Adds a `defineProperty` with the given name and descriptor
+                // Will only ever be called if ES5 is supported
+                _defineProperty: function(what, oldProps, propName, descriptor) {
+                    Object.defineProperty(what, propName, descriptor);
                 },
+
                 // used for overwriting a single property.
                 // this should be used for patching other objects
                 // the super plugin overwrites this
@@ -2817,7 +2849,12 @@
                         //!steal-remove-end
                         for (var prop in this.prototype) {
                             // Non-functions are regular defaults.
-                            if (prop !== "define" && typeof this.prototype[prop] !== "function") {
+                            if (
+                                prop !== "define" &&
+                                prop !== "constructor" &&
+                                (
+                                    typeof this.prototype[prop] !== "function" ||
+                                    this.prototype[prop].prototype instanceof can.Construct)) {
                                 this.defaults[prop] = this.prototype[prop];
                                 // Functions with an `isComputed` property are computes.
                             } else if (this.prototype[prop].isComputed) {
@@ -2915,7 +2952,7 @@
                             firstSerialize = false;
                         if (!serializeMap) {
                             firstSerialize = true;
-                            // Serialize might call .attr() so we need to keep different map 
+                            // Serialize might call .attr() so we need to keep different map
                             serializeMap = {
                                 attr: {},
                                 serialize: {}
@@ -2984,8 +3021,10 @@
                     can.cid(this, ".map");
                     // Sets all `attrs`.
                     this._init = 1;
-                    // It's handy if we pass this to comptues, because computes can have a default value.
-                    var defaultValues = this._setupDefaults();
+                    this._computedBindings = {};
+
+                    // It's handy if we pass this to computes, because computes can have a default value.
+                    var defaultValues = this._setupDefaults(obj);
                     this._setupComputes(defaultValues);
                     var teardownMapping = obj && can.Map.helpers.addToMap(obj, this);
 
@@ -3005,7 +3044,6 @@
                 // Sets up computed properties on a Map.
                 _setupComputes: function() {
                     var computes = this.constructor._computes;
-                    this._computedBindings = {};
 
                     for (var i = 0, len = computes.length, prop; i < len; i++) {
                         prop = computes[i];
@@ -3033,11 +3071,10 @@
                             target: ev.target
                         }, [newVal, oldVal]);
 
-
                 },
                 // Trigger a change event.
                 _triggerChange: function(attr, how, newVal, oldVal) {
-                    // so this change can bubble ... a bubbling change triggers the 
+                    // so this change can bubble ... a bubbling change triggers the
                     // _changes trigger
                     if (bubble.isBubbling(this, "change")) {
                         can.batch.trigger(this, {
@@ -3128,7 +3165,6 @@
                 _get: function(attr) {
                     attr = "" + attr;
                     var dotIndex = attr.indexOf('.');
-
 
                     // Handles the case of a key having a `.` in its name
                     // Otherwise we have to dig deeper into the Map to get the value.
@@ -3419,6 +3455,7 @@
                     this.length = 0;
                     can.cid(this, ".map");
                     this._init = 1;
+                    this._computedBindings = {};
                     this._setupComputes();
                     instances = instances || [];
                     var teardownMapping;
@@ -3501,26 +3538,22 @@
                 splice: function(index, howMany) {
                     var args = can.makeArray(arguments),
                         added = [],
-                        i, j;
-                    for (i = 2; i < args.length; i++) {
-                        args[i] = bubble.set(this, i, this.__type(args[i], i));
+                        i, len;
+
+                    // converting the arguments to the right type
+                    for (i = 2, len = args.length; i < len; i++) {
+                        args[i] = this.__type(args[i], i);
                         added.push(args[i]);
                     }
+
+                    // default howMany if not provided
                     if (howMany === undefined) {
                         howMany = args[1] = this.length - index;
                     }
-                    var removed = splice.apply(this, args),
-                        cleanRemoved = removed;
 
-                    // remove any items that were just added from the removed array
-                    if (added.length && removed.length) {
-                        for (j = 0; j < removed.length; j++) {
-                            if (can.inArray(removed[j], added) >= 0) {
-                                cleanRemoved.splice(j, 1);
-                            }
-                        }
-                    }
+                    var removed = splice.apply(this, args);
 
+                    // delete properties for browsers who's splice sucks (old ie)
                     if (!spliceRemovesProps) {
                         for (i = this.length; i < removed.length + this.length; i++) {
                             delete this[i];
@@ -3529,11 +3562,16 @@
 
                     can.batch.start();
                     if (howMany > 0) {
-                        this._triggerChange("" + index, "remove", undefined, removed);
+                        // tears down bubbling
                         bubble.removeMany(this, removed);
+                        this._triggerChange("" + index, "remove", undefined, removed);
                     }
                     if (args.length > 2) {
-                        this._triggerChange("" + index, "add", args.slice(2), removed);
+                        // make added items bubble to this list
+                        for (i = 0, len = added.length; i < len; i++) {
+                            bubble.set(this, i, added[i]);
+                        }
+                        this._triggerChange("" + index, "add", added, removed);
                     }
                     can.batch.stop();
                     return removed;
@@ -4308,7 +4346,8 @@
                         // call that method
                         if (options.returnObserveMethods) {
                             cur = cur[reads[i]];
-                        } else if (reads[i] === 'constructor' && prev instanceof can.Construct) {
+                        } else if ((reads[i] === 'constructor' && prev instanceof can.Construct) ||
+                            (prev[reads[i]].prototype instanceof can.Construct)) {
                             cur = prev[reads[i]];
                         } else {
                             cur = prev[reads[i]].apply(prev, options.args || []);
@@ -4319,7 +4358,12 @@
                     }
                 } else {
                     // just do the dot operator
-                    cur = prev[reads[i]];
+                    if (cur == null) {
+                        cur = undefined;
+                    } else {
+                        cur = prev[reads[i]];
+                    }
+
                 }
                 type = typeof cur;
                 // If it's a compute, get the compute's value
@@ -4370,6 +4414,20 @@
                 value: cur,
                 parent: prev
             };
+        };
+
+        can.compute.set = function(parent, key, value) {
+            if (isObserve(parent)) {
+                return parent.attr(key, value);
+            }
+
+            if (parent[key] && parent[key].isComputed) {
+                return parent[key](value);
+            }
+
+            if (typeof parent === 'object') {
+                parent[key] = value;
+            }
         };
 
         return can.compute;
@@ -4441,7 +4499,7 @@
 
                 // ## Scope.prototype.attr
                 // Reads a value from the current context or parent contexts.
-                attr: function(key) {
+                attr: function(key, value) {
                     // Reads for whatever called before attr.  It's possible
                     // that this.read clears them.  We want to restore them.
                     var previousReads = can.__clearReading(),
@@ -4449,9 +4507,29 @@
                                 isArgument: true,
                                 returnObserveMethods: true,
                                 proxyMethods: false
-                            }).value;
+                            });
+
+                    // Allow setting a value on the context
+                    if (arguments.length === 2) {
+                        var lastIndex = key.lastIndexOf('.'),
+                            // Either get the paren of a key or the current context object with `.`
+                            readKey = lastIndex !== -1 ? key.substring(0, lastIndex) : '.',
+                            obj = this.read(readKey, {
+                                    isArgument: true,
+                                    returnObserveMethods: true,
+                                    proxyMethods: false
+                                }).value;
+
+                        if (lastIndex !== -1) {
+                            // Get the last part of the key which is what we want to set
+                            key = key.substring(lastIndex + 1, key.length);
+                        }
+
+                        can.compute.set(obj, key, value);
+                    }
+
                     can.__setReading(previousReads);
-                    return res;
+                    return res.value;
                 },
 
                 // ## Scope.prototype.add
@@ -4484,12 +4562,12 @@
                             compute: can.compute(function(newVal) {
                                 // **Compute setter**
                                 if (arguments.length) {
-                                    if (rootObserve.isComputed && !rootReads.length) {
+                                    if (rootObserve.isComputed) {
                                         rootObserve(newVal);
-                                    } else {
+                                    } else if (rootReads.length) {
                                         var last = rootReads.length - 1;
-                                        can.compute.read(rootObserve, rootReads.slice(0, last))
-                                            .value.attr(rootReads[last], newVal);
+                                        var obj = rootReads.length ? can.compute.read(rootObserve, rootReads.slice(0, last)).value : rootObserve;
+                                        can.compute.set(obj, rootReads[last], newVal);
                                     }
                                     // **Compute getter**
                                 } else {
@@ -5717,7 +5795,7 @@
             return obj;
         }
 
-        var alphaNumericHU = "-A-Za-z0-9_",
+        var alphaNumericHU = "-:A-Za-z0-9_",
             attributeNames = "[a-zA-Z_:][" + alphaNumericHU + ":.]*",
             spaceEQspace = "\\s*=\\s*",
             dblQuote2dblQuote = "\"((?:\\\\.|[^\"])*)\"",
@@ -6132,6 +6210,10 @@
                         if (!duringTeardown && data.teardownCheck(text.parentNode)) {
                             return;
                         }
+                        if (index < 0) {
+                            index = indexMap.length + index;
+                        }
+
                         var removedMappings = masterNodeList.splice(index + 1, items.length),
                             itemsToRemove = [];
                         can.each(removedMappings, function(nodeList) {
@@ -7358,10 +7440,11 @@
             can.compute.temporarilyBind(compute);
 
             // computeData gives us an initial value
-            var initialValue = computeData.initialValue;
+            var initialValue = computeData.initialValue,
+                helperObj = Mustache.getHelper(key, options);
 
             //!steal-remove-start
-            if (initialValue === undefined && !isHelper) {
+            if (initialValue === undefined && !isHelper && !helperObj) {
                 can.dev.warn('can/view/mustache/mustache.js: Unable to find key "' + key + '".');
             }
             //!steal-remove-end
@@ -7430,7 +7513,10 @@
 
 
         Mustache.getHelper = function(name, options) {
-            var helper = options.attr("helpers." + name);
+            var helper;
+            if (options) {
+                helper = options.attr("helpers." + name);
+            }
             return helper ? {
                 fn: helper
             } : this._helpers[name];
@@ -8389,8 +8475,9 @@
 
         // If there is a `$` object and it has the `fn` object, create the `scope` plugin that returns
         // the scope object
-        if (window.$ && $.fn) {
-            $.fn.scope = function(attr) {
+        // Issue#1288 - Changed from `$` to `jQuery` mainly when using jQuery as a CommonJS module (Browserify-shim).
+        if (window.jQuery && jQuery.fn) {
+            jQuery.fn.scope = function(attr) {
                 // If `attr` is passed to the `scope` plugin return the value of that 
                 // attribute on the `scope` object, otherwise return the whole scope
                 if (attr) {
@@ -8427,7 +8514,6 @@
         // ## pipe
         // `pipe` lets you pipe the results of a successful deferred
         // through a function before resolving the deferred.
-
         var pipe = function(def, thisArg, func) {
             // The piped result will be available through a new Deferred.
             var d = new can.Deferred();
@@ -8556,123 +8642,135 @@
                 return deferred;
             },
 
-            initializers = {
+            converters = {
                 // ## models
-                // Returns a function that, when handed a list of objects, makes them into models and returns a model list of them.
-                // `prop` is the property on `instancesRawData` that has the array of objects in it (if it's not `data`).
-                models: function(prop) {
-                    return function(instancesRawData, oldList) {
-                        // Increment reqs counter so new instances will be added to the store.
-                        // (This is cleaned up at the end of the method.)
-                        can.Model._reqs++;
+                // The default function for converting into a list of models. Needs to be stored separate
+                // because we will reference it in models static `setup`, too.
+                models: function(instancesRawData, oldList, xhr) {
+                    // Increment reqs counter so new instances will be added to the store.
+                    // (This is cleaned up at the end of the method.)
+                    can.Model._reqs++;
 
-                        // If there is no data, we can't really do anything with it.
-                        if (!instancesRawData) {
-                            return;
-                        }
+                    // If there is no data, we can't really do anything with it.
+                    if (!instancesRawData) {
+                        return;
+                    }
 
-                        // If the "raw" data is already a List, it's not raw.
-                        if (instancesRawData instanceof this.List) {
-                            return instancesRawData;
-                        }
+                    // If the "raw" data is already a List, it's not raw.
+                    if (instancesRawData instanceof this.List) {
+                        return instancesRawData;
+                    }
 
-                        var self = this,
-                            // `tmp` will hold the models before we push them onto `modelList`.
-                            tmp = [],
-                            // `ML` (see way below) is just `can.Model.List`.
-                            ListClass = self.List || ML,
-                            modelList = oldList instanceof can.List ? oldList : new ListClass(),
+                    var self = this,
+                        // `tmp` will hold the models before we push them onto `modelList`.
+                        tmp = [],
+                        // `ML` (see way below) is just `can.Model.List`.
+                        ListClass = self.List || ML,
+                        modelList = oldList instanceof can.List ? oldList : new ListClass(),
 
-                            // Check if we were handed an Array or a model list.
-                            rawDataIsArray = can.isArray(instancesRawData),
-                            rawDataIsList = instancesRawData instanceof ML,
+                        // Check if we were handed an Array or a model list.
+                        rawDataIsList = instancesRawData instanceof ML,
 
-                            // Get the "plain" objects from the models from the list/array.
-                            raw = rawDataIsArray ? instancesRawData : (
-                                rawDataIsList ? instancesRawData.serialize() : can.getObject(prop || "data", instancesRawData));
+                        // Get the "plain" objects from the models from the list/array.
+                        raw = rawDataIsList ? instancesRawData.serialize() : instancesRawData;
 
-                        if (typeof raw === 'undefined') {
-                            throw new Error('Could not get any raw data while converting using .models');
-                        }
+                    raw = self.parseModels(raw, xhr);
 
-                        //!steal-remove-start
-                        if (!raw.length) {
-                            can.dev.warn("model.js models has no data.");
-                        }
-                        //!steal-remove-end
+                    if (raw.data) {
+                        instancesRawData = raw;
+                        raw = raw.data;
+                    }
 
-                        // If there was anything left in the list we were given, get rid of it.
-                        if (modelList.length) {
-                            modelList.splice(0);
-                        }
+                    if (typeof raw === 'undefined') {
+                        throw new Error('Could not get any raw data while converting using .models');
+                    }
 
-                        // If we pushed these directly onto the list, it would cause a change event for each model.
-                        // So, we push them onto `tmp` first and then push everything at once, causing one atomic change event that contains all the models at once.
-                        can.each(raw, function(rawPart) {
-                            tmp.push(self.model(rawPart));
+                    //!steal-remove-start
+                    if (!raw.length) {
+                        can.dev.warn("model.js models has no data.");
+                    }
+                    //!steal-remove-end
+
+                    // If there was anything left in the list we were given, get rid of it.
+                    if (modelList.length) {
+                        modelList.splice(0);
+                    }
+
+                    // If we pushed these directly onto the list, it would cause a change event for each model.
+                    // So, we push them onto `tmp` first and then push everything at once, causing one atomic change event that contains all the models at once.
+                    can.each(raw, function(rawPart) {
+                        tmp.push(self.model(rawPart, xhr));
+                    });
+                    modelList.push.apply(modelList, tmp);
+
+                    // If there was other stuff on `instancesRawData`, let's transfer that onto `modelList` too.
+                    if (!can.isArray(instancesRawData)) {
+                        can.each(instancesRawData, function(val, prop) {
+                            if (prop !== 'data') {
+                                modelList.attr(prop, val);
+                            }
                         });
-                        modelList.push.apply(modelList, tmp);
-
-                        // If there was other stuff on `instancesRawData`, let's transfer that onto `modelList` too.
-                        if (!rawDataIsArray) {
-                            can.each(instancesRawData, function(val, prop) {
-                                if (prop !== 'data') {
-                                    modelList.attr(prop, val);
-                                }
-                            });
-                        }
-                        // Clean up the store on the next turn of the event loop. (`this` is a model constructor.)
-                        setTimeout(can.proxy(this._clean, this), 1);
-                        return modelList;
-                    };
+                    }
+                    // Clean up the store on the next turn of the event loop. (`this` is a model constructor.)
+                    setTimeout(can.proxy(this._clean, this), 1);
+                    return modelList;
                 },
                 // ## model
-                // Returns a function that, when handed a plain object, turns it into a model.
-                // `prop` is the property on `attributes` that has the properties for the model in it.
-                model: function(prop) {
-                    return function(attributes) {
-                        // If there're no properties, there can be no model.
-                        if (!attributes) {
-                            return;
-                        }
-                        // If this object knows how to serialize, parse, or access itself, we'll use that instead.
-                        if (typeof attributes.serialize === 'function') {
-                            attributes = attributes.serialize();
-                        }
-                        if (this.parseModel) {
-                            attributes = this.parseModel.apply(this, arguments);
-                        } else if (prop) {
-                            attributes = can.getObject(prop || "data", attributes);
-                        }
+                // A function that, when handed a plain object, turns it into a model.
+                model: function(attributes, oldModel, xhr) {
+                    // If there're no properties, there can be no model.
+                    if (!attributes) {
+                        return;
+                    }
 
-                        var id = attributes[this.id],
-                            // 0 is a valid ID.
-                            model = (id || id === 0) && this.store[id] ?
-                            // If this model is in the store already, just update it.
-                            this.store[id].attr(attributes, this.removeAttr || false) :
-                            // Otherwise, we need a new model.
-                            new this(attributes);
+                    // If this object knows how to serialize, parse, or access itself, we'll use that instead.
+                    if (typeof attributes.serialize === 'function') {
+                        attributes = attributes.serialize();
+                    } else {
+                        attributes = this.parseModel(attributes, xhr);
+                    }
 
-                        return model;
-                    };
+                    var id = attributes[this.id];
+                    // Models from the store always have priority
+                    // 0 is a valid ID.
+                    if ((id || id === 0) && this.store[id]) {
+                        oldModel = this.store[id];
+                    }
+
+                    var model = oldModel && can.isFunction(oldModel.attr) ?
+                    // If this model is in the store already, just update it.
+                    oldModel.attr(attributes, this.removeAttr || false) :
+                    // Otherwise, we need a new model.
+                    new this(attributes);
+
+                    return model;
                 }
             },
 
-
-            parserMaker = function(prop) {
-                return function(attributes) {
-                    return prop ? can.getObject(prop || "data", attributes) : attributes;
-                };
-            },
-
-            // ## parsers
+            // ## makeParser
             // This object describes how to take the data from an AJAX request and prepare it for `models` and `model`.
             // These functions are meant to be overwritten (if necessary) in an extended model constructor.
-            parsers = {
+            makeParser = {
+                parseModel: function(prop) {
+                    return function(attributes) {
+                        return prop ? can.getObject(prop, attributes) : attributes;
+                    };
+                },
+                parseModels: function(prop) {
+                    return function(attributes) {
+                        if (can.isArray(attributes)) {
+                            return attributes;
+                        }
 
-                parseModel: parserMaker,
+                        prop = prop || 'data';
 
-                parseModels: parserMaker
+                        var result = can.getObject(prop, attributes);
+                        if (!can.isArray(result)) {
+                            throw new Error('Could not get any raw data while converting using .models');
+                        }
+                        return result;
+                    };
+                }
             },
 
             // ## ajaxMethods
@@ -8681,15 +8779,11 @@
             // - `url`: Which property on the model contains the default URL for this method.
             // - `type`: The default HTTP request method.
             // - `data`: A method that takes the arguments from `makeRequest` (see above) and returns a data object for use in the AJAX call.
-
-
             ajaxMethods = {
-
                 create: {
                     url: "_shortName",
                     type: "post"
                 },
-
                 update: {
                     // ## update.data
                     data: function(id, attrs) {
@@ -8710,7 +8804,6 @@
                     },
                     type: "put"
                 },
-
                 destroy: {
                     type: 'delete',
                     // ## destroy.data
@@ -8721,11 +8814,9 @@
                         return attrs;
                     }
                 },
-
                 findAll: {
                     url: "_shortName"
                 },
-
                 findOne: {}
             },
             // ## ajaxMaker
@@ -8781,7 +8872,6 @@
                 fullName: "can.Model",
                 _reqs: 0,
                 // ## can.Model.setup
-
                 setup: function(base, fullName, staticProps, protoProps) {
                     // Assume `fullName` wasn't passed. (`can.Model.extend({ ... }, { ... })`)
                     // This is pretty usual.
@@ -8807,7 +8897,6 @@
                     }
 
                     // `List` is just a regular can.Model.List that knows what kind of Model it's hooked up to.
-
                     if (staticProps && staticProps.List) {
                         this.List = staticProps.List;
                         this.List.Map = this;
@@ -8831,8 +8920,8 @@
                         if (staticProps && staticProps[name] && (typeof staticProps[name] === 'string' || typeof staticProps[name] === 'object')) {
                             self[name] = ajaxMaker(method, staticProps[name]);
                         }
-                        //if we have a resource property set in the static definition
-                        else if (staticProps && staticProps.resource) {
+                        //if we have a resource property set in the static definition, but check if function exists already
+                        else if (staticProps && staticProps.resource && !can.isFunction(staticProps[name])) {
                             self[name] = ajaxMaker(method, createURLFromResource(self, name));
                         }
 
@@ -8859,31 +8948,34 @@
                         }
                     });
 
-                    // Set up the methods that will set up `models` and `model`.
-                    can.each(initializers, function(makeInitializer, name) {
+                    var hasCustomConverter = {};
+
+                    // Set up `models` and `model`.
+                    can.each(converters, function(converter, name) {
                         var parseName = "parse" + can.capitalize(name),
-                            dataProperty = self[name];
+                            dataProperty = (staticProps && staticProps[name]) || self[name];
 
-                        // If there was a different property to find the model's data in than `data`,
-                        // make `parseModel` and `parseModels` functions that look that up instead.
-                        if (typeof dataProperty === "string") {
-                            can.Construct._overwrite(self, base, parseName, parsers[parseName](dataProperty));
-                            can.Construct._overwrite(self, base, name, makeInitializer(dataProperty));
-                        }
-
-                        // If there was no prototype, or no `model` and no `parseModel`,
-                        // we'll have to create a `parseModel`.
-                        else if (!staticProps || (!staticProps[name] && !staticProps[parseName])) {
-                            can.Construct._overwrite(self, base, parseName, parsers[parseName]());
+                        // For legacy e.g. models: 'someProperty' we set the `parseModel(s)` property
+                        // to the given string and set .model(s) to the original converter
+                        if (typeof dataProperty === 'string') {
+                            self[parseName] = dataProperty;
+                            can.Construct._overwrite(self, base, name, converter);
+                        } else if ((staticProps && staticProps[name])) {
+                            hasCustomConverter[parseName] = true;
                         }
                     });
 
-                    // With the overridden parse methods, set up `models` and `model`.
-                    can.each(parsers, function(makeParser, name) {
-                        // If there was a different property to find the model's data in than `data`,
-                        // make `model` and `models` functions that look that up instead.
-                        if (typeof self[name] === "string") {
-                            can.Construct._overwrite(self, base, name, makeParser(self[name]));
+                    // Sets up parseModel(s)
+                    can.each(makeParser, function(maker, parseName) {
+                        var prop = (staticProps && staticProps[parseName]) || self[parseName];
+                        // e.g. parseModels: 'someProperty' make a default parseModel(s)
+                        if (typeof prop === 'string') {
+                            can.Construct._overwrite(self, base, parseName, maker(prop));
+                        } else if ((!staticProps || !can.isFunction(staticProps[parseName])) && !self[parseName]) {
+                            var madeParser = maker();
+                            madeParser.useModelConverter = hasCustomConverter[parseName];
+                            // Add a default parseModel(s) if there is none
+                            can.Construct._overwrite(self, base, parseName, madeParser);
                         }
                     });
 
@@ -8912,12 +9004,9 @@
                     }
                     return arguments[0];
                 },
-
-                models: initializers.models("data"),
-
-                model: initializers.model()
+                models: converters.models,
+                model: converters.model
             },
-
 
             {
                 // ## can.Model#setup
@@ -8932,7 +9021,6 @@
                 },
                 // ## can.Model#isNew
                 // Something is new if its ID is `null` or `undefined`.
-
                 isNew: function() {
                     var id = getId(this);
                     // 0 is a valid ID.
@@ -8941,13 +9029,11 @@
                 },
                 // ## can.Model#save
                 // `save` calls `create` or `update` as necessary, based on whether a model is new.
-
                 save: function(success, error) {
                     return makeRequest(this, this.isNew() ? 'create' : 'update', success, error);
                 },
                 // ## can.Model#destroy
                 // Acts like can.Map.destroy but it also makes an AJAX call.
-
                 destroy: function(success, error) {
                     // If this model is new, don't make an AJAX call.
                     // Instead, we have to construct the Deferred ourselves and return it.
@@ -8966,12 +9052,10 @@
                 },
                 // ## can.Model#bind and can.Model#unbind
                 // These aren't actually implemented here, but their setup needs to be changed to account for the store.
-
                 _bindsetup: function() {
                     this.constructor.store[this.__get(this.constructor.id)] = this;
                     return can.Map.prototype._bindsetup.apply(this, arguments);
                 },
-
                 _bindteardown: function() {
                     delete this.constructor.store[getId(this)];
                     return can.Map.prototype._bindteardown.apply(this, arguments);
@@ -8990,29 +9074,21 @@
         // Returns a function that knows how to prepare data from `findAll` or `findOne` calls.
         // `name` should be either `model` or `models`.
         var makeGetterHandler = function(name) {
-            var parseName = "parse" + can.capitalize(name);
-            return function(data) {
-                // If there's a `parse...` function, use its output.
-                if (this[parseName]) {
-                    data = this[parseName].apply(this, arguments);
-                }
-                // Run our maybe-parsed data through `model` or `models`.
-                return this[name](data);
+            return function(data, readyState, xhr) {
+                return this[name](data, null, xhr);
             };
         },
             // Handle data returned from `create`, `update`, and `destroy` calls.
             createUpdateDestroyHandler = function(data) {
-                if (this.parseModel) {
-                    return this.parseModel.apply(this, arguments);
-                } else {
+                if (this.parseModel.useModelConverter) {
                     return this.model(data);
                 }
+
+                return this.parseModel(data);
             };
 
         var responseHandlers = {
-
             makeFindAll: makeGetterHandler("models"),
-
             makeFindOne: makeGetterHandler("model"),
             makeCreate: createUpdateDestroyHandler,
             makeUpdate: createUpdateDestroyHandler
@@ -9037,20 +9113,19 @@
         // ## can.Model.created, can.Model.updated, and can.Model.destroyed
         // Livecycle methods for models.
         can.each([
-
                 "created",
-
                 "updated",
-
                 "destroyed"
             ], function(funcName) {
                 // Each of these is pretty much the same, except for the events they trigger.
                 can.Model.prototype[funcName] = function(attrs) {
-                    var stub,
-                        constructor = this.constructor;
+                    var self = this,
+                        constructor = self.constructor;
 
                     // Update attributes if attributes have been passed
-                    stub = attrs && typeof attrs === 'object' && this.attr(attrs.attr ? attrs.attr() : attrs);
+                    if (attrs && typeof attrs === 'object') {
+                        this.attr(can.isFunction(attrs.attr) ? attrs.attr() : attrs);
+                    }
 
                     // triggers change event that bubble's like
                     // handler( 'change','1.destroyed' ). This is used

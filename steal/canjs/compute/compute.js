@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.3
+ * CanJS - 2.1.4
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 25 Aug 2014 21:51:29 GMT
+ * Fri, 21 Nov 2014 22:25:48 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -667,7 +667,8 @@ steal('can/util', 'can/util/bind', 'can/util/batch', function (can, bind) {
 					// call that method
 					if (options.returnObserveMethods) {
 						cur = cur[reads[i]];
-					} else if (reads[i] === 'constructor' && prev instanceof can.Construct) {
+					} else if ( (reads[i] === 'constructor' && prev instanceof can.Construct) ||
+						(prev[reads[i]].prototype instanceof can.Construct)) {
 						cur = prev[reads[i]];
 					} else {
 						cur = prev[reads[i]].apply(prev, options.args || []);
@@ -678,7 +679,12 @@ steal('can/util', 'can/util/bind', 'can/util/batch', function (can, bind) {
 				}
 			} else {
 				// just do the dot operator
-				cur = prev[reads[i]];
+				if(cur == null) {
+					cur = undefined;
+				} else {
+					cur = prev[reads[i]];
+				}
+				
 			}
 			type = typeof cur;
 			// If it's a compute, get the compute's value
@@ -729,6 +735,20 @@ steal('can/util', 'can/util/bind', 'can/util/batch', function (can, bind) {
 			value: cur,
 			parent: prev
 		};
+	};
+
+	can.compute.set = function(parent, key, value) {
+		if(isObserve(parent)) {
+			return parent.attr(key, value);
+		}
+
+		if(parent[key] && parent[key].isComputed) {
+			return parent[key](value);
+		}
+
+		if(typeof parent === 'object') {
+			parent[key] = value;
+		}
 	};
 
 	return can.compute;

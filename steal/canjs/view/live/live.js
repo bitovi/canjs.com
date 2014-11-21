@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.1.3
+ * CanJS - 2.1.4
  * http://canjs.us/
  * Copyright (c) 2014 Bitovi
- * Mon, 25 Aug 2014 21:51:29 GMT
+ * Fri, 21 Nov 2014 22:25:48 GMT
  * Licensed MIT
  * Includes: CanJS default build
  * Download from: http://canjs.us/
@@ -238,7 +238,11 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 					if (!duringTeardown && data.teardownCheck(text.parentNode)) {
 						return;
 					}
-					var removedMappings = masterNodeList.splice(index+1, items.length),
+					if(index < 0) {
+						index = indexMap.length + index;
+					}
+
+					var removedMappings = masterNodeList.splice(index + 1, items.length),
 						itemsToRemove = [];
 					can.each(removedMappings, function (nodeList) {
 						
