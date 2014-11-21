@@ -252,11 +252,11 @@
 							errors[attr].push(res);
 						}
 					});
-				}, validations = this.constructor.validations,
+				}, validations = this.constructor.validations || {},
 				isTest = attrs &amp;&amp; attrs.length === 1 &amp;&amp; arguments.length === 2;
 			// go through each attribute or validation and
 			// add any errors
-			can.each(attrs || validations || {}, function (funcs, attr) {
+			can.each(attrs || validations, function (funcs, attr) {
 				// if we are iterating through an array, use funcs
 				// as the attr name
 				if (typeof attr === &#039;number&#039;) {

@@ -309,7 +309,7 @@ funcs - the validation functions</p>
 							errors[attr].push(res);
 						}
 					});
-				}, validations = <span class="hljs-keyword">this</span>.constructor.validations,
+				}, validations = <span class="hljs-keyword">this</span>.constructor.validations || {},
 				isTest = attrs &amp;&amp; attrs.length === <span class="hljs-number">1</span> &amp;&amp; <span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">2</span>;</pre></div></div>
             
         </li>
@@ -326,7 +326,7 @@ add any errors</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.each(attrs || validations || {}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(funcs, attr)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			can.each(attrs || validations, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(funcs, attr)</span> </span>{</pre></div></div>
             
         </li>
         

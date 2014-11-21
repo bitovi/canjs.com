@@ -341,7 +341,7 @@
 					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.Model.makeFindAll.html" 
-							data-search="can.Model.makeFindAll">
+							data-search="makeFindAll">
 							makeFindAll
 						</a>
 						
@@ -627,7 +627,7 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/master/model/model.js">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/master/model/doc/update.md">source</a></li>
 	
 	
 	
@@ -750,28 +750,33 @@ the model to update.</p>
 update a model instance on the server.</p>
 <h2>Implement with a URL</h2>
 <p>The easist way to implement update is to just give it the url to <code>PUT</code> data to:</p>
-<p>Recipe = can.Model.extend({
-update: &quot;/recipes/{id}&quot;
-},{});</p>
+<pre><code>Recipe = can.Model.extend({
+ update: &quot;/recipes/{id}&quot;
+},{});
+</code></pre>
 <p>This lets you update a recipe like:</p>
-<p>Recipe.findOne({id: 1}, function(recipe){
-recipe.attr('name','salad');
-recipe.save();
-})</p>
+<pre><code>Recipe.findOne({id: 1}, function(recipe){
+ recipe.attr('name','salad');
+ recipe.save();
+})
+</code></pre>
 <p>This will make an XHR request like:</p>
-<p>PUT /recipes/1
-name=salad</p>
+<pre><code>PUT /recipes/1
+name=salad
+</code></pre>
 <p>If your server doesn't use PUT, you can change it to post like:</p>
-<p>Recipe = can.Model.extend({
-update: &quot;POST /recipes/{id}&quot;
-},{});</p>
+<pre><code>Recipe = can.Model.extend({
+ update: &quot;POST /recipes/{id}&quot;
+},{});
+</code></pre>
 <p>The server should send back an object with any new attributes the model
 should have.  For example if your server updates the &quot;updatedAt&quot; property, it
 should send back something like:</p>
-<p>// PUT /recipes/4 {name: &quot;Food&quot;} -&gt;
+<pre><code>// PUT /recipes/4 {name: &quot;Food&quot;} -&gt;
 {
-updatedAt : &quot;10-20-2011&quot;
-}</p>
+ updatedAt : &quot;10-20-2011&quot;
+}
+</code></pre>
 <h2>Implement with a Function</h2>
 <p>You can also implement update by yourself.  Update takes the <code>id</code> and
 <code>attributes</code> of the instance to be updated.  Update must return
@@ -780,15 +785,17 @@ properties that should be set on the instance.</p>
 <p>For example, the following code makes a request
 to '/recipes/5.json?name=hot+dog' and gets back
 something that looks like:</p>
-<p>{
-updatedAt: &quot;10-20-2011&quot;
-}</p>
-<p>The code looks like:</p>
-<p>Recipe = can.Model.extend({
-update : function(id, attrs ) {
-return $.post(&quot;/recipes/&quot;+id+&quot;.json&quot;,attrs, null,&quot;json&quot;);
+<pre><code>{
+ updatedAt: &quot;10-20-2011&quot;
 }
-},{});</p>
+</code></pre>
+<p>The code looks like:</p>
+<pre><code>Recipe = can.Model.extend({
+ update : function(id, attrs ) {
+   return $.post(&quot;/recipes/&quot;+id+&quot;.json&quot;,attrs, null,&quot;json&quot;);
+ }
+},{});
+</code></pre>
 
 		</section>
 		
@@ -850,7 +857,7 @@ return $.post(&quot;/recipes/&quot;+id+&quot;.json&quot;,attrs, null,&quot;json&
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Model.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"name":"can.Model.update","type":"function","description":"<p>Update a resource on the server.</p>\n","title":"update","signatures":[{"code":"can.Model.update: \"[METHOD] /path/to/resource\"","description":"<p>If you provide a URL, the Model will send a request to that URL using\nthe method specified (or PUT if none is specified) when updating an\ninstance on the server. (See below for more details.)</p>\n","params":[],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A Deferred that resolves to the updated model.</p>\n"}},{"code":"can.Model.update: function(id, serialized) -> can.Deffered","description":"<p>If you provide a function, the Model will expect you to do your own AJAX requests.</p>\n","params":[{"name":"id","description":"<p>The ID of the model to update.</p>\n"},{"types":[{"type":"Object","options":[]}],"name":"serialized","description":"<p>The [can.Map::serialize serialized] properties of\nthe model to update.</p>\n"}],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A Deferred that resolves to the updated model.</p>\n"}}],"comment":" ","src":"model/model.js"};
+		var docObject = {"parent":"can.Model.static","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.Model.update","description":"<p>Update a resource on the server.</p>\n","title":"update","signatures":[{"code":"can.Model.update: \"[METHOD] /path/to/resource\"","description":"<p>If you provide a URL, the Model will send a request to that URL using\nthe method specified (or PUT if none is specified) when updating an\ninstance on the server. (See below for more details.)</p>\n","params":[],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A Deferred that resolves to the updated model.</p>\n"}},{"code":"can.Model.update: function(id, serialized) -> can.Deffered","description":"<p>If you provide a function, the Model will expect you to do your own AJAX requests.</p>\n","params":[{"name":"id","description":"<p>The ID of the model to update.</p>\n"},{"types":[{"type":"Object","options":[]}],"name":"serialized","description":"<p>The [can.Map::serialize serialized] properties of\nthe model to update.</p>\n"}],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A Deferred that resolves to the updated model.</p>\n"}}],"comment":" ","src":"model/doc/update.md"};
 	</script>
 	
 	

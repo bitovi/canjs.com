@@ -740,6 +740,14 @@ unbind the event handler when the element is <a href="can.events.removed.html">r
 });
 </code></pre>
 <div class='demo_wrapper' data-demo-src='can/view/doc/fade_in_when.html'></div>
+## When to call
+<p><code>can.view.attr</code> must be called before a template is processed. When <a href="http://canjs.com/docs/can.view.html#sig_can_view_idOrUrl_">using <code>can.view</code> to create a renderer function</a>, <code>can.view.attr</code> must be called before the template is loaded, not simply before it is rendered.</p>
+<pre><code>    //Call can.view.attr first
+    can.view.attr('tooltip', tooltipFunction);
+    //Preload a template for rendering
+    var renderer = can.view('app-template');
+    //No calls to can.view.attr after this will be used by `renderer`
+</code></pre>
 
 		</section>
 		
@@ -801,7 +809,7 @@ unbind the event handler when the element is <a href="can.events.removed.html">r
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.view.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.view.attr","description":"<p>Register custom behavior for an attribute.</p>\n","title":"","signatures":[{"code":"can.view.attr( attributeName, attrHandler(el, attrData) )","description":"","params":[{"types":[{"type":"String"},{"type":"RegExp"}],"name":"attributeName","description":"<p>A lower-case attribute name or regular expression\nthat matches attribute names. Examples: <code>&quot;my-fill&quot;</code> or <code>/my-\\w/</code>.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"HTMLElement"}],"name":"el"},{"types":[{"type":"can.view.attrData"}],"name":"attrData"}]}],"name":"attrHandler","description":"<p>A function that adds custom behavior to <code>el</code>.</p>\n"}],"release":"2.1"}],"comment":" ","src":"view/doc/attr.md"};
+		var docObject = {"parent":"can.view.static","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.view.attr","description":"<p>Register custom behavior for an attribute.</p>\n","title":"","signatures":[{"code":"can.view.attr( attributeName, attrHandler(el, attrData) )","description":"","params":[{"types":[{"type":"String"},{"type":"RegExp"}],"name":"attributeName","description":"<p>A lower-case attribute name or regular expression\nthat matches attribute names. Examples: <code>&quot;my-fill&quot;</code> or <code>/my-\\w/</code>.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"HTMLElement"}],"name":"el"},{"types":[{"type":"can.view.attrData"}],"name":"attrData"}]}],"name":"attrHandler","description":"<p>A function that adds custom behavior to <code>el</code>.</p>\n"}],"release":"2.1"}],"comment":" ","src":"view/doc/attr.md"};
 	</script>
 	
 	

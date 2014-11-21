@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">76.68</p>
+      <p class="stat">74.61</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">36</p>
+      <p class="stat">45</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">14.29</p>
+      <p class="stat">18.67</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.24</p>
+      <p class="stat">0.35</p>
     </div>
   </div>
 </div>
@@ -95,11 +95,9 @@
 	var isFunction = can.isFunction,
 		fnTest = /xyz/.test(function () {
 			return this.xyz;
-		}) ? /\b_super\b/ : /.*/;
-	// overwrites a single property so it can still call super
-	can.Construct._overwrite = function (addTo, base, name, val) {
-		// Check if we&#039;re overwriting an existing function
-		addTo[name] = isFunction(val) &amp;&amp; isFunction(base[name]) &amp;&amp; fnTest.test(val) ? function (name, fn) {
+		}) ? /\b_super\b/ : /.*/,
+		getset = [&#039;get&#039;, &#039;set&#039;],
+		getSuper = function (base, name, fn) {
 			return function () {
 				var tmp = this._super,
 					ret;
@@ -112,17 +110,28 @@
 				this._super = tmp;
 				return ret;
 			};
-		}(name, val) : val;
-	};
-	// overwrites an object with methods, sets up _super
-	//   newProps - new properties
-	//   oldProps - where the old properties might be
-	//   addTo - what we are adding to
-	can.Construct._inherit = function (newProps, oldProps, addTo) {
-		addTo = addTo || newProps;
-		for (var name in newProps) {
-			can.Construct._overwrite(addTo, oldProps, name, newProps[name]);
+		};
+
+	can.Construct._defineProperty = function(addTo, base, name, descriptor) {
+		var _super = Object.getOwnPropertyDescriptor(base, name);
+		if(_super) {
+			can.each(getset, function (method) {
+				if(isFunction(_super[method]) &amp;&amp; isFunction(descriptor[method])) {
+					descriptor[method] = getSuper(_super, method, descriptor[method]);
+				} else if(!isFunction(descriptor[method])) {
+					descriptor[method] = _super[method];
+				}
+			});
 		}
+
+		Object.defineProperty(addTo, name, descriptor);
+	};
+
+	// overwrites a single property so it can still call super
+	can.Construct._overwrite = function (addTo, base, name, val) {
+		// Check if we&#039;re overwriting an existing function
+		addTo[name] = isFunction(val) &amp;&amp; isFunction(base[name]) &amp;&amp; fnTest.test(val) ?
+			getSuper(base, name, val) : val;
 	};
 	return can;
 });</textarea>

@@ -49,7 +49,7 @@
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">439</p>
+      <p class="stat">440</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">56.75</p>
+      <p class="stat">56.38</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">3.44</p>
+      <p class="stat">3.45</p>
     </div>
   </div>
 </div>
@@ -512,8 +512,9 @@ steal(&quot;can/util&quot;, &quot;can/view/callbacks&quot;,&quot;can/control&quo
 
 	// If there is a `$` object and it has the `fn` object, create the `scope` plugin that returns
 	// the scope object
-	if (window.$ &amp;&amp; $.fn) {
-		$.fn.scope = function (attr) {
+	// Issue#1288 - Changed from `$` to `jQuery` mainly when using jQuery as a CommonJS module (Browserify-shim).
+	if (window.jQuery &amp;&amp; jQuery.fn) {
+		jQuery.fn.scope = function (attr) {
 			// If `attr` is passed to the `scope` plugin return the value of that 
 			// attribute on the `scope` object, otherwise return the whole scope
 			if (attr) {

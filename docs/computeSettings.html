@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	<title>CanJS - destroyed </title>
+	<title>CanJS - computeSettings </title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -151,10 +151,97 @@
 			
 	   </li>
 	
-	   <li class="search-container">
+	   <li class="search-container active">
 	   		<a href="can.compute.html" data-search="can.compute">
 				can.compute
 			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+		
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.computed.html" 
+							data-search="compute">
+							compute
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.computed.bind.html" 
+							data-search="compute.bind">
+							compute.bind
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="property" 
+							href="can.computed.isComputed.html" 
+							data-search="compute.isComputed">
+							compute.isComputed
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container active  expanded">
+						<a 	class="typedef" 
+							href="computeSettings.html" 
+							data-search="computeSettings">
+							computeSettings
+						</a>
+						
+							
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="computed.unbind.html" 
+							data-search="compute.unbind">
+							compute.unbind
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
 			
 	   </li>
 	
@@ -232,20 +319,22 @@
 		
 		<section class="title">
 			<div class="heading">
-<h1>destroyed</h1>
+<h1>computeSettings</h1>
 	<ul class="tags">
-		<li>function</li>
+		<li>typedef</li>
 	</ul>
 	
-	
+	<span class="release">2.1</span>
 </div>
 
 <div class="sub-heading">
 	
 	
-		<span class="module">can.Model.prototype.destroyed</span>
+		<span class="module">computeSettings</span>
 	
 	
+	
+	<h2><code>{Object}</code></h2>
 	
 	<span class="inherits">&nbsp;</span>
 </div>
@@ -253,7 +342,7 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/master/model/model.js">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/master/compute/compute_settings.md">source</a></li>
 	
 	
 	
@@ -270,28 +359,141 @@
 		
 
 		
-		<section class="description">
-			<p>Called after an instance is destroyed.</p>
-
-		</section>
-		
 
 		
+			
+			<section class='primary-options'>
+				
+
+  <h2 id="sig_">Object
+</h2>
+<div class="signature-wrapper">
+
+
+
+
+
+
+  <h3>Properties</h3>
+  
+  <ol class="parameters">
+	
+	<li class="parameter">
+		<h4>get
+			<code>{function()}</code></h4>
+		<div class="description">
+			<p>A function that retrieves and returns the current value of the compute.</p>
+
+		</div>
+		
+		
+		
+	</li>
+	
+	<li class="parameter">
+		<h4>set
+			<code>{function(newVal, oldVal)}</code></h4>
+		<div class="description">
+			<p>A function that is used when setting a new value of the compute.</p>
+<p>A function that is called when a compute is called with an argument. The function is passed
+the first argumented passed to <a href="can.computed.html">compute</a> and the current value. If
+<code>set</code> returns a value, it is used to compare to the current value of the compute. Otherwise,
+<code>get</code> is called to get the current value of the compute and that value is used
+to determine if the compute has changed values.</p>
+<p><code>newVal</code> is the value being set, while <code>oldVal</code> is the previous value in the compute.</p>
+
+		</div>
+		
+		
+		<ul class="options">
+			
+			<li class="option">
+				<h5>newVal 
+					<code>{*}</code>
+				</h5>
+				<div class="description">
+					
+				</div>
+			</li>
+			
+			<li class="option">
+				<h5>oldVal 
+					<code>{*}</code>
+				</h5>
+				<div class="description">
+					
+				</div>
+			</li>
+			
+		</ul>
+		
+		
+	</li>
+	
+	<li class="parameter">
+		<h4>on
+			<code>{function(updated)}</code></h4>
+		<div class="description">
+			<p>Called to setup binding to dependency events. Call <code>updated</code> when the compute's value needs to be updated.</p>
+
+		</div>
+		
+		
+		<ul class="options">
+			
+			<li class="option">
+				<h5>updated 
+					<code>{function()}</code>
+				</h5>
+				<div class="description">
+					
+				</div>
+			</li>
+			
+		</ul>
+		
+		
+	</li>
+	
+	<li class="parameter">
+		<h4>off
+			<code>{function(function)}</code></h4>
+		<div class="description">
+			<p>Called to teardown binding.</p>
+
+		</div>
+		
+		
+		<ul class="options">
+			
+			<li class="option">
+				<h5> 
+					<code>{function()}</code>
+				</h5>
+				<div class="description">
+					
+				</div>
+			</li>
+			
+		</ul>
+		
+		
+	</li>
+	
+</ol>
+
+
+</div>
+
+  
+
+			</section>
 			
 		
 		
 		
 		
 
-		
-		<section class="comment">
-			<ul>
-<li>Publishes &quot;shortName.destroyed&quot;.</li>
-<li>Triggers a &quot;destroyed&quot; event on this model.</li>
-<li>Removes the model from the global list if its used.</li>
-</ul>
-
-		</section>
 		
 		
 
@@ -351,7 +553,7 @@
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","description":"<p>Called after an instance is destroyed.</p>\n","title":"destroyed","name":"can.Model.prototype.destroyed","hide":true,"src":"model/model.js"};
+		var docObject = {"parent":"can.compute","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"typedef","name":"computeSettings","description":"","title":"computeSettings","types":[{"type":"Object","options":[{"name":"get","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"<p>A function that retrieves and returns the current value of the compute.</p>\n"},{"name":"set","types":[{"type":"function","returns":{"types":[{"type":"*"}]},"params":[{"types":[{"type":"*"}],"name":"newVal"},{"types":[{"type":"*"}],"name":"oldVal"}]}],"description":"<p>A function that is used when setting a new value of the compute.</p>\n<p>A function that is called when a compute is called with an argument. The function is passed\nthe first argumented passed to [can.computed compute] and the current value. If\n<code>set</code> returns a value, it is used to compare to the current value of the compute. Otherwise,\n<code>get</code> is called to get the current value of the compute and that value is used\nto determine if the compute has changed values.</p>\n<p><code>newVal</code> is the value being set, while <code>oldVal</code> is the previous value in the compute.</p>\n"},{"name":"on","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"updated"}]}],"description":"<p>Called to setup binding to dependency events. Call <code>updated</code> when the compute's value needs to be updated.</p>\n"},{"name":"off","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]}]}],"description":"<p>Called to teardown binding.</p>\n"}]}],"release":"2.1","src":"compute/compute_settings.md"};
 	</script>
 	
 	

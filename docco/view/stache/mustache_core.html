@@ -1662,7 +1662,7 @@ performed in value.</p>
 		 */</span>
 		splitModeFromExpression: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(expression, state)</span></span>{
 			expression = can.trim(expression);
-			<span class="hljs-keyword">var</span> mode = expression[<span class="hljs-number">0</span>];
+			<span class="hljs-keyword">var</span> mode = expression.charAt(<span class="hljs-number">0</span>);
 	
 			<span class="hljs-keyword">if</span>( <span class="hljs-string">"#/{&amp;^&gt;!"</span>.indexOf(mode) &gt;= <span class="hljs-number">0</span> ) {
 				expression = can.trim( expression.substr(<span class="hljs-number">1</span>) );

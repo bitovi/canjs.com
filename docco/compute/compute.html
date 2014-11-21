@@ -1772,7 +1772,8 @@ While binding, this should not count as a read</p>
             
             <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (options.returnObserveMethods) {
 						cur = cur[reads[i]];
-					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (reads[i] === <span class="hljs-string">'constructor'</span> &amp;&amp; prev <span class="hljs-keyword">instanceof</span> can.Construct) {
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ( (reads[i] === <span class="hljs-string">'constructor'</span> &amp;&amp; prev <span class="hljs-keyword">instanceof</span> can.Construct) ||
+						(prev[reads[i]].prototype <span class="hljs-keyword">instanceof</span> can.Construct)) {
 						cur = prev[reads[i]];
 					} <span class="hljs-keyword">else</span> {
 						cur = prev[reads[i]].apply(prev, options.args || []);
@@ -1809,7 +1810,12 @@ While binding, this should not count as a read</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				cur = prev[reads[i]];
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(cur == <span class="hljs-literal">null</span>) {
+					cur = <span class="hljs-literal">undefined</span>;
+				} <span class="hljs-keyword">else</span> {
+					cur = prev[reads[i]];
+				}
+				
 			}
 			type = <span class="hljs-keyword">typeof</span> cur;</pre></div></div>
             
@@ -1938,6 +1944,20 @@ unless it is a can.Construct-derived constructor</p>
 			value: cur,
 			parent: prev
 		};
+	};
+
+	can.compute.set = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, key, value)</span> </span>{
+		<span class="hljs-keyword">if</span>(isObserve(parent)) {
+			<span class="hljs-keyword">return</span> parent.attr(key, value);
+		}
+
+		<span class="hljs-keyword">if</span>(parent[key] &amp;&amp; parent[key].isComputed) {
+			<span class="hljs-keyword">return</span> parent[key](value);
+		}
+
+		<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> parent === <span class="hljs-string">'object'</span>) {
+			parent[key] = value;
+		}
 	};
 
 	<span class="hljs-keyword">return</span> can.compute;

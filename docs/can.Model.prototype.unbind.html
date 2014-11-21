@@ -343,7 +343,7 @@
 					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.Model.makeFindAll.html" 
-							data-search="can.Model.makeFindAll">
+							data-search="makeFindAll">
 							makeFindAll
 						</a>
 						
@@ -627,7 +627,7 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/master/model/model.js">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/master/model/doc/model_unbind.md">source</a></li>
 	
 	
 	
@@ -720,10 +720,12 @@ for the given event.</p>
 		<section class="comment">
 			<p><code>unbind(eventName, handler)</code> removes a listener
 attached with <a href="can.Model.prototype.bind.html">bind</a>.</p>
-<p>var handler = function(ev, createdTask){</p>
-<p>}
+<pre><code>var handler = function(ev, createdTask){
+
+}
 task.bind(&quot;created&quot;, handler)
-task.unbind(&quot;created&quot;, handler)</p>
+task.unbind(&quot;created&quot;, handler)
+</code></pre>
 <p>You have to pass the same function to <code>unbind</code> that you
 passed to <code>bind</code>.</p>
 <p>Unbind will also remove the instance from the store
@@ -789,7 +791,7 @@ if there are no other listeners.</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Model.prototype","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.Model.prototype.unbind","description":"<p>Stop listening to events on this Model.</p>\n","title":"unbind","signatures":[{"code":"model.unbind(eventName[, handler])","description":"","params":[{"types":[{"type":"String"}],"name":"eventName","description":"<p>The event to unbind from.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"handler","description":"<p>A handler previously bound with <code>bind</code>.\nIf <strong>handler</strong> is not passed, <code>unbind</code> will remove all handlers\nfor the given event.</p>\n"}],"returns":{"types":[{"type":"can.Model"}],"description":"<p>The Model, for chaining.</p>\n"}}],"comment":" ","src":"model/model.js"};
+		var docObject = {"parent":"can.Model.prototype","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.Model.prototype.unbind","description":"<p>Stop listening to events on this Model.</p>\n","title":"unbind","signatures":[{"code":"model.unbind(eventName[, handler])","description":"","params":[{"types":[{"type":"String"}],"name":"eventName","description":"<p>The event to unbind from.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"handler","description":"<p>A handler previously bound with <code>bind</code>.\nIf <strong>handler</strong> is not passed, <code>unbind</code> will remove all handlers\nfor the given event.</p>\n"}],"returns":{"types":[{"type":"can.Model"}],"description":"<p>The Model, for chaining.</p>\n"}}],"comment":" ","src":"model/doc/model_unbind.md"};
 	</script>
 	
 	

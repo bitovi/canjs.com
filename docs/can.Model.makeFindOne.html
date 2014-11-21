@@ -341,7 +341,7 @@
 					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.Model.makeFindAll.html" 
-							data-search="can.Model.makeFindAll">
+							data-search="makeFindAll">
 							makeFindAll
 						</a>
 						
@@ -623,7 +623,7 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/master/model/model.js">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/master/model/doc/makeFindOne.md">source</a></li>
 	
 	
 	
@@ -692,11 +692,12 @@ the findOneData function to get the raw data, convert them to model instances wi
 <a href="can.Model.models.html">models</a>.</p>
 <h2>Caching</h2>
 <p>The following uses <code>makeFindOne</code> to create a base <code>CachedModel</code>:</p>
-<p>CachedModel = can.Model.extend({
-makeFindOne: function(findOneData){
-// A place to store requests
-var cachedRequests = {};</p>
-<pre><code>   return function(params, success, error){
+<pre><code>CachedModel = can.Model.extend({
+ makeFindOne: function(findOneData){
+   // A place to store requests
+   var cachedRequests = {};
+
+   return function(params, success, error){
      // is this not cached?
      if(! cachedRequests[JSON.stringify(params)] ) {
        var self = this;
@@ -714,16 +715,19 @@ var cachedRequests = {};</p>
      return def;
    }
  }
+},{})
 </code></pre>
-<p>},{})</p>
 <p>The following Todo model will never request the same todo twice:</p>
-<p>Todo = CachedModel({
-findOne: &quot;/todos/{id}&quot;
-},{})</p>
-<p>// widget 1
-Todo.findOne({id: 5})</p>
-<p>// widget 2
-Todo.findOne({id: 5})</p>
+<pre><code>Todo = CachedModel({
+ findOne: &quot;/todos/{id}&quot;
+},{})
+
+// widget 1
+Todo.findOne({id: 5})
+
+// widget 2
+Todo.findOne({id: 5})
+</code></pre>
 
 		</section>
 		
@@ -785,7 +789,7 @@ Todo.findOne({id: 5})</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Model.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"name":"can.Model.makeFindOne","type":"function","description":"","title":"","signatures":[{"code":"can.Model.makeFindOne: function(findOneData) -> findOne","description":"<p>Returns the external <code>findOne</code> method given the implemented [can.Model.findOneData findOneData] function.</p>\n<p>[can.Model.findOne] is implemented with a <code>String</code>, [can.AjaxSettings ajax settings object], or\n[can.Model.findOneData findOneData] function. If it is implemented as\na <code>String</code> or [can.AjaxSettings ajax settings object], those values are used\nto create a [can.Model.findOneData findOneData] function.</p>\n<p>The [can.Model.findOneData findOneData] function is passed to <code>makeFindOne</code>. <code>makeFindOne</code>\nshould use <code>findOneData</code> internally to get the raw data for the request.</p>\n","params":[],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"can.Deferred"}]},"params":[{"types":[{"type":"params"}]},{"types":[{"type":"success"}]},{"types":[{"type":"error"}]}]}],"description":"<p>Returns function that implements the external API of <code>findOne</code>.</p>\n"}}],"comment":" ","src":"model/model.js"};
+		var docObject = {"parent":"can.Model.static","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.Model.makeFindOne","description":"","title":"","signatures":[{"code":"can.Model.makeFindOne: function(findOneData) -> findOne","description":"<p>Returns the external <code>findOne</code> method given the implemented [can.Model.findOneData findOneData] function.</p>\n<p>[can.Model.findOne] is implemented with a <code>String</code>, [can.AjaxSettings ajax settings object], or\n[can.Model.findOneData findOneData] function. If it is implemented as\na <code>String</code> or [can.AjaxSettings ajax settings object], those values are used\nto create a [can.Model.findOneData findOneData] function.</p>\n<p>The [can.Model.findOneData findOneData] function is passed to <code>makeFindOne</code>. <code>makeFindOne</code>\nshould use <code>findOneData</code> internally to get the raw data for the request.</p>\n","params":[],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"can.Deferred"}]},"params":[{"types":[{"type":"params"}]},{"types":[{"type":"success"}]},{"types":[{"type":"error"}]}]}],"description":"<p>Returns function that implements the external API of <code>findOne</code>.</p>\n"}}],"comment":" ","src":"model/doc/makeFindOne.md"};
 	</script>
 	
 	

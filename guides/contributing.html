@@ -420,6 +420,23 @@ var foo = &quot;bar&quot;;
  * Four score and seven—pause—minutes ago...
  */
 </code></pre>
+<h3>Documentation</h3>
+<p>The documentation for the different modules should be clear and consistent. Explanations should be concise, and examples of code should be included where appropriate. In terms of format and style, here are a few suggestions to keep the documentation consistent within a module and across all parts of CanJS:</p>
+<h4>When referencing another part of CanJS, make sure to link the first reference in a section.</h4>
+<p>For instance, when documenting <code>can.Component.scope</code>, the first reference to <code>can.Component</code>, <code>can.route</code>, or any other part of CanJS should be enclosed in square brackets, so that links to those docs are generated. Linking each occurrence isn't necessary, but all the other references should at least be surrounded by &quot;grave accents&quot; or tickmarks.</p>
+<pre><code>This is an example of linking to [can.Component] from another page. If you reference
+`can.Component` later in this section, you don't have to link to it. All subsequent
+references to `can.Component` have grave accents or tickmarks surrounding them.
+
+### New Section
+
+Another section referencing [can.Component] starts this trend again...
+</code></pre>
+<p><strong>Note</strong>: The one exception to this is on the module page. When documenting <code>can.Component</code> itself, only use the tickmarks, as linking to <code>can.Component</code> would just link to the page you are currently modifying.</p>
+<h4>Enclose string literals in tickmarks as they should appear in code</h4>
+<p>If the developer should type <code>&quot;@&quot;</code>, use the tickmarks to make this clear. This avoids the ambiguity of whether the apostrophes or quote marks are part of the text that should be typed. This also applies to any references to variable/key names (e.g., <code>scope</code> versus &quot;scope&quot; or <strong>scope</strong>).</p>
+<h4>Include a clear description of your example code</h4>
+<p>For a developer that's new to CanJS, the description of the example is likely more important than the example itself. Make sure there is a clear description of what the code should accomplish. This includes using all the techniques above. A good description should answer the question, &quot;could you explain what this example code is doing?&quot;</p>
 <h2>List of heroes</h2>
 <p>The following lists everyone who's contributed something to CanJS.  If we've forgotten you, please add yourself.</p>
 <p>First, thanks to everyone who's contributed to <a href="https://github.com/bitovi/javascriptmvc/contributors">JavaScriptMVC</a>
@@ -534,7 +551,7 @@ off JavaScriptMVC.  This page is for contributors after CanJS's launch. Thank yo
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"guides","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"page","name":"contributing","description":"","title":"How to Contribute","order":4,"comment":" ","src":"contributing.md"};
+		var docObject = {"parent":"guides","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"page","name":"contributing","description":"","title":"How to Contribute","order":4,"comment":" ","src":"contributing.md"};
 	</script>
 	
 	

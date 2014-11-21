@@ -286,7 +286,37 @@
 
 		
 		<section class="comment">
-			<p><strong>2.1.3</strong> ( Aug 25 2014 )</p>
+			<p><strong>2.1.4</strong> ( Nov 21 2014 )</p>
+<ul>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1337">Make can.Construct work with getter / setters (and super plugin)</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/1332">Update compute.read to also return constructor functions</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/1323">property for which no validations are defined throws an exception</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1314">Reading from undefined values in scope. </a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/1309">Fixed function overwrite</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1304">Using attrData.scope.compute as a setter throws an error if the getter hasn&#39;t been called</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1297">Setting computes created with computeData will throw if set first</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/1289">Fix IE7 character access</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1288">$.fn.scope undefined when using CommonJS</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1284">Cannot read properties of can.Map inside a property&#39;s value method</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/1281">Removed madeMap and getMapFromObject from LazyMap since it&#39;s unused</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1277">Dispatch correct arguments with can.List:splice if inserting and removing the same elements. </a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1272">Inconsistent results when extending parsed can.Models</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1261">scope objects with constructor function properties are treated as methods</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1257">Mustache warning on helpers</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1246">Extending a Model overwrites parseModels()</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1242">Unused variable in can.Model</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/1178">Fixed Mustache getHelper() so that it doesn&#39;t need second argument</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1152">can.route.map docs</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1147">can.camelize and can.hyphenate not documented</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1139">Issue: can.view(function, deferred, callback) does not work</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1108">can.stache dosent render custom tags with Colon  &quot;:&quot;</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/1100">Documenting what new Model.List() does with no args passed</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1038">Bug: can.List.splice(-1) causes JS exception inside binding framework</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/1033">can.Map code block cleanup and fix failure to render.</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/issues/1032">can.view.preload breaks can.view.attr</a></li>
+<li>change: <a href="https://github.com/bitovi/canjs/pull/1013">Fix rendering of &lt;col&gt; inside &lt;table&gt; in templates.</a></li>
+</ul>
+<p><strong>2.1.3</strong> ( Aug 25 2014 )</p>
 <ul>
 <li>change: <a href="https://github.com/bitovi/canjs/pull/1212">IE 8+10 fixes</a></li>
 <li>change: <a href="https://github.com/bitovi/canjs/pull/1177">makes sure can.compute.read can read a final can.route value</a></li>
@@ -1060,7 +1090,7 @@
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"guides","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"page","name":"changelog","description":"<!--\n-->\n","title":"Changelog","order":5,"src":"changelog.md"};
+		var docObject = {"parent":"guides","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"page","name":"changelog","description":"<!--\n-->\n","title":"Changelog","order":5,"src":"changelog.md"};
 	</script>
 	
 	

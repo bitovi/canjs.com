@@ -88,12 +88,135 @@
 
 
 	<span class="hljs-keyword">var</span> oldSetupDefaults = can.Map.prototype._setupDefaults;
-	can.Map.prototype._setupDefaults = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+	can.Map.prototype._setupDefaults = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> </span>{
 		<span class="hljs-keyword">var</span> defaults = oldSetupDefaults.call(<span class="hljs-keyword">this</span>),
-			Map = <span class="hljs-keyword">this</span>.constructor;
-		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> Map.defaultGenerators) {
-			defaults[prop] = Map.defaultGenerators[prop].call(<span class="hljs-keyword">this</span>);
-		}
+			propsCommittedToAttr = {},
+			Map = <span class="hljs-keyword">this</span>.constructor,
+			originalGet = <span class="hljs-keyword">this</span>._get;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Overwrite this._get with a version that commits defaults to
+this.attr() as needed. Because calling this.attr() for each individual
+default would be expensive.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">this</span>._get = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(originalProp)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>If a this.attr() was called using dot syntax (e.g number.0),
+disregard everything after the “.” until we call the
+original this._get().</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			prop = (originalProp.indexOf(<span class="hljs-string">'.'</span>) !== -<span class="hljs-number">1</span> ?
+				originalProp.substr(<span class="hljs-number">0</span>, originalProp.indexOf(<span class="hljs-string">'.'</span>)) :
+				prop);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>If this property has a default and we haven’t yet committed it to
+this.attr()</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> ((prop <span class="hljs-keyword">in</span> defaults) &amp;&amp; ! (prop <span class="hljs-keyword">in</span> propsCommittedToAttr)) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Commit the property’s default so that it can be read in
+other defaultGenerators.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>.attr(prop, defaults[prop]);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Make not so that we don’t commit this property again.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				propsCommittedToAttr[prop] = <span class="hljs-literal">true</span>;
+			}
+
+			<span class="hljs-keyword">return</span> originalGet.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+		};
+
+		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> Map.defaultGenerators) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Only call the prop’s value method if the property wasn’t provided
+during instantiation.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (! obj || ! (prop <span class="hljs-keyword">in</span> obj)) {
+				defaults[prop] = Map.defaultGenerators[prop].call(<span class="hljs-keyword">this</span>);
+			}
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Replace original this.attr</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">this</span>._get = originalGet;
+
 		<span class="hljs-keyword">return</span> defaults;
 	};
 
@@ -105,11 +228,11 @@
         </li>
         
         
-        <li id="section-4">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>!steal-remove-start</p>
 
@@ -120,11 +243,11 @@
         </li>
         
         
-        <li id="section-5">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>!steal-remove-end</p>
 
@@ -133,11 +256,11 @@
         </li>
         
         
-        <li id="section-6">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>check if there’s a setter</p>
 
@@ -148,11 +271,11 @@
         </li>
         
         
-        <li id="section-7">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>!steal-remove-start</p>
 
@@ -163,11 +286,11 @@
         </li>
         
         
-        <li id="section-8">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>!steal-remove-end</p>
 
@@ -179,11 +302,11 @@
         </li>
         
         
-        <li id="section-9">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>if ‘validations’ is on the page it will trigger
 the error itself and we dont want to trigger
@@ -207,11 +330,11 @@ the event twice. :)</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>if we have a setter</p>
 
@@ -222,11 +345,11 @@ the event twice. :)</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>call the setter, if returned value is undefined,
 this means the setter is async so we
@@ -244,11 +367,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>!steal-remove-start</p>
 
@@ -259,11 +382,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>!steal-remove-end</p>
 
@@ -275,11 +398,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>if there’s a getter we do nothing</p>
 
@@ -292,11 +415,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>if it took a setter and returned nothing, don’t set the value</p>
 
@@ -307,11 +430,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>!steal-remove-start</p>
 
@@ -324,11 +447,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>!steal-remove-end</p>
 
@@ -343,11 +466,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>if no arguments, we are side-effects only</p>
 
@@ -401,11 +524,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>the old type sets up bubbling</p>
 
@@ -427,11 +550,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>If there’s a type, convert it.</p>
 
@@ -444,11 +567,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>If there’s a Type create a new instance of it</p>
 
@@ -461,11 +584,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>If the newValue is a Map, we need to hook it up</p>
 
@@ -516,11 +639,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>Overwrite the invidual property serializer b/c we will overwrite it.</p>
 
@@ -534,11 +657,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>If the map has a define serializer for the given attr, run it.</p>
 
@@ -556,11 +679,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>Overwrite serialize to add in any missing define serialized properties.</p>
 
@@ -576,11 +699,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-26">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>add in properties not already serialized</p>
 
@@ -593,11 +716,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-27">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>Go through each property.</p>
 
@@ -608,11 +731,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>if it’s not already defined</p>
 
@@ -623,11 +746,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-29">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>check there is a serializer so we aren’t doing extra work on serializer:false</p>
 

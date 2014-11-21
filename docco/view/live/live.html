@@ -509,7 +509,11 @@ If we did this during a teardown, it would cause an infinite loop.</p>
             <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (!duringTeardown &amp;&amp; data.teardownCheck(text.parentNode)) {
 						<span class="hljs-keyword">return</span>;
 					}
-					<span class="hljs-keyword">var</span> removedMappings = masterNodeList.splice(index+<span class="hljs-number">1</span>, items.length),
+					<span class="hljs-keyword">if</span>(index &lt; <span class="hljs-number">0</span>) {
+						index = indexMap.length + index;
+					}
+
+					<span class="hljs-keyword">var</span> removedMappings = masterNodeList.splice(index + <span class="hljs-number">1</span>, items.length),
 						itemsToRemove = [];
 					can.each(removedMappings, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodeList)</span> </span>{</pre></div></div>
             

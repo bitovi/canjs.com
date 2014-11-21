@@ -343,7 +343,7 @@
 					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.Model.makeFindAll.html" 
-							data-search="can.Model.makeFindAll">
+							data-search="makeFindAll">
 							makeFindAll
 						</a>
 						
@@ -627,7 +627,7 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/master/model/model.js">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/master/model/doc/model_destroy.md">source</a></li>
 	
 	
 	
@@ -720,24 +720,28 @@ XmlHttpRequest object.</p>
 		<section class="comment">
 			<p>Destroys the instance by calling
 [Can.Model.destroy] with the id of the instance.</p>
-<p>recipe.destroy(success, error);</p>
+<pre><code>recipe.destroy(success, error);
+</code></pre>
 <p>This triggers &quot;destroyed&quot; events on the instance and the
 Model constructor function which can be listened to with
 <a href="can.Model.prototype.bind.html">bind</a> and <a href="can.Model.bind.html">bind</a>.</p>
-<p>Recipe = can.Model.extend({
-destroy : &quot;DELETE /services/recipes/{id}&quot;,
-findOne : &quot;/services/recipes/{id}&quot;
-},{})</p>
-<p>Recipe.bind(&quot;destroyed&quot;, function(){
-console.log(&quot;a recipe destroyed&quot;);
-});</p>
-<p>// get a recipe
+<pre><code>Recipe = can.Model.extend({
+ destroy : &quot;DELETE /services/recipes/{id}&quot;,
+ findOne : &quot;/services/recipes/{id}&quot;
+},{})
+
+Recipe.bind(&quot;destroyed&quot;, function(){
+ console.log(&quot;a recipe destroyed&quot;);
+});
+
+// get a recipe
 Recipe.findOne({id: 5}, function(recipe){
-recipe.bind(&quot;destroyed&quot;, function(){
-console.log(&quot;this recipe destroyed&quot;)
+ recipe.bind(&quot;destroyed&quot;, function(){
+   console.log(&quot;this recipe destroyed&quot;)
+ })
+ recipe.destroy();
 })
-recipe.destroy();
-})</p>
+</code></pre>
 
 		</section>
 		
@@ -799,7 +803,7 @@ recipe.destroy();
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Model.prototype","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.Model.prototype.destroy","description":"<p>Destroy a Model on the server.</p>\n","title":"destroy","signatures":[{"code":"model.destroy([success[, error]])","description":"","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"success","description":"<p>A callback to call on successful destruction. The callback recieves\nthe can.Model as it was just prior to destruction.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"error","description":"<p>A callback to call when an error occurs. The callback receives the\nXmlHttpRequest object.</p>\n"}],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A Deferred that resolves to the Model as it was before destruction.</p>\n"}}],"comment":" ","src":"model/model.js"};
+		var docObject = {"parent":"can.Model.prototype","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.Model.prototype.destroy","description":"<p>Destroy a Model on the server.</p>\n","title":"destroy","signatures":[{"code":"model.destroy([success[, error]])","description":"","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"success","description":"<p>A callback to call on successful destruction. The callback recieves\nthe can.Model as it was just prior to destruction.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"error","description":"<p>A callback to call when an error occurs. The callback receives the\nXmlHttpRequest object.</p>\n"}],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A Deferred that resolves to the Model as it was before destruction.</p>\n"}}],"comment":" ","src":"model/doc/model_destroy.md"};
 	</script>
 	
 	

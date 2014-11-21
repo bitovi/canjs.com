@@ -1432,12 +1432,13 @@ unbind <code>change</code> event listeners set by the controller.</p>
                 <a class="pilcrow" href="#section-81">&#182;</a>
               </div>
               <p>If there is a <code>$</code> object and it has the <code>fn</code> object, create the <code>scope</code> plugin that returns
-the scope object</p>
+the scope object
+Issue#1288 - Changed from <code>$</code> to <code>jQuery</code> mainly when using jQuery as a CommonJS module (Browserify-shim).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.$ &amp;&amp; $.fn) {
-		$.fn.scope = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.jQuery &amp;&amp; jQuery.fn) {
+		jQuery.fn.scope = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr)</span> </span>{</pre></div></div>
             
         </li>
         

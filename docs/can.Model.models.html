@@ -341,7 +341,7 @@
 					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.Model.makeFindAll.html" 
-							data-search="can.Model.makeFindAll">
+							data-search="makeFindAll">
 							makeFindAll
 						</a>
 						
@@ -627,7 +627,7 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/master/model/model.js">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/master/model/doc/deprecated_models.md">source</a></li>
 	
 	
 	
@@ -737,16 +737,21 @@ be used to convert the ajax responses into a data format useful to <a href="can.
 with the data provided. If an item in data matches an instance in the [can.Model.store],
 that instance will be merged with the item's data and inserted in the list.</p>
 <p>For example</p>
-<p>Task = can.Model.extend({},{})</p>
-<p>var t1 = new Task({id: 1, name: &quot;dishes&quot;});</p>
-<p>// Binding on a model puts it in the store.
-t1.bind(&quot;change&quot;, function(){})</p>
-<p>var tasks = Task.models([
-{id: 1, name : &quot;dishes&quot;, complete : false},
-{id: 2, name: &quot;laundry&quot;, complete: true}
-])</p>
-<p>t1 === tasks.attr(0) //-&gt; true
-t1.attr(&quot;complete&quot;)  //-&gt; false</p>
+<pre><code>Task = can.Model.extend({},{})
+
+var t1 = new Task({id: 1, name: &quot;dishes&quot;});
+
+// Binding on a model puts it in the store.
+t1.bind(&quot;change&quot;, function(){})
+
+var tasks = Task.models([
+ {id: 1, name : &quot;dishes&quot;, complete : false},
+ {id: 2, name: &quot;laundry&quot;, complete: true}
+])
+
+t1 === tasks.attr(0) //-&gt; true
+t1.attr(&quot;complete&quot;)  //-&gt; false
+</code></pre>
 
 		</section>
 		
@@ -808,7 +813,7 @@ t1.attr(&quot;complete&quot;)  //-&gt; false</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Model.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"name":"can.Model.models","type":"function","description":"<p>Convert raw data into can.Model instances. Merge data with items in the store if matches are found.</p>\n","title":"models","deprecated":[{"version":"2.1","description":"<p>Prior to 2.1, <code>.models</code> was used to convert the ajax\nresponses into a data format useful for converting them into an observable\nlist AND for converting them into that list. In 2.1, [can.Model.parseModels] should\nbe used to convert the ajax responses into a data format useful to [can.Model.models].</p>\n"}],"signatures":[{"code":"can.Model.models(data[, oldList])","description":"","params":[{"types":[{"type":"Array","template":[{"types":[{"type":"Object","options":[]}]}]}],"name":"data","description":"<p>The raw data from a <code>[can.Model.findAll findAll()]</code> request.</p>\n"},{"types":[{"type":"can.Model.List"}],"optional":true,"name":"oldList","description":"<p>If supplied, this List will be updated with the data from\n<strong>data</strong>.</p>\n"}],"returns":{"types":[{"type":"can.Model.List"}],"description":"<p>A List of Models made from the raw data.</p>\n"}}],"comment":" ","src":"model/model.js"};
+		var docObject = {"parent":"can.Model.static","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.Model.models","description":"<p>Convert raw data into can.Model instances. Merge data with items in the store if matches are found.</p>\n","title":"models","deprecated":[{"version":"2.1","description":"<p>Prior to 2.1, <code>.models</code> was used to convert the ajax\nresponses into a data format useful for converting them into an observable\nlist AND for converting them into that list. In 2.1, [can.Model.parseModels] should\nbe used to convert the ajax responses into a data format useful to [can.Model.models].</p>\n"}],"signatures":[{"code":"can.Model.models(data[, oldList])","description":"","params":[{"types":[{"type":"Array","template":[{"types":[{"type":"Object","options":[]}]}]}],"name":"data","description":"<p>The raw data from a <code>[can.Model.findAll findAll()]</code> request.</p>\n"},{"types":[{"type":"can.Model.List"}],"optional":true,"name":"oldList","description":"<p>If supplied, this List will be updated with the data from\n<strong>data</strong>.</p>\n"}],"returns":{"types":[{"type":"can.Model.List"}],"description":"<p>A List of Models made from the raw data.</p>\n"}}],"comment":" ","src":"model/doc/deprecated_models.md"};
 	</script>
 	
 	

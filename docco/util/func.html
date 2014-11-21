@@ -1565,12 +1565,12 @@ function(s) for the success or failure state of both asynchronous and synchronou
 @function can.capitalize
 @parent can.util
 @description Capitalize the first letter of a string.
-
-    can.capitalize('candy is fun!'); //-&gt; Returns: 'Candy is fun!'
-
 @signature `can.capitalize(str)`
 @param {String} str The string to capitalize.
 @return {String} The string with the first letter capitalized.
+
+@body
+    can.capitalize('candy is fun!'); //-&gt; Returns: 'Candy is fun!'
 */</span></pre></div></div>
             
         </li>
@@ -1581,6 +1581,54 @@ function(s) for the success or failure state of both asynchronous and synchronou
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+@function can.camelize
+@parent can.util
+@description Capitalize the first letter after each hyphen in a string.
+@signature `can.camelize(str)`
+@param {String} str The string to camelize.
+@return {String} The string with the first letter after each hyphen capitalized.
+
+@body
+    can.camelize('hello-world'); //-&gt; Returns: 'helloWorld'
+*/</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+@function can.hyphenate
+@parent can.util
+@description Adds a hyphen before each uppercase letter and converts the entire string to lower case.
+@signature `can.hyphenate(str)`
+@param {String} str The string to hyphenate.
+@return {String} The lowercase string with hyphens added before each letter that was uppercase in the source string.
+
+@body
+    can.hyphenate('helloWorld'); //-&gt; Returns: 'hello-world'
+*/</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-54">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               
             </div>
@@ -1609,11 +1657,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-53">
+        <li id="section-55">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               
             </div>
@@ -1639,11 +1687,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-54">
+        <li id="section-56">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
+                <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
               
             </div>
@@ -1666,11 +1714,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-55">
+        <li id="section-57">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
+                <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
               
             </div>
@@ -1695,11 +1743,11 @@ Gets an object from a string.  It can also modify objects on the 'object path' b
         </li>
         
         
-        <li id="section-56">
+        <li id="section-58">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
+                <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
               
             </div>
@@ -1750,11 +1798,11 @@ Gets an object from a string.  It can also modify objects on the 'object path' b
         </li>
         
         
-        <li id="section-57">
+        <li id="section-59">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-57">&#182;</a>
+                <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
               
             </div>
@@ -1768,11 +1816,11 @@ Gets an object from a string.  It can also modify objects on the 'object path' b
         </li>
         
         
-        <li id="section-58">
+        <li id="section-60">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-58">&#182;</a>
+                <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
               
             </div>

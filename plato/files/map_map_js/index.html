@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">63.87</p>
+      <p class="stat">63.78</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">670</p>
+      <p class="stat">678</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">101.51</p>
+      <p class="stat">101.75</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">5.25</p>
+      <p class="stat">5.30</p>
     </div>
   </div>
 </div>
@@ -151,7 +151,14 @@ steal(&#039;can/util&#039;, &#039;can/util/bind&#039;,&#039;./bubble.js&#039;, &
 					//!steal-remove-end
 					for (var prop in this.prototype) {
 						// Non-functions are regular defaults.
-						if (prop !== &quot;define&quot; &amp;&amp; typeof this.prototype[prop] !== &quot;function&quot;) {
+						if (
+							prop !== &quot;define&quot; &amp;&amp;
+							prop !== &quot;constructor&quot; &amp;&amp;
+							(
+								typeof this.prototype[prop] !== &quot;function&quot; ||
+								this.prototype[prop].prototype instanceof can.Construct
+							)
+						) {
 							this.defaults[prop] = this.prototype[prop];
 						// Functions with an `isComputed` property are computes.
 						} else if (this.prototype[prop].isComputed) {
@@ -202,7 +209,7 @@ steal(&#039;can/util&#039;, &#039;can/util/bind&#039;,&#039;./bubble.js&#039;, &
 				// Parses attribute name into its parts.
 				attrParts: function (attr, keepKey) {
 					//Keep key intact
-					
+
 					if (keepKey ) {
 						return [attr];
 					}
@@ -278,7 +285,7 @@ steal(&#039;can/util&#039;, &#039;can/util/bind&#039;,&#039;./bubble.js&#039;, &
 						firstSerialize = false;
 					if(!serializeMap) {
 						firstSerialize = true;
-						// Serialize might call .attr() so we need to keep different map 
+						// Serialize might call .attr() so we need to keep different map
 						serializeMap = {
 							attr: {},
 							serialize: {}
@@ -346,7 +353,7 @@ steal(&#039;can/util&#039;, &#039;can/util/bind&#039;,&#039;./bubble.js&#039;, &
 				if(obj instanceof can.Map){
 					obj = obj.serialize();
 				}
-				
+
 				// `_data` is where we keep the properties.
 				this._data = {};
 				/**
@@ -359,8 +366,10 @@ steal(&#039;can/util&#039;, &#039;can/util/bind&#039;,&#039;./bubble.js&#039;, &
 				can.cid(this, &quot;.map&quot;);
 				// Sets all `attrs`.
 				this._init = 1;
-				// It&#039;s handy if we pass this to comptues, because computes can have a default value.
-				var defaultValues = this._setupDefaults();
+				this._computedBindings = {};
+
+				// It&#039;s handy if we pass this to computes, because computes can have a default value.
+				var defaultValues = this._setupDefaults(obj);
 				this._setupComputes(defaultValues);
 				var teardownMapping = obj &amp;&amp; can.Map.helpers.addToMap(obj, this);
 
@@ -380,7 +389,6 @@ steal(&#039;can/util&#039;, &#039;can/util/bind&#039;,&#039;./bubble.js&#039;, &
 			// Sets up computed properties on a Map.
 			_setupComputes: function () {
 				var computes = this.constructor._computes;
-				this._computedBindings = {};
 
 				for (var i = 0, len = computes.length, prop; i &lt; len; i++) {
 					prop = computes[i];
@@ -408,11 +416,11 @@ steal(&#039;can/util&#039;, &#039;can/util/bind&#039;,&#039;./bubble.js&#039;, &
 					target: ev.target
 				}, [newVal, oldVal]);
 
-				
+
 			},
 			// Trigger a change event.
 			_triggerChange: function (attr, how, newVal, oldVal) {
-				// so this change can bubble ... a bubbling change triggers the 
+				// so this change can bubble ... a bubbling change triggers the
 				// _changes trigger
 				if(bubble.isBubbling(this, &quot;change&quot;)) {
 					can.batch.trigger(this, {
@@ -422,7 +430,7 @@ steal(&#039;can/util&#039;, &#039;can/util/bind&#039;,&#039;./bubble.js&#039;, &
 				} else {
 					can.batch.trigger(this, attr, [newVal, oldVal]);
 				}
-				
+
 				if(how === &quot;remove&quot; || how === &quot;add&quot;) {
 					can.batch.trigger(this, {
 						type: &quot;__keys&quot;,
@@ -503,8 +511,8 @@ steal(&#039;can/util&#039;, &#039;can/util/bind&#039;,&#039;./bubble.js&#039;, &
 			_get: function (attr) {
 				attr = &quot;&quot;+attr;
 				var dotIndex = attr.indexOf(&#039;.&#039;);
-				
-				
+
+
 				// Handles the case of a key having a `.` in its name
 				// Otherwise we have to dig deeper into the Map to get the value.
 				if( dotIndex &gt;= 0 ) {
@@ -566,9 +574,9 @@ steal(&#039;can/util&#039;, &#039;can/util/bind&#039;,&#039;./bubble.js&#039;, &
 				if(!keepKey &amp;&amp; dotIndex &gt;= 0){
 					var first = attr.substr(0, dotIndex),
 						second = attr.substr(dotIndex+1);
-						
+
 					current =  this._init ? undefined : this.__get( first );
-					
+
 					if( Map.helpers.isObservable(current) ) {
 						current._set(second, value);
 					} else {

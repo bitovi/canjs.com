@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">65.69</p>
+      <p class="stat">65.43</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">711</p>
+      <p class="stat">731</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">92.63</p>
+      <p class="stat">98.88</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">4.52</p>
+      <p class="stat">4.70</p>
     </div>
   </div>
 </div>
@@ -750,7 +750,8 @@ steal(&#039;can/util&#039;, &#039;can/util/bind&#039;, &#039;can/util/batch&#039
 					// call that method
 					if (options.returnObserveMethods) {
 						cur = cur[reads[i]];
-					} else if (reads[i] === &#039;constructor&#039; &amp;&amp; prev instanceof can.Construct) {
+					} else if ( (reads[i] === &#039;constructor&#039; &amp;&amp; prev instanceof can.Construct) ||
+						(prev[reads[i]].prototype instanceof can.Construct)) {
 						cur = prev[reads[i]];
 					} else {
 						cur = prev[reads[i]].apply(prev, options.args || []);
@@ -761,7 +762,12 @@ steal(&#039;can/util&#039;, &#039;can/util/bind&#039;, &#039;can/util/batch&#039
 				}
 			} else {
 				// just do the dot operator
-				cur = prev[reads[i]];
+				if(cur == null) {
+					cur = undefined;
+				} else {
+					cur = prev[reads[i]];
+				}
+				
 			}
 			type = typeof cur;
 			// If it&#039;s a compute, get the compute&#039;s value
@@ -812,6 +818,20 @@ steal(&#039;can/util&#039;, &#039;can/util/bind&#039;, &#039;can/util/batch&#039
 			value: cur,
 			parent: prev
 		};
+	};
+
+	can.compute.set = function(parent, key, value) {
+		if(isObserve(parent)) {
+			return parent.attr(key, value);
+		}
+
+		if(parent[key] &amp;&amp; parent[key].isComputed) {
+			return parent[key](value);
+		}
+
+		if(typeof parent === &#039;object&#039;) {
+			parent[key] = value;
+		}
 	};
 
 	return can.compute;

@@ -2641,7 +2641,8 @@ Check if there is a method directly in the “top” context.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> initialValue = computeData.initialValue;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> initialValue = computeData.initialValue,
+				helperObj = Mustache.getHelper(key, options);</pre></div></div>
             
         </li>
         
@@ -2656,7 +2657,7 @@ Check if there is a method directly in the “top” context.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (initialValue === <span class="hljs-literal">undefined</span> &amp;&amp; !isHelper) {
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (initialValue === <span class="hljs-literal">undefined</span> &amp;&amp; !isHelper &amp;&amp; !helperObj) {
 				can.dev.warn(<span class="hljs-string">'can/view/mustache/mustache.js: Unable to find key "'</span> + key + <span class="hljs-string">'".'</span>);
 			}</pre></div></div>
             
@@ -2809,7 +2810,10 @@ passed in object.</p>
 		 * Returns a helper given the name.
 		 */</span>
 		Mustache.getHelper = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name, options)</span> </span>{
-			<span class="hljs-keyword">var</span> helper = options.attr(<span class="hljs-string">"helpers."</span> + name);
+			<span class="hljs-keyword">var</span> helper;
+			<span class="hljs-keyword">if</span> (options) {
+				helper = options.attr(<span class="hljs-string">"helpers."</span> + name);
+			}
 			<span class="hljs-keyword">return</span> helper ? {
 				fn: helper
 			} : <span class="hljs-keyword">this</span>._helpers[name];

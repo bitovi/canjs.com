@@ -341,7 +341,7 @@
 					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.Model.makeFindAll.html" 
-							data-search="can.Model.makeFindAll">
+							data-search="makeFindAll">
 							makeFindAll
 						</a>
 						
@@ -627,7 +627,7 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/master/model/model.js">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/master/model/doc/parseModel.md">source</a></li>
 	
 	
 	
@@ -748,21 +748,25 @@ overwriting <code>can.Model.parseModel</code> is the best way to normalize it.</
 <h2>Expected data format</h2>
 <p>By default, <a href="can.Model.model.html">model</a> expects data to be a name-value pair
 object like:</p>
-<p>{id: 1, name : &quot;dishes&quot;}</p>
+<pre><code>{id: 1, name : &quot;dishes&quot;}
+</code></pre>
 <p>If your data does not look like this, you probably want to overwrite <code>parseModel</code>.</p>
 <h2>Overwriting parseModel</h2>
 <p>If your service returns data like:</p>
-<p>{ thingsToDo: {name: &quot;dishes&quot;, id: 5} }</p>
+<pre><code>{ thingsToDo: {name: &quot;dishes&quot;, id: 5} }
+</code></pre>
 <p>You will want to overwrite <code>parseModel</code> to pass the model what it expects like:</p>
-<p>Task = can.Model.extend({
-parseModel: function(data){
-return data.thingsToDo;
-}
-},{});</p>
+<pre><code>Task = can.Model.extend({
+ parseModel: function(data){
+   return data.thingsToDo;
+ }
+},{});
+</code></pre>
 <p>You could also do this like:</p>
-<p>Task = can.Model.extend({
-parseModel: &quot;thingsToDo&quot;
-},{});</p>
+<pre><code>Task = can.Model.extend({
+ parseModel: &quot;thingsToDo&quot;
+},{});
+</code></pre>
 
 		</section>
 		
@@ -824,7 +828,7 @@ parseModel: &quot;thingsToDo&quot;
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Model.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"name":"can.Model.parseModel","type":"function","description":"<p>Convert raw data into an object that can be used to create a [can.Model] instance.</p>\n","title":"parseModel","signatures":[{"code":"can.Model.parseModel( data, xhr )","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"data","description":"<p>The data to convert to a can.Model instance.</p>\n"},{"types":[{"type":"XMLHTTPRequest"}],"name":"xhr","description":"<p>The XMLHTTPRequest object used to make the request.</p>\n"}],"release":"2.1","returns":{"types":[{"type":"Object","options":[]}],"description":"<p>An object of properties to set at the [can.Model::attr attributes]\nof a model instance.</p>\n"}},{"code":"parseModel: \"PROPERTY\"","description":"<p>Creates a <code>parseModel</code> function that looks for the attributes object in the PROPERTY\nproperty of raw instance data.</p>\n","params":[]}],"comment":" ","src":"model/model.js"};
+		var docObject = {"parent":"can.Model.static","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.Model.parseModel","description":"<p>Convert raw data into an object that can be used to create a [can.Model] instance.</p>\n","title":"parseModel","signatures":[{"code":"can.Model.parseModel( data, xhr )","description":"","params":[{"types":[{"type":"Object","options":[]}],"name":"data","description":"<p>The data to convert to a can.Model instance.</p>\n"},{"types":[{"type":"XMLHTTPRequest"}],"name":"xhr","description":"<p>The XMLHTTPRequest object used to make the request.</p>\n"}],"release":"2.1","returns":{"types":[{"type":"Object","options":[]}],"description":"<p>An object of properties to set at the [can.Model::attr attributes]\nof a model instance.</p>\n"}},{"code":"parseModel: \"PROPERTY\"","description":"<p>Creates a <code>parseModel</code> function that looks for the attributes object in the PROPERTY\nproperty of raw instance data.</p>\n","params":[]}],"comment":" ","src":"model/doc/parseModel.md"};
 	</script>
 	
 	

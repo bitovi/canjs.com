@@ -343,7 +343,7 @@
 					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.Model.makeFindAll.html" 
-							data-search="can.Model.makeFindAll">
+							data-search="makeFindAll">
 							makeFindAll
 						</a>
 						
@@ -627,7 +627,7 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/master/model/model.js">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/master/model/doc/findOne.md">source</a></li>
 	
 	
 	
@@ -731,9 +731,10 @@ XmlHttpRequest object.</p>
 <p>Implements <code>findOne</code> with a <a href="can.Model.findOneData.html">function</a>. This function
 is passed to <a href="can.Model.makeFindOne.html">makeFindOne</a> to create the external
 <code>findOne</code> method.</p>
-<p>findOne: function(params){
-return $.get(&quot;/task/&quot;+params.id)
-}</p>
+<pre><code>findOne: function(params){
+ return $.get(&quot;/task/&quot;+params.id)
+}
+</code></pre>
 
 
 	<h3>Parameters</h3>
@@ -770,7 +771,8 @@ that resolves to that instance.</p>
 </h2>
 <div class="signature-wrapper">
 <p>Implements <code>findOne</code> with a HTTP method and url to retrieve an instance's data.</p>
-<p>findOne: &quot;GET /tasks/{id}&quot;</p>
+<pre><code>findOne: &quot;GET /tasks/{id}&quot;
+</code></pre>
 <p>If <code>findOne</code> is implemented with a string, this gets converted to
 a <a href="can.Model.makeFindOne.html">makeFindOne function</a>
 which is passed to <a href="can.Model.makeFindOne.html">makeFindOne</a> to create the external
@@ -867,35 +869,51 @@ specifies the options available to pass to <a href="can.ajax.html">can.ajax</a>.
 <p><code>findOne( params, success(instance), error(xhr) ) -&gt; Deferred</code> is used to retrieve a model
 instance from the server.</p>
 <p>Use <code>findOne</code> like:</p>
-<p>Recipe.findOne({id: 57}, function(recipe){
+<pre><code>Recipe.findOne({id: 57}, function(recipe){
 recipe.attr('name') //-&gt; &quot;Ice Water&quot;
 }, function( xhr ){
 // called if an error
-}) //-&gt; Deferred</p>
+}) //-&gt; Deferred
+</code></pre>
 <p>Before you can use <code>findOne</code>, you must implement it.</p>
 <h2>Implement with a URL</h2>
 <p>Implement findAll with a url like:</p>
-<p>Recipe = can.Model.extend({
-findOne : &quot;/recipes/{id}.json&quot;
-},{});</p>
-<p>If <code>findOne</code> is called like:</p>
+<pre><code>Recipe = can.Model.extend({
+ findOne : &quot;/recipes/{id}.json&quot;
+},{});
+``
+
+If `findOne` is called like:
+
+</code></pre>
 <p>Recipe.findOne({id: 57});</p>
-<p>The server should return data that looks like:</p>
+<pre><code>
+The server should return data that looks like:
+
+</code></pre>
 <p>{&quot;id&quot; : 57, &quot;name&quot;: &quot;Ice Water&quot;}</p>
-<h2>Implement with an Object</h2>
-<p>Implement <code>findOne</code> with an object that specifies the parameters to
-<code>can.ajax</code> (jQuery.ajax) like:</p>
+<pre><code>
+## Implement with an Object
+
+Implement `findOne` with an object that specifies the parameters to
+`can.ajax` (jQuery.ajax) like:
+
+</code></pre>
 <p>Recipe = can.Model.extend({
 findOne : {
 url: &quot;/recipes/{id}.xml&quot;,
 dataType: &quot;xml&quot;
 }
 },{})</p>
-<h2>Implement with a Function</h2>
-<p>To implement with a function, <code>findOne</code> is passed <strong>params</strong> to specify
+<pre><code>
+## Implement with a Function
+
+To implement with a function, `findOne` is passed __params__ to specify
 the instance retrieved from the server and it should return a
 deferred that resolves to the model data.  Also notice that you now need to
-build the URL manually. For example:</p>
+build the URL manually. For example:
+
+</code></pre>
 <p>Recipe = can.Model.extend({
 findOne : function(params){
 return $.ajax({
@@ -904,6 +922,8 @@ type: 'get',
 dataType: 'json'})
 }
 },{})</p>
+<pre><code>
+</code></pre>
 
 		</section>
 		
@@ -965,7 +985,7 @@ dataType: 'json'})
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Model.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"name":"can.Model.findOne","type":"function","description":"<p>Retrieve a resource from a server.</p>\n","title":"findOne","signatures":[{"code":"can.Model.findOne( params[, success[, error]] )","description":"<p>Retrieve a single instance from the server.</p>\n","params":[{"types":[{"type":"Object","options":[]}],"name":"params","description":"<p>Values to filter the request or results with.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"can.Model"}],"name":"model"}]}],"optional":true,"name":"success","description":"<p>A callback to call on successful retrieval. The callback recieves\nthe retrieved resource as a can.Model.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"can.AjaxSettings"}],"name":"xhr"}]}],"optional":true,"name":"error","description":"<p>A callback to call when an error occurs. The callback receives the\nXmlHttpRequest object.</p>\n"}],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A deferred that resolves to a [can.Model] instance of the retrieved model</p>\n"}},{"code":"can.Model.findOne: findOneData( params ) -> deferred","description":"<p>Implements <code>findOne</code> with a [can.Model.findOneData function]. This function\nis passed to [can.Model.makeFindOne makeFindOne] to create the external\n<code>findOne</code> method.</p>\n<p>findOne: function(params){\nreturn $.get(&quot;/task/&quot;+params.id)\n}</p>\n","params":[{"types":[{"type":"can.Model.findOneData"}],"name":"findOneData","description":"<p>A function that accepts parameters\nspecifying an instance to retreive and returns a [can.Deferred]\nthat resolves to that instance.</p>\n"}]},{"code":"can.Model.findOne: \"[METHOD] /path/to/resource\"","description":"<p>Implements <code>findOne</code> with a HTTP method and url to retrieve an instance's data.</p>\n<p>findOne: &quot;GET /tasks/{id}&quot;</p>\n<p>If <code>findOne</code> is implemented with a string, this gets converted to\na [can.Model.makeFindOne makeFindOne function]\nwhich is passed to [can.Model.makeFindOne makeFindOne] to create the external\n<code>findOne</code> method.</p>\n","params":[{"types":[{"type":"HttpMethod"}],"name":"METHOD","description":"<p>An HTTP method. Defaults to <code>&quot;GET&quot;</code>.</p>\n"},{"types":[{"type":"STRING"}],"name":"url","description":"<p>The URL of the service to retrieve JSON data.</p>\n"}]},{"code":"can.Model.findOne: {ajaxSettings}","description":"<p>Implements <code>findOne</code> with a [can.AjaxSettings ajax settings object].</p>\n<p>findOne: {url: &quot;/tasks/{id}&quot;, dataType: &quot;json&quot;}</p>\n<p>If <code>findOne</code> is implemented with an object, it gets converted to\na [can.Model.makeFindOne makeFindOne function]\nwhich is passed to [can.Model.makeFindOne makeFindOne] to create the external\n<code>findOne</code> method.</p>\n","params":[{"types":[{"type":"can.AjaxSettings"}],"name":"ajaxSettings","description":"<p>A settings object that\nspecifies the options available to pass to [can.ajax].</p>\n"}]}],"comment":" ","src":"model/model.js"};
+		var docObject = {"parent":"can.Model.static","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.Model.findOne","description":"<p>Retrieve a resource from a server.</p>\n","title":"findOne","signatures":[{"code":"can.Model.findOne( params[, success[, error]] )","description":"<p>Retrieve a single instance from the server.</p>\n","params":[{"types":[{"type":"Object","options":[]}],"name":"params","description":"<p>Values to filter the request or results with.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"can.Model"}],"name":"model"}]}],"optional":true,"name":"success","description":"<p>A callback to call on successful retrieval. The callback recieves\nthe retrieved resource as a can.Model.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"can.AjaxSettings"}],"name":"xhr"}]}],"optional":true,"name":"error","description":"<p>A callback to call when an error occurs. The callback receives the\nXmlHttpRequest object.</p>\n"}],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A deferred that resolves to a [can.Model] instance of the retrieved model</p>\n"}},{"code":"can.Model.findOne: findOneData( params ) -> deferred","description":"<p>Implements <code>findOne</code> with a [can.Model.findOneData function]. This function\nis passed to [can.Model.makeFindOne makeFindOne] to create the external\n<code>findOne</code> method.</p>\n<pre><code>findOne: function(params){\n return $.get(&quot;/task/&quot;+params.id)\n}\n</code></pre>\n","params":[{"types":[{"type":"can.Model.findOneData"}],"name":"findOneData","description":"<p>A function that accepts parameters\nspecifying an instance to retreive and returns a [can.Deferred]\nthat resolves to that instance.</p>\n"}]},{"code":"can.Model.findOne: \"[METHOD] /path/to/resource\"","description":"<p>Implements <code>findOne</code> with a HTTP method and url to retrieve an instance's data.</p>\n<pre><code>findOne: &quot;GET /tasks/{id}&quot;\n</code></pre>\n<p>If <code>findOne</code> is implemented with a string, this gets converted to\na [can.Model.makeFindOne makeFindOne function]\nwhich is passed to [can.Model.makeFindOne makeFindOne] to create the external\n<code>findOne</code> method.</p>\n","params":[{"types":[{"type":"HttpMethod"}],"name":"METHOD","description":"<p>An HTTP method. Defaults to <code>&quot;GET&quot;</code>.</p>\n"},{"types":[{"type":"STRING"}],"name":"url","description":"<p>The URL of the service to retrieve JSON data.</p>\n"}]},{"code":"can.Model.findOne: {ajaxSettings}","description":"<p>Implements <code>findOne</code> with a [can.AjaxSettings ajax settings object].</p>\n<p>findOne: {url: &quot;/tasks/{id}&quot;, dataType: &quot;json&quot;}</p>\n<p>If <code>findOne</code> is implemented with an object, it gets converted to\na [can.Model.makeFindOne makeFindOne function]\nwhich is passed to [can.Model.makeFindOne makeFindOne] to create the external\n<code>findOne</code> method.</p>\n","params":[{"types":[{"type":"can.AjaxSettings"}],"name":"ajaxSettings","description":"<p>A settings object that\nspecifies the options available to pass to [can.ajax].</p>\n"}]}],"comment":" ","src":"model/doc/findOne.md"};
 	</script>
 	
 	
