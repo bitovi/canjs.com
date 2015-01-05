@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>view/scope/scope.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">60.09</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">321</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">44.11</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">1.64</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">// # can/view/scope/scope.js
+//
+// This allows you to define a lookup context and parent contexts that a key&#039;s value can be retrieved from.
+// If no parent scope is provided, only the scope&#039;s context will be explored for values.
+
+steal(
+	&#039;can/util&#039;,
+	&#039;can/construct&#039;,
+	&#039;can/map&#039;,
+	&#039;can/list&#039;,
+	&#039;can/view&#039;,
+	&#039;can/compute&#039;, function (can) {
+
+		// ## Helpers
+
+		// Regex for escaped periods
+		var escapeReg = /(\\)?\./g,
+		// Regex for double escaped periods
+			escapeDotReg = /\\\./g,
+		// **getNames**
+		// Returns array of names by splitting provided string by periods and single escaped periods.
+		// ```getNames(&quot;a.b\.c.d\\.e&quot;) //-&gt; [&#039;a&#039;, &#039;b&#039;, &#039;c&#039;, &#039;d.e&#039;]```
+			getNames = function (attr) {
+				var names = [],
+					last = 0;
+				// Goes through attr string and places the characters found between the periods and single escaped periods into the
+				// `names` array.  Double escaped periods are ignored.
+				attr.replace(escapeReg, function (first, second, index) {
+					/* If period is double escaped then leave in place */
+					if (!second) {
+						names.push(
+							attr
+								.slice(last, index)
+								/* replaces double-escaped period with period */
+								.replace(escapeDotReg, &#039;.&#039;)
+						);
+						last = index + first.length;
+					}
+				});
+				/* Adds last portion of attr to names array */
+				names.push(
+					attr
+						.slice(last)
+						/* replaces double-escaped period with period */
+						.replace(escapeDotReg, &#039;.&#039;)
+				);
+				return names;
+			};
+
+		/**
+		 * @add can.view.Scope
+		 */
+		var Scope = can.Construct.extend(
+
+			/**
+			 * @static
+			 */
+			{
+				// ## Scope.read
+				// Scope.read was moved to can.compute.read
+				// can.compute.read reads properties from a parent.  A much more complex version of getObject.
+				read: can.compute.read
+			},
+			/**
+			 * @prototype
+			 */
+			{
+				init: function (context, parent) {
+					this._context = context;
+					this._parent = parent;
+					this.__cache = {};
+				},
+
+				// ## Scope.prototype.attr
+				// Reads a value from the current context or parent contexts.
+				attr: function (key, value) {
+					// Reads for whatever called before attr.  It&#039;s possible
+					// that this.read clears them.  We want to restore them.
+					var previousReads = can.__clearReading(),
+						res = this.read(key, {
+							isArgument: true,
+							returnObserveMethods: true,
+							proxyMethods: false
+						});
+
+					// Allow setting a value on the context
+					if(arguments.length === 2) {
+						var lastIndex = key.lastIndexOf(&#039;.&#039;),
+							// Either get the paren of a key or the current context object with `.`
+							readKey = lastIndex !== -1 ? key.substring(0, lastIndex) : &#039;.&#039;,
+							obj = this.read(readKey, {
+								isArgument: true,
+								returnObserveMethods: true,
+								proxyMethods: false
+							}).value;
+
+						if(lastIndex !== -1) {
+							// Get the last part of the key which is what we want to set
+							key = key.substring(lastIndex + 1, key.length);
+						}
+
+						can.compute.set(obj, key, value);
+					}
+
+					can.__setReading(previousReads);
+					return res.value;
+				},
+
+				// ## Scope.prototype.add
+				// Creates a new scope and sets the current scope to be the parent.
+				// ```
+				// var scope = new can.view.Scope([{name:&quot;Chris&quot;}, {name: &quot;Justin&quot;}]).add({name: &quot;Brian&quot;});
+				// scope.attr(&quot;name&quot;) //-&gt; &quot;Brian&quot;
+				// ```
+				add: function (context) {
+					if (context !== this._context) {
+						return new this.constructor(context, this);
+					} else {
+						return this;
+					}
+				},
+
+				// ## Scope.prototype.computeData
+				// Finds the first location of the key in the scope and then provides a get-set compute that represents the key&#039;s value
+				// and other information about where the value was found.
+				computeData: function (key, options) {
+					options = options || {
+						args: []
+					};
+					var self = this,
+						rootObserve,
+						rootReads,
+						computeData = {
+							// computeData.compute returns a get-set compute that is tied to the first location of the provided
+							// key in the context of the scope.
+							compute: can.compute(function (newVal) {
+								// **Compute setter**
+								if (arguments.length) {
+									if(rootObserve.isComputed) {
+										rootObserve(newVal);
+									} else if(rootReads.length) {
+										var last = rootReads.length - 1;
+										var obj = rootReads.length ? can.compute.read(rootObserve, rootReads.slice(0, last)).value
+											: rootObserve;
+										can.compute.set(obj, rootReads[last], newVal);
+									}
+									// **Compute getter**
+								} else {
+									// If computeData has found the value for the key in the past in an observable then go directly to
+									// the observable (rootObserve) that the value was found in the last time and return the new value.  This
+									// is a huge performance gain for the fact that we aren&#039;t having to check the entire scope each time.
+									if (rootObserve) {
+										return can.compute.read(rootObserve, rootReads, options)
+											.value;
+									}
+									// If the key has not already been located in a observable then we need to search the scope for the
+									// key.  Once we find the key then we need to return it&#039;s value and if it is found in an observable
+									// then we need to store the observable so the next time this compute is called it can grab the value
+									// directly from the observable.
+									var data = self.read(key, options);
+									rootObserve = data.rootObserve;
+									rootReads = data.reads;
+									computeData.scope = data.scope;
+									computeData.initialValue = data.value;
+									computeData.reads = data.reads;
+									computeData.root = rootObserve;
+									return data.value;
+								}
+							})
+						};
+					return computeData;
+				},
+
+				// ## Scope.prototype.compute
+				// Provides a get-set compute that represents a key&#039;s value.
+				compute: function (key, options) {
+					return this.computeData(key, options)
+						.compute;
+				},
+
+				// ## Scope.prototype.read
+				// Finds the first isntance of a key in the available scopes and returns the keys value along with the the observable the key
+				// was found in, readsData and the current scope.
+				/**
+				 * @hide
+				 * @param {can.mustache.key} attr A dot seperated path.  Use `&quot;\.&quot;` if you have a property name that includes a dot.
+				 * @param {can.view.Scope.readOptions} options that configure how this gets read.
+				 * @return {{}}
+				 * @option {Object} parent the value&#039;s immediate parent
+				 * @option {can.Map|can.compute} rootObserve the first observable to read from.
+				 * @option {Array&lt;String&gt;} reads An array of properties that can be used to read from the rootObserve to get the value.
+				 * @option {*} value the found value
+				 */
+				read: function (attr, options) {
+					// check if we should only look within current scope
+					var stopLookup;
+					if(attr.substr(0, 2) === &#039;./&#039;) {
+						// set flag to halt lookup from walking up scope
+						stopLookup = true;
+						// stop lookup from checking parent scopes
+						attr = attr.substr(2);
+					}
+					// check if we should be running this on a parent.
+					else if (attr.substr(0, 3) === &quot;../&quot;) {
+						return this._parent.read(attr.substr(3), options);
+					} else if (attr === &quot;..&quot;) {
+						return {
+							value: this._parent._context
+						};
+					} else if (attr === &quot;.&quot; || attr === &quot;this&quot;) {
+						return {
+							value: this._context
+						};
+					}
+
+					// Array of names from splitting attr string into names.  ```&quot;a.b\.c.d\\.e&quot; //-&gt; [&#039;a&#039;, &#039;b&#039;, &#039;c&#039;, &#039;d.e&#039;]```
+					var names = attr.indexOf(&#039;\\.&#039;) === -1 ?
+							// Reference doesn&#039;t contain escaped periods
+							attr.split(&#039;.&#039;)
+							// Reference contains escaped periods ```(`a.b\.c.foo` == `a[&quot;b.c&quot;].foo)```
+							: getNames(attr),
+					// The current context (a scope is just data and a parent scope).
+						context,
+					// The current scope.
+						scope = this,
+					// While we are looking for a value, we track the most likely place this value will be found.
+					// This is so if there is no me.name.first, we setup a listener on me.name.
+					// The most likely candidate is the one with the most &quot;read matches&quot; &quot;lowest&quot; in the
+					// context chain.
+					// By &quot;read matches&quot;, we mean the most number of values along the key.
+					// By &quot;lowest&quot; in the context chain, we mean the closest to the current context.
+					// We track the starting position of the likely place with `defaultObserve`.
+						defaultObserve,
+					// Tracks how to read from the defaultObserve.
+						defaultReads = [],
+					// Tracks the highest found number of &quot;read matches&quot;.
+						defaultPropertyDepth = -1,
+					// `scope.read` is designed to be called within a compute, but
+					// for performance reasons only listens to observables within one context.
+					// This is to say, if you have me.name in the current context, but me.name.first and
+					// we are looking for me.name.first, we don&#039;t setup bindings on me.name and me.name.first.
+					// To make this happen, we clear readings if they do not find a value.  But,
+					// if that path turns out to be the default read, we need to restore them.  This
+					// variable remembers those reads so they can be restored.
+						defaultComputeReadings,
+					// Tracks the default&#039;s scope.
+						defaultScope,
+					// Tracks the first found observe.
+						currentObserve,
+					// Tracks the reads to get the value for a scope.
+						currentReads;
+
+					// Goes through each scope context provided until it finds the key (attr).  Once the key is found
+					// then it&#039;s value is returned along with an observe, the current scope and reads.
+					// While going through each scope context searching for the key, each observable found is returned and
+					// saved so that either the observable the key is found in can be returned, or in the case the key is not
+					// found in an observable the closest observable can be returned.
+
+					while (scope) {
+						context = scope._context;
+						if (context !== null) {
+							var data = can.compute.read(context, names, can.simpleExtend({
+								/* Store found observable, incase we want to set it as the rootObserve. */
+								foundObservable: function (observe, nameIndex) {
+									currentObserve = observe;
+									currentReads = names.slice(nameIndex);
+								},
+								// Called when we were unable to find a value.
+								earlyExit: function (parentValue, nameIndex) {
+									/* If this has more matching values */
+									if (nameIndex &gt; defaultPropertyDepth) {
+										defaultObserve = currentObserve;
+										defaultReads = currentReads;
+										defaultPropertyDepth = nameIndex;
+										defaultScope = scope;
+										/* Clear and save readings so next attempt does not use these readings */
+										defaultComputeReadings = can.__clearReading();
+									}
+								},
+								// Execute anonymous functions found along the way
+								executeAnonymousFunctions: true
+							}, options));
+							// **Key was found**, return value and location data
+							if (data.value !== undefined) {
+								return {
+									scope: scope,
+									rootObserve: currentObserve,
+									value: data.value,
+									reads: currentReads
+								};
+							}
+						}
+						// Prevent prior readings and then move up to the next scope.
+						can.__clearReading();
+						if(!stopLookup) {
+							// Move up to the next scope.
+							scope = scope._parent;
+						} else {
+							scope = null;
+						}
+					}
+
+					// **Key was not found**, return undefined for the value.  Unless an observable was
+					// found in the process of searching for the key, then return the most likely observable along with it&#039;s
+					// scope and reads.
+
+					if (defaultObserve) {
+						can.__setReading(defaultComputeReadings);
+						return {
+							scope: defaultScope,
+							rootObserve: defaultObserve,
+							reads: defaultReads,
+							value: undefined
+						};
+					} else {
+						return {
+							names: names,
+							value: undefined
+						};
+					}
+				}
+			});
+
+		can.view.Scope = Scope;
+		return Scope;
+	});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

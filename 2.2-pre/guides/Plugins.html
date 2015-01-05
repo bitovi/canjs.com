@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS - Developing Plugins </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	
+	<link rel="stylesheet" type="text/css" href="./static/bundles/static.css">
+	
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs ">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="../../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
+		          <li><a href="http://jquerypp.com">jQuery++</a></li>
+		          <li><a href="http://stealjs.com">StealJS</a></li>
+		          <li><a href="http://funcunit.com">FuncUnit</a></li>
+		          <li><a href="http://documentjs.com">DocumentJS</a></li>
+		        </ul>
+			</div>
+			
+			<ul class="nav">
+		        <li >
+	              <a href="../../index.html">Home</a>
+                </li>
+		       <li class='active'><a href='index.html'>guides</a></li>
+		       <li><a href='../docs/index.html'>api</a></li>
+		        <li class=" community-menu">
+		          <a href="../../community.html#!forums">Community</a>
+		          <ul class="dropdown-menu">
+		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
+		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
+		            <li><a href="http://bithub.com/canjs/app/">Apps</a></li>
+		            <li><a href="http://bithub.com/canjs/plugin/">Plugins</a></li>
+		            <li><a href="http://bithub.com/canjs/article/">Articles</a></li>
+		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		          </ul>
+		        </li>
+		        <li >
+	              <a href="../../blog/index.html">Blog</a>
+                </li>
+		        <li >
+	              <a href="../../download.html">Download</a>
+                </li>
+	      	</ul>
+			
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+			
+		</nav>
+	</header>
+
+	
+<div class="container api">
+
+	
+	<nav class="sidebar">
+		
+		<h2 id="version">
+	<select id='versions'></select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="Tutorial.html" data-search="Getting Started">
+				Getting Started
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Using.html" data-search="Setting up CanJS">
+				Setting up CanJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Recipes.html" data-search="Recipes">
+				Recipes
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container active">
+	   		<a href="contributing.html" data-search="How to Contribute">
+				How to Contribute
+			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+				
+				
+					<li class="search-container active  expanded">
+						<a 	class="page" 
+							href="Plugins.html" 
+							data-search="Developing Plugins">
+							Developing Plugins
+						</a>
+						
+							
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="changelog.html" data-search="Changelog">
+				Changelog
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="license.html" data-search="License">
+				License
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="migrating.html" data-search="Migrating to 2.0">
+				Migrating to 2.0
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="roadmap.html" data-search="Roadmap">
+				Roadmap
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	
+	
+	
+	<article class="content docs">
+	
+	
+		
+		<section class="title">
+			<div class="heading">
+<h1>Developing Plugins</h1>
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	
+		<span class="module">Plugins</span>
+	
+	
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+    
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/2.2-pre/guides/plugins.md">source</a></li>
+	
+	
+	
+</ul>
+<br />
+		</section>
+		
+		
+		
+		<section class="contents">
+		</section>
+		
+		
+		
+
+		
+
+		
+			
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<p>In this guide you'll learn how to build a plugin for CanJS. As is standard with programming tutorials, we'll build something that says &quot;Hello World&quot;.</p>
+<h2>Setup</h2>
+<p>We'll be using <a href="http://yeoman.io">Yeoman</a> and a generator built to scaffold CanJS plugins. If you don't want to use Yeoman, you will have to create the files mentioned in this guide yourself. The <a href="https://github.com/ccummings/canjs-hello-world">canjs-hello-world</a> repository is where you can grok all of the files the Yeoman generator creates.</p>
+<h3>1) Install Yeoman</h3>
+<p>The first thing you need to do is install Yeoman and <a href="https://github.com/ccummings/generator-canjs-plugin"><code>generator-canjs-plugin</code></a> which will allow you to quickly scaffold a CanJS plugin.</p>
+<p>Install both by running the following on the command line:</p>
+<pre><code>npm install -g yo generator-canjs-plugin
+</code></pre>
+<p><em>For help installing or using Yeoman, there is the <a href="http://yeoman.io/gettingstarted.html">Yeoman getting started guide</a></em></p>
+<h3>2) Run the generator</h3>
+<p>Next create a directory for your plugin and <code>cd</code> into it:</p>
+<pre><code>mkdir canjs-hello-world &amp;&amp; cd canjs-hello-world
+</code></pre>
+<p>Then run the generator:</p>
+<pre><code>yo canjs-plugin
+</code></pre>
+<p>After answering a series of questions about your plugin the generator will create the files and install all of the dependencies you need to develop, test and publish your CanJS plugin.</p>
+<h2>Develop</h2>
+<p>Now that you have a scaffold in place, you'll start building your plugin.</p>
+<h3>Modify the Source</h3>
+<p>A single source file will be placed in the <code>src</code> directory. This is where you will add your plugin code. Here's what your plugin should look like:</p>
+<pre><code>can.hello = function() {
+    return 'Hello World';
+};
+</code></pre>
+<p><strong>Notice that the file includes bootstrapping that allows it to work with AMD loaders, Steal or stand alone with no dependency management tool.</strong></p>
+<h3>Write tests</h3>
+<p>A <a href="https://qunitjs.com/">QUnit</a> test file and runner are placed in the <code>test</code> folder. The <code>*_tests.js</code> file is where you will write tests for your plugin. Modify the <code>Hello World</code> test so it looks like this:</p>
+<pre><code>test('Hello World', function() {
+    equal(can.hello(), 'Hello World', 'Works!');
+});
+</code></pre>
+<p>You can run these tests by opening <code>test/qunit.html</code> in a browser or by running <code>grunt test</code> on the command line. Do this now and make sure the test passes.</p>
+<h3>Create examples</h3>
+<p>Examples for AMD, Steal and stand alone are placed in the <code>example</code> folder. Modify the <code>index.html</code> file in each folder to show people how to use your plugin.</p>
+<p>In each of the 3 <code>index.html</code> files replace the line <code>//Demo JS goes here</code> with:</p>
+<pre><code>console.log(can.hello());
+</code></pre>
+<p>Open these files in a browser and look at the console to see &quot;Hello World&quot; being logged.</p>
+<h3>Create Documentation</h3>
+<p>It's highly recommended that you create documentation for your plugin. You can use your plugin repo's wiki or generate a website for it using <a href="https://pages.github.com/">GitHub pages</a>.</p>
+<h2>Grunt work flow</h2>
+<p>Now that you have developed a plugin, tests and examples, it's time to build the plugin using Grunt. The following commands are available:</p>
+<p>Run jsbeautifier and JSHint:</p>
+<pre><code>grunt quality
+</code></pre>
+<p>Run tests:</p>
+<pre><code>grunt test
+</code></pre>
+<p>Run tests and places distributable files in the <code>dist</code> folder:</p>
+<pre><code>grunt build
+</code></pre>
+<h2>Distribute your plugin with Bower</h2>
+<p>The easiest way to distribute your plugin is via <a href="http://bower.io">Bower</a> In order to create a bower package you'll need:</p>
+<ul>
+<li>A valid manifest file (<a href="http://bower.io/#defining-a-package">bower.json</a>) in the root of the project</li>
+<li>All code available at a Git endpoint (hosted at GitHub or BitBucket for example)</li>
+<li>To register your plugin with Bower</li>
+</ul>
+<h3>The manifest</h3>
+<p>A valid <code>bower.json</code> file is created by the generator. If you are coding your plugin from scratch run <code>bower init</code> and answer the series of prompts to generate your own.</p>
+<p><strong>Be sure to include relevant keywords in your manifest. For CanJS plugins use <code>can</code> and any other keywords that are relevant. For can.Components add a keyword of <code>can-components</code>.</strong></p>
+<h3>Git endpoint</h3>
+<p>Each version of your plugin must have a <a href="http://semver.org/">semantic version number</a> and a corresponding Git tag with the same version. You create a Git tag like this:</p>
+<pre><code>$ git tag -a vX.Y.Z -m 'vX.Y.Z'
+</code></pre>
+<h3>Register with Bower</h3>
+<p>Now that you have a valid manifest a Git endpoint and Git tag you are ready to register your plugin. To do this use the <code>bower register</code> command:</p>
+<pre><code>$ bower register [plugin-name] [git-endpoint]
+</code></pre>
+<p><strong>[git-endpoint] is the URL to your repository, typically starting with <code>git://</code>.</strong></p>
+<p>Your plugin is now available via the <a href="http://bower.io/search">bower registry</a>!</p>
+<h2>Wrapping up</h2>
+<p>That's all there is to it. In this guide you developed a CanJS plugin complete with tests and examples and learned how to distribute it via bower.</p>
+<p>If you've created a CanJS plugin we'd love to hear about it over on <a href="http://bithub.com">BitHub</a> <a href="http://webchat.freenode.net/?channels=canjs">IRC</a> or our <a href="http://forum.javascriptmvc.com">forums</a>.</p>
+
+		</section>
+		
+		
+
+		
+	
+	
+	</article>
+	
+	
+
+</div>
+
+
+
+
+
+	
+	
+	<footer>
+		<nav class="container">
+			<a class="brand" href="index.html"></a>
+			<ul class='nav'>
+				<li >
+	              <a href="../../index.html">Home</a>
+	            </li>
+		        <li class='active'><a href='index.html'>guides</a></li>
+		        <li><a href='../docs/index.html'>api</a></li>
+		        <li class="">
+		          <a href="../../community.html#!forums">Community</a>
+		        </li>
+		        <li >
+	              <a href="../../blog/index.html">Blog</a>
+	            </li>
+		        <li >
+	              <a href="../../download.html">Download</a>
+	            </li>
+            </ul>
+		</nav>
+	</footer>
+	
+
+    
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-2302003-11']);
+	  _gaq.push(['_setDomainName', 'canjs.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	
+	</script>
+	
+	<script type="text/javascript">
+		var docObject = {"type":"page","name":"Plugins","src":"guides/plugins.md","description":"","title":"Developing Plugins","parent":"contributing","order":0,"comment":" ","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/justin/dev/canjs"},"dest":"/Users/justin/dev/canjs.com/2.2-pre/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../../documentjs.json","project":{"version":"2.2-pre","name":"canjs","source":"git://github.com/bitovi/canjs#2.2-pre"}};
+	</script>
+	
+	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
+		<script type='text/javascript' 
+				data-main="static"
+				data-config="./static/config.js"
+				src="./static/steal.production.js"
+		    		bundles-path="bundles"></script>
+	
+	
+</body>
+
+</html>

@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>render.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="elements.html">
+                elements.js
+              </a>
+            
+              
+              <a class="source" href="render.html">
+                render.js
+              </a>
+            
+              
+              <a class="source" href="scanner.html">
+                scanner.js
+              </a>
+            
+              
+              <a class="source" href="view.html">
+                view.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>render.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/view'</span>, <span class="hljs-string">'./elements'</span>, <span class="hljs-string">'can/view/live'</span>, <span class="hljs-string">'can/util/string'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, elements, live)</span> </span>{
+
+	<span class="hljs-comment">/**
+	 * Helper(s)
+	 */</span>
+	<span class="hljs-keyword">var</span> pendingHookups = [],
+		tagChildren = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tagName)</span> </span>{
+			<span class="hljs-keyword">var</span> newTag = elements.tagMap[tagName] || <span class="hljs-string">"span"</span>;
+			<span class="hljs-keyword">if</span> (newTag === <span class="hljs-string">"span"</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>innerHTML in IE doesn’t honor leading whitespace after empty elements</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">return</span> <span class="hljs-string">"@@!!@@"</span>;
+			}
+			<span class="hljs-keyword">return</span> <span class="hljs-string">"&lt;"</span> + newTag + <span class="hljs-string">"&gt;"</span> + tagChildren(newTag) + <span class="hljs-string">"&lt;/"</span> + newTag + <span class="hljs-string">"&gt;"</span>;
+		},
+		contentText = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(input, tag)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>If it’s a string, return.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> input === <span class="hljs-string">'string'</span>) {
+				<span class="hljs-keyword">return</span> input;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>If has no value, return an empty string.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!input &amp;&amp; input !== <span class="hljs-number">0</span>) {
+				<span class="hljs-keyword">return</span> <span class="hljs-string">''</span>;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>If it’s an object, and it has a hookup method.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> hook = (input.hookup &amp;&amp;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Make a function call the hookup method.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, id)</span> </span>{
+					input.hookup.call(input, el, id);
+				}) ||</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Or if it’s a <code>function</code>, just use the input.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			(<span class="hljs-keyword">typeof</span> input === <span class="hljs-string">'function'</span> &amp;&amp; input);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Finally, if there is a <code>function</code> to hookup on some dom,
+add it to pending hookups.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (hook) {
+				<span class="hljs-keyword">if</span> (tag) {
+					<span class="hljs-keyword">return</span> <span class="hljs-string">"&lt;"</span> + tag + <span class="hljs-string">" "</span> + can.view.hook(hook) + <span class="hljs-string">"&gt;&lt;/"</span> + tag + <span class="hljs-string">"&gt;"</span>;
+				} <span class="hljs-keyword">else</span> {
+					pendingHookups.push(hook);
+				}
+
+				<span class="hljs-keyword">return</span> <span class="hljs-string">''</span>;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Finally, if all else is <code>false</code>, <code>toString()</code> it.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> <span class="hljs-string">""</span> + input;
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Returns escaped/sanatized content for anything other than a live-binding</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		contentEscape = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(txt, tag)</span> </span>{
+			<span class="hljs-keyword">return</span> (<span class="hljs-keyword">typeof</span> txt === <span class="hljs-string">'string'</span> || <span class="hljs-keyword">typeof</span> txt === <span class="hljs-string">'number'</span>) ?
+				can.esc(txt) :
+				contentText(txt, tag);
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>A flag to indicate if .txt was called within a live section within an element like the {{name}}
+within <code>&lt;div {{#person}}{{name}}{{/person}}/&gt;</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		withinTemplatedSectionWithinAnElement = <span class="hljs-literal">false</span>,
+		emptyHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{};
+
+	<span class="hljs-keyword">var</span> lastHookups;
+
+	can.extend(can.view, {
+		live: live,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>called in text to make a temporary 
+can.view.lists function that can be called with
+the list to iterate over and the template
+used to produce the content within the list</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		setupLists: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+
+			<span class="hljs-keyword">var</span> old = can.view.lists,
+				data;
+
+			can.view.lists = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(list, renderer)</span> </span>{
+				data = {
+					list: list,
+					renderer: renderer
+				};
+				<span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.random();
+			};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>sets back to the old data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				can.view.lists = old;
+				<span class="hljs-keyword">return</span> data;
+			};
+		},
+		getHooks: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">var</span> hooks = pendingHookups.slice(<span class="hljs-number">0</span>);
+			lastHookups = hooks;
+			pendingHookups = [];
+			<span class="hljs-keyword">return</span> hooks;
+		},
+		onlytxt: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(self, func)</span> </span>{
+			<span class="hljs-keyword">return</span> contentEscape(func.call(self));
+		},
+		<span class="hljs-comment">/**
+		 * @function can.view.txt
+		 * @hide
+		 *
+		 * A helper function used to insert the
+		 * value of the contents of a magic tag into
+		 * a template's output. It detects if an observable value is
+		 * read and will setup live binding.
+		 *
+		 * @signature `can.view.txt(escape, tagName, status, self, func)`
+		 *
+		 * @param {Number} 1 if the content returned should be escaped, 0 if otherwise.
+		 * @param {String} tagName the name of the tag the magic tag is most immediately
+		 * within. Ex: `"li"`.
+		 * @param {String|Number} status A flag indicates which part of a tag the
+		 * magic tag is within. Status can be:
+		 *
+		 *  - _STRING_ - The name of the attribute the magic tag is within. Ex: `"class"`
+		 *  - `1` - The magic tag is within a tag like `&lt;div &lt;%= %&gt;&gt;`
+		 *  - `0` - The magic tag is outside (or between) tags like `&lt;div&gt;&lt;%= %&gt;&lt;/div&gt;`
+		 *
+		 * @param {*} self The `this` of the current context template. `func` is called with
+		 * self as this.
+		 *
+		 * @param {function} func The "wrapping" function. For
+		 * example:  `&lt;%= task.attr('name') %&gt;` becomes
+		 *   `(function(){return task.attr('name')})
+		 *
+		 */</span>
+		txt: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(escape, tagName, status, self, func)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>the temporary tag needed for any live setup</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> tag = (elements.tagMap[tagName] || <span class="hljs-string">"span"</span>),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>should live-binding be setup</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				setupLiveBinding = <span class="hljs-literal">false</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>the compute’s value</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				value,
+				listData,
+				compute,
+				unbind = emptyHandler,
+				attributeName;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Are we currently within a live section within an element like the {{name}}
+within <code>&lt;div {{#person}}{{name}}{{/person}}/&gt;</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (withinTemplatedSectionWithinAnElement) {
+				value = func.call(self);
+			} <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>If this magic tag is within an attribute or an html element,
+set the flag to true so we avoid trying to live bind
+anything that func might be setup.
+TODO: the scanner should be able to set this up.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> status === <span class="hljs-string">"string"</span> || status === <span class="hljs-number">1</span>) {
+					withinTemplatedSectionWithinAnElement = <span class="hljs-literal">true</span>;
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Sets up a listener so we know any can.view.lists called 
+when func is called</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> listTeardown = can.view.setupLists();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				unbind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+					compute.unbind(<span class="hljs-string">"change"</span>, emptyHandler);
+				};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Create a compute that calls func and looks for dependencies.
+By passing <code>false</code>, this compute can not be a dependency of other 
+computes.  This is because live-bits are nested, but 
+handle their own updating. For example:
+    {{#if items.length}}{{#items}}{{.}}{{/items}}{{/if}}
+We do not want <code>{{#if items.length}}</code> changing the DOM if
+<code>{{#items}}</code> text changes.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				compute = can.compute(func, self, <span class="hljs-literal">false</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>Bind to get and temporarily cache the value of the compute.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				compute.bind(<span class="hljs-string">"change"</span>, emptyHandler);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Call the “wrapping” function and get the binding information</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				listData = listTeardown();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>Get the value of the compute</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				value = compute();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>Let people know we are no longer within an element.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				withinTemplatedSectionWithinAnElement = <span class="hljs-literal">false</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>If we should setup live-binding.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				setupLiveBinding = compute.hasDependencies;
+			}
+
+			<span class="hljs-keyword">if</span> (listData) {
+				unbind();
+				<span class="hljs-keyword">return</span> <span class="hljs-string">"&lt;"</span> + tag + can.view.hook(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, parentNode)</span> </span>{
+					live.list(el, listData.list, listData.renderer, self, parentNode);
+				}) + <span class="hljs-string">"&gt;&lt;/"</span> + tag + <span class="hljs-string">"&gt;"</span>;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>If we had no observes just return the value returned by func.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!setupLiveBinding || <span class="hljs-keyword">typeof</span> value === <span class="hljs-string">"function"</span>) {
+				unbind();
+				<span class="hljs-keyword">return</span> ((withinTemplatedSectionWithinAnElement || <span class="hljs-built_in">escape</span> === <span class="hljs-number">2</span> || !<span class="hljs-built_in">escape</span>) ?
+					contentText :
+					contentEscape)(value, status === <span class="hljs-number">0</span> &amp;&amp; tag);
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>the property (instead of innerHTML elements) to adjust. For
+example options should use textContent</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> contentProp = elements.tagToContentPropMap[tagName];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>The magic tag is outside or between tags.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (status === <span class="hljs-number">0</span> &amp;&amp; !contentProp) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Return an element tag with a hookup in place of the content</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">return</span> <span class="hljs-string">"&lt;"</span> + tag + can.view.hook(</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>if value is an object, it’s likely something returned by .safeString</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-built_in">escape</span> &amp;&amp; <span class="hljs-keyword">typeof</span> value !== <span class="hljs-string">"object"</span> ?</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>If we are escaping, replace the parentNode with 
+a text node who’s value is <code>func</code>‘s return value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, parentNode)</span> </span>{
+						live.text(el, compute, parentNode);
+						unbind();
+					} :</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>If we are not escaping, replace the parentNode with a
+documentFragment created as with <code>func</code>‘s return value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, parentNode)</span> </span>{
+						live.html(el, compute, parentNode);
+						unbind();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>children have to be properly nested HTML for buildFragment to work properly</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					}) + <span class="hljs-string">"&gt;"</span> + tagChildren(tag) + <span class="hljs-string">"&lt;/"</span> + tag + <span class="hljs-string">"&gt;"</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>In a tag, but not in an attribute</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (status === <span class="hljs-number">1</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>remember the old attr name</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				pendingHookups.push(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> </span>{
+					live.attributes(el, compute, compute());
+					unbind();
+				});
+
+				<span class="hljs-keyword">return</span> compute();
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">escape</span> === <span class="hljs-number">2</span>) { <span class="hljs-comment">// In a special attribute like src or style</span>
+
+				attributeName = status;
+				pendingHookups.push(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> </span>{
+					live.specialAttribute(el, attributeName, compute);
+					unbind();
+				});
+				<span class="hljs-keyword">return</span> compute();
+			} <span class="hljs-keyword">else</span> { <span class="hljs-comment">// In an attribute...</span>
+				attributeName = status === <span class="hljs-number">0</span> ? contentProp : status;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>if the magic tag is inside the element, like <code>&lt;option&gt;&lt;% TAG %&gt;&lt;/option&gt;</code>,
+we add this hookup to the last element (ex: <code>option</code>‘s) hookups.
+Otherwise, the magic tag is in an attribute, just add to the current element’s
+hookups.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				(status === <span class="hljs-number">0</span> ? lastHookups : pendingHookups)
+					.push(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> </span>{
+						live.attribute(el, attributeName, compute);
+						unbind();
+					});
+				<span class="hljs-keyword">return</span> live.attributePlaceholder;
+			}
+		}
+	});
+
+	<span class="hljs-keyword">return</span> can;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

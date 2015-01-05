@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS - Components </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	
+	<link rel="stylesheet" type="text/css" href="./static/bundles/static.css">
+	
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs ">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="../../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
+		          <li><a href="http://jquerypp.com">jQuery++</a></li>
+		          <li><a href="http://stealjs.com">StealJS</a></li>
+		          <li><a href="http://funcunit.com">FuncUnit</a></li>
+		          <li><a href="http://documentjs.com">DocumentJS</a></li>
+		        </ul>
+			</div>
+			
+			<ul class="nav">
+		        <li >
+	              <a href="../../index.html">Home</a>
+                </li>
+		       <li class='active'><a href='index.html'>guides</a></li>
+		       <li><a href='../docs/index.html'>api</a></li>
+		        <li class=" community-menu">
+		          <a href="../../community.html#!forums">Community</a>
+		          <ul class="dropdown-menu">
+		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
+		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
+		            <li><a href="http://bithub.com/canjs/app/">Apps</a></li>
+		            <li><a href="http://bithub.com/canjs/plugin/">Plugins</a></li>
+		            <li><a href="http://bithub.com/canjs/article/">Articles</a></li>
+		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		          </ul>
+		        </li>
+		        <li >
+	              <a href="../../blog/index.html">Blog</a>
+                </li>
+		        <li >
+	              <a href="../../download.html">Download</a>
+                </li>
+	      	</ul>
+			
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+			
+		</nav>
+	</header>
+
+	
+<div class="container api">
+
+	
+	<nav class="sidebar">
+		
+		<h2 id="version">
+	<select id='versions'></select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container active">
+	   		<a href="Tutorial.html" data-search="Getting Started">
+				Getting Started
+			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Constructs.html" 
+							data-search="Constructor Functions">
+							Constructor Functions
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Observables.html" 
+							data-search="Observables">
+							Observables
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Models.html" 
+							data-search="Models &amp; Retrieving Data">
+							Models &amp; Retrieving Data
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Templates.html" 
+							data-search="Templates">
+							Templates
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="EJS.html" 
+							data-search="EJS">
+							EJS
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Mustache.html" 
+							data-search="Mustache">
+							Mustache
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Controls.html" 
+							data-search="Controls">
+							Controls
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Deferreds.html" 
+							data-search="Deferreds">
+							Deferreds
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container active  expanded">
+						<a 	class="page" 
+							href="Components.html" 
+							data-search="Components">
+							Components
+						</a>
+						
+							
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Routing.html" 
+							data-search="Routing">
+							Routing
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Utilities.html" 
+							data-search="Utility Functions">
+							Utility Functions
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Using.html" data-search="Setting up CanJS">
+				Setting up CanJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Recipes.html" data-search="Recipes">
+				Recipes
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="contributing.html" data-search="How to Contribute">
+				How to Contribute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="changelog.html" data-search="Changelog">
+				Changelog
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="license.html" data-search="License">
+				License
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="migrating.html" data-search="Migrating to 2.0">
+				Migrating to 2.0
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="roadmap.html" data-search="Roadmap">
+				Roadmap
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	
+	
+	
+	<article class="content docs">
+	
+	
+		
+		<section class="title">
+			<div class="heading">
+<h1>Components</h1>
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	
+		<span class="module">Components</span>
+	
+	
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+    
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/2.2-pre/guides/components.md">source</a></li>
+	
+	
+	
+</ul>
+<br />
+		</section>
+		
+		
+		
+		<section class="contents">
+		</section>
+		
+		
+		
+
+		
+		<section class="description">
+			<p>Now that you've learned about observables, templates, and controls, it's time to learn
+about <a href="../docs/can.Component.html">can.Component</a>. can.Component makes it easy to
+combine the functionality of these features. We'll use it to rewrite the todo
+example.</p>
+
+		</section>
+		
+
+		
+			
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<p>Create a component constructor function by
+<a href="../docs/can.Component.extend.html">extend</a> can.Component like:</p>
+<pre><code>can.Component.extend({
+  tag: &quot;my-element&quot;,
+  scope: {
+    visible: true,
+    toggle: function(){
+      this.attr(&quot;visible&quot;, !this.attr(&quot;visible&quot;) )
+    }
+  },
+  template: &quot;&lt;div can-click='toggle'&gt;&quot;+
+              &quot;{{#isVisible}}&quot;+
+                &quot;&lt;content/&gt;&quot;+
+              &quot;{{else}}&quot;+
+                &quot;I am hidden&quot;+
+              &quot;{{/isVisible}}&quot;+
+            &quot;&lt;/div&gt;&quot;,
+  helpers: {
+    isVisible: function(options){
+      return this.attr(&quot;visible&quot;) ?
+        options.fn() : options.inverse();
+    }
+  },
+  events: {
+    &quot;inserted&quot;: function(){
+      console.log(&quot;you add a my-element to the page&quot;)
+    }
+  }
+})
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><a href="../docs/can.Component.prototype.tag.html">tag</a> - Specifies the HTML element that
+components are created on.</li>
+<li><a href="../docs/can.Component.prototype.scope.html">scope</a> - Describes a <a href="../docs/can.Map.html">can.Map</a> that
+is added to the scope used to render the component's template.</li>
+<li><a href="../docs/can.Component.prototype.template.html">template</a> - A template who's content
+gets inserted within the component's element.</li>
+<li><a href="../docs/can.Component.prototype.helpers.html">helpers</a> - Local mustache helpers
+available within the component's template.</li>
+<li><a href="../docs/can.Component.prototype.events.html">events</a> - Listen to events like a
+<a href="../docs/can.Control.html">can.Control</a>.</li>
+</ul>
+<p>Now let's dive into component's properties a bit more.</p>
+<h2>Tag</h2>
+<p>A component represents a custom html element whose nodeName
+is specified by the component's <a href="../docs/can.Component.prototype.tag.html">tag</a> attribute.  To create
+a can.Component constructor function that manages
+functionality on a <code>&lt;todos-editor&gt;</code> elements,
+<a href="../docs/can.Component.extend.html">extend</a> can.Component like:</p>
+<pre><code>can.Component.extend({
+  tag: &quot;todos-editor&quot;
+})
+</code></pre>
+<p>Now, when a <code>&lt;todos-editor&gt;</code> element is found in a mustache template,
+an instance of the component is created on the element.</p>
+<pre><code>var template = can.mustache(&quot;Here is my &quot;+
+                 &quot;&lt;todos-editor&gt;todos-editor element&lt;/todos-editor&gt;&quot;)
+
+var frag = template();
+frag.childNodes[1].nodeName //-&gt; &quot;todos-editor element&quot;
+</code></pre>
+<p>This control doesn't do anything.  Lets change that by filing out other
+properties.</p>
+<h2>Template</h2>
+<p>Lets put an <code>&lt;input/&gt;</code> element inside <code>&lt;todos-editor&gt;</code> elements
+by adding a <a href="../docs/can.Component.prototype.template.html">template</a> property:</p>
+<pre><code>can.Component.extend({
+  tag: &quot;todos-editor&quot;,
+  template: &quot;&lt;input type='text'/&gt;&quot;
+})
+</code></pre>
+<p>This replaces any source content with the component's template.  The result
+of rendering <code>template</code> looks like:</p>
+<div class='demo_wrapper' data-demo-src='can/guides/components/template-0.html'></div>
+<p>Notice that &quot;todos-editor element&quot; is removed.</p>
+<p>To render the source content within the template, add a <code>&lt;content/&gt;</code> tag like:</p>
+<pre><code>can.Component.extend({
+  tag: &quot;todos-editor&quot;,
+  template: &quot;&lt;content/&gt;&lt;input type='text'/&gt;&quot;
+})
+</code></pre>
+<p>This results in:</p>
+<div class='demo_wrapper' data-demo-src='can/guides/components/template-1.html'></div>
+<p>If no source content is provided between the custom tags, you can specify default
+content to use within the <code>&lt;content&gt;&lt;/content&gt;</code> tags like:</p>
+<pre><code>can.Component.extend({
+  tag: &quot;todos-editor&quot;,
+  template: &quot;&lt;content&gt;Edit &lt;/content&gt;&lt;input type='text'/&gt;&quot;
+})
+</code></pre>
+<p>If the source template is changed to:</p>
+<pre><code>var template = can.mustache(&quot;Here is my &quot;+
+                 &quot;&lt;todos-editor&gt;&lt;/todos-editor&gt;&quot;)
+</code></pre>
+<p>This results in:</p>
+<div class='demo_wrapper' data-demo-src='can/guides/components/template-2.html'></div>
+<p>You can also specify the template as a <a href="../docs/can.view.renderer.html">can.view.renderer</a> like:</p>
+<pre><code>var template = can.mustache(&quot;&lt;content&gt;Edit &lt;/content&gt;&quot;+
+                                 &quot;&lt;input type='text'/&gt;&quot;);
+
+can.Component.extend({
+  tag: &quot;todos-editor&quot;,
+  template: template
+})
+</code></pre>
+<p>By default the component's template renders with the
+same [can.view.Scope scope] as the scope where the custom element is
+found within the source template. But, you can adjust the
+scope with can.Component's scope property.</p>
+<h2>Scope</h2>
+<p>A template's <a href="../docs/can.Component.prototype.scope.html">scope</a> property
+allows you to adjust the scope used to render the component's
+template.  If a plain JavaScript object is used, that object is used
+to extend and create an instance of <a href="../docs/can.Map.html">can.Map</a> and
+add to the top to the scope used to render the template.</p>
+<p>For example, we can add a visible property to control if the input element
+is visible or not:</p>
+<pre><code>can.Component.extend({
+  tag: &quot;todos-editor&quot;,
+  template: &quot;&lt;form&gt;Editor: &quot;+
+              &quot;{{#if visible}}&lt;input type='text'/&gt;{{/if}}&quot;+
+            &quot;&lt;/form&gt;&quot;,
+  scope: {
+    visible: true
+  }
+})
+</code></pre>
+<h3>Scope bindings</h3>
+<p>This isn't interesting without a way to change toggling the
+visible property. We can tell our template to call a <code>toggle</code> method
+on the scope anytime someone clicks the form
+with <a href="../docs/can.view.bindings.html">template bindings</a> like:</p>
+<pre><code>can.Component.extend({
+  tag: &quot;todos-editor&quot;,
+  template: &quot;&lt;form can-click='toggle'&gt;Editor: &quot;+
+              &quot;{{#if visible}}&lt;input type='text'/&gt;{{/if}}&quot;+
+            &quot;&lt;/form&gt;&quot;,
+  scope: {
+    visible: true,
+    toggle: function(context, el, ev){
+      this.attr(&quot;visible&quot;, !this.attr(&quot;visible&quot;) )
+    }
+  }
+})
+</code></pre>
+<p>Check it out here:</p>
+<div class='demo_wrapper' data-demo-src='can/guides/components/scope-0.html'></div>
+<p>When bindings are used like this, the scope function is called back with
+the element's context, the element, and the event.</p>
+<h3>Scope value functions</h3>
+<p>Scope functions can also be called for their value. For example:</p>
+<pre><code>can.Component.extend({
+  tag: &quot;todos-editor&quot;,
+  template: &quot;&lt;form can-click='toggle'&gt;{{visibility}}: &quot;+
+              &quot;{{#if visible}}&lt;input type='text'/&gt;{{/if}}&quot;+
+            &quot;&lt;/form&gt;&quot;,
+  scope: {
+    visible: true,
+    toggle: function(context, el, ev){
+      this.attr(&quot;visible&quot;, !this.attr(&quot;visible&quot;) )
+    },
+    visibility: function(){
+      return this.attr(&quot;visible&quot;) ?
+        &quot;visible&quot; : &quot;invisible&quot;
+    }
+  }
+})
+</code></pre>
+<div class='demo_wrapper' data-demo-src='can/guides/components/scope-1.html'></div>
+<h3>Scope as a can.Map constructor function</h3>
+<p>The scope object can also be defined as a can.Map constructor function.  This
+makes it easier to test the scope object independent of the component's
+rendering.  For example:</p>
+<pre><code>var TodosEditorState = can.Map.extend({
+  visible: true,
+  toggle: function(context, el, ev){
+    this.attr(&quot;visible&quot;, !this.attr(&quot;visible&quot;) )
+  },
+  visibility: function(){
+    return this.attr(&quot;visible&quot;) ?
+      &quot;visible&quot; : &quot;invisible&quot;
+  }
+})
+
+can.Component.extend({
+  tag: &quot;todos-editor&quot;,
+  template: &quot;&lt;form can-click='toggle'&gt;{{visibility}}: &quot;+
+              &quot;{{#if visible}}&lt;input type='text'/&gt;{{/if}}&quot;+
+            &quot;&lt;/form&gt;&quot;,
+  scope: TodosEditorState
+})
+
+// TEST CODE
+var editor = new TodosEditorState();
+equal( editor.visibility(), &quot;visible&quot; );
+
+editor.toggle();
+equal( editor.visibility(), &quot;invisible&quot; );
+</code></pre>
+<h3>Passing values to a component's scope</h3>
+<p>Often, you want to pass values to a component.  This is done by
+setting attributes on the component's element. For example,
+we might want to pass a todo to the todo editor from the source
+template.  To do this, add a <code>todo='mytodo'</code> attribute.</p>
+<pre><code>var template = can.mustache(&quot;&lt;h1&gt;Todo: {{mytodo.name}}&lt;/h1&gt;&quot;+
+                 &quot;&lt;todos-editor todo='mytodo'&gt;&lt;/todos-editor&gt;&quot;)
+
+var mytodo = new can.Map({name: &quot;Do the dishes&quot;})
+
+can.Component.extend({
+  tag: &quot;todos-editor&quot;,
+  template: &quot;{{#if todo}}&quot;+
+              &quot;&lt;input type='text' can-value='todo.name'/&gt;&quot;+
+            &quot;{{/if}}&quot;,
+  scope: {}
+})
+
+var frag = template({
+  mytodo: mytodo
+})
+
+document.body.appendChild(frag)
+</code></pre>
+<p>Notice the <code>can-value</code> attribute on the input element. This sets up a two-way binding
+between the todo's name and the input element.  This lets you change the
+todo's name.</p>
+<div class='demo_wrapper' data-demo-src='can/guides/components/scope-2.html'></div>
+<p>Sometimes, you want to specify attribute values that are not looked up in the
+scope.  For example, you might want to give <code>todos-editor</code> placeholder text as follows:</p>
+<pre><code>var template = can.mustache(
+                 &quot;&lt;h1&gt;Todo: {{mytodo.name}}&lt;/h1&gt;&quot;+
+                 &quot;&lt;todos-editor todo='mytodo' &quot;+
+                                &quot;placeholder='name'&gt;&quot;+
+                &quot;&lt;/todos-editor&gt;&quot;)
+</code></pre>
+<p>We can modify the component to read the string placeholder value by setting
+<code>placeholder</code> in the scope to &quot;@&quot;.  This is a special flag that indicates to
+simply use the attribute's value.</p>
+<pre><code>can.Component.extend({
+  tag: &quot;todos-editor&quot;,
+  template: &quot;{{#if todo}}&quot;+
+              &quot;&lt;input type='text' &quot;+
+                     &quot;placeholder='{{placeholder}}' &quot;+
+                     &quot;can-value='todo.name'/&gt;&quot;+
+            &quot;{{/if}}&quot;,
+  scope: {
+    placeholder: &quot;@&quot;
+  }
+})
+</code></pre>
+<p>If you remove the input's text, a placeholder will show up:</p>
+<div class='demo_wrapper' data-demo-src='can/guides/components/scope-3.html'></div>
+<h2>Helpers</h2>
+<p>The helpers object registers local helpers avaialble within the
+component.  The following lists todo and adds a <code>todoClass</code>
+helper that is used to set the className on a todo's <code>&lt;li&gt;</code> element:</p>
+<pre><code>can.Component.extend({
+  tag: &quot;todos-list&quot;,
+    template: 
+        &quot;&lt;ul&gt;&quot;+
+          &quot;{{#each todos}}&quot;+
+            &quot;&lt;li&gt;&quot;+
+              &quot;&lt;input type='checkbox' can-value='complete'&gt;&quot;+
+              &quot;&lt;span {{todoClass}} can-click='select'&gt;{{name}}&lt;/span&gt; &quot;+
+              &quot;&lt;a href='javascript://' can-click='destroy'&gt;X&lt;/a&gt;&quot;+
+            &quot;&lt;/li&gt;&quot;+
+          &quot;{{/each}}&quot;+
+        &quot;&lt;/ul&gt;&quot;,
+    scope: {
+        todos: new Todo.List({}),
+        select: function(todo){
+            can.route.attr(&quot;id&quot;,todo.attr(&quot;id&quot;))
+        }
+    },
+    helpers: {
+        todoClass: function(options){
+            if(options.context.attr('complete')) {
+            return &quot;class='done'&quot;
+            }
+        }
+    }
+});
+</code></pre>
+<p>Notice that <code>options.context</code> is used to retrieve the todo because
+<code>this</code> within <code>todoClass</code> is the scope.</p>
+<div class='demo_wrapper' data-demo-src='can/guides/components/helpers-0.html'></div>
+<h2>Events</h2>
+<p>A component's <a href="../docs/can.Component.prototype.events.html">events</a> object is
+used to create a [can.Control] that has access to scope as
+<code>this.scope</code>.  Use it to listen to events safely.</p>
+<p>For example, we can create a <code>todos-app</code> component that
+manages the high-level state of the application. It listens
+to changes in <a href="../docs/can.route.html">can/route</a> and
+updates the scope's <code>todo</code> property. And, if
+a todo is destroyed that matches the route's <code>id</code>,
+the route's <code>id</code> is removed:</p>
+<pre><code>can.Component.extend({
+  tag: &quot;todos-app&quot;,
+  scope: {
+    todo: null
+  },
+  events: {
+    &quot;{can.route} id&quot;: function(route, ev, id){
+      if(id){
+        Todo.findOne({id: id}, $.proxy(function(todo){
+          this.scope.attr(&quot;todo&quot;, todo)
+        }, this))
+      } else {
+        this.scope.removeAttr(&quot;todo&quot;)
+      }
+    },
+    &quot;{Todo} destroyed&quot;: function(Todo, ev, destroyedTodo){
+      if( destroyedTodo.id == can.route.attr(&quot;id&quot;) ){
+        can.route.removeAttr(&quot;id&quot;)
+      }
+    }
+  }
+})
+</code></pre>
+<p>You can use templated event binding to listen to changes in scope
+objects.  Adding the following to <code>todo-app</code>'s events object
+listens to todo changes and saves the changes.</p>
+<pre><code>&quot;{todo} change&quot;: function(todo, ev, attr){
+  if( attr === &quot;name&quot; || attr == &quot;complete&quot; ) {
+    todo.save()
+  }
+}
+</code></pre>
+<p>Finally, to put this all together, we render a template like:</p>
+<pre><code>&lt;todos-app&gt;
+  &lt;todos-list&gt;&lt;/todos-list&gt;
+  &lt;todos-editor todo='todo'&gt;&lt;/todos-editor&gt;
+&lt;/todos-app&gt;
+</code></pre>
+<div class='demo_wrapper' data-demo-src='can/guides/components/demo.html'></div>
+
+		</section>
+		
+		
+
+		
+	
+	
+	</article>
+	
+	
+
+</div>
+
+
+
+
+
+	
+	
+	<footer>
+		<nav class="container">
+			<a class="brand" href="index.html"></a>
+			<ul class='nav'>
+				<li >
+	              <a href="../../index.html">Home</a>
+	            </li>
+		        <li class='active'><a href='index.html'>guides</a></li>
+		        <li><a href='../docs/index.html'>api</a></li>
+		        <li class="">
+		          <a href="../../community.html#!forums">Community</a>
+		        </li>
+		        <li >
+	              <a href="../../blog/index.html">Blog</a>
+	            </li>
+		        <li >
+	              <a href="../../download.html">Download</a>
+	            </li>
+            </ul>
+		</nav>
+	</footer>
+	
+
+    
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-2302003-11']);
+	  _gaq.push(['_setDomainName', 'canjs.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	
+	</script>
+	
+	<script type="text/javascript">
+		var docObject = {"type":"page","name":"Components","src":"guides/components.md","description":"<p>Now that you've learned about observables, templates, and controls, it's time to learn\nabout <a href=\"../docs/can.Component.html\">can.Component</a>. can.Component makes it easy to\ncombine the functionality of these features. We'll use it to rewrite the todo\nexample.</p>\n","title":"Components","parent":"Tutorial","order":9,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/justin/dev/canjs"},"dest":"/Users/justin/dev/canjs.com/2.2-pre/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../../documentjs.json","project":{"version":"2.2-pre","name":"canjs","source":"git://github.com/bitovi/canjs#2.2-pre"}};
+	</script>
+	
+	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
+		<script type='text/javascript' 
+				data-main="static"
+				data-config="./static/config.js"
+				src="./static/steal.production.js"
+		    		bundles-path="bundles"></script>
+	
+	
+</body>
+
+</html>

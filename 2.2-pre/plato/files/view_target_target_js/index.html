@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>view/target/target.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">60.81</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">207</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">60.71</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">1.81</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">/* jshint maxdepth:7*/
+steal(&quot;can/util&quot;, &quot;can/view/elements.js&quot;,function(can, elements){
+	
+	var processNodes = function(nodes, paths, location){
+		var frag = document.createDocumentFragment();
+		
+		for(var i = 0, len = nodes.length; i &lt; len; i++) {
+			var node = nodes[i];
+			frag.appendChild( processNode(node,paths,location.concat(i)) );
+		}
+		return frag;
+	},
+		keepsTextNodes =  typeof document !== &quot;undefined&quot; &amp;&amp; (function(){
+			var testFrag = document.createDocumentFragment();
+			var div = document.createElement(&quot;div&quot;);
+			
+			div.appendChild(document.createTextNode(&quot;&quot;));
+			div.appendChild(document.createTextNode(&quot;&quot;));
+			testFrag.appendChild(div);
+			
+			var cloned  = testFrag.cloneNode(true);
+			
+			return cloned.childNodes[0].childNodes.length === 2;
+		})(),
+		clonesWork = typeof document !== &quot;undefined&quot; &amp;&amp; (function(){
+			// Since html5shiv is required to support custom elements, assume cloning
+			// works in any browser that doesn&#039;t have html5shiv
+
+			// Clone an element containing a custom tag to see if the innerHTML is what we
+			// expect it to be, or if not it probably was created outside of the document&#039;s
+			// namespace.
+			var a = document.createElement(&#039;a&#039;);
+			a.innerHTML = &quot;&lt;xyz&gt;&lt;/xyz&gt;&quot;;
+			var clone = a.cloneNode(true);
+
+			return clone.innerHTML === &quot;&lt;xyz&gt;&lt;/xyz&gt;&quot;;
+		})();
+
+	/**
+	 * @method cloneNode
+	 * @hide
+	 *
+	 * A custom cloneNode function to be used in browsers that properly support cloning
+	 * of custom tags (IE8 for example). Fixes it by doing some manual cloning that
+	 * uses innerHTML instead, which has been shimmed.
+	 *
+	 * @param {DocumentFragment} frag A document fragment to clone
+	 * @return {DocumentFragment} a new fragment that is a clone of the provided argument
+	 */
+	var cloneNode = clonesWork ?
+		function(el){
+			return el.cloneNode(true);
+		} :
+		function(node){
+			var copy;
+
+			if(node.nodeType === 1) {
+				copy = document.createElement(node.nodeName);
+			} else if(node.nodeType === 3){
+				copy = document.createTextNode(node.nodeValue);
+			} else if(node.nodeType === 8) {
+				copy = document.createComment(node.nodeValue);
+			} else if(node.nodeType === 11) {
+				copy = document.createDocumentFragment();
+			}
+
+			if(node.attributes) {
+				var attributes = can.makeArray(node.attributes);
+				can.each(attributes, function (node) {
+					if(node &amp;&amp; node.specified) {
+						copy.setAttribute(node.nodeName, node.nodeValue);
+					}
+				});
+			}
+			
+			if(node.childNodes) {
+				can.each(node.childNodes, function(child){
+					copy.appendChild( cloneNode(child) );
+				});
+			}
+			
+			return copy;
+		};
+
+	function processNode(node, paths, location){
+		var callback,
+			loc = location,
+			nodeType = typeof node,
+			el,
+			p,
+			i , len;
+		var getCallback = function(){
+			if(!callback) {
+				callback  = {
+					path: location,
+					callbacks: []
+				};
+				paths.push(callback);
+				loc = [];
+			}
+			return callback;
+		};
+		
+		if(nodeType === &quot;object&quot;) {
+			if( node.tag ) {
+				el = document.createElement(node.tag);
+			
+				if(node.attrs) {
+					for(var attrName in node.attrs) {
+						var value = node.attrs[attrName];
+						if(typeof value === &quot;function&quot;){
+							getCallback().callbacks.push({
+								callback:  value
+							});
+						} else  {
+							el.setAttribute(attrName, value);
+						}
+					}
+				}
+				if(node.attributes) {
+					for(i = 0, len = node.attributes.length; i &lt; len; i++ ) {
+						getCallback().callbacks.push({callback: node.attributes[i]});
+					}
+				}
+				if(node.children &amp;&amp; node.children.length) {
+					// add paths
+					if(callback) {
+						p = callback.paths = [];
+					} else {
+						p = paths;
+					}
+					el.appendChild( processNodes(node.children, p, loc) );
+				}
+			} else if(node.comment) {
+				el = document.createComment(node.comment);
+				
+				if(node.callbacks) {
+					for(i = 0, len = node.attributes.length; i &lt; len; i++ ) {
+						getCallback().callbacks.push({callback: node.callbacks[i]});
+					}
+				}
+			}
+			
+			
+		} else if(nodeType === &quot;string&quot;){
+			el = document.createTextNode(node);
+		} else if(nodeType === &quot;function&quot;) {
+			
+			if(keepsTextNodes) {
+				el = document.createTextNode(&quot;&quot;);
+				getCallback().callbacks.push({callback: node});
+			} else {
+				el = document.createComment(&quot;~&quot;);
+				getCallback().callbacks.push({callback: function(){
+					var el = document.createTextNode(&quot;&quot;);
+					elements.replace([this], el);
+					return node.apply(el,arguments );
+				}});
+			}
+			
+		}
+		return el;
+	}
+	
+	function hydratePath(el, pathData, args){
+		var path = pathData.path,
+			callbacks = pathData.callbacks,
+			paths = pathData.paths,
+			callbackData,
+			child = el;
+		
+		for(var i = 0, len = path.length; i &lt; len; i++) {
+			child = child.childNodes[path[i]];
+		}
+		
+		for(i = 0, len = callbacks.length; i &lt; len; i++) {
+			callbackData = callbacks[i];
+			callbackData.callback.apply(child, args );
+		}
+		if(paths &amp;&amp; paths.length){
+			for( i= paths.length - 1 ; i &gt;= 0; i--) {
+				hydratePath(child,paths[i], args);
+			}
+		}
+	}
+
+	function makeTarget(nodes){
+		var paths = [];
+		var frag = processNodes(nodes, paths, []);
+		return {
+			paths: paths,
+			clone: frag,
+			hydrate: function(){
+				var cloned = cloneNode(this.clone);
+				var args = can.makeArray(arguments);
+				for(var i = paths.length - 1; i &gt;=0 ; i--) {
+					hydratePath(cloned,paths[i], args);
+				}
+				return cloned;
+			}
+		};
+	}
+	makeTarget.keepsTextNodes = keepsTextNodes;
+	
+	can.view.target = makeTarget;
+
+	return makeTarget;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

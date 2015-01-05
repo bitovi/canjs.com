@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>util/batch/batch.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">62.71</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">220</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">32.24</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">0.38</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/util/can.js&#039;, function (can) {
+	// Which batch of events this is for -- might not want to send multiple
+	// messages on the same batch.  This is mostly for event delegation.
+	var batchNum = 1,
+		// how many times has start been called without a stop
+		transactions = 0,
+		// an array of events within a transaction
+		batchEvents = [],
+		stopCallbacks = [];
+	can.batch = {
+		/**
+		 * @function can.batch.start
+		 * @parent can.batch
+		 * @description Begin an event batch.
+		 *
+		 * @signature `can.batch.start([batchStopHandler])`
+		 *
+		 * @param {Function} [batchStopHandler] a callback that gets called after all batched events have been called
+		 *
+		 * @body
+		 * `can.batch.start` causes can.Map to begin an event batch. Until `[can.batch.stop]` is called, any
+		 * events that would result from calls to `[can.Map::attr attr]` are held back from firing. If you have
+		 * lots of changes to make to can.Maps, batching them together can help performance &amp;emdash; especially if
+		 * those can.Maps are live-bound to the DOM.
+		 *
+		 * In this example, you can see how the _first_ and _change_ events are not fired (and their handlers
+		 * are not called) until `can.batch.stop` is called.
+		 *
+		 * @codestart
+		 * var person = new can.Map({
+		 *     first: &#039;Alexis&#039;,
+		 *     last: &#039;Abril&#039;
+		 * });
+		 *
+		 * person.bind(&#039;first&#039;, function() {
+		 *     console.log(&quot;First name changed.&quot;&quot;);
+		 * }).bind(&#039;change&#039;, function() {
+		 *     console.log(&quot;Something changed.&quot;);
+		 * });
+		 *
+		 * can.batch.start();
+		 * person.attr(&#039;first&#039;, &#039;Alex&#039;);
+		 * console.log(&#039;Still in the batch.&#039;);
+		 * can.batch.stop();
+		 *
+		 * // the log has:
+		 * // Still in the batch.
+		 * // First name changed.
+		 * // Something changed.
+		 * @codeend
+		 *
+		 * You can also pass a callback to `can.batch.start` which will be called after all the events have
+		 * been fired:
+		 * @codestart
+		 * can.batch.start(function() {
+		 *     console.log(&#039;The batch is over.&#039;);
+		 * });
+		 * person.attr(&#039;first&#039;, &#039;Izzy&#039;);
+		 * console.log(&#039;Still in the batch.&#039;);
+		 * can.batch.stop();
+		 *
+		 * // The console has:
+		 * // Still in the batch.
+		 * // First name changed.
+		 * // Something changed.
+		 * // The batch is over.
+		 * @codeend
+		 *
+		 * ## Calling `can.batch.start` multiple times
+		 *
+		 * If you call `can.batch.start` more than once, `can.batch.stop` needs to be called
+		 * the same number of times before any batched events will fire. For ways
+		 * to circumvent this process, see [can.batch.stop].
+		 *
+		 * Here is an example that demonstrates how events are affected by calling
+		 * `can.batch.start` multiple times.
+		 *
+		 * @codestart
+		 * var addPeople = function(observable) {
+		 *     can.batch.start();
+		 *     observable.attr(&#039;a&#039;, &#039;Alice&#039;);
+		 *     observable.attr(&#039;b&#039;, &#039;Bob&#039;);
+		 *     observable.attr(&#039;e&#039;, &#039;Eve&#039;);
+		 *     can.batch.stop();
+		 * };
+		 *
+		 * // In a completely different place:
+		 * var list = new can.Map();
+		 * list.bind(&#039;change&#039;, function() {
+		 *     console.log(&#039;The list changed.&#039;);
+		 * });
+		 *
+		 * can.batch.start();
+		 * addPeople(list);
+		 * console.log(&#039;Still in the batch.&#039;);
+		 *
+		 * // Here, the console has:
+		 * // Still in the batch.
+		 *
+		 * can.batch.stop();
+		 *
+		 * // Here, the console has:
+		 * // Still in the batch.
+		 * // The list changed.
+		 * // The list changed.
+		 * // The list changed.
+		 * @codeend
+		 */
+		start: function (batchStopHandler) {
+			transactions++;
+			if (batchStopHandler) {
+				stopCallbacks.push(batchStopHandler);
+			}
+		},
+		/**
+		 * @function can.batch.stop
+		 * @parent can.batch
+		 * @description End an event batch.
+		 * @signature `can.batch.stop([force[, callStart]])`
+		 * @param {bool} [force=false] whether to stop batching events immediately
+		 * @param {bool} [callStart=false] whether to call `[can.batch.start can.batch.start]` after firing batched events
+		 *
+		 * @body
+		 * `can.batch.stop` matches an earlier `[can.batch.start]` call. If `can.batch.stop` has been
+		 * called as many times as `can.batch.start` (or if _force_ is true), all batched events will be
+		 * fired and any callbacks passed to `can.batch.start` since the beginning of the batch will be
+		 * called. If _force and _callStart_ are both true, a new batch will be started when all
+		 * the events and callbacks have been fired.
+		 *
+		 * See `[can.batch.start]` for examples of `can.batch.start` and `can.batch.stop` in normal use.
+		 *
+		 * In this example, the batch is forceably ended in the `addPeople` function.
+		 * @codestart
+		 * var addPeople = function(observable) {
+		 *     can.batch.start();
+		 *     observable.attr(&#039;a&#039;, &#039;Alice&#039;);
+		 *     observable.attr(&#039;b&#039;, &#039;Bob&#039;);
+		 *     observable.attr(&#039;e&#039;, &#039;Eve&#039;);
+		 *     can.batch.stop(true);
+		 * };
+		 *
+		 * // In a completely different place:
+		 * var list = new can.Map();
+		 * list.bind(&#039;change&#039;, function() {
+		 *     console.log(&#039;The list changed.&#039;);
+		 * });
+		 *
+		 * can.batch.start();
+		 * addPeople(list);
+		 * console.log(&#039;Still in the batch.&#039;);
+		 *
+		 * // Here, the console has:
+		 * // Still in the batch.
+		 *
+		 * can.batch.stop();
+		 *
+		 * // Here, the console has:
+		 * // The list changed.
+		 * // The list changed.
+		 * // The list changed.
+		 * // Still in the batch.
+		 * @codeend
+		 */
+		stop: function (force, callStart) {
+			if (force) {
+				transactions = 0;
+			} else {
+				transactions--;
+			}
+			if (transactions === 0) {
+				var items = batchEvents.slice(0),
+					callbacks = stopCallbacks.slice(0),
+					i, len;
+				batchEvents = [];
+				stopCallbacks = [];
+				batchNum++;
+				if (callStart) {
+					can.batch.start();
+				}
+				for(i = 0, len = items.length; i &lt; len; i++) {
+					can.dispatch.apply(items[i][0],items[i][1]);
+				}
+				for(i = 0, len = callbacks.length; i &lt; callbacks.length; i++) {
+					callbacks[i]();
+				}
+			}
+		},
+		/**
+		 * @function can.batch.trigger
+		 * @parent can.batch
+		 * @description Trigger an event to be added to the current batch.
+		 * @signature `can.batch.trigger(item, event [, args])`
+		 * @param {can.Map} item the target of the event
+		 * @param {String|{type: String}} event the type of event, or an event object with a type given
+		 * @param {Array} [args] the parameters to trigger the event with.
+		 *
+		 * @body
+		 * If events are currently being batched, calling `can.batch.trigger` adds an event
+		 * to the batch. If events are not currently being batched, the event is triggered
+		 * immediately.
+		 */
+		trigger: function (item, event, args) {
+			// Don&#039;t send events if initalizing.
+			if (!item._init) {
+				if (transactions === 0) {
+					return can.dispatch.call(item, event, args);
+				} else {
+					event = typeof event === &#039;string&#039; ? {
+						type: event
+					} : event;
+					event.batchNum = batchNum;
+					batchEvents.push([
+						item,
+						[event, args]
+					]);
+				}
+			}
+		}
+	};
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

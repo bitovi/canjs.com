@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS - sectionRenderer </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	
+	<link rel="stylesheet" type="text/css" href="./static/bundles/static.css">
+	
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs ">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="../../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
+		          <li><a href="http://jquerypp.com">jQuery++</a></li>
+		          <li><a href="http://stealjs.com">StealJS</a></li>
+		          <li><a href="http://funcunit.com">FuncUnit</a></li>
+		          <li><a href="http://documentjs.com">DocumentJS</a></li>
+		        </ul>
+			</div>
+			
+			<ul class="nav">
+		        <li >
+	              <a href="../../index.html">Home</a>
+                </li>
+		       <li><a href='../guides/index.html'>guides</a></li>
+		       <li class='active'><a href='index.html'>api</a></li>
+		        <li class=" community-menu">
+		          <a href="../../community.html#!forums">Community</a>
+		          <ul class="dropdown-menu">
+		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
+		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
+		            <li><a href="http://bithub.com/canjs/app/">Apps</a></li>
+		            <li><a href="http://bithub.com/canjs/plugin/">Plugins</a></li>
+		            <li><a href="http://bithub.com/canjs/article/">Articles</a></li>
+		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		          </ul>
+		        </li>
+		        <li >
+	              <a href="../../blog/index.html">Blog</a>
+                </li>
+		        <li >
+	              <a href="../../download.html">Download</a>
+                </li>
+	      	</ul>
+			
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+			
+		</nav>
+	</header>
+
+	
+<div class="container api">
+
+	
+	<nav class="sidebar">
+		
+		<h2 id="version">
+	<select id='versions'></select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Construct.html" data-search="can.Construct">
+				can.Construct
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Control.html" data-search="can.Control">
+				can.Control
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Model.html" data-search="can.Model">
+				can.Model
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Model.List.html" data-search="can.Model.List">
+				can.Model.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.compute.html" data-search="can.compute">
+				can.compute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.ejs.html" data-search="can.ejs">
+				can.ejs
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.event.html" data-search="can.event">
+				can.event
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.fixture.html" data-search="can.fixture">
+				can.fixture
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container active">
+	   		<a href="can.mustache.html" data-search="can.mustache">
+				can.mustache
+			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>Methods</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.registerHelper.html" 
+							data-search="registerHelper">
+							registerHelper
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.safeString.html" 
+							data-search="can.mustache.safeString">
+							safeString
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>Pages</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="can.mustache.Basics.html" 
+							data-search="Basics">
+							Basics
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="can.mustache.context.html" 
+							data-search="Paths and Contexts">
+							Paths and Contexts
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="can.mustache.Sections.html" 
+							data-search="Sections">
+							Sections
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="can.mustache.Helpers.html" 
+							data-search="Helpers">
+							Helpers
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="can.mustache.Acquisition.html" 
+							data-search="Template Acquisition">
+							Template Acquisition
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="can.mustache.Binding.html" 
+							data-search="Live Binding">
+							Live Binding
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>Types</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="typedef" 
+							href="can.mustache.helper.html" 
+							data-search="can.mustache.helper">
+							helper
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="typedef" 
+							href="can.mustache.helperOptions.html" 
+							data-search="helperOptions">
+							helperOptions
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="typedef" 
+							href="can.mustache.key.html" 
+							data-search="key">
+							key
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container active  expanded">
+						<a 	class="typedef" 
+							href="can.mustache.sectionRenderer.html" 
+							data-search="sectionRenderer">
+							sectionRenderer
+						</a>
+						
+							
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>Basic Tags</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.tags.escaped.html" 
+							data-search="{{key}}">
+							{{key}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.tags.unescaped.html" 
+							data-search="{{{key}}}">
+							{{{key}}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.tags.unescaped2.html" 
+							data-search="{{&amp;key}}">
+							{{&amp;key}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.helpers.section.html" 
+							data-search="{{#key}}">
+							{{#key}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.helpers.close.html" 
+							data-search="{{/key}}">
+							{{/key}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.helpers.inverse.html" 
+							data-search="{{^key}}">
+							{{^key}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.helpers.partial.html" 
+							data-search="{{&gt;key}}">
+							{{&gt;key}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.tags.comment.html" 
+							data-search="{{!key}}">
+							{{!key}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>Helper Tags</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.helpers.helper.html" 
+							data-search="{{helper args hashes}}">
+							{{helper args hashes}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.helpers.sectionHelper.html" 
+							data-search="{{#helper args hashes}}">
+							{{#helper args hashes}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.helpers.if.html" 
+							data-search="{{#if key}}">
+							{{#if key}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.helpers.else.html" 
+							data-search="{{else}}">
+							{{else}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.helpers.unless.html" 
+							data-search="{{#unless key}}">
+							{{#unless key}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.helpers.each.html" 
+							data-search="{{#each key}}">
+							{{#each key}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.helpers.with.html" 
+							data-search="{{#with key}}">
+							{{#with key}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.helpers.data.html" 
+							data-search="{{data name}}">
+							{{data name}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.helpers.elementCallback.html" 
+							data-search="{{(el)-&gt;CODE}}">
+							{{(el)-&gt;CODE}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.helpers.log.html" 
+							data-search="{{log}}">
+							{{log}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.helpers.index.html" 
+							data-search="{{@index}}">
+							{{@index}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.mustache.helpers.key.html" 
+							data-search="{{@key}}">
+							{{@key}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
+		
+	</ul>
+
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.route.html" data-search="can.route">
+				can.route
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.stache.html" data-search="can.stache">
+				can.stache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.util.html" data-search="can.util">
+				can.util
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.view.html" data-search="can.view">
+				can.view
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
+				can.view.bindings
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	
+	
+	
+	<article class="content docs">
+	
+	
+		
+		<section class="title">
+			<div class="heading">
+<h1>sectionRenderer</h1>
+	<ul class="tags">
+		<li>typedef</li>
+	</ul>
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	
+		<span class="module">can.mustache.sectionRenderer</span>
+	
+	
+	
+	<h2><code>{function(context, helpers)}</code></h2>
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+    
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/2.2-pre/view/mustache/doc/sectionRenderer.md">source</a></li>
+	
+	
+	
+</ul>
+<br />
+		</section>
+		
+		
+		
+		<section class="contents">
+		</section>
+		
+		
+		
+
+		
+		<section class="description">
+			<p>Renders a section. These functions are usually provided as <code>.fn</code> and <code>.inverse</code> on a mustache helper's <a href="can.mustache.helperOptions.html">options</a>.</p>
+
+		</section>
+		
+
+		
+			
+			<section class='primary-options'>
+				
+
+  <h2 id="sig_">function(context, helpers)
+</h2>
+<div class="signature-wrapper">
+
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>context
+				<code>{* | <a href="can.view.Scope.html" >can.view.Scope</a>}</code><span class="pull-right optional">Optional</span></h4>
+			<div class="description">
+				<p>Specifies the data the section is rendered
+with.  If a <a href="can.view.Scope.html">can.view.Scope</a> is provided, that scope is used to render the
+section.  If anything else is provided, it is used to create a new scope object
+with the current scope as it's parent.  If nothing is provided, the current
+scope is used to render the section.</p>
+
+			</div>
+			
+			
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>helpers
+				<code>{* | <a href="can.view.Options.html" >can.view.Options</a>}</code><span class="pull-right optional">Optional</span></h4>
+			<div class="description">
+				<p>Specifies the helpers the section is rendered
+with.  If a <a href="can.view.Options.html">can.view.Options</a> is provided, that scope is used to render the
+section.  If anything else is provided, it is used to create a new scope object
+with the current helper scope as it's parent.  If nothing is provided, the current
+helper scope is used to render the section.</p>
+
+			</div>
+			
+			
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{String}</code></h4>
+		<div class="description">
+			<p>Returns the rendered result of the helper.</p>
+
+		</div>
+		
+		
+	</div>
+	
+
+
+
+
+
+</div>
+
+  
+
+			</section>
+			
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<h2>Use</h2>
+<p>Renderer functions are provided to mustache <a href="can.mustache.helper.html">helpers</a> on
+the <a href="can.mustache.helperOptions.html">options</a> argument and are used to render the
+content between sections. The <code>context</code> and <code>helpers</code> option let you control
+the data and helpers used to render the section.</p>
+<p>The following example adds <code>{first: &quot;Justin&quot;}</code> to the lookup
+data. Notice how the section has access to <code>first</code> and <code>last</code>.</p>
+<pre><code>can.mustache.registerHelper(&quot;myhelper&quot;, function(options){
+  
+  return &quot;&lt;h1&gt;&quot;+options.fn({first: &quot;Justin&quot;})+&quot;&lt;/h1&gt;&quot;
+  
+})
+
+var template = can.mustache(
+  &quot;{{#helper}}{{first}} {{last}}{{/helper}}&quot;);
+  
+template({last: &quot;Meyer&quot;}) //-&gt; &lt;h1&gt;Justin Meyer&lt;/h1&gt;
+</code></pre>
+<p>If no <code>context</code> is provided, the current context is passed.  Notice
+how the section has access to <code>last</code>:</p>
+<pre><code>can.mustache.registerHelper(&quot;myhelper&quot;, function(options){
+  
+  return &quot;&lt;h1&gt;&quot;+options.fn()+&quot;&lt;/h1&gt;&quot;
+  
+})
+
+var template = can.mustache(
+  &quot;{{#helper}}{{first}} {{last}}{{/helper}}&quot;);
+  
+template({last: &quot;Meyer&quot;}) //-&gt; &lt;h1&gt; Meyer&lt;/h1&gt;
+</code></pre>
+<p>If a <a href="can.view.Scope.html">can.view.Scope</a> is provided, it is used to render the
+section. Notice how <code>last</code> is not available in the section:</p>
+<pre><code>can.mustache.registerHelper(&quot;myhelper&quot;, function(options){
+  
+  return &quot;&lt;h1&gt;&quot;+
+    options.fn( new can.view.Scope( {first: &quot;Justin&quot;}) )+
+    &quot;&lt;/h1&gt;&quot;
+  
+})
+
+var template = can.mustache(
+  &quot;{{#helper}}{{first}} {{last}}{{/helper}}&quot;);
+  
+template({last: &quot;Meyer&quot;}) //-&gt; &lt;h1&gt;Justin &lt;/h1&gt;
+</code></pre>
+
+		</section>
+		
+		
+
+		
+	
+	
+	</article>
+	
+	
+
+</div>
+
+
+
+
+
+	
+	
+	<footer>
+		<nav class="container">
+			<a class="brand" href="index.html"></a>
+			<ul class='nav'>
+				<li >
+	              <a href="../../index.html">Home</a>
+	            </li>
+		        <li><a href='../guides/index.html'>guides</a></li>
+		        <li class='active'><a href='index.html'>api</a></li>
+		        <li class="">
+		          <a href="../../community.html#!forums">Community</a>
+		        </li>
+		        <li >
+	              <a href="../../blog/index.html">Blog</a>
+	            </li>
+		        <li >
+	              <a href="../../download.html">Download</a>
+	            </li>
+            </ul>
+		</nav>
+	</footer>
+	
+
+    
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-2302003-11']);
+	  _gaq.push(['_setDomainName', 'canjs.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	
+	</script>
+	
+	<script type="text/javascript">
+		var docObject = {"type":"typedef","name":"can.mustache.sectionRenderer","src":"view/mustache/doc/sectionRenderer.md","description":"<p>Renders a section. These functions are usually provided as <code>.fn</code> and <code>.inverse</code> on a mustache helper's [can.mustache.helperOptions options].</p>\n","title":"sectionRenderer","types":[{"type":"function","returns":{"types":[{"type":"String"}],"description":"<p>Returns the rendered result of the helper.</p>\n"},"params":[{"types":[{"type":"*"},{"type":"can.view.Scope"}],"optional":true,"name":"context","description":"<p>Specifies the data the section is rendered\nwith.  If a [can.view.Scope] is provided, that scope is used to render the\nsection.  If anything else is provided, it is used to create a new scope object\nwith the current scope as it's parent.  If nothing is provided, the current\nscope is used to render the section.</p>\n"},{"types":[{"type":"*"},{"type":"can.view.Options"}],"optional":true,"name":"helpers","description":"<p>Specifies the helpers the section is rendered\nwith.  If a [can.view.Options] is provided, that scope is used to render the\nsection.  If anything else is provided, it is used to create a new scope object\nwith the current helper scope as it's parent.  If nothing is provided, the current\nhelper scope is used to render the section.</p>\n"}]}],"parent":"can.mustache.types","comment":" ","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs"},"dest":"/Users/justin/dev/canjs.com/2.2-pre/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../../documentjs.json","project":{"version":"2.2-pre","name":"canjs","source":"git://github.com/bitovi/canjs#2.2-pre"}};
+	</script>
+	
+	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
+		<script type='text/javascript' 
+				data-main="static"
+				data-config="./static/config.js"
+				src="./static/steal.production.js"
+		    		bundles-path="bundles"></script>
+	
+	
+</body>
+
+</html>

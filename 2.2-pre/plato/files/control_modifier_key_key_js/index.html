@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>control/modifier/key/key.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">48.79</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">433</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">38.35</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">2.76</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">/* jshint maxdepth:5,indent:false*/
+//
+/**
+ * @documentjs-ignore
+ */
+steal(&#039;can/control/modifier&#039;, function (Control) {
+
+	//!steal-remove-start
+	can.dev.warn(&quot;can/control/modifier/key is an undocumented and untested plugin and will be removed in a future release.&quot;);
+	//!steal-remove-end
+
+	/*
+	 * jwerty - Awesome handling of keyboard events
+	 *
+	 * jwerty is a JS lib which allows you to bind, fire and assert key combination
+	 * strings against elements and events. It normalises the poor std api into
+	 * something easy to use and clear.
+	 *
+	 * This code is licensed under the MIT
+	 * For the full license see: http://keithamus.moit-license.org/
+	 * For more information see: http://keithamus.github.com/jwerty
+	 *
+	 * @author Keith Cirkel (&#039;keithamus&#039;) &lt;jwerty@keithcirkel.co.uk&gt;
+	 * @license http://keithamus.mit-license.org/
+	 * @copyright Copyright © 2011, Keith Cirkel
+	 *
+	 */
+	function realTypeOf(v, s) {
+		return v === null ? s === &#039;null&#039; : v === undefined ? s === &#039;undefined&#039; : v.is &amp;&amp; v instanceof $ ? s === &#039;element&#039; : Object.prototype.toString.call(v)
+			.toLowerCase()
+			.indexOf(s) &gt; 7;
+	}
+	// Private
+	var _modProps = {
+		16: &#039;shiftKey&#039;,
+		17: &#039;ctrlKey&#039;,
+		18: &#039;altKey&#039;,
+		91: &#039;metaKey&#039;
+	};
+	// Generate key mappings for common keys that are not printable.
+	var _keys = {
+
+		// MOD aka toggleable keys
+		mods: {
+			// Shift key, ⇧
+			&#039;⇧&#039;: 16,
+			shift: 16,
+			// CTRL key, on Mac: ⌃
+			&#039;⌃&#039;: 17,
+			ctrl: 17,
+			// ALT key, on Mac: ⌥ (Alt)
+			&#039;⌥&#039;: 18,
+			alt: 18,
+			option: 18,
+			// META, on Mac: ⌘ (CMD), on Windows (Win), on Linux (Super)
+			&#039;⌘&#039;: 91,
+			meta: 91,
+			cmd: 91,
+			&#039;super&#039;: 91,
+			win: 91
+		},
+
+		// Normal keys
+		keys: {
+			// Backspace key, on Mac: ⌫ (Backspace)
+			&#039;⌫&#039;: 8,
+			backspace: 8,
+			// Tab Key, on Mac: ⇥ (Tab), on Windows ⇥⇥
+			&#039;⇥&#039;: 9,
+			&#039;⇆&#039;: 9,
+			tab: 9,
+			// Return key, ↩
+			&#039;↩&#039;: 13,
+			&#039;return&#039;: 13,
+			enter: 13,
+			&#039;⌅&#039;: 13,
+			// Pause/Break key
+			&#039;pause&#039;: 19,
+			&#039;pause-break&#039;: 19,
+			// Caps Lock key, ⇪
+			&#039;⇪&#039;: 20,
+			caps: 20,
+			&#039;caps-lock&#039;: 20,
+			// Escape key, on Mac: ⎋, on Windows: Esc
+			&#039;⎋&#039;: 27,
+			escape: 27,
+			esc: 27,
+			// Space key
+			space: 32,
+			// Page-Up key, or pgup, on Mac: ↖
+			&#039;↖&#039;: 33,
+			pgup: 33,
+			&#039;page-up&#039;: 33,
+			// Page-Down key, or pgdown, on Mac: ↘
+			&#039;↘&#039;: 34,
+			pgdown: 34,
+			&#039;page-down&#039;: 34,
+			// END key, on Mac: ⇟
+			&#039;⇟&#039;: 35,
+			end: 35,
+			// HOME key, on Mac: ⇞
+			&#039;⇞&#039;: 36,
+			home: 36,
+			// Insert key, or ins
+			ins: 45,
+			insert: 45,
+			// Delete key, on Mac: ⌫ (Delete)
+			del: 46,
+			&#039;delete&#039;: 46,
+
+			// Left Arrow Key, or ←
+			&#039;←&#039;: 37,
+			left: 37,
+			&#039;arrow-left&#039;: 37,
+			// Up Arrow Key, or ↑
+			&#039;↑&#039;: 38,
+			up: 38,
+			&#039;arrow-up&#039;: 38,
+			// Right Arrow Key, or →
+			&#039;→&#039;: 39,
+			right: 39,
+			&#039;arrow-right&#039;: 39,
+			// Up Arrow Key, or ↓
+			&#039;↓&#039;: 40,
+			down: 40,
+			&#039;arrow-down&#039;: 40,
+
+			// odities, printing characters that come out wrong:
+			// Num-Multiply, or *
+			&#039;*&#039;: 106,
+			star: 106,
+			asterisk: 106,
+			multiply: 106,
+			// Num-Plus or +
+			&#039;+&#039;: 107,
+			&#039;plus&#039;: 107,
+			// Num-Subtract, or -
+			&#039;-&#039;: 109,
+			subtract: 109,
+			// Semicolon
+			&#039;;&#039;: 186,
+			semicolon: 186,
+			// = or equals
+			&#039;=&#039;: 187,
+			&#039;equals&#039;: 187,
+			// Comma, or ,
+			&#039;,&#039;: 188,
+			comma: 188,
+			//&#039;-&#039;: 189, //???
+			// Period, or ., or full-stop
+			&#039;.&#039;: 190,
+			period: 190,
+			&#039;full-stop&#039;: 190,
+			// Slash, or /, or forward-slash
+			&#039;/&#039;: 191,
+			slash: 191,
+			&#039;forward-slash&#039;: 191,
+			// Tick, or `, or back-quote
+			&#039;`&#039;: 192,
+			tick: 192,
+			&#039;back-quote&#039;: 192,
+			// Open bracket, or [
+			&#039;[&#039;: 219,
+			&#039;open-bracket&#039;: 219,
+			// Back slash, or \
+			&#039;\\&#039;: 220,
+			&#039;back-slash&#039;: 220,
+			// Close backet, or ]
+			&#039;]&#039;: 221,
+			&#039;close-bracket&#039;: 221,
+			// Apostraphe, or Quote, or &#039;
+			&#039;\&#039;&#039;: 222,
+			quote: 222,
+			apostraphe: 222
+		}
+
+	}, i, n;
+	// To minimise code bloat, add all of the NUMPAD 0-9 keys in a loop
+	i = 95;
+	n = 0;
+	while (++i &lt; 106) {
+		_keys.keys[&#039;num-&#039; + n] = i;
+		++n;
+	}
+	// To minimise code bloat, add all of the top row 0-9 keys in a loop
+	i = 47;
+	n = 0;
+	while (++i &lt; 58) {
+		_keys.keys[n] = i;
+		++n;
+	}
+	// To minimise code bloat, add all of the F1-F25 keys in a loop
+	i = 111;
+	n = 1;
+	while (++i &lt; 136) {
+		_keys.keys[&#039;f&#039; + n] = i;
+		++n;
+	}
+	// To minimise code bloat, add all of the letters of the alphabet in a loop
+	i = 64;
+	while (++i &lt; 91) {
+		_keys.keys[String.fromCharCode(i)
+			.toLowerCase()] = i;
+	}
+
+	function JwertyCode(jwertyCode) {
+		var i, c, n, z, keyCombo, optionals, jwertyCodeFragment, rangeMatches, rangeI;
+		// In-case we get called with an instance of ourselves, just return that.
+		if (jwertyCode instanceof JwertyCode) {
+			return jwertyCode;
+		}
+		// If jwertyCode isn&#039;t an array, cast it as a string and split into array.
+		if (!realTypeOf(jwertyCode, &#039;array&#039;)) {
+			jwertyCode = String(jwertyCode)
+				.replace(/\s/g, &#039;&#039;)
+				.toLowerCase()
+				.match(/(?:\+,|[^,])+/g);
+		}
+		// Loop through each key sequence in jwertyCode
+		for (i = 0, c = jwertyCode.length; i &lt; c; ++i) {
+			// If the key combo at this part of the sequence isn&#039;t an array,
+			// cast as a string and split into an array.
+			if (!realTypeOf(jwertyCode[i], &#039;array&#039;)) {
+				jwertyCode[i] = String(jwertyCode[i])
+					.match(/(?:\+\/|[^\/])+/g);
+			}
+			// Parse the key optionals in this sequence
+			optionals = [];
+			n = jwertyCode[i].length;
+			while (n--) {
+				// Begin creating the object for this key combo
+				jwertyCodeFragment = jwertyCode[i][n];
+				keyCombo = {
+					jwertyCombo: String(jwertyCodeFragment),
+					shiftKey: false,
+					ctrlKey: false,
+					altKey: false,
+					metaKey: false
+				};
+				// If jwertyCodeFragment isn&#039;t an array then cast as a string
+				// and split it into one.
+				if (!realTypeOf(jwertyCodeFragment, &#039;array&#039;)) {
+					jwertyCodeFragment = String(jwertyCodeFragment)
+						.toLowerCase()
+						.match(/(?:(?:[^\+])+|\+\+|^\+$)/g);
+				}
+				z = jwertyCodeFragment.length;
+				while (z--) {
+					// Normalise matching errors
+					if (jwertyCodeFragment[z] === &#039;++&#039;) {
+						jwertyCodeFragment[z] = &#039;+&#039;;
+					}
+					// Inject either keyCode or ctrl/meta/shift/altKey into keyCombo
+					if (jwertyCodeFragment[z] in _keys.mods) {
+						keyCombo[_modProps[_keys.mods[jwertyCodeFragment[z]]]] = true;
+					} else if (jwertyCodeFragment[z] in _keys.keys) {
+						keyCombo.keyCode = _keys.keys[jwertyCodeFragment[z]];
+					} else {
+						rangeMatches = jwertyCodeFragment[z].match(/^\[([^-]+\-?[^-]*)-([^-]+\-?[^-]*)\]$/);
+					}
+				}
+				if (realTypeOf(keyCombo.keyCode, &#039;undefined&#039;)) {
+					// If we picked up a range match earlier...
+					if (rangeMatches &amp;&amp; rangeMatches[1] in _keys.keys &amp;&amp; rangeMatches[2] in _keys.keys) {
+						rangeMatches[2] = _keys.keys[rangeMatches[2]];
+						rangeMatches[1] = _keys.keys[rangeMatches[1]];
+						// Go from match 1 and capture all key-comobs up to match 2
+						for (rangeI = rangeMatches[1]; rangeI &lt; rangeMatches[2]; ++rangeI) {
+							optionals.push({
+								altKey: keyCombo.altKey,
+								shiftKey: keyCombo.shiftKey,
+								metaKey: keyCombo.metaKey,
+								ctrlKey: keyCombo.ctrlKey,
+								keyCode: rangeI,
+								jwertyCombo: String(jwertyCodeFragment)
+							});
+						}
+						keyCombo.keyCode = rangeI; // Inject either keyCode or ctrl/meta/shift/altKey into keyCombo
+					} else {
+						keyCombo.keyCode = 0;
+					}
+				}
+				optionals.push(keyCombo);
+			}
+			this[i] = optionals;
+		}
+		this.length = i;
+		return this;
+	}
+	var jwerty = {
+
+		/**
+		 * jwerty.event
+		 *
+		 * `jwerty.event` will return a function, which expects the first
+		 *  argument to be a key event. When the key event matches `jwertyCode`,
+		 *  `callbackFunction` is fired. `jwerty.event` is used by `jwerty.key`
+		 *  to bind the function it returns. `jwerty.event` is useful for
+		 *  attaching to your own event listeners. It can be used as a decorator
+		 *  method to encapsulate functionality that you only want to fire after
+		 *  a specific key combo. If `callbackContext` is specified then it will
+		 *  be supplied as `callbackFunction`&#039;s context - in other words, the
+		 *  keyword `this` will be set to `callbackContext` inside the
+		 *  `callbackFunction` function.
+		 *
+		 *   @param {Array|String} jwertyCode can be an array, or string of key
+		 *      combinations, which includes optionals and or sequences
+		 *   @param {Function} callbackFunction is a function (or boolean) which
+		 *      is fired when jwertyCode is matched. Return false to
+		 *      preventDefault()
+		 *   @param {Object} [callbackContext] The context to call
+		 *      `callback` with (i.e this)
+		 *
+		 */
+		event: function (jwertyCode, callbackFunction, callbackContext /*? this */ ) {
+
+			// Construct a function out of callbackFunction, if it is a boolean.
+			if (realTypeOf(callbackFunction, &#039;boolean&#039;)) {
+				var bool = callbackFunction;
+				callbackFunction = function () {
+					return bool;
+				};
+			}
+			jwertyCode = new JwertyCode(jwertyCode);
+			// Initialise in-scope vars.
+			var i = 0,
+				c = jwertyCode.length - 1,
+				returnValue, jwertyCodeIs;
+			// This is the event listener function that gets returned...
+			return function (event) {
+				jwertyCodeIs = jwerty.is(jwertyCode, event, i);
+				// if jwertyCodeIs returns truthy (string)...
+				if (jwertyCodeIs) {
+					// ... and this isn&#039;t the last key in the sequence,
+					// incriment the key in sequence to check.
+					if (i &lt; c) {
+						++i;
+						return; // ... and this is the last in the sequence (or the only
+						// one in sequence), then fire the callback
+					} else {
+						returnValue = callbackFunction.call(callbackContext || this, event, jwertyCodeIs);
+						// If the callback returned false, then we should run
+						// preventDefault();
+						if (returnValue === false) {
+							event.preventDefault();
+						}
+						// Reset i for the next sequence to fire.
+						i = 0;
+						return;
+					}
+				}
+				// If the event didn&#039;t hit this time, we should reset i to 0,
+				// that is, unless this combo was the first in the sequence,
+				// in which case we should reset i to 1.
+				i = jwerty.is(jwertyCode, event) ? 1 : 0;
+			};
+		},
+
+		/**
+		 * jwerty.is
+		 *
+		 * `jwerty.is` will return a boolean value, based on if `event` matches
+		 *  `jwertyCode`. `jwerty.is` is called by `jwerty.event` to check
+		 *  whether or not to fire the callback. `event` can be a DOM event, or
+		 *  a jQuery/Zepto/Ender manufactured event. The properties of
+		 *  `jwertyCode` (speficially ctrlKey, altKey, metaKey, shiftKey and
+		 *  keyCode) should match `jwertyCode`&#039;s properties - if they do, then
+		 *  `jwerty.is` will return `true`. If they don&#039;t, `jwerty.is` will
+		 *  return `false`.
+		 *
+		 *   @param {Array|String} jwertyCode can be an array, or string of key
+		 *      combinations, which includes optionals and or sequences
+		 *   @param {KeyboardEvent} event is the KeyboardEvent to assert against
+		 *   @param {Integer} [i] checks the `i` key in jwertyCode
+		 *      sequence
+		 *
+		 */
+		is: function (jwertyCode, event, i /*? 0*/ ) {
+			jwertyCode = new JwertyCode(jwertyCode);
+			// Default `i` to 0
+			i = i || 0;
+			// We are only interesting in `i` of jwertyCode;
+			jwertyCode = jwertyCode[i];
+			// jQuery stores the *real* event in `originalEvent`, which we use
+			// because it does annoything stuff to `metaKey`
+			event = event.originalEvent || event;
+			// We&#039;ll look at each optional in this jwertyCode sequence...
+			var n = jwertyCode.length,
+				returnValue = false;
+			// Loop through each fragment of jwertyCode
+			while (n--) {
+				returnValue = jwertyCode[n].jwertyCombo;
+				// For each property in the jwertyCode object, compare to `event`
+				for (var p in jwertyCode[n]) {
+					// ...except for jwertyCode.jwertyCombo...
+					if (p !== &#039;jwertyCombo&#039; &amp;&amp; event[p] !== jwertyCode[n][p]) {
+						returnValue = false;
+					}
+				}
+				// If this jwertyCode optional wasn&#039;t falsey, then we can return early.
+				if (returnValue !== false) {
+					return returnValue;
+				}
+			}
+			return returnValue;
+		},
+		KEYS: _keys
+	};
+	/**
+	 * @page can.control.key
+	 * @parent can.control
+	 *
+	 * Add templated event binding with keydown specific binding.
+	 * For example, the following would bind to keydown on &quot;CTRL+P&quot;.
+	 *
+	 *      &quot;keydown:(ctrl+p)&quot;:function(elm,ev){ ... }
+	 *
+	 * Uses a modified version of &#039;jwerty&#039; for its key finding.
+	 *
+	 */
+	// Hang on to original action
+	var originalShifter = can.Control._shifter;
+	// Redefine _isAction to handle new syntax
+	can.extend(can.Control, {
+		_shifter: function (context, name) {
+			var fn = originalShifter.apply(this, arguments),
+				parts = name.split(&#039;:&#039;);
+			if (parts.length &gt; 1 &amp;&amp; /key/.test(parts[0])) {
+				if (parts[1][0] === &#039;(&#039;) {
+					// Make sure the first char after the &#039;:&#039; is a param
+					// this is for cases like &quot;keydown:debounce(50)&quot;:function() { ... }
+					fn = jwerty.event(parts[1].replace(/\(|\)/gi, &#039;&#039;), fn);
+				}
+			}
+			return fn;
+		}
+	});
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

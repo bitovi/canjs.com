@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>~lambdas.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="comments.html">
+                comments.js
+              </a>
+            
+              
+              <a class="source" href="delimiters.html">
+                delimiters.js
+              </a>
+            
+              
+              <a class="source" href="interpolation.html">
+                interpolation.js
+              </a>
+            
+              
+              <a class="source" href="inverted.html">
+                inverted.js
+              </a>
+            
+              
+              <a class="source" href="partials.html">
+                partials.js
+              </a>
+            
+              
+              <a class="source" href="sections.html">
+                sections.js
+              </a>
+            
+              
+              <a class="source" href="spec.html">
+                spec.js
+              </a>
+            
+              
+              <a class="source" href="specs.html">
+                specs.js
+              </a>
+            
+              
+              <a class="source" href="~lambdas.html">
+                ~lambdas.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>~lambdas.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'./spec'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{ <span class="hljs-built_in">window</span>.MUSTACHE_SPECS.push({name:<span class="hljs-string">'~lambdas'</span>, data: {<span class="hljs-string">"overview"</span>:<span class="hljs-string">"Lambdas are a special-cased data type for use in interpolations and\nsections.\n\nWhen used as the data value for an Interpolation tag, the lambda MUST be\ntreatable as an arity 0 function, and invoked as such.  The returned value\nMUST be rendered against the default delimiters, then interpolated in place\nof the lambda.\n\nWhen used as the data value for a Section tag, the lambda MUST be treatable\nas an arity 1 function, and invoked as such (passing a String containing the\nunprocessed section contents).  The returned value MUST be rendered against\nthe current delimiters, then interpolated in place of the section.\n"</span>,<span class="hljs-string">"tests"</span>:[{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Interpolation"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"A lambda's return value should be interpolated."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"lambda"</span>:{<span class="hljs-string">"ruby"</span>:<span class="hljs-string">"proc { \"world\" }"</span>,<span class="hljs-string">"perl"</span>:<span class="hljs-string">"sub { \"world\" }"</span>,<span class="hljs-string">"js"</span>:<span class="hljs-string">"function() { return \"world\" }"</span>,<span class="hljs-string">"php"</span>:<span class="hljs-string">"return \"world\";"</span>,<span class="hljs-string">"python"</span>:<span class="hljs-string">"lambda: \"world\""</span>}},<span class="hljs-string">"template"</span>:<span class="hljs-string">"Hello, {{lambda}}!"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"Hello, world!"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Interpolation - Expansion"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"A lambda's return value should be parsed."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"planet"</span>:<span class="hljs-string">"world"</span>,<span class="hljs-string">"lambda"</span>:{<span class="hljs-string">"ruby"</span>:<span class="hljs-string">"proc { \"{{planet}}\" }"</span>,<span class="hljs-string">"perl"</span>:<span class="hljs-string">"sub { \"{{planet}}\" }"</span>,<span class="hljs-string">"js"</span>:<span class="hljs-string">"function() { return \"{{planet}}\" }"</span>,<span class="hljs-string">"php"</span>:<span class="hljs-string">"return \"{{planet}}\";"</span>,<span class="hljs-string">"python"</span>:<span class="hljs-string">"lambda: \"{{planet}}\""</span>}},<span class="hljs-string">"template"</span>:<span class="hljs-string">"Hello, {{lambda}}!"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"Hello, world!"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Interpolation - Alternate Delimiters"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"A lambda's return value should parse with the default delimiters."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"planet"</span>:<span class="hljs-string">"world"</span>,<span class="hljs-string">"lambda"</span>:{<span class="hljs-string">"ruby"</span>:<span class="hljs-string">"proc { \"|planet| =&gt; {{planet}}\" }"</span>,<span class="hljs-string">"perl"</span>:<span class="hljs-string">"sub { \"|planet| =&gt; {{planet}}\" }"</span>,<span class="hljs-string">"js"</span>:<span class="hljs-string">"function() { return \"|planet| =&gt; {{planet}}\" }"</span>,<span class="hljs-string">"php"</span>:<span class="hljs-string">"return \"|planet| =&gt; {{planet}}\";"</span>,<span class="hljs-string">"python"</span>:<span class="hljs-string">"lambda: \"|planet| =&gt; {{planet}}\""</span>}},<span class="hljs-string">"template"</span>:<span class="hljs-string">"{{= | | =}}\nHello, (|&amp;lambda|)!"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"Hello, (|planet| =&gt; world)!"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Interpolation - Multiple Calls"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Interpolated lambdas should not be cached."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"lambda"</span>:{<span class="hljs-string">"ruby"</span>:<span class="hljs-string">"proc { $calls ||= 0; $calls += 1 }"</span>,<span class="hljs-string">"perl"</span>:<span class="hljs-string">"sub { no strict; $calls += 1 }"</span>,<span class="hljs-string">"js"</span>:<span class="hljs-string">"function() { return (g=(function(){return this})()).calls=(g.calls||0)+1 }"</span>,<span class="hljs-string">"php"</span>:<span class="hljs-string">"global $calls; return ++$calls;"</span>,<span class="hljs-string">"python"</span>:<span class="hljs-string">"lambda: globals().update(calls=globals().get(\"calls\",0)+1) or calls"</span>}},<span class="hljs-string">"template"</span>:<span class="hljs-string">"{{lambda}} == {{{lambda}}} == {{lambda}}"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"1 == 2 == 3"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Escaping"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Lambda results should be appropriately escaped."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"lambda"</span>:{<span class="hljs-string">"ruby"</span>:<span class="hljs-string">"proc { \"&gt;\" }"</span>,<span class="hljs-string">"perl"</span>:<span class="hljs-string">"sub { \"&gt;\" }"</span>,<span class="hljs-string">"js"</span>:<span class="hljs-string">"function() { return \"&gt;\" }"</span>,<span class="hljs-string">"php"</span>:<span class="hljs-string">"return \"&gt;\";"</span>,<span class="hljs-string">"python"</span>:<span class="hljs-string">"lambda: \"&gt;\""</span>}},<span class="hljs-string">"template"</span>:<span class="hljs-string">"&lt;{{lambda}}{{{lambda}}}"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"&lt;&amp;gt;&gt;"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Section"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Lambdas used for sections should receive the raw section string."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"x"</span>:<span class="hljs-string">"Error!"</span>,<span class="hljs-string">"lambda"</span>:{<span class="hljs-string">"ruby"</span>:<span class="hljs-string">"proc { |text| text == \"{{x}}\" ? \"yes\" : \"no\" }"</span>,<span class="hljs-string">"perl"</span>:<span class="hljs-string">"sub { $_[0] eq \"{{x}}\" ? \"yes\" : \"no\" }"</span>,<span class="hljs-string">"js"</span>:<span class="hljs-string">"function(txt) { return (txt == \"{{x}}\" ? \"yes\" : \"no\") }"</span>,<span class="hljs-string">"php"</span>:<span class="hljs-string">"return ($text == \"{{x}}\") ? \"yes\" : \"no\";"</span>,<span class="hljs-string">"python"</span>:<span class="hljs-string">"lambda text: text == \"{{x}}\" and \"yes\" or \"no\""</span>}},<span class="hljs-string">"template"</span>:<span class="hljs-string">"&lt;{{#lambda}}{{x}}{{/lambda}}&gt;"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"&lt;yes&gt;"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Section - Expansion"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Lambdas used for sections should have their results parsed."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"planet"</span>:<span class="hljs-string">"Earth"</span>,<span class="hljs-string">"lambda"</span>:{<span class="hljs-string">"ruby"</span>:<span class="hljs-string">"proc { |text| \"#{text}{{planet}}#{text}\" }"</span>,<span class="hljs-string">"perl"</span>:<span class="hljs-string">"sub { $_[0] . \"{{planet}}\" . $_[0] }"</span>,<span class="hljs-string">"js"</span>:<span class="hljs-string">"function(txt) { return txt + \"{{planet}}\" + txt }"</span>,<span class="hljs-string">"php"</span>:<span class="hljs-string">"return $text . \"{{planet}}\" . $text;"</span>,<span class="hljs-string">"python"</span>:<span class="hljs-string">"lambda text: \"%s{{planet}}%s\" % (text, text)"</span>}},<span class="hljs-string">"template"</span>:<span class="hljs-string">"&lt;{{#lambda}}-{{/lambda}}&gt;"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"&lt;-Earth-&gt;"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Section - Alternate Delimiters"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Lambdas used for sections should parse with the current delimiters."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"planet"</span>:<span class="hljs-string">"Earth"</span>,<span class="hljs-string">"lambda"</span>:{<span class="hljs-string">"ruby"</span>:<span class="hljs-string">"proc { |text| \"#{text}{{planet}} =&gt; |planet|#{text}\" }"</span>,<span class="hljs-string">"perl"</span>:<span class="hljs-string">"sub { $_[0] . \"{{planet}} =&gt; |planet|\" . $_[0] }"</span>,<span class="hljs-string">"js"</span>:<span class="hljs-string">"function(txt) { return txt + \"{{planet}} =&gt; |planet|\" + txt }"</span>,<span class="hljs-string">"php"</span>:<span class="hljs-string">"return $text . \"{{planet}} =&gt; |planet|\" . $text;"</span>,<span class="hljs-string">"python"</span>:<span class="hljs-string">"lambda text: \"%s{{planet}} =&gt; |planet|%s\" % (text, text)"</span>}},<span class="hljs-string">"template"</span>:<span class="hljs-string">"{{= | | =}}&lt;|#lambda|-|/lambda|&gt;"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"&lt;-{{planet}} =&gt; Earth-&gt;"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Section - Multiple Calls"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Lambdas used for sections should not be cached."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"lambda"</span>:{<span class="hljs-string">"ruby"</span>:<span class="hljs-string">"proc { |text| \"__#{text}__\" }"</span>,<span class="hljs-string">"perl"</span>:<span class="hljs-string">"sub { \"__\" . $_[0] . \"__\" }"</span>,<span class="hljs-string">"js"</span>:<span class="hljs-string">"function(txt) { return \"__\" + txt + \"__\" }"</span>,<span class="hljs-string">"php"</span>:<span class="hljs-string">"return \"__\" . $text . \"__\";"</span>,<span class="hljs-string">"python"</span>:<span class="hljs-string">"lambda text: \"__%s__\" % (text)"</span>}},<span class="hljs-string">"template"</span>:<span class="hljs-string">"{{#lambda}}FILE{{/lambda}} != {{#lambda}}LINE{{/lambda}}"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"__FILE__ != __LINE__"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Inverted Section"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Lambdas used for inverted sections should be considered truthy."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"static"</span>:<span class="hljs-string">"static"</span>,<span class="hljs-string">"lambda"</span>:{<span class="hljs-string">"ruby"</span>:<span class="hljs-string">"proc { |text| false }"</span>,<span class="hljs-string">"perl"</span>:<span class="hljs-string">"sub { 0 }"</span>,<span class="hljs-string">"js"</span>:<span class="hljs-string">"function(txt) { return false }"</span>,<span class="hljs-string">"php"</span>:<span class="hljs-string">"return false;"</span>,<span class="hljs-string">"python"</span>:<span class="hljs-string">"lambda text: 0"</span>}},<span class="hljs-string">"template"</span>:<span class="hljs-string">"&lt;{{^lambda}}{{static}}{{/lambda}}&gt;"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"&lt;&gt;"</span>}],<span class="hljs-string">"__ATTN__"</span>:<span class="hljs-string">"Do not edit this file; changes belong in the appropriate YAML file."</span>}});});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

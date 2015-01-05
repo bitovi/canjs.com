@@ -11,7 +11,7 @@ module.exports = function (grunt) {
 			"sites": {
 				"docs": {
 					"glob": {
-						"ignore": ["guides/*.md","{node_modules,bower_components}/**/*"]
+						"ignore": ["guides/*.md","{node_modules,bower_components}/**/*", "lib/**/*"]
 					},
 					"parent" : "canjs"
 				},
@@ -28,7 +28,7 @@ module.exports = function (grunt) {
 			"sites": {
 				"docs": {
 					"glob": {
-						"ignore": "guides/*.md"
+						"ignore": ["guides/*.md","lib/**/*"]
 					},
 					"parent" : "canjs"
 				},
@@ -40,7 +40,8 @@ module.exports = function (grunt) {
 				}
 			}
 		},
-		"2.1" : "git://github.com/bitovi/canjs#master"
+		"2.1" : "git://github.com/bitovi/canjs#master",
+		"2.2-pre": { source: "git://github.com/bitovi/canjs#minor", "npmInstall": ["bitovi/steal#npm"] }
 	};
 	var defaultVersion = "2.1";
 	var versionsNames = Object.keys(versions);
@@ -189,7 +190,8 @@ module.exports = function (grunt) {
 					],
 					"defaultDownloadVersion": "2.1.4"
 				},
-				"versionsSelectText" : "CanJS v<%= version %>"
+				"versionsSelectText" : "CanJS v<%= version %>",
+				"tags": "theme/tags"
 			},
 			"defaultDest" : "./can",
 			"versionDest" : "./<%=version%>/can",

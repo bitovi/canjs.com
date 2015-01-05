@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>mustache_benchmark.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="mustache.html">
+                mustache.js
+              </a>
+            
+              
+              <a class="source" href="mustache_benchmark.html">
+                mustache_benchmark.js
+              </a>
+            
+              
+              <a class="source" href="system.html">
+                system.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>mustache_benchmark.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/view/mustache'</span>, <span class="hljs-string">'can/test/benchmarks.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, benchmarks)</span> </span>{
+	<span class="hljs-comment">/* jshint ignore:start */</span>
+	benchmarks.add(
+		<span class="hljs-string">"can/view/mustache Updating elements"</span>,
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+
+			<span class="hljs-keyword">var</span> template = can.view.mustache(
+				<span class="hljs-string">"{{#each boxes}}"</span> +
+				<span class="hljs-string">"&lt;div class='box-view'&gt;"</span> +
+				<span class="hljs-string">"&lt;div class='box' id='box-{{number}}'  style='top: {{top}}px; left: {{left}}px; background: rgb(0,0,{{color}});'&gt;"</span> +
+				<span class="hljs-string">"{{content}}"</span> +
+				<span class="hljs-string">"&lt;/div&gt;"</span> +
+				<span class="hljs-string">"&lt;/div&gt;"</span> +
+				<span class="hljs-string">"{{/each}}"</span>);
+
+			<span class="hljs-keyword">var</span> boxes = [],
+				Box = can.Map.extend({
+					count: <span class="hljs-number">0</span>,
+					content: <span class="hljs-number">0</span>,
+					tick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+						<span class="hljs-keyword">var</span> count = <span class="hljs-keyword">this</span>.attr(<span class="hljs-string">"count"</span>) + <span class="hljs-number">1</span>;
+						<span class="hljs-keyword">this</span>.attr({
+							count: count,
+							left: <span class="hljs-built_in">Math</span>.cos(count / <span class="hljs-number">10</span>) * <span class="hljs-number">10</span>,
+							top: <span class="hljs-built_in">Math</span>.sin(count / <span class="hljs-number">10</span>) * <span class="hljs-number">10</span>,
+							color: count % <span class="hljs-number">255</span>,
+							content: count
+						});
+					}
+				});
+
+			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) {
+				boxes.push(<span class="hljs-keyword">new</span> Box({
+					number: i
+				}));
+			}
+
+			<span class="hljs-keyword">var</span> frag = template({
+				boxes: boxes
+			});
+			<span class="hljs-keyword">var</span> div = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"div"</span>);
+			<span class="hljs-built_in">document</span>.body.appendChild(div);
+			div.appendChild(frag);
+		},
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">2</span>; j++) {
+				<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; boxes.length; n++) {
+					boxes[n].tick();
+				}
+			}
+		},
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+			<span class="hljs-built_in">document</span>.body.removeChild(div);
+		});
+	<span class="hljs-comment">/* jshint ignore:end */</span>
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

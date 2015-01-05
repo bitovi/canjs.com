@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>map/delegate/delegate.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">51.61</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">188</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">58.61</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">1.39</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/util&#039;, &#039;can/map&#039;, function (can) {
+	// ** - &#039;this&#039; will be the deepest item changed
+	// * - &#039;this&#039; will be any changes within *, but * will be the 
+	//     this returned
+	// tells if the parts part of a delegate matches the broken up props of the event
+	// gives the prop to use as &#039;this&#039;
+	// - parts - the attribute name of the delegate split in parts [&#039;foo&#039;,&#039;*&#039;]
+	// - props - the split props of the event that happened [&#039;foo&#039;,&#039;bar&#039;,&#039;0&#039;]
+	// - returns - the attribute to delegate too (&#039;foo.bar&#039;), or null if not a match 
+	var delegateMatches = function (parts, props) {
+		//check props parts are the same or 
+		var len = parts.length,
+			i = 0,
+			// keeps the matched props we will use
+			matchedProps = [],
+			prop;
+		// if the event matches
+		for (i; i &lt; len; i++) {
+			prop = props[i];
+			// if no more props (but we should be matching them)
+			// return null
+			if (typeof prop !== &#039;string&#039;) {
+				return null;
+			} else // if we have a &quot;**&quot;, match everything
+			if (parts[i] === &#039;**&#039;) {
+				return props.join(&#039;.&#039;);
+			} else // a match, but we want to delegate to &quot;*&quot;
+			if (parts[i] === &#039;*&#039;) {
+				// only do this if there is nothing after ...
+				matchedProps.push(prop);
+			} else if (prop === parts[i]) {
+				matchedProps.push(prop);
+			} else {
+				return null;
+			}
+		}
+		return matchedProps.join(&#039;.&#039;);
+	},
+		// gets a change event and tries to figure out which
+		// delegates to call
+		delegateHandler = function (event, prop, how, newVal, oldVal) {
+			// pre-split properties to save some regexp time
+			var props = prop.split(&#039;.&#039;),
+				delegates = (this._observe_delegates || [])
+					.slice(0),
+				delegate, attr, matchedAttr, hasMatch, valuesEqual;
+			event.attr = prop;
+			event.lastAttr = props[props.length - 1];
+			// for each delegate
+			for (var i = 0; delegate = delegates[i++];) {
+				// if there is a batchNum, this means that this
+				// event is part of a series of events caused by a single 
+				// attrs call.  We don&#039;t want to issue the same event
+				// multiple times
+				// setting the batchNum happens later
+				if (event.batchNum &amp;&amp; delegate.batchNum === event.batchNum || delegate.undelegated) {
+					continue;
+				}
+				// reset match and values tests
+				hasMatch = undefined;
+				valuesEqual = true;
+				// yeah, all this under here has to be redone v
+				// for each attr in a delegate
+				for (var a = 0; a &lt; delegate.attrs.length; a++) {
+					attr = delegate.attrs[a];
+					matchedAttr = delegateMatches(attr.parts, props);
+					// check if it is a match
+					if (matchedAttr) {
+						hasMatch = matchedAttr;
+					}
+					// if it has a value, make sure it&#039;s the right value
+					// if it&#039;s set, we should probably check that it has a 
+					// value no matter what
+					if (attr.value &amp;&amp; valuesEqual) {
+						valuesEqual = attr.value === &#039;&#039; + this.attr(attr.attr);
+					} else if (valuesEqual &amp;&amp; delegate.attrs.length &gt; 1) {
+						// if there are multiple attributes, each has to at
+						// least have some value
+						valuesEqual = this.attr(attr.attr) !== undefined;
+					}
+				}
+				// if there is a match and valuesEqual ... call back
+				if (hasMatch &amp;&amp; valuesEqual) {
+					// how to get to the changed property from the delegate
+					var from = prop.replace(hasMatch + &#039;.&#039;, &#039;&#039;);
+					// if this event is part of a batch, set it on the delegate
+					// to only send one event
+					if (event.batchNum) {
+						delegate.batchNum = event.batchNum;
+					}
+					// if we listen to change, fire those with the same attrs
+					// TODO: the attrs should probably be using from
+					if (delegate.event === &#039;change&#039;) {
+						prop = from;
+						event.curAttr = hasMatch;
+						delegate.callback.apply(this.attr(hasMatch), can.makeArray(arguments));
+					} else if (delegate.event === how) {
+						// if it&#039;s a match, callback with the location of the match
+						delegate.callback.apply(this.attr(hasMatch), [
+							event,
+							newVal,
+							oldVal,
+							from
+						]);
+					} else if (delegate.event === &#039;set&#039; &amp;&amp; how === &#039;add&#039;) {
+						// if we are listening to set, we should also listen to add
+						delegate.callback.apply(this.attr(hasMatch), [
+							event,
+							newVal,
+							oldVal,
+							from
+						]);
+					}
+				}
+			}
+		};
+	can.extend(can.Map.prototype, {
+		delegate: function (selector, event, handler) {
+			selector = can.trim(selector);
+			var delegates = this._observe_delegates || (this._observe_delegates = []),
+				attrs = [],
+				selectorRegex = /([^\s=,]+)(?:=(&quot;[^&quot;,]*&quot;|&#039;[^&#039;,]*&#039;|[^\s&quot;&#039;,]*))?(,?)\s*/g,
+				matches;
+			// parse each property in the selector
+			while ((matches = selectorRegex.exec(selector)) !== null) {
+				// we need to do a little doctoring to make up for the quotes.
+				if (matches[2] &amp;&amp; can.inArray(matches[2].substr(0, 1), [
+					&#039;&quot;&#039;,
+					&#039;\&#039;&#039;
+				]) &gt;= 0) {
+					matches[2] = matches[2].substr(1, -1);
+				}
+				attrs.push({
+					// the attribute name
+					attr: matches[1],
+					// the attribute name, pre-split for speed
+					parts: matches[1].split(&#039;.&#039;),
+					// the value associated with this property (if there was one given)
+					value: matches[2],
+					// whether this selector combines with the one after it with AND or OR
+					or: matches[3] === &#039;,&#039;
+				});
+			}
+			// delegates has pre-processed info about the event
+			delegates.push({
+				// the attrs name for unbinding
+				selector: selector,
+				// an object of attribute names and values {type: &#039;recipe&#039;,id: undefined}
+				// undefined means a value was not defined
+				attrs: attrs,
+				callback: handler,
+				event: event
+			});
+			if (delegates.length === 1) {
+				this.bind(&#039;change&#039;, delegateHandler);
+			}
+			return this;
+		},
+		undelegate: function (selector, event, handler) {
+			selector = selector &amp;&amp; can.trim(selector);
+			var i = 0,
+				delegates = this._observe_delegates || [],
+				delegateOb;
+			if (selector) {
+				while (i &lt; delegates.length) {
+					delegateOb = delegates[i];
+					if (delegateOb.callback === handler || !handler &amp;&amp; delegateOb.selector === selector) {
+						delegateOb.undelegated = true;
+						delegates.splice(i, 1);
+					} else {
+						i++;
+					}
+				}
+			} else {
+				// remove all delegates
+				delegates = [];
+			}
+			if (!delegates.length) {
+				//can.removeData(this, &quot;_observe_delegates&quot;);
+				this.unbind(&#039;change&#039;, delegateHandler);
+			}
+			return this;
+		}
+	});
+	// add helpers for testing .. 
+	can.Map.prototype.delegate.matches = delegateMatches;
+	return can.Map;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

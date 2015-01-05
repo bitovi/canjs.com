@@ -1,0 +1,1912 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>can/view/view.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="elements.html">
+                elements.js
+              </a>
+            
+              
+              <a class="source" href="render.html">
+                render.js
+              </a>
+            
+              
+              <a class="source" href="scanner.html">
+                scanner.js
+              </a>
+            
+              
+              <a class="source" href="view.html">
+                view.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="can-view-view-js">can/view/view.js</h1>
+<hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p><code>can.view</code>
+<em>Templating abstraction.</em>
+can.view loads templates based on a registered type, and given a set of data, returns a document fragment
+from the template engine’s rendering method</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
+
+	<span class="hljs-keyword">var</span> isFunction = can.isFunction,
+		makeArray = can.makeArray,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Used for hookup <code>id</code>s.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		hookupId = <span class="hljs-number">1</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h2 id="internal-utility-methods">internal utility methods</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h5 id="makerenderer">makeRenderer</h5>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-comment">/**
+	 * @hide
+	 * Rendering function factory method
+	 * @param textRenderer
+	 * @returns {renderer}
+	 */</span>
+	<span class="hljs-keyword">var</span> makeRenderer = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(textRenderer)</span> </span>{
+		<span class="hljs-keyword">var</span> renderer = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">return</span> $view.frag(textRenderer.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>));
+		};
+		renderer.render = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">return</span> textRenderer.apply(textRenderer, <span class="hljs-built_in">arguments</span>);
+		};
+		<span class="hljs-keyword">return</span> renderer;
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <h5 id="checktext">checkText</h5>
+<p>Makes sure there’s a template, if not, have <code>steal</code> provide a warning.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> checkText = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(text, url)</span> </span>{
+		<span class="hljs-keyword">if</span> (!text.length) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p><em>removed if not used as a steal module</em></p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>!steal-remove-start</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.dev.log(<span class="hljs-string">"can/view/view.js: There is no template or an empty template at "</span> + url);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>!steal-remove-end</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+			<span class="hljs-keyword">throw</span> <span class="hljs-string">"can.view: No template or empty template:"</span> + url;
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <h5 id="get">get</h5>
+<p>get a deferred renderer for provided url</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-comment">/**
+	 * @hide
+	 * @function get
+	 * @param {String | Object} obj url string or object with url property
+	 * @param {Boolean} async If the ajax request should be asynchronous.
+	 * @returns {can.Deferred} a `view` renderer deferred.
+	 */</span>
+	<span class="hljs-keyword">var</span>	getRenderer = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj, async)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>If <code>obj</code> already is a renderer function just resolve a Deferred with it</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span>(isFunction(obj)) {
+			<span class="hljs-keyword">var</span> def = can.Deferred();
+			<span class="hljs-keyword">return</span> def.resolve(obj);
+		}
+
+		<span class="hljs-keyword">var</span> url = <span class="hljs-keyword">typeof</span> obj === <span class="hljs-string">'string'</span> ? obj : obj.url,
+			suffix = (obj.engine &amp;&amp; <span class="hljs-string">'.'</span> + obj.engine) || url.match(<span class="hljs-regexp">/\.[\w\d]+$/</span>),
+			type,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>If we are reading a script element for the content of the template,
+<code>el</code> will be set to that script element.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			el,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>A unique identifier for the view (used for caching).
+This is typically derived from the element id or
+the url for the template.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			id;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>If the url has a #, we assume we want to use an inline template
+from a script element and not current page’s HTML</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (url.match(<span class="hljs-regexp">/^#/</span>)) {
+			url = url.substr(<span class="hljs-number">1</span>);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>If we have an inline template, derive the suffix from the <code>text/???</code> part.
+This only supports <code>&lt;script&gt;</code> tags.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (el = <span class="hljs-built_in">document</span>.getElementById(url)) {
+			suffix = <span class="hljs-string">'.'</span> + el.type.match(<span class="hljs-regexp">/\/(x\-)?(.+)/</span>)[<span class="hljs-number">2</span>];
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>If there is no suffix, add one.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (!suffix &amp;&amp; !$view.cached[url]) {
+			url += suffix = $view.ext;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>if the suffix was derived from the .match() operation, pluck out the first value</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (can.isArray(suffix)) {
+			suffix = suffix[<span class="hljs-number">0</span>];
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Convert to a unique and valid id.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		id = $view.toId(url);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>If an absolute path, use <code>steal</code>/<code>require</code> to get it.
+You should only be using <code>//</code> if you are using an AMD loader like <code>steal</code> or <code>require</code> (not almond).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (url.match(<span class="hljs-regexp">/^\/\//</span>)) {
+			url = url.substr(<span class="hljs-number">2</span>);
+			url = !<span class="hljs-built_in">window</span>.steal ?
+				url :
+				steal.config()
+					.root.mapJoin(<span class="hljs-string">""</span> + steal.id(url));
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Localize for <code>require</code> (not almond)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.require) {
+			<span class="hljs-keyword">if</span> (<span class="hljs-built_in">require</span>.toUrl) {
+				url = <span class="hljs-built_in">require</span>.toUrl(url);
+			}
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>Set the template engine type.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		type = $view.types[suffix];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>If it is cached,</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> ($view.cached[id]) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>Return the cached deferred renderer.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> $view.cached[id];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>Otherwise if we are getting this from a <code>&lt;script&gt;</code> element.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (el) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>Resolve immediately with the element’s <code>innerHTML</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> $view.registerView(id, el.innerHTML, type);
+		} <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>Make an ajax request for text.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> d = <span class="hljs-keyword">new</span> can.Deferred();
+			can.ajax({
+				async: async,
+				url: url,
+				dataType: <span class="hljs-string">'text'</span>,
+				error: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(jqXHR)</span> </span>{
+					checkText(<span class="hljs-string">''</span>, url);
+					d.reject(jqXHR);
+				},
+				success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(text)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>Make sure we got some text back.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					checkText(text, url);
+					$view.registerView(id, text, type, d);
+				}
+			});
+			<span class="hljs-keyword">return</span> d;
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <h5 id="getdeferreds">getDeferreds</h5>
+<p>Gets an <code>array</code> of deferreds from an <code>object</code>.
+This only goes one level deep.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-comment">/**
+	 * @hide
+	 * @param {Object|can.Deferred} data
+	 * @returns {Array} deferred objects
+	 */</span>
+	<span class="hljs-keyword">var</span> getDeferreds = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
+		<span class="hljs-keyword">var</span> deferreds = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>pull out deferreds</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (can.isDeferred(data)) {
+			<span class="hljs-keyword">return</span> [data];
+		} <span class="hljs-keyword">else</span> {
+			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> data) {
+				<span class="hljs-keyword">if</span> (can.isDeferred(data[prop])) {
+					deferreds.push(data[prop]);
+				}
+			}
+		}
+		<span class="hljs-keyword">return</span> deferreds;
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <h5 id="usefulpart">usefulPart</h5>
+<p>Gets the useful part of a resolved deferred.
+When a jQuery.when is resolved, it returns an array to each argument.
+Reference ($.when)[<a href="https://api.jquery.com/jQuery.when/">https://api.jquery.com/jQuery.when/</a>]
+This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <code>array</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-comment">/**
+	 * @hide
+	 * @function usefulPart
+	 * @param {Array|*} resolved
+	 * @returns {*}
+	 */</span>
+	<span class="hljs-keyword">var</span> usefulPart = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(resolved)</span> </span>{
+		<span class="hljs-keyword">return</span> can.isArray(resolved) &amp;&amp; resolved[<span class="hljs-number">1</span>] === <span class="hljs-string">'success'</span> ? resolved[<span class="hljs-number">0</span>] : resolved;
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <h4 id="can-view">can.view</h4>
+<p>defines $view for internal use, can.template for backwards compatibility</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-comment">/**
+	 * @add can.view
+	 */</span>
+	<span class="hljs-keyword">var</span> $view = can.view = can.template = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(view, data, helpers, callback)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>If helpers is a <code>function</code>, it is actually a callback.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (isFunction(helpers)) {
+			callback = helpers;
+			helpers = <span class="hljs-literal">undefined</span>;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>Render the view as a fragment</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">return</span> $view.renderAs(<span class="hljs-string">"fragment"</span>,view, data, helpers, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <h2 id="can-view-methods">can.view methods</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.extend($view, {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <h5 id="frag">frag</h5>
+<p>creates a fragment and hooks it up all at once</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-comment">/**
+		 * @function can.view.frag frag
+		 * @parent can.view.static
+		 */</span>
+		frag: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result, parentNode)</span> </span>{
+			<span class="hljs-keyword">return</span> $view.hookup($view.fragment(result), parentNode);
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <h4 id="fragment">fragment</h4>
+<p>this is used internally to create a document fragment, insert it,then hook it up</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		fragment: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> </span>{
+			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> result !== <span class="hljs-string">"string"</span> &amp;&amp; result.nodeType === <span class="hljs-number">11</span>) {
+				<span class="hljs-keyword">return</span> result;
+			}
+			<span class="hljs-keyword">var</span> frag = can.buildFragment(result, <span class="hljs-built_in">document</span>.body);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>If we have an empty frag…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!frag.childNodes.length) {
+				frag.appendChild(<span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">''</span>));
+			}
+			<span class="hljs-keyword">return</span> frag;
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <h5 id="toid">toId</h5>
+<p>Convert a path like string into something that’s ok for an <code>element</code> ID.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		toId: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(src)</span> </span>{
+			<span class="hljs-keyword">return</span> can.map(src.toString()
+				.split(<span class="hljs-regexp">/\/|\./g</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(part)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p>Dont include empty strings in toId functions</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (part) {
+						<span class="hljs-keyword">return</span> part;
+					}
+				})
+				.join(<span class="hljs-string">'_'</span>);
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <h5 id="tostr">toStr</h5>
+<p>convert argument to a string</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		toStr: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(txt)</span></span>{
+			<span class="hljs-keyword">return</span> txt == <span class="hljs-literal">null</span> ? <span class="hljs-string">""</span> : <span class="hljs-string">""</span>+txt;
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <h5 id="hookup">hookup</h5>
+<p>attach the provided <code>fragment</code> to <code>parentNode</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-comment">/**
+		 * @hide
+		 * hook up a fragment to its parent node
+		 * @param fragment
+		 * @param parentNode
+		 * @returns {*}
+		 */</span>
+		hookup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fragment, parentNode)</span> </span>{
+			<span class="hljs-keyword">var</span> hookupEls = [],
+				id,
+				func;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <p>Get all <code>childNodes</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.each(fragment.childNodes ? can.makeArray(fragment.childNodes) : fragment, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
+				<span class="hljs-keyword">if</span> (node.nodeType === <span class="hljs-number">1</span>) {
+					hookupEls.push(node);
+					hookupEls.push.apply(hookupEls, can.makeArray(node.getElementsByTagName(<span class="hljs-string">'*'</span>)));
+				}
+			});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              <p>Filter by <code>data-view-id</code> attribute.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.each(hookupEls, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> </span>{
+				<span class="hljs-keyword">if</span> (el.getAttribute &amp;&amp; (id = el.getAttribute(<span class="hljs-string">'data-view-id'</span>)) &amp;&amp; (func = $view.hookups[id])) {
+					func(el, parentNode, id);
+					<span class="hljs-keyword">delete</span> $view.hookups[id];
+					el.removeAttribute(<span class="hljs-string">'data-view-id'</span>);
+				}
+			});
+
+			<span class="hljs-keyword">return</span> fragment;
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              <p><code>hookups</code> keeps list of pending hookups, ie fragments to attach to a parent node</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-comment">/**
+		 * @property hookups
+		 * @hide
+		 * A list of pending 'hookups'
+		 */</span>
+		hookups: {},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              <p><code>hook</code> factory method for hookup function inserted into templates
+hookup functions are called after the html is rendered to the page
+only implemented by EJS templates.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-comment">/**
+		 * @description Create a hookup to insert into templates.
+		 * @function can.view.hook hook
+		 * @parent can.view.static
+		 * @signature `can.view.hook(callback)`
+		 * @param {Function} callback A callback function to be called with the element.
+		 *
+		 * @body
+		 * Registers a hookup function that can be called back after the html is
+		 * put on the page.  Typically this is handled by the template engine.  Currently
+		 * only EJS supports this functionality.
+		 *
+		 *     var id = can.view.hook(function(el){
+		 *            //do something with el
+		 *         }),
+		 *         html = "&lt;div data-view-id='"+id+"'&gt;"
+		 *     $('.foo').html(html);
+		 */</span>
+		hook: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cb)</span> </span>{
+			$view.hookups[++hookupId] = cb;
+			<span class="hljs-keyword">return</span> <span class="hljs-string">' data-view-id=\''</span> + hookupId + <span class="hljs-string">'\''</span>;
+		},
+
+		<span class="hljs-comment">/**
+		 * @hide
+		 * @property {Object} can.view.cached view
+		 * @parent can.view
+		 * Cached are put in this object
+		 */</span>
+		cached: {},
+		cachedRenderers: {},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <p>cache view templates resolved via XHR on the client</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-comment">/**
+		 * @property {Boolean} can.view.cache cache
+		 * @parent can.view.static
+		 * By default, views are cached on the client.  If you'd like the
+		 * the views to reload from the server, you can set the `cache` attribute to `false`.
+		 *
+		 *	//- Forces loads from server
+		 *	can.view.cache = false;
+		 *
+		 */</span>
+		cache: <span class="hljs-literal">true</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <h5 id="register">register</h5>
+<p>given an info object, register a template type
+different templating solutions produce strings or document fragments via their renderer function</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-comment">/**
+		 * @function can.view.register register
+		 * @parent can.view.static
+		 * @description Register a templating language.
+		 * @signature `can.view.register(info)`
+		 * @param {{}} info Information about the templating language.
+		 * @option {String} plugin The location of the templating language's plugin.
+		 * @option {String} suffix Files with this suffix will use this templating language's plugin by default.
+		 * @option {function} renderer A function that returns a function that, given data, will render the template with that data.
+		 * The __renderer__ function receives the id of the template and the text of the template.
+		 * @option {function} script A function that returns the string form of the processed template.
+		 *
+		 * @body
+		 * Registers a template engine to be used with
+		 * view helpers and compression.
+		 *
+		 * ## Example
+		 *
+		 * @codestart
+		 * can.View.register({
+		 *	suffix : "tmpl",
+		 *  plugin : "jquery/view/tmpl",
+		 *	renderer: function( id, text ) {
+		 *	return function(data){
+		 *		return jQuery.render( text, data );
+		 *		}
+		 *	},
+		 *	script: function( id, text ) {
+		 *	var tmpl = can.tmpl(text).toString();
+		 *	return "function(data){return ("+
+		 *			tmpl+
+		 *			").call(jQuery, jQuery, data); }";
+		 *	}
+		 * })
+		 * @codeend
+		 */</span>
+		register: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(info)</span> </span>{
+			<span class="hljs-keyword">this</span>.types[<span class="hljs-string">'.'</span> + info.suffix] = info;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
+              <p><em>removed if not used as a steal module</em></p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-51">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-51">&#182;</a>
+              </div>
+              <p>!steal-remove-start</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> ( <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; <span class="hljs-built_in">window</span>.steal &amp;&amp; steal.type ) {
+				steal.type(info.suffix + <span class="hljs-string">" view js"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, success, error)</span> </span>{
+					<span class="hljs-keyword">var</span> type = $view.types[<span class="hljs-string">"."</span> + options.type],
+						id = $view.toId(options.id + <span class="hljs-string">''</span>);
+					options.text = type.script(id, options.text);
+					success();
+				});
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-52">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              <p>!steal-remove-end</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+			can[info.suffix] = $view[info.suffix] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, text)</span> </span>{
+				<span class="hljs-keyword">var</span> renderer,
+					renderFunc;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              <p>If there is no text, assume id is the template text, so return a nameless renderer.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (!text) {
+					renderFunc = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+						<span class="hljs-keyword">if</span>(!renderer){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-54">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-54">&#182;</a>
+              </div>
+              <p>if the template has a fragRenderer already, just return that.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>							<span class="hljs-keyword">if</span>(info.fragRenderer) {
+								renderer = info.fragRenderer(<span class="hljs-literal">null</span>, id);
+							} <span class="hljs-keyword">else</span> {
+								renderer = makeRenderer(info.renderer(<span class="hljs-literal">null</span>, id));
+							}
+						}
+						<span class="hljs-keyword">return</span> renderer.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+					};
+					renderFunc.render = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+						<span class="hljs-keyword">var</span> textRenderer = info.renderer(<span class="hljs-literal">null</span>, id);
+						<span class="hljs-keyword">return</span> textRenderer.apply(textRenderer, <span class="hljs-built_in">arguments</span>);
+					};
+					<span class="hljs-keyword">return</span> renderFunc;
+				}
+				<span class="hljs-keyword">var</span> registeredRenderer = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+					<span class="hljs-keyword">if</span>(!renderer){
+						<span class="hljs-keyword">if</span>(info.fragRenderer) {
+							renderer = info.fragRenderer(id, text);
+						} <span class="hljs-keyword">else</span> {
+							renderer = info.renderer(id, text);
+						}
+					}
+					<span class="hljs-keyword">return</span> renderer.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+				};
+				<span class="hljs-keyword">if</span>(info.fragRenderer) {
+					<span class="hljs-keyword">return</span> $view.preload( id, registeredRenderer );
+				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">return</span> $view.preloadStringRenderer(id, registeredRenderer);
+				}
+
+			};
+
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-55">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-55">&#182;</a>
+              </div>
+              <p>registered view types</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		types: {},
+
+		<span class="hljs-comment">/**
+		 * @property {String} can.view.ext ext
+		 * @parent can.view.static
+		 * The default suffix to use if none is provided in the view's url.
+		 * This is set to `.ejs` by default.
+		 *
+		 *	// Changes view ext to 'txt'
+		 *	can.view.ext = 'txt';
+		 *
+		 */</span>
+		ext: <span class="hljs-string">".ejs"</span>,
+
+		<span class="hljs-comment">/**
+		 * Returns the text from a script tag
+		 * @hide
+		 * @param {Object} type
+		 * @param {Object} id
+		 * @param {Object} src
+		 */</span>
+		registerScript: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type, id, src)</span> </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-string">'can.view.preloadStringRenderer(\''</span> + id + <span class="hljs-string">'\','</span> + $view.types[<span class="hljs-string">'.'</span> + type].script(id, src) + <span class="hljs-string">');'</span>;
+		},
+
+		<span class="hljs-comment">/**
+		 * @hide
+		 * Called by a production script to pre-load a fragment renderer function
+		 * into the view cache.
+		 * @param {String} id
+		 * @param {Function} renderer
+		 */</span>
+		preload: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, renderer)</span> </span>{
+			<span class="hljs-keyword">var</span> def = $view.cached[id] = <span class="hljs-keyword">new</span> can.Deferred()
+				.resolve(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, helpers)</span> </span>{
+					<span class="hljs-keyword">return</span> renderer.call(data, data, helpers);
+				});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-56">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-56">&#182;</a>
+              </div>
+              <p>set cache references (otherwise preloaded recursive views won’t recurse properly)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			def.__view_id = id;
+			$view.cachedRenderers[id] = renderer;
+
+			<span class="hljs-keyword">return</span> renderer;
+		},
+
+		<span class="hljs-comment">/**
+		 * @hide
+		 * Called by a production script to pre-load a string renderer function
+		 * into the view cache.
+		 * @param id
+		 * @param stringRenderer
+		 * @returns {*}
+		 */</span>
+		preloadStringRenderer: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, stringRenderer)</span> </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.preload(id, makeRenderer(stringRenderer) );
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-57">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-57">&#182;</a>
+              </div>
+              <h4 id="renderers">renderers</h4>
+<hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-58">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-58">&#182;</a>
+              </div>
+              <p>can.view’s primary purpose is to load templates (from strings or filesystem) and render them</p>
+<p>can.view supports two different forms of rendering systems</p>
+<p>mustache templates return a string based rendering function</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-59">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-59">&#182;</a>
+              </div>
+              <p>stache (or other fragment based templating systems) return a document fragment, so ‘hookup’ steps are not required</p>
+<h5 id="render">render</h5>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-comment">/**
+		 * @function can.view.render render
+		 * @parent can.view.static
+		 * @description Render a template.
+		 * @signature `can.view.render(template[, callback])`
+		 * @param {String|Object} view The path of the view template or a view object.
+		 * @param {Function} [callback] A function executed after the template has been processed.
+		 * @return {Function|can.Deferred} A renderer function to be called with data and helpers
+		 * or a Deferred that resolves to a renderer function.
+		 *
+		 * @signature `can.view.render(template, data[, [helpers,] callback])`
+		 * @param {String|Object} view The path of the view template or a view object.
+		 * @param {Object} [data] The data to populate the template with.
+		 * @param {Object.&lt;String, function&gt;} [helpers] Helper methods referenced in the template.
+		 * @param {Function} [callback] A function executed after the template has been processed.
+		 * @return {String|can.Deferred} The template with interpolated data in string form
+		 * or a Deferred that resolves to the template with interpolated data.
+		 *
+		 * @body
+		 * `can.view.render(view, [data], [helpers], callback)` returns the rendered markup produced by the corresponding template
+		 * engine as String. If you pass a deferred object in as data, render returns
+		 * a deferred resolving to the rendered markup.
+		 *
+		 * `can.view.render` is commonly used for sub-templates.
+		 *
+		 * ## Example
+		 *
+		 * _welcome.ejs_ looks like:
+		 *
+		 *     &lt;h1&gt;Hello &lt;%= hello %&gt;&lt;/h1&gt;
+		 *
+		 * Render it to a string like:
+		 *
+		 *     can.view.render("welcome.ejs",{hello: "world"})
+		 *       //-&gt; &lt;h1&gt;Hello world&lt;/h1&gt;
+		 *
+		 * ## Use as a Subtemplate
+		 *
+		 * If you have a template like:
+		 *
+		 *     &lt;ul&gt;
+		 *       &lt;% list(items, function(item){ %&gt;
+		 *         &lt;%== can.view.render("item.ejs",item) %&gt;
+		 *       &lt;% }) %&gt;
+		 *     &lt;/ul&gt;
+		 *
+		 * ## Using renderer functions
+		 *
+		 * If you only pass the view path, `can.view will return a renderer function that can be called with
+		 * the data to render:
+		 *
+		 *     var renderer = can.view.render("welcome.ejs");
+		 *     // Do some more things
+		 *     renderer({hello: "world"}) // -&gt; Document Fragment
+		 *
+		 */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-60">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-60">&#182;</a>
+              </div>
+              <p>call <code>renderAs</code> with a hardcoded string, as view.render
+always operates against resolved template files or hardcoded strings</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		render: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(view, data, helpers, callback)</span> </span>{
+			<span class="hljs-keyword">return</span> can.view.renderAs(<span class="hljs-string">"string"</span>,view, data, helpers, callback);
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-61">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-61">&#182;</a>
+              </div>
+              <h5 id="renderto">renderTo</h5>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-comment">/**
+		 * @hide
+		 * @function renderTo
+		 * @param {String} format
+		 * @param {Function} renderer
+		 * @param data
+		 * @param {Object} helpers helper methods for this template
+		 * @returns {*}
+		 */</span>
+		renderTo: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(format, renderer, data, helpers)</span></span>{
+			<span class="hljs-keyword">return</span> (format === <span class="hljs-string">"string"</span> &amp;&amp; renderer.render ? renderer.render : renderer)(data, helpers);
+		},
+
+		<span class="hljs-comment">/**
+		 * @hide
+		 *
+		 * @param format
+		 * @param view
+		 * @param data
+		 * @param helpers
+		 * @param callback
+		 * @returns {*}
+		 */</span>
+		renderAs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(format, view, data, helpers, callback)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-62">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-62">&#182;</a>
+              </div>
+              <p>If helpers is a <code>function</code>, it is actually a callback.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (isFunction(helpers)) {
+				callback = helpers;
+				helpers = <span class="hljs-literal">undefined</span>;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-63">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-63">&#182;</a>
+              </div>
+              <p>See if we got passed any deferreds.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> deferreds = getDeferreds(data);
+			<span class="hljs-keyword">var</span> reading, deferred, dataCopy, async, response;
+			<span class="hljs-keyword">if</span> (deferreds.length) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-64">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-64">&#182;</a>
+              </div>
+              <p>Does data contain any deferreds?
+The deferred that resolves into the rendered content…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				deferred = <span class="hljs-keyword">new</span> can.Deferred();
+				dataCopy = can.extend({}, data);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-65">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-65">&#182;</a>
+              </div>
+              <p>Add the view request to the list of deferreds.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				deferreds.push(getRenderer(view, <span class="hljs-literal">true</span>));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-66">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-66">&#182;</a>
+              </div>
+              <p>Wait for the view and all deferreds to finish…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				can.when.apply(can, deferreds)
+					.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(resolved)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-67">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-67">&#182;</a>
+              </div>
+              <p>Get all the resolved deferreds.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> objs = makeArray(<span class="hljs-built_in">arguments</span>),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-68">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-68">&#182;</a>
+              </div>
+              <p>Renderer is the last index of the data.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>							renderer = objs.pop(),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-69">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-69">&#182;</a>
+              </div>
+              <p>The result of the template rendering with data.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>							result;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-70">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-70">&#182;</a>
+              </div>
+              <p>Make data look like the resolved deferreds.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span> (can.isDeferred(data)) {
+							dataCopy = usefulPart(resolved);
+						} <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-71">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-71">&#182;</a>
+              </div>
+              <p>Go through each prop in data again and
+replace the defferreds with what they resolved to.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>							<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> data) {
+								<span class="hljs-keyword">if</span> (can.isDeferred(data[prop])) {
+									dataCopy[prop] = usefulPart(objs.shift());
+								}
+							}
+						}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-72">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-72">&#182;</a>
+              </div>
+              <p>Get the rendered result.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						result = can.view.renderTo(format, renderer, dataCopy, helpers);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-73">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-73">&#182;</a>
+              </div>
+              <p>Resolve with the rendered view.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						deferred.resolve(result, dataCopy);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-74">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-74">&#182;</a>
+              </div>
+              <p>If there’s a <code>callback</code>, call it back with the result.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span> (callback) {
+							callback(result, dataCopy);
+						}
+					}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+						deferred.reject.apply(deferred, <span class="hljs-built_in">arguments</span>);
+					});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-75">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-75">&#182;</a>
+              </div>
+              <p>Return the deferred…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">return</span> deferred;
+			} <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-76">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-76">&#182;</a>
+              </div>
+              <p>get is called async but in 
+ff will be async so we need to temporarily reset</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				reading = can.__clearReading();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-77">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-77">&#182;</a>
+              </div>
+              <p>If there’s a <code>callback</code> function</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				async = isFunction(callback);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-78">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-78">&#182;</a>
+              </div>
+              <p>Get the <code>view</code> type</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				deferred = getRenderer(view, async);
+
+				<span class="hljs-keyword">if</span> (reading) {
+					can.__setReading(reading);
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-79">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-79">&#182;</a>
+              </div>
+              <p>If we are <code>async</code>…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (async) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-80">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-80">&#182;</a>
+              </div>
+              <p>Return the deferred</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					response = deferred;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-81">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-81">&#182;</a>
+              </div>
+              <p>And fire callback with the rendered result.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					deferred.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(renderer)</span> </span>{
+						callback(data ? can.view.renderTo(format, renderer, data, helpers) : renderer);
+					});
+				} <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-82">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-82">&#182;</a>
+              </div>
+              <p>if the deferred is resolved, call the cached renderer instead
+this is because it’s possible, with recursive deferreds to
+need to render a view while its deferred is <em>resolving</em>.  A <em>resolving</em> deferred
+is a deferred that was just resolved and is calling back it’s success callbacks.
+If a new success handler is called while resoliving, it does not get fired by
+jQuery’s deferred system.  So instead of adding a new callback
+we use the cached renderer.
+We also add __view_id on the deferred so we can look up it’s cached renderer.
+In the future, we might simply store either a deferred or the cached result.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (deferred.state() === <span class="hljs-string">'resolved'</span> &amp;&amp; deferred.__view_id) {
+						<span class="hljs-keyword">var</span> currentRenderer = $view.cachedRenderers[deferred.__view_id];
+						<span class="hljs-keyword">return</span> data ? can.view.renderTo(format, currentRenderer, data, helpers) : currentRenderer;
+					} <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-83">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-83">&#182;</a>
+              </div>
+              <p>Otherwise, the deferred is complete, so
+set response to the result of the rendering.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						deferred.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(renderer)</span> </span>{
+							response = data ? can.view.renderTo(format, renderer, data, helpers) : renderer;
+						});
+					}
+				}
+
+				<span class="hljs-keyword">return</span> response;
+			}
+		},
+		
+		<span class="hljs-comment">/**
+		 * @hide
+		 * Registers a view with `cached` object.  This is used
+		 * internally by this class and Mustache to hookup views.
+		 * @param  {String} id
+		 * @param  {String} text
+		 * @param  {String} type
+		 * @param  {can.Deferred} def
+		 */</span>
+		registerView: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, text, type, def)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-84">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-84">&#182;</a>
+              </div>
+              <p>Get the renderer function.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> info = (<span class="hljs-keyword">typeof</span> type === <span class="hljs-string">"object"</span> ? type :  $view.types[type || $view.ext]),
+				renderer;
+			<span class="hljs-keyword">if</span>(info.fragRenderer) {
+				renderer = info.fragRenderer(id, text);
+			} <span class="hljs-keyword">else</span> {
+				renderer = makeRenderer( info.renderer(id, text) );
+			}
+			
+			def = def || <span class="hljs-keyword">new</span> can.Deferred();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-85">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-85">&#182;</a>
+              </div>
+              <p>Cache if we are caching.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> ($view.cache) {
+				$view.cached[id] = def;
+				def.__view_id = id;
+				$view.cachedRenderers[id] = renderer;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-86">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-86">&#182;</a>
+              </div>
+              <p>Return the objects for the response’s <code>dataTypes</code>
+(in this case view).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> def.resolve(renderer);
+		}
+	});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-87">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-87">&#182;</a>
+              </div>
+              <p><em>removed if not used as a steal module</em></p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-88">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-88">&#182;</a>
+              </div>
+              <p>!steal-remove-start</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> ( <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; <span class="hljs-built_in">window</span>.steal &amp;&amp; steal.type) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-89">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-89">&#182;</a>
+              </div>
+              <p>when being used as a steal module, add a new type for ‘view’ that runs
+<code>can.view.preloadStringRenderer</code> with the loaded string/text for the dependency.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		steal.type(<span class="hljs-string">"view js"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, success, error)</span> </span>{
+			<span class="hljs-keyword">var</span> type = $view.types[<span class="hljs-string">"."</span> + options.type],
+				id = $view.toId(options.id);
+			<span class="hljs-comment">/**
+			 * @hide
+			 * should return something like steal("dependencies",function(EJS){
+			 * return can.view.preload("ID", options.text)
+			 * })
+			 */</span>
+			<span class="hljs-keyword">var</span> dependency = type.plugin || <span class="hljs-string">'can/view/'</span> + options.type,
+				preload = type.fragRenderer ? <span class="hljs-string">"preload"</span> : <span class="hljs-string">"preloadStringRenderer"</span>;
+			options.text = <span class="hljs-string">'steal(\'can/view\',\''</span> + dependency + <span class="hljs-string">'\',function(can){return '</span> + <span class="hljs-string">'can.view.'</span>+preload+<span class="hljs-string">'(\''</span> + id + <span class="hljs-string">'\','</span> + options.text + <span class="hljs-string">');\n})'</span>;
+			success();
+		});
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-90">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-90">&#182;</a>
+              </div>
+              <p>!steal-remove-end</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+	<span class="hljs-keyword">return</span> can;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

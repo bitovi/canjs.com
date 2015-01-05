@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>view/scanner.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">50.80</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">687</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">81.94</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">5.38</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">/* jshint maxdepth:7*/
+steal(&#039;can/view&#039;, &#039;./elements&#039;, &quot;can/view/callbacks&quot;,function (can, elements, viewCallbacks) {
+
+	/**
+	 * Helper(s)
+	 */
+	var newLine = /(\r|\n)+/g,
+		notEndTag = /\//,
+		// Escapes characters starting with `\`.
+		clean = function (content) {
+			return content
+				.split(&#039;\\&#039;)
+				.join(&quot;\\\\&quot;)
+				.split(&quot;\n&quot;)
+				.join(&quot;\\n&quot;)
+				.split(&#039;&quot;&#039;)
+				.join(&#039;\\&quot;&#039;)
+				.split(&quot;\t&quot;)
+				.join(&quot;\\t&quot;);
+		},
+		// Returns a tagName to use as a temporary placeholder for live content
+		// looks forward ... could be slow, but we only do it when necessary
+		getTag = function (tagName, tokens, i) {
+			// if a tagName is provided, use that
+			if (tagName) {
+				return tagName;
+			} else {
+				// otherwise go searching for the next two tokens like &quot;&lt;&quot;,TAG
+				while (i &lt; tokens.length) {
+					if (tokens[i] === &quot;&lt;&quot; &amp;&amp; !notEndTag.test(tokens[i + 1])) {
+						return elements.reverseTagMap[tokens[i + 1]] || &#039;span&#039;;
+					}
+					i++;
+				}
+			}
+			return &#039;&#039;;
+		},
+		bracketNum = function (content) {
+			return (--content.split(&quot;{&quot;)
+				.length) - (--content.split(&quot;}&quot;)
+				.length);
+		},
+		myEval = function (script) {
+			eval(script);
+		},
+		attrReg = /([^\s]+)[\s]*=[\s]*$/,
+		// Commands for caching.
+		startTxt = &#039;var ___v1ew = [];&#039;,
+		finishTxt = &quot;return ___v1ew.join(&#039;&#039;)&quot;,
+		put_cmd = &quot;___v1ew.push(\n&quot;,
+		insert_cmd = put_cmd,
+		// Global controls (used by other functions to know where we are).
+		// Are we inside a tag?
+		htmlTag = null,
+		// Are we within a quote within a tag?
+		quote = null,
+		// What was the text before the current quote? (used to get the `attr` name)
+		beforeQuote = null,
+		// Whether a rescan is in progress
+		rescan = null,
+		getAttrName = function () {
+			var matches = beforeQuote.match(attrReg);
+			return matches &amp;&amp; matches[1];
+		},
+		// Used to mark where the element is.
+		status = function () {
+			// `t` - `1`.
+			// `h` - `0`.
+			// `q` - String `beforeQuote`.
+			return quote ? &quot;&#039;&quot; + getAttrName() + &quot;&#039;&quot; : (htmlTag ? 1 : 0);
+		},
+		// returns the top of a stack
+		top = function (stack) {
+			return stack[stack.length - 1];
+		},
+		Scanner;
+
+	/**
+	 * @constructor can.view.Scanner
+	 *
+	 * can.view.Scanner is used to convert a template into a JavaScript function.  That
+	 * function is called to produce a rendered result as a string. Often
+	 * the rendered result will include data-view-id attributes on elements that
+	 * will be processed after the template is used to create a document fragment.
+	 *
+	 *
+	 * @param {{text: can.view.Scanner.text, tokens: Array&lt;can.view.Scanner.token&gt;, helpers: Array&lt;can.view.Scanner.helpers&gt;}}
+	 */
+	//
+	/**
+	 * @typedef {{0:String,}}
+	 */
+
+	can.view.Scanner = Scanner = function (options) {
+		// Set options on self
+		can.extend(this, {
+			/**
+			 * @typedef {{start: String, escape: String, scope: String, options: String}}  can.view.Scanner.text
+			 */
+			text: {},
+			tokens: []
+		}, options);
+		// make sure it&#039;s an empty string if it&#039;s not
+		this.text.options = this.text.options || &quot;&quot;;
+
+		// Cache a token lookup
+		this.tokenReg = [];
+		this.tokenSimple = {
+			&quot;&lt;&quot;: &quot;&lt;&quot;,
+			&quot;&gt;&quot;: &quot;&gt;&quot;,
+			&#039;&quot;&#039;: &#039;&quot;&#039;,
+			&quot;&#039;&quot;: &quot;&#039;&quot;
+		};
+		this.tokenComplex = [];
+		this.tokenMap = {};
+		for (var i = 0, token; token = this.tokens[i]; i++) {
+			/**
+			 * Token data structure (complex token and rescan function are optional):
+			 * [
+			 *	&quot;token name&quot;,
+			 *	&quot;simple token or abbreviation&quot;,
+			 *	/complex token regexp/,
+			 *	function(content) {
+			 *		// Rescan Function
+			 *		return {
+			 *			before: &#039;\n&#039;,
+			 *			content: content.trim(),
+			 *			after: &#039;\n&#039;
+			 *		}
+			 * ]
+			 */
+
+			// Save complex mappings (custom regexp)
+			if (token[2]) {
+				this.tokenReg.push(token[2]);
+				this.tokenComplex.push({
+					abbr: token[1],
+					re: new RegExp(token[2]),
+					rescan: token[3]
+				});
+			}
+			// Save simple mappings (string only, no regexp)
+			else {
+				this.tokenReg.push(token[1]);
+				this.tokenSimple[token[1]] = token[0];
+			}
+			this.tokenMap[token[0]] = token[1];
+		}
+
+		// Cache the token registry.
+		this.tokenReg = new RegExp(&quot;(&quot; + this.tokenReg.slice(0)
+			.concat([&quot;&lt;&quot;, &quot;&gt;&quot;, &#039;&quot;&#039;, &quot;&#039;&quot;])
+			.join(&quot;|&quot;) + &quot;)&quot;, &quot;g&quot;);
+	};
+
+	/**
+	 * Extend can.View to add scanner support.
+	 */
+	Scanner.prototype = {
+		// a default that can be overwritten
+		helpers: [],
+
+		scan: function (source, name) {
+			var tokens = [],
+				last = 0,
+				simple = this.tokenSimple,
+				complex = this.tokenComplex;
+
+			source = source.replace(newLine, &quot;\n&quot;);
+			if (this.transform) {
+				source = this.transform(source);
+			}
+			source.replace(this.tokenReg, function (whole, part) {
+				// offset is the second to last argument
+				var offset = arguments[arguments.length - 2];
+
+				// if the next token starts after the last token ends
+				// push what&#039;s in between
+				if (offset &gt; last) {
+					tokens.push(source.substring(last, offset));
+				}
+
+				// push the simple token (if there is one)
+				if (simple[whole]) {
+					tokens.push(whole);
+				}
+				// otherwise lookup complex tokens
+				else {
+					for (var i = 0, token; token = complex[i]; i++) {
+						if (token.re.test(whole)) {
+							tokens.push(token.abbr);
+							// Push a rescan function if one exists
+							if (token.rescan) {
+								tokens.push(token.rescan(part));
+							}
+							break;
+						}
+					}
+				}
+
+				// update the position of the last part of the last token
+				last = offset + part.length;
+			});
+
+			// if there&#039;s something at the end, add it
+			if (last &lt; source.length) {
+				tokens.push(source.substr(last));
+			}
+
+			var content = &#039;&#039;,
+				buff = [startTxt + (this.text.start || &#039;&#039;)],
+				// Helper `function` for putting stuff in the view concat.
+				put = function (content, bonus) {
+					buff.push(put_cmd, &#039;&quot;&#039;, clean(content), &#039;&quot;&#039; + (bonus || &#039;&#039;) + &#039;);&#039;);
+				},
+				// A stack used to keep track of how we should end a bracket
+				// `}`.
+				// Once we have a `&lt;%= %&gt;` with a `leftBracket`,
+				// we store how the file should end here (either `))` or `;`).
+				endStack = [],
+				// The last token, used to remember which tag we are in.
+				lastToken,
+				// The corresponding magic tag.
+				startTag = null,
+				// Was there a magic tag inside an html tag?
+				magicInTag = false,
+				// was there a special state
+				specialStates = {
+					attributeHookups: [],
+					// a stack of tagHookups
+					tagHookups: [],
+					//last tag hooked up
+					lastTagHookup: &#039;&#039;
+				},
+				// Helper `function` for removing tagHookups from the hookup stack
+				popTagHookup = function() {
+					// The length of tagHookups is the nested depth which can be used to uniquely identify custom tags of the same type
+					specialStates.lastTagHookup = specialStates.tagHookups.pop() + specialStates.tagHookups.length;
+				},
+				// The current tag name.
+				tagName = &#039;&#039;,
+				// stack of tagNames
+				tagNames = [],
+				// Pop from tagNames?
+				popTagName = false,
+				// Declared here.
+				bracketCount,
+				// in a special attr like src= or style=
+				specialAttribute = false,
+
+				i = 0,
+				token,
+				tmap = this.tokenMap,
+				attrName;
+
+			// Reinitialize the tag state goodness.
+			htmlTag = quote = beforeQuote = null;
+			for (;
+				(token = tokens[i++]) !== undefined;) {
+				if (startTag === null) {
+					switch (token) {
+					case tmap.left:
+					case tmap.escapeLeft:
+					case tmap.returnLeft:
+						magicInTag = htmlTag &amp;&amp; 1;
+						/* falls through */
+					case tmap.commentLeft:
+						// A new line -- just add whatever content within a clean.
+						// Reset everything.
+						startTag = token;
+						if (content.length) {
+							put(content);
+						}
+						content = &#039;&#039;;
+						break;
+					case tmap.escapeFull:
+						// This is a full line escape (a line that contains only whitespace and escaped logic)
+						// Break it up into escape left and right
+						magicInTag = htmlTag &amp;&amp; 1;
+						rescan = 1;
+						startTag = tmap.escapeLeft;
+						if (content.length) {
+							put(content);
+						}
+						rescan = tokens[i++];
+						content = rescan.content || rescan;
+						if (rescan.before) {
+							put(rescan.before);
+						}
+						tokens.splice(i, 0, tmap.right);
+						break;
+					case tmap.commentFull:
+						// Ignore full line comments.
+						break;
+					case tmap.templateLeft:
+						content += tmap.left;
+						break;
+					case &#039;&lt;&#039;:
+						// Make sure we are not in a comment.
+						if (tokens[i].indexOf(&quot;!--&quot;) !== 0) {
+							htmlTag = 1;
+							magicInTag = 0;
+						}
+
+						content += token;
+
+						break;
+					case &#039;&gt;&#039;:
+						htmlTag = 0;
+						// content.substr(-1) doesn&#039;t work in IE7/8
+						var emptyElement = (content.substr(content.length - 1) === &quot;/&quot; || content.substr(content.length - 2) === &quot;--&quot;),
+							attrs = &quot;&quot;;
+						// if there was a magic tag
+						// or it&#039;s an element that has text content between its tags,
+						// but content is not other tags add a hookup
+						// TODO: we should only add `can.EJS.pending()` if there&#039;s a magic tag
+						// within the html tags.
+						if (specialStates.attributeHookups.length) {
+							attrs = &quot;attrs: [&#039;&quot; + specialStates.attributeHookups.join(&quot;&#039;,&#039;&quot;) + &quot;&#039;], &quot;;
+							specialStates.attributeHookups = [];
+						}
+						// this is the &gt; of a special tag
+						// comparison to lastTagHookup makes sure the same custom tags can be nested
+						if ((tagName + specialStates.tagHookups.length) !== specialStates.lastTagHookup &amp;&amp; tagName === top(specialStates.tagHookups)) {
+							// If it&#039;s a self closing tag (like &lt;content/&gt;) make sure we put the / at the end.
+							if (emptyElement) {
+								content = content.substr(0, content.length - 1);
+							}
+							// Put the start of the end
+							buff.push(put_cmd,
+								&#039;&quot;&#039;, clean(content), &#039;&quot;&#039;,
+								&quot;,can.view.pending({tagName:&#039;&quot; + tagName + &quot;&#039;,&quot; + (attrs) + &quot;scope: &quot; + (this.text.scope || &quot;this&quot;) + this.text.options);
+
+							// if it&#039;s a self closing tag (like &lt;content/&gt;) close and end the tag
+							if (emptyElement) {
+								buff.push(&quot;}));&quot;);
+								content = &quot;/&gt;&quot;;
+								popTagHookup();
+							}
+							// if it&#039;s an empty tag	 
+							else if (tokens[i] === &quot;&lt;&quot; &amp;&amp; tokens[i + 1] === &quot;/&quot; + tagName) {
+								buff.push(&quot;}));&quot;);
+								content = token;
+								popTagHookup();
+							} else {
+								// it has content
+								buff.push(&quot;,subtemplate: function(&quot; + this.text.argNames + &quot;){\n&quot; + startTxt + (this.text.start || &#039;&#039;));
+								content = &#039;&#039;;
+							}
+
+						} else if (magicInTag || (!popTagName &amp;&amp; elements.tagToContentPropMap[tagNames[tagNames.length - 1]]) || attrs) {
+							// make sure / of /&gt; is on the right of pending
+							var pendingPart = &quot;,can.view.pending({&quot; + attrs + &quot;scope: &quot; + (this.text.scope || &quot;this&quot;) + this.text.options + &quot;}),\&quot;&quot;;
+							if (emptyElement) {
+								put(content.substr(0, content.length - 1), pendingPart + &quot;/&gt;\&quot;&quot;);
+							} else {
+								put(content, pendingPart + &quot;&gt;\&quot;&quot;);
+							}
+							content = &#039;&#039;;
+							magicInTag = 0;
+						} else {
+							content += token;
+						}
+
+						// if it&#039;s a tag like &lt;input/&gt;
+						if (emptyElement || popTagName) {
+							// remove the current tag in the stack
+							tagNames.pop();
+							// set the current tag to the previous parent
+							tagName = tagNames[tagNames.length - 1];
+							// Don&#039;t pop next time
+							popTagName = false;
+						}
+						specialStates.attributeHookups = [];
+						break;
+					case &quot;&#039;&quot;:
+					case &#039;&quot;&#039;:
+						// If we are in an html tag, finding matching quotes.
+						if (htmlTag) {
+							// We have a quote and it matches.
+							if (quote &amp;&amp; quote === token) {
+								// We are exiting the quote.
+								quote = null;
+								// Otherwise we are creating a quote.
+								// TODO: does this handle `\`?
+								var attr = getAttrName();
+								if (viewCallbacks.attr(attr)) {
+									specialStates.attributeHookups.push(attr);
+								}
+
+								if (specialAttribute) {
+
+									content += token;
+									put(content);
+									buff.push(finishTxt, &quot;}));\n&quot;);
+									content = &quot;&quot;;
+									specialAttribute = false;
+
+									break;
+								}
+
+							} else if (quote === null) {
+								quote = token;
+								beforeQuote = lastToken;
+								attrName = getAttrName();
+								// TODO: check if there&#039;s magic!!!!
+								if ((tagName === &quot;img&quot; &amp;&amp; attrName === &quot;src&quot;) || attrName === &quot;style&quot;) {
+									// put content that was before the attr name, but don&#039;t include the src=
+									put(content.replace(attrReg, &quot;&quot;));
+									content = &quot;&quot;;
+
+									specialAttribute = true;
+
+									buff.push(insert_cmd, &quot;can.view.txt(2,&#039;&quot; + getTag(tagName, tokens, i) + &quot;&#039;,&quot; + status() + &quot;,this,function(){&quot;, startTxt);
+									put(attrName + &quot;=&quot; + token);
+									break;
+								}
+
+							}
+						}
+						/* falls through */
+					default:
+						// Track the current tag
+						if (lastToken === &#039;&lt;&#039;) {
+
+							tagName = token.substr(0, 3) === &quot;!--&quot; ?
+								&quot;!--&quot; : token.split(/\s/)[0];
+
+							var isClosingTag = false,
+								cleanedTagName;
+
+							if (tagName.indexOf(&quot;/&quot;) === 0) {
+								isClosingTag = true;
+								cleanedTagName = tagName.substr(1);
+							}
+
+							if (isClosingTag) { // &lt;/tag&gt;
+
+								// when we enter a new tag, pop the tag name stack
+								if (top(tagNames) === cleanedTagName) {
+									// set tagName to the last tagName
+									// if there are no more tagNames, we&#039;ll rely on getTag.
+									tagName = cleanedTagName;
+									popTagName = true;
+								}
+								// if we are in a closing tag of a custom tag
+								if (top(specialStates.tagHookups) === cleanedTagName) {
+
+									// remove the last &lt; from the content
+									put(content.substr(0, content.length - 1));
+
+									// finish the &quot;section&quot;
+									buff.push(finishTxt + &quot;}}) );&quot;);
+									// the &lt; belongs to the outside
+									content = &quot;&gt;&lt;&quot;;
+									popTagHookup();
+								}
+
+							} else {
+								if (tagName.lastIndexOf(&quot;/&quot;) === tagName.length - 1) {
+									tagName = tagName.substr(0, tagName.length - 1);
+
+								}
+
+								if (tagName !== &quot;!--&quot; &amp;&amp; (viewCallbacks.tag(tagName) )) {
+									// if the content tag is inside something it doesn&#039;t belong ...
+									if (tagName === &quot;content&quot; &amp;&amp; elements.tagMap[top(tagNames)]) {
+										// convert it to an element that will work
+										token = token.replace(&quot;content&quot;, elements.tagMap[top(tagNames)]);
+									}
+									// we will hookup at the ending tag&gt;
+									specialStates.tagHookups.push(tagName);
+								}
+
+								tagNames.push(tagName);
+
+							}
+
+						}
+						content += token;
+						break;
+					}
+				} else {
+					// We have a start tag.
+					switch (token) {
+					case tmap.right:
+					case tmap.returnRight:
+						switch (startTag) {
+						case tmap.left:
+							// Get the number of `{ minus }`
+							bracketCount = bracketNum(content);
+
+							// We are ending a block.
+							if (bracketCount === 1) {
+								// We are starting on. 
+								buff.push(insert_cmd, &#039;can.view.txt(0,\&#039;&#039; + getTag(tagName, tokens, i) + &#039;\&#039;,&#039; + status() + &#039;,this,function(){&#039;, startTxt, content);
+								endStack.push({
+									before: &quot;&quot;,
+									after: finishTxt + &quot;}));\n&quot;
+								});
+							} else {
+
+								// How are we ending this statement?
+								last = // If the stack has value and we are ending a block...
+								endStack.length &amp;&amp; bracketCount === -1 ? // Use the last item in the block stack.
+								endStack.pop() : // Or use the default ending.
+								{
+									after: &quot;;&quot;
+								};
+
+								// If we are ending a returning block,
+								// add the finish text which returns the result of the
+								// block.
+								if (last.before) {
+									buff.push(last.before);
+								}
+								// Add the remaining content.
+								buff.push(content, &quot;;&quot;, last.after);
+							}
+							break;
+						case tmap.escapeLeft:
+						case tmap.returnLeft:
+							// We have an extra `{` -&gt; `block`.
+							// Get the number of `{ minus }`.
+							bracketCount = bracketNum(content);
+							// If we have more `{`, it means there is a block.
+							if (bracketCount) {
+								// When we return to the same # of `{` vs `}` end with a `doubleParent`.
+								endStack.push({
+									before: finishTxt,
+									after: &quot;}));\n&quot;
+								});
+							}
+
+							var escaped = startTag === tmap.escapeLeft ? 1 : 0,
+								commands = {
+									insert: insert_cmd,
+									tagName: getTag(tagName, tokens, i),
+									status: status(),
+									specialAttribute: specialAttribute
+								};
+
+							for (var ii = 0; ii &lt; this.helpers.length; ii++) {
+								// Match the helper based on helper
+								// regex name value
+								var helper = this.helpers[ii];
+								if (helper.name.test(content)) {
+									content = helper.fn(content, commands);
+
+									// dont escape partials
+									if (helper.name.source === /^&gt;[\s]*\w*/.source) {
+										escaped = 0;
+									}
+									break;
+								}
+							}
+
+							// Handle special cases
+							if (typeof content === &#039;object&#039;) {
+
+								if (content.startTxt &amp;&amp; content.end &amp;&amp; specialAttribute) {
+									buff.push(insert_cmd, &quot;can.view.toStr( &quot;,content.content, &#039;() ) );&#039;);
+
+								} else {
+
+									if (content.startTxt) {
+										buff.push(insert_cmd, &quot;can.view.txt(\n&quot; +
+											(typeof status() === &quot;string&quot; || (content.escaped != null ? content.escaped : escaped)) + &quot;,\n&#039;&quot; + tagName + &quot;&#039;,\n&quot; + status() + &quot;,\nthis,\n&quot;);
+									} else if (content.startOnlyTxt) {
+										buff.push(insert_cmd, &#039;can.view.onlytxt(this,\n&#039;);
+									}
+									buff.push(content.content);
+									if (content.end) {
+										buff.push(&#039;));&#039;);
+									}
+
+								}
+
+							} else if (specialAttribute) {
+
+								buff.push(insert_cmd, content, &#039;);&#039;);
+
+							} else {
+								// If we have `&lt;%== a(function(){ %&gt;` then we want
+								// `can.EJS.text(0,this, function(){ return a(function(){ var _v1ew = [];`.
+
+								buff.push(insert_cmd, &quot;can.view.txt(\n&quot; + (typeof status() === &quot;string&quot; || escaped) +
+									&quot;,\n&#039;&quot; + tagName + &quot;&#039;,\n&quot; + status() + &quot;,\nthis,\nfunction(){ &quot; +
+									(this.text.escape || &#039;&#039;) +
+									&quot;return &quot;, content,
+									// If we have a block.
+									bracketCount ?
+									// Start with startTxt `&quot;var _v1ew = [];&quot;`.
+									startTxt :
+									// If not, add `doubleParent` to close push and text.
+									&quot;}));\n&quot;
+								);
+
+								/*buff.push(insert_cmd, &quot;can.view.txt(\n&quot; +
+									  + &quot;,\n&#039;&quot; +
+									  tagName + &quot;&#039;,\n&quot; +
+									  status() +&quot;,\n&quot; +
+									  &quot;this,\nfunction(){ &quot; +
+									  (this.text.escape || &#039;&#039;) +
+									  &quot;return &quot;, content,
+									  // If we have a block.
+									  bracketCount ?
+									  // Start with startTxt `&quot;var _v1ew = [];&quot;`.
+									  startTxt :
+									  // If not, add `doubleParent` to close push and text.
+									  &quot;}));\n&quot;);*/
+
+							}
+
+							if (rescan &amp;&amp; rescan.after &amp;&amp; rescan.after.length) {
+								put(rescan.after.length);
+								rescan = null;
+							}
+							break;
+						}
+						startTag = null;
+						content = &#039;&#039;;
+						break;
+					case tmap.templateLeft:
+						content += tmap.left;
+						break;
+					default:
+						content += token;
+						break;
+					}
+				}
+				lastToken = token;
+			}
+
+			// Put it together...
+			if (content.length) {
+				// Should be `content.dump` in Ruby.
+				put(content);
+			}
+			buff.push(&quot;;&quot;);
+			var template = buff.join(&#039;&#039;),
+				out = {
+					out: (this.text.outStart || &quot;&quot;) + template + &quot; &quot; + finishTxt + (this.text.outEnd || &quot;&quot;)
+				};
+
+			// Use `eval` instead of creating a function, because it is easier to debug.
+			myEval.call(out, &#039;this.fn = (function(&#039; + this.text.argNames + &#039;){&#039; + out.out + &#039;});\r\n//# sourceURL=&#039; + name + &#039;.js&#039;);
+			return out;
+		}
+	};
+
+	// can.view.attr
+	
+	// This is called when there is a special tag
+	can.view.pending = function (viewData) {
+		// we need to call any live hookups
+		// so get that and return the hook
+		// a better system will always be called with the same stuff
+		var hooks = can.view.getHooks();
+		return can.view.hook(function (el) {
+			can.each(hooks, function (fn) {
+				fn(el);
+			});
+			viewData.templateType = &quot;legacy&quot;;
+			if (viewData.tagName) {
+				viewCallbacks.tagHandler(el, viewData.tagName, viewData);
+			}
+
+			can.each(viewData &amp;&amp; viewData.attrs || [], function (attributeName) {
+				viewData.attributeName = attributeName;
+				var callback = viewCallbacks.attr(attributeName);
+				if(callback) {
+					callback(el, viewData);
+				}
+			});
+
+		});
+
+	};
+
+	can.view.tag(&quot;content&quot;, function (el, tagData) {
+		return tagData.scope;
+	});
+
+	can.view.Scanner = Scanner;
+
+	return Scanner;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>
