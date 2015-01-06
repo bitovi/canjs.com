@@ -597,7 +597,7 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/2.2-pre/dist/steal/can/list/list.js">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/minor/list/doc/Map.md">source</a></li>
 	
 	
 	
@@ -628,31 +628,29 @@
   <h2 id="sig_"><a href="can.Map.html" >can.Map</a>
 </h2>
 <div class="signature-wrapper">
-<p>When objects are added to a can.List, those objects are
-converted into can.Map instances.  For example:</p>
-<pre><code>var list = new can.List();
-list.push({name: &quot;Justin&quot;});
+<p>When objects are added to a can.List, those objects are converted into can.Map instances. For example:</p>
+<pre><code> var list = new can.List();
+ list.push({name: &quot;Justin&quot;});
 
-var map = list.attr(0);
-map.attr(&quot;name&quot;) //-&gt; &quot;Justin&quot;
+ var map = list.attr(0);
+ map.attr(&quot;name&quot;) //-&gt; &quot;Justin&quot;
 </code></pre>
-<p>By changing <a href="can.List.Map.html">can.List.Map</a>, you can specify a different type of Map instance to
-create. For example:</p>
-<pre><code>var User = can.Map.extend({
-  fullName: function(){
-    return this.attr(&quot;first&quot;)+&quot; &quot;+this.attr(&quot;last&quot;)
-  }
-});
+<p>By changing <a href="can.List.Map.html">can.List.Map</a>, you can specify a different type of Map instance to create. For example:</p>
+<pre><code> var User = can.Map.extend({
+   fullName: function(){
+     return this.attr(&quot;first&quot;)+&quot; &quot;+this.attr(&quot;last&quot;)
+   }
+ });
 
-User.List = can.List.extend({
-  Map: User
-}, {});
+ User.List = can.List.extend({
+   Map: User
+ }, {});
 
-var list = new User.List();
-list.push({first: &quot;Justin&quot;, last: &quot;Meyer&quot;});
+ var list = new User.List();
+ list.push({first: &quot;Justin&quot;, last: &quot;Meyer&quot;});
 
-var user = list.attr(0);
-user.fullName() //-&gt; &quot;Justin Meyer&quot;
+ var user = list.attr(0);
+ user.fullName() //-&gt; &quot;Justin Meyer&quot;
 </code></pre>
 
 
@@ -731,7 +729,7 @@ user.fullName() //-&gt; &quot;Justin Meyer&quot;
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"name":"can.List.Map","type":"property","parent":"can.List.static","src":"dist/steal/can/list/list.js","line":24,"codeLine":60,"description":"<p>Specify the Map type used to make objects added to this list observable.</p>\n","types":[{"type":"can.Map","description":"<p>When objects are added to a can.List, those objects are\nconverted into can.Map instances.  For example:</p>\n<pre><code>var list = new can.List();\nlist.push({name: &quot;Justin&quot;});\n\nvar map = list.attr(0);\nmap.attr(&quot;name&quot;) //-&gt; &quot;Justin&quot;\n</code></pre>\n<p>By changing [can.List.Map], you can specify a different type of Map instance to\ncreate. For example:</p>\n<pre><code>var User = can.Map.extend({\n  fullName: function(){\n    return this.attr(&quot;first&quot;)+&quot; &quot;+this.attr(&quot;last&quot;)\n  }\n});\n\nUser.List = can.List.extend({\n  Map: User\n}, {});\n\nvar list = new User.List();\nlist.push({first: &quot;Justin&quot;, last: &quot;Meyer&quot;});\n\nvar user = list.attr(0);\nuser.fullName() //-&gt; &quot;Justin Meyer&quot;\n</code></pre>\n"}],"title":"","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.2-pre/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../../documentjs.json","project":{"version":"2.2-pre","name":"canjs","source":"git://github.com/bitovi/canjs#2.2-pre"}};
+		var docObject = {"name":"can.List.Map","type":"property","parent":"can.List.static","src":"list/doc/Map.md","line":23,"codeLine":59,"description":"<p>Specify the Map type used to make objects added to this list observable.</p>\n","types":[{"type":"can.Map","description":"<p>When objects are added to a can.List, those objects are converted into can.Map instances. For example:</p>\n<pre><code> var list = new can.List();\n list.push({name: &quot;Justin&quot;});\n\n var map = list.attr(0);\n map.attr(&quot;name&quot;) //-&gt; &quot;Justin&quot;\n</code></pre>\n<p>By changing [can.List.Map], you can specify a different type of Map instance to create. For example:</p>\n<pre><code> var User = can.Map.extend({\n   fullName: function(){\n     return this.attr(&quot;first&quot;)+&quot; &quot;+this.attr(&quot;last&quot;)\n   }\n });\n\n User.List = can.List.extend({\n   Map: User\n }, {});\n\n var list = new User.List();\n list.push({first: &quot;Justin&quot;, last: &quot;Meyer&quot;});\n\n var user = list.attr(0);\n user.fullName() //-&gt; &quot;Justin Meyer&quot;\n</code></pre>\n"}],"title":"","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.2-pre/can"},"dest":"/Users/justin/dev/canjs.com/2.2-pre/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../../documentjs.json","project":{"version":"2.2-pre","name":"canjs","source":"git://github.com/bitovi/canjs#minor"}};
 	</script>
 	
 	

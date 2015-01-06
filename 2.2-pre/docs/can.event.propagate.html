@@ -184,6 +184,8 @@
 			
 		
 			
+		
+			
 				
 				
 					<li class="search-container active  expanded">
@@ -245,8 +247,6 @@
 					</li>
 				
 			
-			
-		
 			
 		
 			
@@ -490,7 +490,7 @@
 <ul class="links">
     
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/2.2-pre/event/propagate/propagate.md">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/minor/event/propagate/propagate.md">source</a></li>
 	
 	
 		<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=http://donejs.com/can/dist/can.event.propagate.js">download</a></li>
@@ -608,7 +608,7 @@
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"type":"page","name":"can.event.propagate","src":"event/propagate/propagate.md","description":"<p>This changes [can.event.dispatch can.event.dispatch] to add support for propagating events to parent objects.</p>\n<p>This is implemented similarly to how events work in the DOM: Events dispatched on an object will be dispatched on their parent object, all the way up until no more parent objects are defined.</p>\n","parent":"can.event.plugins","plugin":"can/event/propagate","test":"can/event/propagate/test.html","download":"http://donejs.com/can/dist/can.event.propagate.js","signatures":[{"code":"can.extend(YourClass.prototype, can.event, { propagate: \"parent\" })","description":"<p>Adds event functionality with event propagation to <code>YourClass</code> objects. This can also be applied to normal objects: <code>can.extend(someObject, can.event, { propagate: &quot;parent&quot; })</code>.</p>\n<p>The extra object, <code>{ propagate: &quot;parent&quot; }</code>, is used to define which object property is that object's parent. With the <code>propagate</code> property set to <code>&quot;parent&quot;</code>, any event dispatched on the <code>YourClass</code> instances will also be dispatched on <code>instance.parent</code> if it exists.</p>\n<h2>Using propagation</h2>\n<p>In order to add propagation to an object or prototype, mix it into the object using <code>can.extend</code> along with whatever property should be considered the propagation property.</p>\n<p>Now that propagation has been added, events will be dispatched up the tree for as long as a valid propagate property exists.</p>\n<h2>Stopping propagation</h2>\n<p>When using the propagate plugin, <code>stopPropagation()</code> and <code>isPropagationStopped()</code> methods will be added to the event object. These methods can be used to prevent the event from propagating further up the tree.</p>\n<h2>Preventing default functionality</h2>\n<p>When using the propagate plugin, <code>preventDefault()</code> and <code>isDefaultPrevented()</code> methods will be added to the event object. An object might implement some logic that will be executed after an event is dispatched. In the case that this logic should be optional dependent on the event handlers, default prevention can be used.</p>\n","params":[]}],"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.2-pre/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../../documentjs.json","project":{"version":"2.2-pre","name":"canjs","source":"git://github.com/bitovi/canjs#2.2-pre"}};
+		var docObject = {"type":"page","name":"can.event.propagate","src":"event/propagate/propagate.md","description":"<p>This changes [can.event.dispatch can.event.dispatch] to add support for propagating events to parent objects.</p>\n<p>This is implemented similarly to how events work in the DOM: Events dispatched on an object will be dispatched on their parent object, all the way up until no more parent objects are defined.</p>\n","parent":"can.event.plugins","plugin":"can/event/propagate","test":"can/event/propagate/test.html","download":"http://donejs.com/can/dist/can.event.propagate.js","signatures":[{"code":"can.extend(YourClass.prototype, can.event, { propagate: \"parent\" })","description":"<p>Adds event functionality with event propagation to <code>YourClass</code> objects. This can also be applied to normal objects: <code>can.extend(someObject, can.event, { propagate: &quot;parent&quot; })</code>.</p>\n<p>The extra object, <code>{ propagate: &quot;parent&quot; }</code>, is used to define which object property is that object's parent. With the <code>propagate</code> property set to <code>&quot;parent&quot;</code>, any event dispatched on the <code>YourClass</code> instances will also be dispatched on <code>instance.parent</code> if it exists.</p>\n<h2>Using propagation</h2>\n<p>In order to add propagation to an object or prototype, mix it into the object using <code>can.extend</code> along with whatever property should be considered the propagation property.</p>\n<p>Now that propagation has been added, events will be dispatched up the tree for as long as a valid propagate property exists.</p>\n<h2>Stopping propagation</h2>\n<p>When using the propagate plugin, <code>stopPropagation()</code> and <code>isPropagationStopped()</code> methods will be added to the event object. These methods can be used to prevent the event from propagating further up the tree.</p>\n<h2>Preventing default functionality</h2>\n<p>When using the propagate plugin, <code>preventDefault()</code> and <code>isDefaultPrevented()</code> methods will be added to the event object. An object might implement some logic that will be executed after an event is dispatched. In the case that this logic should be optional dependent on the event handlers, default prevention can be used.</p>\n","params":[]}],"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.2-pre/can"},"dest":"/Users/justin/dev/canjs.com/2.2-pre/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../../documentjs.json","project":{"version":"2.2-pre","name":"canjs","source":"git://github.com/bitovi/canjs#minor"}};
 	</script>
 	
 	

@@ -10,13 +10,6 @@ steal("can/view", function(can){
 			
 		return obj;
 	}
-	function handleIntermediate(intermediate, handler){
-		for(var i = 0, len = intermediate.length; i < len; i++) {
-			var item = intermediate[i];
-			handler[item.tokenType].apply(handler, item.args);
-		}
-		return intermediate;
-	}
 	
 	var alphaNumericHU = "-:A-Za-z0-9_",
 		attributeNames = "[a-zA-Z_:]["+alphaNumericHU+":.]*",
@@ -66,28 +59,7 @@ steal("can/view", function(can){
 	// Special Elements (can contain anything)
 	var special = makeMap("script,style");
 
-	// Callback names on `handler`.
-	var tokenTypes = "start,end,close,attrStart,attrEnd,attrValue,chars,comment,special,done".split(",");
-
-	var fn = function(){};
-
-	var HTMLParser = function (html, handler, returnIntermediate) {
-		if(typeof html === "object") {
-			return handleIntermediate(html, handler);
-		}
-		var intermediate = [];
-		handler = handler || {};
-		if(returnIntermediate) {
-			// overwrite handlers so they add to intermediate
-			can.each(tokenTypes, function(name){
-				var callback = handler[name] || fn;
-				handler[name] = function(){
-					callback.apply(this, arguments);
-					intermediate.push({tokenType: name, args: can.makeArray(arguments)});
-				};
-			});
-		}
-		
+	var HTMLParser = function (html, handler) {
 		
 		function parseStartTag(tag, tagName, rest, unary) {
 			tagName = tagName.toLowerCase();
@@ -242,7 +214,6 @@ steal("can/view", function(can){
 
 		
 		handler.done();
-		return intermediate;
 	};
 	HTMLParser.parseAttrs = function(rest, handler){
 		
@@ -284,6 +255,8 @@ steal("can/view", function(can){
 
 			
 		});
+		
+		
 	};
 
 	can.view.parser = HTMLParser;

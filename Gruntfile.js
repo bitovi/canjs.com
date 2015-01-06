@@ -134,6 +134,7 @@ module.exports = function (grunt) {
 				process.cwd() + '/'+path+"docs",
 				process.cwd() + '/'+path+"docco"
 			];
+			config[versionNumber+"-removeGitIgnore"] = [process.cwd() + '/'+path+"can/.gitignore"];
 		});
 		return config;
 	};
@@ -227,7 +228,8 @@ module.exports = function (grunt) {
 				['clean:'+versionNumber,
 				 'documentjs:'+versionNumber,
 				 'docco:'+versionNumber,
-				 'plato:'+versionNumber]);
+				 'plato:'+versionNumber,
+				 'clean:'+versionNumber+"-removeGitIgnore"]);
 
 	});
 	grunt.registerTask('docjs:default',
