@@ -625,26 +625,30 @@ var o = new can.Map({
         bar : 'Hello World'
     }
 });
-<p>//listen to changes on a property
+
+//listen to changes on a property
 o.delegate('foo.bar', 'change', function(ev, prop, how, newVal, oldVal) {
-// foo.bar has been added, set, or removed
-this //-&gt;
-});</p>
-<p>// change the property
+    // foo.bar has been added, set, or removed
+    this //-&gt;
+});
+
+// change the property
 o.attr('foo.bar', 'Goodbye Cruel World');
-</code></pre></p>
+</code></pre>
 <h2>Types of events</h2>
 <p>Delegate lets you listen to add, set, remove, and change events on property.</p>
 <p><strong>add</strong></p>
 <p>An add event is fired when a new property has been added.</p>
 <pre><code>var o = new can.Control({});
-<p>o.delegate('name', 'add', function(ev, value) {
-// called once
-can.$('#name').show()
-});</p>
-<p>o.attr('name', 'Justin')
+
+o.delegate('name', 'add', function(ev, value) {
+    // called once
+    can.$('#name').show()
+});
+
+o.attr('name', 'Justin')
 o.attr('name', 'Brian');
-</code></pre></p>
+</code></pre>
 <p>Listening to add events is useful for 'setup' functionality (in this case
 showing the <code>#name</code> element.</p>
 <p><strong>set</strong></p>
@@ -654,18 +658,20 @@ always fired after an add.</p>
     // called twice
     can.$('#name').text(value)
 });
-<p>o.attr('name', 'Justin')
+
+o.attr('name', 'Justin')
 o.attr('name', 'Brian');
-</code></pre></p>
+</code></pre>
 <p><strong>remove</strong></p>
 <p>Remove events are fired after a property is removed.</p>
 <pre><code>o.delegate('name', 'remove', function(ev) {
     // called once
     $('#name').text(value)
 });
-<p>o.attr('name', 'Justin');
+
+o.attr('name', 'Justin');
 o.removeAttr('name');
-</code></pre></p>
+</code></pre>
 <h2>Wildcards - matching multiple properties</h2>
 <p>Sometimes, you want to know when any property within some part
 of an observe has changed. Delegate lets you use wildcards to
@@ -680,18 +686,21 @@ on an attribute of the params attribute:</p>
         }
     }
 });
-<p>o.delegate('options.<em>', 'change', function() {
-alert('1');
+
+o.delegate('options.*', 'change', function() {
+    alert('1');
 });
-o.delegate('options.</em>*', 'change', function() {
-alert('2');
-});</p>
-<p>// alerts 1
+o.delegate('options.**', 'change', function() {
+    alert('2');
+});
+
+// alerts 1
 // alerts 2
-o.attr('options.offset', 100);</p>
-<p>// alerts 2
+o.attr('options.offset', 100);
+
+// alerts 2
 o.attr('options.params.parentId', 6);
-</code></pre></p>
+</code></pre>
 <p>Using a single wildcard (<code><em></code>) matches single level
 properties.  Using a double wildcard (<code></em>*</code>) matches
 any deep property.</p>
@@ -704,21 +713,25 @@ for first and last name changes:</p>
       last: 'Meyer'
     }
 });
-<p>o.bind('name.first, name.last',
-'set',
-function(ev, newVal, oldVal, from) {</p>
-<p>});
-</code></pre></p>
+
+o.bind('name.first, name.last',
+    'set',
+    function(ev, newVal, oldVal, from) {
+
+});
+</code></pre>
 <h2>Listening when properties are a particular value</h2>
 <p>Delegate lets you listen when a property is <strong>set</strong> to a specific value:</p>
 <pre><code>var o = new can.Map({
     name : 'Justin'
 });
-<p>o.bind('name=Brian',
-'set',
-function(ev, newVal, oldVal, from) {</p>
-<p>});
-</code></pre></p>
+
+o.bind('name=Brian',
+    'set',
+    function(ev, newVal, oldVal, from) {
+
+});
+</code></pre>
 
 
 	<h3>Parameters</h3>
@@ -864,7 +877,7 @@ called with:</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"type":"function","name":"can.Map.prototype.delegate","src":"map/delegate/doc/prototype.delegate.md","description":"","title":"delegate","parent":"can.Map.delegate","order":0,"plugin":"can/map/delegate","signatures":[{"code":"observe.delegate( selector, event, handler )","description":"<p><code>delegate( selector, event, handler(ev,newVal,oldVal,from) )</code> listen for changes\nin a child attribute from the parent. The child attribute\ndoes not have to exist.</p>\n<pre><code>// create an observable\nvar o = new can.Map({\n    foo : {\n        bar : 'Hello World'\n    }\n});\n<p>//listen to changes on a property\no.delegate('foo.bar', 'change', function(ev, prop, how, newVal, oldVal) {\n// foo.bar has been added, set, or removed\nthis //-&gt;\n});</p>\n<p>// change the property\no.attr('foo.bar', 'Goodbye Cruel World');\n</code></pre></p>\n<h2>Types of events</h2>\n<p>Delegate lets you listen to add, set, remove, and change events on property.</p>\n<p><strong>add</strong></p>\n<p>An add event is fired when a new property has been added.</p>\n<pre><code>var o = new can.Control({});\n<p>o.delegate('name', 'add', function(ev, value) {\n// called once\ncan.$('#name').show()\n});</p>\n<p>o.attr('name', 'Justin')\no.attr('name', 'Brian');\n</code></pre></p>\n<p>Listening to add events is useful for 'setup' functionality (in this case\nshowing the <code>#name</code> element.</p>\n<p><strong>set</strong></p>\n<p>Set events are fired when a property takes on a new value.  set events are\nalways fired after an add.</p>\n<pre><code>o.delegate('name', 'set', function(ev, value) {\n    // called twice\n    can.$('#name').text(value)\n});\n<p>o.attr('name', 'Justin')\no.attr('name', 'Brian');\n</code></pre></p>\n<p><strong>remove</strong></p>\n<p>Remove events are fired after a property is removed.</p>\n<pre><code>o.delegate('name', 'remove', function(ev) {\n    // called once\n    $('#name').text(value)\n});\n<p>o.attr('name', 'Justin');\no.removeAttr('name');\n</code></pre></p>\n<h2>Wildcards - matching multiple properties</h2>\n<p>Sometimes, you want to know when any property within some part\nof an observe has changed. Delegate lets you use wildcards to\nmatch any property name.  The following listens for any change\non an attribute of the params attribute:</p>\n<pre><code>var o = can.Control({\n    options : {\n        limit : 100,\n        offset: 0,\n        params : {\n            parentId: 5\n        }\n    }\n});\n<p>o.delegate('options.<em>', 'change', function() {\nalert('1');\n});\no.delegate('options.</em>*', 'change', function() {\nalert('2');\n});</p>\n<p>// alerts 1\n// alerts 2\no.attr('options.offset', 100);</p>\n<p>// alerts 2\no.attr('options.params.parentId', 6);\n</code></pre></p>\n<p>Using a single wildcard (<code><em></code>) matches single level\nproperties.  Using a double wildcard (<code></em>*</code>) matches\nany deep property.</p>\n<h2>Listening on multiple properties and values</h2>\n<p>Delegate lets you listen on multiple values at once.  The following listens\nfor first and last name changes:</p>\n<pre><code>var o = new can.Map({\n    name : { \n      first: 'Justin', \n      last: 'Meyer'\n    }\n});\n<p>o.bind('name.first, name.last',\n'set',\nfunction(ev, newVal, oldVal, from) {</p>\n<p>});\n</code></pre></p>\n<h2>Listening when properties are a particular value</h2>\n<p>Delegate lets you listen when a property is <strong>set</strong> to a specific value:</p>\n<pre><code>var o = new can.Map({\n    name : 'Justin'\n});\n<p>o.bind('name=Brian',\n'set',\nfunction(ev, newVal, oldVal, from) {</p>\n<p>});\n</code></pre></p>\n","params":[{"types":[{"type":"String"}],"name":"selector","description":"<p>The attributes you want to listen for changes in.</p>\n<p>Selector should be the property or\nproperty names of the element you are searching.  Examples:</p>\n<ul>\n<li>&quot;name&quot; - listens to the &quot;name&quot; property changing</li>\n<li>&quot;name, address&quot; - listens to &quot;name&quot; or &quot;address&quot; changing</li>\n<li>&quot;name address&quot; - listens to &quot;name&quot; or &quot;address&quot; changing</li>\n<li>&quot;address.*&quot; - listens to property directly in address</li>\n<li>&quot;address.**&quot; - listens to any property change in address</li>\n<li>&quot;foo=bar&quot; - listens when foo is &quot;bar&quot;</li>\n</ul>\n"},{"types":[{"type":"String"}],"name":"event","description":"<p>The event name.  One of (&quot;set&quot;,&quot;add&quot;,&quot;remove&quot;,&quot;change&quot;)</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"name":"ev"},{"name":"newVal"},{"name":"oldVal"},{"name":"prop"}]}],"name":"handler","description":"<p>The callback handler\ncalled with:</p>\n<ul>\n<li>newVal - the new value set on the observe</li>\n<li>oldVal - the old value set on the observe</li>\n<li>prop - the prop name that was changed</li>\n</ul>\n"}],"returns":{"types":[{"type":"can.Map"}],"description":"<p>the observe for chaining</p>\n"}}],"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs"},"dest":"/Users/justin/dev/canjs.com/2.2-pre/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../../documentjs.json","project":{"version":"2.2-pre","name":"canjs","source":"git://github.com/bitovi/canjs#2.2-pre"}};
+		var docObject = {"type":"function","name":"can.Map.prototype.delegate","src":"map/delegate/doc/prototype.delegate.md","description":"","title":"delegate","parent":"can.Map.delegate","order":0,"plugin":"can/map/delegate","signatures":[{"code":"observe.delegate( selector, event, handler )","description":"<p><code>delegate( selector, event, handler(ev,newVal,oldVal,from) )</code> listen for changes\nin a child attribute from the parent. The child attribute\ndoes not have to exist.</p>\n<pre><code>// create an observable\nvar o = new can.Map({\n    foo : {\n        bar : 'Hello World'\n    }\n});\n\n//listen to changes on a property\no.delegate('foo.bar', 'change', function(ev, prop, how, newVal, oldVal) {\n    // foo.bar has been added, set, or removed\n    this //-&gt;\n});\n\n// change the property\no.attr('foo.bar', 'Goodbye Cruel World');\n</code></pre>\n<h2>Types of events</h2>\n<p>Delegate lets you listen to add, set, remove, and change events on property.</p>\n<p><strong>add</strong></p>\n<p>An add event is fired when a new property has been added.</p>\n<pre><code>var o = new can.Control({});\n\no.delegate('name', 'add', function(ev, value) {\n    // called once\n    can.$('#name').show()\n});\n\no.attr('name', 'Justin')\no.attr('name', 'Brian');\n</code></pre>\n<p>Listening to add events is useful for 'setup' functionality (in this case\nshowing the <code>#name</code> element.</p>\n<p><strong>set</strong></p>\n<p>Set events are fired when a property takes on a new value.  set events are\nalways fired after an add.</p>\n<pre><code>o.delegate('name', 'set', function(ev, value) {\n    // called twice\n    can.$('#name').text(value)\n});\n\no.attr('name', 'Justin')\no.attr('name', 'Brian');\n</code></pre>\n<p><strong>remove</strong></p>\n<p>Remove events are fired after a property is removed.</p>\n<pre><code>o.delegate('name', 'remove', function(ev) {\n    // called once\n    $('#name').text(value)\n});\n\no.attr('name', 'Justin');\no.removeAttr('name');\n</code></pre>\n<h2>Wildcards - matching multiple properties</h2>\n<p>Sometimes, you want to know when any property within some part\nof an observe has changed. Delegate lets you use wildcards to\nmatch any property name.  The following listens for any change\non an attribute of the params attribute:</p>\n<pre><code>var o = can.Control({\n    options : {\n        limit : 100,\n        offset: 0,\n        params : {\n            parentId: 5\n        }\n    }\n});\n\no.delegate('options.*', 'change', function() {\n    alert('1');\n});\no.delegate('options.**', 'change', function() {\n    alert('2');\n});\n\n// alerts 1\n// alerts 2\no.attr('options.offset', 100);\n\n// alerts 2\no.attr('options.params.parentId', 6);\n</code></pre>\n<p>Using a single wildcard (<code><em></code>) matches single level\nproperties.  Using a double wildcard (<code></em>*</code>) matches\nany deep property.</p>\n<h2>Listening on multiple properties and values</h2>\n<p>Delegate lets you listen on multiple values at once.  The following listens\nfor first and last name changes:</p>\n<pre><code>var o = new can.Map({\n    name : { \n      first: 'Justin', \n      last: 'Meyer'\n    }\n});\n\no.bind('name.first, name.last',\n    'set',\n    function(ev, newVal, oldVal, from) {\n\n});\n</code></pre>\n<h2>Listening when properties are a particular value</h2>\n<p>Delegate lets you listen when a property is <strong>set</strong> to a specific value:</p>\n<pre><code>var o = new can.Map({\n    name : 'Justin'\n});\n\no.bind('name=Brian',\n    'set',\n    function(ev, newVal, oldVal, from) {\n\n});\n</code></pre>\n","params":[{"types":[{"type":"String"}],"name":"selector","description":"<p>The attributes you want to listen for changes in.</p>\n<p>Selector should be the property or\nproperty names of the element you are searching.  Examples:</p>\n<ul>\n<li>&quot;name&quot; - listens to the &quot;name&quot; property changing</li>\n<li>&quot;name, address&quot; - listens to &quot;name&quot; or &quot;address&quot; changing</li>\n<li>&quot;name address&quot; - listens to &quot;name&quot; or &quot;address&quot; changing</li>\n<li>&quot;address.*&quot; - listens to property directly in address</li>\n<li>&quot;address.**&quot; - listens to any property change in address</li>\n<li>&quot;foo=bar&quot; - listens when foo is &quot;bar&quot;</li>\n</ul>\n"},{"types":[{"type":"String"}],"name":"event","description":"<p>The event name.  One of (&quot;set&quot;,&quot;add&quot;,&quot;remove&quot;,&quot;change&quot;)</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"name":"ev"},{"name":"newVal"},{"name":"oldVal"},{"name":"prop"}]}],"name":"handler","description":"<p>The callback handler\ncalled with:</p>\n<ul>\n<li>newVal - the new value set on the observe</li>\n<li>oldVal - the old value set on the observe</li>\n<li>prop - the prop name that was changed</li>\n</ul>\n"}],"returns":{"types":[{"type":"can.Map"}],"description":"<p>the observe for chaining</p>\n"}}],"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.2-pre/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../../documentjs.json","project":{"version":"2.2-pre","name":"canjs","source":"git://github.com/bitovi/canjs#2.2-pre"}};
 	</script>
 	
 	

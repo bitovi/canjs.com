@@ -278,10 +278,11 @@ path from <code>uri</code> to <code>relativeURI</code></p>
 <pre><code>steal.URI(&quot;app/controls/recipe.js&quot;)
    .pathTo(&quot;app/models/recipe.js&quot;)
 // -&gt; ../../models/recipe.js
-<p>steal.URI(&quot;foo/bar&quot;)
-.pathTo(&quot;foo/bar/zed&quot;)
+
+steal.URI(&quot;foo/bar&quot;)
+   .pathTo(&quot;foo/bar/zed&quot;)
 //-&gt; zed
-</code></pre></p>
+</code></pre>
 
 
 
@@ -368,7 +369,7 @@ path from <code>uri</code> to <code>relativeURI</code></p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"type":"function","name":"steal.URI.prototype.pathTo","parent":"steal.URI.prototype","src":"lib/steal/steal.js","line":669,"codeLine":685,"description":"","signatures":[{"code":"pathTo(relativeURI)","description":"<p>Returns a relative\npath from <code>uri</code> to <code>relativeURI</code></p>\n<pre><code>steal.URI(&quot;app/controls/recipe.js&quot;)\n   .pathTo(&quot;app/models/recipe.js&quot;)\n// -&gt; ../../models/recipe.js\n<p>steal.URI(&quot;foo/bar&quot;)\n.pathTo(&quot;foo/bar/zed&quot;)\n//-&gt; zed\n</code></pre></p>\n","params":[],"returns":{"types":[{"type":"steal.URI"}],"description":""}}],"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.2-pre/can"},"dest":"/Users/justin/dev/canjs.com/2.2-pre/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../../documentjs.json","project":{"version":"2.2-pre","name":"canjs","source":"git://github.com/bitovi/canjs#2.2-pre"}};
+		var docObject = {"type":"function","name":"steal.URI.prototype.pathTo","parent":"steal.URI.prototype","src":"lib/steal/steal.js","line":669,"codeLine":685,"description":"","signatures":[{"code":"pathTo(relativeURI)","description":"<p>Returns a relative\npath from <code>uri</code> to <code>relativeURI</code></p>\n<pre><code>steal.URI(&quot;app/controls/recipe.js&quot;)\n   .pathTo(&quot;app/models/recipe.js&quot;)\n// -&gt; ../../models/recipe.js\n\nsteal.URI(&quot;foo/bar&quot;)\n   .pathTo(&quot;foo/bar/zed&quot;)\n//-&gt; zed\n</code></pre>\n","params":[],"returns":{"types":[{"type":"steal.URI"}],"description":""}}],"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.2-pre/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../../documentjs.json","project":{"version":"2.2-pre","name":"canjs","source":"git://github.com/bitovi/canjs#2.2-pre"}};
 	</script>
 	
 	

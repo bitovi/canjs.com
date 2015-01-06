@@ -905,12 +905,13 @@ render the INVERSE with the specified <code>context</code>.</p>
 			<p>An object containing all of the final
 arguments listed as <code>name=value</code> pairs for the helper.</p>
 <pre><code>{{helper arg1 arg2 name=value other=3 position=&quot;top&quot;}}
-<p>options.hash = {
-name: &lt;context_lookup&gt;.value,
-other: 3,
-position: &quot;top&quot;
+
+options.hash = {
+    name: &lt;context_lookup&gt;.value,
+    other: 3,
+    position: &quot;top&quot;
 }
-</code></pre></p>
+</code></pre>
 
 		</div>
 		
@@ -925,12 +926,18 @@ position: &quot;top&quot;
 			<p>The current context the mustache helper is called within.</p>
 <pre><code>var temp = can.mustache(
   &quot;{{#person.name}}{{helper}}{{/person.name}}&quot;);
-<p>var data = {person: {name: {first: &quot;Justin&quot;}}};</p>
-<p>can.mustache.registerHelper(&quot;helper&quot;, function(options){</p>
-<p>options.context === data.person //-&gt; true</p>
-<p>})</p>
-<p>temp(data);
-</code></pre></p>
+
+var data = {person: {name: {first: &quot;Justin&quot;}}};
+
+can.mustache.registerHelper(&quot;helper&quot;, function(options){
+
+  options.context === data.person //-&gt; true
+  
+})
+
+
+temp(data);
+</code></pre>
 
 		</div>
 		
@@ -946,13 +953,19 @@ position: &quot;top&quot;
 contexts.  It can be used to look up <a href="can.mustache.key.html">key</a> values in the current scope.</p>
 <pre><code>var temp = can.mustache(
   &quot;{{#person.name}}{{helper}}{{/person.name}}&quot;);
-<p>var data = {person: {name: {first: &quot;Justin&quot;}}};</p>
-<p>can.mustache.registerHelper(&quot;helper&quot;, function(options){</p>
-<p>options.scope.attr(&quot;first&quot;)   //-&gt; &quot;Justin&quot;
-options.scope.attr(&quot;person&quot;)  //-&gt; data.person</p>
-<p>})</p>
-<p>temp(data);
-</code></pre></p>
+
+var data = {person: {name: {first: &quot;Justin&quot;}}};
+
+can.mustache.registerHelper(&quot;helper&quot;, function(options){
+
+  options.scope.attr(&quot;first&quot;)   //-&gt; &quot;Justin&quot;
+  options.scope.attr(&quot;person&quot;)  //-&gt; data.person
+  
+})
+
+
+temp(data);
+</code></pre>
 
 		</div>
 		
@@ -968,14 +981,20 @@ options.scope.attr(&quot;person&quot;)  //-&gt; data.person</p>
 up <a href="can.mustache.key.html">key</a> values</p>
 <pre><code>var temp = can.mustache(
   &quot;{{#person.name}}{{helper}}{{/person.name}}&quot;);
-<p>var data = {person: {name: {first: &quot;Justin&quot;}}};</p>
-<p>can.mustache.registerHelper(&quot;helper&quot;, function(options){</p>
-<p>options.options.attr(&quot;helpers.specialHelper&quot;)   //-&gt; function(){ ... }</p>
-<p>})</p>
-<p>temp(data, {
-specialHelper: function(){ ... }
+
+var data = {person: {name: {first: &quot;Justin&quot;}}};
+
+can.mustache.registerHelper(&quot;helper&quot;, function(options){
+
+  options.options.attr(&quot;helpers.specialHelper&quot;)   //-&gt; function(){ ... }
+  
+})
+
+
+temp(data, {
+  specialHelper: function(){ ... }
 });
-</code></pre></p>
+</code></pre>
 
 		</div>
 		
@@ -1056,7 +1075,7 @@ specialHelper: function(){ ... }
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"type":"typedef","name":"can.mustache.helperOptions","src":"view/mustache/doc/helperOptions.md","description":"<p>The options argument passed to a [can.mustache.helper helper function].</p>\n","title":"helperOptions","types":[{"type":"Object","options":[{"name":"fn","types":[{"type":"can.mustache.sectionRenderer"}],"description":"<p>Provided if a\n[can.mustache.helpers.sectionHelper section helper] is called.  Call <code>fn</code> to\nrender the BLOCK with the specified <code>context</code>.</p>\n","optional":true},{"name":"inverse","types":[{"type":"can.mustache.sectionRenderer"}],"description":"<p>Provided if a\n[can.mustache.helpers.sectionHelper section helper] is called\nwith [can.mustache.helpers.else {{else}}].  Call <code>inverse</code> to\nrender the INVERSE with the specified <code>context</code>.</p>\n","optional":true},{"name":"hash","types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"*"},{"type":"String"},{"type":"Number"}]}]}],"description":"<p>An object containing all of the final\narguments listed as <code>name=value</code> pairs for the helper.</p>\n<pre><code>{{helper arg1 arg2 name=value other=3 position=&quot;top&quot;}}\n<p>options.hash = {\nname: &lt;context_lookup&gt;.value,\nother: 3,\nposition: &quot;top&quot;\n}\n</code></pre></p>\n"},{"name":"context","description":"<p>The current context the mustache helper is called within.</p>\n<pre><code>var temp = can.mustache(\n  &quot;{{#person.name}}{{helper}}{{/person.name}}&quot;);\n<p>var data = {person: {name: {first: &quot;Justin&quot;}}};</p>\n<p>can.mustache.registerHelper(&quot;helper&quot;, function(options){</p>\n<p>options.context === data.person //-&gt; true</p>\n<p>})</p>\n<p>temp(data);\n</code></pre></p>\n","types":[{"type":"*"}]},{"name":"scope","description":"<p>An object that represents the current context and all parent\ncontexts.  It can be used to look up [can.mustache.key key] values in the current scope.</p>\n<pre><code>var temp = can.mustache(\n  &quot;{{#person.name}}{{helper}}{{/person.name}}&quot;);\n<p>var data = {person: {name: {first: &quot;Justin&quot;}}};</p>\n<p>can.mustache.registerHelper(&quot;helper&quot;, function(options){</p>\n<p>options.scope.attr(&quot;first&quot;)   //-&gt; &quot;Justin&quot;\noptions.scope.attr(&quot;person&quot;)  //-&gt; data.person</p>\n<p>})</p>\n<p>temp(data);\n</code></pre></p>\n","types":[{"type":"can.view.Scope"}]},{"name":"options","description":"<p>An object that represents the local mustache helpers.  It can be used to look\nup [can.mustache.key key] values</p>\n<pre><code>var temp = can.mustache(\n  &quot;{{#person.name}}{{helper}}{{/person.name}}&quot;);\n<p>var data = {person: {name: {first: &quot;Justin&quot;}}};</p>\n<p>can.mustache.registerHelper(&quot;helper&quot;, function(options){</p>\n<p>options.options.attr(&quot;helpers.specialHelper&quot;)   //-&gt; function(){ ... }</p>\n<p>})</p>\n<p>temp(data, {\nspecialHelper: function(){ ... }\n});\n</code></pre></p>\n","types":[{"type":"can.view.Options"}]}]}],"parent":"can.mustache.types","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs"},"dest":"/Users/justin/dev/canjs.com/2.2-pre/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../../documentjs.json","project":{"version":"2.2-pre","name":"canjs","source":"git://github.com/bitovi/canjs#2.2-pre"}};
+		var docObject = {"type":"typedef","name":"can.mustache.helperOptions","src":"view/mustache/doc/helperOptions.md","description":"<p>The options argument passed to a [can.mustache.helper helper function].</p>\n","title":"helperOptions","types":[{"type":"Object","options":[{"name":"fn","types":[{"type":"can.mustache.sectionRenderer"}],"description":"<p>Provided if a\n[can.mustache.helpers.sectionHelper section helper] is called.  Call <code>fn</code> to\nrender the BLOCK with the specified <code>context</code>.</p>\n","optional":true},{"name":"inverse","types":[{"type":"can.mustache.sectionRenderer"}],"description":"<p>Provided if a\n[can.mustache.helpers.sectionHelper section helper] is called\nwith [can.mustache.helpers.else {{else}}].  Call <code>inverse</code> to\nrender the INVERSE with the specified <code>context</code>.</p>\n","optional":true},{"name":"hash","types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"*"},{"type":"String"},{"type":"Number"}]}]}],"description":"<p>An object containing all of the final\narguments listed as <code>name=value</code> pairs for the helper.</p>\n<pre><code>{{helper arg1 arg2 name=value other=3 position=&quot;top&quot;}}\n\noptions.hash = {\n    name: &lt;context_lookup&gt;.value,\n    other: 3,\n    position: &quot;top&quot;\n}\n</code></pre>\n"},{"name":"context","description":"<p>The current context the mustache helper is called within.</p>\n<pre><code>var temp = can.mustache(\n  &quot;{{#person.name}}{{helper}}{{/person.name}}&quot;);\n\nvar data = {person: {name: {first: &quot;Justin&quot;}}};\n\ncan.mustache.registerHelper(&quot;helper&quot;, function(options){\n\n  options.context === data.person //-&gt; true\n  \n})\n\n\ntemp(data);\n</code></pre>\n","types":[{"type":"*"}]},{"name":"scope","description":"<p>An object that represents the current context and all parent\ncontexts.  It can be used to look up [can.mustache.key key] values in the current scope.</p>\n<pre><code>var temp = can.mustache(\n  &quot;{{#person.name}}{{helper}}{{/person.name}}&quot;);\n\nvar data = {person: {name: {first: &quot;Justin&quot;}}};\n\ncan.mustache.registerHelper(&quot;helper&quot;, function(options){\n\n  options.scope.attr(&quot;first&quot;)   //-&gt; &quot;Justin&quot;\n  options.scope.attr(&quot;person&quot;)  //-&gt; data.person\n  \n})\n\n\ntemp(data);\n</code></pre>\n","types":[{"type":"can.view.Scope"}]},{"name":"options","description":"<p>An object that represents the local mustache helpers.  It can be used to look\nup [can.mustache.key key] values</p>\n<pre><code>var temp = can.mustache(\n  &quot;{{#person.name}}{{helper}}{{/person.name}}&quot;);\n\nvar data = {person: {name: {first: &quot;Justin&quot;}}};\n\ncan.mustache.registerHelper(&quot;helper&quot;, function(options){\n\n  options.options.attr(&quot;helpers.specialHelper&quot;)   //-&gt; function(){ ... }\n  \n})\n\n\ntemp(data, {\n  specialHelper: function(){ ... }\n});\n</code></pre>\n","types":[{"type":"can.view.Options"}]}]}],"parent":"can.mustache.types","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs"},"debug":true,"dest":"/Users/justin/dev/canjs.com/2.2-pre/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../../documentjs.json","project":{"version":"2.2-pre","name":"canjs","source":"git://github.com/bitovi/canjs#2.2-pre"}};
 	</script>
 	
 	
