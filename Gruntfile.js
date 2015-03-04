@@ -173,6 +173,7 @@ module.exports = function (grunt) {
 			"versions": versions,
 			"defaultVersion" : defaultVersion,
 			"siteDefaults": {
+				"ignoreTemplateRender": true,
 				"parent" : "canjs",
 				"templates" : "theme/templates",
 				"static": "theme/static",

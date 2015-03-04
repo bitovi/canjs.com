@@ -39,6 +39,7 @@
 	},
 	"defaultVersion" : "2.1",
 	"siteDefaults": {
+		"ignoreTemplateRender": true,
 		"parent" : "canjs",
 		"templates" : "theme/templates",
 		"static": "theme/static",
