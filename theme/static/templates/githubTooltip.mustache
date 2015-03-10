@@ -6,7 +6,7 @@
       {{#commits}}
       <p>- {{truncateHash hash}} {{message}}</p>
       {{/commits}}
-      <p>{{#if actor}}by {{/if}}<a href="http://bithub.com/users/{{actorID}}">{{actor}}</a> on {{formatDate date}} via <a href="{{link}}">{{feed}}</a></p>
+      <p>{{#if actor}}by {{/if}}<a href="http://bitovi.bithub.com/users/{{actorID}}">{{actor}}</a> on {{formatDate date}} via <a href="{{link}}">{{feed}}</a></p>
     </div>
   {{/commits}}
   {{^commits}}
