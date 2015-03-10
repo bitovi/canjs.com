@@ -181,7 +181,7 @@ module.exports = function (grunt) {
 					"urls": {
 						"builderData": "http://bitbuilder.herokuapp.com/canjs",
 						"builder": "http://bitbuilder.herokuapp.com/can.custom.js",
-						"bithub": "http://api.bithub.com/api/v1/events/",
+						"bithub": "http://bitovi.bithub.com/api/v1/events/",
 						"cdn": "//canjs.com/release/",
 						"github":"https://github.com/bitovi/canjs.com"
 					},
