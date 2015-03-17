@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>control/plugin/plugin.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">69.03</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">246</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">38.21</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">0.77</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;jquery&#039;, &#039;can/util&#039;, &#039;can/control&#039;, function ($, can) {
+	$ = $ || window.$;
+
+	//used to determine if a control instance is one of controllers
+	//controllers can be strings or classes
+	var i, isAControllerOf = function (instance, controllers) {
+			var name = instance.constructor.pluginName || instance.constructor._shortName;
+			for (i = 0; i &lt; controllers.length; i++) {
+				if (typeof controllers[i] === &#039;string&#039; ? name === controllers[i] : instance instanceof controllers[i]) {
+					return true;
+				}
+			}
+			return false;
+		}, makeArray = can.makeArray,
+		old = can.Control.setup;
+	/*
+	 * static
+	 */
+	can.Control.setup = function () {
+		// if you didn&#039;t provide a name, or are control, don&#039;t do anything
+		if (this !== can.Control) {
+			/**
+			 * @property {String} can.Control.plugin.static.pluginName pluginName
+			 * @parent can.Control.plugin
+			 *
+			 * @description
+			 *
+			 * Allows you to define the name of the jQuery plugin.
+			 *
+			 * @body
+			 *
+			 * Setting the static `pluginName` property allows you to override the default name
+			 * with your own.
+			 *
+			 *		var Filler = can.Control({
+			 *			pluginName: &#039;fillWith&#039;
+			 *		},{});
+			 *
+			 *		$(&quot;#foo&quot;).fillWith();
+			 *
+			 * If you don&#039;t provide a `pluginName`, the control falls back to the
+			 * [can.Construct.fullName fullName] attribute:
+			 *
+			 *		can.Control(&#039;Ui.Layout.FillWith&#039;, {}, {});
+			 *		$(&quot;#foo&quot;).ui_layout_fill_with();
+			 *
+			 */
+			var pluginName = this.pluginName || this._fullName;
+			// create jQuery plugin
+			if (pluginName !== &#039;can_control&#039;) {
+				this.plugin(pluginName);
+			}
+			old.apply(this, arguments);
+		}
+	};
+	/*
+	 * prototype
+	 */
+	$.fn.extend({
+
+		/**
+		 * @function jQuery.fn.controls jQuery.fn.controls
+		 * @parent can.Control.plugin
+		 * @description Get the Controls associated with elements.
+		 * @signature `jQuery.fn.controls([type])`
+		 * @param {String|can.Control} [control] The type of Controls to find.
+		 * @return {can.Control} The controls associated with the given elements.
+		 *
+		 * @body
+		 * When the widget is initialized, the plugin control creates an array
+		 * of control instance(s) with the DOM element it was initialized on using
+		 * [can.data] method.
+		 *
+		 * The `controls` method allows you to get the control instance(s) for any element
+		 * either by their type or pluginName.
+		 *
+		 *      var MyBox = can.Control({
+		 *          pluginName : &#039;myBox&#039;
+		 *      }, {});
+		 *
+		 *      var MyClock = can.Control({
+		 *          pluginName : &#039;myClock&#039;
+		 *      }, {});
+		 *
+		 *
+		 *		//- Inits the widgets
+		 *		$(&#039;.widgets:eq(0)&#039;).myBox();
+		 *		$(&#039;.widgets:eq(1)&#039;).myClock();
+		 *
+		 *		$(&#039;.widgets&#039;).controls() //-&gt; [ MyBox, MyClock ]
+		 *	    $(&#039;.widgets&#039;).controls(&#039;myBox&#039;) // -&gt; [MyBox]
+		 *	    $(&#039;.widgets&#039;).controls(MyClock) // -&gt; MyClock
+		 *
+		 */
+		controls: function () {
+			var controllerNames = makeArray(arguments),
+				instances = [],
+				controls, c;
+			//check if arguments
+			this.each(function () {
+				controls = can.$(this)
+					.data(&#039;controls&#039;);
+				if (!controls) {
+					return;
+				}
+				for (var i = 0; i &lt; controls.length; i++) {
+					c = controls[i];
+					if (!controllerNames.length || isAControllerOf(c, controllerNames)) {
+						instances.push(c);
+					}
+				}
+			});
+			return instances;
+		},
+
+		/**
+		 * @function jQuery.fn.control jQuery.fn.control
+		 * @parent can.Control.plugin
+		 * @description Get the Control associated with elements.
+		 * @signature `jQuery.fn.control([type])`
+		 * @param {String|can.Control} [control] The type of Control to find.
+		 * @return {can.Control} The first control found.
+		 *
+		 * @body
+		 * This is the same as [jQuery.fn.controls $().controls] except that
+		 * it only returns the first Control found.
+		 *
+		 *		//- Init MyBox widget
+		 *		$(&#039;.widgets&#039;).my_box();
+		 *
+		 *		&lt;div class=&quot;widgets my_box&quot; /&gt;
+		 *
+		 *		$(&#039;.widgets&#039;).controls() //-&gt; MyBox
+		 */
+		control: function (control) {
+			return this.controls.apply(this, arguments)[0];
+		}
+	});
+	can.Control.plugin = function (pluginname) {
+		var control = this;
+		if (!$.fn[pluginname]) {
+			$.fn[pluginname] = function (options) {
+				var args = makeArray(arguments),
+					//if the arg is a method on this control
+					isMethod = typeof options === &#039;string&#039; &amp;&amp; $.isFunction(control.prototype[options]),
+					meth = args[0],
+					returns;
+				this.each(function () {
+					//check if created
+					var plugin = can.$(this)
+						.control(control);
+					if (plugin) {
+						if (isMethod) {
+							// call a method on the control with the remaining args
+							returns = plugin[meth].apply(plugin, args.slice(1));
+						} else {
+							// call the plugin&#039;s update method
+							plugin.update.apply(plugin, args);
+						}
+					} else {
+						//create a new control instance
+						control.newInstance.apply(control, [this].concat(args));
+					}
+				});
+				return returns !== undefined ? returns : this;
+			};
+		}
+	};
+	/**
+	 * @function can.Control.plugin.prototype.update update
+	 * @parent can.Control.plugin
+	 *
+	 * @description Reconfigure a control.
+	 * @signature `update(newOptions)`
+	 * @param {Object} newOptions Options to merge into the current options.
+	 *
+	 * @body
+	 * Update extends [can.Control.prototype.options options]
+	 * with the `options` argument and rebinds all events.  It
+	 * re-configures the control.
+	 *
+	 * For example, the following control wraps a recipe form. When the form
+	 * is submitted, it creates the recipe on the server.  When the recipe
+	 * is `created`, it resets the form with a new instance.
+	 *
+	 *		var Creator = can.Control({
+	 *			&quot;{recipe} created&quot; : function(){
+	 *				this.update({recipe : new Recipe()});
+	 *				this.element[0].reset();
+	 *				this.element.find(&quot;[type=submit]&quot;).val(&quot;Create Recipe&quot;)
+	 *			},
+	 *			&quot;submit&quot; : function(el, ev){
+	 *				ev.preventDefault();
+	 *				var recipe = this.options.recipe;
+	 *				recipe.attrs( this.element.formParams() );
+	 *				this.element.find(&quot;[type=submit]&quot;).val(&quot;Saving...&quot;)
+	 *				recipe.save();
+	 *			}
+	 *		});
+	 *
+	 *		$(&#039;#createRecipes&#039;).creator({ recipe : new Recipe() })
+	 *
+	 * *Update* is called if a control&#039;s plugin helper is called with the plugin options on an element
+	 * that already has a control instance of the same type. If you want to implement your
+	 * own update method make sure to call the old one either using the [can.Construct.super super] plugin or
+	 * by calling `can.Control.prototype.update.apply(this, arguments);`.
+	 * For example, you can change the content of the control element every time the options change:
+	 *
+	 *		var Plugin = can.Control({
+	 *			pluginName: &#039;myPlugin&#039;
+	 *		}, {
+	 *			init : function(el, options) {
+	 *			this.updateCount = 0;
+	 *			this.update({
+	 *				text : &#039;Initialized&#039;
+	 *			});
+	 *		},
+	 *		update : function(options) {
+	 *			// Call the can.Control update first.
+	 *			// Use this._super when using can/construct/super
+	 *			can.Control.prototype.update.call(this, options);
+	 *			this.element.html(this.options.text + &#039; &#039; +
+	 *				(++this.updateCount) + &#039; times&#039;);
+	 *			}
+	 *		});
+	 *
+	 *		$(&#039;#control&#039;).myPlugin();
+	 *		$(&#039;#control&#039;).html();
+	 *		// Initialized. Updated 1 times
+	 *
+	 *		$(&#039;#control&#039;).myPlugin({ text : &#039;Calling update. Updated&#039; });
+	 *		$(&#039;#control&#039;).html();
+	 *		// Calling update. Updated 2 times
+	 *
+	 * @demo can/control/plugin/demo-update.html
+	 *
+	 * @param {Object} options A list of options to merge with
+	 * [can.Control.prototype.options this.options].  Often this method
+	 * is called by the [can.Control.plugin jQuery helper function].
+	 */
+	can.Control.prototype.update = function (options) {
+		can.extend(this.options, options);
+		this.on();
+	};
+	return can;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

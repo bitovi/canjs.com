@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>util/mootools/mootools.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">65.17</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">410</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">74.37</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">4.29</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/util/can.js&#039;, &#039;can/util/attr&#039;, &#039;mootools&#039;, &#039;can/event&#039;, &#039;can/util/fragment.js&#039;, &#039;can/util/deferred.js&#039;,
+	&#039;can/util/array/each.js&#039;, &#039;can/util/object/isplain&#039;, &quot;can/util/inserted&quot;, function (can, attr) {
+		/* jshint maxdepth:5 */
+		// mootools.js
+		// ---------
+		// _MooTools node list._
+		//
+		// Map string helpers.
+		can.trim = function (s) {
+			return s ? s.trim() : s;
+		};
+		// This extend() function is ruthlessly and shamelessly stolen from
+		// jQuery 1.8.2:, lines 291-353.
+		var extend = function () {
+			var options, name, src, copy, copyIsArray, clone, target = arguments[0] || {}, i = 1,
+				length = arguments.length,
+				deep = false;
+			// Handle a deep copy situation
+			if (typeof target === &#039;boolean&#039;) {
+				deep = target;
+				target = arguments[1] || {};
+				// skip the boolean and the target
+				i = 2;
+			}
+			// Handle case when target is a string or something (possible in deep copy)
+			if (typeof target !== &#039;object&#039; &amp;&amp; !can.isFunction(target)) {
+				target = {};
+			}
+			// extend jQuery itself if only one argument is passed
+			if (length === i) {
+				target = this;
+				--i;
+			}
+			for (; i &lt; length; i++) {
+				// Only deal with non-null/undefined values
+				if ((options = arguments[i]) !== null) {
+					// Extend the base object
+					for (name in options) {
+						src = target[name];
+						copy = options[name];
+						// Prevent never-ending loop
+						if (target === copy) {
+							continue;
+						}
+						// Recurse if we&#039;re merging plain objects or arrays
+						if (deep &amp;&amp; copy &amp;&amp; (can.isPlainObject(copy) || (copyIsArray = can.isArray(copy)))) {
+							if (copyIsArray) {
+								copyIsArray = false;
+								clone = src &amp;&amp; can.isArray(src) ? src : [];
+							} else {
+								clone = src &amp;&amp; can.isPlainObject(src) ? src : {};
+							}
+							// Never move original objects, clone them
+							target[name] = can.extend(deep, clone, copy); // Don&#039;t bring in undefined values
+						} else if (copy !== undefined) {
+							target[name] = copy;
+						}
+					}
+				}
+			}
+			// Return the modified object
+			return target;
+		};
+		can.extend = extend;
+		// Map array helpers.
+		can.makeArray = function (item) {
+			// All other libraries return a copy if item is an array.
+			// The original Mootools Array.from returned the same item so we need to slightly modify it
+			if (item === null) {
+				return [];
+			}
+			try {
+				return Type.isEnumerable(item) &amp;&amp; typeof item !== &#039;string&#039; ? Array.prototype.slice.call(item) : [item];
+			} catch (ex) {
+				// some things like DOMNodeChildCollections don&#039;t slice so good.
+				// This pains me, but it has to be done.
+				var arr = [],
+					i;
+				for (i = 0; i &lt; item.length; ++i) {
+					arr.push(item[i]);
+				}
+				return arr;
+			}
+		};
+		can.isArray = function (arr) {
+			return typeOf(arr) === &#039;array&#039;;
+		};
+		can.inArray = function (item, arr, fromIndex) {
+			if (!arr) {
+				return -1;
+			}
+			return Array.prototype.indexOf.call(arr, item, fromIndex);
+		};
+		can.map = function (arr, fn) {
+			return Array.from(arr || [])
+				.map(fn);
+		};
+		// Map object helpers.
+		can.param = function (object) {
+			return Object.toQueryString(object);
+		};
+		can.isEmptyObject = function (object) {
+			return Object.keys(object)
+				.length === 0;
+		};
+		// Map function helpers.
+		can.proxy = function () {
+			var args = can.makeArray(arguments),
+				func = args.shift();
+			return func.bind.apply(func, args);
+		};
+		can.isFunction = function (f) {
+			return typeOf(f) === &#039;function&#039;;
+		};
+		// Make this object so you can bind on it.
+		can.bind = function (ev, cb) {
+			// If we can bind to it...
+			if (this.bind &amp;&amp; this.bind !== can.bind) {
+				this.bind(ev, cb);
+			} else if (this.nodeName &amp;&amp; (this.nodeType &amp;&amp; this.nodeType !== 11)) {
+				can.$(this)
+					.addEvent(ev, cb);
+			} else if (this.addEvent) {
+				this.addEvent(ev, cb);
+			} else {
+				// Make it bind-able...
+				can.addEvent.call(this, ev, cb);
+			}
+			return this;
+		};
+		can.unbind = function (ev, cb) {
+			// If we can bind to it...
+			if (this.unbind &amp;&amp; this.unbind !== can.unbind) {
+				this.unbind(ev, cb);
+			} else if (this.nodeName &amp;&amp; (this.nodeType &amp;&amp; this.nodeType !== 11)) {
+				can.$(this)
+					.removeEvent(ev, cb);
+			} else if (this.removeEvent) {
+				this.removeEvent(ev, cb);
+			} else {
+				// Make it bind-able...
+				can.removeEvent.call(this, ev, cb);
+			}
+			return this;
+		};
+		// Alias on/off to bind/unbind respectively
+		can.on = can.bind;
+		can.off = can.unbind;
+		can.trigger = function (item, event, args, bubble) {
+			// Defaults to `true`.
+			bubble = bubble === undefined ? true : bubble;
+			args = args || [];
+			var propagating = true;
+			if (item.fireEvent) {
+				item = item[0] || item;
+				// walk up parents to simulate bubbling .
+				while (item &amp;&amp; propagating) {
+					// Handle walking yourself.
+					if (!event.type) {
+						event = {
+							type: event,
+							target: item,
+							stopPropagation: function () {
+								propagating = false;
+							}
+						};
+					}
+					var events = item !== window ? can.$(item)
+						.retrieve(&#039;events&#039;)[0] : item.retrieve(&#039;events&#039;);
+					if (events &amp;&amp; events[event.type]) {
+						events[event.type].keys.each(function (fn) {
+							fn.apply(item, [event].concat(args));
+						}, this);
+					}
+					// If we are bubbling, get parent node.
+					if (bubble &amp;&amp; item.parentNode &amp;&amp; item.parentNode.nodeType !== 11) {
+						item = item.parentNode;
+					} else {
+						item = null;
+					}
+				}
+			} else {
+				if (typeof event === &#039;string&#039;) {
+					event = {
+						type: event
+					};
+				}
+				event.target = event.target || item;
+				can.dispatch.call(item, event, can.makeArray(args));
+			}
+		};
+		can.delegate = function (selector, ev, cb) {
+			if (this.delegate) {
+				this.delegate(selector, ev, cb);
+			} else if (this.addEvent) {
+				this.addEvent(ev + &#039;:relay(&#039; + selector + &#039;)&#039;, cb);
+			} else {
+				// make it bind-able ...
+				can.bind.call(this, ev, cb);
+			}
+			return this;
+		};
+		can.undelegate = function (selector, ev, cb) {
+			if (this.undelegate) {
+				this.undelegate(selector, ev, cb);
+			} else if (this.removeEvent) {
+				this.removeEvent(ev + &#039;:relay(&#039; + selector + &#039;)&#039;, cb);
+			} else {
+				can.unbind.call(this, ev, cb);
+			}
+			return this;
+		};
+		var optionsMap = {
+			type: &#039;method&#039;,
+			success: undefined,
+			error: undefined
+		};
+		var updateDeferred = function (xhr, d) {
+			for (var prop in xhr) {
+				if (typeof d[prop] === &#039;function&#039;) {
+					d[prop] = function () {
+						xhr[prop].apply(xhr, arguments);
+					};
+				} else {
+					d[prop] = prop[xhr];
+				}
+			}
+		};
+		can.ajax = function (options) {
+			var d = can.Deferred(),
+				requestOptions = can.extend({}, options),
+				request;
+			// Map jQuery options to MooTools options.
+			for (var option in optionsMap) {
+				if (requestOptions[option] !== undefined) {
+					requestOptions[optionsMap[option]] = requestOptions[option];
+					delete requestOptions[option];
+				}
+			}
+			// Mootools defaults to &#039;post&#039;, but Can expects a default of &#039;get&#039;
+			requestOptions.method = requestOptions.method || &#039;get&#039;;
+			requestOptions.url = requestOptions.url.toString();
+			var success = options.onSuccess || options.success,
+				error = options.onFailure || options.error;
+			requestOptions.onSuccess = function (response, xml) {
+				var data = response;
+				updateDeferred(request.xhr, d);
+				d.resolve(data, &#039;success&#039;, request.xhr);
+				if (success) {
+					success(data, &#039;success&#039;, request.xhr);
+				}
+			};
+			requestOptions.onFailure = function () {
+				updateDeferred(request.xhr, d);
+				d.reject(request.xhr, &#039;error&#039;);
+				if (error) {
+					error(request.xhr, &#039;error&#039;);
+				}
+			};
+			if (options.dataType === &#039;json&#039;) {
+				request = new Request.JSON(requestOptions);
+			} else {
+				request = new Request(requestOptions);
+			}
+			request.send();
+			updateDeferred(request.xhr, d);
+			return d;
+		};
+		// Element -- get the wrapped helper.
+		can.$ = function (selector) {
+			if (selector === window) {
+				return window;
+			}
+			return $$(selector &amp;&amp; selector.nodeName ? [selector] : selector);
+		};
+
+		// Add `document` fragment support.
+		var old = document.id;
+		document.id = function (el) {
+			if (el &amp;&amp; el.nodeType === 11) {
+				return el;
+			} else {
+				return old.apply(document, arguments);
+			}
+		};
+		can.append = function (wrapped, html) {
+			if (typeof html === &#039;string&#039;) {
+				html = can.buildFragment(html);
+			}
+			return wrapped.grab(html);
+		};
+		can.filter = function (wrapped, filter) {
+			return wrapped.filter(filter);
+		};
+		can.data = function (wrapped, key, value) {
+			if (value === undefined) {
+				return wrapped[0].retrieve(key);
+			} else {
+				return wrapped.store(key, value);
+			}
+		};
+		can.addClass = function (wrapped, className) {
+			return wrapped.addClass(className);
+		};
+		can.remove = function (wrapped) {
+			// We need to remove text nodes ourselves.
+			var filtered = wrapped.filter(function (node) {
+				if (node.nodeType !== 1) {
+					node.parentNode.removeChild(node);
+				} else {
+					return true;
+				}
+			});
+			filtered.destroy();
+			return filtered;
+		};
+		can.has = function (wrapped, element) {
+			// this way work in mootools
+			if (Slick.contains(wrapped[0], element)) {
+				return wrapped;
+			} else {
+				return [];
+			}
+		};
+		// Destroyed method.
+		var destroy = Element.prototype.destroy,
+			grab = Element.prototype.grab,
+			oldSet = Element.prototype.set;
+		Element.implement({
+			destroy: function () {
+				can.trigger(this, &#039;removed&#039;, [], false);
+				var elems = this.getElementsByTagName(&#039;*&#039;);
+				for (var i = 0, elem;
+					(elem = elems[i]) !== undefined; i++) {
+					can.trigger(elem, &#039;removed&#039;, [], false);
+				}
+				destroy.apply(this, arguments);
+			},
+			grab: function (el) {
+				var elems;
+				if (el &amp;&amp; el.nodeType === 11) {
+					elems = can.makeArray(el.childNodes);
+				} else {
+					elems = [el];
+				}
+				var ret = grab.apply(this, arguments);
+				can.inserted(elems);
+				return ret;
+			},
+			set: function (attrName, value) {
+				var isAttributeOrProp = can.inArray(attrName, [&quot;events&quot;, &quot;html&quot;, &quot;load&quot;, &quot;morph&quot;, &quot;send&quot;, &quot;tag&quot;, &quot;tween&quot;]) === -1,
+					newValue,
+					oldValue;
+
+				if (isAttributeOrProp) {
+					oldValue = this.get(attrName);
+				}
+
+				var res = oldSet.apply(this, arguments);
+
+				if (isAttributeOrProp) {
+					newValue = this.get(attrName);
+				}
+				if (newValue !== oldValue) {
+					can.attr.trigger(this, attrName, oldValue);
+				}
+				return res;
+			}.overloadSetter()
+		});
+		can.get = function (wrapped, index) {
+			return wrapped[index];
+		};
+		// Overwrite to handle IE not having an id.
+		// IE barfs if text node.
+		var idOf = Slick.uidOf;
+		Slick.uidOf = function (node) {
+			// for some reason, in IE8, node will be the window but not equal it.
+			if (node.nodeType === 1 || node === window || node.document === document) {
+				return idOf(node);
+			} else {
+				return Math.random();
+			}
+		};
+		Element.NativeEvents.hashchange = 2;
+
+		// Setup attributes events
+
+		can.attr = attr;
+
+		// turn off mutation events for zepto
+		delete attr.MutationObserver;
+
+		Element.Events.attributes = {
+			onAdd: function () {
+				var el = can.$(this);
+				can.data(el, &quot;canHasAttributesBindings&quot;, (can.data(el, &quot;canHasAttributesBindings&quot;) || 0) + 1);
+			},
+			onRemove: function () {
+				var el = can.$(this),
+					cur = can.data(el, &quot;canHasAttributesBindings&quot;) || 0;
+				if (cur &lt;= 0) {
+					can.cleanData(el, &quot;canHasAttributesBindings&quot;);
+				} else {
+					can.data(el, &quot;canHasAttributesBindings&quot;, cur - 1);
+				}
+			}
+		};
+
+		return can;
+	});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

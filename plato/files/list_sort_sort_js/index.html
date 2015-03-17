@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>list/sort/sort.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">63.31</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">344</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">66.67</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">2.00</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/util&#039;, &#039;can/list&#039;, function () {
+
+	// Change bubble rule to bubble on change if their is a comparator
+	var oldBubbleRule = can.List._bubbleRule;
+	can.List._bubbleRule = function(eventName, list) {
+		var oldBubble = oldBubbleRule.apply(this, arguments);
+
+		if (list.comparator &amp;&amp; can.inArray(&#039;change&#039;, oldBubble) === -1) {
+			oldBubble.push(&#039;change&#039;);
+		}
+
+		return oldBubble;
+	};
+
+	var proto = can.List.prototype,
+		_changes = proto._changes,
+		setup = proto.setup;
+
+	//Add `move` as an event that lazy-bubbles
+
+	// extend the list for sorting support
+
+	can.extend(proto, {
+		comparator: undefined,
+
+		_comparator: function (a, b) {
+			var comparator = this.comparator;
+
+			// If the user has defined a comparator, use it
+			if (comparator &amp;&amp; typeof comparator === &#039;function&#039;) {
+				return comparator(a, b);
+			}
+
+			return a === b ? 0 : a &lt; b ? -1 : 1;
+		},
+
+		/**
+		 * @hide
+		 */
+		_getInsertIndex: function (item, currentIndex) {
+			var a = this._getComparatorValue(item),
+				b,
+				offset = 0;
+
+			for (var i = 0; i &lt; this.length; i++) {
+				b = this._getComparatorValue(this[i]);
+
+				// If we&#039;ve reached the index that the item currently
+				// resides in and still haven&#039;t found an ideal insert index,
+				// offset the returned index by -1 to account for the fact
+				// that this item would be moved if placed at the
+				// suggested index.
+				if (typeof currentIndex !== &#039;undefined&#039; &amp;&amp; i === currentIndex) {
+					offset = -1;
+					continue;
+				}
+
+				// If we&#039;ve found an item ranked greater than or the same as this
+				// item, consider this a good &quot;insert&quot; index.
+				if (this._comparator(a, b) &lt; 0) {
+					return i + offset;
+				}
+			}
+
+			// The index of the last item in the list
+			return i + offset;
+		},
+
+		_getComparatorValue: function (item, overwrittenComparator) {
+
+			// Use the value passed to .sort() as the comparator value
+			// if it is a string
+			var comparator = typeof overwrittenComparator === &#039;string&#039; ?
+				overwrittenComparator :
+				this.comparator;
+
+			// If the comparator is a string use that value to get
+			// property on the item. If the comparator is a method,
+			// it&#039;ll be used elsewhere.
+			if (item &amp;&amp; comparator &amp;&amp; typeof comparator === &#039;string&#039;) {
+				item = typeof item[comparator] === &#039;function&#039; ?
+					item[comparator]() :
+					item.attr(comparator);
+			}
+
+			return item;
+		},
+
+		_getComparatorValues: function () {
+			var self = this;
+			var a = [];
+			this.each(function (item, index) {
+				a.push(self._getComparatorValue(item));
+			});
+			return a;
+		},
+
+		/**
+		 * @hide
+		 */
+		sort: function (comparator, silent) {
+			var a, b, c, isSorted;
+
+			// Use the value passed to .sort() as the comparator function
+			// if it is a function
+			var comparatorFn = can.isFunction(comparator) ?
+				comparator :
+				this._comparator;
+
+			for (var i, iMin, j = 0, n = this.length; j &lt; n-1; j++) {
+				iMin = j;
+
+				isSorted = true;
+				c = undefined;
+
+				for (i = j+1; i &lt; n; i++) {
+
+					a = this._getComparatorValue(this.attr(i), comparator);
+					b = this._getComparatorValue(this.attr(iMin), comparator);
+
+					// [1, 2, 3, 4(b), 9, 6, 3(a)]
+					if (comparatorFn.call(this, a, b) === -1) {
+						isSorted = false;
+						iMin = i;
+					}
+
+					// [1, 2, 3, 4, 8(b), 12, 49, 9(c), 6(a), 3]
+					// While iterating over the unprocessed items in search
+					// of a &quot;min&quot;, attempt to find two neighboring values
+					// that are improperly sorted.
+					// Note: This is not part of the original selection
+					// sort agortithm
+					if (c &amp;&amp; comparatorFn.call(this, a, c) === -1) {
+						isSorted = false;
+					}
+
+					c = a;
+				}
+
+				if (isSorted) {
+					break;
+				}
+
+				if (iMin !== j) {
+					this._swapItems(iMin, j, silent);
+				}
+			}
+
+
+			if (! silent) {
+				// Trigger length change so that {{#block}} helper can re-render
+				can.trigger(this, &#039;length&#039;, [this.length]);
+			}
+
+			return this;
+		},
+
+		/**
+		 * @hide
+		 */
+		_swapItems: function (oldIndex, newIndex, silent) {
+
+			var temporaryItemReference = this[oldIndex];
+
+			// Remove the item from the list
+			[].splice.call(this, oldIndex, 1);
+
+			// Place the item at the correct index
+			[].splice.call(this, newIndex, 0, temporaryItemReference);
+
+			if (! silent) {
+				// Update the DOM via can.view.live.list
+				can.trigger(this, &#039;move&#039;, [
+					temporaryItemReference,
+					newIndex,
+					oldIndex
+				]);
+			}
+		}
+
+	});
+	// create push, unshift
+	// converts to an array of arguments
+	var getArgs = function (args) {
+		return args[0] &amp;&amp; can.isArray(args[0]) ? args[0] : can.makeArray(args);
+	};
+	can.each({
+			/**
+			 * @function push
+			 * Add items to the end of the list.
+			 *
+			 *     var l = new can.List([]);
+			 *
+			 *     l.bind(&#039;change&#039;, function(
+			 *         ev,        // the change event
+			 *         attr,      // the attr that was changed, for multiple items, &quot;*&quot; is used
+			 *         how,       // &quot;add&quot;
+			 *         newVals,   // an array of new values pushed
+			 *         oldVals,   // undefined
+			 *         where      // the location where these items where added
+			 *         ) {
+			 *
+			 *     })
+			 *
+			 *     l.push(&#039;0&#039;,&#039;1&#039;,&#039;2&#039;);
+			 *
+			 * @param {...*} [...items] items to add to the end of the list.
+			 * @return {Number} the number of items in the array
+			 */
+			push: &quot;length&quot;,
+			/**
+			 * @function unshift
+			 * Add items to the start of the list.  This is very similar to
+			 * [can.List::push].  Example:
+			 *
+			 *     var l = new can.List([&quot;a&quot;,&quot;b&quot;]);
+			 *     l.unshift(1,2,3) //-&gt; 5
+			 *     l.attr() //-&gt; [1,2,3,&quot;a&quot;,&quot;b&quot;]
+			 *
+			 * @param {...*} [...items] items to add to the start of the list.
+			 * @return {Number} the length of the array.
+			 */
+			unshift: 0
+		},
+		/**
+		 * adds a method where
+		 * @param where items in the array should be added
+		 * @param name method name
+		 */
+		function (where, name) {
+			var proto = can.List.prototype,
+				old = proto[name];
+			proto[name] = function () {
+
+				if (this.comparator &amp;&amp; arguments.length) {
+					// get the items being added
+					var args = getArgs(arguments);
+					var i = args.length;
+
+					while (i--) {
+						// Go through and convert anything to an `map` that needs
+						// to be converted.
+						var val = can.bubble.set(this, i, this.__type(args[i], i) );
+
+						// Insert this item at the correct index
+						var newIndex = this._getInsertIndex(val);
+						Array.prototype.splice.apply(this, [newIndex, 0, val]);
+
+						this._triggerChange(&#039;&#039; + newIndex, &#039;add&#039;, [val], undefined);
+					}
+
+					can.batch.trigger(this, &#039;reset&#039;, [args]);
+
+					return this;
+				} else {
+					// call the original method
+					return old.apply(this, arguments);
+				}
+
+
+
+			};
+		});
+
+	// Overwrite .splice so that items added to the list (no matter what the
+	// defined index) are inserted at the correct index, while preserving the
+	// ability to remove items from a list.
+	(function () {
+		var proto = can.List.prototype;
+		var oldSplice = proto.splice;
+
+		proto.splice = function (index, howMany) {
+
+			var args = can.makeArray(arguments),
+				newElements =[],
+				i, len;
+
+			// Don&#039;t use this &quot;sort&quot; oriented splice unless this list has a
+			// comparator
+			if (! this.comparator) {
+				return oldSplice.apply(this, args);
+			}
+
+			// Get the list of new items intended to be added to the list
+			for (i = 2, len = args.length; i &lt; len; i++) {
+				args[i] = this.__type(args[i], i);
+				newElements.push(args[i]);
+			}
+
+			// Remove items using the original splice method
+			oldSplice.call(this, index, howMany);
+
+			// Add items by way of push so that they&#039;re sorted into
+			// the correct position
+			proto.push.apply(this, newElements);
+		};
+	})();
+
+	//- override changes for sorting
+	proto._changes = function (ev, attr, how, newVal, oldVal) {
+
+		// If a comparator is defined and the change was to a
+		// list item, consider moving the item.
+		if (this.comparator &amp;&amp; /^\d+/.test(attr)) {
+
+			if (ev.batchNum &amp;&amp; ev.batchNum !== this._lastBatchNum) {
+				this.sort();
+				this._lastBatchNum = ev.batchNum;
+				return;
+			}
+
+			// get the index
+			var currentIndex = +/^\d+/.exec(attr)[0],
+				// and item
+				item = this[currentIndex];
+
+			if (typeof item !== &#039;undefined&#039;) {
+
+				// Determine where this item should reside as a result
+				// of the change
+				var newIndex = this._getInsertIndex(item, currentIndex);
+
+				if (newIndex !== currentIndex) {
+					this._swapItems(currentIndex, newIndex);
+
+					// Trigger length change so that {{#block}} helper can re-render
+					can.trigger(this, &#039;length&#039;, [
+						this.length
+					]);
+				}
+
+			}
+		}
+		_changes.apply(this, arguments);
+	};
+	//- override setup for sorting
+	proto.setup = function (instances, options) {
+		setup.apply(this, arguments);
+		if (this.comparator) {
+			this.sort();
+		}
+	};
+	return can.Map;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

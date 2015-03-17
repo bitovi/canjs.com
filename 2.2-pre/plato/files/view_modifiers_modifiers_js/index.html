@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>view/modifiers/modifiers.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">69.30</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">276</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">39.70</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">0.92</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;jquery&#039;, &#039;can/util&#039;, &#039;can/view&#039;, function ($, can) {
+	$ = $ || window.$;
+
+	//---- ADD jQUERY HELPERS -----
+	//converts jquery functions to use views	
+	var convert, modify, isTemplate, isHTML, isDOM, getCallback,
+		// text and val cannot produce an element, so don&#039;t run hookups on them
+		noHookup = {
+			&#039;val&#039;: true,
+			&#039;text&#039;: true
+		};
+	convert = function (func_name) {
+		// save the old jQuery helper
+		var old = $.fn[func_name];
+		// replace it with our new helper
+		$.fn[func_name] = function () {
+			var args = can.makeArray(arguments),
+				callbackNum, callback, self = this,
+				result;
+			// if the first arg is a deferred
+			// wait until it finishes, and call
+			// modify with the result
+			if (can.isDeferred(args[0])) {
+				args[0].done(function (res) {
+					modify.call(self, [res], old);
+				});
+				return this;
+			} //check if a template
+			else if (isTemplate(args)) {
+				// if we should operate async
+				if (callbackNum = getCallback(args)) {
+					callback = args[callbackNum];
+					args[callbackNum] = function (result) {
+						modify.call(self, [result], old);
+						callback.call(self, result);
+					};
+					can.view.apply(can.view, args);
+					return this;
+				}
+				// call view with args (there might be deferreds)
+				result = can.view.apply(can.view, args);
+				// if we got a string back
+				if (!can.isDeferred(result)) {
+					// we are going to call the old method with that string
+					args = [result];
+				} else {
+					// if there is a deferred, wait until it is done before calling modify
+					result.done(function (res) {
+						modify.call(self, [res], old);
+					});
+					return this;
+				}
+			}
+			return noHookup[func_name] ? old.apply(this, args) : modify.call(this, args, old);
+		};
+	};
+	// modifies the content of the element
+	// but also will run any hookup
+	modify = function (args, old) {
+		var res;
+		//check if there are new hookups
+		for (var hasHookups in can.view.hookups) {
+			break;
+		}
+		//if there are hookups, turn into a frag
+		// and insert that
+		// by using a frag, the element can be recursively hooked up
+		// before insterion
+		if (hasHookups &amp;&amp; args[0] &amp;&amp; isHTML(args[0])) {
+			args[0] = can.view.frag(args[0])
+				.childNodes;
+		}
+		//then insert into DOM
+		res = old.apply(this, args);
+		return res;
+	};
+	// returns true or false if the args indicate a template is being used
+	// $(&#039;#foo&#039;).html(&#039;/path/to/template.ejs&#039;,{data})
+	// in general, we want to make sure the first arg is a string
+	// and the second arg is data
+	isTemplate = function (args) {
+		// save the second arg type
+		var secArgType = typeof args[1];
+		// the first arg is a string
+		return typeof args[0] === &quot;string&quot; &amp;&amp;
+		// the second arg is an object or function
+		(secArgType === &#039;object&#039; || secArgType === &#039;function&#039;) &amp;&amp;
+		// but it is not a dom element
+		!isDOM(args[1]);
+	};
+	// returns true if the arg is a jQuery object or HTMLElement
+	isDOM = function (arg) {
+		return arg.nodeType || arg[0] &amp;&amp; arg[0].nodeType;
+	};
+	// returns whether the argument is some sort of HTML data
+	isHTML = function (arg) {
+		if (isDOM(arg)) {
+			// if jQuery object or DOM node we&#039;re good
+			return true;
+		} else if (typeof arg === &#039;string&#039;) {
+			// if string, do a quick sanity check that we&#039;re HTML
+			arg = can.trim(arg);
+			return arg.substr(0, 1) === &#039;&lt;&#039; &amp;&amp; arg.substr(arg.length - 1, 1) === &#039;&gt;&#039; &amp;&amp; arg.length &gt;= 3;
+		} else {
+			// don&#039;t know what you are
+			return false;
+		}
+	};
+	//returns the callback arg number if there is one (for async view use)
+	getCallback = function (args) {
+		return typeof args[3] === &#039;function&#039; ? 3 : typeof args[2] === &#039;function&#039; &amp;&amp; 2;
+	};
+	/**
+	 *  @function jQuery.fn.hookup
+	 *  @parent can.view.modifiers
+	 *  Called on a jQuery collection that was rendered with can.View with pending hookups.  can.View can render a
+	 *  template with hookups, but not actually perform the hookup, because it returns a string without actual DOM
+	 *  elements to hook up to.  So hookup performs the hookup and clears the pending hookups, preventing errors in
+	 *  future templates.
+	 *
+	 * @codestart
+	 * $(can.View(&#039;//views/recipes.ejs&#039;,recipeData)).hookup()
+	 * @codeend
+	 */
+	$.fn.hookup = function () {
+		can.view.frag(this);
+		return this;
+	};
+	can.each([
+		/**
+		 *  @function jQuery.fn.prepend
+		 *  @parent can.view.modifiers
+		 *
+		 *  Extending the original [http://api.jquery.com/prepend/ jQuery().prepend()]
+		 *  to render [can.view] templates inserted at the beginning of each element in the set of matched elements.
+		 *
+		 *		$(&#039;#test&#039;).prepend(&#039;path/to/template.ejs&#039;, { name : &#039;canjs&#039; });
+		 *
+		 *  @param {String|Object|Function} content A template filename or the id of a view script tag
+		 *  or a DOM element, array of elements, HTML string, or can object.
+		 *  @param {Object} [data] The data to render the view with.
+		 *  If rendering a view template this parameter always has to be present
+		 *  (use the empty object initializer {} for no data).
+		 *  @param {Function} [callback] A success callback to load the view asynchronously
+		 *
+		 *  @return {jQuery|can.Deferred} The jQuery object or a [can.Deferred] if a deferred has
+		 *  been passed in data.
+		 */
+		&quot;prepend&quot;,
+		/**
+		 *  @function jQuery.fn.append
+		 *  @parent can.view.modifiers
+		 *
+		 *  Extending the original [http://api.jquery.com/append/ jQuery().append()]
+		 *  to render [can.view] templates inserted at the end of each element in the set of matched elements.
+		 *
+		 *		$(&#039;#test&#039;).append(&#039;path/to/template.ejs&#039;, { name : &#039;canjs&#039; });
+		 *
+		 *  @param {String|Object|Function} content A template filename or the id of a view script tag
+		 *  or a DOM element, array of elements, HTML string, or can object.
+		 *  @param {Object} [data] The data to render the view with.
+		 *  If rendering a view template this parameter always has to be present
+		 *  (use the empty object initializer {} for no data).
+		 *  @param {Function} [callback] A success callback to load the view asynchronously
+		 *
+		 *  @return {jQuery|can.Deferred} The jQuery object or a [can.Deferred] if a deferred has
+		 *  been passed in data.
+		 */
+		&quot;append&quot;,
+		/**
+		 *  @function jQuery.fn.after
+		 *  @parent can.view.modifiers
+		 *
+		 *  Extending the original [http://api.jquery.com/after/ jQuery().after()]
+		 *  to render [can.view] templates inserted after each element in the set of matched elements.
+		 *
+		 *		$(&#039;#test&#039;).after(&#039;path/to/template.ejs&#039;, { name : &#039;canjs&#039; });
+		 *
+		 *  @param {String|Object|Function} content A template filename or the id of a view script tag
+		 *  or a DOM element, array of elements, HTML string, or can object.
+		 *  @param {Object} [data] The data to render the view with.
+		 *  If rendering a view template this parameter always has to be present
+		 *  (use the empty object initializer {} for no data).
+		 *  @param {Function} [callback] A success callback to load the view asynchronously
+		 *
+		 *  @return {jQuery|can.Deferred} The jQuery object or a [can.Deferred] if a deferred has
+		 *  been passed in data.
+		 */
+		&quot;after&quot;,
+		/**
+		 *  @function jQuery.fn.before
+		 *  @parent can.view.modifiers
+		 *
+		 *  Extending the original [http://api.jquery.com/before/ jQuery().before()]
+		 *  to render [can.view] templates inserted before each element in the set of matched elements.
+		 *
+		 *		$(&#039;#test&#039;).before(&#039;path/to/template.ejs&#039;, { name : &#039;canjs&#039; });
+		 *
+		 *  @param {String|Object|Function} content A template filename or the id of a view script tag
+		 *  or a DOM element, array of elements, HTML string, or can object.
+		 *  @param {Object} [data] The data to render the view with.
+		 *  If rendering a view template this parameter always has to be present
+		 *  (use the empty object initializer {} for no data).
+		 *  @param {Function} [callback] A success callback to load the view asynchronously
+		 *
+		 *  @return {jQuery|can.Deferred} The jQuery object or a [can.Deferred] if a deferred has
+		 *  been passed in data.
+		 */
+		&quot;before&quot;,
+		/**
+		 *  @function jQuery.fn.text
+		 *  @parent can.view.modifiers
+		 *
+		 *  Extending the original [http://api.jquery.com/text/ jQuery().text()]
+		 *  to render [can.View] templates as the content of each matched element.
+		 *  Unlike [jQuery.fn.html] jQuery.fn.text also works with XML, escaping the provided
+		 *  string as necessary.
+		 *
+		 *		$(&#039;#test&#039;).text(&#039;path/to/template.ejs&#039;, { name : &#039;canjs&#039; });
+		 *
+		 *  @param {String|Object|Function} content A template filename or the id of a view script tag
+		 *  or a DOM element, array of elements, HTML string, or can object.
+		 *  @param {Object} [data] The data to render the view with.
+		 *  If rendering a view template this parameter always has to be present
+		 *  (use the empty object initializer {} for no data).
+		 *  @param {Function} [callback] A success callback to load the view asynchronously
+		 *
+		 *  @return {jQuery|can.Deferred} The jQuery object or a [can.Deferred] if a deferred has
+		 *  been passed in data.
+		 */
+		&quot;text&quot;,
+		/**
+		 *  @function jQuery.fn.html
+		 *  @parent can.view.modifiers
+		 *
+		 *  Extending the original [http://api.jquery.com/html/ jQuery().html()]
+		 *  to render [can.view] templates as the content of each matched element.
+		 *
+		 *		$(&#039;#test&#039;).html(&#039;path/to/template.ejs&#039;, { name : &#039;canjs&#039; });
+		 *
+		 *  @param {String|Object|Function} content A template filename or the id of a view script tag
+		 *  or a DOM element, array of elements, HTML string, or can object.
+		 *  @param {Object} [data] The data to render the view with.
+		 *  If rendering a view template this parameter always has to be present
+		 *  (use the empty object initializer {} for no data).
+		 *  @param {Function} [callback] A success callback to load the view asynchronously
+		 *
+		 *  @return {jQuery|can.Deferred} The jQuery object or a [can.Deferred] if a deferred has
+		 *  been passed in data.
+		 */
+		&quot;html&quot;,
+		/**
+		 *  @function jQuery.fn.replaceWith
+		 *  @parent can.view.modifiers
+		 *
+		 *  Extending the original [http://api.jquery.com/replaceWith/ jQuery().replaceWith()]
+		 *  to render [can.view] templates replacing each element in the set of matched elements.
+		 *
+		 *		$(&#039;#test&#039;).replaceWith(&#039;path/to/template.ejs&#039;, { name : &#039;canjs&#039; });
+		 *
+		 *  @param {String|Object|Function} content A template filename or the id of a view script tag
+		 *  or a DOM element, array of elements, HTML string, or can object.
+		 *  @param {Object} [data] The data to render the view with.
+		 *  If rendering a view template this parameter always has to be present
+		 *  (use the empty object initializer {} for no data).
+		 *  @param {Function} [callback] A success callback to load the view asynchronously
+		 *
+		 *  @return {jQuery|can.Deferred} The jQuery object or a [can.Deferred] if a deferred has
+		 *  been passed in data.
+		 */
+		&quot;replaceWith&quot;, &quot;val&quot;
+	], function (func) {
+		convert(func);
+	});
+	return can;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

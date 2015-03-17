@@ -1,0 +1,79 @@
+{
+  "name": "steal",
+  "description": "Gets JavaScript.",
+  "version": "0.7.0",
+  "author": {
+    "name": "Bitovi",
+    "email": "contact@bitovi.com",
+    "url": "http://bitovi.com/"
+  },
+  "scripts": {
+    "test": "grunt test --stack",
+    "test-windows": "grunt test-windows --stack"
+  },
+  "dependencies": {
+    "systemjs": "bitovi/systemjs#0.14.0-bitovi.2",
+    "less": "^2.4.0"
+  },
+  "devDependencies": {
+    "system-npm": "~0.1.1",
+    "system-json": "0.0.2",
+    "bower": "1.3.8",
+    "grunt": "~0.4.1",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-watch": "~0.3.0",
+    "grunt-release": "^0.7.0",
+    "grunt-simple-mocha": "^0.4.0",
+    "testee": "0.1.1",
+    "jquery": ">2.0",
+    "babel-core": "~4.1.1"
+  },
+  "system": {
+    "npmIgnore": [
+      "less"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bitovi/steal.git"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://opensource.org/licenses/mit-license.php"
+    }
+  ],
+  "main": "main",
+  "bugs": {
+    "url": "https://github.com/bitovi/steal/issues"
+  },
+  "homepage": "https://github.com/bitovi/steal",
+  "_id": "steal@0.7.0",
+  "_shasum": "ecbdda24e1cb6b79f5693a946066eed004fa7751",
+  "_from": "steal@0.7.0",
+  "_npmVersion": "1.4.28",
+  "_npmUser": {
+    "name": "matthewp",
+    "email": "matthew@matthewphillips.info"
+  },
+  "maintainers": [
+    {
+      "name": "justinbmeyer",
+      "email": "justin@bitovi.com"
+    },
+    {
+      "name": "matthewp",
+      "email": "matthew@matthewphillips.info"
+    }
+  ],
+  "dist": {
+    "shasum": "ecbdda24e1cb6b79f5693a946066eed004fa7751",
+    "tarball": "http://registry.npmjs.org/steal/-/steal-0.7.0.tgz"
+  },
+  "_resolved": "https://registry.npmjs.org/steal/-/steal-0.7.0.tgz",
+  "readme": "ERROR: No README data found!"
+}

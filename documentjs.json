@@ -5,7 +5,7 @@
 			"sites": {
 				"docs": {
 					"glob": {
-						"ignore": ["guides/*.md","{node_modules,bower_components}/**/*"]
+						"ignore": ["guides/*.md","{node_modules,bower_components}/**/*", "lib/**/*"]
 					},
 					"parent" : "canjs"
 				},
@@ -22,7 +22,7 @@
 			"sites": {
 				"docs": {
 					"glob": {
-						"ignore": "guides/*.md"
+						"ignore": ["guides/*.md", "lib/**/*"]
 					},
 					"parent" : "canjs"
 				},
@@ -34,7 +34,8 @@
 				}
 			}
 		},
-		"2.1" : "git://github.com/bitovi/canjs#master"
+		"2.1" : "git://github.com/bitovi/canjs#master",
+		"2.2-pre": { "source": "git://github.com/bitovi/canjs#2.2-pre", "npmInstall": ["bitovi/steal#npm","jquery@>1.9.0"] }
 	},
 	"defaultVersion" : "2.1",
 	"siteDefaults": {
@@ -57,7 +58,8 @@
 			],
 			"defaultDownloadVersion": "2.1.4"
 		},
-		"versionsSelectText" : "CanJS v<%= version %>"
+		"versionsSelectText" : "CanJS v<%= version %>",
+		"tags": "theme/tags"
 	},
 	"defaultDest" : "./can",
 	"versionDest" : "./<%=version%>/can",
@@ -65,7 +67,7 @@
 		"pages" : {
 			"dest" : ".",
 			"glob" : "_pages/*.mustache",
-			"parent" : "index"
+			"parent" : "home"
 		}
 	}
 }

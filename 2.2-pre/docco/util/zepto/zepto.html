@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>zepto.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>zepto.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-string">'can/util/attr'</span>, <span class="hljs-string">'can/event'</span>, <span class="hljs-string">'zepto'</span>, <span class="hljs-string">'can/util/object/isplain'</span>,
+	<span class="hljs-string">'can/util/fragment.js'</span>, <span class="hljs-string">'can/util/deferred.js'</span>, <span class="hljs-string">'can/util/array/each.js'</span>, <span class="hljs-string">'can/util/inserted'</span>,
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, attr, event)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2 id="data-js">data.js</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p><em>jQuery-like data methods.</em></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> $ = Zepto;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h2 id="data-js">data.js</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p><em>jQuery-like data methods.</em></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> data = {}, dataAttr = $.fn.data,
+			uuid = $.uuid = +<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(),
+			exp = $.expando = <span class="hljs-string">'Zepto'</span> + uuid;
+
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getData</span><span class="hljs-params">(node, name)</span> </span>{
+			<span class="hljs-keyword">var</span> id = node[exp],
+				store = id &amp;&amp; data[id];
+			<span class="hljs-keyword">return</span> name === <span class="hljs-literal">undefined</span> ? store || setData(node) :
+				(store &amp;&amp; store[name]) || dataAttr.call($(node), name);
+		}
+
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setData</span><span class="hljs-params">(node, name, value)</span> </span>{
+			<span class="hljs-keyword">var</span> id = node[exp] || (node[exp] = ++uuid),
+				store = data[id] || (data[id] = {});
+			<span class="hljs-keyword">if</span> (name !== <span class="hljs-literal">undefined</span>) {
+				store[name] = value;
+			}
+			<span class="hljs-keyword">return</span> store;
+		}
+
+		$.fn.data = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name, value)</span> </span>{
+			<span class="hljs-keyword">return</span> value === <span class="hljs-literal">undefined</span> ?
+				<span class="hljs-keyword">this</span>.length === <span class="hljs-number">0</span> ? <span class="hljs-literal">undefined</span> : getData(<span class="hljs-keyword">this</span>[<span class="hljs-number">0</span>], name) :
+				<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(idx)</span> </span>{
+					setData(<span class="hljs-keyword">this</span>, name, $.isFunction(value) ?
+						value.call(<span class="hljs-keyword">this</span>, idx, getData(<span class="hljs-keyword">this</span>, name)) : value);
+				});
+		};
+		$.cleanData = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elems)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>trigger all the events … then remove the data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, elem;
+				(elem = elems[i]) !== <span class="hljs-literal">undefined</span>; i++) {
+				can.trigger(elem, <span class="hljs-string">"removed"</span>, [], <span class="hljs-literal">false</span>);
+			}
+			<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>;
+				(elem = elems[i]) !== <span class="hljs-literal">undefined</span>; i++) {
+				<span class="hljs-keyword">var</span> id = elem[exp];
+				<span class="hljs-keyword">delete</span> data[id];
+			}
+
+		};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <h2 id="zepto-js">zepto.js</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p><em>Zepto node list.</em></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+		<span class="hljs-keyword">var</span> oldEach = can.each;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Extend what you can out of Zepto.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		$.extend(can, Zepto);
+		can.each = oldEach;
+		can.attr = attr;
+		can.event = event;
+		<span class="hljs-keyword">var</span> arrHas = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj, name)</span> </span>{
+			<span class="hljs-keyword">return</span> obj[<span class="hljs-number">0</span>] &amp;&amp; obj[<span class="hljs-number">0</span>][name] || obj[name];
+		};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Do what’s similar for jQuery.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		can.trigger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj, event, args, bubble)</span> </span>{
+			<span class="hljs-keyword">if</span> (obj.trigger) {
+				obj.trigger(event, args);
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrHas(obj, <span class="hljs-string">"dispatchEvent"</span>)) {
+				<span class="hljs-keyword">if</span> (bubble === <span class="hljs-literal">false</span>) {
+					$([obj])
+						.triggerHandler(event, args);
+				} <span class="hljs-keyword">else</span> {
+					$([obj])
+						.trigger(event, args);
+				}
+
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> event === <span class="hljs-string">"string"</span>) {
+					event = {
+						type: event
+					};
+				}
+				event.target = event.target || obj;
+				can.dispatch.call(obj, event, can.makeArray(args));
+			}
+
+		};
+
+		can.$ = Zepto;
+
+		can.bind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, cb)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>If we can bind to it…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.bind &amp;&amp; <span class="hljs-keyword">this</span>.bind !== can.bind) {
+				<span class="hljs-keyword">this</span>.bind(ev, cb);
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrHas(<span class="hljs-keyword">this</span>, <span class="hljs-string">"addEventListener"</span>)) {
+				$([<span class="hljs-keyword">this</span>])
+					.bind(ev, cb);
+			} <span class="hljs-keyword">else</span> {
+				can.addEvent.call(<span class="hljs-keyword">this</span>, ev, cb);
+			}
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		};
+		can.unbind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, cb)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>If we can bind to it…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.unbind &amp;&amp; <span class="hljs-keyword">this</span>.unbind !== can.unbind) {
+				<span class="hljs-keyword">this</span>.unbind(ev, cb);
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrHas(<span class="hljs-keyword">this</span>, <span class="hljs-string">"addEventListener"</span>)) {
+				$([<span class="hljs-keyword">this</span>])
+					.unbind(ev, cb);
+			} <span class="hljs-keyword">else</span> {
+				can.removeEvent.call(<span class="hljs-keyword">this</span>, ev, cb);
+			}
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Alias on/off to bind/unbind respectively</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		can.on = can.bind;
+		can.off = can.unbind;
+
+		can.delegate = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector, ev, cb)</span> </span>{
+			<span class="hljs-keyword">if</span> (!selector) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Zepto fails with no selector</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				can.bind.call(<span class="hljs-keyword">this</span>, ev, cb);
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.delegate) {
+				<span class="hljs-keyword">this</span>.delegate(selector, ev, cb);
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrHas(<span class="hljs-keyword">this</span>, <span class="hljs-string">"addEventListener"</span>)) {
+				$([<span class="hljs-keyword">this</span>])
+					.delegate(selector, ev, cb);
+			} <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Make it bind-able…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				can.addEvent.call(<span class="hljs-keyword">this</span>, ev, cb);
+			}
+		};
+		can.undelegate = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector, ev, cb)</span> </span>{
+			<span class="hljs-keyword">if</span> (!selector) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Zepto fails with no selector</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				can.unbind.call(<span class="hljs-keyword">this</span>, ev, cb);
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.undelegate) {
+				<span class="hljs-keyword">this</span>.undelegate(selector, ev, cb);
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrHas(<span class="hljs-keyword">this</span>, <span class="hljs-string">"addEventListener"</span>)) {
+				$([<span class="hljs-keyword">this</span>])
+					.undelegate(selector, ev, cb);
+			} <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Make it bind-able…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				can.removeEvent.call(<span class="hljs-keyword">this</span>, ev, cb);
+			}
+		};
+
+		$.each([<span class="hljs-string">"append"</span>, <span class="hljs-string">"filter"</span>, <span class="hljs-string">"addClass"</span>, <span class="hljs-string">"remove"</span>, <span class="hljs-string">"data"</span>, <span class="hljs-string">"has"</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(i, name)</span> </span>{
+			can[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped)</span> </span>{
+				<span class="hljs-keyword">return</span> wrapped[name].apply(wrapped, can.makeArray(<span class="hljs-built_in">arguments</span>)
+					.slice(<span class="hljs-number">1</span>));
+			};
+		});
+
+		can.makeArray = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arr)</span> </span>{
+			<span class="hljs-keyword">var</span> ret = [];
+
+			<span class="hljs-keyword">if</span>(arr == <span class="hljs-literal">null</span>) {
+				<span class="hljs-keyword">return</span> [];
+			}
+
+			<span class="hljs-keyword">if</span>(arr.length === <span class="hljs-literal">undefined</span> || <span class="hljs-keyword">typeof</span> arr === <span class="hljs-string">'string'</span>) {
+				<span class="hljs-keyword">return</span> [arr];
+			}
+
+			can.each(arr, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, i)</span> </span>{
+				ret[i] = a;
+			});
+
+			<span class="hljs-keyword">return</span> ret;
+		};
+
+		can.proxy = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(f, ctx)</span> </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				<span class="hljs-keyword">return</span> f.apply(ctx, <span class="hljs-built_in">arguments</span>);
+			};
+		};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Make ajax.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> XHR = $.ajaxSettings.xhr;
+		$.ajaxSettings.xhr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">var</span> xhr = XHR();
+			<span class="hljs-keyword">var</span> open = xhr.open;
+			xhr.open = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type, url, async)</span> </span>{
+				open.call(<span class="hljs-keyword">this</span>, type, url, ASYNC === <span class="hljs-literal">undefined</span> ? <span class="hljs-literal">true</span> : ASYNC);
+			};
+			<span class="hljs-keyword">return</span> xhr;
+		};
+		<span class="hljs-keyword">var</span> ASYNC;
+		<span class="hljs-keyword">var</span> AJAX = $.ajax;
+		<span class="hljs-keyword">var</span> updateDeferred = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xhr, d)</span> </span>{
+			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> xhr) {
+				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> d[prop] === <span class="hljs-string">'function'</span>) {
+					d[prop] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+						xhr[prop].apply(xhr, <span class="hljs-built_in">arguments</span>);
+					};
+				} <span class="hljs-keyword">else</span> {
+					d[prop] = prop[xhr];
+				}
+			}
+		};
+		can.ajax = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> </span>{
+
+			<span class="hljs-keyword">var</span> success = options.success,
+				error = options.error;
+			<span class="hljs-keyword">var</span> d = can.Deferred();
+
+			options.success = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
+
+				updateDeferred(xhr, d);
+				d.resolve.call(d, data);
+				<span class="hljs-keyword">if</span> (success) {
+					success.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+				}
+			};
+			options.error = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				updateDeferred(xhr, d);
+				d.reject.apply(d, <span class="hljs-built_in">arguments</span>);
+				<span class="hljs-keyword">if</span> (error) {
+					error.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+				}
+			};
+			<span class="hljs-keyword">if</span> (options.async === <span class="hljs-literal">false</span>) {
+				ASYNC = <span class="hljs-literal">false</span>;
+			}
+			<span class="hljs-keyword">var</span> xhr = AJAX(options);
+			ASYNC = <span class="hljs-literal">undefined</span>;
+			updateDeferred(xhr, d);
+			<span class="hljs-keyword">return</span> d;
+		};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Make destroyed and empty work.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> $_empty = $.fn.empty;
+		$.fn.empty = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				$.cleanData(<span class="hljs-keyword">this</span>.getElementsByTagName(<span class="hljs-string">'*'</span>));
+				<span class="hljs-keyword">this</span>.innerHTML = <span class="hljs-string">''</span>;
+			});
+			<span class="hljs-keyword">return</span> $_empty.call(<span class="hljs-keyword">this</span>);
+		};
+
+		<span class="hljs-keyword">var</span> $_remove = $.fn.remove;
+		$.fn.remove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.getElementsByTagName) {
+					$.cleanData([<span class="hljs-keyword">this</span>].concat(can.makeArray(<span class="hljs-keyword">this</span>.getElementsByTagName(<span class="hljs-string">'*'</span>))));
+				}
+			});
+			<span class="hljs-keyword">return</span> $_remove.call(<span class="hljs-keyword">this</span>);
+		};
+
+		can.trim = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> </span>{
+			<span class="hljs-keyword">return</span> str.trim();
+		};
+		can.isEmptyObject = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(object)</span> </span>{
+			<span class="hljs-keyword">var</span> name;
+			<span class="hljs-keyword">for</span> (name <span class="hljs-keyword">in</span> object) {}
+			<span class="hljs-keyword">return</span> name === <span class="hljs-literal">undefined</span>;
+		};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Make extend handle <code>true</code> for deep.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		can.extend = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(first)</span> </span>{
+			<span class="hljs-keyword">if</span> (first === <span class="hljs-literal">true</span>) {
+				<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>);
+				args.shift();
+				<span class="hljs-keyword">return</span> $.extend.apply($, args);
+			}
+			<span class="hljs-keyword">return</span> $.extend.apply($, <span class="hljs-built_in">arguments</span>);
+		};
+
+		can.get = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wrapped, index)</span> </span>{
+			<span class="hljs-keyword">return</span> wrapped[index];
+		};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>setup inserted calls</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		can.each([<span class="hljs-string">'after'</span>, <span class="hljs-string">'prepend'</span>, <span class="hljs-string">'before'</span>, <span class="hljs-string">'append'</span>, <span class="hljs-string">'html'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
+			<span class="hljs-keyword">var</span> original = Zepto.fn[name];
+			Zepto.fn[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				<span class="hljs-keyword">var</span> elems,
+					args = can.makeArray(<span class="hljs-built_in">arguments</span>);
+
+				<span class="hljs-keyword">if</span> (args[<span class="hljs-number">0</span>] != <span class="hljs-literal">null</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>documentFragment</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> args[<span class="hljs-number">0</span>] === <span class="hljs-string">"string"</span>) {
+						args[<span class="hljs-number">0</span>] = $.zepto.fragment(args[<span class="hljs-number">0</span>]);
+					}
+					<span class="hljs-keyword">if</span> (args[<span class="hljs-number">0</span>].nodeType === <span class="hljs-number">11</span>) {
+						elems = can.makeArray(args[<span class="hljs-number">0</span>].childNodes);
+					} <span class="hljs-keyword">else</span> {
+						elems = [args[<span class="hljs-number">0</span>]];
+					}
+				}
+
+				<span class="hljs-keyword">var</span> ret = original.apply(<span class="hljs-keyword">this</span>, args);
+
+				can.inserted(elems);
+
+				<span class="hljs-keyword">return</span> ret;
+			};
+		});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Setup attributes events</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>turn off mutation events for zepto</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">delete</span> attr.MutationObserver;
+
+		<span class="hljs-keyword">var</span> oldAttr = $.fn.attr;
+		$.fn.attr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrName, value)</span> </span>{
+			<span class="hljs-keyword">var</span> isString = <span class="hljs-keyword">typeof</span> attrName === <span class="hljs-string">"string"</span>,
+				oldValue,
+				newValue;
+			<span class="hljs-keyword">if</span> (value !== <span class="hljs-literal">undefined</span> &amp;&amp; isString) {
+				oldValue = oldAttr.call(<span class="hljs-keyword">this</span>, attrName);
+			}
+			<span class="hljs-keyword">var</span> res = oldAttr.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+			<span class="hljs-keyword">if</span> (value !== <span class="hljs-literal">undefined</span> &amp;&amp; isString) {
+				newValue = oldAttr.call(<span class="hljs-keyword">this</span>, attrName);
+			}
+			<span class="hljs-keyword">if</span> (newValue !== oldValue) {
+				can.attr.trigger(<span class="hljs-keyword">this</span>[<span class="hljs-number">0</span>], attrName, oldValue);
+			}
+			<span class="hljs-keyword">return</span> res;
+		};
+		<span class="hljs-keyword">var</span> oldRemove = $.fn.removeAttr;
+		$.fn.removeAttr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrName)</span> </span>{
+			<span class="hljs-keyword">var</span> oldValue = oldAttr.call(<span class="hljs-keyword">this</span>, attrName),
+				res = oldRemove.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+
+			<span class="hljs-keyword">if</span> (oldValue != <span class="hljs-literal">null</span>) {
+				can.attr.trigger(<span class="hljs-keyword">this</span>[<span class="hljs-number">0</span>], attrName, oldValue);
+			}
+			<span class="hljs-keyword">return</span> res;
+		};
+
+		<span class="hljs-keyword">var</span> oldBind = $.fn.bind,
+			oldUnbind = $.fn.unbind;
+
+		$.fn.bind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event)</span> </span>{
+			<span class="hljs-keyword">if</span> (event === <span class="hljs-string">"attributes"</span>) {
+				<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+					<span class="hljs-keyword">var</span> el = can.$(<span class="hljs-keyword">this</span>);
+					can.data(el, <span class="hljs-string">"canHasAttributesBindings"</span>, (can.data(el, <span class="hljs-string">"canHasAttributesBindings"</span>) || <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
+				});
+			}
+			<span class="hljs-keyword">return</span> oldBind.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+		};
+
+		$.fn.unbind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event)</span> </span>{
+			<span class="hljs-keyword">if</span> (event === <span class="hljs-string">"attributes"</span>) {
+				<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+					<span class="hljs-keyword">var</span> el = can.$(<span class="hljs-keyword">this</span>),
+						cur = can.data(el, <span class="hljs-string">"canHasAttributesBindings"</span>) || <span class="hljs-number">0</span>;
+					<span class="hljs-keyword">if</span> (cur &lt;= <span class="hljs-number">0</span>) {
+						can.data(el, <span class="hljs-string">"canHasAttributesBindings"</span>, <span class="hljs-number">0</span>);
+					} <span class="hljs-keyword">else</span> {
+						can.data(el, <span class="hljs-string">"canHasAttributesBindings"</span>, cur - <span class="hljs-number">1</span>);
+					}
+				});
+			}
+			<span class="hljs-keyword">return</span> oldUnbind.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+		};
+
+		<span class="hljs-keyword">return</span> can;
+	});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

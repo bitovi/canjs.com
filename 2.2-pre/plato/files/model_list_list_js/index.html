@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>model/list/list.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">69.38</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">471</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">61.72</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">2.48</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/util&#039;, &#039;can/model&#039;, &#039;can/map/elements&#039;, function (can) {
+
+	//!steal-remove-start
+	can.dev.warn(&quot;can/model/list is a deprecated plugin and will be removed in a future release.&quot;);
+	//!steal-remove-end
+
+	var getArgs = function (args) {
+		if (args[0] &amp;&amp; can.isArray(args[0])) {
+			return args[0];
+		} else if (args[0] instanceof can.Model.List) {
+			return can.makeArray(args[0]);
+		} else {
+			return can.makeArray(args);
+		}
+	},
+		//used for namespacing
+		getIds = function (item) {
+			return item.__get(item.constructor.id);
+		}, ajaxMaker = can.Model._ajax,
+		/**
+		 * @constructor jQuery.Model.List
+		 * @parent jQuery.Model
+		 * @download http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/model/list/list.js
+		 * @test jquery/model/list/qunit.html
+		 * @plugin jquery/model/list
+		 *
+		 * Model.Lists manage a lists (or arrays) of
+		 * model instances.  Similar to [jQuery.Model $.Model],
+		 * they are used to:
+		 *
+		 *  - create events when a list changes
+		 *  - make Ajax requests on multiple instances
+		 *  - add helper function for multiple instances (ACLs)
+		 *
+		 * The [todo] app demonstrates using a can.Control to
+		 * implement an interface for a $.Model.List.
+		 *
+		 * ## Creating A List Class
+		 *
+		 * Create a `$.Model.List [jQuery.Class class] for a $.Model
+		 * like:
+		 *
+		 *     $.Model(&#039;Todo&#039;)
+		 *     $.Model.List(&#039;Todo.List&#039;,{
+		 *       // static properties
+		 *     },{
+		 *       // prototype properties
+		 *     })
+		 *
+		 * This creates a `Todo.List` class for the `Todo`
+		 * class. This creates some nifty magic that we will see soon.
+		 *
+		 * `static` properties are typically used to describe how
+		 * a list makes requests.  `prototype` properties are
+		 * helper functions that operate on an instance of
+		 * a list.
+		 *
+		 * ## Make a Helper Function
+		 *
+		 * Often, a user wants to select multiple items on a
+		 * page and perform some action on them (for example,
+		 * deleting them). The app
+		 * needs to indicate if this is possible (for example,
+		 * by enabling a &quot;DELETE&quot; button).
+		 *
+		 *
+		 * If we get todo data back like:
+		 *
+		 *     // GET /todos.json -&gt;
+		 *     [{
+		 *       &quot;id&quot; : 1,
+		 *       &quot;name&quot; : &quot;dishes&quot;,
+		 *       &quot;acl&quot; : &quot;rwd&quot;
+		 *     },{
+		 *       &quot;id&quot; : 2,
+		 *       &quot;name&quot; : &quot;laundry&quot;,
+		 *       &quot;acl&quot; : &quot;r&quot;
+		 *     }, ... ]
+		 *
+		 * We can add a helper function to let us know if we can
+		 * delete all the instances:
+		 *
+		 *     $.Model.List(&#039;Todo.List&#039;,{
+		 *
+		 *     },{
+		 *        canDelete : function(){
+		 *          return this.grep(function(todo){
+		 *            return todo.acl.indexOf(&quot;d&quot;) != 0
+		 *          }).length == this.length
+		 *        }
+		 *     })
+		 *
+		 * `canDelete` gets a list of all todos that have
+		 * __d__ in their acl.  If all todos have __d__,
+		 * then `canDelete` returns true.
+		 *
+		 * ## Get a List Instance
+		 *
+		 * You can create a model list instance by using
+		 * `new Todo.List( instances )` like:
+		 *
+		 *     var todos = new Todo.List([
+		 *       new Todo({id: 1, name: ...}),
+		 *       new Todo({id: 2, name: ...}),
+		 *     ]);
+		 *
+		 * And call `canDelete` on it like:
+		 *
+		 *     todos.canDelete() //-&gt; boolean
+		 *
+		 * BUT! $.Model, [jQuery.fn.models $.fn.models], and $.Model.List are designed
+		 * to work with each other.
+		 *
+		 * When you use `Todo.findAll`, it will callback with an instance
+		 * of `Todo.List`:
+		 *
+		 *     Todo.findAll({}, function(todos){
+		 *        todos.canDelete() //-&gt; boolean
+		 *     })
+		 *
+		 * If you are adding the model instance to elements and
+		 * retrieving them back with `$().models()`, it will
+		 * return a instance of `Todo.List`.  The following
+		 * returns if the checked `.todo` elements are
+		 * deletable:
+		 *
+		 *     // get the checked inputs
+		 *     $(&#039;.todo input:checked&#039;)
+		 *        // get the todo elements
+		 *        .closest(&#039;.todo&#039;)
+		 *        // get the model list
+		 *        .models()
+		 *        // check canDelete
+		 *        .canDelete()
+		 *
+		 * ## Make Ajax Requests with Lists
+		 *
+		 * After checking if we can delete the todos,
+		 * we should delete them from the server. Like
+		 * `$.Model`, we can add a
+		 * static [jQuery.Model.List.static.destroy destroy] url:
+		 *
+		 *     $.Model.List(&#039;Todo.List&#039;,{
+		 *        destroy : &#039;POST /todos/delete&#039;
+		 *     },{
+		 *        canDelete : function(){
+		 *          return this.grep(function(todo){
+		 *            return todo.acl.indexOf(&quot;d&quot;) != 0
+		 *          }).length == this.length
+		 *        }
+		 *     })
+		 *
+		 *
+		 * and call [jQuery.Model.List.prototype.destroy destroy] on
+		 * our list.
+		 *
+		 *     // get the checked inputs
+		 *     var todos = $(&#039;.todo input:checked&#039;)
+		 *        // get the todo elements
+		 *        .closest(&#039;.todo&#039;)
+		 *        // get the model list
+		 *        .models()
+		 *
+		 *     if( todos.canDelete() ) {
+		 *        todos.destroy()
+		 *     }
+		 *
+		 * By default, destroy will create an AJAX request to
+		 * delete these instances on the server, when
+		 * the AJAX request is successful, the instances are removed
+		 * from the list and events are dispatched.
+		 *
+		 * ## Listening to events on Lists
+		 *
+		 * Use [jQuery.Model.List.prototype.bind bind]`(eventName, handler(event, data))`
+		 * to listen to __add__, __remove__, and __updated__ events on a
+		 * list.
+		 *
+		 * When a model instance is destroyed, it is removed from
+		 * all lists.  In the todo example, we can bind to remove to know
+		 * when a todo has been destroyed.  The following
+		 * removes all the todo elements from the page when they are removed
+		 * from the list:
+		 *
+		 *     todos.bind(&#039;remove&#039;, function(ev, removedTodos){
+		 *       removedTodos.elements().remove();
+		 *     })
+		 *
+		 * ## Demo
+		 *
+		 * The following demo illustrates the previous features with
+		 * a contacts list.  Check
+		 * multiple Contacts and click &quot;DESTROY ALL&quot;
+		 *
+		 * @demo jquery/model/list/list.html
+		 *
+		 * ## Other List Features
+		 *
+		 *  - Store and retrieve multiple instances
+		 *  - Fast HTML inserts
+		 *
+		 * ### Store and retrieve multiple instances
+		 *
+		 * Once you have a collection of models, you often want to retrieve and update
+		 * that list with new instances.  Storing and retrieving is a powerful feature
+		 * you can leverage to manage and maintain a list of models.
+		 *
+		 * To store a new model instance in a list...
+		 *
+		 *     listInstance.push(new Animal({ type: dog, id: 123 }))
+		 *
+		 * To later retrieve that instance in your list...
+		 *
+		 *     var animal = listInstance.get(123);
+		 *
+		 *
+		 * ### Faster Inserts
+		 *
+		 * The &#039;easy&#039; way to add a model to an element is simply inserting
+		 * the model into the view like:
+		 *
+		 * @codestart xml
+		 * &amp;lt;div &amp;lt;%= task %&gt;&gt; A task &amp;lt;/div&gt;
+		 * @codeend
+		 *
+		 * And then you can use [jQuery.fn.models $(&#039;.task&#039;).models()].
+		 *
+		 * This pattern is fast enough for 90% of all widgets.  But it
+		 * does require an extra query.  Lists help you avoid this.
+		 *
+		 * The [jQuery.Model.List.prototype.get get] method takes elements and
+		 * uses their className to return matched instances in the list.
+		 *
+		 * To use get, your elements need to have the instance&#039;s
+		 * identity in their className.  So to setup a div to reprsent
+		 * a task, you would have the following in a view:
+		 *
+		 * @codestart xml
+		 * &amp;lt;div class=&#039;task &amp;lt;%= task.identity() %&gt;&#039;&gt; A task &amp;lt;/div&gt;
+		 * @codeend
+		 *
+		 * Then, with your model list, you could use get to get a list of
+		 * tasks:
+		 *
+		 * @codestart
+		 * taskList.get($(&#039;.task&#039;))
+		 * @codeend
+		 *
+		 * The following demonstrates how to use this technique:
+		 *
+		 * @demo jquery/model/list/list-insert.html
+		 *
+		 */
+		ajaxMethods = {
+			update: {
+				data: function (ids, attrs) {
+					return {
+						ids: ids,
+						attrs: attrs
+					};
+				},
+				type: &#039;put&#039;
+			},
+			destroy: {
+				type: &#039;delete&#039;
+			}
+		};
+	var oldSetup = can.Model.List.setup;
+	can.Model.List.setup = function () {
+		oldSetup.apply(this, arguments);
+		var self = this;
+		can.each(ajaxMethods, function (method, name) {
+			if (!can.isFunction(self[name])) {
+				self[name] = ajaxMaker(method, self[name]);
+			}
+		});
+	};
+	can.extend(can.Model.List.prototype, {
+		slice: function () {
+			return new this.constructor(Array.prototype.slice.apply(this, arguments));
+		},
+		match: function (property, value) {
+			return this.grep(function (inst) {
+				return inst[property] === value;
+			});
+		},
+		grep: function (callback, args) {
+			return new this.constructor($.grep(this, callback, args));
+		},
+		get: function () {
+			if (!this.length) {
+				return new this.constructor([]);
+			}
+			var list = [],
+				constructor = this[0].constructor,
+				underscored = constructor._fullName,
+				test = new RegExp(underscored + &#039;_([^ ]+)&#039;),
+				matches, val, args = getArgs(arguments);
+			for (var i = 0; i &lt; args.length; i++) {
+				if (args[i].nodeName &amp;&amp; (matches = args[i].className.match(test))) {
+					// If this is a dom element
+					val = this.grep(function (item) {
+						return getIds(item) === matches[1];
+					})[0];
+				} else {
+					// Else an id was provided as a number or string.
+					val = this.grep(function (item) {
+						return getIds(item) === args[i];
+					})[0];
+				}
+				if (val) {
+					list.push(val);
+				}
+			}
+			return new this.constructor(list);
+		},
+		remove: function (args) {
+			if (!this.length) {
+				return [];
+			}
+			var list = [],
+				constructor = this[0].constructor,
+				underscored = constructor._fullName,
+				test = new RegExp(underscored + &#039;_([^ ]+)&#039;),
+				matches;
+			args = getArgs(arguments)
+				.slice(0);
+			//for performance, we will go through each and splice it
+			var i = 0;
+			while (i &lt; this.length) {
+				//check
+				var inst = this[i],
+					found = false;
+				for (var a = 0; a &lt; args.length; a++) {
+					var id = args[a].nodeName &amp;&amp; (matches = args[a].className.match(test)) &amp;&amp; matches[1] || (typeof args[a] === &#039;string&#039; || typeof args[a] === &#039;number&#039; ? args[a] : getIds(args[a]));
+					if (getIds(inst) === id) {
+						list.push.apply(list, this.splice(i, 1));
+						args.splice(a, 1);
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					i++;
+				}
+			}
+			var ret = new this.constructor(list);
+			if (ret.length) {
+				$([this])
+					.trigger(&#039;remove&#039;, [ret]);
+			}
+			return ret;
+		},
+		elements: function (context) {
+			// TODO : this can probably be done with 1 query.
+			return $(this.map(function (item) {
+					return &#039;.&#039; + item.identity();
+				})
+				.join(&#039;,&#039;), context);
+		},
+		model: function () {
+			return this.constructor.namespace;
+		},
+		findAll: function (params, success, error) {
+			var self = this;
+			this.model()
+				.findAll(params, function (items) {
+					self.push.apply(self, can.makeArray(items));
+					if (success) {
+						success(self);
+					}
+				}, error);
+		},
+		destroy: function (success, error) {
+			var ids = this.map(getIds),
+				items = can.makeArray(this),
+				construct = this.constructor,
+				list = this;
+			if (ids.length) {
+				this.constructor.destroy(ids)
+					.then(function () {
+						can.each(items, function (item) {
+							// remove this item from this list
+							list.remove(item.id);
+							item.destroyed();
+						});
+						if (success) {
+							success(items);
+						}
+					}, error);
+			} else {
+				if (success) {
+					success(new construct(items));
+				}
+			}
+			return this;
+		},
+		update: function (attrs, success, error) {
+			var ids = this.map(getIds),
+				items = this.slice(0, this.length);
+			if (ids.length) {
+				this.constructor.update(ids, attrs)
+					.then(function (newAttrs) {
+						// final attributes to update with
+						var attributes = $.extend(attrs, newAttrs || {});
+						can.each(items, function (item) {
+							item.updated(attributes);
+						});
+						if (success) {
+							success(items);
+						}
+					}, error);
+			} else {
+				if (success) {
+					success(this);
+				}
+			}
+			return this;
+		},
+		_updateAttrs: function (items, remove) {
+			var len = items.length,
+				newVal, curVal, itemsNotInList = [];
+			var id = this.constructor.id;
+
+			function getId(obj) {
+				return obj.attr ? obj.attr(id) : obj[id];
+			}
+			for (var i = 0; i &lt; len; i++) {
+				newVal = items[i];
+				curVal = null;
+				if (can.Map.helpers.canMakeObserve(newVal) &amp;&amp; getId(newVal)) {
+					curVal = this.get(getId(newVal))[0];
+					if (curVal) {
+						curVal.attr(newVal, remove);
+					} else {
+						itemsNotInList.push(newVal);
+					}
+				}
+			}
+			if (itemsNotInList.length) {
+				//splice everything onto end of list so as not to trigger change events for each push
+				if (this.constructor.namespace) {
+					itemsNotInList = can.makeArray(this.constructor.namespace.models(itemsNotInList));
+				}
+				this.splice.apply(this, [
+					this.length,
+					0
+				].concat(itemsNotInList));
+			}
+			if (remove) {
+				var existingIds = this.map(function (element) {
+					return getId(element);
+				}),
+					itemIds = can.map(items, function (element) {
+						return getId(element);
+					});
+				can.each(existingIds, $.proxy(function (id) {
+					if (!~can.inArray(id, itemIds)) {
+						this.remove(id);
+					}
+				}, this));
+			}
+		}
+	});
+	can.each([&#039;map&#039;], function (name) {
+		can.Model.List.prototype[name] = function (callback, args) {
+			return $[name](this, callback, args);
+		};
+	});
+	return can.Model.List;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

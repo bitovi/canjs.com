@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>inverted.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="comments.html">
+                comments.js
+              </a>
+            
+              
+              <a class="source" href="delimiters.html">
+                delimiters.js
+              </a>
+            
+              
+              <a class="source" href="interpolation.html">
+                interpolation.js
+              </a>
+            
+              
+              <a class="source" href="inverted.html">
+                inverted.js
+              </a>
+            
+              
+              <a class="source" href="partials.html">
+                partials.js
+              </a>
+            
+              
+              <a class="source" href="sections.html">
+                sections.js
+              </a>
+            
+              
+              <a class="source" href="spec.html">
+                spec.js
+              </a>
+            
+              
+              <a class="source" href="specs.html">
+                specs.js
+              </a>
+            
+              
+              <a class="source" href="~lambdas.html">
+                ~lambdas.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>inverted.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'./spec'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{ <span class="hljs-built_in">window</span>.MUSTACHE_SPECS.push({name:<span class="hljs-string">'inverted'</span>, data: {<span class="hljs-string">"overview"</span>:<span class="hljs-string">"Inverted Section tags and End Section tags are used in combination to wrap a\nsection of the template.\n\nThese tags' content MUST be a non-whitespace character sequence NOT\ncontaining the current closing delimiter; each Inverted Section tag MUST be\nfollowed by an End Section tag with the same content within the same\nsection.\n\nThis tag's content names the data to replace the tag.  Name resolution is as\nfollows:\n  1) Split the name on periods; the first part is the name to resolve, any\n  remaining parts should be retained.\n  2) Walk the context stack from top to bottom, finding the first context\n  that is a) a hash containing the name as a key OR b) an object responding\n  to a method with the given name.\n  3) If the context is a hash, the data is the value associated with the\n  name.\n  4) If the context is an object and the method with the given name has an\n  arity of 1, the method SHOULD be called with a String containing the\n  unprocessed contents of the sections; the data is the value returned.\n  5) Otherwise, the data is the value returned by calling the method with\n  the given name.\n  6) If any name parts were retained in step 1, each should be resolved\n  against a context stack containing only the result from the former\n  resolution.  If any part fails resolution, the result should be considered\n  falsey, and should interpolate as the empty string.\nIf the data is not of a list type, it is coerced into a list as follows: if\nthe data is truthy (e.g. `!!data == true`), use a single-element list\ncontaining the data, otherwise use an empty list.\n\nThis section MUST NOT be rendered unless the data list is empty.\n\nInverted Section and End Section tags SHOULD be treated as standalone when\nappropriate.\n"</span>,<span class="hljs-string">"tests"</span>:[{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Falsey"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Falsey sections should have their contents rendered."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"boolean"</span>:<span class="hljs-literal">false</span>},<span class="hljs-string">"template"</span>:<span class="hljs-string">"\"{{^boolean}}This should be rendered.{{/boolean}}\""</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"\"This should be rendered.\""</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Truthy"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Truthy sections should have their contents omitted."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"boolean"</span>:<span class="hljs-literal">true</span>},<span class="hljs-string">"template"</span>:<span class="hljs-string">"\"{{^boolean}}This should not be rendered.{{/boolean}}\""</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"\"\""</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Context"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Objects and hashes should behave like truthy values."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"context"</span>:{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Joe"</span>}},<span class="hljs-string">"template"</span>:<span class="hljs-string">"\"{{^context}}Hi {{name}}.{{/context}}\""</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"\"\""</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"List"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Lists should behave like truthy values."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"list"</span>:[{<span class="hljs-string">"n"</span>:<span class="hljs-number">1</span>},{<span class="hljs-string">"n"</span>:<span class="hljs-number">2</span>},{<span class="hljs-string">"n"</span>:<span class="hljs-number">3</span>}]},<span class="hljs-string">"template"</span>:<span class="hljs-string">"\"{{^list}}{{n}}{{/list}}\""</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"\"\""</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Empty List"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Empty lists should behave like falsey values."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"list"</span>:[]},<span class="hljs-string">"template"</span>:<span class="hljs-string">"\"{{^list}}Yay lists!{{/list}}\""</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"\"Yay lists!\""</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Doubled"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Multiple inverted sections per template should be permitted."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"bool"</span>:<span class="hljs-literal">false</span>,<span class="hljs-string">"two"</span>:<span class="hljs-string">"second"</span>},<span class="hljs-string">"template"</span>:<span class="hljs-string">"{{^bool}}\n* first\n{{/bool}}\n* {{two}}\n{{^bool}}\n* third\n{{/bool}}\n"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"* first\n* second\n* third\n"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Nested (Falsey)"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Nested falsey sections should have their contents rendered."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"bool"</span>:<span class="hljs-literal">false</span>},<span class="hljs-string">"template"</span>:<span class="hljs-string">"| A {{^bool}}B {{^bool}}C{{/bool}} D{{/bool}} E |"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"| A B C D E |"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Nested (Truthy)"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Nested truthy sections should be omitted."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"bool"</span>:<span class="hljs-literal">true</span>},<span class="hljs-string">"template"</span>:<span class="hljs-string">"| A {{^bool}}B {{^bool}}C{{/bool}} D{{/bool}} E |"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"| A  E |"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Context Misses"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Failed context lookups should be considered falsey."</span>,<span class="hljs-string">"data"</span>:{},<span class="hljs-string">"template"</span>:<span class="hljs-string">"[{{^missing}}Cannot find key 'missing'!{{/missing}}]"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"[Cannot find key 'missing'!]"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Dotted Names - Truthy"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Dotted names should be valid for Inverted Section tags."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"a"</span>:{<span class="hljs-string">"b"</span>:{<span class="hljs-string">"c"</span>:<span class="hljs-literal">true</span>}}},<span class="hljs-string">"template"</span>:<span class="hljs-string">"\"{{^a.b.c}}Not Here{{/a.b.c}}\" == \"\""</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"\"\" == \"\""</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Dotted Names - Falsey"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Dotted names should be valid for Inverted Section tags."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"a"</span>:{<span class="hljs-string">"b"</span>:{<span class="hljs-string">"c"</span>:<span class="hljs-literal">false</span>}}},<span class="hljs-string">"template"</span>:<span class="hljs-string">"\"{{^a.b.c}}Not Here{{/a.b.c}}\" == \"Not Here\""</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"\"Not Here\" == \"Not Here\""</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Dotted Names - Broken Chains"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Dotted names that cannot be resolved should be considered falsey."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"a"</span>:{}},<span class="hljs-string">"template"</span>:<span class="hljs-string">"\"{{^a.b.c}}Not Here{{/a.b.c}}\" == \"Not Here\""</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"\"Not Here\" == \"Not Here\""</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Surrounding Whitespace"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Inverted sections should not alter surrounding whitespace."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"boolean"</span>:<span class="hljs-literal">false</span>},<span class="hljs-string">"template"</span>:<span class="hljs-string">" | {{^boolean}}\t|\t{{/boolean}} | \n"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">" | \t|\t | \n"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Internal Whitespace"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Inverted should not alter internal whitespace."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"boolean"</span>:<span class="hljs-literal">false</span>},<span class="hljs-string">"template"</span>:<span class="hljs-string">" | {{^boolean}} {{! Important Whitespace }}\n {{/boolean}} | \n"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">" |  \n  | \n"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Indented Inline Sections"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Single-line sections should not alter surrounding whitespace."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"boolean"</span>:<span class="hljs-literal">false</span>},<span class="hljs-string">"template"</span>:<span class="hljs-string">" {{^boolean}}NO{{/boolean}}\n {{^boolean}}WAY{{/boolean}}\n"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">" NO\n WAY\n"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Standalone Lines"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Standalone lines should be removed from the template."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"boolean"</span>:<span class="hljs-literal">false</span>},<span class="hljs-string">"template"</span>:<span class="hljs-string">"| This Is\n{{^boolean}}\n|\n{{/boolean}}\n| A Line\n"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"| This Is\n|\n| A Line\n"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Standalone Indented Lines"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Standalone indented lines should be removed from the template."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"boolean"</span>:<span class="hljs-literal">false</span>},<span class="hljs-string">"template"</span>:<span class="hljs-string">"| This Is\n  {{^boolean}}\n|\n  {{/boolean}}\n| A Line\n"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"| This Is\n|\n| A Line\n"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Standalone Line Endings"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"\"\\r\\n\" should be considered a newline for standalone tags."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"boolean"</span>:<span class="hljs-literal">false</span>},<span class="hljs-string">"template"</span>:<span class="hljs-string">"|\r\n{{^boolean}}\r\n{{/boolean}}\r\n|"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"|\r\n|"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Standalone Without Previous Line"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Standalone tags should not require a newline to precede them."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"boolean"</span>:<span class="hljs-literal">false</span>},<span class="hljs-string">"template"</span>:<span class="hljs-string">"  {{^boolean}}\n^{{/boolean}}\n/"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"^\n/"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Standalone Without Newline"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Standalone tags should not require a newline to follow them."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"boolean"</span>:<span class="hljs-literal">false</span>},<span class="hljs-string">"template"</span>:<span class="hljs-string">"^{{^boolean}}\n/\n  {{/boolean}}"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"^\n/\n"</span>},{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Padding"</span>,<span class="hljs-string">"desc"</span>:<span class="hljs-string">"Superfluous in-tag whitespace should be ignored."</span>,<span class="hljs-string">"data"</span>:{<span class="hljs-string">"boolean"</span>:<span class="hljs-literal">false</span>},<span class="hljs-string">"template"</span>:<span class="hljs-string">"|{{^ boolean }}={{/ boolean }}|"</span>,<span class="hljs-string">"expected"</span>:<span class="hljs-string">"|=|"</span>}],<span class="hljs-string">"__ATTN__"</span>:<span class="hljs-string">"Do not edit this file; changes belong in the appropriate YAML file."</span>}});});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

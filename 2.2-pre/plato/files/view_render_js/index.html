@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>view/render.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">68.70</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">257</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">37.77</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">1.33</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/view&#039;, &#039;./elements&#039;, &#039;can/view/live&#039;, &#039;can/util/string&#039;, function (can, elements, live) {
+
+	/**
+	 * Helper(s)
+	 */
+	var pendingHookups = [],
+		tagChildren = function (tagName) {
+			var newTag = elements.tagMap[tagName] || &quot;span&quot;;
+			if (newTag === &quot;span&quot;) {
+				//innerHTML in IE doesn&#039;t honor leading whitespace after empty elements
+				return &quot;@@!!@@&quot;;
+			}
+			return &quot;&lt;&quot; + newTag + &quot;&gt;&quot; + tagChildren(newTag) + &quot;&lt;/&quot; + newTag + &quot;&gt;&quot;;
+		},
+		contentText = function (input, tag) {
+
+			// If it&#039;s a string, return.
+			if (typeof input === &#039;string&#039;) {
+				return input;
+			}
+			// If has no value, return an empty string.
+			if (!input &amp;&amp; input !== 0) {
+				return &#039;&#039;;
+			}
+
+			// If it&#039;s an object, and it has a hookup method.
+			var hook = (input.hookup &amp;&amp;
+
+				// Make a function call the hookup method.
+				function (el, id) {
+					input.hookup.call(input, el, id);
+				}) ||
+
+			// Or if it&#039;s a `function`, just use the input.
+			(typeof input === &#039;function&#039; &amp;&amp; input);
+
+			// Finally, if there is a `function` to hookup on some dom,
+			// add it to pending hookups.
+			if (hook) {
+				if (tag) {
+					return &quot;&lt;&quot; + tag + &quot; &quot; + can.view.hook(hook) + &quot;&gt;&lt;/&quot; + tag + &quot;&gt;&quot;;
+				} else {
+					pendingHookups.push(hook);
+				}
+
+				return &#039;&#039;;
+			}
+
+			// Finally, if all else is `false`, `toString()` it.
+			return &quot;&quot; + input;
+		},
+		// Returns escaped/sanatized content for anything other than a live-binding
+		contentEscape = function (txt, tag) {
+			return (typeof txt === &#039;string&#039; || typeof txt === &#039;number&#039;) ?
+				can.esc(txt) :
+				contentText(txt, tag);
+		},
+		// A flag to indicate if .txt was called within a live section within an element like the {{name}}
+		// within `&lt;div {{#person}}{{name}}{{/person}}/&gt;`.
+		withinTemplatedSectionWithinAnElement = false,
+		emptyHandler = function () {};
+
+	var lastHookups;
+
+	can.extend(can.view, {
+		live: live,
+		// called in text to make a temporary 
+		// can.view.lists function that can be called with
+		// the list to iterate over and the template
+		// used to produce the content within the list
+		setupLists: function () {
+
+			var old = can.view.lists,
+				data;
+
+			can.view.lists = function (list, renderer) {
+				data = {
+					list: list,
+					renderer: renderer
+				};
+				return Math.random();
+			};
+			// sets back to the old data
+			return function () {
+				can.view.lists = old;
+				return data;
+			};
+		},
+		getHooks: function () {
+			var hooks = pendingHookups.slice(0);
+			lastHookups = hooks;
+			pendingHookups = [];
+			return hooks;
+		},
+		onlytxt: function (self, func) {
+			return contentEscape(func.call(self));
+		},
+		/**
+		 * @function can.view.txt
+		 * @hide
+		 *
+		 * A helper function used to insert the
+		 * value of the contents of a magic tag into
+		 * a template&#039;s output. It detects if an observable value is
+		 * read and will setup live binding.
+		 *
+		 * @signature `can.view.txt(escape, tagName, status, self, func)`
+		 *
+		 * @param {Number} 1 if the content returned should be escaped, 0 if otherwise.
+		 * @param {String} tagName the name of the tag the magic tag is most immediately
+		 * within. Ex: `&quot;li&quot;`.
+		 * @param {String|Number} status A flag indicates which part of a tag the
+		 * magic tag is within. Status can be:
+		 *
+		 *  - _STRING_ - The name of the attribute the magic tag is within. Ex: `&quot;class&quot;`
+		 *  - `1` - The magic tag is within a tag like `&lt;div &lt;%= %&gt;&gt;`
+		 *  - `0` - The magic tag is outside (or between) tags like `&lt;div&gt;&lt;%= %&gt;&lt;/div&gt;`
+		 *
+		 * @param {*} self The `this` of the current context template. `func` is called with
+		 * self as this.
+		 *
+		 * @param {function} func The &quot;wrapping&quot; function. For
+		 * example:  `&lt;%= task.attr(&#039;name&#039;) %&gt;` becomes
+		 *   `(function(){return task.attr(&#039;name&#039;)})
+		 *
+		 */
+		txt: function (escape, tagName, status, self, func) {
+			// the temporary tag needed for any live setup
+			var tag = (elements.tagMap[tagName] || &quot;span&quot;),
+				// should live-binding be setup
+				setupLiveBinding = false,
+				// the compute&#039;s value
+				value,
+				listData,
+				compute,
+				unbind = emptyHandler,
+				attributeName;
+
+			// Are we currently within a live section within an element like the {{name}}
+			// within `&lt;div {{#person}}{{name}}{{/person}}/&gt;`.
+			if (withinTemplatedSectionWithinAnElement) {
+				value = func.call(self);
+			} else {
+
+				// If this magic tag is within an attribute or an html element,
+				// set the flag to true so we avoid trying to live bind
+				// anything that func might be setup.
+				// TODO: the scanner should be able to set this up.
+				if (typeof status === &quot;string&quot; || status === 1) {
+					withinTemplatedSectionWithinAnElement = true;
+				}
+
+				// Sets up a listener so we know any can.view.lists called 
+				// when func is called
+				var listTeardown = can.view.setupLists();
+				// 
+				unbind = function () {
+					compute.unbind(&quot;change&quot;, emptyHandler);
+				};
+				// Create a compute that calls func and looks for dependencies.
+				// By passing `false`, this compute can not be a dependency of other 
+				// computes.  This is because live-bits are nested, but 
+				// handle their own updating. For example:
+				//     {{#if items.length}}{{#items}}{{.}}{{/items}}{{/if}}
+				// We do not want `{{#if items.length}}` changing the DOM if
+				// `{{#items}}` text changes.
+				compute = can.compute(func, self, false);
+
+				// Bind to get and temporarily cache the value of the compute.
+				compute.bind(&quot;change&quot;, emptyHandler);
+
+				// Call the &quot;wrapping&quot; function and get the binding information
+				listData = listTeardown();
+
+				// Get the value of the compute
+				value = compute();
+
+				// Let people know we are no longer within an element.
+				withinTemplatedSectionWithinAnElement = false;
+
+				// If we should setup live-binding.
+				setupLiveBinding = compute.hasDependencies;
+			}
+
+			if (listData) {
+				unbind();
+				return &quot;&lt;&quot; + tag + can.view.hook(function (el, parentNode) {
+					live.list(el, listData.list, listData.renderer, self, parentNode);
+				}) + &quot;&gt;&lt;/&quot; + tag + &quot;&gt;&quot;;
+			}
+
+			// If we had no observes just return the value returned by func.
+			if (!setupLiveBinding || typeof value === &quot;function&quot;) {
+				unbind();
+				return ((withinTemplatedSectionWithinAnElement || escape === 2 || !escape) ?
+					contentText :
+					contentEscape)(value, status === 0 &amp;&amp; tag);
+			}
+
+			// the property (instead of innerHTML elements) to adjust. For
+			// example options should use textContent
+			var contentProp = elements.tagToContentPropMap[tagName];
+
+			// The magic tag is outside or between tags.
+			if (status === 0 &amp;&amp; !contentProp) {
+				// Return an element tag with a hookup in place of the content
+				return &quot;&lt;&quot; + tag + can.view.hook(
+					// if value is an object, it&#039;s likely something returned by .safeString
+					escape &amp;&amp; typeof value !== &quot;object&quot; ?
+					// If we are escaping, replace the parentNode with 
+					// a text node who&#039;s value is `func`&#039;s return value.
+					function (el, parentNode) {
+						live.text(el, compute, parentNode);
+						unbind();
+					} :
+					// If we are not escaping, replace the parentNode with a
+					// documentFragment created as with `func`&#039;s return value.
+					function (el, parentNode) {
+						live.html(el, compute, parentNode);
+						unbind();
+						//children have to be properly nested HTML for buildFragment to work properly
+					}) + &quot;&gt;&quot; + tagChildren(tag) + &quot;&lt;/&quot; + tag + &quot;&gt;&quot;;
+				// In a tag, but not in an attribute
+			} else if (status === 1) {
+				// remember the old attr name
+				pendingHookups.push(function (el) {
+					live.attributes(el, compute, compute());
+					unbind();
+				});
+
+				return compute();
+			} else if (escape === 2) { // In a special attribute like src or style
+
+				attributeName = status;
+				pendingHookups.push(function (el) {
+					live.specialAttribute(el, attributeName, compute);
+					unbind();
+				});
+				return compute();
+			} else { // In an attribute...
+				attributeName = status === 0 ? contentProp : status;
+				// if the magic tag is inside the element, like `&lt;option&gt;&lt;% TAG %&gt;&lt;/option&gt;`,
+				// we add this hookup to the last element (ex: `option`&#039;s) hookups.
+				// Otherwise, the magic tag is in an attribute, just add to the current element&#039;s
+				// hookups.
+				(status === 0 ? lastHookups : pendingHookups)
+					.push(function (el) {
+						live.attribute(el, attributeName, compute);
+						unbind();
+					});
+				return live.attributePlaceholder;
+			}
+		}
+	});
+
+	return can;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

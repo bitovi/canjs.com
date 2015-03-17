@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS - Migrating to 2.0 </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	
+	<link rel="stylesheet" type="text/css" href="./static/bundles/static.css">
+	
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs ">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="../../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
+		          <li><a href="http://jquerypp.com">jQuery++</a></li>
+		          <li><a href="http://stealjs.com">StealJS</a></li>
+		          <li><a href="http://funcunit.com">FuncUnit</a></li>
+		          <li><a href="http://documentjs.com">DocumentJS</a></li>
+		        </ul>
+			</div>
+			
+			<ul class="nav">
+		        <li >
+	              <a href="../../index.html">Home</a>
+                </li>
+		       <li class='active'><a href='index.html'>guides</a></li>
+		       <li><a href='../docs/index.html'>api</a></li>
+		        <li class=" community-menu">
+		          <a href="../../community.html#!forums">Community</a>
+		          <ul class="dropdown-menu">
+		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
+		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
+		            <li><a href="http://bithub.com/canjs/app/">Apps</a></li>
+		            <li><a href="http://bithub.com/canjs/plugin/">Plugins</a></li>
+		            <li><a href="http://bithub.com/canjs/article/">Articles</a></li>
+		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		          </ul>
+		        </li>
+		        <li >
+	              <a href="../../blog/index.html">Blog</a>
+                </li>
+		        <li >
+	              <a href="../../download.html">Download</a>
+                </li>
+	      	</ul>
+			
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+			
+		</nav>
+	</header>
+
+	
+<div class="container api">
+
+	
+	<nav class="sidebar">
+		
+		<h2 id="version">
+	<select id='versions'></select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="Tutorial.html" data-search="Getting Started">
+				Getting Started
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Using.html" data-search="Setting up CanJS">
+				Setting up CanJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Recipes.html" data-search="Recipes">
+				Recipes
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="contributing.html" data-search="How to Contribute">
+				How to Contribute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="changelog.html" data-search="Changelog">
+				Changelog
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="license.html" data-search="License">
+				License
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container active">
+	   		<a href="migrating.html" data-search="Migrating to 2.0">
+				Migrating to 2.0
+			</a>
+			
+				
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="roadmap.html" data-search="Roadmap">
+				Roadmap
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	
+	
+	
+	<article class="content docs">
+	
+	
+		
+		<section class="title">
+			<div class="heading">
+<h1>Migrating to 2.0</h1>
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	
+		<span class="module">migrating</span>
+	
+	
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+    
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/minor/guides/migrating_to_2.0.md">source</a></li>
+	
+	
+	
+</ul>
+<br />
+		</section>
+		
+		
+		
+		<section class="contents">
+		</section>
+		
+		
+		
+
+		
+
+		
+			
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<p>CanJS 2.0 introduces many new features like:</p>
+<ul>
+<li><a href="../docs/can.view.bindings.can-value.html">2 way bindings</a></li>
+<li>custom elements with <a href="../docs/can.Component.html">can.Component</a></li>
+<li><a href="../docs/can.Component.html">mustache event bindings</a></li>
+</ul>
+<p>and many new API changes.  But it still remains very backwards compatible with
+CanJS 1.1.  This document covers the breaking changes in 2.0 and the deprecated 1.1 features
+that are currently supported, but will be removed in 2.1.</p>
+<h2>Breaking Changes</h2>
+<p>These changes require code modifications to use 2.0.</p>
+<h3>can.route.ready()</h3>
+<p>It is now necessary to always call <a href="../docs/can.route.html">can.route.ready</a> once
+all routes have been set up. If you previously didn't
+use <code>can.route.ready()</code>, just add it on document ready like:</p>
+<pre><code>$(function(){
+  can.route.ready()
+})
+</code></pre>
+<h3>can.Observe.List.Observe is now can.Observe.List.Map</h3>
+<p>Although it was an undocumented feature, you could
+provide a static <code>Observe</code> property on lists to
+specify what type of Observe instance should be created
+when items are added to the list.  For example:</p>
+<pre><code>MyTasks = can.Observe.List({
+  Observe: Task
+},{})
+
+var tasks = new MyTasks();
+tasks.push({});
+tasks.attr(0) instanceof Task //-&gt; true
+</code></pre>
+<p>You should change the static Observe property to
+<code>Map</code> like:</p>
+<pre><code>MyTasks = can.Observe.List({
+  Map: Task
+},{})
+</code></pre>
+<p>In fact, this code should look like:</p>
+<pre><code>MyTasks = can.List.extend({
+  Map: Task
+})
+</code></pre>
+<h3>can.EJS is no longer in core</h3>
+<p>can.EJS is no longer packaged in the core download by default. It has
+been replaced by can.mustache. You
+can use the custom download builder to replace can.mustache with
+can.EJS.</p>
+<h3>can.Observe names and locations</h3>
+<p>Plugins like <strong><em>can.observe.attrbibutes.js</em></strong> are now like
+<strong><em>can.map.attributes.js</em></strong>.  If you are using steal or requirejs to
+load these, you will have to change paths.  In our projects we
+replaced <code>/observe/</code> with <code>/map/</code>.</p>
+<p>Note that <code>can/observe.js</code> (requirejs) and <code>can/observe/observe.js</code>
+still exist.  Loading these files loads <code>can.Map</code>, <code>can.List</code> and
+<code>can.compute</code> and aliases them to the old <code>can.Observe</code> and
+<code>can.Observe.List</code>.</p>
+<h2>Deprecated Changes</h2>
+<p>These are changes that you should strongly consider making to be able to upgrade
+to 2.1 and beyond:</p>
+<h3>can.Observe and can.Observe.List becomes can.Map and can.List</h3>
+<p>In order to comply with the ECMAScript 6 terminology <code>can.Observe</code> has
+been renamed to <code>can.Map</code> and <code>can.Observe.List</code> is now
+called <code>can.List</code>. Backwards compatible mappings
+to <code>can.Observe</code> and <code>can.Observe.List</code> are in place
+but are deprecated.</p>
+<h3>Use .extend for extending Constructs</h3>
+<p>Extending <code>can.Construct</code>s without calling <code>.extend</code> is
+deprecated.  For example, instead of:</p>
+<pre><code>Todo = can.Construct(static, proto)
+MyWidget = can.Control(static, proto)
+Task = can.Model(static, proto)
+</code></pre>
+<p>do:</p>
+<pre><code>Todo = can.Construct.extend(static, proto)
+MyWidget = can.Control.extend(static, proto)
+Task = can.Model.extend(static, proto)
+</code></pre>
+<h3>can.Observe.startBatch and can.Observe.stopBatch becomes can.batch.start and can.batch.stop</h3>
+<p><code>can.Observe.startBatch</code>
+and <code>can.Observe.stopBatch</code> are now available as <a href="../docs/can.batch.start.html">can.batch.start</a>
+and <a href="../docs/can.batch.stop.html">can.batch.stop</a>. Backwards compatible mappings are in place.</p>
+
+		</section>
+		
+		
+
+		
+	
+	
+	</article>
+	
+	
+
+</div>
+
+
+
+
+
+	
+	
+	<footer>
+		<nav class="container">
+			<a class="brand" href="index.html"></a>
+			<ul class='nav'>
+				<li >
+	              <a href="../../index.html">Home</a>
+	            </li>
+		        <li class='active'><a href='index.html'>guides</a></li>
+		        <li><a href='../docs/index.html'>api</a></li>
+		        <li class="">
+		          <a href="../../community.html#!forums">Community</a>
+		        </li>
+		        <li >
+	              <a href="../../blog/index.html">Blog</a>
+	            </li>
+		        <li >
+	              <a href="../../download.html">Download</a>
+	            </li>
+            </ul>
+		</nav>
+	</footer>
+	
+
+    
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-2302003-11']);
+	  _gaq.push(['_setDomainName', 'canjs.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	
+	</script>
+	
+	<script type="text/javascript">
+		var docObject = {"type":"page","name":"migrating","src":"guides/migrating_to_2.0.md","description":"","title":"Migrating to 2.0","parent":"guides","order":7,"comment":" ","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/justin/dev/canjs.com/2.2-pre/can"},"dest":"/Users/justin/dev/canjs.com/2.2-pre/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../../documentjs.json","project":{"version":"2.2-pre","name":"canjs","source":"git://github.com/bitovi/canjs#minor"}};
+	</script>
+	
+	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
+		<script type='text/javascript' 
+				data-main="static"
+				data-config="./static/config.js"
+				src="./static/steal.production.js"
+		    		bundles-path="bundles"></script>
+	
+	
+</body>
+
+</html>

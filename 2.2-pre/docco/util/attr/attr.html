@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>can/util/attr.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="can-util-attr-js">can/util/attr.js</h1>
+<p>Central location for attribute changing to occur, used to trigger an
+<code>attributes</code> event on elements. This enables the user to do (jQuery example): <code>$(el).bind(&quot;attributes&quot;, function(ev) { ... })</code> where <code>ev</code> contains <code>attributeName</code> and <code>oldValue</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+
+steal(<span class="hljs-string">"can/util/can.js"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Acts as a polyfill for setImmediate which only works in IE 10+. Needed to make
+the triggering of <code>attributes</code> event async.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> setImmediate = can.global.setImmediate || <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cb)</span> </span>{
+			<span class="hljs-keyword">return</span> setTimeout(cb, <span class="hljs-number">0</span>);
+		},
+		attr = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>This property lets us know if the browser supports mutation observers.
+If they are supported then that will be setup in can/util/jquery and those native events will be used to inform observers of attribute changes.
+Otherwise this module handles triggering an <code>attributes</code> event on the element.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			MutationObserver: can.global.MutationObserver || can.global.WebKitMutationObserver || can.global.MozMutationObserver,
+
+			<span class="hljs-comment">/**
+			 * @property {Object.&lt;String,(String|Boolean|function)&gt;} can.view.attr.map
+			 * @parent can.view.elements
+			 * @hide
+			 *
+			 *
+			 * A mapping of
+			 * special attributes to their JS property. For example:
+			 *
+			 *     "class" : "className"
+			 *
+			 * means get or set `element.className`. And:
+			 *
+			 *      "checked" : true
+			 *
+			 * means set `element.checked = true`.
+			 *
+			 *
+			 * If the attribute name is not found, it's assumed to use
+			 * `element.getAttribute` and `element.setAttribute`.
+			 */</span>
+			map: {
+				<span class="hljs-string">"class"</span>: <span class="hljs-string">"className"</span>,
+				<span class="hljs-string">"value"</span>: <span class="hljs-string">"value"</span>,
+				<span class="hljs-string">"innerText"</span>: <span class="hljs-string">"innerText"</span>,
+				<span class="hljs-string">"textContent"</span>: <span class="hljs-string">"textContent"</span>,
+				<span class="hljs-string">"checked"</span>: <span class="hljs-literal">true</span>,
+				<span class="hljs-string">"disabled"</span>: <span class="hljs-literal">true</span>,
+				<span class="hljs-string">"readonly"</span>: <span class="hljs-literal">true</span>,
+				<span class="hljs-string">"required"</span>: <span class="hljs-literal">true</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>For the <code>src</code> attribute we are using a setter function to prevent values such as an empty string or null from being set.
+An <code>img</code> tag attempts to fetch the <code>src</code> when it is set, so we need to prevent that from happening by removing the attribute instead.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				src: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, val)</span> </span>{
+					<span class="hljs-keyword">if</span> (val == <span class="hljs-literal">null</span> || val === <span class="hljs-string">""</span>) {
+						el.removeAttribute(<span class="hljs-string">"src"</span>);
+						<span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+					} <span class="hljs-keyword">else</span> {
+						el.setAttribute(<span class="hljs-string">"src"</span>, val);
+						<span class="hljs-keyword">return</span> val;
+					}
+				},
+				style: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, val)</span> </span>{
+					<span class="hljs-keyword">return</span> el.style.cssText = val || <span class="hljs-string">""</span>;
+				}
+			},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>These are elements whos default value we should set.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			defaultValue: [<span class="hljs-string">"input"</span>, <span class="hljs-string">"textarea"</span>],</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h2 id="attr-set">attr.set</h2>
+<p>Set the value an attribute on an element.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName, val)</span> </span>{
+				<span class="hljs-keyword">var</span> oldValue;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>In order to later trigger an event we need to compare the new value to the old value, so here we go ahead and retrieve the old value for browsers that don’t have native MutationObservers.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (!attr.MutationObserver) {
+					oldValue = attr.get(el, attrName);
+				}
+
+				<span class="hljs-keyword">var</span> tagName = el.nodeName.toString()
+					.toLowerCase(),
+					prop = attr.map[attrName],
+					newValue;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Using the property of <code>attr.map</code>, go through and check if the property is a function, and if so call it. Then check if the property is <code>true</code>, and if so set the value to <code>true</code>, also making sure to set <code>defaultChecked</code> to <code>true</code> for elements of <code>attr.defaultValue</code>. We always set the value to true because for these boolean properties, setting them to false would be the same as removing the attribute.</p>
+<p>For all other attributes use <code>setAttribute</code> to set the new value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> prop === <span class="hljs-string">"function"</span>) {
+					newValue = prop(el, val);
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (prop === <span class="hljs-literal">true</span>) {
+					newValue = el[attrName] = <span class="hljs-literal">true</span>;
+
+					<span class="hljs-keyword">if</span> (attrName === <span class="hljs-string">"checked"</span> &amp;&amp; el.type === <span class="hljs-string">"radio"</span>) {
+						<span class="hljs-keyword">if</span> (can.inArray(tagName, attr.defaultValue) &gt;= <span class="hljs-number">0</span>) {
+							el.defaultChecked = <span class="hljs-literal">true</span>;
+						}
+					}
+
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (prop) {
+					newValue = el[prop] = val;
+					<span class="hljs-keyword">if</span> (prop === <span class="hljs-string">"value"</span> &amp;&amp; can.inArray(tagName, attr.defaultValue) &gt;= <span class="hljs-number">0</span>) {
+						el.defaultValue = val;
+					}
+				} <span class="hljs-keyword">else</span> {
+					el.setAttribute(attrName, val);
+					newValue = val;
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Now that the value has been set, for browsers without MutationObservers, check to see that value has changed and if so trigger the “attributes” event on the element.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (!attr.MutationObserver &amp;&amp; newValue !== oldValue) {
+					attr.trigger(el, attrName, oldValue);
+				}
+			},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <h2 id="attr-trigger">attr.trigger</h2>
+<p>Used to trigger an “attributes” event on an element. Checks to make sure that someone is listening for the event and then queues a function to be called asynchronously using `setImmediate.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			trigger: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName, oldValue)</span> </span>{
+				<span class="hljs-keyword">if</span> (can.data(can.$(el), <span class="hljs-string">"canHasAttributesBindings"</span>)) {
+					<span class="hljs-keyword">return</span> setImmediate(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+						can.trigger(el, {
+							type: <span class="hljs-string">"attributes"</span>,
+							attributeName: attrName,
+							target: el,
+							oldValue: oldValue,
+							bubbles: <span class="hljs-literal">false</span>
+						}, []);
+					});
+				}
+			},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <h2 id="attr-get">attr.get</h2>
+<p>Gets the value of an attribute. First checks to see if the property is a string on <code>attr.map</code> and if so returns the value from the element’s property. Otherwise uses <code>getAttribute</code> to retrieve the value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName)</span> </span>{
+				<span class="hljs-keyword">var</span> prop = attr.map[attrName];
+				<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> prop === <span class="hljs-string">"string"</span> &amp;&amp; el[prop]) {
+					<span class="hljs-keyword">return</span> el[prop];
+				}
+				
+				<span class="hljs-keyword">return</span> el.getAttribute(attrName);
+			},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <h2 id="attr-remove">attr.remove</h2>
+<p>Removes an attribute from an element. Works by using the <code>attr.map</code> to see if the attribute is a special type of property. If the property is a function then the fuction is called with <code>undefined</code> as the value. If the property is <code>true</code> then the attribute is set to false. If the property is a string then the attribute is set to an empty string. Otherwise <code>removeAttribute</code> is used.</p>
+<p>If the attribute previously had a value and the browser doesn’t support MutationObservers we then trigger an “attributes” event.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			remove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName)</span> </span>{
+				<span class="hljs-keyword">var</span> oldValue;
+				<span class="hljs-keyword">if</span> (!attr.MutationObserver) {
+					oldValue = attr.get(el, attrName);
+				}
+
+				<span class="hljs-keyword">var</span> setter = attr.map[attrName];
+				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> setter === <span class="hljs-string">"function"</span>) {
+					setter(el, <span class="hljs-literal">undefined</span>);
+				}
+				<span class="hljs-keyword">if</span> (setter === <span class="hljs-literal">true</span>) {
+					el[attrName] = <span class="hljs-literal">false</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> setter === <span class="hljs-string">"string"</span>) {
+					el[setter] = <span class="hljs-string">""</span>;
+				} <span class="hljs-keyword">else</span> {
+					el.removeAttribute(attrName);
+				}
+				<span class="hljs-keyword">if</span> (!attr.MutationObserver &amp;&amp; oldValue != <span class="hljs-literal">null</span>) {
+					attr.trigger(el, attrName, oldValue);
+				}
+
+			},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <h2 id="attr-has">attr.has</h2>
+<p>Checks if an element contains an attribute.
+For browsers that support <code>hasAttribute</code>, creates a function that calls hasAttribute, otherwise creates a function that uses <code>getAttribute</code> to check that the attribute is not null.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			has: (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				<span class="hljs-keyword">var</span> el = can.global.document &amp;&amp; <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);
+				<span class="hljs-keyword">if</span> (el &amp;&amp; el.hasAttribute) {
+					<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, name)</span> </span>{
+						<span class="hljs-keyword">return</span> el.hasAttribute(name);
+					};
+				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, name)</span> </span>{
+						<span class="hljs-keyword">return</span> el.getAttribute(name) !== <span class="hljs-literal">null</span>;
+					};
+				}
+			})()
+		};
+
+	<span class="hljs-keyword">return</span> attr;
+
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
