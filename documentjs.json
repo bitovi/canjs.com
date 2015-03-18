@@ -35,9 +35,9 @@
 			}
 		},
 		"2.1" : "git://github.com/bitovi/canjs#master",
-		"2.2-pre": { "source": "git://github.com/bitovi/canjs#2.2-pre", "npmInstall": ["bitovi/steal#npm","jquery@>1.9.0"] }
+		"2.2": { "source": "git://github.com/bitovi/canjs#master", "npmInstall": ["bitovi/steal#npm","jquery@>1.9.0"] }
 	},
-	"defaultVersion" : "2.1",
+	"defaultVersion" : "2.2",
 	"siteDefaults": {
 		"ignoreTemplateRender": true,
 		"parent" : "canjs",
