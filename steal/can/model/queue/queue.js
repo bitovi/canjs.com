@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.0
+ * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Mar 2015 19:55:12 GMT
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
  */
 
-/*can@2.2.0#model/queue/queue*/
+/*can@2.2.1#model/queue/queue*/
 steal('can/util', 'can/model', 'can/map/backup', function (can) {
 	var cleanAttrs = function (changedAttrs, attrs) {
 		var newAttrs = can.extend(true, {}, attrs),

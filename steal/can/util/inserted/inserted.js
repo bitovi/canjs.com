@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.0
+ * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Mar 2015 19:55:12 GMT
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
  */
 
-/*can@2.2.0#util/inserted/inserted*/
+/*can@2.2.1#util/inserted/inserted*/
 // # can/util/inserted
 // Used to alert interested parties of when an element is inserted into the DOM.
 // Given a list of elements, check if the first is in the DOM, and if so triggers the `inserted` event on all elements and their descendants.

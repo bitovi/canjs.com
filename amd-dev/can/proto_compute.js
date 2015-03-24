@@ -1,17 +1,18 @@
 /*!
- * CanJS - 2.2.0
+ * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Mar 2015 19:55:12 GMT
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
  */
 
-/*can@2.2.0#compute/proto_compute*/
+/*can@2.2.1#compute/proto_compute*/
 define([
     'can/util/library',
     'can/util/bind',
+    'can/read',
     'can/util/batch'
-], function (can, bind) {
+], function (can, bind, read) {
     var stack = [];
     can.__read = function (func, self) {
         stack.push({});
@@ -50,6 +51,10 @@ define([
         var info = can.__read(func, context), newObserveSet = info.observed;
         bindNewSet(oldObserved, newObserveSet, onchanged);
         unbindOldSet(oldObserved, onchanged);
+        can.bind.call(info, 'ready', function () {
+            info.ready = true;
+        });
+        can.batch.trigger(info, 'ready');
         return info;
     };
     var bindNewSet = function (oldObserved, newObserveSet, onchanged) {
@@ -100,7 +105,7 @@ define([
                 var self = this;
                 if (!onchanged) {
                     onchanged = function (ev) {
-                        if (compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
+                        if (readInfo.ready && compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
                             var oldValue = readInfo.value;
                             readInfo = getValueAndBind(func, context, readInfo.observed, onchanged);
                             self.updater(readInfo.value, oldValue, ev.batchNum);
@@ -126,7 +131,7 @@ define([
             on: function (updater) {
                 if (!onchanged) {
                     onchanged = function (ev) {
-                        if (compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
+                        if (readInfo.ready && compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
                             var reads = can.__clearReading();
                             var newValue = func.call(context);
                             can.__setReading(reads);
@@ -149,10 +154,8 @@ define([
             }
         };
     };
-    var isObserve = function (obj) {
-            return obj instanceof can.Map || obj && obj.__get;
-        }, k = function () {
-        };
+    var k = function () {
+    };
     var updater = function (newVal, oldVal, batchNum) {
             this.setCached(newVal);
             updateOnChange(this, newVal, oldVal, batchNum);
@@ -284,7 +287,7 @@ define([
             } else {
                 var self = this;
                 this.onchanged = function (ev) {
-                    if (self.bound && (ev.batchNum === undefined || ev.batchNum !== self.batchNum)) {
+                    if (self.bound && self.readInfo.ready && (ev.batchNum === undefined || ev.batchNum !== self.batchNum)) {
                         var oldValue = self.readInfo.value;
                         self.readInfo = getValueAndBind(getterSetter, context, self.readInfo.observed, self.onchanged);
                         self.updater(self.readInfo.value, oldValue, ev.batchNum);
@@ -343,6 +346,9 @@ define([
             this.lastSetValue = lastSetValue;
             this._setUpdates = true;
             this._set = function (newVal) {
+                if (newVal === lastSetValue.get()) {
+                    return this.value;
+                }
                 lastSetValue.set(newVal);
             };
             this._get = asyncGet(fn, settings.context, lastSetValue);
@@ -388,81 +394,7 @@ define([
             context: context
         });
     };
-    can.Compute.read = function (parent, reads, options) {
-        options = options || {};
-        var cur = parent, type, prev, foundObs;
-        for (var i = 0, readLength = reads.length; i < readLength; i++) {
-            prev = cur;
-            if (prev && prev.isComputed) {
-                if (options.foundObservable) {
-                    options.foundObservable(prev, i);
-                }
-                prev = cur = prev instanceof can.Compute ? prev.get() : prev();
-            }
-            if (isObserve(prev)) {
-                if (!foundObs && options.foundObservable) {
-                    options.foundObservable(prev, i);
-                }
-                foundObs = 1;
-                if (typeof prev[reads[i]] === 'function' && prev.constructor.prototype[reads[i]] === prev[reads[i]]) {
-                    if (options.returnObserveMethods) {
-                        cur = cur[reads[i]];
-                    } else if (reads[i] === 'constructor' && prev instanceof can.Construct || prev[reads[i]].prototype instanceof can.Construct) {
-                        cur = prev[reads[i]];
-                    } else {
-                        cur = prev[reads[i]].apply(prev, options.args || []);
-                    }
-                } else {
-                    cur = cur.attr(reads[i]);
-                }
-            } else {
-                if (cur == null) {
-                    cur = undefined;
-                } else {
-                    cur = prev[reads[i]];
-                }
-            }
-            type = typeof cur;
-            if (cur && cur.isComputed && (!options.isArgument && i < readLength - 1)) {
-                if (!foundObs && options.foundObservable) {
-                    options.foundObservable(prev, i + 1);
-                }
-                cur = cur();
-            } else if (i < reads.length - 1 && type === 'function' && options.executeAnonymousFunctions && !(can.Construct && cur.prototype instanceof can.Construct)) {
-                cur = cur();
-            }
-            if (i < reads.length - 1 && (cur === null || type !== 'function' && type !== 'object')) {
-                if (options.earlyExit) {
-                    options.earlyExit(prev, i, cur);
-                }
-                return {
-                    value: undefined,
-                    parent: prev
-                };
-            }
-        }
-        if (typeof cur === 'function' && !(can.Construct && cur.prototype instanceof can.Construct) && !(can.route && cur === can.route)) {
-            if (options.isArgument) {
-                if (!cur.isComputed && options.proxyMethods !== false) {
-                    cur = can.proxy(cur, prev);
-                }
-            } else {
-                if (cur.isComputed && !foundObs && options.foundObservable) {
-                    options.foundObservable(cur, i);
-                }
-                cur = cur.call(prev);
-            }
-        }
-        if (cur === undefined) {
-            if (options.earlyExit) {
-                options.earlyExit(prev, i - 1);
-            }
-        }
-        return {
-            value: cur,
-            parent: prev
-        };
-    };
+    can.Compute.read = read;
     can.Compute.truthy = function (compute) {
         return new can.Compute(function () {
             var res = compute.get();
@@ -473,7 +405,7 @@ define([
         });
     };
     can.Compute.set = function (parent, key, value) {
-        if (isObserve(parent)) {
+        if (can.isMapLike(parent)) {
             return parent.attr(key, value);
         }
         if (parent[key] && parent[key].isComputed) {

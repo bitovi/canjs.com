@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.0
+ * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Mar 2015 19:55:12 GMT
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
  */
 
-/*can@2.2.0#util/can*/
+/*can@2.2.1#util/can*/
 /* global global: false */
 steal(function () {
 	/* global GLOBALCAN */
@@ -21,9 +21,12 @@ steal(function () {
 	// An empty function useful for where you need a dummy callback.
 	can.k = function(){};
 
-	can.isDeferred = function (obj) {
+	can.isDeferred = can.isPromise = function (obj) {
 		// Returns `true` if something looks like a deferred.
 		return obj && typeof obj.then === "function" && typeof obj.pipe === "function";
+	};
+	can.isMapLike = function(obj){
+		return can.Map && (obj instanceof can.Map || obj && obj.__get);
 	};
 
 	var cid = 0;
@@ -34,7 +37,7 @@ steal(function () {
 		}
 		return object._cid;
 	};
-	can.VERSION = '2.2.0';
+	can.VERSION = '2.2.1';
 
 	can.simpleExtend = function (d, s) {
 		for (var prop in s) {

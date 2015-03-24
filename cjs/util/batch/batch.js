@@ -1,14 +1,14 @@
 /*!
- * CanJS - 2.2.0
+ * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Mar 2015 19:55:12 GMT
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
  */
 
-/*can@2.2.0#util/batch/batch*/
+/*can@2.2.1#util/batch/batch*/
 var can = require('../can.js');
-var batchNum = 1, transactions = 0, batchEvents = [], stopCallbacks = [];
+var batchNum = 1, transactions = 0, batchEvents = [], stopCallbacks = [], currentBatchEvents = null;
 can.batch = {
     start: function (batchStopHandler) {
         transactions++;
@@ -23,7 +23,11 @@ can.batch = {
             transactions--;
         }
         if (transactions === 0) {
-            var items = batchEvents.slice(0), callbacks = stopCallbacks.slice(0), i, len;
+            if (currentBatchEvents !== null) {
+                return;
+            }
+            currentBatchEvents = batchEvents.slice(0);
+            var callbacks = stopCallbacks.slice(0), i, len;
             batchEvents = [];
             stopCallbacks = [];
             can.batch.batchNum = batchNum;
@@ -31,9 +35,10 @@ can.batch = {
             if (callStart) {
                 can.batch.start();
             }
-            for (i = 0, len = items.length; i < len; i++) {
-                can.dispatch.apply(items[i][0], items[i][1]);
+            for (i = 0; i < currentBatchEvents.length; i++) {
+                can.dispatch.apply(currentBatchEvents[i][0], currentBatchEvents[i][1]);
             }
+            currentBatchEvents = null;
             for (i = 0, len = callbacks.length; i < callbacks.length; i++) {
                 callbacks[i]();
             }
@@ -42,10 +47,18 @@ can.batch = {
     },
     trigger: function (item, event, args) {
         if (!item._init) {
-            if (transactions === 0) {
+            event = typeof event === 'string' ? { type: event } : event;
+            if (currentBatchEvents) {
+                currentBatchEvents.push([
+                    item,
+                    [
+                        event,
+                        args
+                    ]
+                ]);
+            } else if (transactions === 0) {
                 return can.dispatch.call(item, event, args);
             } else {
-                event = typeof event === 'string' ? { type: event } : event;
                 event.batchNum = batchNum;
                 batchEvents.push([
                     item,

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.0
+ * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Mar 2015 19:55:12 GMT
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
  */
 
-/*[global-shim]*/
+/*[global-shim-start]*/
 (function (exports, global){
 	var origDefine = global.define;
 
@@ -22,7 +22,8 @@
 		}
 		return cur;
 	};
-	var modules = global.define && global.define.modules || {};
+	var modules = (global.define && global.define.modules) ||
+		(global._define && global._define.modules) || {};
 	var ourDefine = global.define = function(moduleName, deps, callback){
 		var module;
 		if(typeof deps === "function") {
@@ -55,6 +56,7 @@
 		// Favor CJS module.exports over the return value
 		modules[moduleName] = module && module.exports ? module.exports : result;
 	};
+	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
 	global.System = {
@@ -65,7 +67,7 @@
 		}
 	};
 })({},window)
-/*can@2.2.0#control/plugin/plugin*/
+/*can@2.2.1#control/plugin/plugin*/
 define('can/control/plugin/plugin', [
     'dist/jquery',
     'can/util/util',
@@ -138,3 +140,8 @@ define('can/control/plugin/plugin', [
     };
     return can;
 });
+/*[global-shim-end]*/
+(function (){
+	window._define = window.define;
+	window.define = window.define.orig;
+})();

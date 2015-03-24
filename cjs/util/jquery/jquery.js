@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.0
+ * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Mar 2015 19:55:12 GMT
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
  */
 
-/*can@2.2.0#util/jquery/jquery*/
+/*can@2.2.1#util/jquery/jquery*/
 var $ = require('jquery');
 var can = require('../can.js');
 var attr = require('../attr/attr.js');
@@ -16,7 +16,7 @@ require('../inserted/inserted.js');
 var isBindableElement = function (node) {
     return node.nodeName && (node.nodeType === 1 || node.nodeType === 9) || node == window;
 };
-$ = $ || window.$;
+$ = $ || window.jQuery;
 $.extend(can, $, {
     trigger: function (obj, event, args, bubbles) {
         if (isBindableElement(obj)) {

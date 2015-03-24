@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.0
+ * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Mar 2015 19:55:12 GMT
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
  */
 
-/*[global-shim]*/
+/*[global-shim-start]*/
 (function (exports, global){
 	var origDefine = global.define;
 
@@ -22,7 +22,8 @@
 		}
 		return cur;
 	};
-	var modules = global.define && global.define.modules || {};
+	var modules = (global.define && global.define.modules) ||
+		(global._define && global._define.modules) || {};
 	var ourDefine = global.define = function(moduleName, deps, callback){
 		var module;
 		if(typeof deps === "function") {
@@ -55,6 +56,7 @@
 		// Favor CJS module.exports over the return value
 		modules[moduleName] = module && module.exports ? module.exports : result;
 	};
+	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
 	global.System = {
@@ -65,7 +67,7 @@
 		}
 	};
 })({},window)
-/*can@2.2.0#util/can*/
+/*can@2.2.1#util/can*/
 define('can/util/can', [], function () {
     var glbl = typeof window !== 'undefined' ? window : global;
     var can = {};
@@ -75,8 +77,11 @@ define('can/util/can', [], function () {
     can.global = glbl;
     can.k = function () {
     };
-    can.isDeferred = function (obj) {
+    can.isDeferred = can.isPromise = function (obj) {
         return obj && typeof obj.then === 'function' && typeof obj.pipe === 'function';
+    };
+    can.isMapLike = function (obj) {
+        return can.Map && (obj instanceof can.Map || obj && obj.__get);
     };
     var cid = 0;
     can.cid = function (object, name) {
@@ -86,7 +91,7 @@ define('can/util/can', [], function () {
         }
         return object._cid;
     };
-    can.VERSION = '2.2.0';
+    can.VERSION = '2.2.1';
     can.simpleExtend = function (d, s) {
         for (var prop in s) {
             d[prop] = s[prop];
@@ -157,7 +162,7 @@ define('can/util/can', [], function () {
     };
     return can;
 });
-/*can@2.2.0#util/attr/attr*/
+/*can@2.2.1#util/attr/attr*/
 define('can/util/attr/attr', ['can/util/can'], function (can) {
     var setImmediate = can.global.setImmediate || function (cb) {
             return setTimeout(cb, 0);
@@ -279,7 +284,7 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
         };
     return attr;
 });
-/*can@2.2.0#event/event*/
+/*can@2.2.1#event/event*/
 define('can/event/event', ['can/util/can'], function (can) {
     can.addEvent = function (event, handler) {
         var allEvents = this.__bindEvents || (this.__bindEvents = {}), eventList = allEvents[event] || (allEvents[event] = []);
@@ -423,7 +428,7 @@ define('can/event/event', ['can/util/can'], function (can) {
     };
     return can.event;
 });
-/*can@2.2.0#util/fragment*/
+/*can@2.2.1#util/fragment*/
 define('can/util/fragment', ['can/util/can'], function (can) {
     var fragmentRE = /^\s*<(\w+)[^>]*>/, toString = {}.toString, fragment = function (html, name) {
             if (name === undefined) {
@@ -480,7 +485,7 @@ define('can/util/fragment', ['can/util/can'], function (can) {
     }());
     return can;
 });
-/*can@2.2.0#util/deferred*/
+/*can@2.2.1#util/deferred*/
 define('can/util/deferred', ['can/util/can'], function (can) {
     var extend = function (target, src) {
             for (var key in src) {
@@ -632,7 +637,7 @@ define('can/util/deferred', ['can/util/can'], function (can) {
     Deferred.prototype.pipe = Deferred.prototype.then;
     return can;
 });
-/*can@2.2.0#util/array/each*/
+/*can@2.2.1#util/array/each*/
 define('can/util/array/each', ['can/util/can'], function (can) {
     var isArrayLike = function (obj) {
         var length = obj.length;
@@ -680,7 +685,7 @@ define('can/util/array/each', ['can/util/can'], function (can) {
     };
     return can;
 });
-/*can@2.2.0#util/object/isplain/isplain*/
+/*can@2.2.1#util/object/isplain/isplain*/
 define('can/util/object/isplain/isplain', ['can/util/can'], function () {
     var core_hasOwn = Object.prototype.hasOwnProperty, isWindow = function (obj) {
             return obj !== null && obj == obj.window;
@@ -703,7 +708,7 @@ define('can/util/object/isplain/isplain', ['can/util/can'], function () {
     can.isPlainObject = isPlainObject;
     return can;
 });
-/*can@2.2.0#util/inserted/inserted*/
+/*can@2.2.1#util/inserted/inserted*/
 define('can/util/inserted/inserted', ['can/util/can'], function (can) {
     can.inserted = function (elems) {
         elems = can.makeArray(elems);
@@ -750,7 +755,7 @@ define('can/util/inserted/inserted', ['can/util/can'], function (can) {
         can.inserted(children);
     };
 });
-/*can@2.2.0#util/util*/
+/*can@2.2.1#util/util*/
 define('can/util/util', [
     'can/util/can',
     'can/util/attr/attr',
@@ -1101,7 +1106,7 @@ define('can/util/util', [
     };
     return can;
 });
-/*can@2.2.0#view/view*/
+/*can@2.2.1#view/view*/
 define('can/view/view', ['can/util/util'], function (can) {
     var isFunction = can.isFunction, makeArray = can.makeArray, hookupId = 1;
     var makeRenderer = function (textRenderer) {
@@ -1375,7 +1380,7 @@ define('can/view/view', ['can/util/util'], function (can) {
     });
     return can;
 });
-/*can@2.2.0#view/callbacks/callbacks*/
+/*can@2.2.1#view/callbacks/callbacks*/
 define('can/view/callbacks/callbacks', [
     'can/util/util',
     'can/view/view'
@@ -1450,7 +1455,7 @@ define('can/view/callbacks/callbacks', [
     };
     return can.view.callbacks;
 });
-/*can@2.2.0#util/string/string*/
+/*can@2.2.1#util/string/string*/
 define('can/util/string/string', ['can/util/util'], function (can) {
     var strUndHash = /_|-/, strColons = /\=\=/, strWords = /([A-Z]+)([A-Z][a-z])/g, strLowUp = /([a-z\d])([A-Z])/g, strDash = /([a-z\d])([A-Z])/g, strReplacer = /\{([^\}]+)\}/g, strQuote = /"/g, strSingleQuote = /'/g, strHyphenMatch = /-+(.)?/g, strCamelMatch = /[a-z][A-Z]/g, getNext = function (obj, prop, add) {
             var result = obj[prop];
@@ -1535,7 +1540,7 @@ define('can/util/string/string', ['can/util/util'], function (can) {
     });
     return can;
 });
-/*can@2.2.0#construct/construct*/
+/*can@2.2.1#construct/construct*/
 define('can/construct/construct', ['can/util/string/string'], function (can) {
     var initializing = 0;
     var canGetDescriptor;
@@ -1667,7 +1672,7 @@ define('can/construct/construct', ['can/util/string/string'], function (can) {
     };
     return can.Construct;
 });
-/*can@2.2.0#control/control*/
+/*can@2.2.1#control/control*/
 define('can/control/control', [
     'can/util/util',
     'can/construct/construct'
@@ -1862,7 +1867,7 @@ define('can/control/control', [
     });
     return Control;
 });
-/*can@2.2.0#util/bind/bind*/
+/*can@2.2.1#util/bind/bind*/
 define('can/util/bind/bind', ['can/util/util'], function (can) {
     can.bindAndSetup = function () {
         can.addEvent.apply(this, arguments);
@@ -1878,12 +1883,14 @@ define('can/util/bind/bind', ['can/util/util'], function (can) {
         }
         return this;
     };
-    can.unbindAndTeardown = function (ev, handler) {
+    can.unbindAndTeardown = function (event, handler) {
+        var handlers = this.__bindEvents[event] || [];
+        var handlerCount = handlers.length;
         can.removeEvent.apply(this, arguments);
         if (this._bindings === null) {
             this._bindings = 0;
         } else {
-            this._bindings--;
+            this._bindings = this._bindings - (handlerCount - handlers.length);
         }
         if (!this._bindings && this._bindteardown) {
             this._bindteardown();
@@ -1892,7 +1899,7 @@ define('can/util/bind/bind', ['can/util/util'], function (can) {
     };
     return can;
 });
-/*can@2.2.0#map/bubble*/
+/*can@2.2.1#map/bubble*/
 define('can/map/bubble', ['can/util/util'], function (can) {
     var bubble = can.bubble = {
             event: function (map, boundEventName) {
@@ -1999,9 +2006,9 @@ define('can/map/bubble', ['can/util/util'], function (can) {
         };
     return bubble;
 });
-/*can@2.2.0#util/batch/batch*/
+/*can@2.2.1#util/batch/batch*/
 define('can/util/batch/batch', ['can/util/can'], function (can) {
-    var batchNum = 1, transactions = 0, batchEvents = [], stopCallbacks = [];
+    var batchNum = 1, transactions = 0, batchEvents = [], stopCallbacks = [], currentBatchEvents = null;
     can.batch = {
         start: function (batchStopHandler) {
             transactions++;
@@ -2016,7 +2023,11 @@ define('can/util/batch/batch', ['can/util/can'], function (can) {
                 transactions--;
             }
             if (transactions === 0) {
-                var items = batchEvents.slice(0), callbacks = stopCallbacks.slice(0), i, len;
+                if (currentBatchEvents !== null) {
+                    return;
+                }
+                currentBatchEvents = batchEvents.slice(0);
+                var callbacks = stopCallbacks.slice(0), i, len;
                 batchEvents = [];
                 stopCallbacks = [];
                 can.batch.batchNum = batchNum;
@@ -2024,9 +2035,10 @@ define('can/util/batch/batch', ['can/util/can'], function (can) {
                 if (callStart) {
                     can.batch.start();
                 }
-                for (i = 0, len = items.length; i < len; i++) {
-                    can.dispatch.apply(items[i][0], items[i][1]);
+                for (i = 0; i < currentBatchEvents.length; i++) {
+                    can.dispatch.apply(currentBatchEvents[i][0], currentBatchEvents[i][1]);
                 }
+                currentBatchEvents = null;
                 for (i = 0, len = callbacks.length; i < callbacks.length; i++) {
                     callbacks[i]();
                 }
@@ -2035,10 +2047,18 @@ define('can/util/batch/batch', ['can/util/can'], function (can) {
         },
         trigger: function (item, event, args) {
             if (!item._init) {
-                if (transactions === 0) {
+                event = typeof event === 'string' ? { type: event } : event;
+                if (currentBatchEvents) {
+                    currentBatchEvents.push([
+                        item,
+                        [
+                            event,
+                            args
+                        ]
+                    ]);
+                } else if (transactions === 0) {
                     return can.dispatch.call(item, event, args);
                 } else {
-                    event = typeof event === 'string' ? { type: event } : event;
                     event.batchNum = batchNum;
                     batchEvents.push([
                         item,
@@ -2052,7 +2072,7 @@ define('can/util/batch/batch', ['can/util/can'], function (can) {
         }
     };
 });
-/*can@2.2.0#map/map*/
+/*can@2.2.1#map/map*/
 define('can/map/map', [
     'can/util/util',
     'can/util/bind/bind',
@@ -2479,7 +2499,7 @@ define('can/map/map', [
     Map.prototype.off = Map.prototype.unbind;
     return Map;
 });
-/*can@2.2.0#list/list*/
+/*can@2.2.1#list/list*/
 define('can/list/list', [
     'can/util/util',
     'can/map/map',
@@ -2555,8 +2575,8 @@ define('can/list/list', [
                 if (typeof prop === 'number' && prop > this.length - 1) {
                     var newArr = new Array(prop + 1 - this.length);
                     newArr[newArr.length - 1] = value;
-                    value = newArr;
-                    prop = this.length;
+                    this.push.apply(this, newArr);
+                    return newArr;
                 }
                 return can.Map.prototype.__set.call(this, '' + prop, value, current);
             },
@@ -2735,12 +2755,172 @@ define('can/list/list', [
     can.List = Map.List = list;
     return can.List;
 });
-/*can@2.2.0#compute/proto_compute*/
+/*can@2.2.1#compute/read*/
+define('can/compute/read', ['can/util/util'], function (can) {
+    var read = function (parent, reads, options) {
+        options = options || {};
+        var state = { foundObservable: false };
+        var cur = readValue(parent, 0, reads, options, state), type, prev, foundObs, readLength = reads.length, i = 0;
+        while (i < readLength) {
+            prev = cur;
+            for (var r = 0, readersLength = read.propertyReaders.length; r < readersLength; r++) {
+                var reader = read.propertyReaders[r];
+                if (reader.test(cur)) {
+                    cur = reader.read(cur, reads[i], i, options, state);
+                    break;
+                }
+            }
+            i = i + 1;
+            cur = readValue(cur, i, reads, options, state);
+            type = typeof cur;
+            if (i < reads.length && (cur === null || type !== 'function' && type !== 'object')) {
+                if (options.earlyExit) {
+                    options.earlyExit(prev, i - 1, cur);
+                }
+                return {
+                    value: undefined,
+                    parent: prev
+                };
+            }
+        }
+        if (typeof cur === 'function' && !(can.Construct && cur.prototype instanceof can.Construct) && !(can.route && cur === can.route)) {
+            if (options.isArgument) {
+                if (!cur.isComputed && options.proxyMethods !== false) {
+                    cur = can.proxy(cur, prev);
+                }
+            } else {
+                if (cur.isComputed && !foundObs && options.foundObservable) {
+                    options.foundObservable(cur, i);
+                }
+                cur = cur.call(prev);
+            }
+        }
+        if (cur === undefined) {
+            if (options.earlyExit) {
+                options.earlyExit(prev, i - 1);
+            }
+        }
+        return {
+            value: cur,
+            parent: prev
+        };
+    };
+    var readValue = function (value, index, reads, options, state) {
+        for (var i = 0, len = read.valueReaders.length; i < len; i++) {
+            if (read.valueReaders[i].test(value, index, reads, options)) {
+                value = read.valueReaders[i].read(value, index, reads, options, state);
+            }
+        }
+        return value;
+    };
+    read.valueReaders = [
+        {
+            test: function (value, i, reads, options) {
+                return value && value.isComputed && (!options.isArgument && i < reads.length);
+            },
+            read: function (value, i, reads, options, state) {
+                if (!state.foundObservable && options.foundObservable) {
+                    options.foundObservable(value, i);
+                    state.foundObservable = true;
+                }
+                return value instanceof can.Compute ? value.get() : value();
+            }
+        },
+        {
+            test: function (value, i, reads, options) {
+                var type = typeof value;
+                return i < reads.length && type === 'function' && options.executeAnonymousFunctions && !(can.Construct && value.prototype instanceof can.Construct);
+            },
+            read: function (value) {
+                return value();
+            }
+        }
+    ];
+    read.propertyReaders = [
+        {
+            test: can.isMapLike,
+            read: function (value, prop, index, options, state) {
+                if (!state.foundObservable && options.foundObservable) {
+                    options.foundObservable(value, index);
+                    state.foundObservable = true;
+                }
+                if (typeof value[prop] === 'function' && value.constructor.prototype[prop] === value[prop]) {
+                    if (options.returnObserveMethods) {
+                        return value[prop];
+                    } else if (prop === 'constructor' && value instanceof can.Construct || value[prop].prototype instanceof can.Construct) {
+                        return value[prop];
+                    } else {
+                        return value[prop].apply(value, options.args || []);
+                    }
+                } else {
+                    return value.attr(prop);
+                }
+            }
+        },
+        {
+            test: function (value) {
+                return can.isPromise(value);
+            },
+            read: function (value, prop, index, options, state) {
+                if (!state.foundObservable && options.foundObservable) {
+                    options.foundObservable(value, index);
+                    state.foundObservable = true;
+                }
+                var observeData = value.__observeData;
+                if (!value.__observeData) {
+                    observeData = value.__observeData = {
+                        isPending: true,
+                        state: 'pending',
+                        isResolved: false,
+                        isRejected: false
+                    };
+                    can.simpleExtend(observeData, can.event);
+                    value.then(function (value) {
+                        observeData.isPending = false;
+                        observeData.isResolved = true;
+                        observeData.value = value;
+                        observeData.state = 'resolved';
+                        observeData.dispatch('state', [
+                            'resolved',
+                            'pending'
+                        ]);
+                    }, function (reason) {
+                        observeData.isPending = false;
+                        observeData.isRejected = true;
+                        observeData.reason = reason;
+                        observeData.state = 'rejected';
+                        observeData.dispatch('state', [
+                            'rejected',
+                            'pending'
+                        ]);
+                    });
+                }
+                can.__reading(observeData, 'state');
+                return observeData[prop];
+            }
+        },
+        {
+            test: function () {
+                return true;
+            },
+            read: function (value, prop) {
+                if (value == null) {
+                    return undefined;
+                } else {
+                    return value[prop];
+                }
+            }
+        }
+    ];
+    return read;
+});
+/*can@2.2.1#compute/proto_compute*/
 define('can/compute/proto_compute', [
     'can/util/util',
     'can/util/bind/bind',
+    'can/compute/read',
     'can/util/batch/batch'
-], function (can, bind) {
+], function (can, bind, read) {
     var stack = [];
     can.__read = function (func, self) {
         stack.push({});
@@ -2779,6 +2959,10 @@ define('can/compute/proto_compute', [
         var info = can.__read(func, context), newObserveSet = info.observed;
         bindNewSet(oldObserved, newObserveSet, onchanged);
         unbindOldSet(oldObserved, onchanged);
+        can.bind.call(info, 'ready', function () {
+            info.ready = true;
+        });
+        can.batch.trigger(info, 'ready');
         return info;
     };
     var bindNewSet = function (oldObserved, newObserveSet, onchanged) {
@@ -2829,7 +3013,7 @@ define('can/compute/proto_compute', [
                 var self = this;
                 if (!onchanged) {
                     onchanged = function (ev) {
-                        if (compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
+                        if (readInfo.ready && compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
                             var oldValue = readInfo.value;
                             readInfo = getValueAndBind(func, context, readInfo.observed, onchanged);
                             self.updater(readInfo.value, oldValue, ev.batchNum);
@@ -2855,7 +3039,7 @@ define('can/compute/proto_compute', [
             on: function (updater) {
                 if (!onchanged) {
                     onchanged = function (ev) {
-                        if (compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
+                        if (readInfo.ready && compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
                             var reads = can.__clearReading();
                             var newValue = func.call(context);
                             can.__setReading(reads);
@@ -2878,10 +3062,8 @@ define('can/compute/proto_compute', [
             }
         };
     };
-    var isObserve = function (obj) {
-            return obj instanceof can.Map || obj && obj.__get;
-        }, k = function () {
-        };
+    var k = function () {
+    };
     var updater = function (newVal, oldVal, batchNum) {
             this.setCached(newVal);
             updateOnChange(this, newVal, oldVal, batchNum);
@@ -3013,7 +3195,7 @@ define('can/compute/proto_compute', [
             } else {
                 var self = this;
                 this.onchanged = function (ev) {
-                    if (self.bound && (ev.batchNum === undefined || ev.batchNum !== self.batchNum)) {
+                    if (self.bound && self.readInfo.ready && (ev.batchNum === undefined || ev.batchNum !== self.batchNum)) {
                         var oldValue = self.readInfo.value;
                         self.readInfo = getValueAndBind(getterSetter, context, self.readInfo.observed, self.onchanged);
                         self.updater(self.readInfo.value, oldValue, ev.batchNum);
@@ -3072,6 +3254,9 @@ define('can/compute/proto_compute', [
             this.lastSetValue = lastSetValue;
             this._setUpdates = true;
             this._set = function (newVal) {
+                if (newVal === lastSetValue.get()) {
+                    return this.value;
+                }
                 lastSetValue.set(newVal);
             };
             this._get = asyncGet(fn, settings.context, lastSetValue);
@@ -3117,81 +3302,7 @@ define('can/compute/proto_compute', [
             context: context
         });
     };
-    can.Compute.read = function (parent, reads, options) {
-        options = options || {};
-        var cur = parent, type, prev, foundObs;
-        for (var i = 0, readLength = reads.length; i < readLength; i++) {
-            prev = cur;
-            if (prev && prev.isComputed) {
-                if (options.foundObservable) {
-                    options.foundObservable(prev, i);
-                }
-                prev = cur = prev instanceof can.Compute ? prev.get() : prev();
-            }
-            if (isObserve(prev)) {
-                if (!foundObs && options.foundObservable) {
-                    options.foundObservable(prev, i);
-                }
-                foundObs = 1;
-                if (typeof prev[reads[i]] === 'function' && prev.constructor.prototype[reads[i]] === prev[reads[i]]) {
-                    if (options.returnObserveMethods) {
-                        cur = cur[reads[i]];
-                    } else if (reads[i] === 'constructor' && prev instanceof can.Construct || prev[reads[i]].prototype instanceof can.Construct) {
-                        cur = prev[reads[i]];
-                    } else {
-                        cur = prev[reads[i]].apply(prev, options.args || []);
-                    }
-                } else {
-                    cur = cur.attr(reads[i]);
-                }
-            } else {
-                if (cur == null) {
-                    cur = undefined;
-                } else {
-                    cur = prev[reads[i]];
-                }
-            }
-            type = typeof cur;
-            if (cur && cur.isComputed && (!options.isArgument && i < readLength - 1)) {
-                if (!foundObs && options.foundObservable) {
-                    options.foundObservable(prev, i + 1);
-                }
-                cur = cur();
-            } else if (i < reads.length - 1 && type === 'function' && options.executeAnonymousFunctions && !(can.Construct && cur.prototype instanceof can.Construct)) {
-                cur = cur();
-            }
-            if (i < reads.length - 1 && (cur === null || type !== 'function' && type !== 'object')) {
-                if (options.earlyExit) {
-                    options.earlyExit(prev, i, cur);
-                }
-                return {
-                    value: undefined,
-                    parent: prev
-                };
-            }
-        }
-        if (typeof cur === 'function' && !(can.Construct && cur.prototype instanceof can.Construct) && !(can.route && cur === can.route)) {
-            if (options.isArgument) {
-                if (!cur.isComputed && options.proxyMethods !== false) {
-                    cur = can.proxy(cur, prev);
-                }
-            } else {
-                if (cur.isComputed && !foundObs && options.foundObservable) {
-                    options.foundObservable(cur, i);
-                }
-                cur = cur.call(prev);
-            }
-        }
-        if (cur === undefined) {
-            if (options.earlyExit) {
-                options.earlyExit(prev, i - 1);
-            }
-        }
-        return {
-            value: cur,
-            parent: prev
-        };
-    };
+    can.Compute.read = read;
     can.Compute.truthy = function (compute) {
         return new can.Compute(function () {
             var res = compute.get();
@@ -3202,7 +3313,7 @@ define('can/compute/proto_compute', [
         });
     };
     can.Compute.set = function (parent, key, value) {
-        if (isObserve(parent)) {
+        if (can.isMapLike(parent)) {
             return parent.attr(key, value);
         }
         if (parent[key] && parent[key].isComputed) {
@@ -3214,7 +3325,7 @@ define('can/compute/proto_compute', [
     };
     return can.Compute;
 });
-/*can@2.2.0#compute/compute*/
+/*can@2.2.1#compute/compute*/
 define('can/compute/compute', [
     'can/util/util',
     'can/util/bind/bind',
@@ -3276,7 +3387,7 @@ define('can/compute/compute', [
     can.compute.set = can.Compute.set;
     return can.compute;
 });
-/*can@2.2.0#observe/observe*/
+/*can@2.2.1#observe/observe*/
 define('can/observe/observe', [
     'can/util/util',
     'can/map/map',
@@ -3289,7 +3400,7 @@ define('can/observe/observe', [
     can.Observe.triggerBatch = can.batch.trigger;
     return can;
 });
-/*can@2.2.0#view/scope/scope*/
+/*can@2.2.1#view/scope/scope*/
 define('can/view/scope/scope', [
     'can/util/util',
     'can/construct/construct',
@@ -3441,7 +3552,7 @@ define('can/view/scope/scope', [
     can.view.Scope = Scope;
     return Scope;
 });
-/*can@2.2.0#view/elements*/
+/*can@2.2.1#view/elements*/
 define('can/view/elements', [
     'can/util/util',
     'can/view/view'
@@ -3516,7 +3627,7 @@ define('can/view/elements', [
     can.view.elements = elements;
     return elements;
 });
-/*can@2.2.0#view/scanner*/
+/*can@2.2.1#view/scanner*/
 define('can/view/scanner', [
     'can/view/view',
     'can/view/elements',
@@ -3892,7 +4003,7 @@ define('can/view/scanner', [
     can.view.Scanner = Scanner;
     return Scanner;
 });
-/*can@2.2.0#view/node_lists/node_lists*/
+/*can@2.2.1#view/node_lists/node_lists*/
 define('can/view/node_lists/node_lists', [
     'can/util/util',
     'can/view/elements'
@@ -4048,7 +4159,7 @@ define('can/view/node_lists/node_lists', [
     can.view.nodeLists = nodeLists;
     return nodeLists;
 });
-/*can@2.2.0#view/parser/parser*/
+/*can@2.2.1#view/parser/parser*/
 define('can/view/parser/parser', ['can/view/view'], function (can) {
     function makeMap(str) {
         var obj = {}, items = str.split(',');
@@ -4229,7 +4340,7 @@ define('can/view/parser/parser', ['can/view/view'], function (can) {
     can.view.parser = HTMLParser;
     return HTMLParser;
 });
-/*can@2.2.0#view/live/live*/
+/*can@2.2.1#view/live/live*/
 define('can/view/live/live', [
     'can/util/util',
     'can/view/elements',
@@ -4546,7 +4657,7 @@ define('can/view/live/live', [
     can.view.live = live;
     return live;
 });
-/*can@2.2.0#view/render*/
+/*can@2.2.1#view/render*/
 define('can/view/render', [
     'can/view/view',
     'can/view/elements',
@@ -4671,7 +4782,7 @@ define('can/view/render', [
     });
     return can;
 });
-/*can@2.2.0#view/stache/utils*/
+/*can@2.2.1#view/stache/utils*/
 define('can/view/stache/utils', ['can/util/util'], function () {
     return {
         isArrayLike: function (obj) {
@@ -4706,7 +4817,7 @@ define('can/view/stache/utils', ['can/util/util'], function () {
         }
     };
 });
-/*can@2.2.0#view/stache/mustache_helpers*/
+/*can@2.2.1#view/stache/mustache_helpers*/
 define('can/view/stache/mustache_helpers', [
     'can/util/util',
     'can/view/stache/utils',
@@ -4838,7 +4949,7 @@ define('can/view/stache/mustache_helpers', [
         }
     };
 });
-/*can@2.2.0#view/stache/mustache_core*/
+/*can@2.2.1#view/stache/mustache_core*/
 define('can/view/stache/mustache_core', [
     'can/util/util',
     'can/view/stache/utils',
@@ -5153,7 +5264,7 @@ define('can/view/stache/mustache_core', [
     var makeEvaluator = core.makeEvaluator, expressionData = core.expressionData, splitModeFromExpression = core.splitModeFromExpression;
     return core;
 });
-/*can@2.2.0#view/bindings/bindings*/
+/*can@2.2.1#view/bindings/bindings*/
 define('can/view/bindings/bindings', [
     'can/util/util',
     'can/view/stache/mustache_core',
@@ -5404,7 +5515,7 @@ define('can/view/bindings/bindings', [
             }
         });
 });
-/*can@2.2.0#view/mustache/mustache*/
+/*can@2.2.1#view/mustache/mustache*/
 define('can/view/mustache/mustache', [
     'can/util/util',
     'can/view/scope/scope',
@@ -5902,7 +6013,7 @@ define('can/view/mustache/mustache', [
     can.mustache.safeString = can.Mustache.safeString;
     return can;
 });
-/*can@2.2.0#component/component*/
+/*can@2.2.1#component/component*/
 define('can/component/component', [
     'can/util/util',
     'can/view/callbacks/callbacks',
@@ -6091,7 +6202,7 @@ define('can/component/component', [
                                     delegate = options.scope;
                                     return '';
                                 }
-                                key = key.replace(/^scope|^viewModel\./, '');
+                                key = key.replace(/^(scope|^viewModel)\./, '');
                                 value = can.compute.read(options.scope, key.split('.'), { isArgument: true }).value;
                                 if (value === undefined) {
                                     value = can.getObject(key);
@@ -6129,6 +6240,7 @@ define('can/component/component', [
         }, {
             setup: function (el, options) {
                 this.scope = options.scope;
+                this.viewModel = options.viewModel;
                 return can.Control.prototype.setup.call(this, el, options);
             },
             off: function () {
@@ -6167,7 +6279,7 @@ define('can/component/component', [
     }
     return Component;
 });
-/*can@2.2.0#model/model*/
+/*can@2.2.1#model/model*/
 define('can/model/model', [
     'can/util/util',
     'can/map/map',
@@ -6553,7 +6665,7 @@ define('can/model/model', [
         });
     return can.Model;
 });
-/*can@2.2.0#util/string/deparam/deparam*/
+/*can@2.2.1#util/string/deparam/deparam*/
 define('can/util/string/deparam/deparam', [
     'can/util/util',
     'can/util/string/string'
@@ -6590,7 +6702,7 @@ define('can/util/string/deparam/deparam', [
     });
     return can;
 });
-/*can@2.2.0#route/route*/
+/*can@2.2.1#route/route*/
 define('can/route/route', [
     'can/util/util',
     'can/map/map',
@@ -6887,7 +6999,7 @@ define('can/route/route', [
     };
     return can.route;
 });
-/*can@2.2.0#control/route/route*/
+/*can@2.2.1#control/route/route*/
 define('can/control/route/route', [
     'can/util/util',
     'can/route/route',
@@ -6920,3 +7032,8 @@ define('can/control/route/route', [
     };
     return can;
 });
+/*[global-shim-end]*/
+(function (){
+	window._define = window.define;
+	window.define = window.define.orig;
+})();

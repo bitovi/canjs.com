@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.0
+ * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Mar 2015 19:55:12 GMT
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
  */
 
-/*can@2.2.0#component/component*/
+/*can@2.2.1#component/component*/
 // # can/component/component.js
 // 
 // This implements the `can.Component` which allows you to create widgets 
@@ -383,7 +383,7 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 						}
 						
 						// Remove `scope.` from the start of the key and read the value from the `viewModel`.
-						key = key.replace(/^scope|^viewModel\./,"");
+						key = key.replace(/^(scope|^viewModel)\./,"");
 						value = can.compute.read(options.scope, key.split("."), {isArgument: true}).value;
 
 						// If `value` is undefined use `can.getObject` to get the value.
@@ -438,6 +438,7 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 	{
 		setup: function (el, options) {
 			this.scope = options.scope;
+			this.viewModel = options.viewModel;
 			return can.Control.prototype.setup.call(this, el, options);
 		},
 		off: function(){

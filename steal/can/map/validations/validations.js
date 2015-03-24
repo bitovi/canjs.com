@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.0
+ * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Mar 2015 19:55:12 GMT
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
  */
 
-/*can@2.2.0#map/validations/validations*/
+/*can@2.2.1#map/validations/validations*/
 steal('can/util', 'can/map', function (can) {
 	//validations object is by property.  You can have validations that
 	//span properties, but this way we know which ones to run.

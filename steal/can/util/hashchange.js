@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.0
+ * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Mar 2015 19:55:12 GMT
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
  */
 
-/*can@2.2.0#util/hashchange*/
+/*can@2.2.1#util/hashchange*/
 steal('can/util/can.js', function (can) {
 	// This is a workaround for libraries that don't natively listen to the window hashchange event
 	(function () {

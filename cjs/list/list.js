@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.0
+ * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Mar 2015 19:55:12 GMT
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
  */
 
-/*can@2.2.0#list/list*/
+/*can@2.2.1#list/list*/
 var can = require('../util/util.js');
 var Map = require('../map/map.js');
 var bubble = require('../map/bubble.js');
@@ -80,8 +80,8 @@ var list = Map.extend({ Map: Map }, {
             if (typeof prop === 'number' && prop > this.length - 1) {
                 var newArr = new Array(prop + 1 - this.length);
                 newArr[newArr.length - 1] = value;
-                value = newArr;
-                prop = this.length;
+                this.push.apply(this, newArr);
+                return newArr;
             }
             return can.Map.prototype.__set.call(this, '' + prop, value, current);
         },

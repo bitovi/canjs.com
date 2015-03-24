@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.0
+ * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Mar 2015 19:55:12 GMT
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
  */
 
-/*can@2.2.0#view/stache/utils*/
+/*can@2.2.1#view/stache/utils*/
 steal("can/util", function(){
 	return {
 		// Returns if something looks like an array.  This works for can.List

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.0
+ * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Mar 2015 19:55:12 GMT
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
  */
 
-/*can@2.2.0#view/stache/mustache_core*/
+/*can@2.2.1#view/stache/mustache_core*/
 var can = require('../../util/util.js');
 var utils = require('./utils.js');
 var mustacheHelpers = require('./mustache_helpers.js');

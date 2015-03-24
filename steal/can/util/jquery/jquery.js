@@ -1,19 +1,19 @@
 /*!
- * CanJS - 2.2.0
+ * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Mar 2015 19:55:12 GMT
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
  */
 
-/*can@2.2.0#util/jquery/jquery*/
+/*can@2.2.1#util/jquery/jquery*/
 steal('jquery', 'can/util/can.js', 'can/util/attr', "can/event", 'can/util/array/each.js', "can/util/inserted", function ($, can, attr, event) {
 	var isBindableElement = function (node) {
 		// In IE8 window.window !== window.window, so we allow == here.
 		/*jshint eqeqeq:false*/
 		return ( node.nodeName && (node.nodeType === 1 || node.nodeType === 9) )|| node == window;
 	};
-	$ = $ || window.$;
+	$ = $ || window.jQuery;
 	// _jQuery node list._
 	$.extend(can, $, {
 		trigger: function (obj, event, args, bubbles) {

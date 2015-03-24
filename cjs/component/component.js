@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.0
+ * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Mar 2015 19:55:12 GMT
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
  */
 
-/*can@2.2.0#component/component*/
+/*can@2.2.1#component/component*/
 var can = require('../util/util.js');
 var viewCallbacks = require('../view/callbacks/callbacks.js');
 require('../control/control.js');
@@ -193,7 +193,7 @@ var ComponentControl = can.Control.extend({
                                 delegate = options.scope;
                                 return '';
                             }
-                            key = key.replace(/^scope|^viewModel\./, '');
+                            key = key.replace(/^(scope|^viewModel)\./, '');
                             value = can.compute.read(options.scope, key.split('.'), { isArgument: true }).value;
                             if (value === undefined) {
                                 value = can.getObject(key);
@@ -231,6 +231,7 @@ var ComponentControl = can.Control.extend({
     }, {
         setup: function (el, options) {
             this.scope = options.scope;
+            this.viewModel = options.viewModel;
             return can.Control.prototype.setup.call(this, el, options);
         },
         off: function () {

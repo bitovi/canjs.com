@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.0
+ * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Mar 2015 19:55:12 GMT
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
  */
 
-/*can@2.2.0#util/bind/bind*/
+/*can@2.2.1#util/bind/bind*/
 steal('can/util', function (can) {
 	/**
 	 * @typedef {{bind:function():*,unbind:function():*}} can.util.bind
@@ -35,13 +35,19 @@ steal('can/util', function (can) {
 		}
 		return this;
 	};
-	can.unbindAndTeardown = function (ev, handler) {
+	can.unbindAndTeardown = function (event, handler) {
+
+		var handlers = this.__bindEvents[event] || [];
+		var handlerCount = handlers.length;
+
 		// Remove the event handler
 		can.removeEvent.apply(this, arguments);
 		if (this._bindings === null) {
 			this._bindings = 0;
 		} else {
-			this._bindings--;
+			// Subtract the difference in the number of handlers bound to this
+			// event before/after removeEvent
+			this._bindings = this._bindings - (handlerCount - handlers.length);
 		}
 		// If there are no longer any bindings and
 		// there is a bindteardown method, call it.
