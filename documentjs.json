@@ -56,7 +56,7 @@
 				{"number": "2.0"},
 				{"number": "1.1"}
 			],
-			"defaultDownloadVersion": "2.2.0"
+			"defaultDownloadVersion": "2.2.1"
 		},
 		"versionsSelectText" : "CanJS v<%= version %>",
 		"tags": "theme/tags"

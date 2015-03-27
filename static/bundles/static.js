@@ -144,6 +144,10 @@ define("controls/projectCarousel",["can/","can/util/function/","jqueryui"],funct
 define("controls/socialStats",["can/"],function(t){return t.Control.extend("Bitovi.OSS.SocialStats",{},{init:function(){this.state=new t.Map({}),this.modelState=new t.Map({});var i=this;t.when(Bitovi.OSS.ActivitySummary.findOne().done(t.proxy(function(t){this.state.attr(t)},this)),Bitovi.OSS.Plugin.findAll({category:"article",limit:6}).done(t.proxy(function(t){this.modelState.attr("articles",t)},this)),Bitovi.OSS.Plugin.findAll({category:"app",limit:6}).done(t.proxy(function(t){this.modelState.attr("apps",t)},this)),Bitovi.OSS.Plugin.findAll({category:"plugin",limit:6}).done(t.proxy(function(t){this.modelState.attr("plugins",t)},this)),Bitovi.OSS.ForumPost.findAll({limit:6}).done(t.proxy(function(t){this.modelState.attr("forumPosts",t)},this)),Bitovi.OSS.GithubEvent.findAll({limit:6}).done(t.proxy(function(t){this.modelState.attr("commits",t)},this))).then(function(){var e=t.view("static/templates/socialStats.mustache",i.state,{plural:function(t,i){return 1===i?t:t+"s"}}),o=$(e.childNodes).find("li").hide();i.element.html(e),o.fadeIn()})},"a mouseenter":function(i){var e=i.data("tooltip");return this.tooltip&&this.tooltip.element&&this.tooltip.element.remove(),i.parent().addClass("active"),this.tooltip=new Bitovi.OSS[e+"Tooltip"]("<div>",{state:this.modelState,relativeTo:i.parent()}),this.tooltip.on("removed",t.proxy(function(){this.element.find(".active").removeClass("active")},this)),!1}})});
 /*controls/tooltip*/
 define("controls/tooltip",["can/"],function(t){return t.Control.extend("Bitovi.OSS.Tooltip",{defaults:{view:"",placement:"left"}},{init:function(){this.options.relativeTo.offset();this.element.html(t.view(this.options.view,this.options.state)).addClass("has-tip").appendTo(this.options.relativeTo.offsetParent()),this.updateOffset()},"{document.body} click":function(t,e){this.element.has(e.target).length||e.target===this.element[0]||e.target===this.options.relativeTo[0]||this.element.remove()},"{window} resize":t.debounce(function(){this.updateOffset()},100),mouseleave:function(){this.element.remove()},updateOffset:function(){var t=this.options.relativeTo.offset();this.element.offset("left"==this.options.placement?{left:t.left,top:t.top+this.options.relativeTo.height()+15}:{left:t.left-this.element.children(".tooltip").width()+this.options.relativeTo.outerWidth()-40,top:t.top+this.options.relativeTo.height()+15})}})});
+/*can/util/domless/domless*/
+System.set('can/util/domless/domless', System.newModule({}));
+/*can/util/array/makeArray*/
+System.set('can/util/array/makeArray', System.newModule({}));
 /*controls/articleTooltip*/
 define("controls/articleTooltip",["can/","./tooltip","can/construct/super/"],function(t,i){return i.extend("Bitovi.OSS.ArticleTooltip",{defaults:{view:"guides/static/templates/articleTooltip.mustache"}},{init:function(t,i){this._super(t,i)}})});
 /*controls/appTooltip*/
@@ -158,10 +162,6 @@ define("controls/pluginTooltip",["can/","./tooltip","can/construct/super/"],func
 define("controls/projectTooltip",["can/","./tooltip","can/construct/super/"],function(t,o){return o.extend("Bitovi.OSS.ProjectTooltip",{defaults:{view:"guides/static/templates/projectTooltip.mustache"}},{init:function(){this.element.html(t.view(this.options.view,this.options.state)).addClass("has-tip project").appendTo(document.body),this.element.position({of:this.options.relativeTo,my:"left top",at:"right top",collision:"flip",within:document.body,using:function(t,o){t.left+="left"===o.horizontal?10:-50,$(this).css(t).find(".tooltip").addClass(o.horizontal)}})},mouseleave:function(){return!1}})});
 /*controls/twitterTab*/
 define("controls/twitterTab",["can/","./communityTab","can/construct/super/"],function(t,e){return e.extend("Bitovi.OSS.TwitterTab",{defaults:{view:"docs/static/templates/twitterTab.mustache"}},{init:function(){this._super()}})});
-/*can/util/array/makeArray*/
-System.set('can/util/array/makeArray', System.newModule({}));
-/*can/util/domless/domless*/
-System.set('can/util/domless/domless', System.newModule({}));
 /*controls/meetupsTab*/
 define("controls/meetupsTab",["can/","./communityTab","can/construct/super/"],function(t,e){return e.extend("Bitovi.OSS.MeetupsTab",{defaults:{view:"docs/static/templates/meetupsTab.mustache"}},{init:function(){this._super()}})});
 /*controls/controls*/
