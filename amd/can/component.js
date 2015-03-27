@@ -2,7 +2,7 @@
  * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 24 Mar 2015 22:13:03 GMT
+ * Fri, 27 Mar 2015 15:59:45 GMT
  * Licensed MIT
  */
 
@@ -117,6 +117,7 @@ define([
                 }
                 this.scope = this.viewModel = componentScope;
                 can.data(can.$(el), 'scope', this.scope);
+                can.data(can.$(el), 'viewModel', this.scope);
                 var renderedScope = lexicalContent ? this.scope : hookupOptions.scope.add(this.scope), options = { helpers: {} };
                 can.each(this.helpers || {}, function (val, prop) {
                     if (can.isFunction(val)) {
@@ -246,24 +247,6 @@ define([
                 this._bindings.readyComputes = {};
             }
         });
-    can.scope = can.viewModel = function (el, attr, val) {
-        el = can.$(el);
-        var scope = can.data(el, 'scope');
-        if (!scope) {
-            scope = new can.Map();
-            can.data(el, 'scope', scope);
-        }
-        switch (arguments.length) {
-        case 0:
-        case 1:
-            return scope;
-        case 2:
-            return scope.attr(attr);
-        default:
-            scope.attr(attr, val);
-            return el;
-        }
-    };
     var $ = can.$;
     if ($.fn) {
         $.fn.scope = $.fn.viewModel = function () {

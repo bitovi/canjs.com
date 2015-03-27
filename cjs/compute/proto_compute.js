@@ -2,7 +2,7 @@
  * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 24 Mar 2015 22:13:03 GMT
+ * Fri, 27 Mar 2015 15:59:45 GMT
  * Licensed MIT
  */
 
@@ -393,6 +393,7 @@ can.Compute.async = function (initialValue, asyncComputer, context) {
     });
 };
 can.Compute.read = read;
+can.Compute.set = read.write;
 can.Compute.truthy = function (compute) {
     return new can.Compute(function () {
         var res = compute.get();
@@ -401,16 +402,5 @@ can.Compute.truthy = function (compute) {
         }
         return !!res;
     });
-};
-can.Compute.set = function (parent, key, value) {
-    if (can.isMapLike(parent)) {
-        return parent.attr(key, value);
-    }
-    if (parent[key] && parent[key].isComputed) {
-        return parent[key](value);
-    }
-    if (typeof parent === 'object') {
-        parent[key] = value;
-    }
 };
 module.exports = can.Compute;

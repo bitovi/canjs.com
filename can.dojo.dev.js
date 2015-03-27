@@ -2,11 +2,11 @@
  * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 24 Mar 2015 22:13:03 GMT
+ * Fri, 27 Mar 2015 15:59:45 GMT
  * Licensed MIT
  */
 
-/*[global-shim-start]*/
+/*[global-shim]*/
 (function (exports, global){
 	var origDefine = global.define;
 
@@ -22,8 +22,7 @@
 		}
 		return cur;
 	};
-	var modules = (global.define && global.define.modules) ||
-		(global._define && global._define.modules) || {};
+	var modules = global.define && global.define.modules || {};
 	var ourDefine = global.define = function(moduleName, deps, callback){
 		var module;
 		if(typeof deps === "function") {
@@ -56,7 +55,6 @@
 		// Favor CJS module.exports over the return value
 		modules[moduleName] = module && module.exports ? module.exports : result;
 	};
-	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
 	global.System = {
@@ -126,17 +124,23 @@ define('can/util/can', [], function () {
             return frag;
         }
     };
-    can.scope = function (el, attr) {
+    can.scope = can.viewModel = function (el, attr, val) {
         el = can.$(el);
-        var scope = can.data(el, 'scope');
+        var scope = can.data(el, 'scope') || can.data(el, 'viewModel');
         if (!scope) {
-            scope = can.Map ? new can.Map() : {};
+            scope = new can.Map();
             can.data(el, 'scope', scope);
+            can.data(el, 'viewModel', scope);
         }
-        if (attr) {
-            return scope.attr(attr);
-        } else {
+        switch (arguments.length) {
+        case 0:
+        case 1:
             return scope;
+        case 2:
+            return scope.attr(attr);
+        default:
+            scope.attr(attr, val);
+            return el;
         }
     };
     can['import'] = function (moduleName) {
@@ -2973,7 +2977,7 @@ define('can/compute/read', ['can/util/util'], function (can) {
     var read = function (parent, reads, options) {
         options = options || {};
         var state = { foundObservable: false };
-        var cur = readValue(parent, 0, reads, options, state), type, prev, foundObs, readLength = reads.length, i = 0;
+        var cur = readValue(parent, 0, reads, options, state), type, prev, readLength = reads.length, i = 0;
         while (i < readLength) {
             prev = cur;
             for (var r = 0, readersLength = read.propertyReaders.length; r < readersLength; r++) {
@@ -2984,7 +2988,7 @@ define('can/compute/read', ['can/util/util'], function (can) {
                 }
             }
             i = i + 1;
-            cur = readValue(cur, i, reads, options, state);
+            cur = readValue(cur, i, reads, options, state, prev);
             type = typeof cur;
             if (i < reads.length && (cur === null || type !== 'function' && type !== 'object')) {
                 if (options.earlyExit) {
@@ -2994,18 +2998,6 @@ define('can/compute/read', ['can/util/util'], function (can) {
                     value: undefined,
                     parent: prev
                 };
-            }
-        }
-        if (typeof cur === 'function' && !(can.Construct && cur.prototype instanceof can.Construct) && !(can.route && cur === can.route)) {
-            if (options.isArgument) {
-                if (!cur.isComputed && options.proxyMethods !== false) {
-                    cur = can.proxy(cur, prev);
-                }
-            } else {
-                if (cur.isComputed && !foundObs && options.foundObservable) {
-                    options.foundObservable(cur, i);
-                }
-                cur = cur.call(prev);
             }
         }
         if (cur === undefined) {
@@ -3018,20 +3010,24 @@ define('can/compute/read', ['can/util/util'], function (can) {
             parent: prev
         };
     };
-    var readValue = function (value, index, reads, options, state) {
+    var readValue = function (value, index, reads, options, state, prev) {
         for (var i = 0, len = read.valueReaders.length; i < len; i++) {
             if (read.valueReaders[i].test(value, index, reads, options)) {
-                value = read.valueReaders[i].read(value, index, reads, options, state);
+                value = read.valueReaders[i].read(value, index, reads, options, state, prev);
             }
         }
         return value;
     };
     read.valueReaders = [
         {
+            name: 'compute',
             test: function (value, i, reads, options) {
-                return value && value.isComputed && (!options.isArgument && i < reads.length);
+                return value && value.isComputed;
             },
             read: function (value, i, reads, options, state) {
+                if (options.isArgument && i === reads.length) {
+                    return value;
+                }
                 if (!state.foundObservable && options.foundObservable) {
                     options.foundObservable(value, i);
                     state.foundObservable = true;
@@ -3040,17 +3036,22 @@ define('can/compute/read', ['can/util/util'], function (can) {
             }
         },
         {
+            name: 'function',
             test: function (value, i, reads, options) {
                 var type = typeof value;
-                return i < reads.length && type === 'function' && options.executeAnonymousFunctions && !(can.Construct && value.prototype instanceof can.Construct);
+                return type === 'function' && !value.isComputed && (options.executeAnonymousFunctions || options.isArgument && i === reads.length) && !(can.Construct && value.prototype instanceof can.Construct) && !(can.route && value === can.route);
             },
-            read: function (value) {
-                return value();
+            read: function (value, i, reads, options, state, prev) {
+                if (options.isArgument && i === reads.length) {
+                    return options.proxyMethods !== false ? can.proxy(value, prev) : value;
+                }
+                return value.call(prev);
             }
         }
     ];
     read.propertyReaders = [
         {
+            name: 'map',
             test: can.isMapLike,
             read: function (value, prop, index, options, state) {
                 if (!state.foundObservable && options.foundObservable) {
@@ -3071,6 +3072,7 @@ define('can/compute/read', ['can/util/util'], function (can) {
             }
         },
         {
+            name: 'promise',
             test: function (value) {
                 return can.isPromise(value);
             },
@@ -3113,6 +3115,7 @@ define('can/compute/read', ['can/util/util'], function (can) {
             }
         },
         {
+            name: 'object',
             test: function () {
                 return true;
             },
@@ -3125,6 +3128,22 @@ define('can/compute/read', ['can/util/util'], function (can) {
             }
         }
     ];
+    read.write = function (parent, key, value, options) {
+        options = options || {};
+        if (can.isMapLike(parent)) {
+            if (!options.isArgument && parent._data && parent._data[key] && parent._data[key].isComputed) {
+                return parent._data[key](value);
+            } else {
+                return parent.attr(key, value);
+            }
+        }
+        if (parent[key] && parent[key].isComputed) {
+            return parent[key](value);
+        }
+        if (typeof parent === 'object') {
+            parent[key] = value;
+        }
+    };
     return read;
 });
 /*can@2.2.1#compute/proto_compute*/
@@ -3516,6 +3535,7 @@ define('can/compute/proto_compute', [
         });
     };
     can.Compute.read = read;
+    can.Compute.set = read.write;
     can.Compute.truthy = function (compute) {
         return new can.Compute(function () {
             var res = compute.get();
@@ -3524,17 +3544,6 @@ define('can/compute/proto_compute', [
             }
             return !!res;
         });
-    };
-    can.Compute.set = function (parent, key, value) {
-        if (can.isMapLike(parent)) {
-            return parent.attr(key, value);
-        }
-        if (parent[key] && parent[key].isComputed) {
-            return parent[key](value);
-        }
-        if (typeof parent === 'object') {
-            parent[key] = value;
-        }
     };
     return can.Compute;
 });
@@ -3640,21 +3649,17 @@ define('can/view/scope/scope', [
                 this.__cache = {};
             },
             attr: function (key, value) {
-                var previousReads = can.__clearReading(), res = this.read(key, {
+                var previousReads = can.__clearReading(), options = {
                         isArgument: true,
                         returnObserveMethods: true,
                         proxyMethods: false
-                    });
+                    }, res = this.read(key, options);
                 if (arguments.length === 2) {
-                    var lastIndex = key.lastIndexOf('.'), readKey = lastIndex !== -1 ? key.substring(0, lastIndex) : '.', obj = this.read(readKey, {
-                            isArgument: true,
-                            returnObserveMethods: true,
-                            proxyMethods: false
-                        }).value;
+                    var lastIndex = key.lastIndexOf('.'), readKey = lastIndex !== -1 ? key.substring(0, lastIndex) : '.', obj = this.read(readKey, options).value;
                     if (lastIndex !== -1) {
                         key = key.substring(lastIndex + 1, key.length);
                     }
-                    can.compute.set(obj, key, value);
+                    can.compute.set(obj, key, value, options);
                 }
                 can.__setReading(previousReads);
                 return res.value;
@@ -3676,7 +3681,7 @@ define('can/view/scope/scope', [
                                 } else if (rootReads.length) {
                                     var last = rootReads.length - 1;
                                     var obj = rootReads.length ? can.compute.read(rootObserve, rootReads.slice(0, last)).value : rootObserve;
-                                    can.compute.set(obj, rootReads[last], newVal);
+                                    can.compute.set(obj, rootReads[last], newVal, options);
                                 }
                             } else {
                                 if (rootObserve) {
@@ -5340,17 +5345,32 @@ define('can/view/stache/mustache_core', [
                         };
                     }
                 } else if (mode === '#' || mode === '^') {
+                    var valueAndLength = new can.Compute(function () {
+                            var value;
+                            if (can.isFunction(name) && name.isComputed) {
+                                value = name();
+                            } else {
+                                value = name;
+                            }
+                            var len, arrayLike = utils.isArrayLike(value), isObserveList;
+                            if (arrayLike) {
+                                isObserveList = utils.isObserveLike(value);
+                                len = isObserveList ? value.attr('length') : value.length;
+                            }
+                            return {
+                                value: value,
+                                length: len,
+                                isObserveList: isObserveList,
+                                isArrayLike: arrayLike
+                            };
+                        });
                     convertToScopes(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer);
                     return function () {
-                        var value;
-                        if (can.isFunction(name) && name.isComputed) {
-                            value = name();
-                        } else {
-                            value = name;
-                        }
-                        if (utils.isArrayLike(value)) {
-                            var isObserveList = utils.isObserveLike(value);
-                            if (isObserveList ? value.attr('length') : value.length) {
+                        var data = valueAndLength.get();
+                        var value = data.value;
+                        if (data.isArrayLike) {
+                            var isObserveList = data.isObserveList;
+                            if (data.length) {
                                 return (stringOnly ? getItemsStringContent : getItemsFragContent)(value, isObserveList, helperOptions, options);
                             } else {
                                 return helperOptions.inverse(scope, options);
@@ -5591,7 +5611,7 @@ define('can/view/bindings/bindings', [
                         '@element': $el,
                         '@event': ev,
                         '@viewModel': viewModel,
-                        '@scope': viewModel,
+                        '@scope': data.scope,
                         '@context': data.scope._context
                     });
                 if (!can.isEmptyObject(attrInfo.hash)) {
@@ -5599,7 +5619,7 @@ define('can/view/bindings/bindings', [
                     can.each(attrInfo.hash, function (val, key) {
                         if (val && val.hasOwnProperty('get')) {
                             var s = !val.get.indexOf('@') ? localScope : data.scope;
-                            hash[key] = s.read(val.get, { isArgument: true }).value;
+                            hash[key] = s.read(val.get, {}).value;
                         } else {
                             hash[key] = val;
                         }
@@ -5612,7 +5632,7 @@ define('can/view/bindings/bindings', [
                         arg = attrInfo.args[i];
                         if (arg && arg.hasOwnProperty('get')) {
                             var s = !arg.get.indexOf('@') ? localScope : data.scope;
-                            args.unshift(s.read(arg.get, { isArgument: true }).value);
+                            args.unshift(s.read(arg.get, {}).value);
                         } else {
                             args.unshift(arg);
                         }
@@ -5880,7 +5900,7 @@ define('can/view/mustache/mustache', [
                                 end: false
                             };
                         content = can.trim(content);
-                        if (content.length && (mode = content.match(/^([#^\/]|else$)/))) {
+                        if (content.length && (mode = content.match(/^([#^/]|else$)/))) {
                             mode = mode[0];
                             switch (mode) {
                             case '#':
@@ -6358,6 +6378,7 @@ define('can/component/component', [
                 }
                 this.scope = this.viewModel = componentScope;
                 can.data(can.$(el), 'scope', this.scope);
+                can.data(can.$(el), 'viewModel', this.scope);
                 var renderedScope = lexicalContent ? this.scope : hookupOptions.scope.add(this.scope), options = { helpers: {} };
                 can.each(this.helpers || {}, function (val, prop) {
                     if (can.isFunction(val)) {
@@ -6487,24 +6508,6 @@ define('can/component/component', [
                 this._bindings.readyComputes = {};
             }
         });
-    can.scope = can.viewModel = function (el, attr, val) {
-        el = can.$(el);
-        var scope = can.data(el, 'scope');
-        if (!scope) {
-            scope = new can.Map();
-            can.data(el, 'scope', scope);
-        }
-        switch (arguments.length) {
-        case 0:
-        case 1:
-            return scope;
-        case 2:
-            return scope.attr(attr);
-        default:
-            scope.attr(attr, val);
-            return el;
-        }
-    };
     var $ = can.$;
     if ($.fn) {
         $.fn.scope = $.fn.viewModel = function () {
@@ -7271,8 +7274,3 @@ define('can/control/route/route', [
     };
     return can;
 });
-/*[global-shim-end]*/
-(function (){
-	window._define = window.define;
-	window.define = window.define.orig;
-})();

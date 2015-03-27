@@ -2,7 +2,7 @@
  * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 24 Mar 2015 22:13:03 GMT
+ * Fri, 27 Mar 2015 15:59:45 GMT
  * Licensed MIT
  */
 
@@ -586,7 +586,7 @@ steal("can/util", "can/map", "can/map/bubble.js",function (can, Map, bubble) {
 			 * - _length_ The current length of the list.
 			 * If events were batched when the _length_ event was triggered, _length_
 			 * will have the length of the list when `stopBatch` was called. Because
-			 * of this, you may recieve multiple _length_ events with the same
+			 * of this, you may receive multiple _length_ events with the same
 			 * _length_ parameter.
 			 *
 			 * Here is a concrete tour through the _length_ event handler's arguments:
@@ -656,14 +656,14 @@ steal("can/util", "can/map", "can/map/bubble.js",function (can, Map, bubble) {
 			 * @description Add elements to the end of a list.
 			 * @signature `list.push(...elements)`
 			 *
-			 * `push` adds elements onto the end of a List.]
+			 * `push` adds elements onto the end of a List.
 			 *
 			 * @param {*} elements the elements to add to the List
 			 *
 			 * @return {Number} the new length of the List
 			 *
 			 * @body
-			 * `push` is fairly straightforward:
+			 * `push` adds elements onto the end of a List here is an example:
 			 *
 			 * @codestart
 			 * var list = new can.List(['Alice']);
@@ -773,24 +773,22 @@ steal("can/util", "can/map", "can/map/bubble.js",function (can, Map, bubble) {
 			 * @description Remove an element from the end of a List.
 			 * @signature `list.pop()`
 			 *
-			 * `push` removes an element from the end of a List.
+			 * `pop` removes an element from the end of a List.
 			 *
 			 * @return {*} the element just popped off the List, or `undefined` if the List was empty
 			 *
 			 * @body
 			 * `pop` is the opposite action from `[can.List.push push]`:
 			 *
-			 * @codestart
-			 * var list = new can.List(['Alice']);
-			 *
-			 * list.push('Bob', 'Eve');
+			 * ```
+			 * var list = new can.List(['Alice', 'Bob', 'Eve']);
 			 * list.attr(); // ['Alice', 'Bob', 'Eve']
 			 *
 			 * list.pop(); // 'Eve'
 			 * list.pop(); // 'Bob'
 			 * list.pop(); // 'Alice'
 			 * list.pop(); // undefined
-			 * @codeend
+			 * ```
 			 *
 			 * ## Events
 			 *

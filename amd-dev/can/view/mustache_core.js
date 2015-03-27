@@ -2,7 +2,7 @@
  * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 24 Mar 2015 22:13:03 GMT
+ * Fri, 27 Mar 2015 15:59:45 GMT
  * Licensed MIT
  */
 
@@ -184,17 +184,32 @@ define([
                         };
                     }
                 } else if (mode === '#' || mode === '^') {
+                    var valueAndLength = new can.Compute(function () {
+                            var value;
+                            if (can.isFunction(name) && name.isComputed) {
+                                value = name();
+                            } else {
+                                value = name;
+                            }
+                            var len, arrayLike = utils.isArrayLike(value), isObserveList;
+                            if (arrayLike) {
+                                isObserveList = utils.isObserveLike(value);
+                                len = isObserveList ? value.attr('length') : value.length;
+                            }
+                            return {
+                                value: value,
+                                length: len,
+                                isObserveList: isObserveList,
+                                isArrayLike: arrayLike
+                            };
+                        });
                     convertToScopes(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer);
                     return function () {
-                        var value;
-                        if (can.isFunction(name) && name.isComputed) {
-                            value = name();
-                        } else {
-                            value = name;
-                        }
-                        if (utils.isArrayLike(value)) {
-                            var isObserveList = utils.isObserveLike(value);
-                            if (isObserveList ? value.attr('length') : value.length) {
+                        var data = valueAndLength.get();
+                        var value = data.value;
+                        if (data.isArrayLike) {
+                            var isObserveList = data.isObserveList;
+                            if (data.length) {
                                 return (stringOnly ? getItemsStringContent : getItemsFragContent)(value, isObserveList, helperOptions, options);
                             } else {
                                 return helperOptions.inverse(scope, options);

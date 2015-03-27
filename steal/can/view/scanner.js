@@ -2,7 +2,7 @@
  * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 24 Mar 2015 22:13:03 GMT
+ * Fri, 27 Mar 2015 15:59:45 GMT
  * Licensed MIT
  */
 
@@ -96,9 +96,6 @@ steal('can/view', './elements', "can/view/callbacks",function (can, elements, vi
 	 * @param {{text: can.view.Scanner.text, tokens: Array<can.view.Scanner.token>, helpers: Array<can.view.Scanner.helpers>}}
 	 */
 	//
-	/**
-	 * @typedef {{0:String,}}
-	 */
 
 	can.view.Scanner = Scanner = function (options) {
 		// Set options on self
@@ -123,7 +120,7 @@ steal('can/view', './elements', "can/view/callbacks",function (can, elements, vi
 		this.tokenComplex = [];
 		this.tokenMap = {};
 		for (var i = 0, token; token = this.tokens[i]; i++) {
-			/**
+			/*
 			 * Token data structure (complex token and rescan function are optional):
 			 * [
 			 *	"token name",

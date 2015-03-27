@@ -2,7 +2,7 @@
  * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 24 Mar 2015 22:13:03 GMT
+ * Fri, 27 Mar 2015 15:59:45 GMT
  * Licensed MIT
  */
 
@@ -231,11 +231,9 @@ steal('can/util', 'can/list', function () {
 			 */
 			unshift: 0
 		},
-		/**
-		 * adds a method where
-		 * @param where items in the array should be added
-		 * @param name method name
-		 */
+		// adds a method where
+		// @param where items in the array should be added
+		// @param name method name
 		function (where, name) {
 			var proto = can.List.prototype,
 				old = proto[name];

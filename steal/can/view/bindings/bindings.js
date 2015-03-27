@@ -2,7 +2,7 @@
  * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 24 Mar 2015 22:13:03 GMT
+ * Fri, 27 Mar 2015 15:59:45 GMT
  * Licensed MIT
  */
 
@@ -215,7 +215,7 @@ steal("can/util", "can/view/stache/mustache_core.js", "can/view/callbacks", "can
 					"@element": $el,
 					"@event": ev,
 					"@viewModel": viewModel,
-					"@scope": viewModel,
+					"@scope": data.scope,
 					"@context": data.scope._context
 				});
 
@@ -228,9 +228,7 @@ steal("can/util", "can/view/stache/mustache_core.js", "can/view/callbacks", "can
 					can.each(attrInfo.hash, function(val, key) {
 						if (val && val.hasOwnProperty("get")) {
 							var s = !val.get.indexOf("@") ? localScope : data.scope;
-							hash[key] = s.read(val.get, {
-								isArgument: true
-							}).value;
+							hash[key] = s.read(val.get, {}).value;
 						} else {
 							hash[key] = val;
 						}
@@ -246,9 +244,7 @@ steal("can/util", "can/view/stache/mustache_core.js", "can/view/callbacks", "can
 						arg = attrInfo.args[i];
 						if (arg && arg.hasOwnProperty("get")) {
 							var s = !arg.get.indexOf("@") ? localScope : data.scope;
-							args.unshift(s.read(arg.get, {
-								isArgument: true
-							}).value);
+							args.unshift(s.read(arg.get, {}).value);
 						} else {
 							args.unshift(arg);
 						}

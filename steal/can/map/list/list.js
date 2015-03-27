@@ -2,7 +2,7 @@
  * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 24 Mar 2015 22:13:03 GMT
+ * Fri, 27 Mar 2015 15:59:45 GMT
  * Licensed MIT
  */
 
@@ -87,7 +87,7 @@ steal('can/util', 'can/map', 'can/list', 'can/compute', function (can) {
 			});
 			return mapped;
 		}
-		/** TODO
+		/* TODO
 		,
 
 		every : function() {

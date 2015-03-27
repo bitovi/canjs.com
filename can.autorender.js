@@ -2,11 +2,11 @@
  * CanJS - 2.2.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 24 Mar 2015 22:13:03 GMT
+ * Fri, 27 Mar 2015 15:59:45 GMT
  * Licensed MIT
  */
 
-/*[global-shim-start]*/
+/*[global-shim]*/
 (function (exports, global){
 	var origDefine = global.define;
 
@@ -22,8 +22,7 @@
 		}
 		return cur;
 	};
-	var modules = (global.define && global.define.modules) ||
-		(global._define && global._define.modules) || {};
+	var modules = global.define && global.define.modules || {};
 	var ourDefine = global.define = function(moduleName, deps, callback){
 		var module;
 		if(typeof deps === "function") {
@@ -56,7 +55,6 @@
 		// Favor CJS module.exports over the return value
 		modules[moduleName] = module && module.exports ? module.exports : result;
 	};
-	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
 	global.System = {
@@ -105,7 +103,7 @@ define('can/view/autorender/autorender', ['can/util/util'], function (can) {
         }
     }
     function setupScope(el) {
-        var scope = can.scope(el);
+        var scope = can.viewModel(el);
         can.each(el.attributes || [], function (attr) {
             setAttr(el, attr.name, scope);
         });
@@ -147,8 +145,3 @@ define('can/view/autorender/autorender', ['can/util/util'], function (can) {
     };
     return can.autorender;
 });
-/*[global-shim-end]*/
-(function (){
-	window._define = window.define;
-	window.define = window.define.orig;
-})();
