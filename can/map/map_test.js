@@ -1,7 +1,7 @@
 /* jshint asi:true*/
-steal("can/map", "can/compute", "can/test", "can/list", function(){
+steal("can/map", "can/compute", "can/test", "can/list", "steal-qunit", function(){
 
-	module('can/map');
+	QUnit.module('can/map');
 
 	test("Basic Map", 4, function () {
 
@@ -287,5 +287,43 @@ steal("can/map", "can/compute", "can/test", "can/list", function(){
 		var m = new Map();
 
 		equal(m.attr("Todo"), Constructor);
+	});
+
+	test('_bindings count maintained after calling .off() on undefined property (#1490) ', function () {
+
+		var map = new can.Map({
+			test: 1
+		});
+
+		map.on('test', can.noop);
+
+		equal(map._bindings, 1, 'The number of bindings is correct');
+
+		map.off('undefined_property');
+
+		equal(map._bindings, 1, 'The number of bindings is still correct');
+	});
+
+	test('Creating map in compute dispatches all events properly', function() {
+		expect(2);
+
+		var source = can.compute(0);
+
+		var c = can.compute(function() {
+			var map = new can.Map();
+			source();
+			map.bind("foo", function(){
+				ok(true);
+			});
+			map.attr({foo: "bar"}); //DISPATCH
+
+			return map;
+		});
+
+		c.bind("change",function(){});
+
+		can.batch.start();
+		source(1);
+		can.batch.stop();
 	});
 });

@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -742,6 +750,68 @@
 			
 			
 		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.stache.helpers.is.html" 
+							data-search="{{#is expr1 expr2}}">
+							{{#is expr1 expr2}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>Plugins</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="module" 
+							href="can|view|stache|system.html" 
+							data-search="system">
+							system
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="module" 
+							href="can|view|stache|system.import.html" 
+							data-search="&lt;can-import&gt;">
+							&lt;can-import&gt;
+						</a>
+						
+					</li>
+				
+			
+			
+		
 	</ul>
 
 					</li>
@@ -803,9 +873,9 @@
 </div>
 
 <ul class="links">
-    
-        <li><a href="../docco/view/stache/mustache_core.html">docco</a></li>
-    
+	
+		<li><a href="../docco/view/stache/mustache_core.html">docco</a></li>
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/view/stache/doc/stashe.md">source</a></li>
 	
@@ -971,7 +1041,7 @@ frag //-&gt; &lt;my-tag greeting='{message}'&gt;&lt;h1&gt;Hi&lt;/h1&gt;&lt;/my-t
 <p>If the key was not wrapped, the template would render:</p>
 <pre><code>frag //-&gt; &lt;my-tag greeting='message'&gt;&lt;h1&gt;message&lt;/h1&gt;&lt;/my-tag&gt;
 </code></pre>
-<p>Because the attribute value would be passed as the value of <code>gretting</code>.</p>
+<p>Because the attribute value would be passed as the value of <code>greeting</code>.</p>
 <h3>Section renderers return documentFragments</h3>
 <p>A <a href="can.mustache.sectionRenderer.html">Mustache section renderer</a> called
 like <code>options.fn()</code> or <code>options.inverse()</code> would always return a String. For example,
@@ -983,7 +1053,7 @@ the following would wrap the <code>.fn</code> section in an <code>&lt;h1&gt;</co
 var template = can.mustache(&quot;{{#wrapH1}}Hi There!{{/#wrapH1}}&quot;);
 template() //-&gt; &lt;h1&gt;Hi There&lt;/h1&gt;
 </code></pre>
-<p><code>can.stache</code>s <a href="can.stache.sectionRenderer.html">section renderers</a> return documentFragments when sections
+<p><code>can.stache</code>'s <a href="can.stache.sectionRenderer.html">section renderers</a> return documentFragments when sections
 are not contained within an html element. This means the result of the previous helper would be:</p>
 <pre><code>&lt;h1&gt;[object DocumentFragment]&lt;/h1&gt;
 </code></pre>
@@ -1018,19 +1088,13 @@ can.view.tag(&quot;element-callback&quot;, function(el){
 
 		
 		<section class="api">
-			<div class='group_1'><div class='small-signature'><a href="can.stache.tags.escaped.html" class="sig"><code class='prettyprint'>{{key}}</code></a><p>Insert the value of the <a href="can.stache.key.html">key</a> into the output of the template.
-</p></div></div><div class='group_1'><div class='small-signature'><a href="can.stache.tags.unescaped.html" class="sig"><code class='prettyprint'>{{{key}}}</code></a><p>Behaves just like <a href="can.stache.tags.escaped.html">{{key}}</a> and <a href="can.stache.helpers.helper.html">{{helper}}</a> but does not
-escape the result.
-</p></div></div><div class='group_1'><div class='small-signature'><a href="can.stache.tags.unescaped2.html" class="sig"><code class='prettyprint'>{{&amp;key}}</code></a><p>The {{&amp;key}} tag is an alias for <a href="can.stache.tags.unescaped.html">{{{key}}}</a>, behaving just
+			<div class='group_1'><div class='small-signature'><a href="can.stache.tags.escaped.html" class="sig"><code class='prettyprint'>{{key}}</code></a><p>Insert the value of the <a href="can.stache.key.html">key</a> into the output of the template.</p></div></div><div class='group_1'><div class='small-signature'><a href="can.stache.tags.unescaped.html" class="sig"><code class='prettyprint'>{{{key}}}</code></a><p>Behaves just like <a href="can.stache.tags.escaped.html">{{key}}</a> and <a href="can.stache.helpers.helper.html">{{helper}}</a> but does not
+escape the result.</p></div></div><div class='group_1'><div class='small-signature'><a href="can.stache.tags.unescaped2.html" class="sig"><code class='prettyprint'>{{&amp;key}}</code></a><p>The `{{&key}}` tag is an alias for <a href="can.stache.tags.unescaped.html">{{{key}}}</a>, behaving just
 like <a href="can.stache.tags.escaped.html">{{key}}</a> and <a href="can.stache.helpers.helper.html">{{helper}}</a> but does not
-escape the result.
-</p></div></div><div class='group_1'><div class='small-signature'><a href="can.stache.tags.section.html" class="sig"><code class='prettyprint'>{{#key}}BLOCK{{/key}}</code></a><p>Render blocks of text one or more times, depending
-on the value of the key in the current context.
-</p></div></div><div class='group_1'><div class='small-signature'><a href="can.stache.tags.close.html" class="sig"><code class='prettyprint'>{{/key}}</code></a><p>Ends a <a href="can.stache.tags.section.html">{{#key}}</a> or [can.stache.tags.sectionHelper {{#helper}}]
-block.
-</p></div></div><div class='group_1'><div class='small-signature'><a href="can.stache.tags.inverse.html" class="sig"><code class='prettyprint'>{{^key}}BLOCK{{/key}}</code></a><p>Render blocks of text if the value of the key
-is falsey. </p></div></div><div class='group_1'><div class='small-signature'><a href="can.stache.helpers.partial.html" class="sig"><code class='prettyprint'>{{&gt;key}}</code></a><p>Render another template within the current template.
-</p></div></div><div class='group_1'><div class='small-signature'><a href="can.stache.tags.comment.html" class="sig"><code class='prettyprint'>{{!key}}</code></a><p>The comment tag operates similarly to a &lt;!-- --&gt; tag in HTML. </p></div></div>
+escape the result.</p></div></div><div class='group_1'><div class='small-signature'><a href="can.stache.tags.section.html" class="sig"><code class='prettyprint'>{{#key}}BLOCK{{/key}}</code></a><p>Render blocks of text one or more times, depending
+on the value of the key in the current context.</p></div></div><div class='group_1'><div class='small-signature'><a href="can.stache.tags.close.html" class="sig"><code class='prettyprint'>{{/key}}</code></a><p>Ends a <a href="can.stache.tags.section.html">{{#key}}</a> or [can.stache.tags.sectionHelper {{#helper}}]
+block.</p></div></div><div class='group_1'><div class='small-signature'><a href="can.stache.tags.inverse.html" class="sig"><code class='prettyprint'>{{^key}}BLOCK{{/key}}</code></a><p>Render blocks of text if the value of the key
+is falsey. </p></div></div><div class='group_1'><div class='small-signature'><a href="can.stache.helpers.partial.html" class="sig"><code class='prettyprint'>{{&gt;key}}</code></a><p>Render another template within the current template.</p></div></div><div class='group_1'><div class='small-signature'><a href="can.stache.tags.comment.html" class="sig"><code class='prettyprint'>{{!key}}</code></a><p>The comment tag operates similarly to a `<!-- -->` tag in HTML. </p></div></div>
 		</section>
 		
 	
@@ -1088,7 +1152,7 @@ is falsey. </p></div></div><div class='group_1'><div class='small-signature'><a 
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.stache","description":"<p>Logic-less Handlebar and Mustache templates with live binding.</p>\n","title":"","release":"2.1","links":[{"href":"../docco/view/stache/mustache_core.html","title":"docco"}],"test":"can/view/stache/test/test.html","plugin":"can/view/stache","download":"http://canjs.us/release/latest/can.stache.js","signatures":[{"code":"can.stache(template)","description":"<p>Processes the template and returns a [can.view.renderer] function that renders the template\nwith data and local helpers.</p>\n","params":[{"types":[{"type":"String"}],"name":"template","description":"<p>The text of a mustache template.</p>\n"}],"returns":{"types":[{"type":"can.view.renderer"}],"description":"<p>A renderer function that returns a live document fragment\nthat can be inserted in the page.</p>\n"}}],"comment":" ","api":"can.stache.tags","src":"view/stache/doc/stashe.md"};
+		var docObject = {"type":"function","name":"can.stache","src":"view/stache/doc/stashe.md","description":"Logic-less Handlebar and Mustache templates with live binding.","title":"","parent":"canjs","release":"2.1","links":[{"href":"../docco/view/stache/mustache_core.html","title":"docco"}],"test":"can/view/stache/test/test.html","plugin":"can/view/stache","download":"http://canjs.us/release/latest/can.stache.js","signatures":[{"code":"can.stache(template)","description":"Processes the template and returns a [can.view.renderer] function that renders the template\nwith data and local helpers.","params":[{"types":[{"type":"String"}],"name":"template","description":"The text of a mustache template."}],"returns":{"types":[{"type":"can.view.renderer"}],"description":"A renderer function that returns a live document fragment\nthat can be inserted in the page."}}],"comment":" ","api":"can.stache.tags","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -1101,6 +1165,7 @@ is falsey. </p></div></div><div class='group_1'><div class='small-signature'><a 
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

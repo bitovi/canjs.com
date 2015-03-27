@@ -3,7 +3,7 @@
 // This file defines the `can-value` attribute for two-way bindings and the `can-EVENT` attribute 
 // for in template event bindings. These are usable in any mustache template, but mainly and documented 
 // for use within can.Component.
-steal("can/util", "can/view/mustache", "can/control", function (can) {
+steal("can/util", "can/view/stache/mustache_core.js", "can/view/callbacks", "can/control", "can/view/scope", function (can, mustacheCore) {
 	/**
 	 * @function isContentEditable
 	 * @hide
@@ -69,7 +69,7 @@ steal("can/util", "can/view/mustache", "can/control", function (can) {
 	// should be a string representing some value in the current scope to cross-bind to.
 	can.view.attr("can-value", function (el, data) {
 
-		var attr = removeCurly(el.getAttribute("can-value")),
+		var attr = can.trim(removeCurly(el.getAttribute("can-value"))),
 			// Turn the attribute passed in into a compute.  If the user passed in can-value="name" and the current 
 			// scope of the template is some object called data, the compute representing this can-value will be the 
 			// data.attr('name') property.
@@ -173,32 +173,102 @@ steal("can/util", "can/view/mustache", "can/control", function (can) {
 		// the attribute name is the function to call
 		var attributeName = data.attributeName,
 			// The event type to bind on is deteremined by whatever is after can-
-			// 
+			//
 			// For example, can-submit binds on the submit event.
 			event = attributeName.substr("can-".length),
-			// This is the method that the event will initially trigger. It will look up the method by the string name 
+			// This is the method that the event will initially trigger. It will look up the method by the string name
 			// passed in the attribute and call it.
 			handler = function (ev) {
-				// The attribute value, representing the name of the method to call (i.e. can-submit="foo" foo is the 
-				// name of the method)
-				var attr = removeCurly( el.getAttribute(attributeName) ),
-					scopeData = data.scope.read(attr, {
-						returnObserveMethods: true,
-						isArgument: true
+				var attrVal = el.getAttribute(attributeName);
+				if (!attrVal) { return; }
+				// mustacheCore.expressionData will read the attribute
+				// value and parse it identically to how mustache helpers
+				// get parsed.
+				var attrInfo = mustacheCore.expressionData(removeCurly(attrVal));
+
+				// We grab the first item and treat it as a method that
+				// we'll call.
+				var scopeData = data.scope.read(attrInfo.name.get, {
+					returnObserveMethods: true,
+					isArgument: true,
+					executeAnonymousFunctions: true
+				});
+
+				// We break out early if the first argument isn't available
+				// anywhere.
+
+				//!steal-remove-start
+				if (!scopeData.value) {
+					can.dev.warn("can/view/bindings: " + attributeName + " couldn't find method named " + attrInfo.name.get, {
+						element: el,
+						scope: data.scope
 					});
-				return scopeData.value.call(scopeData.parent, data.scope._context, can.$(this), ev);
+					return null;
+				}
+				//!steal-remove-end
+
+				var args = [];
+				var $el = can.$(this);
+				var viewModel = can.viewModel($el[0]);
+				var localScope = data.scope.add({
+					"@element": $el,
+					"@event": ev,
+					"@viewModel": viewModel,
+					"@scope": data.scope,
+					"@context": data.scope._context
+				});
+
+				// .expressionData() gives us a hash object representing
+				// any expressions inside the definition that look like
+				// foo=bar. If there's no hash keys, we'll omit this hash
+				// from our method arguments.
+				if (!can.isEmptyObject(attrInfo.hash)) {
+					var hash = {};
+					can.each(attrInfo.hash, function(val, key) {
+						if (val && val.hasOwnProperty("get")) {
+							var s = !val.get.indexOf("@") ? localScope : data.scope;
+							hash[key] = s.read(val.get, {}).value;
+						} else {
+							hash[key] = val;
+						}
+					});
+					args.unshift(hash);
+				}
+
+				// We go through each non-hash expression argument and
+				// prepend it to our argument list.
+				if (attrInfo.args.length) {
+					var arg;
+					for (var i = attrInfo.args.length-1; i >= 0; i--) {
+						arg = attrInfo.args[i];
+						if (arg && arg.hasOwnProperty("get")) {
+							var s = !arg.get.indexOf("@") ? localScope : data.scope;
+							args.unshift(s.read(arg.get, {}).value);
+						} else {
+							args.unshift(arg);
+						}
+					}
+				}
+				// If no arguments are provided, the method will simply
+				// receive the legacy arguments.
+				if (!args.length) {
+					// The arguments array includes extra args passed in to
+					// the event.
+					args = [data.scope._context, $el].concat(can.makeArray(arguments));
+				}
+				return scopeData.value.apply(scopeData.parent, args);
 			};
 
-		// This code adds support for special event types, like can-enter="foo". special.enter (or any special[event]) is 
-		// a function that returns an object containing an event and a handler. These are to be used for binding. For example, 
-		// when a user adds a can-enter attribute, we'll bind on the keyup event, and the handler performs special logic to 
+		// This code adds support for special event types, like can-enter="foo". special.enter (or any special[event]) is
+		// a function that returns an object containing an event and a handler. These are to be used for binding. For example,
+		// when a user adds a can-enter attribute, we'll bind on the keyup event, and the handler performs special logic to
 		// determine on keyup if the enter key was pressed.
 		if (special[event]) {
 			var specialData = special[event](data, el, handler);
 			handler = specialData.handler;
 			event = specialData.event;
 		}
-		// Bind the handler defined above to the element we're currently processing and the event name provided in this 
+		// Bind the handler defined above to the element we're currently processing and the event name provided in this
 		// attribute name (can-click="foo")
 		can.bind.call(el, event, handler);
 	});
@@ -237,13 +307,22 @@ steal("can/util", "can/view/mustache", "can/control", function (can) {
 			this.element[0].value = (val == null ? '' : val);
 		},
 		// If the input value changes, this will set the live bound data to reflect the change.
+			// If the input value changes, this will set the live bound data to reflect the change.
 		"change": function () {
 			// This may happen in some edgecases, esp. with selects that are not in DOM after the timeout has fired
 			if (!this.element) {
 				return;
 			}
+			var el = this.element[0];
+
 			// Set the value of the attribute passed in to reflect what the user typed
-			this.options.value(this.element[0].value);
+			this.options.value(el.value);
+			var newVal = this.options.value();
+
+			// If the newVal isn't the same as the input, set it's value
+			if(el.value !== newVal) {
+				el.value = newVal;
+			}
 		}
 	}),
 	// ### Checked 
@@ -265,7 +344,7 @@ steal("can/util", "can/view/mustache", "can/control", function (can) {
 						trueValue = this.options.trueValue || true;
 					// If `can-true-value` attribute was set, check if the value is equal to that string value, and set 
 					// the checked property based on their equality.
-					this.element[0].checked = (value === trueValue);
+					this.element[0].checked = (value == trueValue);
 				}
 				// Its a radio input type
 				else {
@@ -299,7 +378,8 @@ steal("can/util", "can/view/mustache", "can/control", function (can) {
 		Multiselect = Value.extend({
 			init: function () {
 				this.delimiter = ";";
-				this.set();
+				// Call `set` after this thread so the rest of the element can finish rendering.
+				setTimeout(can.proxy(this.set, this), 1);
 			},
 			// Since this control extends Value (above), the set method will be called when the value compute changes (and on init).
 			set: function () {

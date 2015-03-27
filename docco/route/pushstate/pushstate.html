@@ -340,7 +340,8 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			setURL: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(path)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			setURL: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(path, changed)</span> </span>{
+				<span class="hljs-keyword">var</span> method = <span class="hljs-string">"pushState"</span>;</pre></div></div>
             
         </li>
         
@@ -358,7 +359,22 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
             <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (includeHash &amp;&amp; path.indexOf(<span class="hljs-string">"#"</span>) === -<span class="hljs-number">1</span> &amp;&amp; <span class="hljs-built_in">window</span>.location.hash) {
 					path += <span class="hljs-built_in">window</span>.location.hash;
 				}
-				<span class="hljs-built_in">window</span>.history.pushState(<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, can.route._call(<span class="hljs-string">"root"</span>) + path);
+				<span class="hljs-keyword">if</span>(replaceStateAttrs.length &gt; <span class="hljs-number">0</span>) {
+					<span class="hljs-keyword">var</span> toRemove = [];
+					<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, l = changed.length; i &lt; l; i++) {
+						<span class="hljs-keyword">if</span>(can.inArray(changed[i], replaceStateAttrs) !== -<span class="hljs-number">1</span>) {
+							method = <span class="hljs-string">"replaceState"</span>;
+						}
+						<span class="hljs-keyword">if</span>(can.inArray(changed[i], replaceStateAttrs.once) !== -<span class="hljs-number">1</span>) {
+							toRemove.push(changed[i]);
+						}
+					}
+					<span class="hljs-keyword">if</span>(toRemove.length &gt; <span class="hljs-number">0</span>) {
+						removeAttrs(replaceStateAttrs, toRemove);
+						removeAttrs(replaceStateAttrs.once, toRemove);
+					}
+				}
+				<span class="hljs-built_in">window</span>.history[method](<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, can.route._call(<span class="hljs-string">"root"</span>) + path);
 			}
 		};</pre></div></div>
             
@@ -543,6 +559,14 @@ freezes phantom.</p>
 					<span class="hljs-keyword">return</span> root.substr(domain.length);
 				}
 				<span class="hljs-keyword">return</span> root;
+			},
+			removeAttrs = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(arr, attrs)</span> </span>{
+				<span class="hljs-keyword">var</span> index;
+				<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = attrs.length - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+					<span class="hljs-keyword">if</span>( (index = can.inArray(attrs[i], arr)) !== -<span class="hljs-number">1</span>) {
+						arr.splice(index, <span class="hljs-number">1</span>);
+					}
+				}
 			},</pre></div></div>
             
         </li>
@@ -588,7 +612,7 @@ freezes phantom.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			includeHash = <span class="hljs-literal">false</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			includeHash = <span class="hljs-literal">false</span>,</pre></div></div>
             
         </li>
         
@@ -599,11 +623,44 @@ freezes phantom.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
+              <p>Attributes that will cause replaceState to be called</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			replaceStateAttrs = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
               <p>Enables plugin, by default <code>hashchange</code> binding is used.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>		can.route.defaultBinding = <span class="hljs-string">"pushstate"</span>;
+
+		can.extend(can.route, {
+			replaceStateOn: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+				<span class="hljs-keyword">var</span> attrs = can.makeArray(<span class="hljs-built_in">arguments</span>);
+				<span class="hljs-built_in">Array</span>.prototype.push.apply(replaceStateAttrs, attrs);
+			},
+			replaceStateOnce: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+				<span class="hljs-keyword">var</span> attrs = can.makeArray(<span class="hljs-built_in">arguments</span>);
+				replaceStateAttrs.once = can.makeArray(replaceStateAttrs.once);
+
+				<span class="hljs-built_in">Array</span>.prototype.push.apply(replaceStateAttrs.once, attrs);
+				can.route.replaceStateOn.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+			},
+			replaceStateOff: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+				<span class="hljs-keyword">var</span> attrs = can.makeArray(<span class="hljs-built_in">arguments</span>);
+				removeAttrs(replaceStateAttrs, attrs);
+			}
+		});
 	}
 
 	<span class="hljs-keyword">return</span> can;

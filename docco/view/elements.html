@@ -63,7 +63,9 @@
             
             <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">"can/view"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
 
-	<span class="hljs-keyword">var</span> selectsCommentNodes = (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+	<span class="hljs-keyword">var</span> doc = <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">document</span> !== <span class="hljs-string">"undefined"</span> ? <span class="hljs-built_in">document</span>: <span class="hljs-literal">null</span>;
+
+	<span class="hljs-keyword">var</span> selectsCommentNodes = doc &amp;&amp; (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
 		<span class="hljs-keyword">return</span> can.$(<span class="hljs-built_in">document</span>.createComment(<span class="hljs-string">'~'</span>)).length === <span class="hljs-number">1</span>;
 	})();
 
@@ -76,7 +78,7 @@
 	 */</span>
 	<span class="hljs-keyword">var</span> elements = {
 		tagToContentPropMap: {
-			option: <span class="hljs-string">'textContent'</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'option'</span>) ? <span class="hljs-string">'textContent'</span> : <span class="hljs-string">'innerText'</span>,
+			option: ( doc &amp;&amp; <span class="hljs-string">"textContent"</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"option"</span>) ) ? <span class="hljs-string">"textContent"</span> : <span class="hljs-string">"innerText"</span>,
 			textarea: <span class="hljs-string">'value'</span>
 		},
 		<span class="hljs-comment">/**

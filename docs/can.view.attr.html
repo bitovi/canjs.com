@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -216,21 +224,15 @@
 	<ul class="primary-grouping">
 		
 			
-				
-					
-					<li class="heading search-container">
-						<span>plugins</span>
-						
-	<ul >
 		
 			
 				
 				
 					<li class="search-container parent ">
-						<a 	class="page" 
-							href="can.view.modifiers.html" 
-							data-search="jQuery modifiers">
-							jQuery modifiers
+						<a 	class="property" 
+							href="can.view.elements.html" 
+							data-search="can.view.elements">
+							elements
 						</a>
 						
 					</li>
@@ -238,13 +240,8 @@
 			
 			
 		
-	</ul>
-
-					</li>
-					
-				
-				
 			
+		
 			
 		
 			
@@ -412,21 +409,6 @@
 			
 				
 				
-					<li class="search-container parent ">
-						<a 	class="property" 
-							href="can.view.nodeLists.html" 
-							data-search="can.view.nodeLists">
-							nodeLists
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
 					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.view.register.html" 
@@ -481,13 +463,31 @@
 			
 		
 			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>plugins</span>
+						
+	<ul >
+		
+			
 				
 				
 					<li class="search-container parent ">
-						<a 	class="property" 
-							href="can.view.elements.html" 
-							data-search="can.view.elements">
-							elements
+						<a 	class="page" 
+							href="can.view.modifiers.html" 
+							data-search="jQuery modifiers">
+							jQuery modifiers
 						</a>
 						
 					</li>
@@ -496,19 +496,42 @@
 			
 		
 			
-		
+				
+				
+					<li class="search-container  ">
+						<a 	class="module" 
+							href="can|view|autorender.html" 
+							data-search="can.autorender">
+							can.autorender
+						</a>
+						
+					</li>
+				
+			
 			
 		
 			
-		
+				
+				
+					<li class="search-container  ">
+						<a 	class="module" 
+							href="can|view|autorender.can-autorender.html" 
+							data-search="can-autorender">
+							can-autorender
+						</a>
+						
+					</li>
+				
+			
 			
 		
+	</ul>
+
+					</li>
+					
+				
+				
 			
-		
-			
-		
-			
-		
 			
 		
 	</ul>
@@ -549,7 +572,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/view/doc/attr.md">source</a></li>
 	
@@ -640,7 +663,7 @@ specified html attribute. Typically it is used to mixin behavior (whereas
 <p>The following example adds a jQueryUI tooltip to any element that has
 a <code>tooltip</code> attribute like <code>&lt;div tooltip=&quot;Click to edit&quot;&gt;Name&lt;/div&gt;</code>.</p>
 <div class='demo_wrapper' data-demo-src='can/view/doc/tooltip.html'></div>
-## Listening to attribute changes
+<h2>Listening to attribute changes</h2>
 <p>In the previous example, the content of the tooltip was static. However,
 it's likely that the tooltip's value might change. For instance, the template
 might want to dynamically update the tooltip like:</p>
@@ -740,7 +763,7 @@ unbind the event handler when the element is <a href="can.events.removed.html">r
 });
 </code></pre>
 <div class='demo_wrapper' data-demo-src='can/view/doc/fade_in_when.html'></div>
-## When to call
+<h2>When to call</h2>
 <p><code>can.view.attr</code> must be called before a template is processed. When <a href="http://canjs.com/docs/can.view.html#sig_can_view_idOrUrl_">using <code>can.view</code> to create a renderer function</a>, <code>can.view.attr</code> must be called before the template is loaded, not simply before it is rendered.</p>
 <pre><code>    //Call can.view.attr first
     can.view.attr('tooltip', tooltipFunction);
@@ -809,7 +832,7 @@ unbind the event handler when the element is <a href="can.events.removed.html">r
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.view.static","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.view.attr","description":"<p>Register custom behavior for an attribute.</p>\n","title":"","signatures":[{"code":"can.view.attr( attributeName, attrHandler(el, attrData) )","description":"","params":[{"types":[{"type":"String"},{"type":"RegExp"}],"name":"attributeName","description":"<p>A lower-case attribute name or regular expression\nthat matches attribute names. Examples: <code>&quot;my-fill&quot;</code> or <code>/my-\\w/</code>.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"HTMLElement"}],"name":"el"},{"types":[{"type":"can.view.attrData"}],"name":"attrData"}]}],"name":"attrHandler","description":"<p>A function that adds custom behavior to <code>el</code>.</p>\n"}],"release":"2.1"}],"comment":" ","src":"view/doc/attr.md"};
+		var docObject = {"type":"function","name":"can.view.attr","src":"view/doc/attr.md","description":"Register custom behavior for an attribute.","title":"","parent":"can.view.static","signatures":[{"code":"can.view.attr( attributeName, attrHandler(el, attrData) )","description":"","params":[{"types":[{"type":"String"},{"type":"RegExp"}],"name":"attributeName","description":"A lower-case attribute name or regular expression\nthat matches attribute names. Examples: `\"my-fill\"` or `/my-\\w/`."},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"HTMLElement"}],"name":"el"},{"types":[{"type":"can.view.attrData"}],"name":"attrData"}]}],"name":"attrHandler","description":"A function that adds custom behavior to `el`."}],"release":"2.1"}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -822,6 +845,7 @@ unbind the event handler when the element is <a href="can.events.removed.html">r
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

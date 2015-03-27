@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -247,7 +255,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/view/stache/mustache_core.js">source</a></li>
 	
@@ -477,7 +485,7 @@
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"view/stache/mustache_core.js","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"makeEvaluator","params":[{"name":"scope","types":[{"type":"*"}]},{"name":"options","types":[{"type":"*"}]},{"name":"nodeList","types":[{"type":"*"}]},{"types":[{"type":"String"}],"name":"mode","description":"<p>Either null, #, ^. &gt; is handled elsewhere</p>\n"},{"types":[{"type":"Object","options":[]}],"name":"exprData","description":"<p>Data about what was in the mustache expression</p>\n"},{"types":[{"type":"renderer"}],"optional":true,"name":"truthyRenderer","description":"<p>Used to render a subsection</p>\n"},{"types":[{"type":"renderer"}],"optional":true,"name":"falseyRenderer","description":"<p>Used to render the inverse subsection</p>\n"},{"types":[{"type":"String"}],"optional":true,"name":"stringOnly","description":"<p>A flag to indicate that only strings will be returned by subsections.</p>\n"},{"types":[{"type":"can.view.Options"}],"name":"The","description":"<p>option helpers in which the expression is evaluated.</p>\n"}],"description":"<p>Given a mode and expresion data, returns a function that evaluates that expression.</p>\n","hide":true,"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"<p>An 'evaluator' function that evaluates the expression.</p>\n"},"src":"view/stache/mustache_core.js"};
+		var docObject = {"type":"function","name":"makeEvaluator","params":[{"name":"scope","types":[{"type":"*"}]},{"name":"options","types":[{"type":"*"}]},{"name":"nodeList","types":[{"type":"*"}]},{"types":[{"type":"String"}],"name":"mode","description":"Either null, #, ^. > is handled elsewhere"},{"types":[{"type":"Object","options":[]}],"name":"exprData","description":"Data about what was in the mustache expression"},{"types":[{"type":"renderer"}],"optional":true,"name":"truthyRenderer","description":"Used to render a subsection"},{"types":[{"type":"renderer"}],"optional":true,"name":"falseyRenderer","description":"Used to render the inverse subsection"},{"types":[{"type":"String"}],"optional":true,"name":"stringOnly","description":"A flag to indicate that only strings will be returned by subsections."},{"types":[{"type":"can.view.Options"}],"name":"The","description":"option helpers in which the expression is evaluated."}],"parent":"view/stache/mustache_core.js","src":"view/stache/mustache_core.js","line":171,"codeLine":183,"description":"Given a mode and expresion data, returns a function that evaluates that expression.","hide":true,"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"An 'evaluator' function that evaluates the expression."},"ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -490,6 +498,7 @@
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

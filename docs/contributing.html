@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -251,7 +259,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/contributing.md">source</a></li>
 	
@@ -367,20 +375,7 @@
 </ul>
 <h2>Documentation</h2>
 <p>If your changes affect the public API, please make relevant changes to the documentation. Documentation is found either inline or in markdown files in the respective directory. In order to view your changes in documentation you will need to run the <a href="https://github.com/bitovi/canjs.com">CanJS.com site</a> locally and regenerate the docs.</p>
-<h4>Note:</h4>
-<blockquote>
-<p><em>You will need to make sure that the <code>can</code> folder in your clone of <code>canjs.com</code> points to your local copy of CanJS where you made the documentation changes. This can be
-accomplished by replacing the <code>can</code> folder in your <code>canjs.com</code> clone with a symlink, using: <code>mv can can.submodule &amp;&amp; ln -s &lt;local path to canjs&gt; can</code>.</em></p>
-</blockquote>
-<pre><code>git clone git@github.com:bitovi/canjs.com.git
-cd canjs.com
-git checkout gh-pages
-git submodule update --init --recursive
-npm install
-grunt
-./js scripts/doc.js
-</code></pre>
-<p>Once the documentation is finished rendering, all the HTML files will be located in the <code>docs</code> folder. Open the documentation file you made changes to and make sure everything rendered correctly.</p>
+<p>Follow the instructions on <a href="https://github.com/bitovi/canjs.com/tree/gh-pages#setup">CanJS.com gh-pages branch</a> to generate documentation from your local copy of canjs.</p>
 <h2>Making a build</h2>
 <p>To make a build (standalone and AMD version) you will also need to have [<a href="http://nodejs.org/">NodeJS</a>, <a href="http://npmjs.org/">npm</a>, <a href="http://gruntjs.com/">Grunt</a> and all of the CanJS dev dependencies installed.</p>
 <h3>Getting Set Up</h3>
@@ -586,7 +581,7 @@ off JavaScriptMVC.  This page is for contributors after CanJS's launch. Thank yo
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"guides","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"page","name":"contributing","description":"","title":"How to Contribute","order":4,"comment":" ","src":"contributing.md"};
+		var docObject = {"type":"page","name":"contributing","src":"contributing.md","description":"","title":"How to Contribute","parent":"guides","order":4,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -599,6 +594,7 @@ off JavaScriptMVC.  This page is for contributors after CanJS's launch. Thank yo
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

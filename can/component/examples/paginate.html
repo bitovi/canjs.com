@@ -65,7 +65,7 @@
     <page-count page='paginate.page' count='paginate.pageCount'></page-count>
   </app>
 </script>
-<script src="../../lib/steal/steal.js"></script>
+<script src="../../node_modules/steal/steal.js" main="@empty"></script>
 <script type='text/javascript'> 
 steal("can/util", "can/component", "can/map/setter", "can/util/fixture",
   "can/model", function (can) {
@@ -134,7 +134,7 @@ var Paginate = can.Map.extend({
 
 can.Component.extend({
   tag: "app",
-  scope: function () {
+  viewModel: function () {
     return {
       paginate: new Paginate({
         limit: 5
@@ -159,7 +159,7 @@ can.Component.extend({
 
 can.Component.extend({
   tag: "grid",
-  scope: {
+  viewModel: {
     items: [],
     waiting: true
   },
@@ -168,23 +168,23 @@ can.Component.extend({
     init: function () {
       this.update();
     },
-    "{scope} deferreddata": "update",
+    "{viewModel} deferreddata": "update",
     update: function () {
-      var deferred = this.scope.attr('deferreddata'),
-        scope = this.scope,
+      var deferred = this.viewModel.attr('deferreddata'),
+        viewModel = this.viewModel,
         el = this.element;
       if (can.isDeferred(deferred)) {
-        this.scope.attr("waiting", true);
+        this.viewModel.attr("waiting", true);
         this.element.find('tbody').css('opacity', 0.5);
         deferred.then(function (items) {
-          scope.attr('items').replace(items);
+          viewModel.attr('items').replace(items);
         });
       } else {
-        scope.attr('items').attr(deferred, true);
+        viewModel.attr('items').attr(deferred, true);
       }
     },
     "{items} change": function () {
-      this.scope.attr("waiting", false);
+      this.viewModel.attr("waiting", false);
       this.element.find('tbody').css('opacity', 1);
     }
   }

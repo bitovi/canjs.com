@@ -1803,7 +1803,10 @@ Instead, we have to construct the Deferred ourselves and return it.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			_bindsetup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-				<span class="hljs-keyword">this</span>.constructor.store[<span class="hljs-keyword">this</span>.__get(<span class="hljs-keyword">this</span>.constructor.id)] = <span class="hljs-keyword">this</span>;
+				<span class="hljs-keyword">var</span> modelInstance = <span class="hljs-keyword">this</span>.__get(<span class="hljs-keyword">this</span>.constructor.id);
+				<span class="hljs-keyword">if</span> (modelInstance != <span class="hljs-literal">null</span>) {
+					<span class="hljs-keyword">this</span>.constructor.store[modelInstance ] = <span class="hljs-keyword">this</span>;
+				}
 				<span class="hljs-keyword">return</span> can.Map.prototype._bindsetup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 			},
 			_bindteardown: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
@@ -1892,7 +1895,8 @@ TODO: shouldn’t this also delete the record from the old ID in the store?</p>
 		makeFindAll: makeGetterHandler(<span class="hljs-string">"models"</span>),
 		makeFindOne: makeGetterHandler(<span class="hljs-string">"model"</span>),
 		makeCreate: createUpdateDestroyHandler,
-		makeUpdate: createUpdateDestroyHandler
+		makeUpdate: createUpdateDestroyHandler,
+		makeDestroy: createUpdateDestroyHandler
 	};</pre></div></div>
             
         </li>
@@ -2099,7 +2103,9 @@ On any other type of event, setup “destroyed” bubbling.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>		_bubbleRule: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventName, list)</span> </span>{
-			<span class="hljs-keyword">return</span> can.List._bubbleRule(eventName, list) || <span class="hljs-string">"destroyed"</span>;
+			<span class="hljs-keyword">var</span> bubbleRules = can.List._bubbleRule(eventName, list);
+			bubbleRules.push(<span class="hljs-string">'destroyed'</span>);
+			<span class="hljs-keyword">return</span> bubbleRules;
 		}
 	},{
 		setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params)</span> </span>{</pre></div></div>

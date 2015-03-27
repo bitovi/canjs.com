@@ -28,7 +28,7 @@ for use within can.Component.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"can/view/mustache"</span>, <span class="hljs-string">"can/control"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"can/view/stache/mustache_core.js"</span>, <span class="hljs-string">"can/view/callbacks"</span>, <span class="hljs-string">"can/control"</span>, <span class="hljs-string">"can/view/scope"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, mustacheCore)</span> </span>{
 	<span class="hljs-comment">/**
 	 * @function isContentEditable
 	 * @hide
@@ -180,7 +180,7 @@ should be a string representing some value in the current scope to cross-bind to
             
             <div class="content"><div class='highlight'><pre>	can.view.attr(<span class="hljs-string">"can-value"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, data)</span> </span>{
 
-		<span class="hljs-keyword">var</span> attr = removeCurly(el.getAttribute(<span class="hljs-string">"can-value"</span>)),</pre></div></div>
+		<span class="hljs-keyword">var</span> attr = can.trim(removeCurly(el.getAttribute(<span class="hljs-string">"can-value"</span>))),</pre></div></div>
             
         </li>
         
@@ -443,12 +443,14 @@ that calls a method identified by the value of this attribute.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>This is the method that the event will initially trigger. It will look up the method by the string name 
+              <p>This is the method that the event will initially trigger. It will look up the method by the string name
 passed in the attribute and call it.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			handler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			handler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> </span>{
+				<span class="hljs-keyword">var</span> attrVal = el.getAttribute(attributeName);
+				<span class="hljs-keyword">if</span> (!attrVal) { <span class="hljs-keyword">return</span>; }</pre></div></div>
             
         </li>
         
@@ -459,18 +461,13 @@ passed in the attribute and call it.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>The attribute value, representing the name of the method to call (i.e. can-submit=”foo” foo is the 
-name of the method)</p>
+              <p>mustacheCore.expressionData will read the attribute
+value and parse it identically to how mustache helpers
+get parsed.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> attr = removeCurly( el.getAttribute(attributeName) ),
-					scopeData = data.scope.read(attr, {
-						returnObserveMethods: <span class="hljs-literal">true</span>,
-						isArgument: <span class="hljs-literal">true</span>
-					});
-				<span class="hljs-keyword">return</span> scopeData.value.call(scopeData.parent, data.scope._context, can.$(<span class="hljs-keyword">this</span>), ev);
-			};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> attrInfo = mustacheCore.expressionData(removeCurly(attrVal));</pre></div></div>
             
         </li>
         
@@ -481,9 +478,180 @@ name of the method)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <p>This code adds support for special event types, like can-enter=”foo”. special.enter (or any special[event]) is 
-a function that returns an object containing an event and a handler. These are to be used for binding. For example, 
-when a user adds a can-enter attribute, we’ll bind on the keyup event, and the handler performs special logic to 
+              <p>We grab the first item and treat it as a method that
+we’ll call.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> scopeData = data.scope.read(attrInfo.name.get, {
+					returnObserveMethods: <span class="hljs-literal">true</span>,
+					isArgument: <span class="hljs-literal">true</span>,
+					executeAnonymousFunctions: <span class="hljs-literal">true</span>
+				});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>We break out early if the first argument isn’t available
+anywhere.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>!steal-remove-start</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (!scopeData.value) {
+					can.dev.warn(<span class="hljs-string">"can/view/bindings: "</span> + attributeName + <span class="hljs-string">" couldn't find method named "</span> + attrInfo.name.get, {
+						element: el,
+						scope: data.scope
+					});
+					<span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>!steal-remove-end</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+				<span class="hljs-keyword">var</span> args = [];
+				<span class="hljs-keyword">var</span> $el = can.$(<span class="hljs-keyword">this</span>);
+				<span class="hljs-keyword">var</span> viewModel = can.viewModel($el[<span class="hljs-number">0</span>]);
+				<span class="hljs-keyword">var</span> localScope = data.scope.add({
+					<span class="hljs-string">"@element"</span>: $el,
+					<span class="hljs-string">"@event"</span>: ev,
+					<span class="hljs-string">"@viewModel"</span>: viewModel,
+					<span class="hljs-string">"@scope"</span>: data.scope,
+					<span class="hljs-string">"@context"</span>: data.scope._context
+				});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>.expressionData() gives us a hash object representing
+any expressions inside the definition that look like
+foo=bar. If there’s no hash keys, we’ll omit this hash
+from our method arguments.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (!can.isEmptyObject(attrInfo.hash)) {
+					<span class="hljs-keyword">var</span> hash = {};
+					can.each(attrInfo.hash, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val, key)</span> </span>{
+						<span class="hljs-keyword">if</span> (val &amp;&amp; val.hasOwnProperty(<span class="hljs-string">"get"</span>)) {
+							<span class="hljs-keyword">var</span> s = !val.get.indexOf(<span class="hljs-string">"@"</span>) ? localScope : data.scope;
+							hash[key] = s.read(val.get, {}).value;
+						} <span class="hljs-keyword">else</span> {
+							hash[key] = val;
+						}
+					});
+					args.unshift(hash);
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>We go through each non-hash expression argument and
+prepend it to our argument list.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (attrInfo.args.length) {
+					<span class="hljs-keyword">var</span> arg;
+					<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = attrInfo.args.length-<span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+						arg = attrInfo.args[i];
+						<span class="hljs-keyword">if</span> (arg &amp;&amp; arg.hasOwnProperty(<span class="hljs-string">"get"</span>)) {
+							<span class="hljs-keyword">var</span> s = !arg.get.indexOf(<span class="hljs-string">"@"</span>) ? localScope : data.scope;
+							args.unshift(s.read(arg.get, {}).value);
+						} <span class="hljs-keyword">else</span> {
+							args.unshift(arg);
+						}
+					}
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>If no arguments are provided, the method will simply
+receive the legacy arguments.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (!args.length) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>The arguments array includes extra args passed in to
+the event.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					args = [data.scope._context, $el].concat(can.makeArray(<span class="hljs-built_in">arguments</span>));
+				}
+				<span class="hljs-keyword">return</span> scopeData.value.apply(scopeData.parent, args);
+			};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>This code adds support for special event types, like can-enter=”foo”. special.enter (or any special[event]) is
+a function that returns an object containing an event and a handler. These are to be used for binding. For example,
+when a user adds a can-enter attribute, we’ll bind on the keyup event, and the handler performs special logic to
 determine on keyup if the enter key was pressed.</p>
 
             </div>
@@ -497,13 +665,13 @@ determine on keyup if the enter key was pressed.</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
-              <p>Bind the handler defined above to the element we’re currently processing and the event name provided in this 
+              <p>Bind the handler defined above to the element we’re currently processing and the event name provided in this
 attribute name (can-click=”foo”)</p>
 
             </div>
@@ -514,11 +682,11 @@ attribute name (can-click=”foo”)</p>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <h2 id="two-way-binding-can-controls">Two way binding can.Controls</h2>
 <p>Each type of input that is supported by view/bindings is wrapped with a special can.Control.  The control serves 
@@ -534,11 +702,11 @@ There is one control per input type. There could easily be more for more advance
         </li>
         
         
-        <li id="section-26">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <h3 id="value">Value</h3>
 <p>A can.Control that manages the two-way bindings on most inputs.  When can-value is found as an attribute 
@@ -552,11 +720,11 @@ on an input, the callback above instantiates this Value control on the input ele
         </li>
         
         
-        <li id="section-27">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>Handle selects by calling <code>set</code> after this thread so the rest of the element can finish rendering.</p>
 
@@ -573,11 +741,11 @@ on an input, the callback above instantiates this Value control on the input ele
         </li>
         
         
-        <li id="section-28">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>If the live bound data changes, call set to reflect the change in the dom.</p>
 
@@ -589,11 +757,11 @@ on an input, the callback above instantiates this Value control on the input ele
         </li>
         
         
-        <li id="section-29">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>This may happen in some edgecases, esp. with selects that are not in DOM after the timeout has fired</p>
 
@@ -607,11 +775,11 @@ on an input, the callback above instantiates this Value control on the input ele
         </li>
         
         
-        <li id="section-30">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>Set the element’s value to match the attribute that was passed in</p>
 
@@ -623,13 +791,14 @@ on an input, the callback above instantiates this Value control on the input ele
         </li>
         
         
-        <li id="section-31">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
-              <p>If the input value changes, this will set the live bound data to reflect the change.</p>
+              <p>If the input value changes, this will set the live bound data to reflect the change.
+If the input value changes, this will set the live bound data to reflect the change.</p>
 
             </div>
             
@@ -638,11 +807,11 @@ on an input, the callback above instantiates this Value control on the input ele
         </li>
         
         
-        <li id="section-32">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>This may happen in some edgecases, esp. with selects that are not in DOM after the timeout has fired</p>
 
@@ -650,33 +819,52 @@ on an input, the callback above instantiates this Value control on the input ele
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.element) {
 				<span class="hljs-keyword">return</span>;
-			}</pre></div></div>
+			}
+			<span class="hljs-keyword">var</span> el = <span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>];</pre></div></div>
             
         </li>
         
         
-        <li id="section-33">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p>Set the value of the attribute passed in to reflect what the user typed</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.options.value(<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].value);
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.options.value(el.value);
+			<span class="hljs-keyword">var</span> newVal = <span class="hljs-keyword">this</span>.options.value();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <p>If the newVal isn’t the same as the input, set it’s value</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(el.value !== newVal) {
+				el.value = newVal;
+			}
 		}
 	}),</pre></div></div>
             
         </li>
         
         
-        <li id="section-34">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <h3 id="checked">Checked</h3>
 <p>A can.Control that manages the two-way bindings on a checkbox element.  When can-value is found as an attribute 
@@ -690,11 +878,11 @@ on a checkbox, the callback above instantiates this Checked control on the check
         </li>
         
         
-        <li id="section-35">
+        <li id="section-44">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <p>If its not a checkbox, its a radio input</p>
 
@@ -707,11 +895,11 @@ on a checkbox, the callback above instantiates this Checked control on the check
         </li>
         
         
-        <li id="section-36">
+        <li id="section-45">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               <p><code>value</code> is the compute representing the can-value for this element.  For example can-value=”foo” and current 
 scope is someObj, value is the compute representing someObj.attr(‘foo’)</p>
@@ -724,11 +912,11 @@ scope is someObj, value is the compute representing someObj.attr(‘foo’)</p>
         </li>
         
         
-        <li id="section-37">
+        <li id="section-46">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p>jshint eqeqeq: false</p>
 
@@ -741,28 +929,28 @@ scope is someObj, value is the compute representing someObj.attr(‘foo’)</p>
         </li>
         
         
-        <li id="section-38">
+        <li id="section-47">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <p>If <code>can-true-value</code> attribute was set, check if the value is equal to that string value, and set 
 the checked property based on their equality.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].checked = (value === trueValue);
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].checked = (value == trueValue);
 				}</pre></div></div>
             
         </li>
         
         
-        <li id="section-39">
+        <li id="section-48">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <p>Its a radio input type</p>
 
@@ -781,11 +969,11 @@ the checked property based on their equality.</p>
         </li>
         
         
-        <li id="section-40">
+        <li id="section-49">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
               <p>This event is triggered by the DOM.  If a change event occurs, we must set the value of the compute (options.value).</p>
 
@@ -798,11 +986,11 @@ the checked property based on their equality.</p>
         </li>
         
         
-        <li id="section-41">
+        <li id="section-50">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
               <p>If the checkbox is checked and can-true-value was used, set value to the string value of can-true-value.  If 
 can-false-value was used and checked is false, set value to the string value of can-false-value.</p>
@@ -815,11 +1003,11 @@ can-false-value was used and checked is false, set value to the string value of 
         </li>
         
         
-        <li id="section-42">
+        <li id="section-51">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
               <p>Radio input type</p>
 
@@ -837,11 +1025,11 @@ can-false-value was used and checked is false, set value to the string value of 
         </li>
         
         
-        <li id="section-43">
+        <li id="section-52">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
               <h3 id="multiselect">Multiselect</h3>
 <p>A can.Control that handles select input with the “multiple” attribute (meaning more than one can be selected at once). </p>
@@ -850,18 +1038,32 @@ can-false-value was used and checked is false, set value to the string value of 
             
             <div class="content"><div class='highlight'><pre>		Multiselect = Value.extend({
 			init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-				<span class="hljs-keyword">this</span>.delimiter = <span class="hljs-string">";"</span>;
-				<span class="hljs-keyword">this</span>.set();
+				<span class="hljs-keyword">this</span>.delimiter = <span class="hljs-string">";"</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              <p>Call <code>set</code> after this thread so the rest of the element can finish rendering.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				setTimeout(can.proxy(<span class="hljs-keyword">this</span>.set, <span class="hljs-keyword">this</span>), <span class="hljs-number">1</span>);
 			},</pre></div></div>
             
         </li>
         
         
-        <li id="section-44">
+        <li id="section-54">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               <p>Since this control extends Value (above), the set method will be called when the value compute changes (and on init).</p>
 
@@ -874,11 +1076,11 @@ can-false-value was used and checked is false, set value to the string value of 
         </li>
         
         
-        <li id="section-45">
+        <li id="section-55">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               <p>When given a string, try to extract all the options from it (i.e. “a;b;c;d”)</p>
 
@@ -892,11 +1094,11 @@ can-false-value was used and checked is false, set value to the string value of 
         </li>
         
         
-        <li id="section-46">
+        <li id="section-56">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
               <p>When given something else, try to make it an array and deal with it</p>
 
@@ -909,11 +1111,11 @@ can-false-value was used and checked is false, set value to the string value of 
         </li>
         
         
-        <li id="section-47">
+        <li id="section-57">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
+                <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
               <p>Make an object containing all the options passed in for convenient lookup</p>
 
@@ -927,11 +1129,11 @@ can-false-value was used and checked is false, set value to the string value of 
         </li>
         
         
-        <li id="section-48">
+        <li id="section-58">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
+                <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
               <p>Go through each &lt;option/&gt; element, if it has a value property (its a valid option), then 
 set its selected property if it was in the list of vals that were just set.</p>
@@ -950,11 +1152,11 @@ set its selected property if it was in the list of vals that were just set.</p>
         </li>
         
         
-        <li id="section-49">
+        <li id="section-59">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
+                <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
               <p>A helper function used by the ‘change’ handler below. Its purpose is to return an array of selected 
 values, like [“foo”, “bar”]</p>
@@ -977,11 +1179,11 @@ values, like [“foo”, “bar”]</p>
         </li>
         
         
-        <li id="section-50">
+        <li id="section-60">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
+                <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
               <p>Called when the user changes this input in any way.</p>
 
@@ -992,11 +1194,11 @@ values, like [“foo”, “bar”]</p>
         </li>
         
         
-        <li id="section-51">
+        <li id="section-61">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
+                <a class="pilcrow" href="#section-61">&#182;</a>
               </div>
               <p>Get an array of the currently selected values</p>
 
@@ -1008,11 +1210,11 @@ values, like [“foo”, “bar”]</p>
         </li>
         
         
-        <li id="section-52">
+        <li id="section-62">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
+                <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
               <p>If the compute is a string, set its value to the joined version of the values array (i.e. “foo;bar”)</p>
 
@@ -1026,11 +1228,11 @@ values, like [“foo”, “bar”]</p>
         </li>
         
         
-        <li id="section-53">
+        <li id="section-63">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
+                <a class="pilcrow" href="#section-63">&#182;</a>
               </div>
               <p>If the compute is a can.List, replace its current contents with the new array of values</p>
 
@@ -1043,11 +1245,11 @@ values, like [“foo”, “bar”]</p>
         </li>
         
         
-        <li id="section-54">
+        <li id="section-64">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
+                <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
               <p>Otherwise set the value to the array of values selected in the input.</p>
 

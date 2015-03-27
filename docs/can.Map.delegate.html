@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -342,6 +350,21 @@
 							href="can.LazyMap.html" 
 							data-search="can.LazyMap">
 							can.LazyMap
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="can.Map.List.html" 
+							data-search="can.Map.List">
+							List
 						</a>
 						
 					</li>
@@ -601,7 +624,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/map/delegate/doc/delegate.md">source</a></li>
 	
@@ -667,7 +690,7 @@ map.attr('name.first',&quot;Justin&quot;)
 </code></pre>
 <h2>Types of events</h2>
 <p>Delegate lets you listen to add, set, remove, and change events on property.</p>
-<p><strong>add</strong></p>
+<h3>add</h3>
 <p>An add event is fired when a new property has been added.</p>
 <pre><code>var o = new can.Map({});
 o.delegate(&quot;name&quot;,&quot;add&quot;, function(ev, value){
@@ -679,7 +702,7 @@ o.attr('name',&quot;Brian&quot;);
 </code></pre>
 <p>Listening to add events is useful for 'setup' functionality (in this case
 showing the <code>#name</code> element.</p>
-<p><strong>set</strong></p>
+<h3>set</h3>
 <p>Set events are fired when a property takes on a new value.  set events are
 always fired after an add.</p>
 <pre><code>o.delegate(&quot;name&quot;,&quot;set&quot;, function(ev, value){
@@ -689,7 +712,7 @@ always fired after an add.</p>
 o.attr('name',&quot;Justin&quot;)
 o.attr('name',&quot;Brian&quot;);
 </code></pre>
-<p><strong>remove</strong></p>
+<h3>remove</h3>
 <p>Remove events are fired after a property is removed.</p>
 <pre><code>o.delegate(&quot;name&quot;,&quot;remove&quot;, function(ev){
   // will be called once
@@ -726,8 +749,8 @@ o.attr('options.offset',100)
 // alerts 2
 o.attr('options.params.parentId',6);
 </code></pre>
-<p>Using a single wildcard (<code><strong></code>) matches single level
-properties.  Using a double wildcard (<code></strong>*</code>) matches
+<p>Using a single wildcard (<code>*</code>) matches single level
+properties.  Using a double wildcard (<code>**</code>) matches
 any deep property.</p>
 <h2>Listening on multiple properties and values</h2>
 <p>Delegate lets you listen on multiple values at once.  The following listens
@@ -820,7 +843,7 @@ call <code><a href="can.Map.prototype.undelegate.html">undelegate</a>(selector, 
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Map.plugins","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"page","name":"can.Map.delegate","description":"<p>The <strong>delegate</strong> plugin allows you to listen to more specific event changes on\n[can.Map Maps].  It allows you to specify:</p>\n","title":"delegate","plugin":"can/map/delegate","test":"can/map/delegate/test.html","src":"map/delegate/doc/delegate.md"};
+		var docObject = {"type":"page","name":"can.Map.delegate","src":"map/delegate/doc/delegate.md","description":"The __delegate__ plugin allows you to listen to more specific event changes on \n[can.Map Maps].  It allows you to specify:","title":"delegate","parent":"can.Map.plugins","plugin":"can/map/delegate","test":"can/map/delegate/test.html","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -833,6 +856,7 @@ call <code><a href="can.Map.prototype.undelegate.html">undelegate</a>(selector, 
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

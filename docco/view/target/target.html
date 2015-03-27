@@ -42,7 +42,7 @@ steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"ca
 		}
 		<span class="hljs-keyword">return</span> frag;
 	},
-		keepsTextNodes =  (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		keepsTextNodes =  <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">document</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
 			<span class="hljs-keyword">var</span> testFrag = <span class="hljs-built_in">document</span>.createDocumentFragment();
 			<span class="hljs-keyword">var</span> div = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"div"</span>);
 			
@@ -54,7 +54,7 @@ steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"ca
 			
 			<span class="hljs-keyword">return</span> cloned.childNodes[<span class="hljs-number">0</span>].childNodes.length === <span class="hljs-number">2</span>;
 		})(),
-		clonesWork = (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{</pre></div></div>
+		clonesWork = <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">document</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{</pre></div></div>
             
         </li>
         
@@ -93,7 +93,7 @@ namespace.</p>
 		})();
 
 	<span class="hljs-comment">/**
-	 * @method cloneNode
+	 * @function cloneNode
 	 * @hide
 	 *
 	 * A custom cloneNode function to be used in browsers that properly support cloning

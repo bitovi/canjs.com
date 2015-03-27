@@ -24,6 +24,11 @@
               </a>
             
               
+              <a class="source" href="intermediate_and_imports.html">
+                intermediate_and_imports.js
+              </a>
+            
+              
               <a class="source" href="mustache_core.html">
                 mustache_core.js
               </a>
@@ -36,6 +41,16 @@
               
               <a class="source" href="stache.html">
                 stache.js
+              </a>
+            
+              
+              <a class="source" href="stache_benchmark.html">
+                stache_benchmark.js
+              </a>
+            
+              
+              <a class="source" href="system.html">
+                system.js
               </a>
             
               
@@ -80,8 +95,10 @@ steal(
 	<span class="hljs-string">"./text_section.js"</span>,
 	<span class="hljs-string">"./mustache_core.js"</span>,
 	<span class="hljs-string">"./mustache_helpers.js"</span>,
+	<span class="hljs-string">"./intermediate_and_imports.js"</span>,
 	<span class="hljs-string">"can/view/callbacks"</span>,
-	<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can, parser, target,  HTMLSectionBuilder, TextSectionBuilder, mustacheCore, mustacheHelpers, viewCallbacks )</span></span>{</pre></div></div>
+	<span class="hljs-string">"can/view/bindings"</span>,
+	<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can, parser, target,  HTMLSectionBuilder, TextSectionBuilder, mustacheCore, mustacheHelpers, getIntermediateAndImports, viewCallbacks )</span></span>{</pre></div></div>
             
         </li>
         
@@ -114,7 +131,9 @@ steal(
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		template = mustacheCore.cleanLineEndings(template);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> template === <span class="hljs-string">"string"</span>) {
+			template = mustacheCore.cleanLineEndings(template);
+		}</pre></div></div>
             
         </li>
         
@@ -677,6 +696,15 @@ text value.  </p>
 					<span class="hljs-keyword">return</span> text;
 				}
 			};
+	};
+	can.stache.async = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(source)</span></span>{
+		<span class="hljs-keyword">var</span> iAi = getIntermediateAndImports(source);
+		<span class="hljs-keyword">var</span> importPromises = can.map( iAi.imports, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(moduleName)</span></span>{
+			<span class="hljs-keyword">return</span> can[<span class="hljs-string">"import"</span>](moduleName);
+		});
+		<span class="hljs-keyword">return</span> can.when.apply(can, importPromises ).then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+			<span class="hljs-keyword">return</span> stache(iAi.intermediate);
+		});
 	};
 
 	<span class="hljs-keyword">return</span> stache;

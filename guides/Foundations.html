@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS - Application Foundations </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	
+	<link rel="stylesheet" type="text/css" href="./static/bundles/static.css">
+	
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs ">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
+		          <li><a href="http://jquerypp.com">jQuery++</a></li>
+		          <li><a href="http://stealjs.com">StealJS</a></li>
+		          <li><a href="http://funcunit.com">FuncUnit</a></li>
+		          <li><a href="http://documentjs.com">DocumentJS</a></li>
+		        </ul>
+			</div>
+			
+			<ul class="nav">
+		        <li >
+	              <a href="../index.html">Home</a>
+                </li>
+		       <li class='active'><a href='index.html'>guides</a></li>
+		       <li><a href='../docs/index.html'>api</a></li>
+		        <li class=" community-menu">
+		          <a href="../community.html#!forums">Community</a>
+		          <ul class="dropdown-menu">
+		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
+		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
+		            <li><a href="http://bitovi.bithub.com/canjs/app/">Apps</a></li>
+		            <li><a href="http://bitovi.bithub.com/canjs/plugin/">Plugins</a></li>
+		            <li><a href="http://bitovi.bithub.com/canjs/article/">Articles</a></li>
+		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		          </ul>
+		        </li>
+		        <li >
+	              <a href="../blog/index.html">Blog</a>
+                </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+                </li>
+	      	</ul>
+			
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+			
+		</nav>
+	</header>
+
+	
+<div class="container api">
+
+	
+	<nav class="sidebar">
+		
+		<h2 id="version">
+	<select id='versions'></select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Using.html" data-search="Setting up CanJS">
+				Setting up CanJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container active">
+	   		<a href="Tutorial.html" data-search="Getting Started">
+				Getting Started
+			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Setup.html" 
+							data-search="Setup">
+							Setup
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container active  expanded">
+						<a 	class="page" 
+							href="Foundations.html" 
+							data-search="Application Foundations">
+							Application Foundations
+						</a>
+						
+							
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Components.html" 
+							data-search="Getting to Know Components">
+							Getting to Know Components
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Components2.html" 
+							data-search="More on Components">
+							More on Components
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Models.html" 
+							data-search="Models (&amp; Fixtures)">
+							Models (&amp; Fixtures)
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Models2.html" 
+							data-search="Sending Data to a Service">
+							Sending Data to a Service
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Review.html" 
+							data-search="Creating the Menu Component">
+							Creating the Menu Component
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="State.html" 
+							data-search="App State &amp; Basic Routing">
+							App State &amp; Basic Routing
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Define.html" 
+							data-search="The Define Plugin">
+							The Define Plugin
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Routes.html" 
+							data-search="Route Formatting &amp; Serialization">
+							Route Formatting &amp; Serialization
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Recap.html" 
+							data-search="Recap">
+							Recap
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Recipes.html" data-search="Recipes">
+				Recipes
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="contributing.html" data-search="How to Contribute">
+				How to Contribute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="changelog.html" data-search="Changelog">
+				Changelog
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="license.html" data-search="License">
+				License
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="migrating.html" data-search="Migrating to 2.0">
+				Migrating to 2.0
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="roadmap.html" data-search="Roadmap">
+				Roadmap
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	
+	
+	
+	<article class="content docs">
+	
+	
+		
+		<section class="title">
+			<div class="heading">
+<h1>Application Foundations</h1>
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	
+		<span class="module">Foundations</span>
+	
+	
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+	
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/master/guides/foundations.md">source</a></li>
+	
+	
+	
+</ul>
+<br />
+		</section>
+		
+		
+		
+		<section class="contents">
+		</section>
+		
+		
+		
+
+		
+
+		
+			
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<hr />
+<p><strong>In this Chapter</strong></p>
+<ul>
+<li>Application Overview</li>
+<li>Page Chrome</li>
+<li>Base View Template</li>
+<li>Application Bootstrap</li>
+</ul>
+<blockquote>
+<p>Get the code for: <a href="https://github.com/bitovi/canjs/blob/guides-overhaul/guides/examples/PlaceMyOrder/ch-1_canjs-getting-started.zip?raw=true">chapter 1</a></p>
+</blockquote>
+<hr />
+<p>The first step in putting together a CanJS app is sketching out the various
+states of your application, as you understand them at the moment
+(requirements are always subject to change!),
+and any supporting elements you might need.</p>
+<p>We’ll be building a small application called &quot;PlaceMyOrder&quot;. PlaceMyOrder is a
+website that lets you select from available restaurants in your area, view their
+menus, and purchase items for delivery. For this sample application, we’ll keep
+things pretty simple. We won’t worry about registration, authentication, or
+payment processing. We’re just going to create an application with three states:</p>
+<ol>
+<li>Restaurant</li>
+<li>Order Form</li>
+<li>Confirmation</li>
+</ol>
+<p>And a few supporting objects:</p>
+<ol>
+<li>Menus</li>
+<li>Menu Items</li>
+<li>Restaurant List</li>
+</ol>
+<p>The following pseudo UML diagram outlines the elements that comprise up our application:</p>
+<p><img src="../can/guides/images/1_application_foundations/AppStateDiagram.png" alt="" /></p>
+<p>Now that our basic environment has been setup, and we have an outline of
+what we're going to build, let's start working with actual code. This step
+will involve setting up our foundations:</p>
+<ul>
+<li>Page Chrome (index.html)</li>
+<li>Bootstrapping (app.js)</li>
+</ul>
+<h3>index.html <a name="index-file"></a></h3>
+<p>Let's dive in to the good stuff, and start working with the app! Create a
+file called &quot;index.html&quot; in the app folder.</p>
+<pre>
+| app
+    |--index.html
+</pre>
+<p>It should look like this:</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head lang=&quot;en&quot;&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;site_css/place_my_order.css&quot;/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;!-- CanJS application root --&gt;
+&lt;div id=&quot;can-app&quot;&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;libs/jquery.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;libs/can.custom.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;libs/can.fixture.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;app.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>At the bottom of the page, just before the body tag, are all of the script
+tags. We're using the jQuery edition of CanJS, so the first script tag
+loaded must be jQuery. Following jQuery, we load can.custom.js.</p>
+<p>In the last chapter, we mentioned including can.fixture.js. In a
+normal project, once you connected to the actual REST services, you would
+remove can.fixture.js. In addition, to simplify things, we're using the Bootstrap framework for our CSS; however Bootstrap is not required to use CanJS.</p>
+<h4>Base Template</h4>
+<p>Create a file in the app folder called &quot;base_template.stache&quot;. We'll edit the
+contents of that file as we build out our application. For now, you can
+leave it blank.</p>
+<h4>Application Bootstrap</h4>
+<p>The first script we need to create is the script that will bootstrap our
+application. Create a file in the app folder called &quot;app.js&quot;. Edit the
+file as follows:</p>
+<pre><code>$(function () {
+
+    $('#can-app').html('The Requisite &quot;Hello World&quot; Message');
+
+});
+</code></pre>
+<p>If you open up your application in a browser, you should see:</p>
+<blockquote>
+<p>The Requisite &quot;Hello World&quot; Message</p>
+</blockquote>
+<p>At this point, we haven't done much. We aren't using CanJS at all yet.
+We're just using jQuery to set the HTML contents of a DOM element.</p>
+<p>So, how do we get the application to actually <em>do something</em>? Building apps
+with CanJS centers around building can.Components, read on to the next
+chapter to learn more.</p>
+<hr />
+<p><span class="pull-left"><a href="Setup.html">&lt; Setup</a></span></p>
+<p><span class="pull-right"><a href="Components.html">Getting to Know Components &gt;</a></span></p>
+
+		</section>
+		
+		
+
+		
+	
+	
+	</article>
+	
+	
+
+</div>
+
+
+
+
+
+	
+	
+	<footer>
+		<nav class="container">
+			<a class="brand" href="index.html"></a>
+			<ul class='nav'>
+				<li >
+	              <a href="../index.html">Home</a>
+	            </li>
+		        <li class='active'><a href='index.html'>guides</a></li>
+		        <li><a href='../docs/index.html'>api</a></li>
+		        <li class="">
+		          <a href="../community.html#!forums">Community</a>
+		        </li>
+		        <li >
+	              <a href="../blog/index.html">Blog</a>
+	            </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+	            </li>
+            </ul>
+		</nav>
+	</footer>
+	
+
+    
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-2302003-11']);
+	  _gaq.push(['_setDomainName', 'canjs.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	
+	</script>
+	
+	<script type="text/javascript">
+		var docObject = {"type":"page","name":"Foundations","src":"guides/foundations.md","description":"","title":"Application Foundations","parent":"Tutorial","order":2,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
+	</script>
+	
+	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
+		<script type='text/javascript' 
+				data-main="static"
+				data-config="./static/config.js"
+				src="./static/steal.production.js"
+		    		bundles-path="bundles"></script>
+	
+	
+</body>
+
+</html>

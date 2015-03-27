@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -456,9 +464,9 @@
 </div>
 
 <ul class="links">
-    
-        <li><a href="../docco/control/control.html">docco</a></li>
-    
+	
+		<li><a href="../docco/control/control.html">docco</a></li>
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/control/control.js">source</a></li>
 	
@@ -539,7 +547,7 @@ as event handlers (see <a href="#section_Listeningtoevents">Listening to events<
 
 	<h3>Returns</h3>
 	<div class="returns">
-		<h4><code>{constructor(element, <a href="options.html" >options</a>) => <a href="can.Construct.html" >can.Construct</a>}</code></h4>
+		<h4><code>{constructor(element, options) => <a href="can.Construct.html" >can.Construct</a>}</code></h4>
 		<div class="description">
 			<p>A control constructor function that has been
 extended with the provided <code>staticProperties</code> and <code>instanceProperties</code>.</p>
@@ -987,7 +995,7 @@ data by calling <code>$(document.body).empty()</code>.</em></p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"constructor","name":"can.Control","description":"<p>Create organized, memory-leak free, rapidly performing, stateful controls with declarative event binding. Use <code>can.Control</code> to create UI\ncontrols like tabs, grids, and context menus,\nand organize them into higher-order business rules with\n[can.route]. It can serve as both a traditional view and a traditional controller.</p>\n","title":"","download":"can/route","test":"can/control/test.html","inherits":"can.Construct","links":[{"href":"../docco/control/control.html","title":"docco"}],"signatures":[{"code":"can.Control( [staticProperties,] instanceProperties )","description":"<p>Create a new, extended, control constructor\nfunction. This functionality is inherited from [can.Construct] and is deprecated in favor of using\n[can.Control.extend].</p>\n","params":[{"types":[{"type":"Object","options":[]}],"optional":true,"name":"staticProperties","description":"<p>An object of properties and methods that are added the control constructor\nfunction directly. The most common property to add is [can.Control.defaults].</p>\n"},{"types":[{"type":"Object","options":[]}],"name":"instanceProperties","description":"<p>An object of properties and methods that belong to\ninstances of the <code>can.Control</code> constructor function. These properties are added to the\ncontrol's <code>prototype</code> object. Properties that\nlook like event handlers (ex: <code>&quot;click&quot;</code> or <code>&quot;li mouseenter&quot;</code>) are setup\nas event handlers (see <a href=\"#section_Listeningtoevents\">Listening to events</a>).</p>\n"}],"returns":{"types":[{"type":"function","constructs":{"types":[{"type":"can.Construct"}]},"returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"element"}]},{"types":[{"type":"options"}]}]}],"description":"<p>A control constructor function that has been\nextended with the provided <code>staticProperties</code> and <code>instanceProperties</code>.</p>\n"}},{"code":"new can.Control( element, options )","description":"<p>Create an instance of a control. [can.Control.prototype.setup] processes\nthe arguments and sets up event binding. Write your initialization\ncode in [can.Control.prototype.init]. Note, you never call <code>new can.Control()</code> directly,\ninstead, you call it on constructor functions extended from <code>can.Control</code>.</p>\n","params":[{"types":[{"type":"HTMLElement"},{"type":"can.NodeList"},{"type":"CSSSelectorString"}],"name":"element","description":"<p>Specifies the element the control\nwill be created on.</p>\n"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"options","description":"<p>Option values merged with [can.Control.defaults can.Control.defaults]\nand set as [can.Control.prototype.options this.options].</p>\n"}],"returns":{"types":[{"type":"can.Control"}],"description":"<p>A new instance of the constructor function extending can.Control.</p>\n"}}],"comment":" ","src":"control/control.js"};
+		var docObject = {"type":"constructor","name":"can.Control","src":"control/control.js","description":"Create organized, memory-leak free, rapidly performing, stateful controls with declarative event binding. Use `can.Control` to create UI \ncontrols like tabs, grids, and context menus,\nand organize them into higher-order business rules with\n[can.route]. It can serve as both a traditional view and a traditional controller.","title":"","parent":"canjs","download":"can/route","test":"can/control/test.html","inherits":"can.Construct","links":[{"href":"../docco/control/control.html","title":"docco"}],"signatures":[{"code":"can.Control( [staticProperties,] instanceProperties )","description":"Create a new, extended, control constructor \nfunction. This functionality is inherited from [can.Construct] and is deprecated in favor of using \n[can.Control.extend].","params":[{"types":[{"type":"Object","options":[]}],"optional":true,"name":"staticProperties","description":"An object of properties and methods that are added the control constructor \nfunction directly. The most common property to add is [can.Control.defaults]."},{"types":[{"type":"Object","options":[]}],"name":"instanceProperties","description":"An object of properties and methods that belong to \ninstances of the `can.Control` constructor function. These properties are added to the\ncontrol's `prototype` object. Properties that\nlook like event handlers (ex: `\"click\"` or `\"li mouseenter\"`) are setup\nas event handlers (see [Listening to events](#section_Listeningtoevents))."}],"returns":{"types":[{"type":"function","constructs":{"types":[{"type":"can.Construct"}]},"returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"element"}]},{"types":[{"type":"options"}]}]}],"description":"A control constructor function that has been\nextended with the provided `staticProperties` and `instanceProperties`."}},{"code":"new can.Control( element, options )","description":"Create an instance of a control. [can.Control.prototype.setup] processes\nthe arguments and sets up event binding. Write your initialization\ncode in [can.Control.prototype.init]. Note, you never call `new can.Control()` directly,\ninstead, you call it on constructor functions extended from `can.Control`.","params":[{"types":[{"type":"HTMLElement"},{"type":"can.NodeList"},{"type":"CSSSelectorString"}],"name":"element","description":"Specifies the element the control \nwill be created on."},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"options","description":"Option values merged with [can.Control.defaults can.Control.defaults]\nand set as [can.Control.prototype.options this.options]."}],"returns":{"types":[{"type":"can.Control"}],"description":"A new instance of the constructor function extending can.Control."}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -1000,6 +1008,7 @@ data by calling <code>$(document.body).empty()</code>.</em></p>
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

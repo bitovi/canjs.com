@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS - Route Formatting &amp; Serialization </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	
+	<link rel="stylesheet" type="text/css" href="./static/bundles/static.css">
+	
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs ">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
+		          <li><a href="http://jquerypp.com">jQuery++</a></li>
+		          <li><a href="http://stealjs.com">StealJS</a></li>
+		          <li><a href="http://funcunit.com">FuncUnit</a></li>
+		          <li><a href="http://documentjs.com">DocumentJS</a></li>
+		        </ul>
+			</div>
+			
+			<ul class="nav">
+		        <li >
+	              <a href="../index.html">Home</a>
+                </li>
+		       <li class='active'><a href='index.html'>guides</a></li>
+		       <li><a href='../docs/index.html'>api</a></li>
+		        <li class=" community-menu">
+		          <a href="../community.html#!forums">Community</a>
+		          <ul class="dropdown-menu">
+		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
+		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
+		            <li><a href="http://bitovi.bithub.com/canjs/app/">Apps</a></li>
+		            <li><a href="http://bitovi.bithub.com/canjs/plugin/">Plugins</a></li>
+		            <li><a href="http://bitovi.bithub.com/canjs/article/">Articles</a></li>
+		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		          </ul>
+		        </li>
+		        <li >
+	              <a href="../blog/index.html">Blog</a>
+                </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+                </li>
+	      	</ul>
+			
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+			
+		</nav>
+	</header>
+
+	
+<div class="container api">
+
+	
+	<nav class="sidebar">
+		
+		<h2 id="version">
+	<select id='versions'></select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Using.html" data-search="Setting up CanJS">
+				Setting up CanJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container active">
+	   		<a href="Tutorial.html" data-search="Getting Started">
+				Getting Started
+			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Setup.html" 
+							data-search="Setup">
+							Setup
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Foundations.html" 
+							data-search="Application Foundations">
+							Application Foundations
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Components.html" 
+							data-search="Getting to Know Components">
+							Getting to Know Components
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Components2.html" 
+							data-search="More on Components">
+							More on Components
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Models.html" 
+							data-search="Models (&amp; Fixtures)">
+							Models (&amp; Fixtures)
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Models2.html" 
+							data-search="Sending Data to a Service">
+							Sending Data to a Service
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Review.html" 
+							data-search="Creating the Menu Component">
+							Creating the Menu Component
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="State.html" 
+							data-search="App State &amp; Basic Routing">
+							App State &amp; Basic Routing
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Define.html" 
+							data-search="The Define Plugin">
+							The Define Plugin
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container active  expanded">
+						<a 	class="page" 
+							href="Routes.html" 
+							data-search="Route Formatting &amp; Serialization">
+							Route Formatting &amp; Serialization
+						</a>
+						
+							
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Recap.html" 
+							data-search="Recap">
+							Recap
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Recipes.html" data-search="Recipes">
+				Recipes
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="contributing.html" data-search="How to Contribute">
+				How to Contribute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="changelog.html" data-search="Changelog">
+				Changelog
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="license.html" data-search="License">
+				License
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="migrating.html" data-search="Migrating to 2.0">
+				Migrating to 2.0
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="roadmap.html" data-search="Roadmap">
+				Roadmap
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	
+	
+	
+	<article class="content docs">
+	
+	
+		
+		<section class="title">
+			<div class="heading">
+<h1>Route Formatting &amp; Serialization</h1>
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	
+		<span class="module">Routes</span>
+	
+	
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+	
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/master/guides/routes.md">source</a></li>
+	
+	
+	
+</ul>
+<br />
+		</section>
+		
+		
+		
+		<section class="contents">
+		</section>
+		
+		
+		
+
+		
+
+		
+			
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<hr />
+<p><strong>In this Chapter</strong></p>
+<ul>
+<li>Route Formatting</li>
+<li>Serialization</li>
+<li>Creating Anchor Tags with can.route.link</li>
+</ul>
+<blockquote>
+<p>Get the code for: <a href="https://github.com/bitovi/canjs/blob/guides-overhaul/guides/examples/PlaceMyOrder/ch-9_canjs-getting-started.zip?raw=true">chapter 9</a> - (<em>This is the completed application</em>).</p>
+</blockquote>
+<hr />
+<p>As mentioned earlier, each property you define on an Application State will
+serialize to a route by default when you bind that Application State with
+can.route, using can.route.map(). In our current Application State, that means
+we will have default routes for:</p>
+<ul>
+<li>restaurant</li>
+<li>menus, and</li>
+<li>confirmation</li>
+</ul>
+<p>What if we don't want one of our Application State's properties to serialize
+to a route? What if you want to change the way the value of the attribute is
+serialized? This is where the serialize attribute of a property declared by
+the define plugin comes into play.</p>
+<p>Open up your application, select a restaurant from the drop down list, and
+click, the “Place My Order!” button. You should see something similar
+to the following in your URL bar:</p>
+<p><img src="../can/guides/images/9_routes_and_serialization/NastyUrlBar.png" alt="" /></p>
+<p>That's not pretty, and not very useful. We don't want the confirmation or menu
+attributes to serialize. It's easy to change this behavior. Open up app.js, and edit the Application State object as follows:</p>
+<p>First, let's update the setter so that we can change restaurants by typing
+in the correct restaurant name into the hash. Open up site_models.js, and edit
+the RestaurantModel, as follows:</p>
+<pre><code>var RestaurantModel = can.Model.extend({
+        findAll: &quot;GET /restaurants&quot;,
+        findOne: 'GET /restaurant/{name}'
+    },
+    {});
+</code></pre>
+<p>Next, add the following code to fixtures.js:</p>
+<pre><code>can.fixture(&quot;GET /restaurant/{name}&quot;, function requestHandler(request) {
+
+    var restaurantMap = {
+        &quot;Spago&quot;: {
+            &quot;name&quot;: &quot;Spago&quot;,
+            &quot;location&quot;: &quot;USA&quot;,
+            &quot;cuisine&quot;: &quot;Modern&quot;,
+            &quot;owner&quot;: &quot;Wolfgang Puck&quot;,
+            &quot;restaurantId&quot;: 1
+        },
+        &quot;El_Bulli&quot;: {
+            &quot;name&quot;: &quot;El Bulli&quot;,
+            &quot;location&quot;: &quot;Spain&quot;,
+            &quot;cuisine&quot;: &quot;Modern&quot;,
+            &quot;owner&quot;: &quot;Ferran Adria&quot;,
+            &quot;restaurantId&quot;: 2
+        },
+        &quot;The_French_Laundry&quot;: {
+            &quot;name&quot;: &quot;The French Laundry&quot;,
+            &quot;location&quot;: &quot;USA&quot;,
+            &quot;cuisine&quot;: &quot;French Traditional&quot;,
+            &quot;owner&quot;: &quot;Thomas Keller&quot;,
+            &quot;restaurantId&quot;: 3
+        }
+    };
+
+    return restaurantMap[request.data.name];
+
+});
+</code></pre>
+<p>Open up app.js, and edit the Application State object
+as follows:</p>
+<pre><code>var ApplicationState = can.Map.extend({
+    define: {
+        restaurant: {
+            value: {},
+            set: function (restaurant) {
+                if (restaurant.restaurantId) {
+                    var that = this;
+                    RestaurantModel.findOne({name: restaurant.name},
+                        function success(selectedMenus) {
+                            that.attr('menus', {
+                                collection: selectedMenus.menus,
+                                restaurantName: restaurant.name
+                            });
+                        },
+                        function error(xhr) {
+                            alert(xhr.message);
+                        });
+                }
+                return restaurant;
+            }
+        },
+        menus: {
+            value: null,
+            serialize: false
+        },
+        confirmation: {
+            value: {},
+            serialize: false
+        }
+    }
+});
+</code></pre>
+<p>Add the
+following code before the call to can.route.ready():</p>
+<pre><code>can.route('/:restaurant');
+</code></pre>
+<p>This line tells can.route to match any route going to the restaurant, and
+format it so that it is a forward slash followed by the serialized value. Add
+a serialize property to the restaurant attribute of the Application State
+object as follows:</p>
+<pre><code>restaurant: {
+   ...
+   serialize: function () {
+       return this.attr('restaurant.name');
+   }
+}
+</code></pre>
+<p>Now, when you select a restaurant and click the Place Order buton, you should
+see the following in the URL bar:</p>
+<p><img src="../can/guides/images/9_routes_and_serialization/FormattedRouteUrlBar.png" alt="" /></p>
+<p>Finally, update the Application State object in app.js, as follows:</p>
+<pre><code>function getRestaurantMenu(restaurant, that) {
+    that.attr('menus', new RestaurantMenusModel.List({id: restaurant.restaurantId}));
+}
+
+function showSelectedRestaurantMenus(restaurant, that) {
+    this.attr('restaurantName', restaurant);
+    RestaurantModel.findOne({name: restaurant},
+        function success(restaurantModel) {
+            getRestaurantMenu(restaurantModel, that);
+            return restaurantModel;
+        },
+        function error(xhr) {
+            alert(xhr.message);
+            return null;
+        })
+}
+
+var ApplicationState = can.Map.extend({
+    define: {
+        restaurant: {
+            value: {},
+            set: function (restaurant) {
+                var that = this;
+
+                if (!restaurant) return restaurant;
+
+                if(typeof restaurant === 'string'){
+                    return showSelectedRestaurantMenus.call(this, restaurant, that);
+                }
+                else if (restaurant.restaurantId) {
+                    getRestaurantMenu(restaurant, that);
+                    return restaurant;
+                }
+
+            },
+            serialize: function () {
+                return this.attr('restaurant.name');
+            }
+        },
+        ...
+</code></pre>
+<p>Note, that we've refactored the call to RestaurantMenusModel out into its own
+function. Now, when you change the value of the restaurant in the URL, the
+menu changes as well.</p>
+<h2>Creating Anchor Tags with can.route.link</h2>
+<p>The last thing we need to do is
+add functionality to our Site Menu. Open up the <em>site_menu.stache</em> file in
+your site_menu components folder. Edit it, as follows:</p>
+<pre><code>{{#menuData.menuText}}
+    &lt;ul class=&quot;nav&quot;&gt;
+        &lt;li&gt;&lt;a class=&quot;visible-xs text-center&quot; data-toggle=&quot;offcanvas&quot; href=&quot;#&quot;&gt;
+
+    ...
+
+    &lt;!--Begin update --&gt;
+    &lt;ul id=&quot;lg-menu&quot; class=&quot;nav hidden-xs&quot;&gt;
+        &lt;li class=&quot;active&quot;&gt;{{&amp;HomeLink}}&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;!--End update --&gt;
+
+    ...
+
+{{/menuData.menuText}}
+</code></pre>
+<p>The &amp; character in the data key tells Stache to include the unescaped
+value of the content it receives. We'll be generating an anchor tag, so we
+need to use this.</p>
+<p>Open up site_menu_component.js, and add the following method to the can.Component:</p>
+<pre><code>can.Component.extend({
+    tag: &quot;menu&quot;,
+    template: can.view('components/site_menu/site_menu.stache'),
+    scope: SiteMenuViewModel,
+    events: {
+        inserted: function () {
+            var siteMenuViewModel = this.scope;
+            SiteMenuModel.findOne({},
+                function success(menu) {
+                    siteMenuViewModel.attr('menuData', menu);
+                    //--&gt; Add this line
+                    siteMenuViewModel.attr('menuData.menuText.HomeLink',
+                        can.route.link( '&lt;i class=&quot;glyphicon glyphicon-cutlery&quot;&gt;&lt;/i&gt; Restaurants', {restaurant: null}, false ));
+                },
+                function error(xhr) {
+                    alert(xhr.error.message);
+                });
+        }
+    }
+});
+</code></pre>
+<p>Here, we add a can route link to the view template, using can.route.link. You
+should always use can.route.link when adding anchor tags to your application.</p>
+<p>Finally, update your app.js, adding code that will respond to the application
+state change. Append the following below the &quot;getRestaurantMenu&quot; function:</p>
+<pre><code>function setAppToDefaultState() {
+    this.attr('menus', null);
+}
+</code></pre>
+<p>Update the restaurant attribute <code>set</code> function on your ApplicationState:</p>
+<pre><code>set: function (restaurant) {
+    var that = this;
+
+    if (!restaurant) return restaurant;
+
+    if(typeof restaurant === 'string'){
+
+        //--&gt; Add this conditional code
+        if(restaurant === 'null'){
+            setAppToDefaultState.call(this);
+            return null;
+        }
+
+        return showSelectedRestaurantMenus.call(this, restaurant, that);
+
+    }
+    else if (restaurant.restaurantId) {
+        getRestaurantMenu(restaurant, that);
+        return restaurant;
+    }
+
+}
+</code></pre>
+<p>Now, open up your application in the browser (refresh, if you haven't). Select
+a restaurant from the list, then click the Place Order button. Once a menu
+displays, click on the Restaurants link. The menu will disappear, and the
+application will be returned to the default state, where you select a
+restaurant form the list.</p>
+<hr />
+<p><span class="pull-left"><a href="Define.html">&lt; The Define Plugin</a></span></p>
+<p><span class="pull-right"><a href="Recap.html">Recap &gt;</a></span></p>
+
+		</section>
+		
+		
+
+		
+	
+	
+	</article>
+	
+	
+
+</div>
+
+
+
+
+
+	
+	
+	<footer>
+		<nav class="container">
+			<a class="brand" href="index.html"></a>
+			<ul class='nav'>
+				<li >
+	              <a href="../index.html">Home</a>
+	            </li>
+		        <li class='active'><a href='index.html'>guides</a></li>
+		        <li><a href='../docs/index.html'>api</a></li>
+		        <li class="">
+		          <a href="../community.html#!forums">Community</a>
+		        </li>
+		        <li >
+	              <a href="../blog/index.html">Blog</a>
+	            </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+	            </li>
+            </ul>
+		</nav>
+	</footer>
+	
+
+    
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-2302003-11']);
+	  _gaq.push(['_setDomainName', 'canjs.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	
+	</script>
+	
+	<script type="text/javascript">
+		var docObject = {"type":"page","name":"Routes","src":"guides/routes.md","description":"","title":"Route Formatting & Serialization","parent":"Tutorial","order":10,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
+	</script>
+	
+	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
+		<script type='text/javascript' 
+				data-main="static"
+				data-config="./static/config.js"
+				src="./static/steal.production.js"
+		    		bundles-path="bundles"></script>
+	
+	
+</body>
+
+</html>

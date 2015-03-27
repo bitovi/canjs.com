@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -478,6 +486,21 @@
 				
 				
 					<li class="search-container  ">
+						<a 	class="property" 
+							href="can.Model.store.html" 
+							data-search="store">
+							store
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.Model.unbind.html" 
 							data-search="unbind">
@@ -625,7 +648,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/model/doc/create.md">source</a></li>
 	
@@ -890,7 +913,7 @@ something that looks like:</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Model.static","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.Model.create","description":"<p>Specifies how to create a new resource on the server. <code>create(serialized)</code> is called by [can.Model.prototype.save save] if the model instance [can.Model.prototype.isNew is new].</p>\n","title":"create","signatures":[{"code":"can.Model.create: function(serialized) -> deferred","description":"<p>Specify a function to create persistent instances. The function will\ntypically perform an AJAX request to a service that results in\ncreating a record in a database.</p>\n","params":[{"types":[{"type":"Object","options":[]}],"name":"serialized","description":"<p>The [can.Map::serialize serialized] properties of\nthe model to create.</p>\n"}],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A Deferred that resolves to an object of attributes\nthat will be added to the created model instance.  The object <strong>MUST</strong> contain\nan [can.Model.id id] property so that future calls to [can.Model.prototype.save save]\nwill call [can.Model.update].</p>\n"}},{"code":"can.Model.create: \"[METHOD] /path/to/resource\"","description":"<p>Specify a HTTP method and url to create persistent instances.</p>\n<p>If you provide a URL, the Model will send a request to that URL using\nthe method specified (or POST if none is specified) when saving a\nnew instance on the server. (See below for more details.)</p>\n","params":[{"types":[{"type":"HttpMethod"}],"name":"METHOD","description":"<p>An HTTP method. Defaults to <code>&quot;POST&quot;</code>.</p>\n"},{"types":[{"type":"STRING"}],"name":"url","description":"<p>The URL of the service to retrieve JSON data.</p>\n"}]},{"code":"can.Model.create: {ajaxSettings}","description":"<p>Specify an options object that is used to make a HTTP request to create\npersistent instances.</p>\n","params":[{"types":[{"type":"can.AjaxSettings"}],"name":"ajaxSettings","description":"<p>A settings object that\nspecifies the options available to pass to [can.ajax].</p>\n"}]}],"comment":" ","src":"model/doc/create.md"};
+		var docObject = {"type":"function","name":"can.Model.create","src":"model/doc/create.md","description":"Specifies how to create a new resource on the server. `create(serialized)` is called by [can.Model.prototype.save save] if the model instance [can.Model.prototype.isNew is new].","title":"create","parent":"can.Model.static","signatures":[{"code":"can.Model.create: function(serialized) -> deferred","description":"Specify a function to create persistent instances. The function will\ntypically perform an AJAX request to a service that results in\ncreating a record in a database.","params":[{"types":[{"type":"Object","options":[]}],"name":"serialized","description":"The [can.Map::serialize serialized] properties of\nthe model to create."}],"returns":{"types":[{"type":"can.Deferred"}],"description":"A Deferred that resolves to an object of attributes\nthat will be added to the created model instance.  The object __MUST__ contain\nan [can.Model.id id] property so that future calls to [can.Model.prototype.save save]\nwill call [can.Model.update]."}},{"code":"can.Model.create: \"[METHOD] /path/to/resource\"","description":"Specify a HTTP method and url to create persistent instances.\n\nIf you provide a URL, the Model will send a request to that URL using\nthe method specified (or POST if none is specified) when saving a\nnew instance on the server. (See below for more details.)","params":[{"types":[{"type":"HttpMethod"}],"name":"METHOD","description":"An HTTP method. Defaults to `\"POST\"`."},{"types":[{"type":"STRING"}],"name":"url","description":"The URL of the service to retrieve JSON data."}]},{"code":"can.Model.create: {ajaxSettings}","description":"Specify an options object that is used to make a HTTP request to create\npersistent instances.","params":[{"types":[{"type":"can.AjaxSettings"}],"name":"ajaxSettings","description":"A settings object that\nspecifies the options available to pass to [can.ajax]."}]}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -903,6 +926,7 @@ something that looks like:</p>
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -216,21 +224,15 @@
 	<ul class="primary-grouping">
 		
 			
-				
-					
-					<li class="heading search-container">
-						<span>plugins</span>
-						
-	<ul >
 		
 			
 				
 				
 					<li class="search-container parent ">
-						<a 	class="page" 
-							href="can.view.modifiers.html" 
-							data-search="jQuery modifiers">
-							jQuery modifiers
+						<a 	class="property" 
+							href="can.view.elements.html" 
+							data-search="can.view.elements">
+							elements
 						</a>
 						
 					</li>
@@ -238,13 +240,8 @@
 			
 			
 		
-	</ul>
-
-					</li>
-					
-				
-				
 			
+		
 			
 		
 			
@@ -508,21 +505,6 @@
 			
 				
 				
-					<li class="search-container parent ">
-						<a 	class="property" 
-							href="can.view.nodeLists.html" 
-							data-search="can.view.nodeLists">
-							nodeLists
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
 					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.view.register.html" 
@@ -577,13 +559,31 @@
 			
 		
 			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>plugins</span>
+						
+	<ul >
+		
+			
 				
 				
 					<li class="search-container parent ">
-						<a 	class="property" 
-							href="can.view.elements.html" 
-							data-search="can.view.elements">
-							elements
+						<a 	class="page" 
+							href="can.view.modifiers.html" 
+							data-search="jQuery modifiers">
+							jQuery modifiers
 						</a>
 						
 					</li>
@@ -592,19 +592,42 @@
 			
 		
 			
-		
+				
+				
+					<li class="search-container  ">
+						<a 	class="module" 
+							href="can|view|autorender.html" 
+							data-search="can.autorender">
+							can.autorender
+						</a>
+						
+					</li>
+				
+			
 			
 		
 			
-		
+				
+				
+					<li class="search-container  ">
+						<a 	class="module" 
+							href="can|view|autorender.can-autorender.html" 
+							data-search="can-autorender">
+							can-autorender
+						</a>
+						
+					</li>
+				
+			
 			
 		
+	</ul>
+
+					</li>
+					
+				
+				
 			
-		
-			
-		
-			
-		
 			
 		
 	</ul>
@@ -645,7 +668,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/view/live/live.js">source</a></li>
 	
@@ -803,7 +826,7 @@ can.view.live.attr(div,&quot;class&quot;, compute);
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.view.live","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.view.live.attr","params":[{"types":[{"type":"HTMLElement"}],"name":"el","description":"<p>The element whos attribute will be kept live.</p>\n"},{"types":[{"type":"String"}],"name":"attributeName","description":"<p>The attribute name.</p>\n"},{"types":[{"type":"can.compute"}],"name":"compute","description":"<p>The compute.</p>\n"}],"description":"<p>Keep an attribute live to a [can.compute].</p>\n","title":"","comment":" ","src":"view/live/live.js"};
+		var docObject = {"type":"function","name":"can.view.live.attr","params":[{"types":[{"type":"HTMLElement"}],"name":"el","description":"The element whos attribute will be kept live."},{"types":[{"type":"String"}],"name":"attributeName","description":"The attribute name."},{"types":[{"type":"can.compute"}],"name":"compute","description":"The compute."}],"parent":"can.view.live","src":"view/live/live.js","line":605,"codeLine":623,"description":"Keep an attribute live to a [can.compute].","title":"","comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -816,6 +839,7 @@ can.view.live.attr(div,&quot;class&quot;, compute);
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

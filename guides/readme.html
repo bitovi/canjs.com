@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -103,8 +104,8 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
-	   		<a href="Tutorial.html" data-search="Getting Started">
-				Getting Started
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
 			</a>
 			
 	   </li>
@@ -117,8 +118,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="Why.html" data-search="Why CanJS?">
-				Why CanJS?
+	   		<a href="Tutorial.html" data-search="Getting Started">
+				Getting Started
 			</a>
 			
 	   </li>
@@ -191,7 +192,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/readme.md">source</a></li>
 	
@@ -211,7 +212,7 @@
 
 		
 		<section class="description">
-			<p><a href="http://canjs.us/"><img src="http://canjs.us/scripts/static/img/canjs_logo_yellow_small.png" alt="CanJS" /></a></p>
+			<h2><a href="http://canjs.com/"><img src="http://bitovi.com/img/os-canjs-logo.png" alt="CanJS" /></a></h2>
 
 		</section>
 		
@@ -226,6 +227,12 @@
 		
 		<section class="comment">
 			<p><a href="https://travis-ci.org/bitovi/canjs"><img src="https://travis-ci.org/bitovi/canjs.png?branch=master" alt="Build Status" /></a></p>
+<blockquote>
+<p>WARNING: This npm package is for the <a href="http://canjs.com">CanJS client-side MV* framework</a>. It was formerly
+the <a href="https://github.com/sebi2k1/node-can">node-can project</a> which has been moved
+to <a href="https://www.npmjs.com/package/socketcan">socketcan</a>.  A HUGE thanks to Sebastian Haas for
+letting us use the <code>can</code> name!</p>
+</blockquote>
 <p>CanJS is a MIT-licensed, client-side, JavaScript framework that makes building
 rich web applications easy. Use it because it’s:</p>
 <ul>
@@ -236,7 +243,7 @@ rich web applications easy. Use it because it’s:</p>
 <li>Library-er</li>
 </ul>
 <h3>Demos and Docs</h3>
-<p>Go to <a href="http://canjs.us/">http://canjs.us/</a> for docs, downloads, tests, demos, and more.</p>
+<p>Go to <a href="http://canjs.com/">http://canjs.com/</a> for docs, downloads, tests, demos, and more.</p>
 <h3>Support / Contributing</h3>
 <p>Before you make an issue, please read our <a href="contributing.md">Contributing</a> guide.</p>
 <p>You can find the core team in <a href="irc://irc.freenode.net/#canjs">#canjs on irc.freenode.net</a>.</p>
@@ -305,7 +312,7 @@ rich web applications easy. Use it because it’s:</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"guides","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"page","name":"readme","description":"<p><a href=\"http://canjs.us/\"><img src=\"http://canjs.us/scripts/static/img/canjs_logo_yellow_small.png\" alt=\"CanJS\" /></a></p>\n","src":"readme.md"};
+		var docObject = {"type":"page","name":"readme","src":"readme.md","description":"## [![CanJS](http://bitovi.com/img/os-canjs-logo.png)](http://canjs.com/)","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -318,6 +325,7 @@ rich web applications easy. Use it because it’s:</p>
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

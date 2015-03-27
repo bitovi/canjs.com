@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -354,6 +362,21 @@
 			
 				
 				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="can.Map.List.html" 
+							data-search="can.Map.List">
+							List
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
 					<li class="search-container parent ">
 						<a 	class="page" 
 							href="can.Map.attributes.html" 
@@ -569,7 +592,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/map/doc/prototype.bind.md">source</a></li>
 	
@@ -589,7 +612,7 @@
 
 		
 		<section class="description">
-			<p>Bind event handlers to an Map.</p>
+			<p>Bind event handlers to a Map.</p>
 
 		</section>
 		
@@ -667,7 +690,7 @@ a property using <code>attr</code>, two events are fired on the Map, allowing ot
 of your application to map the changes to the object.</p>
 <h2>The <em>change</em> event</h2>
 <p>The first event that is fired is the <em>change</em> event. The <em>change</em> event is useful
-if you want to react to all changes on an Map.</p>
+if you want to react to all changes on a Map.</p>
 <pre><code>var o = new can.Map({});
 o.bind('change', function(ev, attr, how, newVal, oldVal) {
     console.log('Something changed.');
@@ -679,7 +702,7 @@ o.bind('change', function(ev, attr, how, newVal, oldVal) {
 <li><em>attr</em> Which property changed.</li>
 <li><em>how</em> Whether the property was added, removed, or set. Possible values are <code>'add'</code>, <code>'remove'</code>, or <code>'set'</code>.</li>
 <li><em>newVal</em> The value of the property after the change. <code>newVal</code> will be <code>undefined</code> if the property was removed.</li>
-<li><em>oldVal</em> Thishe value of the property before the change. <code>oldVal</code> will be <code>undefined</code> if the property was added.</li>
+<li><em>oldVal</em> This is the value of the property before the change. <code>oldVal</code> will be <code>undefined</code> if the property was added.</li>
 </ul>
 <p>Here is a concrete tour through the <em>change</em> event handler's arguments:</p>
 <pre><code>var o = new can.Map({});
@@ -790,7 +813,7 @@ o.removeAttr('a');     // [object Object], undefined, Alice
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Map.prototype","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.Map.prototype.bind","description":"<p>Bind event handlers to an Map.</p>\n","title":"bind","order":3,"signatures":[{"code":"map.bind(eventType, handler)","description":"","params":[{"types":[{"type":"String"}],"name":"eventType","description":"<p>the type of event to bind this handler to</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"handler","description":"<p>the handler to be called when this type of event fires\nThe signature of the handler depends on the type of event being bound. See below\nfor details.</p>\n"}],"returns":{"types":[{"type":"can.Map"}],"description":"<p>this Map, for chaining</p>\n"}}],"comment":" ","src":"map/doc/prototype.bind.md"};
+		var docObject = {"type":"function","name":"can.Map.prototype.bind","src":"map/doc/prototype.bind.md","description":"Bind event handlers to a Map.","title":"bind","parent":"can.Map.prototype","order":3,"signatures":[{"code":"map.bind(eventType, handler)","description":"","params":[{"types":[{"type":"String"}],"name":"eventType","description":"the type of event to bind this handler to"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"handler","description":"the handler to be called when this type of event fires\nThe signature of the handler depends on the type of event being bound. See below\nfor details."}],"returns":{"types":[{"type":"can.Map"}],"description":"this Map, for chaining"}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -803,6 +826,7 @@ o.removeAttr('a');     // [object Object], undefined, Alice
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

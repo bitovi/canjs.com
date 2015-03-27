@@ -110,7 +110,10 @@ call bindsetup if the function exists.</p>
 		}
 		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 	};
-	can.unbindAndTeardown = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, handler)</span> </span>{</pre></div></div>
+	can.unbindAndTeardown = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event, handler)</span> </span>{
+
+		<span class="hljs-keyword">var</span> handlers = <span class="hljs-keyword">this</span>.__bindEvents[event] || [];
+		<span class="hljs-keyword">var</span> handlerCount = handlers.length;</pre></div></div>
             
         </li>
         
@@ -128,9 +131,7 @@ call bindsetup if the function exists.</p>
             <div class="content"><div class='highlight'><pre>		can.removeEvent.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._bindings === <span class="hljs-literal">null</span>) {
 			<span class="hljs-keyword">this</span>._bindings = <span class="hljs-number">0</span>;
-		} <span class="hljs-keyword">else</span> {
-			<span class="hljs-keyword">this</span>._bindings--;
-		}</pre></div></div>
+		} <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -140,6 +141,23 @@ call bindsetup if the function exists.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Subtract the difference in the number of handlers bound to this
+event before/after removeEvent</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>._bindings = <span class="hljs-keyword">this</span>._bindings - (handlerCount - handlers.length);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>If there are no longer any bindings and
 there is a bindteardown method, call it.</p>

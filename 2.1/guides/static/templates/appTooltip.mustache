@@ -1,0 +1,17 @@
+<div class="tooltip apps">
+  <div class="bithub-content">
+  {{#apps}}
+    <div class="bithub-post">
+      {{#if image_url}}
+      <a href="{{link}}" class="pull-left"><img {{#image_url}}src="{{.}}"{{/image_url}}/></a>
+      {{/if}}
+      <h2><a href="{{link}}">{{title}}</a></h2>
+      <p>posted {{#if author.name}}by {{/if}}{{author.name}} on {{formatDate date}} via <a href="{{link}}">{{feed}}</a></p>
+    </div>
+  {{/apps}}
+  {{^apps}}
+  <div class="loading"/>
+  {{/apps}}
+  </div>
+  <a href="http://bitovi.bithub.com/app/" class="button">More Apps <span class="icon-arrow"></span></a>
+</div>

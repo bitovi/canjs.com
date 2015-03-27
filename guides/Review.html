@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS - Creating the Menu Component </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	
+	<link rel="stylesheet" type="text/css" href="./static/bundles/static.css">
+	
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs ">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
+		          <li><a href="http://jquerypp.com">jQuery++</a></li>
+		          <li><a href="http://stealjs.com">StealJS</a></li>
+		          <li><a href="http://funcunit.com">FuncUnit</a></li>
+		          <li><a href="http://documentjs.com">DocumentJS</a></li>
+		        </ul>
+			</div>
+			
+			<ul class="nav">
+		        <li >
+	              <a href="../index.html">Home</a>
+                </li>
+		       <li class='active'><a href='index.html'>guides</a></li>
+		       <li><a href='../docs/index.html'>api</a></li>
+		        <li class=" community-menu">
+		          <a href="../community.html#!forums">Community</a>
+		          <ul class="dropdown-menu">
+		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
+		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
+		            <li><a href="http://bitovi.bithub.com/canjs/app/">Apps</a></li>
+		            <li><a href="http://bitovi.bithub.com/canjs/plugin/">Plugins</a></li>
+		            <li><a href="http://bitovi.bithub.com/canjs/article/">Articles</a></li>
+		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		          </ul>
+		        </li>
+		        <li >
+	              <a href="../blog/index.html">Blog</a>
+                </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+                </li>
+	      	</ul>
+			
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+			
+		</nav>
+	</header>
+
+	
+<div class="container api">
+
+	
+	<nav class="sidebar">
+		
+		<h2 id="version">
+	<select id='versions'></select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Using.html" data-search="Setting up CanJS">
+				Setting up CanJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container active">
+	   		<a href="Tutorial.html" data-search="Getting Started">
+				Getting Started
+			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Setup.html" 
+							data-search="Setup">
+							Setup
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Foundations.html" 
+							data-search="Application Foundations">
+							Application Foundations
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Components.html" 
+							data-search="Getting to Know Components">
+							Getting to Know Components
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Components2.html" 
+							data-search="More on Components">
+							More on Components
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Models.html" 
+							data-search="Models (&amp; Fixtures)">
+							Models (&amp; Fixtures)
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Models2.html" 
+							data-search="Sending Data to a Service">
+							Sending Data to a Service
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container active  expanded">
+						<a 	class="page" 
+							href="Review.html" 
+							data-search="Creating the Menu Component">
+							Creating the Menu Component
+						</a>
+						
+							
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="State.html" 
+							data-search="App State &amp; Basic Routing">
+							App State &amp; Basic Routing
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Define.html" 
+							data-search="The Define Plugin">
+							The Define Plugin
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Routes.html" 
+							data-search="Route Formatting &amp; Serialization">
+							Route Formatting &amp; Serialization
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Recap.html" 
+							data-search="Recap">
+							Recap
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Recipes.html" data-search="Recipes">
+				Recipes
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="contributing.html" data-search="How to Contribute">
+				How to Contribute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="changelog.html" data-search="Changelog">
+				Changelog
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="license.html" data-search="License">
+				License
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="migrating.html" data-search="Migrating to 2.0">
+				Migrating to 2.0
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="roadmap.html" data-search="Roadmap">
+				Roadmap
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	
+	
+	
+	<article class="content docs">
+	
+	
+		
+		<section class="title">
+			<div class="heading">
+<h1>Creating the Menu Component</h1>
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	
+		<span class="module">Review</span>
+	
+	
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+	
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/master/guides/review.md">source</a></li>
+	
+	
+	
+</ul>
+<br />
+		</section>
+		
+		
+		
+		<section class="contents">
+		</section>
+		
+		
+		
+
+		
+
+		
+			
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<hr />
+<p><strong>In this Chapter</strong></p>
+<ul>
+<li>Create the Site Menu can.Component</li>
+</ul>
+<blockquote>
+<p>Get the code for: <a href="https://github.com/bitovi/canjs/blob/guides-overhaul/guides/examples/PlaceMyOrder/ch-6_canjs-getting-started.zip?raw=true">chapter 6</a></p>
+</blockquote>
+<hr />
+<p>We should know enough at this point to successfully create our Menu component.
+Going through the steps will be a good review of what we've covered so far,
+and help you solidify your understanding of CanJS. We'll also cover some
+additional functionality from the objects we already know, such as the findOne
+method of can.Model.</p>
+<p>In your models folder, open fixtures.js. Add the following code to register a
+new can.fixture:</p>
+<pre><code>can.fixture(&quot;GET /site_menu&quot;, function requestHandler() {
+   return {
+       menuText: {
+           &quot;PageTitle&quot;: &quot;PlaceMyOrder.com&quot;,
+           &quot;FoodAtFingertips&quot;: &quot;Food at your Fingertips&quot;,
+           &quot;Restaurants&quot;: &quot;Restaurants&quot;,
+           &quot;Cuisines&quot;: &quot;Cuisines&quot;
+       }
+   };
+});
+</code></pre>
+<p>Open up site_models.js, and add a new can.Model:</p>
+<pre><code>var SiteMenuModel = can.Model.extend({
+        findOne: &quot;GET /site_menu&quot;
+}, {});
+</code></pre>
+<p>In your components folder, create a new folder called &quot;site_menu&quot;. In that
+folder, create a file called site_menu_component.js and add the following code:</p>
+<pre><code>var SiteMenuViewModel = can.Map.extend({
+    init: function () {
+        this.attr('menuData', {});
+    }
+});
+
+can.Component.extend({
+    tag: &quot;menu&quot;,
+    template: can.view('components/site_menu/site_menu.stache'),
+    scope: SiteMenuViewModel,
+    events: {
+        inserted: function () {
+            var siteMenuViewModel = this.scope;
+            SiteMenuModel.findOne({},
+                function success(menu) {
+                    siteMenuViewModel.attr('menuData', menu);
+                },
+                function error(xhr) {
+                    alert(xhr.error.message);
+                });
+        }
+    }
+});
+</code></pre>
+<p>We've included a new attribute on the definition of our can.Component, above:
+the &quot;events&quot; attribute. The events attribute allows you to define listeners
+for events on your can.Component. These events can be DOM events, such as
+&quot;click&quot;, events in the lifecycle of the can.Component, or properties on the
+component's scope. References to the scope from the events attribute are
+obtained from the <code>this</code> keyword, as follows: <code>this.scope</code>.</p>
+<p>In the code above, we listened for the &quot;inserted&quot; event. This is a
+can.Component lifecycle event that fires when the component has been inserted
+into the DOM.</p>
+<p>Similar to the can.Model findAll method, the findOne method takes a parameters
+object as its first argument. Optionally, you can pass in two callback
+functions: the first being the success function and the second being the error
+function. The success function receives the object returned by the findOne
+call as the first parameter in its method signature. The error function
+receives the <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest">XMLHttpRequest object</a>
+as the first parameter in its method
+signature. If the findOne operation is successful, the success method will be
+called. Otherwise, the error method is called.</p>
+<p>In the example above, we create an observable can.Map object. We create an
+instance of that object, and assign it to the can.Component's scope. Because
+the can.Map object is observable, when we later update it's menuData property,
+the update is broadcast to the system, and the menu can.Component is refreshed
+with the menu data returned from the findOne method. There is currently no
+implicit method for calling can.Model.findOne. You must use the method
+described above.</p>
+<p>Let's connect all of this to a view template. Staying in the menu folder,
+create a template file called &quot;site_menu.stache&quot;, as follows:</p>
+<pre><code>  {{#menuData.menuText}}
+  &lt;ul class=&quot;nav&quot;&gt;
+      &lt;li&gt;&lt;a class=&quot;visible-xs text-center&quot; data-toggle=&quot;offcanvas&quot; href=&quot;#&quot;&gt;&lt;i
+              class=&quot;glyphicon glyphicon-chevron-right&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;ul id=&quot;sidebar-footer&quot; class=&quot;list-unstyled hidden-xs&quot;&gt;
+      &lt;li can-click=&quot;clickedAlert&quot;&gt;
+          &lt;a href=&quot;#!home&quot;&gt;&lt;h4&gt;{{PageTitle}}&lt;/h4&gt;
+              &lt;i class=&quot;glyphicon glyphicon-heart-empty&quot;&gt;&lt;/i&gt;{{FoodAtFingertips}}&lt;/a&gt;
+      &lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;ul id=&quot;lg-menu&quot; class=&quot;nav hidden-xs&quot;&gt;
+      &lt;li class=&quot;active&quot;&gt;&lt;a can-click=&quot;goHome&quot; href=&quot;#&quot;&gt;&lt;i class=&quot;glyphicon glyphicon-cutlery&quot;&gt;&lt;/i&gt; {{Restaurants}}&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+
+
+  &lt;!-- tiny only nav--&gt;
+  &lt;ul id=&quot;xs-menu&quot; class=&quot;nav visible-xs&quot;&gt;
+      &lt;li&gt;&lt;a class=&quot;text-center&quot; href=&quot;#!restaurants&quot;&gt;&lt;i class=&quot;glyphicon glyphicon-cutlery&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  {{/menuData.menuText}}
+</code></pre>
+<p>Open up /app/base_template.stache, and add the following line to the top of
+the file:</p>
+<pre><code>&lt;menu id=&quot;sidebar&quot; class=&quot;column col-sm-2 col-xs-1 sidebar-offcanvas&quot;&gt;&lt;/menu&gt;
+</code></pre>
+<p>Finally, add the script tag for the SiteMenuComponent to the index.html file:</p>
+<pre><code>&lt;script src=&quot;models/site_models.js&quot;&gt;&lt;/script&gt;
+&lt;!--Begin add--&gt;
+&lt;script src=&quot;components/site_menu/site_menu_component.js&quot;&gt;&lt;/script&gt;
+&lt;!--End add--&gt;
+&lt;script src=&quot;components/order_form/order_form_component.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>If you go out to your application, and refresh it, you should see the following:</p>
+<p><img src="../can/guides/images/6_reinforcing_concepts/MenuComponentAdded.png" alt="" /></p>
+<hr />
+<p><span class="pull-left"><a href="Models2.html">&lt; Sending Data to a Service</a></span></p>
+<p><span class="pull-right"><a href="State.html">App State &amp; Basic Routing &gt;</a></span></p>
+
+		</section>
+		
+		
+
+		
+	
+	
+	</article>
+	
+	
+
+</div>
+
+
+
+
+
+	
+	
+	<footer>
+		<nav class="container">
+			<a class="brand" href="index.html"></a>
+			<ul class='nav'>
+				<li >
+	              <a href="../index.html">Home</a>
+	            </li>
+		        <li class='active'><a href='index.html'>guides</a></li>
+		        <li><a href='../docs/index.html'>api</a></li>
+		        <li class="">
+		          <a href="../community.html#!forums">Community</a>
+		        </li>
+		        <li >
+	              <a href="../blog/index.html">Blog</a>
+	            </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+	            </li>
+            </ul>
+		</nav>
+	</footer>
+	
+
+    
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-2302003-11']);
+	  _gaq.push(['_setDomainName', 'canjs.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	
+	</script>
+	
+	<script type="text/javascript">
+		var docObject = {"type":"page","name":"Review","src":"guides/review.md","description":"","title":"Creating the Menu Component","parent":"Tutorial","order":7,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
+	</script>
+	
+	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
+		<script type='text/javascript' 
+				data-main="static"
+				data-config="./static/config.js"
+				src="./static/steal.production.js"
+		    		bundles-path="bundles"></script>
+	
+	
+</body>
+
+</html>

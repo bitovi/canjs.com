@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -193,7 +201,7 @@
 					<li class="search-container  ">
 						<a 	class="property" 
 							href="can.Construct.constructorExtends.html" 
-							data-search="constructorExtends">
+							data-search="can.Construct.constructorExtends">
 							constructorExtends
 						</a>
 						
@@ -492,7 +500,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/construct/construct.js">source</a></li>
 	
@@ -547,12 +555,7 @@ the <a href="can.Construct.shortName.html">shortName</a>.</p>
 
 		
 		<section class="comment">
-			<pre><code class="language-js">can.Construct(&quot;MyApplication.MyConstructor&quot;,{},{});
-MyApplication.MyConstructor.namespace // &quot;MyApplication&quot;
-MyApplication.MyConstructor.shortName // &quot;MyConstructor&quot;
-MyApplication.MyConstructor.fullName  // &quot;MyApplication.MyConstructor&quot;
-</code></pre>
-
+			
 		</section>
 		
 		
@@ -613,7 +616,7 @@ MyApplication.MyConstructor.fullName  // &quot;MyApplication.MyConstructor&quot;
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Construct.static","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"name":"can.Construct.fullName","type":"property","description":"<p>If you pass a name when creating a Construct, the <code>fullName</code> property will be set to\nthe name you passed. The <code>fullName</code> consists of the [can.Construct.namespace namespace] and\nthe [can.Construct.shortName shortName].</p>\n","types":[{"type":"String"}],"title":"fullName","src":"construct/construct.js"};
+		var docObject = {"name":"can.Construct.fullName","type":"property","parent":"can.Construct.static","src":"construct/construct.js","line":565,"codeLine":580,"description":"If you pass a name when creating a Construct, the `fullName` property will be set to\nthe name you passed. The `fullName` consists of the [can.Construct.namespace namespace] and\nthe [can.Construct.shortName shortName].","types":[{"type":"String"}],"title":"fullName","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -626,6 +629,7 @@ MyApplication.MyConstructor.fullName  // &quot;MyApplication.MyConstructor&quot;
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

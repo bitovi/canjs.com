@@ -24,6 +24,11 @@
               </a>
             
               
+              <a class="source" href="intermediate_and_imports.html">
+                intermediate_and_imports.js
+              </a>
+            
+              
               <a class="source" href="mustache_core.html">
                 mustache_core.js
               </a>
@@ -36,6 +41,16 @@
               
               <a class="source" href="stache.html">
                 stache.js
+              </a>
+            
+              
+              <a class="source" href="stache_benchmark.html">
+                stache_benchmark.js
+              </a>
+            
+              
+              <a class="source" href="system.html">
+                system.js
               </a>
             
               
@@ -123,7 +138,7 @@
 				compute.bind(<span class="hljs-string">"change"</span>, emptyHandler);
 				<span class="hljs-keyword">var</span> value = compute();
 				
-				<span class="hljs-keyword">if</span>( compute.hasDependencies ) {
+				<span class="hljs-keyword">if</span>( compute.computeInstance.hasDependencies ) {
 					<span class="hljs-keyword">if</span>(state.attr) {
 						live.simpleAttribute(<span class="hljs-keyword">this</span>, state.attr, compute);
 					} <span class="hljs-keyword">else</span> {

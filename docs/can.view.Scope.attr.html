@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -216,21 +224,15 @@
 	<ul class="primary-grouping">
 		
 			
-				
-					
-					<li class="heading search-container">
-						<span>plugins</span>
-						
-	<ul >
 		
 			
 				
 				
 					<li class="search-container parent ">
-						<a 	class="page" 
-							href="can.view.modifiers.html" 
-							data-search="jQuery modifiers">
-							jQuery modifiers
+						<a 	class="property" 
+							href="can.view.elements.html" 
+							data-search="can.view.elements">
+							elements
 						</a>
 						
 					</li>
@@ -238,13 +240,8 @@
 			
 			
 		
-	</ul>
-
-					</li>
-					
-				
-				
 			
+		
 			
 		
 			
@@ -348,36 +345,6 @@
 							href="can.view.Scope.computeData.html" 
 							data-search="computeData">
 							computeData
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="property" 
-							href="can.view.Scope.prototype.defaultComputeReadings.html" 
-							data-search="can.view.Scope.prototype.defaultComputeReadings">
-							defaultComputeReadings
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.view.Scope.prototype.foundObservable.html" 
-							data-search="can.view.Scope.prototype.foundObservable">
-							foundObservable
 						</a>
 						
 					</li>
@@ -591,21 +558,6 @@
 			
 				
 				
-					<li class="search-container parent ">
-						<a 	class="property" 
-							href="can.view.nodeLists.html" 
-							data-search="can.view.nodeLists">
-							nodeLists
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
 					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.view.register.html" 
@@ -660,13 +612,31 @@
 			
 		
 			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>plugins</span>
+						
+	<ul >
+		
+			
 				
 				
 					<li class="search-container parent ">
-						<a 	class="property" 
-							href="can.view.elements.html" 
-							data-search="can.view.elements">
-							elements
+						<a 	class="page" 
+							href="can.view.modifiers.html" 
+							data-search="jQuery modifiers">
+							jQuery modifiers
 						</a>
 						
 					</li>
@@ -675,19 +645,42 @@
 			
 		
 			
-		
+				
+				
+					<li class="search-container  ">
+						<a 	class="module" 
+							href="can|view|autorender.html" 
+							data-search="can.autorender">
+							can.autorender
+						</a>
+						
+					</li>
+				
+			
 			
 		
 			
-		
+				
+				
+					<li class="search-container  ">
+						<a 	class="module" 
+							href="can|view|autorender.can-autorender.html" 
+							data-search="can-autorender">
+							can-autorender
+						</a>
+						
+					</li>
+				
+			
 			
 		
+	</ul>
+
+					</li>
+					
+				
+				
 			
-		
-			
-		
-			
-		
 			
 		
 	</ul>
@@ -732,7 +725,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/view/scope/doc/attr.md">source</a></li>
 	
@@ -816,8 +809,27 @@ will be explored.</p>
 
 var curScope = new can.view.Scope(list).add(justin);
 
-curScope.attr(&quot;name&quot;) //-&gt; &quot;Justin&quot;
-curScope.attr(&quot;length&quot;) //-&gt; 2
+curScope.attr(&quot;name&quot;); //-&gt; &quot;Justin&quot;
+curScope.attr(&quot;length&quot;); //-&gt; 2
+</code></pre>
+<p>Prefixing a key with <code>&quot;./&quot;</code> prevents any parent scope look ups.
+Prefixing a key with one or more <code>&quot;../&quot;</code> shifts the lookup path
+that many levels up.</p>
+<pre><code>var list = [{name: &quot;Justin&quot;},{name: &quot;Brian&quot;}];
+list.name = &quot;Programmers&quot;;
+list.surname = &quot;CanJS&quot;;
+
+var justin = list[0];
+var brian = list[1];
+var curScope = new can.view.Scope(list).add(justin).add(brian);
+
+curScope.attr(&quot;name&quot;); //-&gt; &quot;Brian&quot;
+curScope.attr(&quot;surname&quot;); //-&gt; &quot;CanJS&quot;
+curScope.attr(&quot;./surname&quot;); //-&gt; undefined
+curScope.attr(&quot;../name&quot;); //-&gt; &quot;Justin&quot;
+curScope.attr(&quot;../surname&quot;); //-&gt; &quot;CanJS&quot;
+curScope.attr(&quot;.././surname&quot;); //-&gt; &quot;undefined&quot;
+curScope.attr(&quot;../../name&quot;); //-&gt; &quot;Programmers&quot;
 </code></pre>
 
 		</section>
@@ -880,7 +892,7 @@ curScope.attr(&quot;length&quot;) //-&gt; 2
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.view.Scope.prototype","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.view.Scope.attr","description":"","title":"attr","params":[{"types":[{"type":"can.mustache.key"}],"name":"key","description":"<p>A dot seperated path.  Use <code>&quot;\\.&quot;</code> if you have a\nproperty name that includes a dot.</p>\n"}],"returns":{"types":[{"type":"*"}],"description":"<p>The found value or undefined if no value is found.</p>\n"},"comment":" ","src":"view/scope/doc/attr.md"};
+		var docObject = {"type":"function","name":"can.view.Scope.attr","src":"view/scope/doc/attr.md","description":"","title":"attr","parent":"can.view.Scope.prototype","params":[{"types":[{"type":"can.mustache.key"}],"name":"key","description":"A dot seperated path.  Use `\"\\.\"` if you have a\nproperty name that includes a dot."}],"returns":{"types":[{"type":"*"}],"description":"The found value or undefined if no value is found."},"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -893,6 +905,7 @@ curScope.attr(&quot;length&quot;) //-&gt; 2
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

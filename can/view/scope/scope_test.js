@@ -1,5 +1,5 @@
-steal("can/view/scope", "can/route", "can/test", function () {
-	module('can/view/scope');
+steal("can/view/scope", "can/route", "can/test", "steal-qunit", function () {
+	QUnit.module('can/view/scope');
 	/*	test("basics",function(){
 
 	 var items = { people: [{name: "Justin"},[{name: "Brian"}]], count: 1000 }; 
@@ -409,6 +409,21 @@ steal("can/view/scope", "can/route", "can/test", function () {
 
 		equal(scope.attr("other.name"), "Brian", "Value updated");
 		equal(map.attr("other.name"), "Brian", "Name update in map");
+	});
+	
+	test("computeData.compute get/sets computes in maps", function(){
+		var compute = can.compute(4);
+		var map = new can.Map();
+		map.attr("computer", compute);
+		
+		var scope = new can.view.Scope(map);
+		var computeData = scope.computeData("computer",{});
+		
+		equal( computeData.compute(), 4, "got the value");
+		
+		computeData.compute(5);
+		equal(compute(), 5, "updated compute value");
+		equal( computeData.compute(), 5, "the compute has the right value");
 	});
 
 });

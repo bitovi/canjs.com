@@ -1,16 +1,23 @@
+/* global global: false */
 steal(function () {
 	/* global GLOBALCAN */
-	var can = window.can || {};
+	var glbl = typeof window !== "undefined" ? window : global;
+	
+	var can = {};
 	if (typeof GLOBALCAN === 'undefined' || GLOBALCAN !== false) {
-		window.can = can;
+		glbl.can = can;
 	}
+	can.global = glbl;
 
 	// An empty function useful for where you need a dummy callback.
 	can.k = function(){};
 
-	can.isDeferred = function (obj) {
+	can.isDeferred = can.isPromise = function (obj) {
 		// Returns `true` if something looks like a deferred.
 		return obj && typeof obj.then === "function" && typeof obj.pipe === "function";
+	};
+	can.isMapLike = function(obj){
+		return can.Map && (obj instanceof can.Map || obj && obj.__get);
 	};
 
 	var cid = 0;
@@ -62,6 +69,55 @@ steal(function () {
 		}
 	};
 	
+	// Define the `can.scope` function that can be used to retrieve the `scope` from the element
+	can.scope = can.viewModel = function (el, attr, val) {
+		el = can.$(el);
+		var scope = can.data(el, "scope") || can.data(el, "viewModel");
+		if(!scope) {
+			scope = new can.Map();
+			can.data(el, "scope", scope);
+			can.data(el, "viewModel", scope);
+		}
+		switch (arguments.length) {
+			case 0:
+			case 1:
+				return scope;
+			case 2:
+				return scope.attr(attr);
+			default:
+				scope.attr(attr, val);
+				return el;
+		}
+	};
+	
+	can["import"] = function(moduleName) {
+		var deferred = new can.Deferred();
+		
+		if(typeof window.System === "object") {
+			window.System["import"](moduleName).then(can.proxy(deferred.resolve, deferred),
+				can.proxy(deferred.reject, deferred));
+		} else if(window.define && window.define.amd){
+			
+			window.require([moduleName], function(value){
+				deferred.resolve(value);
+			});
+			
+		} else if(window.steal) {
+			
+			steal.steal(moduleName, function(value){
+				deferred.resolve(value);
+			});
+			
+		} else if(window.require){
+			deferred.resolve(window.require(moduleName));
+		} else {
+			// ideally this will use can.getObject
+			deferred.resolve();
+		}
+		
+		return deferred.promise();
+	};
+	
 	// this is here in case can.compute hasn't loaded
 	can.__reading = function () {};
 
@@ -80,7 +136,7 @@ steal(function () {
 			var ll = this.logLevel;
 			if (ll < 2) {
 				Array.prototype.unshift.call(arguments, 'WARN:');
-				if (window.console && console.warn) {
+				if (typeof window !== undefined && window.console && console.warn) {
 					this._logger("warn", Array.prototype.slice.call(arguments));
 				} else if (window.console && console.log) {
 					this._logger("log", Array.prototype.slice.call(arguments));

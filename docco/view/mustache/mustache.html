@@ -28,6 +28,11 @@
                 mustache_benchmark.js
               </a>
             
+              
+              <a class="source" href="system.html">
+                system.js
+              </a>
+            
           </div>
         </li>
       </ul>
@@ -57,6 +62,7 @@
 	<span class="hljs-string">'can/view/scanner.js'</span>,
 	<span class="hljs-string">'can/compute'</span>,
 	<span class="hljs-string">'can/view/render.js'</span>,
+	<span class="hljs-string">'can/view/bindings'</span>,
 	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
             
         </li>
@@ -377,7 +383,7 @@ a <code>steal</code>-packaged view.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		can.Mustache = <span class="hljs-built_in">window</span>.Mustache = Mustache;
+            <div class="content"><div class='highlight'><pre>		can.Mustache = can.global.Mustache = Mustache;
 
 		<span class="hljs-comment">/** 
 		 * @prototype
@@ -2704,7 +2710,7 @@ Check if there is a method directly in the “top” context.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!compute.hasDependencies) {
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!compute.computeInstance.hasDependencies) {
 				<span class="hljs-keyword">return</span> initialValue;
 			} <span class="hljs-keyword">else</span> {
 				<span class="hljs-keyword">return</span> compute;
@@ -2889,8 +2895,9 @@ property to look up the partial</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> reads = can.__clearReading();
-				<span class="hljs-keyword">if</span> (scope.attr(<span class="hljs-string">'partial'</span>)) {
-					partial = scope.attr(<span class="hljs-string">'partial'</span>);
+				<span class="hljs-keyword">var</span> scopePartialName = scope.attr(partial);
+				<span class="hljs-keyword">if</span> (scopePartialName) {
+					partial = scopePartialName;
 				}
 				can.__setReading(reads);
 			}</pre></div></div>
@@ -3084,6 +3091,58 @@ that will only change values from true to false</p>
 				} <span class="hljs-keyword">else</span> {
 					<span class="hljs-keyword">return</span> options.inverse(options.contexts || <span class="hljs-keyword">this</span>);
 				}
+			},
+			<span class="hljs-comment">/**
+			* @function can.stache.helpers.is {{#is expr1 expr2 expr3}}
+			* @parent can.stache.htags 12
+			*
+			* @signature `{{#is expr1 expr2}}BLOCK{{/is}}`
+			*
+			* Renders the `BLOCK` template within the current template.
+			*
+			* @param {can.stache.expression} [expr...] An expression or key that references a
+			* value within the current or parent
+			*
+			* @param {can.stache} BLOCK A template that is rendered
+			* if the result of comparsion `expr1` and `expr2` value is truthy.
+			*
+			* @return {DocumentFragment} If the key's value is truthy, the `BLOCK` is rendered with the
+			* current context and its value is returned; otherwise, an empty string.
+			*
+			* @body
+			*
+			* The `is` helper compares expr1 and expr2 and renders the blocks accordingly.
+			*
+			*	{{#is expr1 expr2}}
+			*		// truthy
+			*	{{else}}
+			*		// falsey
+			*	{{/is}}
+			*/</span>
+			<span class="hljs-string">'is'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+				<span class="hljs-keyword">var</span> lastValue, curValue,
+					options = <span class="hljs-built_in">arguments</span>[<span class="hljs-built_in">arguments</span>.length - <span class="hljs-number">1</span>];
+
+				<span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length - <span class="hljs-number">2</span> &lt;= <span class="hljs-number">0</span>) {
+					<span class="hljs-keyword">return</span> options.inverse();
+				}
+
+				<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">arguments</span>.length - <span class="hljs-number">1</span>; i++) {
+					curValue = Mustache.resolve(<span class="hljs-built_in">arguments</span>[i]);
+					curValue = can.isFunction(curValue) ? curValue() : curValue;
+
+					<span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span>) {
+						<span class="hljs-keyword">if</span> (curValue !== lastValue) {
+							<span class="hljs-keyword">return</span> options.inverse();
+						}
+					}
+					lastValue = curValue;
+				}
+
+				<span class="hljs-keyword">return</span> options.fn();
+			},
+			<span class="hljs-string">'eq'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+				<span class="hljs-keyword">return</span> Mustache._helpers.is.fn.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 			},</pre></div></div>
             
         </li>

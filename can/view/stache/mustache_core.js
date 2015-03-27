@@ -78,7 +78,7 @@ steal("can/util",
 		getKeyArgValue = function(key, scope){
 			var data = getKeyComputeData(key, scope, true);
 			// If there are no dependencies, just return the value.
-			if (!data.compute.hasDependencies) {
+			if (!data.compute.computeInstance.hasDependencies) {
 				return data.initialValue;
 			} else {
 				return data.compute;
@@ -262,7 +262,7 @@ steal("can/util",
 					
 					// Set name to be the compute if the compute reads observables,
 					// or the value of the value of the compute if no observables are found.
-					if(computeData.compute.hasDependencies) {
+					if(computeData.compute.computeInstance.hasDependencies) {
 						name = compute;
 					} else {
 						name = initialValue;
@@ -338,20 +338,39 @@ steal("can/util",
 				}
 			} else if( mode === "#" || mode === "^" ) {
 				// Setup renderers.
-				convertToScopes(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer);
-				return function(){
-					// Get the value
+				var valueAndLength = new can.Compute(function(){
 					var value;
 					if (can.isFunction(name) && name.isComputed) {
 						value = name();
 					} else {
 						value = name;
 					}
-					// If it's an array, render.
-					if (utils.isArrayLike(value) ) {
-						var isObserveList = utils.isObserveLike(value);
+					var len,
+						arrayLike = utils.isArrayLike(value),
+						isObserveList;
+					if ( arrayLike ) {
+						isObserveList = utils.isObserveLike(value);
+						len = isObserveList ? value.attr("length") : value.length;
+					}
+					return {
 						
-						if(isObserveList ? value.attr("length") : value.length) {
+						value: value,
+						length: len,
+						isObserveList: isObserveList,
+						isArrayLike: arrayLike
+					};
+				});
+				convertToScopes(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer);
+				return function(){
+					var data = valueAndLength.get();
+					// Get the value
+					var value = data.value;
+
+					// If it's an array, render.
+					if (data.isArrayLike ) {
+						var isObserveList = data.isObserveList;
+						
+						if(data.length) {
 							return (stringOnly ? getItemsStringContent: getItemsFragContent  )
 								(value, isObserveList, helperOptions, options);
 						} else {
@@ -380,26 +399,41 @@ steal("can/util",
 			partialName = can.trim(partialName);
 
 			return function(scope, options, parentSectionNodeList){
-				// Look up partials in options first.
-				var partial = options.attr("partials." + partialName),
-					res;
-				if (partial) {
-					res = partial.render ? partial.render(scope, options) :
-						partial(scope, options);
-				}
-				// Use can.view to get and render the partial.
-				else {
-					
-					res = can.view.render(partialName, scope, options );
-				}
-
-				res = can.frag(res);
 
 				var nodeList = [this];
-
+				nodeList.expression = ">" + partialName;
 				nodeLists.register(nodeList, null, state.directlyNested ? parentSectionNodeList || true :  true);
-				nodeLists.update(nodeList, res.childNodes);
-				elements.replace([this], res);
+
+				var partialFrag = can.compute(function(){
+					var localPartialName = partialName;
+						// Look up partials in options first.
+					var partial = options.attr("partials." + localPartialName),
+						res;
+					if (partial) {
+						res = partial.render ? partial.render(scope, options) :
+							partial(scope, options);
+					}
+					// Use can.view to get and render the partial.
+					else {
+						var scopePartialName = scope.read(localPartialName, {
+							isArgument: true,
+							returnObserveMethods: true,
+							proxyMethods: false
+						}).value;
+
+						if (scopePartialName) {
+							localPartialName = scopePartialName;
+						}
+
+						res = can.view.render(localPartialName, scope, options );
+					}
+
+					return can.frag(res);
+
+				});
+
+				live.html(this, partialFrag, this.parentNode, nodeList);
+
 			};
 		},
 		// ## mustacheCore.makeStringBranchRenderer
@@ -495,7 +529,7 @@ steal("can/util",
 					
 				}
 				// If the compute has observable dependencies, setup live binding.
-				else if( compute.hasDependencies ) {
+				else if( compute.computeInstance.hasDependencies ) {
 					
 					// Depending on where the template is, setup live-binding differently.
 					if(state.attr) {

@@ -31,10 +31,15 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/observe'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
-
-
-	can.Map.helpers.define = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Map)</span> </span>{
-		<span class="hljs-keyword">var</span> define = Map.prototype.define;</pre></div></div>
+	<span class="hljs-keyword">var</span> define = can.define = {};
+	
+	<span class="hljs-keyword">var</span> getPropDefineBehavior = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(behavior, prop, define)</span> </span>{
+		<span class="hljs-keyword">var</span> propBehavior;
+		<span class="hljs-keyword">if</span>(define) {
+			propBehavior = define[prop] ? define[prop] : define[<span class="hljs-string">"*"</span>];
+			<span class="hljs-keyword">return</span> propBehavior &amp;&amp; propBehavior[behavior];
+		}
+	};</pre></div></div>
             
         </li>
         
@@ -44,6 +49,22 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>This is called when the Map is defined</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.Map.helpers.define = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Map)</span> </span>{
+		<span class="hljs-keyword">var</span> definitions = Map.prototype.define;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
               <p>!steal-remove-start</p>
 
@@ -57,31 +78,38 @@
         </li>
         
         
-        <li id="section-3">
+        <li id="section-4">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>!steal-remove-end</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>		Map.defaultGenerators = {};
-		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> define) {
-			<span class="hljs-keyword">if</span> (<span class="hljs-string">"value"</span> <span class="hljs-keyword">in</span> define[prop]) {
-				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> define[prop].value === <span class="hljs-string">"function"</span>) {
-					Map.defaultGenerators[prop] = define[prop].value;
-				} <span class="hljs-keyword">else</span> {
-					Map.defaults[prop] = define[prop].value;
+		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> definitions) {
+			<span class="hljs-keyword">var</span> type = definitions[prop].type;
+			<span class="hljs-keyword">if</span>( <span class="hljs-keyword">typeof</span> type === <span class="hljs-string">"string"</span> ) {
+				<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> define.types[type] === <span class="hljs-string">"object"</span>) {
+					<span class="hljs-keyword">delete</span> definitions[prop].type;
+					can.extend(definitions[prop], define.types[type]);
 				}
 			}
-			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> define[prop].Value === <span class="hljs-string">"function"</span>) {
+			<span class="hljs-keyword">if</span> (<span class="hljs-string">"value"</span> <span class="hljs-keyword">in</span> definitions[prop]) {
+				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> definitions[prop].value === <span class="hljs-string">"function"</span>) {
+					Map.defaultGenerators[prop] = definitions[prop].value;
+				} <span class="hljs-keyword">else</span> {
+					Map.defaults[prop] = definitions[prop].value;
+				}
+			}
+			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> definitions[prop].Value === <span class="hljs-string">"function"</span>) {
 				(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Constructor)</span> </span>{
 					Map.defaultGenerators[prop] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 						<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Constructor();
 					};
-				})(define[prop].Value);
+				})(definitions[prop].Value);
 			}
 		}
 	};
@@ -97,11 +125,11 @@
         </li>
         
         
-        <li id="section-4">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>Overwrite this._get with a version that commits defaults to
 this.attr() as needed. Because calling this.attr() for each individual
@@ -114,11 +142,11 @@ default would be expensive.</p>
         </li>
         
         
-        <li id="section-5">
+        <li id="section-6">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>If a this.attr() was called using dot syntax (e.g number.0),
 disregard everything after the “.” until we call the
@@ -133,11 +161,11 @@ original this._get().</p>
         </li>
         
         
-        <li id="section-6">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>If this property has a default and we haven’t yet committed it to
 this.attr()</p>
@@ -149,11 +177,11 @@ this.attr()</p>
         </li>
         
         
-        <li id="section-7">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Commit the property’s default so that it can be read in
 other defaultGenerators.</p>
@@ -165,11 +193,11 @@ other defaultGenerators.</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>Make not so that we don’t commit this property again.</p>
 
@@ -186,11 +214,11 @@ other defaultGenerators.</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>Only call the prop’s value method if the property wasn’t provided
 during instantiation.</p>
@@ -205,11 +233,11 @@ during instantiation.</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>Replace original this.attr</p>
 
@@ -228,11 +256,11 @@ during instantiation.</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>!steal-remove-start</p>
 
@@ -243,30 +271,15 @@ during instantiation.</p>
         </li>
         
         
-        <li id="section-12">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <p>!steal-remove-end</p>
-
-            </div>
-            
-        </li>
-        
-        
         <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>check if there’s a setter</p>
+              <p>!steal-remove-end</p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> errorCallback = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(errors)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -277,11 +290,11 @@ during instantiation.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <p>!steal-remove-start</p>
+              <p>check if there’s a setter</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				clearTimeout(asyncTimer);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> errorCallback = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(errors)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -291,6 +304,21 @@ during instantiation.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>!steal-remove-start</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				clearTimeout(asyncTimer);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>!steal-remove-end</p>
 
@@ -302,11 +330,11 @@ during instantiation.</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>if ‘validations’ is on the page it will trigger
 the error itself and we dont want to trigger
@@ -323,18 +351,17 @@ the event twice. :)</p>
 				<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 			},
 			self = <span class="hljs-keyword">this</span>,
-			define = <span class="hljs-keyword">this</span>.define &amp;&amp; <span class="hljs-keyword">this</span>.define[prop],
-			setter = define &amp;&amp; define.set,
-			getter = define &amp;&amp; define.get;</pre></div></div>
+			setter = getPropDefineBehavior(<span class="hljs-string">"set"</span>, prop, <span class="hljs-keyword">this</span>.define),
+			getter = getPropDefineBehavior(<span class="hljs-string">"get"</span>, prop, <span class="hljs-keyword">this</span>.define);</pre></div></div>
             
         </li>
         
         
-        <li id="section-17">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>if we have a setter</p>
 
@@ -345,11 +372,11 @@ the event twice. :)</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>call the setter, if returned value is undefined,
 this means the setter is async so we
@@ -361,23 +388,13 @@ do not call update property and return right away</p>
 			<span class="hljs-keyword">var</span> setterCalled = <span class="hljs-literal">false</span>,
 
 				setValue = setter.call(<span class="hljs-keyword">this</span>, value, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> </span>{
-					oldSet.call(self, prop, value, current, success, errorCallback);
+					<span class="hljs-keyword">if</span>(getter) {
+						self[prop](value);
+					} <span class="hljs-keyword">else</span> {
+						oldSet.call(self, prop, value, current, success, errorCallback);
+					}
+					
 					setterCalled = <span class="hljs-literal">true</span>;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
-              </div>
-              <p>!steal-remove-start</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					clearTimeout(asyncTimer);</pre></div></div>
             
         </li>
         
@@ -388,12 +405,11 @@ do not call update property and return right away</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              <p>!steal-remove-end</p>
+              <p>!steal-remove-start</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				}, errorCallback);
-			<span class="hljs-keyword">if</span> (getter) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					clearTimeout(asyncTimer);</pre></div></div>
             
         </li>
         
@@ -404,13 +420,12 @@ do not call update property and return right away</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>if there’s a getter we do nothing</p>
+              <p>!steal-remove-end</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.batch.stop();
-				<span class="hljs-keyword">return</span>;
-			}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				}, errorCallback, getter ? <span class="hljs-keyword">this</span>[prop].computeInstance.lastSetValue.get() : current);
+			<span class="hljs-keyword">if</span> (getter) {</pre></div></div>
             
         </li>
         
@@ -421,11 +436,18 @@ do not call update property and return right away</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>if it took a setter and returned nothing, don’t set the value</p>
+              <p>if there’s a getter we don’t call old set
+instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (setValue === <span class="hljs-literal">undefined</span> &amp;&amp; !setterCalled &amp;&amp; setter.length &gt;= <span class="hljs-number">2</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(setValue !== <span class="hljs-literal">undefined</span> &amp;&amp; !setterCalled &amp;&amp; setter.length &gt;= <span class="hljs-number">2</span>) {
+					<span class="hljs-keyword">this</span>[prop](setValue);
+				}
+				
+				can.batch.stop();
+				<span class="hljs-keyword">return</span>;
+			}</pre></div></div>
             
         </li>
         
@@ -435,6 +457,21 @@ do not call update property and return right away</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>if it took a setter and returned nothing, don’t set the value</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (setValue === <span class="hljs-literal">undefined</span> &amp;&amp; !setterCalled &amp;&amp; setter.length &gt;= <span class="hljs-number">2</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>!steal-remove-start</p>
 
@@ -447,11 +484,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>!steal-remove-end</p>
 
@@ -466,11 +503,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>if no arguments, we are side-effects only</p>
 
@@ -492,7 +529,7 @@ do not call update property and return right away</p>
 		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 	};
 
-	<span class="hljs-keyword">var</span> converters = {
+	define.types = {
 		<span class="hljs-string">'date'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> </span>{
 			<span class="hljs-keyword">var</span> type = <span class="hljs-keyword">typeof</span> str;
 			<span class="hljs-keyword">if</span> (type === <span class="hljs-string">'string'</span>) {
@@ -513,39 +550,35 @@ do not call update property and return right away</p>
 			}
 			<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 		},
+		<span class="hljs-comment">/**
+		 * Implements HTML-style boolean logic for attribute strings, where
+		 * any string, including "", is truthy.
+		 */</span>
+		<span class="hljs-string">'htmlbool'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val)</span> </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> val === <span class="hljs-string">"string"</span> || !!val;
+		},
 		<span class="hljs-string">'*'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> </span>{
 			<span class="hljs-keyword">return</span> val;
 		},
 		<span class="hljs-string">'string'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-string">''</span> + val;
+		},
+		<span class="hljs-string">'compute'</span>: {
+			set: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newValue, setVal, setErr, oldValue)</span></span>{
+				<span class="hljs-keyword">if</span>(newValue.isComputed) {
+					<span class="hljs-keyword">return</span> newValue;
+				}
+				<span class="hljs-keyword">if</span>(oldValue &amp;&amp; oldValue.isComputed) {
+					oldValue(newValue);
+					<span class="hljs-keyword">return</span> oldValue;
+				}
+				<span class="hljs-keyword">return</span> newValue;
+			},
+			get: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span></span>{
+				<span class="hljs-keyword">return</span> value &amp;&amp; value.isComputed ? value() : value;
+			}
 		}
 	};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-26">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
-              </div>
-              <p>the old type sets up bubbling</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> oldType = proto.__type;
-	proto.__type = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value, prop)</span> </span>{
-		<span class="hljs-keyword">var</span> def = <span class="hljs-keyword">this</span>.define &amp;&amp; <span class="hljs-keyword">this</span>.define[prop],
-			type = def &amp;&amp; def.type,
-			Type = def &amp;&amp; def.Type,
-			newValue = value;
-
-		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> type === <span class="hljs-string">"string"</span>) {
-			type = converters[type];
-		}
-
-		<span class="hljs-keyword">if</span> (type || Type) {</pre></div></div>
             
         </li>
         
@@ -555,6 +588,31 @@ do not call update property and return right away</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>the old type sets up bubbling</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> oldType = proto.__type;
+	proto.__type = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value, prop)</span> </span>{
+		<span class="hljs-keyword">var</span> type = getPropDefineBehavior(<span class="hljs-string">"type"</span>, prop, <span class="hljs-keyword">this</span>.define),
+			Type = getPropDefineBehavior(<span class="hljs-string">"Type"</span>, prop, <span class="hljs-keyword">this</span>.define),
+			newValue = value;
+
+		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> type === <span class="hljs-string">"string"</span>) {
+			type = define.types[type];
+		}
+
+		<span class="hljs-keyword">if</span> (type || Type) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>If there’s a type, convert it.</p>
 
@@ -567,11 +625,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>If there’s a Type create a new instance of it</p>
 
@@ -584,11 +642,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-29">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>If the newValue is a Map, we need to hook it up</p>
 
@@ -596,13 +654,31 @@ do not call update property and return right away</p>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> newValue;
 
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>If we pass in a object with define</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(can.isPlainObject(newValue) &amp;&amp; newValue.define) {
+			newValue = can.Map.extend(newValue);
+			newValue = <span class="hljs-keyword">new</span> newValue();
 		}
 		<span class="hljs-keyword">return</span> oldType.call(<span class="hljs-keyword">this</span>, newValue, prop);
 	};
 
 	<span class="hljs-keyword">var</span> oldRemove = proto._remove;
 	proto._remove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, current)</span> </span>{
-		<span class="hljs-keyword">var</span> remove = <span class="hljs-keyword">this</span>.define &amp;&amp; <span class="hljs-keyword">this</span>.define[prop] &amp;&amp; <span class="hljs-keyword">this</span>.define[prop].remove,
+		<span class="hljs-keyword">var</span> remove = getPropDefineBehavior(<span class="hljs-string">"remove"</span>, prop, <span class="hljs-keyword">this</span>.define),
 			res;
 		<span class="hljs-keyword">if</span> (remove) {
 			can.batch.start();
@@ -639,11 +715,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-30">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>Overwrite the invidual property serializer b/c we will overwrite it.</p>
 
@@ -657,18 +733,18 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-31">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>If the map has a define serializer for the given attr, run it.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> serializeProp = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(map, attr, val)</span> </span>{
-		<span class="hljs-keyword">var</span> serializer = map.define &amp;&amp; map.define[attr] &amp;&amp; map.define[attr].serialize;
+		<span class="hljs-keyword">var</span> serializer = attr === <span class="hljs-string">"*"</span> ? <span class="hljs-literal">false</span> : getPropDefineBehavior(<span class="hljs-string">"serialize"</span>, attr, map.define);
 		<span class="hljs-keyword">if</span>(serializer === <span class="hljs-literal">undefined</span>) {
 			<span class="hljs-keyword">return</span> oldSingleSerialize.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(serializer !== <span class="hljs-literal">false</span>){
@@ -679,11 +755,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-32">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>Overwrite serialize to add in any missing define serialized properties.</p>
 
@@ -699,11 +775,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-33">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>add in properties not already serialized</p>
 
@@ -716,11 +792,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-34">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>Go through each property.</p>
 
@@ -731,11 +807,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-35">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>if it’s not already defined</p>
 
@@ -746,11 +822,11 @@ do not call update property and return right away</p>
         </li>
         
         
-        <li id="section-36">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>check there is a serializer so we aren’t doing extra work on serializer:false</p>
 
@@ -768,7 +844,7 @@ do not call update property and return right away</p>
 		<span class="hljs-keyword">return</span> serialized;
 	};
 
-	<span class="hljs-keyword">return</span> can.Map;
+	<span class="hljs-keyword">return</span> can.define;
 });</pre></div></div>
             
         </li>

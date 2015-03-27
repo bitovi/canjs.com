@@ -61,7 +61,9 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>
-	<span class="hljs-keyword">var</span> URI = steal.URI || steal.File;
+	<span class="hljs-keyword">var</span> URI = steal.URI || steal.File || <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(path)</span> </span>{
+			<span class="hljs-keyword">return</span> [path];
+		};
 	can.Control.getFolder = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 		<span class="hljs-keyword">return</span> can.underscore(<span class="hljs-keyword">this</span>.fullName.replace(<span class="hljs-regexp">/\./g</span>, <span class="hljs-string">'/'</span>))
 			.replace(<span class="hljs-string">'/Controllers'</span>, <span class="hljs-string">''</span>);

@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -582,7 +590,7 @@
 	<ul class="tags">
 		<li>page</li>
 	</ul>
-	<span class="module">can/map/sort</span>
+	<span class="module">can/list/sort</span>
 	
 </div>
 
@@ -593,13 +601,13 @@
 </div>
 
 <ul class="links">
-    
-	
-		<li><a href="https://github.com/bitovi/canjs/tree/master/map/sort/sort.md">source</a></li>
 	
 	
+		<li><a href="https://github.com/bitovi/canjs/tree/master/list/sort/sort.md">source</a></li>
 	
-		<li><a href="../can/map/sort/test.html">tests</a></li>
+	
+	
+		<li><a href="../can/list/sort/test.html">tests</a></li>
 	
 </ul>
 <br />
@@ -615,7 +623,7 @@
 
 		
 		<section class="description">
-			<p><code>list.sort(sortfunc)</code></p>
+			<p>Two-way bind a <a href="can.List.html">can.List</a>'s sort order to the DOM.</p>
 
 		</section>
 		
@@ -629,15 +637,99 @@
 
 		
 		<section class="comment">
-			<p>Sorts the instances in the list.</p>
-<pre><code>var list = new can.List([
-    { name: 'Justin' },
-    { name: 'Brian' },
-    { name: 'Austin' },
-    { name: 'Mihael' }])
-    
-list.comparator = 'name';
-list.sort(); //- sorts the list by the name attribute
+			<h2>Use</h2>
+<p>The <a href="can.List.prototype.sort.html">can.List.sort</a> plugin makes it easy to define
+and maintain how items are arranged in a <a href="can.List.html">can.List</a>. To use it,
+simply define a <code>comparator</code> on the <a href="can.List.html">can.List</a>'s prototype. It can be a
+<code>String</code> or a <code>Function</code>.</p>
+<pre><code>var cart = new can.List([
+    { title: 'Bread', price: 3.00 },
+    { title: 'Butter', price: 3.50 },
+    { title: 'Juice', price: 3.25 }
+]);
+cart.comparator = 'price';
+cart.sort(); // -&gt; [Bread, Butter, Juice]
+</code></pre>
+<p>When a <code>String</code> is defined the default comparator function
+arranges the items in ascending order. To change the sort order
+define your own comparator function.</p>
+<pre><code>var stockPrices = new can.List([
+    0.01, 0.98, 0.75, 0.12, 0.05, 0.16
+]);
+stockPrices.comparator = function (a, b) {
+    return a === b ? 0 : a &lt; b ? 1 : -1; // Descending
+}
+stockPrices.sort(); // -&gt; [0.98, 0.75, 0.16, 0.12, 0.05, 0.01];
+
+</code></pre>
+<p>String comparators will be passed to [can.List.attr] to
+retrieve the values being compared.</p>
+<pre><code>var table = new can.List([
+    [6, 3, 4],
+    [1, 8, 2],
+    [7, 9, 5]
+]);
+table.comparator = '2'
+table.sort(); // -&gt; [1, 8, 2],
+                    [6, 3, 4],
+                    [7, 9, 5]
+</code></pre>
+<p>At any point in time you can overwrite the prototype's
+comparator by passing a value to [can.List.sort]</p>
+<pre><code>var table = new can.List([
+    [6, 3, 4],
+    [1, 8, 2],
+    [7, 9, 5]
+]);
+table.comparator = '2'
+table.sort('1'); // -&gt; [6, 3, 4],
+                       [1, 8, 2],
+                       [7, 9, 5]
+</code></pre>
+<p>The <a href="can.List.prototype.sort.html">can.List.sort</a> plugin also ensures that the
+sort order is preserved while the <a href="can.List.html">can.List</a> is being manipulated
+by <code>push</code>, <code>unshift</code>, or <code>splice</code> operations.</p>
+<pre><code>var animals = new can.List();
+animals.comparator = 'weight';
+
+animals.push({
+    type: 'Dog',
+    weight`: 50
+}); // -&gt; [Dog]
+
+animals.push({
+    type: 'Mouse',
+    weight`: 0.5
+}); // -&gt; [Mouse, Dog]
+
+animals.unshift({
+    type: 'Bear',
+    weight`: 500
+}); // -&gt; [Mouse, Dog, Bear]
+
+// Replace Mouse
+animals.splice(2, 1, {
+    type: 'Elephant',
+    weight`: 8000
+}); // -&gt; [Dog, Bear, Elephant]
+</code></pre>
+<p>Whenever there are changes to items in the <a href="can.List.html">can.List</a>, the
+<a href="can.List.prototype.sort.html">can.List.sort</a> plugin moves the item to the correct
+index and fires a &quot;move&quot; event.</p>
+<pre><code>var cart = new can.List([
+    { title: 'Bread', price: 3.00 },
+    { title: 'Butter', price: 3.50 },
+    { title: 'Juice', price: 3.25 }
+]);
+cart.comparator = 'price';
+cart.sort(); // -&gt; [Bread, Butter, Juice]
+
+cart.bind('move', function (ev, item, newIndex, oldIndex) {
+    console.log('Moved:', item.title + ', from:', oldIndex + ', to:', newIndex);
+})
+
+cart.attr('0.price', 4.00); // Moved: Bread, from: 0, to: 3
+                                                        // -&gt; [Juice, Butter, Bread]
 </code></pre>
 
 		</section>
@@ -700,7 +792,7 @@ list.sort(); //- sorts the list by the name attribute
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.List.prototype","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"page","name":"can.List.prototype.sort","description":"<p><code>list.sort(sortfunc)</code></p>\n","plugin":"can/map/sort","test":"can/map/sort/test.html","src":"map/sort/sort.md"};
+		var docObject = {"type":"page","name":"can.List.prototype.sort","src":"list/sort/sort.md","description":"Two-way bind a [can.List]'s sort order to the DOM.","parent":"can.List.prototype","plugin":"can/list/sort","test":"can/list/sort/test.html","comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -713,6 +805,7 @@ list.sort(); //- sorts the list by the name attribute
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

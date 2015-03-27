@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -355,7 +363,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/view/bindings/doc/select-multiple.md">source</a></li>
 	
@@ -452,7 +460,7 @@ new Map({colors: []})
 { colors: new can.List() }
 </code></pre>
 <div class='demo_wrapper' data-demo-src='can/view/bindings/doc/select_multiple.html'></div>
-## Cross binding Strings
+<h2>Cross binding Strings</h2>
 <p>If the <a href="can.Map.html">can.Map</a> property or <a href="can.compute.html">can.compute</a> value is a
 string like:</p>
 <pre><code>new can.Map({color: &quot;red;green&quot;});
@@ -461,7 +469,7 @@ string like:</p>
 <p>The string will be split by <code>&quot;;&quot;</code>. The items in the split
 string are used as values to match against <code>&lt;option&gt;</code> tag values.</p>
 <div class='demo_wrapper' data-demo-src='can/view/bindings/doc/select_multiple_string.html'></div>
-## Cross binding undefined 
+<h2>Cross binding undefined</h2>
 <p>If the <code>KEY</code> value begins as undefined <a href="can.Map.html">can.Map</a> property like:</p>
 <pre><code>new can.Map({colors: undefined});
 </code></pre>
@@ -532,7 +540,7 @@ string are used as values to match against <code>&lt;option&gt;</code> tag value
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.view.bindings.can-value","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.view.bindings.can-value-select-multiple","description":"<p>Cross bind a value to a <code>&lt;select&gt;</code> element with multiple selections permitted.</p>\n","title":"select multiple","release":"2.1","signatures":[{"code":"<select multiple can-value='KEY'/>","description":"<p>Cross binds the selected option values with an observable value.</p>\n","params":[{"types":[{"type":"can.mustache.key"}],"name":"KEY","description":"<p>A named value in the current\nscope. <code>KEY</code>'s value is cross bound with the selected <code>&lt;option&gt;</code> in\nthe <code>&lt;select&gt;</code>. <code>KEY</code>'s value should be either Array-like, a String,\nor <code>undefined</code>.</p>\n"}]}],"comment":" ","src":"view/bindings/doc/select-multiple.md"};
+		var docObject = {"type":"function","name":"can.view.bindings.can-value-select-multiple","src":"view/bindings/doc/select-multiple.md","description":"Cross bind a value to a `<select>` element with multiple selections permitted.","title":"select multiple","parent":"can.view.bindings.can-value","release":"2.1","signatures":[{"code":"<select multiple can-value='KEY'/>","description":"Cross binds the selected option values with an observable value.","params":[{"types":[{"type":"can.mustache.key"}],"name":"KEY","description":"A named value in the current \nscope. `KEY`'s value is cross bound with the selected `<option>` in\nthe `<select>`. `KEY`'s value should be either Array-like, a String,\nor `undefined`."}]}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -545,6 +553,7 @@ string are used as values to match against <code>&lt;option&gt;</code> tag value
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

@@ -1,0 +1,17 @@
+<div class="tooltip github">
+  <div class="bithub-content">
+  {{#commits}}
+    <div class="bithub-post">
+      <h2><a href="{{link}}">{{actor}} {{title}}</a></h2>
+      {{#commits}}
+      <p>- {{truncateHash hash}} {{message}}</p>
+      {{/commits}}
+      <p>{{#if actor}}by {{/if}}<a href="http://bitovi.bithub.com/users/{{actorID}}">{{actor}}</a> on {{formatDate date}} via <a href="{{link}}">{{feed}}</a></p>
+    </div>
+  {{/commits}}
+  {{^commits}}
+  <div class="loading"/>
+  {{/commits}}
+  </div>
+  <a href="https://github.com/bitovi/canjs/commits/master" class="button">More Commits <span class="icon-arrow"></span></a>
+</div>

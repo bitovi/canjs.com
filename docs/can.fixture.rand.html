@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -396,7 +404,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/util/fixture/doc/rand.md">source</a></li>
 	
@@ -639,7 +647,7 @@ rand([&quot;j&quot;,&quot;m&quot;,&quot;v&quot;,&quot;c&quot;],2,3)
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.fixture","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.fixture.rand","description":"<p>Create a random number or selection.</p>\n","title":"rand","signatures":[{"code":"can.fixture.rand([min,] max)","description":"","params":[{"types":[{"type":"Number"}],"optional":true,"name":"min","defaultValue":"0","description":"<p>The lower bound on integers to select.</p>\n"},{"types":[{"type":"Number"}],"name":"max","description":"<p>The upper bound on integers to select.</p>\n"}],"returns":{"types":[{"type":"Number"}],"description":"<p>A random integer in the range [<strong>min</strong>, <strong>max</strong>).</p>\n"}},{"code":"can.fixture.rand(choices, min[ ,max])","description":"","params":[{"types":[{"type":"Array","options":[]}],"name":"choices","description":"<p>An array of things to choose from.</p>\n"},{"types":[{"type":"Number"}],"name":"min","description":"<p>The minimum number of times to choose from <strong>choices</strong>.</p>\n"},{"types":[{"type":"Number"}],"optional":true,"name":"max","defaultValue":"min","description":"<p>The maximum number of times to choose from <strong>choices</strong>.</p>\n"}],"returns":{"types":[{"type":"Array","options":[]}],"description":"<p>An array of between <strong>min</strong> and <strong>max</strong> random choices from <strong>choices</strong>.</p>\n"}}],"comment":" ","src":"util/fixture/doc/rand.md"};
+		var docObject = {"type":"function","name":"can.fixture.rand","src":"util/fixture/doc/rand.md","description":"Create a random number or selection.","title":"rand","parent":"can.fixture","signatures":[{"code":"can.fixture.rand([min,] max)","description":"","params":[{"types":[{"type":"Number"}],"optional":true,"name":"min","defaultValue":"0","description":"The lower bound on integers to select."},{"types":[{"type":"Number"}],"name":"max","description":"The upper bound on integers to select."}],"returns":{"types":[{"type":"Number"}],"description":"A random integer in the range [__min__, __max__)."}},{"code":"can.fixture.rand(choices, min[ ,max])","description":"","params":[{"types":[{"type":"Array","options":[]}],"name":"choices","description":"An array of things to choose from."},{"types":[{"type":"Number"}],"name":"min","description":"The minimum number of times to choose from __choices__."},{"types":[{"type":"Number"}],"optional":true,"name":"max","defaultValue":"min","description":"The maximum number of times to choose from __choices__."}],"returns":{"types":[{"type":"Array","options":[]}],"description":"An array of between __min__ and __max__ random choices from __choices__."}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -652,6 +660,7 @@ rand([&quot;j&quot;,&quot;m&quot;,&quot;v&quot;,&quot;c&quot;],2,3)
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

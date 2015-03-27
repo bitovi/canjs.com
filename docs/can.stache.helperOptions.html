@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -744,6 +752,68 @@
 			
 			
 		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.stache.helpers.is.html" 
+							data-search="{{#is expr1 expr2}}">
+							{{#is expr1 expr2}}
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>Plugins</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="module" 
+							href="can|view|stache|system.html" 
+							data-search="system">
+							system
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="module" 
+							href="can|view|stache|system.import.html" 
+							data-search="&lt;can-import&gt;">
+							&lt;can-import&gt;
+						</a>
+						
+					</li>
+				
+			
+			
+		
 	</ul>
 
 					</li>
@@ -811,7 +881,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/view/stache/doc/helperOptions.md">source</a></li>
 	
@@ -1064,7 +1134,7 @@ temp(data, {
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.stache.types","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"typedef","name":"can.stache.helperOptions","description":"<p>The options argument passed to a [can.stache.helper helper function].</p>\n","title":"helperOptions","types":[{"type":"Object","options":[{"name":"fn","types":[{"type":"can.stache.sectionRenderer"}],"description":"<p>Renders the &quot;truthy&quot; subsection\nBLOCK.  <code>options.fn</code> is only available if the helper is called as a\n[can.stache.tags.section section] or [can.stache.tags.inverse inverse section] like:\n<code>{{#helper}}</code> or `{{^helper}}.  The subsection BLOCK's</p>\n<p>Available if the helper is called\nas a section or inverse section.\n[can.stache.helpers.sectionHelper section helper] is called.  Call <code>fn</code> to\nrender the BLOCK with the specified <code>context</code>.</p>\n","optional":true},{"name":"inverse","types":[{"type":"can.stache.sectionRenderer"}],"description":"<p>Provided if a\n[can.stache.helpers.sectionHelper section helper] is called\nwith [can.stache.helpers.else {{else}}].  Call <code>inverse</code> to\nrender the INVERSE with the specified <code>context</code>.</p>\n","optional":true},{"name":"hash","types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"*"},{"type":"String"},{"type":"Number"}]}]}],"description":"<p>An object containing all of the final\narguments listed as <code>name=value</code> pairs for the helper.</p>\n<pre><code>{{helper arg1 arg2 name=value other=3 position=&quot;top&quot;}}\n\noptions.hash = {\n    name: &lt;context_lookup&gt;.value,\n    other: 3,\n    position: &quot;top&quot;\n}\n</code></pre>\n"},{"name":"context","description":"<p>The current context the stache helper is called within.</p>\n<pre><code>var temp = can.stache(\n  &quot;{{#person.name}}{{helper}}{{/person.name}}&quot;);\n\nvar data = {person: {name: {first: &quot;Justin&quot;}}};\n\ncan.stache.registerHelper(&quot;helper&quot;, function(options){\n\n  options.context === data.person //-&gt; true\n  \n})\n\n\ntemp(data);\n</code></pre>\n","types":[{"type":"*"}]},{"name":"scope","description":"<p>An object that represents the current context and all parent\ncontexts.  It can be used to look up [can.stache.key key] values in the current scope.</p>\n<pre><code>var temp = can.stache(\n  &quot;{{#person.name}}{{helper}}{{/person.name}}&quot;);\n\nvar data = {person: {name: {first: &quot;Justin&quot;}}};\n\ncan.stache.registerHelper(&quot;helper&quot;, function(options){\n\n  options.scope.attr(&quot;first&quot;)   //-&gt; &quot;Justin&quot;\n  options.scope.attr(&quot;person&quot;)  //-&gt; data.person\n  \n})\n\n\ntemp(data);\n</code></pre>\n","types":[{"type":"can.view.Scope"}]},{"name":"options","description":"<p>An object that represents the local stache helpers.  It can be used to look\nup [can.stache.key key] values</p>\n<pre><code>var temp = can.stache(&quot;{{#person.name}}{{helper}}{{/person.name}}&quot;);\n\nvar data = {person: {name: &quot;Justin&quot;}};\n\ncan.stache.registerHelper(&quot;helper&quot;, function(options){\n\n  options.options.attr(&quot;helpers.specialHelper&quot;) //-&gt; function\n  \n})\n\n\ntemp(data, {\n  specialHelper: function(){ ... }\n});\n</code></pre>\n","types":[{"type":"can.view.Options"}]}]}],"src":"view/stache/doc/helperOptions.md"};
+		var docObject = {"type":"typedef","name":"can.stache.helperOptions","src":"view/stache/doc/helperOptions.md","description":"The options argument passed to a [can.stache.helper helper function].","title":"helperOptions","types":[{"type":"Object","options":[{"name":"fn","types":[{"type":"can.stache.sectionRenderer"}],"description":"Renders the \"truthy\" subsection \nBLOCK.  `options.fn` is only available if the helper is called as a \n[can.stache.tags.section section] or [can.stache.tags.inverse inverse section] like:\n`{{#helper}}` or `{{^helper}}.  The subsection BLOCK's \n\nAvailable if the helper is called \nas a section or inverse section. \n[can.stache.helpers.sectionHelper section helper] is called.  Call `fn` to\nrender the BLOCK with the specified `context`.","optional":true},{"name":"inverse","types":[{"type":"can.stache.sectionRenderer"}],"description":"Provided if a \n[can.stache.helpers.sectionHelper section helper] is called \nwith [can.stache.helpers.else {{else}}].  Call `inverse` to\nrender the INVERSE with the specified `context`.","optional":true},{"name":"hash","types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"*"},{"type":"String"},{"type":"Number"}]}]}],"description":"An object containing all of the final \narguments listed as `name=value` pairs for the helper.\n\t\n\t{{helper arg1 arg2 name=value other=3 position=\"top\"}}\n\n\toptions.hash = {\n\t\tname: <context_lookup>.value,\n\t\tother: 3,\n\t\tposition: \"top\"\n\t}"},{"name":"context","description":"The current context the stache helper is called within.\n\n    \n    \n    var temp = can.stache(\n      \"{{#person.name}}{{helper}}{{/person.name}}\");\n    \n    var data = {person: {name: {first: \"Justin\"}}};\n    \n    can.stache.registerHelper(\"helper\", function(options){\n    \n      options.context === data.person //-> true\n      \n    })\n    \n    \n    temp(data);","types":[{"type":"*"}]},{"name":"scope","description":"An object that represents the current context and all parent \ncontexts.  It can be used to look up [can.stache.key key] values in the current scope.\n\n    var temp = can.stache(\n      \"{{#person.name}}{{helper}}{{/person.name}}\");\n    \n    var data = {person: {name: {first: \"Justin\"}}};\n    \n    can.stache.registerHelper(\"helper\", function(options){\n    \n      options.scope.attr(\"first\")   //-> \"Justin\"\n      options.scope.attr(\"person\")  //-> data.person\n      \n    })\n    \n    \n    temp(data);","types":[{"type":"can.view.Scope"}]},{"name":"options","description":"An object that represents the local stache helpers.  It can be used to look \nup [can.stache.key key] values\n\n    var temp = can.stache(\"{{#person.name}}{{helper}}{{/person.name}}\");\n    \n    var data = {person: {name: \"Justin\"}};\n    \n    can.stache.registerHelper(\"helper\", function(options){\n    \n      options.options.attr(\"helpers.specialHelper\") //-> function\n      \n    })\n    \n    \n    temp(data, {\n      specialHelper: function(){ ... }\n    });","types":[{"type":"can.view.Options"}]}]}],"parent":"can.stache.types","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -1077,6 +1147,7 @@ temp(data, {
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

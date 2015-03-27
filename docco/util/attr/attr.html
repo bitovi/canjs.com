@@ -45,9 +45,9 @@ the triggering of <code>attributes</code> event async.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> setImmediate = <span class="hljs-built_in">window</span>.setImmediate || <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cb)</span> </span>{
-			<span class="hljs-keyword">return</span> setTimeout(cb, <span class="hljs-number">0</span>);
-		},
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> setImmediate = can.global.setImmediate || <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cb)</span> </span>{
+				<span class="hljs-keyword">return</span> setTimeout(cb, <span class="hljs-number">0</span>);
+			},
 		attr = {</pre></div></div>
             
         </li>
@@ -65,7 +65,7 @@ Otherwise this module handles triggering an <code>attributes</code> event on the
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			MutationObserver: <span class="hljs-built_in">window</span>.MutationObserver || <span class="hljs-built_in">window</span>.WebKitMutationObserver || <span class="hljs-built_in">window</span>.MozMutationObserver,
+            <div class="content"><div class='highlight'><pre>			MutationObserver: can.global.MutationObserver || can.global.WebKitMutationObserver || can.global.MozMutationObserver,
 
 			<span class="hljs-comment">/**
 			 * @property {Object.&lt;String,(String|Boolean|function)&gt;} can.view.attr.map
@@ -91,8 +91,8 @@ Otherwise this module handles triggering an <code>attributes</code> event on the
 			map: {
 				<span class="hljs-string">"class"</span>: <span class="hljs-string">"className"</span>,
 				<span class="hljs-string">"value"</span>: <span class="hljs-string">"value"</span>,
-				<span class="hljs-string">"innerText"</span>: <span class="hljs-string">"innerText"</span>,
-				<span class="hljs-string">"textContent"</span>: <span class="hljs-string">"textContent"</span>,
+				<span class="hljs-string">"innertext"</span>: <span class="hljs-string">"innerText"</span>,
+				<span class="hljs-string">"textcontent"</span>: <span class="hljs-string">"textContent"</span>,
 				<span class="hljs-string">"checked"</span>: <span class="hljs-literal">true</span>,
 				<span class="hljs-string">"disabled"</span>: <span class="hljs-literal">true</span>,
 				<span class="hljs-string">"readonly"</span>: <span class="hljs-literal">true</span>,
@@ -156,6 +156,7 @@ An <code>img</code> tag attempts to fetch the <code>src</code> when it is set, s
             </div>
             
             <div class="content"><div class='highlight'><pre>			set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName, val)</span> </span>{
+				attrName = attrName.toLowerCase();
 				<span class="hljs-keyword">var</span> oldValue;</pre></div></div>
             
         </li>
@@ -175,8 +176,7 @@ An <code>img</code> tag attempts to fetch the <code>src</code> when it is set, s
 					oldValue = attr.get(el, attrName);
 				}
 
-				<span class="hljs-keyword">var</span> tagName = el.nodeName.toString()
-					.toLowerCase(),
+				<span class="hljs-keyword">var</span> tagName = el.nodeName.toString().toLowerCase(),
 					prop = attr.map[attrName],
 					newValue;</pre></div></div>
             
@@ -206,7 +206,10 @@ An <code>img</code> tag attempts to fetch the <code>src</code> when it is set, s
 					}
 
 				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (prop) {
-					newValue = el[prop] = val;
+					newValue = val;
+					<span class="hljs-keyword">if</span> (el[prop] !== val) {
+						el[prop] = val;
+					}
 					<span class="hljs-keyword">if</span> (prop === <span class="hljs-string">"value"</span> &amp;&amp; can.inArray(tagName, attr.defaultValue) &gt;= <span class="hljs-number">0</span>) {
 						el.defaultValue = val;
 					}
@@ -249,6 +252,7 @@ An <code>img</code> tag attempts to fetch the <code>src</code> when it is set, s
             
             <div class="content"><div class='highlight'><pre>			trigger: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName, oldValue)</span> </span>{
 				<span class="hljs-keyword">if</span> (can.data(can.$(el), <span class="hljs-string">"canHasAttributesBindings"</span>)) {
+					attrName = attrName.toLowerCase();
 					<span class="hljs-keyword">return</span> setImmediate(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 						can.trigger(el, {
 							type: <span class="hljs-string">"attributes"</span>,
@@ -276,11 +280,12 @@ An <code>img</code> tag attempts to fetch the <code>src</code> when it is set, s
             </div>
             
             <div class="content"><div class='highlight'><pre>			get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName)</span> </span>{
+				attrName = attrName.toLowerCase();
 				<span class="hljs-keyword">var</span> prop = attr.map[attrName];
 				<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> prop === <span class="hljs-string">"string"</span> &amp;&amp; el[prop]) {
 					<span class="hljs-keyword">return</span> el[prop];
 				}
-				
+
 				<span class="hljs-keyword">return</span> el.getAttribute(attrName);
 			},</pre></div></div>
             
@@ -300,6 +305,7 @@ An <code>img</code> tag attempts to fetch the <code>src</code> when it is set, s
             </div>
             
             <div class="content"><div class='highlight'><pre>			remove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attrName)</span> </span>{
+				attrName = attrName.toLowerCase();
 				<span class="hljs-keyword">var</span> oldValue;
 				<span class="hljs-keyword">if</span> (!attr.MutationObserver) {
 					oldValue = attr.get(el, attrName);
@@ -338,8 +344,8 @@ For browsers that support <code>hasAttribute</code>, creates a function that cal
             </div>
             
             <div class="content"><div class='highlight'><pre>			has: (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-				<span class="hljs-keyword">var</span> el = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);
-				<span class="hljs-keyword">if</span> (el.hasAttribute) {
+				<span class="hljs-keyword">var</span> el = can.global.document &amp;&amp; <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);
+				<span class="hljs-keyword">if</span> (el &amp;&amp; el.hasAttribute) {
 					<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, name)</span> </span>{
 						<span class="hljs-keyword">return</span> el.hasAttribute(name);
 					};

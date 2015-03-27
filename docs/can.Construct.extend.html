@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -193,7 +201,7 @@
 					<li class="search-container  ">
 						<a 	class="property" 
 							href="can.Construct.constructorExtends.html" 
-							data-search="constructorExtends">
+							data-search="can.Construct.constructorExtends">
 							constructorExtends
 						</a>
 						
@@ -490,7 +498,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/construct/construct.js">source</a></li>
 	
@@ -518,7 +526,7 @@
 <div class="signature-wrapper">
 <p>Extends <code>can.Construct</code>, or constructor functions derived from <code>can.Construct</code>,
 to create a new constructor function. Example:</p>
-<pre><code>Animal = can.Construct.extend({
+<pre><code>var Animal = can.Construct.extend({
   sayHi: function(){
     console.log(&quot;hi&quot;)
   }
@@ -558,11 +566,11 @@ and &quot;Constructor&quot; as <a href="can.Construct.shortName.html">shortName<
 			<div class="description">
 				<p>Properties that are added the constructor
 function directly. For example:</p>
-<pre><code>Animal = can.Construct.extend({
+<pre><code>var Animal = can.Construct.extend({
   findAll: function(){
     return can.ajax({url: &quot;/animals&quot;})
   }
-},{});
+},{}); // need to pass an empty instanceProperties object
 
 Animal.findAll().then(function(json){ ... })
 </code></pre>
@@ -582,16 +590,20 @@ specify inheritable behavior when a Constructor function is created.</p>
 				<p>Properties that belong to
 instances made with the constructor. These properties are added to the
 constructor's <code>prototype</code> object. Example:</p>
-<pre><code>Animal = can.Construct.extend({
-  init: function(name){
+<pre><code>var Animal = can.Construct.extend({
+  findAll: function() {
+    return can.ajax({url: &quot;/animals&quot;});
+  }
+},{
+  init: function(name) {
     this.name = name;
   },
-  sayHi: function(){
-    console.log(this.name,&quot;says hi&quot;)
+  sayHi: function() {
+    console.log(this.name,&quot; says hai!&quot;);
   }
 })
-var animal = new Animal()
-animal.sayHi();
+var pony = new Animal(&quot;Gertrude&quot;);
+pony.sayHi(); // &quot;Gertrude says hai!&quot;
 </code></pre>
 <p>The <a href="can.Construct.prototype.init.html">init</a> and <a href="can.Construct.prototype.setup.html">setup</a> properties
 are used for initialization.</p>
@@ -610,6 +622,9 @@ are used for initialization.</p>
 		<h4><code>{function()}</code></h4>
 		<div class="description">
 			<p>The constructor function.</p>
+<pre><code>var Animal = can.Construct.extend(...);
+var pony = new Animal(); // Animal is a constructor function
+</code></pre>
 
 		</div>
 		
@@ -630,6 +645,66 @@ are used for initialization.</p>
 		
 		
 
+		
+		<section class="comment">
+			<h2>Inheritance</h2>
+<p>Creating &quot;subclasses&quot; with <code>can.Construct</code> is simple. All you need to do is call the base constructor
+with the new function's static and instance properties. For example, we want our <code>Snake</code> to
+be an <code>Animal</code>, but there are some differences:</p>
+<pre><code>var Snake = Animal.extend({
+    legs: 0
+}, {
+    init: function() {
+        Animal.prototype.init.call(this, 'ssssss');
+    },
+    slither: function() {
+        console.log('slithering...');
+    }
+});
+
+var baslisk = new Snake();
+baslisk.speak();   // &quot;ssssss&quot;
+baslisk.slither(); // &quot;slithering...&quot;
+baslisk instanceof Snake;  // true
+baslisk instanceof Animal; // true
+</code></pre>
+<h2>Static properties and inheritance</h2>
+<p>If you pass all three arguments to can.Construct, the second one will be attached directy to the
+constructor, allowing you to imitate static properties and functions. You can access these
+properties through the <code><a href="can.Construct.prototype.constructor.html">this.constructor</a></code> property.</p>
+<p>Static properties can get overridden through inheritance just like instance properties. In the example below,
+we override both the legs static property as well as the the init function for each instance:</p>
+<pre><code>var Animal = can.Construct.extend({
+    legs: 4
+}, {
+    init: function(sound) {
+        this.sound = sound;
+    },
+    speak: function() {
+        console.log(this.sound);
+    }
+});
+
+var Snake = Animal.extend({
+    legs: 0
+}, {
+    init: function() {
+        this.sound = 'ssssss';
+    },
+    slither: function() {
+        console.log('slithering...');
+    }
+});
+
+Animal.legs; // 4
+Snake.legs; // 0
+var dog = new Animal('woof');
+var blackMamba = new Snake();
+dog.speak(); // 'woof'
+blackMamba.speak(); // 'ssssss'
+</code></pre>
+
+		</section>
 		
 		
 
@@ -689,7 +764,7 @@ are used for initialization.</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Construct.static","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.Construct.extend","description":"","title":"extend","signatures":[{"code":"can.Construct.extend([name,] [staticProperties,] instanceProperties)","description":"<p>Extends <code>can.Construct</code>, or constructor functions derived from <code>can.Construct</code>,\nto create a new constructor function. Example:</p>\n<pre><code>Animal = can.Construct.extend({\n  sayHi: function(){\n    console.log(&quot;hi&quot;)\n  }\n})\nvar animal = new Animal()\nanimal.sayHi();\n</code></pre>\n","params":[{"types":[{"type":"String"}],"optional":true,"name":"name","description":"<p>Creates the necessary properties and\nobjects that point from the <code>window</code> to the created constructor function. The following:</p>\n<pre><code>can.Construct.extend(&quot;company.project.Constructor&quot;,{})\n</code></pre>\n<p>creates a <code>company</code> object on window if it does not find one, a\n<code>project</code> object on <code>company</code> if it does not find one, and it will set the\n<code>Constructor</code> property on the <code>project</code> object to point to the constructor function.</p>\n<p>Finally, it sets &quot;company.project.Constructor&quot; as [can.Construct.fullName fullName]\nand &quot;Constructor&quot; as [can.Construct.shortName shortName].</p>\n"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"staticProperties","description":"<p>Properties that are added the constructor\nfunction directly. For example:</p>\n<pre><code>Animal = can.Construct.extend({\n  findAll: function(){\n    return can.ajax({url: &quot;/animals&quot;})\n  }\n},{});\n\nAnimal.findAll().then(function(json){ ... })\n</code></pre>\n<p>The [can.Construct.setup static setup] method can be used to\nspecify inheritable behavior when a Constructor function is created.</p>\n"},{"types":[{"type":"Object","options":[]}],"name":"instanceProperties","description":"<p>Properties that belong to\ninstances made with the constructor. These properties are added to the\nconstructor's <code>prototype</code> object. Example:</p>\n<pre><code>Animal = can.Construct.extend({\n  init: function(name){\n    this.name = name;\n  },\n  sayHi: function(){\n    console.log(this.name,&quot;says hi&quot;)\n  }\n})\nvar animal = new Animal()\nanimal.sayHi();\n</code></pre>\n<p>The [can.Construct::init init] and [can.Construct::setup setup] properties\nare used for initialization.</p>\n"}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"<p>The constructor function.</p>\n"}}],"src":"construct/construct.js"};
+		var docObject = {"type":"function","name":"can.Construct.extend","parent":"can.Construct.static","src":"construct/construct.js","line":300,"codeLine":437,"description":"","title":"extend","signatures":[{"code":"can.Construct.extend([name,] [staticProperties,] instanceProperties)","description":"Extends `can.Construct`, or constructor functions derived from `can.Construct`,\nto create a new constructor function. Example:\n\n    var Animal = can.Construct.extend({\n      sayHi: function(){\n        console.log(\"hi\")\n      }\n    })\n    var animal = new Animal()\n    animal.sayHi();","params":[{"types":[{"type":"String"}],"optional":true,"name":"name","description":"Creates the necessary properties and\nobjects that point from the `window` to the created constructor function. The following:\n\n    can.Construct.extend(\"company.project.Constructor\",{})\n\ncreates a `company` object on window if it does not find one, a\n`project` object on `company` if it does not find one, and it will set the\n`Constructor` property on the `project` object to point to the constructor function.\n\nFinally, it sets \"company.project.Constructor\" as [can.Construct.fullName fullName]\nand \"Constructor\" as [can.Construct.shortName shortName]."},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"staticProperties","description":"Properties that are added the constructor\nfunction directly. For example:\n\n```\nvar Animal = can.Construct.extend({\n  findAll: function(){\n    return can.ajax({url: \"/animals\"})\n  }\n},{}); // need to pass an empty instanceProperties object\n\nAnimal.findAll().then(function(json){ ... })\n```\n\nThe [can.Construct.setup static setup] method can be used to\nspecify inheritable behavior when a Constructor function is created."},{"types":[{"type":"Object","options":[]}],"name":"instanceProperties","description":"Properties that belong to\ninstances made with the constructor. These properties are added to the\nconstructor's `prototype` object. Example:\n\n    var Animal = can.Construct.extend({\n\t  findAll: function() {\n\t\treturn can.ajax({url: \"/animals\"});\n\t  }\n    },{\n      init: function(name) {\n        this.name = name;\n      },\n      sayHi: function() {\n        console.log(this.name,\" says hai!\");\n      }\n    })\n    var pony = new Animal(\"Gertrude\");\n    pony.sayHi(); // \"Gertrude says hai!\"\n\nThe [can.Construct::init init] and [can.Construct::setup setup] properties\nare used for initialization."}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"The constructor function.\n```\nvar Animal = can.Construct.extend(...);\nvar pony = new Animal(); // Animal is a constructor function\n```"}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -702,6 +777,7 @@ are used for initialization.</p>
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

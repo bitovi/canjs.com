@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -355,7 +363,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/view/bindings/doc/input-radio.md">source</a></li>
 	
@@ -500,7 +508,7 @@ a <a href="can.Map.html">can.Map</a> property or a <a href="can.compute.html">ca
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.view.bindings.can-value","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.view.bindings.can-value-radio","description":"<p>Cross bind a value to a radio input.</p>\n","title":"input type=radio","signatures":[{"code":"<input type='radio' can-value='KEY' value='VALUE'/>","description":"<p>If the radio element is checked, sets the observable specified by <code>can-value</code> to match the value of\n<code>value</code> attribute.</p>\n","params":[{"types":[{"type":"can.mustache.key"}],"name":"KEY","description":"<p>A named value in the current scope. It should reference a\na [can.Map] property or a [can.compute].</p>\n"},{"types":[{"type":"String"}],"name":"VALUE","description":"<p>Used to set the value of <code>KEY</code> when the radio input is checked.</p>\n"}]}],"comment":" ","src":"view/bindings/doc/input-radio.md"};
+		var docObject = {"type":"function","name":"can.view.bindings.can-value-radio","src":"view/bindings/doc/input-radio.md","description":"Cross bind a value to a radio input.","title":"input type=radio","parent":"can.view.bindings.can-value","signatures":[{"code":"<input type='radio' can-value='KEY' value='VALUE'/>","description":"If the radio element is checked, sets the observable specified by `can-value` to match the value of \n`value` attribute.","params":[{"types":[{"type":"can.mustache.key"}],"name":"KEY","description":"A named value in the current scope. It should reference a\na [can.Map] property or a [can.compute]."},{"types":[{"type":"String"}],"name":"VALUE","description":"Used to set the value of `KEY` when the radio input is checked."}]}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -513,6 +521,7 @@ a <a href="can.Map.html">can.Map</a> property or a <a href="can.compute.html">ca
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

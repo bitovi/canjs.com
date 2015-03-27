@@ -550,7 +550,10 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 			// ## can.Model#bind and can.Model#unbind
 			// These aren't actually implemented here, but their setup needs to be changed to account for the store.
 			_bindsetup: function () {
-				this.constructor.store[this.__get(this.constructor.id)] = this;
+				var modelInstance = this.__get(this.constructor.id);
+				if (modelInstance != null) {
+					this.constructor.store[modelInstance ] = this;
+				}
 				return can.Map.prototype._bindsetup.apply(this, arguments);
 			},
 			_bindteardown: function () {
@@ -588,7 +591,8 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 		makeFindAll: makeGetterHandler("models"),
 		makeFindOne: makeGetterHandler("model"),
 		makeCreate: createUpdateDestroyHandler,
-		makeUpdate: createUpdateDestroyHandler
+		makeUpdate: createUpdateDestroyHandler,
+		makeDestroy: createUpdateDestroyHandler
 	};
 
 	// Go through the response handlers and make the actual "make" methods.
@@ -648,7 +652,9 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 		// On change or a nested named event, setup change bubbling.
 		// On any other type of event, setup "destroyed" bubbling.
 		_bubbleRule: function(eventName, list) {
-			return can.List._bubbleRule(eventName, list) || "destroyed";
+			var bubbleRules = can.List._bubbleRule(eventName, list);
+			bubbleRules.push('destroyed');
+			return bubbleRules;
 		}
 	},{
 		setup: function (params) {

@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/model'</span>, <span class="hljs-string">'can/util/object'</span>, <span class="hljs-string">'can/util/json.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/model'</span>, <span class="hljs-string">'can/util/object'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -91,7 +91,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span>.localStorage !== <span class="hljs-string">'undefined'</span>) {
-				<span class="hljs-keyword">this</span>._cached = can.evalJSON(<span class="hljs-built_in">window</span>.localStorage.getItem(<span class="hljs-keyword">this</span>.cachedKey())) || {};
+				<span class="hljs-keyword">this</span>._cached = <span class="hljs-built_in">JSON</span>.parse(<span class="hljs-built_in">window</span>.localStorage.getItem(<span class="hljs-keyword">this</span>.cachedKey())) || {};
 			} <span class="hljs-keyword">else</span> {
 				<span class="hljs-keyword">this</span>._cached = {};
 			}

@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -289,7 +297,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/view/bindings/doc/can-event.md">source</a></li>
 	
@@ -312,7 +320,7 @@
 		
 			
 				<section class="signature">
-					<h2 id="sig_can_EVENT___39_KEY__39_">can-EVENT=&#39;KEY&#39;
+					<h2 id="sig_can_EVENT___39__methodKey_argKey____hashName_hashKey_______39_">can-EVENT=&#39;{methodKey [argKey..] [hashName=hashKey...]}&#39;
 </h2>
 <div class="signature-wrapper">
 <p>Specify a callback function to be called on a particular event. You can create your own special event types.</p>
@@ -336,11 +344,63 @@ using jQuery, you can listen to jQuery special events too.</p>
 		</li>
 		
 		<li class="parameter">
-			<h4>key
-				<code>{<a href="can.mustache.key.html" >key</a>}</code></h4>
+			<h4>methodKey
+				<code>{<a href="can.stache.key.html" >key</a>}</code></h4>
 			<div class="description">
-				<p>A named value in the current scope.  The value
+				<p>A named key value in the current scope.  The value
 should be a function.</p>
+
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>argKey
+				<code>{<a href="can.stache.key.html" >key</a>}</code><span class="pull-right optional">Optional Variable</span></h4>
+			<div class="description">
+				<p>Key values that will be passed as
+arguments to the <code>methodKey</code> function value.  Key values can
+be read from the scope, or literals like <code>&quot;foo&quot;</code>, <code>1</code>, etc.</p>
+<p>The following key values are also supported:</p>
+<ul>
+<li><code>@element</code> - The <a href="can.$.html">can.$</a> wrapped element the event happened upon.</li>
+<li><code>@event</code> - The event object.</li>
+<li><code>@viewModel</code> - If the element is a <a href="can.Component.html">can.Component</a>, the component's <a href="can.Component.prototype.viewModel.html">viewModel</a>.</li>
+<li><code>@context</code> - The current context.</li>
+<li><code>@scope</code> - The current <a href="can.view.Scope.html">can.view.Scope</a>.</li>
+</ul>
+<p>If no <code>argKey</code>s or <code>hashKey</code>s are provided, the methodKey will be called with the
+<code>@content</code>, <code>@element</code> and <code>@event</code> as arguments.</p>
+
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>hashName
+				<code>{String}</code></h4>
+			<div class="description">
+				<p>A property name
+that gets added to the <code>hash</code> argument.  The hash argument is the
+last value passed to the function specified by <code>methodKey</code>.</p>
+
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>hashKey
+				<code>{<a href="can.stache.key.html" >key</a>}</code></h4>
+			<div class="description">
+				<p>Specifies value that is added
+to the <code>hash</code> argument for a <code>hashName</code> value.  <code>hashKey</code> supports
+the same key values as <code>argKey</code>.</p>
 
 			</div>
 			
@@ -367,22 +427,31 @@ should be a function.</p>
 		
 		<section class="comment">
 			<h2>Use</h2>
-<p>By adding <code>can-EVENT='KEY'</code> to an element, the function pointed to
-by <code>KEY</code> is bound to the element's <code>EVENT</code> event. The function
-is called back with:</p>
-<ul>
-<li><code>context</code> - the context of the element</li>
-<li><code>element</code> - the element that was bound</li>
-<li><code>event</code> - the event that was triggered</li>
-</ul>
-<div class='demo_wrapper' data-demo-src='can/view/bindings/doc/can-event.html'></div>
-## Special Event Types
-<p>can.view.bindings supports creating special event types (events that aren't natively triggered by the DOM), which are bound by adding attributes like <code>can-SPECIAL='KEY'</code>. This is similar to <a href="http://benalman.com/news/2010/03/jquery-special-events/">$.special</a>.</p>
+<p>By adding <code>can-EVENT='methodKey'</code> to an element, the function pointed to
+by <code>methodKey</code> is bound to the element's <code>EVENT</code> event. The function can be
+passed any number of arguments from the surrounding scope, or <code>name=value</code>
+attributes for named arguments. Direct arguments will be provided to the
+handler in the order they were given, except <code>name=value</code> arguments, which
+will all be given as part of a <code>hash</code> argument inserted after all direct
+arguments.</p>
+<p>If no <code>argKey</code>s or <code>hashKey</code>s are provided, the methodKey will be called with the
+<code>@content</code>, <code>@element</code> and <code>@event</code> as arguments.</p>
+<p>The following uses <code>can-click={items.splice @index 1}</code> to remove a
+item from <code>items</code> when that item is clicked on.</p>
+<div class='demo_wrapper' data-demo-src='can/view/bindings/doc/can-event-args.html'></div>
+<h2>Special Event Types</h2>
+<p>can.view.bindings supports creating special event types
+(events that aren't natively triggered by the DOM), which are
+bound by adding attributes like <code>can-SPECIAL='KEY'</code>. This is
+similar to <a href="http://benalman.com/news/2010/03/jquery-special-events/">$.special</a>.</p>
 <h3>can-enter</h3>
-<p>can-enter is a special event that calls its handler whenever the enter key is pressed while focused on the current element. For example:</p>
-<pre><code>&lt;input type='text' can-enter='save' /&gt;
+<p>can-enter is a special event that calls its handler whenever the enter
+key is pressed while focused on the current element. For example:</p>
+<pre><code>&lt;input type='text' can-enter='{save}' /&gt;
 </code></pre>
-<p>The above template snippet would cause the save method (in the <a href="can.mustache.html">Mustache</a> <a href="can.view.Scope.html">scope</a>) whenever the user hits the enter key on this input.</p>
+<p>The above template snippet would cause the save method
+(in the <a href="can.mustache.html">Mustache</a> <a href="can.view.Scope.html">scope</a>) whenever
+the user hits the enter key on this input.</p>
 
 		</section>
 		
@@ -444,7 +513,7 @@ is called back with:</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.view.bindings","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.view.bindings.can-EVENT","description":"","title":"can-EVENT","signatures":[{"code":"can-EVENT='KEY'","description":"<p>Specify a callback function to be called on a particular event. You can create your own special event types.</p>\n","params":[{"types":[{"type":"String"}],"name":"EVENT","description":"<p>A event name like <code>click</code> or <code>keyup</code>.  If you are\nusing jQuery, you can listen to jQuery special events too.</p>\n"},{"types":[{"type":"can.mustache.key"}],"name":"key","description":"<p>A named value in the current scope.  The value\nshould be a function.</p>\n"}]}],"comment":" ","src":"view/bindings/doc/can-event.md"};
+		var docObject = {"type":"function","name":"can.view.bindings.can-EVENT","src":"view/bindings/doc/can-event.md","description":"","title":"can-EVENT","parent":"can.view.bindings","signatures":[{"code":"can-EVENT='{methodKey [argKey..] [hashName=hashKey...]}'","description":"Specify a callback function to be called on a particular event. You can create your own special event types.","params":[{"types":[{"type":"String"}],"name":"EVENT","description":"A event name like `click` or `keyup`.  If you are\nusing jQuery, you can listen to jQuery special events too."},{"types":[{"type":"can.stache.key"}],"name":"methodKey","description":"A named key value in the current scope.  The value\nshould be a function."},{"types":[{"type":"can.stache.key"}],"optional":true,"name":"argKey","variable":true,"description":"Key values that will be passed as\narguments to the `methodKey` function value.  Key values can \nbe read from the scope, or literals like `\"foo\"`, `1`, etc.\n\nThe following key values are also supported:\n\n - `@element` - The [can.$] wrapped element the event happened upon.\n - `@event` - The event object.\n - `@viewModel` - If the element is a [can.Component], the component's [can.Component::viewModel viewModel].\n - `@context` - The current context.\n - `@scope` - The current [can.view.Scope].\n\nIf no `argKey`s or `hashKey`s are provided, the methodKey will be called with the\n`@content`, `@element` and `@event` as arguments."},{"types":[{"type":"String"}],"name":"hashName","description":"A property name \nthat gets added to the `hash` argument.  The hash argument is the\nlast value passed to the function specified by `methodKey`."},{"types":[{"type":"can.stache.key"}],"name":"hashKey","description":"Specifies value that is added \nto the `hash` argument for a `hashName` value.  `hashKey` supports\nthe same key values as `argKey`."}]}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -457,6 +526,7 @@ is called back with:</p>
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

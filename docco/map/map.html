@@ -332,7 +332,9 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
             </div>
             
             <div class="content"><div class='highlight'><pre>			_bubbleRule: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventName)</span> </span>{
-				<span class="hljs-keyword">return</span> (eventName === <span class="hljs-string">"change"</span> || eventName.indexOf(<span class="hljs-string">"."</span>) &gt;= <span class="hljs-number">0</span> ) &amp;&amp; <span class="hljs-string">"change"</span>;
+				<span class="hljs-keyword">return</span> (eventName === <span class="hljs-string">"change"</span> || eventName.indexOf(<span class="hljs-string">"."</span>) &gt;= <span class="hljs-number">0</span> ) ?
+					[<span class="hljs-string">"change"</span>] :
+					[];
 			},</pre></div></div>
             
         </li>

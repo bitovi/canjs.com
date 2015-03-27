@@ -24,6 +24,11 @@
               </a>
             
               
+              <a class="source" href="intermediate_and_imports.html">
+                intermediate_and_imports.js
+              </a>
+            
+              
               <a class="source" href="mustache_core.html">
                 mustache_core.js
               </a>
@@ -36,6 +41,16 @@
               
               <a class="source" href="stache.html">
                 stache.js
+              </a>
+            
+              
+              <a class="source" href="stache_benchmark.html">
+                stache_benchmark.js
+              </a>
+            
+              
+              <a class="source" href="system.html">
+                system.js
               </a>
             
               
@@ -305,7 +320,7 @@ steal(<span class="hljs-string">"can/util"</span>,
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!data.compute.hasDependencies) {
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!data.compute.computeInstance.hasDependencies) {
 				<span class="hljs-keyword">return</span> data.initialValue;
 			} <span class="hljs-keyword">else</span> {
 				<span class="hljs-keyword">return</span> data.compute;
@@ -895,7 +910,7 @@ or the value of the value of the compute if no observables are found.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(computeData.compute.hasDependencies) {
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(computeData.compute.computeInstance.hasDependencies) {
 						name = compute;
 					} <span class="hljs-keyword">else</span> {
 						name = initialValue;
@@ -1120,8 +1135,31 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				convertToScopes(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer);
-				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> valueAndLength = <span class="hljs-keyword">new</span> can.Compute(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+					<span class="hljs-keyword">var</span> value;
+					<span class="hljs-keyword">if</span> (can.isFunction(name) &amp;&amp; name.isComputed) {
+						value = name();
+					} <span class="hljs-keyword">else</span> {
+						value = name;
+					}
+					<span class="hljs-keyword">var</span> len,
+						arrayLike = utils.isArrayLike(value),
+						isObserveList;
+					<span class="hljs-keyword">if</span> ( arrayLike ) {
+						isObserveList = utils.isObserveLike(value);
+						len = isObserveList ? value.attr(<span class="hljs-string">"length"</span>) : value.length;
+					}
+					<span class="hljs-keyword">return</span> {
+						
+						value: value,
+						length: len,
+						isObserveList: isObserveList,
+						isArrayLike: arrayLike
+					};
+				});
+				convertToScopes(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer);
+				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+					<span class="hljs-keyword">var</span> data = valueAndLength.get();</pre></div></div>
             
         </li>
         
@@ -1136,12 +1174,7 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> value;
-					<span class="hljs-keyword">if</span> (can.isFunction(name) &amp;&amp; name.isComputed) {
-						value = name();
-					} <span class="hljs-keyword">else</span> {
-						value = name;
-					}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> value = data.value;</pre></div></div>
             
         </li>
         
@@ -1156,10 +1189,10 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (utils.isArrayLike(value) ) {
-						<span class="hljs-keyword">var</span> isObserveList = utils.isObserveLike(value);
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (data.isArrayLike ) {
+						<span class="hljs-keyword">var</span> isObserveList = data.isObserveList;
 						
-						<span class="hljs-keyword">if</span>(isObserveList ? value.attr(<span class="hljs-string">"length"</span>) : value.length) {
+						<span class="hljs-keyword">if</span>(data.length) {
 							<span class="hljs-keyword">return</span> (stringOnly ? getItemsStringContent: getItemsFragContent  )
 								(value, isObserveList, helperOptions, options);
 						} <span class="hljs-keyword">else</span> {
@@ -1226,7 +1259,14 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
 		makeLiveBindingPartialRenderer: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(partialName, state)</span></span>{
 			partialName = can.trim(partialName);
 
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(scope, options, parentSectionNodeList)</span></span>{</pre></div></div>
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(scope, options, parentSectionNodeList)</span></span>{
+
+				<span class="hljs-keyword">var</span> nodeList = [<span class="hljs-keyword">this</span>];
+				nodeList.expression = <span class="hljs-string">"&gt;"</span> + partialName;
+				nodeLists.register(nodeList, <span class="hljs-literal">null</span>, state.directlyNested ? parentSectionNodeList || <span class="hljs-literal">true</span> :  <span class="hljs-literal">true</span>);
+
+				<span class="hljs-keyword">var</span> partialFrag = can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+					<span class="hljs-keyword">var</span> localPartialName = partialName;</pre></div></div>
             
         </li>
         
@@ -1241,12 +1281,12 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> partial = options.attr(<span class="hljs-string">"partials."</span> + partialName),
-					res;
-				<span class="hljs-keyword">if</span> (partial) {
-					res = partial.render ? partial.render(scope, options) :
-						partial(scope, options);
-				}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> partial = options.attr(<span class="hljs-string">"partials."</span> + localPartialName),
+						res;
+					<span class="hljs-keyword">if</span> (partial) {
+						res = partial.render ? partial.render(scope, options) :
+							partial(scope, options);
+					}</pre></div></div>
             
         </li>
         
@@ -1261,18 +1301,26 @@ anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> {
-					
-					res = can.view.render(partialName, scope, options );
-				}
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">else</span> {
+						<span class="hljs-keyword">var</span> scopePartialName = scope.read(localPartialName, {
+							isArgument: <span class="hljs-literal">true</span>,
+							returnObserveMethods: <span class="hljs-literal">true</span>,
+							proxyMethods: <span class="hljs-literal">false</span>
+						}).value;
 
-				res = can.frag(res);
+						<span class="hljs-keyword">if</span> (scopePartialName) {
+							localPartialName = scopePartialName;
+						}
 
-				<span class="hljs-keyword">var</span> nodeList = [<span class="hljs-keyword">this</span>];
+						res = can.view.render(localPartialName, scope, options );
+					}
 
-				nodeLists.register(nodeList, <span class="hljs-literal">null</span>, state.directlyNested ? parentSectionNodeList || <span class="hljs-literal">true</span> :  <span class="hljs-literal">true</span>);
-				nodeLists.update(nodeList, res.childNodes);
-				elements.replace([<span class="hljs-keyword">this</span>], res);
+					<span class="hljs-keyword">return</span> can.frag(res);
+
+				});
+
+				live.html(<span class="hljs-keyword">this</span>, partialFrag, <span class="hljs-keyword">this</span>.parentNode, nodeList);
+
 			};
 		},</pre></div></div>
             
@@ -1565,7 +1613,7 @@ performed in value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( compute.hasDependencies ) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( compute.computeInstance.hasDependencies ) {</pre></div></div>
             
         </li>
         

@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -342,6 +350,21 @@
 							href="can.LazyMap.html" 
 							data-search="can.LazyMap">
 							can.LazyMap
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="can.Map.List.html" 
+							data-search="can.Map.List">
+							List
 						</a>
 						
 					</li>
@@ -618,7 +641,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/map/backup/doc/prototype.restore.md">source</a></li>
 	
@@ -680,36 +703,6 @@ will re-add properties that have been removed.</p>
 		<h4><code>{<a href="can.Map.html" >can.Map</a>}</code></h4>
 		<div class="description">
 			<p>The Observe, for chaining.</p>
-<pre><code class="language-js">var recipe = new can.Map({
-title: 'Pancake Mix',
-yields: '3 batches',
-ingredients: [{
- ingredient: 'flour',
- quantity: '6 cups'
-},{
- ingredient: 'baking soda',
- quantity: '1 1/2 teaspoons'
-},{
- ingredient: 'baking powder',
- quantity: '3 teaspoons'
-},{
- ingredient: 'salt',
- quantity: '1 tablespoon'
-},{
- ingredient: 'sugar',
- quantity: '2 tablespoons'
-}]
-});
-<p>recipe.backup();</p>
-<p>recipe.attr('title', 'Flapjack Mix');
-recipe.restore();
-recipe.attr('title'); // 'Pancake Mix'</p>
-<p>recipe.attr('ingredients.0.quantity', '7 cups');
-recipe.restore();
-recipe.attr('ingredients.0.quantity'); // '7 cups'
-recipe.restore(true);
-recipe.attr('ingredients.0.quantity'); // '6 cups'
-</code></pre></p>
 <h2>Events</h2>
 <p>When <code>restore</code> sets values or re-adds properties, the same events will be fired (including
 <em>change</em>, <em>add</em>, and <em>set</em>) as if the values of the properties had been set using <code><a href="can.Map.prototype.attr.html">attr</a></code>.</p>
@@ -792,7 +785,7 @@ recipe.attr('ingredients.0.quantity'); // '6 cups'
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Map.backup","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.Map.backup.prototype.restore","description":"<p>Restore saved values of an Observe's properties.</p>\n","title":"restore","plugin":"can/map/backup","order":2,"signatures":[{"code":"map.restore( [deep] )","description":"<p><code>restore</code> sets the properties of an Observe back to what they were the last time\n[can.Map.backup.prototype.backup backup] was called. If <em>deep</em> is <code>true</code>,\n<code>restore</code> will also restore the properties of nested Observes.</p>\n<p><code>restore</code> will not remove properties that were added since the last backup, but it\nwill re-add properties that have been removed.</p>\n","params":[{"types":[{"type":"bool"}],"optional":true,"name":"deep","defaultValue":"false","description":"<p>whether to restore properties in nested Observes</p>\n"}],"returns":{"types":[{"type":"can.Map"}],"description":"<p>The Observe, for chaining.</p>\n<pre><code class=\"language-js\">var recipe = new can.Map({\ntitle: 'Pancake Mix',\nyields: '3 batches',\ningredients: [{\n ingredient: 'flour',\n quantity: '6 cups'\n},{\n ingredient: 'baking soda',\n quantity: '1 1/2 teaspoons'\n},{\n ingredient: 'baking powder',\n quantity: '3 teaspoons'\n},{\n ingredient: 'salt',\n quantity: '1 tablespoon'\n},{\n ingredient: 'sugar',\n quantity: '2 tablespoons'\n}]\n});\n<p>recipe.backup();</p>\n<p>recipe.attr('title', 'Flapjack Mix');\nrecipe.restore();\nrecipe.attr('title'); // 'Pancake Mix'</p>\n<p>recipe.attr('ingredients.0.quantity', '7 cups');\nrecipe.restore();\nrecipe.attr('ingredients.0.quantity'); // '7 cups'\nrecipe.restore(true);\nrecipe.attr('ingredients.0.quantity'); // '6 cups'\n</code></pre></p>\n<h2>Events</h2>\n<p>When <code>restore</code> sets values or re-adds properties, the same events will be fired (including\n<em>change</em>, <em>add</em>, and <em>set</em>) as if the values of the properties had been set using <code>[can.Map.prototype.attr attr]</code>.</p>\n"}}],"src":"map/backup/doc/prototype.restore.md"};
+		var docObject = {"type":"function","name":"can.Map.backup.prototype.restore","src":"map/backup/doc/prototype.restore.md","description":"Restore saved values of an Observe's properties.","title":"restore","plugin":"can/map/backup","parent":"can.Map.backup","order":2,"signatures":[{"code":"map.restore( [deep] )","description":"`restore` sets the properties of an Observe back to what they were the last time\n[can.Map.backup.prototype.backup backup] was called. If _deep_ is `true`,\n`restore` will also restore the properties of nested Observes.\n\n`restore` will not remove properties that were added since the last backup, but it\nwill re-add properties that have been removed.","params":[{"types":[{"type":"bool"}],"optional":true,"name":"deep","defaultValue":"false","description":"whether to restore properties in nested Observes"}],"returns":{"types":[{"type":"can.Map"}],"description":"The Observe, for chaining.\n\n\n## Events\nWhen `restore` sets values or re-adds properties, the same events will be fired (including\n_change_, _add_, and _set_) as if the values of the properties had been set using `[can.Map.prototype.attr attr]`."}}],"ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -805,6 +798,7 @@ recipe.attr('ingredients.0.quantity'); // '6 cups'
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

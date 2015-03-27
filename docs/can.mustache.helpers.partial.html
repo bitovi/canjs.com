@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -824,7 +832,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/view/mustache/doc/partials.md">source</a></li>
 	
@@ -919,72 +927,25 @@ the page.</p>
 <p>Partials render at runtime, so recursive partials are possible but make sure you avoid infinite loops.</p>
 <p>For example, this template and partial:</p>
 <p><strong>base.mustache</strong></p>
-<pre><code class="language-js">&lt;h2&gt;Names&lt;/h2&gt;
-{{#names}}
-    {{&gt;user.mustache}}
-{{/names}}
-</code></pre>
 <p><strong>user.mustache</strong></p>
-<pre><code class="language-js">&lt;strong&gt;{{name}}&lt;/strong&gt;
-</code></pre>
 <p>The resulting expanded template at render time would look like:</p>
-<pre><code class="language-js">&lt;h2&gt;Names&lt;/h2&gt;
-{{#names}}
-    &lt;strong&gt;{{name}}&lt;/strong&gt;
-{{/names}}
-</code></pre>
 <h2>Acquiring Partials</h2>
 <p><strong>Referencing Files</strong></p>
 <p>Partials can reference a file path and file name in the template.</p>
 <p>The following template uses a relative path (relative to the current page):</p>
-<pre><code class="language-js">&lt;script id=&quot;template&quot; type=&quot;text/mustache&quot;&gt;
-    {{&gt;views/test_template.mustache}}
-&lt;/script&gt;
-</code></pre>
 <p>The following template uses an absolute path (rooted to steal's root directory):</p>
-<pre><code class="language-js">&lt;script id=&quot;template&quot; type=&quot;text/mustache&quot;&gt;
-    {{&gt;//myapp/accordion/views/test_template.mustache}}
-&lt;/script&gt;
-</code></pre>
 <p><strong>Referencing by ID</strong></p>
 <p>Partials can reference templates that exist in script tags on the page by
 referencing the <code>id</code> of the partial in the template.  For example:</p>
-<pre><code class="language-js">&lt;script id=&quot;mytemplate&quot; type=&quot;text/mustache&quot;&gt;
-    {{&gt;mypartial}}
-&lt;/script&gt;
-</code></pre>
-<pre><code class="language-js">&lt;script id=&quot;mypartial&quot; type=&quot;text/mustache&quot;&gt;
-    I am a partial.
-&lt;/script&gt;
-</code></pre>
-<pre><code class="language-js">var template = can.view(&quot;#mytemplate&quot;, {});
-</code></pre>
 <p><strong>Manually Registering</strong></p>
 <p>Partials can be manually registered by calling <code>can.view.registerView</code>
 and passing an identifier and content.  For example:</p>
-<pre><code class="language-js">can.view.registerView('myTemplate', &quot;My body lies over {{.}}&quot;)
-</code></pre>
 <p>in the template, you reference the template by the identifer you registered:</p>
-<pre><code class="language-js">{{&gt;myTemplate}}
-</code></pre>
 <p>resulting in the template rendering with the current context applied to the partial.</p>
 <h2>Passing Partials in Options</h2>
 <p>Partials can resolve the context object that contains partial identifiers.
 For example:</p>
-<pre><code class="language-js">var template = can.view(&quot;#template&quot;, { 
-    items: []
-    itemsTemplate: &quot;test_template.mustache&quot; 
-});
-
-can.$(document.body).append(template);
-</code></pre>
 <p>then reference the partial in the template just like:</p>
-<pre><code class="language-js">&lt;ul&gt;
-{{#items}}
-    &lt;li&gt;{{&gt;itemsTemplate}}&lt;/li&gt;
-{{/items}}
-&lt;/ul&gt;
-</code></pre>
 
 		</section>
 		
@@ -1046,7 +1007,7 @@ can.$(document.body).append(template);
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.mustache.tags","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.mustache.helpers.partial","description":"","title":"{{>key}}","order":6,"signatures":[{"code":"{{>key}}","description":"<p>Render another template within the current template.</p>\n","params":[{"types":[{"type":"can.mustache.key"}],"name":"key","description":"<p>A key that references a value within the current or parent\n[can.mustache.context context]. If the value is a function or [can.compute], the\nfunction's return value is used.</p>\n<p>If the key value is:</p>\n<ul>\n<li><p><code>undefined</code> - the key's name (ex: user.mustache in <code>{{&gt;user.mustache}}</code>) is used to\nlook up a template using [can.view].</p></li>\n<li><p><code>string</code> - the string value is used to lookup a view in [can.view].</p></li>\n<li><p><code>function</code> - the function is called with the current scope.</p></li>\n</ul>\n<p>[can.view] looks for a template in the following places:</p>\n<ol>\n<li>A registered view</li>\n<li>An id of an element</li>\n<li>A url to load the template.</li>\n</ol>\n"}],"returns":{"types":[{"type":"String"}],"description":"<p>The value of the rendered template is inserted into\nthe page.</p>\n"}}],"comment":" ","src":"view/mustache/doc/partials.md"};
+		var docObject = {"type":"function","name":"can.mustache.helpers.partial","src":"view/mustache/doc/partials.md","description":"","title":"{{>key}}","parent":"can.mustache.tags","order":6,"signatures":[{"code":"{{>key}}","description":"Render another template within the current template.","params":[{"types":[{"type":"can.mustache.key"}],"name":"key","description":"A key that references a value within the current or parent \n[can.mustache.context context]. If the value is a function or [can.compute], the \nfunction's return value is used.\n\nIf the key value is:\n\n - `undefined` - the key's name (ex: user.mustache in `{{>user.mustache}}`) is used to\n   look up a template using [can.view].\n\n - `string` - the string value is used to lookup a view in [can.view].\n\n - `function` - the function is called with the current scope.\n\n[can.view] looks for a template in the following places:\n\n1. A registered view\n2. An id of an element\n3. A url to load the template."}],"returns":{"types":[{"type":"String"}],"description":"The value of the rendered template is inserted into\nthe page."}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -1059,6 +1020,7 @@ can.$(document.body).append(template);
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

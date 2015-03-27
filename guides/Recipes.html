@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -103,8 +104,8 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
-	   		<a href="Tutorial.html" data-search="Getting Started">
-				Getting Started
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
 			</a>
 			
 	   </li>
@@ -117,8 +118,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="Why.html" data-search="Why CanJS?">
-				Why CanJS?
+	   		<a href="Tutorial.html" data-search="Getting Started">
+				Getting Started
 			</a>
 			
 	   </li>
@@ -197,7 +198,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/guides/recipes.md">source</a></li>
 	
@@ -309,7 +310,7 @@ $(&quot;#my-app&quot;).html(frag);
 {{#each people}}
   &lt;li&gt;
     {{lastname}}, {{firstname}}
-  &lt;li&gt;
+  &lt;/li&gt;
 {{/each}}
 &lt;/ul&gt;
 </code></pre>
@@ -542,9 +543,9 @@ appears in a template.</p>
 <pre><code>can.Component.extend({
     tag: 'people',
 </code></pre>
-<p>The <code>scope</code> object on a <code>Component</code> contains the component's state, data,
+<p>The <code>viewModel</code> object on a <code>Component</code> contains the component's state, data,
 and behavior. Here, it specifies how to <code>remove</code> a person from the list:</p>
-<pre><code>    scope: {
+<pre><code>    viewModel: {
         people: people,
         remove: function( person ) {
             var people = this.attr(&quot;people&quot;);
@@ -558,9 +559,9 @@ and behavior. Here, it specifies how to <code>remove</code> a person from the li
 property. This can either be an external file or a string.
 Each <code>li</code> uses <code>can-click</code>, <a href="http://canjs.com/docs/can.view.bindings.can-EVENT.html">which declares an event binding.</a>
 Here, <code>remove</code> inside the component's
-scope will be called with the relevant <code>people</code> object
+viewModel will be called with the relevant <code>people</code> object
 as an argument.</p>
-<pre><code>scope: {
+<pre><code>viewModel: {
     template: '&lt;ul&gt;' +
                 '{{#each people}}' +
                 '&lt;li can-click=&quot;remove&quot;&gt;' +
@@ -590,7 +591,7 @@ widget without understanding anything other than the syntax.
 This is one of the most useful features of components.</p>
 <h3>Tabs Widget Behavior</h3>
 <p>Before implementing the component itself, we'll
-define an observable <em>view model</em>--the <code>scope</code> object
+define an observable <em>view model</em>--the <code>viewModel</code> object
 of the UI element. This makes the code modular and easier
 to manage (and also allows for unit testing).</p>
 <p>In order to accurately represent a tabs widget,
@@ -649,12 +650,12 @@ a template can be used to display or hide the panel accordingly.</p>
 &lt;/tabs&gt;
 </code></pre>
 <p>A designer can create a <code>tabs</code> component with <code>panel</code> components inside it.
-The <code>template</code> object on the tabs component's scope needs to be able to render
+The <code>template</code> object on the tabs component's viewModel needs to be able to render
 the content that is inside of the <code>&lt;tabs&gt;</code> tag. To do this, we simply use the
 <code>&lt;content&gt;</code> tag, which will render everything within the component's tags:</p>
 <pre><code>can.Component.extend({
     tag: &quot;tabs&quot;,
-    scope: TabsViewModel,
+    viewModel: TabsViewModel,
     template: &quot;&lt;ul&gt;\
                 {{#each panels}}\
                     &lt;li can-click='activate'&gt;{{title}}&lt;/li&gt;\
@@ -667,34 +668,34 @@ the content that is inside of the <code>&lt;tabs&gt;</code> tag. To do this, we 
 as components. The tabs template contains the logic for whether
 the panel is visible (<code>visible</code> is controlled by the tabs
 component's <code>activate</code> method).</p>
-<p>Each panel's <code>scope</code> contains a title, which should be
+<p>Each panel's <code>viewModel</code> contains a title, which should be
 taken from the <code>title</code> attribute in the <code>&lt;panel&gt;</code> tag.
 If you want to set the string value of a Component's
-attribute as a <code>scope</code> variable, use  <code>@'</code>.</p>
+attribute as a <code>viewModel</code> variable, use  <code>@'</code>.</p>
 <pre><code>can.Component.extend({
 tag: &quot;panel&quot;,
 template: &quot;{{#if visible}}&lt;content /&gt;{{/if}}&quot;,
-scope: {
+viewModel: {
     title: &quot;@&quot;
 },
 ...
 </code></pre>
-<p>In addition to the <code>scope</code> property, a component has an
+<p>In addition to the <code>viewModel</code> property, a component has an
 <a href="http://canjs.com/docs/can.Component.prototype.events.html"><code>events</code> property</a>.
 This <code>events</code> property uses a <code>can.Control</code> instantiated inside
 the component to handle events.</p>
 <p>Since we defined behavior for adding panels on the parent
 <code>tabs</code> component, we should use this method whenever a <code>panel</code>
 is inserted into the page (and an <code>inserted</code> event is triggered).
-To add the panel to the <code>tabs</code> component's scope, we call the
-<code>addPanel</code> method by accessing the parent scope with <code>this.element.parent().scope()</code>:</p>
+To add the panel to the <code>tabs</code> component's view model, we call the
+<code>addPanel</code> method by accessing the parent view model with <code>this.element.parent().viewModel()</code>:</p>
 <pre><code>...
     events: {
         inserted: function() {
-            this.element.parent().scope().addPanel( this.scope )
+            this.element.parent().viewModel().addPanel( this.viewModel )
         },
         removed: function() {
-            this.element.parent().scope().addPanel( this.scope )
+            this.element.parent().viewModel().addPanel( this.viewModel )
         }
     }
 });
@@ -732,13 +733,13 @@ from <code>can.Model</code> to fetch the messages and create new ones:</p>
     create : 'POST ' + myServerUrl + '/messages'
 },{});
 </code></pre>
-<p>In a chat component's scope, we will use the <code>Message</code> model to
+<p>In a chat component's viewModel, we will use the <code>Message</code> model to
 save new messages and observe changes to the Model.
 <a href="http://canjs.com/docs/can.Model.List.html#sig_newcan_Model_List__models__"><code>new Message.List({})</code></a> is a shortcut to perform
 the <a href="http://canjs.com/docs/can.Model.findAll.html"><code>findAll</code></a> operation on a <code>can.Model</code> and
 return a <code>can.List</code>.</p>
 <pre><code>...
-    scope: {
+    viewModel: {
             messages: new Message.List({}),
             newMessage: &quot;&quot;
 ...
@@ -748,7 +749,7 @@ Since this chat application uses a <code>&lt;form&gt;</code> for sending message
 <code>can-submit</code> to specify an event handler.</p>
 <p>There's one more helper used in the template: <a href="http://canjs.com/docs/can.view.bindings.can-value.html"><code>can-value</code></a>.
 This automatically two-way binds the value of an input field to an observable
-property on the <code>scope</code> of the component (in this case, <code>newMessage</code>).</p>
+property on the <code>viewModel</code> of the component (in this case, <code>newMessage</code>).</p>
 <pre><code>can.Component.extend({
   tag: 'chat',
   template: '&lt;ul id=&quot;messages&quot;&gt;' +
@@ -768,7 +769,7 @@ always be the current text in the <code>input</code> field.
 The body of the message is fetched from
 the Component's <code>newMessage</code> attribute when a user submits the form.</p>
 <p>To save the new message to the server, call <code>save()</code>.</p>
-<pre><code>submitMessage: function(scope, el, ev){
+<pre><code>submitMessage: function(context, el, ev){
     ev.preventDefault();
     new Message({body: this.attr(&quot;newMessage&quot;)}).save();
     this.attr(&quot;newMessage&quot;, &quot;&quot;);
@@ -778,7 +779,7 @@ the Component's <code>newMessage</code> attribute when a user submits the form.<
 must be updated.</p>
 <pre><code>events: {
     '{Message} created': function(construct, ev, message){
-        this.scope.attr('messages').push(message);
+        this.viewModel.attr('messages').push(message);
     }
 }
 </code></pre>
@@ -787,7 +788,7 @@ or from another user. In the next section, we demonstrate how to use
 <a href="http://socket.io/">socket.io</a> to update the <code>Message</code> model with messages
 from other users in real time. Binding to the <code>created</code> event for <strong>all</strong>
 messages allows us to create a single entry point that pushes new messages
-to the <code>scope</code>, <a href="http://canjs.com/docs/can.Model.html#section_Listentochangesindata">regardless of where those messages are from.</a></p>
+to the <code>viewModel</code>, <a href="http://canjs.com/docs/can.Model.html#section_Listentochangesindata">regardless of where those messages are from.</a></p>
 <p>When the chat Component is loaded, messages are loaded from the server
 using <code>can.Model</code> and <code>new Message.List({})</code>.  When a new message is
 submitted:</p>
@@ -901,7 +902,7 @@ to the <code>canjs.com</code> respository on GitHub.</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"guides","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"page","name":"Recipes","description":"","title":"Recipes","order":4,"comment":" ","src":"guides/recipes.md"};
+		var docObject = {"type":"page","name":"Recipes","src":"guides/recipes.md","description":"","title":"Recipes","parent":"guides","order":4,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -914,6 +915,7 @@ to the <code>canjs.com</code> respository on GitHub.</p>
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

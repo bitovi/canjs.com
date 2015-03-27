@@ -76,8 +76,8 @@ If no binding should be done, undefined or null should be returned</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			event: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(map, eventName)</span> </span>{
-				<span class="hljs-keyword">return</span> map.constructor._bubbleRule(eventName, map);
+            <div class="content"><div class='highlight'><pre>			event: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(map, boundEventName)</span> </span>{
+				<span class="hljs-keyword">return</span> map.constructor._bubbleRule(boundEventName, map);
 			},
 			childrenOf: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(parentMap, eventName)</span> </span>{
 
@@ -179,11 +179,17 @@ If no binding should be done, undefined or null should be returned</p>
 			},
 			bind: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, eventName)</span> </span>{
 				<span class="hljs-keyword">if</span> (!parent._init ) {
-					<span class="hljs-keyword">var</span> bubbleEvent = bubble.event(parent, eventName);
-					<span class="hljs-keyword">if</span>(bubbleEvent) {
-						<span class="hljs-keyword">if</span>(!parent._bubbleBindings) {
-							parent._bubbleBindings = {};
-						}
+					<span class="hljs-keyword">var</span> bubbleEvents = bubble.event(parent, eventName),
+						len = bubbleEvents.length,
+						bubbleEvent;
+
+					<span class="hljs-keyword">if</span>(!parent._bubbleBindings) {
+						parent._bubbleBindings = {};
+					}
+
+					<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+						bubbleEvent = bubbleEvents[i];
+
 						<span class="hljs-keyword">if</span> (!parent._bubbleBindings[bubbleEvent]) {
 							parent._bubbleBindings[bubbleEvent] = <span class="hljs-number">1</span>;</pre></div></div>
             
@@ -204,16 +210,21 @@ If no binding should be done, undefined or null should be returned</p>
 						} <span class="hljs-keyword">else</span> {
 							parent._bubbleBindings[bubbleEvent]++;
 						}
-
 					}
 				}
 			},
 			unbind: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, eventName)</span> </span>{
-				<span class="hljs-keyword">var</span> bubbleEvent = bubble.event(parent, eventName);
-				<span class="hljs-keyword">if</span>(bubbleEvent) {
+				<span class="hljs-keyword">var</span> bubbleEvents = bubble.event(parent, eventName),
+					len = bubbleEvents.length,
+					bubbleEvent;
+
+				<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+					bubbleEvent = bubbleEvents[i];
+
 					<span class="hljs-keyword">if</span> (parent._bubbleBindings ) {
 						parent._bubbleBindings[bubbleEvent]--;
 					}
+
 					<span class="hljs-keyword">if</span> (parent._bubbleBindings &amp;&amp; !parent._bubbleBindings[bubbleEvent] ) {
 						<span class="hljs-keyword">delete</span> parent._bubbleBindings[bubbleEvent];
 						bubble.teardownChildrenFrom(parent, bubbleEvent);

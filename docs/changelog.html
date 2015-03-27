@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -251,7 +259,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/changelog.md">source</a></li>
 	
@@ -286,7 +294,87 @@
 
 		
 		<section class="comment">
-			<p><strong>2.1.4</strong> ( Nov 21 2014 )</p>
+			<p><strong>2.2.1</strong> ( Mar 24 2015 )</p>
+<ul>
+<li><a href="https://github.com/bitovi/canjs/issues/1548">List.prototype.__set should not assume to create an array for indices out of bounds</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/1545">Prevents listening to events that happen while reading the compute</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1544">v2.2.0 - The included <code>global.define</code> breaks UMD defs in other scripts</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/1540">cleans up can.Compute.read and adds template-obserbable promises</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/1532">Update components.md</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/1528">Adding viewModel to Components control instance</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/1527">Update the binding count correctly after calling removeEvent</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/1526">#1521 define map properties in the same order they&#39;re defined</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1519">Problem with defines called out of order</a></li>
+</ul>
+<p><strong>2.2.0</strong> ( Mar 16 2015 )</p>
+<ul>
+<li><a href="https://github.com/bitovi/canjs/pull/1512">Renaming and adding can.Component viewModel property.</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/1506">Set the context correctly when an async compute has a length of 1</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1496">Typo (use of @params instead of @param) in can.Model&#39;s documentation </a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/1491">Added a note and some sample code illustrating relative can.view.Scope.attr lookups.</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/1486">Adds can.Compute, and &quot;compute&quot; type and setter / getter paring for define pugin</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1478">can-value doesn&#39;t two way bind with a key value that has 0 and one values to a checkbox</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1477">spaces around a key with <code>can-value</code> do not two way bind</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1474">can-EVENT can not call intermediate functions before calling the final function</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1471">can.fixture.store with objects does not work for .create</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1469">can.Model resource is not creating &quot;destroy&quot; static method</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/1464">Don&#39;t change route if the only change would be prepending &quot;!&quot;</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1456">Make RequireJS work with can.import</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/1454">Complete the Sort plugin</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/1434">Can attr set checkboxes</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/1428">add/remove events always give you back arrays</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/1421">Moved jquery out of travis.yml file and into devDependencies #1418</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1420">can.route.setState doesn&#39;t deep clean the route</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1418">travis.yml before_script</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1417">Observable can/map/backup plugin</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1415">removing bound scope properties on destroy</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1414">CanJS can-value does not work for multi-select when options are rendered using Map</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1409">Insert can.compute into can.Map</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1407">Dev warning: custom tag is already defined</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1406">{{#is}} and {{#eq}} helper</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1404">can.List.prototype.sortIndexes is defined but not referenced</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1399">A splice where can.List ends up exactly the same should not produce any events.</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1398">#each doesn&#39;t work with null values that change to a can.List</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1393">Memory leak in CanJS template/model</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1390">can-autorender</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1389">can.stache and can.mustache templates don&#39;t resolve partial names against the scope.</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1387">can.stache will import components it depends on</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1386">can.import</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1378">getOwnPropertyDescriptor causes fatal error in IE8</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1373">can/map/define default behaviors with &quot;*&quot;</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/1372">updating module names for builder</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/1371">booleanAttr for components</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1358">Models with no id (undefined or null) are placed in model store</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1346">can/map/define doesn&#39;t work more than one level deep.</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1300">rename can.Component scope to context?</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1265">can.List.prototype.sort is not working</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1219">can-EVENT arguments</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1201">{{prop}}CHECKED{{/prop}} doesn&#39;t work if someone manually changes input checked and then changes value elsewhere  (visible in TODOMVC)</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1195">can-event doesn&#39;t pass extra arguments</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1185">Default empty route event fires twice on page load</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1182">can-event trows an error when inside #if block</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1137">can.route - Allow changing the route (and URL) without saving to browser history</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1134">Block level elements should be able to render inside anchor tags</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1131">can.fixture has no way to allow AJAX calls to circumvent it, if necessary</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/1114">Sorting a List doesn&#39;t update in a template correctly</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1112">can-EVENT removed in live bindings doesn&#39;t unbind</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1069">Lexical semantics for can.Component</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/1000">Constructor names visible in debugger</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/998">Fix <code>can.List</code> event docs, as well as an event ambiguity</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/987">new fixture store API is not documented</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/984">Improvement: can.list.pushAll and can.list.unshiftAll shortcuts</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/897">Replacing can.Map.List and can.List.Map</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/888">Ensure can-value bound input stay in sync with compute</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/887">can-value becomes out of sync when a compute rejects the new value</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/872">input with can-value keeps wrong value prevented with setter plugin</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/828">can.list.sort triggers event before sorting but none after</a></li>
+<li><a href="https://github.com/bitovi/canjs/pull/740">Improve can.scope and $.fn.scope code and add assignment support</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/734">Pass local helpers to sub templates.</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/680">can.batch.start/stop causes can.List with length&gt;1 to render last element twice</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/646">Advanced linking / setting of attribute values and computes</a></li>
+<li><a href="https://github.com/bitovi/canjs/issues/356">Live binding does not maintain the cursor position.</a></li>
+</ul>
+<p><strong>2.1.4</strong> ( Nov 21 2014 )</p>
 <ul>
 <li>change: <a href="https://github.com/bitovi/canjs/issues/1337">Make can.Construct work with getter / setters (and super plugin)</a></li>
 <li>change: <a href="https://github.com/bitovi/canjs/pull/1332">Update compute.read to also return constructor functions</a></li>
@@ -1090,7 +1178,7 @@
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"guides","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"page","name":"changelog","description":"<!--\n-->\n","title":"Changelog","order":5,"src":"changelog.md"};
+		var docObject = {"type":"page","name":"changelog","src":"changelog.md","description":"<!--\n-->","title":"Changelog","parent":"guides","order":5,"ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -1103,6 +1191,7 @@
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

@@ -185,7 +185,12 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		$.extend(can, Zepto);
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> oldPlain = can.isPlainObject;
+		$.extend(can, Zepto);
+		can.inArray = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, arr)</span> </span>{
+			<span class="hljs-keyword">return</span> !arr ? -<span class="hljs-number">1</span> : $.inArray.apply($, <span class="hljs-built_in">arguments</span>);
+		};
+		can.isPlainObject = oldPlain;
 		can.each = oldEach;
 		can.attr = attr;
 		can.event = event;

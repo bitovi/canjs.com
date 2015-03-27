@@ -91,6 +91,8 @@ steal('can/util', 'can/map', 'can/list','can/util/string/deparam', function (can
 		lastHash,
 		// Are data changes pending that haven't yet updated the hash
 		changingData,
+		// List of attributes that have changed since last update
+		changedAttrs = [],
 		// If the `can.route.data` changes, update the hash.
 		// Using `.serialize()` retrieves the raw data contained in the `observable`.
 		// This function is ~~throttled~~ debounced so it only updates once even if multiple values changed.
@@ -98,16 +100,19 @@ steal('can/util', 'can/map', 'can/list','can/util/string/deparam', function (can
 		onRouteDataChange = function (ev, attr, how, newval) {
 			// indicate that data is changing
 			changingData = 1;
+			// collect attributes that are changing
+			changedAttrs.push(attr);
 			clearTimeout(timer);
 			timer = setTimeout(function () {
 				// indicate that the hash is set to look like the data
 				changingData = 0;
 				var serialized = can.route.data.serialize(),
 					path = can.route.param(serialized, true);
-				can.route._call("setURL", path);
+				can.route._call("setURL", path, changedAttrs);
 				// trigger a url change so its possible to live-bind on url-based changes
 				can.batch.trigger(eventsObject,"__url",[path, lastHash]);
 				lastHash = path;
+				changedAttrs = [];
 			}, 10);
 		},
 		// A dummy events object used to dispatch url change events on.
@@ -548,7 +553,9 @@ steal('can/util', 'can/map', 'can/list','can/util/string/deparam', function (can
 				// gets called with the serialized can.route data after a route has changed
 				// returns what the url has been updated to (for matching purposes)
 				setURL: function (path) {
-					location.hash = "#!" + path;
+					if(location.hash !== "#" + path) {
+						location.hash = "!" + path;
+					}
 					return path;
 				},
 				root: "#!"
@@ -651,15 +658,23 @@ steal('can/util', 'can/map', 'can/list','can/util/string/deparam', function (can
 		// the hash is what we set it to anyway, do NOT change the hash
 		if (!changingData || hash !== lastHash) {
 			can.batch.start();
-			for(var attr in oldParams){
-				if(!curParams[attr]){
-					can.route.removeAttr(attr);
-				}
-			}
+			recursiveClean(oldParams, curParams, can.route.data);
+
 			can.route.attr(curParams);
 			// trigger a url change so its possible to live-bind on url-based changes
 			can.batch.trigger(eventsObject,"__url",[hash, lastHash]);
 			can.batch.stop();
+		}
+	};
+
+	var recursiveClean = function(old, cur, data){
+		for(var attr in old){
+			if(cur[attr] === undefined){
+				data.removeAttr(attr);
+			}
+			else if(Object.prototype.toString.call(old[attr]) === "[object Object]") {
+				recursiveClean( old[attr], cur[attr], data.attr(attr) );
+			}
 		}
 	};
 

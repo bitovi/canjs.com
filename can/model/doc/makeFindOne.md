@@ -5,7 +5,7 @@
 
 Returns the external `findOne` method given the implemented [can.Model.findOneData findOneData] function.
 
-@params {can.Model.findOneData}
+@param {can.Model.findOneData} findOneData
 
 [can.Model.findOne] is implemented with a `String`, [can.AjaxSettings ajax settings object], or
 [can.Model.findOneData findOneData] function. If it is implemented as
@@ -26,14 +26,14 @@ Returns function that implements the external API of `findOne`.
 `makeFindOne` can be used to implement base models that perform special
 behavior. `makeFindOne` is passed a [can.Model.findOneData findOneData] function that retrieves raw
 data. It should return a function that when called, uses
-the findOneData function to get the raw data, convert them to model instances with
-[can.Model.models models].
+the findOneData function to get the raw data and convert it to a model instance with
+[can.Model.model model].
 
 ## Caching
 
 The following uses `makeFindOne` to create a base `CachedModel`:
 
-```
+```js
 CachedModel = can.Model.extend({
  makeFindOne: function(findOneData){
    // A place to store requests
@@ -62,7 +62,7 @@ CachedModel = can.Model.extend({
 
 The following Todo model will never request the same todo twice:
 
-```
+```js
 Todo = CachedModel({
  findOne: "/todos/{id}"
 },{})

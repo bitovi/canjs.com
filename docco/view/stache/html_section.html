@@ -24,6 +24,11 @@
               </a>
             
               
+              <a class="source" href="intermediate_and_imports.html">
+                intermediate_and_imports.js
+              </a>
+            
+              
               <a class="source" href="mustache_core.html">
                 mustache_core.js
               </a>
@@ -36,6 +41,16 @@
               
               <a class="source" href="stache.html">
                 stache.js
+              </a>
+            
+              
+              <a class="source" href="stache_benchmark.html">
+                stache_benchmark.js
+              </a>
+            
+              
+              <a class="source" href="system.html">
+                system.js
               </a>
             
               
@@ -74,7 +89,7 @@
             <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>,<span class="hljs-string">"can/view/target"</span>,<span class="hljs-string">"./utils.js"</span>,<span class="hljs-string">"./mustache_core.js"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( can, target, utils, mustacheCore )</span> </span>{
 
 	
-	<span class="hljs-keyword">var</span> decodeHTML = (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+	<span class="hljs-keyword">var</span> decodeHTML = <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">document</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
 		<span class="hljs-keyword">var</span> el = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);
 		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(html)</span></span>{
 			<span class="hljs-keyword">if</span>(html.indexOf(<span class="hljs-string">"&amp;"</span>) === -<span class="hljs-number">1</span>) {

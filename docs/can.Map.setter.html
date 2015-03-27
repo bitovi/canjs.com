@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -352,6 +360,21 @@
 			
 				
 				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="can.Map.List.html" 
+							data-search="can.Map.List">
+							List
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
 					<li class="search-container parent ">
 						<a 	class="page" 
 							href="can.Map.attributes.html" 
@@ -586,7 +609,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/map/setter/doc/setter.md">source</a></li>
 	
@@ -701,7 +724,6 @@ the proposed value is in error.</p>
 			<p>If a non-undefined value is returned, that value is set as the attribute's value. If
 undefined is returned, it's assumed that the <code>setValue</code> callback will be called.  Use <code>setValue</code> to
 set undefined values.</p>
-<div class='demo_wrapper' data-demo-src='can/map/setter/setter-paginate.html'></div>
 
 		</div>
 		
@@ -784,37 +806,8 @@ property's current value is an Map or List, and an Map or List is returned
 from a setter, the effect will not be to merge the values into the current value as
 if the return value was fed straight into <code>attr</code>, but to replace the value with the
 new Map or List completely:</p>
-<pre><code class="language-js">var Contact = can.Map.extend({
-    setInfo: function(raw) {
-      return raw;
-    }
-});
-
-var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
-alice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}
-alice.info._cid; // '.map1'
-
-alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
-alice.attr(); // {name: 'Allison Wonderland', 'phone': '888-888-8888'}
-alice.info._cid; // '.map2'
-</code></pre>
 <p>If you would rather have the new Map or List merged into the current value, call
 <code>attr</code> inside the setter:</p>
-<pre><code class="language-js">var Contact = can.Map.extend({
-    setInfo: function(raw) {
-      this.info.attr(raw);
-      return this.info;
-    }
-});
-
-var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
-alice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}
-alice.info._cid; // '.Map1'
-
-alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
-alice.attr(); // {name: 'Allison Wonderland', email: 'alice@liddell.com', 'phone': '888-888-8888'}
-alice.info._cid; // '.Map1'
-</code></pre>
 <h2>Error Handling</h2>
 <p>Setters can trigger errors if values passed didn't meet your defined validation(s).</p>
 <p>Below is an example of a <em>School</em> observable that accepts a name property and errors
@@ -841,6 +834,7 @@ school.attr(&quot;name&quot;,&quot;&quot;);
 <h2>Demo</h2>
 <p>The example app is a pagination widget that updates
 the offsets when the <em>Prev</em> or <em>Next</em> button is clicked.</p>
+<div class='demo_wrapper' data-demo-src='can/map/setter/setter-paginate.html'></div>
 <p>Notice the <code>setCount</code> and <code>setOffset</code> setters.</p>
 
 		</section>
@@ -903,7 +897,7 @@ the offsets when the <em>Prev</em> or <em>Next</em> button is clicked.</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Map.plugins","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.Map.setter","description":"<p>Specify setter methods on [can.Map can.Maps].</p>\n","title":"setter","plugin":"can/map/setter","test":"can/map/setter/test.html","deprecated":[{"version":"2.1","description":"<p>The setter plugin (and the attributes plugin) have been deprecated in\nfavor of the new [can.Map.prototype.define define] plugin, which provides the same\nfunctionality. It will still be maintained up to 3.0 and potentially after.\nProjects using setters should consider switching to [can.Map.prototype.define.set define setters].</p>\n"}],"signatures":[{"code":"setATTR: function(newValue,setValue,setErrors)","description":"<p>Specifies a setter method for the <code>ATTR</code> attribute.</p>\n","params":[{"types":[{"type":"String"}],"name":"ATTR","description":"<p>The capitalized attribute name this setter will set.</p>\n"},{"types":[{"type":"*"}],"name":"newValue","description":"<p>The propsed value of the attribute specified by [can.Map::attr].</p>\n"},{"types":[{"type":"can.Map.setter.setValue"}],"name":"setValue","description":"<p>A callback function that can specify <code>undefined</code> values\nor the value at a later time.</p>\n"},{"types":[{"type":"can.Map.setter.setErrors"}],"name":"setErrors","description":"<p>A callback function that can specify error data if\nthe proposed value is in error.</p>\n"}],"returns":{"types":[{"type":"*"}],"description":"<p>If a non-undefined value is returned, that value is set as the attribute's value. If\nundefined is returned, it's assumed that the <code>setValue</code> callback will be called.  Use <code>setValue</code> to\nset undefined values.</p>\n<div class='demo_wrapper' data-demo-src='can/map/setter/setter-paginate.html'></div>\n"}}],"comment":" ","src":"map/setter/doc/setter.md"};
+		var docObject = {"type":"function","name":"can.Map.setter","src":"map/setter/doc/setter.md","description":"Specify setter methods on [can.Map can.Maps].","title":"setter","parent":"can.Map.plugins","plugin":"can/map/setter","test":"can/map/setter/test.html","deprecated":[{"version":"2.1","description":"The setter plugin (and the attributes plugin) have been deprecated in \nfavor of the new [can.Map.prototype.define define] plugin, which provides the same \nfunctionality. It will still be maintained up to 3.0 and potentially after. \nProjects using setters should consider switching to [can.Map.prototype.define.set define setters]."}],"signatures":[{"code":"setATTR: function(newValue,setValue,setErrors)","description":"Specifies a setter method for the `ATTR` attribute.","params":[{"types":[{"type":"String"}],"name":"ATTR","description":"The capitalized attribute name this setter will set."},{"types":[{"type":"*"}],"name":"newValue","description":"The propsed value of the attribute specified by [can.Map::attr]."},{"types":[{"type":"can.Map.setter.setValue"}],"name":"setValue","description":"A callback function that can specify `undefined` values\nor the value at a later time."},{"types":[{"type":"can.Map.setter.setErrors"}],"name":"setErrors","description":"A callback function that can specify error data if\nthe proposed value is in error."}],"returns":{"types":[{"type":"*"}],"description":"If a non-undefined value is returned, that value is set as the attribute's value. If\nundefined is returned, it's assumed that the `setValue` callback will be called.  Use `setValue` to\nset undefined values."}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -916,6 +910,7 @@ the offsets when the <em>Prev</em> or <em>Next</em> button is clicked.</p>
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

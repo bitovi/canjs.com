@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -251,7 +259,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/view/ejs/doc/ejsConstructor.md">source</a></li>
 	
@@ -592,7 +600,7 @@ can.view('//todo/views/init.ejs', todos)
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"constructor","name":"can.EJS-constructor","description":"<p>EJS provides <strong>live</strong> ERB-style client-side templates.</p>\n","title":"can.EJS","hide":true,"deprecated":[{"version":"2.1","description":"<p>EJS is incompatable with [can.Component] and should\nbe avoided for new projects. It will still be maintained up to\n3.0 and potentially after. Projects using EJS should consider\nswitching to [can.stache]. The EJS constructor funciton is also\nnow considered an internal API so you should use [can.ejs] to create your templates.</p>\n"}],"signatures":[{"code":"new can.ejs(options)","description":"<p>Creates an EmbeddedJS template. Use EJS with [can.view] or [can.view.ejs].</p>\n","params":[]}],"comment":" ","src":"view/ejs/doc/ejsConstructor.md"};
+		var docObject = {"type":"constructor","name":"can.EJS-constructor","src":"view/ejs/doc/ejsConstructor.md","description":"EJS provides __live__ ERB-style client-side templates.","title":"can.EJS","hide":true,"deprecated":[{"version":"2.1","description":"EJS is incompatable with [can.Component] and should\nbe avoided for new projects. It will still be maintained up to \n3.0 and potentially after. Projects using EJS should consider\nswitching to [can.stache]. The EJS constructor funciton is also\nnow considered an internal API so you should use [can.ejs] to create your templates."}],"signatures":[{"code":"new can.ejs(options)","description":"Creates an EmbeddedJS template. Use EJS with [can.view] or [can.view.ejs].","params":[]}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -605,6 +613,7 @@ can.view('//todo/views/init.ejs', todos)
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

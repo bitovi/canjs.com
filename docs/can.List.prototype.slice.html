@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -597,7 +605,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/list/list.js">source</a></li>
 	
@@ -690,17 +698,7 @@ If <em>end</em> is not supplied, <code>slice</code> will copy until the end of t
 
 		
 		<section class="comment">
-			<pre><code class="language-js">var list = new can.List(['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve']);
-var newList = list.slice(1, 4);
-newList.attr(); // ['Bob', 'Charlie', 'Daniel']
-</code></pre>
-<p><code>slice</code> is the simplest way to copy a List:</p>
-<pre><code class="language-js">var list = new can.List(['Alice', 'Bob', 'Eve']);
-var copy = list.slice();
-
-copy.attr();   // ['Alice', 'Bob', 'Eve']
-list === copy; // false
-</code></pre>
+			<p><code>slice</code> is the simplest way to copy a List:</p>
 
 		</section>
 		
@@ -762,7 +760,7 @@ list === copy; // false
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.List.prototype","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.List.prototype.slice","description":"<p>Make a copy of a part of a List.</p>\n","title":"slice","signatures":[{"code":"list.slice([start[, end]])","description":"<p><code>slice</code> creates a copy of a portion of the List.</p>\n","params":[{"types":[{"type":"Number"}],"optional":true,"name":"start","defaultValue":"0","description":"<p>the index to start copying from</p>\n"},{"types":[{"type":"Number"}],"optional":true,"name":"end","description":"<p>the first index not to include in the copy\nIf <em>end</em> is not supplied, <code>slice</code> will copy until the end of the list.</p>\n"}],"returns":{"types":[{"type":"can.List"}],"description":"<p>a new <code>can.List</code> with the extracted elements</p>\n"}}],"comment":" ","src":"list/list.js"};
+		var docObject = {"type":"function","name":"can.List.prototype.slice","parent":"can.List.prototype","src":"list/list.js","line":939,"codeLine":970,"description":"Make a copy of a part of a List.","title":"slice","signatures":[{"code":"list.slice([start[, end]])","description":"`slice` creates a copy of a portion of the List.","params":[{"types":[{"type":"Number"}],"optional":true,"name":"start","defaultValue":"0","description":"the index to start copying from"},{"types":[{"type":"Number"}],"optional":true,"name":"end","description":"the first index not to include in the copy\nIf _end_ is not supplied, `slice` will copy until the end of the list."}],"returns":{"types":[{"type":"can.List"}],"description":"a new `can.List` with the extracted elements"}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -775,6 +773,7 @@ list === copy; // false
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

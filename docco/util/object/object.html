@@ -32,39 +32,6 @@
             
             <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
 	<span class="hljs-keyword">var</span> isArray = can.isArray;
-	<span class="hljs-comment">/**
-	 * @hide
-	 * @page can.Object can.Object
-	 * @parent can.util
-	 *
-	 * @body
-	 * Object contains several helper methods that
-	 * help compare objects.
-	 *
-	 * ## same
-	 *
-	 * Returns true if two objects are similar.
-	 *
-	 *     can.Object.same({foo: "bar"} , {bar: "foo"}) //-&gt; false
-	 *
-	 * ## subset
-	 *
-	 * Returns true if an object is a set of another set.
-	 *
-	 *     can.Object.subset({}, {foo: "bar"} ) //-&gt; true
-	 *
-	 * ## subsets
-	 *
-	 * Returns the subsets of an object
-	 *
-	 *     can.Object.subsets({userId: 20},
-	 *                      [
-	 *                       {userId: 20, limit: 30},
-	 *                       {userId: 5},
-	 *                       {}
-	 *                      ])
-	 *              //-&gt;    [{userId: 20, limit: 30}]
-	 */</span>
 	can.Object = {};
 	<span class="hljs-comment">/**
 	 * @function can.Object.same
@@ -84,7 +51,7 @@
 	 * This function does not work with objects that create circular references.
 	 *
 	 * ## Examples
-	 * @codestart
+	 * ```
 	 * can.Object.same({name: "Justin"}, {name: "JUSTIN"}) //-&gt; false
 	 *
 	 * // ignore the name property
@@ -110,7 +77,7 @@
 	 *     }
 	 *     return a === b;
 	 * }})      //-&gt; true
-	 * @codeend
+	 * ```
 	 */</span>
 	<span class="hljs-keyword">var</span> same = can.Object.same = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b, compares, aParent, bParent, deep)</span> </span>{
 		<span class="hljs-keyword">var</span> aType = <span class="hljs-keyword">typeof</span> a,
@@ -187,18 +154,19 @@
 	 * @function can.Object.subsets
 	 * @parent can.util
 	 * @description Returns the sets in 'sets' that are a subset of checkSet
-	 * @codestart
-	 * can.Object.subsets({userId: 20},
-	 * [
-	 *	{userId: 20, limit: 30},
-	 *	{userId: 5},
-	 *	{}
-	 * ]) //-&gt; [{userId: 20, limit: 30}]
-	 * @codeend
 	 * @signature `can.Object.subsets(checkSet, sets, compares)`
 	 * @param {Object} checkSet
 	 * @param {Object} sets
 	 * @param {Object} compares
+	 * @body
+	 * ## Example
+	 * ```
+	 * can.Object.subsets({userId: 20}, [
+	 *     {userId: 20, limit: 30},
+	 *     {userId: 5},
+	 *     {}
+	 * ]); //-&gt; [{userId: 20, limit: 30}]
+	 * ```
 	 */</span>
 	can.Object.subsets = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(checkSet, sets, compares)</span> </span>{
 		<span class="hljs-keyword">var</span> len = sets.length,
@@ -228,15 +196,17 @@
 	<span class="hljs-comment">/**
 	 * @function can.Object.subset
 	 * @parent can.util
-	 * @description Compares if subset is a subset of set. Returns true if an object is a set of another set
-	 * @codestart
-	 * can.Object.subset({}, {foo: "bar"} ) //-&gt; true
-	 * @codeend
+	 * @description Returns true if an Object is a subset of another Object
 	 * @signature `can.Object.subset(subset, set, compares)`
 	 * @param {Object} subset
 	 * @param {Object} set
 	 * @param {Object} compares
 	 * @returns {Boolean} Whether or not subset is a subset of set
+	 * @body
+	 * ## Example
+	 * ```
+	 * can.Object.subset({}, {foo: "bar"} ) //-&gt; true
+	 * ```
 	 */</span>
 	can.Object.subset = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(subset, set, compares)</span> </span>{</pre></div></div>
             

@@ -1,0 +1,30 @@
+<div class="container projects header">
+  <h1>Used In These {{length}} Projects</h1>
+  <a href="http://bitovi.bithub.com/?newpost=true&newpost_p=canjs&newpost_c=app" class="button add-your-app">+ Add Your App</a>
+</div>
+<div class="container carousel-wrapper">
+    <button class="prev">&lsaquo;</button>
+    <div class="carousel">
+      <ul class="list">
+        {{#each appRowOne}}
+        <li {{data 'project'}}>
+          <a href="{{link}}">
+            <img {{#picture}}src="{{.}}"{{/picture}} height="147" width="230">
+            <h3>{{title}}</h3>
+          </a>
+        </li>
+        {{/each}}
+      </ul>
+      <ul class="list">
+        {{#each appRowTwo}}
+        <li {{data 'project'}}>
+          <a href="{{link}}">
+            <img {{#picture}}src="{{.}}"{{/picture}} height="147" width="230">
+            <h3>{{title}}</h3>
+          </a>
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+    <button class="next">&rsaquo;</button>
+</div>

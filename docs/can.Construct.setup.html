@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -193,7 +201,7 @@
 					<li class="search-container  ">
 						<a 	class="property" 
 							href="can.Construct.constructorExtends.html" 
-							data-search="constructorExtends">
+							data-search="can.Construct.constructorExtends">
 							constructorExtends
 						</a>
 						
@@ -490,7 +498,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/construct/construct.js">source</a></li>
 	
@@ -530,7 +538,7 @@ functions that inherit from Group will be added to
   setup: function(Construct, fullName, staticProps, protoProps){
     this.childGroups = [];
     if(Construct !== can.Construct){
-      this.childGroups(Construct)
+      this.childGroups.push(Construct)
     }
     Construct.setup.apply(this, arguments)
   }
@@ -615,41 +623,9 @@ function is created and
 set to inherit from its base constructor. It is useful for setting up
 additional inheritance work.
 Do not confuse this with the prototype <code><a href="can.Construct.prototype.setup.html">setup</a></code> method.</p>
-<h2>Setup Extends Defaults</h2>
-<p>Setup deeply extends the static <code>defaults</code> property of the base constructor with
-properties of the inheriting constructor.  For example:</p>
-<pre><code class="language-js">Parent = can.Construct.extend({
-  defaults : {
-    parentProp: 'foo'
-  }
-},{})
-
-Child = Parent.extend({
-  defaults : {
-    childProp : 'bar'
-  }
-},{}
-
-Child.defaults // {parentProp: 'foo', 'childProp': 'bar'}
-</code></pre>
 <h2>Example</h2>
 <p>This <code>Parent</code> class adds a reference to its base class to itself, and
 so do all the classes that inherit from it.</p>
-<pre><code class="language-js">Parent = can.Construct.extend({
-  setup : function(base, fullName, staticProps, protoProps){
-    this.base = base;
-
-    // call base functionality
-    can.Construct.setup.apply(this, arguments)
-  }
-},{});
-
-Parent.base; // can.Construct
-
-Child = Parent({});
-
-Child.base; // Parent
-</code></pre>
 
 		</section>
 		
@@ -711,7 +687,7 @@ Child.base; // Parent
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Construct.static","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.Construct.setup","description":"<p>Perform initialization logic for a constructor function.</p>\n","title":"setup","signatures":[{"code":"can.Construct.setup(base, fullName, staticProps, protoProps)","description":"<p>A static <code>setup</code> method provides inheritable setup functionality\nfor a Constructor function. The following example\ncreates a Group constructor function.  Any constructor\nfunctions that inherit from Group will be added to\n<code>Group.childGroups</code>.</p>\n<pre><code>Group = can.Construct.extend({\n  setup: function(Construct, fullName, staticProps, protoProps){\n    this.childGroups = [];\n    if(Construct !== can.Construct){\n      this.childGroups(Construct)\n    }\n    Construct.setup.apply(this, arguments)\n  }\n},{})\nvar Flock = Group.extend(...)\nGroup.childGroups[0] //-&gt; Flock\n</code></pre>\n","params":[{"types":[{"type":"constructor"}],"name":"base","description":"<p>The base constructor that is being inherited from.</p>\n"},{"types":[{"type":"String"}],"name":"fullName","description":"<p>The name of the new constructor.</p>\n"},{"types":[{"type":"Object","options":[]}],"name":"staticProps","description":"<p>The static properties of the new constructor.</p>\n"},{"types":[{"type":"Object","options":[]}],"name":"protoProps","description":"<p>The prototype properties of the new constructor.</p>\n"}]}],"comment":" ","src":"construct/construct.js"};
+		var docObject = {"type":"function","name":"can.Construct.setup","parent":"can.Construct.static","src":"construct/construct.js","line":225,"codeLine":286,"description":"Perform initialization logic for a constructor function.","title":"setup","signatures":[{"code":"can.Construct.setup(base, fullName, staticProps, protoProps)","description":"A static `setup` method provides inheritable setup functionality\nfor a Constructor function. The following example\ncreates a Group constructor function.  Any constructor\nfunctions that inherit from Group will be added to\n`Group.childGroups`.\n\n\n    Group = can.Construct.extend({\n      setup: function(Construct, fullName, staticProps, protoProps){\n        this.childGroups = [];\n        if(Construct !== can.Construct){\n          this.childGroups.push(Construct)\n        }\n        Construct.setup.apply(this, arguments)\n      }\n    },{})\n    var Flock = Group.extend(...)\n    Group.childGroups[0] //-> Flock","params":[{"types":[{"type":"constructor"}],"name":"base","description":"The base constructor that is being inherited from."},{"types":[{"type":"String"}],"name":"fullName","description":"The name of the new constructor."},{"types":[{"type":"Object","options":[]}],"name":"staticProps","description":"The static properties of the new constructor."},{"types":[{"type":"Object","options":[]}],"name":"protoProps","description":"The prototype properties of the new constructor."}]}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -724,6 +700,7 @@ Child.base; // Parent
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

@@ -78,7 +78,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>._data = can.extend(can.extend(<span class="hljs-literal">true</span>, {}, <span class="hljs-keyword">this</span>.constructor.defaults || {}), obj);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>._data = can.extend(can.extend(<span class="hljs-literal">true</span>, {}, <span class="hljs-keyword">this</span>._setupDefaults() || {}), obj);</pre></div></div>
             
         </li>
         

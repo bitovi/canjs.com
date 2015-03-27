@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -216,21 +224,15 @@
 	<ul class="primary-grouping">
 		
 			
-				
-					
-					<li class="heading search-container">
-						<span>plugins</span>
-						
-	<ul >
 		
 			
 				
 				
 					<li class="search-container parent ">
-						<a 	class="page" 
-							href="can.view.modifiers.html" 
-							data-search="jQuery modifiers">
-							jQuery modifiers
+						<a 	class="property" 
+							href="can.view.elements.html" 
+							data-search="can.view.elements">
+							elements
 						</a>
 						
 					</li>
@@ -238,13 +240,8 @@
 			
 			
 		
-	</ul>
-
-					</li>
-					
-				
-				
 			
+		
 			
 		
 			
@@ -508,21 +505,6 @@
 			
 				
 				
-					<li class="search-container parent ">
-						<a 	class="property" 
-							href="can.view.nodeLists.html" 
-							data-search="can.view.nodeLists">
-							nodeLists
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
 					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.view.register.html" 
@@ -577,13 +559,31 @@
 			
 		
 			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>plugins</span>
+						
+	<ul >
+		
+			
 				
 				
 					<li class="search-container parent ">
-						<a 	class="property" 
-							href="can.view.elements.html" 
-							data-search="can.view.elements">
-							elements
+						<a 	class="page" 
+							href="can.view.modifiers.html" 
+							data-search="jQuery modifiers">
+							jQuery modifiers
 						</a>
 						
 					</li>
@@ -592,19 +592,42 @@
 			
 		
 			
-		
+				
+				
+					<li class="search-container  ">
+						<a 	class="module" 
+							href="can|view|autorender.html" 
+							data-search="can.autorender">
+							can.autorender
+						</a>
+						
+					</li>
+				
+			
 			
 		
 			
-		
+				
+				
+					<li class="search-container  ">
+						<a 	class="module" 
+							href="can|view|autorender.can-autorender.html" 
+							data-search="can-autorender">
+							can-autorender
+						</a>
+						
+					</li>
+				
+			
 			
 		
+	</ul>
+
+					</li>
+					
+				
+				
 			
-		
-			
-		
-			
-		
 			
 		
 	</ul>
@@ -645,7 +668,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/view/live/live.js">source</a></li>
 	
@@ -746,15 +769,19 @@ a documentFragment.</p>
 var todos = can.compute(function(){
   return new Todo.List({page: can.route.attr(&quot;page&quot;)})
 })
-<p>var placeholder = document.createTextNode(&quot; &quot;)
-$(&quot;ul#todos&quot;).append(placeholder)</p>
-<p>can.view.live.list(
-placeholder,
-todos,
-function(todo, index){
-return &quot;&lt;li&gt;&quot;+todo.attr(&quot;name&quot;)+&quot;&lt;/li&gt;&quot;
-})
-</code></pre></p>
+
+var placeholder = document.createTextNode(&quot; &quot;)
+$(&quot;ul#todos&quot;).append(placeholder)
+
+
+
+can.view.live.list(
+  placeholder,
+  todos,
+  function(todo, index){
+    return &quot;&lt;li&gt;&quot;+todo.attr(&quot;name&quot;)+&quot;&lt;/li&gt;&quot;
+  })
+</code></pre>
 
 			</div>
 			
@@ -800,6 +827,10 @@ return &quot;&lt;li&gt;&quot;+todo.attr(&quot;name&quot;)+&quot;&lt;/li&gt;&quot
 		
 		
 
+		
+		<section class="comment">
+			
+		</section>
 		
 		
 
@@ -859,7 +890,7 @@ return &quot;&lt;li&gt;&quot;+todo.attr(&quot;name&quot;)+&quot;&lt;/li&gt;&quot
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.view.live","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.view.live.list","params":[{"types":[{"type":"HTMLElement"}],"name":"el","description":"<p>An html element to replace with the live-section.</p>\n"},{"name":"compute","types":[{"type":"*"}]},{"types":[{"type":"function","returns":{"types":[{"type":"String"}]},"params":[{"types":[{"type":"*"}],"name":"index"},{"types":[{"type":"index"}],"name":"index"}],"context":{"types":[{"type":"*"}]}}],"name":"render","description":"<p>A function that when called with\nthe incremental item to render and the index of the item in the list.</p>\n"},{"types":[{"type":"Object","options":[]}],"name":"context","description":"<p>The <code>this</code> the <code>render</code> function will be called with.</p>\n"},{"types":[{"type":"HTMLElement"}],"optional":true,"name":"parentNode","description":"<p>An overwritable parentNode if <code>el</code>'s parent is\na documentFragment.</p>\n<h2>Use</h2>\n<p><code>can.view.live.list</code> is used to setup incremental live-binding.</p>\n<pre><code>// a compute that change's it's list\nvar todos = can.compute(function(){\n  return new Todo.List({page: can.route.attr(&quot;page&quot;)})\n})\n<p>var placeholder = document.createTextNode(&quot; &quot;)\n$(&quot;ul#todos&quot;).append(placeholder)</p>\n<p>can.view.live.list(\nplaceholder,\ntodos,\nfunction(todo, index){\nreturn &quot;&lt;li&gt;&quot;+todo.attr(&quot;name&quot;)+&quot;&lt;/li&gt;&quot;\n})\n</code></pre></p>\n"},{"name":"nodeList","types":[{"type":"*"}]},{"types":[{"type":"can.compute"},{"type":"can.List"}],"name":"list","description":"<p>A [can.List] or [can.compute] whose value is a [can.List].</p>\n"}],"description":"<p>Live binds a compute's [can.List] incrementally.</p>\n","title":"","release":"2.0.4","src":"view/live/live.js"};
+		var docObject = {"type":"function","name":"can.view.live.list","params":[{"types":[{"type":"HTMLElement"}],"name":"el","description":"An html element to replace with the live-section."},{"name":"compute","types":[{"type":"*"}]},{"types":[{"type":"function","returns":{"types":[{"type":"String"}]},"params":[{"types":[{"type":"*"}],"name":"index"},{"types":[{"type":"index"}],"name":"index"}],"context":{"types":[{"type":"*"}]}}],"name":"render","description":"A function that when called with\nthe incremental item to render and the index of the item in the list."},{"types":[{"type":"Object","options":[]}],"name":"context","description":"The `this` the `render` function will be called with."},{"types":[{"type":"HTMLElement"}],"optional":true,"name":"parentNode","description":"An overwritable parentNode if `el`'s parent is\na documentFragment.\n\n## Use\n\n`can.view.live.list` is used to setup incremental live-binding.\n\n    // a compute that change's it's list\n    var todos = can.compute(function(){\n      return new Todo.List({page: can.route.attr(\"page\")})\n    })\n\n    var placeholder = document.createTextNode(\" \")\n    $(\"ul#todos\").append(placeholder)\n\n\n\n    can.view.live.list(\n      placeholder,\n      todos,\n      function(todo, index){\n        return \"<li>\"+todo.attr(\"name\")+\"</li>\"\n      })"},{"name":"nodeList","types":[{"type":"*"}]},{"types":[{"type":"can.compute"},{"type":"can.List"}],"name":"list","description":"A [can.List] or [can.compute] whose value is a [can.List]."}],"parent":"can.view.live","src":"view/live/live.js","line":107,"codeLine":149,"description":"Live binds a compute's [can.List] incrementally.","title":"","release":"2.0.4","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -872,6 +903,7 @@ return &quot;&lt;li&gt;&quot;+todo.attr(&quot;name&quot;)+&quot;&lt;/li&gt;&quot
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

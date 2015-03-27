@@ -10,7 +10,7 @@ steal("can/util", "can/view/elements.js",function(can, elements){
 		}
 		return frag;
 	},
-		keepsTextNodes =  (function(){
+		keepsTextNodes =  typeof document !== "undefined" && (function(){
 			var testFrag = document.createDocumentFragment();
 			var div = document.createElement("div");
 			
@@ -22,7 +22,7 @@ steal("can/util", "can/view/elements.js",function(can, elements){
 			
 			return cloned.childNodes[0].childNodes.length === 2;
 		})(),
-		clonesWork = (function(){
+		clonesWork = typeof document !== "undefined" && (function(){
 			// Since html5shiv is required to support custom elements, assume cloning
 			// works in any browser that doesn't have html5shiv
 
@@ -37,7 +37,7 @@ steal("can/util", "can/view/elements.js",function(can, elements){
 		})();
 
 	/**
-	 * @method cloneNode
+	 * @function cloneNode
 	 * @hide
 	 *
 	 * A custom cloneNode function to be used in browsers that properly support cloning

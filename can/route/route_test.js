@@ -1,6 +1,6 @@
 /* jshint asi:true*/
-steal("can/route", "can/test", function () {
-	module("can/route", {
+steal("can/route", "can/test", "steal-qunit", function () {
+	QUnit.module("can/route", {
 		setup: function () {
 			can.route._teardown();
 			can.route.defaultBinding = "hashchange";
@@ -447,13 +447,13 @@ steal("can/route", "can/test", function () {
 			route: ":foo-:bar"
 		});
 
-		window.location.hash = "qunit-header";
+		window.location.hash = "qunit-fixture";
 		window.location.hash = "";
 	});
 	var teardownRouteTest;
 	var setupRouteTest = function(callback){
 		
-		var testarea = document.getElementById('qunit-test-area');
+		var testarea = document.getElementById('qunit-fixture');
 		var iframe = document.createElement('iframe');
 		stop();
 		window.routeTestReady = function(){
@@ -495,6 +495,22 @@ steal("can/route", "can/test", function () {
 				}, 10);
 			});
 
+		});
+
+		test("initial route fires twice", function () {
+			stop();
+			expect(1);
+			window.routeTestReady = function (iCanRoute, loc) {
+				iCanRoute("", {});
+				iCanRoute.bind('change', function(){
+					ok(true, 'change triggered once')
+					start();
+				});
+				iCanRoute.ready();
+			}
+			var iframe = document.createElement('iframe');
+			iframe.src = can.test.path("route/testing.html?5");
+			can.$("#qunit-fixture")[0].appendChild(iframe);
 		});
 
 		test("removing things from the hash", function () {
@@ -692,6 +708,79 @@ steal("can/route", "can/test", function () {
 				},1);
 			});
 		});
+		
+		test("routes should deep clean", function() {
+			expect(2);
+			setupRouteTest(function (iframe, iCanRoute, loc) {
+				iCanRoute.ready();
+				var hash1 = can.route.url({
+					panelA: {
+						name: "fruit",
+						id: 15,
+						show: true
+					}
+				});
+				var hash2 = can.route.url({
+					panelA: {
+						name: "fruit",
+						id: 20,
+						read: false
+					}
+				});
+
+
+				loc.hash = hash1;
+
+				loc.hash = hash2;
+
+				setTimeout(function() {
+					equal(iCanRoute.attr("panelA.id"), 20, "id should change");
+					equal(iCanRoute.attr("panelA.show"), undefined, "show should be removed");
+					
+					teardownRouteTest();
+				}, 30);
+
+			});
+		});
+
+		test("hash doesn't update to itself with a !", function() {
+			stop();
+			window.routeTestReady = function (iCanRoute, loc) {
+
+				iCanRoute.ready();
+				iCanRoute(":path");
+
+				iCanRoute.attr('path', 'foo');
+				setTimeout(function() {
+					var counter = 0;
+					try {
+						equal(loc.hash, '#!foo');
+					} catch(e) {
+						start();
+						throw e;
+					}
+
+					iCanRoute.bind("change", function() {
+						counter++;
+					});
+
+					loc.hash = "bar";
+					setTimeout(function() {
+						try {
+							equal(loc.hash, '#bar');
+							equal(counter, 1); //sanity check -- bindings only ran once before this change.
+						} finally {
+							start();
+						}
+					}, 100);
+				}, 100);
+			};
+			var iframe = document.createElement('iframe');
+			iframe.src = can.test.path("route/testing.html?1");
+			can.$("#qunit-fixture")[0].appendChild(iframe);
+		});
+
+
 	}
 
 	test("escaping periods", function () {

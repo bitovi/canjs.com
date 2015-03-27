@@ -7,7 +7,7 @@
 Retrieve multiple resources from a server.
 
 @param {Object} params Values to filter the request or results with.
-@param {function(can.Model.List)} [success(list)] A callback to call on successful retrieval. The callback recieves
+@param {function(can.Model.List)} [success(list)] A callback to call on successful retrieval. The callback receives
 a can.Model.List of the retrieved resources.
 @param {function(can.AjaxSettings)} [error(xhr)] A callback to call when an error occurs. The callback receives the
 XmlHttpRequest object.
@@ -94,6 +94,9 @@ Recipe.findAll({favorite: true}, function(recipes){
  // called if an error
 }) //-> Deferred
 ```
+
+`findAll` uses [can.Model.parseModels parseModels] to parse the returned data. `can.Model.parseModels` 
+can be overwritten to handle non-standard data formats.
 
 Before you can use `findAll`, you must implement it.
 

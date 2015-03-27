@@ -77,7 +77,23 @@ messages on the same batch.  This is mostly for event delegation.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>		batchEvents = [],
-		stopCallbacks = [];
+		stopCallbacks = [],</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>an array of the currently dispatching batch events … here so we can add things to the end of it (1519).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		currentBatchEvents = <span class="hljs-literal">null</span>;
+		
 	can.batch = {
 		<span class="hljs-comment">/**
 		 * @function can.batch.start
@@ -239,21 +255,44 @@ messages on the same batch.  This is mostly for event delegation.</p>
 				transactions--;
 			}
 			<span class="hljs-keyword">if</span> (transactions === <span class="hljs-number">0</span>) {
-				<span class="hljs-keyword">var</span> items = batchEvents.slice(<span class="hljs-number">0</span>),
-					callbacks = stopCallbacks.slice(<span class="hljs-number">0</span>),
+				<span class="hljs-keyword">if</span>(currentBatchEvents !== <span class="hljs-literal">null</span>) {
+					<span class="hljs-keyword">return</span>;
+				}
+
+				currentBatchEvents = batchEvents.slice(<span class="hljs-number">0</span>);
+
+				<span class="hljs-keyword">var</span>	callbacks = stopCallbacks.slice(<span class="hljs-number">0</span>),
 					i, len;
 				batchEvents = [];
-				stopCallbacks = [];
+				stopCallbacks = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Capture current batchNum so it can be check in live bindings</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				can.batch.batchNum = batchNum;
 				batchNum++;
 				<span class="hljs-keyword">if</span> (callStart) {
 					can.batch.start();
 				}
-				<span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>, len = items.length; i &lt; len; i++) {
-					can.dispatch.apply(items[i][<span class="hljs-number">0</span>],items[i][<span class="hljs-number">1</span>]);
+				<span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; currentBatchEvents.length; i++) {
+					can.dispatch.apply(currentBatchEvents[i][<span class="hljs-number">0</span>],currentBatchEvents[i][<span class="hljs-number">1</span>]);
 				}
+				currentBatchEvents = <span class="hljs-literal">null</span>;
+
 				<span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>, len = callbacks.length; i &lt; callbacks.length; i++) {
 					callbacks[i]();
 				}
+				can.batch.batchNum = <span class="hljs-literal">undefined</span>;
 			}
 		},
 		<span class="hljs-comment">/**
@@ -275,23 +314,31 @@ messages on the same batch.  This is mostly for event delegation.</p>
         </li>
         
         
-        <li id="section-5">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>Don’t send events if initalizing.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!item._init) {
-				<span class="hljs-keyword">if</span> (transactions === <span class="hljs-number">0</span>) {
-					<span class="hljs-keyword">return</span> can.dispatch.call(item, event, args);
+				event = <span class="hljs-keyword">typeof</span> event === <span class="hljs-string">'string'</span> ? {
+					type: event
+				} : event;
+
+				<span class="hljs-keyword">if</span>( currentBatchEvents) {
+
+					currentBatchEvents.push([
+						item,
+						[event, args]
+					]);
+
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (transactions === <span class="hljs-number">0</span>) {
+					<span class="hljs-keyword">return</span> can.dispatch.call( item, event, args );
 				} <span class="hljs-keyword">else</span> {
-					event = <span class="hljs-keyword">typeof</span> event === <span class="hljs-string">'string'</span> ? {
-						type: event
-					} : event;
 					event.batchNum = batchNum;
 					batchEvents.push([
 						item,

@@ -552,7 +552,7 @@ We do not want <code>{{#if items.length}}</code> changing the DOM if
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				setupLiveBinding = compute.hasDependencies;
+            <div class="content"><div class='highlight'><pre>				setupLiveBinding = compute.computeInstance.hasDependencies;
 			}
 
 			<span class="hljs-keyword">if</span> (listData) {

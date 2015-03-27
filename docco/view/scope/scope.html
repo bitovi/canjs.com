@@ -202,11 +202,12 @@ that this.read clears them.  We want to restore them.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> previousReads = can.__clearReading(),
-						res = <span class="hljs-keyword">this</span>.read(key, {
+						options = {
 							isArgument: <span class="hljs-literal">true</span>,
 							returnObserveMethods: <span class="hljs-literal">true</span>,
 							proxyMethods: <span class="hljs-literal">false</span>
-						});</pre></div></div>
+						},
+						res = <span class="hljs-keyword">this</span>.read(key, options);</pre></div></div>
             
         </li>
         
@@ -238,11 +239,7 @@ that this.read clears them.  We want to restore them.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>							readKey = lastIndex !== -<span class="hljs-number">1</span> ? key.substring(<span class="hljs-number">0</span>, lastIndex) : <span class="hljs-string">'.'</span>,
-							obj = <span class="hljs-keyword">this</span>.read(readKey, {
-								isArgument: <span class="hljs-literal">true</span>,
-								returnObserveMethods: <span class="hljs-literal">true</span>,
-								proxyMethods: <span class="hljs-literal">false</span>
-							}).value;
+							obj = <span class="hljs-keyword">this</span>.read(readKey, options).value;
 
 						<span class="hljs-keyword">if</span>(lastIndex !== -<span class="hljs-number">1</span>) {</pre></div></div>
             
@@ -262,7 +259,7 @@ that this.read clears them.  We want to restore them.</p>
             <div class="content"><div class='highlight'><pre>							key = key.substring(lastIndex + <span class="hljs-number">1</span>, key.length);
 						}
 
-						can.compute.set(obj, key, value);
+						can.compute.set(obj, key, value, options);
 					}
 
 					can.__setReading(previousReads);
@@ -353,7 +350,7 @@ key in the context of the scope.</p>
 										<span class="hljs-keyword">var</span> last = rootReads.length - <span class="hljs-number">1</span>;
 										<span class="hljs-keyword">var</span> obj = rootReads.length ? can.compute.read(rootObserve, rootReads.slice(<span class="hljs-number">0</span>, last)).value
 											: rootObserve;
-										can.compute.set(obj, rootReads[last], newVal);
+										can.compute.set(obj, rootReads[last], newVal, options);
 									}</pre></div></div>
             
         </li>

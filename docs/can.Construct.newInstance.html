@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -193,7 +201,7 @@
 					<li class="search-container  ">
 						<a 	class="property" 
 							href="can.Construct.constructorExtends.html" 
-							data-search="constructorExtends">
+							data-search="can.Construct.constructorExtends">
 							constructorExtends
 						</a>
 						
@@ -490,7 +498,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/construct/construct.js">source</a></li>
 	
@@ -575,9 +583,11 @@ instead.</p>
 with arbitrary parameters. Typically, however, you will simply want to call the constructor with the
 <strong>new</strong> operator.</p>
 <h2>Example</h2>
-<p>The following creates a <code>Person</code> Construct and then creates a new instance of Person,
-using <code>apply</code> on newInstance to pass arbitrary parameters.</p>
-<pre><code class="language-js">var Person = can.Construct.extend({
+<p>The following creates a <code>Person</code> Construct and overrides <code>newInstance</code> to cache all
+instances of Person to prevent duplication. If the properties of a new Person match an existing one it
+will return a reference to the previously created object, otherwise it returns a new object entirely.</p>
+<pre><code>// define and create the Person constructor
+var Person = can.Construct.extend({
   init : function(first, middle, last) {
     this.first = first;
     this.middle = middle;
@@ -585,8 +595,33 @@ using <code>apply</code> on newInstance to pass arbitrary parameters.</p>
   }
 });
 
-var args = [&quot;Justin&quot;,&quot;Barry&quot;,&quot;Meyer&quot;],
-    justin = new Person.newInstance.apply(null, args);
+// store a reference to the original newInstance function
+var _newInstance = Person.newInstance;
+
+// override Person's newInstance function
+Person.newInstance = function() {
+// if cache does not exist make it an new object
+this.__cache = this.__cache || {};
+// id is a stingified version of the passed arguments
+var id = JSON.stringify(arguments);
+
+// look in the cache to see if the object already exists
+var cachedInst = this.__cache[id];
+if(cachedInst) {
+    return cachedInst;
+}
+
+//otherwise call the original newInstance function and return a new instance of Person.
+var newInst = _newInstance.apply(this, arguments);
+this.__cache[id] = newInst;
+return newInst;
+}
+
+// create two instances with the same arguments
+var justin = new Person('Justin', 'Barry', 'Meyer'),
+    brian = new Person('Justin', 'Barry', 'Meyer');
+
+console.log(justin === brian); // true - both are references to the same instance
 </code></pre>
 
 		</section>
@@ -649,7 +684,7 @@ var args = [&quot;Justin&quot;,&quot;Barry&quot;,&quot;Meyer&quot;],
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Construct.static","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.Construct.newInstance","description":"<p>Returns an instance of <code>can.Construct</code>. This method can be overridden to return a cached instance.</p>\n","title":"newInstance","signatures":[{"code":"can.Construct.newInstance([...args])","description":"","params":[{"types":[{"type":"*"}],"optional":true,"name":"args","description":"<p>arguments that get passed to [can.Construct::setup] and [can.Construct::init]. Note\nthat if [can.Construct::setup] returns an array, those arguments will be passed to [can.Construct::init]\ninstead.</p>\n"}],"returns":{"types":[{"type":"class"}],"description":"<p>instance of the class</p>\n"}}],"comment":" ","src":"construct/construct.js"};
+		var docObject = {"type":"function","name":"can.Construct.newInstance","parent":"can.Construct.static","src":"construct/construct.js","line":124,"codeLine":189,"description":"Returns an instance of `can.Construct`. This method can be overridden to return a cached instance.","title":"newInstance","signatures":[{"code":"can.Construct.newInstance([...args])","description":"","params":[{"types":[{"type":"*"}],"optional":true,"name":"args","description":"arguments that get passed to [can.Construct::setup] and [can.Construct::init]. Note\nthat if [can.Construct::setup] returns an array, those arguments will be passed to [can.Construct::init]\ninstead."}],"returns":{"types":[{"type":"class"}],"description":"instance of the class"}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -662,6 +697,7 @@ var args = [&quot;Justin&quot;,&quot;Barry&quot;,&quot;Meyer&quot;],
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

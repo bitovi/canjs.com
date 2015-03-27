@@ -15,8 +15,8 @@
 steal('can/util/can.js', "can/util/attr", 'yui', 'can/event',
 	"can/util/fragment.js", 'can/util/array/each.js',
 	'can/util/object/isplain', 'can/util/deferred.js',
-	'../hashchange.js', "can/util/inserted", function (can, attr) {
-
+	'can/util/hashchange.js', "can/util/inserted", function (can, attr, YUI) {
+		YUI = YUI || window.YUI;
 		// lets overwrite 
 		YUI.add('can-modifications', function (Y, NAME) {
 			var addHTML = Y.DOM.addHTML;
@@ -153,6 +153,7 @@ steal('can/util/can.js', "can/util/attr", 'yui', 'can/event',
 			return wrapped.addClass(className);
 		};
 		can.data = function (wrapped, key, value) {
+			if(!wrapped.item(0)) { return; }
 			if (value === undefined) {
 				return wrapped.item(0)
 					.getData(key);

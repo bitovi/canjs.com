@@ -1,6 +1,6 @@
-steal('can/construct', function () {
+steal('can/construct', 'steal-qunit', function () {
 	/* global Foo, Car, Bar */
-	module('can/construct', {
+	QUnit.module('can/construct', {
 		setup: function () {
 			var Animal = this.Animal = can.Construct({
 				count: 0,
@@ -70,6 +70,12 @@ steal('can/construct', function () {
 		can.Construct('Todo', {}, {});
 		ok(Foo.Bar === fb, 'returns class');
 		equal(fb.shortName, 'Bar', 'short name is right');
+		//!steal-remove-start
+		if (can.dev && fb.name) {
+			equal(fb.name, 'Bar', 'short name is right');
+		}
+		//!steal-remove-end
+
 		equal(fb.fullName, 'Foo.Bar', 'fullName is right');
 	});
 	test('setups', function () {
@@ -154,28 +160,4 @@ steal('can/construct', function () {
 		var o2 = {};
 		can.Construct.extend(o1,o2);
 	});
-
-	if(Object.getOwnPropertyDescriptor) {
-		test("support getters and setters", function () {
-			var Person = can.Construct.extend({
-				get age() {
-					return this.base + 40;
-				},
-
-				set name(value) {
-					this._name = value;
-				},
-
-				get name() {
-					return this._name;
-				}
-			});
-
-			var test = new Person();
-			test.base = 2;
-			equal(test.age, 42, 'Getter called properly');
-			test.name = 'David';
-			equal(test.name, 'David', 'Setter ran');
-		});
-	}
 });

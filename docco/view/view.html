@@ -1049,7 +1049,7 @@ different templating solutions produce strings or document fragments via their r
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.steal) {
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> ( <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; <span class="hljs-built_in">window</span>.steal &amp;&amp; steal.type ) {
 				steal.type(info.suffix + <span class="hljs-string">" view js"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, success, error)</span> </span>{
 					<span class="hljs-keyword">var</span> type = $view.types[<span class="hljs-string">"."</span> + options.type],
 						id = $view.toId(options.id + <span class="hljs-string">''</span>);
@@ -1855,7 +1855,7 @@ set response to the result of the rendering.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.steal) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> ( <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; <span class="hljs-built_in">window</span>.steal &amp;&amp; steal.type) {</pre></div></div>
             
         </li>
         

@@ -24,6 +24,11 @@
               </a>
             
               
+              <a class="source" href="intermediate_and_imports.html">
+                intermediate_and_imports.js
+              </a>
+            
+              
               <a class="source" href="mustache_core.html">
                 mustache_core.js
               </a>
@@ -36,6 +41,16 @@
               
               <a class="source" href="stache.html">
                 stache.js
+              </a>
+            
+              
+              <a class="source" href="stache_benchmark.html">
+                stache_benchmark.js
+              </a>
+            
+              
+              <a class="source" href="system.html">
+                system.js
               </a>
             
               
@@ -92,7 +107,7 @@
 				key,
 				i;
 			
-			<span class="hljs-keyword">if</span>( resolved <span class="hljs-keyword">instanceof</span> can.List || (items &amp;&amp; items.isComputed &amp;&amp; resolved === <span class="hljs-literal">undefined</span>)) {
+			<span class="hljs-keyword">if</span>( resolved <span class="hljs-keyword">instanceof</span> can.List ) {
 				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span></span>{
 					<span class="hljs-keyword">var</span> cb = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, index, parentNodeList)</span> </span>{
 								
@@ -186,6 +201,31 @@ that will only change values from true to false</p>
 			} <span class="hljs-keyword">else</span> {
 				<span class="hljs-keyword">return</span> options.inverse(options.scope || <span class="hljs-keyword">this</span>);
 			}
+		},
+		<span class="hljs-string">'is'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">var</span> lastValue, curValue,
+				options = <span class="hljs-built_in">arguments</span>[<span class="hljs-built_in">arguments</span>.length - <span class="hljs-number">1</span>];
+
+			<span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length - <span class="hljs-number">2</span> &lt;= <span class="hljs-number">0</span>) {
+				<span class="hljs-keyword">return</span> options.inverse();
+			}
+
+			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">arguments</span>.length - <span class="hljs-number">1</span>; i++) {
+				curValue = resolve(<span class="hljs-built_in">arguments</span>[i]);
+				curValue = can.isFunction(curValue) ? curValue() : curValue;
+
+				<span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span>) {
+					<span class="hljs-keyword">if</span> (curValue !== lastValue) {
+						<span class="hljs-keyword">return</span> options.inverse();
+					}
+				}
+				lastValue = curValue;
+			}
+
+			<span class="hljs-keyword">return</span> options.fn();
+		},
+		<span class="hljs-string">'eq'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">return</span> helpers.is.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 		},
 		<span class="hljs-string">'unless'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(expr, options)</span> </span>{
 			<span class="hljs-keyword">return</span> helpers[<span class="hljs-string">'if'</span>].apply(<span class="hljs-keyword">this</span>, [can.isFunction(expr) ? can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{ <span class="hljs-keyword">return</span> !expr(); }) : !expr, options]);

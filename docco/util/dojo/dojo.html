@@ -11,27 +11,6 @@
   <div id="container">
     <div id="background"></div>
     
-      <ul id="jump_to">
-        <li>
-          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
-          <a class="small" href="javascript:void(0);">+</a>
-          <div id="jump_wrapper">
-          <div id="jump_page">
-            
-              
-              <a class="source" href="dojo.html">
-                dojo.js
-              </a>
-            
-              
-              <a class="source" href="trigger.html">
-                trigger.js
-              </a>
-            
-          </div>
-        </li>
-      </ul>
-    
     <ul class="sections">
         
           <li id="title">
@@ -51,11 +30,17 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-string">'can/util/attr'</span>, <span class="hljs-string">'dojo'</span>, <span class="hljs-string">'can/event'</span>, <span class="hljs-string">'can/util/fragment.js'</span>,
-	<span class="hljs-string">'can/util/array/each.js'</span>, <span class="hljs-string">'can/util/object/isplain'</span>, <span class="hljs-string">'can/util/deferred.js'</span>, <span class="hljs-string">'../hashchange.js'</span>, <span class="hljs-string">'can/util/inserted'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, attr)</span> </span>{
-		
-	<span class="hljs-keyword">var</span> dojo = <span class="hljs-built_in">window</span>.dojo;
-	define(<span class="hljs-string">'plugd/trigger'</span>, [<span class="hljs-string">'dojo'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dojo)</span> </span>{
+            <div class="content"><div class='highlight'><pre><span class="hljs-string">"format steal"</span>;
+steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-string">'can/util/attr'</span>, <span class="hljs-string">'dojo'</span>, <span class="hljs-string">'can/event'</span>, <span class="hljs-string">'can/util/fragment.js'</span>,
+	<span class="hljs-string">'can/util/array/each.js'</span>,
+	<span class="hljs-string">'can/util/object/isplain'</span>,
+	<span class="hljs-string">'can/util/deferred.js'</span>,
+	<span class="hljs-string">'can/util/hashchange.js'</span>,
+	<span class="hljs-string">'can/util/inserted'</span>,
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, attr, djo)</span> </span>{
+
+	<span class="hljs-keyword">var</span> dojo = djo || <span class="hljs-built_in">window</span>.dojo;
+	define(<span class="hljs-string">'plugd/trigger'</span>, [<span class="hljs-string">'dojo/main'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 		<span class="hljs-keyword">var</span> d = dojo;
 		<span class="hljs-keyword">var</span> isfn = d.isFunction;
 		<span class="hljs-keyword">var</span> leaveRe = <span class="hljs-regexp">/mouse(enter|leave)/</span>;
@@ -407,7 +392,7 @@ as all <span class="hljs-built_in">arguments</span> beyond the `event` are curri
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-built_in">require</span>([
-		<span class="hljs-string">'dojo'</span>,
+		<span class="hljs-string">'dojo/main'</span>,
 		<span class="hljs-string">'dojo/query'</span>,
 		<span class="hljs-string">'plugd/trigger'</span>,
 		<span class="hljs-string">'dojo/NodeList-dom'</span>

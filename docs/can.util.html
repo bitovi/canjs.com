@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -226,7 +234,7 @@
 			
 				
 				
-					<li class="search-container parent ">
+					<li class="search-container  ">
 						<a 	class="constructor" 
 							href="can.Deferred.html" 
 							data-search="can.Deferred">
@@ -236,8 +244,6 @@
 					</li>
 				
 			
-			
-		
 			
 		
 			
@@ -258,7 +264,7 @@
 			
 				
 				
-					<li class="search-container parent ">
+					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.Object.subset.html" 
 							data-search="can.Object.subset">
@@ -560,6 +566,21 @@
 				
 					<li class="search-container  ">
 						<a 	class="function" 
+							href="can.import.html" 
+							data-search="can.import">
+							can.import
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
 							href="can.isArray.html" 
 							data-search="can.isArray">
 							can.isArray
@@ -800,6 +821,21 @@
 				
 					<li class="search-container  ">
 						<a 	class="function" 
+							href="can.viewModel.html" 
+							data-search="can.viewModel">
+							can.viewModel
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
 							href="can.when.html" 
 							data-search="can.when">
 							can.when
@@ -859,7 +895,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/util/util.md">source</a></li>
 	
@@ -879,7 +915,7 @@
 
 		
 		<section class="description">
-			<p>Utility methods supported by CanJS</p>
+			<p>can.util adds the following utility functions to CanJS:</p>
 
 		</section>
 		
@@ -891,6 +927,52 @@
 		
 		
 
+		
+		<section class="comment">
+			<ul>
+<li><a href="can.$.html">$</a> - make a dependency library's NodeList</li>
+<li><a href="can.Deferred.html">Deferred</a> - create a new Deferred object</li>
+<li><a href="can.Object.same.html">Object.same</a> - checks if two Objects are the same</li>
+<li><a href="can.Object.subset.html">Object.subset</a> - determines if an Object is a subset of another Object</li>
+<li><a href="can.Object.subsets.html">Object.subsets</a> - returns the Object that contain the subset</li>
+<li><a href="can.addClass.html">addClass</a> - add a class to Elements in a NodeList</li>
+<li><a href="can.ajax.html">ajax</a> - make an AJAX request</li>
+<li><a href="can.append.html">append</a> - append content to the Elements of a NodeList</li>
+<li><a href="can.batch.html">batch</a> - specify atomic operations by preventing/allowing change events</li>
+<li><a href="can.bind.html">bind</a> - listen for events from an object</li>
+<li><a href="can.buildFragment.html">buildFragment</a> - make a document fragment</li>
+<li><a href="can.camelize.html">camelize</a> - capitalize the first letter after each hyphen in a string</li>
+<li><a href="can.capitalize.html">capitalize</a> - capitalize the first letter of a string</li>
+<li><a href="can.data.html">data</a> - associate data with or retrieve data from DOM nodes</li>
+<li><a href="can.delegate.html">delegate</a> - listen for events from the children of an Element</li>
+<li><a href="can.deparam.html">deparam</a> - convert a query String to an Object literal</li>
+<li><a href="can.each.html">each</a> - iterate through an Array or Object</li>
+<li><a href="can.esc.html">esc</a> - escapes a String for insertion into HTML</li>
+<li><a href="can.events.html">events</a> - adds the attributes, inserted, and removed DOM events to the base library</li>
+<li><a href="can.extend.html">extend</a> - merge a number of Objects together</li>
+<li><a href="can.frag.html">frag</a> - convert various objects into a DocumentFragment</li>
+<li><a href="can.getObject.html">getObject</a> - retrieve an object from a String path</li>
+<li><a href="can.hyphenate.html">hyphenate</a> - adds a hyphen before each uppercase letter and converts the entire string to lower case</li>
+<li><a href="can.isArray.html">isArray</a> - check if an object is an array</li>
+<li><a href="can.isDeferred.html">isDeferred</a> - check if an object is a Deferred</li>
+<li><a href="can.isEmptyObject.html">isEmptyObject</a> - check if an object has no properties</li>
+<li><a href="can.isFunction.html">isFunction</a> - check if an object is a function</li>
+<li><a href="can.makeArray.html">makeArray</a> - convert an array-like object to an Array</li>
+<li><a href="can.off.html">off</a> - stop listening for events on an object</li>
+<li><a href="can.on.html">on</a> - listen for events on an object</li>
+<li><a href="can.param.html">param</a> - serialize an object into a query String</li>
+<li><a href="can.proxy.html">proxy</a> - bind a function to a context</li>
+<li><a href="can.remove.html">remove</a> - remove Elements from the DOM</li>
+<li><a href="can.sub.html">sub</a> - returns a string with {param} replaced by property values</li>
+<li><a href="can.trigger.html">trigger</a> - trigger an event on an Object</li>
+<li><a href="can.trim.html">trim</a> - trim whitespace from a String</li>
+<li><a href="can.unbind.html">unbind</a> - stop listening for events on an Object</li>
+<li><a href="can.undelegate.html">undelegate</a> - stop listening for events from the children of an Element</li>
+<li><a href="can.underscore.html">underscore</a> - convert a CamelCase or mixedCase string and underscores the String on the capital letter</li>
+<li><a href="can.when.html">when</a> - call a callback Function when a Deferred resolves</li>
+</ul>
+
+		</section>
 		
 		
 
@@ -950,7 +1032,7 @@
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"page","name":"can.util","description":"<p>Utility methods supported by CanJS</p>\n","title":"can.util","src":"util/util.md"};
+		var docObject = {"type":"page","name":"can.util","src":"util/util.md","description":"can.util adds the following utility functions to CanJS:","title":"can.util","parent":"canjs","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -963,6 +1045,7 @@
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

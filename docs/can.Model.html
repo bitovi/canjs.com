@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -476,6 +484,21 @@
 				
 				
 					<li class="search-container  ">
+						<a 	class="property" 
+							href="can.Model.store.html" 
+							data-search="store">
+							store
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.Model.unbind.html" 
 							data-search="unbind">
@@ -619,11 +642,11 @@
 </div>
 
 <ul class="links">
-    
-        <li><a href="../docco/model/model.html">docco</a></li>
-    
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/master/model/model.js">source</a></li>
+		<li><a href="../docco/model/model.html">docco</a></li>
+	
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/master/model/doc/model.md">source</a></li>
 	
 	
 		<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=can/model">download</a></li>
@@ -776,7 +799,7 @@ be functions.</p>
 <ul>
 <li>Get and modify data from the server</li>
 <li>Listen to changes by the server</li>
-<li>Unifying service data into the same objects</li>
+<li>Keep track of all instances and prevent duplicates in the non-leaking <a href="can.Model.store.html">store</a></li>
 </ul>
 <h2>Get and modify data from the server</h2>
 <p>can.Model makes connecting to a JSON REST service
@@ -874,8 +897,8 @@ todo.bind('destroyed', function( ev ) {...})
 <pre><code>// listen for when the name property changes
 todo.bind('name', function(ev){  })
 </code></pre>
-<p><strong>Listening with can.Control</strong></p>
-<p>You should be using can.Control to listen to model changes like:</p>
+<p><strong>Listening with can.Control or can.Component</strong></p>
+<p>You can use can.Control or the events property of can.Component to listen to model changes like:</p>
 <pre><code>Todos = can.Control.extend({
   &quot;{Todo} updated&quot; : function(Todo, ev, todo) {...}
 })
@@ -941,7 +964,7 @@ todo.bind('name', function(ev){  })
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"name":"can.Model","type":"constructor","src":"model/model.js","description":"","download":"can/model","test":"can/model/test.html","links":[{"href":"../docco/model/model.html","title":"docco"}],"signatures":[{"code":"can.Model([name,] staticProperties, instanceProperties)","description":"<p>Create a can.Model constructor. (See [can.Construct] for more details on this syntax.)</p>\n","params":[{"types":[{"type":"String"}],"optional":true,"name":"name","description":"<p>If given, this will be the globally-available name of the constructor function.</p>\n"},{"types":[{"type":"Object","options":[]}],"name":"staticProperties","description":"<p>The static properties of the class. See below for properties with\nspecial meanings to <code>can.Model</code>.</p>\n"},{"types":[{"type":"Object","options":[]}],"name":"instanceProperties","description":"<p>The instance properties of instances of the class. These will usually\nbe functions.</p>\n"}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"<p>A can.Model constructor.</p>\n"}},{"code":"new can.Model([options])","description":"<p>Creates a new instance of <em>ModelConstructor</em>.</p>\n","params":[{"types":[{"type":"Object","options":[]}],"optional":true,"name":"options","description":"<p>Options to pass to <code>setup</code> or <code>init</code>.</p>\n"}],"returns":{"types":[{"type":"can.Model"}],"description":"<p>A new instance of <em>ModelConstructor</em>.</p>\n"}}],"comment":" "};
+		var docObject = {"name":"can.Model","type":"constructor","src":"model/doc/model.md","description":"","parent":"canjs","download":"can/model","test":"can/model/test.html","links":[{"href":"../docco/model/model.html","title":"docco"}],"signatures":[{"code":"can.Model([name,] staticProperties, instanceProperties)","description":"Create a can.Model constructor. (See [can.Construct] for more details on this syntax.)","params":[{"types":[{"type":"String"}],"optional":true,"name":"name","description":"If given, this will be the globally-available name of the constructor function."},{"types":[{"type":"Object","options":[]}],"name":"staticProperties","description":"The static properties of the class. See below for properties with\nspecial meanings to `can.Model`."},{"types":[{"type":"Object","options":[]}],"name":"instanceProperties","description":"The instance properties of instances of the class. These will usually\nbe functions."}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"A can.Model constructor."}},{"code":"new can.Model([options])","description":"Creates a new instance of _ModelConstructor_.","params":[{"types":[{"type":"Object","options":[]}],"optional":true,"name":"options","description":"Options to pass to `setup` or `init`."}],"returns":{"types":[{"type":"can.Model"}],"description":"A new instance of _ModelConstructor_."}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -954,6 +977,7 @@ todo.bind('name', function(ev){  })
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

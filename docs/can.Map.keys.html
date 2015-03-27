@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -354,6 +362,21 @@
 			
 				
 				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="can.Map.List.html" 
+							data-search="can.Map.List">
+							List
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
 					<li class="search-container parent ">
 						<a 	class="page" 
 							href="can.Map.attributes.html" 
@@ -569,7 +592,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/map/doc/static.keys.md">source</a></li>
 	
@@ -589,7 +612,7 @@
 
 		
 		<section class="description">
-			<p>Iterate over the keys of an Map.</p>
+			<p>Returns an array of the map's keys.</p>
 
 		</section>
 		
@@ -648,7 +671,7 @@
 
 		
 		<section class="comment">
-			<p><code>keys</code> iterates over an map to get an array of its keys.</p>
+			<p><code>keys</code> iterates over a map to get an array of its keys.</p>
 <pre><code>var people = new can.Map({
     a: 'Alice',
     b: 'Bob',
@@ -718,7 +741,7 @@ can.Map.keys(people); // ['a', 'b', 'e']
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Map.static","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"function","name":"can.Map.keys","description":"<p>Iterate over the keys of an Map.</p>\n","title":"keys","order":0,"signatures":[{"code":"can.Map.keys(map)","description":"","params":[{"types":[{"type":"can.Map"}],"name":"map","description":"<p>the <code>can.Map</code> to get the keys from</p>\n"}],"returns":{"types":[{"type":"Array","options":[]}],"description":"<p>array An array containing the keys from <em>map</em>.</p>\n"}}],"comment":" ","src":"map/doc/static.keys.md"};
+		var docObject = {"type":"function","name":"can.Map.keys","src":"map/doc/static.keys.md","description":"Returns an array of the map's keys.","title":"keys","parent":"can.Map.static","order":0,"signatures":[{"code":"can.Map.keys(map)","description":"","params":[{"types":[{"type":"can.Map"}],"name":"map","description":"the `can.Map` to get the keys from"}],"returns":{"types":[{"type":"Array","options":[]}],"description":"array An array containing the keys from _map_."}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -731,6 +754,7 @@ can.Map.keys(people); // ['a', 'b', 'e']
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

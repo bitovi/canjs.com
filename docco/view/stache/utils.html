@@ -24,6 +24,11 @@
               </a>
             
               
+              <a class="source" href="intermediate_and_imports.html">
+                intermediate_and_imports.js
+              </a>
+            
+              
               <a class="source" href="mustache_core.html">
                 mustache_core.js
               </a>
@@ -36,6 +41,16 @@
               
               <a class="source" href="stache.html">
                 stache.js
+              </a>
+            
+              
+              <a class="source" href="stache_benchmark.html">
+                stache_benchmark.js
+              </a>
+            
+              
+              <a class="source" href="system.html">
+                system.js
               </a>
             
               
@@ -156,7 +171,7 @@ This doesn’t have to do full JSON, so removing eval would be good.</p>
 				<span class="hljs-keyword">return</span> str.substr(<span class="hljs-number">1</span>, str.length -<span class="hljs-number">2</span>);
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(str === <span class="hljs-string">"undefined"</span>) {
 				<span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
-			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-built_in">window</span>.JSON) {
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(can.global.JSON) {
 				<span class="hljs-keyword">return</span> <span class="hljs-built_in">JSON</span>.parse(str);
 			} <span class="hljs-keyword">else</span> {
 				<span class="hljs-keyword">return</span> <span class="hljs-built_in">eval</span>(<span class="hljs-string">"("</span>+str+<span class="hljs-string">")"</span>);

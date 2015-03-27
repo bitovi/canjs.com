@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -101,6 +102,13 @@
 </h2>
 <ul class="api">
 	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
 	
 	   <li class="search-container">
 	   		<a href="can.Component.html" data-search="can.Component">
@@ -490,9 +498,9 @@
 </div>
 
 <ul class="links">
-    
-        <li><a href="../docco/event.html">docco</a></li>
-    
+	
+		<li><a href="../docco/event.html">docco</a></li>
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/master/event/event.md">source</a></li>
 	
@@ -548,37 +556,9 @@
 		<section class="comment">
 			<h2>Using as a mixin</h2>
 <p>The easiest way to add events to your classes and objects is by mixing <code>can.event</code> into your object or prototype.</p>
-<pre><code class="language-js">var SomeClass = can.Construct(&quot;SomeClass&quot;, {
-    init: function() {
-        this.value = 0;
-    },
-    increment: function() {
-        this.value++;
-        this.dispatch(&quot;change&quot;, [this.value]);
-    }
-});
-can.extend(SomeClass.prototype, can.event);
-</code></pre>
 <p>Now that <code>can.event</code> is included in the prototype, we can add/remove/dispatch events on the object instances.</p>
-<pre><code class="language-js">var instance = new SomeClass();
-instance.on(&quot;change&quot;, function(ev, value) {
-    alert(&quot;The instance changed to &quot; + value);
-});
-
-// This will dispatch the &quot;change&quot; event and show the alert
-instance.increment();
-</code></pre>
 <h2>Using without mixing in</h2>
 <p>The same event functionality from <code>can.event</code> can be used, even if the given object doesn't include <code>can.event</code>. Every method within <code>can.event</code> supports being called with an alternate scope.</p>
-<pre><code class="language-js">var obj = {};
-
-can.event.on.call(obj, &quot;change&quot;, function() {
-    alert(&quot;object change!&quot;);
-});
-
-// This will dispatch the &quot;change&quot; event and show the alert
-can.event.dispatch.call(obj, &quot;change&quot;);
-</code></pre>
 
 		</section>
 		
@@ -640,7 +620,7 @@ can.event.dispatch.call(obj, &quot;change&quot;);
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.4","docConfigDest":"../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#master"},"type":"page","name":"can.event","description":"<p>Add event functionality into your objects.</p>\n<p>The <code>can.event</code> object provides a number of methods for handling events in objects. This functionality is best used by mixing the <code>can.event</code> object into an object or prototype. However, event listeners can still be used even on objects that don't include <code>can.event</code>.</p>\n<p>All methods provided by <code>can.event</code> assume that they are mixed into an object -- <code>this</code> should be the object dispatching the events.</p>\n","title":"can.event","test":"can/event/test.html","links":[{"href":"../docco/event.html","title":"docco"}],"release":"2.1","signatures":[{"code":"can.extend(YourClass.prototype, can.event)","description":"<p>Adds event functionality to <code>YourClass</code> objects. This can also be applied to normal objects: <code>can.extend(someObject, can.event)</code>.</p>\n","params":[]}],"comment":" ","src":"event/event.md"};
+		var docObject = {"type":"page","name":"can.event","src":"event/event.md","description":"Add event functionality into your objects.\n\nThe `can.event` object provides a number of methods for handling events in objects. This functionality is best used by mixing the `can.event` object into an object or prototype. However, event listeners can still be used even on objects that don't include `can.event`.\n\nAll methods provided by `can.event` assume that they are mixed into an object -- `this` should be the object dispatching the events.","title":"can.event","parent":"canjs","test":"can/event/test.html","links":[{"href":"../docco/event.html","title":"docco"}],"release":"2.1","signatures":[{"code":"can.extend(YourClass.prototype, can.event)","description":"Adds event functionality to `YourClass` objects. This can also be applied to normal objects: `can.extend(someObject, can.event)`.","params":[]}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
@@ -653,6 +633,7 @@ can.event.dispatch.call(obj, &quot;change&quot;);
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	
