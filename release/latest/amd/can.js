@@ -1,12 +1,18 @@
 /*!
- * CanJS - 2.1.4
- * http://canjs.us/
- * Copyright (c) 2014 Bitovi
- * Fri, 21 Nov 2014 22:25:48 GMT
+ * CanJS - 2.2.1
+ * http://canjs.com/
+ * Copyright (c) 2015 Bitovi
+ * Tue, 24 Mar 2015 22:13:03 GMT
  * Licensed MIT
- * Includes: CanJS default build
- * Download from: http://canjs.us/
  */
-define(["can/util/library", "can/control/route", "can/model", "can/view/mustache", "can/component"], function(can) {
-	return can;
+
+/*can@2.2.1#can*/
+define([
+    'can/util/library',
+    'can/control/route',
+    'can/model',
+    'can/view/mustache',
+    'can/component'
+], function (can) {
+    return can;
 });
