@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.1
+ * CanJS - 2.2.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 24 Mar 2015 22:13:03 GMT
+ * Tue, 31 Mar 2015 17:29:12 GMT
  * Licensed MIT
  */
 
-/*can@2.2.1#compute/proto_compute*/
+/*can@2.2.2#compute/proto_compute*/
 define([
     'can/util/library',
     'can/util/bind',
@@ -395,6 +395,7 @@ define([
         });
     };
     can.Compute.read = read;
+    can.Compute.set = read.write;
     can.Compute.truthy = function (compute) {
         return new can.Compute(function () {
             var res = compute.get();
@@ -403,17 +404,6 @@ define([
             }
             return !!res;
         });
-    };
-    can.Compute.set = function (parent, key, value) {
-        if (can.isMapLike(parent)) {
-            return parent.attr(key, value);
-        }
-        if (parent[key] && parent[key].isComputed) {
-            return parent[key](value);
-        }
-        if (typeof parent === 'object') {
-            parent[key] = value;
-        }
     };
     return can.Compute;
 });

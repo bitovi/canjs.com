@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.1
+ * CanJS - 2.2.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 24 Mar 2015 22:13:03 GMT
+ * Tue, 31 Mar 2015 17:29:12 GMT
  * Licensed MIT
  */
 
-/*can@2.2.1#view/target/target*/
+/*can@2.2.2#view/target/target*/
 define([
     'can/util/library',
     'can/elements'

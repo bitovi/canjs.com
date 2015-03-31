@@ -1,17 +1,17 @@
 /*!
- * CanJS - 2.2.1
+ * CanJS - 2.2.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 24 Mar 2015 22:13:03 GMT
+ * Tue, 31 Mar 2015 17:29:12 GMT
  * Licensed MIT
  */
 
-/*can@2.2.1#compute/read*/
+/*can@2.2.2#compute/read*/
 define(['can/util/library'], function (can) {
     var read = function (parent, reads, options) {
         options = options || {};
         var state = { foundObservable: false };
-        var cur = readValue(parent, 0, reads, options, state), type, prev, foundObs, readLength = reads.length, i = 0;
+        var cur = readValue(parent, 0, reads, options, state), type, prev, readLength = reads.length, i = 0;
         while (i < readLength) {
             prev = cur;
             for (var r = 0, readersLength = read.propertyReaders.length; r < readersLength; r++) {
@@ -22,7 +22,7 @@ define(['can/util/library'], function (can) {
                 }
             }
             i = i + 1;
-            cur = readValue(cur, i, reads, options, state);
+            cur = readValue(cur, i, reads, options, state, prev);
             type = typeof cur;
             if (i < reads.length && (cur === null || type !== 'function' && type !== 'object')) {
                 if (options.earlyExit) {
@@ -32,18 +32,6 @@ define(['can/util/library'], function (can) {
                     value: undefined,
                     parent: prev
                 };
-            }
-        }
-        if (typeof cur === 'function' && !(can.Construct && cur.prototype instanceof can.Construct) && !(can.route && cur === can.route)) {
-            if (options.isArgument) {
-                if (!cur.isComputed && options.proxyMethods !== false) {
-                    cur = can.proxy(cur, prev);
-                }
-            } else {
-                if (cur.isComputed && !foundObs && options.foundObservable) {
-                    options.foundObservable(cur, i);
-                }
-                cur = cur.call(prev);
             }
         }
         if (cur === undefined) {
@@ -56,20 +44,24 @@ define(['can/util/library'], function (can) {
             parent: prev
         };
     };
-    var readValue = function (value, index, reads, options, state) {
+    var readValue = function (value, index, reads, options, state, prev) {
         for (var i = 0, len = read.valueReaders.length; i < len; i++) {
             if (read.valueReaders[i].test(value, index, reads, options)) {
-                value = read.valueReaders[i].read(value, index, reads, options, state);
+                value = read.valueReaders[i].read(value, index, reads, options, state, prev);
             }
         }
         return value;
     };
     read.valueReaders = [
         {
+            name: 'compute',
             test: function (value, i, reads, options) {
-                return value && value.isComputed && (!options.isArgument && i < reads.length);
+                return value && value.isComputed;
             },
             read: function (value, i, reads, options, state) {
+                if (options.isArgument && i === reads.length) {
+                    return value;
+                }
                 if (!state.foundObservable && options.foundObservable) {
                     options.foundObservable(value, i);
                     state.foundObservable = true;
@@ -78,17 +70,22 @@ define(['can/util/library'], function (can) {
             }
         },
         {
+            name: 'function',
             test: function (value, i, reads, options) {
                 var type = typeof value;
-                return i < reads.length && type === 'function' && options.executeAnonymousFunctions && !(can.Construct && value.prototype instanceof can.Construct);
+                return type === 'function' && !value.isComputed && (options.executeAnonymousFunctions || options.isArgument && i === reads.length) && !(can.Construct && value.prototype instanceof can.Construct) && !(can.route && value === can.route);
             },
-            read: function (value) {
-                return value();
+            read: function (value, i, reads, options, state, prev) {
+                if (options.isArgument && i === reads.length) {
+                    return options.proxyMethods !== false ? can.proxy(value, prev) : value;
+                }
+                return value.call(prev);
             }
         }
     ];
     read.propertyReaders = [
         {
+            name: 'map',
             test: can.isMapLike,
             read: function (value, prop, index, options, state) {
                 if (!state.foundObservable && options.foundObservable) {
@@ -109,6 +106,7 @@ define(['can/util/library'], function (can) {
             }
         },
         {
+            name: 'promise',
             test: function (value) {
                 return can.isPromise(value);
             },
@@ -151,6 +149,7 @@ define(['can/util/library'], function (can) {
             }
         },
         {
+            name: 'object',
             test: function () {
                 return true;
             },
@@ -163,5 +162,21 @@ define(['can/util/library'], function (can) {
             }
         }
     ];
+    read.write = function (parent, key, value, options) {
+        options = options || {};
+        if (can.isMapLike(parent)) {
+            if (!options.isArgument && parent._data && parent._data[key] && parent._data[key].isComputed) {
+                return parent._data[key](value);
+            } else {
+                return parent.attr(key, value);
+            }
+        }
+        if (parent[key] && parent[key].isComputed) {
+            return parent[key](value);
+        }
+        if (typeof parent === 'object') {
+            parent[key] = value;
+        }
+    };
     return read;
 });

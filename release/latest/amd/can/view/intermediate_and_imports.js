@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.1
+ * CanJS - 2.2.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 24 Mar 2015 22:13:03 GMT
+ * Tue, 31 Mar 2015 17:29:12 GMT
  * Licensed MIT
  */
 
-/*can@2.2.1#view/stache/intermediate_and_imports*/
+/*can@2.2.2#view/stache/intermediate_and_imports*/
 define([
     'can/view/mustache_core',
     'can/view/parser'

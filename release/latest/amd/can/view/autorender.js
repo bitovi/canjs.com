@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.1
+ * CanJS - 2.2.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 24 Mar 2015 22:13:03 GMT
+ * Tue, 31 Mar 2015 17:29:12 GMT
  * Licensed MIT
  */
 
-/*can@2.2.1#view/autorender/autorender*/
+/*can@2.2.2#view/autorender/autorender*/
 'format steal';
 define(['can/util/library'], function (can) {
     var deferred = new can.Deferred(), ignoreAttributesRegExp = /^(dataViewId|class|id|type|src)$/i;
@@ -44,7 +44,7 @@ define(['can/util/library'], function (can) {
         }
     }
     function setupScope(el) {
-        var scope = can.scope(el);
+        var scope = can.viewModel(el);
         can.each(el.attributes || [], function (attr) {
             setAttr(el, attr.name, scope);
         });

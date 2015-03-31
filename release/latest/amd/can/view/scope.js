@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.1
+ * CanJS - 2.2.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 24 Mar 2015 22:13:03 GMT
+ * Tue, 31 Mar 2015 17:29:12 GMT
  * Licensed MIT
  */
 
-/*can@2.2.1#view/scope/scope*/
+/*can@2.2.2#view/scope/scope*/
 define([
     'can/util/library',
     'can/construct',
@@ -33,21 +33,17 @@ define([
                 this.__cache = {};
             },
             attr: function (key, value) {
-                var previousReads = can.__clearReading(), res = this.read(key, {
+                var previousReads = can.__clearReading(), options = {
                         isArgument: true,
                         returnObserveMethods: true,
                         proxyMethods: false
-                    });
+                    }, res = this.read(key, options);
                 if (arguments.length === 2) {
-                    var lastIndex = key.lastIndexOf('.'), readKey = lastIndex !== -1 ? key.substring(0, lastIndex) : '.', obj = this.read(readKey, {
-                            isArgument: true,
-                            returnObserveMethods: true,
-                            proxyMethods: false
-                        }).value;
+                    var lastIndex = key.lastIndexOf('.'), readKey = lastIndex !== -1 ? key.substring(0, lastIndex) : '.', obj = this.read(readKey, options).value;
                     if (lastIndex !== -1) {
                         key = key.substring(lastIndex + 1, key.length);
                     }
-                    can.compute.set(obj, key, value);
+                    can.compute.set(obj, key, value, options);
                 }
                 can.__setReading(previousReads);
                 return res.value;
@@ -69,7 +65,7 @@ define([
                                 } else if (rootReads.length) {
                                     var last = rootReads.length - 1;
                                     var obj = rootReads.length ? can.compute.read(rootObserve, rootReads.slice(0, last)).value : rootObserve;
-                                    can.compute.set(obj, rootReads[last], newVal);
+                                    can.compute.set(obj, rootReads[last], newVal, options);
                                 }
                             } else {
                                 if (rootObserve) {
