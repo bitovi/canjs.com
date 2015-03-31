@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.1
+ * CanJS - 2.2.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 27 Mar 2015 15:59:45 GMT
+ * Tue, 31 Mar 2015 17:29:12 GMT
  * Licensed MIT
  */
 
-/*can@2.2.1#util/attr/attr*/
+/*can@2.2.2#util/attr/attr*/
 // # can/util/attr.js
 // Central location for attribute changing to occur, used to trigger an
 // `attributes` event on elements. This enables the user to do (jQuery example): `$(el).bind("attributes", function(ev) { ... })` where `ev` contains `attributeName` and `oldValue`.

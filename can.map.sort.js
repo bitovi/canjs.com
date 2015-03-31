@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.1
+ * CanJS - 2.2.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 27 Mar 2015 15:59:45 GMT
+ * Tue, 31 Mar 2015 17:29:12 GMT
  * Licensed MIT
  */
 
-/*[global-shim]*/
+/*[global-shim-start]*/
 (function (exports, global){
 	var origDefine = global.define;
 
@@ -22,7 +22,8 @@
 		}
 		return cur;
 	};
-	var modules = global.define && global.define.modules || {};
+	var modules = (global.define && global.define.modules) ||
+		(global._define && global._define.modules) || {};
 	var ourDefine = global.define = function(moduleName, deps, callback){
 		var module;
 		if(typeof deps === "function") {
@@ -55,6 +56,7 @@
 		// Favor CJS module.exports over the return value
 		modules[moduleName] = module && module.exports ? module.exports : result;
 	};
+	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
 	global.System = {
@@ -65,7 +67,7 @@
 		}
 	};
 })({},window)
-/*can@2.2.1#list/sort/sort*/
+/*can@2.2.2#list/sort/sort*/
 define('can/list/sort/sort', [
     'can/util/util',
     'can/list/list'
@@ -232,7 +234,12 @@ define('can/list/sort/sort', [
     };
     return can.Map;
 });
-/*can@2.2.1#map/sort/sort*/
+/*can@2.2.2#map/sort/sort*/
 define('can/map/sort/sort', ['can/list/sort/sort'], function (sortPlugin) {
     return sortPlugin;
 });
+/*[global-shim-end]*/
+(function (){
+	window._define = window.define;
+	window.define = window.define.orig;
+})();

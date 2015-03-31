@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.1
+ * CanJS - 2.2.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 27 Mar 2015 15:59:45 GMT
+ * Tue, 31 Mar 2015 17:29:12 GMT
  * Licensed MIT
  */
 
-/*can@2.2.1#util/string/deparam/deparam*/
+/*can@2.2.2#util/string/deparam/deparam*/
 var can = require('../../util.js');
 require('../string.js');
 var digitTest = /^\d+$/, keyBreaker = /([^\[\]]+)|(\[\])/g, paramTest = /([^?#]*)(#.*)?$/, prep = function (str) {
