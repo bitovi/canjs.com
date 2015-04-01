@@ -561,7 +561,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		can.each([<span class="hljs-string">'after'</span>, <span class="hljs-string">'prepend'</span>, <span class="hljs-string">'before'</span>, <span class="hljs-string">'append'</span>, <span class="hljs-string">'html'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		can.each([<span class="hljs-string">'after'</span>, <span class="hljs-string">'prepend'</span>, <span class="hljs-string">'before'</span>, <span class="hljs-string">'append'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
 			<span class="hljs-keyword">var</span> original = Zepto.fn[name];
 			Zepto.fn[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
 				<span class="hljs-keyword">var</span> elems,
@@ -587,6 +587,8 @@
 					}
 					<span class="hljs-keyword">if</span> (args[<span class="hljs-number">0</span>].nodeType === <span class="hljs-number">11</span>) {
 						elems = can.makeArray(args[<span class="hljs-number">0</span>].childNodes);
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(args[<span class="hljs-number">0</span>] <span class="hljs-keyword">instanceof</span> Zepto.fn.constructor) {
+						elems = can.makeArray(args[<span class="hljs-number">0</span>]);
 					} <span class="hljs-keyword">else</span> {
 						elems = [args[<span class="hljs-number">0</span>]];
 					}
