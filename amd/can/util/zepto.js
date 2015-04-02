@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#util/zepto/zepto*/
+/*can@2.2.3-pre.0#util/zepto/zepto*/
 define([
     'can/can',
     'can/util/attr',
@@ -238,8 +238,7 @@ define([
         'after',
         'prepend',
         'before',
-        'append',
-        'html'
+        'append'
     ], function (name) {
         var original = Zepto.fn[name];
         Zepto.fn[name] = function () {
@@ -250,6 +249,8 @@ define([
                 }
                 if (args[0].nodeType === 11) {
                     elems = can.makeArray(args[0].childNodes);
+                } else if (args[0] instanceof Zepto.fn.constructor) {
+                    elems = can.makeArray(args[0]);
                 } else {
                     elems = [args[0]];
                 }

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#component/component*/
+/*can@2.2.3-pre.0#component/component*/
 var can = require('../util/util.js');
 var viewCallbacks = require('../view/callbacks/callbacks.js');
 require('../control/control.js');
@@ -48,7 +48,7 @@ var Component = can.Component = can.Construct.extend({
         }
     }, {
         setup: function (el, hookupOptions) {
-            var initialScopeData = {}, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && this.template, twoWayBindings = {}, scope = this.scope || this.viewModel, scopePropertyUpdating, componentScope, frag;
+            var initialScopeData = {}, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && this.template, twoWayBindings = {}, scope = this.scope || this.viewModel, viewModelPropertyUpdates = {}, componentScope, frag;
             can.each(this.constructor.attributeScopeMappings, function (val, prop) {
                 initialScopeData[prop] = el.getAttribute(can.hyphenate(val));
             });
@@ -67,9 +67,14 @@ var Component = can.Component = can.Construct.extend({
                 }
                 var computeData = hookupOptions.scope.computeData(value, { args: [] }), compute = computeData.compute;
                 var handler = function (ev, newVal) {
-                    scopePropertyUpdating = name;
+                    viewModelPropertyUpdates[name] = (viewModelPropertyUpdates[name] || 0) + 1;
+                    var handler = function () {
+                        --viewModelPropertyUpdates[name];
+                        can.unbind.call(viewModelPropertyUpdates, 'ready', handler);
+                    };
+                    can.bind.call(viewModelPropertyUpdates, 'ready', handler);
                     componentScope.attr(name, newVal);
-                    scopePropertyUpdating = null;
+                    can.batch.trigger(viewModelPropertyUpdates, 'ready');
                 };
                 compute.bind('change', handler);
                 initialScopeData[name] = compute();
@@ -99,7 +104,7 @@ var Component = can.Component = can.Construct.extend({
             var handlers = {};
             can.each(twoWayBindings, function (computeData, prop) {
                 handlers[prop] = function (ev, newVal) {
-                    if (scopePropertyUpdating !== prop) {
+                    if (!viewModelPropertyUpdates[prop]) {
                         computeData.compute(newVal);
                     }
                 };

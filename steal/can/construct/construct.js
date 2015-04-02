@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#construct/construct*/
+/*can@2.2.3-pre.0#construct/construct*/
 // steal-clean
 steal('can/util/string', function (can) {
 	// ## construct.js
@@ -473,7 +473,19 @@ steal('can/util/string', function (can) {
 				parts = fullName.split('.');
 				shortName = parts.pop();
 			}
-		
+			//!steal-remove-start
+			/* jshint ignore:start */
+			// In dev builds we want constructor.name to be the same as shortName.
+			// The only way to do that right now is using eval. jshint does not like
+			// this at all so we hide it
+
+			// Strip semicolons
+			var constructorName = shortName ? shortName.replace(/;/g, '') : 'Constructor';
+
+			// Assign a name to the constructor
+			eval('Constructor = function ' + constructorName + '() { return init.apply(this, arguments); }');
+			/* jshint ignore:end */
+			//!steal-remove-end
 
 			// Make sure Constructor is still defined when the constructor name
 			// code is removed.
@@ -486,7 +498,13 @@ steal('can/util/string', function (can) {
 			function init() {
 				// All construction is actually done in the init method.
 				if (!initializing) {
-				
+					//!steal-remove-start
+					if(this.constructor !== Constructor &&
+					// We are being called without `new` or we are extending.
+					arguments.length && Constructor.constructorExtends) {
+						can.dev.warn('can/construct/construct.js: extending a can.Construct without calling extend');
+					}
+					//!steal-remove-end
 
 					return this.constructor !== Constructor &&
 					// We are being called without `new` or we are extending.
@@ -511,7 +529,11 @@ steal('can/util/string', function (can) {
 				_fullName = can.underscore(fullName.replace(/\./g, "_"));
 				_shortName = can.underscore(shortName);
 
-			
+				//!steal-remove-start
+				if (current[shortName]) {
+					can.dev.warn("can/construct/construct.js: There's already something called " + fullName);
+				}
+				//!steal-remove-end
 
 				current[shortName] = Constructor;
 			}

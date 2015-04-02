@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#model/model*/
+/*can@2.2.3-pre.0#model/model*/
 steal('can/util', 'can/map', 'can/list', function (can) {
 	/** @add can.Model **/
 	// ## model.js
@@ -186,7 +186,11 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 					throw new Error('Could not get any raw data while converting using .models');
 				}
 
-			
+				//!steal-remove-start
+				if (!raw.length) {
+					can.dev.warn("model.js models has no data.");
+				}
+				//!steal-remove-end
 
 				// If there was anything left in the list we were given, get rid of it.
 				if (modelList.length) {
@@ -384,7 +388,9 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 				// Assume no static properties were passed. (`can.Model.extend({ ... })`)
 				// This is really unusual for a model though, since there's so much configuration.
 				if (!protoProps) {
-				
+					//!steal-remove-start
+					can.dev.warn("can/model/model.js: can.Model extended without static properties.");
+					//!steal-remove-end
 					protoProps = staticProps;
 				}
 
@@ -637,7 +643,9 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 			// but there should be a better way.
 			can.dispatch.call(this, {type:"change", target: this}, [funcName]);
 
-		
+			//!steal-remove-start
+			can.dev.log("Model.js - " + constructor.shortName + " " + funcName);
+			//!steal-remove-end
 
 			// Call event on the instance's Class
 			can.dispatch.call(constructor, funcName, [this]);

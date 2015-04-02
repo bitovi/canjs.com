@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#component/component*/
+/*can@2.2.3-pre.0#component/component*/
 // # can/component/component.js
 // 
 // This implements the `can.Component` which allows you to create widgets 
@@ -115,8 +115,8 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 									  this.template),
 					twoWayBindings = {},
 					scope = this.scope || this.viewModel,
-					// what viewModel property is currently updating
-					scopePropertyUpdating,
+					// tracks which viewModel property is currently updating
+					viewModelPropertyUpdates = {},
 					// the object added to the viewModel
 					componentScope,
 					frag;
@@ -134,7 +134,13 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 					var name = can.camelize(node.nodeName.toLowerCase()),
 						value = node.value;
 
-				
+					//!steal-remove-start
+					// user tried to pass something like id="{foo}", so give them a good warning
+					if(ignoreAttributesRegExp.test(name) && value[0] === "{" && value[value.length-1] === "}") {
+						can.dev.warn("can/component: looks like you're trying to pass "+name+" as an attribute into a component, "+
+							"but it is not a supported attribute");
+					}
+					//!steal-remove-end
 
 					// Ignore attributes already present in the ScopeMappings.
 					if (component.constructor.attributeScopeMappings[name] || ignoreAttributesRegExp.test(name) || viewCallbacks.attr(node.nodeName)) {
@@ -159,9 +165,17 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 
 					// bind on this, check it's value, if it has dependencies
 					var handler = function (ev, newVal) {
-						scopePropertyUpdating = name;
+						// setup counter to prevent updating the scope with viewModel changes caused by scope updates.
+						viewModelPropertyUpdates[name] = (viewModelPropertyUpdates[name] || 0 )+1;
+						var handler = function(){
+							--viewModelPropertyUpdates[name];
+							can.unbind.call(viewModelPropertyUpdates,"ready", handler);
+						};
+						can.bind.call(viewModelPropertyUpdates,"ready", handler);
+						
+						
 						componentScope.attr(name, newVal);
-						scopePropertyUpdating = null;
+						can.batch.trigger(viewModelPropertyUpdates,"ready");
 					};
 
 					// Compute only returned if bindable
@@ -214,8 +228,9 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 				can.each(twoWayBindings, function (computeData, prop) {
 					handlers[prop] = function (ev, newVal) {
 						// Check that this property is not being changed because
-						// it's source value just changed
-						if (scopePropertyUpdating !== prop) {
+						// it's scope value just changed
+						if (!viewModelPropertyUpdates[prop]) {
+							//console.log("updating view.scope ",prop,"from",  componentScope._cid);
 							computeData.compute(newVal);
 						}
 					};

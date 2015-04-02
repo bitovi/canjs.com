@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#util/fixture/fixture*/
+/*can@2.2.3-pre.0#util/fixture/fixture*/
 // # can/util/fixture.js
 //
 // Intercepts AJAX requests and simulates them with either a function or a
@@ -57,7 +57,10 @@ steal('can/util', 'can/util/string', 'can/util/object', function (can) {
 
 		// A simple wrapper for logging fixture.js.
 		var log = function () {
-		
+			//!steal-remove-start
+			can.dev.log('can/fixture/fixture.js: ' + Array.prototype.slice.call(arguments)
+				.join(' '));
+			//!steal-remove-end
 		};
 
 		// We always need the type which can also be called method, default to GET
@@ -98,7 +101,9 @@ steal('can/util', 'can/util/string', 'can/util/object', function (can) {
 
 			delete settings.fixture;
 
-		
+			//!steal-remove-start
+			log("looking for fixture in " + url);
+			//!steal-remove-end
 
 			// Override the AJAX settings, changing the URL to the fixture file,
 			// removing the data, and changing the type to GET.
@@ -115,7 +120,9 @@ steal('can/util', 'can/util/string', 'can/util/object', function (can) {
 			// Otherwise, it is a function and we add the fixture data type so the
 			// fixture transport will handle it.
 		} else {
-		
+			//!steal-remove-start
+			log("using a dynamic fixture for " + settings.type + " " + settings.url);
+			//!steal-remove-end
 
 			// TODO: make everything go here for timing and other fun stuff
 			// add to settings data from fixture ...

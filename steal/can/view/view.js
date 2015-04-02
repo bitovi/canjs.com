@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#view/view*/
+/*can@2.2.3-pre.0#view/view*/
 // # can/view/view.js
 // -------
 // `can.view`
@@ -48,7 +48,9 @@ steal('can/util', function (can) {
 
 			// _removed if not used as a steal module_
 
-		
+			//!steal-remove-start
+			can.dev.log("can/view/view.js: There is no template or an empty template at " + url);
+			//!steal-remove-end
 
 			throw "can.view: No template or empty template:" + url;
 		}
@@ -388,7 +390,16 @@ steal('can/util', function (can) {
 
 			// _removed if not used as a steal module_
 
-		
+			//!steal-remove-start
+			if ( typeof window !== "undefined" && window.steal && steal.type ) {
+				steal.type(info.suffix + " view js", function (options, success, error) {
+					var type = $view.types["." + options.type],
+						id = $view.toId(options.id + '');
+					options.text = type.script(id, options.text);
+					success();
+				});
+			}
+			//!steal-remove-end
 
 			can[info.suffix] = $view[info.suffix] = function (id, text) {
 				var renderer,
@@ -729,7 +740,26 @@ steal('can/util', function (can) {
 
 	// _removed if not used as a steal module_
 
-
+	//!steal-remove-start
+	if ( typeof window !== "undefined" && window.steal && steal.type) {
+		//when being used as a steal module, add a new type for 'view' that runs
+		// `can.view.preloadStringRenderer` with the loaded string/text for the dependency.
+		steal.type("view js", function (options, success, error) {
+			var type = $view.types["." + options.type],
+				id = $view.toId(options.id);
+			/**
+			 * @hide
+			 * should return something like steal("dependencies",function(EJS){
+			 * return can.view.preload("ID", options.text)
+			 * })
+			 */
+			var dependency = type.plugin || 'can/view/' + options.type,
+				preload = type.fragRenderer ? "preload" : "preloadStringRenderer";
+			options.text = 'steal(\'can/view\',\'' + dependency + '\',function(can){return ' + 'can.view.'+preload+'(\'' + id + '\',' + options.text + ');\n})';
+			success();
+		});
+	}
+	//!steal-remove-end
 
 	return can;
 });

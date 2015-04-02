@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#control/control*/
+/*can@2.2.3-pre.0#control/control*/
 // # can/control/control.js
 //
 // Create organized, memory-leak free, rapidly performing, stateful 
@@ -134,7 +134,9 @@ steal('can/util', 'can/construct', function (can) {
 				if (options || !paramReplacer.test(methodName)) {
 					var convertedName = options ? can.sub(methodName, this._lookup(options)) : methodName;
 					if (!convertedName) {
-					
+						//!steal-remove-start
+						can.dev.log('can/control/control.js: No property found for handling ' + methodName);
+						//!steal-remove-end
 						return null;
 					}
 					var arr = can.isArray(convertedName),
@@ -292,7 +294,9 @@ steal('can/util', 'can/construct', function (can) {
 			// the element from the Control instance.
 			destroy: function () {
 				if (this.element === null) {
-				
+					//!steal-remove-start
+					can.dev.warn("can/control/control.js: Control already destroyed");
+					//!steal-remove-end
 					return;
 				}
 				var Class = this.constructor,

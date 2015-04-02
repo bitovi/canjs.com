@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#map/setter/setter*/
+/*can@2.2.3-pre.0#map/setter/setter*/
 steal('can/util', 'can/map', function (can) {
 
 	can.classize = function (s, join) {
@@ -23,13 +23,19 @@ steal('can/util', 'can/map', function (can) {
 		proto = can.Map.prototype,
 		old = proto.__set;
 	proto.__set = function (prop, value, current, success, error) {
-	
+		//!steal-remove-start
+		var asyncTimer;
+		can.dev.warn("can/map/setter is a deprecated plugin and will be removed in a future release. "+
+			"can/map/define provides the same functionality in a more complete API.");
+		//!steal-remove-end
 		
 		// check if there's a setter
 		var cap = classize(prop),
 			setName = 'set' + cap,
 			errorCallback = function (errors) {
-			
+				//!steal-remove-start
+				clearTimeout(asyncTimer);
+				//!steal-remove-end
 				
 				var stub = error && error.call(self, errors);
 				// if 'validations' is on the page it will trigger
@@ -55,12 +61,18 @@ steal('can/util', 'can/map', function (can) {
 			
 			value = this[setName](value, function (value) {
 				old.call(self, prop, value, current, success, errorCallback);
-			
+				//!steal-remove-start
+				clearTimeout(asyncTimer);
+				//!steal-remove-end
 			}, errorCallback);
 			
 			
 			if(value === undefined) {
-			
+				//!steal-remove-start
+				asyncTimer = setTimeout(function(){
+					can.dev.warn('can/map/setter.js: Setter ' + setName+' did not return a value or call the setter callback.');
+				},can.dev.warnTimeout);
+				//!steal-remove-end
 				can.batch.stop();
 				return;
 			} else {

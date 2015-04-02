@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#view/live/live*/
+/*can@2.2.3-pre.0#view/live/live*/
 var can = require('../../util/util.js');
 var elements = require('../elements.js');
 var view = require('../view.js');
@@ -127,13 +127,16 @@ var live = {
                 }, move = function (ev, item, newIndex, currentIndex) {
                     newIndex = newIndex + 1;
                     currentIndex = currentIndex + 1;
-                    var referenceItem = masterNodeList[newIndex][0];
-                    var movedItem = masterNodeList[currentIndex][0];
-                    var parentNode = referenceItem.parentNode;
+                    var referenceNodeList = masterNodeList[newIndex];
+                    var movedElements = can.frag(nodeLists.flatten(masterNodeList[currentIndex]));
+                    var referenceElement;
                     if (currentIndex < newIndex) {
-                        referenceItem = referenceItem.nextSibling;
+                        referenceElement = nodeLists.last(referenceNodeList).nextSibling;
+                    } else {
+                        referenceElement = nodeLists.first(referenceNodeList);
                     }
-                    parentNode.insertBefore(movedItem, referenceItem);
+                    var parentNode = referenceElement.parentNode;
+                    parentNode.insertBefore(movedElements, referenceElement);
                     var temp = masterNodeList[currentIndex];
                     [].splice.apply(masterNodeList, [
                         currentIndex,
@@ -146,7 +149,7 @@ var live = {
                     ]);
                 }, text = document.createTextNode(''), list, teardownList = function (fullTeardown) {
                     if (list && list.unbind) {
-                        list.unbind('add', add).unbind('remove', remove);
+                        list.unbind('add', add).unbind('remove', remove).unbind('move', move);
                     }
                     remove({}, { length: masterNodeList.length - 1 }, 0, true, fullTeardown);
                 }, updateList = function (ev, newList, oldList) {

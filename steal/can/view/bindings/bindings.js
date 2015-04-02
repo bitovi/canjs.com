@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#view/bindings/bindings*/
+/*can@2.2.3-pre.0#view/bindings/bindings*/
 // # can/view/bindings/bindings.js
 // 
 // This file defines the `can-value` attribute for two-way bindings and the `can-EVENT` attribute 
@@ -206,7 +206,15 @@ steal("can/util", "can/view/stache/mustache_core.js", "can/view/callbacks", "can
 				// We break out early if the first argument isn't available
 				// anywhere.
 
-			
+				//!steal-remove-start
+				if (!scopeData.value) {
+					can.dev.warn("can/view/bindings: " + attributeName + " couldn't find method named " + attrInfo.name.get, {
+						element: el,
+						scope: data.scope
+					});
+					return null;
+				}
+				//!steal-remove-end
 
 				var args = [];
 				var $el = can.$(this);

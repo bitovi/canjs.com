@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#view/stache/mustache_core*/
+/*can@2.2.3-pre.0#view/stache/mustache_core*/
 // # can/view/stache/mustache_core.js
 // 
 // This provides helper utilities for Mustache processing. Currently,
@@ -290,7 +290,15 @@ steal("can/util",
 					}
 
 				}
-			
+				//!steal-remove-start
+				if ( !helper && initialValue === undefined) {
+					if(looksLikeAHelper) {
+						can.dev.warn('can/view/stache/mustache_core.js: Unable to find helper "' + exprData.name.get + '".');
+					} else {
+						can.dev.warn('can/view/stache/mustache_core.js: Unable to find key or helper "' + exprData.name.get + '".');
+					}
+				}
+				//!steal-remove-end
 			}
 
 

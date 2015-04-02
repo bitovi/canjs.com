@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#view/mustache/mustache*/
+/*can@2.2.3-pre.0#view/mustache/mustache*/
 var can = require('../../util/util.js');
 require('../scope/scope.js');
 require('../view.js');
@@ -142,7 +142,7 @@ can.extend(Mustache.prototype, {
                             end: false
                         };
                     content = can.trim(content);
-                    if (content.length && (mode = content.match(/^([#^\/]|else$)/))) {
+                    if (content.length && (mode = content.match(/^([#^/]|else$)/))) {
                         mode = mode[0];
                         switch (mode) {
                         case '#':

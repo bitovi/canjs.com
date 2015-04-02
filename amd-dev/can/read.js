@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#compute/read*/
+/*can@2.2.3-pre.0#compute/read*/
 define(['can/util/library'], function (can) {
     var read = function (parent, reads, options) {
         options = options || {};
@@ -121,8 +121,11 @@ define(['can/util/library'], function (can) {
                         isPending: true,
                         state: 'pending',
                         isResolved: false,
-                        isRejected: false
+                        isRejected: false,
+                        value: undefined,
+                        reason: undefined
                     };
+                    can.cid(observeData);
                     can.simpleExtend(observeData, can.event);
                     value.then(function (value) {
                         observeData.isPending = false;
@@ -145,7 +148,7 @@ define(['can/util/library'], function (can) {
                     });
                 }
                 can.__reading(observeData, 'state');
-                return observeData[prop];
+                return prop in observeData ? observeData[prop] : value[prop];
             }
         },
         {

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#util/util*/
+/*can@2.2.3-pre.0#util/util*/
 steal('can/util/can.js', 'can/util/attr', 'can/event', 'zepto', 'can/util/object/isplain',
 	'can/util/fragment.js', 'can/util/deferred.js', 'can/util/array/each.js', 'can/util/inserted',
 	function (can, attr, event) {
@@ -292,7 +292,7 @@ steal('can/util/can.js', 'can/util/attr', 'can/event', 'zepto', 'can/util/object
 		};
 
 		// setup inserted calls
-		can.each(['after', 'prepend', 'before', 'append', 'html'], function (name) {
+		can.each(['after', 'prepend', 'before', 'append'], function (name) {
 			var original = Zepto.fn[name];
 			Zepto.fn[name] = function () {
 				var elems,
@@ -305,6 +305,8 @@ steal('can/util/can.js', 'can/util/attr', 'can/event', 'zepto', 'can/util/object
 					}
 					if (args[0].nodeType === 11) {
 						elems = can.makeArray(args[0].childNodes);
+					} else if(args[0] instanceof Zepto.fn.constructor) {
+						elems = can.makeArray(args[0]);
 					} else {
 						elems = [args[0]];
 					}

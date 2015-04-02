@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#map/map*/
+/*can@2.2.3-pre.0#map/map*/
 // # can/map/map.js
 // `can.Map` provides the observable pattern for JavaScript Objects.
 
@@ -56,7 +56,16 @@ steal('can/util', 'can/util/bind','./bubble.js', 'can/construct', 'can/util/batc
 					}
 					// Builds a list of compute and non-compute properties in this Object's prototype.
 					this._computes = [];
-				
+					//!steal-remove-start
+					if(this.prototype.define && !this.helpers.define) {
+						can.dev.warn("can/map/define is not included, yet there is a define property "+
+							"used. You may want to add this plugin.");
+					}
+					if(this.define && !this.helpers.define) {
+						can.dev.warn("The define property should be on the map's prototype properties, "+
+							"not the static properies. Also, can/map/define is not included.");
+					}
+					//!steal-remove-end
 					for (var prop in this.prototype) {
 						// Non-functions are regular defaults.
 						if (

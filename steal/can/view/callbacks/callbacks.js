@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#view/callbacks/callbacks*/
+/*can@2.2.3-pre.0#view/callbacks/callbacks*/
 steal("can/util", "can/view",function(can){
 
 
@@ -42,7 +42,11 @@ steal("can/util", "can/view",function(can){
 
 	var tag = can.view.tag = function (tagName, tagHandler) {
 		if(tagHandler) {
-		
+			//!steal-remove-start
+			if (typeof tags[tagName.toLowerCase()] !== 'undefined') {
+				can.dev.warn("Custom tag: " + tagName.toLowerCase() + "is already defined");
+			}
+			//!steal-remove-end
 			// if we have html5shive ... re-generate
 			if (can.global.html5) {
 				can.global.html5.elements += " " + tagName;
@@ -85,7 +89,11 @@ steal("can/util", "can/view",function(can){
 				res = scope;
 			}
 	
-		
+			//!steal-remove-start
+			if (!tagCallback) {
+				can.dev.warn('can/view/scanner.js: No custom element found for ' + tagName);
+			}
+			//!steal-remove-end
 	
 			// If the tagCallback gave us something to render with, and there is content within that element
 			// render it!

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#map/backup/backup*/
+/*can@2.2.3-pre.0#map/backup/backup*/
 //allows you to backup and restore a map instance
 steal('can/util', 'can/compute', 'can/map', 'can/util/object', function (can) {
 	var flatProps = function (a, cur) {

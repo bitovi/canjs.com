@@ -1,21 +1,23 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#view/stache/system*/
+/*can@2.2.3-pre.0#view/mustache/system*/
 'format steal';
-define([
-    'can/view/stache',
-    'can/view/intermediate_and_imports'
-], function (stache, getIntermediateAndImports) {
+define(['can/view/mustache'], function (can) {
     function translate(load) {
-        var intermediateAndImports = getIntermediateAndImports(load.source);
-        intermediateAndImports.imports.unshift('can/view/stache/stache');
-        return 'define(' + JSON.stringify(intermediateAndImports.imports) + ',function(stache){' + 'return stache(' + JSON.stringify(intermediateAndImports.intermediate) + ')' + '})';
+        return 'define([\'can/view/mustache/mustache\'],function(can){' + 'return can.view.preloadStringRenderer(\'' + load.metadata.pluginArgument + '\',' + 'can.Mustache(function(scope,options) { ' + new can.Mustache({
+            text: load.source,
+            name: load.name
+        }).template.out + ' })' + ')' + '})';
+    }
+    return { translate: translate };
+});
+mports.intermediate) + ')' + '})';
     }
     return { translate: translate };
 });

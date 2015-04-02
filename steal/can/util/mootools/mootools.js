@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#util/util*/
+/*can@2.2.3-pre.0#util/util*/
 steal('can/util/can.js', 'can/util/attr', 'mootools', 'can/event', 'can/util/fragment.js', 'can/util/deferred.js',
 	'can/util/array/each.js', 'can/util/object/isplain', "can/util/inserted", function (can, attr) {
 		/* jshint maxdepth:5 */

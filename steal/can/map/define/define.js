@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Thu, 02 Apr 2015 01:07:57 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#map/define/define*/
+/*can@2.2.3-pre.0#map/define/define*/
 steal('can/util', 'can/observe', function (can) {
 	var define = can.define = {};
 	
@@ -21,7 +21,12 @@ steal('can/util', 'can/observe', function (can) {
 	// This is called when the Map is defined
 	can.Map.helpers.define = function (Map) {
 		var definitions = Map.prototype.define;
-	
+		//!steal-remove-start
+		if(Map.define){
+			can.dev.warn("The define property should be on the map's prototype properties, "+
+				"not the static properies.");
+		}
+		//!steal-remove-end
 		Map.defaultGenerators = {};
 		for (var prop in definitions) {
 			var type = definitions[prop].type;
@@ -101,11 +106,15 @@ steal('can/util', 'can/observe', function (can) {
 	var proto = can.Map.prototype,
 		oldSet = proto.__set;
 	proto.__set = function (prop, value, current, success, error) {
-	
+		//!steal-remove-start
+		var asyncTimer;
+		//!steal-remove-end
 
 		// check if there's a setter
 		var errorCallback = function (errors) {
-			
+				//!steal-remove-start
+				clearTimeout(asyncTimer);
+				//!steal-remove-end
 
 				var stub = error && error.call(self, errors);
 				// if 'validations' is on the page it will trigger
@@ -140,7 +149,9 @@ steal('can/util', 'can/observe', function (can) {
 					}
 					
 					setterCalled = true;
-				
+					//!steal-remove-start
+					clearTimeout(asyncTimer);
+					//!steal-remove-end
 				}, errorCallback, getter ? this[prop].computeInstance.lastSetValue.get() : current);
 			if (getter) {
 				// if there's a getter we don't call old set
@@ -154,7 +165,11 @@ steal('can/util', 'can/observe', function (can) {
 			}
 			// if it took a setter and returned nothing, don't set the value
 			else if (setValue === undefined && !setterCalled && setter.length >= 2) {
-			
+				//!steal-remove-start
+				asyncTimer = setTimeout(function () {
+					can.dev.warn('can/map/setter.js: Setter "' + prop + '" did not return a value or call the setter callback.');
+				}, can.dev.warnTimeout);
+				//!steal-remove-end
 				can.batch.stop();
 				return;
 			} else {
