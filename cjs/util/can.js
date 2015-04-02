@@ -2,7 +2,7 @@
  * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 01:07:57 GMT
+ * Thu, 02 Apr 2015 20:20:11 GMT
  * Licensed MIT
  */
 
@@ -85,7 +85,7 @@ can.scope = can.viewModel = function (el, attr, val) {
 };
 can['import'] = function (moduleName) {
     var deferred = new can.Deferred();
-    if (typeof window.System === 'object') {
+    if (typeof window.System === 'object' && can.isFunction(window.System['import'])) {
         window.System['import'](moduleName).then(can.proxy(deferred.resolve, deferred), can.proxy(deferred.reject, deferred));
     } else if (window.define && window.define.amd) {
         window.require([moduleName], function (value) {

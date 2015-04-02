@@ -2,7 +2,7 @@
  * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 01:07:57 GMT
+ * Thu, 02 Apr 2015 20:20:11 GMT
  * Licensed MIT
  */
 
@@ -102,7 +102,7 @@ steal(function () {
 	can["import"] = function(moduleName) {
 		var deferred = new can.Deferred();
 		
-		if(typeof window.System === "object") {
+		if(typeof window.System === "object" && can.isFunction(window.System["import"])) {
 			window.System["import"](moduleName).then(can.proxy(deferred.resolve, deferred),
 				can.proxy(deferred.reject, deferred));
 		} else if(window.define && window.define.amd){
@@ -130,7 +130,57 @@ steal(function () {
 	// this is here in case can.compute hasn't loaded
 	can.__reading = function () {};
 
-
+	//!steal-remove-start
+	can.dev = {
+		warnTimeout: 5000,
+		logLevel: 0,
+		/**
+		 * Adds a warning message to the console.
+		 * @codestart
+		 * can.dev.warn("something evil");
+		 * @codeend
+		 * @param {String} out the message
+		 */
+		warn: function (out) {
+			var ll = this.logLevel;
+			if (ll < 2) {
+				Array.prototype.unshift.call(arguments, 'WARN:');
+				if (typeof window !== undefined && window.console && console.warn) {
+					this._logger("warn", Array.prototype.slice.call(arguments));
+				} else if (window.console && console.log) {
+					this._logger("log", Array.prototype.slice.call(arguments));
+				} else if (window.opera && window.opera.postError) {
+					window.opera.postError("steal.js WARNING: " + out);
+				}
+			}
+		},
+		/**
+		 * Adds a message to the console.
+		 * @codestart
+		 * can.dev.log("hi");
+		 * @codeend
+		 * @param {String} out the message
+		 */
+		log: function (out) {
+			var ll = this.logLevel;
+			if (ll < 1) {
+				if (window.console && console.log) {
+					Array.prototype.unshift.call(arguments, 'Info:');
+					this._logger("log", Array.prototype.slice.call(arguments));
+				} else if (window.opera && window.opera.postError) {
+					window.opera.postError("steal.js INFO: " + out);
+				}
+			}
+		},
+		_logger: function (type, arr) {
+			if (console.log.apply) {
+				console[type].apply(console, arr);
+			} else {
+				console[type](arr);
+			}
+		}
+	};
+	//!steal-remove-end
 
 	return can;
 });

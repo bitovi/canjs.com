@@ -2,7 +2,7 @@
  * CanJS - 2.2.3-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 01:07:57 GMT
+ * Thu, 02 Apr 2015 20:20:11 GMT
  * Licensed MIT
  */
 
@@ -145,7 +145,7 @@ define('can/util/can', [], function () {
     };
     can['import'] = function (moduleName) {
         var deferred = new can.Deferred();
-        if (typeof window.System === 'object') {
+        if (typeof window.System === 'object' && can.isFunction(window.System['import'])) {
             window.System['import'](moduleName).then(can.proxy(deferred.resolve, deferred), can.proxy(deferred.reject, deferred));
         } else if (window.define && window.define.amd) {
             window.require([moduleName], function (value) {
@@ -2528,7 +2528,9 @@ define('can/map/map', [
                 if (value !== current) {
                     var changeType = current !== undefined || this.__get().hasOwnProperty(prop) ? 'set' : 'add';
                     this.___set(prop, this.constructor._bubble.set(this, prop, value, current));
-                    this._triggerChange(prop, changeType, value, current);
+                    if (!this._computedBindings[prop]) {
+                        this._triggerChange(prop, changeType, value, current);
+                    }
                     if (current) {
                         this.constructor._bubble.teardownFromParent(this, current);
                     }
