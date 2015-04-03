@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	<title>CanJS  - can.List.prototype.isPending</title>
+	<title>CanJS - sort </title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -441,54 +441,11 @@
 			
 				
 				
-					<li class="search-container parent expanded">
+					<li class="search-container parent ">
 						<a 	class="function" 
 							href="can.List.plugins.promise.html" 
 							data-search="promise">
 							promise
-						</a>
-						
-							
-	<ul >
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.List.prototype.always.html" 
-							data-search="can.List.prototype.always">
-							can.List.prototype.always
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.List.prototype.done.html" 
-							data-search="can.List.prototype.done">
-							can.List.prototype.done
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.List.prototype.fail.html" 
-							data-search="can.List.prototype.fail">
-							can.List.prototype.fail
 						</a>
 						
 					</li>
@@ -500,111 +457,13 @@
 				
 				
 					<li class="search-container active  expanded">
-						<a 	class="function" 
-							href="can.List.prototype.isPending.html" 
-							data-search="can.List.prototype.isPending">
-							can.List.prototype.isPending
-						</a>
-						
-							
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.List.prototype.isRejected.html" 
-							data-search="can.List.prototype.isRejected">
-							can.List.prototype.isRejected
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.List.prototype.isResolved.html" 
-							data-search="can.List.prototype.isResolved">
-							can.List.prototype.isResolved
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="property" 
-							href="can.List.prototype.reason.html" 
-							data-search="can.List.prototype.reason">
-							can.List.prototype.reason
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="property" 
-							href="can.List.prototype.state.html" 
-							data-search="can.List.prototype.state">
-							can.List.prototype.state
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="function" 
-							href="can.List.prototype.then.html" 
-							data-search="can.List.prototype.then">
-							can.List.prototype.then
-						</a>
-						
-					</li>
-				
-			
-			
-		
-	</ul>
-
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
 						<a 	class="page" 
 							href="can.List.plugins.sort.html" 
 							data-search="sort">
 							sort
 						</a>
+						
+							
 						
 					</li>
 				
@@ -727,15 +586,17 @@
 		
 		<section class="title">
 			<div class="heading">
-<h1>can.List.prototype.isPending</h1>
+<h1>sort</h1>
 	<ul class="tags">
-		<li>function</li>
+		<li>page</li>
 	</ul>
-	
+	<span class="module">can/list/sort</span>
 	
 </div>
 
 <div class="sub-heading">
+	
+	
 	
 	
 	<span class="inherits">&nbsp;</span>
@@ -744,9 +605,11 @@
 <ul class="links">
 	
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/master/list/promise/doc/isPending.md">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/master/list/sort/sort.md">source</a></li>
 	
 	
+	
+		<li><a href="../can/list/sort/test.html">tests</a></li>
 	
 </ul>
 <br />
@@ -761,36 +624,13 @@
 		
 
 		
+		<section class="description">
+			<p>Sort a <a href="can.List.html">can.List</a> and keep it that way.</p>
+
+		</section>
+		
 
 		
-			
-				<section class="signature">
-					<h2 id="sig_list_isPending__">list.isPending()
-</h2>
-<div class="signature-wrapper">
-<p>Returns if the <a href="can.List.prototype.state.html">state</a> of the list is pending.</p>
-
-
-
-	<h3>Returns</h3>
-	<div class="returns">
-		<h4><code>{Boolean}</code></h4>
-		<div class="description">
-			<p><code>true</code> if the list is pending. <code>false</code> if otherwise.</p>
-
-		</div>
-		
-		
-	</div>
-	
-
-
-
-
-
-</div>
-
-				</section>
 			
 		
 		
@@ -800,10 +640,88 @@
 		
 		<section class="comment">
 			<h2>Use</h2>
-<pre><code>var data = new can.Deferred();
-var list = new can.List(data);
+<p>The <a href="can.List.plugins.sort.html">sort</a> plugin makes it easy to define
+and maintain how items are arranged in a <a href="can.List.html">can.List</a>. To use it,
+set a <code>comparator</code> <a href="can.Map.prototype.attr.html">attr</a> on a <a href="can.List.html">can.List</a>. It can be a
+<code>String</code> or a <code>Function</code>.</p>
+<pre><code>var cart = new can.List([
+    { title: 'Bread', price: 4.00 },
+    { title: 'Butter', price: 3.50 },
+    { title: 'Juice', price: 3.05 }
+]);
+cart.attr(&quot;comparator&quot;,'price');
+cart; // -&gt; [Juice, Butter, Bread]
+</code></pre>
+<p>Setting a comparator will sort the list immediately. But what's really nice
+is that if your list is being listened to, it will automatically sort when
+any of its items are changed:</p>
+<pre><code>var cart = new can.List([
+    { title: 'Juice', price: 3.05 }
+    { title: 'Butter', price: 3.50 },
+    { title: 'Bread', price: 4.00 }
+]);
+cart.attr(&quot;comparator&quot;,'price');
+cart.bind(&quot;length&quot;, function(){});
+cart.attr(&quot;0.price&quot;,5);
+cart; // -&gt; [Butter, Bread, Juice]
+</code></pre>
+<p>And it will keep sort order when items are pushed, unshifted, or spliced into the can.List:</p>
+<pre><code>var cart = new can.List([
+    { title: 'Juice', price: 3.05 }
+    { title: 'Butter', price: 3.50 },
+    { title: 'Bread', price: 4.00 }
+]);
+cart.bind(&quot;length&quot;, function(){});
+cart.push({title: 'Apple', 3.25});
+cart; // -&gt; [Juice, Apple, Butter, Bread]
+</code></pre>
+<p>If you are using a <code>can.List</code> in a template, it will be bound to
+automatically.  Check out this demo that lets you change the sort order
+and a person's name:</p>
+<div class='demo_wrapper' data-demo-src='can/list/sort/simple_sort.html'></div>
+<h2>Function Comparators</h2>
+<p>When a <code>String</code> is defined the default comparator function
+arranges the items in ascending order. To customize the sort behavior,
+define your own comparator function.</p>
+<pre><code>var stockPrices = new can.List([
+    0.01, 0.98, 0.75, 0.12, 0.05, 0.16
+]);
+stockPrices.attr(&quot;comparator&quot;, function (a, b) {
+    return a === b ? 0 : a &lt; b ? 1 : -1; // Descending
+})
+stockPrices // -&gt; [0.98, 0.75, 0.16, 0.12, 0.05, 0.01];
 
-list.isPending() //-&gt; true
+</code></pre>
+<h2>String Comparators</h2>
+<p>String comparators will be passed to [can.List.attr] to
+retrieve the values being compared.</p>
+<pre><code>var table = new can.List([
+    [6, 3, 4],
+    [1, 8, 2],
+    [7, 9, 5]
+]);
+table.attr('comparator', '2')
+table  // -&gt; [1, 8, 2],
+             [6, 3, 4],
+             [7, 9, 5]
+</code></pre>
+<h2>Move events</h2>
+<p>Whenever there are changes to items in the <a href="can.List.html">can.List</a>, the
+<a href="can.List.plugins.sort.html">sort</a> plugin moves the item to the correct
+index and fires a &quot;move&quot; event.</p>
+<pre><code>var cart = new can.List([
+    { title: 'Bread', price: 3.00 },
+    { title: 'Butter', price: 3.50 },
+    { title: 'Juice', price: 3.25 }
+]);
+cart.attr('comparator','price');
+
+cart.bind('move', function (ev, item, newIndex, oldIndex) {
+    console.log('Moved:', item.title + ', from:', oldIndex + ', to:', newIndex);
+})
+
+cart.attr('0.price', 4.00); // Moved: Bread, from: 0, to: 3
+                            // -&gt; [Juice, Butter, Bread]
 </code></pre>
 
 		</section>
@@ -866,7 +784,7 @@ list.isPending() //-&gt; true
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"type":"function","name":"can.List.prototype.isPending","src":"list/promise/doc/isPending.md","description":"","title":"","parent":"can.List.plugins.promise","signatures":[{"code":"list.isPending()","description":"Returns if the [can.List::state state] of the list is pending.","params":[],"returns":{"types":[{"type":"Boolean"}],"description":"`true` if the list is pending. `false` if otherwise."}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
+		var docObject = {"type":"page","name":"can.List.plugins.sort","src":"list/sort/sort.md","description":"Sort a [can.List] and keep it that way.","title":"sort","parent":"can.List.plugins","plugin":"can/list/sort","test":"can/list/sort/test.html","comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	

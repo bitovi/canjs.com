@@ -1063,10 +1063,11 @@ $(parent).append(el);
 </code></pre>
 <p>Listen to an <code>inserted</code> event with <a href="can.Component.prototype.events.html">can.Component's events</a> object like:</p>
 <pre><code>can.Component.extend({
-  tag: &quot;panel&quot;
-  &quot;inserted&quot;: function(el, ev){
+  tag: &quot;panel&quot;,
+  events:{
+    &quot;inserted&quot;: function(el, ev){
     
-  }
+    }
 })
 </code></pre>
 <p>To create an <code>inserted</code> event, you must use the base-library <a href="can.$.html">NodeList</a>'s DOM modifier methods.</p>
