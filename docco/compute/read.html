@@ -461,8 +461,11 @@ none of these passed</p>
 						isPending: <span class="hljs-literal">true</span>,
 						state: <span class="hljs-string">"pending"</span>,
 						isResolved: <span class="hljs-literal">false</span>,
-						isRejected: <span class="hljs-literal">false</span>
-					};</pre></div></div>
+						isRejected: <span class="hljs-literal">false</span>,
+						value: <span class="hljs-literal">undefined</span>,
+						reason: <span class="hljs-literal">undefined</span>
+					};
+					can.cid(observeData);</pre></div></div>
             
         </li>
         
@@ -493,7 +496,7 @@ none of these passed</p>
 					});
 				}
 				can.__reading(observeData,<span class="hljs-string">"state"</span>);
-				<span class="hljs-keyword">return</span> observeData[prop];
+				<span class="hljs-keyword">return</span> prop <span class="hljs-keyword">in</span> observeData ? observeData[prop] : value[prop];
 			}
 		},</pre></div></div>
             

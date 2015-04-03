@@ -444,12 +444,12 @@ The extend method can take up to three arguments:</p>
 <li>instanceProperties: object</li>
 </ol>
 <p>The extend method behaves differently depending on the number of arguments you
-pass it. The name and staticProperties arugments are optional. For example, if
+pass it. The name and staticProperties arguments are optional. For example, if
 you pass it one argument, it will be use the value you pass it to set its
-instanceProperties. If you pass it two arguments, it use the first to set its
+instanceProperties. If you pass it two arguments, it uses the first to set its
 staticProperties, and the second to set its instanceProperties. Finally, if
-you pass in all three arguments, the first will set its name, the second in
-staticProperties, and the third its instanceProperties.</p>
+you pass in all three arguments, the first will set its name, the second sets its
+staticProperties, and the third becomes its instanceProperties.</p>
 <p>In the example below, I only want to pass in staticProperties. Therefore, I
 must call the method as follows:</p>
 <pre><code>can.Construct.extend({
@@ -484,12 +484,13 @@ encapsulated, they should each contain their own:</p>
 <li>JS</li>
 <li>CSS</li>
 </ul>
-<p>This is why we created a components folder for our app—instead of, say, a
+<p>This is why we created a components folder for our app — instead of, say, a
 JS folder. Each component we develop will be in a folder that contains all
 the files that support that component. This makes components portable,
 enabling you to reuse them across projects. It also isolates them, making
 them easier to test and maintain.</p>
-<p>In the components folder, create a subfolder called <em>restaurant_list</em>, along with the following files:</p>
+<p>In the components folder, create a subfolder called <em>restaurant_list</em>, along
+Twith the following files:</p>
 <pre>
 | restaurant_list
     |--restaurant_list_component.js
@@ -666,7 +667,7 @@ myCanMapInstance.attr('person.name.last', 'Bach');
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"type":"page","name":"Components","src":"guides/components.md","description":"","title":"Getting to Know Components","parent":"Tutorial","order":3,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/justin/dev/canjs.com/can"},"debug":true,"dest":"/Users/justin/dev/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.1","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
+		var docObject = {"type":"page","name":"Components","src":"guides/components.md","description":"","title":"Getting to Know Components","parent":"Tutorial","order":3,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/bitovi/Desktop/Bitovi/github/canjs.com/theme/templates","static":"/Users/bitovi/Desktop/Bitovi/github/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/bitovi/Desktop/Bitovi/github/canjs.com/can"},"dest":"/Users/bitovi/Desktop/Bitovi/github/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	

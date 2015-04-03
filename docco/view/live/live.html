@@ -648,9 +648,9 @@ placeholder node</p>
             <div class="content"><div class='highlight'><pre>					newIndex = newIndex + <span class="hljs-number">1</span>;
 					currentIndex = currentIndex + <span class="hljs-number">1</span>;
 
-					<span class="hljs-keyword">var</span> referenceItem = masterNodeList[newIndex][<span class="hljs-number">0</span>];
-					<span class="hljs-keyword">var</span> movedItem = masterNodeList[currentIndex][<span class="hljs-number">0</span>];
-					<span class="hljs-keyword">var</span> parentNode = referenceItem.parentNode;</pre></div></div>
+					<span class="hljs-keyword">var</span> referenceNodeList = masterNodeList[newIndex];
+					<span class="hljs-keyword">var</span> movedElements = can.frag( nodeLists.flatten(masterNodeList[currentIndex]) );
+					<span class="hljs-keyword">var</span> referenceElement;</pre></div></div>
             
         </li>
         
@@ -669,8 +669,12 @@ nextSibling, insertBefore acts like appendChild.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (currentIndex &lt; newIndex) {
-						referenceItem = referenceItem.nextSibling;
-					}</pre></div></div>
+						referenceElement = nodeLists.last(referenceNodeList).nextSibling;
+					} <span class="hljs-keyword">else</span> {
+						referenceElement = nodeLists.first(referenceNodeList);
+					}
+					
+					<span class="hljs-keyword">var</span> parentNode = referenceElement.parentNode;</pre></div></div>
             
         </li>
         
@@ -685,7 +689,7 @@ nextSibling, insertBefore acts like appendChild.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					parentNode.insertBefore(movedItem, referenceItem);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					parentNode.insertBefore(movedElements, referenceElement);</pre></div></div>
             
         </li>
         
@@ -808,7 +812,8 @@ array</p>
             
             <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (list &amp;&amp; list.unbind) {
 						list.unbind(<span class="hljs-string">'add'</span>, add)
-							.unbind(<span class="hljs-string">'remove'</span>, remove);
+							.unbind(<span class="hljs-string">'remove'</span>, remove)
+							.unbind(<span class="hljs-string">'move'</span>, move);
 					}</pre></div></div>
             
         </li>
