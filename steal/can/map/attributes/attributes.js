@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3
+ * CanJS - 2.2.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 15:31:35 GMT
+ * Fri, 03 Apr 2015 23:27:46 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3#map/attributes/attributes*/
+/*can@2.2.4#map/attributes/attributes*/
 steal('can/util', 'can/map', 'can/list', function (can, Map) {
 	
 	//!steal-remove-start

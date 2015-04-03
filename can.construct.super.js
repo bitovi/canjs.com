@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.2.3
+ * CanJS - 2.2.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 15:31:35 GMT
+ * Fri, 03 Apr 2015 23:27:46 GMT
  * Licensed MIT
  */
 
@@ -67,7 +67,7 @@
 		}
 	};
 })({},window)
-/*can@2.2.3#construct/super/super*/
+/*can@2.2.4#construct/super/super*/
 define('can/construct/super/super', [
     'can/util/util',
     'can/construct/construct'

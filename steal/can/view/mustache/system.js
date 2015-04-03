@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3
+ * CanJS - 2.2.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 15:31:35 GMT
+ * Fri, 03 Apr 2015 23:27:46 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3#view/mustache/system*/
+/*can@2.2.4#view/mustache/system*/
 "format steal";
 steal("can/view/mustache", function(can){
 

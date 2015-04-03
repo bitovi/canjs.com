@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3
+ * CanJS - 2.2.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 15:31:35 GMT
+ * Fri, 03 Apr 2015 23:27:46 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3#view/stache/html_section*/
+/*can@2.2.4#view/stache/html_section*/
 var can = require('../../util/util.js');
 var target = require('../target/target.js');
 var utils = require('./utils.js');

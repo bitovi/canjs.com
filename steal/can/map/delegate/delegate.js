@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3
+ * CanJS - 2.2.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 15:31:35 GMT
+ * Fri, 03 Apr 2015 23:27:46 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3#map/delegate/delegate*/
+/*can@2.2.4#map/delegate/delegate*/
 steal('can/util', 'can/map', function (can) {
 	// ** - 'this' will be the deepest item changed
 	// * - 'this' will be any changes within *, but * will be the 

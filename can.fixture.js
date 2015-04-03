@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.2.3
+ * CanJS - 2.2.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 15:31:35 GMT
+ * Fri, 03 Apr 2015 23:27:46 GMT
  * Licensed MIT
  */
 
@@ -67,7 +67,7 @@
 		}
 	};
 })({},window)
-/*can@2.2.3#util/object/object*/
+/*can@2.2.4#util/object/object*/
 define('can/util/object/object', ['can/util/util'], function (can) {
     var isArray = can.isArray;
     can.Object = {};
@@ -161,7 +161,7 @@ define('can/util/object/object', ['can/util/util'], function (can) {
     compareMethods.eqeq = compareMethods.similar;
     return can.Object;
 });
-/*can@2.2.3#util/fixture/fixture*/
+/*can@2.2.4#util/fixture/fixture*/
 define('can/util/fixture/fixture', [
     'can/util/util',
     'can/util/string/string',

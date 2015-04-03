@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3
+ * CanJS - 2.2.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 15:31:35 GMT
+ * Fri, 03 Apr 2015 23:27:46 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3#list/promise/promise*/
+/*can@2.2.4#list/promise/promise*/
 var list = require('../list.js');
 var oldReplace = can.List.prototype.replace;
 can.List.prototype.replace = function (data) {

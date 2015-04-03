@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3
+ * CanJS - 2.2.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 15:31:35 GMT
+ * Fri, 03 Apr 2015 23:27:46 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3#view/live/live*/
+/*can@2.2.4#view/live/live*/
 steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'can/view/parser',function (can, elements, view, nodeLists, parser) {
 
 	elements = elements || can.view.elements;
@@ -295,7 +295,7 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 						referenceElement = nodeLists.first(referenceNodeList);
 					}
 					
-					var parentNode = referenceElement.parentNode;
+					var parentNode = masterNodeList[0].parentNode;
 
 
 					// Move the DOM nodes into the proper location

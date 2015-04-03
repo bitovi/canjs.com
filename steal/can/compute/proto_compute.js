@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3
+ * CanJS - 2.2.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 15:31:35 GMT
+ * Fri, 03 Apr 2015 23:27:46 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3#compute/proto_compute*/
+/*can@2.2.4#compute/proto_compute*/
 steal('can/util', 'can/util/bind', 'can/compute/read.js','can/util/batch', function (can, bind, read) {
 	var stack = [];
 

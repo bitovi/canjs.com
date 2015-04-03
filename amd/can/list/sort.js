@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3
+ * CanJS - 2.2.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 15:31:35 GMT
+ * Fri, 03 Apr 2015 23:27:46 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3#list/sort/sort*/
+/*can@2.2.4#list/sort/sort*/
 define([
     'can/util/library',
     'can/list'
@@ -19,15 +19,62 @@ define([
         }
         return oldBubble;
     };
-    var proto = can.List.prototype, _changes = proto._changes, setup = proto.setup;
+    var proto = can.List.prototype, _changes = proto._changes, setup = proto.setup, unbind = proto.unbind;
     can.extend(proto, {
-        comparator: undefined,
+        setup: function (instances, options) {
+            setup.apply(this, arguments);
+            this._comparatorBound = false;
+            this._init = 1;
+            this.bind('comparator', can.proxy(this._comparatorUpdated, this));
+            delete this._init;
+            if (this.comparator) {
+                this.sort();
+            }
+        },
+        _comparatorUpdated: function (ev, newValue) {
+            if (newValue || newValue === 0) {
+                this.sort();
+                if (this._bindings > 0 && !this._comparatorBound) {
+                    this.bind('change', this._comparatorBound = function () {
+                    });
+                }
+            } else if (this._comparatorBound) {
+                unbind.call(this, 'change', this._comparatorBound);
+                this._comparatorBound = false;
+            }
+        },
+        unbind: function (ev, handler) {
+            var res = unbind.apply(this, arguments);
+            if (this._comparatorBound && this._bindings === 1) {
+                unbind.call(this, 'change', this._comparatorBound);
+                this._comparatorBound = false;
+            }
+            return res;
+        },
         _comparator: function (a, b) {
             var comparator = this.comparator;
             if (comparator && typeof comparator === 'function') {
                 return comparator(a, b);
             }
             return a === b ? 0 : a < b ? -1 : 1;
+        },
+        _changes: function (ev, attr, how, newVal, oldVal) {
+            if (this.comparator && /^\d+/.test(attr)) {
+                if (ev.batchNum && ev.batchNum !== this._lastBatchNum) {
+                    this.sort();
+                    this._lastBatchNum = ev.batchNum;
+                    return;
+                }
+                var currentIndex = +/^\d+/.exec(attr)[0], item = this[currentIndex];
+                if (typeof item !== 'undefined') {
+                    var newIndex = this._getInsertIndex(item, currentIndex);
+                    if (newIndex !== currentIndex) {
+                        this._swapItems(currentIndex, newIndex);
+                        can.trigger(this, 'length', [this.length]);
+                    }
+                }
+            }
+            _changes.apply(this, arguments);
         },
         _getInsertIndex: function (item, currentIndex) {
             var a = this._getComparatorValue(item), b, offset = 0;
@@ -147,29 +194,5 @@ define([
             proto.push.apply(this, newElements);
         };
     }());
-    proto._changes = function (ev, attr, how, newVal, oldVal) {
-        if (this.comparator && /^\d+/.test(attr)) {
-            if (ev.batchNum && ev.batchNum !== this._lastBatchNum) {
-                this.sort();
-                this._lastBatchNum = ev.batchNum;
-                return;
-            }
-            var currentIndex = +/^\d+/.exec(attr)[0], item = this[currentIndex];
-            if (typeof item !== 'undefined') {
-                var newIndex = this._getInsertIndex(item, currentIndex);
-                if (newIndex !== currentIndex) {
-                    this._swapItems(currentIndex, newIndex);
-                    can.trigger(this, 'length', [this.length]);
-                }
-            }
-        }
-        _changes.apply(this, arguments);
-    };
-    proto.setup = function (instances, options) {
-        setup.apply(this, arguments);
-        if (this.comparator) {
-            this.sort();
-        }
-    };
     return can.Map;
 });

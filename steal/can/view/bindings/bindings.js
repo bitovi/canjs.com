@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3
+ * CanJS - 2.2.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 15:31:35 GMT
+ * Fri, 03 Apr 2015 23:27:46 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3#view/bindings/bindings*/
+/*can@2.2.4#view/bindings/bindings*/
 // # can/view/bindings/bindings.js
 // 
 // This file defines the `can-value` attribute for two-way bindings and the `can-EVENT` attribute 
