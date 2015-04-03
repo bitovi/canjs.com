@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#view/live/live*/
+/*can@2.2.3#view/live/live*/
 define([
     'can/util/library',
     'can/elements',
@@ -65,8 +65,8 @@ define([
         };
     var live = {
             list: function (el, compute, render, context, parentNode, nodeList) {
-                var masterNodeList = nodeList || [el], indexMap = [], setupBatchNum = can.batch.batchNum, add = function (ev, items, index) {
-                        if (ev.batchNum && ev.batchNum === setupBatchNum) {
+                var masterNodeList = nodeList || [el], indexMap = [], afterPreviousEvents = false, add = function (ev, items, index) {
+                        if (!afterPreviousEvents) {
                             return;
                         }
                         var frag = document.createDocumentFragment(), newNodeLists = [], newIndicies = [];
@@ -106,6 +106,9 @@ define([
                             indexMap[i](i);
                         }
                     }, remove = function (ev, items, index, duringTeardown, fullTeardown) {
+                        if (!afterPreviousEvents) {
+                            return;
+                        }
                         if (!duringTeardown && data.teardownCheck(text.parentNode)) {
                             return;
                         }
@@ -127,15 +130,21 @@ define([
                             nodeLists.unregister(masterNodeList);
                         }
                     }, move = function (ev, item, newIndex, currentIndex) {
+                        if (!afterPreviousEvents) {
+                            return;
+                        }
                         newIndex = newIndex + 1;
                         currentIndex = currentIndex + 1;
-                        var referenceItem = masterNodeList[newIndex][0];
-                        var movedItem = masterNodeList[currentIndex][0];
-                        var parentNode = referenceItem.parentNode;
+                        var referenceNodeList = masterNodeList[newIndex];
+                        var movedElements = can.frag(nodeLists.flatten(masterNodeList[currentIndex]));
+                        var referenceElement;
                         if (currentIndex < newIndex) {
-                            referenceItem = referenceItem.nextSibling;
+                            referenceElement = nodeLists.last(referenceNodeList).nextSibling;
+                        } else {
+                            referenceElement = nodeLists.first(referenceNodeList);
                         }
-                        parentNode.insertBefore(movedItem, referenceItem);
+                        var parentNode = referenceElement.parentNode;
+                        parentNode.insertBefore(movedElements, referenceElement);
                         var temp = masterNodeList[currentIndex];
                         [].splice.apply(masterNodeList, [
                             currentIndex,
@@ -148,7 +157,7 @@ define([
                         ]);
                     }, text = document.createTextNode(''), list, teardownList = function (fullTeardown) {
                         if (list && list.unbind) {
-                            list.unbind('add', add).unbind('remove', remove);
+                            list.unbind('add', add).unbind('remove', remove).unbind('move', move);
                         }
                         remove({}, { length: masterNodeList.length - 1 }, 0, true, fullTeardown);
                     }, updateList = function (ev, newList, oldList) {
@@ -157,7 +166,12 @@ define([
                         if (list.bind) {
                             list.bind('add', add).bind('remove', remove).bind('move', move);
                         }
+                        afterPreviousEvents = true;
                         add({}, list, 0);
+                        afterPreviousEvents = false;
+                        can.batch.afterPreviousEvents(function () {
+                            afterPreviousEvents = true;
+                        });
                     };
                 parentNode = elements.getParentNode(el, parentNode);
                 var data = setup(parentNode, function () {

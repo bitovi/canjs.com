@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#view/autorender/autorender*/
+/*can@2.2.3#view/autorender/autorender*/
 'format steal';
 define(['can/util/library'], function (can) {
     var deferred = new can.Deferred(), ignoreAttributesRegExp = /^(dataViewId|class|id|type|src)$/i;
@@ -58,7 +58,7 @@ define(['can/util/library'], function (can) {
         can.each(can.$('[can-autorender]'), function (el, i) {
             el.style.display = 'none';
             var text = el.innerHTML || el.text, typeAttr = el.getAttribute('type'), typeInfo = typeAttr.match(typeMatch), type = typeInfo && typeInfo[1], typeModule = 'can/view/' + type;
-            if (!(window.define && window.define.amd)) {
+            if (window.System || !(window.define && window.define.amd)) {
                 typeModule += '/' + type;
             }
             promises.push(can['import'](typeModule).then(function (engine) {
@@ -75,10 +75,10 @@ define(['can/util/library'], function (can) {
         });
         can.when.apply(can, promises).then(can.proxy(deferred.resolve, deferred), can.proxy(deferred.reject, deferred));
     }
-    if (document.body) {
+    if (document.readyState === 'complete') {
         autoload();
     } else {
-        can.bind.call(document, 'DOMContentLoaded', autoload);
+        can.bind.call(window, 'load', autoload);
     }
     var promise = deferred.promise();
     can.autorender = function (success, error) {

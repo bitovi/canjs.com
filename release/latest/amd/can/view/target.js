@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#view/target/target*/
+/*can@2.2.3#view/target/target*/
 define([
     'can/util/library',
     'can/elements'
@@ -31,7 +31,7 @@ define([
             a.innerHTML = '<xyz></xyz>';
             var clone = a.cloneNode(true);
             return clone.innerHTML === '<xyz></xyz>';
-        }();
+        }(), namespacesWork = typeof document !== 'undefined' && !!document.createElementNS;
     var cloneNode = clonesWork ? function (el) {
             return el.cloneNode(true);
         } : function (node) {
@@ -75,7 +75,11 @@ define([
         };
         if (nodeType === 'object') {
             if (node.tag) {
-                el = document.createElement(node.tag);
+                if (namespacesWork && node.namespace) {
+                    el = document.createElementNS(node.namespace, node.tag);
+                } else {
+                    el = document.createElement(node.tag);
+                }
                 if (node.attrs) {
                     for (var attrName in node.attrs) {
                         var value = node.attrs[attrName];

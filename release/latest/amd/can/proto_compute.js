@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#compute/proto_compute*/
+/*can@2.2.3#compute/proto_compute*/
 define([
     'can/util/library',
     'can/util/bind',
@@ -51,10 +51,9 @@ define([
         var info = can.__read(func, context), newObserveSet = info.observed;
         bindNewSet(oldObserved, newObserveSet, onchanged);
         unbindOldSet(oldObserved, onchanged);
-        can.bind.call(info, 'ready', function () {
+        can.batch.afterPreviousEvents(function () {
             info.ready = true;
         });
-        can.batch.trigger(info, 'ready');
         return info;
     };
     var bindNewSet = function (oldObserved, newObserveSet, onchanged) {

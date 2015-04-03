@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#view/stache/html_section*/
+/*can@2.2.3#view/stache/html_section*/
 define([
     'can/util/library',
     'can/view/target',
@@ -56,14 +56,14 @@ define([
         },
         compile: function () {
             var compiled = this.stack.pop().compile();
-            return function (scope, options) {
+            return function (scope, options, nodeList) {
                 if (!(scope instanceof can.view.Scope)) {
                     scope = new can.view.Scope(scope || {});
                 }
                 if (!(options instanceof mustacheCore.Options)) {
                     options = new mustacheCore.Options(options || {});
                 }
-                return compiled.hydrate(scope, options);
+                return compiled.hydrate(scope, options, nodeList);
             };
         },
         push: function (chars) {

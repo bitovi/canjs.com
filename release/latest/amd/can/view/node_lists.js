@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#view/node_lists/node_lists*/
+/*can@2.2.3#view/node_lists/node_lists*/
 define([
     'can/util/library',
     'can/elements'
@@ -119,6 +119,18 @@ define([
                 } else {
                     return nodeLists.first(first);
                 }
+            },
+            flatten: function (nodeList) {
+                var items = [];
+                for (var i = 0; i < nodeList.length; i++) {
+                    var item = nodeList[i];
+                    if (item.nodeType) {
+                        items.push(item);
+                    } else {
+                        items.push.apply(items, nodeLists.flatten(item));
+                    }
+                }
+                return items;
             },
             register: function (nodeList, unregistered, parent) {
                 nodeList.unregistered = unregistered;

@@ -1,14 +1,14 @@
 /*!
- * CanJS - 2.2.2
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Tue, 31 Mar 2015 17:29:12 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.2#util/mootools/mootools*/
+/*can@2.2.3#util/mootools/mootools*/
 define([
-    'can/can',
+    'can/util/can',
     'can/util/attr',
     'mootools',
     'can/event',
