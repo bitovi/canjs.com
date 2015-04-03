@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3-pre.0
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 20:20:11 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3-pre.0#view/autorender/autorender*/
+/*can@2.2.3#view/autorender/autorender*/
 'format steal';
 define(['can/util/library'], function (can) {
     var deferred = new can.Deferred(), ignoreAttributesRegExp = /^(dataViewId|class|id|type|src)$/i;
@@ -58,7 +58,7 @@ define(['can/util/library'], function (can) {
         can.each(can.$('[can-autorender]'), function (el, i) {
             el.style.display = 'none';
             var text = el.innerHTML || el.text, typeAttr = el.getAttribute('type'), typeInfo = typeAttr.match(typeMatch), type = typeInfo && typeInfo[1], typeModule = 'can/view/' + type;
-            if (!(window.define && window.define.amd)) {
+            if (window.System || !(window.define && window.define.amd)) {
                 typeModule += '/' + type;
             }
             promises.push(can['import'](typeModule).then(function (engine) {

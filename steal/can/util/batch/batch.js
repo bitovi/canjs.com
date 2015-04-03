@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3-pre.0
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 20:20:11 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3-pre.0#util/batch/batch*/
+/*can@2.2.3#util/batch/batch*/
 steal('can/util/can.js', function (can) {
 	// Which batch of events this is for -- might not want to send multiple
 	// messages on the same batch.  This is mostly for event delegation.
@@ -244,6 +244,18 @@ steal('can/util/can.js', function (can) {
 						[event, args]
 					]);
 				}
+			}
+		},
+		afterPreviousEvents: function(handler){
+			if(currentBatchEvents) {
+				var obj = {};
+				can.bind.call(obj,"ready", handler);
+				currentBatchEvents.push([
+					obj,
+					[{type: "ready"}, []]
+				]);
+			} else {
+				handler();
 			}
 		}
 	};

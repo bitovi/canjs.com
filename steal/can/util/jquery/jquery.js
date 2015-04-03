@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3-pre.0
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 20:20:11 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3-pre.0#util/jquery/jquery*/
+/*can@2.2.3#util/jquery/jquery*/
 steal('jquery', 'can/util/can.js', 'can/util/attr', "can/event", 'can/util/array/each.js', "can/util/inserted", function ($, can, attr, event) {
 	var isBindableElement = function (node) {
 		// In IE8 window.window !== window.window, so we allow == here.

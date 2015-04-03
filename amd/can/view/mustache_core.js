@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3-pre.0
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 20:20:11 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3-pre.0#view/stache/mustache_core*/
+/*can@2.2.3#view/stache/mustache_core*/
 define([
     'can/util/library',
     'can/view/utils',
@@ -161,7 +161,8 @@ define([
                         scope: scope,
                         contexts: scope,
                         hash: hash,
-                        nodeList: nodeList
+                        nodeList: nodeList,
+                        exprData: exprData
                     });
                     args.push(helperOptions);
                     return function () {
@@ -177,32 +178,17 @@ define([
                         };
                     }
                 } else if (mode === '#' || mode === '^') {
-                    var valueAndLength = new can.Compute(function () {
-                            var value;
-                            if (can.isFunction(name) && name.isComputed) {
-                                value = name();
-                            } else {
-                                value = name;
-                            }
-                            var len, arrayLike = utils.isArrayLike(value), isObserveList;
-                            if (arrayLike) {
-                                isObserveList = utils.isObserveLike(value);
-                                len = isObserveList ? value.attr('length') : value.length;
-                            }
-                            return {
-                                value: value,
-                                length: len,
-                                isObserveList: isObserveList,
-                                isArrayLike: arrayLike
-                            };
-                        });
                     convertToScopes(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer);
-                    return function () {
-                        var data = valueAndLength.get();
-                        var value = data.value;
-                        if (data.isArrayLike) {
-                            var isObserveList = data.isObserveList;
-                            if (data.length) {
+                    var evaluator = function () {
+                        var value;
+                        if (can.isFunction(name) && name.isComputed) {
+                            value = name();
+                        } else {
+                            value = name;
+                        }
+                        if (utils.isArrayLike(value)) {
+                            var isObserveList = utils.isObserveLike(value);
+                            if (isObserveList ? value.attr('length') : value.length) {
                                 return (stringOnly ? getItemsStringContent : getItemsFragContent)(value, isObserveList, helperOptions, options);
                             } else {
                                 return helperOptions.inverse(scope, options);
@@ -211,6 +197,8 @@ define([
                             return value ? helperOptions.fn(value || scope, options) : helperOptions.inverse(scope, options);
                         }
                     };
+                    evaluator.bindOnce = false;
+                    return evaluator;
                 } else {
                 }
             },
@@ -262,7 +250,7 @@ define([
                     nodeList.expression = expression;
                     nodeLists.register(nodeList, null, state.directlyNested ? parentSectionNodeList || true : true);
                     var evaluator = makeEvaluator(scope, options, nodeList, mode, exprData, truthyRenderer, falseyRenderer, state.tag);
-                    var compute = can.compute(evaluator, null, false, true);
+                    var compute = can.compute(evaluator, null, false, evaluator.bindOnce === false ? false : true);
                     compute.bind('change', can.k);
                     var value = compute();
                     if (typeof value === 'function') {

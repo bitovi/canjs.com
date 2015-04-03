@@ -1,13 +1,13 @@
 /*!
- * CanJS - 2.2.3-pre.0
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 20:20:11 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3-pre.0#util/inserted/inserted*/
-define(['can/can'], function (can) {
+/*can@2.2.3#util/inserted/inserted*/
+define(['can/util/can'], function (can) {
     can.inserted = function (elems) {
         elems = can.makeArray(elems);
         var inDocument = false, doc = can.$(document.contains ? document : document.body), children;

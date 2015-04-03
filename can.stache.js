@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3-pre.0
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 20:20:11 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*[global-shim]*/
+/*[global-shim-start]*/
 (function (exports, global){
 	var origDefine = global.define;
 
@@ -22,7 +22,8 @@
 		}
 		return cur;
 	};
-	var modules = global.define && global.define.modules || {};
+	var modules = (global.define && global.define.modules) ||
+		(global._define && global._define.modules) || {};
 	var ourDefine = global.define = function(moduleName, deps, callback){
 		var module;
 		if(typeof deps === "function") {
@@ -55,6 +56,7 @@
 		// Favor CJS module.exports over the return value
 		modules[moduleName] = module && module.exports ? module.exports : result;
 	};
+	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
 	global.System = {
@@ -65,7 +67,7 @@
 		}
 	};
 })({},window)
-/*can@2.2.3-pre.0#view/target/target*/
+/*can@2.2.3#view/target/target*/
 define('can/view/target/target', [
     'can/util/util',
     'can/view/elements'
@@ -90,7 +92,7 @@ define('can/view/target/target', [
             a.innerHTML = '<xyz></xyz>';
             var clone = a.cloneNode(true);
             return clone.innerHTML === '<xyz></xyz>';
-        }();
+        }(), namespacesWork = typeof document !== 'undefined' && !!document.createElementNS;
     var cloneNode = clonesWork ? function (el) {
             return el.cloneNode(true);
         } : function (node) {
@@ -134,7 +136,11 @@ define('can/view/target/target', [
         };
         if (nodeType === 'object') {
             if (node.tag) {
-                el = document.createElement(node.tag);
+                if (namespacesWork && node.namespace) {
+                    el = document.createElementNS(node.namespace, node.tag);
+                } else {
+                    el = document.createElement(node.tag);
+                }
                 if (node.attrs) {
                     for (var attrName in node.attrs) {
                         var value = node.attrs[attrName];
@@ -220,7 +226,7 @@ define('can/view/target/target', [
     can.view.target = makeTarget;
     return makeTarget;
 });
-/*can@2.2.3-pre.0#view/stache/html_section*/
+/*can@2.2.3#view/stache/html_section*/
 define('can/view/stache/html_section', [
     'can/util/util',
     'can/view/target/target',
@@ -270,14 +276,14 @@ define('can/view/stache/html_section', [
         },
         compile: function () {
             var compiled = this.stack.pop().compile();
-            return function (scope, options) {
+            return function (scope, options, nodeList) {
                 if (!(scope instanceof can.view.Scope)) {
                     scope = new can.view.Scope(scope || {});
                 }
                 if (!(options instanceof mustacheCore.Options)) {
                     options = new mustacheCore.Options(options || {});
                 }
-                return compiled.hydrate(scope, options);
+                return compiled.hydrate(scope, options, nodeList);
             };
         },
         push: function (chars) {
@@ -341,7 +347,7 @@ define('can/view/stache/html_section', [
     });
     return HTMLSectionBuilder;
 });
-/*can@2.2.3-pre.0#view/stache/text_section*/
+/*can@2.2.3#view/stache/text_section*/
 define('can/view/stache/text_section', [
     'can/util/util',
     'can/view/live/live',
@@ -431,7 +437,7 @@ define('can/view/stache/text_section', [
     });
     return TextSectionBuilder;
 });
-/*can@2.2.3-pre.0#view/stache/intermediate_and_imports*/
+/*can@2.2.3#view/stache/intermediate_and_imports*/
 define('can/view/stache/intermediate_and_imports', [
     'can/view/stache/mustache_core',
     'can/view/parser/parser'
@@ -485,7 +491,7 @@ define('can/view/stache/intermediate_and_imports', [
         };
     };
 });
-/*can@2.2.3-pre.0#view/stache/stache*/
+/*can@2.2.3#view/stache/stache*/
 define('can/view/stache/stache', [
     'can/util/util',
     'can/view/parser/parser',
@@ -500,6 +506,11 @@ define('can/view/stache/stache', [
 ], function (can, parser, target, HTMLSectionBuilder, TextSectionBuilder, mustacheCore, mustacheHelpers, getIntermediateAndImports, viewCallbacks) {
     parser = parser || can.view.parser;
     viewCallbacks = viewCallbacks || can.view.callbacks;
+    var svgNamespace = 'http://www.w3.org/2000/svg';
+    var namespaces = {
+            'svg': svgNamespace,
+            'g': svgNamespace
+        };
     function stache(template) {
         if (typeof template === 'string') {
             template = mustacheCore.cleanLineEndings(template);
@@ -508,7 +519,8 @@ define('can/view/stache/stache', [
                 node: null,
                 attr: null,
                 sectionElementStack: [],
-                text: false
+                text: false,
+                namespaceStack: []
             }, makeRendererAndUpdateSection = function (section, mode, stache) {
                 if (mode === '>') {
                     section.add(mustacheCore.makeLiveBindingPartialRenderer(stache, state));
@@ -536,7 +548,7 @@ define('can/view/stache/stache', [
                 var cur = {
                         tag: state.node && state.node.tag,
                         attr: state.attr && state.attr.name,
-                        directlyNested: state.sectionElementStack[state.sectionElementStack.length - 1] === 'section'
+                        directlyNested: state.sectionElementStack.length ? state.sectionElementStack[state.sectionElementStack.length - 1] === 'section' : true
                     };
                 return overwrites ? can.simpleExtend(cur, overwrites) : cur;
             }, addAttributesCallback = function (node, callback) {
@@ -547,9 +559,14 @@ define('can/view/stache/stache', [
             };
         parser(template, {
             start: function (tagName, unary) {
+                var matchedNamespace = namespaces[tagName];
+                if (matchedNamespace && !unary) {
+                    state.namespaceStack.push(matchedNamespace);
+                }
                 state.node = {
                     tag: tagName,
-                    children: []
+                    children: [],
+                    namespace: matchedNamespace || can.last(state.namespaceStack)
                 };
             },
             end: function (tagName, unary) {
@@ -576,6 +593,10 @@ define('can/view/stache/stache', [
                 state.node = null;
             },
             close: function (tagName) {
+                var matchedNamespace = namespaces[tagName];
+                if (matchedNamespace) {
+                    state.namespaceStack.pop();
+                }
                 var isCustomTag = viewCallbacks.tag(tagName), renderer;
                 if (isCustomTag) {
                     renderer = section.endSubSectionAndReturnRenderer();
@@ -733,3 +754,8 @@ define('can/view/stache/stache', [
     };
     return stache;
 });
+/*[global-shim-end]*/
+(function (){
+	window._define = window.define;
+	window.define = window.define.orig;
+})();

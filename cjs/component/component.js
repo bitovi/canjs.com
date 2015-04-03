@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3-pre.0
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 20:20:11 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3-pre.0#component/component*/
+/*can@2.2.3#component/component*/
 var can = require('../util/util.js');
 var viewCallbacks = require('../view/callbacks/callbacks.js');
 require('../control/control.js');
@@ -48,7 +48,11 @@ var Component = can.Component = can.Construct.extend({
         }
     }, {
         setup: function (el, hookupOptions) {
-            var initialScopeData = {}, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && this.template, twoWayBindings = {}, scope = this.scope || this.viewModel, viewModelPropertyUpdates = {}, componentScope, frag;
+            var initialScopeData = {}, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && this.template, twoWayBindings = {}, scope = this.scope || this.viewModel, viewModelPropertyUpdates = {}, componentScope, frag, teardownFunctions = [], callTeardownFunctions = function () {
+                    for (var i = 0, len = teardownFunctions.length; i < len; i++) {
+                        teardownFunctions[i]();
+                    }
+                };
             can.each(this.constructor.attributeScopeMappings, function (val, prop) {
                 initialScopeData[prop] = el.getAttribute(can.hyphenate(val));
             });
@@ -68,20 +72,17 @@ var Component = can.Component = can.Construct.extend({
                 var computeData = hookupOptions.scope.computeData(value, { args: [] }), compute = computeData.compute;
                 var handler = function (ev, newVal) {
                     viewModelPropertyUpdates[name] = (viewModelPropertyUpdates[name] || 0) + 1;
-                    var handler = function () {
-                        --viewModelPropertyUpdates[name];
-                        can.unbind.call(viewModelPropertyUpdates, 'ready', handler);
-                    };
-                    can.bind.call(viewModelPropertyUpdates, 'ready', handler);
                     componentScope.attr(name, newVal);
-                    can.batch.trigger(viewModelPropertyUpdates, 'ready');
+                    can.batch.afterPreviousEvents(function () {
+                        --viewModelPropertyUpdates[name];
+                    });
                 };
                 compute.bind('change', handler);
                 initialScopeData[name] = compute();
                 if (!compute.computeInstance.hasDependencies) {
                     compute.unbind('change', handler);
                 } else {
-                    can.bind.call(el, 'removed', function () {
+                    teardownFunctions.push(function () {
                         compute.unbind('change', handler);
                     });
                     twoWayBindings[name] = computeData;
@@ -129,11 +130,11 @@ var Component = can.Component = can.Construct.extend({
                     };
                 }
             });
-            var tearDownBindings = function () {
+            teardownFunctions.push(function () {
                 can.each(handlers, function (handler, prop) {
                     componentScope.unbind(prop, handlers[prop]);
                 });
-            };
+            });
             this._control = new this.constructor.Control(el, {
                 scope: this.scope,
                 viewModel: this.scope
@@ -142,14 +143,18 @@ var Component = can.Component = can.Construct.extend({
                 var oldDestroy = this._control.destroy;
                 this._control.destroy = function () {
                     oldDestroy.apply(this, arguments);
-                    tearDownBindings();
+                    callTeardownFunctions();
                 };
                 this._control.on();
             } else {
                 can.bind.call(el, 'removed', function () {
-                    tearDownBindings();
+                    callTeardownFunctions();
                 });
             }
+            var nodeList = can.view.nodeLists.register([], undefined, true);
+            teardownFunctions.push(function () {
+                can.view.nodeLists.unregister(nodeList);
+            });
             if (this.constructor.renderer) {
                 if (!options.tags) {
                     options.tags = {};
@@ -163,15 +168,16 @@ var Component = can.Component = can.Construct.extend({
                         options.tags.content = contentHookup;
                     }
                 };
-                frag = this.constructor.renderer(renderedScope, hookupOptions.options.add(options));
+                frag = this.constructor.renderer(renderedScope, hookupOptions.options.add(options), nodeList);
             } else {
                 if (hookupOptions.templateType === 'legacy') {
                     frag = can.view.frag(hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : '');
                 } else {
-                    frag = hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : document.createDocumentFragment();
+                    frag = hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options), nodeList) : document.createDocumentFragment();
                 }
             }
             can.appendChild(el, frag);
+            can.view.nodeLists.update(nodeList, el.childNodes);
         }
     });
 var ComponentControl = can.Control.extend({

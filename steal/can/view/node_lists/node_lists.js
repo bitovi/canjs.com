@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3-pre.0
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 20:20:11 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3-pre.0#view/node_lists/node_lists*/
+/*can@2.2.3#view/node_lists/node_lists*/
 // # can/view/node_lists/node_list.js
 // 
 // `can.view.nodeLists` are used to make sure "directly nested" live-binding
@@ -212,6 +212,10 @@ steal('can/util', 'can/view/elements.js', function (can) {
 			
 			return oldNodes;
 		},
+		// Goes through each node in the list. [el1, el2, el3, ...]
+		// Ginds the nodeList for that node in repacements.  el1's nodeList might look like [el1, [el2]].
+		// Replaces that element and any other elements in the node list with the 
+		// nodelist itself. resulting in [ [el1, [el2]], el3, ...]
 		nestReplacements: function(list){
 			var index = 0,
 				// temporary id map that is limited to this call

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3-pre.0
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 20:20:11 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*[global-shim]*/
+/*[global-shim-start]*/
 (function (exports, global){
 	var origDefine = global.define;
 
@@ -22,7 +22,8 @@
 		}
 		return cur;
 	};
-	var modules = global.define && global.define.modules || {};
+	var modules = (global.define && global.define.modules) ||
+		(global._define && global._define.modules) || {};
 	var ourDefine = global.define = function(moduleName, deps, callback){
 		var module;
 		if(typeof deps === "function") {
@@ -55,6 +56,7 @@
 		// Favor CJS module.exports over the return value
 		modules[moduleName] = module && module.exports ? module.exports : result;
 	};
+	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
 	global.System = {
@@ -65,7 +67,7 @@
 		}
 	};
 })({},window)
-/*can@2.2.3-pre.0#view/autorender/autorender*/
+/*can@2.2.3#view/autorender/autorender*/
 'format steal';
 define('can/view/autorender/autorender', ['can/util/util'], function (can) {
     var deferred = new can.Deferred(), ignoreAttributesRegExp = /^(dataViewId|class|id|type|src)$/i;
@@ -117,7 +119,7 @@ define('can/view/autorender/autorender', ['can/util/util'], function (can) {
         can.each(can.$('[can-autorender]'), function (el, i) {
             el.style.display = 'none';
             var text = el.innerHTML || el.text, typeAttr = el.getAttribute('type'), typeInfo = typeAttr.match(typeMatch), type = typeInfo && typeInfo[1], typeModule = 'can/view/' + type;
-            if (!(window.define && window.define.amd)) {
+            if (window.System || !(window.define && window.define.amd)) {
                 typeModule += '/' + type;
             }
             promises.push(can['import'](typeModule).then(function (engine) {
@@ -145,3 +147,8 @@ define('can/view/autorender/autorender', ['can/util/util'], function (can) {
     };
     return can.autorender;
 });
+/*[global-shim-end]*/
+(function (){
+	window._define = window.define;
+	window.define = window.define.orig;
+})();

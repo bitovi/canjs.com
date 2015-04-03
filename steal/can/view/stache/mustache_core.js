@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3-pre.0
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 20:20:11 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3-pre.0#view/stache/mustache_core*/
+/*can@2.2.3#view/stache/mustache_core*/
 // # can/view/stache/mustache_core.js
 // 
 // This provides helper utilities for Mustache processing. Currently,
@@ -321,7 +321,8 @@ steal("can/util",
 					scope: scope,
 					contexts: scope,
 					hash: hash,
-					nodeList: nodeList
+					nodeList: nodeList,
+					exprData: exprData
 				});
 
 				args.push(helperOptions);
@@ -347,39 +348,20 @@ steal("can/util",
 				}
 			} else if( mode === "#" || mode === "^" ) {
 				// Setup renderers.
-				var valueAndLength = new can.Compute(function(){
+				convertToScopes(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer);
+				var evaluator = function(){
+					// Get the value
 					var value;
 					if (can.isFunction(name) && name.isComputed) {
 						value = name();
 					} else {
 						value = name;
 					}
-					var len,
-						arrayLike = utils.isArrayLike(value),
-						isObserveList;
-					if ( arrayLike ) {
-						isObserveList = utils.isObserveLike(value);
-						len = isObserveList ? value.attr("length") : value.length;
-					}
-					return {
-						
-						value: value,
-						length: len,
-						isObserveList: isObserveList,
-						isArrayLike: arrayLike
-					};
-				});
-				convertToScopes(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer);
-				return function(){
-					var data = valueAndLength.get();
-					// Get the value
-					var value = data.value;
-
 					// If it's an array, render.
-					if (data.isArrayLike ) {
-						var isObserveList = data.isObserveList;
+					if (utils.isArrayLike(value) ) {
+						var isObserveList = utils.isObserveLike(value);
 						
-						if(data.length) {
+						if(isObserveList ? value.attr("length") : value.length) {
 							return (stringOnly ? getItemsStringContent: getItemsFragContent  )
 								(value, isObserveList, helperOptions, options);
 						} else {
@@ -391,6 +373,8 @@ steal("can/util",
 						return value ? helperOptions.fn(value || scope, options) : helperOptions.inverse(scope, options);
 					}
 				};
+				evaluator.bindOnce = false;
+				return evaluator;
 			} else {
 				// not supported!
 			}
@@ -517,7 +501,7 @@ steal("can/util",
 				// parent expresions.  If this value changes, the parent expressions should
 				// not re-evaluate. We prevent that by making sure this compute is ignored by 
 				// everyone else.
-				var compute = can.compute(evaluator, null, false, true);
+				var compute = can.compute(evaluator, null, false, evaluator.bindOnce === false ?  false : true);
 				
 				// Bind on the compute to set the cached value. This helps performance
 				// so live binding can read a cached value instead of re-calculating.

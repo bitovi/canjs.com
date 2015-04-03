@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3-pre.0
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 20:20:11 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3-pre.0#view/stache/stache*/
+/*can@2.2.3#view/stache/stache*/
 define([
     'can/util/library',
     'can/view/parser',
@@ -21,6 +21,11 @@ define([
 ], function (can, parser, target, HTMLSectionBuilder, TextSectionBuilder, mustacheCore, mustacheHelpers, getIntermediateAndImports, viewCallbacks) {
     parser = parser || can.view.parser;
     viewCallbacks = viewCallbacks || can.view.callbacks;
+    var svgNamespace = 'http://www.w3.org/2000/svg';
+    var namespaces = {
+            'svg': svgNamespace,
+            'g': svgNamespace
+        };
     function stache(template) {
         if (typeof template === 'string') {
             template = mustacheCore.cleanLineEndings(template);
@@ -29,7 +34,8 @@ define([
                 node: null,
                 attr: null,
                 sectionElementStack: [],
-                text: false
+                text: false,
+                namespaceStack: []
             }, makeRendererAndUpdateSection = function (section, mode, stache) {
                 if (mode === '>') {
                     section.add(mustacheCore.makeLiveBindingPartialRenderer(stache, state));
@@ -57,7 +63,7 @@ define([
                 var cur = {
                         tag: state.node && state.node.tag,
                         attr: state.attr && state.attr.name,
-                        directlyNested: state.sectionElementStack[state.sectionElementStack.length - 1] === 'section'
+                        directlyNested: state.sectionElementStack.length ? state.sectionElementStack[state.sectionElementStack.length - 1] === 'section' : true
                     };
                 return overwrites ? can.simpleExtend(cur, overwrites) : cur;
             }, addAttributesCallback = function (node, callback) {
@@ -68,9 +74,14 @@ define([
             };
         parser(template, {
             start: function (tagName, unary) {
+                var matchedNamespace = namespaces[tagName];
+                if (matchedNamespace && !unary) {
+                    state.namespaceStack.push(matchedNamespace);
+                }
                 state.node = {
                     tag: tagName,
-                    children: []
+                    children: [],
+                    namespace: matchedNamespace || can.last(state.namespaceStack)
                 };
             },
             end: function (tagName, unary) {
@@ -97,6 +108,10 @@ define([
                 state.node = null;
             },
             close: function (tagName) {
+                var matchedNamespace = namespaces[tagName];
+                if (matchedNamespace) {
+                    state.namespaceStack.pop();
+                }
                 var isCustomTag = viewCallbacks.tag(tagName), renderer;
                 if (isCustomTag) {
                     renderer = section.endSubSectionAndReturnRenderer();

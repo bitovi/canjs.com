@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3-pre.0
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 20:20:11 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3-pre.0#util/can*/
+/*can@2.2.3#util/can*/
 var glbl = typeof window !== 'undefined' ? window : global;
 var can = {};
 if (typeof GLOBALCAN === 'undefined' || GLOBALCAN !== false) {
@@ -29,12 +29,15 @@ can.cid = function (object, name) {
     }
     return object._cid;
 };
-can.VERSION = '2.2.3-pre.0';
+can.VERSION = '2.2.3';
 can.simpleExtend = function (d, s) {
     for (var prop in s) {
         d[prop] = s[prop];
     }
     return d;
+};
+can.last = function (arr) {
+    return arr && arr[arr.length - 1];
 };
 can.frag = function (item) {
     var frag;

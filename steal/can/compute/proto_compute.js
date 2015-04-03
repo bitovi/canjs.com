@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3-pre.0
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 20:20:11 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3-pre.0#compute/proto_compute*/
+/*can@2.2.3#compute/proto_compute*/
 steal('can/util', 'can/util/bind', 'can/compute/read.js','can/util/batch', function (can, bind, read) {
 	var stack = [];
 
@@ -58,11 +58,10 @@ steal('can/util', 'can/util/bind', 'can/compute/read.js','can/util/batch', funct
 		// Go through what needs to be observed.
 		bindNewSet(oldObserved, newObserveSet, onchanged);
 		unbindOldSet(oldObserved, onchanged);
-		// set ready only after all events that might be caused by a change
-		can.bind.call(info,"ready", function(){
+		// set ready after all previous events have fired
+		can.batch.afterPreviousEvents(function(){
 			info.ready = true;
 		});
-		can.batch.trigger(info,"ready");
 		
 		return info;
 	};

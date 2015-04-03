@@ -1,13 +1,13 @@
 /*!
- * CanJS - 2.2.3-pre.0
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 20:20:11 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3-pre.0#util/batch/batch*/
-define(['can/can'], function (can) {
+/*can@2.2.3#util/batch/batch*/
+define(['can/util/can'], function (can) {
     var batchNum = 1, transactions = 0, batchEvents = [], stopCallbacks = [], currentBatchEvents = null;
     can.batch = {
         start: function (batchStopHandler) {
@@ -68,6 +68,21 @@ define(['can/can'], function (can) {
                         ]
                     ]);
                 }
+            }
+        },
+        afterPreviousEvents: function (handler) {
+            if (currentBatchEvents) {
+                var obj = {};
+                can.bind.call(obj, 'ready', handler);
+                currentBatchEvents.push([
+                    obj,
+                    [
+                        { type: 'ready' },
+                        []
+                    ]
+                ]);
+            } else {
+                handler();
             }
         }
     };

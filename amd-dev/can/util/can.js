@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.3-pre.0
+ * CanJS - 2.2.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 02 Apr 2015 20:20:11 GMT
+ * Fri, 03 Apr 2015 15:31:35 GMT
  * Licensed MIT
  */
 
-/*can@2.2.3-pre.0#util/can*/
+/*can@2.2.3#util/can*/
 define([], function () {
     var glbl = typeof window !== 'undefined' ? window : global;
     var can = {};
@@ -30,12 +30,15 @@ define([], function () {
         }
         return object._cid;
     };
-    can.VERSION = '2.2.3-pre.0';
+    can.VERSION = '2.2.3';
     can.simpleExtend = function (d, s) {
         for (var prop in s) {
             d[prop] = s[prop];
         }
         return d;
+    };
+    can.last = function (arr) {
+        return arr && arr[arr.length - 1];
     };
     can.frag = function (item) {
         var frag;
@@ -104,6 +107,41 @@ define([], function () {
         return deferred.promise();
     };
     can.__reading = function () {
+    };
+    can.dev = {
+        warnTimeout: 5000,
+        logLevel: 0,
+        warn: function (out) {
+            var ll = this.logLevel;
+            if (ll < 2) {
+                Array.prototype.unshift.call(arguments, 'WARN:');
+                if (typeof window !== undefined && window.console && console.warn) {
+                    this._logger('warn', Array.prototype.slice.call(arguments));
+                } else if (window.console && console.log) {
+                    this._logger('log', Array.prototype.slice.call(arguments));
+                } else if (window.opera && window.opera.postError) {
+                    window.opera.postError('steal.js WARNING: ' + out);
+                }
+            }
+        },
+        log: function (out) {
+            var ll = this.logLevel;
+            if (ll < 1) {
+                if (window.console && console.log) {
+                    Array.prototype.unshift.call(arguments, 'Info:');
+                    this._logger('log', Array.prototype.slice.call(arguments));
+                } else if (window.opera && window.opera.postError) {
+                    window.opera.postError('steal.js INFO: ' + out);
+                }
+            }
+        },
+        _logger: function (type, arr) {
+            if (console.log.apply) {
+                console[type].apply(console, arr);
+            } else {
+                console[type](arr);
+            }
+        }
     };
     return can;
 });
