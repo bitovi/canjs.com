@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -750,7 +751,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/1.1-legacy/view/mustache/mustache.js">source</a></li>
 	
@@ -895,7 +896,7 @@ of the key and renders the block between the helper and the slash.</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Mustache.htags","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"},"type":"function","name":"can.Mustache.helpers.unless","description":"","title":"{{#unless key}}","order":4,"signatures":[{"code":"{{#unless key}}BLOCK{{/unless}}","description":"<p>Render the block of text if the key's value is falsey.</p>\n","params":[{"types":[{"type":"can.Mustache.key"}],"name":"key","description":"<p>A key that references a value within the current or parent\ncontext. If the value is a function or can.compute, the function's\nreturn value is used.</p>\n"},{"types":[{"type":"can.Mustache"}],"name":"BLOCK","description":"<p>A template that is rendered\nif the <code>key</code>'s value is falsey.</p>\n"}]}],"comment":" ","src":"view/mustache/mustache.js"};
+		var docObject = {"type":"function","name":"can.Mustache.helpers.unless","parent":"can.Mustache.htags","src":"view/mustache/mustache.js","line":1768,"codeLine":1792,"description":"","title":"{{#unless key}}","order":4,"signatures":[{"code":"{{#unless key}}BLOCK{{/unless}}","description":"Render the block of text if the key's value is falsey.","params":[{"types":[{"type":"can.Mustache.key"}],"name":"key","description":"A key that references a value within the current or parent \ncontext. If the value is a function or can.compute, the function's \nreturn value is used."},{"types":[{"type":"can.Mustache"}],"name":"BLOCK","description":"A template that is rendered \nif the `key`'s value is falsey."}]}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/1.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"}};
 	</script>
 	
 	
@@ -908,6 +909,7 @@ of the key and renders the block between the helper and the slash.</p>
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

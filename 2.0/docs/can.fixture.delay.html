@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -377,7 +378,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/util/fixture/fixture.js">source</a></li>
 	
@@ -432,11 +433,7 @@ functional synchronous fixtures that return a result. By default, the delay is 2
 
 		
 		<section class="comment">
-			<pre><code class="language-js">steal('can/util/fixtures').then(function(){
-  can.fixture.delay = 1000;
-})
-</code></pre>
-
+			
 		</section>
 		
 		
@@ -497,7 +494,7 @@ functional synchronous fixtures that return a result. By default, the delay is 2
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.fixture","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"name":"can.fixture.delay","type":"property","description":"<p><code>can.fixture.delay</code> indicates the delay in milliseconds between an ajax request is made and\nthe success and complete handlers are called.  This only sets\nfunctional synchronous fixtures that return a result. By default, the delay is 200ms.</p>\n","types":[{"type":"Number"}],"title":"delay","src":"util/fixture/fixture.js"};
+		var docObject = {"name":"can.fixture.delay","type":"property","parent":"can.fixture","src":"util/fixture/fixture.js","line":910,"codeLine":924,"description":"`can.fixture.delay` indicates the delay in milliseconds between an ajax request is made and\nthe success and complete handlers are called.  This only sets\nfunctional synchronous fixtures that return a result. By default, the delay is 200ms.","types":[{"type":"Number"}],"title":"delay","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
 	
 	
@@ -510,6 +507,7 @@ functional synchronous fixtures that return a result. By default, the delay is 2
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

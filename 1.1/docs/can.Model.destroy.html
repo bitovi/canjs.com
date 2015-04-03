@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -384,6 +385,21 @@
 			
 		
 			
+				
+				
+					<li class="search-container  ">
+						<a 	class="property" 
+							href="can.Model.removeAttr.html" 
+							data-search="removeAttr">
+							removeAttr
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
 		
 			
 				
@@ -522,7 +538,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/1.1-legacy/model/model.js">source</a></li>
 	
@@ -721,7 +737,7 @@ instance from the server.</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Model.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"},"name":"can.Model.destroy","type":"function","description":"<p>Destroy a resource on the server.</p>\n","title":"destroy","signatures":[{"code":"can.Model.destroy: function(id) -> deferred","description":"<p>If you provide a function, the Model will expect you to do your own AJAX requests.</p>\n","params":[{"types":[{"type":"*"}],"name":"id","description":"<p>The ID of the resource to destroy.</p>\n"}],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A Deferred that resolves to the destroyed model.</p>\n"}},{"code":"can.Model.destroy: \"[METHOD] /path/to/resource\"","description":"<p>If you provide a URL, the Model will send a request to that URL using\nthe method specified (or DELETE if none is specified) when deleting an\ninstance on the server. (See below for more details.)</p>\n","params":[],"returns":{"types":[{"type":"can.Deferred"}],"description":"<p>A Deferred that resolves to the destroyed model.</p>\n"}}],"comment":" ","src":"model/model.js"};
+		var docObject = {"name":"can.Model.destroy","type":"function","parent":"can.Model.static","src":"model/model.js","line":398,"codeLine":460,"description":"Destroy a resource on the server.","title":"destroy","signatures":[{"code":"can.Model.destroy: function(id) -> deferred","description":"If you provide a function, the Model will expect you to do your own AJAX requests.","params":[{"types":[{"type":"*"}],"name":"id","description":"The ID of the resource to destroy."}],"returns":{"types":[{"type":"can.Deferred"}],"description":"A Deferred that resolves to the destroyed model."}},{"code":"can.Model.destroy: \"[METHOD] /path/to/resource\"","description":"If you provide a URL, the Model will send a request to that URL using\nthe method specified (or DELETE if none is specified) when deleting an\ninstance on the server. (See below for more details.)","params":[],"returns":{"types":[{"type":"can.Deferred"}],"description":"A Deferred that resolves to the destroyed model."}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/1.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"}};
 	</script>
 	
 	
@@ -734,6 +750,7 @@ instance from the server.</p>
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

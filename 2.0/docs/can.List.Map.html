@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -497,7 +498,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/list/list.js">source</a></li>
 	
@@ -633,7 +634,7 @@ user.fullName() //-&gt; &quot;Justin Meyer&quot;
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.List.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"name":"can.List.Map","type":"property","description":"<p>Specify the Map type used to make objects added to this list observable.</p>\n","types":[{"type":"can.Map","description":"<p>When objects are added to a can.List, those objects are\nconverted into can.Map instances.  For example:</p>\n<pre><code>var list = new can.List();\nlist.push({name: &quot;Justin&quot;});\n\nvar map = list.attr(0);\nmap.attr(&quot;name&quot;) //-&gt; &quot;Justin&quot;\n</code></pre>\n<p>By changing [can.List.Map], you can specify a different type of Map instance to\ncreate. For example:</p>\n<pre><code>var User = can.Map.extend({\n  fullName: function(){\n    return this.attr(&quot;first&quot;)+&quot; &quot;+this.attr(&quot;last&quot;)\n  }\n});\n\nUser.List = can.List.extend({\n  Map: User\n}, {});\n\nvar list = new User.List();\nlist.push({first: &quot;Justin&quot;, last: &quot;Meyer&quot;});\n\nvar user = list.attr(0);\nuser.fullName() //-&gt; &quot;Justin Meyer&quot;\n</code></pre>\n"}],"title":"","src":"list/list.js"};
+		var docObject = {"name":"can.List.Map","type":"property","parent":"can.List.static","src":"list/list.js","line":22,"codeLine":58,"description":"Specify the Map type used to make objects added to this list observable.","types":[{"type":"can.Map","description":"When objects are added to a can.List, those objects are\nconverted into can.Map instances.  For example:\n\n    var list = new can.List();\n    list.push({name: \"Justin\"});\n\n    var map = list.attr(0);\n    map.attr(\"name\") //-> \"Justin\"\n\nBy changing [can.List.Map], you can specify a different type of Map instance to\ncreate. For example:\n\n    var User = can.Map.extend({\n      fullName: function(){\n        return this.attr(\"first\")+\" \"+this.attr(\"last\")\n      }\n    });\n\n    User.List = can.List.extend({\n      Map: User\n    }, {});\n\n    var list = new User.List();\n    list.push({first: \"Justin\", last: \"Meyer\"});\n\n    var user = list.attr(0);\n    user.fullName() //-> \"Justin Meyer\""}],"title":"","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
 	
 	
@@ -646,6 +647,7 @@ user.fullName() //-&gt; &quot;Justin Meyer&quot;
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

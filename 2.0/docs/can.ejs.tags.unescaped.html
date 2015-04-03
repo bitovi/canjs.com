@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -147,6 +148,12 @@
 			
 		
 			
+		
+			
+		
+			
+		
+			
 				
 					
 					<li class="heading search-container">
@@ -157,7 +164,7 @@
 			
 				
 				
-					<li class="search-container parent ">
+					<li class="search-container  ">
 						<a 	class="function" 
 							href="can.EJS.prototype.render.html" 
 							data-search="render">
@@ -377,7 +384,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/view/ejs/tags.unescaped.md">source</a></li>
 	
@@ -483,7 +490,7 @@ for sub-templates.</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.EJS.tags","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"type":"function","name":"can.EJS.tags.unescaped","description":"","title":"<%== CODE %>","order":2,"signatures":[{"code":"<%== CODE %>","description":"<p>Runs JS Code and writes the <em>unescaped</em> result into the result of the template.</p>\n<p>The following results in &quot;my favorite element is <B>B</B>.&quot;. Using <code>&lt;%==</code> is useful\nfor sub-templates.</p>\n<pre><code>     &lt;div&gt;my favorite element is &lt;%== '&lt;B&gt;B&lt;/B&gt;' %&gt;.&lt;/div&gt;\n</code></pre>\n","params":[]}],"src":"view/ejs/tags.unescaped.md"};
+		var docObject = {"type":"function","name":"can.EJS.tags.unescaped","src":"view/ejs/tags.unescaped.md","description":"","title":"<%== CODE %>","parent":"can.EJS.tags","order":2,"signatures":[{"code":"<%== CODE %>","description":"Runs JS Code and writes the _unescaped_ result into the result of the template.\n\nThe following results in \"my favorite element is <B>B</B>.\". Using `<%==` is useful\nfor sub-templates.\n     \n         <div>my favorite element is <%== '<B>B</B>' %>.</div>","params":[]}],"ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
 	
 	
@@ -496,6 +503,7 @@ for sub-templates.</p>
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

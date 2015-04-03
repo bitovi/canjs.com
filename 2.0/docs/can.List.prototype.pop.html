@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -499,7 +500,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/list/list.js">source</a></li>
 	
@@ -562,16 +563,6 @@
 		
 		<section class="comment">
 			<p><code>pop</code> is the opposite action from <code>[can.List.push push]</code>:</p>
-<pre><code class="language-js">var list = new can.List(['Alice']);
-
-list.push('Bob', 'Eve');
-list.attr(); // ['Alice', 'Bob', 'Eve']
-
-list.pop(); // 'Eve'
-list.pop(); // 'Bob'
-list.pop(); // 'Alice'
-list.pop(); // undefined
-</code></pre>
 <h2>Events</h2>
 <p><code>pop</code> causes <em>change</em>, <em>remove</em>, and <em>length</em> events to be fired if the List is not empty
 when it is called.</p>
@@ -639,7 +630,7 @@ looking for <a href="can.List.prototype.unshift.html">unshift</a> and its counte
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.List.prototype","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"name":"can.List.prototype.pop","type":"function","description":"<p>Remove an element from the end of a List.</p>\n","title":"pop","signatures":[{"code":"list.pop()","description":"<p><code>push</code> removes an element from the end of a List.</p>\n","params":[],"returns":{"types":[{"type":"*"}],"description":"<p>the element just popped off the List, or <code>undefined</code> if the List was empty</p>\n"}}],"comment":" ","src":"list/list.js"};
+		var docObject = {"name":"can.List.prototype.pop","type":"function","parent":"can.List.prototype","src":"list/list.js","line":704,"codeLine":738,"description":"Remove an element from the end of a List.","title":"pop","signatures":[{"code":"list.pop()","description":"`push` removes an element from the end of a List.","params":[],"returns":{"types":[{"type":"*"}],"description":"the element just popped off the List, or `undefined` if the List was empty"}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
 	
 	
@@ -652,6 +643,7 @@ looking for <a href="can.List.prototype.unshift.html">unshift</a> and its counte
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

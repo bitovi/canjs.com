@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -228,7 +229,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/route/pushstate/binding.md">source</a></li>
 	
@@ -326,7 +327,7 @@ part that is used for matching routes.</p>
 	
 	<li class="parameter">
 		<h4>setURL
-			<code>{function(<a href="path.html" >path</a>)}</code></h4>
+			<code>{function(path)}</code></h4>
 		<div class="description">
 			<p>Called with the
 serialized can.route data after a route has changed.
@@ -339,7 +340,7 @@ Returns what the url has been updated to.</p>
 			
 			<li class="option">
 				<h5> 
-					<code>{<a href="path.html" >path</a>}</code>
+					<code>{path}</code>
 				</h5>
 				<div class="description">
 					
@@ -449,7 +450,7 @@ when the url has changed.  Typically <code>bind</code> is called when <a href="c
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"type":"typedef","name":"can.route.binding","description":"","title":"","types":[{"type":"Object","options":[{"name":"root","description":"<p>The starting point of\nthe url to match. For <code>hashchange</code>, the value\nis &quot;#!&quot;. For <code>pushstate</code>, the value is <code>/</code>.  This can\nbe overwritten before [can.route.ready] is called like:</p>\n<pre><code>can.route.bindings.pushstate.root = &quot;/site/&quot;\n</code></pre>\n","types":[{"type":"String"}]},{"name":"querySeparator","description":"<p>Specifies the seperator\nbetween the path part of the url and the query (also known as search)\npart of the url. For <code>hashchange</code>, the value\nis <code>&quot;&amp;&quot;</code>. For <code>pushstate</code>, the value is <code>&quot;?&quot;</code>.</p>\n","types":[{"type":"String"}]},{"name":"paramsMatcher","description":"<p>A regular expression that is used\nto identify the <code>key=value</code> pairs in the query part of the url.</p>\n","types":[{"type":"RegExp"}]},{"name":"matchingPartOfURL","description":"<p>Reads the url and returns the\npart that is used for matching routes.</p>\n","types":[{"type":"function","returns":{"types":[{"type":"String"}]},"params":[]}]},{"name":"setURL","description":"<p>Called with the\nserialized can.route data after a route has changed.\nReturns what the url has been updated to.</p>\n","types":[{"type":"function","returns":{"types":[{"type":"String"}]},"params":[{"types":[{"type":"path"}]}]}]},{"name":"bind","description":"<p>Attaches listeners to the document to know\nwhen the url has changed.  Typically <code>bind</code> is called when [can.route.ready] is called.</p>\n","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]},{"name":"unbind","description":"<p>Tears down the bindings to the document.</p>\n","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]}]}],"src":"route/pushstate/binding.md"};
+		var docObject = {"type":"typedef","name":"can.route.binding","src":"route/pushstate/binding.md","description":"","title":"","types":[{"type":"Object","options":[{"name":"root","description":"The starting point of \nthe url to match. For `hashchange`, the value\nis \"#!\". For `pushstate`, the value is `/`.  This can\nbe overwritten before [can.route.ready] is called like:\n\n    can.route.bindings.pushstate.root = \"/site/\"","types":[{"type":"String"}]},{"name":"querySeparator","description":"Specifies the seperator\nbetween the path part of the url and the query (also known as search)\npart of the url. For `hashchange`, the value\nis `\"&\"`. For `pushstate`, the value is `\"?\"`.","types":[{"type":"String"}]},{"name":"paramsMatcher","description":"A regular expression that is used\nto identify the `key=value` pairs in the query part of the url.","types":[{"type":"RegExp"}]},{"name":"matchingPartOfURL","description":"Reads the url and returns the\npart that is used for matching routes.","types":[{"type":"function","returns":{"types":[{"type":"String"}]},"params":[]}]},{"name":"setURL","description":"Called with the \nserialized can.route data after a route has changed.\nReturns what the url has been updated to.","types":[{"type":"function","returns":{"types":[{"type":"String"}]},"params":[{"types":[{"type":"path"}]}]}]},{"name":"bind","description":"Attaches listeners to the document to know\nwhen the url has changed.  Typically `bind` is called when [can.route.ready] is called.","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]},{"name":"unbind","description":"Tears down the bindings to the document.","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]}]}],"ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
 	
 	
@@ -462,6 +463,7 @@ when the url has changed.  Typically <code>bind</code> is called when <a href="c
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

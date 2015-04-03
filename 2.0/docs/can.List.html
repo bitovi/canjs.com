@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -493,9 +494,9 @@
 </div>
 
 <ul class="links">
-    
-        <li><a href="../docco/list.html">docco</a></li>
-    
+	
+		<li><a href="../docco/list.html">docco</a></li>
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/list/list.js">source</a></li>
 	
@@ -641,27 +642,6 @@ hobbies.attr()         //-&gt; [&quot;JavaScript&quot;,&quot;Party Rocking&quot;
 of a List directly. Always use <code>attr</code> to set the elements of a List, or use <a href="can.List.prototype.push.html">push</a>,
 <a href="can.List.prototype.pop.html">pop</a>, <a href="can.List.prototype.shift.html">shift</a>, <a href="can.List.prototype.unshift.html">unshift</a>, or <a href="can.List.prototype.splice.html">splice</a>.</p>
 <p>Here is a tour through the forms of <code>can.List</code>'s <code>attr</code> that parallels the one found under <a href="can.Map.prototype.attr.html">attr</a>:</p>
-<pre><code class="language-js">var people = new can.List(['Alex', 'Bill']);
-
-// set an element:
-people.attr(0, 'Adam');
-people[0] = 'Adam'; // don't do this!
-
-// get an element:
-people.attr(0); // 'Adam'
-people[0]; // 'Adam'
-
-// get all elements:
-people.attr(); // ['Adam', 'Bill']
-
-// extend the array:
-people.attr(4, 'Charlie');
-people.attr(); // ['Adam', 'Bill', undefined, undefined, 'Charlie']
-
-// merge the elements:
-people.attr(['Alice', 'Bob', 'Eve']);
-people.attr(); // ['Alice', 'Bob', 'Eve', undefined, 'Charlie']
-</code></pre>
 <h2>Listening to changes</h2>
 <p>As with <code>can.Map</code>s, the real power of observable arrays comes from being able to
 react to changes in the member elements of the array. Lists emit five types of events:</p>
@@ -673,34 +653,6 @@ react to changes in the member elements of the array. Lists emit five types of e
 <li>the <em>length</em> event is fired when the length of the List changes.</li>
 </ul>
 <p>This example presents a brief concrete survey of the times these events are fired:</p>
-<pre><code class="language-js">var list = new can.List(['Alice', 'Bob', 'Eve']);
-
-list.bind('change', function() { console.log('An element changed.'); });
-list.bind('set', function() { console.log('An element was set.'); });
-list.bind('add', function() { console.log('An element was added.'); });
-list.bind('remove', function() { 
-  console.log('An element was removed.'); 
-});
-list.bind('length', function() { 
-  console.log('The length of the list changed.'); 
-});
-
-list.attr(0, 'Alexis'); // 'An element changed.'
-                        // 'An element was set.'
-
-list.attr(3, 'Xerxes'); // 'An element changed.'
-                        // 'An element was added.'
-                        // 'The length of the list was changed.'
-
-list.attr(['Adam', 'Bill']); // 'An element changed.'
-                             // 'An element was set.'
-                             // 'An element was changed.'
-                             // 'An element was set.'
-
-list.pop(); // 'An element changed.'
-            // 'An element was removed.'
-            // 'The length of the list was changed.'
-</code></pre>
 <p>More information about binding to these events can be found under <a href="can.List.prototype.attr.html">attr</a>.</p>
 
 		</section>
@@ -763,7 +715,7 @@ list.pop(); // 'An element changed.'
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"type":"constructor","name":"can.List","description":"<p>Use for observable array-like objects.</p>\n","title":"","inherits":"can.Map","download":"can/map","test":"can/map/qunit.html","links":[{"href":"../docco/list.html","title":"docco"}],"signatures":[{"code":"new can.List([array])","description":"<p>Create an observable array-like object.</p>\n","params":[{"types":[{"type":"Array","options":[]}],"optional":true,"name":"array","description":"<p>Items to seed the List with.</p>\n"}],"returns":{"types":[{"type":"can.List"}],"description":"<p>An instance of <code>can.List</code> with the elements from <em>array</em>.</p>\n"}},{"code":"new can.List(deferred)","description":"","params":[{"types":[{"type":"can.Deferred"}],"name":"deferred","description":"<p>A deferred that resolves to an\narray.  When the deferred resolves, its values will be added to the list.</p>\n"}],"returns":{"types":[{"type":"can.List"}],"description":"<p>An initially empty <code>can.List</code>.</p>\n"}}],"comment":" ","src":"list/list.js"};
+		var docObject = {"type":"constructor","name":"can.List","src":"list/list.js","description":"Use for observable array-like objects.","title":"","inherits":"can.Map","download":"can/map","test":"can/map/qunit.html","parent":"canjs","links":[{"href":"../docco/list.html","title":"docco"}],"signatures":[{"code":"new can.List([array])","description":"Create an observable array-like object.","params":[{"types":[{"type":"Array","options":[]}],"optional":true,"name":"array","description":"Items to seed the List with."}],"returns":{"types":[{"type":"can.List"}],"description":"An instance of `can.List` with the elements from _array_."}},{"code":"new can.List(deferred)","description":"","params":[{"types":[{"type":"can.Deferred"}],"name":"deferred","description":"A deferred that resolves to an \narray.  When the deferred resolves, its values will be added to the list."}],"returns":{"types":[{"type":"can.List"}],"description":"An initially empty `can.List`."}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
 	
 	
@@ -776,6 +728,7 @@ list.pop(); // 'An element changed.'
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

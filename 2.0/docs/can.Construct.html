@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -463,9 +464,9 @@
 </div>
 
 <ul class="links">
-    
-        <li><a href="../docco/construct.html">docco</a></li>
-    
+	
+		<li><a href="../docco/construct.html">docco</a></li>
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/construct/construct.js">source</a></li>
 	
@@ -639,35 +640,6 @@ constructor, allowing you to imitate static properties and functions. You can ac
 properties through the <code><a href="can.Construct.prototype.constructor.html">this.constructor</a></code> property.</p>
 <p>Static properties can get overridden through inheritance just like instance properties. In the example below,
 we override both the legs static property as well as the the init function for each instance:</p>
-<pre><code class="language-js">var Animal = can.Construct.extend({
-    legs: 4
-}, {
-    init: function(sound) {
-        this.sound = sound;
-    },
-    speak: function() {
-        console.log(this.sound);
-    }
-});
-
-var Snake = Animal.extend({
-    legs: 0
-}, {
-    init: function() {
-        this.sound = 'ssssss';
-    },
-    slither: function() {
-        console.log('slithering...');
-    }
-});
-
-Animal.legs; // 4
-Snake.legs; // 0
-var dog = new Animal('woof');
-var blackMamba = new Snake();
-dog.speak(); // 'woof'
-blackMamba.speak(); // 'ssssss'
-</code></pre>
 <h2>Plugins</h2>
 <p>There are two plugins available to help make using <code>can.Construct</code> even simpler.</p>
 <ul>
@@ -735,7 +707,7 @@ blackMamba.speak(); // 'ssssss'
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"type":"constructor","name":"can.Construct","description":"<p>Provides a way to easily use the power of prototypal inheritance\nwithout worrying about hooking up all the particulars yourself. Use\n[can.Construct.extend can.Construct.extend] to create a inheritable\nconstructor function of your own.</p>\n","title":"","download":"can/construct","test":"can/construct/test.html","links":[{"href":"../docco/construct.html","title":"docco"}],"signatures":[{"code":"new can.Construct([args..])","description":"<p>Create a new instance of a constructor function. <code>new</code> is not\nused with <code>can.Construct</code> directly. Instead, it is used with a constructor\nfunction returned by [can.Construct.extend can.Construct.extend]. For\nexample:</p>\n<pre><code>Animal = can.Construct.extend({\n  sayHi: function(){\n    console.log(&quot;hi&quot;)\n  }\n})\nvar animal = new Animal()\nanimal.sayHi();\n</code></pre>\n<p>Any arguments passed to the construction function are passed\nto [can.Construct.prototype.setup setup] and [can.Construct.prototype.init init].</p>\n","params":[]},{"code":"can.Construct([name,] [staticProperties,] instanceProperties)","description":"<p>Creates a new extended constructor function. Example:</p>\n<pre><code>Animal = can.Construct({\n  sayHi: function(){\n    console.log(&quot;hi&quot;)\n  }\n})\n</code></pre>\n<p>This is deprecated. In CanJS 1.2, by default, calling the constructor function\nwithout <code>new</code> will create a <code>new</code> instance.  This behavior is controlled\nby the [can.Construct.constructorExtends constructorExtends] property.</p>\n<p>Use [can.Construct.extend can.Construct.extend]\ninstead of calling the constructor to extend.</p>\n","params":[]},{"code":"can.Construct([args...])","description":"<p>Create a new instance of a constructor function if\n[can.Construct.constructorExtends constructorExtends] is\nfalse. <code>can.Construct([args...])</code> is not used with <code>can.Construct</code>\ndirectly. Instead it is used on constructor functions\nextended from [can.Construct].</p>\n<pre><code>Animal = can.Construct.extend({\n   constructorExtends: false\n},{\n  sayHi: function(){\n    console.log(&quot;hi&quot;)\n  }\n})\nvar animal = Animal();\n</code></pre>\n<p>This will be the default behavior in CanJS 1.2.</p>\n","params":[]}],"comment":" ","src":"construct/construct.js"};
+		var docObject = {"type":"constructor","name":"can.Construct","src":"construct/construct.js","description":"Provides a way to easily use the power of prototypal inheritance \nwithout worrying about hooking up all the particulars yourself. Use\n[can.Construct.extend can.Construct.extend] to create a inheritable\nconstructor function of your own.","title":"","download":"can/construct","test":"can/construct/test.html","parent":"canjs","links":[{"href":"../docco/construct.html","title":"docco"}],"signatures":[{"code":"new can.Construct([args..])","description":"Create a new instance of a constructor function. `new` is not\nused with `can.Construct` directly. Instead, it is used with a constructor \nfunction returned by [can.Construct.extend can.Construct.extend]. For\nexample:\n\n    Animal = can.Construct.extend({\n      sayHi: function(){\n        console.log(\"hi\")\n      }\n    })\n    var animal = new Animal()\n    animal.sayHi();\n    \nAny arguments passed to the construction function are passed \nto [can.Construct.prototype.setup setup] and [can.Construct.prototype.init init].","params":[]},{"code":"can.Construct([name,] [staticProperties,] instanceProperties)","description":"Creates a new extended constructor function. Example:\n\n    Animal = can.Construct({\n      sayHi: function(){\n        console.log(\"hi\")\n      }\n    })\n    \nThis is deprecated. In CanJS 1.2, by default, calling the constructor function\nwithout `new` will create a `new` instance.  This behavior is controlled\nby the [can.Construct.constructorExtends constructorExtends] property.\n\nUse [can.Construct.extend can.Construct.extend] \ninstead of calling the constructor to extend.","params":[]},{"code":"can.Construct([args...])","description":"Create a new instance of a constructor function if\n[can.Construct.constructorExtends constructorExtends] is \nfalse. `can.Construct([args...])` is not used with `can.Construct`\ndirectly. Instead it is used on constructor functions\nextended from [can.Construct].\n\n    Animal = can.Construct.extend({\n       constructorExtends: false\n    },{\n      sayHi: function(){\n        console.log(\"hi\")\n      }\n    })\n    var animal = Animal();\n\n\nThis will be the default behavior in CanJS 1.2.","params":[]}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
 	
 	
@@ -748,6 +720,7 @@ blackMamba.speak(); // 'ssssss'
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

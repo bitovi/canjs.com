@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	<title>CanJS - Models (&amp; Fixtures) </title>
+	<title>CanJS - Models &amp; Retrieving Data </title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -103,20 +103,6 @@
 <ul class="api">
 	<!-- First Level -->
 	
-	   <li class="search-container">
-	   		<a href="Why.html" data-search="Why CanJS?">
-				Why CanJS?
-			</a>
-			
-	   </li>
-	
-	   <li class="search-container">
-	   		<a href="Using.html" data-search="Setting up CanJS">
-				Setting up CanJS
-			</a>
-			
-	   </li>
-	
 	   <li class="search-container active">
 	   		<a href="Tutorial.html" data-search="Getting Started">
 				Getting Started
@@ -130,9 +116,9 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="Setup.html" 
-							data-search="Setup">
-							Setup
+							href="Constructs.html" 
+							data-search="Constructor Functions">
+							Constructor Functions
 						</a>
 						
 					</li>
@@ -145,39 +131,9 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="Foundations.html" 
-							data-search="Application Foundations">
-							Application Foundations
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="page" 
-							href="Components.html" 
-							data-search="Getting to Know Components">
-							Getting to Know Components
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="page" 
-							href="Components2.html" 
-							data-search="More on Components">
-							More on Components
+							href="Observables.html" 
+							data-search="Observables">
+							Observables
 						</a>
 						
 					</li>
@@ -191,8 +147,8 @@
 					<li class="search-container active  expanded">
 						<a 	class="page" 
 							href="Models.html" 
-							data-search="Models (&amp; Fixtures)">
-							Models (&amp; Fixtures)
+							data-search="Models &amp; Retrieving Data">
+							Models &amp; Retrieving Data
 						</a>
 						
 							
@@ -207,9 +163,9 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="Models2.html" 
-							data-search="Sending Data to a Service">
-							Sending Data to a Service
+							href="Templates.html" 
+							data-search="Templates">
+							Templates
 						</a>
 						
 					</li>
@@ -222,9 +178,9 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="Review.html" 
-							data-search="Creating the Menu Component">
-							Creating the Menu Component
+							href="EJS.html" 
+							data-search="EJS">
+							EJS
 						</a>
 						
 					</li>
@@ -237,9 +193,9 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="State.html" 
-							data-search="App State &amp; Basic Routing">
-							App State &amp; Basic Routing
+							href="Mustache.html" 
+							data-search="Mustache">
+							Mustache
 						</a>
 						
 					</li>
@@ -252,9 +208,9 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="Define.html" 
-							data-search="The Define Plugin">
-							The Define Plugin
+							href="Controls.html" 
+							data-search="Controls">
+							Controls
 						</a>
 						
 					</li>
@@ -267,9 +223,9 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="Routes.html" 
-							data-search="Route Formatting &amp; Serialization">
-							Route Formatting &amp; Serialization
+							href="Deferreds.html" 
+							data-search="Deferreds">
+							Deferreds
 						</a>
 						
 					</li>
@@ -282,9 +238,39 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="Recap.html" 
-							data-search="Recap">
-							Recap
+							href="Components.html" 
+							data-search="Components">
+							Components
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Routing.html" 
+							data-search="Routing">
+							Routing
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Utilities.html" 
+							data-search="Utility Functions">
+							Utility Functions
 						</a>
 						
 					</li>
@@ -294,6 +280,20 @@
 		
 	</ul>
 
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Using.html" data-search="Setting up CanJS">
+				Setting up CanJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
+			</a>
 			
 	   </li>
 	
@@ -350,7 +350,7 @@
 		
 		<section class="title">
 			<div class="heading">
-<h1>Models (&amp; Fixtures)</h1>
+<h1>Models &amp; Retrieving Data</h1>
 	<ul class="tags">
 		<li>page</li>
 	</ul>
@@ -398,186 +398,90 @@
 
 		
 		<section class="comment">
-			<hr />
-<p><strong>In this Chapter</strong></p>
-<ul>
-<li>can.Model</li>
-<li>can.fixture</li>
-<li>Connecting can.Models with can.Components</li>
-</ul>
-<blockquote>
-<p>Get the code for: <a href="https://github.com/bitovi/canjs/blob/guides-overhaul/guides/examples/PlaceMyOrder/ch-4_canjs-getting-started.zip?raw=true">chapter 4</a></p>
-</blockquote>
-<hr />
-<p>The next item we're going to go over is <a href="../docs/can.Model.html">can.Model</a>. Models make interacting
-with JSON REST services <em>really easy</em>. They do this by encapsulating most of
-the code required to connect to a service and managing the data the service
-returns. Additionally, can.Model extends <a href="../docs/can.Map.html">can.Map</a>, meaning that the objects
-returned have all of the features of a can.Map, such as being observable.</p>
-<p>We'll use a can.Model to provide data for our restaurant list.</p>
-<p>In the models folder, create a file called &quot;site_models.js&quot;. Add the
-following code:</p>
-<pre><code>/**
- * Restaurants Model
- */
-var RestaurantModel = can.Model.extend({
-    findAll: &quot;GET /restaurants&quot;
-},
-//Include second, blank parameter object to set instanceProperties
-{});
-</code></pre>
-<p>Because it is a <a href="../docs/can.Construct.html">can.Construct</a>, can.Model.extend can take up to three parameters:</p>
-<ol>
-<li>name</li>
-<li>staticProperties</li>
-<li>instanceProperties</li>
-</ol>
-<p>A can.Model's staticProperties parameter has several reserved properties you
-can add that simplify accessing data from a JSON REST service. These
+			<p>Models are special Observes that connect to RESTful services. They come with a
+set of methods designed to make it easy to manage changes remotely. To create
+a Model class, call <code>can.Model</code> and supply it with specific static properties
+that tell it how to interact with the server, along with any prototype
+properties or helper methods the Model may need. The important static
 properties are:</p>
-<ol>
-<li>findAll</li>
-<li>findOne</li>
-<li>create</li>
-<li>update</li>
-<li>destroy</li>
-</ol>
-<p>The <code>find___</code> methods are available directly off of the object definition (i.e.,
-they are static). The <code>create</code>, <code>update</code>, and <code>destroy</code> methods are available off of
-specific instances of a can.Model. We'll see how to use these below.</p>
-<p><strong>Reminder</strong>: The number of parameters you pass in to an extend method is
-important. If you pass in a single parameter object, the extend method will
-use that to set the instanceProperties. If you pass in two parameter
-objects, the <em>first</em> object passed in will be used to set the
-<em>staticProperties</em>. The second parameter will be used to set the
-<em>instanceProperties</em>. Here, we only want to set the staticProperties, so we
-must pass in a second, blank object.</p>
-<p>A few examples illustrate this, below:</p>
-<pre><code>var MyModel = can.Model.extend({
- findAll: function () {
- // Static method
- }
-}, {
- destroy: function () {
- // Instance method
- }
-});
-
-MyModel.findAll(); // Reference a method defined on the constructor
-
-var modelInstance = new MyModel();
-modelInstance.destroy(); // Reference a method defined on the prototype
-</code></pre>
-<h2>The Data for Our Model</h2>
-<p>We're not going to connect to a server to retrieve our data; however, we're
-going to code our model as if we were. How can this possibly work? CanJS
-provides a handy utility, can.fixture, that we can use to easily mimic the
-functionality of connecting to a server. As the CanJS docs say, &quot;can.fixture
-intercepts an AJAX request and simulates the response with a file or a
-function. You can use can.fixture to develop JavaScript independently of
-backend services.&quot;</p>
-<p>can.fixture is not included with the base CanJS package. It's a good practice
-to keep it separate from your production CanJS library, which is why we
-downloaded it from its CDN in a separate script tag, rather than including it
-with our custom download. <em>If you use can.fixture during development, remember
-to remove it once you are connecting to your REST services</em>.</p>
-<p>Let's create a fixture that will respond to our requests for menu item data.
-Create another file in the models folder called &quot;fixtures.js&quot;. Add the
-following code to that file:</p>
-<pre><code>/**
- * Restaurants Model Fixture
- */
-can.fixture(&quot;GET /restaurants&quot;, function requestHandler() {
-    return [
-        {
-            &quot;name&quot;: &quot;Spago&quot;,
-            &quot;location&quot;: &quot;USA&quot;,
-            &quot;cuisine&quot;: &quot;Modern&quot;,
-            &quot;owner&quot;: &quot;Wolfgang Puck&quot;,
-            &quot;restaurantId&quot;: 1
-        },
-        {
-            &quot;name&quot;: &quot;El Bulli&quot;,
-            &quot;location&quot;: &quot;Spain&quot;,
-            &quot;cuisine&quot;: &quot;Modern&quot;,
-            &quot;owner&quot;: &quot;Ferran Adria&quot;,
-            &quot;restaurantId&quot;: 2
-        },
-        {
-            &quot;name&quot;: &quot;The French Laundry&quot;,
-            &quot;location&quot;: &quot;USA&quot;,
-            &quot;cuisine&quot;: &quot;French Traditional&quot;,
-            &quot;owner&quot;: &quot;Thomas Keller&quot;,
-            &quot;restaurantId&quot;: 3
-        }
-    ];
-});
-</code></pre>
-<p>The first argument to can.fixture, &quot;GET /restaurants&quot;, tells CanJS to
-intercept any GET requests to the resource &quot;/restaurants&quot;. The second argument
-is a function that returns the data we want to get when the application makes
-a service call. Because we're simulating a findAll method, we need to return
-an array. The findAll method expects an array. By default, if it does not
-receive one, it will throw an error. If you need to connect to services that
-return data that doesn't match the expected return type of the <code>find___</code>
-methods, don't fret. There are ways to manage this, which we'll work with
-later on.</p>
-<h2>Connecting the Model to the Component</h2>
-<p>It's time to connect all of this together in our view model. Simply open up
-restaurant_list_component.js. Edit the RestaurantListViewModel as follows,
-updating the restaurants property to receive data from the model we created:</p>
-<pre><code>var RestaurantListViewModel = can.Map.extend({
-    restaurants: new RestaurantModel.List({}),
-    currentRestaurant: undefined,
-    restaurantSelected: function (viewModel, select) {
-        var restaurant = select.find('option:checked').data('restaurant');
-        var currentRestaurant = 'currentRestaurant';
-        this.attr(currentRestaurant, restaurant);
-    }
-});
-</code></pre>
-<p>Note that there are a few ways to call a findAll method on a can.Model. The
-first way is to call the method explicitly. Using the RestaurantModel as an
-example, that would look like this:</p>
-<pre><code>RestaurantModel.findAll({//paramsObject},
-    function success(returnedObject){
-        //
-    },
-    function error(errorObject){
-        //
-    });
-</code></pre>
-<p>In the code above, however, we called the findAll method indirectly:</p>
-<pre><code>restaurants: new RestaurantModel.List({}),
-</code></pre>
-<p>This is a special feature of the can.Model.List constructor. When can.Model is
-extended, can.Model.List is automatically extended, as well. It is set as the
-model's List property. If a can.Model.List is instantiated, and you pass in a
-plain JavaScript object for its construction parameter, that parameter is used
-as the parameter for the Model's findAll method. At first, this will return an
-empty list; however, the can.Model's findAll method will then be called, and
-the list will be populated with the results of that call automatically, once
-the findAll method receives its results.</p>
-<p>We'll look at the can.Model's findOne method later on, when we create our Menu
-Component. Finally, let's add the scripts we created to our index.html file:</p>
-<pre><code>&lt;script src=&quot;libs/jquery.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;libs/can.custom.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;libs/can.fixture.js&quot;&gt;&lt;/script&gt;
-&lt;!--Begin add--&gt;
-&lt;script src=&quot;models/fixtures.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;models/site_models.js&quot;&gt;&lt;/script&gt;
-&lt;!--End add--&gt;
-&lt;script src=&quot;components/restaurant_list/restaurant_list_component.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;app.js&quot;&gt;&lt;/script&gt;
-</code></pre>
-<p>Let's go back to our app now, and see what happens! If everything went
-according to plan, you should see something like this:</p>
-<p><img src="../can/guides/images/4_models/FinalRestaurantComponentNoSelect.png" alt="" /></p>
-<p>And, when you select a restaurant from the list, you should see:</p>
-<p><img src="../can/guides/images/4_models/FinalRestaurantComponentSelect.png" alt="" /></p>
-<hr />
-<p><span class="pull-left"><a href="Components2.html">&lt; More on Components</a></span></p>
-<p><span class="pull-right"><a href="Models2.html">Sending Data to a Service &gt;</a></span></p>
+<ul>
+<li><a href="../docs/can.Model.findAll.html">findAll</a>, which describes how to get a group of
+items.</li>
+<li><a href="../docs/can.Model.findOne.html">findOne</a>, which describes how to get a specific
+item.</li>
+<li><a href="../docs/can.Model.create.html">create</a>, which describes how to save a new item.</li>
+<li><a href="../docs/can.Model.update.html">update</a>, which describes how to update an
+existing item.</li>
+<li><a href="../docs/can.Model.destroy.html">destroy</a>, which describes how to delete an item.</li>
+</ul>
+<p>When accessing a straightforward RESTful API, creating a Model class and an
+instance of that Model class might be as simple as this:</p>
+<p>Because Models are Observes, don't forget to set all your properties using <code>attr</code>.</p>
+<h2>Talking to the server</h2>
+<p>By supplying the <code>findAll</code>, <code>findOne</code>, <code>create</code>, <code>update</code>, and <code>destroy</code>
+properties, you show a Model class how to communicate with the server. You can
+call <code>findAll</code> and <code>findOne</code> on the Model class to retrieve Models and <code>save</code>
+and <code>destroy</code> on Models to create, update, and delete them.</p>
+<h3>Retrieving items from a server</h3>
+<p><code>can.Model.findAll</code> retrieves a group of Models by making a call to a server.
+Here's how you call <code>findAll</code> on our Todo class above:</p>
+<p>This will make a <code>GET</code> request to <code>/todos</code>, which should return JSON that looks
+similar to:</p>
+<p><code>findAll</code> will also accept an array from the service, but <a href="http://haacked.com/archive/2008/11/20/anatomy-of-a-subtle-json-vulnerability.aspx">you probably should not be returning an array from a JSON service</a>.</p>
+<p>When the service has returned, <code>findAll</code> will massage the data into Model
+instances and put them in a can.Model.List (which is like a can.Observe.List
+for Models). The resulting List will be passed to the success callback in its
+second parameter. If there was an error, <code>findAll</code> will call the error
+callback in its third parameter and pass it the XmlHttpRequest object used to
+make the call.</p>
+<p><code>findAll</code> returns a <a href="../docs/can.Deferred.html">can.Deferred</a> that will resolve to a Model
+List of items if the call succeeds and rejects to the XmlHttpRequest object if
+there is an error.</p>
+<p><code>can.Model.findOne</code> works similarly to <code>findAll</code>, except that it retrieves a
+single Model from a service:</p>
+<p>This makes a <code>GET</code> request to <code>/todos/1</code>, which should return JSON that looks
+similar to:</p>
+<p><code>findOne</code> returns a Deferred that resolves to the Todo if the call succeeds and
+rejects to the XmlHttpRequest object if there is an error.</p>
+<h3>Modifying items</h3>
+<p>You can call <a href="../docs/can.Model.prototype.save.html">save</a> on a Model instance to save it
+back to the server. If the Model has an <strong>id</strong>, it will be updated using the
+function specified under <code>update</code>. Otherwise, can.Model assumes the Model is new
+and creates the item on the server using the function in <code>create</code>.</p>
+<p>Either way, the success callback in the first parameter will be called on a
+successful save with the updated Model; if an error occurs, the error callback
+in the second parameter will be called with the XmlHttpRequest object. Like
+<code>findAll</code>, <code>save</code> returns a Deferred that resolves to the updated Model on
+success and rejects to the XmlHttpRequest object on failure.</p>
+<p>In the code above, the first time <code>shopping.save()</code> is called, can.Model will
+make a <code>POST</code> request to <code>/todos</code> with a request body of <code>description=Go grocery shopping.</code>. When the response comes back, it should have an <strong>id</strong>
+(say, 5) and that <strong>id</strong> property will be reflected in <code>todo</code>.</p>
+<p>The second time <code>saved.save()</code> is called, <code>saved</code> has an <strong>id</strong>, so can.Model
+will make a <code>PUT</code> request to <code>/todos/5</code> with a request body of
+<code>description=Remember the milk.</code>.</p>
+<h3>Deleting items</h3>
+<p>When you need to delete a Model's counterpart on the server, just call <code>destroy</code>
+on the Model, passing it success and error handlers just like <code>save</code>, except
+that the success handler will be passed the Model that has been deleted.
+<code>destroy</code> also retuns a Deferred, which resolves to the deleted Model and
+rejects to the XmlHttpRequest object.</p>
+<p>When <code>destroy</code> is called in the above code, can.Model makes a <code>DELETE</code> request
+to <code>/todos/6</code>.</p>
+<h2>Listening to events</h2>
+<p>Because Models are Observes, you can bind to the same events as on any other
+Observe. In addition to those events, Models emit three new kinds of events:</p>
+<ul>
+<li><em>created</em>, when an instance is created on the server.</li>
+<li><em>updated</em>, when an instance is updated on the server.</li>
+<li><em>destroyed</em>, when an instance is destroyed on the server.</li>
+</ul>
+<p>For example, here is how you listen for an instance being created on the server:</p>
+<p>You can also bind directly onto the Model class to listen for any time <strong>any</strong>
+instance is created, updated, or destroyed:</p>
+<h2>Model Lists</h2>
+<p>Model Lists (provided by <code>can.Model.List</code>) are Lists whose items are Models.
+When one of a Model List's elements are destroyed, that element is removed from
+the list.</p>
 
 		</section>
 		
@@ -639,7 +543,7 @@ according to plan, you should see something like this:</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"type":"page","name":"Models","src":"guides/models.md","description":"","title":"Models (& Fixtures)","parent":"Tutorial","order":5,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/bitovi/Desktop/Bitovi/github/canjs.com/theme/templates","static":"/Users/bitovi/Desktop/Bitovi/github/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/bitovi/Desktop/Bitovi/github/canjs.com/can"},"dest":"/Users/bitovi/Desktop/Bitovi/github/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
+		var docObject = {"type":"page","name":"Models","src":"guides/models.md","description":"","title":"Models & Retrieving Data","parent":"Tutorial","order":2,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	

@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -462,7 +463,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/1.1-legacy/construct/construct.js">source</a></li>
 	
@@ -549,17 +550,6 @@ with arbitrary parameters. Typically, however, you will simply want to call the 
 <h2>Example</h2>
 <p>The following creates a <code>Person</code> Construct and then creates a new instance of Person,
 using <code>apply</code> on newInstance to pass arbitrary parameters.</p>
-<pre><code class="language-js">var Person = can.Construct.extend({
-  init : function(first, middle, last) {
-    this.first = first;
-    this.middle = middle;
-    this.last = last;
-  }
-});
-
-var args = [&quot;Justin&quot;,&quot;Barry&quot;,&quot;Meyer&quot;],
-    justin = new Person.newInstance.apply(null, args);
-</code></pre>
 
 		</section>
 		
@@ -621,7 +611,7 @@ var args = [&quot;Justin&quot;,&quot;Barry&quot;,&quot;Meyer&quot;],
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Construct.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"},"type":"function","name":"can.Construct.newInstance","description":"<p>Returns an instance of <code>can.Construct</code>. This method can be overridden to return a cached instance.</p>\n","title":"newInstance","signatures":[{"code":"can.Construct.newInstance([...args])","description":"","params":[{"types":[{"type":"*"}],"optional":true,"name":"args","description":"<p>arguments that get passed to [can.Construct::setup] and [can.Construct::init]. Note\nthat if [can.Construct::setup] returns an array, those arguments will be passed to [can.Construct::init]\ninstead.</p>\n"}],"returns":{"types":[{"type":"class"}],"description":"<p>instance of the class</p>\n"}}],"comment":" ","src":"construct/construct.js"};
+		var docObject = {"type":"function","name":"can.Construct.newInstance","parent":"can.Construct.static","src":"construct/construct.js","line":47,"codeLine":84,"description":"Returns an instance of `can.Construct`. This method can be overridden to return a cached instance.","title":"newInstance","signatures":[{"code":"can.Construct.newInstance([...args])","description":"","params":[{"types":[{"type":"*"}],"optional":true,"name":"args","description":"arguments that get passed to [can.Construct::setup] and [can.Construct::init]. Note\nthat if [can.Construct::setup] returns an array, those arguments will be passed to [can.Construct::init]\ninstead."}],"returns":{"types":[{"type":"class"}],"description":"instance of the class"}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/1.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"}};
 	</script>
 	
 	
@@ -634,6 +624,7 @@ var args = [&quot;Justin&quot;,&quot;Barry&quot;,&quot;Meyer&quot;],
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

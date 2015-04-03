@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -530,7 +531,7 @@
 			
 				
 				
-					<li class="search-container parent ">
+					<li class="search-container  ">
 						<a 	class="page" 
 							href="can.Observe.setter.html" 
 							data-search="setter">
@@ -643,7 +644,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/1.1-legacy/observe/attributes/attributes.js">source</a></li>
 	
@@ -741,53 +742,9 @@ new Observe or List completely. Because of this, any bindings you have on the pr
 observable object will break.</p>
 <p>If you would rather have the new Observe or List merged into the current value, call
 <code>attr</code> directly on the property instead of on the Observe:</p>
-<pre><code class="language-js">var Contact = can.Observe.extend({
-  attributes: {
-    info: 'info'
-  },
-  convert: {
-    'info': function(data, oldVal) {
-      return data;
-    }
-  }
-}, {});
-
-var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
-alice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}
-alice.info._cid; // '.observe1'
-
-alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
-alice.attr(); // {name: 'Allison Wonderland', 'phone': '888-888-8888'}
-alice.info._cid; // '.observe2'
-
-alice.info.attr({email: 'alice@wonderland.com', phone: '000-000-0000'});
-alice.attr(); // {name: 'Allison Wonderland', email: 'alice@wonderland.com', 'phone': '000-000-0000'}
-alice.info._cid; // '.observe2'
-</code></pre>
 <h2>Assocations and Convert</h2>
 <p>If you have assocations defined within your model(s), you can use convert to automatically
 call serialize on those models.</p>
-<pre><code class="language-js">var Contact = can.Model.extend({
-  attributes : {
-    tasks: &quot;Task.models&quot;
-  }
-}, {});
-
-var Task = can.Model.extend({
-  attributes : {
-    due : 'date'
-  }
-},{});
-
-var contact = new Contact({
-  tasks: [ new Task({
-    due: new Date()
-  }) ]
-});
-
-contact.serialize(); 
-//-&gt; { tasks: [ { due: 1333219754627 } ] }
-</code></pre>
 
 		</section>
 		
@@ -849,7 +806,7 @@ contact.serialize();
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Observe.attributes.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"},"name":"can.Observe.attributes.static.convert","type":"property","description":"<p>You often want to convert from what the observe sends you to a form more useful to JavaScript.\nFor example, contacts might be returned from the server with dates that look like: &quot;1982-10-20&quot;.\nWe can observe to convert it to something closer to <code>new Date(1982,10,20)</code>.</p>\n","title":"convert","src":"observe/attributes/attributes.js"};
+		var docObject = {"name":"can.Observe.attributes.static.convert","type":"property","parent":"can.Observe.attributes.static","src":"observe/attributes/attributes.js","line":30,"codeLine":158,"description":"You often want to convert from what the observe sends you to a form more useful to JavaScript. \nFor example, contacts might be returned from the server with dates that look like: \"1982-10-20\". \nWe can observe to convert it to something closer to `new Date(1982,10,20)`.","title":"convert","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/1.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"}};
 	</script>
 	
 	
@@ -862,6 +819,7 @@ contact.serialize();
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

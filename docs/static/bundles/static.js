@@ -1,6 +1,6 @@
 /*[system-bundles-config]*/
-System.paths["bundles/*.css"] ="../../../../../../../../../../../../../node_modules/documentjs/site/static/build/af6688b97a5a6cbeed957a36258607e9/bundles/*css";
-System.paths["bundles/*"] = "../../../../../../../../../../../../../node_modules/documentjs/site/static/build/af6688b97a5a6cbeed957a36258607e9/bundles/*.js";
+System.paths["bundles/*.css"] ="../../../../../../../../../../../../node_modules/documentjs/site/static/build/323d071ee09a36bea7dd206701eabbf4/bundles/*css";
+System.paths["bundles/*"] = "../../../../../../../../../../../../node_modules/documentjs/site/static/build/323d071ee09a36bea7dd206701eabbf4/bundles/*.js";
 System.bundles = {"bundles/static.css!":["styles/styles.less!$less"]};
 /*config.js*/
 define("config.js",function(e,t,s){!function(){var e="undefined"!=typeof window;System.config({map:{"jquery/jquery":"jquery","can/util/util":"can/util/jquery/jquery","benchmark/benchmark":"benchmark",mustache:"can/view/mustache/system","prettify/prettify":"prettify"},paths:{jquery:e?"jquery/dist/jquery.js":"../../../../node_modules/jquery/dist/jquery.js","can/*":e?"can/*.js":"../../../../node_modules/can/*.js",jqueryui:"lib/jquery-ui.1.10.3.js",moment:"lib/moment.js",grayscale:"lib/grayscale.js",prettify:"prettify.js"},meta:{jquery:{exports:"jQuery"},jqueryui:{deps:["jquery"]},moment:{exports:"moment"},prettify:{format:"global"},grayscale:{format:"global",deps:["jquery"]},"lib/scrollbox":{format:"global",deps:["jquery"]}},ext:{ejs:"can/view/ejs/system",mustache:"can/view/mustache/system",stache:"can/view/stache/system"}})}(),System.buildConfig={map:{"can/util/util":"can/util/domless/domless"}}});
@@ -144,16 +144,16 @@ define("controls/projectCarousel",["can/","can/util/function/","jqueryui"],funct
 define("controls/socialStats",["can/"],function(t){return t.Control.extend("Bitovi.OSS.SocialStats",{},{init:function(){this.state=new t.Map({}),this.modelState=new t.Map({});var i=this;t.when(Bitovi.OSS.ActivitySummary.findOne().done(t.proxy(function(t){this.state.attr(t)},this)),Bitovi.OSS.Plugin.findAll({category:"article",limit:6}).done(t.proxy(function(t){this.modelState.attr("articles",t)},this)),Bitovi.OSS.Plugin.findAll({category:"app",limit:6}).done(t.proxy(function(t){this.modelState.attr("apps",t)},this)),Bitovi.OSS.Plugin.findAll({category:"plugin",limit:6}).done(t.proxy(function(t){this.modelState.attr("plugins",t)},this)),Bitovi.OSS.ForumPost.findAll({limit:6}).done(t.proxy(function(t){this.modelState.attr("forumPosts",t)},this)),Bitovi.OSS.GithubEvent.findAll({limit:6}).done(t.proxy(function(t){this.modelState.attr("commits",t)},this))).then(function(){var e=t.view("static/templates/socialStats.mustache",i.state,{plural:function(t,i){return 1===i?t:t+"s"}}),o=$(e.childNodes).find("li").hide();i.element.html(e),o.fadeIn()})},"a mouseenter":function(i,e){var o=i.data("tooltip");return this.tooltip&&this.tooltip.element&&this.tooltip.element.remove(),i.parent().addClass("active"),this.tooltip=new Bitovi.OSS[o+"Tooltip"]("<div>",{state:this.modelState,relativeTo:i.parent()}),this.tooltip.on("removed",t.proxy(function(){this.element.find(".active").removeClass("active")},this)),!1}})});
 /*controls/tooltip*/
 define("controls/tooltip",["can/"],function(t){return t.Control.extend("Bitovi.OSS.Tooltip",{defaults:{view:"",placement:"left"}},{init:function(e,i){this.options.relativeTo.offset();this.element.html(t.view(this.options.view,this.options.state)).addClass("has-tip").appendTo(this.options.relativeTo.offsetParent()),this.updateOffset()},"{document.body} click":function(t,e){this.element.has(e.target).length||e.target===this.element[0]||e.target===this.options.relativeTo[0]||this.element.remove()},"{window} resize":t.debounce(function(t,e){this.updateOffset()},100),mouseleave:function(t,e){this.element.remove()},updateOffset:function(){var t=this.options.relativeTo.offset();this.element.offset("left"==this.options.placement?{left:t.left,top:t.top+this.options.relativeTo.height()+15}:{left:t.left-this.element.children(".tooltip").width()+this.options.relativeTo.outerWidth()-40,top:t.top+this.options.relativeTo.height()+15})}})});
+/*can/util/domless/domless*/
+System.set('can/util/domless/domless', System.newModule({}));
+/*can/util/array/makeArray*/
+System.set('can/util/array/makeArray', System.newModule({}));
 /*controls/articleTooltip*/
 define("controls/articleTooltip",["can/","./tooltip","can/construct/super/"],function(t,i){return i.extend("Bitovi.OSS.ArticleTooltip",{defaults:{view:"guides/static/templates/articleTooltip.mustache"}},{init:function(t,i){this._super(t,i)}})});
 /*controls/appTooltip*/
 define("controls/appTooltip",["can/","./tooltip","can/construct/super/"],function(t,i){return i.extend("Bitovi.OSS.AppTooltip",{defaults:{view:"guides/static/templates/appTooltip.mustache"}},{init:function(t,i){this._super(t,i)}})});
-/*can/util/domless/domless*/
-System.set('can/util/domless/domless', System.newModule({}));
 /*controls/forumTooltip*/
 define("controls/forumTooltip",["can/","./tooltip","can/construct/super/"],function(t,o){return o.extend("Bitovi.OSS.ForumTooltip",{defaults:{view:"guides/static/templates/forumTooltip.mustache",placement:"right"}},{init:function(t,o){this._super(t,o)}})});
-/*can/util/array/makeArray*/
-System.set('can/util/array/makeArray', System.newModule({}));
 /*controls/githubTooltip*/
 define("controls/githubTooltip",["can/","./tooltip","can/construct/super/"],function(t,e){return e.extend("Bitovi.OSS.GithubTooltip",{defaults:{view:"guides/static/templates/githubTooltip.mustache",placement:"right"}},{init:function(e,i){this._super(e,i),t.Mustache.registerHelper("truncateHash",function(t){return t().substr(0,6)})}})});
 /*controls/pluginTooltip*/

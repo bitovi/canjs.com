@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -223,7 +224,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/1.1-legacy/model/pages/encapsulate.md">source</a></li>
 	
@@ -284,19 +285,10 @@ data:</p>
 <pre><code>Contact.findAll({type: 'old'}, successCallback);
 </code></pre>
 <p>And instead of raw data, findAll returns contact instances that let you do things like:</p>
-<pre><code class="language-js">// destroy the contact
-contact.destroy() 
-
-// update the contact
-contact.update({name: &quot;Jeremy&quot;})
-
-// create a contact
-new Contact({name: &quot;Alex&quot;}).save();
-</code></pre>
 <h2>Encapsulation Demo</h2>
 <p>The Grid demo shows using two different models with the same widget.</p>
 <div class='demo_wrapper' data-demo-src='jquery/model/demo-encapsulate.html'></div>
-## How to Encapsulate
+<h2>How to Encapsulate</h2>
 <p>Think of models as a contract for creating, reading, updating, and deleting data.</p>
 <p>By filling out a model, you can pass that model to a widget and the widget will use
 the model as a proxy for your data.</p>
@@ -376,31 +368,7 @@ to have an understanding of jQuery's Ajax converters and
 deferreds.</p>
 <p>Lets see how we might fill out the
 <code>Contact.findAll</code> function to work with JSONP:</p>
-<pre><code class="language-js">$.Model('Contact',
-{
-  findAll : function(params, success, error){
-  
-    // do the ajax request
-    return $.get('/contacts.jsonp',
-      params, 
-      success,
-      'jsonp contact.models');
-  }
-},
-{
-  // Prototype properties of Contact.
-  // We'll learn about this soon!
-});
-</code></pre>
 <p>If we wanted to make a list of contacts, we could do it like:</p>
-<pre><code class="language-js">Contact.findAll({},function(contacts){
-  var html = [];
-  for(var i =0; i &lt; contacts.length; i++){
-    html.push('&lt;li&gt;'+contacts[i].name + '&lt;/li&gt;')
-  }
-  $('#contacts').html( html.join('') );
-});
-</code></pre>
 
 		</section>
 		
@@ -462,7 +430,7 @@ deferreds.</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"jQuery.Model","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"},"type":"page","name":"jquery.model.encapsulate","description":"<p>Models encapsulate your application's raw data.  This promotes reuse and provide a\nstandard interface for widgets to talk to services.</p>\n","title":"Service Encapsulation","src":"model/pages/encapsulate.md"};
+		var docObject = {"type":"page","name":"jquery.model.encapsulate","src":"model/pages/encapsulate.md","description":"Models encapsulate your application's raw data.  This promotes reuse and provide a \nstandard interface for widgets to talk to services.","title":"Service Encapsulation","parent":"jQuery.Model","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/1.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"}};
 	</script>
 	
 	
@@ -475,6 +443,7 @@ deferreds.</p>
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

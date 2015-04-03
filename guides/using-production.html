@@ -104,8 +104,8 @@
 	<!-- First Level -->
 	
 	   <li class="search-container">
-	   		<a href="Why.html" data-search="Why CanJS?">
-				Why CanJS?
+	   		<a href="Tutorial.html" data-search="Getting Started">
+				Getting Started
 			</a>
 			
 	   </li>
@@ -186,8 +186,8 @@
 	   </li>
 	
 	   <li class="search-container">
-	   		<a href="Tutorial.html" data-search="Getting Started">
-				Getting Started
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
 			</a>
 			
 	   </li>
@@ -312,19 +312,19 @@
 <p>You can run the <a href="http://requirejs.org/docs/optimization.html">RequireJS optimizer</a> against your application but need to make sure to put
 all the configuration in a separate file, e.g. <code>js/app.js</code>:</p>
 <pre><code>require.config({
-    paths : {
-        &quot;jquery&quot; : &quot;http://code.jquery.com/jquery-2.0.3&quot;,
-        &quot;can&quot;: &quot;path/to/can/amd&quot;
-    }
+paths : {
+  &quot;jquery&quot; : &quot;http://code.jquery.com/jquery-2.0.3&quot;,
+  &quot;can&quot;: &quot;path/to/can/amd&quot;
+}
 });
 
 require(['can/control', 'can/view/mustache'], function(Control, can) {
-    // Use Mustache and Control
-    var MyControl = Control.extend({
-        init: function() {
-            this.element.html(can.view('path/to/view.mustache', this.options));
-        }
-    });
+// Use Mustache and Control
+var MyControl = Control.extend({
+  init: function() {
+    this.element.html(can.view('path/to/view.mustache', this.options));
+  }
+});
 });
 </code></pre>
 <p>Then run <code>r.js</code> like:</p>
@@ -400,7 +400,7 @@ referencing <code>steal.production.js</code> in <code>app/index.html</code> (ins
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"type":"page","name":"using-production","src":"guides/using-production.md","description":"While it makes sense to use uniminified JavaScript split into separate files and a CanJS debugging version (like `can.jquery.dev.js`) during development, you should concatenate and minify all your resources for use in production. If you are using CanJS [using-standalone standalone] this can be done through a build tool like [Grunt](http://gruntjs.com/) or [Gulp](http://gulpjs.com/) or tools part of your server side framework like the [Ruby on Rails asset pipeline](http://guides.rubyonrails.org/asset_pipeline.html).","title":"In Production","parent":"Using","order":2,"ignoreTemplateRender":true,"templates":"/Users/bitovi/Desktop/Bitovi/github/canjs.com/theme/templates","static":"/Users/bitovi/Desktop/Bitovi/github/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/bitovi/Desktop/Bitovi/github/canjs.com/can"},"dest":"/Users/bitovi/Desktop/Bitovi/github/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
+		var docObject = {"type":"page","name":"using-production","src":"guides/using-production.md","description":"While it makes sense to use uniminified JavaScript split into separate files and a CanJS debugging version (like `can.jquery.dev.js`) during development, you should concatenate and minify all your resources for use in production. If you are using CanJS [using-standalone standalone] this can be done through a build tool like [Grunt](http://gruntjs.com/) or [Gulp](http://gulpjs.com/) or tools part of your server side framework like the [Ruby on Rails asset pipeline](http://guides.rubyonrails.org/asset_pipeline.html).","title":"In Production","parent":"Using","order":2,"ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	

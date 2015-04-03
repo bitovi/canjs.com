@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -389,7 +390,7 @@
 			
 				
 				
-					<li class="search-container parent ">
+					<li class="search-container  ">
 						<a 	class="page" 
 							href="can.Map.setter.html" 
 							data-search="setter">
@@ -516,7 +517,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/map/map.js">source</a></li>
 	
@@ -745,82 +746,13 @@ To remove keys without setting other keys, use <code><a href="can.Map.prototype.
 		<section class="comment">
 			<p><code>attr</code> gets or sets properties on the <code>can.Map</code> it's called on. Here's a tour through
 how all of its forms work:</p>
-<pre><code class="language-js">var people = new can.Map({});
-
-// set a property:
-people.attr('a', 'Alex');
-
-// get a property:
-people.attr('a'); // 'Alex'
-
-// set and merge multiple properties:
-people.attr({
-    a: 'Alice',
-    b: 'Bob'
-});
-
-// get all properties:
-people.attr(); // {a: 'Alice', b: 'Bob'}
-
-// set properties while removing others:
-people.attr({
-    b: 'Bill',
-    e: 'Eve'
-}, true);
-
-people.attr(); // {b: 'Bill', e: 'Eve'}
-</code></pre>
 <h2>Deep properties</h2>
 <p><code>attr</code> can also set and read deep properties. All you have to do is specify
 the property name as you normally would if you weren't using <code>attr</code>.</p>
-<pre><code class="language-js">var people = new can.Map({names: {}});
-
-// set a property:
-people.attr('names.a', 'Alice');
-
-// get a property:
-people.attr('names.a'); // 'Alice'
-people.names.attr('a'); // 'Alice'
-
-// get all properties:
-people.attr(); // {names: {a: 'Alice'}}
-</code></pre>
 <p>Objects that are added to Observes become Observes themselves behind the scenes,
 so changes to deep properties fire events at each level, and you can bind at any
 level. As this example shows, all the same events are fired no matter what level
 you call <code>attr</code> at:</p>
-<pre><code class="language-js">var people = new can.Map({names: {}});
-
-people.bind('change', function(ev, attr, how, newVal, oldVal) {
-  console.log('people change: ' + attr + ', ' + how + ', ' + newVal + ', ' + oldVal);
-});
-
-people.names.bind('change', function(ev, attr, how, newVal, oldVal) {
-   console.log('people.names change' + attr + ', ' + how + ', ' + newVal + ', ' + oldVal);
-});
-
-people.bind('names', function(ev, newVal, oldVal) {
-    console.log('people names: ' + newVal + ', ' + oldVal);
-});
-
-people.names.bind('a', function(ev, newVal, oldVal) {
-    console.log('people.names a: ' + newVal + ', ' + oldVal);
-});
-
-people.bind('names.a', function(ev, newVal, oldVal) {
-    console.log('people names.a: ' + newVal + ', ' + oldVal);
-});
-
-people.attr('names.a', 'Alice'); // people change: names.a, add, Alice, undefined
-                                 // people.names change: a, add, Alice, undefined
-                                 // people.names a: Alice, undefined
-                                 // people names.a: Alice, undefined
-
-people.names.attr('b', 'Bob');   // people change: names.b, add, Bob, undefined
-                                 // people.names change: b, add, Bob, undefined
-                                 // people.names b: Bob, undefined
-                                 // people names.b: Bob, undefined
-</code></pre>
 <h2>See also</h2>
 <p>For information on the events that are fired on property changes and how
 to listen for those events, see <a href="can.Map.prototype.bind.html">bind</a>.</p>
@@ -885,7 +817,7 @@ to listen for those events, see <a href="can.Map.prototype.bind.html">bind</a>.<
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Map.prototype","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"type":"function","name":"can.Map.prototype.attr","description":"<p>Get or set properties on an Map.</p>\n","title":"attr","signatures":[{"code":"map.attr()","description":"<p>Gets a collection of all the properties in this <code>can.Map</code>.</p>\n","params":[],"returns":{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"*"}]}]}],"description":"<p>an object with all the properties in this <code>can.Map</code>.</p>\n"}},{"code":"map.attr(key)","description":"<p>Reads a property from this <code>can.Map</code>.</p>\n","params":[{"types":[{"type":"String"}],"name":"key","description":"<p>the property to read</p>\n"}],"returns":{"types":[{"type":"*"}],"description":"<p>the value assigned to <em>key</em>.</p>\n"}},{"code":"map.attr(key, value)","description":"<p>Assigns <em>value</em> to a property on this <code>can.Map</code> called <em>key</em>.</p>\n","params":[{"types":[{"type":"String"}],"name":"key","description":"<p>the property to set</p>\n"},{"types":[{"type":"*"}],"name":"the","description":"<p>value to assign to <em>key</em>.</p>\n"}],"returns":{"types":[{"type":"can.Map"}],"description":"<p>this Map, for chaining</p>\n"}},{"code":"map.attr(obj[, removeOthers])","description":"<p>Assigns each value in <em>obj</em> to a property on this <code>can.Map</code> named after the\ncorresponding key in <em>obj</em>, effectively merging <em>obj</em> into the Map.</p>\n","params":[{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"*"}]}]}],"name":"obj","description":"<p>a collection of key-value pairs to set.\nIf any properties already exist on the <code>can.Map</code>, they will be overwritten.</p>\n"},{"types":[{"type":"bool"}],"optional":true,"name":"removeOthers","defaultValue":"false","description":"<p>whether to remove keys not present in <em>obj</em>.\nTo remove keys without setting other keys, use <code>[can.Map::removeAttr removeAttr]</code>.</p>\n"}],"returns":{"types":[{"type":"can.Map"}],"description":"<p>this Map, for chaining</p>\n"}}],"comment":" ","src":"map/map.js"};
+		var docObject = {"type":"function","name":"can.Map.prototype.attr","parent":"can.Map.prototype","src":"map/map.js","line":415,"codeLine":546,"description":"Get or set properties on an Map.","title":"attr","signatures":[{"code":"map.attr()","description":"Gets a collection of all the properties in this `can.Map`.","params":[],"returns":{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"*"}]}]}],"description":"an object with all the properties in this `can.Map`."}},{"code":"map.attr(key)","description":"Reads a property from this `can.Map`.","params":[{"types":[{"type":"String"}],"name":"key","description":"the property to read"}],"returns":{"types":[{"type":"*"}],"description":"the value assigned to _key_."}},{"code":"map.attr(key, value)","description":"Assigns _value_ to a property on this `can.Map` called _key_.","params":[{"types":[{"type":"String"}],"name":"key","description":"the property to set"},{"types":[{"type":"*"}],"name":"the","description":"value to assign to _key_."}],"returns":{"types":[{"type":"can.Map"}],"description":"this Map, for chaining"}},{"code":"map.attr(obj[, removeOthers])","description":"Assigns each value in _obj_ to a property on this `can.Map` named after the\ncorresponding key in _obj_, effectively merging _obj_ into the Map.","params":[{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"*"}]}]}],"name":"obj","description":"a collection of key-value pairs to set.\nIf any properties already exist on the `can.Map`, they will be overwritten."},{"types":[{"type":"bool"}],"optional":true,"name":"removeOthers","defaultValue":"false","description":"whether to remove keys not present in _obj_.\nTo remove keys without setting other keys, use `[can.Map::removeAttr removeAttr]`."}],"returns":{"types":[{"type":"can.Map"}],"description":"this Map, for chaining"}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
 	
 	
@@ -898,6 +830,7 @@ to listen for those events, see <a href="can.Map.prototype.bind.html">bind</a>.<
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

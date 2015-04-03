@@ -103,12 +103,10 @@
 <ul class="api">
 	<!-- First Level -->
 	
-	   <li class="search-container active">
-	   		<a href="Why.html" data-search="Why CanJS?">
-				Why CanJS?
+	   <li class="search-container">
+	   		<a href="Tutorial.html" data-search="Getting Started">
+				Getting Started
 			</a>
-			
-				
 			
 	   </li>
 	
@@ -119,10 +117,12 @@
 			
 	   </li>
 	
-	   <li class="search-container">
-	   		<a href="Tutorial.html" data-search="Getting Started">
-				Getting Started
+	   <li class="search-container active">
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
 			</a>
+			
+				
 			
 	   </li>
 	
@@ -274,7 +274,7 @@
 <h3>Speed</h3>
 <p>The importance of performance is almost impossible to exaggerate. CanJS’s guts are highly optimized. See how:</p>
 <h4>Control initialization</h4>
-<p>[Controls can.Control] pre-processes event handlers so binding is super fast. Compare <a href="http://jsperf.com/tabs-timing-test/7">initializing a can.Control, Backbone.View and Ember.View tabs</a> widget:
+<p><a href="Controls.html">can.Control</a> pre-processes event handlers so binding is super fast. Compare <a href="http://jsperf.com/tabs-timing-test/7">initializing a can.Control, Backbone.View and Ember.View tabs</a> widget:
 <a href="http://jsperf.com/tabs-timing-test/7"><img src="http://bitovi.com/images/introducing-canjs/performance_control.png" alt="Control performance" /></a></p>
 <h4>Tabs initialization performance</h4>
 <p>This makes a big difference for page initialization if your site has lots of controls.</p>
@@ -286,10 +286,10 @@
 <p>This means that CanJS and Knockout are slightly faster at different things, but are likely tied for the fastest live-binding libraries.</p>
 <p><em>Note: AngularJS throttles updates, which means it doesn’t fit well with these tests.</em></p>
 <h4>Model and view deferred support for parallel loading</h4>
-<p>[Deferreds Deferreds] are simply awesome for handling asynchronous behavior. <a href="Models.html">can.Model</a> produces deferreds and <a href="../docs/can.view.html">can.view</a> consumes them. With the view modifiers plugin, you can load a template and its data in parallel and render it into an element with:</p>
+<p><a href="Deferreds.html">Deferreds</a> are simply awesome for handling asynchronous behavior. <a href="Models.html">can.Model</a> produces deferreds and <a href="../docs/can.view.html">can.view</a> consumes them. With the view modifiers plugin, you can load a template and its data in parallel and render it into an element with:</p>
 <p>Hot. You can do this without the view modifiers plugin like:</p>
 <h4>Opt-in data binding</h4>
-<p>Although [EJS can.ejs’s] live-binding is super fast, setting up live data binding can be too slow in certain situations (like rendering a list of 1000 items). EJS’s live binding is opt-in. It only turns on if you are using the <code>attr</code> method. If the following template binds to a <code>todo</code>'s <code>name</code> …</p>
+<p>Although <a href="EJS.html">can.ejs’s</a> live-binding is super fast, setting up live data binding can be too slow in certain situations (like rendering a list of 1000 items). EJS’s live binding is opt-in. It only turns on if you are using the <code>attr</code> method. If the following template binds to a <code>todo</code>'s <code>name</code> …</p>
 <p>… the following doesn’t setup live-binding and renders much faster …</p>
 
 		</section>
@@ -352,7 +352,7 @@
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"type":"page","name":"Why","src":"guides/why.md","description":"","title":"Why CanJS?","parent":"guides","order":1,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/bitovi/Desktop/Bitovi/github/canjs.com/theme/templates","static":"/Users/bitovi/Desktop/Bitovi/github/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/bitovi/Desktop/Bitovi/github/canjs.com/can"},"dest":"/Users/bitovi/Desktop/Bitovi/github/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.0","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
+		var docObject = {"type":"page","name":"Why","src":"guides/why.md","description":"","title":"Why CanJS?","parent":"guides","order":3,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	

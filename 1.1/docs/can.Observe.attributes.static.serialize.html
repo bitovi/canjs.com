@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -530,7 +531,7 @@
 			
 				
 				
-					<li class="search-container parent ">
+					<li class="search-container  ">
 						<a 	class="page" 
 							href="can.Observe.setter.html" 
 							data-search="setter">
@@ -643,7 +644,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/1.1-legacy/observe/attributes/attributes.js">source</a></li>
 	
@@ -684,22 +685,6 @@ the types specified in <a href="can.Observe.attributes.html">attributes</a>.</p>
 that will return the value if the property holds a primitive value (string, number, ...),
 or it will call the &quot;serialize&quot; method if the property holds an object with the &quot;serialize&quot; method set.</p>
 <p>For example, to serialize all dates to ISO format:</p>
-<pre><code class="language-js">var Contact = can.Observe.extend({
-  attributes : {
-    birthday : 'date'
-  },
-  serialize : {
-    date : function(val, type){
-      return new Date(val).toISOString();
-    }
-  }
-},{});
-        
-var contact = new Contact({ 
-  birthday: new Date(&quot;Oct 25, 1973&quot;) 
-}).serialize();
-//-&gt; { &quot;birthday&quot; : &quot;1973-10-25T05:00:00.000Z&quot; }
-</code></pre>
 
 		</section>
 		
@@ -761,7 +746,7 @@ var contact = new Contact({
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Observe.attributes.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"},"name":"can.Observe.attributes.static.serialize","type":"property","description":"<p><code>can.Observe.serialize</code> is an object of name-function pairs that are used to\nserialize attributes.</p>\n","title":"serialize","src":"observe/attributes/attributes.js"};
+		var docObject = {"name":"can.Observe.attributes.static.serialize","type":"property","parent":"can.Observe.attributes.static","src":"observe/attributes/attributes.js","line":193,"codeLine":228,"description":"`can.Observe.serialize` is an object of name-function pairs that are used to \nserialize attributes.","title":"serialize","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/1.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"}};
 	</script>
 	
 	
@@ -774,6 +759,7 @@ var contact = new Contact({
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

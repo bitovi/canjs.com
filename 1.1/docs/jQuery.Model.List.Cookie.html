@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -219,7 +220,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/1.1-legacy/model/list/cookie/cookie.js">source</a></li>
 	
@@ -258,33 +259,7 @@ retrieves and saves a list of contacts:</p>
 
 		
 		<section class="comment">
-			<pre><code class="language-js">var contacts = new Contact.List([]).retrieve(&quot;contacts&quot;);
-
-// add each contact to the page
-contacts.each(function(){
-addContact(this);
-});
-
-// when a new cookie is crated
-$(&quot;#contact&quot;).submit(function(ev){
-    ev.preventDefault();
-    var data = $(this).formParams();
-    
-    // gives it a random id
-    data.id = +new Date();
-    var contact = new Contact(data);
-    
-    //add it to the list of contacts 
-    contacts.push(contact);
-    
-    //store the current list
-    contacts.store(&quot;contacts&quot;);
-    
-    //show the contact
-    addContact(contact);
-})
-</code></pre>
-<p>You can see this in action in the following demo.  Create a contact, then
+			<p>You can see this in action in the following demo.  Create a contact, then
 refresh the page.</p>
 <div class='demo_wrapper' data-demo-src='jquery/model/list/cookie/cookie.html'></div>
 
@@ -348,7 +323,7 @@ refresh the page.</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"jQuery.Model.List","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"},"type":"constructor","description":"<p>Provides a store-able list of model instances.  The following\nretrieves and saves a list of contacts:</p>\n","name":"jQuery.Model.List.Cookie","title":"","plugin":"jquery/model/list/cookie","test":"jquery/model/list/cookie/qunit.html","download":"http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/model/list/cookie/cookie.js","src":"model/list/cookie/cookie.js"};
+		var docObject = {"src":"model/list/cookie/cookie.js","line":2,"codeLine":45,"type":"constructor","description":"Provides a store-able list of model instances.  The following \nretrieves and saves a list of contacts:","name":"jQuery.Model.List.Cookie","title":"","plugin":"jquery/model/list/cookie","test":"jquery/model/list/cookie/qunit.html","download":"http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/model/list/cookie/cookie.js","parent":"jQuery.Model.List","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/1.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"}};
 	</script>
 	
 	
@@ -361,6 +336,7 @@ refresh the page.</p>
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -457,6 +458,8 @@
 		
 			
 		
+			
+		
 	</ul>
 
 			
@@ -492,7 +495,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/view/view.js">source</a></li>
 	
@@ -607,22 +610,6 @@ The <strong>renderer</strong> function receives the id of the template and the t
 			<p>Registers a template engine to be used with
 view helpers and compression.</p>
 <h2>Example</h2>
-<pre><code class="language-js">can.View.register({
-suffix : &quot;tmpl&quot;,
- plugin : &quot;jquery/view/tmpl&quot;,
-renderer: function( id, text ) {
-return function(data){
-    return jQuery.render( text, data );
-    }
-},
-script: function( id, text ) {
-var tmpl = can.tmpl(text).toString();
-return &quot;function(data){return (&quot;+
-        tmpl+
-        &quot;).call(jQuery, jQuery, data); }&quot;;
-}
-})
-</code></pre>
 
 		</section>
 		
@@ -684,7 +671,7 @@ return &quot;function(data){return (&quot;+
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.view.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"type":"function","name":"can.view.register","description":"<p>Register a templating language.</p>\n","title":"register","signatures":[{"code":"can.view.register(info)","description":"","params":[{"types":[{"type":"Object","options":[{"name":"plugin","description":"<p>The location of the templating language's plugin.</p>\n","types":[{"type":"String"}]},{"name":"suffix","description":"<p>Files with this suffix will use this templating language's plugin by default.</p>\n","types":[{"type":"String"}]},{"name":"renderer","description":"<p>A function that returns a function that, given data, will render the template with that data.\nThe <strong>renderer</strong> function receives the id of the template and the text of the template.</p>\n","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]},{"name":"script","description":"<p>A function that returns the string form of the processed template.</p>\n","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]}]}],"name":"info","description":"<p>Information about the templating language.</p>\n"}]}],"types":[],"comment":" ","src":"view/view.js"};
+		var docObject = {"type":"function","name":"can.view.register","parent":"can.view.static","src":"view/view.js","line":249,"codeLine":285,"description":"Register a templating language.","title":"register","signatures":[{"code":"can.view.register(info)","description":"","params":[{"types":[{"type":"Object","options":[{"name":"plugin","description":"The location of the templating language's plugin.","types":[{"type":"String"}]},{"name":"suffix","description":"Files with this suffix will use this templating language's plugin by default.","types":[{"type":"String"}]},{"name":"renderer","description":"A function that returns a function that, given data, will render the template with that data.\nThe __renderer__ function receives the id of the template and the text of the template.","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]},{"name":"script","description":"A function that returns the string form of the processed template.","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}]}]}],"name":"info","description":"Information about the templating language."}]}],"types":[],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
 	
 	
@@ -697,6 +684,7 @@ return &quot;function(data){return (&quot;+
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

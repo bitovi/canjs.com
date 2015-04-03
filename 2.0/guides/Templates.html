@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -368,7 +369,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/guides/views.md">source</a></li>
 	
@@ -411,23 +412,9 @@ pass the data to populate the template with.</p>
 <p>In order to register a template with can.view, create a script tag on the page
 with an ID, a <code>type</code> attribute that matches the templating language, and the
 content of the template inside:</p>
-<pre><code class="language-js">&lt;script type=&quot;text/ejs&quot; id=&quot;todoList&quot;&gt;
-&lt;% can.each(this, function(val, key) { %&gt;
-    &lt;li&gt;&lt;%= val.attr('description') %&gt;&lt;/li&gt;
-&lt;% }); %&gt;
-&lt;/script&gt;
-</code></pre>
 <p>Then load the template using the script tag's ID and pass the template data:</p>
-<pre><code class="language-js">Todo.findAll({}, function(todos) {
-    $('#nav').html(can.view('todoList', todos))
-});
-</code></pre>
 <p>Or you can load a template without registering it first (or including it on the
 page) by giving the URL to <code>can.view</code>:</p>
-<pre><code class="language-js">Todo.findAll({}, function(todos) {
-    $('#nav').html(can.view('todos/todos.ejs', todos))
-});
-</code></pre>
 <h2>Passing Deferreds</h2>
 <p>If the second parameter you pass to <code>can.view</code> contains Deferreds, can.view will
 instead return a Deferred that resolves to the documentFragment containing the
@@ -435,20 +422,9 @@ populated template after all the deferreds have resolved.</p>
 <p>This aspect is most useful because [Model] methods like <code>findAll</code> return a
 Deferred. This allows you to load a template, retrieve one or more Models, and
 then render the resulting documentFragment after everything has been loaded:</p>
-<pre><code class="language-js">can.view('todos.ejs', {
-    todos: Todo.findAll().
-    user: User.findOne({id: 5})
-}).then(function(fragment) {
-    document.getElementById('todos').appendChild(fragment);
-});
-</code></pre>
 <h2>Rendering to string</h2>
 <p>To render to a string instead of a documentFragment, use <code>can.view.render</code>. This
 is mainly used to nest templates inside of other templates:</p>
-<pre><code class="language-js">&lt;% can.each(todos, function(todo, key) { %&gt;
-    &lt;li&gt;&lt;%== can.view.render('todos.ejs', todo); %&gt;&lt;/li&gt;
-&lt;% }) %&gt;
-</code></pre>
 
 		</section>
 		
@@ -510,7 +486,7 @@ is mainly used to nest templates inside of other templates:</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"Tutorial","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"type":"page","name":"Templates","description":"","title":"Templates","order":3,"comment":" ","src":"guides/views.md"};
+		var docObject = {"type":"page","name":"Templates","src":"guides/views.md","description":"","title":"Templates","parent":"Tutorial","order":3,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
 	
 	
@@ -523,6 +499,7 @@ is mainly used to nest templates inside of other templates:</p>
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

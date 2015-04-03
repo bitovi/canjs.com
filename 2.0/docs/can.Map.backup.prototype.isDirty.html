@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -440,7 +441,7 @@
 			
 				
 				
-					<li class="search-container parent ">
+					<li class="search-container  ">
 						<a 	class="page" 
 							href="can.Map.setter.html" 
 							data-search="setter">
@@ -565,7 +566,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/map/backup/backup.js">source</a></li>
 	
@@ -626,39 +627,6 @@ If the Observe has never been backed up, <code>isDirty</code> returns <code>unde
 		<h4><code>{bool}</code></h4>
 		<div class="description">
 			<p>Whether the Observe has changed since the last time it was <a href="can.Map.backup.prototype.backup.html">backed up</a>.</p>
-<pre><code class="language-js">var recipe = new can.Map({
-  title: 'Pancake Mix',
-  yields: '3 batches',
-  ingredients: [{
-    ingredient: 'flour',
-    quantity: '6 cups'
-  },{
-    ingredient: 'baking soda',
-    quantity: '1 1/2 teaspoons'
-  },{
-    ingredient: 'baking powder',
-    quantity: '3 teaspoons'
-  },{
-    ingredient: 'salt',
-    quantity: '1 tablespoon'
-  },{
-    ingredient: 'sugar',
-    quantity: '2 tablespoons'
-  }]
-});
-<p>recipe.isDirty();     // false
-recipe.backup();</p>
-<p>recipe.attr('title', 'Flapjack Mix');
-recipe.isDirty();     // true
-recipe.restore();
-recipe.isDirty();   // false</p>
-<p>recipe.attr('ingredients.0.quantity', '7 cups');
-recipe.isDirty();     // false
-recipe.isDirty(true); // true</p>
-<p>recipe.backup();
-recipe.isDirty();     // false
-recipe.isDirty(true); // false
-</code></pre></p>
 
 		</div>
 		
@@ -738,7 +706,7 @@ recipe.isDirty(true); // false
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Map.backup","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"type":"function","name":"can.Map.backup.prototype.isDirty","description":"<p>Check whether an Observe has changed since the last time it was backed up.</p>\n","title":"isDirty","plugin":"can/map/backup","signatures":[{"code":"map.isDirty([deep])","description":"<p><code>isDirty</code> checks whether any properties have changed value or whether any properties have\nbeen added or removed since the last time the Observe was backed up. If <em>deep</em> is <code>true</code>,\nIf the Observe has never been backed up, <code>isDirty</code> returns <code>undefined</code>.\n<code>isDirty</code> will include nested Observes in its checks.</p>\n","params":[{"types":[{"type":"bool"}],"optional":true,"name":"deep","defaultValue":"false","description":"<p>whether to check nested Observes</p>\n"}],"returns":{"types":[{"type":"bool"}],"description":"<p>Whether the Observe has changed since the last time it was [can.Map.backup.prototype.backup backed up].</p>\n<pre><code class=\"language-js\">var recipe = new can.Map({\n  title: 'Pancake Mix',\n  yields: '3 batches',\n  ingredients: [{\n    ingredient: 'flour',\n    quantity: '6 cups'\n  },{\n    ingredient: 'baking soda',\n    quantity: '1 1/2 teaspoons'\n  },{\n    ingredient: 'baking powder',\n    quantity: '3 teaspoons'\n  },{\n    ingredient: 'salt',\n    quantity: '1 tablespoon'\n  },{\n    ingredient: 'sugar',\n    quantity: '2 tablespoons'\n  }]\n});\n<p>recipe.isDirty();     // false\nrecipe.backup();</p>\n<p>recipe.attr('title', 'Flapjack Mix');\nrecipe.isDirty();     // true\nrecipe.restore();\nrecipe.isDirty();   // false</p>\n<p>recipe.attr('ingredients.0.quantity', '7 cups');\nrecipe.isDirty();     // false\nrecipe.isDirty(true); // true</p>\n<p>recipe.backup();\nrecipe.isDirty();     // false\nrecipe.isDirty(true); // false\n</code></pre></p>\n"}}],"src":"map/backup/backup.js"};
+		var docObject = {"type":"function","name":"can.Map.backup.prototype.isDirty","parent":"can.Map.backup","src":"map/backup/backup.js","line":69,"codeLine":125,"description":"Check whether an Observe has changed since the last time it was backed up.","title":"isDirty","plugin":"can/map/backup","signatures":[{"code":"map.isDirty([deep])","description":"`isDirty` checks whether any properties have changed value or whether any properties have\nbeen added or removed since the last time the Observe was backed up. If _deep_ is `true`,\nIf the Observe has never been backed up, `isDirty` returns `undefined`.\n`isDirty` will include nested Observes in its checks.","params":[{"types":[{"type":"bool"}],"optional":true,"name":"deep","defaultValue":"false","description":"whether to check nested Observes"}],"returns":{"types":[{"type":"bool"}],"description":"Whether the Observe has changed since the last time it was [can.Map.backup.prototype.backup backed up]."}}],"ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
 	
 	
@@ -751,6 +719,7 @@ recipe.isDirty(true); // false
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -368,7 +369,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/guides/route.md">source</a></li>
 	
@@ -407,87 +408,16 @@ is provided, it just serializes the route into standard URL-encoded notation.</p
 		
 		<section class="comment">
 			<p>Here is how you might use <code>can.route</code> without a template:</p>
-<pre><code class="language-js">// Before we start, empty the hash.
-window.location.hash = '';
-
-// This means that can.route is empty.
-can.route.attr(); // {}
-
-// Set the hash...
-window.location.hash = '#!id=7';
-// ...and can.route reflects that.
-can.route.attr(); // {id: 7}
-
-// Set the route...
-can.route.attr({type: 'todos'}, true);
-// ...and the hash reflects that.
-window.location.hash; // #!type=todos
-
-// Set a new property on the route...
-can.route.attr('id', 6);
-// ...and the has changes again to reflect multiple properties.
-window.location.hash; // #!type=todos&amp;id=6
-</code></pre>
 <p>If you give <code>can.route</code> a template, you can make pretty URLs:</p>
-<pre><code class="language-js">// Give can.route a template.
-can.route(':type/:id');
-
-// If you set a hash that looks like the route...
-window.location.hash = '#!todos/5';
-// ... the route data changes accordingly.
-can.route.attr(); // {type: 'todos', id: 5}
-
-// If the route data is changed...
-can.route.attr({type: 'users', id: 29});
-// ...the hash is changed using the template.
-window.location.hash; // '#!users/7'
-
-// You can also supply defaults for routes.
-can.route('', {type: 'recipe'});
-
-// Then if you change the hash...
-window.location.hash = '';
-// ...the route data reflects the defaults.
-can.route.attr(); // {type: 'recipe'}
-</code></pre>
 <h2>Listening to events</h2>
 <p>Because <code>can.route</code> is an Observe, you can bind to it just like normal Observes:</p>
-<pre><code class="language-js">can.route.bind('id', function(ev, newVal, oldVal) {
-    console.log('The hash\'s id changed.');
-});
-</code></pre>
 <p>You can listen to routing events in Controls with the <em>route</em> event:</p>
-<pre><code class="language-js">var Routing = can.Control({
-    'route': function() {
-        // Matches every routing change, but gets passed no data.
-    },
-    'todos/:id route': function(data) {
-        // Matches routes like #!todos/5,
-        // and will get passed {id: 5} as data.
-    },
-    ':type/:id route': function(data) {
-        // Matches routes like #!recipes/5,
-        // and will get passed {id: 5, type: 'recipes'} as data.
-    }
-})
-</code></pre>
 <h2>Making URLs and links</h2>
 <p><code>can.route.url</code> takes a set of properties and makes a URL according to
 <code>can.route</code>'s current route.</p>
-<pre><code class="language-js">can.route(':type/:id', {type: 'todos'});
-can.route.url({id: 7}); // #!todos/7
-</code></pre>
 <p><code>can.route.link</code> does the same thing as <code>can.route.url</code>, but it returns an
 anchor element (in string form) ready to be inserted into HTML. You can also
 specify extra propertires to be set on the element.</p>
-<pre><code class="language-js">var a = can.route.link(
-    'Todo 5',
-    {id: 7},
-    {className: 'button'}
-);
-
-a; // &lt;a href=&quot;#!todos/7&quot; class=&quot;button&quot;&gt;Todo 5&lt;/a&gt;
-</code></pre>
 
 		</section>
 		
@@ -549,7 +479,7 @@ a; // &lt;a href=&quot;#!todos/7&quot; class=&quot;button&quot;&gt;Todo 5&lt;/a&
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"Tutorial","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"type":"page","name":"Routing","description":"<p><a href=\"../docs/can.route.html\">can.route</a> is the core of CanJS's routing functionality. It is a special\nObserve that updates <code>window.location.hash</code> when its properties change and\nupdates its properties when <code>window.location.hash</code> changes. You can give\n<code>can.route</code> a template to translate URLs into property values, but if no route\nis provided, it just serializes the route into standard URL-encoded notation.</p>\n","title":"Routing","order":9,"src":"guides/route.md"};
+		var docObject = {"type":"page","name":"Routing","src":"guides/route.md","description":"[can.route](../docs/can.route.html) is the core of CanJS's routing functionality. It is a special\nObserve that updates `window.location.hash` when its properties change and\nupdates its properties when `window.location.hash` changes. You can give\n`can.route` a template to translate URLs into property values, but if no route\nis provided, it just serializes the route into standard URL-encoded notation.","title":"Routing","parent":"Tutorial","order":9,"ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
 	
 	
@@ -562,6 +492,7 @@ a; // &lt;a href=&quot;#!todos/7&quot; class=&quot;button&quot;&gt;Todo 5&lt;/a&
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

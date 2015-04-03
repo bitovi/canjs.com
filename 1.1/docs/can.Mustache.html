@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -744,9 +745,9 @@
 </div>
 
 <ul class="links">
-    
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/1.1-legacy/view/mustache/mustache.js">source</a></li>
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/1.1-legacy/view/mustache/doc/mustache.md">source</a></li>
 	
 	
 		<li><a href="http://bitbuilder.herokuapp.com/can.custom.js?plugins=http://canjs.us/release/latest/can.view.mustache.js">download</a></li>
@@ -892,19 +893,13 @@ document.body.appendChild(template);
 
 		
 		<section class="api">
-			<div class='group_1'><div class='small-signature'><a href="can.Mustache.tags.escaped.html" class="sig"><code class='prettyprint'>{{key}}</code></a><p>Insert the value of the <a href="can.Mustache.key.html">key</a> into the  output of the template.
-</p></div></div><div class='group_1'><div class='small-signature'><a href="can.Mustache.tags.unescaped.html" class="sig"><code class='prettyprint'>{{{key}}}</code></a><p>Behaves just like <a href="can.Mustache.tags.escaped.html">{{key}}</a> and <a href="can.Mustache.helpers.helper.html">{{helper}}</a> but does not
-escape the result.
-</p></div></div><div class='group_1'><div class='small-signature'><a href="can.Mustache.tags.unescaped2.html" class="sig"><code class='prettyprint'>{{&amp;key}}</code></a><p>The {{&amp;key}} tag is an alias for <a href="can.Mustache.tags.unescaped.html">{{{key}}}</a>, behaving just
+			<div class='group_1'><div class='small-signature'><a href="can.Mustache.tags.escaped.html" class="sig"><code class='prettyprint'>{{key}}</code></a><p>Insert the value of the <a href="can.Mustache.key.html">key</a> into the  output of the template.</p></div></div><div class='group_1'><div class='small-signature'><a href="can.Mustache.tags.unescaped.html" class="sig"><code class='prettyprint'>{{{key}}}</code></a><p>Behaves just like <a href="can.Mustache.tags.escaped.html">{{key}}</a> and <a href="can.Mustache.helpers.helper.html">{{helper}}</a> but does not
+escape the result.</p></div></div><div class='group_1'><div class='small-signature'><a href="can.Mustache.tags.unescaped2.html" class="sig"><code class='prettyprint'>{{&amp;key}}</code></a><p>The `{{&key}}` tag is an alias for <a href="can.Mustache.tags.unescaped.html">{{{key}}}</a>, behaving just 
 like <a href="can.Mustache.tags.escaped.html">{{key}}</a> and <a href="can.Mustache.helpers.helper.html">{{helper}}</a> but does not
-escape the result.
-</p></div></div><div class='group_1'><div class='small-signature'><a href="can.Mustache.helpers.section.html" class="sig"><code class='prettyprint'>{{#key}}BLOCK{{/key}}</code></a><p>Render blocks of text one or more times, depending
-on the value of the key in the current context.
-</p></div></div><div class='group_1'><div class='small-signature'><a href="can.Mustache.helpers.close.html" class="sig"><code class='prettyprint'>{{/key}}</code></a><p>Ends a <a href="can.Mustache.helpers.section.html">{{#key}}</a> or <a href="can.Mustache.helpers.sectionHelper.html">{{#helper}}</a>
-block.
-</p></div></div><div class='group_1'><div class='small-signature'><a href="can.Mustache.helpers.inverse.html" class="sig"><code class='prettyprint'>{{^key}}BLOCK{{/key}}</code></a><p>Render blocks of text if the value of the key
-is falsey. </p></div></div><div class='group_1'><div class='small-signature'><a href="can.Mustache.helpers.partial.html" class="sig"><code class='prettyprint'>{{&gt;key}}</code></a><p>Render another template within the current template.
-</p></div></div><div class='group_1'><div class='small-signature'><a href="can.Mustache.tags.comment.html" class="sig"><code class='prettyprint'>{{!key}}</code></a><p>The comment tag operates similarly to a &lt;!-- --&gt; tag in HTML. </p></div></div>
+escape the result.</p></div></div><div class='group_1'><div class='small-signature'><a href="can.Mustache.helpers.section.html" class="sig"><code class='prettyprint'>{{#key}}BLOCK{{/key}}</code></a><p>Render blocks of text one or more times, depending 
+on the value of the key in the current context.</p></div></div><div class='group_1'><div class='small-signature'><a href="can.Mustache.helpers.close.html" class="sig"><code class='prettyprint'>{{/key}}</code></a><p>Ends a <a href="can.Mustache.helpers.section.html">{{#key}}</a> or <a href="can.Mustache.helpers.sectionHelper.html">{{#helper}}</a>
+block.</p></div></div><div class='group_1'><div class='small-signature'><a href="can.Mustache.helpers.inverse.html" class="sig"><code class='prettyprint'>{{^key}}BLOCK{{/key}}</code></a><p>Render blocks of text if the value of the key
+is falsey. </p></div></div><div class='group_1'><div class='small-signature'><a href="can.Mustache.helpers.partial.html" class="sig"><code class='prettyprint'>{{&gt;key}}</code></a><p>Render another template within the current template.</p></div></div><div class='group_1'><div class='small-signature'><a href="can.Mustache.tags.comment.html" class="sig"><code class='prettyprint'>{{!key}}</code></a><p>The comment tag operates similarly to a `<!-- -->` tag in HTML. </p></div></div>
 		</section>
 		
 	
@@ -962,7 +957,7 @@ is falsey. </p></div></div><div class='group_1'><div class='small-signature'><a 
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"},"name":"can.Mustache","type":"constructor","description":"<p>Logic-less [http://mustache.github.io/ mustache] templates with live binding  when used with <a href=\"#can_observe\">can.Observes</a>.</p>\n","src":"view/mustache/mustache.js","test":"can/view/mustache/test/test.html","plugin":"can/view/mustache","download":"http://canjs.us/release/latest/can.view.mustache.js","signatures":[{"code":"new can.Mustache(options)","description":"<p>Creates an instance of a mustache template. This is typically not used directly in\nfavor of [can.view] or [can.view.mustache].</p>\n","params":[{"types":[{"type":"Object","options":[{"name":"text","description":"<p>The text of the mustache template.</p>\n","types":[{"type":"String"}]},{"name":"name","description":"<p>The name of the template used to identify it to\ndebugging tools.</p>\n","types":[{"type":"String"}],"optional":true}]}],"name":"options","description":"<p>An options object with the following properties:</p>\n"}]}],"types":[],"comment":" ","api":"can.Mustache.tags"};
+		var docObject = {"name":"can.Mustache","type":"constructor","description":"Logic-less [http://mustache.github.io/ mustache] templates with live binding  when used with [can.Observes](#can_observe).","src":"view/mustache/doc/mustache.md","parent":"canjs","test":"can/view/mustache/test/test.html","plugin":"can/view/mustache","download":"http://canjs.us/release/latest/can.view.mustache.js","signatures":[{"code":"new can.Mustache(options)","description":"Creates an instance of a mustache template. This is typically not used directly in \nfavor of [can.view] or [can.view.mustache].","params":[{"types":[{"type":"Object","options":[{"name":"text","description":"The text of the mustache template.","types":[{"type":"String"}]},{"name":"name","description":"The name of the template used to identify it to\ndebugging tools.","types":[{"type":"String"}],"optional":true}]}],"name":"options","description":"An options object with the following properties:"}]}],"types":[],"comment":" ","api":"can.Mustache.tags","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/1.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"}};
 	</script>
 	
 	
@@ -975,6 +970,7 @@ is falsey. </p></div></div><div class='group_1'><div class='small-signature'><a 
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

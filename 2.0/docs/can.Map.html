@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -387,7 +388,7 @@
 			
 				
 				
-					<li class="search-container parent ">
+					<li class="search-container  ">
 						<a 	class="page" 
 							href="can.Map.setter.html" 
 							data-search="setter">
@@ -510,9 +511,9 @@
 </div>
 
 <ul class="links">
-    
-        <li><a href="../docco/map.html">docco</a></li>
-    
+	
+		<li><a href="../docco/map.html">docco</a></li>
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/map/map.js">source</a></li>
 	
@@ -627,28 +628,6 @@ never set them directly. You can also read property values using <code>attr</cod
 Usually, you will want to do this when creating a <code><a href="can.compute.html">can.compute</a></code> or when
 live-binding properties in an <a href="can.EJS.html">EJS</a> template. (If you are using
 <a href="can.Mustache.html">Mustache</a>, you don't need to use <code>attr</code>.)</p>
-<pre><code class="language-js">var aName = {a: 'Alexis'},
-    map = new can.Map(aName);
-
-// Observes are copies of data:
-aName === map; // false
-
-// reading from an Observe:
-map.attr();    // {a: 'Alexis'}
-map.a;         // 'Alexis'
-map.attr('a'); // 'Alexis'
-
-// setting an Observe's property:
-map.attr('a', 'Alice');
-map.a; // Alice
-
-// removing an Observe's property;
-map.removeAttr('a');
-map.attr(); // {}
-
-// Don't do this!
-map.a = 'Adam'; // wrong!
-</code></pre>
 <p>Find out more about manipulating properties of Observes under
 <a href="can.Map.prototype.attr.html">attr</a> and <a href="can.Map.prototype.removeAttr.html">removeAttr</a>.</p>
 <h2>Listening to changes</h2>
@@ -660,51 +639,9 @@ properties are changed that you can bind to.</p>
 <li>the <em>change</em> event fires on every change to an Observe.</li>
 <li>an event named after the property name fires on every change to that property.</li>
 </ul>
-<pre><code class="language-js">var o = new can.Map({});
-o.bind('change', function(ev, attr, how, newVal, oldVal) {
-    console.log('Something on o changed.');
-});
-o.bind('a', function(ev, newVal, oldVal) {
-    console.log('a was changed.');
-});
-
-o.attr('a', 'Alexis'); // 'Something on o changed.'
-                       // 'a was changed.'
-o.attr({
-    'a': 'Alice',      // 'Something on o changed.' (for a's change)
-    'b': 'Bob'         // 'Something on o changed.' (for b's change)
-});                    // 'a was changed.'
-
-o.removeAttr('a');     // 'Something on o changed.'
-                       // 'a was changed.'
-</code></pre>
 <p>For more detail on how to use these events, see <a href="can.Map.prototype.bind.html">bind</a> and
 <a href="can.Map.prototype.unbind.html">unbind</a>. There is also a plugin called <a href="can.Map.delegate.html">delegate</a>
 that makes binding to specific types of events easier:</p>
-<pre><code class="language-js">var o = new can.Map({});
-o.delegate('a', 'add', function(ev, newVal, oldVal) {
-    console.log('a was added.');
-});
-o.delegate('a', 'set', function(ev, newVal, oldVal) {
-    console.log('a was set.');
-});
-o.delegate('a', 'remove', function(ev, newVal, oldVal) {
-    console.log('a was removed.');
-});
-o.delegate('a', 'change', function(ev, newVal, oldVal) {
-    console.log('a was changed.');
-});
-
-o.attr('a', 'Alexis'); // 'a was added.'
-                       // 'a was changed.'
-
-o.attr('a', 'Alice'); // 'a was set.'
-                      // 'a was changed.'
-
-
-o.removeAttr('a'); // 'a was removed.'
-                   // 'a was changed.'
-</code></pre>
 
 		</section>
 		
@@ -766,7 +703,7 @@ o.removeAttr('a'); // 'a was removed.'
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"type":"constructor","name":"can.Map","description":"<p>Create observable objects.</p>\n","title":"","inherits":"can.Construct","test":"can/map/test.html","plugin":"can/map","links":[{"href":"../docco/map.html","title":"docco"}],"signatures":[{"code":"new can.Map([props])","description":"<p>Creates a new instance of can.Map.</p>\n","params":[{"types":[{"type":"Object","options":[]}],"optional":true,"name":"props","description":"<p>Properties and values to seed the Observe with.</p>\n"}],"returns":{"types":[{"type":"can.Map"}],"description":"<p>An instance of <code>can.Map</code> with the properties from <em>props</em>.</p>\n"}},{"code":"can.Map([name,] [staticProperties,] instanceProperties)","description":"<p>Creates a new extended constructor function.</p>\n<p>This is deprecated. In CanJS 1.2, by default, calling the constructor function\nwithout <code>new</code> will create a <code>new</code> instance. Use [can.Construct.extend can.Map.extend]\ninstead of calling the constructor to extend.</p>\n","params":[]}],"comment":" ","src":"map/map.js"};
+		var docObject = {"type":"constructor","name":"can.Map","src":"map/map.js","description":"Create observable objects.","title":"","inherits":"can.Construct","parent":"canjs","test":"can/map/test.html","plugin":"can/map","links":[{"href":"../docco/map.html","title":"docco"}],"signatures":[{"code":"new can.Map([props])","description":"Creates a new instance of can.Map.","params":[{"types":[{"type":"Object","options":[]}],"optional":true,"name":"props","description":"Properties and values to seed the Observe with."}],"returns":{"types":[{"type":"can.Map"}],"description":"An instance of `can.Map` with the properties from _props_."}},{"code":"can.Map([name,] [staticProperties,] instanceProperties)","description":"Creates a new extended constructor function. \n    \nThis is deprecated. In CanJS 1.2, by default, calling the constructor function\nwithout `new` will create a `new` instance. Use [can.Construct.extend can.Map.extend] \ninstead of calling the constructor to extend.","params":[]}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
 	
 	
@@ -779,6 +716,7 @@ o.removeAttr('a'); // 'a was removed.'
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

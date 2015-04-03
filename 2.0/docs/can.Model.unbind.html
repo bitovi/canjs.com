@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -403,6 +404,21 @@
 			
 		
 			
+				
+				
+					<li class="search-container  ">
+						<a 	class="property" 
+							href="can.Model.removeAttr.html" 
+							data-search="removeAttr">
+							removeAttr
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
 		
 			
 				
@@ -544,7 +560,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/model/model.js">source</a></li>
 	
@@ -708,7 +724,7 @@ passed to <code>bind</code>.</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Model.static","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"description":"<p>Stop listening for events on a Model class.</p>\n","title":"unbind","name":"can.Model.unbind","type":"function","signatures":[{"code":"can.Model.unbind(eventType, handler)","description":"","params":[{"types":[{"type":"String"}],"name":"eventType","description":"<p>The type of event. It must be\n<code>&quot;created&quot;</code>, <code>&quot;updated&quot;</code>, <code>&quot;destroyed&quot;</code>.</p>\n"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"handler","description":"<p>A callback function\nthat was passed to <code>bind</code>.</p>\n"}],"returns":{"types":[{"type":"can.Model"}],"description":"<p>The model constructor function.</p>\n"}}],"comment":" ","src":"model/model.js"};
+		var docObject = {"src":"model/model.js","line":244,"codeLine":270,"type":"function","description":"Stop listening for events on a Model class.","title":"unbind","name":"can.Model.unbind","parent":"can.Model.static","signatures":[{"code":"can.Model.unbind(eventType, handler)","description":"","params":[{"types":[{"type":"String"}],"name":"eventType","description":"The type of event. It must be\n`\"created\"`, `\"updated\"`, `\"destroyed\"`."},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"handler","description":"A callback function\nthat was passed to `bind`."}],"returns":{"types":[{"type":"can.Model"}],"description":"The model constructor function."}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
 	
 	
@@ -721,6 +737,7 @@ passed to <code>bind</code>.</p>
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

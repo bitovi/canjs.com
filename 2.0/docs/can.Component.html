@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -356,9 +357,9 @@
 </div>
 
 <ul class="links">
-    
-        <li><a href="../docco/component.html">docco</a></li>
-    
+	
+		<li><a href="../docco/component.html">docco</a></li>
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/component/component.js">source</a></li>
 	
@@ -630,8 +631,8 @@ only renders friendly messages:</p>
 <p>The following demos a tabs widget.  Click &quot;Add Vegetables&quot;
 to add a new tab.</p>
 <div class='demo_wrapper' data-demo-src='can/component/examples/tabs.html'></div>
-An instance of the tabs widget is created by creating `<tabs>` and `<panel>`
-elements like:
+<p>An instance of the tabs widget is created by creating <code>&lt;tabs&gt;</code> and <code>&lt;panel&gt;</code>
+elements like:</p>
 <pre><code>&lt;tabs&gt;
   {{#each foodTypes}}
     &lt;panel title='title'&gt;{{content}}&lt;/panel&gt;
@@ -651,9 +652,9 @@ and adds its data to the tabs' list of panels with:</p>
 <h3>TreeCombo</h3>
 <p>The following tree combo lets people walk through a hierarchy and select locations.</p>
 <div class='demo_wrapper' data-demo-src='can/component/examples/treecombo.html'></div>
-The secret to this widget is the scope's `breadcrumb` property, which is an array
-of items the user has navigated through, and `selectableItems`, which represents the children of the
-last item in the breadcrub.  These are defined on the scope like:
+<p>The secret to this widget is the scope's <code>breadcrumb</code> property, which is an array
+of items the user has navigated through, and <code>selectableItems</code>, which represents the children of the
+last item in the breadcrub.  These are defined on the scope like:</p>
 <pre><code>breadcrumb: [],
 selectableItems: function(){
   var breadcrumb = this.attr(&quot;breadcrumb&quot;);
@@ -682,7 +683,7 @@ adds that item to the breadcrumb like:</p>
 widget-like components: a grid, next / prev buttons, and a page count indicator. And,
 it shows an application component that puts them all together.</p>
 <div class='demo_wrapper' data-demo-src='can/component/examples/paginate.html'></div>
-This demo uses a `Paginate` can.Map to assist with maintaining a paginated state:
+<p>This demo uses a <code>Paginate</code> can.Map to assist with maintaining a paginated state:</p>
 <pre><code>var Paginate = can.Map.extend({
 ...
 });
@@ -786,7 +787,7 @@ its sub-components:</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"canjs","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"type":"constructor","name":"can.Component","description":"<p>Create widgets that use a template, a view-model  and custom tags.</p>\n","title":"","download":"can/component","test":"can/component/test.html","links":[{"href":"../docco/component.html","title":"docco"}],"signatures":[{"code":"< TAG [ATTR-NAME=ATTR-VALUE] >","description":"<p>Create an instance of a component on a particular\ntag. Currently, this only works within [can.Mustache] templates.</p>\n","params":[{"types":[{"type":"String"}],"name":"TAG","description":"<p>An HTML tag name that matches the [can.Component::tag tag]\nproperty of the component.</p>\n"},{"types":[{"type":"String"}],"name":"ATTR-NAME","description":"<p>An HTML attribute name. Any attribute name is\nvalid. Any attributes added to the element are added as properties to the\ncomponent's [can.Component::scope scope].</p>\n"},{"types":[{"type":"String"}],"name":"ATTR-VALUE","description":"<p>Specifies the value of a property passed to\nthe component instance's [can.Component::scope scope]. By default <code>ATTR-VALUE</code>\nvalues are looked up in the [can.view.Scope can.Mustache scope]. If the string value\nof the <code>ATTR-NAME</code> is desired, this can be specified like:</p>\n<pre><code>ATTR-NAME: &quot;@&quot;\n</code></pre>\n"}]}],"comment":" ","src":"component/component.js"};
+		var docObject = {"type":"constructor","name":"can.Component","src":"component/component.js","description":"Create widgets that use a template, a view-model  and custom tags.","title":"","download":"can/component","test":"can/component/test.html","parent":"canjs","links":[{"href":"../docco/component.html","title":"docco"}],"signatures":[{"code":"< TAG [ATTR-NAME=ATTR-VALUE] >","description":"Create an instance of a component on a particular \ntag. Currently, this only works within [can.Mustache] templates.","params":[{"types":[{"type":"String"}],"name":"TAG","description":"An HTML tag name that matches the [can.Component::tag tag]\nproperty of the component."},{"types":[{"type":"String"}],"name":"ATTR-NAME","description":"An HTML attribute name. Any attribute name is\nvalid. Any attributes added to the element are added as properties to the\ncomponent's [can.Component::scope scope]."},{"types":[{"type":"String"}],"name":"ATTR-VALUE","description":"Specifies the value of a property passed to\nthe component instance's [can.Component::scope scope]. By default `ATTR-VALUE`\nvalues are looked up in the [can.view.Scope can.Mustache scope]. If the string value\nof the `ATTR-NAME` is desired, this can be specified like: \n\n    ATTR-NAME: \"@\""}]}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
 	
 	
@@ -799,6 +800,7 @@ its sub-components:</p>
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

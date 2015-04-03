@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -387,7 +388,7 @@
 			
 				
 				
-					<li class="search-container parent ">
+					<li class="search-container  ">
 						<a 	class="page" 
 							href="can.Map.setter.html" 
 							data-search="setter">
@@ -657,7 +658,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/map/validations/validations.js">source</a></li>
 	
@@ -831,7 +832,7 @@ errors.dueDate[0] //-&gt; &quot;can't be empty&quot;
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Map.validations","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"type":"function","name":"can.Map.validations.prototype.errors","description":"","title":"errors","signatures":[{"code":"observe.errors(attrs, newVal)","description":"","params":[{"types":[{"type":"Array","template":[{"types":[{"type":"String"}]}]}],"optional":true,"name":"attrs","description":"<p>An optional list of attributes to get errors for:</p>\n<pre><code>task.errors(['dueDate','name']);\n</code></pre>\n<p>Or it can take a single attr name like:</p>\n<pre><code>task.errors('dueDate')\n</code></pre>\n"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"newVal","description":"<p>An optional new value to test setting\non the observe.  If <code>newVal</code> is provided,\nit returns the errors on the observe if <code>newVal</code> was set.</p>\n"}],"returns":{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"Array","template":[{"types":[{"type":"String"}]}]}]}]}],"description":"<p>an object of attributeName : [errors] like:</p>\n<pre><code>task.errors() // -&gt; {dueDate: [&quot;can't be empty&quot;]}\n</code></pre>\n<p>or <code>null</code> if there are no errors.</p>\n"}}],"comment":" ","src":"map/validations/validations.js"};
+		var docObject = {"type":"function","name":"can.Map.validations.prototype.errors","parent":"can.Map.validations","src":"map/validations/validations.js","line":327,"codeLine":372,"description":"","title":"errors","signatures":[{"code":"observe.errors(attrs, newVal)","description":"","params":[{"types":[{"type":"Array","template":[{"types":[{"type":"String"}]}]}],"optional":true,"name":"attrs","description":"An optional list of attributes to get errors for:\n\n    task.errors(['dueDate','name']);\n\nOr it can take a single attr name like:\n\n    task.errors('dueDate')"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"newVal","description":"An optional new value to test setting\non the observe.  If `newVal` is provided,\nit returns the errors on the observe if `newVal` was set."}],"returns":{"types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"Array","template":[{"types":[{"type":"String"}]}]}]}]}],"description":"an object of attributeName : [errors] like:\n\n    task.errors() // -> {dueDate: [\"can't be empty\"]}\n\nor `null` if there are no errors."}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
 	
 	
@@ -844,6 +845,7 @@ errors.dueDate[0] //-&gt; &quot;can't be empty&quot;
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

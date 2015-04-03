@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -438,7 +439,7 @@
 			
 				
 				
-					<li class="search-container parent ">
+					<li class="search-container  ">
 						<a 	class="page" 
 							href="can.Map.setter.html" 
 							data-search="setter">
@@ -563,7 +564,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/map/backup/backup.md">source</a></li>
 	
@@ -603,35 +604,6 @@ and lets you restore the original values of an Map's properties after they are c
 			<p>Here is an example showing how to use <code><a href="can.Map.backup.prototype.backup.html">backup</a></code> to save values,
 <code><a href="can.Map.backup.prototype.restore.html">restore</a></code> to restore them, and <code><a href="can.Map.backup.prototype.isDirty.html">isDirty</a></code></p>
 <p>to check if the Map has changed:</p>
-<pre><code class="language-js">var recipe = new can.Map({
-  title: 'Pancake Mix',
-  yields: '3 batches',
-  ingredients: [{
-    ingredient: 'flour',
-    quantity: '6 cups'
-  },{
-    ingredient: 'baking soda',
-    quantity: '1 1/2 teaspoons'
-  },{
-    ingredient: 'baking powder',
-    quantity: '3 teaspoons'
-  },{
-    ingredient: 'salt',
-    quantity: '1 tablespoon'
-  },{
-    ingredient: 'sugar',
-    quantity: '2 tablespoons'
-  }]
-});
-recipe.backup();
-
-recipe.attr('title', 'Flapjack Mix');
-recipe.title;     // 'Flapjack Mix'
-recipe.isDirty(); // true
-
-recipe.restore();
-recipe.title;     // 'Pancake Mix'
-</code></pre>
 
 		</section>
 		
@@ -693,7 +665,7 @@ recipe.title;     // 'Pancake Mix'
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Map.plugins","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":"guides/*.md","pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/2.0/can"},"dest":"/Users/justin/dev/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"},"type":"page","name":"can.Map.backup","description":"<p>can.Map.backup is a plugin that provides a dirty bit for properties on an Map,\nand lets you restore the original values of an Map's properties after they are changed.</p>\n","title":"backup","plugin":"can/map/backup","test":"can/map/backup/test.html","src":"map/backup/backup.md"};
+		var docObject = {"type":"page","name":"can.Map.backup","src":"map/backup/backup.md","description":"can.Map.backup is a plugin that provides a dirty bit for properties on an Map,\nand lets you restore the original values of an Map's properties after they are changed.","title":"backup","parent":"can.Map.plugins","plugin":"can/map/backup","test":"can/map/backup/test.html","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
 	
 	
@@ -706,6 +678,7 @@ recipe.title;     // 'Pancake Mix'
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

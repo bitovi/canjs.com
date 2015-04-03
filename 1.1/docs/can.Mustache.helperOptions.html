@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -752,7 +753,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/1.1-legacy/view/mustache/doc/helperOptions.md">source</a></li>
 	
@@ -971,7 +972,7 @@ options.contexts = [
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Mustache.types","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"},"type":"typedef","name":"can.Mustache.helperOptions","description":"<p>The options argument passed to a [can.Mustache.helper helper function].</p>\n","title":"helperOptions","types":[{"type":"Object","options":[{"name":"fn","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"*"}],"name":"context"}]}],"description":"<p>Provided if a\n[can.Mustache.helpers.sectionHelper section helper] is called.  Call <code>fn</code> to\nrender the BLOCK with the specified <code>context</code>.</p>\n","optional":true},{"name":"inverse","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"*"}],"name":"context"}]}],"description":"<p>Provided if a\n[can.Mustache.helpers.sectionHelper section helper] is called\nwith [can.Mustache.helpers.else {{else}}].  Call <code>inverse</code> to\nrender the INVERSE with the specified <code>context</code>.</p>\n","optional":true},{"name":"hash","types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"*"},{"type":"String"},{"type":"Number"}]}]}],"description":"<p>An object containing all of the final\narguments listed as <code>name=value</code> pairs for the helper.</p>\n<pre><code>{{helper arg1 arg2 name=value other=3 position=&quot;top&quot;}}\n\noptions.hash = {\n    name: &lt;context_lookup&gt;.value,\n    other: 3,\n    position: &quot;top&quot;\n}\n</code></pre>\n"},{"name":"contexts","description":"<p>An array containing the context lookup stack for the current helper.</p>\n<pre><code>{{#section}}\n    {{#someObj}}\n        {{#panels}}\n            {{helper}}\n        {{/panels}}\n    {{/someObj}}\n{{/section}}\n\noptions.contexts = [\n    &lt;root_scope&gt;,\n    &lt;context_lookup&gt;.section,\n    &lt;context_lookup&gt;.someObj,\n    panel\n]\n</code></pre>\n","types":[{"type":"Array","options":[]}]}]}],"src":"view/mustache/doc/helperOptions.md"};
+		var docObject = {"type":"typedef","name":"can.Mustache.helperOptions","src":"view/mustache/doc/helperOptions.md","description":"The options argument passed to a [can.Mustache.helper helper function].","title":"helperOptions","types":[{"type":"Object","options":[{"name":"fn","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"*"}],"name":"context"}]}],"description":"Provided if a \n[can.Mustache.helpers.sectionHelper section helper] is called.  Call `fn` to\nrender the BLOCK with the specified `context`.","optional":true},{"name":"inverse","types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"*"}],"name":"context"}]}],"description":"Provided if a \n[can.Mustache.helpers.sectionHelper section helper] is called \nwith [can.Mustache.helpers.else {{else}}].  Call `inverse` to\nrender the INVERSE with the specified `context`.","optional":true},{"name":"hash","types":[{"type":"Object","template":[{"types":[{"type":"String"}]},{"types":[{"type":"*"},{"type":"String"},{"type":"Number"}]}]}],"description":"An object containing all of the final \narguments listed as `name=value` pairs for the helper.\n\t\n\t{{helper arg1 arg2 name=value other=3 position=\"top\"}}\n\n\toptions.hash = {\n\t\tname: <context_lookup>.value,\n\t\tother: 3,\n\t\tposition: \"top\"\n\t}"},{"name":"contexts","description":"An array containing the context lookup stack for the current helper.\n\n\t{{#section}}\n\t\t{{#someObj}}\n\t\t\t{{#panels}}\n\t\t\t\t{{helper}}\n\t\t\t{{/panels}}\n\t\t{{/someObj}}\n\t{{/section}}\n\n\toptions.contexts = [\n\t\t<root_scope>,\n\t\t<context_lookup>.section,\n\t\t<context_lookup>.someObj,\n\t\tpanel\n\t]","types":[{"type":"Array","options":[]}]}]}],"parent":"can.Mustache.types","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/1.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"}};
 	</script>
 	
 	
@@ -984,6 +985,7 @@ options.contexts = [
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -424,7 +425,7 @@
 			
 				
 				
-					<li class="search-container active parent expanded">
+					<li class="search-container active  expanded">
 						<a 	class="page" 
 							href="can.Observe.setter.html" 
 							data-search="setter">
@@ -432,25 +433,6 @@
 						</a>
 						
 							
-	<ul >
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="constructor" 
-							href="can.classize.html" 
-							data-search="can.classize">
-							can.classize
-						</a>
-						
-					</li>
-				
-			
-			
-		
-	</ul>
-
 						
 					</li>
 				
@@ -556,7 +538,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/1.1-legacy/observe/setter/setter.md">source</a></li>
 	
@@ -636,37 +618,8 @@ property's current value is an Observe or List, and an Observe or List is return
 from a setter, the effect will not be to merge the values into the current value as
 if the return value was fed straight into <code>attr</code>, but to replace the value with the
 new Observe or List completely:</p>
-<pre><code class="language-js">var Contact = can.Observe.extend({
-    setInfo: function(raw) {
-      return raw;
-    }
-});
-
-var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
-alice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}
-alice.info._cid; // '.observe1'
-
-alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
-alice.attr(); // {name: 'Allison Wonderland', 'phone': '888-888-8888'}
-alice.info._cid; // '.observe2'
-</code></pre>
 <p>If you would rather have the new Observe or List merged into the current value, call
 <code>attr</code> inside the setter:</p>
-<pre><code class="language-js">var Contact = can.Observe.extend({
-    setInfo: function(raw) {
-      this.info.attr(raw);
-      return this.info;
-    }
-});
-
-var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
-alice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}
-alice.info._cid; // '.observe1'
-
-alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
-alice.attr(); // {name: 'Allison Wonderland', email: 'alice@liddell.com', 'phone': '888-888-8888'}
-alice.info._cid; // '.observe1'
-</code></pre>
 <h2>Error Handling</h2>
 <p>Setters can trigger errors if values passed didn't meet your defined validation(s).</p>
 <p>Below is an example of a <em>School</em> observable that accepts a name property and errors
@@ -755,7 +708,7 @@ the offsets when the <em>Prev</em> or <em>Next</em> button is clicked.</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"can.Observe.plugins","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"},"type":"page","name":"can.Observe.setter","description":"<p><code>can.Observe.setter(name, success(value), error(errors))</code> extends the Observe object\nto provide convenient helper methods for setting attributes on a observable.</p>\n","title":"setter","plugin":"can/observe/setter","test":"can/observe/setter/test.html","comment":" ","src":"observe/setter/setter.md"};
+		var docObject = {"type":"page","name":"can.Observe.setter","src":"observe/setter/setter.md","description":"`can.Observe.setter(name, success(value), error(errors))` extends the Observe object \nto provide convenient helper methods for setting attributes on a observable.","title":"setter","parent":"can.Observe.plugins","plugin":"can/observe/setter","test":"can/observe/setter/test.html","comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/1.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"}};
 	</script>
 	
 	
@@ -768,6 +721,7 @@ the offsets when the <em>Prev</em> or <em>Next</em> button is clicked.</p>
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	

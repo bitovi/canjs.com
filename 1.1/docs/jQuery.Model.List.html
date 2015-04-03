@@ -78,7 +78,8 @@
 					<ul class="dropdown-menu">
 						<li><a href="http://bitovi.com">Bitovi.com</a></li>
 						<li><a href="http://bitovi.com/blog/">Blog</a></li>
-						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
 						<li><a href="http://bitovi.com/training/">Training</a></li>
 						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
 						<li><a href="http://bitovi.com/people/">People</a></li>
@@ -219,7 +220,7 @@
 </div>
 
 <ul class="links">
-    
+	
 	
 		<li><a href="https://github.com/bitovi/canjs/tree/1.1-legacy/model/list/list.js">source</a></li>
 	
@@ -398,7 +399,7 @@ from the list:</p>
 a contacts list.  Check
 multiple Contacts and click &quot;DESTROY ALL&quot;</p>
 <div class='demo_wrapper' data-demo-src='jquery/model/list/list.html'></div>
-## Other List Features
+<h2>Other List Features</h2>
 <ul>
 <li>Store and retrieve multiple instances</li>
 <li>Fast HTML inserts</li>
@@ -416,8 +417,6 @@ you can leverage to manage and maintain a list of models.</p>
 <h3>Faster Inserts</h3>
 <p>The 'easy' way to add a model to an element is simply inserting
 the model into the view like:</p>
-<pre><code class="language-xml">&lt;div &lt;%= task %&gt;&gt; A task &lt;/div&gt;
-</code></pre>
 <p>And then you can use [jQuery.fn.models $('.task').models()].</p>
 <p>This pattern is fast enough for 90% of all widgets.  But it
 does require an extra query.  Lists help you avoid this.</p>
@@ -426,12 +425,8 @@ uses their className to return matched instances in the list.</p>
 <p>To use get, your elements need to have the instance's
 identity in their className.  So to setup a div to reprsent
 a task, you would have the following in a view:</p>
-<pre><code class="language-xml">&lt;div class='task &lt;%= task.identity() %&gt;'&gt; A task &lt;/div&gt;
-</code></pre>
 <p>Then, with your model list, you could use get to get a list of
 tasks:</p>
-<pre><code class="language-js">taskList.get($('.task'))
-</code></pre>
 <p>The following demonstrates how to use this technique:</p>
 <div class='demo_wrapper' data-demo-src='jquery/model/list/list-insert.html'></div>
 
@@ -495,7 +490,7 @@ tasks:</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"parent":"jQuery.Model","templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/1.1/can"},"dest":"/Users/justin/dev/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.1.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"},"name":"jQuery.Model.List","type":"constructor","description":"<p>Model.Lists manage a lists (or arrays) of\nmodel instances.  Similar to [jQuery.Model $.Model],\nthey are used to:</p>\n","title":"","download":"http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/model/list/list.js","test":"jquery/model/list/qunit.html","plugin":"jquery/model/list","src":"model/list/list.js"};
+		var docObject = {"name":"jQuery.Model.List","type":"constructor","parent":"jQuery.Model","src":"model/list/list.js","line":18,"codeLine":252,"description":"Model.Lists manage a lists (or arrays) of \nmodel instances.  Similar to [jQuery.Model $.Model], \nthey are used to:","title":"","download":"http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/model/list/list.js","test":"jquery/model/list/qunit.html","plugin":"jquery/model/list","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/1.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.3","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"}};
 	</script>
 	
 	
@@ -508,6 +503,7 @@ tasks:</p>
 		</script>
 		<script type='text/javascript' 
 				data-main="static"
+				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	
