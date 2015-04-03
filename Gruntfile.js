@@ -190,7 +190,7 @@ module.exports = function (grunt) {
 						{"number": "2.0"},
 						{"number": "1.1"}
 					],
-					"defaultDownloadVersion": "2.2.3"
+					"defaultDownloadVersion": "2.2.4"
 				},
 				"versionsSelectText" : "CanJS v<%= version %>",
 				"tags": "theme/tags"
