@@ -794,9 +794,53 @@ new Observe or List completely. Because of this, any bindings you have on the pr
 observable object will break.</p>
 <p>If you would rather have the new Observe or List merged into the current value, call
 <code>attr</code> directly on the property instead of on the Observe:</p>
+<pre><code>var Contact = can.Map.extend({
+attributes: {
+ info: 'info'
+},
+convert: {
+ 'info': function(data, oldVal) {
+   return data;
+}
+}
+}, {});
+
+var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
+alice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}
+alice.info._cid; // '.observe1'
+
+alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
+alice.attr(); // {name: 'Allison Wonderland', 'phone': '888-888-8888'}
+alice.info._cid; // '.observe2'
+
+alice.info.attr({email: 'alice@wonderland.com', phone: '000-000-0000'});
+alice.attr(); // {name: 'Allison Wonderland', email: 'alice@wonderland.com', 'phone': '000-000-0000'}
+alice.info._cid; // '.observe2'
+</code></pre>
 <h2>Assocations and Convert</h2>
 <p>If you have assocations defined within your model(s), you can use convert to automatically
 call serialize on those models.</p>
+<pre><code>var Contact = can.Model.extend({
+attributes : {
+ tasks: Task
+}
+}, {});
+
+var Task = can.Model.extend({
+attributes : {
+ due : 'date'
+}
+},{});
+
+var contact = new Contact({
+tasks: [ new Task({
+ due: new Date()
+}) ]
+});
+
+contact.serialize();
+//-&gt; { tasks: [ { due: 1333219754627 } ] }
+</code></pre>
 
 		</section>
 		

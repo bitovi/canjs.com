@@ -686,8 +686,19 @@
 		
 		<section class="comment">
 			<p><code>push</code> adds elements onto the end of a List here is an example:</p>
+<pre><code>var list = new can.List(['Alice']);
+
+list.push('Bob', 'Eve');
+list.attr(); // ['Alice', 'Bob', 'Eve']
+</code></pre>
 <p>If you have an array you want to concatenate to the end
 of the List, you can use <code>apply</code>:</p>
+<pre><code>var names = ['Bob', 'Eve'],
+    list = new can.List(['Alice']);
+
+list.push.apply(list, names);
+list.attr(); // ['Alice', 'Bob', 'Eve']
+</code></pre>
 <h2>Events</h2>
 <p><code>push</code> causes <em>change</em>, <em>add</em>, and <em>length</em> events to be fired.</p>
 <h2>See also</h2>

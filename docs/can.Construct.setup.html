@@ -626,6 +626,21 @@ Do not confuse this with the prototype <code><a href="can.Construct.prototype.se
 <h2>Example</h2>
 <p>This <code>Parent</code> class adds a reference to its base class to itself, and
 so do all the classes that inherit from it.</p>
+<pre><code>Parent = can.Construct.extend({
+  setup : function(base, fullName, staticProps, protoProps){
+    this.base = base;
+
+    // call base functionality
+    can.Construct.setup.apply(this, arguments)
+  }
+},{});
+
+Parent.base; // can.Construct
+
+Child = Parent({});
+
+Child.base; // Parent
+</code></pre>
 
 		</section>
 		

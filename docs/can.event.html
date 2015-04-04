@@ -556,9 +556,37 @@
 		<section class="comment">
 			<h2>Using as a mixin</h2>
 <p>The easiest way to add events to your classes and objects is by mixing <code>can.event</code> into your object or prototype.</p>
+<pre><code>var SomeClass = can.Construct(&quot;SomeClass&quot;, {
+    init: function() {
+        this.value = 0;
+    },
+    increment: function() {
+        this.value++;
+        this.dispatch(&quot;change&quot;, [this.value]);
+    }
+});
+can.extend(SomeClass.prototype, can.event);
+</code></pre>
 <p>Now that <code>can.event</code> is included in the prototype, we can add/remove/dispatch events on the object instances.</p>
+<pre><code>var instance = new SomeClass();
+instance.on(&quot;change&quot;, function(ev, value) {
+    alert(&quot;The instance changed to &quot; + value);
+});
+
+// This will dispatch the &quot;change&quot; event and show the alert
+instance.increment();
+</code></pre>
 <h2>Using without mixing in</h2>
 <p>The same event functionality from <code>can.event</code> can be used, even if the given object doesn't include <code>can.event</code>. Every method within <code>can.event</code> supports being called with an alternate scope.</p>
+<pre><code>var obj = {};
+
+can.event.on.call(obj, &quot;change&quot;, function() {
+    alert(&quot;object change!&quot;);
+});
+
+// This will dispatch the &quot;change&quot; event and show the alert
+can.event.dispatch.call(obj, &quot;change&quot;);
+</code></pre>
 
 		</section>
 		

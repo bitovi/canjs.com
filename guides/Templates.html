@@ -178,21 +178,6 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="EJS.html" 
-							data-search="EJS">
-							EJS
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="page" 
 							href="Mustache.html" 
 							data-search="Mustache">
 							Mustache
@@ -400,8 +385,7 @@
 		<section class="comment">
 			<p><a href="../docs/can.view.html">can.view</a> loads and renders templates with the data
 you provide, and returns a documentFragment with the populated template.
-can.view supports many templating languages, but <a href="EJS.html">EJS</a> and [Mustache
-Mustache] allow you to live bind to Observes within templates. Live binding
+<a href="../docs/can.stache.html">Stache</a> and <a href="../docs/can.mustache.html">Mustache</a> allow you to live bind to Observes within templates. Live binding
 will dynamically update your template in the DOM automatically whenever the
 properties within Observes change.</p>
 <h2>Loading templates</h2>
@@ -412,9 +396,23 @@ pass the data to populate the template with.</p>
 <p>In order to register a template with can.view, create a script tag on the page
 with an ID, a <code>type</code> attribute that matches the templating language, and the
 content of the template inside:</p>
+<pre><code>&lt;script type=&quot;text/mustache&quot; id=&quot;todoList&quot;&gt;
+{{#each .}}
+    &lt;li&gt;{{description}}&lt;/li&gt;
+{{/each}}
+&lt;/script&gt;
+</code></pre>
 <p>Then load the template using the script tag's ID and pass the template data:</p>
+<pre><code>Todo.findAll({}, function(todos) {
+    $('#nav').html(can.view('todoList', todos))
+});
+</code></pre>
 <p>Or you can load a template without registering it first (or including it on the
 page) by giving the URL to <code>can.view</code>:</p>
+<pre><code>Todo.findAll({}, function(todos) {
+    $('#nav').html(can.view('todos/todos.mustache', todos))
+});
+</code></pre>
 <h2>Passing Deferreds</h2>
 <p>If the second parameter you pass to <code>can.view</code> contains Deferreds, can.view will
 instead return a Deferred that resolves to the documentFragment containing the
@@ -422,9 +420,13 @@ populated template after all the deferreds have resolved.</p>
 <p>This aspect is most useful because [Model] methods like <code>findAll</code> return a
 Deferred. This allows you to load a template, retrieve one or more Models, and
 then render the resulting documentFragment after everything has been loaded:</p>
-<h2>Rendering to string</h2>
-<p>To render to a string instead of a documentFragment, use <code>can.view.render</code>. This
-is mainly used to nest templates inside of other templates:</p>
+<pre><code>can.view('todos.ejs', {
+    todos: Todo.findAll().
+    user: User.findOne({id: 5})
+}).then(function(fragment) {
+    document.getElementById('todos').appendChild(fragment);
+});
+</code></pre>
 
 		</section>
 		

@@ -686,8 +686,19 @@
 		
 		<section class="comment">
 			<p><code>unshift</code> adds elements to the front of the list in bulk in the order specified:</p>
+<pre><code>var list = new can.List(['Alice']);
+
+list.unshift('Bob', 'Eve');
+list.attr(); // ['Bob', 'Eve', 'Alice']
+</code></pre>
 <p>If you have an array you want to concatenate to the beginning
 of the List, you can use <code>apply</code>:</p>
+<pre><code>var names = ['Bob', 'Eve'],
+    list = new can.List(['Alice']);
+
+list.push.apply(list, names);
+list.attr(); // ['Bob', 'Eve', 'Alice']
+</code></pre>
 <h2>Events</h2>
 <p><code>unshift</code> causes <em>change</em>, <em>add</em>, and <em>length</em> events to be fired.</p>
 <h2>See also</h2>

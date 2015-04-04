@@ -708,13 +708,66 @@ progressPercent(100)
 task.attr('progress') // -&gt; 1
 </code></pre>
 <p>The following is a similar example that shows converting feet into meters and back:</p>
+<pre><code>var wall = new can.Map({
+    material: 'brick',
+    length: 10 // in feet
+});
+
+var wallLengthInMeters = can.compute(function(lengthInM) {
+    if(arguments.length) {
+        wall.attr('length', lengthInM / 3.28084);
+    } else {
+        return wall.attr('length') * 3.28084;
+    }
+});
+
+wallLengthInMeters(); // 3.048
+
+// When you set the compute...
+wallLengthInMeters(5);
+wallLengthInMeters(); // 5
+// ...the original Observe changes too.
+wall.length;          // 16.4042
+</code></pre>
 <h2>Events</h2>
 <p>When a compute's value is changed, it emits a <em>change</em> event. You can listen for this change
 event by using <code>[can.computed.bind bind]</code> to bind an event handler to the compute:</p>
+<pre><code>var tally = can.compute(0);
+tally.bind('change', function(ev, newVal, oldVal) {
+    console.log('The tally is now at ' + newVal + '.');
+});
+
+tally(tally() + 5); // The log reads:
+                    // 'The tally is now at 5.'
+</code></pre>
 <h2>Using computes to build Controls</h2>
 <p>It's a piece of cake to build a <code><a href="can.Control.html">can.Control</a></code> off of the value of a compute. And since computes
 are observable, it means that the view of that Control will update itself whenever the value
 of the compute updates. Here's a simple slider that works off of a compute:</p>
+<pre><code>var project = new Observe({
+    name: 'A Very Important Project',
+    percentDone: .35
+});
+
+SimpleSlider = can.Control.extend({ }, {
+    init: function() {
+        this.element.html(can.view(this.options.view, this.options));
+    },
+    '.handle dragend': function(el, ev) {
+        var percent = this.calculateSliderPercent();
+        // set the compute's value
+        this.options.percentDone(percent);
+    },
+    '{percentDone} change': function(ev, newVal, oldVal) {
+           // react to the percentage changing some other way
+        this.moveSliderTo(newVal);
+    }
+    // Implementing calculateSliderPercent and moveSliderTo
+    // has been left as an exercise for the reader.
+});
+
+new SimpleSlider('#slider', {percentDone: project.compute('percentDone')});
+</code></pre>
 <p>Now that's some delicious cake. More information on Controls can be found under <code><a href="can.Control.html">can.Control</a></code>.
 There is also a full explanation of can.Map's <code><a href="can.Map.prototype.compute.html">compute</a></code>,
 which is used in the last line of the example above.</p>

@@ -691,6 +691,22 @@ The <strong>renderer</strong> function receives the id of the template and the t
 			<p>Registers a template engine to be used with
 view helpers and compression.</p>
 <h2>Example</h2>
+<pre><code>can.View.register({
+suffix : &quot;tmpl&quot;,
+ plugin : &quot;jquery/view/tmpl&quot;,
+renderer: function( id, text ) {
+return function(data){
+    return jQuery.render( text, data );
+    }
+},
+script: function( id, text ) {
+var tmpl = can.tmpl(text).toString();
+return &quot;function(data){return (&quot;+
+        tmpl+
+        &quot;).call(jQuery, jQuery, data); }&quot;;
+}
+})
+</code></pre>
 
 		</section>
 		

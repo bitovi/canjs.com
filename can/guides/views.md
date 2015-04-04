@@ -5,8 +5,7 @@
 
 [can.view](../docs/can.view.html) loads and renders templates with the data
 you provide, and returns a documentFragment with the populated template.
-can.view supports many templating languages, but [EJS EJS] and [Mustache
-Mustache] allow you to live bind to Observes within templates. Live binding
+[Stache](../docs/can.stache.html) and [Mustache](../docs/can.mustache.html) allow you to live bind to Observes within templates. Live binding
 will dynamically update your template in the DOM automatically whenever the
 properties within Observes change.
 
@@ -20,28 +19,29 @@ pass the data to populate the template with.
 In order to register a template with can.view, create a script tag on the page
 with an ID, a `type` attribute that matches the templating language, and the
 content of the template inside:
-@codestart
-&lt;script type="text/ejs" id="todoList">
-<% can.each(this, function(val, key) { %>
-	&lt;li><%= val.attr('description') %>&lt;/li>
-<% }); %>
-&lt;/script>
-@codeend
+```
+<script type="text/mustache" id="todoList">
+{{#each .}}
+	<li>{{description}}</li>
+{{/each}}
+</script>
+```
 
 Then load the template using the script tag's ID and pass the template data:
-@codestart
+```
 Todo.findAll({}, function(todos) {
 	$('#nav').html(can.view('todoList', todos))
 });
-@codeend
+```
 
 Or you can load a template without registering it first (or including it on the
 page) by giving the URL to `can.view`:
-@codestart
+
+```
 Todo.findAll({}, function(todos) {
-	$('#nav').html(can.view('todos/todos.ejs', todos))
+	$('#nav').html(can.view('todos/todos.mustache', todos))
 });
-@codeend
+```
 
 ## Passing Deferreds
 
@@ -53,22 +53,12 @@ This aspect is most useful because [Model] methods like `findAll` return a
 Deferred. This allows you to load a template, retrieve one or more Models, and
 then render the resulting documentFragment after everything has been loaded:
 
-@codestart
+```
 can.view('todos.ejs', {
 	todos: Todo.findAll().
 	user: User.findOne({id: 5})
 }).then(function(fragment) {
 	document.getElementById('todos').appendChild(fragment);
 });
-@codeend
+```
 
-## Rendering to string
-
-To render to a string instead of a documentFragment, use `can.view.render`. This
-is mainly used to nest templates inside of other templates:
-
-@codestart
-<% can.each(todos, function(todo, key) { %>
-	&lt;li><%== can.view.render('todos.ejs', todo); %>&lt;/li>
-<% }) %>
-@codeend

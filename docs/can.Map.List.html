@@ -634,6 +634,17 @@
 </h2>
 <div class="signature-wrapper">
 <p>Generates a new filtered list that live-updates itself to contain the filtered items of the original list.</p>
+<pre><code>var list = new can.List([
+    { name: 'Justin' },
+    { name: 'Brian' },
+    { name: 'Austin' },
+    { name: 'Mihael' }])
+    
+// Returns a filtered list that only matches names containing an &quot;n&quot;
+var filtered = list.filter(function(element, index, list) {
+    return item.attr(&quot;name&quot;).match(/n/i);
+});
+</code></pre>
 
 
 	<h3>Parameters</h3>
@@ -680,6 +691,17 @@
 </h2>
 <div class="signature-wrapper">
 <p>Generates a new mapped list that live-updates itself to contain the mapped items of the original list.</p>
+<pre><code>var list = new can.List([
+    { name: 'Justin' },
+    { name: 'Brian' },
+    { name: 'Austin' },
+    { name: 'Mihael' }])
+    
+// Returns a mapped list that returns the element names.
+var filtered = list.filter(function(element, index, list) {
+    return item.attr(&quot;name&quot;);
+});
+</code></pre>
 
 
 	<h3>Parameters</h3>
@@ -785,7 +807,7 @@
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"type":"page","name":"can.Map.List","src":"map/list/list.md","description":"The `can.Map.List` plugin adds support for live-updating mapped and filtered observable lists.","parent":"can.Map.plugins","plugin":"can/map/list","test":"can/map/list/test.html","deprecated":[{"version":"2.1","description":"This plugin is pending review and its API has not been finalized. Including this plugin will overwrite [can.List.prototype.filter] (which is faster but doesn't provide live-updating). The new `filter` and `map` methods also have a slightly different API, including the _element_, _index_, and _list_ as arguments (instead of only _element_ and _list_)."}],"signatures":[{"code":"list.filter(callback)","description":"Generates a new filtered list that live-updates itself to contain the filtered items of the original list.","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"element"}]},{"types":[{"type":"index"}]},{"types":[{"type":"list"}]}]}],"name":"callback","description":"A filtering function that will determine whether an element is filtered or not."}],"returns":{"types":[{"type":"can.List"}],"description":"A live-updating filtered list."}},{"code":"list.map(callback)","description":"Generates a new mapped list that live-updates itself to contain the mapped items of the original list.","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"element"}]},{"types":[{"type":"index"}]},{"types":[{"type":"list"}]}]}],"name":"callback","description":"A mapping function that will determine each element's mapped value."}],"returns":{"types":[{"type":"can.List"}],"description":"A live-updating mapped list."}}],"ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.1","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
+		var docObject = {"type":"page","name":"can.Map.List","src":"map/list/list.md","description":"The `can.Map.List` plugin adds support for live-updating mapped and filtered observable lists.","parent":"can.Map.plugins","plugin":"can/map/list","test":"can/map/list/test.html","deprecated":[{"version":"2.1","description":"This plugin is pending review and its API has not been finalized. Including this plugin will overwrite [can.List.prototype.filter] (which is faster but doesn't provide live-updating). The new `filter` and `map` methods also have a slightly different API, including the _element_, _index_, and _list_ as arguments (instead of only _element_ and _list_)."}],"signatures":[{"code":"list.filter(callback)","description":"Generates a new filtered list that live-updates itself to contain the filtered items of the original list.\n\n```\nvar list = new can.List([\n\t{ name: 'Justin' },\n\t{ name: 'Brian' },\n\t{ name: 'Austin' },\n\t{ name: 'Mihael' }])\n\t\n// Returns a filtered list that only matches names containing an \"n\"\nvar filtered = list.filter(function(element, index, list) {\n\treturn item.attr(\"name\").match(/n/i);\n});\n```","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"element"}]},{"types":[{"type":"index"}]},{"types":[{"type":"list"}]}]}],"name":"callback","description":"A filtering function that will determine whether an element is filtered or not."}],"returns":{"types":[{"type":"can.List"}],"description":"A live-updating filtered list."}},{"code":"list.map(callback)","description":"Generates a new mapped list that live-updates itself to contain the mapped items of the original list.\n\n```\nvar list = new can.List([\n\t{ name: 'Justin' },\n\t{ name: 'Brian' },\n\t{ name: 'Austin' },\n\t{ name: 'Mihael' }])\n\t\n// Returns a mapped list that returns the element names.\nvar filtered = list.filter(function(element, index, list) {\n\treturn item.attr(\"name\");\n});\n```","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"types":[{"type":"element"}]},{"types":[{"type":"index"}]},{"types":[{"type":"list"}]}]}],"name":"callback","description":"A mapping function that will determine each element's mapped value."}],"returns":{"types":[{"type":"can.List"}],"description":"A live-updating mapped list."}}],"ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.1","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	

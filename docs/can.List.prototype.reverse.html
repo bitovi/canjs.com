@@ -667,7 +667,13 @@
 
 		
 		<section class="comment">
-			<p><code>reverse</code> calls <code>replace</code> internally and triggers corresponding <code>add</code>, <code>remove</code>, <code>change</code> and <code>length</code> events respectively.</p>
+			<pre><code>var list = new can.List(['Alice', 'Bob', 'Eve']);
+var reversedList = list.reverse();
+
+reversedList.attr(); // ['Eve', 'Bob', 'Alice'];
+list === reversedList; // true
+</code></pre>
+<p><code>reverse</code> calls <code>replace</code> internally and triggers corresponding <code>add</code>, <code>remove</code>, <code>change</code> and <code>length</code> events respectively.</p>
 <h2>Demo</h2>
 <div class='iframe_wrapper' data-iframe-src='can/list/doc/reverse.html' data-iframe-height='350'></div>
 

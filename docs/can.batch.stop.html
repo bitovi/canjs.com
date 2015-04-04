@@ -1030,6 +1030,35 @@ called. If _force and <em>callStart</em> are both true, a new batch will be star
 the events and callbacks have been fired.</p>
 <p>See <code><a href="can.batch.start.html">can.batch.start</a></code> for examples of <code>can.batch.start</code> and <code>can.batch.stop</code> in normal use.</p>
 <p>In this example, the batch is forceably ended in the <code>addPeople</code> function.</p>
+<pre><code>var addPeople = function(observable) {
+    can.batch.start();
+    observable.attr('a', 'Alice');
+    observable.attr('b', 'Bob');
+    observable.attr('e', 'Eve');
+    can.batch.stop(true);
+};
+
+// In a completely different place:
+var list = new can.Map();
+list.bind('change', function() {
+    console.log('The list changed.');
+});
+
+can.batch.start();
+addPeople(list);
+console.log('Still in the batch.');
+
+// Here, the console has:
+// Still in the batch.
+
+can.batch.stop();
+
+// Here, the console has:
+// The list changed.
+// The list changed.
+// The list changed.
+// Still in the batch.
+</code></pre>
 
 		</section>
 		

@@ -685,7 +685,15 @@
 
 		
 		<section class="comment">
-			<p>It is trivial to make a <code>contains</code>-type function using <code>indexOf</code>:</p>
+			<pre><code>var list = new can.List(['Alice', 'Bob', 'Eve']);
+list.indexOf('Alice');   // 0
+list.indexOf('Charlie'); // -1
+</code></pre>
+<p>It is trivial to make a <code>contains</code>-type function using <code>indexOf</code>:</p>
+<pre><code>function(list, item) {
+    return list.indexOf(item) &gt;= 0;
+}
+</code></pre>
 
 		</section>
 		

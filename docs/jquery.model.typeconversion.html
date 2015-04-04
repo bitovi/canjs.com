@@ -313,11 +313,50 @@ a string.</p>
 Instead, you can set the type of
 an attribute and provide a function to convert that type.</p>
 <p>The following sets the birthday attribute to &quot;date&quot; and provides a date conversion function:</p>
+<pre><code>$.Model(&quot;Contact&quot;,
+{
+  attributes : { 
+    birthday : 'date'
+  },
+  convert : {
+    date : function(raw){
+      if(typeof raw == 'string'){
+        var matches = raw.match(/(\d+)-(\d+)-(\d+)/)
+        return new Date( matches[1], 
+                        (+matches[2])-1, 
+                         matches[3] )
+      }else if(raw instanceof Date){
+        return raw;
+      }
+    }
+  },
+  findAll : function( ... ){ ... }
+},
+{
+  // No prototype properties necessary
+})
+</code></pre>
 <div class='demo_wrapper' data-demo-src='jquery/model/demo-convert.html'></div>
 <h1>Serialization</h1>
 <p>Serialization occurs before the model is saved. This allows you to prepare your model's attributes before they're sent to the server.</p>
 <p>By default every attribute will be passed through the 'default' serialization method that will return the value if the property holds a primitive value (string, number, ...), or it will call the &quot;serialize&quot; method if the property holds an object with the &quot;serialize&quot; method set.</p>
 <p>You can set the serialization methods similar to the convert methods:</p>
+<pre><code>$.Model(&quot;Contact&quot;,
+{
+  attributes : { 
+    birthday : 'date'
+  },
+  serialize : {
+    date : function( val, type ){
+      return val.getYear() + &quot;-&quot; + (val.getMonth() + 1) + &quot;-&quot; + val.getDate(); 
+    }
+  },
+  findAll : function( ... ){ ... }
+},
+{
+  // No prototype properties necessary
+})
+</code></pre>
 <p>This code will format the 'birthday' attribute as '2011-11-24' before it will be sent to the server.</p>
 
 		</section>

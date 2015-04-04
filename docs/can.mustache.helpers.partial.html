@@ -927,25 +927,72 @@ the page.</p>
 <p>Partials render at runtime, so recursive partials are possible but make sure you avoid infinite loops.</p>
 <p>For example, this template and partial:</p>
 <p><strong>base.mustache</strong></p>
+<pre><code>&lt;h2&gt;Names&lt;/h2&gt;
+{{#names}}
+    {{&gt;user.mustache}}
+{{/names}}
+</code></pre>
 <p><strong>user.mustache</strong></p>
+<pre><code>&lt;strong&gt;{{name}}&lt;/strong&gt;
+</code></pre>
 <p>The resulting expanded template at render time would look like:</p>
+<pre><code>&lt;h2&gt;Names&lt;/h2&gt;
+{{#names}}
+    &lt;strong&gt;{{name}}&lt;/strong&gt;
+{{/names}}
+</code></pre>
 <h2>Acquiring Partials</h2>
 <p><strong>Referencing Files</strong></p>
 <p>Partials can reference a file path and file name in the template.</p>
 <p>The following template uses a relative path (relative to the current page):</p>
+<pre><code>&lt;script id=&quot;template&quot; type=&quot;text/mustache&quot;&gt;
+    {{&gt;views/test_template.mustache}}
+&lt;/script&gt;
+</code></pre>
 <p>The following template uses an absolute path (rooted to steal's root directory):</p>
+<pre><code>&lt;script id=&quot;template&quot; type=&quot;text/mustache&quot;&gt;
+    {{&gt;//myapp/accordion/views/test_template.mustache}}
+&lt;/script&gt;
+</code></pre>
 <p><strong>Referencing by ID</strong></p>
 <p>Partials can reference templates that exist in script tags on the page by
 referencing the <code>id</code> of the partial in the template.  For example:</p>
+<pre><code>&lt;script id=&quot;mytemplate&quot; type=&quot;text/mustache&quot;&gt;
+    {{&gt;mypartial}}
+&lt;/script&gt;
+</code></pre>
+<pre><code>&lt;script id=&quot;mypartial&quot; type=&quot;text/mustache&quot;&gt;
+    I am a partial.
+&lt;/script&gt;
+</code></pre>
+<pre><code>var template = can.view(&quot;#mytemplate&quot;, {});
+</code></pre>
 <p><strong>Manually Registering</strong></p>
 <p>Partials can be manually registered by calling <code>can.view.registerView</code>
 and passing an identifier and content.  For example:</p>
+<pre><code>can.view.registerView('myTemplate', &quot;My body lies over {{.}}&quot;)
+</code></pre>
 <p>in the template, you reference the template by the identifer you registered:</p>
+<pre><code>{{&gt;myTemplate}}
+</code></pre>
 <p>resulting in the template rendering with the current context applied to the partial.</p>
 <h2>Passing Partials in Options</h2>
 <p>Partials can resolve the context object that contains partial identifiers.
 For example:</p>
+<pre><code>var template = can.view(&quot;#template&quot;, { 
+    items: []
+    itemsTemplate: &quot;test_template.mustache&quot; 
+});
+
+can.$(document.body).append(template);
+</code></pre>
 <p>then reference the partial in the template just like:</p>
+<pre><code>&lt;ul&gt;
+{{#items}}
+    &lt;li&gt;{{&gt;itemsTemplate}}&lt;/li&gt;
+{{/items}}
+&lt;/ul&gt;
+</code></pre>
 
 		</section>
 		

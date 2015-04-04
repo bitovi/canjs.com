@@ -698,7 +698,17 @@ If <em>end</em> is not supplied, <code>slice</code> will copy until the end of t
 
 		
 		<section class="comment">
-			<p><code>slice</code> is the simplest way to copy a List:</p>
+			<pre><code>var list = new can.List(['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve']);
+var newList = list.slice(1, 4);
+newList.attr(); // ['Bob', 'Charlie', 'Daniel']
+</code></pre>
+<p><code>slice</code> is the simplest way to copy a List:</p>
+<pre><code>var list = new can.List(['Alice', 'Bob', 'Eve']);
+var copy = list.slice();
+
+copy.attr();   // ['Alice', 'Bob', 'Eve']
+list === copy; // false
+</code></pre>
 
 		</section>
 		

@@ -1017,14 +1017,77 @@ lots of changes to make to can.Maps, batching them together can help performance
 those can.Maps are live-bound to the DOM.</p>
 <p>In this example, you can see how the <em>first</em> and <em>change</em> events are not fired (and their handlers
 are not called) until <code>can.batch.stop</code> is called.</p>
+<pre><code>var person = new can.Map({
+    first: 'Alexis',
+    last: 'Abril'
+});
+
+person.bind('first', function() {
+    console.log(&quot;First name changed.&quot;&quot;);
+}).bind('change', function() {
+    console.log(&quot;Something changed.&quot;);
+});
+
+can.batch.start();
+person.attr('first', 'Alex');
+console.log('Still in the batch.');
+can.batch.stop();
+
+// the log has:
+// Still in the batch.
+// First name changed.
+// Something changed.
+</code></pre>
 <p>You can also pass a callback to <code>can.batch.start</code> which will be called after all the events have
 been fired:</p>
+<pre><code>can.batch.start(function() {
+    console.log('The batch is over.');
+});
+person.attr('first', 'Izzy');
+console.log('Still in the batch.');
+can.batch.stop();
+
+// The console has:
+// Still in the batch.
+// First name changed.
+// Something changed.
+// The batch is over.
+</code></pre>
 <h2>Calling <code>can.batch.start</code> multiple times</h2>
 <p>If you call <code>can.batch.start</code> more than once, <code>can.batch.stop</code> needs to be called
 the same number of times before any batched events will fire. For ways
 to circumvent this process, see <a href="can.batch.stop.html">can.batch.stop</a>.</p>
 <p>Here is an example that demonstrates how events are affected by calling
 <code>can.batch.start</code> multiple times.</p>
+<pre><code>var addPeople = function(observable) {
+    can.batch.start();
+    observable.attr('a', 'Alice');
+    observable.attr('b', 'Bob');
+    observable.attr('e', 'Eve');
+    can.batch.stop();
+};
+
+// In a completely different place:
+var list = new can.Map();
+list.bind('change', function() {
+    console.log('The list changed.');
+});
+
+can.batch.start();
+addPeople(list);
+console.log('Still in the batch.');
+
+// Here, the console has:
+// Still in the batch.
+
+can.batch.stop();
+
+// Here, the console has:
+// Still in the batch.
+// The list changed.
+// The list changed.
+// The list changed.
+</code></pre>
 
 		</section>
 		

@@ -176,21 +176,6 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="EJS.html" 
-							data-search="EJS">
-							EJS
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="page" 
 							href="Mustache.html" 
 							data-search="Mustache">
 							Mustache
@@ -408,16 +393,87 @@ is provided, it just serializes the route into standard URL-encoded notation.</p
 		
 		<section class="comment">
 			<p>Here is how you might use <code>can.route</code> without a template:</p>
+<pre><code>// Before we start, empty the hash.
+window.location.hash = '';
+
+// This means that can.route is empty.
+can.route.attr(); // {}
+
+// Set the hash...
+window.location.hash = '#!id=7';
+// ...and can.route reflects that.
+can.route.attr(); // {id: 7}
+
+// Set the route...
+can.route.attr({type: 'todos'}, true);
+// ...and the hash reflects that.
+window.location.hash; // #!type=todos
+
+// Set a new property on the route...
+can.route.attr('id', 6);
+// ...and the has changes again to reflect multiple properties.
+window.location.hash; // #!type=todos&amp;id=6
+</code></pre>
 <p>If you give <code>can.route</code> a template, you can make pretty URLs:</p>
+<pre><code>// Give can.route a template.
+can.route(':type/:id');
+
+// If you set a hash that looks like the route...
+window.location.hash = '#!todos/5';
+// ... the route data changes accordingly.
+can.route.attr(); // {type: 'todos', id: 5}
+
+// If the route data is changed...
+can.route.attr({type: 'users', id: 29});
+// ...the hash is changed using the template.
+window.location.hash; // '#!users/7'
+
+// You can also supply defaults for routes.
+can.route('', {type: 'recipe'});
+
+// Then if you change the hash...
+window.location.hash = '';
+// ...the route data reflects the defaults.
+can.route.attr(); // {type: 'recipe'}
+</code></pre>
 <h2>Listening to events</h2>
 <p>Because <code>can.route</code> is an Observe, you can bind to it just like normal Observes:</p>
+<pre><code>can.route.bind('id', function(ev, newVal, oldVal) {
+    console.log('The hash\'s id changed.');
+});
+</code></pre>
 <p>You can listen to routing events in Controls with the <em>route</em> event:</p>
+<pre><code>var Routing = can.Control({
+    'route': function() {
+        // Matches every routing change, but gets passed no data.
+    },
+    'todos/:id route': function(data) {
+        // Matches routes like #!todos/5,
+        // and will get passed {id: 5} as data.
+    },
+    ':type/:id route': function(data) {
+        // Matches routes like #!recipes/5,
+        // and will get passed {id: 5, type: 'recipes'} as data.
+    }
+})
+</code></pre>
 <h2>Making URLs and links</h2>
 <p><code>can.route.url</code> takes a set of properties and makes a URL according to
 <code>can.route</code>'s current route.</p>
+<pre><code>can.route(':type/:id', {type: 'todos'});
+can.route.url({id: 7}); // #!todos/7
+</code></pre>
 <p><code>can.route.link</code> does the same thing as <code>can.route.url</code>, but it returns an
 anchor element (in string form) ready to be inserted into HTML. You can also
 specify extra propertires to be set on the element.</p>
+<pre><code>var a = can.route.link(
+    'Todo 5',
+    {id: 7},
+    {className: 'button'}
+);
+
+a; // &lt;a href=&quot;#!todos/7&quot; class=&quot;button&quot;&gt;Todo 5&lt;/a&gt;
+</code></pre>
 
 		</section>
 		

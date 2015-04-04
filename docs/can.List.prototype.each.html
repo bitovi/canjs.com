@@ -689,7 +689,24 @@ the loop will stop.</p>
 
 		
 		<section class="comment">
-			
+			<pre><code>var i = 0;
+new can.Map([1, 10, 100]).each(function(element, index) {
+    i += element;
+});
+
+i; // 111
+
+i = 0;
+new can.Map([1, 10, 100]).each(function(element, index) {
+    i += element;
+    if(index &gt;= 1) {
+        return false;
+    }
+});
+
+i; // 11
+</code></pre>
+
 		</section>
 		
 		

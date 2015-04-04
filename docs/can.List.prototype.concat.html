@@ -679,6 +679,15 @@ the end of the concatenated List. Otherwise, the parameter itself will be added.
 		
 		<section class="comment">
 			<p><code>concat</code> makes a new List with the elements of the List followed by the elements of the parameters.</p>
+<pre><code>var list = new can.List();
+var newList = list.concat(
+    'Alice',
+    ['Bob', 'Charlie']),
+    new can.List(['Daniel', 'Eve']),
+    {f: 'Francis'}
+);
+newList.attr(); // ['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve', {f: 'Francis'}]
+</code></pre>
 
 		</section>
 		

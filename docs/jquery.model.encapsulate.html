@@ -320,6 +320,15 @@ data:</p>
 <pre><code>Contact.findAll({type: 'old'}, successCallback);
 </code></pre>
 <p>And instead of raw data, findAll returns contact instances that let you do things like:</p>
+<pre><code>// destroy the contact
+contact.destroy() 
+
+// update the contact
+contact.update({name: &quot;Jeremy&quot;})
+
+// create a contact
+new Contact({name: &quot;Alex&quot;}).save();
+</code></pre>
 <h2>Encapsulation Demo</h2>
 <p>The Grid demo shows using two different models with the same widget.</p>
 <div class='demo_wrapper' data-demo-src='jquery/model/demo-encapsulate.html'></div>
@@ -403,7 +412,31 @@ to have an understanding of jQuery's Ajax converters and
 deferreds.</p>
 <p>Lets see how we might fill out the
 <code>Contact.findAll</code> function to work with JSONP:</p>
+<pre><code>$.Model('Contact',
+{
+  findAll : function(params, success, error){
+  
+    // do the ajax request
+    return $.get('/contacts.jsonp',
+      params, 
+      success,
+      'jsonp contact.models');
+  }
+},
+{
+  // Prototype properties of Contact.
+  // We'll learn about this soon!
+});
+</code></pre>
 <p>If we wanted to make a list of contacts, we could do it like:</p>
+<pre><code>Contact.findAll({},function(contacts){
+  var html = [];
+  for(var i =0; i &lt; contacts.length; i++){
+    html.push('&lt;li&gt;'+contacts[i].name + '&lt;/li&gt;')
+  }
+  $('#contacts').html( html.join('') );
+});
+</code></pre>
 
 		</section>
 		

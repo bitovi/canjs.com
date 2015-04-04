@@ -37,7 +37,7 @@ Instead, model encapsulates (wraps) this request so you call it like:
 
 And instead of raw data, findAll returns contact instances that let you do things like:
 
-@codestart
+```
 // destroy the contact
 contact.destroy() 
 
@@ -46,7 +46,7 @@ contact.update({name: "Jeremy"})
 
 // create a contact
 new Contact({name: "Alex"}).save();
-@codeend
+```
 
 ## Encapsulation Demo
 
@@ -152,7 +152,7 @@ deferreds.
 Lets see how we might fill out the
 <code>Contact.findAll</code> function to work with JSONP:
 
-@codestart
+```
 $.Model('Contact',
 {
   findAll : function(params, success, error){
@@ -168,18 +168,18 @@ $.Model('Contact',
   // Prototype properties of Contact.
   // We'll learn about this soon!
 });
-@codeend
+```
 
 
 
 If we wanted to make a list of contacts, we could do it like:
 
-@codestart
+```
 Contact.findAll({},function(contacts){
   var html = [];
   for(var i =0; i < contacts.length; i++){
-    html.push('&lt;li>'+contacts[i].name + '&lt;/li>')
+    html.push('<li>'+contacts[i].name + '</li>')
   }
   $('#contacts').html( html.join('') );
 });
-@codeend
+```

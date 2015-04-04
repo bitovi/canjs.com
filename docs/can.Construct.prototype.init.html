@@ -570,7 +570,35 @@ after <a href="can.Construct.prototype.setup.html">setup</a>. The <code>init</co
 should go, and a common thing to do in <code>init</code> is to save the arguments passed into the constructor.</p>
 <h2>Examples</h2>
 <p>First, we'll make a Person constructor that has a first and last name:</p>
+<pre><code>var Person = can.Construct.extend({
+    init: function(first, last) {
+        this.first = first;
+        this.last  = last;
+    }
+});
+
+var justin = new Person(&quot;Justin&quot;, &quot;Meyer&quot;);
+justin.first; // &quot;Justin&quot;
+justin.last; // &quot;Meyer&quot;
+</code></pre>
 <p>Then we'll extend Person into Programmer and add a favorite language:</p>
+<pre><code>var Programmer = Person.extend({
+    init: function(first, last, language) {
+        // call base's init
+        Person.prototype.init.apply(this, arguments);
+
+        // other initialization code
+        this.language = language;
+    },
+    bio: function() {
+        return &quot;Hi! I'm &quot;&quot; + this.first + &quot; &quot; + this.last +
+            &quot; and I write &quot; + this.language + &quot;.&quot;;
+    }
+});
+
+var brian = new Programmer(&quot;Brian&quot;, &quot;Moschel&quot;, 'ECMAScript');
+brian.bio(); // &quot;Hi! I'm Brian Moschel and I write ECMAScript.&quot;;
+</code></pre>
 <h2>Modified Arguments</h2>
 <p><a href="can.Construct.prototype.setup.html">setup</a> is able to modify the arguments passed to <code>init</code>.
 If you aren't receiving the exact arguments as those passed to <code>new Construct(args)</code>,

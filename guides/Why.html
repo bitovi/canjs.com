@@ -244,17 +244,74 @@
 <h3>Engineered limber</h3>
 <p>CanJS’s tools are designed to work under almost every situation. Your server sends back XML with strange urls? That’s ok, overwrite <a href="../docs/can.Model.static.findAll.html">can.Model.findAll</a> or <a href="../docs/can.Model.static.models.html">can.Model.models</a>. Want some special teardown code for a control? Overwrite <a href="../docs/can.Control.prototype.destroy.html">can.Control:destroy</a>.</p>
 <p>But our favorite bit of flexibility is how <a href="../docs/can.Observe.html">can.Observe</a> works with nested data. It converts nested objects into observes automatically. For example:</p>
+<pre><code>var person = new can.Observe({
+  name: { first: 'Justin', last: 'Meyer' },
+  hobbies: [ 'programming', 'party rocking' ]
+})
+
+person.attr( 'name.first' ) //-&gt; 'Justin'
+person.attr( 'hobbies.0' ) //-&gt; 'programming'
+</code></pre>
 <p>But most important, <code>change</code> events bubble, letting observes listen for when a nested property changes:</p>
+<pre><code>person.bind( 'change', function( ev, attr, how, newVal, oldVal ) {
+  attr   //-&gt; 'name.last'
+  how    //-&gt; 'set'
+  newVal //-&gt; 'Meyer'
+  oldVal //-&gt; 'Myer'
+});
+
+person.attr( 'name.last', 'Meyer' );
+</code></pre>
 <h2 id="Powerful">Powerful</h2>
 <h3>Safety</h3>
 <p>Memory safety is really important, especially in long-lived, dynamic pages. CanJS combats this menace in two important and unique ways:</p>
 <h4>Controls that unbind event handlers auto-magically</h4>
 <p>Using templated event binding, Controls can listen to events on objects other than their element. For example, a tooltip listening to the window looks like:</p>
+<pre><code>var Tooltip = can.Control.extend({
+  '{window} click': function( el, ev ) {
+    // hide only if we clicked outside the tooltip
+    if (!this.element.has( ev.target ) {
+      this.element.remove();
+    }
+  }
+})
+
+// create a Tooltip
+var tooltipElement = $( '&lt;div&gt;INFO&lt;/div&gt;' ).appendTo( el )
+var tooltipInstance = new Tooltip( tooltipElement );
+</code></pre>
 <p><code>window</code> now has a reference to the control which keeps the <code>tooltipInstance</code> and everything the tooltip instance might reference in memory. CanJS overwrites each library’s element remove functionality to <a href="../docs/can.Control.prototype.destroy.html">destroy</a> controls. Destroying a control unbinds all of its event handlers, removing any memory leaks auto-magically.</p>
 <h4>A model store that does not leak</h4>
 <p>It’s relatively common to load the same model instance multiple times on a single page. For example, an app might request todos due today and high-priority todos and render them like:</p>
+<pre><code>can.view( 'todosList.ejs', {
+  todaysTodos: Todo.findAll( { due: 'today' } ),
+  criticalTodos: Todo.findAll( { type: 'critical' } )
+}).then(function( frag ) {
+  $( '#todos' ).html( frag );
+})
+</code></pre>
 <p><code>todosList.ejs</code> might look like:</p>
+<pre><code>&lt;h2&gt;Due Today&lt;/h2&gt;
+&lt;% list( todaysTodos, function( todo ) { %&gt;
+  &lt;li &lt;%= (el) -&gt; el.data( 'todo', todo ) %&gt;&gt;
+    &lt;%= todo.attr( 'name' ) %&gt;
+  &lt;/li&gt;
+&lt;% } ) %&gt;
+&lt;h2&gt;Critical Todos&lt;/h2&gt;
+&lt;% list( criticalTodos, function( todo ) { %&gt;
+  &lt;li &lt;%= (el) -&gt; el.data( 'todo', todo ) %&gt;&gt;
+    &lt;%= todo.attr( 'name' ) %&gt;
+  &lt;/li&gt;
+&lt;% } ) %&gt;
+</code></pre>
 <p>If the result for of <code>Todo.findAll( { due: 'today' } )</code> and <code>Todo.findAll( { type: 'critical' } )</code> both share a todo instance like:</p>
+<pre><code>{ 
+    &quot;id&quot; : 5, 
+    &quot;name&quot; : &quot;do dishes&quot;,
+    &quot;due&quot; : &quot;today&quot;,
+    &quot;type&quot; : &quot;critical&quot;
+}
+</code></pre>
 <p><a href="Models.html">can.Model</a> knows that this data represents the same todo and only creates one instance. This means that a single model instance is in both lists. By changing the todo’s name or destroying it, both lists will be changed.</p>
 <p>However, model only stores these model instances while something is binding to them. Once nothing is bound to the model instance, they are removed from the store, freeing their memory for garbage collection.</p>
 <h3>Ease of use</h3>
@@ -287,10 +344,20 @@
 <p><em>Note: AngularJS throttles updates, which means it doesn’t fit well with these tests.</em></p>
 <h4>Model and view deferred support for parallel loading</h4>
 <p><a href="Deferreds.html">Deferreds</a> are simply awesome for handling asynchronous behavior. <a href="Models.html">can.Model</a> produces deferreds and <a href="../docs/can.view.html">can.view</a> consumes them. With the view modifiers plugin, you can load a template and its data in parallel and render it into an element with:</p>
+<pre><code>$( '#todos' ).html( 'todos.ejs', Todo.findAll() );
+</code></pre>
 <p>Hot. You can do this without the view modifiers plugin like:</p>
+<pre><code>can.view( 'todos.ejs', Todo.findAll() ).then(function( frag ) {
+  $( '#todos' ).html( frag );
+})
+</code></pre>
 <h4>Opt-in data binding</h4>
 <p>Although <a href="EJS.html">can.ejs’s</a> live-binding is super fast, setting up live data binding can be too slow in certain situations (like rendering a list of 1000 items). EJS’s live binding is opt-in. It only turns on if you are using the <code>attr</code> method. If the following template binds to a <code>todo</code>'s <code>name</code> …</p>
+<pre><code>&lt;li&gt; &lt;%= todo.attr('name') %&gt; &lt;/li&gt;
+</code></pre>
 <p>… the following doesn’t setup live-binding and renders much faster …</p>
+<pre><code>&lt;li&gt; &lt;%= todo.name %&gt; &lt;/li&gt;
+</code></pre>
 
 		</section>
 		

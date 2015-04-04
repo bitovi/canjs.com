@@ -711,6 +711,12 @@ If <em>howMany</em> is not provided, <code>splice</code> will all elements from 
 		<section class="comment">
 			<p><code>splice</code> lets you remove elements from and insert elements into a List.</p>
 <p>This example demonstrates how to do surgery on a list of numbers:</p>
+<pre><code> var list = new can.List([0, 1, 2, 3]);
+
+ // starting at index 2, remove one element and insert 'Alice' and 'Bob':
+ list.splice(2, 1, 'Alice', 'Bob');
+ list.attr(); // [0, 1, 'Alice', 'Bob', 3]
+</code></pre>
 <h2>Events</h2>
 <p><code>splice</code> causes the List it's called on to emit <em>change</em> events,
 <em>add</em> events, <em>remove</em> events, and <em>length</em> events. If there are
@@ -720,6 +726,28 @@ separate <em>change</em> event, an <em>add</em> event, and a separate <em>length
 will be fired.</p>
 <p>This slightly-modified version of the above example should help
 make it clear how <code>splice</code> causes events to be emitted:</p>
+<pre><code> var list = new can.List(['a', 'b', 'c', 'd']);
+ list.bind('change', function(ev, attr, how, newVals, oldVals) {
+     console.log('change: ' + attr + ', ' + how + ', ' + newVals + ', ' + oldVals);
+ });
+ list.bind('add', function(ev, newVals, where) {
+     console.log('add: ' + newVals + ', ' + where);
+ });
+ list.bind('remove', function(ev, oldVals, where) {
+     console.log('remove: ' + oldVals + ', ' + where);
+ });
+ list.bind('length', function(ev, length) {
+     console.log('length: ' + length + ', ' + this.attr());
+ });
+
+ // starting at index 2, remove one element and insert 'Alice' and 'Bob':
+ list.splice(2, 1, 'Alice', 'Bob'); // change: 2, 'remove', undefined, ['c']
+                                    // remove: ['c'], 2
+                                    // length: 5, ['a', 'b', 'Alice', 'Bob', 'd']
+                                    // change: 2, 'add', ['Alice', 'Bob'], ['c']
+                                    // add: ['Alice', 'Bob'], 2
+                                    // length: 5, ['a', 'b', 'Alice', 'Bob', 'd']
+</code></pre>
 <p>More information about binding to these events can be found under [can.List.attr attr].</p>
 
 		</section>

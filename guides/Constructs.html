@@ -178,21 +178,6 @@
 				
 					<li class="search-container  ">
 						<a 	class="page" 
-							href="EJS.html" 
-							data-search="EJS">
-							EJS
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="page" 
 							href="Mustache.html" 
 							data-search="Mustache">
 							Mustache
@@ -447,8 +432,30 @@ supplied an prototype method called
 call init with <code>this</code> as the new instance and the arguments passed to the
 constructor.</p>
 <p>This helps make our Todo configurable:</p>
+<pre><code>var Todo = can.Construct.extend({
+  init: function(owner) {
+    this.owner = owner;
+  },
+  allowedToEdit: function() {
+    return true;
+  }
+});
+
+var t = new Todo(&quot;me&quot;);
+t.owner; // 'me'
+</code></pre>
 <p>If you're extending a Construct, you probably want to make sure you call the
 base's <code>init</code> method inside the child's <code>init</code>:</p>
+<pre><code>var PrivateTodo = can.Construct.extend({
+  init: function(owner, isShared) {
+    can.Construct.prototype.init.apply(this, arguments);
+    this.isShared = isShared;
+  },
+  allowedToEdit: function(){
+    return this.owner === &quot;me&quot; || this.isShared;
+  }
+});
+</code></pre>
 <p>If you find yourself using inheritence a lot, checkout can.Construct's <a href="../docs/can.Construct.super.html">super plugin</a>.</p>
 
 		</section>

@@ -668,6 +668,16 @@
 		
 		<section class="comment">
 			<p><code>shift</code> is the opposite action from <code><a href="can.List.prototype.unshift.html">unshift</a></code>:</p>
+<pre><code>var list = new can.List(['Alice']);
+
+list.unshift('Bob', 'Eve');
+list.attr(); // ['Bob', 'Eve', 'Alice']
+
+list.shift(); // 'Bob'
+list.shift(); // 'Eve'
+list.shift(); // 'Alice'
+list.shift(); // undefined
+</code></pre>
 <h2>Events</h2>
 <p><code>pop</code> causes <em>change</em>, <em>remove</em>, and <em>length</em> events to be fired if the List is not empty
 when it is called.</p>

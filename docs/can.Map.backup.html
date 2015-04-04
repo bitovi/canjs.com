@@ -679,6 +679,35 @@ and lets you restore the original values of an Map's properties after they are c
 			<p>Here is an example showing how to use <code><a href="can.Map.backup.prototype.backup.html">backup</a></code> to save values,
 <code><a href="can.Map.backup.prototype.restore.html">restore</a></code> to restore them, and <code><a href="can.Map.backup.prototype.isDirty.html">isDirty</a></code></p>
 <p>to check if the Map has changed:</p>
+<pre><code>var recipe = new can.Map({
+  title: 'Pancake Mix',
+  yields: '3 batches',
+  ingredients: [{
+    ingredient: 'flour',
+    quantity: '6 cups'
+  },{
+    ingredient: 'baking soda',
+    quantity: '1 1/2 teaspoons'
+  },{
+    ingredient: 'baking powder',
+    quantity: '3 teaspoons'
+  },{
+    ingredient: 'salt',
+    quantity: '1 tablespoon'
+  },{
+    ingredient: 'sugar',
+    quantity: '2 tablespoons'
+  }]
+});
+recipe.backup();
+
+recipe.attr('title', 'Flapjack Mix');
+recipe.title;     // 'Flapjack Mix'
+recipe.isDirty(); // true
+
+recipe.restore();
+recipe.title;     // 'Pancake Mix'
+</code></pre>
 
 		</section>
 		

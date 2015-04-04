@@ -174,21 +174,6 @@
 			
 				
 				
-					<li class="search-container  ">
-						<a 	class="page" 
-							href="EJS.html" 
-							data-search="EJS">
-							EJS
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
 					<li class="search-container active  expanded">
 						<a 	class="page" 
 							href="Mustache.html" 
@@ -408,7 +393,18 @@ special tags used for injecting your data into the HTML. The number of ways
 you can inject data is limited by design for simplicity and maintainability,
 but can be enhanced through the use of helpers.</p>
 <p>Here's an example of a template that might render a list of Todos:</p>
+<pre><code>&lt;script type=&quot;text/mustache&quot; id=&quot;todosList&quot;&gt;
+{{#todos}}
+&lt;li&gt;{{description}}&lt;/li&gt;
+{{/todos}}
+&lt;/script&gt;
+</code></pre>
 <p>You can use <code>can.view</code> to render the template:</p>
+<pre><code>Todo.findAll({}, function(todos) {
+    document.getElementById('list')
+        .appendChild(can.view('todoList', {todos: todos}));
+});
+</code></pre>
 <h2>Magic tags</h2>
 <p>There are three kinds of magic tags used in Mustache:</p>
 <ul>
@@ -422,24 +418,65 @@ to the template without escaping it.</li>
 <p>Variable tags insert data into the template. They reference variables in the current
 context.</p>
 <p>This template:</p>
+<pre><code>Name: {{name}}
+</code></pre>
 <p>given this data:</p>
+<pre><code>{name: 'Alice'}
+</code></pre>
 <p>will render the following:</p>
+<pre><code>Name: Alice
+</code></pre>
 <h3>Sections</h3>
 <p>Sections contain text blocks and are conditionally rendered based on the
 variable enclosed in the opening tag. They also change the active context
 inside them to that of the variable referenced in the opening tag.</p>
 <p>For the following examples, we will assume the template is being populated with
 this set of data:</p>
+<pre><code>{
+    name: 'Alice Liddell',
+    nickname: '',
+    friends: ['Bob', 'Eve'],
+    enemies: []
+}
+</code></pre>
 <p>If the variable is <code>undefined</code>, <code>null</code>, <code>false</code>, <code>''</code>, or <code>[]</code>, it is considered
 a falsey value and the section is not rendered at all. Neither of these sections
 will render:</p>
+<pre><code>{{#enemies}}
+&lt;li&gt;{{.}}&lt;/li&gt;
+{{/enemies}}
+</code></pre>
+<pre><code>{{#nickname}}{{.}}{{/nickname}}
+</code></pre>
 <p>If the variable is a non-empty array, the section will be rendered once for each
 element in the array. If it is truthy but not an array, the section is rendered
 once.</p>
 <p>This template:</p>
+<pre><code>&lt;h1&gt;{{#name}}{{.}}{{/name}}&lt;/h1&gt;
+&lt;ul&gt;
+    {{#friends}}
+    &lt;li&gt;{{.}}&lt;/li&gt;
+    {{/friends}}
+&lt;/ul&gt;
+</code></pre>
 <p>will render like this:</p>
+<pre><code>&lt;h1&gt;Alice Liddell&lt;/h1&gt;
+&lt;ul&gt;
+    &lt;li&gt;Bob&lt;/li&gt;
+    &lt;li&gt;Eve&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
 <p>You can also make inverted sections that render if the variable referenced in the
 opening tag is falsey:</p>
+<pre><code>&lt;ul&gt;
+    {{#friends}}
+    &lt;li&gt;{{.}}&lt;/li&gt;
+    {{/friends}}
+    {{^friends}}
+    &lt;li&gt;You have no friends.&lt;/li&gt;
+    {{/friends}}
+&lt;/ul&gt;
+</code></pre>
 <h3>Context</h3>
 <p>When Mustache is resolving an object in a section, it sets the current context
 to the object value for which it is iterating. (If the variable in the opening tag
@@ -450,8 +487,24 @@ sections and helpers. If a variable is not found in the current context, Mustach
 will look for the the in each successive parent context until it resolves the
 variable or runs out of parent contexts.</p>
 <p>For example, with this data:</p>
+<pre><code>{
+    brothers: [{name: 'Bob'}, {name: 'David'}],
+    sisters: [{name: 'Alice'}, {name: 'Eve'}]
+}
+</code></pre>
 <p>and this template:</p>
+<pre><code>{{#brothers}}
+    {{#sisters}}
+        {{name}}
+    {{/sisters}}
+{{/brothers}}
+</code></pre>
 <p>the rendered result will be:</p>
+<pre><code>Alice
+Eve
+Alice
+Eve
+</code></pre>
 <p>Since there is no <code>sisters</code> variable in the context of the elements of the <code>brothers</code>
 array, Mustache jumps up to the parent context and resolves <code>sisters</code> there.</p>
 <h2>Helpers</h2>
@@ -462,26 +515,84 @@ a helper.</p>
 <p>To use a helper that is local to the template you're rendering, pass it as the
 third argument to <code>can.view</code> in an object where the key is the name of the helper
 and the value is the helper function:</p>
+<pre><code>var fragment = can.view('todosList', {todos: todos}, {
+    uppercase: function(str) {
+        return str.toUppercase();
+    }
+});
+</code></pre>
 <p>This might be used in a template like this:</p>
+<pre><code>&lt;script type=&quot;text/mustache&quot; id=&quot;todosList&quot;&gt;
+{{#todos}}
+&lt;li&gt;{{uppercase description}}&lt;/li&gt;
+{{/todos}}
+&lt;/script&gt;
+</code></pre>
 <p>If a property of an observe is passed to a helper function, the helper will
 become a <a href="../docs/can.compute.html">can.compute</a>. As an example, if you had this template:</p>
+<pre><code>&lt;script type=&quot;text/mustache&quot; id=&quot;prefixedName&quot;&gt;
+&lt;div&gt;{{addMs lastName}}&lt;/div&gt;
+&lt;/script&gt;
+</code></pre>
 <p>And you ran this code:</p>
-<p>The contents of the &lt;div&gt; would be <code>Ms. Wonderland</code>.</p>
+<pre><code>var name = new can.Observe({firstName: 'Alice', lastName: 'Liddell'});
+document.getElementById('name')
+    .appendChild(can.view('prefixedName', name, {
+        addMs: function(lastName) {
+            return 'Ms. ' + lastName;
+        }
+    }));
+name.attr({firstName: 'Allison', lastName: 'Wonderland'});
+</code></pre>
+<p>The contents of the <div> would be <code>Ms. Wonderland</code>.</p>
 <h3>Global helpers</h3>
 <p>You can register global helpers using <a href="../docs/can.mustache.registerHelper.html">can.mustache.registerHelper</a>:</p>
+<pre><code>can.mustache.registerHelper('i10n', function(str, options) {
+    return (Globalize != undefined ? Globalize.localize(str) : str);
+});
+</code></pre>
 <h3>Data helpers</h3>
 <p>You can use the <code>data</code> helper in Mustache to associate data to an element. This
 helper will associate the current context (<code>.</code>) with a variable you pass to the
 helper.</p>
 <p>For example, this template:</p>
+<pre><code>&lt;script type=&quot;text/mustache&quot; id=&quot;nameDiv&quot;&gt;
+&lt;div id=&quot;person&quot; {{data 'name'}}&gt;{{firstName}} {{lastName}}&lt;/div&gt;
+&lt;/script&gt;
+</code></pre>
 <p>lets you do this in code:</p>
+<pre><code>document.body.appendChild(can.view('nameDiv', {
+    firstName: 'Alice',
+    lastName: 'Liddell'
+}));
+
+var obj = can.data(document.getElementById('person'), 'name');
+obj; // { firstName: 'Alice', lastName: 'Liddell'}
+</code></pre>
 <h2>Partials</h2>
 <p>You can nest templates in other templates by using partials. Partials inherit
 the context from which they are called. They are evaluated at render time, so you
 should be careful to avoid infinite loops. To include a partial, put its URL or
 ID inside <code>{{&gt; }}</code>.</p>
 <p>With these templates:</p>
+<pre><code>&lt;script type=&quot;text/mustache&quot; id=&quot;names&quot;&gt;
+&lt;ul&gt;
+{{#names}}
+    {{&gt;user}}
+{{/names}}
+&lt;/ul&gt;
+&lt;/script&gt;
+&lt;script type=&quot;text/mustache&quot; id=&quot;user&quot;&gt;
+&lt;li&gt;{{firstName}} {{lastName}}&lt;/li&gt;
+&lt;/script&gt;
+</code></pre>
 <p>the expanded template at render time would look similar to:</p>
+<pre><code>&lt;ul&gt;
+{{#names}}
+    &lt;li&gt;{{firstName}} {{lastName}}&lt;/li&gt;
+{{/names}}
+&lt;/ul&gt;
+</code></pre>
 
 		</section>
 		
@@ -543,7 +654,7 @@ ID inside <code>{{&gt; }}</code>.</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"type":"page","name":"Mustache","src":"guides/mustache.md","description":"","title":"Mustache","parent":"Tutorial","order":5,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.1","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
+		var docObject = {"type":"page","name":"Mustache","src":"guides/mustache.md","description":"","title":"Mustache","parent":"Tutorial","order":4,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/guides","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.1","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	

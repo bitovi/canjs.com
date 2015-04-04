@@ -806,8 +806,37 @@ property's current value is an Map or List, and an Map or List is returned
 from a setter, the effect will not be to merge the values into the current value as
 if the return value was fed straight into <code>attr</code>, but to replace the value with the
 new Map or List completely:</p>
+<pre><code>var Contact = can.Map.extend({
+    setInfo: function(raw) {
+      return raw;
+    }
+});
+
+var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
+alice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}
+alice.info._cid; // '.map1'
+
+alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
+alice.attr(); // {name: 'Allison Wonderland', 'phone': '888-888-8888'}
+alice.info._cid; // '.map2'
+</code></pre>
 <p>If you would rather have the new Map or List merged into the current value, call
 <code>attr</code> inside the setter:</p>
+<pre><code>var Contact = can.Map.extend({
+    setInfo: function(raw) {
+      this.info.attr(raw);
+      return this.info;
+    }
+});
+
+var alice = new Contact({info: {name: 'Alice Liddell', email: 'alice@liddell.com'}});
+alice.attr(); // {name: 'Alice Liddell', 'email': 'alice@liddell.com'}
+alice.info._cid; // '.Map1'
+
+alice.attr('info', {name: 'Allison Wonderland', phone: '888-888-8888'});
+alice.attr(); // {name: 'Allison Wonderland', email: 'alice@liddell.com', 'phone': '888-888-8888'}
+alice.info._cid; // '.Map1'
+</code></pre>
 <h2>Error Handling</h2>
 <p>Setters can trigger errors if values passed didn't meet your defined validation(s).</p>
 <p>Below is an example of a <em>School</em> observable that accepts a name property and errors

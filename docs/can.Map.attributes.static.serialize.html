@@ -737,6 +737,22 @@ the types specified in <a href="can.Map.attributes.html">attributes</a>.</p>
 that will return the value if the property holds a primitive value (string, number, ...),
 or it will call the &quot;serialize&quot; method if the property holds an object with the &quot;serialize&quot; method set.</p>
 <p>For example, to serialize all dates to ISO format:</p>
+<pre><code>var Contact = can.Map.extend({
+attributes : {
+ birthday : 'date'
+},
+serialize : {
+ date : function(val, type){
+   return new Date(val).toISOString();
+ }
+}
+},{});
+
+var contact = new Contact({
+birthday: new Date(&quot;Oct 25, 1973&quot;)
+}).serialize();
+//-&gt; { &quot;birthday&quot; : &quot;1973-10-25T05:00:00.000Z&quot; }
+</code></pre>
 
 		</section>
 		

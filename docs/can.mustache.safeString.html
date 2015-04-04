@@ -906,8 +906,20 @@ not become escaped, even if you use <a href="can.mustache.tags.unescaped.html">{
 			<p>If you write a helper that generates its own HTML, you will
 usually want to return a <code>can.mustache.safeString.</code> In this case,
 you will want to manually escape parameters with <code><a href="can.esc.html">can.esc</a>.</code></p>
+<pre><code>can.mustache.registerHelper('link', function(text, url) {
+  text = can.esc(text);
+  url  = can.esc(url);
+
+  var result = '&lt;a href=&quot;' + url + '&quot;&gt;' + text + '&lt;/a&gt;';
+  return can.mustache.safeString(result);
+});
+</code></pre>
 <p>Rendering:</p>
+<pre><code>&lt;div&gt;{{link &quot;Google&quot;, &quot;http://google.com&quot;}}&lt;/div&gt;
+</code></pre>
 <p>Results in:</p>
+<pre><code>&lt;div&gt;&lt;a href=&quot;http://google.com&quot;&gt;Google&lt;/a&gt;&lt;/div&gt;
+</code></pre>
 <p>As an anchor tag whereas if we would have just returned the result rather than a
 <code>can.mustache.safeString</code> our template would have rendered a div with the escaped anchor tag.</p>
 
