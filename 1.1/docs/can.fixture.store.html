@@ -176,68 +176,6 @@
 		
 			
 				
-					
-					<li class="heading search-container">
-						<span>Types</span>
-						
-	<ul >
-		
-			
-				
-				
-					<li class="search-container parent ">
-						<a 	class="typedef" 
-							href="can.fixture.types.Store.html" 
-							data-search="Store">
-							Store
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="typedef" 
-							href="can.fixture.types.requestHandler.html" 
-							data-search="requestHandler">
-							requestHandler
-						</a>
-						
-					</li>
-				
-			
-			
-		
-			
-				
-				
-					<li class="search-container  ">
-						<a 	class="typedef" 
-							href="can.fixture.types.responseHandler.html" 
-							data-search="responseHandler">
-							responseHandler
-						</a>
-						
-					</li>
-				
-			
-			
-		
-	</ul>
-
-					</li>
-					
-				
-				
-			
-			
-		
-			
-				
 				
 					<li class="search-container  ">
 						<a 	class="property" 
@@ -309,6 +247,68 @@
 							
 						
 					</li>
+				
+			
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>Types</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container parent ">
+						<a 	class="typedef" 
+							href="can.fixture.types.Store.html" 
+							data-search="Store">
+							Store
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="typedef" 
+							href="can.fixture.types.requestHandler.html" 
+							data-search="requestHandler">
+							requestHandler
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="typedef" 
+							href="can.fixture.types.responseHandler.html" 
+							data-search="responseHandler">
+							responseHandler
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
 				
 			
 			
@@ -590,7 +590,7 @@ the store can do filtering, grouping, sorting, and paging.</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"type":"function","name":"can.fixture.store","parent":"can.fixture","src":"util/fixture/fixture.js","line":347,"codeLine":429,"description":"Make a store of objects to use when making requests against fixtures.","title":"store","signatures":[{"code":"can.fixture.store(count, make[, filter])","description":"","params":[{"types":[{"type":"Number"}],"name":"count","description":"The number of items to create."},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"make","description":"A function that will return the JavaScript object. The\nmake function is called back with the id and the current array of items."},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"filter","description":"A function used to further filter results. Used for to simulate\nserver params like searchText or startDate.\nThe function should return true if the item passes the filter,\nfalse otherwise. For example:\n\n\n    function(item, settings){\n      if(settings.data.searchText){\n           var regex = new RegExp(\"^\"+settings.data.searchText)\n          return regex.test(item.name);\n      }\n    }"}],"returns":{"types":[{"type":"can.fixture.Store"}],"description":"A generator object providing fixture functions for *findAll*, *findOne*, *create*,\n*update* and *destroy*."}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/1.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.4","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"}};
+		var docObject = {"type":"function","name":"can.fixture.store","parent":"can.fixture","src":"util/fixture/fixture.js","line":347,"codeLine":429,"description":"Make a store of objects to use when making requests against fixtures.","title":"store","signatures":[{"code":"can.fixture.store(count, make[, filter])","description":"","params":[{"types":[{"type":"Number"}],"name":"count","description":"The number of items to create."},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"name":"make","description":"A function that will return the JavaScript object. The\nmake function is called back with the id and the current array of items."},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"filter","description":"A function used to further filter results. Used for to simulate\nserver params like searchText or startDate.\nThe function should return true if the item passes the filter,\nfalse otherwise. For example:\n\n\n    function(item, settings){\n      if(settings.data.searchText){\n           var regex = new RegExp(\"^\"+settings.data.searchText)\n          return regex.test(item.name);\n      }\n    }"}],"returns":{"types":[{"type":"can.fixture.Store"}],"description":"A generator object providing fixture functions for *findAll*, *findOne*, *create*,\n*update* and *destroy*."}}],"comment":" ","forceBuild":true,"ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/1.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.4","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"}};
 	</script>
 	
 	
