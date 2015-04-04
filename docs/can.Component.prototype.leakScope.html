@@ -439,12 +439,7 @@
 
 		
 		<section class="description">
-			<p>A component's <a href="can.Component.prototype.leakScope.html">leakScope</a> option controls whether
-the surrounding template where the component is used can directly share
-viewModel with the component's internal viewModel. This option defaults to <code>true</code>,
-which means <code>&lt;content&gt;</code> is able to access internal viewModel variables on the
-component, and the component will be able to use outside variables when
-used on a page.</p>
+			<p>Allow reading the outer scope values from a component's template and a component's viewModel values in the user content.</p>
 
 		</section>
 		
@@ -457,6 +452,17 @@ used on a page.</p>
   <h2 id="sig_">Boolean
 </h2>
 <div class="signature-wrapper">
+<p><code>false</code> only allows reading:</p>
+<ul>
+<li>the component's viewModel from the the component's template, and</li>
+<li>the outer scope values from the user content.</li>
+</ul>
+<p><code>true</code> adds the ability to read:</p>
+<ul>
+<li>the outer <a href="can.view.Scope.html">scope</a> values from the component's template, and</li>
+<li>the component's <a href="can.Component.prototype.viewModel.html">viewModel</a> values from the user content.</li>
+</ul>
+<p>The default value is <code>true</code>.  This may reverse in 3.0.</p>
 
 
 
@@ -477,31 +483,50 @@ used on a page.</p>
 
 		
 		<section class="comment">
-			<p>For example, if the following component is defined:</p>
+			<h2>Use</h2>
+<p>A component's <a href="can.Component.prototype.leakScope.html">leakScope</a> option controls if a
+component's template can access the component's outer scope and the
+user content can read the component's view model.</p>
+<p>Lets define what <strong>outer scope</strong>, <strong>component's template</strong> and <strong>user content</strong> mean.</p>
+<p>If I have component <code>&lt;my-widget&gt;</code> in a template like:</p>
+<pre><code>{{#data}}
+    &lt;hello-world&gt;{{subject}}&lt;/hello-world&gt;
+{{/data}}
+</code></pre>
+<p>The <strong>outer scope</strong> of <code>&lt;hello-world&gt;</code> has <code>data</code> as its context.  The <strong>user content</strong> of
+<code>&lt;hello-world&gt;</code> is the template between its tags.  In this case, the <strong>user content</strong>
+is <code>{{subject}}</code>.</p>
+<p>Finally, if <code>&lt;my-widget&gt;</code> is defined like:</p>
+<pre><code>can.Component.extend({
+  tag: &quot;hello-world&quot;,
+  tag: can.stache(&quot;{{greeting}} &lt;content/&gt;{{exclamation}}&quot;)
+})
+</code></pre>
+<p><code>{{greeting}} &lt;content/&gt;{{exclamation}}</code> represents the <strong>component's template</strong>.</p>
+<h2>Example</h2>
+<p>If the following component is defined:</p>
 <pre><code>can.Component.extend({
     tag: &quot;hello-world&quot;,
     leakScope: true, // the default value
-    template: &quot;{{greeting}} &lt;content&gt;&lt;/content&gt;{{exclamation}}&quot;,
-    viewModel: { greeting: &quot;Hello&quot; }
+    template: can.stache(&quot;{{greeting}} &lt;content/&gt;{{exclamation}}&quot;),
+    viewModel: { greeting: &quot;Hello&quot;, subject: &quot;LEAK&quot; }
 })
 </code></pre>
 <p>And used like so:</p>
-<pre><code>&lt;hello-world&gt;{{greeting}}&lt;/hello-world&gt;
+<pre><code>&lt;hello-world&gt;{{subject}}&lt;/hello-world&gt;
 </code></pre>
-<p>With the following data in the surrounding viewModel:</p>
-<pre><code>{ greeting: &quot;World&quot;, exclamation: &quot;!&quot; }
+<p>With the following data in the outer scope:</p>
+<pre><code>{ subject: &quot;World&quot;, exclamation: &quot;!&quot; }
 </code></pre>
 <p>Will render the following if <code>leakScope</code> is true:</p>
-<pre><code>&lt;hello-world&gt;Hello Hello!&lt;/hello-world&gt;
+<pre><code>&lt;hello-world&gt;Hello LEAK!&lt;/hello-world&gt;
 </code></pre>
 <p>But if <code>leakScope</code> is false:</p>
 <pre><code>&lt;hello-world&gt;Hello World&lt;/hello-world&gt;
 </code></pre>
-<p>Because when the viewModel isn't leaked, the internal <code>template</code> for the
-component does not see the surrounding binding for <code>exclamation</code> or
-<code>greeting</code>, and simply uses its internal <code>viewModel</code> to render its
-template. This also affects where the <code>{{greeting}}</code> will be looked up, in
-the light dom.</p>
+<p>Because when the scope isn't leaked, the <strong>component's template</strong>
+does not see <code>exclamation</code>. The <strong>user content</strong> does not see the
+viewModel's <code>subject</code> and uses the outer scope's <code>subject</code> which is <code>&quot;World&quot;</code>.</p>
 <p>Using the <code>leakScope: false</code> option is useful for hiding and protecting
 internal details of <code>can.Component</code>, potentially preventing accidental
 clashes.</p>
@@ -566,7 +591,7 @@ clashes.</p>
 	</script>
 	
 	<script type="text/javascript">
-		var docObject = {"type":"property","name":"can.Component.prototype.leakScope","src":"component/leakscope.md","description":"A component's [can.Component::leakScope leakScope] option controls whether\nthe surrounding template where the component is used can directly share\nviewModel with the component's internal viewModel. This option defaults to `true`,\nwhich means `<content>` is able to access internal viewModel variables on the\ncomponent, and the component will be able to use outside variables when\nused on a page.","types":[{"type":"Boolean"}],"title":"","parent":"can.Component.prototype","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.4","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
+		var docObject = {"type":"property","name":"can.Component.prototype.leakScope","src":"component/leakscope.md","description":"Allow reading the outer scope values from a component's template and a component's viewModel values in the user content.","types":[{"type":"Boolean","description":"`false` only allows reading:\n \n- the component's viewModel from the the component's template, and\n- the outer scope values from the user content.\n\n`true` adds the ability to read:\n\n- the outer [can.view.Scope scope] values from the component's template, and\n- the component's [can.Component.prototype.viewModel viewModel] values from the user content. \n \nThe default value is `true`.  This may reverse in 3.0."}],"title":"","parent":"can.Component.prototype","comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"http://bitbuilder.herokuapp.com/canjs","builder":"http://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://api.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.1","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
 	</script>
 	
 	
