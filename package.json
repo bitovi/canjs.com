@@ -25,17 +25,17 @@
     "node": ">= 0.10.0"
   },
   "devDependencies": {
+    "documentjs": "0.3.0-pre.1",
     "grunt": "~0.4.1",
-    "grunt-contrib-watch": "~0.3.1",
-    "grunt-contrib-less": "~0.5.0",
-    "documentjs": "https://github.com/bitovi/documentjs/tarball/node-generator",
+    "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-less": "~0.5.0",
+    "grunt-contrib-watch": "~0.3.1",
     "grunt-docco2": "git://github.com/shcarrico/grunt-docco.git#options-passing",
-    "grunt-plato": "~0.2.1",
     "grunt-jsbeautifier": "~0.2.6",
+    "grunt-plato": "~0.2.1",
     "grunt-shell": "~0.6.4",
-    "sqlite3": "~2.2.3",
     "q": "~1.0.1",
-    "documentjs": "0.3.0-pre.1"
+    "sqlite3": "~2.2.3"
   }
 }
