@@ -41,7 +41,8 @@ module.exports = function (grunt) {
 			}
 		},
 		"2.1" : "git://github.com/bitovi/canjs#664214f77031591bb2b59375cb31b4e7a5dd9fae",
-		"2.2": { "source": "git://github.com/bitovi/canjs#master", "npmInstall": ["steal@0.7.X","jquery@^1.11.0", "steal-qunit@0.0.2"] }
+		"2.2": { "source": "git://github.com/bitovi/canjs#master", "npmInstall": ["steal@0.7.X","jquery@^1.11.0", "steal-qunit@0.0.2"] },
+		"2.3-pre": { "source": "git://github.com/bitovi/canjs#minor", "npmInstall": ["steal@0.7.X","jquery@^1.11.0", "steal-qunit@0.0.2"] }
 	};
 	var defaultVersion = "2.2";
 	var versionsNames = Object.keys(versions);
