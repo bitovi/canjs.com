@@ -237,13 +237,6 @@ module.exports = function (grunt) {
 	grunt.registerTask('docjs:default',
 				['docjs:'+defaultVersion]);
 	grunt.registerTask('docjs:all', all);
-	//grunt.registerTask('platoit',['documentjs:'+defaultVersion,'plato:'+defaultVersion]);
-
-	//grunt.registerTask('doccoit',subTasks);
-
-	//grunt.registerTask('docjs', ['clean', 'documentjs:'+minor, 'doccoit', 'dash-docset', 'dash-repath']);
-
-	// Default task.
-	grunt.registerTask('default', [ 'docjs:default' ]);
+	grunt.registerTask('default', [ 'docjs:default', 'docs:2.3-pre' ]);
 
 };
