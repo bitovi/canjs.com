@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#view/view*/
+/*can@2.2.5#view/view*/
 // # can/view/view.js
 // -------
 // `can.view`
@@ -367,7 +367,7 @@ steal('can/util', function (can) {
 		 *
 		 * ## Example
 		 *
-		 * @codestart
+		 * ```
 		 * can.View.register({
 		 *	suffix : "tmpl",
 		 *  plugin : "jquery/view/tmpl",
@@ -383,7 +383,7 @@ steal('can/util', function (can) {
 		 *			").call(jQuery, jQuery, data); }";
 		 *	}
 		 * })
-		 * @codeend
+		 * ```
 		 */
 		register: function (info) {
 			this.types['.' + info.suffix] = info;

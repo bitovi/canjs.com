@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#component/component*/
+/*can@2.2.5#component/component*/
 // # can/component/component.js
 // 
 // This implements the `can.Component` which allows you to create widgets 
@@ -18,7 +18,7 @@
 // `can.Component.setup` prepares everything needed by the `can.Component.prototype.setup` 
 // to hookup the component.
 
-steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/mustache", "can/view/bindings", function (can, viewCallbacks) {
+steal("can/util", "can/view/callbacks","can/view/elements.js","can/control", "can/observe", "can/view/mustache", "can/view/bindings", function (can, viewCallbacks, elements) {
 	// ## Helpers
 	// Attribute names to ignore for setting viewModel values.
 	var ignoreAttributesRegExp = /^(dataViewId|class|id)$/i,
@@ -349,9 +349,13 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 									subtemplate !== hookupOptions.subtemplate ?
 									rendererOptions :
 									hookupOptions;
-
-							can.view.live.replace([el], subtemplate(
-								opts.scope, opts.options));
+							
+							if(rendererOptions.parentNodeList) {
+								var frag = subtemplate( opts.scope, opts.options, rendererOptions.parentNodeList );
+								elements.replace([el], frag);
+							} else {
+								can.view.live.replace([el], subtemplate( opts.scope, opts.options ));
+							}
 
 							// Restore the content tag so it could potentially be used again (as in lists)
 							options.tags.content = contentHookup;

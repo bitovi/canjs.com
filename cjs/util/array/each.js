@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#util/array/each*/
+/*can@2.2.5#util/array/each*/
 var can = require('../can.js');
 var isArrayLike = function (obj) {
     var length = obj.length;

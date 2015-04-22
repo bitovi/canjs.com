@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#util/can*/
+/*can@2.2.5#util/can*/
 /* global global: false */
 steal(function () {
 	/* global GLOBALCAN */
@@ -37,7 +37,7 @@ steal(function () {
 		}
 		return object._cid;
 	};
-	can.VERSION = '2.2.4';
+	can.VERSION = '2.2.5';
 
 	can.simpleExtend = function (d, s) {
 		for (var prop in s) {
@@ -140,9 +140,9 @@ steal(function () {
 		logLevel: 0,
 		/**
 		 * Adds a warning message to the console.
-		 * @codestart
+		 * ```
 		 * can.dev.warn("something evil");
-		 * @codeend
+		 * ```
 		 * @param {String} out the message
 		 */
 		warn: function (out) {
@@ -160,9 +160,9 @@ steal(function () {
 		},
 		/**
 		 * Adds a message to the console.
-		 * @codestart
+		 * ```
 		 * can.dev.log("hi");
-		 * @codeend
+		 * ```
 		 * @param {String} out the message
 		 */
 		log: function (out) {

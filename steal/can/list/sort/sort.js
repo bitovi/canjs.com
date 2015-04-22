@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#list/sort/sort*/
+/*can@2.2.5#list/sort/sort*/
 steal('can/util', 'can/list', function () {
 
 	// BUBBLE RULE
@@ -220,7 +220,7 @@ steal('can/util', 'can/list', function () {
 					b = this._getComparatorValue(this.attr(iMin), comparator);
 
 					// [1, 2, 3, 4(b), 9, 6, 3(a)]
-					if (comparatorFn.call(this, a, b) === -1) {
+					if (comparatorFn.call(this, a, b) < 0) {
 						isSorted = false;
 						iMin = i;
 					}
@@ -231,7 +231,7 @@ steal('can/util', 'can/list', function () {
 					// that are improperly sorted.
 					// Note: This is not part of the original selection
 					// sort agortithm
-					if (c && comparatorFn.call(this, a, c) === -1) {
+					if (c && comparatorFn.call(this, a, c) < 0) {
 						isSorted = false;
 					}
 

@@ -1,20 +1,25 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#map/define/define*/
+/*can@2.2.5#map/define/define*/
 var can = require('../../util/util.js');
 require('../../observe/observe.js');
 var define = can.define = {};
-var getPropDefineBehavior = function (behavior, prop, define) {
-    var propBehavior;
+var getPropDefineBehavior = function (behavior, attr, define) {
+    var prop, defaultProp;
     if (define) {
-        propBehavior = define[prop] ? define[prop] : define['*'];
-        return propBehavior && propBehavior[behavior];
+        prop = define[attr];
+        defaultProp = define['*'];
+        if (prop && prop[behavior] !== undefined) {
+            return prop[behavior];
+        } else if (defaultProp && defaultProp[behavior] !== undefined) {
+            return defaultProp[behavior];
+        }
     }
 };
 can.Map.helpers.define = function (Map) {

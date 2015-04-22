@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#view/live/live*/
+/*can@2.2.5#view/live/live*/
 var can = require('../../util/util.js');
 var elements = require('../elements.js');
 var view = require('../view.js');
@@ -63,7 +63,7 @@ var setup = function (el, bind, unbind) {
     };
 var live = {
         list: function (el, compute, render, context, parentNode, nodeList) {
-            var masterNodeList = nodeList || [el], indexMap = [], afterPreviousEvents = false, add = function (ev, items, index) {
+            var masterNodeList = nodeList || [el], indexMap = [], afterPreviousEvents = false, isTornDown = false, add = function (ev, items, index) {
                     if (!afterPreviousEvents) {
                         return;
                     }
@@ -159,6 +159,9 @@ var live = {
                     }
                     remove({}, { length: masterNodeList.length - 1 }, 0, true, fullTeardown);
                 }, updateList = function (ev, newList, oldList) {
+                    if (isTornDown) {
+                        return;
+                    }
                     teardownList();
                     list = newList || [];
                     if (list.bind) {
@@ -187,7 +190,10 @@ var live = {
             } else {
                 elements.replace(masterNodeList, text);
                 nodeLists.update(masterNodeList, [text]);
-                nodeList.unregistered = data.teardownCheck;
+                nodeList.unregistered = function () {
+                    data.teardownCheck();
+                    isTornDown = true;
+                };
             }
             updateList({}, can.isFunction(compute) ? compute() : compute);
         },

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#view/stache/stache*/
+/*can@2.2.5#view/stache/stache*/
 /* jshint undef: false */
 steal(
 	"can/util",
@@ -145,12 +145,13 @@ steal(
 					// If it's a custom tag with content, we need a section renderer.
 					section.add(state.node);
 					if(isCustomTag) {
-						addAttributesCallback(state.node, function(scope, options){
+						addAttributesCallback(state.node, function(scope, options, parentNodeList){
 							viewCallbacks.tagHandler(this,tagName, {
 								scope: scope,
 								options: options,
 								subtemplate: null,
-								templateType: "stache"
+								templateType: "stache",
+								parentNodeList: parentNodeList
 							});
 						});
 					}
@@ -185,12 +186,13 @@ steal(
 				
 				var oldNode = section.pop();
 				if( isCustomTag ) {
-					addAttributesCallback(oldNode, function(scope, options){
+					addAttributesCallback(oldNode, function(scope, options, parentNodeList){
 						viewCallbacks.tagHandler(this,tagName, {
 							scope: scope,
 							options: options,
 							subtemplate: renderer,
-							templateType: "stache"
+							templateType: "stache",
+							parentNodeList: parentNodeList
 						});
 					});
 				}

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#util/attr/attr*/
+/*can@2.2.5#util/attr/attr*/
 var can = require('../can.js');
 var setImmediate = can.global.setImmediate || function (cb) {
         return setTimeout(cb, 0);

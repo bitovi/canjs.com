@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#view/stache/mustache_helpers*/
+/*can@2.2.5#view/stache/mustache_helpers*/
 steal("can/util", "./utils.js","can/view/live",function(can, utils, live){
 	live = live || can.view.live;
 	
@@ -22,6 +22,7 @@ steal("can/util", "./utils.js","can/view/live",function(can, utils, live){
 	
 	var helpers = {
 		"each": function(items, options){
+			
 			var resolved = resolve(items),
 				result = [],
 				keys,
@@ -30,6 +31,13 @@ steal("can/util", "./utils.js","can/view/live",function(can, utils, live){
 			
 			if( resolved instanceof can.List ) {
 				return function(el){
+					// make a child nodeList inside the can.view.live.html nodeList
+					// so that if the html is re
+					var nodeList = [el];
+					nodeList.expression = "live.list";
+					can.view.nodeLists.register(nodeList, null, options.nodeList);
+					can.view.nodeLists.update(options.nodeList, [el]);
+					
 					var cb = function (item, index, parentNodeList) {
 								
 						return options.fn(options.scope.add({
@@ -37,7 +45,7 @@ steal("can/util", "./utils.js","can/view/live",function(can, utils, live){
 							}).add(item), options.options, parentNodeList);
 							
 					};
-					live.list(el, items, cb, options.context, el.parentNode, options.nodeList);
+					live.list(el, items, cb, options.context, el.parentNode, nodeList);
 				};
 			}
 			

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#list/sort/sort*/
+/*can@2.2.5#list/sort/sort*/
 define([
     'can/util/library',
     'can/list'
@@ -115,11 +115,11 @@ define([
                 for (i = j + 1; i < n; i++) {
                     a = this._getComparatorValue(this.attr(i), comparator);
                     b = this._getComparatorValue(this.attr(iMin), comparator);
-                    if (comparatorFn.call(this, a, b) === -1) {
+                    if (comparatorFn.call(this, a, b) < 0) {
                         isSorted = false;
                         iMin = i;
                     }
-                    if (c && comparatorFn.call(this, a, c) === -1) {
+                    if (c && comparatorFn.call(this, a, c) < 0) {
                         isSorted = false;
                     }
                     c = a;

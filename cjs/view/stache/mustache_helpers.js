@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#view/stache/mustache_helpers*/
+/*can@2.2.5#view/stache/mustache_helpers*/
 var can = require('../../util/util.js');
 var utils = require('./utils.js');
 var live = require('../live/live.js');
@@ -25,10 +25,14 @@ var helpers = {
             var resolved = resolve(items), result = [], keys, key, i;
             if (resolved instanceof can.List) {
                 return function (el) {
+                    var nodeList = [el];
+                    nodeList.expression = 'live.list';
+                    can.view.nodeLists.register(nodeList, null, options.nodeList);
+                    can.view.nodeLists.update(options.nodeList, [el]);
                     var cb = function (item, index, parentNodeList) {
                         return options.fn(options.scope.add({ '@index': index }).add(item), options.options, parentNodeList);
                     };
-                    live.list(el, items, cb, options.context, el.parentNode, options.nodeList);
+                    live.list(el, items, cb, options.context, el.parentNode, nodeList);
                 };
             }
             var expr = resolved;

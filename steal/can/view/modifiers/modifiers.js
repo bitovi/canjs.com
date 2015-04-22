@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#view/modifiers/modifiers*/
+/*can@2.2.5#view/modifiers/modifiers*/
 steal('jquery', 'can/util', 'can/view', function ($, can) {
 	$ = $ || window.$;
 
@@ -127,9 +127,9 @@ steal('jquery', 'can/util', 'can/view', function ($, can) {
 	 *  elements to hook up to.  So hookup performs the hookup and clears the pending hookups, preventing errors in
 	 *  future templates.
 	 *
-	 * @codestart
+	 * ```
 	 * $(can.View('//views/recipes.ejs',recipeData)).hookup()
-	 * @codeend
+	 * ```
 	 */
 	$.fn.hookup = function () {
 		can.view.frag(this);

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#construct/construct*/
+/*can@2.2.5#construct/construct*/
 // steal-clean
 steal('can/util/string', function (can) {
 	// ## construct.js
@@ -276,7 +276,7 @@ steal('can/util/string', function (can) {
 		 * This `Parent` class adds a reference to its base class to itself, and
 		 * so do all the classes that inherit from it.
 		 *
-		 * @codestart
+		 * ```
 		 * Parent = can.Construct.extend({
 		 *   setup : function(base, fullName, staticProps, protoProps){
 		 *     this.base = base;
@@ -291,7 +291,7 @@ steal('can/util/string', function (can) {
 		 * Child = Parent({});
 		 *
 		 * Child.base; // Parent
-		 * @codeend
+		 * ```
 		 */
 		setup: function (base, fullName) {
 			this.defaults = can.extend(true, {}, base.defaults, this.defaults);
@@ -549,12 +549,12 @@ steal('can/util/string', function (can) {
 				 * This provides a way organize code and ensure globally unique types. The
 				 * `namespace` is the [can.Construct.fullName fullName] you passed without the [can.Construct.shortName shortName].
 				 *
-				 * @codestart
+				 * ```
 				 * can.Construct("MyApplication.MyConstructor",{},{});
 				 * MyApplication.MyConstructor.namespace // "MyApplication"
 				 * MyApplication.MyConstructor.shortName // "MyConstructor"
 				 * MyApplication.MyConstructor.fullName  // "MyApplication.MyConstructor"
-				 * @codeend
+				 * ```
 				 */
 				namespace: namespace,
 				/**
@@ -564,12 +564,12 @@ steal('can/util/string', function (can) {
 				 * If you pass a name when creating a Construct, the `shortName` property will be set to the
 				 * name you passed without the [can.Construct.namespace namespace].
 				 *
-				 * @codestart
+				 * ```
 				 * can.Construct("MyApplication.MyConstructor",{},{});
 				 * MyApplication.MyConstructor.namespace // "MyApplication"
 				 * MyApplication.MyConstructor.shortName // "MyConstructor"
 				 * MyApplication.MyConstructor.fullName  // "MyApplication.MyConstructor"
-				 * @codeend
+				 * ```
 				 */
 				_shortName: _shortName,
 				/**
@@ -580,12 +580,12 @@ steal('can/util/string', function (can) {
 				 * the name you passed. The `fullName` consists of the [can.Construct.namespace namespace] and
 				 * the [can.Construct.shortName shortName].
 				 *
-				 * @codestart
+				 * ```
 				 * can.Construct("MyApplication.MyConstructor",{},{});
 				 * MyApplication.MyConstructor.namespace // "MyApplication"
 				 * MyApplication.MyConstructor.shortName // "MyConstructor"
 				 * MyApplication.MyConstructor.fullName  // "MyApplication.MyConstructor"
-				 * @codeend
+				 * ```
 				 */
 				fullName: fullName,
 				_fullName: _fullName
@@ -720,7 +720,7 @@ steal('can/util/string', function (can) {
 	 *
 	 * First, we'll make a Person constructor that has a first and last name:
 	 *
-	 * @codestart
+	 * ```
 	 * var Person = can.Construct.extend({
 	 *     init: function(first, last) {
 	 *         this.first = first;
@@ -731,11 +731,11 @@ steal('can/util/string', function (can) {
 	 * var justin = new Person("Justin", "Meyer");
 	 * justin.first; // "Justin"
 	 * justin.last; // "Meyer"
-	 * @codeend
+	 * ```
 	 *
 	 * Then we'll extend Person into Programmer and add a favorite language:
 	 *
-	 * @codestart
+	 * ```
 	 * var Programmer = Person.extend({
 	 *     init: function(first, last, language) {
 	 *         // call base's init
@@ -752,7 +752,7 @@ steal('can/util/string', function (can) {
 	 *
 	 * var brian = new Programmer("Brian", "Moschel", 'ECMAScript');
 	 * brian.bio(); // "Hi! I'm Brian Moschel and I write ECMAScript.";
-	 * @codeend
+	 * ```
 	 *
 	 * ## Modified Arguments
 	 *

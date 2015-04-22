@@ -1,14 +1,15 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#component/component*/
+/*can@2.2.5#component/component*/
 var can = require('../util/util.js');
 var viewCallbacks = require('../view/callbacks/callbacks.js');
+var elements = require('../view/elements.js');
 require('../control/control.js');
 require('../observe/observe.js');
 require('../view/mustache/mustache.js');
@@ -164,7 +165,12 @@ var Component = can.Component = can.Construct.extend({
                     if (subtemplate) {
                         delete options.tags.content;
                         var opts = !lexicalContent || subtemplate !== hookupOptions.subtemplate ? rendererOptions : hookupOptions;
-                        can.view.live.replace([el], subtemplate(opts.scope, opts.options));
+                        if (rendererOptions.parentNodeList) {
+                            var frag = subtemplate(opts.scope, opts.options, rendererOptions.parentNodeList);
+                            elements.replace([el], frag);
+                        } else {
+                            can.view.live.replace([el], subtemplate(opts.scope, opts.options));
+                        }
                         options.tags.content = contentHookup;
                     }
                 };

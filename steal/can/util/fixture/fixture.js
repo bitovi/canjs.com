@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#util/fixture/fixture*/
+/*can@2.2.5#util/fixture/fixture*/
 // # can/util/fixture.js
 //
 // Intercepts AJAX requests and simulates them with either a function or a
@@ -629,11 +629,11 @@ steal('can/util', 'can/util/string', 'can/util/object', function (can) {
 				 * `store.destroy(request, response())` simulates
 				 * a request to destroy an item from the server.
 				 *
-				 * @codestart
+				 * ```
 				 * todosStore.destroy({
 				 *   url: "/todos/5"
 				 * }, function(){});
-				 * @codeend
+				 * ```
 				 */
 				destroy: function (request, response) {
 					var id = getId(request),

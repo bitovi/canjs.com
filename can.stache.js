@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
@@ -67,7 +67,7 @@
 		}
 	};
 })({},window)
-/*can@2.2.4#view/target/target*/
+/*can@2.2.5#view/target/target*/
 define('can/view/target/target', [
     'can/util/util',
     'can/view/elements'
@@ -226,7 +226,7 @@ define('can/view/target/target', [
     can.view.target = makeTarget;
     return makeTarget;
 });
-/*can@2.2.4#view/stache/html_section*/
+/*can@2.2.5#view/stache/html_section*/
 define('can/view/stache/html_section', [
     'can/util/util',
     'can/view/target/target',
@@ -347,7 +347,7 @@ define('can/view/stache/html_section', [
     });
     return HTMLSectionBuilder;
 });
-/*can@2.2.4#view/stache/text_section*/
+/*can@2.2.5#view/stache/text_section*/
 define('can/view/stache/text_section', [
     'can/util/util',
     'can/view/live/live',
@@ -437,7 +437,7 @@ define('can/view/stache/text_section', [
     });
     return TextSectionBuilder;
 });
-/*can@2.2.4#view/stache/intermediate_and_imports*/
+/*can@2.2.5#view/stache/intermediate_and_imports*/
 define('can/view/stache/intermediate_and_imports', [
     'can/view/stache/mustache_core',
     'can/view/parser/parser'
@@ -491,7 +491,7 @@ define('can/view/stache/intermediate_and_imports', [
         };
     };
 });
-/*can@2.2.4#view/stache/stache*/
+/*can@2.2.5#view/stache/stache*/
 define('can/view/stache/stache', [
     'can/util/util',
     'can/view/parser/parser',
@@ -574,12 +574,13 @@ define('can/view/stache/stache', [
                 if (unary) {
                     section.add(state.node);
                     if (isCustomTag) {
-                        addAttributesCallback(state.node, function (scope, options) {
+                        addAttributesCallback(state.node, function (scope, options, parentNodeList) {
                             viewCallbacks.tagHandler(this, tagName, {
                                 scope: scope,
                                 options: options,
                                 subtemplate: null,
-                                templateType: 'stache'
+                                templateType: 'stache',
+                                parentNodeList: parentNodeList
                             });
                         });
                     }
@@ -603,12 +604,13 @@ define('can/view/stache/stache', [
                 }
                 var oldNode = section.pop();
                 if (isCustomTag) {
-                    addAttributesCallback(oldNode, function (scope, options) {
+                    addAttributesCallback(oldNode, function (scope, options, parentNodeList) {
                         viewCallbacks.tagHandler(this, tagName, {
                             scope: scope,
                             options: options,
                             subtemplate: renderer,
-                            templateType: 'stache'
+                            templateType: 'stache',
+                            parentNodeList: parentNodeList
                         });
                     });
                 }

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#view/mustache/mustache*/
+/*can@2.2.5#view/mustache/mustache*/
 steal('can/util',
 	'can/view/scope',
 	'can/view',
@@ -1735,26 +1735,26 @@ steal('can/util',
 		 * usually want to return a `can.mustache.safeString.` In this case,
 		 * you will want to manually escape parameters with `[can.esc].`
 		 *
-		 * @codestart
+		 * ```
 		 * can.mustache.registerHelper('link', function(text, url) {
 		 *   text = can.esc(text);
 		 *   url  = can.esc(url);
 		 *
-		 *   var result = '&lt;a href="' + url + '"&gt;' + text + '&lt;/a&gt;';
+		 *   var result = '<a href="' + url + '">' + text + '</a>';
 		 *   return can.mustache.safeString(result);
 		 * });
-		 * @codeend
+		 * ```
 		 *
 		 * Rendering:
-		 * @codestart
-		 * &lt;div&gt;{{link "Google", "http://google.com"}}&lt;/div&gt;
-		 * @codeend
+		 * ```
+		 * <div>{{link "Google", "http://google.com"}}</div>
+		 * ```
 		 *
 		 * Results in:
 		 *
-		 * @codestart
-		 * &lt;div&gt;&lt;a href="http://google.com"&gt;Google&lt;/a&gt;&lt;/div&gt;
-		 * @codeend
+		 * ```
+		 * <div><a href="http://google.com">Google</a></div>
+		 * ```
 		 *
 		 * As an anchor tag whereas if we would have just returned the result rather than a
 		 * `can.mustache.safeString` our template would have rendered a div with the escaped anchor tag.

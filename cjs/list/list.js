@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.2.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Wed, 22 Apr 2015 15:03:29 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#list/list*/
+/*can@2.2.5#list/list*/
 var can = require('../util/util.js');
 var Map = require('../map/map.js');
 var bubble = require('../map/bubble.js');
@@ -119,7 +119,7 @@ var list = Map.extend({ Map: Map }, {
                     allSame = false;
                 }
             }
-            if (allSame) {
+            if (allSame && this.length <= added.length) {
                 return added;
             }
             if (howMany === undefined) {
