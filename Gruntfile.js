@@ -4,50 +4,10 @@ module.exports = function (grunt) {
 
 	var _ = grunt.util._;
 	var path = require('path');
-
-	var versions = {
-		"1.1" : {
-			"source": "git://github.com/bitovi/canjs#1.1-legacy",
-			"sites": {
-				"docs": {
-					"glob": {
-						"ignore": ["guides/*.md","{node_modules,bower_components}/**/*", "lib/**/*"]
-					},
-					"parent" : "canjs"
-				},
-				"guides": {
-					"glob": {
-						"pattern": "{guides/*.md,*.md}"
-					},
-					"parent": "guides"
-				}
-			}
-		},
-		"2.0" : {
-			"source": "https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac",
-			"sites": {
-				"docs": {
-					"glob": {
-						"ignore": ["guides/*.md","lib/**/*"]
-					},
-					"parent" : "canjs"
-				},
-				"guides": {
-					"glob": {
-						"pattern": "{guides/*.md,*.md}"
-					},
-					"parent": "guides"
-				}
-			}
-		},
-		"2.1" : "git://github.com/bitovi/canjs#664214f77031591bb2b59375cb31b4e7a5dd9fae",
-		"2.2": { "source": "git://github.com/bitovi/canjs#master", "npmInstall": ["steal@0.7.X","jquery@^1.11.0", "steal-qunit@0.0.2"] },
-		"2.3-pre": { "source": "git://github.com/bitovi/canjs#minor", "npmInstall": ["steal@0.7.X","jquery@^1.11.0", "steal-qunit@0.0.2"] }
-	};
-	var defaultVersion = "2.2";
+	var docjsConfig = require('./documentjs.json');
+	var versions = docjsConfig.versions;
+	var defaultVersion = docjsConfig.defaultVersion;
 	var versionsNames = Object.keys(versions);
-
-
 	var doccoConfig = function(){
 		var config = {};
 		_.each(versions, function(value, versionNumber){
@@ -170,42 +130,7 @@ module.exports = function (grunt) {
 		},*/
 		clean: cleanConfig(),
 
-		documentjs: {
-			"versions": versions,
-			"defaultVersion" : defaultVersion,
-			"siteDefaults": {
-				"ignoreTemplateRender": true,
-				"parent" : "canjs",
-				"templates" : "theme/templates",
-				"static": "theme/static",
-				"pageConfig": {
-					"urls": {
-						"builderData": "http://bitbuilder.herokuapp.com/canjs",
-						"builder": "http://bitbuilder.herokuapp.com/can.custom.js",
-						"bithub": "http://bitovi.bithub.com/api/v1/events/",
-						"cdn": "//canjs.com/release/",
-						"github":"https://github.com/bitovi/canjs.com"
-					},
-					"versions": [
-						{"branch": "master","number": "2.1"},
-						{"number": "2.0"},
-						{"number": "1.1"}
-					],
-					"defaultDownloadVersion": "2.2.5"
-				},
-				"versionsSelectText" : "CanJS v<%= version %>",
-				"tags": "theme/tags"
-			},
-			"defaultDest" : "./can",
-			"versionDest" : "./<%=version%>/can",
-			"sites": {
-				"pages" : {
-					"dest" : ".",
-					"glob" : "_pages/*.mustache",
-					"parent" : "home"
-				}
-			}
-		}
+		documentjs: docjsConfig
 	});
 
 	// These plugins provide necessary tasks.
@@ -220,9 +145,6 @@ module.exports = function (grunt) {
 	grunt.loadTasks("tasks");
 
 	var subTasks = ['docco:dev'];
-	//if(versionMap[minor].branch === "master") {
-	//	subTasks.push("docco:latest");
-	//}
 	var all = ["documentjs:pages"];
 	_.each(versions, function(value, versionNumber){
 			all.push('docjs:'+versionNumber)
