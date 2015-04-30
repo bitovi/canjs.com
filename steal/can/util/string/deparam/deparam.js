@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.5
+ * CanJS - 2.3.0-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 22 Apr 2015 15:03:29 GMT
+ * Thu, 30 Apr 2015 21:40:42 GMT
  * Licensed MIT
  */
 
-/*can@2.2.5#util/string/deparam/deparam*/
+/*can@2.3.0-pre.0#util/string/deparam/deparam*/
 steal('can/util', 'can/util/string', function (can) {
 	// ## deparam.js  
 	// `can.deparam`  

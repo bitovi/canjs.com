@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.5
+ * CanJS - 2.3.0-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 22 Apr 2015 15:03:29 GMT
+ * Thu, 30 Apr 2015 21:40:42 GMT
  * Licensed MIT
  */
 
-/*can@2.2.5#component/component*/
+/*can@2.3.0-pre.0#component/component*/
 define([
     'can/util/library',
     'can/view/callbacks',
@@ -128,13 +128,21 @@ define([
                 this.scope = this.viewModel = componentScope;
                 can.data(can.$(el), 'scope', this.scope);
                 can.data(can.$(el), 'viewModel', this.scope);
-                var renderedScope = lexicalContent ? this.scope : hookupOptions.scope.add(this.scope), options = { helpers: {} };
+                var renderedScope = lexicalContent ? this.scope : hookupOptions.scope.add(this.scope), options = { helpers: {} }, addHelper = function (name, fn) {
+                        options.helpers[name] = function () {
+                            return fn.apply(componentScope, arguments);
+                        };
+                    };
                 can.each(this.helpers || {}, function (val, prop) {
                     if (can.isFunction(val)) {
-                        options.helpers[prop] = function () {
-                            return val.apply(componentScope, arguments);
-                        };
+                        addHelper(prop, val);
                     }
+                });
+                can.each(this.simpleHelpers || {}, function (val, prop) {
+                    if (options.helpers[prop]) {
+                        can.dev.warn('Component ' + component.tag + ' already has a helper called ' + prop);
+                    }
+                    addHelper(prop, can.view.simpleHelper(val));
                 });
                 teardownFunctions.push(function () {
                     can.each(handlers, function (handler, prop) {

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.5
+ * CanJS - 2.3.0-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 22 Apr 2015 15:03:29 GMT
+ * Thu, 30 Apr 2015 21:40:42 GMT
  * Licensed MIT
  */
 
-/*can@2.2.5#component/component*/
+/*can@2.3.0-pre.0#component/component*/
 // # can/component/component.js
 // 
 // This implements the `can.Component` which allows you to create widgets 
@@ -264,6 +264,11 @@ steal("can/util", "can/view/callbacks","can/view/elements.js","can/control", "ca
 						hookupOptions.scope.add(this.scope),
 					options = {
 						helpers: {}
+					},
+					addHelper = function(name, fn) {
+						options.helpers[name] = function() {
+							return fn.apply(componentScope, arguments);
+						};
 					};
 
 				// ## Helpers
@@ -271,13 +276,23 @@ steal("can/util", "can/view/callbacks","can/view/elements.js","can/control", "ca
 				// Setup helpers to callback with `this` as the component
 				can.each(this.helpers || {}, function (val, prop) {
 					if (can.isFunction(val)) {
-						options.helpers[prop] = function () {
-							return val.apply(componentScope, arguments);
-						};
+						addHelper(prop, val);
 					}
 				});
-				
-				
+
+				// Setup simple helpers
+				can.each(this.simpleHelpers || {}, function(val, prop) {
+					//!steal-remove-start
+					if(options.helpers[prop]) {
+						can.dev.warn('Component ' + component.tag +
+						' already has a helper called ' + prop);
+					}
+					//!steal-remove-end
+
+					// Convert the helper
+					addHelper(prop, can.view.simpleHelper(val));
+				});
+
 				// Teardown reverse bindings when the element is removed
 				teardownFunctions.push(function(){
 					can.each(handlers, function (handler, prop) {

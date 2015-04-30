@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.5
+ * CanJS - 2.3.0-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 22 Apr 2015 15:03:29 GMT
+ * Thu, 30 Apr 2015 21:40:42 GMT
  * Licensed MIT
  */
 
-/*[global-shim-start]*/
+/*[global-shim]*/
 (function (exports, global){
 	var origDefine = global.define;
 
@@ -22,8 +22,7 @@
 		}
 		return cur;
 	};
-	var modules = (global.define && global.define.modules) ||
-		(global._define && global._define.modules) || {};
+	var modules = global.define && global.define.modules || {};
 	var ourDefine = global.define = function(moduleName, deps, callback){
 		var module;
 		if(typeof deps === "function") {
@@ -56,7 +55,6 @@
 		// Favor CJS module.exports over the return value
 		modules[moduleName] = module && module.exports ? module.exports : result;
 	};
-	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
 	global.System = {
@@ -67,7 +65,7 @@
 		}
 	};
 })({},window)
-/*can@2.2.5#list/promise/promise*/
+/*can@2.3.0-pre.0#list/promise/promise*/
 define('can/list/promise/promise', ['can/list/list'], function (list) {
     var oldReplace = can.List.prototype.replace;
     can.List.prototype.replace = function (data) {
@@ -117,8 +115,3 @@ define('can/list/promise/promise', ['can/list/list'], function (list) {
         };
     });
 });
-/*[global-shim-end]*/
-(function (){
-	window._define = window.define;
-	window.define = window.define.orig;
-})();

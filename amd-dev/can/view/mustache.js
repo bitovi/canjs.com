@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.5
+ * CanJS - 2.3.0-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 22 Apr 2015 15:03:29 GMT
+ * Thu, 30 Apr 2015 21:40:42 GMT
  * Licensed MIT
  */
 
-/*can@2.2.5#view/mustache/mustache*/
+/*can@2.3.0-pre.0#view/mustache/mustache*/
 define([
     'can/util/library',
     'can/view/scope',
@@ -144,7 +144,7 @@ define([
                                 end: false
                             };
                         content = can.trim(content);
-                        if (content.length && (mode = content.match(/^([#^\/]|else$)/))) {
+                        if (content.length && (mode = content.match(/^([#^/]|else$)/))) {
                             mode = mode[0];
                             switch (mode) {
                             case '#':
@@ -358,6 +358,9 @@ define([
             name: name,
             fn: fn
         };
+    };
+    Mustache.registerSimpleHelper = function (name, fn) {
+        Mustache.registerHelper(name, can.view.simpleHelper(fn));
     };
     Mustache.getHelper = function (name, options) {
         var helper;

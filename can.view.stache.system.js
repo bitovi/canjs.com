@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.5
+ * CanJS - 2.3.0-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 22 Apr 2015 15:03:29 GMT
+ * Thu, 30 Apr 2015 21:40:42 GMT
  * Licensed MIT
  */
 
-/*[global-shim-start]*/
+/*[global-shim]*/
 (function (exports, global){
 	var origDefine = global.define;
 
@@ -22,8 +22,7 @@
 		}
 		return cur;
 	};
-	var modules = (global.define && global.define.modules) ||
-		(global._define && global._define.modules) || {};
+	var modules = global.define && global.define.modules || {};
 	var ourDefine = global.define = function(moduleName, deps, callback){
 		var module;
 		if(typeof deps === "function") {
@@ -56,7 +55,6 @@
 		// Favor CJS module.exports over the return value
 		modules[moduleName] = module && module.exports ? module.exports : result;
 	};
-	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
 	global.System = {
@@ -67,7 +65,7 @@
 		}
 	};
 })({},window)
-/*can@2.2.5#view/target/target*/
+/*can@2.3.0-pre.0#view/target/target*/
 define('can/view/target/target', [
     'can/util/util',
     'can/view/elements'
@@ -92,7 +90,14 @@ define('can/view/target/target', [
             a.innerHTML = '<xyz></xyz>';
             var clone = a.cloneNode(true);
             return clone.innerHTML === '<xyz></xyz>';
-        }(), namespacesWork = typeof document !== 'undefined' && !!document.createElementNS;
+        }(), namespacesWork = typeof document !== 'undefined' && !!document.createElementNS, attributeDummy = typeof document !== 'undefined' ? document.createElement('div') : null, setAttribute = function (el, attrName, value) {
+            try {
+                el.setAttribute(attrName, value);
+            } catch (e) {
+                attributeDummy.innerHTML = '<div ' + attrName + '="' + value + '"></div>';
+                el.setAttributeNode(attributeDummy.childNodes[0].attributes[0].cloneNode());
+            }
+        };
     var cloneNode = clonesWork ? function (el) {
             return el.cloneNode(true);
         } : function (node) {
@@ -110,7 +115,7 @@ define('can/view/target/target', [
                 var attributes = can.makeArray(node.attributes);
                 can.each(attributes, function (node) {
                     if (node && node.specified) {
-                        copy.setAttribute(node.nodeName, node.nodeValue);
+                        setAttribute(copy, node.nodeName, node.nodeValue);
                     }
                 });
             }
@@ -147,7 +152,7 @@ define('can/view/target/target', [
                         if (typeof value === 'function') {
                             getCallback().callbacks.push({ callback: value });
                         } else {
-                            el.setAttribute(attrName, value);
+                            setAttribute(el, attrName, value);
                         }
                     }
                 }
@@ -226,7 +231,7 @@ define('can/view/target/target', [
     can.view.target = makeTarget;
     return makeTarget;
 });
-/*can@2.2.5#view/stache/html_section*/
+/*can@2.3.0-pre.0#view/stache/html_section*/
 define('can/view/stache/html_section', [
     'can/util/util',
     'can/view/target/target',
@@ -347,7 +352,7 @@ define('can/view/stache/html_section', [
     });
     return HTMLSectionBuilder;
 });
-/*can@2.2.5#view/stache/text_section*/
+/*can@2.3.0-pre.0#view/stache/text_section*/
 define('can/view/stache/text_section', [
     'can/util/util',
     'can/view/live/live',
@@ -437,7 +442,7 @@ define('can/view/stache/text_section', [
     });
     return TextSectionBuilder;
 });
-/*can@2.2.5#view/stache/intermediate_and_imports*/
+/*can@2.3.0-pre.0#view/stache/intermediate_and_imports*/
 define('can/view/stache/intermediate_and_imports', [
     'can/view/stache/mustache_core',
     'can/view/parser/parser'
@@ -491,7 +496,7 @@ define('can/view/stache/intermediate_and_imports', [
         };
     };
 });
-/*can@2.2.5#view/stache/stache*/
+/*can@2.3.0-pre.0#view/stache/stache*/
 define('can/view/stache/stache', [
     'can/util/util',
     'can/view/parser/parser',
@@ -756,7 +761,7 @@ define('can/view/stache/stache', [
     };
     return stache;
 });
-/*can@2.2.5#view/stache/system*/
+/*can@2.3.0-pre.0#view/stache/system*/
 'format steal';
 define('can/view/stache/system', [
     'can/view/stache/stache',
@@ -769,8 +774,3 @@ define('can/view/stache/system', [
     }
     return { translate: translate };
 });
-/*[global-shim-end]*/
-(function (){
-	window._define = window.define;
-	window.define = window.define.orig;
-})();

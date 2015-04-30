@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.5
+ * CanJS - 2.3.0-pre.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 22 Apr 2015 15:03:29 GMT
+ * Thu, 30 Apr 2015 21:40:42 GMT
  * Licensed MIT
  */
 
-/*can@2.2.5#view/target/target*/
+/*can@2.3.0-pre.0#view/target/target*/
 define([
     'can/util/library',
     'can/elements'
@@ -31,7 +31,14 @@ define([
             a.innerHTML = '<xyz></xyz>';
             var clone = a.cloneNode(true);
             return clone.innerHTML === '<xyz></xyz>';
-        }(), namespacesWork = typeof document !== 'undefined' && !!document.createElementNS;
+        }(), namespacesWork = typeof document !== 'undefined' && !!document.createElementNS, attributeDummy = typeof document !== 'undefined' ? document.createElement('div') : null, setAttribute = function (el, attrName, value) {
+            try {
+                el.setAttribute(attrName, value);
+            } catch (e) {
+                attributeDummy.innerHTML = '<div ' + attrName + '="' + value + '"></div>';
+                el.setAttributeNode(attributeDummy.childNodes[0].attributes[0].cloneNode());
+            }
+        };
     var cloneNode = clonesWork ? function (el) {
             return el.cloneNode(true);
         } : function (node) {
@@ -49,7 +56,7 @@ define([
                 var attributes = can.makeArray(node.attributes);
                 can.each(attributes, function (node) {
                     if (node && node.specified) {
-                        copy.setAttribute(node.nodeName, node.nodeValue);
+                        setAttribute(copy, node.nodeName, node.nodeValue);
                     }
                 });
             }
@@ -86,7 +93,7 @@ define([
                         if (typeof value === 'function') {
                             getCallback().callbacks.push({ callback: value });
                         } else {
-                            el.setAttribute(attrName, value);
+                            setAttribute(el, attrName, value);
                         }
                     }
                 }
