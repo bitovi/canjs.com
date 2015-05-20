@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#view/bindings/bindings*/
+/*can@2.2.6#view/bindings/bindings*/
 define([
     'can/util/library',
     'can/view/mustache_core',
@@ -35,16 +35,14 @@ define([
                     return !!editable(el.parentNode);
                 }
             };
-        }(), removeBrackets = function (value, open, close) {
-            open = open || '{';
-            close = close || '}';
-            if (value[0] === open && value[value.length - 1] === close) {
+        }(), removeCurly = function (value) {
+            if (value[0] === '{' && value[value.length - 1] === '}') {
                 return value.substr(1, value.length - 2);
             }
             return value;
         };
     can.view.attr('can-value', function (el, data) {
-        var attr = can.trim(removeBrackets(el.getAttribute('can-value'))), value = data.scope.computeData(attr, { args: [] }).compute, trueValue, falseValue;
+        var attr = can.trim(removeCurly(el.getAttribute('can-value'))), value = data.scope.computeData(attr, { args: [] }).compute, trueValue, falseValue;
         if (el.nodeName.toLowerCase() === 'input') {
             if (el.type === 'checkbox') {
                 if (can.attr.has(el, 'can-true-value')) {
@@ -89,13 +87,13 @@ define([
                 };
             }
         };
-    var handleEvent = function (el, data) {
-        var attributeName = data.attributeName, event = attributeName.indexOf('can-') === 0 ? attributeName.substr('can-'.length) : removeBrackets(attributeName, '(', ')'), handler = function (ev) {
+    can.view.attr(/can-[\w\.]+/, function (el, data) {
+        var attributeName = data.attributeName, event = attributeName.substr('can-'.length), handler = function (ev) {
                 var attrVal = el.getAttribute(attributeName);
                 if (!attrVal) {
                     return;
                 }
-                var attrInfo = mustacheCore.expressionData(removeBrackets(attrVal));
+                var attrInfo = mustacheCore.expressionData(removeCurly(attrVal));
                 var scopeData = data.scope.read(attrInfo.name.get, {
                         returnObserveMethods: true,
                         isArgument: true,
@@ -156,9 +154,7 @@ define([
             event = specialData.event;
         }
         can.bind.call(el, event, handler);
-    };
-    can.view.attr(/can-[\w\.]+/, handleEvent);
-    can.view.attr(/\([\w\.]+\)/, handleEvent);
+    });
     var Value = can.Control.extend({
             init: function () {
                 if (this.element[0].nodeName.toUpperCase() === 'SELECT') {
@@ -267,15 +263,4 @@ define([
                 this.options.value(this.element[0].innerHTML);
             }
         });
-    can.view.attr(/\[[\w\.]+\]/, function (el, options) {
-        var prop = removeBrackets(el.getAttribute(options.attributeName));
-        var name = removeBrackets(options.attributeName, '[', ']');
-        can.one.call(el, 'inserted', function () {
-            var value = can.viewModel(el);
-            if (prop !== 'this' && prop !== '.') {
-                value = value.attr(prop);
-            }
-            options.scope.attr(name, value);
-        });
-    });
 });

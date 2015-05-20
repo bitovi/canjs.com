@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#map/define/define*/
+/*can@2.2.6#map/define/define*/
 var can = require('../../util/util.js');
 require('../../observe/observe.js');
 var define = can.define = {};
@@ -91,12 +91,12 @@ proto.__set = function (prop, value, current, success, error) {
                 setterCalled = true;
             }, errorCallback, getter ? this[prop].computeInstance.lastSetValue.get() : current);
         if (getter) {
-            if (setValue !== undefined && !setterCalled && setter.length >= 2) {
+            if (setValue !== undefined && !setterCalled && setter.length >= 1) {
                 this[prop](setValue);
             }
             can.batch.stop();
             return;
-        } else if (setValue === undefined && !setterCalled && setter.length >= 2) {
+        } else if (setValue === undefined && !setterCalled && setter.length >= 1) {
             can.batch.stop();
             return;
         } else {
@@ -124,6 +124,9 @@ define.types = {
         }
     },
     'number': function (val) {
+        if (val == null) {
+            return val;
+        }
         return +val;
     },
     'boolean': function (val) {
@@ -139,6 +142,9 @@ define.types = {
         return val;
     },
     'string': function (val) {
+        if (val == null) {
+            return val;
+        }
         return '' + val;
     },
     'compute': {

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#view/stache/mustache_core*/
+/*can@2.2.6#view/stache/mustache_core*/
 define([
     'can/util/library',
     'can/view/utils',
@@ -66,8 +66,7 @@ define([
             var rendererWithScope = function (ctx, opts, parentNodeList) {
                 return renderer(ctx || parentScope, opts, parentNodeList);
             };
-            return function (newScope, newOptions, parentNodeList) {
-                var reads = can.__clearReading();
+            return can.__notObserve(function (newScope, newOptions, parentNodeList) {
                 if (newScope !== undefined && !(newScope instanceof can.view.Scope)) {
                     newScope = parentScope.add(newScope);
                 }
@@ -75,9 +74,8 @@ define([
                     newOptions = parentOptions.add(newOptions);
                 }
                 var result = rendererWithScope(newScope, newOptions || parentOptions, parentNodeList || nodeList);
-                can.__setReading(reads);
                 return result;
-            };
+            });
         };
     var core = {
             expressionData: function (expression) {
@@ -107,7 +105,7 @@ define([
                         },
                         inverse: function () {
                         }
-                    }, context = scope.attr('.'), name = exprData.name, helper, looksLikeAHelper = exprData.args.length || !can.isEmptyObject(exprData.hash), initialValue;
+                    }, context = scope.attr('.'), name = exprData.name, helper, looksLikeAHelper = exprData.args.length || !can.isEmptyObject(exprData.hash), initialValue, helperEvaluator;
                 for (var i = 0, len = exprData.args.length; i < len; i++) {
                     var arg = exprData.args[i];
                     if (arg && isLookup(arg)) {
@@ -134,9 +132,6 @@ define([
                         var get = name.get;
                         var computeData = getKeyComputeData(name.get, scope, false), compute = computeData.compute;
                         initialValue = computeData.initialValue;
-                        if (computeData.reads && computeData.reads.length === 1 && computeData.root instanceof can.Map && !can.isFunction(computeData.root[computeData.reads[0]])) {
-                            compute = can.compute(computeData.root, computeData.reads[0]);
-                        }
                         if (computeData.compute.computeInstance.hasDependencies) {
                             name = compute;
                         } else {
@@ -172,9 +167,11 @@ define([
                         exprData: exprData
                     });
                     args.push(helperOptions);
-                    return function () {
+                    helperEvaluator = function () {
                         return helper.fn.apply(context, args) || '';
                     };
+                    helperEvaluator.bindOnce = false;
+                    return helperEvaluator;
                 }
                 if (!mode) {
                     if (name && name.isComputed) {

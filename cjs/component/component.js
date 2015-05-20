@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#component/component*/
+/*can@2.2.6#component/component*/
 var can = require('../util/util.js');
 var viewCallbacks = require('../view/callbacks/callbacks.js');
 var elements = require('../view/elements.js');
@@ -123,18 +123,13 @@ var Component = can.Component = can.Construct.extend({
             this.scope = this.viewModel = componentScope;
             can.data(can.$(el), 'scope', this.scope);
             can.data(can.$(el), 'viewModel', this.scope);
-            var renderedScope = lexicalContent ? this.scope : hookupOptions.scope.add(this.scope), options = { helpers: {} }, addHelper = function (name, fn) {
-                    options.helpers[name] = function () {
-                        return fn.apply(componentScope, arguments);
-                    };
-                };
+            var renderedScope = lexicalContent ? this.scope : hookupOptions.scope.add(this.scope), options = { helpers: {} };
             can.each(this.helpers || {}, function (val, prop) {
                 if (can.isFunction(val)) {
-                    addHelper(prop, val);
+                    options.helpers[prop] = function () {
+                        return val.apply(componentScope, arguments);
+                    };
                 }
-            });
-            can.each(this.simpleHelpers || {}, function (val, prop) {
-                addHelper(prop, can.view.simpleHelper(val));
             });
             teardownFunctions.push(function () {
                 can.each(handlers, function (handler, prop) {

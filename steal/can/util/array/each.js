@@ -1,18 +1,20 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#util/array/each*/
+/*can@2.2.6#util/array/each*/
 /* jshint maxdepth:7*/
 steal('can/util/can.js', function (can) {
 	
 	// The following is from jQuery
 	var isArrayLike = function(obj){
-		var length = obj.length;
+		// The `in` check is from jQuery’s fix for an iOS 8 64-bit JIT object length bug:
+		// https://github.com/jquery/jquery/pull/2185
+		var length = "length" in obj && obj.length;
 		return typeof arr !== "function" &&
 			( length === 0 || typeof length === "number" && length > 0 && ( length - 1 ) in obj );
 	};

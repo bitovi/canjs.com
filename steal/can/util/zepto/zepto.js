@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#util/util*/
+/*can@2.2.6#util/util*/
 steal('can/util/can.js', 'can/util/attr', 'can/event', 'zepto', 'can/util/object/isplain',
 	'can/util/fragment.js', 'can/util/deferred.js', 'can/util/array/each.js', 'can/util/inserted',
 	function (can, attr, event) {
@@ -187,12 +187,6 @@ steal('can/util/can.js', 'can/util/attr', 'can/event', 'zepto', 'can/util/object
 			});
 
 			return ret;
-		};
-
-		can.proxy = function (f, ctx) {
-			return function () {
-				return f.apply(ctx, arguments);
-			};
 		};
 
 		// Make ajax.

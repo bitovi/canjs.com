@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#route/route*/
+/*can@2.2.6#route/route*/
 var can = require('../util/util.js');
 require('../map/map.js');
 require('../list/list.js');
@@ -185,7 +185,7 @@ extend(can.route, {
         return '<a ' + makeProps(extend({ href: can.route.url(options, merge) }, props)) + '>' + name + '</a>';
     },
     current: function (options) {
-        can.__reading(eventsObject, '__url');
+        can.__observe(eventsObject, '__url');
         return this._call('matchingPartOfURL') === can.route.param(options);
     },
     bindings: {

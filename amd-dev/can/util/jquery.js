@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#util/jquery/jquery*/
+/*can@2.2.6#util/jquery/jquery*/
 define([
     'jquery',
     'can/util/can',
@@ -97,11 +97,7 @@ define([
             }
             return this;
         },
-        proxy: function (fn, context) {
-            return function () {
-                return fn.apply(context, arguments);
-            };
-        },
+        proxy: can.proxy,
         attr: attr
     });
     can.on = can.bind;

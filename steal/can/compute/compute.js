@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#compute/compute*/
+/*can@2.2.6#compute/compute*/
 /* jshint maxdepth:7*/
 
 // # can.compute
@@ -24,27 +24,7 @@
 
 steal('can/util', 'can/util/bind', 'can/util/batch', 'can/compute/proto_compute.js', function (can, bind) {
 
-	// ## Reading Helpers
-	//
-	// The following methods are used to call a function that relies on
-	// observable data and to track the observable events which should 
-	// be listened to when changes occur.
-	// To do this, [`can.__reading(observable, event)`](#can-__reading) is called to
-	// "broadcast" the corresponding event on each read.
-	// 
-	// ### Observed
-	//
-	// An "Observed" is an object of observable objects and events that
-	// a function relies on. These objects and events must be listened to
-	// in order to determine when to check a function for updates.
-	// This looks like the following:
-	//
-	//     { 
-	//       "map1|first": {obj: map, event: "first"},
-	//       "map1|last" : {obj: map, event: "last"}
-	//     }
-	// 
-	// Each object-event pair is mapped so no duplicates will be listed.
+
 
 	can.compute = function (getterSetter, context, eventName, bindOnce) {
 

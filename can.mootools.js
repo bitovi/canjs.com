@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*[global-shim]*/
+/*[global-shim-start]*/
 (function (exports, global){
 	var origDefine = global.define;
 
@@ -22,7 +22,8 @@
 		}
 		return cur;
 	};
-	var modules = global.define && global.define.modules || {};
+	var modules = (global.define && global.define.modules) ||
+		(global._define && global._define.modules) || {};
 	var ourDefine = global.define = function(moduleName, deps, callback){
 		var module;
 		if(typeof deps === "function") {
@@ -55,6 +56,7 @@
 		// Favor CJS module.exports over the return value
 		modules[moduleName] = module && module.exports ? module.exports : result;
 	};
+	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
 	global.System = {
@@ -65,7 +67,7 @@
 		}
 	};
 })({},window)
-/*can@2.3.0-pre.0#util/can*/
+/*can@2.2.6#util/can*/
 define('can/util/can', [], function () {
     var glbl = typeof window !== 'undefined' ? window : global;
     var can = {};
@@ -89,7 +91,7 @@ define('can/util/can', [], function () {
         }
         return object._cid;
     };
-    can.VERSION = '2.3.0-pre.0';
+    can.VERSION = '2.2.6';
     can.simpleExtend = function (d, s) {
         for (var prop in s) {
             d[prop] = s[prop];
@@ -99,6 +101,18 @@ define('can/util/can', [], function () {
     can.last = function (arr) {
         return arr && arr[arr.length - 1];
     };
+    var protoBind = Function.prototype.bind;
+    if (protoBind) {
+        can.proxy = function (fn, context) {
+            return protoBind.call(fn, context);
+        };
+    } else {
+        can.proxy = function (fn, context) {
+            return function () {
+                return fn.apply(context, arguments);
+            };
+        };
+    }
     can.frag = function (item) {
         var frag;
         if (!item || typeof item === 'string') {
@@ -165,11 +179,11 @@ define('can/util/can', [], function () {
         }
         return deferred.promise();
     };
-    can.__reading = function () {
+    can.__observe = function () {
     };
     return can;
 });
-/*can@2.3.0-pre.0#util/attr/attr*/
+/*can@2.2.6#util/attr/attr*/
 define('can/util/attr/attr', ['can/util/can'], function (can) {
     var setImmediate = can.global.setImmediate || function (cb) {
             return setTimeout(cb, 0);
@@ -291,7 +305,7 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
         };
     return attr;
 });
-/*can@2.3.0-pre.0#event/event*/
+/*can@2.2.6#event/event*/
 define('can/event/event', ['can/util/can'], function (can) {
     can.addEvent = function (event, handler) {
         var allEvents = this.__bindEvents || (this.__bindEvents = {}), eventList = allEvents[event] || (allEvents[event] = []);
@@ -435,7 +449,7 @@ define('can/event/event', ['can/util/can'], function (can) {
     };
     return can.event;
 });
-/*can@2.3.0-pre.0#util/fragment*/
+/*can@2.2.6#util/fragment*/
 define('can/util/fragment', ['can/util/can'], function (can) {
     var fragmentRE = /^\s*<(\w+)[^>]*>/, toString = {}.toString, fragment = function (html, name) {
             if (name === undefined) {
@@ -492,7 +506,7 @@ define('can/util/fragment', ['can/util/can'], function (can) {
     }());
     return can;
 });
-/*can@2.3.0-pre.0#util/deferred*/
+/*can@2.2.6#util/deferred*/
 define('can/util/deferred', ['can/util/can'], function (can) {
     var extend = function (target, src) {
             for (var key in src) {
@@ -644,10 +658,10 @@ define('can/util/deferred', ['can/util/can'], function (can) {
     Deferred.prototype.pipe = Deferred.prototype.then;
     return can;
 });
-/*can@2.3.0-pre.0#util/array/each*/
+/*can@2.2.6#util/array/each*/
 define('can/util/array/each', ['can/util/can'], function (can) {
     var isArrayLike = function (obj) {
-        var length = obj.length;
+        var length = 'length' in obj && obj.length;
         return typeof arr !== 'function' && (length === 0 || typeof length === 'number' && length > 0 && length - 1 in obj);
     };
     can.each = function (elements, callback, context) {
@@ -692,7 +706,7 @@ define('can/util/array/each', ['can/util/can'], function (can) {
     };
     return can;
 });
-/*can@2.3.0-pre.0#util/object/isplain/isplain*/
+/*can@2.2.6#util/object/isplain/isplain*/
 define('can/util/object/isplain/isplain', ['can/util/can'], function () {
     var core_hasOwn = Object.prototype.hasOwnProperty, isWindow = function (obj) {
             return obj !== null && obj == obj.window;
@@ -715,7 +729,7 @@ define('can/util/object/isplain/isplain', ['can/util/can'], function () {
     can.isPlainObject = isPlainObject;
     return can;
 });
-/*can@2.3.0-pre.0#util/inserted/inserted*/
+/*can@2.2.6#util/inserted/inserted*/
 define('can/util/inserted/inserted', ['can/util/can'], function (can) {
     can.inserted = function (elems) {
         elems = can.makeArray(elems);
@@ -762,7 +776,7 @@ define('can/util/inserted/inserted', ['can/util/can'], function (can) {
         can.inserted(children);
     };
 });
-/*can@2.3.0-pre.0#util/util*/
+/*can@2.2.6#util/util*/
 define('can/util/util', [
     'can/util/can',
     'can/util/attr/attr',
@@ -847,10 +861,6 @@ define('can/util/util', [
     };
     can.isEmptyObject = function (object) {
         return Object.keys(object).length === 0;
-    };
-    can.proxy = function () {
-        var args = can.makeArray(arguments), func = args.shift();
-        return func.bind.apply(func, args);
     };
     can.isFunction = function (f) {
         return typeOf(f) === 'function';
@@ -1113,7 +1123,7 @@ define('can/util/util', [
     };
     return can;
 });
-/*can@2.3.0-pre.0#view/view*/
+/*can@2.2.6#view/view*/
 define('can/view/view', ['can/util/util'], function (can) {
     var isFunction = can.isFunction, makeArray = can.makeArray, hookupId = 1;
     var makeRenderer = function (textRenderer) {
@@ -1383,25 +1393,11 @@ define('can/view/view', ['can/util/util'], function (can) {
                 $view.cachedRenderers[id] = renderer;
             }
             return def.resolve(renderer);
-        },
-        simpleHelper: function (fn) {
-            return function () {
-                var realArgs = [];
-                can.each(arguments, function (val, i) {
-                    if (i <= arguments.length) {
-                        while (val && val.isComputed) {
-                            val = val();
-                        }
-                        realArgs.push(val);
-                    }
-                });
-                return fn.apply(this, realArgs);
-            };
         }
     });
     return can;
 });
-/*can@2.3.0-pre.0#view/callbacks/callbacks*/
+/*can@2.2.6#view/callbacks/callbacks*/
 define('can/view/callbacks/callbacks', [
     'can/util/util',
     'can/view/view'
@@ -1476,7 +1472,7 @@ define('can/view/callbacks/callbacks', [
     };
     return can.view.callbacks;
 });
-/*can@2.3.0-pre.0#view/elements*/
+/*can@2.2.6#view/elements*/
 define('can/view/elements', [
     'can/util/util',
     'can/view/view'
@@ -1551,7 +1547,7 @@ define('can/view/elements', [
     can.view.elements = elements;
     return elements;
 });
-/*can@2.3.0-pre.0#util/string/string*/
+/*can@2.2.6#util/string/string*/
 define('can/util/string/string', ['can/util/util'], function (can) {
     var strUndHash = /_|-/, strColons = /\=\=/, strWords = /([A-Z]+)([A-Z][a-z])/g, strLowUp = /([a-z\d])([A-Z])/g, strDash = /([a-z\d])([A-Z])/g, strReplacer = /\{([^\}]+)\}/g, strQuote = /"/g, strSingleQuote = /'/g, strHyphenMatch = /-+(.)?/g, strCamelMatch = /[a-z][A-Z]/g, getNext = function (obj, prop, add) {
             var result = obj[prop];
@@ -1636,7 +1632,7 @@ define('can/util/string/string', ['can/util/util'], function (can) {
     });
     return can;
 });
-/*can@2.3.0-pre.0#construct/construct*/
+/*can@2.2.6#construct/construct*/
 define('can/construct/construct', ['can/util/string/string'], function (can) {
     var initializing = 0;
     var canGetDescriptor;
@@ -1768,7 +1764,7 @@ define('can/construct/construct', ['can/util/string/string'], function (can) {
     };
     return can.Construct;
 });
-/*can@2.3.0-pre.0#control/control*/
+/*can@2.2.6#control/control*/
 define('can/control/control', [
     'can/util/util',
     'can/construct/construct'
@@ -1963,7 +1959,7 @@ define('can/control/control', [
     });
     return Control;
 });
-/*can@2.3.0-pre.0#util/bind/bind*/
+/*can@2.2.6#util/bind/bind*/
 define('can/util/bind/bind', ['can/util/util'], function (can) {
     can.bindAndSetup = function () {
         can.addEvent.apply(this, arguments);
@@ -1995,7 +1991,7 @@ define('can/util/bind/bind', ['can/util/util'], function (can) {
     };
     return can;
 });
-/*can@2.3.0-pre.0#map/bubble*/
+/*can@2.2.6#map/bubble*/
 define('can/map/bubble', ['can/util/util'], function (can) {
     var bubble = can.bubble = {
             event: function (map, boundEventName) {
@@ -2102,7 +2098,7 @@ define('can/map/bubble', ['can/util/util'], function (can) {
         };
     return bubble;
 });
-/*can@2.3.0-pre.0#util/batch/batch*/
+/*can@2.2.6#util/batch/batch*/
 define('can/util/batch/batch', ['can/util/can'], function (can) {
     var batchNum = 1, transactions = 0, batchEvents = [], stopCallbacks = [], currentBatchEvents = null;
     can.batch = {
@@ -2183,7 +2179,7 @@ define('can/util/batch/batch', ['can/util/can'], function (can) {
         }
     };
 });
-/*can@2.3.0-pre.0#map/map*/
+/*can@2.2.6#map/map*/
 define('can/map/map', [
     'can/util/util',
     'can/util/bind/bind',
@@ -2293,7 +2289,7 @@ define('can/map/map', [
                             where[name] = result;
                         }
                     });
-                    can.__reading(map, '__keys');
+                    can.__observe(map, '__keys');
                     if (firstSerialize) {
                         serializeMap = null;
                     }
@@ -2312,7 +2308,7 @@ define('can/map/map', [
             },
             keys: function (map) {
                 var keys = [];
-                can.__reading(map, '__keys');
+                can.__observe(map, '__keys');
                 for (var keyName in map._data) {
                     keys.push(keyName);
                 }
@@ -2400,7 +2396,6 @@ define('can/map/map', [
                 if (type !== 'string' && type !== 'number') {
                     return this._attrs(attr, val);
                 } else if (arguments.length === 1) {
-                    can.__reading(this, attr);
                     return this._get(attr);
                 } else {
                     this._set(attr, val);
@@ -2439,9 +2434,12 @@ define('can/map/map', [
                     if (value !== undefined) {
                         return value;
                     }
-                    var first = attr.substr(0, dotIndex), second = attr.substr(dotIndex + 1), current = this.__get(first);
+                    var first = attr.substr(0, dotIndex), second = attr.substr(dotIndex + 1);
+                    can.__observe(this, first);
+                    var current = this.__get(first);
                     return current && current._get ? current._get(second) : undefined;
                 } else {
+                    can.__observe(this, attr);
                     return this.__get(attr);
                 }
             },
@@ -2612,7 +2610,7 @@ define('can/map/map', [
     Map.prototype.off = Map.prototype.unbind;
     return Map;
 });
-/*can@2.3.0-pre.0#list/list*/
+/*can@2.2.6#list/list*/
 define('can/list/list', [
     'can/util/util',
     'can/map/map',
@@ -2868,7 +2866,7 @@ define('can/list/list', [
     can.List = Map.List = list;
     return can.List;
 });
-/*can@2.3.0-pre.0#compute/read*/
+/*can@2.2.6#compute/read*/
 define('can/compute/read', ['can/util/util'], function (can) {
     var read = function (parent, reads, options) {
         options = options || {};
@@ -2907,11 +2905,15 @@ define('can/compute/read', ['can/util/util'], function (can) {
         };
     };
     var readValue = function (value, index, reads, options, state, prev) {
-        for (var i = 0, len = read.valueReaders.length; i < len; i++) {
-            if (read.valueReaders[i].test(value, index, reads, options)) {
-                value = read.valueReaders[i].read(value, index, reads, options, state, prev);
+        var usedValueReader;
+        do {
+            usedValueReader = false;
+            for (var i = 0, len = read.valueReaders.length; i < len; i++) {
+                if (read.valueReaders[i].test(value, index, reads, options)) {
+                    value = read.valueReaders[i].read(value, index, reads, options, state, prev);
+                }
             }
-        }
+        } while (usedValueReader);
         return value;
     };
     read.valueReaders = [
@@ -3009,7 +3011,7 @@ define('can/compute/read', ['can/util/util'], function (can) {
                         ]);
                     });
                 }
-                can.__reading(observeData, 'state');
+                can.__observe(observeData, 'state');
                 return prop in observeData ? observeData[prop] : value[prop];
             }
         },
@@ -3045,55 +3047,67 @@ define('can/compute/read', ['can/util/util'], function (can) {
     };
     return read;
 });
-/*can@2.3.0-pre.0#compute/proto_compute*/
-define('can/compute/proto_compute', [
-    'can/util/util',
-    'can/util/bind/bind',
-    'can/compute/read',
-    'can/util/batch/batch'
-], function (can, bind, read) {
-    var stack = [];
-    can.__read = function (func, self) {
-        stack.push({});
-        var value = func.call(self);
-        return {
-            value: value,
-            observed: stack.pop()
-        };
+/*can@2.2.6#compute/get_value_and_bind*/
+define('can/compute/get_value_and_bind', ['can/util/util'], function () {
+    function observe(func, context, oldInfo, onchanged) {
+        var info = getValueAndObserved(func, context), newObserveSet = info.observed, oldObserved = oldInfo.observed;
+        if (info.names !== oldInfo.names) {
+            bindNewSet(oldObserved, newObserveSet, onchanged);
+            unbindOldSet(oldObserved, onchanged);
+        }
+        can.batch.afterPreviousEvents(function () {
+            info.ready = true;
+        });
+        return info;
+    }
+    var observedStack = [];
+    can.__isRecordingObserves = function () {
+        return observedStack.length;
     };
-    can.__reading = function (obj, event) {
-        if (stack.length) {
-            stack[stack.length - 1][obj._cid + '|' + event] = {
+    can.__observe = can.__reading = function (obj, event) {
+        if (observedStack.length) {
+            var name = obj._cid + '|' + event, top = observedStack[observedStack.length - 1];
+            top.names += name;
+            top.observed[name] = {
                 obj: obj,
                 event: event + ''
             };
         }
     };
-    can.__clearReading = function () {
-        if (stack.length) {
-            var ret = stack[stack.length - 1];
-            stack[stack.length - 1] = {};
+    can.__notObserve = function (fn) {
+        return function () {
+            var previousReads = can.__clearObserved();
+            var res = fn.apply(this, arguments);
+            can.__setObserved(previousReads);
+            return res;
+        };
+    };
+    can.__clearObserved = can.__clearReading = function () {
+        if (observedStack.length) {
+            var ret = observedStack[observedStack.length - 1];
+            observedStack[observedStack.length - 1] = { observed: {} };
             return ret;
         }
     };
-    can.__setReading = function (o) {
-        if (stack.length) {
-            stack[stack.length - 1] = o;
+    can.__setObserved = can.__setReading = function (o) {
+        if (observedStack.length) {
+            observedStack[observedStack.length - 1] = o;
         }
     };
-    can.__addReading = function (o) {
-        if (stack.length) {
-            can.simpleExtend(stack[stack.length - 1], o);
+    can.__addObserved = can.__addReading = function (o) {
+        if (observedStack.length) {
+            can.simpleExtend(observedStack[observedStack.length - 1], o);
         }
     };
-    var getValueAndBind = function (func, context, oldObserved, onchanged) {
-        var info = can.__read(func, context), newObserveSet = info.observed;
-        bindNewSet(oldObserved, newObserveSet, onchanged);
-        unbindOldSet(oldObserved, onchanged);
-        can.batch.afterPreviousEvents(function () {
-            info.ready = true;
+    var getValueAndObserved = function (func, self) {
+        observedStack.push({
+            names: '',
+            observed: {}
         });
-        return info;
+        var value = func.call(self);
+        var stackItem = observedStack.pop();
+        stackItem.value = value;
+        return stackItem;
     };
     var bindNewSet = function (oldObserved, newObserveSet, onchanged) {
         for (var name in newObserveSet) {
@@ -3114,6 +3128,16 @@ define('can/compute/proto_compute', [
             obEv.obj.unbind(obEv.event, onchanged);
         }
     };
+    return observe;
+});
+/*can@2.2.6#compute/proto_compute*/
+define('can/compute/proto_compute', [
+    'can/util/util',
+    'can/util/bind/bind',
+    'can/compute/read',
+    'can/compute/get_value_and_bind',
+    'can/util/batch/batch'
+], function (can, bind, read, getValueAndBind) {
     var updateOnChange = function (compute, newValue, oldValue, batchNum) {
         if (newValue !== oldValue) {
             can.batch.trigger(compute, batchNum ? {
@@ -3125,63 +3149,33 @@ define('can/compute/proto_compute', [
             ]);
         }
     };
-    var setupComputeHandlersOn = function () {
-        this.readInfo = getValueAndBind(this._getterSetter, this._context, {}, this.onchanged);
-        this.setCached(this.readInfo.value);
-        this.hasDependencies = !can.isEmptyObject(this.readInfo.observed);
-    };
-    var setupComputeHandlersOff = function () {
-        for (var name in this.readInfo.observed) {
-            var ob = this.readInfo.observed[name];
-            ob.obj.unbind(ob.event, this.onchanged);
-        }
-    };
-    var setupComputeHandlers = function (compute, func, context) {
+    var setupComputeHandlers = function (compute, func, context, singleBind) {
         var readInfo, onchanged, batchNum;
+        singleBind = false;
         return {
-            on: function () {
+            on: function (updater) {
                 var self = this;
                 if (!onchanged) {
                     onchanged = function (ev) {
                         if (readInfo.ready && compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
-                            var oldValue = readInfo.value;
-                            readInfo = getValueAndBind(func, context, readInfo.observed, onchanged);
-                            self.updater(readInfo.value, oldValue, ev.batchNum);
+                            var oldValue = readInfo.value, newValue;
+                            if (singleBind) {
+                                newValue = func.call(context);
+                                readInfo.value = newValue;
+                            } else {
+                                readInfo = getValueAndBind(func, context, readInfo, onchanged);
+                                newValue = readInfo.value;
+                            }
+                            self.updater(newValue, oldValue, ev.batchNum);
                             batchNum = batchNum = ev.batchNum;
                         }
                     };
                 }
-                readInfo = getValueAndBind(func, context, {}, onchanged);
-                compute.setCached(readInfo.value);
-                compute.hasDependencies = !can.isEmptyObject(readInfo.observed);
-            },
-            off: function (updater) {
-                for (var name in readInfo.observed) {
-                    var ob = readInfo.observed[name];
-                    ob.obj.unbind(ob.event, onchanged);
+                readInfo = getValueAndBind(func, context, { observed: {} }, onchanged);
+                if (singleBind) {
+                    func = can.__notObserve(func);
                 }
-            }
-        };
-    };
-    var setupSingleBindComputeHandlers = function (compute, func, context) {
-        var readInfo, oldValue, onchanged, batchNum;
-        return {
-            on: function (updater) {
-                if (!onchanged) {
-                    onchanged = function (ev) {
-                        if (readInfo.ready && compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
-                            var reads = can.__clearReading();
-                            var newValue = func.call(context);
-                            can.__setReading(reads);
-                            updater.call(compute, newValue, oldValue, ev.batchNum);
-                            oldValue = newValue;
-                            batchNum = batchNum = ev.batchNum;
-                        }
-                    };
-                }
-                readInfo = getValueAndBind(func, context, {}, onchanged);
-                oldValue = readInfo.value;
-                compute.setCached(readInfo.value);
+                compute.value = readInfo.value;
                 compute.hasDependencies = !can.isEmptyObject(readInfo.observed);
             },
             off: function (updater) {
@@ -3195,12 +3189,8 @@ define('can/compute/proto_compute', [
     var k = function () {
     };
     var updater = function (newVal, oldVal, batchNum) {
-            this.setCached(newVal);
+            this.value = newVal;
             updateOnChange(this, newVal, oldVal, batchNum);
-        }, createAsyncAltUpdater = function (context, oldUpdater) {
-            return function () {
-                oldUpdater(context._get(), context.value);
-            };
         }, asyncGet = function (fn, context, lastSetValue) {
             return function () {
                 return fn.call(context, lastSetValue.get());
@@ -3240,12 +3230,10 @@ define('can/compute/proto_compute', [
         can.cid(this, 'compute');
     };
     can.simpleExtend(can.Compute.prototype, {
-        _bindsetup: function () {
+        _bindsetup: can.__notObserve(function () {
             this.bound = true;
-            var oldReading = can.__clearReading();
             this._on(this.updater);
-            can.__setReading(oldReading);
-        },
+        }),
         _bindteardown: function () {
             this._off(this.updater);
             this.bound = false;
@@ -3263,8 +3251,8 @@ define('can/compute/proto_compute', [
         _on: k,
         _off: k,
         get: function () {
-            if (stack.length && this._canReadForChangeEvent !== false) {
-                can.__reading(this, 'change');
+            if (can.__isRecordingObserves() && this._canObserve !== false) {
+                can.__observe(this, 'change');
                 if (!this.bound) {
                     can.Compute.temporarilyBind(this);
                 }
@@ -3298,9 +3286,6 @@ define('can/compute/proto_compute', [
         _set: function (newVal) {
             return this.value = newVal;
         },
-        setCached: function (newVal) {
-            this.value = newVal;
-        },
         updater: updater,
         _computeFn: function (newVal) {
             if (arguments.length) {
@@ -3314,31 +3299,15 @@ define('can/compute/proto_compute', [
         _setupGetterSetterFn: function (getterSetter, context, eventName, bindOnce) {
             this._set = can.proxy(getterSetter, context);
             this._get = can.proxy(getterSetter, context);
-            this._canReadForChangeEvent = eventName === false ? false : true;
-            this._getterSetter = getterSetter;
-            this._context = context;
-            var handlers;
-            if (bindOnce) {
-                handlers = setupSingleBindComputeHandlers(this, getterSetter, context || this);
-                this._on = handlers.on;
-                this._off = handlers.off;
-            } else {
-                var self = this;
-                this.onchanged = function (ev) {
-                    if (self.bound && self.readInfo.ready && (ev.batchNum === undefined || ev.batchNum !== self.batchNum)) {
-                        var oldValue = self.readInfo.value;
-                        self.readInfo = getValueAndBind(getterSetter, context, self.readInfo.observed, self.onchanged);
-                        self.updater(self.readInfo.value, oldValue, ev.batchNum);
-                        self.batchNum = ev.batchNum;
-                    }
-                };
-                this._on = setupComputeHandlersOn;
-                this._off = setupComputeHandlersOff;
-            }
+            this._canObserve = eventName === false ? false : true;
+            var handlers = setupComputeHandlers(this, getterSetter, context || this, bindOnce);
+            this._on = handlers.on;
+            this._off = handlers.off;
         },
         _setupContextString: function (target, propertyName, eventName) {
-            var isObserve = target instanceof can.Map, handler;
-            this.updater = can.proxy(this.updater, this);
+            var isObserve = can.isMapLike(target), self = this, handler = function (ev, newVal, oldVal) {
+                    self.updater(newVal, oldVal, ev.batchNum);
+                };
             if (isObserve) {
                 this.hasDependencies = true;
                 this._get = function () {
@@ -3348,11 +3317,8 @@ define('can/compute/proto_compute', [
                     target.attr(propertyName, val);
                 };
                 this._on = function (update) {
-                    handler = function (ev, newVal, oldVal) {
-                        update(newVal, oldVal, ev.batchNum);
-                    };
                     target.bind(eventName || propertyName, handler);
-                    this.value = can.__read(this._get).value;
+                    this.value = this._get();
                 };
                 this._off = function () {
                     return target.unbind(eventName || propertyName, handler);
@@ -3369,10 +3335,14 @@ define('can/compute/proto_compute', [
         },
         _setupContextSettings: function (initialValue, settings) {
             this.value = initialValue;
-            var oldUpdater = can.proxy(this.updater, this);
             this._set = settings.set ? can.proxy(settings.set, settings) : this._set;
             this._get = settings.get ? can.proxy(settings.get, settings) : this._get;
-            this.updater = createAsyncAltUpdater(this, oldUpdater);
+            if (!settings.__selfUpdater) {
+                var self = this, oldUpdater = this.updater;
+                this.updater = function () {
+                    oldUpdater.call(self, self._get(), self.value);
+                };
+            }
             this._on = settings.on ? settings.on : this._on;
             this._off = settings.off ? settings.off : this._off;
         },
@@ -3387,7 +3357,7 @@ define('can/compute/proto_compute', [
                 if (newVal === lastSetValue.get()) {
                     return this.value;
                 }
-                lastSetValue.set(newVal);
+                return lastSetValue.set(newVal);
             };
             this._get = asyncGet(fn, settings.context, lastSetValue);
             if (fn.length === 0) {
@@ -3445,7 +3415,7 @@ define('can/compute/proto_compute', [
     };
     return can.Compute;
 });
-/*can@2.3.0-pre.0#compute/compute*/
+/*can@2.2.6#compute/compute*/
 define('can/compute/compute', [
     'can/util/util',
     'can/util/bind/bind',
@@ -3507,7 +3477,7 @@ define('can/compute/compute', [
     can.compute.set = can.Compute.set;
     return can.compute;
 });
-/*can@2.3.0-pre.0#observe/observe*/
+/*can@2.2.6#observe/observe*/
 define('can/observe/observe', [
     'can/util/util',
     'can/map/map',
@@ -3520,15 +3490,118 @@ define('can/observe/observe', [
     can.Observe.triggerBatch = can.batch.trigger;
     return can;
 });
-/*can@2.3.0-pre.0#view/scope/scope*/
+/*can@2.2.6#view/scope/compute_data*/
+define('can/view/scope/compute_data', [
+    'can/util/util',
+    'can/compute/compute',
+    'can/compute/get_value_and_bind'
+], function (can, compute, getValueAndBind) {
+    var isFastPath = function (computeData) {
+        return computeData.reads && computeData.reads.length === 1 && computeData.root instanceof can.Map && !can.isFunction(computeData.root[computeData.reads[0]]);
+    };
+    var getValueAndBindScopeRead = function (scopeRead, scopeReadChanged) {
+        return getValueAndBind(scopeRead, null, { observed: {} }, scopeReadChanged);
+    };
+    var unbindScopeRead = function (readInfo, scopeReadChanged) {
+        for (var name in readInfo.observed) {
+            var ob = readInfo.observed[name];
+            ob.obj.unbind(ob.event, scopeReadChanged);
+        }
+    };
+    var getValueAndBindSinglePropertyRead = function (computeData, singlePropertyReadChanged) {
+        var target = computeData.root, prop = computeData.reads[0];
+        target.bind(prop, singlePropertyReadChanged);
+        return {
+            value: computeData.initialValue,
+            observed: { something: true }
+        };
+    };
+    var unbindSinglePropertyRead = function (computeData, singlePropertyReadChanged) {
+        computeData.root.unbind(computeData.reads[0], singlePropertyReadChanged);
+    };
+    var scopeReader = function (scope, key, options, computeData, newVal) {
+        if (arguments.length > 4) {
+            if (computeData.root.isComputed) {
+                computeData.root(newVal);
+            } else if (computeData.reads.length) {
+                var last = computeData.reads.length - 1;
+                var obj = computeData.reads.length ? can.compute.read(computeData.root, computeData.reads.slice(0, last)).value : computeData.root;
+                can.compute.set(obj, computeData.reads[last], newVal, options);
+            }
+        } else {
+            if (computeData.root) {
+                return can.compute.read(computeData.root, computeData.reads, options).value;
+            }
+            var data = scope.read(key, options);
+            computeData.scope = data.scope;
+            computeData.initialValue = data.value;
+            computeData.reads = data.reads;
+            computeData.root = data.rootObserve;
+            return data.value;
+        }
+    };
+    return function (scope, key, options) {
+        options = options || { args: [] };
+        var computeData = {}, scopeRead = function (newVal) {
+                if (arguments.length) {
+                    return scopeReader(scope, key, options, computeData, newVal);
+                } else {
+                    return scopeReader(scope, key, options, computeData);
+                }
+            }, batchNum, readInfo, scopeReadChanged = function (ev) {
+                if (readInfo.ready && compute.computeInstance.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
+                    var oldValue = readInfo.value, newValue;
+                    readInfo = getValueAndBind(scopeRead, null, readInfo, scopeReadChanged);
+                    newValue = readInfo.value;
+                    compute.computeInstance.updater(newValue, oldValue, ev.batchNum);
+                    batchNum = batchNum = ev.batchNum;
+                }
+            }, singlePropertyReadChanged = function (ev, newVal, oldVal) {
+                if (typeof newVal !== 'function') {
+                    compute.computeInstance.updater(newVal, oldVal, ev.batchNum);
+                } else {
+                    unbindSinglePropertyRead(computeData, singlePropertyReadChanged);
+                    readInfo = getValueAndBindScopeRead(scopeRead, scopeReadChanged);
+                    isFastPathBound = false;
+                    compute.computeInstance.updater(readInfo.value, oldVal, ev.batchNum);
+                }
+            }, isFastPathBound = false, compute = can.compute(undefined, {
+                on: function () {
+                    readInfo = getValueAndBindScopeRead(scopeRead, scopeReadChanged);
+                    if (isFastPath(computeData)) {
+                        var oldReadInfo = readInfo;
+                        readInfo = getValueAndBindSinglePropertyRead(computeData, singlePropertyReadChanged);
+                        unbindScopeRead(oldReadInfo, scopeReadChanged);
+                        isFastPathBound = true;
+                    }
+                    compute.computeInstance.value = readInfo.value;
+                    compute.computeInstance.hasDependencies = !can.isEmptyObject(readInfo.observed);
+                },
+                off: function () {
+                    if (isFastPathBound) {
+                        unbindSinglePropertyRead(computeData, singlePropertyReadChanged);
+                    } else {
+                        unbindScopeRead(readInfo, scopeReadChanged);
+                    }
+                },
+                set: scopeRead,
+                get: scopeRead,
+                __selfUpdater: true
+            });
+        computeData.compute = compute;
+        return computeData;
+    };
+});
+/*can@2.2.6#view/scope/scope*/
 define('can/view/scope/scope', [
     'can/util/util',
+    'can/view/scope/compute_data',
     'can/construct/construct',
     'can/map/map',
     'can/list/list',
     'can/view/view',
     'can/compute/compute'
-], function (can) {
+], function (can, makeComputeData) {
     var escapeReg = /(\\)?\./g, escapeDotReg = /\\\./g, getNames = function (attr) {
             var names = [], last = 0;
             attr.replace(escapeReg, function (first, second, index) {
@@ -3546,8 +3619,8 @@ define('can/view/scope/scope', [
                 this._parent = parent;
                 this.__cache = {};
             },
-            attr: function (key, value) {
-                var previousReads = can.__clearReading(), options = {
+            attr: can.__notObserve(function (key, value) {
+                var options = {
                         isArgument: true,
                         returnObserveMethods: true,
                         proxyMethods: false
@@ -3559,9 +3632,8 @@ define('can/view/scope/scope', [
                     }
                     can.compute.set(obj, key, value, options);
                 }
-                can.__setReading(previousReads);
                 return res.value;
-            },
+            }),
             add: function (context) {
                 if (context !== this._context) {
                     return new this.constructor(context, this);
@@ -3570,33 +3642,7 @@ define('can/view/scope/scope', [
                 }
             },
             computeData: function (key, options) {
-                options = options || { args: [] };
-                var self = this, rootObserve, rootReads, computeData = {
-                        compute: can.compute(function (newVal) {
-                            if (arguments.length) {
-                                if (rootObserve.isComputed) {
-                                    rootObserve(newVal);
-                                } else if (rootReads.length) {
-                                    var last = rootReads.length - 1;
-                                    var obj = rootReads.length ? can.compute.read(rootObserve, rootReads.slice(0, last)).value : rootObserve;
-                                    can.compute.set(obj, rootReads[last], newVal, options);
-                                }
-                            } else {
-                                if (rootObserve) {
-                                    return can.compute.read(rootObserve, rootReads, options).value;
-                                }
-                                var data = self.read(key, options);
-                                rootObserve = data.rootObserve;
-                                rootReads = data.reads;
-                                computeData.scope = data.scope;
-                                computeData.initialValue = data.value;
-                                computeData.reads = data.reads;
-                                computeData.root = rootObserve;
-                                return data.value;
-                            }
-                        })
-                    };
-                return computeData;
+                return makeComputeData(this, key, options);
             },
             compute: function (key, options) {
                 return this.computeData(key, options).compute;
@@ -3616,7 +3662,7 @@ define('can/view/scope/scope', [
                 var names = attr.indexOf('\\.') === -1 ? attr.split('.') : getNames(attr), context, scope = this, defaultObserve, defaultReads = [], defaultPropertyDepth = -1, defaultComputeReadings, defaultScope, currentObserve, currentReads;
                 while (scope) {
                     context = scope._context;
-                    if (context !== null) {
+                    if (context !== null && (typeof context === 'object' || typeof context === 'function')) {
                         var data = can.compute.read(context, names, can.simpleExtend({
                                 foundObservable: function (observe, nameIndex) {
                                     currentObserve = observe;
@@ -3668,7 +3714,7 @@ define('can/view/scope/scope', [
     can.view.Scope = Scope;
     return Scope;
 });
-/*can@2.3.0-pre.0#view/scanner*/
+/*can@2.2.6#view/scanner*/
 define('can/view/scanner', [
     'can/view/view',
     'can/view/elements',
@@ -4044,7 +4090,7 @@ define('can/view/scanner', [
     can.view.Scanner = Scanner;
     return Scanner;
 });
-/*can@2.3.0-pre.0#view/node_lists/node_lists*/
+/*can@2.2.6#view/node_lists/node_lists*/
 define('can/view/node_lists/node_lists', [
     'can/util/util',
     'can/view/elements'
@@ -4212,7 +4258,7 @@ define('can/view/node_lists/node_lists', [
     can.view.nodeLists = nodeLists;
     return nodeLists;
 });
-/*can@2.3.0-pre.0#view/parser/parser*/
+/*can@2.2.6#view/parser/parser*/
 define('can/view/parser/parser', ['can/view/view'], function (can) {
     function makeMap(str) {
         var obj = {}, items = str.split(',');
@@ -4228,7 +4274,7 @@ define('can/view/parser/parser', ['can/view/view'], function (can) {
         }
         return intermediate;
     }
-    var alphaNumericHU = '-:A-Za-z0-9_', attributeNames = '[\\(|\\[]?[a-zA-Z_:][' + alphaNumericHU + ':.]*[\\)|\\]]?', spaceEQspace = '\\s*=\\s*', dblQuote2dblQuote = '"((?:\\\\.|[^"])*)"', quote2quote = '\'((?:\\\\.|[^\'])*)\'', attributeEqAndValue = '(?:' + spaceEQspace + '(?:' + '(?:"[^"]*")|(?:\'[^\']*\')|[^>\\s]+))?', matchStash = '\\{\\{[^\\}]*\\}\\}\\}?', stash = '\\{\\{([^\\}]*)\\}\\}\\}?', startTag = new RegExp('^<([' + alphaNumericHU + ']+)' + '(' + '(?:\\s*' + '(?:(?:' + '(?:' + attributeNames + ')?' + attributeEqAndValue + ')|' + '(?:' + matchStash + ')+)' + ')*' + ')\\s*(\\/?)>'), endTag = new RegExp('^<\\/([' + alphaNumericHU + ']+)[^>]*>'), attr = new RegExp('(?:' + '(?:(' + attributeNames + ')|' + stash + ')' + '(?:' + spaceEQspace + '(?:' + '(?:' + dblQuote2dblQuote + ')|(?:' + quote2quote + ')|([^>\\s]+)' + ')' + ')?)', 'g'), mustache = new RegExp(stash, 'g'), txtBreak = /<|\{\{/;
+    var alphaNumericHU = '-:A-Za-z0-9_', attributeNames = '[a-zA-Z_:][' + alphaNumericHU + ':.]*', spaceEQspace = '\\s*=\\s*', dblQuote2dblQuote = '"((?:\\\\.|[^"])*)"', quote2quote = '\'((?:\\\\.|[^\'])*)\'', attributeEqAndValue = '(?:' + spaceEQspace + '(?:' + '(?:"[^"]*")|(?:\'[^\']*\')|[^>\\s]+))?', matchStash = '\\{\\{[^\\}]*\\}\\}\\}?', stash = '\\{\\{([^\\}]*)\\}\\}\\}?', startTag = new RegExp('^<([' + alphaNumericHU + ']+)' + '(' + '(?:\\s*' + '(?:(?:' + '(?:' + attributeNames + ')?' + attributeEqAndValue + ')|' + '(?:' + matchStash + ')+)' + ')*' + ')\\s*(\\/?)>'), endTag = new RegExp('^<\\/([' + alphaNumericHU + ']+)[^>]*>'), attr = new RegExp('(?:' + '(?:(' + attributeNames + ')|' + stash + ')' + '(?:' + spaceEQspace + '(?:' + '(?:' + dblQuote2dblQuote + ')|(?:' + quote2quote + ')|([^>\\s]+)' + ')' + ')?)', 'g'), mustache = new RegExp(stash, 'g'), txtBreak = /<|\{\{/;
     var empty = makeMap('area,base,basefont,br,col,frame,hr,img,input,isindex,link,meta,param,embed');
     var block = makeMap('a,address,article,applet,aside,audio,blockquote,button,canvas,center,dd,del,dir,div,dl,dt,fieldset,figcaption,figure,footer,form,frameset,h1,h2,h3,h4,h5,h6,header,hgroup,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,output,p,pre,section,script,table,tbody,td,tfoot,th,thead,tr,ul,video');
     var inline = makeMap('abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var');
@@ -4393,7 +4439,7 @@ define('can/view/parser/parser', ['can/view/view'], function (can) {
     can.view.parser = HTMLParser;
     return HTMLParser;
 });
-/*can@2.3.0-pre.0#view/live/live*/
+/*can@2.2.6#view/live/live*/
 define('can/view/live/live', [
     'can/util/util',
     'can/view/elements',
@@ -4730,7 +4776,7 @@ define('can/view/live/live', [
     can.view.live = live;
     return live;
 });
-/*can@2.3.0-pre.0#view/render*/
+/*can@2.2.6#view/render*/
 define('can/view/render', [
     'can/view/view',
     'can/view/elements',
@@ -4855,7 +4901,7 @@ define('can/view/render', [
     });
     return can;
 });
-/*can@2.3.0-pre.0#view/stache/utils*/
+/*can@2.2.6#view/stache/utils*/
 define('can/view/stache/utils', ['can/util/util'], function () {
     return {
         isArrayLike: function (obj) {
@@ -4890,7 +4936,7 @@ define('can/view/stache/utils', ['can/util/util'], function () {
         }
     };
 });
-/*can@2.3.0-pre.0#view/stache/mustache_helpers*/
+/*can@2.2.6#view/stache/mustache_helpers*/
 define('can/view/stache/mustache_helpers', [
     'can/util/util',
     'can/view/stache/utils',
@@ -5011,13 +5057,9 @@ define('can/view/stache/mustache_helpers', [
                 };
             }
         };
-    var registerHelper = function (name, callback) {
-        helpers[name] = callback;
-    };
     return {
-        registerHelper: registerHelper,
-        registerSimpleHelper: function (name, callback) {
-            registerHelper(name, can.view.simpleHelper(callback));
+        registerHelper: function (name, callback) {
+            helpers[name] = callback;
         },
         getHelper: function (name, options) {
             var helper = options.attr('helpers.' + name);
@@ -5030,7 +5072,7 @@ define('can/view/stache/mustache_helpers', [
         }
     };
 });
-/*can@2.3.0-pre.0#view/stache/mustache_core*/
+/*can@2.2.6#view/stache/mustache_core*/
 define('can/view/stache/mustache_core', [
     'can/util/util',
     'can/view/stache/utils',
@@ -5090,8 +5132,7 @@ define('can/view/stache/mustache_core', [
             var rendererWithScope = function (ctx, opts, parentNodeList) {
                 return renderer(ctx || parentScope, opts, parentNodeList);
             };
-            return function (newScope, newOptions, parentNodeList) {
-                var reads = can.__clearReading();
+            return can.__notObserve(function (newScope, newOptions, parentNodeList) {
                 if (newScope !== undefined && !(newScope instanceof can.view.Scope)) {
                     newScope = parentScope.add(newScope);
                 }
@@ -5099,9 +5140,8 @@ define('can/view/stache/mustache_core', [
                     newOptions = parentOptions.add(newOptions);
                 }
                 var result = rendererWithScope(newScope, newOptions || parentOptions, parentNodeList || nodeList);
-                can.__setReading(reads);
                 return result;
-            };
+            });
         };
     var core = {
             expressionData: function (expression) {
@@ -5131,7 +5171,7 @@ define('can/view/stache/mustache_core', [
                         },
                         inverse: function () {
                         }
-                    }, context = scope.attr('.'), name = exprData.name, helper, looksLikeAHelper = exprData.args.length || !can.isEmptyObject(exprData.hash), initialValue;
+                    }, context = scope.attr('.'), name = exprData.name, helper, looksLikeAHelper = exprData.args.length || !can.isEmptyObject(exprData.hash), initialValue, helperEvaluator;
                 for (var i = 0, len = exprData.args.length; i < len; i++) {
                     var arg = exprData.args[i];
                     if (arg && isLookup(arg)) {
@@ -5158,9 +5198,6 @@ define('can/view/stache/mustache_core', [
                         var get = name.get;
                         var computeData = getKeyComputeData(name.get, scope, false), compute = computeData.compute;
                         initialValue = computeData.initialValue;
-                        if (computeData.reads && computeData.reads.length === 1 && computeData.root instanceof can.Map && !can.isFunction(computeData.root[computeData.reads[0]])) {
-                            compute = can.compute(computeData.root, computeData.reads[0]);
-                        }
                         if (computeData.compute.computeInstance.hasDependencies) {
                             name = compute;
                         } else {
@@ -5189,9 +5226,11 @@ define('can/view/stache/mustache_core', [
                         exprData: exprData
                     });
                     args.push(helperOptions);
-                    return function () {
+                    helperEvaluator = function () {
                         return helper.fn.apply(context, args) || '';
                     };
+                    helperEvaluator.bindOnce = false;
+                    return helperEvaluator;
                 }
                 if (!mode) {
                     if (name && name.isComputed) {
@@ -5348,7 +5387,7 @@ define('can/view/stache/mustache_core', [
     var makeEvaluator = core.makeEvaluator, expressionData = core.expressionData, splitModeFromExpression = core.splitModeFromExpression;
     return core;
 });
-/*can@2.3.0-pre.0#view/bindings/bindings*/
+/*can@2.2.6#view/bindings/bindings*/
 define('can/view/bindings/bindings', [
     'can/util/util',
     'can/view/stache/mustache_core',
@@ -5377,16 +5416,14 @@ define('can/view/bindings/bindings', [
                     return !!editable(el.parentNode);
                 }
             };
-        }(), removeBrackets = function (value, open, close) {
-            open = open || '{';
-            close = close || '}';
-            if (value[0] === open && value[value.length - 1] === close) {
+        }(), removeCurly = function (value) {
+            if (value[0] === '{' && value[value.length - 1] === '}') {
                 return value.substr(1, value.length - 2);
             }
             return value;
         };
     can.view.attr('can-value', function (el, data) {
-        var attr = can.trim(removeBrackets(el.getAttribute('can-value'))), value = data.scope.computeData(attr, { args: [] }).compute, trueValue, falseValue;
+        var attr = can.trim(removeCurly(el.getAttribute('can-value'))), value = data.scope.computeData(attr, { args: [] }).compute, trueValue, falseValue;
         if (el.nodeName.toLowerCase() === 'input') {
             if (el.type === 'checkbox') {
                 if (can.attr.has(el, 'can-true-value')) {
@@ -5431,13 +5468,13 @@ define('can/view/bindings/bindings', [
                 };
             }
         };
-    var handleEvent = function (el, data) {
-        var attributeName = data.attributeName, event = attributeName.indexOf('can-') === 0 ? attributeName.substr('can-'.length) : removeBrackets(attributeName, '(', ')'), handler = function (ev) {
+    can.view.attr(/can-[\w\.]+/, function (el, data) {
+        var attributeName = data.attributeName, event = attributeName.substr('can-'.length), handler = function (ev) {
                 var attrVal = el.getAttribute(attributeName);
                 if (!attrVal) {
                     return;
                 }
-                var attrInfo = mustacheCore.expressionData(removeBrackets(attrVal));
+                var attrInfo = mustacheCore.expressionData(removeCurly(attrVal));
                 var scopeData = data.scope.read(attrInfo.name.get, {
                         returnObserveMethods: true,
                         isArgument: true,
@@ -5491,9 +5528,7 @@ define('can/view/bindings/bindings', [
             event = specialData.event;
         }
         can.bind.call(el, event, handler);
-    };
-    can.view.attr(/can-[\w\.]+/, handleEvent);
-    can.view.attr(/\([\w\.]+\)/, handleEvent);
+    });
     var Value = can.Control.extend({
             init: function () {
                 if (this.element[0].nodeName.toUpperCase() === 'SELECT') {
@@ -5602,19 +5637,8 @@ define('can/view/bindings/bindings', [
                 this.options.value(this.element[0].innerHTML);
             }
         });
-    can.view.attr(/\[[\w\.]+\]/, function (el, options) {
-        var prop = removeBrackets(el.getAttribute(options.attributeName));
-        var name = removeBrackets(options.attributeName, '[', ']');
-        can.one.call(el, 'inserted', function () {
-            var value = can.viewModel(el);
-            if (prop !== 'this' && prop !== '.') {
-                value = value.attr(prop);
-            }
-            options.scope.attr(name, value);
-        });
-    });
 });
-/*can@2.3.0-pre.0#view/mustache/mustache*/
+/*can@2.2.6#view/mustache/mustache*/
 define('can/view/mustache/mustache', [
     'can/util/util',
     'can/view/scope/scope',
@@ -5752,7 +5776,7 @@ define('can/view/mustache/mustache', [
                                 end: false
                             };
                         content = can.trim(content);
-                        if (content.length && (mode = content.match(/^([#^/]|else$)/))) {
+                        if (content.length && (mode = content.match(/^([#^\/]|else$)/))) {
                             mode = mode[0];
                             switch (mode) {
                             case '#':
@@ -5963,9 +5987,6 @@ define('can/view/mustache/mustache', [
             fn: fn
         };
     };
-    Mustache.registerSimpleHelper = function (name, fn) {
-        Mustache.registerHelper(name, can.view.simpleHelper(fn));
-    };
     Mustache.getHelper = function (name, options) {
         var helper;
         if (options) {
@@ -6115,7 +6136,7 @@ define('can/view/mustache/mustache', [
     can.mustache.safeString = can.Mustache.safeString;
     return can;
 });
-/*can@2.3.0-pre.0#component/component*/
+/*can@2.2.6#component/component*/
 define('can/component/component', [
     'can/util/util',
     'can/view/callbacks/callbacks',
@@ -6234,18 +6255,13 @@ define('can/component/component', [
                 this.scope = this.viewModel = componentScope;
                 can.data(can.$(el), 'scope', this.scope);
                 can.data(can.$(el), 'viewModel', this.scope);
-                var renderedScope = lexicalContent ? this.scope : hookupOptions.scope.add(this.scope), options = { helpers: {} }, addHelper = function (name, fn) {
-                        options.helpers[name] = function () {
-                            return fn.apply(componentScope, arguments);
-                        };
-                    };
+                var renderedScope = lexicalContent ? this.scope : hookupOptions.scope.add(this.scope), options = { helpers: {} };
                 can.each(this.helpers || {}, function (val, prop) {
                     if (can.isFunction(val)) {
-                        addHelper(prop, val);
+                        options.helpers[prop] = function () {
+                            return val.apply(componentScope, arguments);
+                        };
                     }
-                });
-                can.each(this.simpleHelpers || {}, function (val, prop) {
-                    addHelper(prop, can.view.simpleHelper(val));
                 });
                 teardownFunctions.push(function () {
                     can.each(handlers, function (handler, prop) {
@@ -6386,7 +6402,7 @@ define('can/component/component', [
     }
     return Component;
 });
-/*can@2.3.0-pre.0#model/model*/
+/*can@2.2.6#model/model*/
 define('can/model/model', [
     'can/util/util',
     'can/map/map',
@@ -6415,7 +6431,7 @@ define('can/model/model', [
             }
             return d;
         }, modelNum = 0, getId = function (inst) {
-            can.__reading(inst, inst.constructor.id);
+            can.__observe(inst, inst.constructor.id);
             return inst.__get(inst.constructor.id);
         }, ajax = function (ajaxOb, data, type, dataType, success, error) {
             var params = {};
@@ -6476,7 +6492,7 @@ define('can/model/model', [
                     instancesRawData = raw;
                     raw = raw.data;
                 }
-                if (typeof raw === 'undefined') {
+                if (typeof raw === 'undefined' || !can.isArray(raw)) {
                     throw new Error('Could not get any raw data while converting using .models');
                 }
                 if (modelList.length) {
@@ -6772,7 +6788,7 @@ define('can/model/model', [
         });
     return can.Model;
 });
-/*can@2.3.0-pre.0#util/string/deparam/deparam*/
+/*can@2.2.6#util/string/deparam/deparam*/
 define('can/util/string/deparam/deparam', [
     'can/util/util',
     'can/util/string/string'
@@ -6809,7 +6825,7 @@ define('can/util/string/deparam/deparam', [
     });
     return can;
 });
-/*can@2.3.0-pre.0#route/route*/
+/*can@2.2.6#route/route*/
 define('can/route/route', [
     'can/util/util',
     'can/map/map',
@@ -6990,7 +7006,7 @@ define('can/route/route', [
             return '<a ' + makeProps(extend({ href: can.route.url(options, merge) }, props)) + '>' + name + '</a>';
         },
         current: function (options) {
-            can.__reading(eventsObject, '__url');
+            can.__observe(eventsObject, '__url');
             return this._call('matchingPartOfURL') === can.route.param(options);
         },
         bindings: {
@@ -7106,7 +7122,7 @@ define('can/route/route', [
     };
     return can.route;
 });
-/*can@2.3.0-pre.0#control/route/route*/
+/*can@2.2.6#control/route/route*/
 define('can/control/route/route', [
     'can/util/util',
     'can/route/route',
@@ -7139,3 +7155,8 @@ define('can/control/route/route', [
     };
     return can;
 });
+/*[global-shim-end]*/
+(function (){
+	window._define = window.define;
+	window.define = window.define.orig;
+})();

@@ -1,13 +1,14 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#view/scope/scope*/
+/*can@2.2.6#view/scope/scope*/
 var can = require('../../util/util.js');
+var makeComputeData = require('./compute_data.js');
 require('../../construct/construct.js');
 require('../../map/map.js');
 require('../../list/list.js');
@@ -30,8 +31,8 @@ var Scope = can.Construct.extend({ read: can.compute.read }, {
             this._parent = parent;
             this.__cache = {};
         },
-        attr: function (key, value) {
-            var previousReads = can.__clearReading(), options = {
+        attr: can.__notObserve(function (key, value) {
+            var options = {
                     isArgument: true,
                     returnObserveMethods: true,
                     proxyMethods: false
@@ -43,9 +44,8 @@ var Scope = can.Construct.extend({ read: can.compute.read }, {
                 }
                 can.compute.set(obj, key, value, options);
             }
-            can.__setReading(previousReads);
             return res.value;
-        },
+        }),
         add: function (context) {
             if (context !== this._context) {
                 return new this.constructor(context, this);
@@ -54,33 +54,7 @@ var Scope = can.Construct.extend({ read: can.compute.read }, {
             }
         },
         computeData: function (key, options) {
-            options = options || { args: [] };
-            var self = this, rootObserve, rootReads, computeData = {
-                    compute: can.compute(function (newVal) {
-                        if (arguments.length) {
-                            if (rootObserve.isComputed) {
-                                rootObserve(newVal);
-                            } else if (rootReads.length) {
-                                var last = rootReads.length - 1;
-                                var obj = rootReads.length ? can.compute.read(rootObserve, rootReads.slice(0, last)).value : rootObserve;
-                                can.compute.set(obj, rootReads[last], newVal, options);
-                            }
-                        } else {
-                            if (rootObserve) {
-                                return can.compute.read(rootObserve, rootReads, options).value;
-                            }
-                            var data = self.read(key, options);
-                            rootObserve = data.rootObserve;
-                            rootReads = data.reads;
-                            computeData.scope = data.scope;
-                            computeData.initialValue = data.value;
-                            computeData.reads = data.reads;
-                            computeData.root = rootObserve;
-                            return data.value;
-                        }
-                    })
-                };
-            return computeData;
+            return makeComputeData(this, key, options);
         },
         compute: function (key, options) {
             return this.computeData(key, options).compute;
@@ -100,7 +74,7 @@ var Scope = can.Construct.extend({ read: can.compute.read }, {
             var names = attr.indexOf('\\.') === -1 ? attr.split('.') : getNames(attr), context, scope = this, defaultObserve, defaultReads = [], defaultPropertyDepth = -1, defaultComputeReadings, defaultScope, currentObserve, currentReads;
             while (scope) {
                 context = scope._context;
-                if (context !== null) {
+                if (context !== null && (typeof context === 'object' || typeof context === 'function')) {
                     var data = can.compute.read(context, names, can.simpleExtend({
                             foundObservable: function (observe, nameIndex) {
                                 currentObserve = observe;

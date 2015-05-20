@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#view/mustache/mustache*/
+/*can@2.2.6#view/mustache/mustache*/
 steal('can/util',
 	'can/view/scope',
 	'can/view',
@@ -1651,27 +1651,6 @@ steal('can/util',
 				name: name,
 				fn: fn
 			};
-		};
-
-		/**
-		 * @function can.mustache.registerSimpleHelper
-		 * @parent can.mustache.methods
-		 * @description Register a simple helper.
-		 * @function can.mustache.registerSimpleHelper registerSimpleHelper
-		 * @signature `Mustache.registerSimpleHelper(name, helper)`
-		 * @param {String} name The name of the helper.
-		 * @param {can.mustache.simplehelper} helper The simple helper function.
-		 *
-		 * @body
-		 * Registers a helper with the Mustache system that passes the values
-		 * instead of computes as arguments. This is useful if your helper does not
-		 * modify the argument computes and you only need the actual values.
-		 * Pass the name of the helper followed by the
-		 * function to which Mustache should invoke.
-		 * These are run at runtime.
-		 */
-		Mustache.registerSimpleHelper = function(name, fn) {
-			Mustache.registerHelper(name, can.view.simpleHelper(fn));
 		};
 
 		/**

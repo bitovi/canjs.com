@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#compute/read*/
+/*can@2.2.6#compute/read*/
 define(['can/util/library'], function (can) {
     var read = function (parent, reads, options) {
         options = options || {};
@@ -45,11 +45,15 @@ define(['can/util/library'], function (can) {
         };
     };
     var readValue = function (value, index, reads, options, state, prev) {
-        for (var i = 0, len = read.valueReaders.length; i < len; i++) {
-            if (read.valueReaders[i].test(value, index, reads, options)) {
-                value = read.valueReaders[i].read(value, index, reads, options, state, prev);
+        var usedValueReader;
+        do {
+            usedValueReader = false;
+            for (var i = 0, len = read.valueReaders.length; i < len; i++) {
+                if (read.valueReaders[i].test(value, index, reads, options)) {
+                    value = read.valueReaders[i].read(value, index, reads, options, state, prev);
+                }
             }
-        }
+        } while (usedValueReader);
         return value;
     };
     read.valueReaders = [
@@ -147,7 +151,7 @@ define(['can/util/library'], function (can) {
                         ]);
                     });
                 }
-                can.__reading(observeData, 'state');
+                can.__observe(observeData, 'state');
                 return prop in observeData ? observeData[prop] : value[prop];
             }
         },

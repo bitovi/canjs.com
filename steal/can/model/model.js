@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#model/model*/
+/*can@2.2.6#model/model*/
 steal('can/util', 'can/map', 'can/list', function (can) {
 	/** @add can.Model **/
 	// ## model.js
@@ -57,9 +57,9 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 
 		// ## getId
 		getId = function (inst) {
-			// `can.__reading` makes a note that `id` was just read.
-			can.__reading(inst, inst.constructor.id);
-			// Use `__get` instead of `attr` for performance. (But that means we have to remember to call `can.__reading`.)
+			// `can.__observe` makes a note that `id` was just read.
+			can.__observe(inst, inst.constructor.id);
+			// Use `__get` instead of `attr` for performance. (But that means we have to remember to call `can.__observe`.)
 			return inst.__get(inst.constructor.id);
 		},
 
@@ -182,7 +182,7 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 					raw = raw.data;
 				}
 
-				if (typeof raw === 'undefined') {
+				if (typeof raw === 'undefined' || !can.isArray(raw)) {
 					throw new Error('Could not get any raw data while converting using .models');
 				}
 
@@ -340,15 +340,15 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 			};
 		},
 		// ## createURLFromResource
-		// For each of the names (create, update, destroy, findOne, and findAll) use the 
+		// For each of the names (create, update, destroy, findOne, and findAll) use the
 		// URL provided by the `resource` property. For example:
-		// 		
+		//
 		// 		ToDo = can.Model.extend({
 		// 			resource: "/todos"
 		// 		}, {});
-		// 	
+		//
 		// 	Will create a can.Model that is identical to:
-		// 	
+		//
 		// 		ToDo = can.Model.extend({
 		// 			findAll: "GET /todos",
 		// 			findOne: "GET /todos/{id}",
@@ -356,7 +356,7 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 		// 			update:  "PUT /todos/{id}",
 		// 			destroy: "DELETE /todos/{id}"
 		// 		},{});
-		// 
+		//
 		// - `model`: the can.Model that has the resource property
 		// - `method`: a property from the ajaxMethod object
 		createURLFromResource = function(model, name) {
@@ -651,7 +651,7 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 			can.dispatch.call(constructor, funcName, [this]);
 		};
 	});
-	
+
 
 	// # can.Model.List
 	// Model Lists are just like `Map.List`s except that when their items are

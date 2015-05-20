@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#view/callbacks/callbacks*/
+/*can@2.2.6#view/callbacks/callbacks*/
 define([
     'can/util/library',
     'can/view'
@@ -39,7 +39,7 @@ define([
     var tag = can.view.tag = function (tagName, tagHandler) {
             if (tagHandler) {
                 if (typeof tags[tagName.toLowerCase()] !== 'undefined') {
-                    can.dev.warn('Custom tag: ' + tagName.toLowerCase() + 'is already defined');
+                    can.dev.warn('Custom tag: ' + tagName.toLowerCase() + ' is already defined');
                 }
                 if (can.global.html5) {
                     can.global.html5.elements += ' ' + tagName;

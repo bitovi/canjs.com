@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#map/define/define*/
+/*can@2.2.6#map/define/define*/
 steal('can/util', 'can/observe', function (can) {
 	var define = can.define = {};
 	
@@ -164,7 +164,7 @@ steal('can/util', 'can/observe', function (can) {
 			if (getter) {
 				// if there's a getter we don't call old set
 				// instead we call the getter's compute with the new value
-				if(setValue !== undefined && !setterCalled && setter.length >= 2) {
+				if(setValue !== undefined && !setterCalled && setter.length >= 1) {
 					this[prop](setValue);
 				}
 				
@@ -172,7 +172,7 @@ steal('can/util', 'can/observe', function (can) {
 				return;
 			}
 			// if it took a setter and returned nothing, don't set the value
-			else if (setValue === undefined && !setterCalled && setter.length >= 2) {
+			else if (setValue === undefined && !setterCalled && setter.length >= 1) {
 				//!steal-remove-start
 				asyncTimer = setTimeout(function () {
 					can.dev.warn('can/map/setter.js: Setter "' + prop + '" did not return a value or call the setter callback.');
@@ -213,6 +213,9 @@ steal('can/util', 'can/observe', function (can) {
 			}
 		},
 		'number': function (val) {
+			if(val == null) {
+				return val;
+			}
 			return +(val);
 		},
 		'boolean': function (val) {
@@ -232,6 +235,9 @@ steal('can/util', 'can/observe', function (can) {
 			return val;
 		},
 		'string': function (val) {
+			if(val == null) {
+				return val;
+			}
 			return '' + val;
 		},
 		'compute': {

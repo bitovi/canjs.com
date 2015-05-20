@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*[global-shim]*/
+/*[global-shim-start]*/
 (function (exports, global){
 	var origDefine = global.define;
 
@@ -22,7 +22,8 @@
 		}
 		return cur;
 	};
-	var modules = global.define && global.define.modules || {};
+	var modules = (global.define && global.define.modules) ||
+		(global._define && global._define.modules) || {};
 	var ourDefine = global.define = function(moduleName, deps, callback){
 		var module;
 		if(typeof deps === "function") {
@@ -55,6 +56,7 @@
 		// Favor CJS module.exports over the return value
 		modules[moduleName] = module && module.exports ? module.exports : result;
 	};
+	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
 	global.System = {
@@ -65,7 +67,7 @@
 		}
 	};
 })({},window)
-/*can@2.3.0-pre.0#map/define/define*/
+/*can@2.2.6#map/define/define*/
 define('can/map/define/define', [
     'can/util/util',
     'can/observe/observe'
@@ -152,12 +154,12 @@ define('can/map/define/define', [
                     setterCalled = true;
                 }, errorCallback, getter ? this[prop].computeInstance.lastSetValue.get() : current);
             if (getter) {
-                if (setValue !== undefined && !setterCalled && setter.length >= 2) {
+                if (setValue !== undefined && !setterCalled && setter.length >= 1) {
                     this[prop](setValue);
                 }
                 can.batch.stop();
                 return;
-            } else if (setValue === undefined && !setterCalled && setter.length >= 2) {
+            } else if (setValue === undefined && !setterCalled && setter.length >= 1) {
                 can.batch.stop();
                 return;
             } else {
@@ -185,6 +187,9 @@ define('can/map/define/define', [
             }
         },
         'number': function (val) {
+            if (val == null) {
+                return val;
+            }
             return +val;
         },
         'boolean': function (val) {
@@ -200,6 +205,9 @@ define('can/map/define/define', [
             return val;
         },
         'string': function (val) {
+            if (val == null) {
+                return val;
+            }
             return '' + val;
         },
         'compute': {
@@ -300,3 +308,8 @@ define('can/map/define/define', [
     };
     return can.define;
 });
+/*[global-shim-end]*/
+(function (){
+	window._define = window.define;
+	window.define = window.define.orig;
+})();

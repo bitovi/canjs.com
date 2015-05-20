@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#route/pushstate/pushstate*/
+/*can@2.2.6#route/pushstate/pushstate*/
 // # can/route/pushstate/pushstate.js
 //
 // Plugin for `can.route` which uses browser `history.pushState` support

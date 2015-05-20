@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#view/target/target*/
+/*can@2.2.6#view/target/target*/
 /* jshint maxdepth:7*/
 steal("can/util", "can/view/elements.js",function(can, elements){
 	
@@ -44,20 +44,7 @@ steal("can/util", "can/view/elements.js",function(can, elements){
 
 			return clone.innerHTML === "<xyz></xyz>";
 		})(),
-		namespacesWork = typeof document !== "undefined" && !!document.createElementNS,
-		// A dummy element we use for creating non-standard attribute names (e.g. containing () and [])
-		attributeDummy = typeof document !== "undefined" ? document.createElement('div') : null,
-		// Sets the attribute on an element. Uses a hack when setAttribute complains
-		setAttribute = function(el, attrName, value) {
-			try {
-				el.setAttribute(attrName, value);
-			} catch(e) {
-				// We got an error. Set innerHTML with the non-standard attribute and clone
-				// that attribute node
-				attributeDummy.innerHTML = '<div ' + attrName + '="' + value + '"></div>';
-				el.setAttributeNode(attributeDummy.childNodes[0].attributes[0].cloneNode());
-			}
-		};
+		namespacesWork = typeof document !== "undefined" && !!document.createElementNS;
 
 	/**
 	 * @function cloneNode
@@ -91,7 +78,7 @@ steal("can/util", "can/view/elements.js",function(can, elements){
 				var attributes = can.makeArray(node.attributes);
 				can.each(attributes, function (node) {
 					if(node && node.specified) {
-						setAttribute(copy, node.nodeName, node.nodeValue);
+						copy.setAttribute(node.nodeName, node.nodeValue);
 					}
 				});
 			}
@@ -140,7 +127,7 @@ steal("can/util", "can/view/elements.js",function(can, elements){
 								callback:  value
 							});
 						} else  {
-							setAttribute(el, attrName, value);
+							el.setAttribute(attrName, value);
 						}
 					}
 				}

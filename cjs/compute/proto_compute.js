@@ -1,78 +1,17 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#compute/proto_compute*/
+/*can@2.2.6#compute/proto_compute*/
 var can = require('../util/util.js');
 var bind = require('../util/bind/bind.js');
 var read = require('./read.js');
+var getValueAndBind = require('./get_value_and_bind.js');
 require('../util/batch/batch.js');
-var stack = [];
-can.__read = function (func, self) {
-    stack.push({});
-    var value = func.call(self);
-    return {
-        value: value,
-        observed: stack.pop()
-    };
-};
-can.__reading = function (obj, event) {
-    if (stack.length) {
-        stack[stack.length - 1][obj._cid + '|' + event] = {
-            obj: obj,
-            event: event + ''
-        };
-    }
-};
-can.__clearReading = function () {
-    if (stack.length) {
-        var ret = stack[stack.length - 1];
-        stack[stack.length - 1] = {};
-        return ret;
-    }
-};
-can.__setReading = function (o) {
-    if (stack.length) {
-        stack[stack.length - 1] = o;
-    }
-};
-can.__addReading = function (o) {
-    if (stack.length) {
-        can.simpleExtend(stack[stack.length - 1], o);
-    }
-};
-var getValueAndBind = function (func, context, oldObserved, onchanged) {
-    var info = can.__read(func, context), newObserveSet = info.observed;
-    bindNewSet(oldObserved, newObserveSet, onchanged);
-    unbindOldSet(oldObserved, onchanged);
-    can.batch.afterPreviousEvents(function () {
-        info.ready = true;
-    });
-    return info;
-};
-var bindNewSet = function (oldObserved, newObserveSet, onchanged) {
-    for (var name in newObserveSet) {
-        bindOrPreventUnbinding(oldObserved, newObserveSet, name, onchanged);
-    }
-};
-var bindOrPreventUnbinding = function (oldObserved, newObserveSet, name, onchanged) {
-    if (oldObserved[name]) {
-        delete oldObserved[name];
-    } else {
-        var obEv = newObserveSet[name];
-        obEv.obj.bind(obEv.event, onchanged);
-    }
-};
-var unbindOldSet = function (oldObserved, onchanged) {
-    for (var name in oldObserved) {
-        var obEv = oldObserved[name];
-        obEv.obj.unbind(obEv.event, onchanged);
-    }
-};
 var updateOnChange = function (compute, newValue, oldValue, batchNum) {
     if (newValue !== oldValue) {
         can.batch.trigger(compute, batchNum ? {
@@ -84,63 +23,33 @@ var updateOnChange = function (compute, newValue, oldValue, batchNum) {
         ]);
     }
 };
-var setupComputeHandlersOn = function () {
-    this.readInfo = getValueAndBind(this._getterSetter, this._context, {}, this.onchanged);
-    this.setCached(this.readInfo.value);
-    this.hasDependencies = !can.isEmptyObject(this.readInfo.observed);
-};
-var setupComputeHandlersOff = function () {
-    for (var name in this.readInfo.observed) {
-        var ob = this.readInfo.observed[name];
-        ob.obj.unbind(ob.event, this.onchanged);
-    }
-};
-var setupComputeHandlers = function (compute, func, context) {
+var setupComputeHandlers = function (compute, func, context, singleBind) {
     var readInfo, onchanged, batchNum;
+    singleBind = false;
     return {
-        on: function () {
+        on: function (updater) {
             var self = this;
             if (!onchanged) {
                 onchanged = function (ev) {
                     if (readInfo.ready && compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
-                        var oldValue = readInfo.value;
-                        readInfo = getValueAndBind(func, context, readInfo.observed, onchanged);
-                        self.updater(readInfo.value, oldValue, ev.batchNum);
+                        var oldValue = readInfo.value, newValue;
+                        if (singleBind) {
+                            newValue = func.call(context);
+                            readInfo.value = newValue;
+                        } else {
+                            readInfo = getValueAndBind(func, context, readInfo, onchanged);
+                            newValue = readInfo.value;
+                        }
+                        self.updater(newValue, oldValue, ev.batchNum);
                         batchNum = batchNum = ev.batchNum;
                     }
                 };
             }
-            readInfo = getValueAndBind(func, context, {}, onchanged);
-            compute.setCached(readInfo.value);
-            compute.hasDependencies = !can.isEmptyObject(readInfo.observed);
-        },
-        off: function (updater) {
-            for (var name in readInfo.observed) {
-                var ob = readInfo.observed[name];
-                ob.obj.unbind(ob.event, onchanged);
+            readInfo = getValueAndBind(func, context, { observed: {} }, onchanged);
+            if (singleBind) {
+                func = can.__notObserve(func);
             }
-        }
-    };
-};
-var setupSingleBindComputeHandlers = function (compute, func, context) {
-    var readInfo, oldValue, onchanged, batchNum;
-    return {
-        on: function (updater) {
-            if (!onchanged) {
-                onchanged = function (ev) {
-                    if (readInfo.ready && compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
-                        var reads = can.__clearReading();
-                        var newValue = func.call(context);
-                        can.__setReading(reads);
-                        updater.call(compute, newValue, oldValue, ev.batchNum);
-                        oldValue = newValue;
-                        batchNum = batchNum = ev.batchNum;
-                    }
-                };
-            }
-            readInfo = getValueAndBind(func, context, {}, onchanged);
-            oldValue = readInfo.value;
-            compute.setCached(readInfo.value);
+            compute.value = readInfo.value;
             compute.hasDependencies = !can.isEmptyObject(readInfo.observed);
         },
         off: function (updater) {
@@ -154,12 +63,8 @@ var setupSingleBindComputeHandlers = function (compute, func, context) {
 var k = function () {
 };
 var updater = function (newVal, oldVal, batchNum) {
-        this.setCached(newVal);
+        this.value = newVal;
         updateOnChange(this, newVal, oldVal, batchNum);
-    }, createAsyncAltUpdater = function (context, oldUpdater) {
-        return function () {
-            oldUpdater(context._get(), context.value);
-        };
     }, asyncGet = function (fn, context, lastSetValue) {
         return function () {
             return fn.call(context, lastSetValue.get());
@@ -199,12 +104,10 @@ can.Compute = function (getterSetter, context, eventName, bindOnce) {
     can.cid(this, 'compute');
 };
 can.simpleExtend(can.Compute.prototype, {
-    _bindsetup: function () {
+    _bindsetup: can.__notObserve(function () {
         this.bound = true;
-        var oldReading = can.__clearReading();
         this._on(this.updater);
-        can.__setReading(oldReading);
-    },
+    }),
     _bindteardown: function () {
         this._off(this.updater);
         this.bound = false;
@@ -222,8 +125,8 @@ can.simpleExtend(can.Compute.prototype, {
     _on: k,
     _off: k,
     get: function () {
-        if (stack.length && this._canReadForChangeEvent !== false) {
-            can.__reading(this, 'change');
+        if (can.__isRecordingObserves() && this._canObserve !== false) {
+            can.__observe(this, 'change');
             if (!this.bound) {
                 can.Compute.temporarilyBind(this);
             }
@@ -257,9 +160,6 @@ can.simpleExtend(can.Compute.prototype, {
     _set: function (newVal) {
         return this.value = newVal;
     },
-    setCached: function (newVal) {
-        this.value = newVal;
-    },
     updater: updater,
     _computeFn: function (newVal) {
         if (arguments.length) {
@@ -273,31 +173,15 @@ can.simpleExtend(can.Compute.prototype, {
     _setupGetterSetterFn: function (getterSetter, context, eventName, bindOnce) {
         this._set = can.proxy(getterSetter, context);
         this._get = can.proxy(getterSetter, context);
-        this._canReadForChangeEvent = eventName === false ? false : true;
-        this._getterSetter = getterSetter;
-        this._context = context;
-        var handlers;
-        if (bindOnce) {
-            handlers = setupSingleBindComputeHandlers(this, getterSetter, context || this);
-            this._on = handlers.on;
-            this._off = handlers.off;
-        } else {
-            var self = this;
-            this.onchanged = function (ev) {
-                if (self.bound && self.readInfo.ready && (ev.batchNum === undefined || ev.batchNum !== self.batchNum)) {
-                    var oldValue = self.readInfo.value;
-                    self.readInfo = getValueAndBind(getterSetter, context, self.readInfo.observed, self.onchanged);
-                    self.updater(self.readInfo.value, oldValue, ev.batchNum);
-                    self.batchNum = ev.batchNum;
-                }
-            };
-            this._on = setupComputeHandlersOn;
-            this._off = setupComputeHandlersOff;
-        }
+        this._canObserve = eventName === false ? false : true;
+        var handlers = setupComputeHandlers(this, getterSetter, context || this, bindOnce);
+        this._on = handlers.on;
+        this._off = handlers.off;
     },
     _setupContextString: function (target, propertyName, eventName) {
-        var isObserve = target instanceof can.Map, handler;
-        this.updater = can.proxy(this.updater, this);
+        var isObserve = can.isMapLike(target), self = this, handler = function (ev, newVal, oldVal) {
+                self.updater(newVal, oldVal, ev.batchNum);
+            };
         if (isObserve) {
             this.hasDependencies = true;
             this._get = function () {
@@ -307,11 +191,8 @@ can.simpleExtend(can.Compute.prototype, {
                 target.attr(propertyName, val);
             };
             this._on = function (update) {
-                handler = function (ev, newVal, oldVal) {
-                    update(newVal, oldVal, ev.batchNum);
-                };
                 target.bind(eventName || propertyName, handler);
-                this.value = can.__read(this._get).value;
+                this.value = this._get();
             };
             this._off = function () {
                 return target.unbind(eventName || propertyName, handler);
@@ -328,10 +209,14 @@ can.simpleExtend(can.Compute.prototype, {
     },
     _setupContextSettings: function (initialValue, settings) {
         this.value = initialValue;
-        var oldUpdater = can.proxy(this.updater, this);
         this._set = settings.set ? can.proxy(settings.set, settings) : this._set;
         this._get = settings.get ? can.proxy(settings.get, settings) : this._get;
-        this.updater = createAsyncAltUpdater(this, oldUpdater);
+        if (!settings.__selfUpdater) {
+            var self = this, oldUpdater = this.updater;
+            this.updater = function () {
+                oldUpdater.call(self, self._get(), self.value);
+            };
+        }
         this._on = settings.on ? settings.on : this._on;
         this._off = settings.off ? settings.off : this._off;
     },
@@ -346,7 +231,7 @@ can.simpleExtend(can.Compute.prototype, {
             if (newVal === lastSetValue.get()) {
                 return this.value;
             }
-            lastSetValue.set(newVal);
+            return lastSetValue.set(newVal);
         };
         this._get = asyncGet(fn, settings.context, lastSetValue);
         if (fn.length === 0) {

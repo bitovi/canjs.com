@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#map/map*/
+/*can@2.2.6#map/map*/
 var can = require('../util/util.js');
 var bind = require('../util/bind/bind.js');
 var bubble = require('./bubble.js');
@@ -114,7 +114,7 @@ var Map = can.Map = can.Construct.extend({
                         where[name] = result;
                     }
                 });
-                can.__reading(map, '__keys');
+                can.__observe(map, '__keys');
                 if (firstSerialize) {
                     serializeMap = null;
                 }
@@ -133,7 +133,7 @@ var Map = can.Map = can.Construct.extend({
         },
         keys: function (map) {
             var keys = [];
-            can.__reading(map, '__keys');
+            can.__observe(map, '__keys');
             for (var keyName in map._data) {
                 keys.push(keyName);
             }
@@ -221,7 +221,6 @@ var Map = can.Map = can.Construct.extend({
             if (type !== 'string' && type !== 'number') {
                 return this._attrs(attr, val);
             } else if (arguments.length === 1) {
-                can.__reading(this, attr);
                 return this._get(attr);
             } else {
                 this._set(attr, val);
@@ -260,9 +259,12 @@ var Map = can.Map = can.Construct.extend({
                 if (value !== undefined) {
                     return value;
                 }
-                var first = attr.substr(0, dotIndex), second = attr.substr(dotIndex + 1), current = this.__get(first);
+                var first = attr.substr(0, dotIndex), second = attr.substr(dotIndex + 1);
+                can.__observe(this, first);
+                var current = this.__get(first);
                 return current && current._get ? current._get(second) : undefined;
             } else {
+                can.__observe(this, attr);
                 return this.__get(attr);
             }
         },

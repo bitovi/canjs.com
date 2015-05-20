@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#view/stache/mustache_core*/
+/*can@2.2.6#view/stache/mustache_core*/
 // # can/view/stache/mustache_core.js
 // 
 // This provides helper utilities for Mustache processing. Currently,
@@ -110,9 +110,8 @@ steal("can/util",
 			var rendererWithScope = function(ctx, opts, parentNodeList){
 				return renderer(ctx || parentScope, opts, parentNodeList);
 			};
-			return function (newScope, newOptions, parentNodeList) {
+			return can.__notObserve(function (newScope, newOptions, parentNodeList) {
 				// prevent binding on fn.
-				var reads = can.__clearReading();
 				// If a non-scope value is passed, add that to the parent scope.
 				if (newScope !== undefined && !(newScope instanceof can.view.Scope)) {
 					newScope = parentScope.add(newScope);
@@ -121,9 +120,8 @@ steal("can/util",
 					newOptions = parentOptions.add(newOptions);
 				}
 				var result = rendererWithScope(newScope, newOptions || parentOptions, parentNodeList|| nodeList );
-				can.__setReading(reads);
 				return result;
-			};
+			});
 		};
 	
 
@@ -211,7 +209,9 @@ steal("can/util",
 				// `true` if the expression looks like a helper.
 				looksLikeAHelper = exprData.args.length || !can.isEmptyObject(exprData.hash),
 				// The "peaked" at value of the name.
-				initialValue;
+				initialValue,
+				// The function that calls the helper
+				helperEvaluator;
 				
 			// Convert lookup values in arguments to actual values.
 			for(var i = 0, len = exprData.args.length; i < len; i++) {
@@ -257,18 +257,7 @@ steal("can/util",
 						compute = computeData.compute;
 						
 					initialValue = computeData.initialValue;
-					// Optimize for a simple attribute read.
-					if(computeData.reads &&
-						// a single property read
-						computeData.reads.length === 1 &&
-						// on a map
-						computeData.root instanceof can.Map &&
-						// that isn't calling a function
-						!can.isFunction(computeData.root[computeData.reads[0]]) ) {
-						compute = can.compute(computeData.root, computeData.reads[0]);
-					}
-					
-					
+
 					// Set name to be the compute if the compute reads observables,
 					// or the value of the value of the compute if no observables are found.
 					if(computeData.compute.computeInstance.hasDependencies) {
@@ -327,9 +316,11 @@ steal("can/util",
 
 				args.push(helperOptions);
 				// Call the helper.
-				return function () {
+				helperEvaluator = function () {
 					return helper.fn.apply(context, args) || '';
 				};
+				helperEvaluator.bindOnce = false;
+				return helperEvaluator;
 
 			}
 			
@@ -514,7 +505,7 @@ steal("can/util",
 					// A helper function should do it's own binding.  Similar to how
 					// we prevented this function's compute from being noticed by parent expressions,
 					// we hide any observables read in the function by saving any observables that
-					// have been read and then setting them back which overwrites any `can.__reading` calls
+					// have been read and then setting them back which overwrites any `can.__observe` calls
 					// performed in value.
 					var old = can.__clearReading();
 					value(this);

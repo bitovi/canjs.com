@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#view/view*/
+/*can@2.2.6#view/view*/
 // # can/view/view.js
 // -------
 // `can.view`
@@ -735,22 +735,6 @@ steal('can/util', function (can) {
 			// Return the objects for the response's `dataTypes`
 			// (in this case view).
 			return def.resolve(renderer);
-		},
-
-		// Returns a function that automatically converts all computes passed to it
-		simpleHelper: function(fn) {
-			return function() {
-				var realArgs = [];
-				can.each(arguments, function(val, i) {
-					if (i <= arguments.length) {
-						while (val && val.isComputed) {
-							val = val();
-						}
-						realArgs.push(val);
-					}
-				});
-				return fn.apply(this, realArgs);
-			};
 		}
 	});
 

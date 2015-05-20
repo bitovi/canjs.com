@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.0
+ * CanJS - 2.2.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 30 Apr 2015 21:40:42 GMT
+ * Wed, 20 May 2015 23:00:01 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.0#view/stache/stache*/
+/*can@2.2.6#view/stache/stache*/
 define([
     'can/util/library',
     'can/view/parser',
@@ -60,10 +60,11 @@ define([
                     }
                 }
             }, copyState = function (overwrites) {
+                var lastElement = state.sectionElementStack[state.sectionElementStack.length - 1];
                 var cur = {
                         tag: state.node && state.node.tag,
                         attr: state.attr && state.attr.name,
-                        directlyNested: state.sectionElementStack.length ? state.sectionElementStack[state.sectionElementStack.length - 1] === 'section' : true
+                        directlyNested: state.sectionElementStack.length ? lastElement === 'section' || lastElement === 'custom' : true
                     };
                 return overwrites ? can.simpleExtend(cur, overwrites) : cur;
             }, addAttributesCallback = function (node, callback) {
@@ -101,7 +102,7 @@ define([
                     }
                 } else {
                     section.push(state.node);
-                    state.sectionElementStack.push('element');
+                    state.sectionElementStack.push(isCustomTag ? 'custom' : 'element');
                     if (isCustomTag) {
                         section.startSubSection();
                     }
