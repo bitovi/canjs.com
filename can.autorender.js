@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.2.6
+ * CanJS - 2.3.0-pre.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 20 May 2015 23:00:01 GMT
+ * Fri, 29 May 2015 22:07:38 GMT
  * Licensed MIT
  */
 
@@ -43,10 +43,13 @@
 			};
 			args.push(require, module.exports, module);
 		}
-		// Babel uses only the exports objet
+		// Babel uses the exports and module object.
 		else if(!args[0] && deps[0] === "exports") {
 			module = { exports: {} };
 			args[0] = module.exports;
+			if(deps[1] === "module") {
+				args[1] = module;
+			}
 		}
 
 		global.define = origDefine;
@@ -64,12 +67,80 @@
 			global.define = origDefine;
 			eval("(function() { " + __code + " \n }).call(global);");
 			global.define = ourDefine;
-		}
+		},
+		orig: global.System
 	};
 })({},window)
-/*can@2.2.6#view/autorender/autorender*/
+/*can@2.3.0-pre.1#map/app/app*/
+define('can/map/app/app', [
+    'can/util/util',
+    'can/map/map',
+    'can/compute/compute'
+], function (can) {
+    function sortedSetJson(set) {
+        if (set == null) {
+            return set;
+        } else {
+            var sorted = {};
+            var keys = [];
+            for (var k in set) {
+                keys.push(k);
+            }
+            keys.sort();
+            can.each(keys, function (prop) {
+                sorted[prop] = set[prop];
+            });
+            return JSON.stringify(sorted);
+        }
+    }
+    can.AppMap = can.Map.extend({
+        setup: function () {
+            can.Map.prototype.setup.apply(this, arguments);
+            this.__readyPromises = [];
+            this.__pageData = {};
+            if (typeof System !== 'undefined' && System.has('asset-register')) {
+                var register = System.get('asset-register')['default'];
+                var self = this;
+                register('inline-cache', function () {
+                    var script = document.createElement('script');
+                    var text = document.createTextNode('\nINLINE_CACHE = ' + JSON.stringify(self.__pageData) + ';\n');
+                    script.appendChild(text);
+                    return script;
+                });
+            }
+        },
+        waitFor: function (promise) {
+            this.__readyPromises.push(promise);
+            return promise;
+        },
+        pageData: can.__notObserve(function (key, set, inst) {
+            var appState = this;
+            function store(data) {
+                var keyData = appState.__pageData[key];
+                if (!keyData) {
+                    keyData = appState.__pageData[key] = {};
+                }
+                keyData[sortedSetJson(set)] = typeof data.serialize === 'function' ? data.serialize() : data;
+            }
+            if (can.isDeferred(inst)) {
+                this.waitFor(inst);
+                inst.then(function (data) {
+                    store(data);
+                });
+            } else {
+                store(inst);
+            }
+            return inst;
+        })
+    });
+    return can.AppMap;
+});
+/*can@2.3.0-pre.1#view/autorender/autorender*/
 'format steal';
-define('can/view/autorender/autorender', ['can/util/util'], function (can) {
+define('can/view/autorender/autorender', [
+    'can/util/util',
+    'can/map/app/app'
+], function (can, AppState) {
     var deferred = new can.Deferred(), ignoreAttributesRegExp = /^(dataViewId|class|id|type|src)$/i;
     var typeMatch = /\s*text\/(mustache|stache|ejs)\s*/;
     function isIn(element, type) {
@@ -105,7 +176,8 @@ define('can/view/autorender/autorender', ['can/util/util'], function (can) {
         }
     }
     function setupScope(el) {
-        var scope = can.viewModel(el);
+        el = can.$(el);
+        var scope = can.data(el, 'scope') || can.data(el, 'viewModel') ? can.viewModel(el) : new AppState();
         can.each(el.attributes || [], function (attr) {
             setAttr(el, attr.name, scope);
         });
@@ -151,4 +223,5 @@ define('can/view/autorender/autorender', ['can/util/util'], function (can) {
 (function (){
 	window._define = window.define;
 	window.define = window.define.orig;
+	window.System = window.System.orig;
 })();

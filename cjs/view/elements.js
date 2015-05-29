@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.6
+ * CanJS - 2.3.0-pre.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 20 May 2015 23:00:01 GMT
+ * Fri, 29 May 2015 22:07:38 GMT
  * Licensed MIT
  */
 
-/*can@2.2.6#view/elements*/
+/*can@2.3.0-pre.1#view/elements*/
 var can = require('../util/util.js');
 require('./view.js');
 var doc = typeof document !== 'undefined' ? document : null;
@@ -60,9 +60,9 @@ var elements = {
         after: function (oldElements, newFrag) {
             var last = oldElements[oldElements.length - 1];
             if (last.nextSibling) {
-                can.insertBefore(last.parentNode, newFrag, last.nextSibling);
+                can.insertBefore(last.parentNode, newFrag, last.nextSibling, can.document);
             } else {
-                can.appendChild(last.parentNode, newFrag);
+                can.appendChild(last.parentNode, newFrag, can.document);
             }
         },
         replace: function (oldElements, newFrag) {

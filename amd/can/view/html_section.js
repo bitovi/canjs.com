@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.6
+ * CanJS - 2.3.0-pre.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 20 May 2015 23:00:01 GMT
+ * Fri, 29 May 2015 22:07:38 GMT
  * Licensed MIT
  */
 
-/*can@2.2.6#view/stache/html_section*/
+/*can@2.3.0-pre.1#view/stache/html_section*/
 define([
     'can/util/library',
     'can/view/target',
@@ -58,7 +58,7 @@ define([
             var compiled = this.stack.pop().compile();
             return function (scope, options, nodeList) {
                 if (!(scope instanceof can.view.Scope)) {
-                    scope = new can.view.Scope(scope || {});
+                    scope = can.view.Scope.refsScope().add(scope || {});
                 }
                 if (!(options instanceof mustacheCore.Options)) {
                     options = new mustacheCore.Options(options || {});
@@ -105,9 +105,9 @@ define([
             }
         },
         compile: function () {
-            this.compiled = target(this.targetData);
+            this.compiled = target(this.targetData, can.document || can.global.document);
             if (this.inverseData) {
-                this.inverseCompiled = target(this.inverseData);
+                this.inverseCompiled = target(this.inverseData, can.document || can.global.document);
                 delete this.inverseData;
             }
             delete this.targetData;

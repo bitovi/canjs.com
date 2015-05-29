@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.6
+ * CanJS - 2.3.0-pre.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 20 May 2015 23:00:01 GMT
+ * Fri, 29 May 2015 22:07:38 GMT
  * Licensed MIT
  */
 
-/*can@2.2.6#view/live/live*/
+/*can@2.3.0-pre.1#view/live/live*/
 define([
     'can/util/library',
     'can/elements',
@@ -33,6 +33,19 @@ define([
             can.bind.call(el, 'removed', teardown);
             bind(data);
             return data;
+        }, getChildNodes = function (node) {
+            var childNodes = node.childNodes;
+            if ('length' in childNodes) {
+                return childNodes;
+            } else {
+                var cur = node.firstChild;
+                var nodes = [];
+                while (cur) {
+                    nodes.push(cur);
+                    cur = cur.nextSibling;
+                }
+                return nodes;
+            }
         }, listen = function (el, compute, change) {
             return setup(el, function () {
                 compute.bind('change', change);
@@ -59,8 +72,8 @@ define([
         }, splice = [].splice, isNode = function (obj) {
             return obj && obj.nodeType;
         }, addTextNodeIfNoChildren = function (frag) {
-            if (!frag.childNodes.length) {
-                frag.appendChild(document.createTextNode(''));
+            if (!frag.firstChild) {
+                frag.appendChild(frag.ownerDocument.createTextNode(''));
             }
         };
     var live = {
@@ -69,7 +82,7 @@ define([
                         if (!afterPreviousEvents) {
                             return;
                         }
-                        var frag = document.createDocumentFragment(), newNodeLists = [], newIndicies = [];
+                        var frag = text.ownerDocument.createDocumentFragment(), newNodeLists = [], newIndicies = [];
                         can.each(items, function (item, key) {
                             var itemNodeList = [];
                             if (nodeList) {
@@ -77,7 +90,7 @@ define([
                             }
                             var itemIndex = can.compute(key + index), itemHTML = render.call(context, item, itemIndex, itemNodeList), gotText = typeof itemHTML === 'string', itemFrag = can.frag(itemHTML);
                             itemFrag = gotText ? can.view.hookup(itemFrag) : itemFrag;
-                            var childNodes = can.makeArray(itemFrag.childNodes);
+                            var childNodes = can.makeArray(getChildNodes(itemFrag));
                             if (nodeList) {
                                 nodeLists.update(itemNodeList, childNodes);
                                 newNodeLists.push(itemNodeList);
@@ -155,7 +168,7 @@ define([
                             0,
                             temp
                         ]);
-                    }, text = document.createTextNode(''), list, teardownList = function (fullTeardown) {
+                    }, text = el.ownerDocument.createTextNode(''), list, teardownList = function (fullTeardown) {
                         if (list && list.unbind) {
                             list.unbind('add', add).unbind('remove', remove).unbind('move', move);
                         }
@@ -215,9 +228,9 @@ define([
                         if (!aNode && !isFunction) {
                             frag = can.view.hookup(frag, parentNode);
                         }
-                        oldNodes = nodeLists.update(nodes, frag.childNodes);
+                        oldNodes = nodeLists.update(nodes, getChildNodes(frag));
                         if (isFunction) {
-                            val(frag.childNodes[0]);
+                            val(frag.firstChild);
                         }
                         elements.replace(oldNodes, frag);
                     };
@@ -235,7 +248,7 @@ define([
                 if (typeof val === 'string') {
                     frag = can.view.hookup(frag, nodes[0].parentNode);
                 }
-                nodeLists.update(nodes, frag.childNodes);
+                nodeLists.update(nodes, getChildNodes(frag));
                 elements.replace(oldNodes, frag);
                 return nodes;
             },
@@ -247,7 +260,7 @@ define([
                         }
                         data.teardownCheck(node.parentNode);
                     });
-                var node = document.createTextNode(can.view.toStr(compute()));
+                var node = el.ownerDocument.createTextNode(can.view.toStr(compute()));
                 if (nodeList) {
                     nodeList.unregistered = data.teardownCheck;
                     data.nodeList = nodeList;

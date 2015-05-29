@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.6
+ * CanJS - 2.3.0-pre.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 20 May 2015 23:00:01 GMT
+ * Fri, 29 May 2015 22:07:38 GMT
  * Licensed MIT
  */
 
-/*can@2.2.6#view/mustache/mustache*/
+/*can@2.3.0-pre.1#view/mustache/mustache*/
 var can = require('../../util/util.js');
 require('../scope/scope.js');
 require('../view.js');
@@ -352,6 +352,9 @@ Mustache.registerHelper = function (name, fn) {
         name: name,
         fn: fn
     };
+};
+Mustache.registerSimpleHelper = function (name, fn) {
+    Mustache.registerHelper(name, can.view.simpleHelper(fn));
 };
 Mustache.getHelper = function (name, options) {
     var helper;

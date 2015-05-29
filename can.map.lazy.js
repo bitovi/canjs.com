@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.2.6
+ * CanJS - 2.3.0-pre.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 20 May 2015 23:00:01 GMT
+ * Fri, 29 May 2015 22:07:38 GMT
  * Licensed MIT
  */
 
@@ -43,10 +43,13 @@
 			};
 			args.push(require, module.exports, module);
 		}
-		// Babel uses only the exports objet
+		// Babel uses the exports and module object.
 		else if(!args[0] && deps[0] === "exports") {
 			module = { exports: {} };
 			args[0] = module.exports;
+			if(deps[1] === "module") {
+				args[1] = module;
+			}
 		}
 
 		global.define = origDefine;
@@ -64,10 +67,11 @@
 			global.define = origDefine;
 			eval("(function() { " + __code + " \n }).call(global);");
 			global.define = ourDefine;
-		}
+		},
+		orig: global.System
 	};
 })({},window)
-/*can@2.2.6#map/lazy/bubble*/
+/*can@2.3.0-pre.1#map/lazy/bubble*/
 define('can/map/lazy/bubble', [
     'can/util/util',
     'can/map/bubble'
@@ -87,7 +91,7 @@ define('can/map/lazy/bubble', [
         }
     });
 });
-/*can@2.2.6#map/lazy/nested_reference*/
+/*can@2.3.0-pre.1#map/lazy/nested_reference*/
 define('can/map/lazy/nested_reference', ['can/util/util'], function (can) {
     var pathIterator = function (root, propPath, callback) {
         var props = propPath.split('.'), cur = root, part;
@@ -159,7 +163,7 @@ define('can/map/lazy/nested_reference', ['can/util/util'], function (can) {
     });
     can.NestedReference = NestedReference;
 });
-/*can@2.2.6#map/lazy/lazy*/
+/*can@2.3.0-pre.1#map/lazy/lazy*/
 define('can/map/lazy/lazy', [
     'can/util/util',
     'can/map/lazy/bubble',
@@ -380,4 +384,5 @@ define('can/map/lazy/lazy', [
 (function (){
 	window._define = window.define;
 	window.define = window.define.orig;
+	window.System = window.System.orig;
 })();

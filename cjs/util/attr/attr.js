@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.6
+ * CanJS - 2.3.0-pre.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 20 May 2015 23:00:01 GMT
+ * Fri, 29 May 2015 22:07:38 GMT
  * Licensed MIT
  */
 
-/*can@2.2.6#util/attr/attr*/
+/*can@2.3.0-pre.1#util/attr/attr*/
 var can = require('../can.js');
 var setImmediate = can.global.setImmediate || function (cb) {
         return setTimeout(cb, 0);
@@ -31,7 +31,7 @@ var setImmediate = can.global.setImmediate || function (cb) {
                 }
             },
             style: function (el, val) {
-                return el.style.cssText = val || '';
+                return el.style && 'cssText' in el.style ? el.style.cssText = val || '' : el.setAttribute('style', val);
             }
         },
         defaultValue: [
@@ -39,9 +39,10 @@ var setImmediate = can.global.setImmediate || function (cb) {
             'textarea'
         ],
         set: function (el, attrName, val) {
+            var usingMutationObserver = can.isDOM(el) && attr.MutationObserver;
             attrName = attrName.toLowerCase();
             var oldValue;
-            if (!attr.MutationObserver) {
+            if (!usingMutationObserver) {
                 oldValue = attr.get(el, attrName);
             }
             var tagName = el.nodeName.toString().toLowerCase(), prop = attr.map[attrName], newValue;
@@ -66,7 +67,7 @@ var setImmediate = can.global.setImmediate || function (cb) {
                 el.setAttribute(attrName, val);
                 newValue = val;
             }
-            if (!attr.MutationObserver && newValue !== oldValue) {
+            if (!usingMutationObserver && newValue !== oldValue) {
                 attr.trigger(el, attrName, oldValue);
             }
         },

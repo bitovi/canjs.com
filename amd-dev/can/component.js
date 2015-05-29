@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.6
+ * CanJS - 2.3.0-pre.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 20 May 2015 23:00:01 GMT
+ * Fri, 29 May 2015 22:07:38 GMT
  * Licensed MIT
  */
 
-/*can@2.2.6#component/component*/
+/*can@2.3.0-pre.1#component/component*/
 define([
     'can/util/library',
     'can/view/callbacks',
@@ -16,7 +16,7 @@ define([
     'can/view/mustache',
     'can/view/bindings'
 ], function (can, viewCallbacks, elements) {
-    var ignoreAttributesRegExp = /^(dataViewId|class|id)$/i, paramReplacer = /\{([^\}]+)\}/g;
+    var ignoreAttributesRegExp = /^(dataViewId|class|id|\[[\w\.-]+\]|#[\w\.-])$/i, paramReplacer = /\{([^\}]+)\}/g;
     var Component = can.Component = can.Construct.extend({
             setup: function () {
                 can.Construct.setup.apply(this, arguments);
@@ -50,8 +50,8 @@ define([
                 }
             }
         }, {
-            setup: function (el, hookupOptions) {
-                var initialScopeData = {}, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && this.template, twoWayBindings = {}, scope = this.scope || this.viewModel, viewModelPropertyUpdates = {}, componentScope, frag, teardownFunctions = [], callTeardownFunctions = function () {
+            setup: function (el, componentTagData) {
+                var initialScopeData = { '@root': componentTagData.scope.attr('@root') }, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && this.template, twoWayBindings = {}, scope = this.scope || this.viewModel, viewModelPropertyUpdates = {}, componentScope, frag, teardownFunctions = [], callTeardownFunctions = function () {
                         for (var i = 0, len = teardownFunctions.length; i < len; i++) {
                             teardownFunctions[i]();
                         }
@@ -60,7 +60,7 @@ define([
                     initialScopeData[prop] = el.getAttribute(can.hyphenate(val));
                 });
                 can.each(can.makeArray(el.attributes), function (node, index) {
-                    var name = can.camelize(node.nodeName.toLowerCase()), value = node.value;
+                    var name = can.camelize(node.name.toLowerCase()), value = node.value;
                     if (ignoreAttributesRegExp.test(name) && value[0] === '{' && value[value.length - 1] === '}') {
                         can.dev.warn('can/component: looks like you\'re trying to pass ' + name + ' as an attribute into a component, ' + 'but it is not a supported attribute');
                     }
@@ -70,12 +70,12 @@ define([
                     if (value[0] === '{' && value[value.length - 1] === '}') {
                         value = value.substr(1, value.length - 2);
                     } else {
-                        if (hookupOptions.templateType !== 'legacy') {
+                        if (componentTagData.templateType !== 'legacy') {
                             initialScopeData[name] = value;
                             return;
                         }
                     }
-                    var computeData = hookupOptions.scope.computeData(value, { args: [] }), compute = computeData.compute;
+                    var computeData = componentTagData.scope.computeData(value, { args: [] }), compute = computeData.compute;
                     var handler = function (ev, newVal) {
                         viewModelPropertyUpdates[name] = (viewModelPropertyUpdates[name] || 0) + 1;
                         componentScope.attr(name, newVal);
@@ -99,7 +99,7 @@ define([
                 } else if (scope instanceof can.Map) {
                     componentScope = scope;
                 } else if (can.isFunction(scope)) {
-                    var scopeResult = scope.call(this, initialScopeData, hookupOptions.scope, el);
+                    var scopeResult = scope.call(this, initialScopeData, componentTagData.scope, el);
                     if (scopeResult instanceof can.Map) {
                         componentScope = scopeResult;
                     } else if (scopeResult.prototype instanceof can.Map) {
@@ -117,7 +117,7 @@ define([
                     };
                     componentScope.bind(prop, handlers[prop]);
                 });
-                if (!can.isEmptyObject(this.constructor.attributeScopeMappings) || hookupOptions.templateType !== 'legacy') {
+                if (!can.isEmptyObject(this.constructor.attributeScopeMappings) || componentTagData.templateType !== 'legacy') {
                     can.bind.call(el, 'attributes', function (ev) {
                         var camelized = can.camelize(ev.attributeName);
                         if (!twoWayBindings[camelized] && !ignoreAttributesRegExp.test(camelized)) {
@@ -128,13 +128,21 @@ define([
                 this.scope = this.viewModel = componentScope;
                 can.data(can.$(el), 'scope', this.scope);
                 can.data(can.$(el), 'viewModel', this.scope);
-                var renderedScope = lexicalContent ? this.scope : hookupOptions.scope.add(this.scope), options = { helpers: {} };
+                var renderedScope = (lexicalContent ? can.view.Scope.refsScope() : componentTagData.scope.add(new can.view.Scope.Refs())).add(this.scope), options = { helpers: {} }, addHelper = function (name, fn) {
+                        options.helpers[name] = function () {
+                            return fn.apply(componentScope, arguments);
+                        };
+                    };
                 can.each(this.helpers || {}, function (val, prop) {
                     if (can.isFunction(val)) {
-                        options.helpers[prop] = function () {
-                            return val.apply(componentScope, arguments);
-                        };
+                        addHelper(prop, val);
                     }
+                });
+                can.each(this.simpleHelpers || {}, function (val, prop) {
+                    if (options.helpers[prop]) {
+                        can.dev.warn('Component ' + component.tag + ' already has a helper called ' + prop);
+                    }
+                    addHelper(prop, can.view.simpleHelper(val));
                 });
                 teardownFunctions.push(function () {
                     can.each(handlers, function (handler, prop) {
@@ -165,13 +173,25 @@ define([
                     if (!options.tags) {
                         options.tags = {};
                     }
-                    options.tags.content = function contentHookup(el, rendererOptions) {
-                        var subtemplate = hookupOptions.subtemplate || rendererOptions.subtemplate;
+                    options.tags.content = function contentHookup(el, contentTagData) {
+                        var subtemplate = componentTagData.subtemplate || contentTagData.subtemplate, renderingLightContent = subtemplate === componentTagData.subtemplate;
                         if (subtemplate) {
                             delete options.tags.content;
-                            var opts = !lexicalContent || subtemplate !== hookupOptions.subtemplate ? rendererOptions : hookupOptions;
-                            if (rendererOptions.parentNodeList) {
-                                var frag = subtemplate(opts.scope, opts.options, rendererOptions.parentNodeList);
+                            var opts;
+                            if (renderingLightContent) {
+                                if (lexicalContent) {
+                                    opts = componentTagData;
+                                } else {
+                                    opts = {
+                                        scope: contentTagData.scope.cloneFromRef(),
+                                        options: contentTagData.options
+                                    };
+                                }
+                            } else {
+                                opts = contentTagData;
+                            }
+                            if (contentTagData.parentNodeList) {
+                                var frag = subtemplate(opts.scope, opts.options, contentTagData.parentNodeList);
                                 elements.replace([el], frag);
                             } else {
                                 can.view.live.replace([el], subtemplate(opts.scope, opts.options));
@@ -179,16 +199,16 @@ define([
                             options.tags.content = contentHookup;
                         }
                     };
-                    frag = this.constructor.renderer(renderedScope, hookupOptions.options.add(options), nodeList);
+                    frag = this.constructor.renderer(renderedScope, componentTagData.options.add(options), nodeList);
                 } else {
-                    if (hookupOptions.templateType === 'legacy') {
-                        frag = can.view.frag(hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : '');
+                    if (componentTagData.templateType === 'legacy') {
+                        frag = can.view.frag(componentTagData.subtemplate ? componentTagData.subtemplate(renderedScope, componentTagData.options.add(options)) : '');
                     } else {
-                        frag = hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options), nodeList) : document.createDocumentFragment();
+                        frag = componentTagData.subtemplate ? componentTagData.subtemplate(renderedScope, componentTagData.options.add(options), nodeList) : document.createDocumentFragment();
                     }
                 }
-                can.appendChild(el, frag);
-                can.view.nodeLists.update(nodeList, el.childNodes);
+                can.appendChild(el, frag, can.document);
+                can.view.nodeLists.update(nodeList, can.childNodes(el));
             }
         });
     var ComponentControl = can.Control.extend({

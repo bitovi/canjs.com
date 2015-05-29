@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.6
+ * CanJS - 2.3.0-pre.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 20 May 2015 23:00:01 GMT
+ * Fri, 29 May 2015 22:07:38 GMT
  * Licensed MIT
  */
 
-/*can@2.2.6#util/can*/
+/*can@2.3.0-pre.1#util/can*/
 define([], function () {
     var glbl = typeof window !== 'undefined' ? window : global;
     var can = {};
@@ -30,7 +30,7 @@ define([], function () {
         }
         return object._cid;
     };
-    can.VERSION = '2.2.6';
+    can.VERSION = '2.3.0-pre.1';
     can.simpleExtend = function (d, s) {
         for (var prop in s) {
             d[prop] = s[prop];
@@ -39,6 +39,23 @@ define([], function () {
     };
     can.last = function (arr) {
         return arr && arr[arr.length - 1];
+    };
+    can.isDOM = function (el) {
+        return (el.ownerDocument || el) === can.global.document;
+    };
+    can.childNodes = function (node) {
+        var childNodes = node.childNodes;
+        if ('length' in childNodes) {
+            return childNodes;
+        } else {
+            var cur = node.firstChild;
+            var nodes = [];
+            while (cur) {
+                nodes.push(cur);
+                cur = cur.nextSibling;
+            }
+            return nodes;
+        }
     };
     var protoBind = Function.prototype.bind;
     if (protoBind) {
@@ -52,10 +69,11 @@ define([], function () {
             };
         };
     }
-    can.frag = function (item) {
+    can.frag = function (item, doc) {
+        var document = doc || can.document || can.global.document;
         var frag;
         if (!item || typeof item === 'string') {
-            frag = can.buildFragment(item == null ? '' : '' + item, document.body);
+            frag = can.buildFragment(item == null ? '' : '' + item, document);
             if (!frag.childNodes.length) {
                 frag.appendChild(document.createTextNode(''));
             }
@@ -73,8 +91,8 @@ define([], function () {
             });
             return frag;
         } else {
-            frag = can.buildFragment('' + item, document.body);
-            if (!frag.childNodes.length) {
+            frag = can.buildFragment('' + item, document);
+            if (!can.childNodes(frag).length) {
                 frag.appendChild(document.createTextNode(''));
             }
             return frag;
@@ -120,5 +138,6 @@ define([], function () {
     };
     can.__observe = function () {
     };
+    can.isNode = typeof process === 'object' && {}.toString.call(process) === '[object process]';
     return can;
 });

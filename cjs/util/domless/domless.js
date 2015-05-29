@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.6
+ * CanJS - 2.3.0-pre.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 20 May 2015 23:00:01 GMT
+ * Fri, 29 May 2015 22:07:38 GMT
  * Licensed MIT
  */
 
-/*can@2.2.6#util/domless/domless*/
+/*can@2.3.0-pre.1#util/domless/domless*/
 var can = require('../can.js');
 var attr = require('../attr/attr.js');
 require('../array/each.js');

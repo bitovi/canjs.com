@@ -1,20 +1,23 @@
 /*!
- * CanJS - 2.2.6
+ * CanJS - 2.3.0-pre.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 20 May 2015 23:00:01 GMT
+ * Fri, 29 May 2015 22:07:38 GMT
  * Licensed MIT
  */
 
-/*can@2.2.6#util/inserted/inserted*/
+/*can@2.3.0-pre.1#util/inserted/inserted*/
 var can = require('../can.js');
-can.inserted = function (elems) {
+can.inserted = function (elems, document) {
+    if (!elems.length) {
+        return;
+    }
     elems = can.makeArray(elems);
-    var inDocument = false, doc = can.$(document.contains ? document : document.body), children;
+    var doc = document || elems[0].ownerDocument || elems[0], inDocument = false, root = can.$(doc.contains ? doc : doc.body), children;
     for (var i = 0, elem; (elem = elems[i]) !== undefined; i++) {
         if (!inDocument) {
             if (elem.getElementsByTagName) {
-                if (can.has(doc, elem).length) {
+                if (can.has(root, elem).length) {
                     inDocument = true;
                 } else {
                     return;
@@ -32,17 +35,17 @@ can.inserted = function (elems) {
         }
     }
 };
-can.appendChild = function (el, child) {
+can.appendChild = function (el, child, document) {
     var children;
     if (child.nodeType === 11) {
-        children = can.makeArray(child.childNodes);
+        children = can.makeArray(can.childNodes(child));
     } else {
         children = [child];
     }
     el.appendChild(child);
-    can.inserted(children);
+    can.inserted(children, document);
 };
-can.insertBefore = function (el, child, ref) {
+can.insertBefore = function (el, child, ref, document) {
     var children;
     if (child.nodeType === 11) {
         children = can.makeArray(child.childNodes);
@@ -50,5 +53,5 @@ can.insertBefore = function (el, child, ref) {
         children = [child];
     }
     el.insertBefore(child, ref);
-    can.inserted(children);
+    can.inserted(children, document);
 };

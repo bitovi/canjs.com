@@ -1,67 +1,68 @@
 /*!
- * CanJS - 2.2.6
+ * CanJS - 2.3.0-pre.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 20 May 2015 23:00:01 GMT
+ * Fri, 29 May 2015 22:07:38 GMT
  * Licensed MIT
  */
 
-/*can@2.2.6#view/stache/intermediate_and_imports*/
-steal("can/view/stache/mustache_core.js", "can/view/parser",function(mustacheCore, parser){
-	
-	return function(source){
-		
-		var template = mustacheCore.cleanLineEndings(source);
-		var imports = [],
-			inImport = false,
-			inFrom = false;
-		
-		var keepToken = function(){
-			return inImport ? false : true;
-		};
-		
-		var intermediate = parser(template, {
-			start: function( tagName, unary ){
-				if(tagName === "can-import") {
-					inImport = true;
-				}
-				return keepToken();
-			},
-			end: function( tagName, unary ){
-				if(tagName === "can-import") {
-					inImport = false;
-					return false;
-				}
-				return keepToken();
-			},
-			attrStart: function( attrName ){
-				if(attrName === "from") {
-					inFrom = true;
-				}
-				return keepToken();
-			},
-			attrEnd:   function( attrName ){
-				if(attrName === "from") {
-					inFrom = false;
-				}
-				return keepToken();
-			},
-			attrValue: function( value ){
-				if(inFrom && inImport) {
-					imports.push(value);
-				}
-				return keepToken();
-			},
-			chars: keepToken,
-			comment: keepToken,
-			special: keepToken,
-			done: keepToken
-		}, true);
-	    
-		return {intermediate: intermediate, imports: imports};
-	};
-
+/*can@2.3.0-pre.1#view/stache/intermediate_and_imports*/
+steal('can/view/stache/mustache_core.js', 'can/view/parser', 'can/view/import', function (mustacheCore, parser) {
+    return function (source) {
+        var template = mustacheCore.cleanLineEndings(source);
+        var imports = [], ases = {}, inImport = false, inFrom = false, inAs = false, currentAs = '', currentFrom = '';
+        var intermediate = parser(template, {
+                start: function (tagName, unary) {
+                    if (tagName === 'can-import') {
+                        inImport = true;
+                    } else if (inImport) {
+                        inImport = false;
+                    }
+                },
+                attrStart: function (attrName) {
+                    if (attrName === 'from') {
+                        inFrom = true;
+                    } else if (inImport && attrName === '[.]') {
+                        inAs = true;
+                        currentAs = 'viewModel';
+                        return false;
+                    }
+                },
+                attrEnd: function (attrName) {
+                    if (attrName === 'from') {
+                        inFrom = false;
+                    } else if (inImport && attrName === '[.]') {
+                        inAs = false;
+                        return false;
+                    }
+                },
+                attrValue: function (value) {
+                    if (inFrom && inImport) {
+                        imports.push(value);
+                        currentFrom = value;
+                    } else if (inAs && currentAs === 'viewModel') {
+                        return false;
+                    }
+                },
+                end: function (tagName) {
+                    if (tagName === 'can-import') {
+                        if (currentAs) {
+                            ases[currentAs] = currentFrom;
+                            currentAs = '';
+                            inAs = false;
+                        }
+                    }
+                },
+                close: function (tagName) {
+                    if (tagName === 'can-import') {
+                        imports.pop();
+                    }
+                }
+            }, true);
+        return {
+            intermediate: intermediate,
+            imports: imports,
+            ases: ases
+        };
+    };
 });
-
-
-

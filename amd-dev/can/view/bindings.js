@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.6
+ * CanJS - 2.3.0-pre.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 20 May 2015 23:00:01 GMT
+ * Fri, 29 May 2015 22:07:38 GMT
  * Licensed MIT
  */
 
-/*can@2.2.6#view/bindings/bindings*/
+/*can@2.3.0-pre.1#view/bindings/bindings*/
 define([
     'can/util/library',
     'can/view/mustache_core',
@@ -35,14 +35,16 @@ define([
                     return !!editable(el.parentNode);
                 }
             };
-        }(), removeCurly = function (value) {
-            if (value[0] === '{' && value[value.length - 1] === '}') {
+        }(), removeBrackets = function (value, open, close) {
+            open = open || '{';
+            close = close || '}';
+            if (value[0] === open && value[value.length - 1] === close) {
                 return value.substr(1, value.length - 2);
             }
             return value;
         };
     can.view.attr('can-value', function (el, data) {
-        var attr = can.trim(removeCurly(el.getAttribute('can-value'))), value = data.scope.computeData(attr, { args: [] }).compute, trueValue, falseValue;
+        var attr = can.trim(removeBrackets(el.getAttribute('can-value'))), value = data.scope.computeData(attr, { args: [] }).compute, trueValue, falseValue;
         if (el.nodeName.toLowerCase() === 'input') {
             if (el.type === 'checkbox') {
                 if (can.attr.has(el, 'can-true-value')) {
@@ -87,13 +89,13 @@ define([
                 };
             }
         };
-    can.view.attr(/can-[\w\.]+/, function (el, data) {
-        var attributeName = data.attributeName, event = attributeName.substr('can-'.length), handler = function (ev) {
+    var handleEvent = function (el, data) {
+        var attributeName = data.attributeName, event = attributeName.indexOf('can-') === 0 ? attributeName.substr('can-'.length) : removeBrackets(attributeName, '(', ')'), handler = function (ev) {
                 var attrVal = el.getAttribute(attributeName);
                 if (!attrVal) {
                     return;
                 }
-                var attrInfo = mustacheCore.expressionData(removeCurly(attrVal));
+                var attrInfo = mustacheCore.expressionData(removeBrackets(attrVal));
                 var scopeData = data.scope.read(attrInfo.name.get, {
                         returnObserveMethods: true,
                         isArgument: true,
@@ -154,7 +156,9 @@ define([
             event = specialData.event;
         }
         can.bind.call(el, event, handler);
-    });
+    };
+    can.view.attr(/can-[\w\.]+/, handleEvent);
+    can.view.attr(/\([\w\.]+\)/, handleEvent);
     var Value = can.Control.extend({
             init: function () {
                 if (this.element[0].nodeName.toUpperCase() === 'SELECT') {
@@ -263,4 +267,39 @@ define([
                 this.options.value(this.element[0].innerHTML);
             }
         });
+    can.view.attr(/\[[\w\.\-_]+\]/, function (el, attrData) {
+        var prop = removeBrackets(el.getAttribute(attrData.attributeName));
+        var name = can.camelize(removeBrackets(attrData.attributeName, '[', ']'));
+        var viewModel = can.viewModel(el);
+        var scope = new can.view.Scope(viewModel);
+        var computeData = scope.computeData(prop, { args: [] }), compute = computeData.compute;
+        var handler = function (ev, newVal) {
+            attrData.scope.attr(name, newVal);
+        };
+        compute.bind('change', handler);
+        attrData.scope.attr(name, compute());
+        can.one.call(el, 'removed', function () {
+            compute.unbind('change', handler);
+        });
+    });
+    can.view.attr(/#[\w\.\-_]+/, function (el, attrData) {
+        var prop = removeBrackets(el.getAttribute(attrData.attributeName)) || '.';
+        var name = can.camelize(attrData.attributeName.substr(1).toLowerCase());
+        var viewModel = can.viewModel(el);
+        var scope = new can.view.Scope(viewModel);
+        var refs = attrData.scope.getRefs();
+        var computeData = scope.computeData(prop, {
+                args: [],
+                isArgument: true
+            }), compute = computeData.compute;
+        var handler = function (ev, newVal) {
+            refs.attr(name, newVal);
+        };
+        compute.bind('change', handler);
+        var initialValue = compute();
+        refs.attr(name, initialValue === undefined ? null : initialValue);
+        can.one.call(el, 'removed', function () {
+            compute.unbind('change', handler);
+        });
+    });
 });

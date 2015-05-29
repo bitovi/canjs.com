@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.6
+ * CanJS - 2.3.0-pre.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 20 May 2015 23:00:01 GMT
+ * Fri, 29 May 2015 22:07:38 GMT
  * Licensed MIT
  */
 
-/*can@2.2.6#compute/compute*/
+/*can@2.3.0-pre.1#compute/compute*/
 define([
     'can/util/library',
     'can/util/bind',
@@ -66,5 +66,13 @@ define([
     };
     can.compute.read = can.Compute.read;
     can.compute.set = can.Compute.set;
+    can.__notObserve = function (fn) {
+        return function () {
+            var previousReads = can.__clearReading();
+            var res = fn.apply(this, arguments);
+            can.__setReading(previousReads);
+            return res;
+        };
+    };
     return can.compute;
 });

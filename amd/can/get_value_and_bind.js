@@ -1,13 +1,13 @@
 /*!
- * CanJS - 2.2.6
+ * CanJS - 2.3.0-pre.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 20 May 2015 23:00:01 GMT
+ * Fri, 29 May 2015 22:07:38 GMT
  * Licensed MIT
  */
 
-/*can@2.2.6#compute/get_value_and_bind*/
-define(['can/util/library'], function () {
+/*can@2.3.0-pre.1#compute/get_value_and_bind*/
+define(['can/util/library'], function (can) {
     function observe(func, context, oldInfo, onchanged) {
         var info = getValueAndObserved(func, context), newObserveSet = info.observed, oldObserved = oldInfo.observed;
         if (info.names !== oldInfo.names) {
@@ -44,7 +44,10 @@ define(['can/util/library'], function () {
     can.__clearObserved = can.__clearReading = function () {
         if (observedStack.length) {
             var ret = observedStack[observedStack.length - 1];
-            observedStack[observedStack.length - 1] = { observed: {} };
+            observedStack[observedStack.length - 1] = {
+                names: '',
+                observed: {}
+            };
             return ret;
         }
     };
@@ -55,7 +58,9 @@ define(['can/util/library'], function () {
     };
     can.__addObserved = can.__addReading = function (o) {
         if (observedStack.length) {
-            can.simpleExtend(observedStack[observedStack.length - 1], o);
+            var last = observedStack[observedStack.length - 1];
+            can.simpleExtend(last.observed, o.observed);
+            last.names += o.names;
         }
     };
     var getValueAndObserved = function (func, self) {

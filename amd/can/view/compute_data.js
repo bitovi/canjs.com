@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.6
+ * CanJS - 2.3.0-pre.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 20 May 2015 23:00:01 GMT
+ * Fri, 29 May 2015 22:07:38 GMT
  * Licensed MIT
  */
 
-/*can@2.2.6#view/scope/compute_data*/
+/*can@2.3.0-pre.1#view/scope/compute_data*/
 define([
     'can/util/library',
     'can/compute',
@@ -37,11 +37,12 @@ define([
     };
     var scopeReader = function (scope, key, options, computeData, newVal) {
         if (arguments.length > 4) {
-            if (computeData.root.isComputed) {
-                computeData.root(newVal);
+            var root = computeData.root || computeData.setRoot;
+            if (root.isComputed) {
+                root(newVal);
             } else if (computeData.reads.length) {
                 var last = computeData.reads.length - 1;
-                var obj = computeData.reads.length ? can.compute.read(computeData.root, computeData.reads.slice(0, last)).value : computeData.root;
+                var obj = computeData.reads.length ? can.compute.read(root, computeData.reads.slice(0, last)).value : root;
                 can.compute.set(obj, computeData.reads[last], newVal, options);
             }
         } else {
@@ -53,6 +54,7 @@ define([
             computeData.initialValue = data.value;
             computeData.reads = data.reads;
             computeData.root = data.rootObserve;
+            computeData.setRoot = data.setRoot;
             return data.value;
         }
     };
