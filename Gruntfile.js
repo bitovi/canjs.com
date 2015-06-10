@@ -147,15 +147,26 @@ module.exports = function (grunt) {
 	var subTasks = ['docco:dev'];
 	var all = ["documentjs:pages"];
 	_.each(versions, function(value, versionNumber){
-			all.push('docjs:'+versionNumber)
-			grunt.registerTask('docjs:'+versionNumber,
-				['clean:'+versionNumber,
-				 'documentjs:'+versionNumber,
-				 'docco:'+versionNumber,
-				 'plato:'+versionNumber,
-				 'clean:'+versionNumber+"-removeGitIgnore"]);
+		var task = 'docjs:'+versionNumber;
+		all.push(task);
+		grunt.registerTask(task,
+			['clean:'+versionNumber,
+			 'documentjs:'+versionNumber,
+			 'docco:'+versionNumber,
+			 'plato:'+versionNumber,
+			 'clean:'+versionNumber+"-removeGitIgnore"]);
+		if(versionNumber === defaultVersion) {
+			grunt.registerTask('master', [task]);
+		} else if(versionNumber > defaultVersion) {
+			if(versionNumber.charAt(0) === defaultVersion.charAt(0)) {
+				grunt.registerTask('minor', [task]);
+			} else {
+				grunt.registerTask('major', [task]);
+			}
 
+		}
 	});
+
 	grunt.registerTask('docjs:default',
 				['docjs:'+defaultVersion]);
 	grunt.registerTask('docjs:all', all);
