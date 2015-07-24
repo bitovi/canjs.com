@@ -1,21 +1,21 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#view/target/target*/
+/*can@2.2.7#view/target/target*/
 define([
     'can/util/library',
     'can/elements'
-], function (can, elements, vdom) {
-    var processNodes = function (nodes, paths, location, document) {
+], function (can, elements) {
+    var processNodes = function (nodes, paths, location) {
             var frag = document.createDocumentFragment();
             for (var i = 0, len = nodes.length; i < len; i++) {
                 var node = nodes[i];
-                frag.appendChild(processNode(node, paths, location.concat(i), document));
+                frag.appendChild(processNode(node, paths, location.concat(i)));
             }
             return frag;
         }, keepsTextNodes = typeof document !== 'undefined' && function () {
@@ -25,20 +25,13 @@ define([
             div.appendChild(document.createTextNode(''));
             testFrag.appendChild(div);
             var cloned = testFrag.cloneNode(true);
-            return can.childNodes(cloned.firstChild).length === 2;
+            return cloned.childNodes[0].childNodes.length === 2;
         }(), clonesWork = typeof document !== 'undefined' && function () {
             var a = document.createElement('a');
             a.innerHTML = '<xyz></xyz>';
             var clone = a.cloneNode(true);
             return clone.innerHTML === '<xyz></xyz>';
-        }(), namespacesWork = typeof document !== 'undefined' && !!document.createElementNS, attributeDummy = typeof document !== 'undefined' ? document.createElement('div') : null, setAttribute = function (el, attrName, value) {
-            try {
-                el.setAttribute(attrName, value);
-            } catch (e) {
-                attributeDummy.innerHTML = '<div ' + attrName + '="' + value + '"></div>';
-                el.setAttributeNode(attributeDummy.childNodes[0].attributes[0].cloneNode());
-            }
-        };
+        }(), namespacesWork = typeof document !== 'undefined' && !!document.createElementNS;
     var cloneNode = clonesWork ? function (el) {
             return el.cloneNode(true);
         } : function (node) {
@@ -56,7 +49,7 @@ define([
                 var attributes = can.makeArray(node.attributes);
                 can.each(attributes, function (node) {
                     if (node && node.specified) {
-                        setAttribute(copy, node.nodeName, node.nodeValue);
+                        copy.setAttribute(node.nodeName, node.nodeValue);
                     }
                 });
             }
@@ -67,7 +60,7 @@ define([
             }
             return copy;
         };
-    function processNode(node, paths, location, document) {
+    function processNode(node, paths, location) {
         var callback, loc = location, nodeType = typeof node, el, p, i, len;
         var getCallback = function () {
             if (!callback) {
@@ -93,7 +86,7 @@ define([
                         if (typeof value === 'function') {
                             getCallback().callbacks.push({ callback: value });
                         } else {
-                            setAttribute(el, attrName, value);
+                            el.setAttribute(attrName, value);
                         }
                     }
                 }
@@ -108,7 +101,7 @@ define([
                     } else {
                         p = paths;
                     }
-                    el.appendChild(processNodes(node.children, p, loc, document));
+                    el.appendChild(processNodes(node.children, p, loc));
                 }
             } else if (node.comment) {
                 el = document.createComment(node.comment);
@@ -137,44 +130,33 @@ define([
         }
         return el;
     }
-    function getCallbacks(el, pathData, elementCallbacks) {
-        var path = pathData.path, callbacks = pathData.callbacks, paths = pathData.paths, child = el, pathLength = path ? path.length : 0, pathsLength = paths ? paths.length : 0;
-        for (var i = 0; i < pathLength; i++) {
-            child = child.childNodes.item(path[i]);
+    function hydratePath(el, pathData, args) {
+        var path = pathData.path, callbacks = pathData.callbacks, paths = pathData.paths, callbackData, child = el;
+        for (var i = 0, len = path.length; i < len; i++) {
+            child = child.childNodes[path[i]];
         }
-        elementCallbacks.push({
-            element: child,
-            callbacks: callbacks
-        });
-        for (i = 0; i < pathsLength; i++) {
-            getCallbacks(child, paths[i], elementCallbacks);
-        }
-    }
-    function hydrateCallbacks(callbacks, args) {
-        var len = callbacks.length, callbacksLength, callbackElement, callbackData;
-        for (var i = 0; i < len; i++) {
+        for (i = 0, len = callbacks.length; i < len; i++) {
             callbackData = callbacks[i];
-            callbacksLength = callbackData.callbacks.length;
-            callbackElement = callbackData.element;
-            for (var c = 0; c < callbacksLength; c++) {
-                callbackData.callbacks[c].callback.apply(callbackElement, args);
+            callbackData.callback.apply(child, args);
+        }
+        if (paths && paths.length) {
+            for (i = paths.length - 1; i >= 0; i--) {
+                hydratePath(child, paths[i], args);
             }
         }
     }
-    function makeTarget(nodes, doc) {
+    function makeTarget(nodes) {
         var paths = [];
-        var frag = processNodes(nodes, paths, [], doc || can.global.document);
+        var frag = processNodes(nodes, paths, []);
         return {
             paths: paths,
             clone: frag,
             hydrate: function () {
                 var cloned = cloneNode(this.clone);
                 var args = can.makeArray(arguments);
-                var callbacks = [];
-                for (var i = 0; i < paths.length; i++) {
-                    getCallbacks(cloned, paths[i], callbacks);
+                for (var i = paths.length - 1; i >= 0; i--) {
+                    hydratePath(cloned, paths[i], args);
                 }
-                hydrateCallbacks(callbacks, args);
                 return cloned;
             }
         };

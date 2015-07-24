@@ -1,14 +1,14 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#component/component*/
+/*can@2.2.7#component/component*/
 steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/control', 'can/observe', 'can/view/mustache', 'can/view/bindings', function (can, viewCallbacks, elements) {
-    var ignoreAttributesRegExp = /^(dataViewId|class|id|\[[\w\.-]+\]|#[\w\.-])$/i, paramReplacer = /\{([^\}]+)\}/g;
+    var ignoreAttributesRegExp = /^(dataViewId|class|id)$/i, paramReplacer = /\{([^\}]+)\}/g;
     var Component = can.Component = can.Construct.extend({
             setup: function () {
                 can.Construct.setup.apply(this, arguments);
@@ -42,8 +42,8 @@ steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/control', '
                 }
             }
         }, {
-            setup: function (el, componentTagData) {
-                var initialScopeData = { '@root': componentTagData.scope.attr('@root') }, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && this.template, twoWayBindings = {}, scope = this.scope || this.viewModel, viewModelPropertyUpdates = {}, componentScope, frag, teardownFunctions = [], callTeardownFunctions = function () {
+            setup: function (el, hookupOptions) {
+                var initialScopeData = {}, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && this.template, twoWayBindings = {}, scope = this.scope || this.viewModel, viewModelPropertyUpdates = {}, componentScope, frag, teardownFunctions = [], callTeardownFunctions = function () {
                         for (var i = 0, len = teardownFunctions.length; i < len; i++) {
                             teardownFunctions[i]();
                         }
@@ -52,7 +52,7 @@ steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/control', '
                     initialScopeData[prop] = el.getAttribute(can.hyphenate(val));
                 });
                 can.each(can.makeArray(el.attributes), function (node, index) {
-                    var name = can.camelize(node.name.toLowerCase()), value = node.value;
+                    var name = can.camelize(node.nodeName.toLowerCase()), value = node.value;
                     if (ignoreAttributesRegExp.test(name) && value[0] === '{' && value[value.length - 1] === '}') {
                         can.dev.warn('can/component: looks like you\'re trying to pass ' + name + ' as an attribute into a component, ' + 'but it is not a supported attribute');
                     }
@@ -62,12 +62,12 @@ steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/control', '
                     if (value[0] === '{' && value[value.length - 1] === '}') {
                         value = value.substr(1, value.length - 2);
                     } else {
-                        if (componentTagData.templateType !== 'legacy') {
+                        if (hookupOptions.templateType !== 'legacy') {
                             initialScopeData[name] = value;
                             return;
                         }
                     }
-                    var computeData = componentTagData.scope.computeData(value, { args: [] }), compute = computeData.compute;
+                    var computeData = hookupOptions.scope.computeData(value, { args: [] }), compute = computeData.compute;
                     var handler = function (ev, newVal) {
                         viewModelPropertyUpdates[name] = (viewModelPropertyUpdates[name] || 0) + 1;
                         componentScope.attr(name, newVal);
@@ -91,7 +91,7 @@ steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/control', '
                 } else if (scope instanceof can.Map) {
                     componentScope = scope;
                 } else if (can.isFunction(scope)) {
-                    var scopeResult = scope.call(this, initialScopeData, componentTagData.scope, el);
+                    var scopeResult = scope.call(this, initialScopeData, hookupOptions.scope, el);
                     if (scopeResult instanceof can.Map) {
                         componentScope = scopeResult;
                     } else if (scopeResult.prototype instanceof can.Map) {
@@ -109,7 +109,7 @@ steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/control', '
                     };
                     componentScope.bind(prop, handlers[prop]);
                 });
-                if (!can.isEmptyObject(this.constructor.attributeScopeMappings) || componentTagData.templateType !== 'legacy') {
+                if (!can.isEmptyObject(this.constructor.attributeScopeMappings) || hookupOptions.templateType !== 'legacy') {
                     can.bind.call(el, 'attributes', function (ev) {
                         var camelized = can.camelize(ev.attributeName);
                         if (!twoWayBindings[camelized] && !ignoreAttributesRegExp.test(camelized)) {
@@ -120,21 +120,13 @@ steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/control', '
                 this.scope = this.viewModel = componentScope;
                 can.data(can.$(el), 'scope', this.scope);
                 can.data(can.$(el), 'viewModel', this.scope);
-                var renderedScope = (lexicalContent ? can.view.Scope.refsScope() : componentTagData.scope.add(new can.view.Scope.Refs())).add(this.scope), options = { helpers: {} }, addHelper = function (name, fn) {
-                        options.helpers[name] = function () {
-                            return fn.apply(componentScope, arguments);
-                        };
-                    };
+                var renderedScope = lexicalContent ? this.scope : hookupOptions.scope.add(this.scope), options = { helpers: {} };
                 can.each(this.helpers || {}, function (val, prop) {
                     if (can.isFunction(val)) {
-                        addHelper(prop, val);
+                        options.helpers[prop] = function () {
+                            return val.apply(componentScope, arguments);
+                        };
                     }
-                });
-                can.each(this.simpleHelpers || {}, function (val, prop) {
-                    if (options.helpers[prop]) {
-                        can.dev.warn('Component ' + component.tag + ' already has a helper called ' + prop);
-                    }
-                    addHelper(prop, can.view.simpleHelper(val));
                 });
                 teardownFunctions.push(function () {
                     can.each(handlers, function (handler, prop) {
@@ -143,20 +135,9 @@ steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/control', '
                 });
                 this._control = new this.constructor.Control(el, {
                     scope: this.scope,
-                    viewModel: this.scope
+                    viewModel: this.scope,
+                    destroy: callTeardownFunctions
                 });
-                if (this._control && this._control.destroy) {
-                    var oldDestroy = this._control.destroy;
-                    this._control.destroy = function () {
-                        oldDestroy.apply(this, arguments);
-                        callTeardownFunctions();
-                    };
-                    this._control.on();
-                } else {
-                    can.bind.call(el, 'removed', function () {
-                        callTeardownFunctions();
-                    });
-                }
                 var nodeList = can.view.nodeLists.register([], undefined, true);
                 teardownFunctions.push(function () {
                     can.view.nodeLists.unregister(nodeList);
@@ -165,25 +146,13 @@ steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/control', '
                     if (!options.tags) {
                         options.tags = {};
                     }
-                    options.tags.content = function contentHookup(el, contentTagData) {
-                        var subtemplate = componentTagData.subtemplate || contentTagData.subtemplate, renderingLightContent = subtemplate === componentTagData.subtemplate;
+                    options.tags.content = function contentHookup(el, rendererOptions) {
+                        var subtemplate = hookupOptions.subtemplate || rendererOptions.subtemplate;
                         if (subtemplate) {
                             delete options.tags.content;
-                            var opts;
-                            if (renderingLightContent) {
-                                if (lexicalContent) {
-                                    opts = componentTagData;
-                                } else {
-                                    opts = {
-                                        scope: contentTagData.scope.cloneFromRef(),
-                                        options: contentTagData.options
-                                    };
-                                }
-                            } else {
-                                opts = contentTagData;
-                            }
-                            if (contentTagData.parentNodeList) {
-                                var frag = subtemplate(opts.scope, opts.options, contentTagData.parentNodeList);
+                            var opts = !lexicalContent || subtemplate !== hookupOptions.subtemplate ? rendererOptions : hookupOptions;
+                            if (rendererOptions.parentNodeList) {
+                                var frag = subtemplate(opts.scope, opts.options, rendererOptions.parentNodeList);
                                 elements.replace([el], frag);
                             } else {
                                 can.view.live.replace([el], subtemplate(opts.scope, opts.options));
@@ -191,16 +160,16 @@ steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/control', '
                             options.tags.content = contentHookup;
                         }
                     };
-                    frag = this.constructor.renderer(renderedScope, componentTagData.options.add(options), nodeList);
+                    frag = this.constructor.renderer(renderedScope, hookupOptions.options.add(options), nodeList);
                 } else {
-                    if (componentTagData.templateType === 'legacy') {
-                        frag = can.view.frag(componentTagData.subtemplate ? componentTagData.subtemplate(renderedScope, componentTagData.options.add(options)) : '');
+                    if (hookupOptions.templateType === 'legacy') {
+                        frag = can.view.frag(hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : '');
                     } else {
-                        frag = componentTagData.subtemplate ? componentTagData.subtemplate(renderedScope, componentTagData.options.add(options), nodeList) : document.createDocumentFragment();
+                        frag = hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options), nodeList) : document.createDocumentFragment();
                     }
                 }
-                can.appendChild(el, frag, can.document);
-                can.view.nodeLists.update(nodeList, can.childNodes(el));
+                can.appendChild(el, frag);
+                can.view.nodeLists.update(nodeList, el.childNodes);
             }
         });
     var ComponentControl = can.Control.extend({
@@ -277,6 +246,11 @@ steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/control', '
                 }
                 can.Control.prototype.off.apply(this, arguments);
                 this._bindings.readyComputes = {};
+            },
+            destroy: function () {
+                if (typeof this.options.destroy === 'function') {
+                    this.options.destroy.apply(this, arguments);
+                }
             }
         });
     var $ = can.$;

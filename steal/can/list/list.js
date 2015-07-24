@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#list/list*/
+/*can@2.2.7#list/list*/
 steal('can/util', 'can/map', 'can/map/bubble.js', function (can, Map, bubble) {
     var splice = [].splice, spliceRemovesProps = function () {
             var obj = {
@@ -251,14 +251,6 @@ steal('can/util', 'can/map', 'can/map/bubble.js', function (can, Map, bubble) {
                 if (filtered) {
                     filteredList.push(item);
                 }
-            });
-            return filteredList;
-        },
-        map: function (callback, thisArg) {
-            var filteredList = new can.List(), self = this;
-            this.each(function (item, index, list) {
-                var mapped = callback.call(thisArg | self, item, index, self);
-                filteredList.push(mapped);
             });
             return filteredList;
         }

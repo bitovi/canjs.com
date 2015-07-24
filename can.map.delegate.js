@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
@@ -71,7 +71,7 @@
 		orig: global.System
 	};
 })({},window)
-/*can@2.3.0-pre.1#map/delegate/delegate*/
+/*can@2.2.7#map/delegate/delegate*/
 define('can/map/delegate/delegate', [
     'can/util/util',
     'can/map/map'

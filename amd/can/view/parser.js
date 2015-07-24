@@ -1,23 +1,18 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#view/parser/parser*/
-define([], function () {
-    function each(items, callback) {
-        for (var i = 0; i < items.length; i++) {
-            callback(items[i], i);
-        }
-    }
+/*can@2.2.7#view/parser/parser*/
+define(['can/view'], function (can) {
     function makeMap(str) {
         var obj = {}, items = str.split(',');
-        each(items, function (name) {
-            obj[name] = true;
-        });
+        for (var i = 0; i < items.length; i++) {
+            obj[items[i]] = true;
+        }
         return obj;
     }
     function handleIntermediate(intermediate, handler) {
@@ -27,7 +22,7 @@ define([], function () {
         }
         return intermediate;
     }
-    var alphaNumericHU = '-:A-Za-z0-9_', attributeNames = '[^=>\\s\\{\\}\\/]+', spaceEQspace = '\\s*=\\s*', dblQuote2dblQuote = '"((?:\\\\.|[^"])*)"', quote2quote = '\'((?:\\\\.|[^\'])*)\'', attributeEqAndValue = '(?:' + spaceEQspace + '(?:' + '(?:"[^"]*")|(?:\'[^\']*\')|[^>\\s]+))?', matchStash = '\\{\\{[^\\}]*\\}\\}\\}?', stash = '\\{\\{([^\\}]*)\\}\\}\\}?', startTag = new RegExp('^<([' + alphaNumericHU + ']+)' + '(' + '(?:\\s*' + '(?:(?:' + '(?:' + attributeNames + ')?' + attributeEqAndValue + ')|' + '(?:' + matchStash + ')+)' + ')*' + ')\\s*(\\/?)>'), endTag = new RegExp('^<\\/([' + alphaNumericHU + ']+)[^>]*>'), attr = new RegExp('(?:' + '(?:(' + attributeNames + ')|' + stash + ')' + '(?:' + spaceEQspace + '(?:' + '(?:' + dblQuote2dblQuote + ')|(?:' + quote2quote + ')|([^>\\s]+)' + ')' + ')?)', 'g'), mustache = new RegExp(stash, 'g'), txtBreak = /<|\{\{/;
+    var alphaNumericHU = '-:A-Za-z0-9_', attributeNames = '[a-zA-Z_:][' + alphaNumericHU + ':.]*', spaceEQspace = '\\s*=\\s*', dblQuote2dblQuote = '"((?:\\\\.|[^"])*)"', quote2quote = '\'((?:\\\\.|[^\'])*)\'', attributeEqAndValue = '(?:' + spaceEQspace + '(?:' + '(?:"[^"]*")|(?:\'[^\']*\')|[^>\\s]+))?', matchStash = '\\{\\{[^\\}]*\\}\\}\\}?', stash = '\\{\\{([^\\}]*)\\}\\}\\}?', startTag = new RegExp('^<([' + alphaNumericHU + ']+)' + '(' + '(?:\\s*' + '(?:(?:' + '(?:' + attributeNames + ')?' + attributeEqAndValue + ')|' + '(?:' + matchStash + ')+)' + ')*' + ')\\s*(\\/?)>'), endTag = new RegExp('^<\\/([' + alphaNumericHU + ']+)[^>]*>'), attr = new RegExp('(?:' + '(?:(' + attributeNames + ')|' + stash + ')' + '(?:' + spaceEQspace + '(?:' + '(?:' + dblQuote2dblQuote + ')|(?:' + quote2quote + ')|([^>\\s]+)' + ')' + ')?)', 'g'), mustache = new RegExp(stash, 'g'), txtBreak = /<|\{\{/;
     var empty = makeMap('area,base,basefont,br,col,frame,hr,img,input,isindex,link,meta,param,embed');
     var block = makeMap('a,address,article,applet,aside,audio,blockquote,button,canvas,center,dd,del,dir,div,dl,dt,fieldset,figcaption,figure,footer,form,frameset,h1,h2,h3,h4,h5,h6,header,hgroup,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,output,p,pre,section,script,table,tbody,td,tfoot,th,thead,tr,ul,video');
     var inline = makeMap('abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var');
@@ -44,13 +39,13 @@ define([], function () {
         var intermediate = [];
         handler = handler || {};
         if (returnIntermediate) {
-            each(tokenTypes, function (name) {
+            can.each(tokenTypes, function (name) {
                 var callback = handler[name] || fn;
                 handler[name] = function () {
                     if (callback.apply(this, arguments) !== false) {
                         intermediate.push({
                             tokenType: name,
-                            args: [].slice.call(arguments, 0)
+                            args: can.makeArray(arguments)
                         });
                     }
                 };
@@ -99,15 +94,7 @@ define([], function () {
                 handler.special(inside);
             }
         }
-        var callChars = function () {
-            if (charsText) {
-                if (handler.chars) {
-                    handler.chars(charsText);
-                }
-            }
-            charsText = '';
-        };
-        var index, chars, match, stack = [], last = html, charsText = '';
+        var index, chars, match, stack = [], last = html;
         stack.last = function () {
             return this[this.length - 1];
         };
@@ -117,7 +104,6 @@ define([], function () {
                 if (html.indexOf('<!--') === 0) {
                     index = html.indexOf('-->');
                     if (index >= 0) {
-                        callChars();
                         if (handler.comment) {
                             handler.comment(html.substring(4, index));
                         }
@@ -127,7 +113,6 @@ define([], function () {
                 } else if (html.indexOf('</') === 0) {
                     match = html.match(endTag);
                     if (match) {
-                        callChars();
                         html = html.substring(match[0].length);
                         match[0].replace(endTag, parseEndTag);
                         chars = false;
@@ -135,7 +120,6 @@ define([], function () {
                 } else if (html.indexOf('<') === 0) {
                     match = html.match(startTag);
                     if (match) {
-                        callChars();
                         html = html.substring(match[0].length);
                         match[0].replace(startTag, parseStartTag);
                         chars = false;
@@ -143,22 +127,16 @@ define([], function () {
                 } else if (html.indexOf('{{') === 0) {
                     match = html.match(mustache);
                     if (match) {
-                        callChars();
                         html = html.substring(match[0].length);
                         match[0].replace(mustache, parseMustache);
                     }
                 }
                 if (chars) {
                     index = html.search(txtBreak);
-                    if (index === 0 && html === last) {
-                        charsText += html.charAt(0);
-                        html = html.substr(1);
-                        index = html.search(txtBreak);
-                    }
                     var text = index < 0 ? html : html.substring(0, index);
                     html = index < 0 ? '' : html.substring(index);
-                    if (text) {
-                        charsText += text;
+                    if (handler.chars && text) {
+                        handler.chars(text);
                     }
                 }
             } else {
@@ -176,7 +154,6 @@ define([], function () {
             }
             last = html;
         }
-        callChars();
         parseEndTag();
         handler.done();
         return intermediate;
@@ -207,5 +184,6 @@ define([], function () {
             }
         });
     };
+    can.view.parser = HTMLParser;
     return HTMLParser;
 });

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
@@ -71,7 +71,7 @@
 		orig: global.System
 	};
 })({},window)
-/*can@2.3.0-pre.1#map/lazy/bubble*/
+/*can@2.2.7#map/lazy/bubble*/
 define('can/map/lazy/bubble', [
     'can/util/util',
     'can/map/bubble'
@@ -91,7 +91,7 @@ define('can/map/lazy/bubble', [
         }
     });
 });
-/*can@2.3.0-pre.1#map/lazy/nested_reference*/
+/*can@2.2.7#map/lazy/nested_reference*/
 define('can/map/lazy/nested_reference', ['can/util/util'], function (can) {
     var pathIterator = function (root, propPath, callback) {
         var props = propPath.split('.'), cur = root, part;
@@ -163,7 +163,7 @@ define('can/map/lazy/nested_reference', ['can/util/util'], function (can) {
     });
     can.NestedReference = NestedReference;
 });
-/*can@2.3.0-pre.1#map/lazy/lazy*/
+/*can@2.2.7#map/lazy/lazy*/
 define('can/map/lazy/lazy', [
     'can/util/util',
     'can/map/lazy/bubble',

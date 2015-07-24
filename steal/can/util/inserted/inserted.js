@@ -1,23 +1,20 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#util/inserted/inserted*/
+/*can@2.2.7#util/inserted/inserted*/
 steal('can/util/can.js', function (can) {
-    can.inserted = function (elems, document) {
-        if (!elems.length) {
-            return;
-        }
+    can.inserted = function (elems) {
         elems = can.makeArray(elems);
-        var doc = document || elems[0].ownerDocument || elems[0], inDocument = false, root = can.$(doc.contains ? doc : doc.body), children;
+        var inDocument = false, doc = can.$(document.contains ? document : document.body), children;
         for (var i = 0, elem; (elem = elems[i]) !== undefined; i++) {
             if (!inDocument) {
                 if (elem.getElementsByTagName) {
-                    if (can.has(root, elem).length) {
+                    if (can.has(doc, elem).length) {
                         inDocument = true;
                     } else {
                         return;
@@ -35,17 +32,17 @@ steal('can/util/can.js', function (can) {
             }
         }
     };
-    can.appendChild = function (el, child, document) {
+    can.appendChild = function (el, child) {
         var children;
         if (child.nodeType === 11) {
-            children = can.makeArray(can.childNodes(child));
+            children = can.makeArray(child.childNodes);
         } else {
             children = [child];
         }
         el.appendChild(child);
-        can.inserted(children, document);
+        can.inserted(children);
     };
-    can.insertBefore = function (el, child, ref, document) {
+    can.insertBefore = function (el, child, ref) {
         var children;
         if (child.nodeType === 11) {
             children = can.makeArray(child.childNodes);
@@ -53,6 +50,6 @@ steal('can/util/can.js', function (can) {
             children = [child];
         }
         el.insertBefore(child, ref);
-        can.inserted(children, document);
+        can.inserted(children);
     };
 });

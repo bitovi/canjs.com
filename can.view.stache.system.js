@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
@@ -71,16 +71,16 @@
 		orig: global.System
 	};
 })({},window)
-/*can@2.3.0-pre.1#view/target/target*/
+/*can@2.2.7#view/target/target*/
 define('can/view/target/target', [
     'can/util/util',
     'can/view/elements'
-], function (can, elements, vdom) {
-    var processNodes = function (nodes, paths, location, document) {
+], function (can, elements) {
+    var processNodes = function (nodes, paths, location) {
             var frag = document.createDocumentFragment();
             for (var i = 0, len = nodes.length; i < len; i++) {
                 var node = nodes[i];
-                frag.appendChild(processNode(node, paths, location.concat(i), document));
+                frag.appendChild(processNode(node, paths, location.concat(i)));
             }
             return frag;
         }, keepsTextNodes = typeof document !== 'undefined' && function () {
@@ -90,20 +90,13 @@ define('can/view/target/target', [
             div.appendChild(document.createTextNode(''));
             testFrag.appendChild(div);
             var cloned = testFrag.cloneNode(true);
-            return can.childNodes(cloned.firstChild).length === 2;
+            return cloned.childNodes[0].childNodes.length === 2;
         }(), clonesWork = typeof document !== 'undefined' && function () {
             var a = document.createElement('a');
             a.innerHTML = '<xyz></xyz>';
             var clone = a.cloneNode(true);
             return clone.innerHTML === '<xyz></xyz>';
-        }(), namespacesWork = typeof document !== 'undefined' && !!document.createElementNS, attributeDummy = typeof document !== 'undefined' ? document.createElement('div') : null, setAttribute = function (el, attrName, value) {
-            try {
-                el.setAttribute(attrName, value);
-            } catch (e) {
-                attributeDummy.innerHTML = '<div ' + attrName + '="' + value + '"></div>';
-                el.setAttributeNode(attributeDummy.childNodes[0].attributes[0].cloneNode());
-            }
-        };
+        }(), namespacesWork = typeof document !== 'undefined' && !!document.createElementNS;
     var cloneNode = clonesWork ? function (el) {
             return el.cloneNode(true);
         } : function (node) {
@@ -121,7 +114,7 @@ define('can/view/target/target', [
                 var attributes = can.makeArray(node.attributes);
                 can.each(attributes, function (node) {
                     if (node && node.specified) {
-                        setAttribute(copy, node.nodeName, node.nodeValue);
+                        copy.setAttribute(node.nodeName, node.nodeValue);
                     }
                 });
             }
@@ -132,7 +125,7 @@ define('can/view/target/target', [
             }
             return copy;
         };
-    function processNode(node, paths, location, document) {
+    function processNode(node, paths, location) {
         var callback, loc = location, nodeType = typeof node, el, p, i, len;
         var getCallback = function () {
             if (!callback) {
@@ -158,7 +151,7 @@ define('can/view/target/target', [
                         if (typeof value === 'function') {
                             getCallback().callbacks.push({ callback: value });
                         } else {
-                            setAttribute(el, attrName, value);
+                            el.setAttribute(attrName, value);
                         }
                     }
                 }
@@ -173,7 +166,7 @@ define('can/view/target/target', [
                     } else {
                         p = paths;
                     }
-                    el.appendChild(processNodes(node.children, p, loc, document));
+                    el.appendChild(processNodes(node.children, p, loc));
                 }
             } else if (node.comment) {
                 el = document.createComment(node.comment);
@@ -202,44 +195,33 @@ define('can/view/target/target', [
         }
         return el;
     }
-    function getCallbacks(el, pathData, elementCallbacks) {
-        var path = pathData.path, callbacks = pathData.callbacks, paths = pathData.paths, child = el, pathLength = path ? path.length : 0, pathsLength = paths ? paths.length : 0;
-        for (var i = 0; i < pathLength; i++) {
-            child = child.childNodes.item(path[i]);
+    function hydratePath(el, pathData, args) {
+        var path = pathData.path, callbacks = pathData.callbacks, paths = pathData.paths, callbackData, child = el;
+        for (var i = 0, len = path.length; i < len; i++) {
+            child = child.childNodes[path[i]];
         }
-        elementCallbacks.push({
-            element: child,
-            callbacks: callbacks
-        });
-        for (i = 0; i < pathsLength; i++) {
-            getCallbacks(child, paths[i], elementCallbacks);
-        }
-    }
-    function hydrateCallbacks(callbacks, args) {
-        var len = callbacks.length, callbacksLength, callbackElement, callbackData;
-        for (var i = 0; i < len; i++) {
+        for (i = 0, len = callbacks.length; i < len; i++) {
             callbackData = callbacks[i];
-            callbacksLength = callbackData.callbacks.length;
-            callbackElement = callbackData.element;
-            for (var c = 0; c < callbacksLength; c++) {
-                callbackData.callbacks[c].callback.apply(callbackElement, args);
+            callbackData.callback.apply(child, args);
+        }
+        if (paths && paths.length) {
+            for (i = paths.length - 1; i >= 0; i--) {
+                hydratePath(child, paths[i], args);
             }
         }
     }
-    function makeTarget(nodes, doc) {
+    function makeTarget(nodes) {
         var paths = [];
-        var frag = processNodes(nodes, paths, [], doc || can.global.document);
+        var frag = processNodes(nodes, paths, []);
         return {
             paths: paths,
             clone: frag,
             hydrate: function () {
                 var cloned = cloneNode(this.clone);
                 var args = can.makeArray(arguments);
-                var callbacks = [];
-                for (var i = 0; i < paths.length; i++) {
-                    getCallbacks(cloned, paths[i], callbacks);
+                for (var i = paths.length - 1; i >= 0; i--) {
+                    hydratePath(cloned, paths[i], args);
                 }
-                hydrateCallbacks(callbacks, args);
                 return cloned;
             }
         };
@@ -248,7 +230,7 @@ define('can/view/target/target', [
     can.view.target = makeTarget;
     return makeTarget;
 });
-/*can@2.3.0-pre.1#view/stache/html_section*/
+/*can@2.2.7#view/stache/html_section*/
 define('can/view/stache/html_section', [
     'can/util/util',
     'can/view/target/target',
@@ -300,7 +282,7 @@ define('can/view/stache/html_section', [
             var compiled = this.stack.pop().compile();
             return function (scope, options, nodeList) {
                 if (!(scope instanceof can.view.Scope)) {
-                    scope = can.view.Scope.refsScope().add(scope || {});
+                    scope = new can.view.Scope(scope || {});
                 }
                 if (!(options instanceof mustacheCore.Options)) {
                     options = new mustacheCore.Options(options || {});
@@ -347,9 +329,9 @@ define('can/view/stache/html_section', [
             }
         },
         compile: function () {
-            this.compiled = target(this.targetData, can.document || can.global.document);
+            this.compiled = target(this.targetData);
             if (this.inverseData) {
-                this.inverseCompiled = target(this.inverseData, can.document || can.global.document);
+                this.inverseCompiled = target(this.inverseData);
                 delete this.inverseData;
             }
             delete this.targetData;
@@ -369,12 +351,59 @@ define('can/view/stache/html_section', [
     });
     return HTMLSectionBuilder;
 });
-/*can@2.3.0-pre.1#view/stache/text_section*/
+/*can@2.2.7#view/stache/live_attr*/
+define('can/view/stache/live_attr', [
+    'can/util/util',
+    'can/view/live/live',
+    'can/view/elements',
+    'can/view/callbacks/callbacks'
+], function (can, live, elements, viewCallbacks) {
+    live = live || can.view.live;
+    elements = elements || can.view.elements;
+    viewCallbacks = viewCallbacks || can.view.callbacks;
+    return {
+        attributes: function (el, compute, scope, options) {
+            var oldAttrs = {};
+            var setAttrs = function (newVal) {
+                var newAttrs = live.getAttributeParts(newVal), name;
+                for (name in newAttrs) {
+                    var newValue = newAttrs[name], oldValue = oldAttrs[name];
+                    if (newValue !== oldValue) {
+                        can.attr.set(el, name, newValue);
+                        var callback = viewCallbacks.attr(name);
+                        if (callback) {
+                            callback(el, {
+                                attributeName: name,
+                                scope: scope,
+                                options: options
+                            });
+                        }
+                    }
+                    delete oldAttrs[name];
+                }
+                for (name in oldAttrs) {
+                    elements.removeAttr(el, name);
+                }
+                oldAttrs = newAttrs;
+            };
+            var handler = function (ev, newVal) {
+                setAttrs(newVal);
+            };
+            compute.bind('change', handler);
+            can.bind.call(el, 'removed', function () {
+                compute.unbind('change', handler);
+            });
+            setAttrs(compute());
+        }
+    };
+});
+/*can@2.2.7#view/stache/text_section*/
 define('can/view/stache/text_section', [
     'can/util/util',
     'can/view/live/live',
-    'can/view/stache/utils'
-], function (can, live, utils) {
+    'can/view/stache/utils',
+    'can/view/stache/live_attr'
+], function (can, live, utils, liveStache) {
     live = live || can.view.live;
     var TextSectionBuilder = function () {
             this.stack = [new TextSection()];
@@ -411,7 +440,7 @@ define('can/view/stache/text_section', [
                     if (state.attr) {
                         live.simpleAttribute(this, state.attr, compute);
                     } else {
-                        live.attributes(this, compute);
+                        liveStache.attributes(this, compute, scope, options);
                     }
                     compute.unbind('change', emptyHandler);
                 } else {
@@ -459,109 +488,61 @@ define('can/view/stache/text_section', [
     });
     return TextSectionBuilder;
 });
-/*can@2.3.0-pre.1#view/import/import*/
-define('can/view/import/import', [
-    'can/util/util',
-    'can/view/callbacks/callbacks'
-], function (can) {
-    can.view.tag('can-import', function (el, tagData) {
-        var moduleName = el.getAttribute('from');
-        var importPromise;
-        if (moduleName) {
-            importPromise = can['import'](moduleName);
-        } else {
-            importPromise = can.Deferred().reject('No moduleName provided').promise();
-        }
-        var root = tagData.scope.attr('@root');
-        if (root && can.isFunction(root.waitFor)) {
-            root.waitFor(importPromise);
-        }
-        can.data(can.$(el), 'viewModel', importPromise);
-        var scope = tagData.scope.add(importPromise);
-        var handOffTag = el.getAttribute('can-tag');
-        if (handOffTag) {
-            var callback = can.view.callbacks._tags[handOffTag];
-            callback(el, can.extend(tagData, { scope: scope }));
-            var viewModel = can.viewModel(el);
-            importPromise.then(function (val) {
-                viewModel.attr('value', val);
-            });
-        } else {
-            var frag = tagData.subtemplate ? tagData.subtemplate(scope, tagData.options) : document.createDocumentFragment();
-            var nodeList = can.view.nodeLists.register([], undefined, true);
-            can.one.call(el, 'removed', function () {
-                can.view.nodeLists.unregister(nodeList);
-            });
-            can.appendChild(el, frag, can.document);
-            can.view.nodeLists.update(nodeList, can.childNodes(el));
-        }
-    });
-});
-/*can@2.3.0-pre.1#view/stache/intermediate_and_imports*/
+/*can@2.2.7#view/stache/intermediate_and_imports*/
 define('can/view/stache/intermediate_and_imports', [
     'can/view/stache/mustache_core',
-    'can/view/parser/parser',
-    'can/view/import/import'
+    'can/view/parser/parser'
 ], function (mustacheCore, parser) {
     return function (source) {
         var template = mustacheCore.cleanLineEndings(source);
-        var imports = [], ases = {}, inImport = false, inFrom = false, inAs = false, currentAs = '', currentFrom = '';
+        var imports = [], inImport = false, inFrom = false;
+        var keepToken = function () {
+            return inImport ? false : true;
+        };
         var intermediate = parser(template, {
                 start: function (tagName, unary) {
                     if (tagName === 'can-import') {
                         inImport = true;
-                    } else if (inImport) {
-                        inImport = false;
                     }
+                    return keepToken();
+                },
+                end: function (tagName, unary) {
+                    if (tagName === 'can-import') {
+                        inImport = false;
+                        return false;
+                    }
+                    return keepToken();
                 },
                 attrStart: function (attrName) {
                     if (attrName === 'from') {
                         inFrom = true;
-                    } else if (inImport && attrName === '[.]') {
-                        inAs = true;
-                        currentAs = 'viewModel';
-                        return false;
                     }
+                    return keepToken();
                 },
                 attrEnd: function (attrName) {
                     if (attrName === 'from') {
                         inFrom = false;
-                    } else if (inImport && attrName === '[.]') {
-                        inAs = false;
-                        return false;
                     }
+                    return keepToken();
                 },
                 attrValue: function (value) {
                     if (inFrom && inImport) {
                         imports.push(value);
-                        currentFrom = value;
-                    } else if (inAs && currentAs === 'viewModel') {
-                        return false;
                     }
+                    return keepToken();
                 },
-                end: function (tagName) {
-                    if (tagName === 'can-import') {
-                        if (currentAs) {
-                            ases[currentAs] = currentFrom;
-                            currentAs = '';
-                            inAs = false;
-                        }
-                    }
-                },
-                close: function (tagName) {
-                    if (tagName === 'can-import') {
-                        imports.pop();
-                    }
-                }
+                chars: keepToken,
+                comment: keepToken,
+                special: keepToken,
+                done: keepToken
             }, true);
         return {
             intermediate: intermediate,
-            imports: imports,
-            ases: ases
+            imports: imports
         };
     };
 });
-/*can@2.3.0-pre.1#view/stache/stache*/
+/*can@2.2.7#view/stache/stache*/
 define('can/view/stache/stache', [
     'can/util/util',
     'can/view/parser/parser',
@@ -575,7 +556,6 @@ define('can/view/stache/stache', [
     'can/view/bindings/bindings'
 ], function (can, parser, target, HTMLSectionBuilder, TextSectionBuilder, mustacheCore, mustacheHelpers, getIntermediateAndImports, viewCallbacks) {
     parser = parser || can.view.parser;
-    can.view.parser = parser;
     viewCallbacks = viewCallbacks || can.view.callbacks;
     var svgNamespace = 'http://www.w3.org/2000/svg';
     var namespaces = {
@@ -627,7 +607,7 @@ define('can/view/stache/stache', [
                 if (!node.attributes) {
                     node.attributes = [];
                 }
-                node.attributes.unshift(callback);
+                node.attributes.push(callback);
             };
         parser(template, {
             start: function (tagName, unary) {
@@ -828,7 +808,7 @@ define('can/view/stache/stache', [
     };
     return stache;
 });
-/*can@2.3.0-pre.1#view/stache/system*/
+/*can@2.2.7#view/stache/system*/
 'format steal';
 define('can/view/stache/system', [
     'can/view/stache/stache',

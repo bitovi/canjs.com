@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#view/stache/mustache_core*/
+/*can@2.2.7#view/stache/mustache_core*/
 define([
     'can/util/library',
     'can/view/utils',
@@ -23,14 +23,14 @@ define([
     var argumentsRegExp = /((([^'"\s]+?=)?('.*?'|".*?"))|.*?)\s/g, literalNumberStringBooleanRegExp = /^(?:(?:('.*?'|".*?")|([0-9]+\.?[0-9]*|true|false|null|undefined))|(?:(.+?)=(?:(?:('.*?'|".*?")|([0-9]+\.?[0-9]*|true|false|null|undefined))|(.+))))$/, mustacheLineBreakRegExp = /(?:(?:^|(\r?)\n)(\s*)(\{\{([^\}]*)\}\}\}?)([^\S\n\r]*)($|\r?\n))|(\{\{([^\}]*)\}\}\}?)/g, isLookup = function (obj) {
             return obj && typeof obj.get === 'string';
         }, getItemsFragContent = function (items, isObserveList, helperOptions, options) {
-            var frag = (can.document || can.global.document).createDocumentFragment();
+            var frag = document.createDocumentFragment();
             for (var i = 0, len = items.length; i < len; i++) {
                 append(frag, helperOptions.fn(isObserveList ? items.attr('' + i) : items[i], options));
             }
             return frag;
         }, append = function (frag, content) {
             if (content) {
-                frag.appendChild(typeof content === 'string' ? frag.ownerDocument.createTextNode(content) : content);
+                frag.appendChild(typeof content === 'string' ? document.createTextNode(content) : content);
             }
         }, getItemsStringContent = function (items, isObserveList, helperOptions, options) {
             var txt = '';
@@ -216,13 +216,10 @@ define([
                                         returnObserveMethods: true,
                                         proxyMethods: false
                                     }).value;
-                                if (scopePartialName === null) {
-                                    return can.frag('');
-                                }
                                 if (scopePartialName) {
                                     localPartialName = scopePartialName;
                                 }
-                                res = can.isFunction(localPartialName) ? localPartialName(scope, options) : can.view.render(localPartialName, scope, options);
+                                res = can.view.render(localPartialName, scope, options);
                             }
                             return can.frag(res);
                         });
@@ -275,7 +272,7 @@ define([
                         } else if (state.text && typeof value === 'string') {
                             this.nodeValue = value;
                         } else if (value) {
-                            elements.replace([this], can.frag(value, this.ownerDocument));
+                            elements.replace([this], can.frag(value));
                         }
                     }
                     compute.unbind('change', can.k);

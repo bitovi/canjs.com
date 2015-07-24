@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#view/stache/stache*/
+/*can@2.2.7#view/stache/stache*/
 var can = require('../../util/util.js');
 var parser = require('../parser/parser.js');
 var target = require('../target/target.js');
@@ -18,7 +18,6 @@ var getIntermediateAndImports = require('./intermediate_and_imports.js');
 var viewCallbacks = require('../callbacks/callbacks.js');
 require('../bindings/bindings.js');
 parser = parser || can.view.parser;
-can.view.parser = parser;
 viewCallbacks = viewCallbacks || can.view.callbacks;
 var svgNamespace = 'http://www.w3.org/2000/svg';
 var namespaces = {
@@ -70,7 +69,7 @@ function stache(template) {
             if (!node.attributes) {
                 node.attributes = [];
             }
-            node.attributes.unshift(callback);
+            node.attributes.push(callback);
         };
     parser(template, {
         start: function (tagName, unary) {

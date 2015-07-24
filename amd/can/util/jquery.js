@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#util/jquery/jquery*/
+/*can@2.2.7#util/jquery/jquery*/
 define([
     'jquery',
     'can/util/can',
@@ -139,7 +139,7 @@ define([
         return oldDomManip.call(this, args, table, function (elem) {
             var elems;
             if (elem.nodeType === 11) {
-                elems = can.makeArray(can.childNodes(elem));
+                elems = can.makeArray(elem.childNodes);
             }
             var ret = callback.apply(this, arguments);
             can.inserted(elems ? elems : [elem]);
@@ -149,18 +149,16 @@ define([
         return oldDomManip.call(this, args, function (elem) {
             var elems;
             if (elem.nodeType === 11) {
-                elems = can.makeArray(can.childNodes(elem));
+                elems = can.makeArray(elem.childNodes);
             }
             var ret = callback.apply(this, arguments);
             can.inserted(elems ? elems : [elem]);
             return ret;
         });
     };
-    var oldAttr = $.attr;
-    $.attr = function (el, attrName) {
-        if (can.isDOM(el) && can.attr.MutationObserver) {
-            return oldAttr.apply(this, arguments);
-        } else {
+    if (!can.attr.MutationObserver) {
+        var oldAttr = $.attr;
+        $.attr = function (el, attrName) {
             var oldValue, newValue;
             if (arguments.length >= 3) {
                 oldValue = oldAttr.call(this, el, attrName);
@@ -173,23 +171,26 @@ define([
                 can.attr.trigger(el, attrName, oldValue);
             }
             return res;
-        }
-    };
-    var oldRemove = $.removeAttr;
-    $.removeAttr = function (el, attrName) {
-        if (can.isDOM(el) && can.attr.MutationObserver) {
-            return oldRemove.apply(this, arguments);
-        } else {
+        };
+        var oldRemove = $.removeAttr;
+        $.removeAttr = function (el, attrName) {
             var oldValue = oldAttr.call(this, el, attrName), res = oldRemove.apply(this, arguments);
             if (oldValue != null) {
                 can.attr.trigger(el, attrName, oldValue);
             }
             return res;
-        }
-    };
-    $.event.special.attributes = {
-        setup: function () {
-            if (can.isDOM(this) && can.attr.MutationObserver) {
+        };
+        $.event.special.attributes = {
+            setup: function () {
+                can.data(can.$(this), 'canHasAttributesBindings', true);
+            },
+            teardown: function () {
+                $.removeData(this, 'canHasAttributesBindings');
+            }
+        };
+    } else {
+        $.event.special.attributes = {
+            setup: function () {
                 var self = this;
                 var observer = new can.attr.MutationObserver(function (mutations) {
                         mutations.forEach(function (mutation) {
@@ -202,22 +203,16 @@ define([
                     attributeOldValue: true
                 });
                 can.data(can.$(this), 'canAttributesObserver', observer);
-            } else {
-                can.data(can.$(this), 'canHasAttributesBindings', true);
-            }
-        },
-        teardown: function () {
-            if (can.isDOM(this) && can.attr.MutationObserver) {
+            },
+            teardown: function () {
                 can.data(can.$(this), 'canAttributesObserver').disconnect();
                 $.removeData(this, 'canAttributesObserver');
-            } else {
-                $.removeData(this, 'canHasAttributesBindings');
             }
-        }
-    };
+        };
+    }
     (function () {
         var text = '<-\n>', frag = can.buildFragment(text, document);
-        if (frag.firstChild && text !== frag.firstChild.nodeValue) {
+        if (text !== frag.childNodes[0].nodeValue) {
             var oldBuildFragment = can.buildFragment;
             can.buildFragment = function (content, context) {
                 var res = oldBuildFragment(content, context);

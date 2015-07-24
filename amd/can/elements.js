@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#view/elements*/
+/*can@2.2.7#view/elements*/
 define([
     'can/util/library',
     'can/view'
@@ -62,9 +62,9 @@ define([
             after: function (oldElements, newFrag) {
                 var last = oldElements[oldElements.length - 1];
                 if (last.nextSibling) {
-                    can.insertBefore(last.parentNode, newFrag, last.nextSibling, can.document);
+                    can.insertBefore(last.parentNode, newFrag, last.nextSibling);
                 } else {
-                    can.appendChild(last.parentNode, newFrag, can.document);
+                    can.appendChild(last.parentNode, newFrag);
                 }
             },
             replace: function (oldElements, newFrag) {

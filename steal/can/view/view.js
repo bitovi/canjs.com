@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#view/view*/
+/*can@2.2.7#view/view*/
 steal('can/util', function (can) {
     var isFunction = can.isFunction, makeArray = can.makeArray, hookupId = 1;
     var makeRenderer = function (textRenderer) {
@@ -284,20 +284,6 @@ steal('can/util', function (can) {
                 $view.cachedRenderers[id] = renderer;
             }
             return def.resolve(renderer);
-        },
-        simpleHelper: function (fn) {
-            return function () {
-                var realArgs = [];
-                can.each(arguments, function (val, i) {
-                    if (i <= arguments.length) {
-                        while (val && val.isComputed) {
-                            val = val();
-                        }
-                        realArgs.push(val);
-                    }
-                });
-                return fn.apply(this, realArgs);
-            };
         }
     });
     if (typeof window !== 'undefined' && window.steal && steal.type) {

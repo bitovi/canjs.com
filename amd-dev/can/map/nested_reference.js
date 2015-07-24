@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#map/lazy/nested_reference*/
+/*can@2.2.7#map/lazy/nested_reference*/
 define(['can/util/library'], function (can) {
     var pathIterator = function (root, propPath, callback) {
         var props = propPath.split('.'), cur = root, part;

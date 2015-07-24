@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#compute/proto_compute*/
+/*can@2.2.7#compute/proto_compute*/
 var can = require('../util/util.js');
 var bind = require('../util/bind/bind.js');
 var read = require('./read.js');
@@ -198,8 +198,13 @@ can.simpleExtend(can.Compute.prototype, {
                 return target.unbind(eventName || propertyName, handler);
             };
         } else {
-            this._get = can.proxy(this._get, target);
-            this._set = can.proxy(this._set, target);
+            this._get = function () {
+                return can.getObject(propertyName, [target]);
+            };
+            this._set = function (value) {
+                var properties = propertyName.split('.'), leafPropertyName = properties.pop(), targetProperty = can.getObject(properties.join('.'), [target]);
+                targetProperty[leafPropertyName] = value;
+            };
         }
     },
     _setupContextFunction: function (initialValue, setter, eventName) {

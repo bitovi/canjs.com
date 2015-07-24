@@ -1,15 +1,16 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#view/stache/text_section*/
+/*can@2.2.7#view/stache/text_section*/
 var can = require('../../util/util.js');
 var live = require('../live/live.js');
 var utils = require('./utils.js');
+var liveStache = require('./live_attr.js');
 live = live || can.view.live;
 var TextSectionBuilder = function () {
         this.stack = [new TextSection()];
@@ -46,7 +47,7 @@ can.extend(TextSectionBuilder.prototype, {
                 if (state.attr) {
                     live.simpleAttribute(this, state.attr, compute);
                 } else {
-                    live.attributes(this, compute);
+                    liveStache.attributes(this, compute, scope, options);
                 }
                 compute.unbind('change', emptyHandler);
             } else {

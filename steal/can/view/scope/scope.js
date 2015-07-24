@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#view/scope/scope*/
+/*can@2.2.7#view/scope/scope*/
 steal('can/util', 'can/view/scope/compute_data.js', 'can/construct', 'can/map', 'can/list', 'can/view', 'can/compute', function (can, makeComputeData) {
     var escapeReg = /(\\)?\./g, escapeDotReg = /\\\./g, getNames = function (attr) {
             var names = [], last = 0;
@@ -19,13 +19,7 @@ steal('can/util', 'can/view/scope/compute_data.js', 'can/construct', 'can/map', 
             names.push(attr.slice(last).replace(escapeDotReg, '.'));
             return names;
         };
-    var Scope = can.Construct.extend({
-            read: can.compute.read,
-            Refs: can.Map.extend({}),
-            refsScope: function () {
-                return new can.view.Scope(new this.Refs());
-            }
-        }, {
+    var Scope = can.Construct.extend({ read: can.compute.read }, {
             init: function (context, parent) {
                 this._context = context;
                 this._parent = parent;
@@ -59,37 +53,6 @@ steal('can/util', 'can/view/scope/compute_data.js', 'can/construct', 'can/map', 
             compute: function (key, options) {
                 return this.computeData(key, options).compute;
             },
-            getRefs: function () {
-                var scope = this, context;
-                while (scope) {
-                    context = scope._context;
-                    if (context instanceof Scope.Refs) {
-                        return context;
-                    }
-                    scope = scope._parent;
-                }
-            },
-            cloneFromRef: function () {
-                var contexts = [];
-                var scope = this, context, parent;
-                while (scope) {
-                    context = scope._context;
-                    if (context instanceof Scope.Refs) {
-                        parent = scope._parent;
-                        break;
-                    }
-                    contexts.push(context);
-                    scope = scope._parent;
-                }
-                if (parent) {
-                    can.each(contexts, function (context) {
-                        parent = parent.add(context);
-                    });
-                    return parent;
-                } else {
-                    return this;
-                }
-            },
             read: function (attr, options) {
                 var stopLookup;
                 if (attr.substr(0, 2) === './') {
@@ -101,39 +64,25 @@ steal('can/util', 'can/view/scope/compute_data.js', 'can/construct', 'can/map', 
                     return { value: this._parent._context };
                 } else if (attr === '.' || attr === 'this') {
                     return { value: this._context };
-                } else if (attr === '@root') {
-                    var cur = this, child = this;
-                    while (cur._parent) {
-                        child = cur;
-                        cur = cur._parent;
-                    }
-                    if (cur._context instanceof Scope.Refs) {
-                        cur = child;
-                    }
-                    return { value: cur._context };
                 }
-                var names = attr.indexOf('\\.') === -1 ? attr.split('.') : getNames(attr), context, scope = this, undefinedObserves = [], currentObserve, currentReads, setObserveDepth = -1, currentSetReads, currentSetObserve, searchedRefsScope = false, refInstance, readOptions = can.simpleExtend({
-                        foundObservable: function (observe, nameIndex) {
-                            currentObserve = observe;
-                            currentReads = names.slice(nameIndex);
-                        },
-                        earlyExit: function (parentValue, nameIndex) {
-                            if (nameIndex > setObserveDepth) {
-                                currentSetObserve = currentObserve;
-                                currentSetReads = currentReads;
-                                setObserveDepth = nameIndex;
-                            }
-                        },
-                        executeAnonymousFunctions: true
-                    }, options);
+                var names = attr.indexOf('\\.') === -1 ? attr.split('.') : getNames(attr), context, scope = this, undefinedObserves = [], currentObserve, currentReads, setObserveDepth = -1, currentSetReads, currentSetObserve;
                 while (scope) {
                     context = scope._context;
-                    refInstance = context instanceof Scope.Refs;
-                    if (context !== null && (typeof context === 'object' || typeof context === 'function') && !(searchedRefsScope && refInstance)) {
-                        if (refInstance) {
-                            searchedRefsScope = true;
-                        }
-                        var data = can.compute.read(context, names, readOptions);
+                    if (context !== null && (typeof context === 'object' || typeof context === 'function')) {
+                        var data = can.compute.read(context, names, can.simpleExtend({
+                                foundObservable: function (observe, nameIndex) {
+                                    currentObserve = observe;
+                                    currentReads = names.slice(nameIndex);
+                                },
+                                earlyExit: function (parentValue, nameIndex) {
+                                    if (nameIndex > setObserveDepth) {
+                                        currentSetObserve = currentObserve;
+                                        currentSetReads = currentReads;
+                                        setObserveDepth = nameIndex;
+                                    }
+                                },
+                                executeAnonymousFunctions: true
+                            }, options));
                         if (data.value !== undefined) {
                             return {
                                 scope: scope,

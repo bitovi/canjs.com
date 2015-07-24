@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#compute/compute*/
+/*can@2.2.7#compute/compute*/
 define([
     'can/util/library',
     'can/util/bind',
@@ -15,14 +15,33 @@ define([
 ], function (can, bind) {
     can.compute = function (getterSetter, context, eventName, bindOnce) {
         var internalCompute = new can.Compute(getterSetter, context, eventName, bindOnce);
+        var bind = internalCompute.bind;
+        var unbind = internalCompute.unbind;
         var compute = function (val) {
             if (arguments.length) {
                 return internalCompute.set(val);
             }
             return internalCompute.get();
         };
-        compute.bind = can.proxy(internalCompute.bind, internalCompute);
-        compute.unbind = can.proxy(internalCompute.unbind, internalCompute);
+        var cid = can.cid(compute, 'compute');
+        var handlerKey = '__handler' + cid;
+        compute.bind = function (ev, handler) {
+            var computeHandler = handler && handler[handlerKey];
+            if (handler && !computeHandler) {
+                computeHandler = handler[handlerKey] = function () {
+                    handler.apply(compute, arguments);
+                };
+            }
+            return bind.call(internalCompute, ev, computeHandler);
+        };
+        compute.unbind = function (ev, handler) {
+            var computeHandler = handler && handler[handlerKey];
+            if (computeHandler) {
+                delete handler[handlerKey];
+                return internalCompute.unbind(ev, computeHandler);
+            }
+            return unbind.apply(internalCompute, arguments);
+        };
         compute.isComputed = internalCompute.isComputed;
         compute.clone = function (ctx) {
             if (typeof getterSetter === 'function') {
@@ -66,13 +85,5 @@ define([
     };
     can.compute.read = can.Compute.read;
     can.compute.set = can.Compute.set;
-    can.__notObserve = function (fn) {
-        return function () {
-            var previousReads = can.__clearReading();
-            var res = fn.apply(this, arguments);
-            can.__setReading(previousReads);
-            return res;
-        };
-    };
     return can.compute;
 });

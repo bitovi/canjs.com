@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#compute/get_value_and_bind*/
+/*can@2.2.7#compute/get_value_and_bind*/
 steal('can/util', function (can) {
     function observe(func, context, oldInfo, onchanged) {
         var info = getValueAndObserved(func, context), newObserveSet = info.observed, oldObserved = oldInfo.observed;

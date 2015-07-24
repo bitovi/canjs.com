@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#map/map*/
+/*can@2.2.7#map/map*/
 steal('can/util', 'can/util/bind', './bubble.js', 'can/construct', 'can/util/batch', function (can, bind, bubble) {
     var madeMap = null;
     var teardownMap = function () {
@@ -338,7 +338,6 @@ steal('can/util', 'can/util/bind', './bubble.js', 'can/construct', 'can/util/bat
                     this[prop] = val;
                 }
             },
-            one: can.one,
             bind: function (eventName, handler) {
                 var computedBinding = this._computedBindings && this._computedBindings[eventName];
                 if (computedBinding) {

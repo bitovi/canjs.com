@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#view/stache/mustache_helpers*/
+/*can@2.2.7#view/stache/mustache_helpers*/
 steal('can/util', './utils.js', 'can/view/live', function (can, utils, live) {
     live = live || can.view.live;
     var resolve = function (value) {
@@ -123,13 +123,9 @@ steal('can/util', './utils.js', 'can/view/live', function (can, utils, live) {
                 };
             }
         };
-    var registerHelper = function (name, callback) {
-        helpers[name] = callback;
-    };
     return {
-        registerHelper: registerHelper,
-        registerSimpleHelper: function (name, callback) {
-            registerHelper(name, can.view.simpleHelper(callback));
+        registerHelper: function (name, callback) {
+            helpers[name] = callback;
         },
         getHelper: function (name, options) {
             var helper = options.attr('helpers.' + name);

@@ -1,69 +1,59 @@
 /*!
- * CanJS - 2.3.0-pre.1
+ * CanJS - 2.2.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 29 May 2015 22:07:38 GMT
+ * Fri, 24 Jul 2015 20:57:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0-pre.1#view/stache/intermediate_and_imports*/
+/*can@2.2.7#view/stache/intermediate_and_imports*/
 var mustacheCore = require('./mustache_core.js');
 var parser = require('../parser/parser.js');
-require('../import/import.js');
 module.exports = function (source) {
     var template = mustacheCore.cleanLineEndings(source);
-    var imports = [], ases = {}, inImport = false, inFrom = false, inAs = false, currentAs = '', currentFrom = '';
+    var imports = [], inImport = false, inFrom = false;
+    var keepToken = function () {
+        return inImport ? false : true;
+    };
     var intermediate = parser(template, {
             start: function (tagName, unary) {
                 if (tagName === 'can-import') {
                     inImport = true;
-                } else if (inImport) {
-                    inImport = false;
                 }
+                return keepToken();
+            },
+            end: function (tagName, unary) {
+                if (tagName === 'can-import') {
+                    inImport = false;
+                    return false;
+                }
+                return keepToken();
             },
             attrStart: function (attrName) {
                 if (attrName === 'from') {
                     inFrom = true;
-                } else if (inImport && attrName === '[.]') {
-                    inAs = true;
-                    currentAs = 'viewModel';
-                    return false;
                 }
+                return keepToken();
             },
             attrEnd: function (attrName) {
                 if (attrName === 'from') {
                     inFrom = false;
-                } else if (inImport && attrName === '[.]') {
-                    inAs = false;
-                    return false;
                 }
+                return keepToken();
             },
             attrValue: function (value) {
                 if (inFrom && inImport) {
                     imports.push(value);
-                    currentFrom = value;
-                } else if (inAs && currentAs === 'viewModel') {
-                    return false;
                 }
+                return keepToken();
             },
-            end: function (tagName) {
-                if (tagName === 'can-import') {
-                    if (currentAs) {
-                        ases[currentAs] = currentFrom;
-                        currentAs = '';
-                        inAs = false;
-                    }
-                }
-            },
-            close: function (tagName) {
-                if (tagName === 'can-import') {
-                    imports.pop();
-                }
-            }
+            chars: keepToken,
+            comment: keepToken,
+            special: keepToken,
+            done: keepToken
         }, true);
     return {
         intermediate: intermediate,
-        imports: imports,
-        ases: ases
+        imports: imports
     };
 };
