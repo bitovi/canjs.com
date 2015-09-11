@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.7
+ * CanJS - 2.2.9
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 24 Jul 2015 20:57:32 GMT
+ * Fri, 11 Sep 2015 23:12:43 GMT
  * Licensed MIT
  */
 
-/*can@2.2.7#util/fixture/fixture*/
+/*can@2.2.9#util/fixture/fixture*/
 var can = require('../util.js');
 require('../string/string.js');
 require('../object/object.js');
@@ -62,7 +62,7 @@ var updateSettings = function (settings, originalOptions) {
             settings.type = 'GET';
             if (!settings.error) {
                 settings.error = function (xhr, error, message) {
-                    throw 'fixtures.js Error ' + error + ' ' + message;
+                    throw new Error('fixtures.js Error ' + error + ' ' + message);
                 };
             }
         } else {

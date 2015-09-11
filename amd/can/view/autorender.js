@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.7
+ * CanJS - 2.2.9
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 24 Jul 2015 20:57:32 GMT
+ * Fri, 11 Sep 2015 23:12:43 GMT
  * Licensed MIT
  */
 
-/*can@2.2.7#view/autorender/autorender*/
+/*can@2.2.9#view/autorender/autorender*/
 'format steal';
 define(['can/util/library'], function (can) {
     var deferred = new can.Deferred(), ignoreAttributesRegExp = /^(dataViewId|class|id|type|src)$/i;

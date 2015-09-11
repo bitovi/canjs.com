@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.2.7
+ * CanJS - 2.2.9
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 24 Jul 2015 20:57:32 GMT
+ * Fri, 11 Sep 2015 23:12:43 GMT
  * Licensed MIT
  */
 
@@ -43,13 +43,10 @@
 			};
 			args.push(require, module.exports, module);
 		}
-		// Babel uses the exports and module object.
+		// Babel uses only the exports objet
 		else if(!args[0] && deps[0] === "exports") {
 			module = { exports: {} };
 			args[0] = module.exports;
-			if(deps[1] === "module") {
-				args[1] = module;
-			}
 		}
 
 		global.define = origDefine;
@@ -67,11 +64,10 @@
 			global.define = origDefine;
 			eval("(function() { " + __code + " \n }).call(global);");
 			global.define = ourDefine;
-		},
-		orig: global.System
+		}
 	};
 })({},window)
-/*can@2.2.7#map/lazy/bubble*/
+/*can@2.2.9#map/lazy/bubble*/
 define('can/map/lazy/bubble', [
     'can/util/util',
     'can/map/bubble'
@@ -91,7 +87,7 @@ define('can/map/lazy/bubble', [
         }
     });
 });
-/*can@2.2.7#map/lazy/nested_reference*/
+/*can@2.2.9#map/lazy/nested_reference*/
 define('can/map/lazy/nested_reference', ['can/util/util'], function (can) {
     var pathIterator = function (root, propPath, callback) {
         var props = propPath.split('.'), cur = root, part;
@@ -163,7 +159,7 @@ define('can/map/lazy/nested_reference', ['can/util/util'], function (can) {
     });
     can.NestedReference = NestedReference;
 });
-/*can@2.2.7#map/lazy/lazy*/
+/*can@2.2.9#map/lazy/lazy*/
 define('can/map/lazy/lazy', [
     'can/util/util',
     'can/map/lazy/bubble',
@@ -300,7 +296,7 @@ define('can/map/lazy/lazy', [
             } else if (!data.parts.length) {
                 this.__set(attr, value, data.value, data);
             } else {
-                throw 'can.LazyMap: object does not exist';
+                throw new Error('can.LazyMap: object does not exist');
             }
         },
         __set: function (prop, value, current, data, convert) {
@@ -384,5 +380,4 @@ define('can/map/lazy/lazy', [
 (function (){
 	window._define = window.define;
 	window.define = window.define.orig;
-	window.System = window.System.orig;
 })();

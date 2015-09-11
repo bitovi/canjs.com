@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.7
+ * CanJS - 2.2.9
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 24 Jul 2015 20:57:32 GMT
+ * Fri, 11 Sep 2015 23:12:43 GMT
  * Licensed MIT
  */
 
-/*can@2.2.7#view/view*/
+/*can@2.2.9#view/view*/
 define(['can/util/library'], function (can) {
     var isFunction = can.isFunction, makeArray = can.makeArray, hookupId = 1;
     var makeRenderer = function (textRenderer) {
@@ -20,7 +20,7 @@ define(['can/util/library'], function (can) {
     };
     var checkText = function (text, url) {
         if (!text.length) {
-            throw 'can.view: No template or empty template:' + url;
+            throw new Error('can.view: No template or empty template:' + url);
         }
     };
     var getRenderer = function (obj, async) {

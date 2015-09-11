@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.2.7
+ * CanJS - 2.2.9
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 24 Jul 2015 20:57:32 GMT
+ * Fri, 11 Sep 2015 23:12:43 GMT
  * Licensed MIT
  */
 
@@ -43,13 +43,10 @@
 			};
 			args.push(require, module.exports, module);
 		}
-		// Babel uses the exports and module object.
+		// Babel uses only the exports objet
 		else if(!args[0] && deps[0] === "exports") {
 			module = { exports: {} };
 			args[0] = module.exports;
-			if(deps[1] === "module") {
-				args[1] = module;
-			}
 		}
 
 		global.define = origDefine;
@@ -67,11 +64,10 @@
 			global.define = origDefine;
 			eval("(function() { " + __code + " \n }).call(global);");
 			global.define = ourDefine;
-		},
-		orig: global.System
+		}
 	};
 })({},window)
-/*can@2.2.7#view/target/target*/
+/*can@2.2.9#view/target/target*/
 define('can/view/target/target', [
     'can/util/util',
     'can/view/elements'
@@ -230,7 +226,7 @@ define('can/view/target/target', [
     can.view.target = makeTarget;
     return makeTarget;
 });
-/*can@2.2.7#view/stache/html_section*/
+/*can@2.2.9#view/stache/html_section*/
 define('can/view/stache/html_section', [
     'can/util/util',
     'can/view/target/target',
@@ -351,7 +347,7 @@ define('can/view/stache/html_section', [
     });
     return HTMLSectionBuilder;
 });
-/*can@2.2.7#view/stache/live_attr*/
+/*can@2.2.9#view/stache/live_attr*/
 define('can/view/stache/live_attr', [
     'can/util/util',
     'can/view/live/live',
@@ -397,7 +393,7 @@ define('can/view/stache/live_attr', [
         }
     };
 });
-/*can@2.2.7#view/stache/text_section*/
+/*can@2.2.9#view/stache/text_section*/
 define('can/view/stache/text_section', [
     'can/util/util',
     'can/view/live/live',
@@ -488,7 +484,7 @@ define('can/view/stache/text_section', [
     });
     return TextSectionBuilder;
 });
-/*can@2.2.7#view/stache/intermediate_and_imports*/
+/*can@2.2.9#view/stache/intermediate_and_imports*/
 define('can/view/stache/intermediate_and_imports', [
     'can/view/stache/mustache_core',
     'can/view/parser/parser'
@@ -542,7 +538,7 @@ define('can/view/stache/intermediate_and_imports', [
         };
     };
 });
-/*can@2.2.7#view/stache/stache*/
+/*can@2.2.9#view/stache/stache*/
 define('can/view/stache/stache', [
     'can/util/util',
     'can/view/parser/parser',
@@ -748,7 +744,7 @@ define('can/view/stache/stache', [
                         }
                         makeRendererAndUpdateSection(state.node.section, mode, expression);
                     } else {
-                        throw mode + ' is currently not supported within a tag.';
+                        throw new Error(mode + ' is currently not supported within a tag.');
                     }
                 } else {
                     makeRendererAndUpdateSection(section, mode, expression);
@@ -808,7 +804,7 @@ define('can/view/stache/stache', [
     };
     return stache;
 });
-/*can@2.2.7#view/stache/system*/
+/*can@2.2.9#view/stache/system*/
 'format steal';
 define('can/view/stache/system', [
     'can/view/stache/stache',
@@ -825,5 +821,4 @@ define('can/view/stache/system', [
 (function (){
 	window._define = window.define;
 	window.define = window.define.orig;
-	window.System = window.System.orig;
 })();

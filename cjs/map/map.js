@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.7
+ * CanJS - 2.2.9
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 24 Jul 2015 20:57:32 GMT
+ * Fri, 11 Sep 2015 23:12:43 GMT
  * Licensed MIT
  */
 
-/*can@2.2.7#map/map*/
+/*can@2.2.9#map/map*/
 var can = require('../util/util.js');
 var bind = require('../util/bind/bind.js');
 var bubble = require('./bubble.js');
@@ -304,7 +304,7 @@ var Map = can.Map = can.Construct.extend({
                 if (Map.helpers.isObservable(current)) {
                     current._set(second, value);
                 } else {
-                    throw 'can.Map: Object does not exist';
+                    throw new Error('can.Map: Object does not exist');
                 }
             } else {
                 if (this.__convert) {

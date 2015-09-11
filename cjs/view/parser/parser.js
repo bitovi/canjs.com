@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.7
+ * CanJS - 2.2.9
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 24 Jul 2015 20:57:32 GMT
+ * Fri, 11 Sep 2015 23:12:43 GMT
  * Licensed MIT
  */
 
-/*can@2.2.7#view/parser/parser*/
+/*can@2.2.9#view/parser/parser*/
 var can = require('../view.js');
 function makeMap(str) {
     var obj = {}, items = str.split(',');
@@ -150,7 +150,7 @@ var HTMLParser = function (html, handler, returnIntermediate) {
             parseEndTag('', stack.last());
         }
         if (html === last) {
-            throw 'Parse Error: ' + html;
+            throw new Error('Parse Error: ' + html);
         }
         last = html;
     }

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.7
+ * CanJS - 2.2.9
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 24 Jul 2015 20:57:32 GMT
+ * Fri, 11 Sep 2015 23:12:43 GMT
  * Licensed MIT
  */
 
-/*can@2.2.7#compute/get_value_and_bind*/
+/*can@2.2.9#compute/get_value_and_bind*/
 var can = require('../util/util.js');
 function observe(func, context, oldInfo, onchanged) {
     var info = getValueAndObserved(func, context), newObserveSet = info.observed, oldObserved = oldInfo.observed;

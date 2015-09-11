@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.7
+ * CanJS - 2.2.9
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 24 Jul 2015 20:57:32 GMT
+ * Fri, 11 Sep 2015 23:12:43 GMT
  * Licensed MIT
  */
 
-/*can@2.2.7#util/batch/batch*/
+/*can@2.2.9#util/batch/batch*/
 var can = require('../can.js');
 var batchNum = 1, transactions = 0, batchEvents = [], stopCallbacks = [], currentBatchEvents = null;
 can.batch = {
@@ -47,7 +47,10 @@ can.batch = {
     },
     trigger: function (item, event, args) {
         if (!item._init) {
-            event = typeof event === 'string' ? { type: event } : event;
+            event = typeof event === 'string' ? {
+                type: event,
+                batchNum: can.batch.batchNum
+            } : event;
             if (currentBatchEvents) {
                 currentBatchEvents.push([
                     item,

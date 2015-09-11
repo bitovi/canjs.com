@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.7
+ * CanJS - 2.2.9
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 24 Jul 2015 20:57:32 GMT
+ * Fri, 11 Sep 2015 23:12:43 GMT
  * Licensed MIT
  */
 
-/*can@2.2.7#map/define/define*/
+/*can@2.2.9#map/define/define*/
 var can = require('../../util/util.js');
 require('../../observe/observe.js');
 var define = can.define = {};
@@ -53,7 +53,7 @@ var oldSetupDefaults = can.Map.prototype._setupDefaults;
 can.Map.prototype._setupDefaults = function (obj) {
     var defaults = oldSetupDefaults.call(this), propsCommittedToAttr = {}, Map = this.constructor, originalGet = this._get;
     this._get = function (originalProp) {
-        prop = originalProp.indexOf('.') !== -1 ? originalProp.substr(0, originalProp.indexOf('.')) : prop;
+        var prop = originalProp.indexOf('.') !== -1 ? originalProp.substr(0, originalProp.indexOf('.')) : originalProp;
         if (prop in defaults && !(prop in propsCommittedToAttr)) {
             this.attr(prop, defaults[prop]);
             propsCommittedToAttr[prop] = true;

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.7
+ * CanJS - 2.2.9
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 24 Jul 2015 20:57:32 GMT
+ * Fri, 11 Sep 2015 23:12:43 GMT
  * Licensed MIT
  */
 
-/*can@2.2.7#compute/read*/
+/*can@2.2.9#compute/read*/
 define(['can/util/library'], function (can) {
     var read = function (parent, reads, options) {
         options = options || {};
@@ -77,7 +77,7 @@ define(['can/util/library'], function (can) {
             name: 'function',
             test: function (value, i, reads, options) {
                 var type = typeof value;
-                return type === 'function' && !value.isComputed && (options.executeAnonymousFunctions || options.isArgument && i === reads.length) && !(can.Construct && value.prototype instanceof can.Construct) && !(can.route && value === can.route);
+                return type === 'function' && !value.isComputed && (options.executeAnonymousFunctions !== false || options.isArgument && i === reads.length) && !(can.Construct && value.prototype instanceof can.Construct) && !(can.route && value === can.route);
             },
             read: function (value, i, reads, options, state, prev) {
                 if (options.isArgument && i === reads.length) {

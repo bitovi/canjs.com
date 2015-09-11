@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.7
+ * CanJS - 2.2.9
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 24 Jul 2015 20:57:32 GMT
+ * Fri, 11 Sep 2015 23:12:43 GMT
  * Licensed MIT
  */
 
-/*can@2.2.7#view/stache/stache*/
+/*can@2.2.9#view/stache/stache*/
 define([
     'can/util/library',
     'can/view/parser',
@@ -212,7 +212,7 @@ define([
                         }
                         makeRendererAndUpdateSection(state.node.section, mode, expression);
                     } else {
-                        throw mode + ' is currently not supported within a tag.';
+                        throw new Error(mode + ' is currently not supported within a tag.');
                     }
                 } else {
                     makeRendererAndUpdateSection(section, mode, expression);

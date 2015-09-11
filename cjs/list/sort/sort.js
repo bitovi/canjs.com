@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.7
+ * CanJS - 2.2.9
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 24 Jul 2015 20:57:32 GMT
+ * Fri, 11 Sep 2015 23:12:43 GMT
  * Licensed MIT
  */
 
-/*can@2.2.7#list/sort/sort*/
+/*can@2.2.9#list/sort/sort*/
 require('../../util/util.js');
 require('../list.js');
 var oldBubbleRule = can.List._bubbleRule;
@@ -57,28 +57,39 @@ can.extend(proto, {
         return a === b ? 0 : a < b ? -1 : 1;
     },
     _changes: function (ev, attr, how, newVal, oldVal) {
-        if (this.comparator && /^\d+/.test(attr)) {
-            if (ev.batchNum && ev.batchNum !== this._lastBatchNum) {
-                this.sort();
-                this._lastBatchNum = ev.batchNum;
-                return;
+        var dotIndex = ('' + attr).indexOf('.');
+        if (this.comparator && dotIndex !== -1) {
+            if (ev.batchNum) {
+                if (ev.batchNum === this._lastProcessedBatchNum) {
+                    return;
+                } else {
+                    this.sort();
+                    this._lastProcessedBatchNum = ev.batchNum;
+                    return;
+                }
             }
-            var currentIndex = +/^\d+/.exec(attr)[0], item = this[currentIndex];
-            if (typeof item !== 'undefined') {
-                var newIndex = this._getInsertIndex(item, currentIndex);
+            var currentIndex = +attr.substr(0, dotIndex);
+            var item = this[currentIndex];
+            var changedAttr = attr.substr(dotIndex + 1);
+            if (typeof item !== 'undefined' && (typeof this.comparator !== 'string' || this.comparator.indexOf(changedAttr) === 0)) {
+                var newIndex = this._getRelativeInsertIndex(item, currentIndex);
                 if (newIndex !== currentIndex) {
                     this._swapItems(currentIndex, newIndex);
-                    can.trigger(this, 'length', [this.length]);
+                    can.batch.trigger(this, 'length', [this.length]);
                 }
             }
         }
         _changes.apply(this, arguments);
     },
-    _getInsertIndex: function (item, currentIndex) {
-        var a = this._getComparatorValue(item), b, offset = 0;
-        for (var i = 0; i < this.length; i++) {
-            b = this._getComparatorValue(this[i]);
-            if (typeof currentIndex !== 'undefined' && i === currentIndex) {
+    _getInsertIndex: function (item) {
+        var length = this.length;
+        var offset = 0;
+        var a = this._getComparatorValue(item);
+        var b, comparedItem;
+        for (var i = 0; i < length; i++) {
+            comparedItem = this[i];
+            b = this._getComparatorValue(comparedItem);
+            if (item === comparedItem) {
                 offset = -1;
                 continue;
             }
@@ -86,7 +97,20 @@ can.extend(proto, {
                 return i + offset;
             }
         }
-        return i + offset;
+        return length + offset;
+    },
+    _getRelativeInsertIndex: function (item, currentIndex) {
+        var naiveInsertIndex = this._getInsertIndex(item);
+        var nextItemIndex = currentIndex + 1;
+        var a = this._getComparatorValue(item);
+        var b;
+        if (currentIndex < naiveInsertIndex && nextItemIndex < this.length) {
+            b = this._getComparatorValue(this[nextItemIndex]);
+            if (this._comparator(a, b) === 0) {
+                return currentIndex;
+            }
+        }
+        return naiveInsertIndex;
     },
     _getComparatorValue: function (item, overwrittenComparator) {
         var comparator = typeof overwrittenComparator === 'string' ? overwrittenComparator : this.comparator;
@@ -130,7 +154,7 @@ can.extend(proto, {
             }
         }
         if (!silent) {
-            can.trigger(this, 'length', [this.length]);
+            can.batch.trigger(this, 'length', [this.length]);
         }
         return this;
     },
@@ -139,7 +163,7 @@ can.extend(proto, {
         [].splice.call(this, oldIndex, 1);
         [].splice.call(this, newIndex, 0, temporaryItemReference);
         if (!silent) {
-            can.trigger(this, 'move', [
+            can.batch.trigger(this, 'move', [
                 temporaryItemReference,
                 newIndex,
                 oldIndex

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.2.7
+ * CanJS - 2.2.9
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 24 Jul 2015 20:57:32 GMT
+ * Fri, 11 Sep 2015 23:12:43 GMT
  * Licensed MIT
  */
 
@@ -43,13 +43,10 @@
 			};
 			args.push(require, module.exports, module);
 		}
-		// Babel uses the exports and module object.
+		// Babel uses only the exports objet
 		else if(!args[0] && deps[0] === "exports") {
 			module = { exports: {} };
 			args[0] = module.exports;
-			if(deps[1] === "module") {
-				args[1] = module;
-			}
 		}
 
 		global.define = origDefine;
@@ -67,11 +64,10 @@
 			global.define = origDefine;
 			eval("(function() { " + __code + " \n }).call(global);");
 			global.define = ourDefine;
-		},
-		orig: global.System
+		}
 	};
 })({},window)
-/*can@2.2.7#util/object/object*/
+/*can@2.2.9#util/object/object*/
 define('can/util/object/object', ['can/util/util'], function (can) {
     var isArray = can.isArray;
     can.Object = {};
@@ -165,7 +161,7 @@ define('can/util/object/object', ['can/util/util'], function (can) {
     compareMethods.eqeq = compareMethods.similar;
     return can.Object;
 });
-/*can@2.2.7#util/fixture/fixture*/
+/*can@2.2.9#util/fixture/fixture*/
 define('can/util/fixture/fixture', [
     'can/util/util',
     'can/util/string/string',
@@ -223,7 +219,7 @@ define('can/util/fixture/fixture', [
                 settings.type = 'GET';
                 if (!settings.error) {
                     settings.error = function (xhr, error, message) {
-                        throw 'fixtures.js Error ' + error + ' ' + message;
+                        throw new Error('fixtures.js Error ' + error + ' ' + message);
                     };
                 }
             } else {
@@ -656,5 +652,4 @@ define('can/util/fixture/fixture', [
 (function (){
 	window._define = window.define;
 	window.define = window.define.orig;
-	window.System = window.System.orig;
 })();

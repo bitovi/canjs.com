@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.7
+ * CanJS - 2.2.9
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 24 Jul 2015 20:57:32 GMT
+ * Fri, 11 Sep 2015 23:12:43 GMT
  * Licensed MIT
  */
 
-/*can@2.2.7#util/bind/bind*/
+/*can@2.2.9#util/bind/bind*/
 var can = require('../util.js');
 can.bindAndSetup = function () {
     can.addEvent.apply(this, arguments);
@@ -23,6 +23,9 @@ can.bindAndSetup = function () {
     return this;
 };
 can.unbindAndTeardown = function (event, handler) {
+    if (!this.__bindEvents) {
+        return this;
+    }
     var handlers = this.__bindEvents[event] || [];
     var handlerCount = handlers.length;
     can.removeEvent.apply(this, arguments);
