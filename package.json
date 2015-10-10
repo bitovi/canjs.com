@@ -25,7 +25,7 @@
     "node": ">= 0.10.0"
   },
   "devDependencies": {
-    "documentjs": "0.3.0-pre.1",
+    "documentjs": "0.3.1",
     "grunt": "~0.4.1",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "~0.4.1",
