@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
@@ -43,10 +43,15 @@
 			};
 			args.push(require, module.exports, module);
 		}
-		// Babel uses only the exports objet
+		// Babel uses the exports and module object.
 		else if(!args[0] && deps[0] === "exports") {
 			module = { exports: {} };
 			args[0] = module.exports;
+			if(deps[1] === "module") {
+				args[1] = module;
+			}
+		} else if(!args[0] && deps[0] === "module") {
+			args[0] = { id: moduleName };
 		}
 
 		global.define = origDefine;
@@ -59,24 +64,30 @@
 	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
-	global.System = {
-		define: function(__name, __code){
-			global.define = origDefine;
-			eval("(function() { " + __code + " \n }).call(global);");
-			global.define = ourDefine;
-		}
-	};
+	ourDefine("@loader", [], function(){
+		// shim for @@global-helpers
+		var noop = function(){};
+		return {
+			get: function(){
+				return { prepareGlobal: noop, retrieveGlobal: noop };
+			},
+			global: global,
+			__exec: function(__load){
+				eval("(function() { " + __load.source + " \n }).call(global);");
+			}
+		};
+	});
 })({},window)
-/*can@2.2.9#view/target/target*/
+/*can@2.3.0#view/target/target*/
 define('can/view/target/target', [
     'can/util/util',
     'can/view/elements'
-], function (can, elements) {
-    var processNodes = function (nodes, paths, location) {
+], function (can, elements, vdom) {
+    var processNodes = function (nodes, paths, location, document) {
             var frag = document.createDocumentFragment();
             for (var i = 0, len = nodes.length; i < len; i++) {
                 var node = nodes[i];
-                frag.appendChild(processNode(node, paths, location.concat(i)));
+                frag.appendChild(processNode(node, paths, location.concat(i), document));
             }
             return frag;
         }, keepsTextNodes = typeof document !== 'undefined' && function () {
@@ -86,13 +97,20 @@ define('can/view/target/target', [
             div.appendChild(document.createTextNode(''));
             testFrag.appendChild(div);
             var cloned = testFrag.cloneNode(true);
-            return cloned.childNodes[0].childNodes.length === 2;
+            return can.childNodes(cloned.firstChild).length === 2;
         }(), clonesWork = typeof document !== 'undefined' && function () {
             var a = document.createElement('a');
             a.innerHTML = '<xyz></xyz>';
             var clone = a.cloneNode(true);
             return clone.innerHTML === '<xyz></xyz>';
-        }(), namespacesWork = typeof document !== 'undefined' && !!document.createElementNS;
+        }(), namespacesWork = typeof document !== 'undefined' && !!document.createElementNS, attributeDummy = typeof document !== 'undefined' ? document.createElement('div') : null, setAttribute = function (el, attrName, value) {
+            try {
+                el.setAttribute(attrName, value);
+            } catch (e) {
+                attributeDummy.innerHTML = '<div ' + attrName + '="' + value + '"></div>';
+                el.setAttributeNode(attributeDummy.childNodes[0].attributes[0].cloneNode());
+            }
+        };
     var cloneNode = clonesWork ? function (el) {
             return el.cloneNode(true);
         } : function (node) {
@@ -110,7 +128,7 @@ define('can/view/target/target', [
                 var attributes = can.makeArray(node.attributes);
                 can.each(attributes, function (node) {
                     if (node && node.specified) {
-                        copy.setAttribute(node.nodeName, node.nodeValue);
+                        setAttribute(copy, node.nodeName, node.nodeValue);
                     }
                 });
             }
@@ -121,7 +139,7 @@ define('can/view/target/target', [
             }
             return copy;
         };
-    function processNode(node, paths, location) {
+    function processNode(node, paths, location, document) {
         var callback, loc = location, nodeType = typeof node, el, p, i, len;
         var getCallback = function () {
             if (!callback) {
@@ -147,7 +165,7 @@ define('can/view/target/target', [
                         if (typeof value === 'function') {
                             getCallback().callbacks.push({ callback: value });
                         } else {
-                            el.setAttribute(attrName, value);
+                            setAttribute(el, attrName, value);
                         }
                     }
                 }
@@ -162,7 +180,7 @@ define('can/view/target/target', [
                     } else {
                         p = paths;
                     }
-                    el.appendChild(processNodes(node.children, p, loc));
+                    el.appendChild(processNodes(node.children, p, loc, document));
                 }
             } else if (node.comment) {
                 el = document.createComment(node.comment);
@@ -191,33 +209,44 @@ define('can/view/target/target', [
         }
         return el;
     }
-    function hydratePath(el, pathData, args) {
-        var path = pathData.path, callbacks = pathData.callbacks, paths = pathData.paths, callbackData, child = el;
-        for (var i = 0, len = path.length; i < len; i++) {
-            child = child.childNodes[path[i]];
+    function getCallbacks(el, pathData, elementCallbacks) {
+        var path = pathData.path, callbacks = pathData.callbacks, paths = pathData.paths, child = el, pathLength = path ? path.length : 0, pathsLength = paths ? paths.length : 0;
+        for (var i = 0; i < pathLength; i++) {
+            child = child.childNodes.item(path[i]);
         }
-        for (i = 0, len = callbacks.length; i < len; i++) {
+        elementCallbacks.push({
+            element: child,
+            callbacks: callbacks
+        });
+        for (i = 0; i < pathsLength; i++) {
+            getCallbacks(child, paths[i], elementCallbacks);
+        }
+    }
+    function hydrateCallbacks(callbacks, args) {
+        var len = callbacks.length, callbacksLength, callbackElement, callbackData;
+        for (var i = 0; i < len; i++) {
             callbackData = callbacks[i];
-            callbackData.callback.apply(child, args);
-        }
-        if (paths && paths.length) {
-            for (i = paths.length - 1; i >= 0; i--) {
-                hydratePath(child, paths[i], args);
+            callbacksLength = callbackData.callbacks.length;
+            callbackElement = callbackData.element;
+            for (var c = 0; c < callbacksLength; c++) {
+                callbackData.callbacks[c].callback.apply(callbackElement, args);
             }
         }
     }
-    function makeTarget(nodes) {
+    function makeTarget(nodes, doc) {
         var paths = [];
-        var frag = processNodes(nodes, paths, []);
+        var frag = processNodes(nodes, paths, [], doc || can.global.document);
         return {
             paths: paths,
             clone: frag,
             hydrate: function () {
                 var cloned = cloneNode(this.clone);
                 var args = can.makeArray(arguments);
-                for (var i = paths.length - 1; i >= 0; i--) {
-                    hydratePath(cloned, paths[i], args);
+                var callbacks = [];
+                for (var i = 0; i < paths.length; i++) {
+                    getCallbacks(cloned, paths[i], callbacks);
                 }
+                hydrateCallbacks(callbacks, args);
                 return cloned;
             }
         };
@@ -226,7 +255,244 @@ define('can/view/target/target', [
     can.view.target = makeTarget;
     return makeTarget;
 });
-/*can@2.2.9#view/stache/html_section*/
+/*can@2.3.0#view/stache/mustache_core*/
+define('can/view/stache/mustache_core', [
+    'can/util/util',
+    'can/view/stache/utils',
+    'can/view/stache/mustache_helpers',
+    'can/view/stache/expression',
+    'can/view/live/live',
+    'can/view/elements',
+    'can/view/scope/scope',
+    'can/view/node_lists/node_lists'
+], function (can, utils, mustacheHelpers, expression, live, elements, Scope, nodeLists) {
+    live = live || can.view.live;
+    elements = elements || can.view.elements;
+    Scope = Scope || can.view.Scope;
+    nodeLists = nodeLists || can.view.nodeLists;
+    var mustacheLineBreakRegExp = /(?:(?:^|(\r?)\n)(\s*)(\{\{([^\}]*)\}\}\}?)([^\S\n\r]*)($|\r?\n))|(\{\{([^\}]*)\}\}\}?)/g, getItemsFragContent = function (items, isObserveList, helperOptions, options) {
+            var frag = (can.document || can.global.document).createDocumentFragment();
+            for (var i = 0, len = items.length; i < len; i++) {
+                append(frag, helperOptions.fn(isObserveList ? items.attr('' + i) : items[i], options));
+            }
+            return frag;
+        }, append = function (frag, content) {
+            if (content) {
+                frag.appendChild(typeof content === 'string' ? frag.ownerDocument.createTextNode(content) : content);
+            }
+        }, getItemsStringContent = function (items, isObserveList, helperOptions, options) {
+            var txt = '';
+            for (var i = 0, len = items.length; i < len; i++) {
+                txt += helperOptions.fn(isObserveList ? items.attr('' + i) : items[i], options);
+            }
+            return txt;
+        };
+    var core = {
+            expression: expression,
+            makeEvaluator: function (scope, helperOptions, nodeList, mode, exprData, truthyRenderer, falseyRenderer, stringOnly) {
+                if (mode === '^') {
+                    var temp = truthyRenderer;
+                    truthyRenderer = falseyRenderer;
+                    falseyRenderer = temp;
+                }
+                var value, helperOptionArg;
+                if (exprData instanceof expression.Call) {
+                    helperOptionArg = {
+                        fn: function () {
+                        },
+                        inverse: function () {
+                        },
+                        context: scope.attr('.'),
+                        scope: scope,
+                        nodeList: nodeList,
+                        exprData: exprData,
+                        helpersScope: helperOptions
+                    };
+                    utils.convertToScopes(helperOptionArg, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer);
+                    value = exprData.value(scope, helperOptions, helperOptionArg);
+                    if (exprData.isHelper) {
+                        return value;
+                    }
+                } else {
+                    var readOptions = {
+                            isArgument: true,
+                            args: [
+                                scope.attr('.'),
+                                scope
+                            ],
+                            asCompute: true
+                        };
+                    var helperAndValue = exprData.helperAndValue(scope, helperOptions, readOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);
+                    var helper = helperAndValue.helper;
+                    value = helperAndValue.value;
+                    if (helper) {
+                        return exprData.evaluator(helper, scope, helperOptions, readOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);
+                    }
+                }
+                if (!mode) {
+                    if (value && value.isComputed) {
+                        return value;
+                    } else {
+                        return function () {
+                            return '' + (value != null ? value : '');
+                        };
+                    }
+                } else if (mode === '#' || mode === '^') {
+                    helperOptionArg = {
+                        fn: function () {
+                        },
+                        inverse: function () {
+                        }
+                    };
+                    utils.convertToScopes(helperOptionArg, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer);
+                    return function () {
+                        var finalValue;
+                        if (can.isFunction(value) && value.isComputed) {
+                            finalValue = value();
+                        } else {
+                            finalValue = value;
+                        }
+                        if (typeof finalValue === 'function') {
+                            return finalValue;
+                        } else if (utils.isArrayLike(finalValue)) {
+                            var isObserveList = utils.isObserveLike(finalValue);
+                            if (isObserveList ? finalValue.attr('length') : finalValue.length) {
+                                return (stringOnly ? getItemsStringContent : getItemsFragContent)(finalValue, isObserveList, helperOptionArg, helperOptions);
+                            } else {
+                                return helperOptionArg.inverse(scope, helperOptions);
+                            }
+                        } else {
+                            return finalValue ? helperOptionArg.fn(finalValue || scope, helperOptions) : helperOptionArg.inverse(scope, helperOptions);
+                        }
+                    };
+                } else {
+                }
+            },
+            makeLiveBindingPartialRenderer: function (partialName, state) {
+                partialName = can.trim(partialName);
+                return function (scope, options, parentSectionNodeList) {
+                    var nodeList = [this];
+                    nodeList.expression = '>' + partialName;
+                    nodeLists.register(nodeList, null, state.directlyNested ? parentSectionNodeList || true : true);
+                    var partialFrag = can.compute(function () {
+                            var localPartialName = partialName;
+                            var partial = options.attr('partials.' + localPartialName), res;
+                            if (partial) {
+                                res = partial.render ? partial.render(scope, options) : partial(scope, options);
+                            } else {
+                                var scopePartialName = scope.read(localPartialName, { isArgument: true }).value;
+                                if (scopePartialName === null) {
+                                    return can.frag('');
+                                }
+                                if (scopePartialName) {
+                                    localPartialName = scopePartialName;
+                                }
+                                res = can.isFunction(localPartialName) ? localPartialName(scope, options) : can.view.render(localPartialName, scope, options);
+                            }
+                            return can.frag(res);
+                        });
+                    live.html(this, partialFrag, this.parentNode, nodeList);
+                };
+            },
+            makeStringBranchRenderer: function (mode, expressionString) {
+                var exprData = core.expression.parse(expressionString), fullExpression = mode + expressionString;
+                if (!(exprData instanceof expression.Helper) && !(exprData instanceof expression.Call)) {
+                    exprData = new expression.Helper(exprData, [], {});
+                }
+                return function branchRenderer(scope, options, truthyRenderer, falseyRenderer) {
+                    var evaluator = scope.__cache[fullExpression];
+                    if (mode || !evaluator) {
+                        evaluator = makeEvaluator(scope, options, null, mode, exprData, truthyRenderer, falseyRenderer, true);
+                        if (!mode) {
+                            scope.__cache[fullExpression] = evaluator;
+                        }
+                    }
+                    var res = evaluator();
+                    return res == null ? '' : '' + res;
+                };
+            },
+            makeLiveBindingBranchRenderer: function (mode, expressionString, state) {
+                var exprData = core.expression.parse(expressionString);
+                if (!(exprData instanceof expression.Helper) && !(exprData instanceof expression.Call)) {
+                    exprData = new expression.Helper(exprData, [], {});
+                }
+                return function branchRenderer(scope, options, parentSectionNodeList, truthyRenderer, falseyRenderer) {
+                    var nodeList = [this];
+                    nodeList.expression = expressionString;
+                    nodeLists.register(nodeList, null, state.directlyNested ? parentSectionNodeList || true : true);
+                    var evaluator = makeEvaluator(scope, options, nodeList, mode, exprData, truthyRenderer, falseyRenderer, state.tag);
+                    var gotCompute = evaluator.isComputed, compute;
+                    if (gotCompute) {
+                        compute = evaluator;
+                    } else {
+                        compute = can.compute(evaluator, null, false);
+                    }
+                    compute.computeInstance.bind('change', can.k);
+                    var value = compute();
+                    if (typeof value === 'function') {
+                        can.__notObserve(value)(this);
+                    } else if (gotCompute || compute.computeInstance.hasDependencies) {
+                        if (state.attr) {
+                            live.simpleAttribute(this, state.attr, compute);
+                        } else if (state.tag) {
+                            live.attributes(this, compute);
+                        } else if (state.text && typeof value !== 'object') {
+                            live.text(this, compute, this.parentNode, nodeList);
+                        } else {
+                            live.html(this, compute, this.parentNode, nodeList);
+                        }
+                    } else {
+                        if (state.attr) {
+                            can.attr.set(this, state.attr, value);
+                        } else if (state.tag) {
+                            live.setAttributes(this, value);
+                        } else if (state.text && typeof value === 'string') {
+                            this.nodeValue = value;
+                        } else if (value != null) {
+                            elements.replace([this], can.frag(value, this.ownerDocument));
+                        }
+                    }
+                    compute.computeInstance.unbind('change', can.k);
+                };
+            },
+            splitModeFromExpression: function (expression, state) {
+                expression = can.trim(expression);
+                var mode = expression.charAt(0);
+                if ('#/{&^>!'.indexOf(mode) >= 0) {
+                    expression = can.trim(expression.substr(1));
+                } else {
+                    mode = null;
+                }
+                if (mode === '{' && state.node) {
+                    mode = null;
+                }
+                return {
+                    mode: mode,
+                    expression: expression
+                };
+            },
+            cleanLineEndings: function (template) {
+                return template.replace(mustacheLineBreakRegExp, function (whole, returnBefore, spaceBefore, special, expression, spaceAfter, returnAfter, spaceLessSpecial, spaceLessExpression, matchIndex) {
+                    spaceAfter = spaceAfter || '';
+                    returnBefore = returnBefore || '';
+                    spaceBefore = spaceBefore || '';
+                    var modeAndExpression = splitModeFromExpression(expression || spaceLessExpression, {});
+                    if (spaceLessSpecial || '>{'.indexOf(modeAndExpression.mode) >= 0) {
+                        return whole;
+                    } else if ('^#!/'.indexOf(modeAndExpression.mode) >= 0) {
+                        return special + (matchIndex !== 0 && returnAfter.length ? returnBefore + '\n' : '');
+                    } else {
+                        return spaceBefore + special + spaceAfter + (spaceBefore.length || matchIndex !== 0 ? returnBefore + '\n' : '');
+                    }
+                });
+            },
+            Options: utils.Options
+        };
+    var makeEvaluator = core.makeEvaluator, splitModeFromExpression = core.splitModeFromExpression;
+    can.view.mustacheCore = core;
+    return core;
+});
+/*can@2.3.0#view/stache/html_section*/
 define('can/view/stache/html_section', [
     'can/util/util',
     'can/view/target/target',
@@ -240,7 +506,7 @@ define('can/view/stache/html_section', [
                     return html.replace(/\r\n/g, '\n');
                 }
                 el.innerHTML = html;
-                return el.childNodes.length === 0 ? '' : el.childNodes[0].nodeValue;
+                return el.childNodes.length === 0 ? '' : el.childNodes.item(0).nodeValue;
             };
         }();
     var HTMLSectionBuilder = function () {
@@ -278,7 +544,7 @@ define('can/view/stache/html_section', [
             var compiled = this.stack.pop().compile();
             return function (scope, options, nodeList) {
                 if (!(scope instanceof can.view.Scope)) {
-                    scope = new can.view.Scope(scope || {});
+                    scope = can.view.Scope.refsScope().add(scope || {});
                 }
                 if (!(options instanceof mustacheCore.Options)) {
                     options = new mustacheCore.Options(options || {});
@@ -325,9 +591,9 @@ define('can/view/stache/html_section', [
             }
         },
         compile: function () {
-            this.compiled = target(this.targetData);
+            this.compiled = target(this.targetData, can.document || can.global.document);
             if (this.inverseData) {
-                this.inverseCompiled = target(this.inverseData);
+                this.inverseCompiled = target(this.inverseData, can.document || can.global.document);
                 delete this.inverseData;
             }
             delete this.targetData;
@@ -347,7 +613,7 @@ define('can/view/stache/html_section', [
     });
     return HTMLSectionBuilder;
 });
-/*can@2.2.9#view/stache/live_attr*/
+/*can@2.3.0#view/stache/live_attr*/
 define('can/view/stache/live_attr', [
     'can/util/util',
     'can/view/live/live',
@@ -393,7 +659,7 @@ define('can/view/stache/live_attr', [
         }
     };
 });
-/*can@2.2.9#view/stache/text_section*/
+/*can@2.3.0#view/stache/text_section*/
 define('can/view/stache/text_section', [
     'can/util/util',
     'can/view/live/live',
@@ -402,9 +668,8 @@ define('can/view/stache/text_section', [
 ], function (can, live, utils, liveStache) {
     live = live || can.view.live;
     var TextSectionBuilder = function () {
-            this.stack = [new TextSection()];
-        }, emptyHandler = function () {
-        };
+        this.stack = [new TextSection()];
+    };
     can.extend(TextSectionBuilder.prototype, utils.mixins);
     can.extend(TextSectionBuilder.prototype, {
         startSection: function (process) {
@@ -429,8 +694,8 @@ define('can/view/stache/text_section', [
             return function (scope, options) {
                 var compute = can.compute(function () {
                         return renderer(scope, options);
-                    }, this, false, true);
-                compute.bind('change', emptyHandler);
+                    }, null, false);
+                compute.computeInstance.bind('change', can.k);
                 var value = compute();
                 if (compute.computeInstance.hasDependencies) {
                     if (state.attr) {
@@ -438,7 +703,7 @@ define('can/view/stache/text_section', [
                     } else {
                         liveStache.attributes(this, compute, scope, options);
                     }
-                    compute.unbind('change', emptyHandler);
+                    compute.computeInstance.unbind('change', can.k);
                 } else {
                     if (state.attr) {
                         can.attr.set(this, state.attr, value);
@@ -484,61 +749,112 @@ define('can/view/stache/text_section', [
     });
     return TextSectionBuilder;
 });
-/*can@2.2.9#view/stache/intermediate_and_imports*/
+/*can@2.3.0#view/import/import*/
+define('can/view/import/import', [
+    'can/util/util',
+    'can/view/callbacks/callbacks'
+], function (can) {
+    can.view.tag('can-import', function (el, tagData) {
+        var moduleName = el.getAttribute('from');
+        var templateModule = tagData.options.attr('helpers.module');
+        var parentName = templateModule ? templateModule.id : undefined;
+        var importPromise;
+        if (moduleName) {
+            importPromise = can['import'](moduleName, parentName);
+        } else {
+            importPromise = can.Deferred().reject('No moduleName provided').promise();
+        }
+        var root = tagData.scope.attr('%root');
+        if (root && can.isFunction(root.waitFor)) {
+            root.waitFor(importPromise);
+        }
+        can.data(can.$(el), 'viewModel', importPromise);
+        can.data(can.$(el), 'scope', importPromise);
+        var scope = tagData.scope.add(importPromise);
+        var handOffTag = el.getAttribute('can-tag');
+        if (handOffTag) {
+            var callback = can.view.tag(handOffTag);
+            callback(el, can.extend(tagData, { scope: scope }));
+            can.data(can.$(el), 'viewModel', importPromise);
+            can.data(can.$(el), 'scope', importPromise);
+        } else {
+            var frag = tagData.subtemplate ? tagData.subtemplate(scope, tagData.options) : document.createDocumentFragment();
+            var nodeList = can.view.nodeLists.register([], undefined, true);
+            can.one.call(el, 'removed', function () {
+                can.view.nodeLists.unregister(nodeList);
+            });
+            can.appendChild(el, frag, can.document);
+            can.view.nodeLists.update(nodeList, can.childNodes(el));
+        }
+    });
+});
+/*can@2.3.0#view/stache/intermediate_and_imports*/
 define('can/view/stache/intermediate_and_imports', [
     'can/view/stache/mustache_core',
-    'can/view/parser/parser'
+    'can/view/parser/parser',
+    'can/view/import/import'
 ], function (mustacheCore, parser) {
     return function (source) {
         var template = mustacheCore.cleanLineEndings(source);
-        var imports = [], inImport = false, inFrom = false;
-        var keepToken = function () {
-            return inImport ? false : true;
-        };
+        var imports = [], dynamicImports = [], ases = {}, inImport = false, inFrom = false, inAs = false, isUnary = false, currentAs = '', currentFrom = '';
         var intermediate = parser(template, {
                 start: function (tagName, unary) {
+                    isUnary = unary;
                     if (tagName === 'can-import') {
                         inImport = true;
-                    }
-                    return keepToken();
-                },
-                end: function (tagName, unary) {
-                    if (tagName === 'can-import') {
+                    } else if (inImport) {
                         inImport = false;
-                        return false;
                     }
-                    return keepToken();
                 },
                 attrStart: function (attrName) {
                     if (attrName === 'from') {
                         inFrom = true;
+                    } else if (attrName === 'as' || attrName === 'export-as') {
+                        inAs = true;
                     }
-                    return keepToken();
                 },
                 attrEnd: function (attrName) {
                     if (attrName === 'from') {
                         inFrom = false;
+                    } else if (attrName === 'as' || attrName === 'export-as') {
+                        inAs = false;
                     }
-                    return keepToken();
                 },
                 attrValue: function (value) {
                     if (inFrom && inImport) {
                         imports.push(value);
+                        if (!isUnary) {
+                            dynamicImports.push(value);
+                        }
+                        currentFrom = value;
+                    } else if (inAs && inImport) {
+                        currentAs = value;
                     }
-                    return keepToken();
                 },
-                chars: keepToken,
-                comment: keepToken,
-                special: keepToken,
-                done: keepToken
+                end: function (tagName) {
+                    if (tagName === 'can-import') {
+                        if (currentAs) {
+                            ases[currentAs] = currentFrom;
+                            currentAs = '';
+                        }
+                    }
+                },
+                close: function (tagName) {
+                    if (tagName === 'can-import') {
+                        imports.pop();
+                    }
+                }
             }, true);
         return {
             intermediate: intermediate,
-            imports: imports
+            imports: imports,
+            dynamicImports: dynamicImports,
+            ases: ases,
+            exports: ases
         };
     };
 });
-/*can@2.2.9#view/stache/stache*/
+/*can@2.3.0#view/stache/stache*/
 define('can/view/stache/stache', [
     'can/util/util',
     'can/view/parser/parser',
@@ -552,6 +868,7 @@ define('can/view/stache/stache', [
     'can/view/bindings/bindings'
 ], function (can, parser, target, HTMLSectionBuilder, TextSectionBuilder, mustacheCore, mustacheHelpers, getIntermediateAndImports, viewCallbacks) {
     parser = parser || can.view.parser;
+    can.view.parser = parser;
     viewCallbacks = viewCallbacks || can.view.callbacks;
     var svgNamespace = 'http://www.w3.org/2000/svg';
     var namespaces = {
@@ -603,7 +920,7 @@ define('can/view/stache/stache', [
                 if (!node.attributes) {
                     node.attributes = [];
                 }
-                node.attributes.push(callback);
+                node.attributes.unshift(callback);
             };
         parser(template, {
             start: function (tagName, unary) {
@@ -725,13 +1042,17 @@ define('can/view/stache/stache', [
                         delete state.node.section;
                     }
                 } else if (state.attr) {
-                    if (!state.attr.section) {
-                        state.attr.section = new TextSectionBuilder();
-                        if (state.attr.value) {
-                            state.attr.section.add(state.attr.value);
+                    if (viewCallbacks.attr(state.attr.name) && !state.attr.value) {
+                        this.attrValue('{{' + text + '}}');
+                    } else {
+                        if (!state.attr.section) {
+                            state.attr.section = new TextSectionBuilder();
+                            if (state.attr.value) {
+                                state.attr.section.add(state.attr.value);
+                            }
                         }
+                        makeRendererAndUpdateSection(state.attr.section, mode, expression);
                     }
-                    makeRendererAndUpdateSection(state.attr.section, mode, expression);
                 } else if (state.node) {
                     if (!state.node.attributes) {
                         state.node.attributes = [];

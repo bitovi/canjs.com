@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#view/view*/
+/*can@2.3.0#view/view*/
 define(['can/util/library'], function (can) {
     var isFunction = can.isFunction, makeArray = can.makeArray, hookupId = 1;
     var makeRenderer = function (textRenderer) {
@@ -220,7 +220,7 @@ define(['can/util/library'], function (can) {
                 helpers = undefined;
             }
             var deferreds = getDeferreds(data);
-            var reading, deferred, dataCopy, async, response;
+            var deferred, dataCopy, async, response;
             if (deferreds.length) {
                 deferred = new can.Deferred();
                 dataCopy = can.extend({}, data);
@@ -246,12 +246,8 @@ define(['can/util/library'], function (can) {
                 });
                 return deferred;
             } else {
-                reading = can.__clearReading();
                 async = isFunction(callback);
-                deferred = getRenderer(view, async);
-                if (reading) {
-                    can.__setReading(reading);
-                }
+                deferred = can.__notObserve(getRenderer)(view, async);
                 if (async) {
                     response = deferred;
                     deferred.then(function (renderer) {
@@ -284,6 +280,20 @@ define(['can/util/library'], function (can) {
                 $view.cachedRenderers[id] = renderer;
             }
             return def.resolve(renderer);
+        },
+        simpleHelper: function (fn) {
+            return function () {
+                var realArgs = [];
+                can.each(arguments, function (val, i) {
+                    if (i <= arguments.length) {
+                        while (val && val.isComputed) {
+                            val = val();
+                        }
+                        realArgs.push(val);
+                    }
+                });
+                return fn.apply(this, realArgs);
+            };
         }
     });
     if (typeof window !== 'undefined' && window.steal && steal.type) {

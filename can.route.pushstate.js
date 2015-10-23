@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
@@ -43,10 +43,15 @@
 			};
 			args.push(require, module.exports, module);
 		}
-		// Babel uses only the exports objet
+		// Babel uses the exports and module object.
 		else if(!args[0] && deps[0] === "exports") {
 			module = { exports: {} };
 			args[0] = module.exports;
+			if(deps[1] === "module") {
+				args[1] = module;
+			}
+		} else if(!args[0] && deps[0] === "module") {
+			args[0] = { id: moduleName };
 		}
 
 		global.define = origDefine;
@@ -59,27 +64,38 @@
 	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
-	global.System = {
-		define: function(__name, __code){
-			global.define = origDefine;
-			eval("(function() { " + __code + " \n }).call(global);");
-			global.define = ourDefine;
-		}
-	};
+	ourDefine("@loader", [], function(){
+		// shim for @@global-helpers
+		var noop = function(){};
+		return {
+			get: function(){
+				return { prepareGlobal: noop, retrieveGlobal: noop };
+			},
+			global: global,
+			__exec: function(__load){
+				eval("(function() { " + __load.source + " \n }).call(global);");
+			}
+		};
+	});
 })({},window)
-/*can@2.2.9#route/pushstate/pushstate*/
+/*can@2.3.0#route/pushstate/pushstate*/
 define('can/route/pushstate/pushstate', [
     'can/util/util',
     'can/route/route'
 ], function (can) {
     'use strict';
-    if (window.history && history.pushState) {
+    var hasPushstate = window.history && window.history.pushState;
+    var isFileProtocol = window.location && window.location.protocol === 'file:';
+    if (!isFileProtocol && hasPushstate) {
         can.route.bindings.pushstate = {
             root: '/',
             matchSlashes: false,
             paramsMatcher: /^\?(?:[^=]+=[^&]*&)*[^=]+=[^&]*/,
             querySeparator: '?',
             bind: function () {
+                if (can.isNode) {
+                    return;
+                }
                 can.delegate.call(can.$(document.documentElement), 'a', 'click', anchorClickHandler);
                 can.each(methodsToOverwrite, function (method) {
                     originalMethods[method] = window.history[method];
@@ -132,6 +148,9 @@ define('can/route/pushstate/pushstate', [
                 if (!(e.isDefaultPrevented ? e.isDefaultPrevented() : e.defaultPrevented === true)) {
                     var node = this._node || this;
                     var linksHost = node.host || window.location.host;
+                    if (node.href === 'javascript://') {
+                        return;
+                    }
                     if (window.location.host === linksHost) {
                         var root = cleanRoot();
                         if (node.pathname.indexOf(root) === 0) {

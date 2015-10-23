@@ -1,13 +1,22 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#view/stache/utils*/
-require('../../util/util.js');
+/*can@2.3.0#view/stache/utils*/
+var can = require('../../util/util.js');
+require('../scope/scope.js');
+var Options = can.view.Scope.extend({
+        init: function (data, parent) {
+            if (!data.helpers && !data.partials && !data.tags) {
+                data = { helpers: data };
+            }
+            can.view.Scope.prototype.init.apply(this, arguments);
+        }
+    });
 module.exports = {
     isArrayLike: function (obj) {
         return obj && obj.splice && typeof obj.length === 'number';
@@ -38,5 +47,29 @@ module.exports = {
         subSectionDepth: function () {
             return this.stack.length - 1;
         }
-    }
+    },
+    convertToScopes: function (helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer) {
+        if (truthyRenderer) {
+            helperOptions.fn = this.makeRendererConvertScopes(truthyRenderer, scope, options, nodeList);
+        }
+        if (falseyRenderer) {
+            helperOptions.inverse = this.makeRendererConvertScopes(falseyRenderer, scope, options, nodeList);
+        }
+    },
+    makeRendererConvertScopes: function (renderer, parentScope, parentOptions, nodeList) {
+        var rendererWithScope = function (ctx, opts, parentNodeList) {
+            return renderer(ctx || parentScope, opts, parentNodeList);
+        };
+        return can.__notObserve(function (newScope, newOptions, parentNodeList) {
+            if (newScope !== undefined && !(newScope instanceof can.view.Scope)) {
+                newScope = parentScope.add(newScope);
+            }
+            if (newOptions !== undefined && !(newOptions instanceof Options)) {
+                newOptions = parentOptions.add(newOptions);
+            }
+            var result = rendererWithScope(newScope, newOptions || parentOptions, parentNodeList || nodeList);
+            return result;
+        });
+    },
+    Options: Options
 };

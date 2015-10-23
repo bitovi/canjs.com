@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#view/stache/html_section*/
+/*can@2.3.0#view/stache/html_section*/
 var can = require('../../util/util.js');
 var target = require('../target/target.js');
 var utils = require('./utils.js');
@@ -18,7 +18,7 @@ var decodeHTML = typeof document !== 'undefined' && function () {
                 return html.replace(/\r\n/g, '\n');
             }
             el.innerHTML = html;
-            return el.childNodes.length === 0 ? '' : el.childNodes[0].nodeValue;
+            return el.childNodes.length === 0 ? '' : el.childNodes.item(0).nodeValue;
         };
     }();
 var HTMLSectionBuilder = function () {
@@ -56,7 +56,7 @@ can.extend(HTMLSectionBuilder.prototype, {
         var compiled = this.stack.pop().compile();
         return function (scope, options, nodeList) {
             if (!(scope instanceof can.view.Scope)) {
-                scope = new can.view.Scope(scope || {});
+                scope = can.view.Scope.refsScope().add(scope || {});
             }
             if (!(options instanceof mustacheCore.Options)) {
                 options = new mustacheCore.Options(options || {});
@@ -103,9 +103,9 @@ can.extend(HTMLSection.prototype, {
         }
     },
     compile: function () {
-        this.compiled = target(this.targetData);
+        this.compiled = target(this.targetData, can.document || can.global.document);
         if (this.inverseData) {
-            this.inverseCompiled = target(this.inverseData);
+            this.inverseCompiled = target(this.inverseData, can.document || can.global.document);
             delete this.inverseData;
         }
         delete this.targetData;

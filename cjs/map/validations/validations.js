@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#map/validations/validations*/
+/*can@2.3.0#map/validations/validations*/
 var can = require('../../util/util.js');
 require('../map.js');
 var validate = function (attrNames, options, proc) {
@@ -136,7 +136,7 @@ can.extend(can.Map.prototype, {
         }
         var errors = {}, self = this, addErrors = function (attr, funcs) {
                 can.each(funcs, function (func) {
-                    var res = func.call(self, isTest ? self.__convert ? self.__convert(attr, newVal) : newVal : self.attr(attr));
+                    var res = func.call(self, isTest ? newVal : self.attr(attr));
                     if (res) {
                         if (!errors[attr]) {
                             errors[attr] = [];

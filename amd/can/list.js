@@ -1,17 +1,18 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#list/list*/
+/*can@2.3.0#list/list*/
 define([
     'can/util/library',
     'can/map',
-    'can/bubble'
-], function (can, Map, bubble) {
+    'can/bubble',
+    'can/map_helpers'
+], function (can, Map, bubble, mapHelpers) {
     var splice = [].splice, spliceRemovesProps = function () {
             var obj = {
                     0: 'a',
@@ -24,23 +25,19 @@ define([
             setup: function (instances, options) {
                 this.length = 0;
                 can.cid(this, '.map');
-                this._init = 1;
-                this._computedBindings = {};
-                this._setupComputes();
+                this._setupComputedProperties();
                 instances = instances || [];
                 var teardownMapping;
                 if (can.isDeferred(instances)) {
                     this.replace(instances);
                 } else {
-                    teardownMapping = instances.length && can.Map.helpers.addToMap(instances, this);
+                    teardownMapping = instances.length && mapHelpers.addToMap(instances, this);
                     this.push.apply(this, can.makeArray(instances || []));
                 }
                 if (teardownMapping) {
                     teardownMapping();
                 }
-                this.bind('change', can.proxy(this._changes, this));
                 can.simpleExtend(this, options);
-                delete this._init;
             },
             _triggerChange: function (attr, how, newVal, oldVal) {
                 Map.prototype._triggerChange.apply(this, arguments);
@@ -66,7 +63,7 @@ define([
                     }
                 }
             },
-            __get: function (attr) {
+            ___get: function (attr) {
                 if (attr) {
                     if (this[attr] && this[attr].isComputed && can.isFunction(this.constructor.prototype[attr])) {
                         return this[attr]();
@@ -93,7 +90,7 @@ define([
                     this.length = +attr + 1;
                 }
             },
-            _remove: function (prop, current) {
+            __remove: function (prop, current) {
                 if (isNaN(+prop)) {
                     delete this[prop];
                     this._triggerChange(prop, 'remove', undefined, current);
@@ -102,13 +99,13 @@ define([
                 }
             },
             _each: function (callback) {
-                var data = this.__get();
+                var data = this.___get();
                 for (var i = 0; i < data.length; i++) {
                     callback(data[i], i);
                 }
             },
             serialize: function () {
-                return Map.helpers.serialize(this, 'serialize', []);
+                return mapHelpers.serialize(this, 'serialize', []);
             },
             splice: function (index, howMany) {
                 var args = can.makeArray(arguments), added = [], i, len, listIndex, allSame = args.length > 2;
@@ -139,18 +136,16 @@ define([
                     this._triggerChange('' + index, 'remove', undefined, removed);
                 }
                 if (args.length > 2) {
-                    for (i = 0, len = added.length; i < len; i++) {
-                        bubble.set(this, i, added[i]);
-                    }
+                    bubble.addMany(this, added);
                     this._triggerChange('' + index, 'add', added, removed);
                 }
                 can.batch.stop();
                 return removed;
             },
-            _attrs: function (items, remove) {
-                if (items === undefined) {
-                    return Map.helpers.serialize(this, 'attr', []);
-                }
+            _getAttrs: function () {
+                return mapHelpers.serialize(this, 'attr', []);
+            },
+            _setAttrs: function (items, remove) {
                 items = can.makeArray(items);
                 can.batch.start();
                 this._updateAttrs(items, remove);
@@ -160,10 +155,10 @@ define([
                 var len = Math.min(items.length, this.length);
                 for (var prop = 0; prop < len; prop++) {
                     var curVal = this[prop], newVal = items[prop];
-                    if (Map.helpers.isObservable(curVal) && Map.helpers.canMakeObserve(newVal)) {
+                    if (can.isMapLike(curVal) && mapHelpers.canMakeObserve(newVal)) {
                         curVal.attr(newVal, remove);
                     } else if (curVal !== newVal) {
-                        this._set(prop, newVal);
+                        this._set(prop + '', newVal);
                     } else {
                     }
                 }
@@ -213,17 +208,19 @@ define([
     });
     can.extend(list.prototype, {
         indexOf: function (item, fromIndex) {
-            this.attr('length');
+            can.__observe(this, 'length');
             return can.inArray(item, this, fromIndex);
         },
         join: function () {
-            return [].join.apply(this.attr(), arguments);
+            can.__observe(this, 'length');
+            return [].join.apply(this, arguments);
         },
         reverse: function () {
             var list = [].reverse.call(can.makeArray(this));
-            this.replace(list);
+            return this.replace(list);
         },
         slice: function () {
+            can.__observe(this, 'length');
             var temp = Array.prototype.slice.apply(this, arguments);
             return new this.constructor(temp);
         },
@@ -249,12 +246,20 @@ define([
             return this;
         },
         filter: function (callback, thisArg) {
-            var filteredList = new can.List(), self = this, filtered;
+            var filteredList = new this.constructor(), self = this, filtered;
             this.each(function (item, index, list) {
                 filtered = callback.call(thisArg | self, item, index, self);
                 if (filtered) {
                     filteredList.push(item);
                 }
+            });
+            return filteredList;
+        },
+        map: function (callback, thisArg) {
+            var filteredList = new can.List(), self = this;
+            this.each(function (item, index, list) {
+                var mapped = callback.call(thisArg | self, item, index, self);
+                filteredList.push(mapped);
             });
             return filteredList;
         }

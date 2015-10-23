@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#compute/read*/
+/*can@2.3.0#compute/read*/
 define(['can/util/library'], function (can) {
     var read = function (parent, reads, options) {
         options = options || {};
@@ -44,6 +44,10 @@ define(['can/util/library'], function (can) {
             parent: prev
         };
     };
+    var isAt = function (index, reads) {
+        var prevRead = reads[index - 1];
+        return prevRead && prevRead.at;
+    };
     var readValue = function (value, index, reads, options, state, prev) {
         var usedValueReader;
         do {
@@ -60,7 +64,7 @@ define(['can/util/library'], function (can) {
         {
             name: 'compute',
             test: function (value, i, reads, options) {
-                return value && value.isComputed;
+                return value && value.isComputed && !isAt(i, reads);
             },
             read: function (value, i, reads, options, state) {
                 if (options.isArgument && i === reads.length) {
@@ -77,13 +81,17 @@ define(['can/util/library'], function (can) {
             name: 'function',
             test: function (value, i, reads, options) {
                 var type = typeof value;
-                return type === 'function' && !value.isComputed && (options.executeAnonymousFunctions !== false || options.isArgument && i === reads.length) && !(can.Construct && value.prototype instanceof can.Construct) && !(can.route && value === can.route);
+                return type === 'function' && !value.isComputed && !(can.Construct && value.prototype instanceof can.Construct) && !(can.route && value === can.route);
             },
             read: function (value, i, reads, options, state, prev) {
-                if (options.isArgument && i === reads.length) {
+                if (isAt(i, reads)) {
+                    return i === reads.length ? can.proxy(value, prev) : value;
+                } else if (options.callMethodsOnObservables && can.isMapLike(prev)) {
+                    return value.apply(prev, options.args || []);
+                } else if (options.isArgument && i === reads.length) {
                     return options.proxyMethods !== false ? can.proxy(value, prev) : value;
                 }
-                return value.call(prev);
+                return value.apply(prev, options.args || []);
             }
         }
     ];
@@ -96,16 +104,10 @@ define(['can/util/library'], function (can) {
                     options.foundObservable(value, index);
                     state.foundObservable = true;
                 }
-                if (typeof value[prop] === 'function' && value.constructor.prototype[prop] === value[prop]) {
-                    if (options.returnObserveMethods) {
-                        return value[prop];
-                    } else if (prop === 'constructor' && value instanceof can.Construct || value[prop].prototype instanceof can.Construct) {
-                        return value[prop];
-                    } else {
-                        return value[prop].apply(value, options.args || []);
-                    }
+                if (typeof value[prop.key] === 'function' && value.constructor.prototype[prop.key] === value[prop.key]) {
+                    return value[prop.key];
                 } else {
-                    return value.attr(prop);
+                    return value.attr(prop.key);
                 }
             }
         },
@@ -152,7 +154,7 @@ define(['can/util/library'], function (can) {
                     });
                 }
                 can.__observe(observeData, 'state');
-                return prop in observeData ? observeData[prop] : value[prop];
+                return prop.key in observeData ? observeData[prop.key] : value[prop.key];
             }
         },
         {
@@ -164,11 +166,22 @@ define(['can/util/library'], function (can) {
                 if (value == null) {
                     return undefined;
                 } else {
-                    return value[prop];
+                    if (prop.key in value) {
+                        return value[prop.key];
+                    } else if (prop.at && specialRead[prop.key] && '@' + prop.key in value) {
+                        return value['@' + prop.key];
+                    }
                 }
             }
         }
     ];
+    var specialRead = {
+            index: true,
+            key: true,
+            event: true,
+            element: true,
+            viewModel: true
+        };
     read.write = function (parent, key, value, options) {
         options = options || {};
         if (can.isMapLike(parent)) {
@@ -184,6 +197,38 @@ define(['can/util/library'], function (can) {
         if (typeof parent === 'object') {
             parent[key] = value;
         }
+    };
+    read.reads = function (key) {
+        var keys = [];
+        var last = 0;
+        var at = false;
+        if (key.charAt(0) === '@') {
+            last = 1;
+            at = true;
+        }
+        var keyToAdd = '';
+        for (var i = last; i < key.length; i++) {
+            var character = key.charAt(i);
+            if (character === '.' || character === '@') {
+                if (key.charAt(i - 1) !== '\\') {
+                    keys.push({
+                        key: keyToAdd,
+                        at: at
+                    });
+                    at = character === '@';
+                    keyToAdd = '';
+                } else {
+                    keyToAdd = keyToAdd.substr(0, keyToAdd.length - 1) + '.';
+                }
+            } else {
+                keyToAdd += character;
+            }
+        }
+        keys.push({
+            key: keyToAdd,
+            at: at
+        });
+        return keys;
     };
     return read;
 });

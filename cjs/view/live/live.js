@@ -1,17 +1,18 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#view/live/live*/
+/*can@2.3.0#view/live/live*/
 var can = require('../../util/util.js');
 var elements = require('../elements.js');
 var view = require('../view.js');
 var nodeLists = require('../node_lists/node_lists.js');
 var parser = require('../parser/parser.js');
+var diff = require('../../util/array/diff.js');
 elements = elements || can.view.elements;
 nodeLists = nodeLists || can.view.NodeLists;
 parser = parser || can.view.parser;
@@ -31,11 +32,24 @@ var setup = function (el, bind, unbind) {
         can.bind.call(el, 'removed', teardown);
         bind(data);
         return data;
+    }, getChildNodes = function (node) {
+        var childNodes = node.childNodes;
+        if ('length' in childNodes) {
+            return childNodes;
+        } else {
+            var cur = node.firstChild;
+            var nodes = [];
+            while (cur) {
+                nodes.push(cur);
+                cur = cur.nextSibling;
+            }
+            return nodes;
+        }
     }, listen = function (el, compute, change) {
         return setup(el, function () {
-            compute.bind('change', change);
+            compute.computeInstance.bind('change', change);
         }, function (data) {
-            compute.unbind('change', change);
+            compute.computeInstance.unbind('change', change);
             if (data.nodeList) {
                 nodeLists.unregister(data.nodeList);
             }
@@ -57,35 +71,61 @@ var setup = function (el, bind, unbind) {
     }, splice = [].splice, isNode = function (obj) {
         return obj && obj.nodeType;
     }, addTextNodeIfNoChildren = function (frag) {
-        if (!frag.childNodes.length) {
-            frag.appendChild(document.createTextNode(''));
+        if (!frag.firstChild) {
+            frag.appendChild(frag.ownerDocument.createTextNode(''));
+        }
+    }, getLiveFragment = function (itemHTML) {
+        var gotText = typeof itemHTML === 'string', itemFrag = can.frag(itemHTML);
+        return gotText ? can.view.hookup(itemFrag) : itemFrag;
+    }, renderAndAddToNodeLists = function (newNodeLists, nodeList, render, context, args) {
+        var itemNodeList = [];
+        if (nodeList) {
+            nodeLists.register(itemNodeList, null, true);
+        }
+        var itemHTML = render.apply(context, args.concat([itemNodeList])), itemFrag = getLiveFragment(itemHTML);
+        var childNodes = can.makeArray(getChildNodes(itemFrag));
+        if (nodeList) {
+            nodeLists.update(itemNodeList, childNodes);
+            newNodeLists.push(itemNodeList);
+        } else {
+            newNodeLists.push(nodeLists.register(childNodes));
+        }
+        return itemFrag;
+    }, removeFromNodeList = function (masterNodeList, index, length) {
+        var removedMappings = masterNodeList.splice(index + 1, length), itemsToRemove = [];
+        can.each(removedMappings, function (nodeList) {
+            var nodesToRemove = nodeLists.unregister(nodeList);
+            [].push.apply(itemsToRemove, nodesToRemove);
+        });
+        return itemsToRemove;
+    }, addFalseyIfEmpty = function (list, falseyRender, masterNodeList, nodeList) {
+        if (falseyRender && list.length === 0) {
+            var falseyNodeLists = [];
+            var falseyFrag = renderAndAddToNodeLists(falseyNodeLists, nodeList, falseyRender, list, [list]);
+            elements.after([masterNodeList[0]], falseyFrag);
+            masterNodeList.push(falseyNodeLists[0]);
         }
     };
 var live = {
-        list: function (el, compute, render, context, parentNode, nodeList) {
+        list: function (el, compute, render, context, parentNode, nodeList, falseyRender) {
             var masterNodeList = nodeList || [el], indexMap = [], afterPreviousEvents = false, isTornDown = false, add = function (ev, items, index) {
                     if (!afterPreviousEvents) {
                         return;
                     }
-                    var frag = document.createDocumentFragment(), newNodeLists = [], newIndicies = [];
+                    var frag = text.ownerDocument.createDocumentFragment(), newNodeLists = [], newIndicies = [];
                     can.each(items, function (item, key) {
-                        var itemNodeList = [];
-                        if (nodeList) {
-                            nodeLists.register(itemNodeList, null, true);
-                        }
-                        var itemIndex = can.compute(key + index), itemHTML = render.call(context, item, itemIndex, itemNodeList), gotText = typeof itemHTML === 'string', itemFrag = can.frag(itemHTML);
-                        itemFrag = gotText ? can.view.hookup(itemFrag) : itemFrag;
-                        var childNodes = can.makeArray(itemFrag.childNodes);
-                        if (nodeList) {
-                            nodeLists.update(itemNodeList, childNodes);
-                            newNodeLists.push(itemNodeList);
-                        } else {
-                            newNodeLists.push(nodeLists.register(childNodes));
-                        }
+                        var itemIndex = can.compute(key + index), itemFrag = renderAndAddToNodeLists(newNodeLists, nodeList, render, context, [
+                                item,
+                                itemIndex
+                            ]);
                         frag.appendChild(itemFrag);
                         newIndicies.push(itemIndex);
                     });
                     var masterListIndex = index + 1;
+                    if (!indexMap.length) {
+                        var falseyItemsToRemove = removeFromNodeList(masterNodeList, 0, masterNodeList.length - 1);
+                        can.remove(can.$(falseyItemsToRemove));
+                    }
                     if (!masterNodeList[masterListIndex]) {
                         elements.after(masterListIndex === 1 ? [text] : [nodeLists.last(masterNodeList[masterListIndex - 1])], frag);
                     } else {
@@ -113,15 +153,12 @@ var live = {
                     if (index < 0) {
                         index = indexMap.length + index;
                     }
-                    var removedMappings = masterNodeList.splice(index + 1, items.length), itemsToRemove = [];
-                    can.each(removedMappings, function (nodeList) {
-                        var nodesToRemove = nodeLists.unregister(nodeList);
-                        [].push.apply(itemsToRemove, nodesToRemove);
-                    });
+                    var itemsToRemove = removeFromNodeList(masterNodeList, index, items.length);
                     indexMap.splice(index, items.length);
                     for (var i = index, len = indexMap.length; i < len; i++) {
                         indexMap[i](i);
                     }
+                    addFalseyIfEmpty(list, falseyRender, masterNodeList, nodeList);
                     if (!fullTeardown) {
                         can.remove(can.$(itemsToRemove));
                     } else {
@@ -153,7 +190,7 @@ var live = {
                         0,
                         temp
                     ]);
-                }, text = document.createTextNode(''), list, teardownList = function (fullTeardown) {
+                }, text = el.ownerDocument.createTextNode(''), list, teardownList = function (fullTeardown) {
                     if (list && list.unbind) {
                         list.unbind('add', add).unbind('remove', remove).unbind('move', move);
                     }
@@ -162,14 +199,34 @@ var live = {
                     if (isTornDown) {
                         return;
                     }
-                    teardownList();
-                    list = newList || [];
+                    afterPreviousEvents = true;
+                    if (newList && oldList) {
+                        list = newList || [];
+                        var patches = diff(oldList, newList);
+                        if (oldList.unbind) {
+                            oldList.unbind('add', add).unbind('remove', remove).unbind('move', move);
+                        }
+                        for (var i = 0, patchLen = patches.length; i < patchLen; i++) {
+                            var patch = patches[i];
+                            if (patch.deleteCount) {
+                                remove({}, { length: patch.deleteCount }, patch.index, true);
+                            }
+                            if (patch.insert.length) {
+                                add({}, patch.insert, patch.index);
+                            }
+                        }
+                    } else {
+                        if (oldList) {
+                            teardownList();
+                        }
+                        list = newList || [];
+                        add({}, list, 0);
+                        addFalseyIfEmpty(list, falseyRender, masterNodeList, nodeList);
+                    }
+                    afterPreviousEvents = false;
                     if (list.bind) {
                         list.bind('add', add).bind('remove', remove).bind('move', move);
                     }
-                    afterPreviousEvents = true;
-                    add({}, list, 0);
-                    afterPreviousEvents = false;
                     can.batch.afterPreviousEvents(function () {
                         afterPreviousEvents = true;
                     });
@@ -213,9 +270,9 @@ var live = {
                     if (!aNode && !isFunction) {
                         frag = can.view.hookup(frag, parentNode);
                     }
-                    oldNodes = nodeLists.update(nodes, frag.childNodes);
+                    oldNodes = nodeLists.update(nodes, getChildNodes(frag));
                     if (isFunction) {
-                        val(frag.childNodes[0]);
+                        val(frag.firstChild);
                     }
                     elements.replace(oldNodes, frag);
                 };
@@ -233,7 +290,7 @@ var live = {
             if (typeof val === 'string') {
                 frag = can.view.hookup(frag, nodes[0].parentNode);
             }
-            nodeLists.update(nodes, frag.childNodes);
+            nodeLists.update(nodes, getChildNodes(frag));
             elements.replace(oldNodes, frag);
             return nodes;
         },
@@ -245,7 +302,7 @@ var live = {
                     }
                     data.teardownCheck(node.parentNode);
                 });
-            var node = document.createTextNode(can.view.toStr(compute()));
+            var node = el.ownerDocument.createTextNode(can.view.toStr(compute()));
             if (nodeList) {
                 nodeList.unregistered = data.teardownCheck;
                 data.nodeList = nodeList;

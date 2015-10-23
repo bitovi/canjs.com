@@ -1,52 +1,17 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#map/bubble*/
+/*can@2.3.0#map/bubble*/
 define(['can/util/library'], function (can) {
     var bubble = can.bubble = {
-            event: function (map, boundEventName) {
-                return map.constructor._bubbleRule(boundEventName, map);
-            },
-            childrenOf: function (parentMap, eventName) {
-                parentMap._each(function (child, prop) {
-                    if (child && child.bind) {
-                        bubble.toParent(child, parentMap, prop, eventName);
-                    }
-                });
-            },
-            teardownChildrenFrom: function (parentMap, eventName) {
-                parentMap._each(function (child) {
-                    bubble.teardownFromParent(parentMap, child, eventName);
-                });
-            },
-            toParent: function (child, parent, prop, eventName) {
-                can.listenTo.call(parent, child, eventName, function () {
-                    var args = can.makeArray(arguments), ev = args.shift();
-                    args[0] = (can.List && parent instanceof can.List ? parent.indexOf(child) : prop) + (args[0] ? '.' + args[0] : '');
-                    ev.triggeredNS = ev.triggeredNS || {};
-                    if (ev.triggeredNS[parent._cid]) {
-                        return;
-                    }
-                    ev.triggeredNS[parent._cid] = true;
-                    can.trigger(parent, ev, args);
-                });
-            },
-            teardownFromParent: function (parent, child, eventName) {
-                if (child && child.unbind) {
-                    can.stopListening.call(parent, child, eventName);
-                }
-            },
-            isBubbling: function (parent, eventName) {
-                return parent._bubbleBindings && parent._bubbleBindings[eventName];
-            },
             bind: function (parent, eventName) {
-                if (!parent._init) {
-                    var bubbleEvents = bubble.event(parent, eventName), len = bubbleEvents.length, bubbleEvent;
+                if (!parent.__inSetup) {
+                    var bubbleEvents = bubble.events(parent, eventName), len = bubbleEvents.length, bubbleEvent;
                     if (!parent._bubbleBindings) {
                         parent._bubbleBindings = {};
                     }
@@ -62,7 +27,7 @@ define(['can/util/library'], function (can) {
                 }
             },
             unbind: function (parent, eventName) {
-                var bubbleEvents = bubble.event(parent, eventName), len = bubbleEvents.length, bubbleEvent;
+                var bubbleEvents = bubble.events(parent, eventName), len = bubbleEvents.length, bubbleEvent;
                 for (var i = 0; i < len; i++) {
                     bubbleEvent = bubbleEvents[i];
                     if (parent._bubbleBindings) {
@@ -87,9 +52,9 @@ define(['can/util/library'], function (can) {
                     }
                 }
             },
-            removeMany: function (parent, children) {
+            addMany: function (parent, children) {
                 for (var i = 0, len = children.length; i < len; i++) {
-                    bubble.remove(parent, children[i]);
+                    bubble.add(parent, children[i], i);
                 }
             },
             remove: function (parent, child) {
@@ -101,14 +66,60 @@ define(['can/util/library'], function (can) {
                     }
                 }
             },
+            removeMany: function (parent, children) {
+                for (var i = 0, len = children.length; i < len; i++) {
+                    bubble.remove(parent, children[i]);
+                }
+            },
             set: function (parent, prop, value, current) {
-                if (can.Map.helpers.isObservable(value)) {
+                if (can.isMapLike(value)) {
                     bubble.add(parent, value, prop);
                 }
-                if (can.Map.helpers.isObservable(current)) {
+                if (can.isMapLike(current)) {
                     bubble.remove(parent, current);
                 }
                 return value;
+            },
+            events: function (map, boundEventName) {
+                return map.constructor._bubbleRule(boundEventName, map);
+            },
+            toParent: function (child, parent, prop, eventName) {
+                can.listenTo.call(parent, child, eventName, function () {
+                    var args = can.makeArray(arguments), ev = args.shift();
+                    args[0] = (can.List && parent instanceof can.List ? parent.indexOf(child) : prop) + (args[0] ? '.' + args[0] : '');
+                    ev.triggeredNS = ev.triggeredNS || {};
+                    if (ev.triggeredNS[parent._cid]) {
+                        return;
+                    }
+                    ev.triggeredNS[parent._cid] = true;
+                    can.trigger(parent, ev, args);
+                    if (eventName === 'change') {
+                        can.trigger(parent, args[0], [
+                            args[2],
+                            args[3]
+                        ]);
+                    }
+                });
+            },
+            childrenOf: function (parent, eventName) {
+                parent._each(function (child, prop) {
+                    if (child && child.bind) {
+                        bubble.toParent(child, parent, prop, eventName);
+                    }
+                });
+            },
+            teardownFromParent: function (parent, child, eventName) {
+                if (child && child.unbind) {
+                    can.stopListening.call(parent, child, eventName);
+                }
+            },
+            teardownChildrenFrom: function (parent, eventName) {
+                parent._each(function (child) {
+                    bubble.teardownFromParent(parent, child, eventName);
+                });
+            },
+            isBubbling: function (parent, eventName) {
+                return parent._bubbleBindings && parent._bubbleBindings[eventName];
             }
         };
     return bubble;

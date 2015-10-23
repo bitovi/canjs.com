@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#model/model*/
+/*can@2.3.0#model/model*/
 var can = require('../util/util.js');
 require('../map/map.js');
 require('../list/list.js');
@@ -34,7 +34,7 @@ var pipe = function (def, thisArg, func) {
         return d;
     }, modelNum = 0, getId = function (inst) {
         can.__observe(inst, inst.constructor.id);
-        return inst.__get(inst.constructor.id);
+        return inst.___get(inst.constructor.id);
     }, ajax = function (ajaxOb, data, type, dataType, success, error) {
         var params = {};
         if (typeof ajaxOb === 'string') {
@@ -301,7 +301,7 @@ can.Model = can.Map.extend({
         return makeRequest(this, 'destroy', success, error, 'destroyed');
     },
     _bindsetup: function () {
-        var modelInstance = this.__get(this.constructor.id);
+        var modelInstance = this.___get(this.constructor.id);
         if (modelInstance != null) {
             this.constructor.store[modelInstance] = this;
         }
@@ -355,9 +355,9 @@ can.each([
             this.attr(can.isFunction(attrs.attr) ? attrs.attr() : attrs);
         }
         can.dispatch.call(this, {
-            type: 'change',
+            type: funcName,
             target: this
-        }, [funcName]);
+        }, []);
         can.dispatch.call(constructor, funcName, [this]);
     };
 });
@@ -375,9 +375,7 @@ var ML = can.Model.List = can.List.extend({
             } else {
                 can.List.prototype.setup.apply(this, arguments);
             }
-            this._init = 1;
             this.bind('destroyed', can.proxy(this._destroyed, this));
-            delete this._init;
         },
         _destroyed: function (ev, attr) {
             if (/\w+/.test(attr)) {

@@ -1,13 +1,14 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#map/define/define*/
+/*can@2.3.0#map/define/define*/
 var can = require('../../util/util.js');
+var mapHelpers = require('../map_helpers.js');
 require('../../observe/observe.js');
 var define = can.define = {};
 var getPropDefineBehavior = function (behavior, attr, define) {
@@ -22,7 +23,7 @@ var getPropDefineBehavior = function (behavior, attr, define) {
         }
     }
 };
-can.Map.helpers.define = function (Map) {
+mapHelpers.define = function (Map) {
     var definitions = Map.prototype.define;
     Map.defaultGenerators = {};
     for (var prop in definitions) {
@@ -65,7 +66,7 @@ can.Map.prototype._setupDefaults = function (obj) {
             defaults[prop] = Map.defaultGenerators[prop].call(this);
         }
     }
-    this._get = originalGet;
+    delete this._get;
     return defaults;
 };
 var proto = can.Map.prototype, oldSet = proto.__set;
@@ -89,10 +90,10 @@ proto.__set = function (prop, value, current, success, error) {
                     oldSet.call(self, prop, value, current, success, errorCallback);
                 }
                 setterCalled = true;
-            }, errorCallback, getter ? this[prop].computeInstance.lastSetValue.get() : current);
+            }, errorCallback, getter ? this._computedAttrs[prop].compute.computeInstance.lastSetValue.get() : current);
         if (getter) {
             if (setValue !== undefined && !setterCalled && setter.length >= 1) {
-                this[prop](setValue);
+                this._computedAttrs[prop].compute(setValue);
             }
             can.batch.stop();
             return;
@@ -183,8 +184,8 @@ proto.__type = function (value, prop) {
     }
     return oldType.call(this, newValue, prop);
 };
-var oldRemove = proto._remove;
-proto._remove = function (prop, current) {
+var oldRemove = proto.__remove;
+proto.__remove = function (prop, current) {
     var remove = getPropDefineBehavior('remove', prop, this.define), res;
     if (remove) {
         can.batch.start();
@@ -200,27 +201,26 @@ proto._remove = function (prop, current) {
     }
     return oldRemove.call(this, prop, current);
 };
-var oldSetupComputes = proto._setupComputes;
-proto._setupComputes = function (defaultsValues) {
+var oldSetupComputes = proto._setupComputedProperties;
+proto._setupComputedProperties = function () {
     oldSetupComputes.apply(this, arguments);
     for (var attr in this.define) {
         var def = this.define[attr], get = def.get;
         if (get) {
-            this[attr] = can.compute.async(defaultsValues[attr], get, this);
-            this._computedBindings[attr] = { count: 0 };
+            mapHelpers.addComputedAttr(this, attr, can.compute.async(undefined, get, this));
         }
     }
 };
-var oldSingleSerialize = can.Map.helpers._serialize;
-can.Map.helpers._serialize = function (map, name, val) {
-    return serializeProp(map, name, val);
+var oldSingleSerialize = proto.___serialize;
+proto.___serialize = function (name, val) {
+    return serializeProp(this, name, val);
 };
 var serializeProp = function (map, attr, val) {
     var serializer = attr === '*' ? false : getPropDefineBehavior('serialize', attr, map.define);
     if (serializer === undefined) {
-        return oldSingleSerialize.apply(this, arguments);
+        return oldSingleSerialize.call(map, attr, val);
     } else if (serializer !== false) {
-        return typeof serializer === 'function' ? serializer.call(map, val, attr) : oldSingleSerialize.apply(this, arguments);
+        return typeof serializer === 'function' ? serializer.call(map, val, attr) : oldSingleSerialize.call(map, attr, val);
     }
 };
 var oldSerialize = proto.serialize;

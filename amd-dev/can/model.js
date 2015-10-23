@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#model/model*/
+/*can@2.3.0#model/model*/
 define([
     'can/util/library',
     'can/map',
@@ -36,7 +36,7 @@ define([
             return d;
         }, modelNum = 0, getId = function (inst) {
             can.__observe(inst, inst.constructor.id);
-            return inst.__get(inst.constructor.id);
+            return inst.___get(inst.constructor.id);
         }, ajax = function (ajaxOb, data, type, dataType, success, error) {
             var params = {};
             if (typeof ajaxOb === 'string') {
@@ -307,7 +307,7 @@ define([
             return makeRequest(this, 'destroy', success, error, 'destroyed');
         },
         _bindsetup: function () {
-            var modelInstance = this.__get(this.constructor.id);
+            var modelInstance = this.___get(this.constructor.id);
             if (modelInstance != null) {
                 this.constructor.store[modelInstance] = this;
             }
@@ -361,9 +361,9 @@ define([
                 this.attr(can.isFunction(attrs.attr) ? attrs.attr() : attrs);
             }
             can.dispatch.call(this, {
-                type: 'change',
+                type: funcName,
                 target: this
-            }, [funcName]);
+            }, []);
             can.dev.log('Model.js - ' + constructor.shortName + ' ' + funcName);
             can.dispatch.call(constructor, funcName, [this]);
         };
@@ -382,9 +382,7 @@ define([
                 } else {
                     can.List.prototype.setup.apply(this, arguments);
                 }
-                this._init = 1;
                 this.bind('destroyed', can.proxy(this._destroyed, this));
-                delete this._init;
             },
             _destroyed: function (ev, attr) {
                 if (/\w+/.test(attr)) {

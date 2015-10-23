@@ -1,20 +1,21 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#component/component*/
+/*can@2.3.0#component/component*/
 var can = require('../util/util.js');
 var viewCallbacks = require('../view/callbacks/callbacks.js');
 var elements = require('../view/elements.js');
+var bindings = require('../view/bindings/bindings.js');
 require('../control/control.js');
 require('../observe/observe.js');
 require('../view/mustache/mustache.js');
-require('../view/bindings/bindings.js');
-var ignoreAttributesRegExp = /^(dataViewId|class|id)$/i, paramReplacer = /\{([^\}]+)\}/g;
+require('../util/view_model/view_model.js');
+var ignoreAttributesRegExp = /^(dataViewId|class|id|\[[\w\.-]+\]|#[\w\.-])$/i, paramReplacer = /\{([^\}]+)\}/g;
 var Component = can.Component = can.Construct.extend({
         setup: function () {
             can.Construct.setup.apply(this, arguments);
@@ -48,92 +49,107 @@ var Component = can.Component = can.Construct.extend({
             }
         }
     }, {
-        setup: function (el, hookupOptions) {
-            var initialScopeData = {}, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && this.template, twoWayBindings = {}, scope = this.scope || this.viewModel, viewModelPropertyUpdates = {}, componentScope, frag, teardownFunctions = [], callTeardownFunctions = function () {
+        setup: function (el, componentTagData) {
+            var initialScopeData = { '%root': componentTagData.scope.attr('%root') }, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && !!this.template, bindingsData = {}, scope = this.scope || this.viewModel, viewModelPropertyUpdates = {}, viewModel, frag, teardownFunctions = [], callTeardownFunctions = function () {
                     for (var i = 0, len = teardownFunctions.length; i < len; i++) {
                         teardownFunctions[i]();
                     }
-                };
+                }, $el = can.$(el);
             can.each(this.constructor.attributeScopeMappings, function (val, prop) {
                 initialScopeData[prop] = el.getAttribute(can.hyphenate(val));
             });
             can.each(can.makeArray(el.attributes), function (node, index) {
-                var name = can.camelize(node.nodeName.toLowerCase()), value = node.value;
-                if (component.constructor.attributeScopeMappings[name] || ignoreAttributesRegExp.test(name) || viewCallbacks.attr(node.nodeName)) {
+                var nodeName = node.name, name = can.camelize(nodeName.toLowerCase()), value = node.value;
+                var isDataBindings = bindings.dataBindingsRegExp.test(nodeName);
+                if (component.constructor.attributeScopeMappings[name] || ignoreAttributesRegExp.test(name) || viewCallbacks.attr(nodeName) && !isDataBindings) {
                     return;
                 }
                 if (value[0] === '{' && value[value.length - 1] === '}') {
                     value = value.substr(1, value.length - 2);
-                } else {
-                    if (hookupOptions.templateType !== 'legacy') {
+                } else if (!isDataBindings) {
+                    if (componentTagData.templateType !== 'legacy') {
                         initialScopeData[name] = value;
                         return;
                     }
                 }
-                var computeData = hookupOptions.scope.computeData(value, { args: [] }), compute = computeData.compute;
-                var handler = function (ev, newVal) {
-                    viewModelPropertyUpdates[name] = (viewModelPropertyUpdates[name] || 0) + 1;
-                    componentScope.attr(name, newVal);
-                    can.batch.afterPreviousEvents(function () {
-                        --viewModelPropertyUpdates[name];
-                    });
-                };
-                compute.bind('change', handler);
-                initialScopeData[name] = compute();
-                if (!compute.computeInstance.hasDependencies) {
-                    compute.unbind('change', handler);
+                var bindingData = bindings.attributeNameInfo(nodeName);
+                bindingData.propName = can.camelize(bindingData.propName);
+                bindingsData[bindingData.propName] = bindingData;
+                var compute = bindings.getParentCompute(el, componentTagData.scope, value, {});
+                if (compute && compute.isComputed) {
+                    if (bindingData.parentToChild) {
+                        bindings.bindParentToChild(el, compute, function (newValue) {
+                            viewModel.attr(bindingData.propName, newValue);
+                        }, viewModelPropertyUpdates, bindingData.propName);
+                        var initialValue = compute();
+                        if (initialValue !== undefined) {
+                            initialScopeData[bindingData.propName] = initialValue;
+                        }
+                    }
+                    bindingsData[bindingData.propName].parentCompute = compute;
                 } else {
-                    teardownFunctions.push(function () {
-                        compute.unbind('change', handler);
-                    });
-                    twoWayBindings[name] = computeData;
+                    initialScopeData[bindingData.propName] = compute;
                 }
             });
             if (this.constructor.Map) {
-                componentScope = new this.constructor.Map(initialScopeData);
+                viewModel = new this.constructor.Map(initialScopeData);
             } else if (scope instanceof can.Map) {
-                componentScope = scope;
+                viewModel = scope;
             } else if (can.isFunction(scope)) {
-                var scopeResult = scope.call(this, initialScopeData, hookupOptions.scope, el);
+                var scopeResult = scope.call(this, initialScopeData, componentTagData.scope, el);
                 if (scopeResult instanceof can.Map) {
-                    componentScope = scopeResult;
+                    viewModel = scopeResult;
                 } else if (scopeResult.prototype instanceof can.Map) {
-                    componentScope = new scopeResult(initialScopeData);
+                    viewModel = new scopeResult(initialScopeData);
                 } else {
-                    componentScope = new (can.Map.extend(scopeResult))(initialScopeData);
+                    viewModel = new (can.Map.extend(scopeResult))(initialScopeData);
                 }
             }
             var handlers = {};
-            can.each(twoWayBindings, function (computeData, prop) {
-                handlers[prop] = function (ev, newVal) {
-                    if (!viewModelPropertyUpdates[prop]) {
-                        computeData.compute(newVal);
+            can.each(bindingsData, function (bindingData, prop) {
+                if (bindingData.childToParent) {
+                    handlers[prop] = function (ev, newVal) {
+                        if (!viewModelPropertyUpdates[prop]) {
+                            bindingData.parentCompute(newVal);
+                        }
+                    };
+                    viewModel.bind(prop, handlers[prop]);
+                    if (bindingData.parentCompute) {
+                        bindings.initializeValues(bindingData, prop === '.' ? viewModel : viewModel.attr(prop), bindingData.parentCompute, function () {
+                        }, function (ev, newVal) {
+                            bindingData.parentCompute(newVal);
+                        });
                     }
-                };
-                componentScope.bind(prop, handlers[prop]);
+                }
             });
-            if (!can.isEmptyObject(this.constructor.attributeScopeMappings) || hookupOptions.templateType !== 'legacy') {
+            if (!can.isEmptyObject(this.constructor.attributeScopeMappings) || componentTagData.templateType !== 'legacy') {
                 can.bind.call(el, 'attributes', function (ev) {
                     var camelized = can.camelize(ev.attributeName);
-                    if (!twoWayBindings[camelized] && !ignoreAttributesRegExp.test(camelized)) {
-                        componentScope.attr(camelized, el.getAttribute(ev.attributeName));
+                    if (!bindingsData[camelized] && !ignoreAttributesRegExp.test(camelized)) {
+                        viewModel.attr(camelized, el.getAttribute(ev.attributeName));
                     }
                 });
             }
-            this.scope = this.viewModel = componentScope;
-            can.data(can.$(el), 'scope', this.scope);
-            can.data(can.$(el), 'viewModel', this.scope);
-            var renderedScope = lexicalContent ? this.scope : hookupOptions.scope.add(this.scope), options = { helpers: {} };
+            this.scope = this.viewModel = viewModel;
+            can.data($el, 'scope', this.scope);
+            can.data($el, 'viewModel', this.scope);
+            can.data($el, 'preventDataBindings', true);
+            var shadowScope = (lexicalContent ? can.view.Scope.refsScope() : componentTagData.scope.add(new can.view.Scope.Refs())).add(this.scope, { viewModel: true }), options = { helpers: {} }, addHelper = function (name, fn) {
+                    options.helpers[name] = function () {
+                        return fn.apply(viewModel, arguments);
+                    };
+                };
             can.each(this.helpers || {}, function (val, prop) {
                 if (can.isFunction(val)) {
-                    options.helpers[prop] = function () {
-                        return val.apply(componentScope, arguments);
-                    };
+                    addHelper(prop, val);
                 }
+            });
+            can.each(this.simpleHelpers || {}, function (val, prop) {
+                addHelper(prop, can.view.simpleHelper(val));
             });
             teardownFunctions.push(function () {
                 can.each(handlers, function (handler, prop) {
-                    componentScope.unbind(prop, handlers[prop]);
+                    viewModel.unbind(prop, handlers[prop]);
                 });
             });
             this._control = new this.constructor.Control(el, {
@@ -149,30 +165,46 @@ var Component = can.Component = can.Construct.extend({
                 if (!options.tags) {
                     options.tags = {};
                 }
-                options.tags.content = function contentHookup(el, rendererOptions) {
-                    var subtemplate = hookupOptions.subtemplate || rendererOptions.subtemplate;
+                options.tags.content = function contentHookup(el, contentTagData) {
+                    var subtemplate = componentTagData.subtemplate || contentTagData.subtemplate, renderingLightContent = subtemplate === componentTagData.subtemplate;
                     if (subtemplate) {
                         delete options.tags.content;
-                        var opts = !lexicalContent || subtemplate !== hookupOptions.subtemplate ? rendererOptions : hookupOptions;
-                        if (rendererOptions.parentNodeList) {
-                            var frag = subtemplate(opts.scope, opts.options, rendererOptions.parentNodeList);
+                        var lightTemplateData;
+                        if (renderingLightContent) {
+                            if (lexicalContent) {
+                                lightTemplateData = componentTagData;
+                            } else {
+                                lightTemplateData = {
+                                    scope: contentTagData.scope.cloneFromRef(),
+                                    options: contentTagData.options
+                                };
+                            }
+                        } else {
+                            lightTemplateData = contentTagData;
+                        }
+                        lightTemplateData.scope = lightTemplateData.scope.add(viewModel, {
+                            'protected': true,
+                            viewModel: true
+                        });
+                        if (contentTagData.parentNodeList) {
+                            var frag = subtemplate(lightTemplateData.scope, lightTemplateData.options, contentTagData.parentNodeList);
                             elements.replace([el], frag);
                         } else {
-                            can.view.live.replace([el], subtemplate(opts.scope, opts.options));
+                            can.view.live.replace([el], subtemplate(lightTemplateData.scope, lightTemplateData.options));
                         }
                         options.tags.content = contentHookup;
                     }
                 };
-                frag = this.constructor.renderer(renderedScope, hookupOptions.options.add(options), nodeList);
+                frag = this.constructor.renderer(shadowScope, componentTagData.options.add(options), nodeList);
             } else {
-                if (hookupOptions.templateType === 'legacy') {
-                    frag = can.view.frag(hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : '');
+                if (componentTagData.templateType === 'legacy') {
+                    frag = can.view.frag(componentTagData.subtemplate ? componentTagData.subtemplate(shadowScope, componentTagData.options.add(options)) : '');
                 } else {
-                    frag = hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options), nodeList) : document.createDocumentFragment();
+                    frag = componentTagData.subtemplate ? componentTagData.subtemplate(shadowScope, componentTagData.options.add(options), nodeList) : document.createDocumentFragment();
                 }
             }
-            can.appendChild(el, frag);
-            can.view.nodeLists.update(nodeList, el.childNodes);
+            can.appendChild(el, frag, can.document);
+            can.view.nodeLists.update(nodeList, can.childNodes(el));
         }
     });
 var ComponentControl = can.Control.extend({
@@ -201,7 +233,7 @@ var ComponentControl = can.Control.extend({
                                 return '';
                             }
                             key = key.replace(/^(scope|^viewModel)\./, '');
-                            value = can.compute.read(options.scope, key.split('.'), { isArgument: true }).value;
+                            value = can.compute.read(options.scope, can.compute.read.reads(key), { isArgument: true }).value;
                             if (value === undefined) {
                                 value = can.getObject(key);
                             }

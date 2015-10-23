@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#view/callbacks/callbacks*/
+/*can@2.3.0#view/callbacks/callbacks*/
 define([
     'can/util/library',
     'can/view'
@@ -63,12 +63,10 @@ define([
         tag: tag,
         attr: attr,
         tagHandler: function (el, tagName, tagData) {
-            var helperTagCallback = tagData.options.attr('tags.' + tagName), tagCallback = helperTagCallback || tags[tagName];
+            var helperTagCallback = tagData.options.get('tags.' + tagName, { proxyMethods: false }), tagCallback = helperTagCallback || tags[tagName];
             var scope = tagData.scope, res;
             if (tagCallback) {
-                var reads = can.__clearObserved();
-                res = tagCallback(el, tagData);
-                can.__setObserved(reads);
+                res = can.__notObserve(tagCallback)(el, tagData);
             } else {
                 res = scope;
             }

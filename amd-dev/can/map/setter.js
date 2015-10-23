@@ -1,16 +1,17 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#map/setter/setter*/
+/*can@2.3.0#map/setter/setter*/
 define([
     'can/util/library',
     'can/map'
 ], function (can) {
+    can.dev.warn('can/map/setter is a deprecated plugin and will be removed in a future release. ' + 'can/map/define provides the same functionality in a more complete API.');
     can.classize = function (s, join) {
         var parts = s.split(can.undHash), i = 0;
         for (; i < parts.length; i++) {
@@ -21,7 +22,6 @@ define([
     var classize = can.classize, proto = can.Map.prototype, old = proto.__set;
     proto.__set = function (prop, value, current, success, error) {
         var asyncTimer;
-        can.dev.warn('can/map/setter is a deprecated plugin and will be removed in a future release. ' + 'can/map/define provides the same functionality in a more complete API.');
         var cap = classize(prop), setName = 'set' + cap, errorCallback = function (errors) {
                 clearTimeout(asyncTimer);
                 var stub = error && error.call(self, errors);

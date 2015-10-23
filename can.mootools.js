@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
@@ -43,10 +43,15 @@
 			};
 			args.push(require, module.exports, module);
 		}
-		// Babel uses only the exports objet
+		// Babel uses the exports and module object.
 		else if(!args[0] && deps[0] === "exports") {
 			module = { exports: {} };
 			args[0] = module.exports;
+			if(deps[1] === "module") {
+				args[1] = module;
+			}
+		} else if(!args[0] && deps[0] === "module") {
+			args[0] = { id: moduleName };
 		}
 
 		global.define = origDefine;
@@ -59,17 +64,23 @@
 	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
-	global.System = {
-		define: function(__name, __code){
-			global.define = origDefine;
-			eval("(function() { " + __code + " \n }).call(global);");
-			global.define = ourDefine;
-		}
-	};
+	ourDefine("@loader", [], function(){
+		// shim for @@global-helpers
+		var noop = function(){};
+		return {
+			get: function(){
+				return { prepareGlobal: noop, retrieveGlobal: noop };
+			},
+			global: global,
+			__exec: function(__load){
+				eval("(function() { " + __load.source + " \n }).call(global);");
+			}
+		};
+	});
 })({},window)
-/*can@2.2.9#util/can*/
+/*can@2.3.0#util/can*/
 define('can/util/can', [], function () {
-    var glbl = typeof window !== 'undefined' ? window : global;
+    var glbl = typeof window !== 'undefined' ? window : typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope ? self : global;
     var can = {};
     if (typeof GLOBALCAN === 'undefined' || GLOBALCAN !== false) {
         glbl.can = can;
@@ -81,7 +92,7 @@ define('can/util/can', [], function () {
         return obj && typeof obj.then === 'function' && typeof obj.pipe === 'function';
     };
     can.isMapLike = function (obj) {
-        return can.Map && (obj instanceof can.Map || obj && obj.__get);
+        return can.Map && (obj instanceof can.Map || obj && obj.___get);
     };
     var cid = 0;
     can.cid = function (object, name) {
@@ -91,7 +102,7 @@ define('can/util/can', [], function () {
         }
         return object._cid;
     };
-    can.VERSION = '2.2.9';
+    can.VERSION = '2.3.0';
     can.simpleExtend = function (d, s) {
         for (var prop in s) {
             d[prop] = s[prop];
@@ -100,6 +111,23 @@ define('can/util/can', [], function () {
     };
     can.last = function (arr) {
         return arr && arr[arr.length - 1];
+    };
+    can.isDOM = function (el) {
+        return (el.ownerDocument || el) === can.global.document;
+    };
+    can.childNodes = function (node) {
+        var childNodes = node.childNodes;
+        if ('length' in childNodes) {
+            return childNodes;
+        } else {
+            var cur = node.firstChild;
+            var nodes = [];
+            while (cur) {
+                nodes.push(cur);
+                cur = cur.nextSibling;
+            }
+            return nodes;
+        }
     };
     var protoBind = Function.prototype.bind;
     if (protoBind) {
@@ -113,10 +141,11 @@ define('can/util/can', [], function () {
             };
         };
     }
-    can.frag = function (item) {
+    can.frag = function (item, doc) {
+        var document = doc || can.document || can.global.document;
         var frag;
         if (!item || typeof item === 'string') {
-            frag = can.buildFragment(item == null ? '' : '' + item, document.body);
+            frag = can.buildFragment(item == null ? '' : '' + item, document);
             if (!frag.childNodes.length) {
                 frag.appendChild(document.createTextNode(''));
             }
@@ -134,8 +163,8 @@ define('can/util/can', [], function () {
             });
             return frag;
         } else {
-            frag = can.buildFragment('' + item, document.body);
-            if (!frag.childNodes.length) {
+            frag = can.buildFragment('' + item, document);
+            if (!can.childNodes(frag).length) {
                 frag.appendChild(document.createTextNode(''));
             }
             return frag;
@@ -160,10 +189,40 @@ define('can/util/can', [], function () {
             return el;
         }
     };
-    can['import'] = function (moduleName) {
+    var parseURI = function (url) {
+        var m = String(url).replace(/^\s+|\s+$/g, '').match(/^([^:\/?#]+:)?(\/\/(?:[^:@]*(?::[^:@]*)?@)?(([^:\/?#]*)(?::(\d*))?))?([^?#]*)(\?[^#]*)?(#[\s\S]*)?/);
+        return m ? {
+            href: m[0] || '',
+            protocol: m[1] || '',
+            authority: m[2] || '',
+            host: m[3] || '',
+            hostname: m[4] || '',
+            port: m[5] || '',
+            pathname: m[6] || '',
+            search: m[7] || '',
+            hash: m[8] || ''
+        } : null;
+    };
+    can.joinURIs = function (base, href) {
+        function removeDotSegments(input) {
+            var output = [];
+            input.replace(/^(\.\.?(\/|$))+/, '').replace(/\/(\.(\/|$))+/g, '/').replace(/\/\.\.$/, '/../').replace(/\/?[^\/]*/g, function (p) {
+                if (p === '/..') {
+                    output.pop();
+                } else {
+                    output.push(p);
+                }
+            });
+            return output.join('').replace(/^\//, input.charAt(0) === '/' ? '/' : '');
+        }
+        href = parseURI(href || '');
+        base = parseURI(base || '');
+        return !href || !base ? null : (href.protocol || base.protocol) + (href.protocol || href.authority ? href.authority : base.authority) + removeDotSegments(href.protocol || href.authority || href.pathname.charAt(0) === '/' ? href.pathname : href.pathname ? (base.authority && !base.pathname ? '/' : '') + base.pathname.slice(0, base.pathname.lastIndexOf('/') + 1) + href.pathname : base.pathname) + (href.protocol || href.authority || href.pathname ? href.search : href.search || base.search) + href.hash;
+    };
+    can['import'] = function (moduleName, parentName) {
         var deferred = new can.Deferred();
         if (typeof window.System === 'object' && can.isFunction(window.System['import'])) {
-            window.System['import'](moduleName).then(can.proxy(deferred.resolve, deferred), can.proxy(deferred.reject, deferred));
+            window.System['import'](moduleName, { name: parentName }).then(can.proxy(deferred.resolve, deferred), can.proxy(deferred.reject, deferred));
         } else if (window.define && window.define.amd) {
             window.require([moduleName], function (value) {
                 deferred.resolve(value);
@@ -181,9 +240,12 @@ define('can/util/can', [], function () {
     };
     can.__observe = function () {
     };
+    can.isNode = typeof process === 'object' && {}.toString.call(process) === '[object process]';
+    can.isBrowserWindow = typeof window !== 'undefined' && typeof document !== 'undefined' && typeof SimpleDOM === 'undefined';
+    can.isWebWorker = typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope;
     return can;
 });
-/*can@2.2.9#util/attr/attr*/
+/*can@2.3.0#util/attr/attr*/
 define('can/util/attr/attr', ['can/util/can'], function (can) {
     var setImmediate = can.global.setImmediate || function (cb) {
             return setTimeout(cb, 0);
@@ -193,10 +255,15 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
                 'class': 'className',
                 'value': 'value',
                 'innertext': 'innerText',
+                'innerhtml': 'innerHTML',
                 'textcontent': 'textContent',
+                'for': 'htmlFor',
                 'checked': true,
                 'disabled': true,
-                'readonly': true,
+                'readonly': function (el, val) {
+                    el.readOnly = true;
+                    return val;
+                },
                 'required': true,
                 src: function (el, val) {
                     if (val == null || val === '') {
@@ -207,27 +274,46 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
                         return val;
                     }
                 },
-                style: function (el, val) {
-                    return el.style.cssText = val || '';
-                }
+                style: function () {
+                    var el = can.global.document && document.createElement('div');
+                    if (el && el.style && 'cssText' in el.style) {
+                        return function (el, val) {
+                            return el.style.cssText = val || '';
+                        };
+                    } else {
+                        return function (el, val) {
+                            return el.setAttribute('style', val);
+                        };
+                    }
+                }()
             },
             defaultValue: [
                 'input',
                 'textarea'
             ],
+            setAttrOrProp: function (el, attrName, val) {
+                attrName = attrName.toLowerCase();
+                var prop = attr.map[attrName];
+                if (prop === true && !val) {
+                    this.remove(el, attrName);
+                } else {
+                    this.set(el, attrName, val);
+                }
+            },
             set: function (el, attrName, val) {
+                var usingMutationObserver = can.isDOM(el) && attr.MutationObserver;
                 attrName = attrName.toLowerCase();
                 var oldValue;
-                if (!attr.MutationObserver) {
+                if (!usingMutationObserver) {
                     oldValue = attr.get(el, attrName);
                 }
-                var tagName = el.nodeName.toString().toLowerCase(), prop = attr.map[attrName], newValue;
+                var prop = attr.map[attrName], newValue;
                 if (typeof prop === 'function') {
                     newValue = prop(el, val);
                 } else if (prop === true) {
                     newValue = el[attrName] = true;
                     if (attrName === 'checked' && el.type === 'radio') {
-                        if (can.inArray(tagName, attr.defaultValue) >= 0) {
+                        if (can.inArray((el.nodeName + '').toLowerCase(), attr.defaultValue) >= 0) {
                             el.defaultChecked = true;
                         }
                     }
@@ -236,14 +322,14 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
                     if (el[prop] !== val) {
                         el[prop] = val;
                     }
-                    if (prop === 'value' && can.inArray(tagName, attr.defaultValue) >= 0) {
+                    if (prop === 'value' && can.inArray((el.nodeName + '').toLowerCase(), attr.defaultValue) >= 0) {
                         el.defaultValue = val;
                     }
                 } else {
                     el.setAttribute(attrName, val);
                     newValue = val;
                 }
-                if (!attr.MutationObserver && newValue !== oldValue) {
+                if (!usingMutationObserver && newValue !== oldValue) {
                     attr.trigger(el, attrName, oldValue);
                 }
             },
@@ -264,8 +350,10 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
             get: function (el, attrName) {
                 attrName = attrName.toLowerCase();
                 var prop = attr.map[attrName];
-                if (typeof prop === 'string' && el[prop]) {
+                if (typeof prop === 'string' && prop in el) {
                     return el[prop];
+                } else if (prop === true) {
+                    return el[attrName];
                 }
                 return el.getAttribute(attrName);
             },
@@ -305,7 +393,7 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
         };
     return attr;
 });
-/*can@2.2.9#event/event*/
+/*can@2.3.0#event/event*/
 define('can/event/event', ['can/util/can'], function (can) {
     can.addEvent = function (event, handler) {
         var allEvents = this.__bindEvents || (this.__bindEvents = {}), eventList = allEvents[event] || (allEvents[event] = []);
@@ -396,10 +484,20 @@ define('can/event/event', ['can/util/can'], function (can) {
         if (!events) {
             return;
         }
+        var eventName;
         if (typeof event === 'string') {
+            eventName = event;
             event = { type: event };
+        } else {
+            eventName = event.type;
         }
-        var eventName = event.type, handlers = (events[eventName] || []).slice(0), passed = [event];
+        var handlers = events[eventName];
+        if (!handlers) {
+            return;
+        } else {
+            handlers = handlers.slice(0);
+        }
+        var passed = [event];
         if (args) {
             passed.push.apply(passed, args);
         }
@@ -449,7 +547,7 @@ define('can/event/event', ['can/util/can'], function (can) {
     };
     return can.event;
 });
-/*can@2.2.9#util/fragment*/
+/*can@2.3.0#util/fragment*/
 define('can/util/fragment', ['can/util/can'], function (can) {
     var fragmentRE = /^\s*<(\w+)[^>]*>/, toString = {}.toString, fragment = function (html, name) {
             if (name === undefined) {
@@ -506,7 +604,7 @@ define('can/util/fragment', ['can/util/can'], function (can) {
     }());
     return can;
 });
-/*can@2.2.9#util/deferred*/
+/*can@2.3.0#util/deferred*/
 define('can/util/deferred', ['can/util/can'], function (can) {
     var extend = function (target, src) {
             for (var key in src) {
@@ -658,10 +756,10 @@ define('can/util/deferred', ['can/util/can'], function (can) {
     Deferred.prototype.pipe = Deferred.prototype.then;
     return can;
 });
-/*can@2.2.9#util/array/each*/
+/*can@2.3.0#util/array/each*/
 define('can/util/array/each', ['can/util/can'], function (can) {
     var isArrayLike = function (obj) {
-        var length = 'length' in obj && obj.length;
+        var length = obj && typeof obj !== 'boolean' && typeof obj !== 'number' && 'length' in obj && obj.length;
         return typeof arr !== 'function' && (length === 0 || typeof length === 'number' && length > 0 && length - 1 in obj);
     };
     can.each = function (elements, callback, context) {
@@ -706,7 +804,7 @@ define('can/util/array/each', ['can/util/can'], function (can) {
     };
     return can;
 });
-/*can@2.2.9#util/object/isplain/isplain*/
+/*can@2.3.0#util/object/isplain/isplain*/
 define('can/util/object/isplain/isplain', ['can/util/can'], function () {
     var core_hasOwn = Object.prototype.hasOwnProperty, isWindow = function (obj) {
             return obj !== null && obj == obj.window;
@@ -729,15 +827,18 @@ define('can/util/object/isplain/isplain', ['can/util/can'], function () {
     can.isPlainObject = isPlainObject;
     return can;
 });
-/*can@2.2.9#util/inserted/inserted*/
+/*can@2.3.0#util/inserted/inserted*/
 define('can/util/inserted/inserted', ['can/util/can'], function (can) {
-    can.inserted = function (elems) {
+    can.inserted = function (elems, document) {
+        if (!elems.length) {
+            return;
+        }
         elems = can.makeArray(elems);
-        var inDocument = false, doc = can.$(document.contains ? document : document.body), children;
+        var doc = document || elems[0].ownerDocument || elems[0], inDocument = false, root = can.$(doc.contains ? doc : doc.body), children;
         for (var i = 0, elem; (elem = elems[i]) !== undefined; i++) {
             if (!inDocument) {
                 if (elem.getElementsByTagName) {
-                    if (can.has(doc, elem).length) {
+                    if (can.has(root, elem).length) {
                         inDocument = true;
                     } else {
                         return;
@@ -755,28 +856,28 @@ define('can/util/inserted/inserted', ['can/util/can'], function (can) {
             }
         }
     };
-    can.appendChild = function (el, child) {
+    can.appendChild = function (el, child, document) {
         var children;
         if (child.nodeType === 11) {
-            children = can.makeArray(child.childNodes);
+            children = can.makeArray(can.childNodes(child));
         } else {
             children = [child];
         }
         el.appendChild(child);
-        can.inserted(children);
+        can.inserted(children, document);
     };
-    can.insertBefore = function (el, child, ref) {
+    can.insertBefore = function (el, child, ref, document) {
         var children;
         if (child.nodeType === 11) {
-            children = can.makeArray(child.childNodes);
+            children = can.makeArray(can.childNodes(child));
         } else {
             children = [child];
         }
         el.insertBefore(child, ref);
-        can.inserted(children);
+        can.inserted(children, document);
     };
 });
-/*can@2.2.9#util/util*/
+/*can@2.3.0#util/util*/
 define('can/util/util', [
     'can/util/can',
     'can/util/attr/attr',
@@ -1123,7 +1224,7 @@ define('can/util/util', [
     };
     return can;
 });
-/*can@2.2.9#view/view*/
+/*can@2.3.0#view/view*/
 define('can/view/view', ['can/util/util'], function (can) {
     var isFunction = can.isFunction, makeArray = can.makeArray, hookupId = 1;
     var makeRenderer = function (textRenderer) {
@@ -1329,7 +1430,7 @@ define('can/view/view', ['can/util/util'], function (can) {
                 helpers = undefined;
             }
             var deferreds = getDeferreds(data);
-            var reading, deferred, dataCopy, async, response;
+            var deferred, dataCopy, async, response;
             if (deferreds.length) {
                 deferred = new can.Deferred();
                 dataCopy = can.extend({}, data);
@@ -1355,12 +1456,8 @@ define('can/view/view', ['can/util/util'], function (can) {
                 });
                 return deferred;
             } else {
-                reading = can.__clearReading();
                 async = isFunction(callback);
-                deferred = getRenderer(view, async);
-                if (reading) {
-                    can.__setReading(reading);
-                }
+                deferred = can.__notObserve(getRenderer)(view, async);
                 if (async) {
                     response = deferred;
                     deferred.then(function (renderer) {
@@ -1393,11 +1490,25 @@ define('can/view/view', ['can/util/util'], function (can) {
                 $view.cachedRenderers[id] = renderer;
             }
             return def.resolve(renderer);
+        },
+        simpleHelper: function (fn) {
+            return function () {
+                var realArgs = [];
+                can.each(arguments, function (val, i) {
+                    if (i <= arguments.length) {
+                        while (val && val.isComputed) {
+                            val = val();
+                        }
+                        realArgs.push(val);
+                    }
+                });
+                return fn.apply(this, realArgs);
+            };
         }
     });
     return can;
 });
-/*can@2.2.9#view/callbacks/callbacks*/
+/*can@2.3.0#view/callbacks/callbacks*/
 define('can/view/callbacks/callbacks', [
     'can/util/util',
     'can/view/view'
@@ -1451,12 +1562,10 @@ define('can/view/callbacks/callbacks', [
         tag: tag,
         attr: attr,
         tagHandler: function (el, tagName, tagData) {
-            var helperTagCallback = tagData.options.attr('tags.' + tagName), tagCallback = helperTagCallback || tags[tagName];
+            var helperTagCallback = tagData.options.get('tags.' + tagName, { proxyMethods: false }), tagCallback = helperTagCallback || tags[tagName];
             var scope = tagData.scope, res;
             if (tagCallback) {
-                var reads = can.__clearObserved();
-                res = tagCallback(el, tagData);
-                can.__setObserved(reads);
+                res = can.__notObserve(tagCallback)(el, tagData);
             } else {
                 res = scope;
             }
@@ -1472,7 +1581,7 @@ define('can/view/callbacks/callbacks', [
     };
     return can.view.callbacks;
 });
-/*can@2.2.9#view/elements*/
+/*can@2.3.0#view/elements*/
 define('can/view/elements', [
     'can/util/util',
     'can/view/view'
@@ -1528,12 +1637,16 @@ define('can/view/elements', [
             after: function (oldElements, newFrag) {
                 var last = oldElements[oldElements.length - 1];
                 if (last.nextSibling) {
-                    can.insertBefore(last.parentNode, newFrag, last.nextSibling);
+                    can.insertBefore(last.parentNode, newFrag, last.nextSibling, can.document);
                 } else {
-                    can.appendChild(last.parentNode, newFrag);
+                    can.appendChild(last.parentNode, newFrag, can.document);
                 }
             },
             replace: function (oldElements, newFrag) {
+                var selectedValue, parentNode = oldElements[0].parentNode;
+                if (parentNode.nodeName.toUpperCase() === 'SELECT' && parentNode.selectedIndex >= 0) {
+                    selectedValue = parentNode.value;
+                }
                 elements.after(oldElements, newFrag);
                 if (can.remove(can.$(oldElements)).length < oldElements.length && !selectsCommentNodes) {
                     can.each(oldElements, function (el) {
@@ -1542,12 +1655,908 @@ define('can/view/elements', [
                         }
                     });
                 }
+                if (selectedValue !== undefined) {
+                    parentNode.value = selectedValue;
+                }
             }
         };
     can.view.elements = elements;
     return elements;
 });
-/*can@2.2.9#util/string/string*/
+/*can@2.3.0#util/bind/bind*/
+define('can/util/bind/bind', ['can/util/util'], function (can) {
+    can.bindAndSetup = function () {
+        can.addEvent.apply(this, arguments);
+        if (!this.__inSetup) {
+            if (!this._bindings) {
+                this._bindings = 1;
+                if (this._bindsetup) {
+                    this._bindsetup();
+                }
+            } else {
+                this._bindings++;
+            }
+        }
+        return this;
+    };
+    can.unbindAndTeardown = function (event, handler) {
+        if (!this.__bindEvents) {
+            return this;
+        }
+        var handlers = this.__bindEvents[event] || [];
+        var handlerCount = handlers.length;
+        can.removeEvent.apply(this, arguments);
+        if (this._bindings === null) {
+            this._bindings = 0;
+        } else {
+            this._bindings = this._bindings - (handlerCount - handlers.length);
+        }
+        if (!this._bindings && this._bindteardown) {
+            this._bindteardown();
+        }
+        return this;
+    };
+    return can;
+});
+/*can@2.3.0#util/batch/batch*/
+define('can/util/batch/batch', ['can/util/can'], function (can) {
+    var batchNum = 1, transactions = 0, batchEvents = [], stopCallbacks = [], currentBatchEvents = null, currentBatchCallbacks = null;
+    can.batch = {
+        start: function (batchStopHandler) {
+            transactions++;
+            if (batchStopHandler) {
+                stopCallbacks.push(batchStopHandler);
+            }
+        },
+        stop: function (force, callStart) {
+            if (force) {
+                transactions = 0;
+            } else {
+                transactions--;
+            }
+            if (transactions === 0) {
+                if (currentBatchEvents !== null) {
+                    return;
+                }
+                currentBatchEvents = batchEvents;
+                currentBatchCallbacks = stopCallbacks;
+                var i, len;
+                batchEvents = [];
+                stopCallbacks = [];
+                can.batch.batchNum = batchNum;
+                batchNum++;
+                if (callStart) {
+                    can.batch.start();
+                }
+                for (i = 0; i < currentBatchEvents.length; i++) {
+                    can.dispatch.apply(currentBatchEvents[i][0], currentBatchEvents[i][1]);
+                }
+                currentBatchEvents = null;
+                for (i = 0, len = currentBatchCallbacks.length; i < currentBatchCallbacks.length; i++) {
+                    currentBatchCallbacks[i]();
+                }
+                currentBatchCallbacks = null;
+                can.batch.batchNum = undefined;
+            }
+        },
+        trigger: function (item, event, args) {
+            if (!item.__inSetup) {
+                event = typeof event === 'string' ? {
+                    type: event,
+                    batchNum: can.batch.batchNum
+                } : event;
+                if (currentBatchEvents) {
+                    currentBatchEvents.push([
+                        item,
+                        [
+                            event,
+                            args
+                        ]
+                    ]);
+                } else if (transactions === 0) {
+                    return can.dispatch.call(item, event, args);
+                } else {
+                    event.batchNum = batchNum;
+                    batchEvents.push([
+                        item,
+                        [
+                            event,
+                            args
+                        ]
+                    ]);
+                }
+            }
+        },
+        afterPreviousEvents: function (handler) {
+            if (currentBatchEvents) {
+                var obj = { __bindEvents: { ready: [{ handler: handler }] } };
+                currentBatchEvents.push([
+                    obj,
+                    [
+                        { type: 'ready' },
+                        []
+                    ]
+                ]);
+            } else {
+                handler({});
+            }
+        },
+        after: function (handler) {
+            if (currentBatchEvents) {
+                currentBatchCallbacks.push(handler);
+            } else {
+                handler({});
+            }
+        }
+    };
+});
+/*can@2.3.0#compute/read*/
+define('can/compute/read', ['can/util/util'], function (can) {
+    var read = function (parent, reads, options) {
+        options = options || {};
+        var state = { foundObservable: false };
+        var cur = readValue(parent, 0, reads, options, state), type, prev, readLength = reads.length, i = 0;
+        while (i < readLength) {
+            prev = cur;
+            for (var r = 0, readersLength = read.propertyReaders.length; r < readersLength; r++) {
+                var reader = read.propertyReaders[r];
+                if (reader.test(cur)) {
+                    cur = reader.read(cur, reads[i], i, options, state);
+                    break;
+                }
+            }
+            i = i + 1;
+            cur = readValue(cur, i, reads, options, state, prev);
+            type = typeof cur;
+            if (i < reads.length && (cur === null || type !== 'function' && type !== 'object')) {
+                if (options.earlyExit) {
+                    options.earlyExit(prev, i - 1, cur);
+                }
+                return {
+                    value: undefined,
+                    parent: prev
+                };
+            }
+        }
+        if (cur === undefined) {
+            if (options.earlyExit) {
+                options.earlyExit(prev, i - 1);
+            }
+        }
+        return {
+            value: cur,
+            parent: prev
+        };
+    };
+    var isAt = function (index, reads) {
+        var prevRead = reads[index - 1];
+        return prevRead && prevRead.at;
+    };
+    var readValue = function (value, index, reads, options, state, prev) {
+        var usedValueReader;
+        do {
+            usedValueReader = false;
+            for (var i = 0, len = read.valueReaders.length; i < len; i++) {
+                if (read.valueReaders[i].test(value, index, reads, options)) {
+                    value = read.valueReaders[i].read(value, index, reads, options, state, prev);
+                }
+            }
+        } while (usedValueReader);
+        return value;
+    };
+    read.valueReaders = [
+        {
+            name: 'compute',
+            test: function (value, i, reads, options) {
+                return value && value.isComputed && !isAt(i, reads);
+            },
+            read: function (value, i, reads, options, state) {
+                if (options.isArgument && i === reads.length) {
+                    return value;
+                }
+                if (!state.foundObservable && options.foundObservable) {
+                    options.foundObservable(value, i);
+                    state.foundObservable = true;
+                }
+                return value instanceof can.Compute ? value.get() : value();
+            }
+        },
+        {
+            name: 'function',
+            test: function (value, i, reads, options) {
+                var type = typeof value;
+                return type === 'function' && !value.isComputed && !(can.Construct && value.prototype instanceof can.Construct) && !(can.route && value === can.route);
+            },
+            read: function (value, i, reads, options, state, prev) {
+                if (isAt(i, reads)) {
+                    return i === reads.length ? can.proxy(value, prev) : value;
+                } else if (options.callMethodsOnObservables && can.isMapLike(prev)) {
+                    return value.apply(prev, options.args || []);
+                } else if (options.isArgument && i === reads.length) {
+                    return options.proxyMethods !== false ? can.proxy(value, prev) : value;
+                }
+                return value.apply(prev, options.args || []);
+            }
+        }
+    ];
+    read.propertyReaders = [
+        {
+            name: 'map',
+            test: can.isMapLike,
+            read: function (value, prop, index, options, state) {
+                if (!state.foundObservable && options.foundObservable) {
+                    options.foundObservable(value, index);
+                    state.foundObservable = true;
+                }
+                if (typeof value[prop.key] === 'function' && value.constructor.prototype[prop.key] === value[prop.key]) {
+                    return value[prop.key];
+                } else {
+                    return value.attr(prop.key);
+                }
+            }
+        },
+        {
+            name: 'promise',
+            test: function (value) {
+                return can.isPromise(value);
+            },
+            read: function (value, prop, index, options, state) {
+                if (!state.foundObservable && options.foundObservable) {
+                    options.foundObservable(value, index);
+                    state.foundObservable = true;
+                }
+                var observeData = value.__observeData;
+                if (!value.__observeData) {
+                    observeData = value.__observeData = {
+                        isPending: true,
+                        state: 'pending',
+                        isResolved: false,
+                        isRejected: false,
+                        value: undefined,
+                        reason: undefined
+                    };
+                    can.cid(observeData);
+                    can.simpleExtend(observeData, can.event);
+                    value.then(function (value) {
+                        observeData.isPending = false;
+                        observeData.isResolved = true;
+                        observeData.value = value;
+                        observeData.state = 'resolved';
+                        observeData.dispatch('state', [
+                            'resolved',
+                            'pending'
+                        ]);
+                    }, function (reason) {
+                        observeData.isPending = false;
+                        observeData.isRejected = true;
+                        observeData.reason = reason;
+                        observeData.state = 'rejected';
+                        observeData.dispatch('state', [
+                            'rejected',
+                            'pending'
+                        ]);
+                    });
+                }
+                can.__observe(observeData, 'state');
+                return prop.key in observeData ? observeData[prop.key] : value[prop.key];
+            }
+        },
+        {
+            name: 'object',
+            test: function () {
+                return true;
+            },
+            read: function (value, prop) {
+                if (value == null) {
+                    return undefined;
+                } else {
+                    if (prop.key in value) {
+                        return value[prop.key];
+                    } else if (prop.at && specialRead[prop.key] && '@' + prop.key in value) {
+                        return value['@' + prop.key];
+                    }
+                }
+            }
+        }
+    ];
+    var specialRead = {
+            index: true,
+            key: true,
+            event: true,
+            element: true,
+            viewModel: true
+        };
+    read.write = function (parent, key, value, options) {
+        options = options || {};
+        if (can.isMapLike(parent)) {
+            if (!options.isArgument && parent._data && parent._data[key] && parent._data[key].isComputed) {
+                return parent._data[key](value);
+            } else {
+                return parent.attr(key, value);
+            }
+        }
+        if (parent[key] && parent[key].isComputed) {
+            return parent[key](value);
+        }
+        if (typeof parent === 'object') {
+            parent[key] = value;
+        }
+    };
+    read.reads = function (key) {
+        var keys = [];
+        var last = 0;
+        var at = false;
+        if (key.charAt(0) === '@') {
+            last = 1;
+            at = true;
+        }
+        var keyToAdd = '';
+        for (var i = last; i < key.length; i++) {
+            var character = key.charAt(i);
+            if (character === '.' || character === '@') {
+                if (key.charAt(i - 1) !== '\\') {
+                    keys.push({
+                        key: keyToAdd,
+                        at: at
+                    });
+                    at = character === '@';
+                    keyToAdd = '';
+                } else {
+                    keyToAdd = keyToAdd.substr(0, keyToAdd.length - 1) + '.';
+                }
+            } else {
+                keyToAdd += character;
+            }
+        }
+        keys.push({
+            key: keyToAdd,
+            at: at
+        });
+        return keys;
+    };
+    return read;
+});
+/*can@2.3.0#compute/get_value_and_bind*/
+define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
+    function ObservedInfo(func, context, onchanged) {
+        this.func = func;
+        this.context = context;
+        this.onchanged = onchanged;
+    }
+    function getValueAndBind(observedInfo) {
+        observedInfo.oldObserved = observedInfo.newObserved || {};
+        observedInfo.ignore = 0;
+        observedInfo.newObserved = {};
+        observedInfo.ready = false;
+        observedInfoStack.push(observedInfo);
+        observedInfo.value = observedInfo.func.call(observedInfo.context);
+        observedInfoStack.pop();
+        unbindOldSet(observedInfo);
+        can.batch.afterPreviousEvents(function () {
+            observedInfo.ready = true;
+        });
+        return observedInfo;
+    }
+    var unbindOldSet = function (observedInfo) {
+        var onchanged = observedInfo.onchanged, oldObserved = observedInfo.oldObserved;
+        for (var name in oldObserved) {
+            var obEv = oldObserved[name];
+            if (obEv) {
+                obEv.obj.unbind(obEv.event, onchanged);
+            }
+        }
+    };
+    var observedInfoStack = [];
+    can.__observe = function (obj, event) {
+        var top = observedInfoStack[observedInfoStack.length - 1];
+        if (top) {
+            var evStr = event + '', name = obj._cid + '|' + evStr;
+            if (top.traps) {
+                top.traps.push({
+                    obj: obj,
+                    event: evStr,
+                    name: name
+                });
+            } else if (!top.ignore && !top.newObserved[name]) {
+                top.newObserved[name] = {
+                    obj: obj,
+                    event: evStr
+                };
+                if (!top.oldObserved[name]) {
+                    obj.bind(evStr, top.onchanged);
+                }
+                top.oldObserved[name] = null;
+            }
+        }
+    };
+    can.__reading = can.__observe;
+    can.__trapObserves = function () {
+        if (observedInfoStack.length) {
+            var top = observedInfoStack[observedInfoStack.length - 1];
+            var traps = top.traps = [];
+            return function () {
+                top.traps = null;
+                return traps;
+            };
+        } else {
+            return function () {
+                return [];
+            };
+        }
+    };
+    can.__observes = function (observes) {
+        var top = observedInfoStack[observedInfoStack.length - 1];
+        if (top) {
+            for (var i = 0, len = observes.length; i < len; i++) {
+                var trap = observes[i], name = trap.name;
+                if (!top.newObserved[name]) {
+                    top.newObserved[name] = trap;
+                    if (!top.oldObserved[name]) {
+                        trap.obj.bind(trap.event, top.onchanged);
+                    }
+                    top.oldObserved[name] = null;
+                }
+            }
+        }
+    };
+    can.__isRecordingObserves = function () {
+        return observedInfoStack.length;
+    };
+    can.__notObserve = function (fn) {
+        return function () {
+            if (observedInfoStack.length) {
+                var top = observedInfoStack[observedInfoStack.length - 1];
+                top.ignore++;
+                var res = fn.apply(this, arguments);
+                top.ignore--;
+                return res;
+            } else {
+                return fn.apply(this, arguments);
+            }
+        };
+    };
+    getValueAndBind.unbindReadInfo = function (readInfo) {
+        var onchanged = readInfo.onchanged;
+        for (var name in readInfo.newObserved) {
+            var ob = readInfo.newObserved[name];
+            ob.obj.unbind(ob.event, onchanged);
+        }
+    };
+    getValueAndBind.ObservedInfo = ObservedInfo;
+    return getValueAndBind;
+});
+/*can@2.3.0#compute/proto_compute*/
+define('can/compute/proto_compute', [
+    'can/util/util',
+    'can/util/bind/bind',
+    'can/compute/read',
+    'can/compute/get_value_and_bind',
+    'can/util/batch/batch'
+], function (can, bind, read, getValueAndBind) {
+    can.Compute = function (getterSetter, context, eventName, bindOnce) {
+        var args = [];
+        for (var i = 0, arglen = arguments.length; i < arglen; i++) {
+            args[i] = arguments[i];
+        }
+        var contextType = typeof args[1];
+        if (typeof args[0] === 'function') {
+            this._setupGetterSetterFn(args[0], args[1], args[2], args[3]);
+        } else if (args[1]) {
+            if (contextType === 'string') {
+                this._setupProperty(args[0], args[1], args[2]);
+            } else if (contextType === 'function') {
+                this._setupSetter(args[0], args[1], args[2]);
+            } else {
+                if (args[1] && args[1].fn) {
+                    this._setupAsyncCompute(args[0], args[1]);
+                } else {
+                    this._setupSettings(args[0], args[1]);
+                }
+            }
+        } else {
+            this._setupSimpleValue(args[0]);
+        }
+        this._args = args;
+        this.isComputed = true;
+        can.cid(this, 'compute');
+    };
+    can.simpleExtend(can.Compute.prototype, {
+        _setupGetterSetterFn: function (getterSetter, context, eventName) {
+            this._set = context ? can.proxy(getterSetter, context) : getterSetter;
+            this._get = context ? can.proxy(getterSetter, context) : getterSetter;
+            this._canObserve = eventName === false ? false : true;
+            var handlers = setupComputeHandlers(this, getterSetter, context || this);
+            this._on = handlers.on;
+            this._off = handlers.off;
+        },
+        _setupProperty: function (target, propertyName, eventName) {
+            var isObserve = can.isMapLike(target), self = this, handler;
+            if (isObserve) {
+                handler = function (ev, newVal, oldVal) {
+                    self.updater(newVal, oldVal, ev.batchNum);
+                };
+                this.hasDependencies = true;
+                this._get = function () {
+                    return target.attr(propertyName);
+                };
+                this._set = function (val) {
+                    target.attr(propertyName, val);
+                };
+            } else {
+                handler = function () {
+                    self.updater(self._get(), self.value);
+                };
+                this._get = function () {
+                    return can.getObject(propertyName, [target]);
+                };
+                this._set = function (value) {
+                    var properties = propertyName.split('.'), leafPropertyName = properties.pop(), targetProperty = can.getObject(properties.join('.'), [target]);
+                    targetProperty[leafPropertyName] = value;
+                };
+            }
+            this._on = function (update) {
+                can.bind.call(target, eventName || propertyName, handler);
+                this.value = this._get();
+            };
+            this._off = function () {
+                return can.unbind.call(target, eventName || propertyName, handler);
+            };
+        },
+        _setupSetter: function (initialValue, setter, eventName) {
+            this.value = initialValue;
+            this._set = setter;
+            can.simpleExtend(this, eventName);
+        },
+        _setupSettings: function (initialValue, settings) {
+            this.value = initialValue;
+            this._set = settings.set || this._set;
+            this._get = settings.get || this._get;
+            if (!settings.__selfUpdater) {
+                var self = this, oldUpdater = this.updater;
+                this.updater = function () {
+                    oldUpdater.call(self, self._get(), self.value);
+                };
+            }
+            this._on = settings.on ? settings.on : this._on;
+            this._off = settings.off ? settings.off : this._off;
+        },
+        _setupAsyncCompute: function (initialValue, settings) {
+            var self = this;
+            this.value = initialValue;
+            this._setUpdates = true;
+            this.lastSetValue = new can.Compute(initialValue);
+            this._set = function (newVal) {
+                if (newVal === self.lastSetValue.get()) {
+                    return this.value;
+                }
+                return self.lastSetValue.set(newVal);
+            };
+            this._get = function () {
+                return getter.call(settings.context, self.lastSetValue.get());
+            };
+            var getter = settings.fn, bindings;
+            if (getter.length === 0) {
+                bindings = setupComputeHandlers(this, getter, settings.context);
+            } else if (getter.length === 1) {
+                bindings = setupComputeHandlers(this, function () {
+                    return getter.call(settings.context, self.lastSetValue.get());
+                }, settings);
+            } else {
+                var oldUpdater = this.updater, setValue = function (newVal) {
+                        oldUpdater.call(self, newVal, self.value);
+                    };
+                this.updater = function (newVal) {
+                    oldUpdater.call(self, newVal, self.value);
+                };
+                bindings = setupComputeHandlers(this, function () {
+                    var res = getter.call(settings.context, self.lastSetValue.get(), setValue);
+                    return res !== undefined ? res : this.value;
+                }, this);
+            }
+            this._on = bindings.on;
+            this._off = bindings.off;
+        },
+        _setupSimpleValue: function (initialValue) {
+            this.value = initialValue;
+        },
+        _bindsetup: can.__notObserve(function () {
+            this.bound = true;
+            this._on(this.updater);
+        }),
+        _bindteardown: function () {
+            this._off(this.updater);
+            this.bound = false;
+        },
+        bind: can.bindAndSetup,
+        unbind: can.unbindAndTeardown,
+        clone: function (context) {
+            if (context && typeof this._args[0] === 'function') {
+                this._args[1] = context;
+            } else if (context) {
+                this._args[2] = context;
+            }
+            return new can.Compute(this._args[0], this._args[1], this._args[2], this._args[3]);
+        },
+        _on: can.k,
+        _off: can.k,
+        get: function () {
+            if (can.__isRecordingObserves() && this._canObserve !== false) {
+                can.__observe(this, 'change');
+                if (!this.bound) {
+                    can.Compute.temporarilyBind(this);
+                }
+            }
+            if (this.bound) {
+                return this.value;
+            } else {
+                return this._get();
+            }
+        },
+        _get: function () {
+            return this.value;
+        },
+        set: function (newVal) {
+            var old = this.value;
+            var setVal = this._set(newVal, old);
+            if (this._setUpdates) {
+                return this.value;
+            }
+            if (this.hasDependencies) {
+                return this._get();
+            }
+            if (setVal === undefined) {
+                this.value = this._get();
+            } else {
+                this.value = setVal;
+            }
+            updateOnChange(this, this.value, old);
+            return this.value;
+        },
+        _set: function (newVal) {
+            return this.value = newVal;
+        },
+        updater: function (newVal, oldVal, batchNum) {
+            this.value = newVal;
+            updateOnChange(this, newVal, oldVal, batchNum);
+        },
+        toFunction: function () {
+            return can.proxy(this._computeFn, this);
+        },
+        _computeFn: function (newVal) {
+            if (arguments.length) {
+                return this.set(newVal);
+            }
+            return this.get();
+        }
+    });
+    var updateOnChange = function (compute, newValue, oldValue, batchNum) {
+        if (newValue !== oldValue) {
+            can.batch.trigger(compute, {
+                type: 'change',
+                batchNum: batchNum
+            }, [
+                newValue,
+                oldValue
+            ]);
+        }
+    };
+    var setupComputeHandlers = function (compute, func, context) {
+        var readInfo = new getValueAndBind.ObservedInfo(func, context, function (ev) {
+                if (readInfo.ready && compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
+                    var oldValue = readInfo.value;
+                    getValueAndBind(readInfo);
+                    compute.updater(readInfo.value, oldValue, ev.batchNum);
+                    batchNum = ev.batchNum;
+                }
+            }), batchNum;
+        return {
+            on: function () {
+                getValueAndBind(readInfo);
+                compute.value = readInfo.value;
+                compute.hasDependencies = !can.isEmptyObject(readInfo.newObserved);
+            },
+            off: function () {
+                getValueAndBind.unbindReadInfo(readInfo);
+            }
+        };
+    };
+    can.Compute.temporarilyBind = function (compute) {
+        var computeInstance = compute.computeInstance || compute;
+        computeInstance.bind('change', can.k);
+        if (!computes) {
+            computes = [];
+            setTimeout(unbindComputes, 10);
+        }
+        computes.push(computeInstance);
+    };
+    var computes, unbindComputes = function () {
+            for (var i = 0, len = computes.length; i < len; i++) {
+                computes[i].unbind('change', can.k);
+            }
+            computes = null;
+        };
+    can.Compute.async = function (initialValue, asyncComputer, context) {
+        return new can.Compute(initialValue, {
+            fn: asyncComputer,
+            context: context
+        });
+    };
+    can.Compute.truthy = function (compute) {
+        return new can.Compute(function () {
+            var res = compute.get();
+            if (typeof res === 'function') {
+                res = res.get();
+            }
+            return !!res;
+        });
+    };
+    can.Compute.read = read;
+    can.Compute.set = read.write;
+    return can.Compute;
+});
+/*can@2.3.0#compute/compute*/
+define('can/compute/compute', [
+    'can/util/util',
+    'can/util/bind/bind',
+    'can/util/batch/batch',
+    'can/compute/proto_compute'
+], function (can, bind) {
+    can.compute = function (getterSetter, context, eventName, bindOnce) {
+        var internalCompute = new can.Compute(getterSetter, context, eventName, bindOnce);
+        var bind = internalCompute.bind;
+        var unbind = internalCompute.unbind;
+        var compute = function (val) {
+            if (arguments.length) {
+                return internalCompute.set(val);
+            }
+            return internalCompute.get();
+        };
+        var cid = can.cid(compute, 'compute');
+        var handlerKey = '__handler' + cid;
+        compute.bind = function (ev, handler) {
+            var computeHandler = handler && handler[handlerKey];
+            if (handler && !computeHandler) {
+                computeHandler = handler[handlerKey] = function () {
+                    handler.apply(compute, arguments);
+                };
+            }
+            return bind.call(internalCompute, ev, computeHandler);
+        };
+        compute.unbind = function (ev, handler) {
+            var computeHandler = handler && handler[handlerKey];
+            if (computeHandler) {
+                delete handler[handlerKey];
+                return internalCompute.unbind(ev, computeHandler);
+            }
+            return unbind.apply(internalCompute, arguments);
+        };
+        compute.isComputed = internalCompute.isComputed;
+        compute.clone = function (ctx) {
+            if (typeof getterSetter === 'function') {
+                context = ctx;
+            }
+            return can.compute(getterSetter, context, ctx, bindOnce);
+        };
+        compute.computeInstance = internalCompute;
+        return compute;
+    };
+    can.compute.truthy = function (compute) {
+        return can.compute(function () {
+            var res = compute();
+            if (typeof res === 'function') {
+                res = res();
+            }
+            return !!res;
+        });
+    };
+    can.compute.async = function (initialValue, asyncComputer, context) {
+        return can.compute(initialValue, {
+            fn: asyncComputer,
+            context: context
+        });
+    };
+    can.compute.read = can.Compute.read;
+    can.compute.set = can.Compute.set;
+    can.compute.temporarilyBind = can.Compute.temporarilyBind;
+    return can.compute;
+});
+/*can@2.3.0#view/scope/compute_data*/
+define('can/view/scope/compute_data', [
+    'can/util/util',
+    'can/compute/compute',
+    'can/compute/get_value_and_bind'
+], function (can, compute, getValueAndBind) {
+    var isFastPath = function (computeData) {
+        return computeData.reads && computeData.reads.length === 1 && computeData.root instanceof can.Map && !can.isFunction(computeData.root[computeData.reads[0].key]);
+    };
+    var unbindScopeRead = getValueAndBind.unbindReadInfo;
+    var getValueAndBindSinglePropertyRead = function (readInfo, computeData, singlePropertyReadChanged) {
+        var target = computeData.root, prop = computeData.reads[0].key;
+        target.bind(prop, singlePropertyReadChanged);
+        readInfo.value = computeData.initialValue;
+    };
+    var unbindSinglePropertyRead = function (computeData, singlePropertyReadChanged) {
+        computeData.root.unbind(computeData.reads[0].key, singlePropertyReadChanged);
+    };
+    var scopeReader = function (scope, key, options, computeData, newVal) {
+        if (arguments.length > 4) {
+            var root = computeData.root || computeData.setRoot;
+            if (root) {
+                if (root.isComputed) {
+                    root(newVal);
+                } else if (computeData.reads.length) {
+                    var last = computeData.reads.length - 1;
+                    var obj = computeData.reads.length ? can.compute.read(root, computeData.reads.slice(0, last)).value : root;
+                    can.compute.set(obj, computeData.reads[last].key, newVal, options);
+                }
+            } else {
+            }
+        } else {
+            if (computeData.root) {
+                return can.compute.read(computeData.root, computeData.reads, options).value;
+            }
+            var data = scope.read(key, options);
+            computeData.scope = data.scope;
+            computeData.initialValue = data.value;
+            computeData.reads = data.reads;
+            computeData.root = data.rootObserve;
+            computeData.setRoot = data.setRoot;
+            return data.value;
+        }
+    };
+    return function (scope, key, options) {
+        options = options || { args: [] };
+        var computeData = {}, scopeRead = function (newVal) {
+                if (arguments.length) {
+                    return scopeReader(scope, key, options, computeData, newVal);
+                } else {
+                    return scopeReader(scope, key, options, computeData);
+                }
+            }, batchNum, readInfo = new getValueAndBind.ObservedInfo(scopeRead, null, function (ev) {
+                if (readInfo.ready && compute.computeInstance.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
+                    var oldValue = readInfo.value, newValue;
+                    getValueAndBind(readInfo);
+                    newValue = readInfo.value;
+                    compute.computeInstance.updater(newValue, oldValue, ev.batchNum);
+                    batchNum = batchNum = ev.batchNum;
+                }
+            }), singlePropertyReadChanged = function (ev, newVal, oldVal) {
+                if (typeof newVal !== 'function') {
+                    compute.computeInstance.updater(newVal, oldVal, ev.batchNum);
+                } else {
+                    unbindSinglePropertyRead(computeData, singlePropertyReadChanged);
+                    getValueAndBind(readInfo);
+                    isFastPathBound = false;
+                    compute.computeInstance.updater(readInfo.value, oldVal, ev.batchNum);
+                }
+            }, isFastPathBound = false, compute = can.compute(undefined, {
+                on: function () {
+                    getValueAndBind(readInfo);
+                    if (isFastPath(computeData)) {
+                        getValueAndBindSinglePropertyRead(readInfo, computeData, singlePropertyReadChanged);
+                        unbindScopeRead(readInfo);
+                        readInfo.newObserved = {};
+                        isFastPathBound = true;
+                    }
+                    compute.computeInstance.value = readInfo.value;
+                    compute.computeInstance.hasDependencies = isFastPathBound || !can.isEmptyObject(readInfo.newObserved);
+                },
+                off: function () {
+                    if (isFastPathBound) {
+                        unbindSinglePropertyRead(computeData, singlePropertyReadChanged);
+                    } else {
+                        unbindScopeRead(readInfo);
+                    }
+                },
+                set: scopeRead,
+                get: scopeRead,
+                __selfUpdater: true
+            });
+        computeData.compute = compute;
+        return computeData;
+    };
+});
+/*can@2.3.0#util/string/string*/
 define('can/util/string/string', ['can/util/util'], function (can) {
     var strUndHash = /_|-/, strColons = /\=\=/, strWords = /([A-Z]+)([A-Z][a-z])/g, strLowUp = /([a-z\d])([A-Z])/g, strDash = /([a-z\d])([A-Z])/g, strReplacer = /\{([^\}]+)\}/g, strQuote = /"/g, strSingleQuote = /'/g, strHyphenMatch = /-+(.)?/g, strCamelMatch = /[a-z][A-Z]/g, getNext = function (obj, prop, add) {
             var result = obj[prop];
@@ -1632,7 +2641,7 @@ define('can/util/string/string', ['can/util/util'], function (can) {
     });
     return can;
 });
-/*can@2.2.9#construct/construct*/
+/*can@2.3.0#construct/construct*/
 define('can/construct/construct', ['can/util/string/string'], function (can) {
     var initializing = 0;
     var canGetDescriptor;
@@ -1674,7 +2683,9 @@ define('can/construct/construct', ['can/util/string/string'], function (can) {
         newInstance: function () {
             var inst = this.instance(), args;
             if (inst.setup) {
+                inst.__inSetup = true;
                 args = inst.setup.apply(inst, arguments);
+                delete inst.__inSetup;
             }
             if (inst.init) {
                 inst.init.apply(inst, args || arguments);
@@ -1715,6 +2726,10 @@ define('can/construct/construct', ['can/util/string/string'], function (can) {
             if (fullName) {
                 parts = fullName.split('.');
                 shortName = parts.pop();
+            } else if (klass && klass.shortName) {
+                shortName = klass.shortName;
+            } else if (this.shortName) {
+                shortName = this.shortName;
             }
             if (typeof constructorName === 'undefined') {
                 Constructor = function () {
@@ -1764,7 +2779,2736 @@ define('can/construct/construct', ['can/util/string/string'], function (can) {
     };
     return can.Construct;
 });
-/*can@2.2.9#control/control*/
+/*can@2.3.0#map/bubble*/
+define('can/map/bubble', ['can/util/util'], function (can) {
+    var bubble = can.bubble = {
+            bind: function (parent, eventName) {
+                if (!parent.__inSetup) {
+                    var bubbleEvents = bubble.events(parent, eventName), len = bubbleEvents.length, bubbleEvent;
+                    if (!parent._bubbleBindings) {
+                        parent._bubbleBindings = {};
+                    }
+                    for (var i = 0; i < len; i++) {
+                        bubbleEvent = bubbleEvents[i];
+                        if (!parent._bubbleBindings[bubbleEvent]) {
+                            parent._bubbleBindings[bubbleEvent] = 1;
+                            bubble.childrenOf(parent, bubbleEvent);
+                        } else {
+                            parent._bubbleBindings[bubbleEvent]++;
+                        }
+                    }
+                }
+            },
+            unbind: function (parent, eventName) {
+                var bubbleEvents = bubble.events(parent, eventName), len = bubbleEvents.length, bubbleEvent;
+                for (var i = 0; i < len; i++) {
+                    bubbleEvent = bubbleEvents[i];
+                    if (parent._bubbleBindings) {
+                        parent._bubbleBindings[bubbleEvent]--;
+                    }
+                    if (parent._bubbleBindings && !parent._bubbleBindings[bubbleEvent]) {
+                        delete parent._bubbleBindings[bubbleEvent];
+                        bubble.teardownChildrenFrom(parent, bubbleEvent);
+                        if (can.isEmptyObject(parent._bubbleBindings)) {
+                            delete parent._bubbleBindings;
+                        }
+                    }
+                }
+            },
+            add: function (parent, child, prop) {
+                if (child instanceof can.Map && parent._bubbleBindings) {
+                    for (var eventName in parent._bubbleBindings) {
+                        if (parent._bubbleBindings[eventName]) {
+                            bubble.teardownFromParent(parent, child, eventName);
+                            bubble.toParent(child, parent, prop, eventName);
+                        }
+                    }
+                }
+            },
+            addMany: function (parent, children) {
+                for (var i = 0, len = children.length; i < len; i++) {
+                    bubble.add(parent, children[i], i);
+                }
+            },
+            remove: function (parent, child) {
+                if (child instanceof can.Map && parent._bubbleBindings) {
+                    for (var eventName in parent._bubbleBindings) {
+                        if (parent._bubbleBindings[eventName]) {
+                            bubble.teardownFromParent(parent, child, eventName);
+                        }
+                    }
+                }
+            },
+            removeMany: function (parent, children) {
+                for (var i = 0, len = children.length; i < len; i++) {
+                    bubble.remove(parent, children[i]);
+                }
+            },
+            set: function (parent, prop, value, current) {
+                if (can.isMapLike(value)) {
+                    bubble.add(parent, value, prop);
+                }
+                if (can.isMapLike(current)) {
+                    bubble.remove(parent, current);
+                }
+                return value;
+            },
+            events: function (map, boundEventName) {
+                return map.constructor._bubbleRule(boundEventName, map);
+            },
+            toParent: function (child, parent, prop, eventName) {
+                can.listenTo.call(parent, child, eventName, function () {
+                    var args = can.makeArray(arguments), ev = args.shift();
+                    args[0] = (can.List && parent instanceof can.List ? parent.indexOf(child) : prop) + (args[0] ? '.' + args[0] : '');
+                    ev.triggeredNS = ev.triggeredNS || {};
+                    if (ev.triggeredNS[parent._cid]) {
+                        return;
+                    }
+                    ev.triggeredNS[parent._cid] = true;
+                    can.trigger(parent, ev, args);
+                    if (eventName === 'change') {
+                        can.trigger(parent, args[0], [
+                            args[2],
+                            args[3]
+                        ]);
+                    }
+                });
+            },
+            childrenOf: function (parent, eventName) {
+                parent._each(function (child, prop) {
+                    if (child && child.bind) {
+                        bubble.toParent(child, parent, prop, eventName);
+                    }
+                });
+            },
+            teardownFromParent: function (parent, child, eventName) {
+                if (child && child.unbind) {
+                    can.stopListening.call(parent, child, eventName);
+                }
+            },
+            teardownChildrenFrom: function (parent, eventName) {
+                parent._each(function (child) {
+                    bubble.teardownFromParent(parent, child, eventName);
+                });
+            },
+            isBubbling: function (parent, eventName) {
+                return parent._bubbleBindings && parent._bubbleBindings[eventName];
+            }
+        };
+    return bubble;
+});
+/*can@2.3.0#map/map_helpers*/
+define('can/map/map_helpers', ['can/util/util'], function () {
+    var mapHelpers = {
+            attrParts: function (attr, keepKey) {
+                if (keepKey) {
+                    return [attr];
+                }
+                return typeof attr === 'object' ? attr : ('' + attr).split('.');
+            },
+            canMakeObserve: function (obj) {
+                return obj && !can.isDeferred(obj) && (can.isArray(obj) || can.isPlainObject(obj));
+            },
+            serialize: function () {
+                var serializeMap = null;
+                return function (map, how, where) {
+                    var cid = can.cid(map), firstSerialize = false;
+                    if (!serializeMap) {
+                        firstSerialize = true;
+                        serializeMap = {
+                            attr: {},
+                            serialize: {}
+                        };
+                    }
+                    serializeMap[how][cid] = where;
+                    map.each(function (val, name) {
+                        var result, isObservable = can.isMapLike(val), serialized = isObservable && serializeMap[how][can.cid(val)];
+                        if (serialized) {
+                            result = serialized;
+                        } else {
+                            if (map['___' + how]) {
+                                result = map['___' + how](name, val);
+                            } else {
+                                result = mapHelpers.getValue(map, name, val, how);
+                            }
+                        }
+                        if (result !== undefined) {
+                            where[name] = result;
+                        }
+                    });
+                    if (firstSerialize) {
+                        serializeMap = null;
+                    }
+                    return where;
+                };
+            }(),
+            getValue: function (map, name, val, how) {
+                if (can.isMapLike(val)) {
+                    return val[how]();
+                } else {
+                    return val;
+                }
+            },
+            define: null,
+            addComputedAttr: function (map, attrName, compute) {
+                map._computedAttrs[attrName] = {
+                    compute: compute,
+                    count: 0,
+                    handler: function (ev, newVal, oldVal) {
+                        can.batch.trigger(map, {
+                            type: attrName,
+                            batchNum: ev.batchNum,
+                            target: map
+                        }, [
+                            newVal,
+                            oldVal
+                        ]);
+                    }
+                };
+            },
+            addToMap: function addToMap(obj, instance) {
+                var teardown;
+                if (!madeMap) {
+                    teardown = teardownMap;
+                    madeMap = {};
+                }
+                var hasCid = obj._cid;
+                var cid = can.cid(obj);
+                if (!madeMap[cid]) {
+                    madeMap[cid] = {
+                        obj: obj,
+                        instance: instance,
+                        added: !hasCid
+                    };
+                }
+                return teardown;
+            },
+            getMapFromObject: function (obj) {
+                return madeMap && madeMap[obj._cid] && madeMap[obj._cid].instance;
+            }
+        };
+    var madeMap = null;
+    var teardownMap = function () {
+        for (var cid in madeMap) {
+            if (madeMap[cid].added) {
+                delete madeMap[cid].obj._cid;
+            }
+        }
+        madeMap = null;
+    };
+    return mapHelpers;
+});
+/*can@2.3.0#map/map*/
+define('can/map/map', [
+    'can/util/util',
+    'can/util/bind/bind',
+    'can/map/bubble',
+    'can/map/map_helpers',
+    'can/construct/construct',
+    'can/util/batch/batch'
+], function (can, bind, bubble, mapHelpers) {
+    var Map = can.Map = can.Construct.extend({
+            setup: function () {
+                can.Construct.setup.apply(this, arguments);
+                this._computedPropertyNames = [];
+                if (can.Map) {
+                    if (!this.defaults) {
+                        this.defaults = {};
+                    }
+                    for (var prop in this.prototype) {
+                        if (prop !== 'define' && prop !== 'constructor' && (typeof this.prototype[prop] !== 'function' || this.prototype[prop].prototype instanceof can.Construct)) {
+                            this.defaults[prop] = this.prototype[prop];
+                        } else if (this.prototype[prop].isComputed) {
+                            this._computedPropertyNames.push(prop);
+                        }
+                    }
+                    if (mapHelpers.define) {
+                        mapHelpers.define(this);
+                    }
+                }
+                if (can.List && !(this.prototype instanceof can.List)) {
+                    this.List = Map.List.extend({ Map: this }, {});
+                }
+            },
+            shortName: 'Map',
+            _bubbleRule: function (eventName) {
+                return eventName === 'change' || eventName.indexOf('.') >= 0 ? ['change'] : [];
+            },
+            bind: can.bindAndSetup,
+            unbind: can.unbindAndTeardown,
+            id: 'id',
+            keys: function (map) {
+                var keys = [];
+                can.__observe(map, '__keys');
+                for (var keyName in map._data) {
+                    keys.push(keyName);
+                }
+                return keys;
+            }
+        }, {
+            setup: function (obj) {
+                if (obj instanceof can.Map) {
+                    obj = obj.serialize();
+                }
+                this._data = {};
+                can.cid(this, '.map');
+                this._setupComputedProperties();
+                var teardownMapping = obj && mapHelpers.addToMap(obj, this);
+                var defaultValues = this._setupDefaults(obj);
+                var data = can.extend(can.extend(true, {}, defaultValues), obj);
+                this.attr(data);
+                if (teardownMapping) {
+                    teardownMapping();
+                }
+            },
+            _setupComputedProperties: function () {
+                this._computedAttrs = {};
+                var computes = this.constructor._computedPropertyNames;
+                for (var i = 0, len = computes.length; i < len; i++) {
+                    var attrName = computes[i];
+                    mapHelpers.addComputedAttr(this, attrName, this[attrName].clone(this));
+                }
+            },
+            _setupDefaults: function () {
+                return this.constructor.defaults || {};
+            },
+            attr: function (attr, val) {
+                var type = typeof attr;
+                if (attr === undefined) {
+                    return this._getAttrs();
+                } else if (type !== 'string' && type !== 'number') {
+                    return this._setAttrs(attr, val);
+                } else if (arguments.length === 1) {
+                    return this._get(attr + '');
+                } else {
+                    this._set(attr + '', val);
+                    return this;
+                }
+            },
+            _get: function (attr) {
+                var dotIndex = attr.indexOf('.');
+                if (dotIndex >= 0) {
+                    var value = this.___get(attr);
+                    if (value !== undefined) {
+                        can.__observe(this, attr);
+                        return value;
+                    }
+                    var first = attr.substr(0, dotIndex), second = attr.substr(dotIndex + 1);
+                    var current = this.__get(first);
+                    return current && current._get ? current._get(second) : undefined;
+                } else {
+                    return this.__get(attr);
+                }
+            },
+            __get: function (attr) {
+                can.__observe(this, attr);
+                return this.___get(attr);
+            },
+            ___get: function (attr) {
+                if (attr) {
+                    var computedAttr = this._computedAttrs[attr];
+                    if (computedAttr) {
+                        return computedAttr.compute();
+                    } else {
+                        return this._data[attr];
+                    }
+                } else {
+                    return this._data;
+                }
+            },
+            _set: function (attr, value, keepKey) {
+                var dotIndex = attr.indexOf('.'), current;
+                if (dotIndex >= 0 && !keepKey) {
+                    var first = attr.substr(0, dotIndex), second = attr.substr(dotIndex + 1);
+                    current = this.__inSetup ? undefined : this.___get(first);
+                    if (can.isMapLike(current)) {
+                        current._set(second, value);
+                    } else {
+                        throw new Error('can.Map: Object does not exist');
+                    }
+                } else {
+                    current = this.__inSetup ? undefined : this.___get(attr);
+                    if (this.__convert) {
+                        value = this.__convert(attr, value);
+                    }
+                    this.__set(attr, this.__type(value, attr), current);
+                }
+            },
+            __type: function (value, prop) {
+                if (typeof value === 'object' && !(value instanceof can.Map) && mapHelpers.canMakeObserve(value)) {
+                    var cached = mapHelpers.getMapFromObject(value);
+                    if (cached) {
+                        return cached;
+                    }
+                    if (can.isArray(value)) {
+                        var List = can.List;
+                        return new List(value);
+                    } else {
+                        var Map = this.constructor.Map || can.Map;
+                        return new Map(value);
+                    }
+                }
+                return value;
+            },
+            __set: function (prop, value, current) {
+                if (value !== current) {
+                    var changeType = current !== undefined || this.___get().hasOwnProperty(prop) ? 'set' : 'add';
+                    this.___set(prop, typeof value === 'object' ? bubble.set(this, prop, value, current) : value);
+                    if (!this._computedAttrs[prop]) {
+                        this._triggerChange(prop, changeType, value, current);
+                    }
+                    if (typeof current === 'object') {
+                        bubble.teardownFromParent(this, current);
+                    }
+                }
+            },
+            ___set: function (prop, val) {
+                var computedAttr = this._computedAttrs[prop];
+                if (computedAttr) {
+                    computedAttr.compute(val);
+                } else {
+                    this._data[prop] = val;
+                }
+                if (typeof this.constructor.prototype[prop] !== 'function' && !computedAttr) {
+                    this[prop] = val;
+                }
+            },
+            removeAttr: function (attr) {
+                return this._remove(attr);
+            },
+            _remove: function (attr) {
+                var parts = mapHelpers.attrParts(attr), prop = parts.shift(), current = this.___get(prop);
+                if (parts.length && current) {
+                    return current.removeAttr(parts);
+                } else {
+                    if (typeof attr === 'string' && !!~attr.indexOf('.')) {
+                        prop = attr;
+                    }
+                    this.__remove(prop, current);
+                    return current;
+                }
+            },
+            __remove: function (prop, current) {
+                if (prop in this._data) {
+                    this.___remove(prop);
+                    this._triggerChange(prop, 'remove', undefined, current);
+                }
+            },
+            ___remove: function (prop) {
+                delete this._data[prop];
+                if (!(prop in this.constructor.prototype)) {
+                    delete this[prop];
+                }
+            },
+            ___serialize: function (name, val) {
+                return mapHelpers.getValue(this, name, val, 'serialize');
+            },
+            _getAttrs: function () {
+                return mapHelpers.serialize(this, 'attr', {});
+            },
+            _setAttrs: function (props, remove) {
+                props = can.simpleExtend({}, props);
+                var prop, self = this, newVal;
+                can.batch.start();
+                this.each(function (curVal, prop) {
+                    if (prop === '_cid') {
+                        return;
+                    }
+                    newVal = props[prop];
+                    if (newVal === undefined) {
+                        if (remove) {
+                            self.removeAttr(prop);
+                        }
+                        return;
+                    }
+                    if (self.__convert) {
+                        newVal = self.__convert(prop, newVal);
+                    }
+                    if (can.isMapLike(curVal) && mapHelpers.canMakeObserve(newVal)) {
+                        curVal.attr(newVal, remove);
+                    } else if (curVal !== newVal) {
+                        self.__set(prop, self.__type(newVal, prop), curVal);
+                    }
+                    delete props[prop];
+                });
+                for (prop in props) {
+                    if (prop !== '_cid') {
+                        newVal = props[prop];
+                        this._set(prop, newVal, true);
+                    }
+                }
+                can.batch.stop();
+                return this;
+            },
+            serialize: function () {
+                return mapHelpers.serialize(this, 'serialize', {});
+            },
+            _triggerChange: function (attr, how, newVal, oldVal) {
+                if (bubble.isBubbling(this, 'change')) {
+                    can.batch.trigger(this, {
+                        type: 'change',
+                        target: this
+                    }, [
+                        attr,
+                        how,
+                        newVal,
+                        oldVal
+                    ]);
+                }
+                can.batch.trigger(this, {
+                    type: attr,
+                    target: this
+                }, [
+                    newVal,
+                    oldVal
+                ]);
+                if (how === 'remove' || how === 'add') {
+                    can.batch.trigger(this, {
+                        type: '__keys',
+                        target: this
+                    });
+                }
+            },
+            _bindsetup: function () {
+            },
+            _bindteardown: function () {
+            },
+            one: can.one,
+            bind: function (eventName, handler) {
+                var computedBinding = this._computedAttrs && this._computedAttrs[eventName];
+                if (computedBinding) {
+                    if (!computedBinding.count) {
+                        computedBinding.count = 1;
+                        computedBinding.compute.bind('change', computedBinding.handler);
+                    } else {
+                        computedBinding.count++;
+                    }
+                }
+                bubble.bind(this, eventName);
+                return can.bindAndSetup.apply(this, arguments);
+            },
+            unbind: function (eventName, handler) {
+                var computedBinding = this._computedAttrs && this._computedAttrs[eventName];
+                if (computedBinding) {
+                    if (computedBinding.count === 1) {
+                        computedBinding.count = 0;
+                        computedBinding.compute.unbind('change', computedBinding.handler);
+                    } else {
+                        computedBinding.count--;
+                    }
+                }
+                bubble.unbind(this, eventName);
+                return can.unbindAndTeardown.apply(this, arguments);
+            },
+            compute: function (prop) {
+                if (can.isFunction(this.constructor.prototype[prop])) {
+                    return can.compute(this[prop], this);
+                } else {
+                    var reads = can.compute.read.reads(prop), last = reads.length - 1;
+                    return can.compute(function (newVal) {
+                        if (arguments.length) {
+                            can.compute.read(this, reads.slice(0, last)).value.attr(reads[last].key, newVal);
+                        } else {
+                            return can.compute.read(this, reads, { args: [] }).value;
+                        }
+                    }, this);
+                }
+            },
+            each: function () {
+                return can.each.apply(undefined, [this].concat(can.makeArray(arguments)));
+            },
+            _each: function (callback) {
+                var data = this.___get();
+                for (var prop in data) {
+                    if (data.hasOwnProperty(prop)) {
+                        callback(data[prop], prop);
+                    }
+                }
+            },
+            dispatch: can.dispatch
+        });
+    Map.prototype.on = Map.prototype.bind;
+    Map.prototype.off = Map.prototype.unbind;
+    Map.on = Map.bind;
+    Map.off = Map.unbind;
+    return Map;
+});
+/*can@2.3.0#list/list*/
+define('can/list/list', [
+    'can/util/util',
+    'can/map/map',
+    'can/map/bubble',
+    'can/map/map_helpers'
+], function (can, Map, bubble, mapHelpers) {
+    var splice = [].splice, spliceRemovesProps = function () {
+            var obj = {
+                    0: 'a',
+                    length: 1
+                };
+            splice.call(obj, 0, 1);
+            return !obj[0];
+        }();
+    var list = Map.extend({ Map: Map }, {
+            setup: function (instances, options) {
+                this.length = 0;
+                can.cid(this, '.map');
+                this._setupComputedProperties();
+                instances = instances || [];
+                var teardownMapping;
+                if (can.isDeferred(instances)) {
+                    this.replace(instances);
+                } else {
+                    teardownMapping = instances.length && mapHelpers.addToMap(instances, this);
+                    this.push.apply(this, can.makeArray(instances || []));
+                }
+                if (teardownMapping) {
+                    teardownMapping();
+                }
+                can.simpleExtend(this, options);
+            },
+            _triggerChange: function (attr, how, newVal, oldVal) {
+                Map.prototype._triggerChange.apply(this, arguments);
+                var index = +attr;
+                if (!~('' + attr).indexOf('.') && !isNaN(index)) {
+                    if (how === 'add') {
+                        can.batch.trigger(this, how, [
+                            newVal,
+                            index
+                        ]);
+                        can.batch.trigger(this, 'length', [this.length]);
+                    } else if (how === 'remove') {
+                        can.batch.trigger(this, how, [
+                            oldVal,
+                            index
+                        ]);
+                        can.batch.trigger(this, 'length', [this.length]);
+                    } else {
+                        can.batch.trigger(this, how, [
+                            newVal,
+                            index
+                        ]);
+                    }
+                }
+            },
+            ___get: function (attr) {
+                if (attr) {
+                    if (this[attr] && this[attr].isComputed && can.isFunction(this.constructor.prototype[attr])) {
+                        return this[attr]();
+                    } else {
+                        return this[attr];
+                    }
+                } else {
+                    return this;
+                }
+            },
+            __set: function (prop, value, current) {
+                prop = isNaN(+prop) || prop % 1 ? prop : +prop;
+                if (typeof prop === 'number' && prop > this.length - 1) {
+                    var newArr = new Array(prop + 1 - this.length);
+                    newArr[newArr.length - 1] = value;
+                    this.push.apply(this, newArr);
+                    return newArr;
+                }
+                return can.Map.prototype.__set.call(this, '' + prop, value, current);
+            },
+            ___set: function (attr, val) {
+                this[attr] = val;
+                if (+attr >= this.length) {
+                    this.length = +attr + 1;
+                }
+            },
+            __remove: function (prop, current) {
+                if (isNaN(+prop)) {
+                    delete this[prop];
+                    this._triggerChange(prop, 'remove', undefined, current);
+                } else {
+                    this.splice(prop, 1);
+                }
+            },
+            _each: function (callback) {
+                var data = this.___get();
+                for (var i = 0; i < data.length; i++) {
+                    callback(data[i], i);
+                }
+            },
+            serialize: function () {
+                return mapHelpers.serialize(this, 'serialize', []);
+            },
+            splice: function (index, howMany) {
+                var args = can.makeArray(arguments), added = [], i, len, listIndex, allSame = args.length > 2;
+                index = index || 0;
+                for (i = 0, len = args.length - 2; i < len; i++) {
+                    listIndex = i + 2;
+                    args[listIndex] = this.__type(args[listIndex], listIndex);
+                    added.push(args[listIndex]);
+                    if (this[i + index] !== args[listIndex]) {
+                        allSame = false;
+                    }
+                }
+                if (allSame && this.length <= added.length) {
+                    return added;
+                }
+                if (howMany === undefined) {
+                    howMany = args[1] = this.length - index;
+                }
+                var removed = splice.apply(this, args);
+                if (!spliceRemovesProps) {
+                    for (i = this.length; i < removed.length + this.length; i++) {
+                        delete this[i];
+                    }
+                }
+                can.batch.start();
+                if (howMany > 0) {
+                    bubble.removeMany(this, removed);
+                    this._triggerChange('' + index, 'remove', undefined, removed);
+                }
+                if (args.length > 2) {
+                    bubble.addMany(this, added);
+                    this._triggerChange('' + index, 'add', added, removed);
+                }
+                can.batch.stop();
+                return removed;
+            },
+            _getAttrs: function () {
+                return mapHelpers.serialize(this, 'attr', []);
+            },
+            _setAttrs: function (items, remove) {
+                items = can.makeArray(items);
+                can.batch.start();
+                this._updateAttrs(items, remove);
+                can.batch.stop();
+            },
+            _updateAttrs: function (items, remove) {
+                var len = Math.min(items.length, this.length);
+                for (var prop = 0; prop < len; prop++) {
+                    var curVal = this[prop], newVal = items[prop];
+                    if (can.isMapLike(curVal) && mapHelpers.canMakeObserve(newVal)) {
+                        curVal.attr(newVal, remove);
+                    } else if (curVal !== newVal) {
+                        this._set(prop + '', newVal);
+                    } else {
+                    }
+                }
+                if (items.length > this.length) {
+                    this.push.apply(this, items.slice(this.length));
+                } else if (items.length < this.length && remove) {
+                    this.splice(items.length);
+                }
+            }
+        }), getArgs = function (args) {
+            return args[0] && can.isArray(args[0]) ? args[0] : can.makeArray(args);
+        };
+    can.each({
+        push: 'length',
+        unshift: 0
+    }, function (where, name) {
+        var orig = [][name];
+        list.prototype[name] = function () {
+            var args = [], len = where ? this.length : 0, i = arguments.length, res, val;
+            while (i--) {
+                val = arguments[i];
+                args[i] = bubble.set(this, i, this.__type(val, i));
+            }
+            res = orig.apply(this, args);
+            if (!this.comparator || args.length) {
+                this._triggerChange('' + len, 'add', args, undefined);
+            }
+            return res;
+        };
+    });
+    can.each({
+        pop: 'length',
+        shift: 0
+    }, function (where, name) {
+        list.prototype[name] = function () {
+            if (!this.length) {
+                return undefined;
+            }
+            var args = getArgs(arguments), len = where && this.length ? this.length - 1 : 0;
+            var res = [][name].apply(this, args);
+            this._triggerChange('' + len, 'remove', undefined, [res]);
+            if (res && res.unbind) {
+                bubble.remove(this, res);
+            }
+            return res;
+        };
+    });
+    can.extend(list.prototype, {
+        indexOf: function (item, fromIndex) {
+            can.__observe(this, 'length');
+            return can.inArray(item, this, fromIndex);
+        },
+        join: function () {
+            can.__observe(this, 'length');
+            return [].join.apply(this, arguments);
+        },
+        reverse: function () {
+            var list = [].reverse.call(can.makeArray(this));
+            return this.replace(list);
+        },
+        slice: function () {
+            can.__observe(this, 'length');
+            var temp = Array.prototype.slice.apply(this, arguments);
+            return new this.constructor(temp);
+        },
+        concat: function () {
+            var args = [];
+            can.each(can.makeArray(arguments), function (arg, i) {
+                args[i] = arg instanceof can.List ? arg.serialize() : arg;
+            });
+            return new this.constructor(Array.prototype.concat.apply(this.serialize(), args));
+        },
+        forEach: function (cb, thisarg) {
+            return can.each(this, cb, thisarg || this);
+        },
+        replace: function (newList) {
+            if (can.isDeferred(newList)) {
+                newList.then(can.proxy(this.replace, this));
+            } else {
+                this.splice.apply(this, [
+                    0,
+                    this.length
+                ].concat(can.makeArray(newList || [])));
+            }
+            return this;
+        },
+        filter: function (callback, thisArg) {
+            var filteredList = new this.constructor(), self = this, filtered;
+            this.each(function (item, index, list) {
+                filtered = callback.call(thisArg | self, item, index, self);
+                if (filtered) {
+                    filteredList.push(item);
+                }
+            });
+            return filteredList;
+        },
+        map: function (callback, thisArg) {
+            var filteredList = new can.List(), self = this;
+            this.each(function (item, index, list) {
+                var mapped = callback.call(thisArg | self, item, index, self);
+                filteredList.push(mapped);
+            });
+            return filteredList;
+        }
+    });
+    can.List = Map.List = list;
+    return can.List;
+});
+/*can@2.3.0#view/scope/scope*/
+define('can/view/scope/scope', [
+    'can/util/util',
+    'can/view/scope/compute_data',
+    'can/construct/construct',
+    'can/map/map',
+    'can/list/list',
+    'can/view/view',
+    'can/compute/compute'
+], function (can, makeComputeData) {
+    var Scope = can.Construct.extend({
+            read: can.compute.read,
+            Refs: can.Map.extend({}),
+            Break: function () {
+            },
+            refsScope: function () {
+                return new can.view.Scope(new this.Refs());
+            }
+        }, {
+            init: function (context, parent, meta) {
+                this._context = context;
+                this._parent = parent;
+                this.__cache = {};
+                this._meta = meta || {};
+            },
+            get: can.__notObserve(function (key, options) {
+                options = can.simpleExtend({ isArgument: true }, options);
+                var res = this.read(key, options);
+                return res.value;
+            }),
+            attr: can.__notObserve(function (key, value, options) {
+                options = can.simpleExtend({ isArgument: true }, options);
+                if (arguments.length === 2) {
+                    var lastIndex = key.lastIndexOf('.'), readKey = lastIndex !== -1 ? key.substring(0, lastIndex) : '.', obj = this.read(readKey, options).value;
+                    if (lastIndex !== -1) {
+                        key = key.substring(lastIndex + 1, key.length);
+                    }
+                    can.compute.set(obj, key, value, options);
+                } else {
+                    return this.get(key, options);
+                }
+            }),
+            add: function (context, meta) {
+                if (context !== this._context) {
+                    return new this.constructor(context, this, meta);
+                } else {
+                    return this;
+                }
+            },
+            computeData: function (key, options) {
+                return makeComputeData(this, key, options);
+            },
+            compute: function (key, options) {
+                return this.computeData(key, options).compute;
+            },
+            getRefs: function () {
+                return this.getScope(function (scope) {
+                    return scope._context instanceof Scope.Refs;
+                });
+            },
+            getViewModel: function () {
+                return this.getContext(function (scope) {
+                    return scope._meta.viewModel;
+                });
+            },
+            getContext: function (tester) {
+                var res = this.getScope(tester);
+                return res && res._context;
+            },
+            getScope: function (tester) {
+                var scope = this;
+                while (scope) {
+                    if (tester(scope)) {
+                        return scope;
+                    }
+                    scope = scope._parent;
+                }
+            },
+            getRoot: function () {
+                var cur = this, child = this;
+                while (cur._parent) {
+                    child = cur;
+                    cur = cur._parent;
+                }
+                if (cur._context instanceof Scope.Refs) {
+                    cur = child;
+                }
+                return cur._context;
+            },
+            cloneFromRef: function () {
+                var contexts = [];
+                var scope = this, context, parent;
+                while (scope) {
+                    context = scope._context;
+                    if (context instanceof Scope.Refs) {
+                        parent = scope._parent;
+                        break;
+                    }
+                    contexts.push(context);
+                    scope = scope._parent;
+                }
+                if (parent) {
+                    can.each(contexts, function (context) {
+                        parent = parent.add(context);
+                    });
+                    return parent;
+                } else {
+                    return this;
+                }
+            },
+            read: function (attr, options) {
+                if (this._meta.protected) {
+                    return this._parent.read(attr, options);
+                }
+                var isInCurrentContext = attr.substr(0, 2) === './', isInParentContext = attr.substr(0, 3) === '../', isCurrentContext = attr === '.' || attr === 'this', isParentContext = attr === '..', isContextBased = isInCurrentContext || isInParentContext || isCurrentContext || isParentContext;
+                if (isContextBased && this._meta.notContext) {
+                    return this._parent.read(attr, options);
+                }
+                var stopLookup;
+                if (isInCurrentContext) {
+                    stopLookup = true;
+                    attr = attr.substr(2);
+                } else if (isInParentContext) {
+                    return this._parent.read(attr.substr(3), options);
+                } else if (isCurrentContext) {
+                    return { value: this._context };
+                } else if (isParentContext) {
+                    return { value: this._parent._context };
+                } else if (attr === '%root') {
+                    return { value: this.getRoot() };
+                }
+                var names = can.compute.read.reads(attr), context, scope = attr.charAt(0) === '*' ? this.getRefs() : this, undefinedObserves = [], currentObserve, currentReads, setObserveDepth = -1, currentSetReads, currentSetObserve, searchedRefsScope = false, refInstance, readOptions = can.simpleExtend({
+                        foundObservable: function (observe, nameIndex) {
+                            currentObserve = observe;
+                            currentReads = names.slice(nameIndex);
+                        },
+                        earlyExit: function (parentValue, nameIndex) {
+                            if (nameIndex > setObserveDepth) {
+                                currentSetObserve = currentObserve;
+                                currentSetReads = currentReads;
+                                setObserveDepth = nameIndex;
+                            }
+                        }
+                    }, options);
+                while (scope) {
+                    context = scope._context;
+                    refInstance = context instanceof Scope.Refs;
+                    if (context !== null && (typeof context === 'object' || typeof context === 'function') && !(searchedRefsScope && refInstance) && !scope._meta.protected) {
+                        if (refInstance) {
+                            searchedRefsScope = true;
+                        }
+                        var getObserves = can.__trapObserves();
+                        var data = can.compute.read(context, names, readOptions);
+                        var observes = getObserves();
+                        if (data.value !== undefined) {
+                            can.__observes(observes);
+                            return {
+                                scope: scope,
+                                rootObserve: currentObserve,
+                                value: data.value,
+                                reads: currentReads
+                            };
+                        } else {
+                            undefinedObserves.push.apply(undefinedObserves, observes);
+                        }
+                    }
+                    if (!stopLookup) {
+                        scope = scope._parent;
+                    } else {
+                        scope = null;
+                    }
+                }
+                can.__observes(undefinedObserves);
+                return {
+                    setRoot: currentSetObserve,
+                    reads: currentSetReads,
+                    value: undefined
+                };
+            }
+        });
+    can.view.Scope = Scope;
+    return Scope;
+});
+/*can@2.3.0#view/stache/utils*/
+define('can/view/stache/utils', [
+    'can/util/util',
+    'can/view/scope/scope'
+], function (can) {
+    var Options = can.view.Scope.extend({
+            init: function (data, parent) {
+                if (!data.helpers && !data.partials && !data.tags) {
+                    data = { helpers: data };
+                }
+                can.view.Scope.prototype.init.apply(this, arguments);
+            }
+        });
+    return {
+        isArrayLike: function (obj) {
+            return obj && obj.splice && typeof obj.length === 'number';
+        },
+        isObserveLike: function (obj) {
+            return obj instanceof can.Map || obj && !!obj._get;
+        },
+        emptyHandler: function () {
+        },
+        jsonParse: function (str) {
+            if (str[0] === '\'') {
+                return str.substr(1, str.length - 2);
+            } else if (str === 'undefined') {
+                return undefined;
+            } else if (can.global.JSON) {
+                return JSON.parse(str);
+            } else {
+                return eval('(' + str + ')');
+            }
+        },
+        mixins: {
+            last: function () {
+                return this.stack[this.stack.length - 1];
+            },
+            add: function (chars) {
+                this.last().add(chars);
+            },
+            subSectionDepth: function () {
+                return this.stack.length - 1;
+            }
+        },
+        convertToScopes: function (helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer) {
+            if (truthyRenderer) {
+                helperOptions.fn = this.makeRendererConvertScopes(truthyRenderer, scope, options, nodeList);
+            }
+            if (falseyRenderer) {
+                helperOptions.inverse = this.makeRendererConvertScopes(falseyRenderer, scope, options, nodeList);
+            }
+        },
+        makeRendererConvertScopes: function (renderer, parentScope, parentOptions, nodeList) {
+            var rendererWithScope = function (ctx, opts, parentNodeList) {
+                return renderer(ctx || parentScope, opts, parentNodeList);
+            };
+            return can.__notObserve(function (newScope, newOptions, parentNodeList) {
+                if (newScope !== undefined && !(newScope instanceof can.view.Scope)) {
+                    newScope = parentScope.add(newScope);
+                }
+                if (newOptions !== undefined && !(newOptions instanceof Options)) {
+                    newOptions = parentOptions.add(newOptions);
+                }
+                var result = rendererWithScope(newScope, newOptions || parentOptions, parentNodeList || nodeList);
+                return result;
+            });
+        },
+        Options: Options
+    };
+});
+/*can@2.3.0#view/node_lists/node_lists*/
+define('can/view/node_lists/node_lists', [
+    'can/util/util',
+    'can/view/elements'
+], function (can) {
+    var canExpando = true;
+    try {
+        document.createTextNode('')._ = 0;
+    } catch (ex) {
+        canExpando = false;
+    }
+    var nodeMap = {}, textNodeMap = {}, expando = 'ejs_' + Math.random(), _id = 0, id = function (node, localMap) {
+            var _textNodeMap = localMap || textNodeMap;
+            var id = readId(node, _textNodeMap);
+            if (id) {
+                return id;
+            } else {
+                if (canExpando || node.nodeType !== 3) {
+                    ++_id;
+                    return node[expando] = (node.nodeName ? 'element_' : 'obj_') + _id;
+                } else {
+                    ++_id;
+                    _textNodeMap['text_' + _id] = node;
+                    return 'text_' + _id;
+                }
+            }
+        }, readId = function (node, textNodeMap) {
+            if (canExpando || node.nodeType !== 3) {
+                return node[expando];
+            } else {
+                for (var textNodeID in textNodeMap) {
+                    if (textNodeMap[textNodeID] === node) {
+                        return textNodeID;
+                    }
+                }
+            }
+        }, splice = [].splice, push = [].push, itemsInChildListTree = function (list) {
+            var count = 0;
+            for (var i = 0, len = list.length; i < len; i++) {
+                var item = list[i];
+                if (item.nodeType) {
+                    count++;
+                } else {
+                    count += itemsInChildListTree(item);
+                }
+            }
+            return count;
+        }, replacementMap = function (replacements, idMap) {
+            var map = {};
+            for (var i = 0, len = replacements.length; i < len; i++) {
+                var node = nodeLists.first(replacements[i]);
+                map[id(node, idMap)] = replacements[i];
+            }
+            return map;
+        };
+    var nodeLists = {
+            id: id,
+            update: function (nodeList, newNodes) {
+                var oldNodes = nodeLists.unregisterChildren(nodeList);
+                newNodes = can.makeArray(newNodes);
+                var oldListLength = nodeList.length;
+                splice.apply(nodeList, [
+                    0,
+                    oldListLength
+                ].concat(newNodes));
+                if (nodeList.replacements) {
+                    nodeLists.nestReplacements(nodeList);
+                } else {
+                    nodeLists.nestList(nodeList);
+                }
+                return oldNodes;
+            },
+            nestReplacements: function (list) {
+                var index = 0, idMap = {}, rMap = replacementMap(list.replacements, idMap), rCount = list.replacements.length;
+                while (index < list.length && rCount) {
+                    var node = list[index], replacement = rMap[readId(node, idMap)];
+                    if (replacement) {
+                        list.splice(index, itemsInChildListTree(replacement), replacement);
+                        rCount--;
+                    }
+                    index++;
+                }
+                list.replacements = [];
+            },
+            nestList: function (list) {
+                var index = 0;
+                while (index < list.length) {
+                    var node = list[index], childNodeList = nodeMap[id(node)];
+                    if (childNodeList) {
+                        if (childNodeList !== list) {
+                            list.splice(index, itemsInChildListTree(childNodeList), childNodeList);
+                        }
+                    } else {
+                        nodeMap[id(node)] = list;
+                    }
+                    index++;
+                }
+            },
+            last: function (nodeList) {
+                var last = nodeList[nodeList.length - 1];
+                if (last.nodeType) {
+                    return last;
+                } else {
+                    return nodeLists.last(last);
+                }
+            },
+            first: function (nodeList) {
+                var first = nodeList[0];
+                if (first.nodeType) {
+                    return first;
+                } else {
+                    return nodeLists.first(first);
+                }
+            },
+            flatten: function (nodeList) {
+                var items = [];
+                for (var i = 0; i < nodeList.length; i++) {
+                    var item = nodeList[i];
+                    if (item.nodeType) {
+                        items.push(item);
+                    } else {
+                        items.push.apply(items, nodeLists.flatten(item));
+                    }
+                }
+                return items;
+            },
+            register: function (nodeList, unregistered, parent) {
+                nodeList.unregistered = unregistered;
+                nodeList.parentList = parent;
+                if (parent === true) {
+                    nodeList.replacements = [];
+                } else if (parent) {
+                    parent.replacements.push(nodeList);
+                    nodeList.replacements = [];
+                } else {
+                    nodeLists.nestList(nodeList);
+                }
+                return nodeList;
+            },
+            unregisterChildren: function (nodeList) {
+                var nodes = [];
+                can.each(nodeList, function (node) {
+                    if (node.nodeType) {
+                        if (!nodeList.replacements) {
+                            delete nodeMap[id(node)];
+                        }
+                        nodes.push(node);
+                    } else {
+                        push.apply(nodes, nodeLists.unregister(node));
+                    }
+                });
+                return nodes;
+            },
+            unregister: function (nodeList) {
+                var nodes = nodeLists.unregisterChildren(nodeList);
+                if (nodeList.unregistered) {
+                    var unregisteredCallback = nodeList.unregistered;
+                    delete nodeList.unregistered;
+                    delete nodeList.replacements;
+                    unregisteredCallback();
+                }
+                return nodes;
+            },
+            nodeMap: nodeMap
+        };
+    can.view.nodeLists = nodeLists;
+    return nodeLists;
+});
+/*can@2.3.0#view/parser/parser*/
+define('can/view/parser/parser', [], function () {
+    function each(items, callback) {
+        for (var i = 0; i < items.length; i++) {
+            callback(items[i], i);
+        }
+    }
+    function makeMap(str) {
+        var obj = {}, items = str.split(',');
+        each(items, function (name) {
+            obj[name] = true;
+        });
+        return obj;
+    }
+    function handleIntermediate(intermediate, handler) {
+        for (var i = 0, len = intermediate.length; i < len; i++) {
+            var item = intermediate[i];
+            handler[item.tokenType].apply(handler, item.args);
+        }
+        return intermediate;
+    }
+    var alphaNumericHU = '-:A-Za-z0-9_', attributeNames = '[^=>\\s\\/]+', spaceEQspace = '\\s*=\\s*', attributeEqAndValue = '(?:' + spaceEQspace + '(?:' + '(?:"[^"]*")|(?:\'[^\']*\')|[^>\\s]+))?', matchStash = '\\{\\{[^\\}]*\\}\\}\\}?', stash = '\\{\\{([^\\}]*)\\}\\}\\}?', startTag = new RegExp('^<([' + alphaNumericHU + ']+)' + '(' + '(?:\\s*' + '(?:(?:' + '(?:' + attributeNames + ')?' + attributeEqAndValue + ')|' + '(?:' + matchStash + ')+)' + ')*' + ')\\s*(\\/?)>'), endTag = new RegExp('^<\\/([' + alphaNumericHU + ']+)[^>]*>'), mustache = new RegExp(stash, 'g'), txtBreak = /<|\{\{/, space = /\s/;
+    var empty = makeMap('area,base,basefont,br,col,frame,hr,img,input,isindex,link,meta,param,embed');
+    var block = makeMap('a,address,article,applet,aside,audio,blockquote,button,canvas,center,dd,del,dir,div,dl,dt,fieldset,figcaption,figure,footer,form,frameset,h1,h2,h3,h4,h5,h6,header,hgroup,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,output,p,pre,section,script,table,tbody,td,tfoot,th,thead,tr,ul,video');
+    var inline = makeMap('abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var');
+    var closeSelf = makeMap('colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr');
+    var special = makeMap('script,style');
+    var tokenTypes = 'start,end,close,attrStart,attrEnd,attrValue,chars,comment,special,done'.split(',');
+    var fn = function () {
+    };
+    var HTMLParser = function (html, handler, returnIntermediate) {
+        if (typeof html === 'object') {
+            return handleIntermediate(html, handler);
+        }
+        var intermediate = [];
+        handler = handler || {};
+        if (returnIntermediate) {
+            each(tokenTypes, function (name) {
+                var callback = handler[name] || fn;
+                handler[name] = function () {
+                    if (callback.apply(this, arguments) !== false) {
+                        intermediate.push({
+                            tokenType: name,
+                            args: [].slice.call(arguments, 0)
+                        });
+                    }
+                };
+            });
+        }
+        function parseStartTag(tag, tagName, rest, unary) {
+            tagName = tagName.toLowerCase();
+            if (block[tagName]) {
+                while (stack.last() && inline[stack.last()]) {
+                    parseEndTag('', stack.last());
+                }
+            }
+            if (closeSelf[tagName] && stack.last() === tagName) {
+                parseEndTag('', tagName);
+            }
+            unary = empty[tagName] || !!unary;
+            handler.start(tagName, unary);
+            if (!unary) {
+                stack.push(tagName);
+            }
+            HTMLParser.parseAttrs(rest, handler);
+            handler.end(tagName, unary);
+        }
+        function parseEndTag(tag, tagName) {
+            var pos;
+            if (!tagName) {
+                pos = 0;
+            } else {
+                for (pos = stack.length - 1; pos >= 0; pos--) {
+                    if (stack[pos] === tagName) {
+                        break;
+                    }
+                }
+            }
+            if (pos >= 0) {
+                for (var i = stack.length - 1; i >= pos; i--) {
+                    if (handler.close) {
+                        handler.close(stack[i]);
+                    }
+                }
+                stack.length = pos;
+            }
+        }
+        function parseMustache(mustache, inside) {
+            if (handler.special) {
+                handler.special(inside);
+            }
+        }
+        var callChars = function () {
+            if (charsText) {
+                if (handler.chars) {
+                    handler.chars(charsText);
+                }
+            }
+            charsText = '';
+        };
+        var index, chars, match, stack = [], last = html, charsText = '';
+        stack.last = function () {
+            return this[this.length - 1];
+        };
+        while (html) {
+            chars = true;
+            if (!stack.last() || !special[stack.last()]) {
+                if (html.indexOf('<!--') === 0) {
+                    index = html.indexOf('-->');
+                    if (index >= 0) {
+                        callChars();
+                        if (handler.comment) {
+                            handler.comment(html.substring(4, index));
+                        }
+                        html = html.substring(index + 3);
+                        chars = false;
+                    }
+                } else if (html.indexOf('</') === 0) {
+                    match = html.match(endTag);
+                    if (match) {
+                        callChars();
+                        html = html.substring(match[0].length);
+                        match[0].replace(endTag, parseEndTag);
+                        chars = false;
+                    }
+                } else if (html.indexOf('<') === 0) {
+                    match = html.match(startTag);
+                    if (match) {
+                        callChars();
+                        html = html.substring(match[0].length);
+                        match[0].replace(startTag, parseStartTag);
+                        chars = false;
+                    }
+                } else if (html.indexOf('{{') === 0) {
+                    match = html.match(mustache);
+                    if (match) {
+                        callChars();
+                        html = html.substring(match[0].length);
+                        match[0].replace(mustache, parseMustache);
+                    }
+                }
+                if (chars) {
+                    index = html.search(txtBreak);
+                    if (index === 0 && html === last) {
+                        charsText += html.charAt(0);
+                        html = html.substr(1);
+                        index = html.search(txtBreak);
+                    }
+                    var text = index < 0 ? html : html.substring(0, index);
+                    html = index < 0 ? '' : html.substring(index);
+                    if (text) {
+                        charsText += text;
+                    }
+                }
+            } else {
+                html = html.replace(new RegExp('([\\s\\S]*?)</' + stack.last() + '[^>]*>'), function (all, text) {
+                    text = text.replace(/<!--([\s\S]*?)-->|<!\[CDATA\[([\s\S]*?)]]>/g, '$1$2');
+                    if (handler.chars) {
+                        handler.chars(text);
+                    }
+                    return '';
+                });
+                parseEndTag('', stack.last());
+            }
+            if (html === last) {
+                throw new Error('Parse Error: ' + html);
+            }
+            last = html;
+        }
+        callChars();
+        parseEndTag();
+        handler.done();
+        return intermediate;
+    };
+    var callAttrStart = function (state, curIndex, handler, rest) {
+        state.attrStart = rest.substring(typeof state.nameStart === 'number' ? state.nameStart : curIndex, curIndex);
+        handler.attrStart(state.attrStart);
+        state.inName = false;
+    };
+    var callAttrEnd = function (state, curIndex, handler, rest) {
+        if (state.valueStart !== undefined && state.valueStart < curIndex) {
+            handler.attrValue(rest.substring(state.valueStart, curIndex));
+        } else if (!state.inValue) {
+        }
+        handler.attrEnd(state.attrStart);
+        state.attrStart = undefined;
+        state.valueStart = undefined;
+        state.inValue = false;
+        state.inName = false;
+        state.inQuote = false;
+        state.lookingForName = true;
+    };
+    HTMLParser.parseAttrs = function (rest, handler) {
+        if (!rest) {
+            return;
+        }
+        var i = 0;
+        var curIndex;
+        var state = {
+                inDoubleCurly: false,
+                inName: false,
+                nameStart: undefined,
+                inValue: false,
+                valueStart: undefined,
+                inQuote: false,
+                attrStart: undefined,
+                lookingForName: true,
+                lookingForValue: false,
+                lookingForEq: false
+            };
+        while (i < rest.length) {
+            curIndex = i;
+            var cur = rest.charAt(i);
+            var next = rest.charAt(i + 1);
+            var nextNext = rest.charAt(i + 2);
+            i++;
+            if (cur === '{' && next === '{') {
+                if (state.inValue && curIndex > state.valueStart) {
+                    handler.attrValue(rest.substring(state.valueStart, curIndex));
+                } else if (state.inName && state.nameStart < curIndex) {
+                    callAttrStart(state, curIndex, handler, rest);
+                    callAttrEnd(state, curIndex, handler, rest);
+                }
+                state.inDoubleCurly = true;
+                state.doubleCurlyStart = curIndex + 2;
+                i++;
+            } else if (state.inDoubleCurly) {
+                if (cur === '}' && next === '}') {
+                    var isTriple = nextNext === '}' ? 1 : 0;
+                    handler.special(rest.substring(state.doubleCurlyStart, curIndex));
+                    state.inDoubleCurly = false;
+                    if (state.inValue) {
+                        state.valueStart = curIndex + 2 + isTriple;
+                    }
+                    i += 1 + isTriple;
+                }
+            } else if (state.inValue) {
+                if (state.inQuote) {
+                    if (cur === state.inQuote) {
+                        callAttrEnd(state, curIndex, handler, rest);
+                    }
+                } else if (space.test(cur)) {
+                    callAttrEnd(state, curIndex, handler, rest);
+                }
+            } else if (cur === '=' && (state.lookingForEq || state.lookingForName || state.inName)) {
+                if (!state.attrStart) {
+                    callAttrStart(state, curIndex, handler, rest);
+                }
+                state.lookingForValue = true;
+                state.lookingForEq = false;
+                state.lookingForName = false;
+            } else if (state.inName) {
+                if (space.test(cur)) {
+                    callAttrStart(state, curIndex, handler, rest);
+                    state.lookingForEq = true;
+                }
+            } else if (state.lookingForName) {
+                if (!space.test(cur)) {
+                    if (state.attrStart) {
+                        callAttrEnd(state, curIndex, handler, rest);
+                    }
+                    state.nameStart = curIndex;
+                    state.inName = true;
+                }
+            } else if (state.lookingForValue) {
+                if (!space.test(cur)) {
+                    state.lookingForValue = false;
+                    state.inValue = true;
+                    if (cur === '\'' || cur === '"') {
+                        state.inQuote = cur;
+                        state.valueStart = curIndex + 1;
+                    } else {
+                        state.valueStart = curIndex;
+                    }
+                }
+            }
+        }
+        if (state.inName) {
+            callAttrStart(state, curIndex + 1, handler, rest);
+            callAttrEnd(state, curIndex + 1, handler, rest);
+        } else if (state.lookingForEq) {
+            callAttrEnd(state, curIndex + 1, handler, rest);
+        }
+    };
+    return HTMLParser;
+});
+/*can@2.3.0#util/array/diff*/
+define('can/util/array/diff', [], function () {
+    var slice = [].slice;
+    return function (oldList, newList) {
+        var oldIndex = 0, newIndex = 0, oldLength = oldList.length, newLength = newList.length, patches = [];
+        while (oldIndex < oldLength && newIndex < newLength) {
+            var oldItem = oldList[oldIndex], newItem = newList[newIndex];
+            if (oldItem === newItem) {
+                oldIndex++;
+                newIndex++;
+                continue;
+            }
+            if (newIndex + 1 < newLength && newList[newIndex + 1] === oldItem) {
+                patches.push({
+                    index: newIndex,
+                    deleteCount: 0,
+                    insert: [newList[newIndex]]
+                });
+                oldIndex++;
+                newIndex += 2;
+                continue;
+            } else if (oldIndex + 1 < oldLength && oldList[oldIndex + 1] === newItem) {
+                patches.push({
+                    index: newIndex,
+                    deleteCount: 1,
+                    insert: []
+                });
+                oldIndex += 2;
+                newIndex++;
+                continue;
+            } else {
+                patches.push({
+                    index: newIndex,
+                    deleteCount: oldLength - oldIndex,
+                    insert: slice.call(newList, newIndex)
+                });
+                return patches;
+            }
+        }
+        if (newIndex === newLength && oldIndex === oldLength) {
+            return patches;
+        }
+        patches.push({
+            index: newIndex,
+            deleteCount: oldLength - oldIndex,
+            insert: slice.call(newList, newIndex)
+        });
+        return patches;
+    };
+});
+/*can@2.3.0#view/live/live*/
+define('can/view/live/live', [
+    'can/util/util',
+    'can/view/elements',
+    'can/view/view',
+    'can/view/node_lists/node_lists',
+    'can/view/parser/parser',
+    'can/util/array/diff'
+], function (can, elements, view, nodeLists, parser, diff) {
+    elements = elements || can.view.elements;
+    nodeLists = nodeLists || can.view.NodeLists;
+    parser = parser || can.view.parser;
+    var setup = function (el, bind, unbind) {
+            var tornDown = false, teardown = function () {
+                    if (!tornDown) {
+                        tornDown = true;
+                        unbind(data);
+                        can.unbind.call(el, 'removed', teardown);
+                    }
+                    return true;
+                }, data = {
+                    teardownCheck: function (parent) {
+                        return parent ? false : teardown();
+                    }
+                };
+            can.bind.call(el, 'removed', teardown);
+            bind(data);
+            return data;
+        }, getChildNodes = function (node) {
+            var childNodes = node.childNodes;
+            if ('length' in childNodes) {
+                return childNodes;
+            } else {
+                var cur = node.firstChild;
+                var nodes = [];
+                while (cur) {
+                    nodes.push(cur);
+                    cur = cur.nextSibling;
+                }
+                return nodes;
+            }
+        }, listen = function (el, compute, change) {
+            return setup(el, function () {
+                compute.computeInstance.bind('change', change);
+            }, function (data) {
+                compute.computeInstance.unbind('change', change);
+                if (data.nodeList) {
+                    nodeLists.unregister(data.nodeList);
+                }
+            });
+        }, getAttributeParts = function (newVal) {
+            var attrs = {}, attr;
+            parser.parseAttrs(newVal, {
+                attrStart: function (name) {
+                    attrs[name] = '';
+                    attr = name;
+                },
+                attrValue: function (value) {
+                    attrs[attr] += value;
+                },
+                attrEnd: function () {
+                }
+            });
+            return attrs;
+        }, splice = [].splice, isNode = function (obj) {
+            return obj && obj.nodeType;
+        }, addTextNodeIfNoChildren = function (frag) {
+            if (!frag.firstChild) {
+                frag.appendChild(frag.ownerDocument.createTextNode(''));
+            }
+        }, getLiveFragment = function (itemHTML) {
+            var gotText = typeof itemHTML === 'string', itemFrag = can.frag(itemHTML);
+            return gotText ? can.view.hookup(itemFrag) : itemFrag;
+        }, renderAndAddToNodeLists = function (newNodeLists, nodeList, render, context, args) {
+            var itemNodeList = [];
+            if (nodeList) {
+                nodeLists.register(itemNodeList, null, true);
+            }
+            var itemHTML = render.apply(context, args.concat([itemNodeList])), itemFrag = getLiveFragment(itemHTML);
+            var childNodes = can.makeArray(getChildNodes(itemFrag));
+            if (nodeList) {
+                nodeLists.update(itemNodeList, childNodes);
+                newNodeLists.push(itemNodeList);
+            } else {
+                newNodeLists.push(nodeLists.register(childNodes));
+            }
+            return itemFrag;
+        }, removeFromNodeList = function (masterNodeList, index, length) {
+            var removedMappings = masterNodeList.splice(index + 1, length), itemsToRemove = [];
+            can.each(removedMappings, function (nodeList) {
+                var nodesToRemove = nodeLists.unregister(nodeList);
+                [].push.apply(itemsToRemove, nodesToRemove);
+            });
+            return itemsToRemove;
+        }, addFalseyIfEmpty = function (list, falseyRender, masterNodeList, nodeList) {
+            if (falseyRender && list.length === 0) {
+                var falseyNodeLists = [];
+                var falseyFrag = renderAndAddToNodeLists(falseyNodeLists, nodeList, falseyRender, list, [list]);
+                elements.after([masterNodeList[0]], falseyFrag);
+                masterNodeList.push(falseyNodeLists[0]);
+            }
+        };
+    var live = {
+            list: function (el, compute, render, context, parentNode, nodeList, falseyRender) {
+                var masterNodeList = nodeList || [el], indexMap = [], afterPreviousEvents = false, isTornDown = false, add = function (ev, items, index) {
+                        if (!afterPreviousEvents) {
+                            return;
+                        }
+                        var frag = text.ownerDocument.createDocumentFragment(), newNodeLists = [], newIndicies = [];
+                        can.each(items, function (item, key) {
+                            var itemIndex = can.compute(key + index), itemFrag = renderAndAddToNodeLists(newNodeLists, nodeList, render, context, [
+                                    item,
+                                    itemIndex
+                                ]);
+                            frag.appendChild(itemFrag);
+                            newIndicies.push(itemIndex);
+                        });
+                        var masterListIndex = index + 1;
+                        if (!indexMap.length) {
+                            var falseyItemsToRemove = removeFromNodeList(masterNodeList, 0, masterNodeList.length - 1);
+                            can.remove(can.$(falseyItemsToRemove));
+                        }
+                        if (!masterNodeList[masterListIndex]) {
+                            elements.after(masterListIndex === 1 ? [text] : [nodeLists.last(masterNodeList[masterListIndex - 1])], frag);
+                        } else {
+                            var el = nodeLists.first(masterNodeList[masterListIndex]);
+                            can.insertBefore(el.parentNode, frag, el);
+                        }
+                        splice.apply(masterNodeList, [
+                            masterListIndex,
+                            0
+                        ].concat(newNodeLists));
+                        splice.apply(indexMap, [
+                            index,
+                            0
+                        ].concat(newIndicies));
+                        for (var i = index + newIndicies.length, len = indexMap.length; i < len; i++) {
+                            indexMap[i](i);
+                        }
+                    }, remove = function (ev, items, index, duringTeardown, fullTeardown) {
+                        if (!afterPreviousEvents) {
+                            return;
+                        }
+                        if (!duringTeardown && data.teardownCheck(text.parentNode)) {
+                            return;
+                        }
+                        if (index < 0) {
+                            index = indexMap.length + index;
+                        }
+                        var itemsToRemove = removeFromNodeList(masterNodeList, index, items.length);
+                        indexMap.splice(index, items.length);
+                        for (var i = index, len = indexMap.length; i < len; i++) {
+                            indexMap[i](i);
+                        }
+                        addFalseyIfEmpty(list, falseyRender, masterNodeList, nodeList);
+                        if (!fullTeardown) {
+                            can.remove(can.$(itemsToRemove));
+                        } else {
+                            nodeLists.unregister(masterNodeList);
+                        }
+                    }, move = function (ev, item, newIndex, currentIndex) {
+                        if (!afterPreviousEvents) {
+                            return;
+                        }
+                        newIndex = newIndex + 1;
+                        currentIndex = currentIndex + 1;
+                        var referenceNodeList = masterNodeList[newIndex];
+                        var movedElements = can.frag(nodeLists.flatten(masterNodeList[currentIndex]));
+                        var referenceElement;
+                        if (currentIndex < newIndex) {
+                            referenceElement = nodeLists.last(referenceNodeList).nextSibling;
+                        } else {
+                            referenceElement = nodeLists.first(referenceNodeList);
+                        }
+                        var parentNode = masterNodeList[0].parentNode;
+                        parentNode.insertBefore(movedElements, referenceElement);
+                        var temp = masterNodeList[currentIndex];
+                        [].splice.apply(masterNodeList, [
+                            currentIndex,
+                            1
+                        ]);
+                        [].splice.apply(masterNodeList, [
+                            newIndex,
+                            0,
+                            temp
+                        ]);
+                    }, text = el.ownerDocument.createTextNode(''), list, teardownList = function (fullTeardown) {
+                        if (list && list.unbind) {
+                            list.unbind('add', add).unbind('remove', remove).unbind('move', move);
+                        }
+                        remove({}, { length: masterNodeList.length - 1 }, 0, true, fullTeardown);
+                    }, updateList = function (ev, newList, oldList) {
+                        if (isTornDown) {
+                            return;
+                        }
+                        afterPreviousEvents = true;
+                        if (newList && oldList) {
+                            list = newList || [];
+                            var patches = diff(oldList, newList);
+                            if (oldList.unbind) {
+                                oldList.unbind('add', add).unbind('remove', remove).unbind('move', move);
+                            }
+                            for (var i = 0, patchLen = patches.length; i < patchLen; i++) {
+                                var patch = patches[i];
+                                if (patch.deleteCount) {
+                                    remove({}, { length: patch.deleteCount }, patch.index, true);
+                                }
+                                if (patch.insert.length) {
+                                    add({}, patch.insert, patch.index);
+                                }
+                            }
+                        } else {
+                            if (oldList) {
+                                teardownList();
+                            }
+                            list = newList || [];
+                            add({}, list, 0);
+                            addFalseyIfEmpty(list, falseyRender, masterNodeList, nodeList);
+                        }
+                        afterPreviousEvents = false;
+                        if (list.bind) {
+                            list.bind('add', add).bind('remove', remove).bind('move', move);
+                        }
+                        can.batch.afterPreviousEvents(function () {
+                            afterPreviousEvents = true;
+                        });
+                    };
+                parentNode = elements.getParentNode(el, parentNode);
+                var data = setup(parentNode, function () {
+                        if (can.isFunction(compute)) {
+                            compute.bind('change', updateList);
+                        }
+                    }, function () {
+                        if (can.isFunction(compute)) {
+                            compute.unbind('change', updateList);
+                        }
+                        teardownList(true);
+                    });
+                if (!nodeList) {
+                    live.replace(masterNodeList, text, data.teardownCheck);
+                } else {
+                    elements.replace(masterNodeList, text);
+                    nodeLists.update(masterNodeList, [text]);
+                    nodeList.unregistered = function () {
+                        data.teardownCheck();
+                        isTornDown = true;
+                    };
+                }
+                updateList({}, can.isFunction(compute) ? compute() : compute);
+            },
+            html: function (el, compute, parentNode, nodeList) {
+                var data;
+                parentNode = elements.getParentNode(el, parentNode);
+                data = listen(parentNode, compute, function (ev, newVal, oldVal) {
+                    var attached = nodeLists.first(nodes).parentNode;
+                    if (attached) {
+                        makeAndPut(newVal);
+                    }
+                    data.teardownCheck(nodeLists.first(nodes).parentNode);
+                });
+                var nodes = nodeList || [el], makeAndPut = function (val) {
+                        var isFunction = typeof val === 'function', aNode = isNode(val), frag = can.frag(isFunction ? '' : val), oldNodes = can.makeArray(nodes);
+                        addTextNodeIfNoChildren(frag);
+                        if (!aNode && !isFunction) {
+                            frag = can.view.hookup(frag, parentNode);
+                        }
+                        oldNodes = nodeLists.update(nodes, getChildNodes(frag));
+                        if (isFunction) {
+                            val(frag.firstChild);
+                        }
+                        elements.replace(oldNodes, frag);
+                    };
+                data.nodeList = nodes;
+                if (!nodeList) {
+                    nodeLists.register(nodes, data.teardownCheck);
+                } else {
+                    nodeList.unregistered = data.teardownCheck;
+                }
+                makeAndPut(compute());
+            },
+            replace: function (nodes, val, teardown) {
+                var oldNodes = nodes.slice(0), frag = can.frag(val);
+                nodeLists.register(nodes, teardown);
+                if (typeof val === 'string') {
+                    frag = can.view.hookup(frag, nodes[0].parentNode);
+                }
+                nodeLists.update(nodes, getChildNodes(frag));
+                elements.replace(oldNodes, frag);
+                return nodes;
+            },
+            text: function (el, compute, parentNode, nodeList) {
+                var parent = elements.getParentNode(el, parentNode);
+                var data = listen(parent, compute, function (ev, newVal, oldVal) {
+                        if (typeof node.nodeValue !== 'unknown') {
+                            node.nodeValue = can.view.toStr(newVal);
+                        }
+                        data.teardownCheck(node.parentNode);
+                    });
+                var node = el.ownerDocument.createTextNode(can.view.toStr(compute()));
+                if (nodeList) {
+                    nodeList.unregistered = data.teardownCheck;
+                    data.nodeList = nodeList;
+                    nodeLists.update(nodeList, [node]);
+                    elements.replace([el], node);
+                } else {
+                    data.nodeList = live.replace([el], node, data.teardownCheck);
+                }
+            },
+            setAttributes: function (el, newVal) {
+                var attrs = getAttributeParts(newVal);
+                for (var name in attrs) {
+                    can.attr.set(el, name, attrs[name]);
+                }
+            },
+            attributes: function (el, compute, currentValue) {
+                var oldAttrs = {};
+                var setAttrs = function (newVal) {
+                    var newAttrs = getAttributeParts(newVal), name;
+                    for (name in newAttrs) {
+                        var newValue = newAttrs[name], oldValue = oldAttrs[name];
+                        if (newValue !== oldValue) {
+                            can.attr.set(el, name, newValue);
+                        }
+                        delete oldAttrs[name];
+                    }
+                    for (name in oldAttrs) {
+                        elements.removeAttr(el, name);
+                    }
+                    oldAttrs = newAttrs;
+                };
+                listen(el, compute, function (ev, newVal) {
+                    setAttrs(newVal);
+                });
+                if (arguments.length >= 3) {
+                    oldAttrs = getAttributeParts(currentValue);
+                } else {
+                    setAttrs(compute());
+                }
+            },
+            attributePlaceholder: '__!!__',
+            attributeReplace: /__!!__/g,
+            attribute: function (el, attributeName, compute) {
+                listen(el, compute, function (ev, newVal) {
+                    elements.setAttr(el, attributeName, hook.render());
+                });
+                var wrapped = can.$(el), hooks;
+                hooks = can.data(wrapped, 'hooks');
+                if (!hooks) {
+                    can.data(wrapped, 'hooks', hooks = {});
+                }
+                var attr = String(elements.getAttr(el, attributeName)), parts = attr.split(live.attributePlaceholder), goodParts = [], hook;
+                goodParts.push(parts.shift(), parts.join(live.attributePlaceholder));
+                if (hooks[attributeName]) {
+                    hooks[attributeName].computes.push(compute);
+                } else {
+                    hooks[attributeName] = {
+                        render: function () {
+                            var i = 0, newAttr = attr ? attr.replace(live.attributeReplace, function () {
+                                    return elements.contentText(hook.computes[i++]());
+                                }) : elements.contentText(hook.computes[i++]());
+                            return newAttr;
+                        },
+                        computes: [compute],
+                        batchNum: undefined
+                    };
+                }
+                hook = hooks[attributeName];
+                goodParts.splice(1, 0, compute());
+                elements.setAttr(el, attributeName, goodParts.join(''));
+            },
+            specialAttribute: function (el, attributeName, compute) {
+                listen(el, compute, function (ev, newVal) {
+                    elements.setAttr(el, attributeName, getValue(newVal));
+                });
+                elements.setAttr(el, attributeName, getValue(compute()));
+            },
+            simpleAttribute: function (el, attributeName, compute) {
+                listen(el, compute, function (ev, newVal) {
+                    elements.setAttr(el, attributeName, newVal);
+                });
+                elements.setAttr(el, attributeName, compute());
+            }
+        };
+    live.attr = live.simpleAttribute;
+    live.attrs = live.attributes;
+    live.getAttributeParts = getAttributeParts;
+    var newLine = /(\r|\n)+/g;
+    var getValue = function (val) {
+        var regexp = /^["'].*["']$/;
+        val = val.replace(elements.attrReg, '').replace(newLine, '');
+        return regexp.test(val) ? val.substr(1, val.length - 2) : val;
+    };
+    can.view.live = live;
+    return live;
+});
+/*can@2.3.0#view/stache/mustache_helpers*/
+define('can/view/stache/mustache_helpers', [
+    'can/util/util',
+    'can/view/stache/utils',
+    'can/view/live/live'
+], function (can, utils, live) {
+    live = live || can.view.live;
+    var resolve = function (value) {
+        if (utils.isObserveLike(value) && utils.isArrayLike(value) && value.attr('length')) {
+            return value;
+        } else if (can.isFunction(value)) {
+            return value();
+        } else {
+            return value;
+        }
+    };
+    var resolveHash = function (hash) {
+        var params = {};
+        for (var prop in hash) {
+            var value = hash[prop];
+            if (value && value.isComputed) {
+                params[prop] = value();
+            } else {
+                params[prop] = value;
+            }
+        }
+        return params;
+    };
+    var looksLikeOptions = function (options) {
+        return options && typeof options.fn === 'function' && typeof options.inverse === 'function';
+    };
+    var helpers = {
+            'each': function (items, options) {
+                var resolved = resolve(items), result = [], keys, key, i;
+                if (resolved instanceof can.List) {
+                    return function (el) {
+                        var nodeList = [el];
+                        nodeList.expression = 'live.list';
+                        can.view.nodeLists.register(nodeList, null, options.nodeList);
+                        can.view.nodeLists.update(options.nodeList, [el]);
+                        var cb = function (item, index, parentNodeList) {
+                            return options.fn(options.scope.add({ '@index': index }).add(item), options.options, parentNodeList);
+                        };
+                        live.list(el, items, cb, options.context, el.parentNode, nodeList, function (list, parentNodeList) {
+                            return options.inverse(options.scope.add(list), options.options, parentNodeList);
+                        });
+                    };
+                }
+                var expr = resolved;
+                if (!!expr && utils.isArrayLike(expr)) {
+                    for (i = 0; i < expr.length; i++) {
+                        result.push(options.fn(options.scope.add({ '@index': i }).add(expr[i])));
+                    }
+                } else if (utils.isObserveLike(expr)) {
+                    keys = can.Map.keys(expr);
+                    for (i = 0; i < keys.length; i++) {
+                        key = keys[i];
+                        result.push(options.fn(options.scope.add({ '@key': key }).add(expr[key])));
+                    }
+                } else if (expr instanceof Object) {
+                    for (key in expr) {
+                        result.push(options.fn(options.scope.add({ '@key': key }).add(expr[key])));
+                    }
+                }
+                return result;
+            },
+            '@index': function (offset, options) {
+                if (!options) {
+                    options = offset;
+                    offset = 0;
+                }
+                var index = options.scope.attr('@index');
+                return '' + ((can.isFunction(index) ? index() : index) + offset);
+            },
+            'if': function (expr, options) {
+                var value;
+                if (can.isFunction(expr)) {
+                    value = can.compute.truthy(expr)();
+                } else {
+                    value = !!resolve(expr);
+                }
+                if (value) {
+                    return options.fn(options.scope || this);
+                } else {
+                    return options.inverse(options.scope || this);
+                }
+            },
+            'is': function () {
+                var lastValue, curValue, options = arguments[arguments.length - 1];
+                if (arguments.length - 2 <= 0) {
+                    return options.inverse();
+                }
+                for (var i = 0; i < arguments.length - 1; i++) {
+                    curValue = resolve(arguments[i]);
+                    curValue = can.isFunction(curValue) ? curValue() : curValue;
+                    if (i > 0) {
+                        if (curValue !== lastValue) {
+                            return options.inverse();
+                        }
+                    }
+                    lastValue = curValue;
+                }
+                return options.fn();
+            },
+            'eq': function () {
+                return helpers.is.apply(this, arguments);
+            },
+            'unless': function (expr, options) {
+                return helpers['if'].apply(this, [
+                    can.isFunction(expr) ? can.compute(function () {
+                        return !expr();
+                    }) : !expr,
+                    options
+                ]);
+            },
+            'with': function (expr, options) {
+                var ctx = expr;
+                expr = resolve(expr);
+                if (!!expr) {
+                    return options.fn(ctx);
+                }
+            },
+            'log': function (expr, options) {
+                if (typeof console !== 'undefined' && console.log) {
+                    if (!options) {
+                        console.log(expr.context);
+                    } else {
+                        console.log(expr, options.context);
+                    }
+                }
+            },
+            'data': function (attr) {
+                var data = arguments.length === 2 ? this : arguments[1];
+                return function (el) {
+                    can.data(can.$(el), attr, data || this.context);
+                };
+            },
+            'switch': function (expression, options) {
+                resolve(expression);
+                var found = false;
+                var newOptions = options.helpers.add({
+                        'case': function (value, options) {
+                            if (!found && resolve(expression) === resolve(value)) {
+                                found = true;
+                                return options.fn(options.scope || this);
+                            }
+                        },
+                        'default': function (options) {
+                            if (!found) {
+                                return options.fn(options.scope || this);
+                            }
+                        }
+                    });
+                return options.fn(options.scope, newOptions);
+            },
+            'joinBase': function (firstExpr) {
+                var args = [].slice.call(arguments);
+                var options = args.pop();
+                var moduleReference = can.map(args, function (expr) {
+                        var value = resolve(expr);
+                        return can.isFunction(value) ? value() : value;
+                    }).join('');
+                var templateModule = options.helpers.attr('helpers.module');
+                var parentAddress = templateModule ? templateModule.uri : undefined;
+                var isRelative = moduleReference[0] === '.';
+                if (isRelative && parentAddress) {
+                    return can.joinURIs(parentAddress, moduleReference);
+                } else {
+                    var baseURL = can.baseURL || typeof System !== 'undefined' && (System.renderingLoader && System.renderingLoader.baseURL || System.baseURL) || location.pathname;
+                    if (moduleReference[0] !== '/' && baseURL[baseURL.length - 1] !== '/') {
+                        baseURL += '/';
+                    }
+                    return can.joinURIs(baseURL, moduleReference);
+                }
+            },
+            routeUrl: function (params, merge) {
+                if (!params) {
+                    params = {};
+                }
+                if (typeof params.fn === 'function' && typeof params.inverse === 'function') {
+                    params = resolveHash(params.hash);
+                }
+                return can.route.url(params, typeof merge === 'boolean' ? merge : undefined);
+            },
+            routeCurrent: function (params) {
+                var last = can.last(arguments), isOptions = last && looksLikeOptions(last);
+                if (last && isOptions && !(last.exprData instanceof can.expression.Call)) {
+                    if (can.route.current(resolveHash(params.hash || {}))) {
+                        return params.fn();
+                    } else {
+                        return params.inverse();
+                    }
+                } else {
+                    return can.route.current(looksLikeOptions(params) ? {} : params || {});
+                }
+            }
+        };
+    helpers.routeCurrent.callAsMethod = true;
+    helpers.eachOf = helpers.each;
+    var registerHelper = function (name, callback) {
+        helpers[name] = callback;
+    };
+    return {
+        registerHelper: registerHelper,
+        registerSimpleHelper: function (name, callback) {
+            registerHelper(name, can.view.simpleHelper(callback));
+        },
+        getHelper: function (name, options) {
+            var helper = options && options.get('helpers.' + name, { proxyMethods: false });
+            if (!helper) {
+                helper = helpers[name];
+            }
+            if (helper) {
+                return { fn: helper };
+            }
+        }
+    };
+});
+/*can@2.3.0#view/stache/expression*/
+define('can/view/stache/expression', [
+    'can/util/util',
+    'can/view/stache/utils',
+    'can/view/stache/mustache_helpers',
+    'can/view/scope/scope'
+], function (can, utils, mustacheHelpers, Scope) {
+    var getKeyComputeData = function (key, scope, readOptions) {
+            var data = scope.computeData(key, readOptions);
+            can.compute.temporarilyBind(data.compute);
+            return data;
+        }, lookupValue = function (key, scope, helperOptions, readOptions) {
+            var computeData = getKeyComputeData(key, scope, readOptions);
+            if (!computeData.compute.computeInstance.hasDependencies) {
+                return {
+                    value: computeData.initialValue,
+                    computeData: computeData
+                };
+            } else {
+                return {
+                    value: computeData.compute,
+                    computeData: computeData
+                };
+            }
+        }, lookupValueOrHelper = function (key, scope, helperOptions, readOptions) {
+            var res = lookupValue(key, scope, helperOptions, readOptions);
+            if (res.computeData.initialValue === undefined) {
+                if (key.charAt(0) === '@' && key !== '@index') {
+                    key = key.substr(1);
+                }
+                var helper = mustacheHelpers.getHelper(key, helperOptions);
+                res.helper = helper && helper.fn;
+            }
+            return res;
+        }, convertToArgExpression = function (expr) {
+            if (!(expr instanceof Arg) && !(expr instanceof Literal)) {
+                return new Arg(expr);
+            } else {
+                return expr;
+            }
+        };
+    var Literal = function (value) {
+        this._value = value;
+    };
+    Literal.prototype.value = function () {
+        return this._value;
+    };
+    var Lookup = function (key, root) {
+        this.key = key;
+        this.rootExpr = root;
+    };
+    Lookup.prototype.value = function (scope, helperOptions) {
+        var result = lookupValueOrHelper(this.key, scope, helperOptions);
+        this.isHelper = result.helper && !result.helper.callAsMethod;
+        return result.helper || result.value;
+    };
+    var ScopeLookup = function (key, root) {
+        Lookup.apply(this, arguments);
+    };
+    ScopeLookup.prototype.value = function (scope, helperOptions) {
+        return lookupValue(this.key, scope, helperOptions).value;
+    };
+    var Arg = function (expression, modifiers) {
+        this.expr = expression;
+        this.modifiers = modifiers || {};
+        this.isCompute = false;
+    };
+    Arg.prototype.value = function () {
+        return this.expr.value.apply(this.expr, arguments);
+    };
+    var Hash = function () {
+    };
+    var Call = function (methodExpression, argExpressions, hashExpressions) {
+        this.methodExpr = methodExpression;
+        this.argExprs = can.map(argExpressions, convertToArgExpression);
+        var hashExprs = this.hashExprs = {};
+        can.each(hashExpressions, function (expr, name) {
+            hashExprs[name] = convertToArgExpression(expr);
+        });
+    };
+    Call.prototype.args = function (scope, helperOptions) {
+        var args = [];
+        for (var i = 0, len = this.argExprs.length; i < len; i++) {
+            var arg = this.argExprs[i];
+            var value = arg.value.apply(arg, arguments);
+            args.push({
+                call: value && value.isComputed && !arg.modifiers.compute,
+                value: value
+            });
+        }
+        return function () {
+            var finalArgs = [];
+            for (var i = 0, len = args.length; i < len; i++) {
+                finalArgs[i] = args[i].call ? args[i].value() : args[i].value;
+            }
+            return finalArgs;
+        };
+    };
+    Call.prototype.hash = function (scope, helperOptions) {
+        var hash = {};
+        for (var prop in this.hashExprs) {
+            var val = this.hashExprs[prop], value = val.value.apply(val, arguments);
+            hash[prop] = {
+                call: value && value.isComputed && !val.modifiers.compute,
+                value: value
+            };
+        }
+        return function () {
+            var finalHash = {};
+            for (var prop in hash) {
+                finalHash[prop] = hash[prop].call ? hash[prop].value() : hash[prop].value;
+            }
+            return finalHash;
+        };
+    };
+    Call.prototype.value = function (scope, helperScope, helperOptions) {
+        var method = this.methodExpr.value(scope, helperScope);
+        this.isHelper = this.methodExpr.isHelper;
+        var hasHash = !can.isEmptyObject(this.hashExprs), getArgs = this.args(scope, helperScope), getHash = this.hash(scope, helperScope);
+        return can.compute(function () {
+            var func = method;
+            if (func && func.isComputed) {
+                func = func();
+            }
+            if (typeof func === 'function') {
+                var args = getArgs();
+                if (hasHash) {
+                    args.push(getHash());
+                }
+                if (helperOptions) {
+                    args.push(helperOptions);
+                }
+                return func.apply(null, args);
+            }
+        });
+    };
+    var HelperLookup = function () {
+        Lookup.apply(this, arguments);
+    };
+    HelperLookup.prototype.value = function (scope, helperOptions) {
+        var result = lookupValueOrHelper(this.key, scope, helperOptions, {
+                isArgument: true,
+                args: [
+                    scope.attr('.'),
+                    scope
+                ]
+            });
+        return result.helper || result.value;
+    };
+    var HelperScopeLookup = function () {
+        Lookup.apply(this, arguments);
+    };
+    HelperScopeLookup.prototype.value = function (scope, helperOptions) {
+        return lookupValue(this.key, scope, helperOptions, {
+            callMethodsOnObservables: true,
+            isArgument: true,
+            args: [
+                scope.attr('.'),
+                scope
+            ]
+        }).value;
+    };
+    var Helper = function (methodExpression, argExpressions, hashExpressions) {
+        this.methodExpr = methodExpression;
+        this.argExprs = argExpressions;
+        this.hashExprs = hashExpressions;
+        this.mode = null;
+    };
+    Helper.prototype.args = function (scope, helperOptions) {
+        var args = [];
+        for (var i = 0, len = this.argExprs.length; i < len; i++) {
+            var arg = this.argExprs[i];
+            args.push(arg.value.apply(arg, arguments));
+        }
+        return args;
+    };
+    Helper.prototype.hash = function (scope, helperOptions) {
+        var hash = {};
+        for (var prop in this.hashExprs) {
+            var val = this.hashExprs[prop];
+            hash[prop] = val.value.apply(val, arguments);
+        }
+        return hash;
+    };
+    Helper.prototype.helperAndValue = function (scope, helperOptions) {
+        var looksLikeAHelper = this.argExprs.length || !can.isEmptyObject(this.hashExprs), helper, value, methodKey = this.methodExpr instanceof Literal ? '' + this.methodExpr._value : this.methodExpr.key, initialValue, args;
+        if (looksLikeAHelper) {
+            helper = mustacheHelpers.getHelper(methodKey, helperOptions);
+            var context = scope.attr('.');
+            if (!helper && typeof context[methodKey] === 'function') {
+                helper = { fn: context[methodKey] };
+            }
+        }
+        if (!helper) {
+            args = this.args(scope, helperOptions);
+            var computeData = getKeyComputeData(methodKey, scope, {
+                    isArgument: false,
+                    args: args && args.length ? args : [
+                        scope.attr('.'),
+                        scope
+                    ]
+                }), compute = computeData.compute;
+            initialValue = computeData.initialValue;
+            if (computeData.compute.computeInstance.hasDependencies) {
+                value = compute;
+            } else {
+                value = initialValue;
+            }
+            if (!looksLikeAHelper && initialValue === undefined) {
+                helper = mustacheHelpers.getHelper(methodKey, helperOptions);
+            }
+        }
+        return {
+            value: value,
+            args: args,
+            helper: helper && helper.fn
+        };
+    };
+    Helper.prototype.evaluator = function (helper, scope, helperOptions, readOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly) {
+        var helperOptionArg = {
+                fn: function () {
+                },
+                inverse: function () {
+                }
+            }, context = scope.attr('.'), args = this.args(scope, helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly), hash = this.hash(scope, helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);
+        utils.convertToScopes(helperOptionArg, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer);
+        can.simpleExtend(helperOptionArg, {
+            context: context,
+            scope: scope,
+            contexts: scope,
+            hash: hash,
+            nodeList: nodeList,
+            exprData: this,
+            helperOptions: helperOptions,
+            helpers: helperOptions
+        });
+        args.push(helperOptionArg);
+        return function () {
+            return helper.apply(context, args);
+        };
+    };
+    Helper.prototype.value = function (scope, helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly) {
+        var helperAndValue = this.helperAndValue(scope, helperOptions);
+        var helper = helperAndValue.helper;
+        if (!helper) {
+            return helperAndValue.value;
+        }
+        var fn = this.evaluator(helper, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);
+        var compute = can.compute(fn);
+        can.compute.temporarilyBind(compute);
+        if (!compute.computeInstance.hasDependencies) {
+            return compute();
+        } else {
+            return compute;
+        }
+    };
+    var keyRegExp = /[\w\.\\\-_@\/\&%]+/, tokensRegExp = /('.*?'|".*?"|=|[\w\.\\\-_@\/*%\$]+|[\(\)]|,|\~)/g, literalRegExp = /^('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false|null|undefined)$/;
+    var isTokenKey = function (token) {
+        return keyRegExp.test(token);
+    };
+    var testDot = /^[\.@]\w/;
+    var isAddingToExpression = function (token) {
+        return isTokenKey(token) && testDot.test(token);
+    };
+    var ensureChildren = function (type) {
+        if (!type.children) {
+            type.children = [];
+        }
+        return type;
+    };
+    var Stack = function () {
+        this.root = {
+            children: [],
+            type: 'Root'
+        };
+        this.current = this.root;
+        this.stack = [this.root];
+    };
+    can.simpleExtend(Stack.prototype, {
+        top: function () {
+            return can.last(this.stack);
+        },
+        isRootTop: function () {
+            return this.top() === this.root;
+        },
+        popTo: function (types) {
+            this.popUntil(types);
+            if (!this.isRootTop()) {
+                this.stack.pop();
+            }
+        },
+        firstParent: function (types) {
+            var curIndex = this.stack.length - 2;
+            while (curIndex > 0 && can.inArray(this.stack[curIndex].type, types) === -1) {
+                curIndex--;
+            }
+            return this.stack[curIndex];
+        },
+        popUntil: function (types) {
+            while (can.inArray(this.top().type, types) === -1 && !this.isRootTop()) {
+                this.stack.pop();
+            }
+            return this.top();
+        },
+        addTo: function (types, type) {
+            var cur = this.popUntil(types);
+            ensureChildren(cur).children.push(type);
+        },
+        addToAndPush: function (types, type) {
+            this.addTo(types, type);
+            this.stack.push(type);
+        },
+        topLastChild: function () {
+            return can.last(this.top().children);
+        },
+        replaceTopLastChild: function (type) {
+            var children = ensureChildren(this.top()).children;
+            children.pop();
+            children.push(type);
+            return type;
+        },
+        replaceTopLastChildAndPush: function (type) {
+            this.replaceTopLastChild(type);
+            this.stack.push(type);
+        },
+        replaceTopAndPush: function (type) {
+            var children;
+            if (this.top() === this.root) {
+                children = ensureChildren(this.top()).children;
+            } else {
+                this.stack.pop();
+                children = ensureChildren(this.top()).children;
+            }
+            children.pop();
+            children.push(type);
+            this.stack.push(type);
+            return type;
+        }
+    });
+    var convertKeyToLookup = function (key) {
+        var lastPath = key.lastIndexOf('./');
+        var lastDot = key.lastIndexOf('.');
+        if (lastDot > lastPath) {
+            return key.substr(0, lastDot) + '@' + key.substr(lastDot + 1);
+        }
+        var firstNonPathCharIndex = lastPath === -1 ? 0 : lastPath + 2;
+        var firstNonPathChar = key.charAt(firstNonPathCharIndex);
+        if (firstNonPathChar === '.' || firstNonPathChar === '@') {
+            return key.substr(0, firstNonPathCharIndex) + '@' + key.substr(firstNonPathCharIndex + 1);
+        } else {
+            return key.substr(0, firstNonPathCharIndex) + '@' + key.substr(firstNonPathCharIndex);
+        }
+    };
+    var convertToAtLookup = function (ast) {
+        if (ast.type === 'Lookup') {
+            ast.key = convertKeyToLookup(ast.key);
+        }
+        return ast;
+    };
+    var convertToHelperIfTopIsLookup = function (stack) {
+        var top = stack.top();
+        if (top && top.type === 'Lookup') {
+            var base = stack.stack[stack.stack.length - 2];
+            if (base.type !== 'Helper' && base) {
+                stack.replaceTopAndPush({
+                    type: 'Helper',
+                    method: top
+                });
+            }
+        }
+    };
+    var expression = {
+            convertKeyToLookup: convertKeyToLookup,
+            Literal: Literal,
+            Lookup: Lookup,
+            ScopeLookup: ScopeLookup,
+            Arg: Arg,
+            Hash: Hash,
+            Call: Call,
+            Helper: Helper,
+            HelperLookup: HelperLookup,
+            HelperScopeLookup: HelperScopeLookup,
+            tokenize: function (expression) {
+                var tokens = [];
+                (can.trim(expression) + ' ').replace(tokensRegExp, function (whole, arg) {
+                    tokens.push(arg);
+                });
+                return tokens;
+            },
+            lookupRules: {
+                'default': function (ast, methodType, isArg) {
+                    var name = (methodType === 'Helper' && !ast.root ? 'Helper' : '') + (isArg ? 'Scope' : '') + 'Lookup';
+                    return expression[name];
+                },
+                'method': function (ast, methodType, isArg) {
+                    return ScopeLookup;
+                }
+            },
+            methodRules: {
+                'default': function (ast) {
+                    return ast.type === 'Call' ? Call : Helper;
+                },
+                'call': function (ast) {
+                    return Call;
+                }
+            },
+            parse: function (expressionString, options) {
+                options = options || {};
+                var ast = this.ast(expressionString);
+                if (!options.lookupRule) {
+                    options.lookupRule = 'default';
+                }
+                if (typeof options.lookupRule === 'string') {
+                    options.lookupRule = expression.lookupRules[options.lookupRule];
+                }
+                if (!options.methodRule) {
+                    options.methodRule = 'default';
+                }
+                if (typeof options.methodRule === 'string') {
+                    options.methodRule = expression.methodRules[options.methodRule];
+                }
+                var expr = this.hydrateAst(ast, options, options.baseMethodType || 'Helper');
+                return expr;
+            },
+            hydrateAst: function (ast, options, methodType, isArg) {
+                if (ast.type === 'Lookup') {
+                    return new (options.lookupRule(ast, methodType, isArg))(ast.key, ast.root && this.hydrateAst(ast.root, options, methodType));
+                } else if (ast.type === 'Literal') {
+                    return new Literal(ast.value);
+                } else if (ast.type === 'Arg') {
+                    return new Arg(this.hydrateAst(ast.children[0], options, methodType, isArg), { compute: true });
+                } else if (ast.type === 'Hash') {
+                    throw new Error('');
+                } else if (ast.type === 'Call' || ast.type === 'Helper') {
+                    var hashes = {}, args = [], children = ast.children;
+                    if (children) {
+                        for (var i = 0; i < children.length; i++) {
+                            var child = children[i];
+                            if (child.type === 'Hash') {
+                                hashes[child.prop] = this.hydrateAst(child.children[0], options, ast.type, true);
+                            } else {
+                                args.push(this.hydrateAst(child, options, ast.type, true));
+                            }
+                        }
+                    }
+                    return new (options.methodRule(ast))(this.hydrateAst(ast.method, options, ast.type), args, hashes);
+                }
+            },
+            ast: function (expression) {
+                var tokens = this.tokenize(expression);
+                return this.parseAst(tokens, { index: 0 });
+            },
+            parseAst: function (tokens, cursor) {
+                var stack = new Stack(), top;
+                while (cursor.index < tokens.length) {
+                    var token = tokens[cursor.index], nextToken = tokens[cursor.index + 1];
+                    cursor.index++;
+                    if (literalRegExp.test(token)) {
+                        convertToHelperIfTopIsLookup(stack);
+                        stack.addTo([
+                            'Helper',
+                            'Call',
+                            'Hash'
+                        ], {
+                            type: 'Literal',
+                            value: utils.jsonParse(token)
+                        });
+                    } else if (nextToken === '=') {
+                        top = stack.top();
+                        if (top && top.type === 'Lookup') {
+                            var firstParent = stack.firstParent([
+                                    'Call',
+                                    'Helper',
+                                    'Hash'
+                                ]);
+                            if (firstParent.type === 'Call' || firstParent.type === 'Root') {
+                                stack.popUntil(['Call']);
+                                top = stack.top();
+                                stack.replaceTopAndPush({
+                                    type: 'Helper',
+                                    method: top.type === 'Root' ? can.last(top.children) : top
+                                });
+                            }
+                        }
+                        stack.addToAndPush([
+                            'Helper',
+                            'Call'
+                        ], {
+                            type: 'Hash',
+                            prop: token
+                        });
+                        cursor.index++;
+                    } else if (keyRegExp.test(token)) {
+                        var last = stack.topLastChild();
+                        if (last && last.type === 'Call' && isAddingToExpression(token)) {
+                            stack.replaceTopLastChildAndPush({
+                                type: 'Lookup',
+                                root: last,
+                                key: token
+                            });
+                        } else {
+                            convertToHelperIfTopIsLookup(stack);
+                            stack.addToAndPush([
+                                'Helper',
+                                'Call',
+                                'Hash',
+                                'Arg'
+                            ], {
+                                type: 'Lookup',
+                                key: token
+                            });
+                        }
+                    } else if (token === '~') {
+                        convertToHelperIfTopIsLookup(stack);
+                        stack.addToAndPush([
+                            'Helper',
+                            'Call',
+                            'Hash'
+                        ], {
+                            type: 'Arg',
+                            key: token
+                        });
+                    } else if (token === '(') {
+                        top = stack.top();
+                        if (top.type === 'Lookup') {
+                            stack.replaceTopAndPush({
+                                type: 'Call',
+                                method: convertToAtLookup(top)
+                            });
+                        } else {
+                            throw new Error('Unable to understand expression ' + tokens.join(''));
+                        }
+                    } else if (token === ')') {
+                        stack.popTo(['Call']);
+                    } else if (token === ',') {
+                        stack.popUntil(['Call']);
+                    }
+                }
+                return stack.root.children[0];
+            }
+        };
+    can.expression = expression;
+    return expression;
+});
+/*can@2.3.0#control/control*/
 define('can/control/control', [
     'can/util/util',
     'can/construct/construct'
@@ -1953,1566 +5697,413 @@ define('can/control/control', [
         'touchend',
         'touchleave',
         'inserted',
-        'removed'
+        'removed',
+        'dragstart',
+        'dragenter',
+        'dragover',
+        'dragleave',
+        'drag',
+        'drop',
+        'dragend'
     ], function (v) {
         processors[v] = basicProcessor;
     });
     return Control;
 });
-/*can@2.2.9#util/bind/bind*/
-define('can/util/bind/bind', ['can/util/util'], function (can) {
-    can.bindAndSetup = function () {
-        can.addEvent.apply(this, arguments);
-        if (!this._init) {
-            if (!this._bindings) {
-                this._bindings = 1;
-                if (this._bindsetup) {
-                    this._bindsetup();
-                }
-            } else {
-                this._bindings++;
-            }
-        }
-        return this;
-    };
-    can.unbindAndTeardown = function (event, handler) {
-        if (!this.__bindEvents) {
-            return this;
-        }
-        var handlers = this.__bindEvents[event] || [];
-        var handlerCount = handlers.length;
-        can.removeEvent.apply(this, arguments);
-        if (this._bindings === null) {
-            this._bindings = 0;
-        } else {
-            this._bindings = this._bindings - (handlerCount - handlers.length);
-        }
-        if (!this._bindings && this._bindteardown) {
-            this._bindteardown();
-        }
-        return this;
-    };
-    return can;
-});
-/*can@2.2.9#map/bubble*/
-define('can/map/bubble', ['can/util/util'], function (can) {
-    var bubble = can.bubble = {
-            event: function (map, boundEventName) {
-                return map.constructor._bubbleRule(boundEventName, map);
-            },
-            childrenOf: function (parentMap, eventName) {
-                parentMap._each(function (child, prop) {
-                    if (child && child.bind) {
-                        bubble.toParent(child, parentMap, prop, eventName);
-                    }
-                });
-            },
-            teardownChildrenFrom: function (parentMap, eventName) {
-                parentMap._each(function (child) {
-                    bubble.teardownFromParent(parentMap, child, eventName);
-                });
-            },
-            toParent: function (child, parent, prop, eventName) {
-                can.listenTo.call(parent, child, eventName, function () {
-                    var args = can.makeArray(arguments), ev = args.shift();
-                    args[0] = (can.List && parent instanceof can.List ? parent.indexOf(child) : prop) + (args[0] ? '.' + args[0] : '');
-                    ev.triggeredNS = ev.triggeredNS || {};
-                    if (ev.triggeredNS[parent._cid]) {
-                        return;
-                    }
-                    ev.triggeredNS[parent._cid] = true;
-                    can.trigger(parent, ev, args);
-                });
-            },
-            teardownFromParent: function (parent, child, eventName) {
-                if (child && child.unbind) {
-                    can.stopListening.call(parent, child, eventName);
-                }
-            },
-            isBubbling: function (parent, eventName) {
-                return parent._bubbleBindings && parent._bubbleBindings[eventName];
-            },
-            bind: function (parent, eventName) {
-                if (!parent._init) {
-                    var bubbleEvents = bubble.event(parent, eventName), len = bubbleEvents.length, bubbleEvent;
-                    if (!parent._bubbleBindings) {
-                        parent._bubbleBindings = {};
-                    }
-                    for (var i = 0; i < len; i++) {
-                        bubbleEvent = bubbleEvents[i];
-                        if (!parent._bubbleBindings[bubbleEvent]) {
-                            parent._bubbleBindings[bubbleEvent] = 1;
-                            bubble.childrenOf(parent, bubbleEvent);
-                        } else {
-                            parent._bubbleBindings[bubbleEvent]++;
-                        }
-                    }
-                }
-            },
-            unbind: function (parent, eventName) {
-                var bubbleEvents = bubble.event(parent, eventName), len = bubbleEvents.length, bubbleEvent;
-                for (var i = 0; i < len; i++) {
-                    bubbleEvent = bubbleEvents[i];
-                    if (parent._bubbleBindings) {
-                        parent._bubbleBindings[bubbleEvent]--;
-                    }
-                    if (parent._bubbleBindings && !parent._bubbleBindings[bubbleEvent]) {
-                        delete parent._bubbleBindings[bubbleEvent];
-                        bubble.teardownChildrenFrom(parent, bubbleEvent);
-                        if (can.isEmptyObject(parent._bubbleBindings)) {
-                            delete parent._bubbleBindings;
-                        }
-                    }
-                }
-            },
-            add: function (parent, child, prop) {
-                if (child instanceof can.Map && parent._bubbleBindings) {
-                    for (var eventName in parent._bubbleBindings) {
-                        if (parent._bubbleBindings[eventName]) {
-                            bubble.teardownFromParent(parent, child, eventName);
-                            bubble.toParent(child, parent, prop, eventName);
-                        }
-                    }
-                }
-            },
-            removeMany: function (parent, children) {
-                for (var i = 0, len = children.length; i < len; i++) {
-                    bubble.remove(parent, children[i]);
-                }
-            },
-            remove: function (parent, child) {
-                if (child instanceof can.Map && parent._bubbleBindings) {
-                    for (var eventName in parent._bubbleBindings) {
-                        if (parent._bubbleBindings[eventName]) {
-                            bubble.teardownFromParent(parent, child, eventName);
-                        }
-                    }
-                }
-            },
-            set: function (parent, prop, value, current) {
-                if (can.Map.helpers.isObservable(value)) {
-                    bubble.add(parent, value, prop);
-                }
-                if (can.Map.helpers.isObservable(current)) {
-                    bubble.remove(parent, current);
-                }
-                return value;
-            }
-        };
-    return bubble;
-});
-/*can@2.2.9#util/batch/batch*/
-define('can/util/batch/batch', ['can/util/can'], function (can) {
-    var batchNum = 1, transactions = 0, batchEvents = [], stopCallbacks = [], currentBatchEvents = null;
-    can.batch = {
-        start: function (batchStopHandler) {
-            transactions++;
-            if (batchStopHandler) {
-                stopCallbacks.push(batchStopHandler);
-            }
-        },
-        stop: function (force, callStart) {
-            if (force) {
-                transactions = 0;
-            } else {
-                transactions--;
-            }
-            if (transactions === 0) {
-                if (currentBatchEvents !== null) {
-                    return;
-                }
-                currentBatchEvents = batchEvents.slice(0);
-                var callbacks = stopCallbacks.slice(0), i, len;
-                batchEvents = [];
-                stopCallbacks = [];
-                can.batch.batchNum = batchNum;
-                batchNum++;
-                if (callStart) {
-                    can.batch.start();
-                }
-                for (i = 0; i < currentBatchEvents.length; i++) {
-                    can.dispatch.apply(currentBatchEvents[i][0], currentBatchEvents[i][1]);
-                }
-                currentBatchEvents = null;
-                for (i = 0, len = callbacks.length; i < callbacks.length; i++) {
-                    callbacks[i]();
-                }
-                can.batch.batchNum = undefined;
-            }
-        },
-        trigger: function (item, event, args) {
-            if (!item._init) {
-                event = typeof event === 'string' ? {
-                    type: event,
-                    batchNum: can.batch.batchNum
-                } : event;
-                if (currentBatchEvents) {
-                    currentBatchEvents.push([
-                        item,
-                        [
-                            event,
-                            args
-                        ]
-                    ]);
-                } else if (transactions === 0) {
-                    return can.dispatch.call(item, event, args);
-                } else {
-                    event.batchNum = batchNum;
-                    batchEvents.push([
-                        item,
-                        [
-                            event,
-                            args
-                        ]
-                    ]);
-                }
-            }
-        },
-        afterPreviousEvents: function (handler) {
-            if (currentBatchEvents) {
-                var obj = {};
-                can.bind.call(obj, 'ready', handler);
-                currentBatchEvents.push([
-                    obj,
-                    [
-                        { type: 'ready' },
-                        []
-                    ]
-                ]);
-            } else {
-                handler();
-            }
-        }
-    };
-});
-/*can@2.2.9#map/map*/
-define('can/map/map', [
+/*can@2.3.0#view/href/href*/
+define('can/view/href/href', [
     'can/util/util',
-    'can/util/bind/bind',
-    'can/map/bubble',
-    'can/construct/construct',
-    'can/util/batch/batch'
-], function (can, bind, bubble) {
-    var madeMap = null;
-    var teardownMap = function () {
-        for (var cid in madeMap) {
-            if (madeMap[cid].added) {
-                delete madeMap[cid].obj._cid;
-            }
+    'can/view/stache/expression',
+    'can/view/callbacks/callbacks',
+    'can/view/scope/scope'
+], function (can, expression) {
+    var removeCurly = function (value) {
+        if (value[0] === '{' && value[value.length - 1] === '}') {
+            return value.substr(1, value.length - 2);
         }
-        madeMap = null;
-    };
-    var getMapFromObject = function (obj) {
-        return madeMap && madeMap[obj._cid] && madeMap[obj._cid].instance;
-    };
-    var serializeMap = null;
-    var Map = can.Map = can.Construct.extend({
-            setup: function () {
-                can.Construct.setup.apply(this, arguments);
-                if (can.Map) {
-                    if (!this.defaults) {
-                        this.defaults = {};
-                    }
-                    this._computes = [];
-                    for (var prop in this.prototype) {
-                        if (prop !== 'define' && prop !== 'constructor' && (typeof this.prototype[prop] !== 'function' || this.prototype[prop].prototype instanceof can.Construct)) {
-                            this.defaults[prop] = this.prototype[prop];
-                        } else if (this.prototype[prop].isComputed) {
-                            this._computes.push(prop);
-                        }
-                    }
-                    if (this.helpers.define) {
-                        this.helpers.define(this);
-                    }
-                }
-                if (can.List && !(this.prototype instanceof can.List)) {
-                    this.List = Map.List.extend({ Map: this }, {});
-                }
-            },
-            _bubble: bubble,
-            _bubbleRule: function (eventName) {
-                return eventName === 'change' || eventName.indexOf('.') >= 0 ? ['change'] : [];
-            },
-            _computes: [],
-            bind: can.bindAndSetup,
-            on: can.bindAndSetup,
-            unbind: can.unbindAndTeardown,
-            off: can.unbindAndTeardown,
-            id: 'id',
-            helpers: {
-                define: null,
-                attrParts: function (attr, keepKey) {
-                    if (keepKey) {
-                        return [attr];
-                    }
-                    return typeof attr === 'object' ? attr : ('' + attr).split('.');
-                },
-                addToMap: function (obj, instance) {
-                    var teardown;
-                    if (!madeMap) {
-                        teardown = teardownMap;
-                        madeMap = {};
-                    }
-                    var hasCid = obj._cid;
-                    var cid = can.cid(obj);
-                    if (!madeMap[cid]) {
-                        madeMap[cid] = {
-                            obj: obj,
-                            instance: instance,
-                            added: !hasCid
-                        };
-                    }
-                    return teardown;
-                },
-                isObservable: function (obj) {
-                    return obj instanceof can.Map || obj && obj === can.route;
-                },
-                canMakeObserve: function (obj) {
-                    return obj && !can.isDeferred(obj) && (can.isArray(obj) || can.isPlainObject(obj));
-                },
-                serialize: function (map, how, where) {
-                    var cid = can.cid(map), firstSerialize = false;
-                    if (!serializeMap) {
-                        firstSerialize = true;
-                        serializeMap = {
-                            attr: {},
-                            serialize: {}
-                        };
-                    }
-                    serializeMap[how][cid] = where;
-                    map.each(function (val, name) {
-                        var result, isObservable = Map.helpers.isObservable(val), serialized = isObservable && serializeMap[how][can.cid(val)];
-                        if (serialized) {
-                            result = serialized;
-                        } else {
-                            if (how === 'serialize') {
-                                result = Map.helpers._serialize(map, name, val);
-                            } else {
-                                result = Map.helpers._getValue(map, name, val, how);
-                            }
-                        }
-                        if (result !== undefined) {
-                            where[name] = result;
-                        }
-                    });
-                    can.__observe(map, '__keys');
-                    if (firstSerialize) {
-                        serializeMap = null;
-                    }
-                    return where;
-                },
-                _serialize: function (map, name, val) {
-                    return Map.helpers._getValue(map, name, val, 'serialize');
-                },
-                _getValue: function (map, name, val, how) {
-                    if (Map.helpers.isObservable(val)) {
-                        return val[how]();
-                    } else {
-                        return val;
-                    }
-                }
-            },
-            keys: function (map) {
-                var keys = [];
-                can.__observe(map, '__keys');
-                for (var keyName in map._data) {
-                    keys.push(keyName);
-                }
-                return keys;
-            }
-        }, {
-            setup: function (obj) {
-                if (obj instanceof can.Map) {
-                    obj = obj.serialize();
-                }
-                this._data = {};
-                can.cid(this, '.map');
-                this._init = 1;
-                this._computedBindings = {};
-                var defaultValues = this._setupDefaults(obj);
-                this._setupComputes(defaultValues);
-                var teardownMapping = obj && can.Map.helpers.addToMap(obj, this);
-                var data = can.extend(can.extend(true, {}, defaultValues), obj);
-                this.attr(data);
-                if (teardownMapping) {
-                    teardownMapping();
-                }
-                this.bind('change', can.proxy(this._changes, this));
-                delete this._init;
-            },
-            _setupComputes: function () {
-                var computes = this.constructor._computes;
-                for (var i = 0, len = computes.length, prop; i < len; i++) {
-                    prop = computes[i];
-                    this[prop] = this[prop].clone(this);
-                    this._computedBindings[prop] = { count: 0 };
-                }
-            },
-            _setupDefaults: function () {
-                return this.constructor.defaults || {};
-            },
-            _bindsetup: function () {
-            },
-            _bindteardown: function () {
-            },
-            _changes: function (ev, attr, how, newVal, oldVal) {
-                can.batch.trigger(this, {
-                    type: attr,
-                    batchNum: ev.batchNum,
-                    target: ev.target
-                }, [
-                    newVal,
-                    oldVal
-                ]);
-            },
-            _triggerChange: function (attr, how, newVal, oldVal) {
-                if (bubble.isBubbling(this, 'change')) {
-                    can.batch.trigger(this, {
-                        type: 'change',
-                        target: this
-                    }, [
-                        attr,
-                        how,
-                        newVal,
-                        oldVal
-                    ]);
-                } else {
-                    can.batch.trigger(this, attr, [
-                        newVal,
-                        oldVal
-                    ]);
-                }
-                if (how === 'remove' || how === 'add') {
-                    can.batch.trigger(this, {
-                        type: '__keys',
-                        target: this
-                    });
-                }
-            },
-            _each: function (callback) {
-                var data = this.__get();
-                for (var prop in data) {
-                    if (data.hasOwnProperty(prop)) {
-                        callback(data[prop], prop);
-                    }
-                }
-            },
-            attr: function (attr, val) {
-                var type = typeof attr;
-                if (type !== 'string' && type !== 'number') {
-                    return this._attrs(attr, val);
-                } else if (arguments.length === 1) {
-                    return this._get(attr);
-                } else {
-                    this._set(attr, val);
-                    return this;
-                }
-            },
-            each: function () {
-                return can.each.apply(undefined, [this].concat(can.makeArray(arguments)));
-            },
-            removeAttr: function (attr) {
-                var isList = can.List && this instanceof can.List, parts = can.Map.helpers.attrParts(attr), prop = parts.shift(), current = isList ? this[prop] : this._data[prop];
-                if (parts.length && current) {
-                    return current.removeAttr(parts);
-                } else {
-                    if (typeof attr === 'string' && !!~attr.indexOf('.')) {
-                        prop = attr;
-                    }
-                    this._remove(prop, current);
-                    return current;
-                }
-            },
-            _remove: function (prop, current) {
-                if (prop in this._data) {
-                    delete this._data[prop];
-                    if (!(prop in this.constructor.prototype)) {
-                        delete this[prop];
-                    }
-                    this._triggerChange(prop, 'remove', undefined, current);
-                }
-            },
-            _get: function (attr) {
-                attr = '' + attr;
-                var dotIndex = attr.indexOf('.');
-                if (dotIndex >= 0) {
-                    var value = this.__get(attr);
-                    if (value !== undefined) {
-                        return value;
-                    }
-                    var first = attr.substr(0, dotIndex), second = attr.substr(dotIndex + 1);
-                    can.__observe(this, first);
-                    var current = this.__get(first);
-                    return current && current._get ? current._get(second) : undefined;
-                } else {
-                    can.__observe(this, attr);
-                    return this.__get(attr);
-                }
-            },
-            __get: function (attr) {
-                if (attr) {
-                    if (this._computedBindings[attr]) {
-                        return this[attr]();
-                    } else {
-                        return this._data[attr];
-                    }
-                } else {
-                    return this._data;
-                }
-            },
-            __type: function (value, prop) {
-                if (!(value instanceof can.Map) && can.Map.helpers.canMakeObserve(value)) {
-                    var cached = getMapFromObject(value);
-                    if (cached) {
-                        return cached;
-                    }
-                    if (can.isArray(value)) {
-                        var List = can.List;
-                        return new List(value);
-                    } else {
-                        var Map = this.constructor.Map || can.Map;
-                        return new Map(value);
-                    }
-                }
-                return value;
-            },
-            _set: function (attr, value, keepKey) {
-                attr = '' + attr;
-                var dotIndex = attr.indexOf('.'), current;
-                if (!keepKey && dotIndex >= 0) {
-                    var first = attr.substr(0, dotIndex), second = attr.substr(dotIndex + 1);
-                    current = this._init ? undefined : this.__get(first);
-                    if (Map.helpers.isObservable(current)) {
-                        current._set(second, value);
-                    } else {
-                        throw new Error('can.Map: Object does not exist');
-                    }
-                } else {
-                    if (this.__convert) {
-                        value = this.__convert(attr, value);
-                    }
-                    current = this._init ? undefined : this.__get(attr);
-                    this.__set(attr, this.__type(value, attr), current);
-                }
-            },
-            __set: function (prop, value, current) {
-                if (value !== current) {
-                    var changeType = current !== undefined || this.__get().hasOwnProperty(prop) ? 'set' : 'add';
-                    this.___set(prop, this.constructor._bubble.set(this, prop, value, current));
-                    if (!this._computedBindings[prop]) {
-                        this._triggerChange(prop, changeType, value, current);
-                    }
-                    if (current) {
-                        this.constructor._bubble.teardownFromParent(this, current);
-                    }
-                }
-            },
-            ___set: function (prop, val) {
-                if (this._computedBindings[prop]) {
-                    this[prop](val);
-                } else {
-                    this._data[prop] = val;
-                }
-                if (typeof this.constructor.prototype[prop] !== 'function' && !this._computedBindings[prop]) {
-                    this[prop] = val;
-                }
-            },
-            bind: function (eventName, handler) {
-                var computedBinding = this._computedBindings && this._computedBindings[eventName];
-                if (computedBinding) {
-                    if (!computedBinding.count) {
-                        computedBinding.count = 1;
-                        var self = this;
-                        computedBinding.handler = function (ev, newVal, oldVal) {
-                            can.batch.trigger(self, {
-                                type: eventName,
-                                batchNum: ev.batchNum,
-                                target: self
-                            }, [
-                                newVal,
-                                oldVal
-                            ]);
-                        };
-                        this[eventName].bind('change', computedBinding.handler);
-                    } else {
-                        computedBinding.count++;
-                    }
-                }
-                this.constructor._bubble.bind(this, eventName);
-                return can.bindAndSetup.apply(this, arguments);
-            },
-            unbind: function (eventName, handler) {
-                var computedBinding = this._computedBindings && this._computedBindings[eventName];
-                if (computedBinding) {
-                    if (computedBinding.count === 1) {
-                        computedBinding.count = 0;
-                        this[eventName].unbind('change', computedBinding.handler);
-                        delete computedBinding.handler;
-                    } else {
-                        computedBinding.count--;
-                    }
-                }
-                this.constructor._bubble.unbind(this, eventName);
-                return can.unbindAndTeardown.apply(this, arguments);
-            },
-            serialize: function () {
-                return can.Map.helpers.serialize(this, 'serialize', {});
-            },
-            _attrs: function (props, remove) {
-                if (props === undefined) {
-                    return Map.helpers.serialize(this, 'attr', {});
-                }
-                props = can.simpleExtend({}, props);
-                var prop, self = this, newVal;
-                can.batch.start();
-                this.each(function (curVal, prop) {
-                    if (prop === '_cid') {
-                        return;
-                    }
-                    newVal = props[prop];
-                    if (newVal === undefined) {
-                        if (remove) {
-                            self.removeAttr(prop);
-                        }
-                        return;
-                    }
-                    if (self.__convert) {
-                        newVal = self.__convert(prop, newVal);
-                    }
-                    if (Map.helpers.isObservable(newVal)) {
-                        self.__set(prop, self.__type(newVal, prop), curVal);
-                    } else if (Map.helpers.isObservable(curVal) && Map.helpers.canMakeObserve(newVal)) {
-                        curVal.attr(newVal, remove);
-                    } else if (curVal !== newVal) {
-                        self.__set(prop, self.__type(newVal, prop), curVal);
-                    }
-                    delete props[prop];
-                });
-                for (prop in props) {
-                    if (prop !== '_cid') {
-                        newVal = props[prop];
-                        this._set(prop, newVal, true);
-                    }
-                }
-                can.batch.stop();
-                return this;
-            },
-            compute: function (prop) {
-                if (can.isFunction(this.constructor.prototype[prop])) {
-                    return can.compute(this[prop], this);
-                } else {
-                    var reads = prop.split('.'), last = reads.length - 1, options = { args: [] };
-                    return can.compute(function (newVal) {
-                        if (arguments.length) {
-                            can.compute.read(this, reads.slice(0, last)).value.attr(reads[last], newVal);
-                        } else {
-                            return can.compute.read(this, reads, options).value;
-                        }
-                    }, this);
-                }
-            }
-        });
-    Map.prototype.on = Map.prototype.bind;
-    Map.prototype.off = Map.prototype.unbind;
-    return Map;
-});
-/*can@2.2.9#list/list*/
-define('can/list/list', [
-    'can/util/util',
-    'can/map/map',
-    'can/map/bubble'
-], function (can, Map, bubble) {
-    var splice = [].splice, spliceRemovesProps = function () {
-            var obj = {
-                    0: 'a',
-                    length: 1
-                };
-            splice.call(obj, 0, 1);
-            return !obj[0];
-        }();
-    var list = Map.extend({ Map: Map }, {
-            setup: function (instances, options) {
-                this.length = 0;
-                can.cid(this, '.map');
-                this._init = 1;
-                this._computedBindings = {};
-                this._setupComputes();
-                instances = instances || [];
-                var teardownMapping;
-                if (can.isDeferred(instances)) {
-                    this.replace(instances);
-                } else {
-                    teardownMapping = instances.length && can.Map.helpers.addToMap(instances, this);
-                    this.push.apply(this, can.makeArray(instances || []));
-                }
-                if (teardownMapping) {
-                    teardownMapping();
-                }
-                this.bind('change', can.proxy(this._changes, this));
-                can.simpleExtend(this, options);
-                delete this._init;
-            },
-            _triggerChange: function (attr, how, newVal, oldVal) {
-                Map.prototype._triggerChange.apply(this, arguments);
-                var index = +attr;
-                if (!~('' + attr).indexOf('.') && !isNaN(index)) {
-                    if (how === 'add') {
-                        can.batch.trigger(this, how, [
-                            newVal,
-                            index
-                        ]);
-                        can.batch.trigger(this, 'length', [this.length]);
-                    } else if (how === 'remove') {
-                        can.batch.trigger(this, how, [
-                            oldVal,
-                            index
-                        ]);
-                        can.batch.trigger(this, 'length', [this.length]);
-                    } else {
-                        can.batch.trigger(this, how, [
-                            newVal,
-                            index
-                        ]);
-                    }
-                }
-            },
-            __get: function (attr) {
-                if (attr) {
-                    if (this[attr] && this[attr].isComputed && can.isFunction(this.constructor.prototype[attr])) {
-                        return this[attr]();
-                    } else {
-                        return this[attr];
-                    }
-                } else {
-                    return this;
-                }
-            },
-            __set: function (prop, value, current) {
-                prop = isNaN(+prop) || prop % 1 ? prop : +prop;
-                if (typeof prop === 'number' && prop > this.length - 1) {
-                    var newArr = new Array(prop + 1 - this.length);
-                    newArr[newArr.length - 1] = value;
-                    this.push.apply(this, newArr);
-                    return newArr;
-                }
-                return can.Map.prototype.__set.call(this, '' + prop, value, current);
-            },
-            ___set: function (attr, val) {
-                this[attr] = val;
-                if (+attr >= this.length) {
-                    this.length = +attr + 1;
-                }
-            },
-            _remove: function (prop, current) {
-                if (isNaN(+prop)) {
-                    delete this[prop];
-                    this._triggerChange(prop, 'remove', undefined, current);
-                } else {
-                    this.splice(prop, 1);
-                }
-            },
-            _each: function (callback) {
-                var data = this.__get();
-                for (var i = 0; i < data.length; i++) {
-                    callback(data[i], i);
-                }
-            },
-            serialize: function () {
-                return Map.helpers.serialize(this, 'serialize', []);
-            },
-            splice: function (index, howMany) {
-                var args = can.makeArray(arguments), added = [], i, len, listIndex, allSame = args.length > 2;
-                index = index || 0;
-                for (i = 0, len = args.length - 2; i < len; i++) {
-                    listIndex = i + 2;
-                    args[listIndex] = this.__type(args[listIndex], listIndex);
-                    added.push(args[listIndex]);
-                    if (this[i + index] !== args[listIndex]) {
-                        allSame = false;
-                    }
-                }
-                if (allSame && this.length <= added.length) {
-                    return added;
-                }
-                if (howMany === undefined) {
-                    howMany = args[1] = this.length - index;
-                }
-                var removed = splice.apply(this, args);
-                if (!spliceRemovesProps) {
-                    for (i = this.length; i < removed.length + this.length; i++) {
-                        delete this[i];
-                    }
-                }
-                can.batch.start();
-                if (howMany > 0) {
-                    bubble.removeMany(this, removed);
-                    this._triggerChange('' + index, 'remove', undefined, removed);
-                }
-                if (args.length > 2) {
-                    for (i = 0, len = added.length; i < len; i++) {
-                        bubble.set(this, i, added[i]);
-                    }
-                    this._triggerChange('' + index, 'add', added, removed);
-                }
-                can.batch.stop();
-                return removed;
-            },
-            _attrs: function (items, remove) {
-                if (items === undefined) {
-                    return Map.helpers.serialize(this, 'attr', []);
-                }
-                items = can.makeArray(items);
-                can.batch.start();
-                this._updateAttrs(items, remove);
-                can.batch.stop();
-            },
-            _updateAttrs: function (items, remove) {
-                var len = Math.min(items.length, this.length);
-                for (var prop = 0; prop < len; prop++) {
-                    var curVal = this[prop], newVal = items[prop];
-                    if (Map.helpers.isObservable(curVal) && Map.helpers.canMakeObserve(newVal)) {
-                        curVal.attr(newVal, remove);
-                    } else if (curVal !== newVal) {
-                        this._set(prop, newVal);
-                    } else {
-                    }
-                }
-                if (items.length > this.length) {
-                    this.push.apply(this, items.slice(this.length));
-                } else if (items.length < this.length && remove) {
-                    this.splice(items.length);
-                }
-            }
-        }), getArgs = function (args) {
-            return args[0] && can.isArray(args[0]) ? args[0] : can.makeArray(args);
-        };
-    can.each({
-        push: 'length',
-        unshift: 0
-    }, function (where, name) {
-        var orig = [][name];
-        list.prototype[name] = function () {
-            var args = [], len = where ? this.length : 0, i = arguments.length, res, val;
-            while (i--) {
-                val = arguments[i];
-                args[i] = bubble.set(this, i, this.__type(val, i));
-            }
-            res = orig.apply(this, args);
-            if (!this.comparator || args.length) {
-                this._triggerChange('' + len, 'add', args, undefined);
-            }
-            return res;
-        };
-    });
-    can.each({
-        pop: 'length',
-        shift: 0
-    }, function (where, name) {
-        list.prototype[name] = function () {
-            if (!this.length) {
-                return undefined;
-            }
-            var args = getArgs(arguments), len = where && this.length ? this.length - 1 : 0;
-            var res = [][name].apply(this, args);
-            this._triggerChange('' + len, 'remove', undefined, [res]);
-            if (res && res.unbind) {
-                bubble.remove(this, res);
-            }
-            return res;
-        };
-    });
-    can.extend(list.prototype, {
-        indexOf: function (item, fromIndex) {
-            this.attr('length');
-            return can.inArray(item, this, fromIndex);
-        },
-        join: function () {
-            return [].join.apply(this.attr(), arguments);
-        },
-        reverse: function () {
-            var list = [].reverse.call(can.makeArray(this));
-            this.replace(list);
-        },
-        slice: function () {
-            var temp = Array.prototype.slice.apply(this, arguments);
-            return new this.constructor(temp);
-        },
-        concat: function () {
-            var args = [];
-            can.each(can.makeArray(arguments), function (arg, i) {
-                args[i] = arg instanceof can.List ? arg.serialize() : arg;
-            });
-            return new this.constructor(Array.prototype.concat.apply(this.serialize(), args));
-        },
-        forEach: function (cb, thisarg) {
-            return can.each(this, cb, thisarg || this);
-        },
-        replace: function (newList) {
-            if (can.isDeferred(newList)) {
-                newList.then(can.proxy(this.replace, this));
-            } else {
-                this.splice.apply(this, [
-                    0,
-                    this.length
-                ].concat(can.makeArray(newList || [])));
-            }
-            return this;
-        },
-        filter: function (callback, thisArg) {
-            var filteredList = new can.List(), self = this, filtered;
-            this.each(function (item, index, list) {
-                filtered = callback.call(thisArg | self, item, index, self);
-                if (filtered) {
-                    filteredList.push(item);
-                }
-            });
-            return filteredList;
-        }
-    });
-    can.List = Map.List = list;
-    return can.List;
-});
-/*can@2.2.9#compute/read*/
-define('can/compute/read', ['can/util/util'], function (can) {
-    var read = function (parent, reads, options) {
-        options = options || {};
-        var state = { foundObservable: false };
-        var cur = readValue(parent, 0, reads, options, state), type, prev, readLength = reads.length, i = 0;
-        while (i < readLength) {
-            prev = cur;
-            for (var r = 0, readersLength = read.propertyReaders.length; r < readersLength; r++) {
-                var reader = read.propertyReaders[r];
-                if (reader.test(cur)) {
-                    cur = reader.read(cur, reads[i], i, options, state);
-                    break;
-                }
-            }
-            i = i + 1;
-            cur = readValue(cur, i, reads, options, state, prev);
-            type = typeof cur;
-            if (i < reads.length && (cur === null || type !== 'function' && type !== 'object')) {
-                if (options.earlyExit) {
-                    options.earlyExit(prev, i - 1, cur);
-                }
-                return {
-                    value: undefined,
-                    parent: prev
-                };
-            }
-        }
-        if (cur === undefined) {
-            if (options.earlyExit) {
-                options.earlyExit(prev, i - 1);
-            }
-        }
-        return {
-            value: cur,
-            parent: prev
-        };
-    };
-    var readValue = function (value, index, reads, options, state, prev) {
-        var usedValueReader;
-        do {
-            usedValueReader = false;
-            for (var i = 0, len = read.valueReaders.length; i < len; i++) {
-                if (read.valueReaders[i].test(value, index, reads, options)) {
-                    value = read.valueReaders[i].read(value, index, reads, options, state, prev);
-                }
-            }
-        } while (usedValueReader);
         return value;
     };
-    read.valueReaders = [
-        {
-            name: 'compute',
-            test: function (value, i, reads, options) {
-                return value && value.isComputed;
-            },
-            read: function (value, i, reads, options, state) {
-                if (options.isArgument && i === reads.length) {
-                    return value;
-                }
-                if (!state.foundObservable && options.foundObservable) {
-                    options.foundObservable(value, i);
-                    state.foundObservable = true;
-                }
-                return value instanceof can.Compute ? value.get() : value();
-            }
-        },
-        {
-            name: 'function',
-            test: function (value, i, reads, options) {
-                var type = typeof value;
-                return type === 'function' && !value.isComputed && (options.executeAnonymousFunctions !== false || options.isArgument && i === reads.length) && !(can.Construct && value.prototype instanceof can.Construct) && !(can.route && value === can.route);
-            },
-            read: function (value, i, reads, options, state, prev) {
-                if (options.isArgument && i === reads.length) {
-                    return options.proxyMethods !== false ? can.proxy(value, prev) : value;
-                }
-                return value.call(prev);
-            }
-        }
-    ];
-    read.propertyReaders = [
-        {
-            name: 'map',
-            test: can.isMapLike,
-            read: function (value, prop, index, options, state) {
-                if (!state.foundObservable && options.foundObservable) {
-                    options.foundObservable(value, index);
-                    state.foundObservable = true;
-                }
-                if (typeof value[prop] === 'function' && value.constructor.prototype[prop] === value[prop]) {
-                    if (options.returnObserveMethods) {
-                        return value[prop];
-                    } else if (prop === 'constructor' && value instanceof can.Construct || value[prop].prototype instanceof can.Construct) {
-                        return value[prop];
-                    } else {
-                        return value[prop].apply(value, options.args || []);
-                    }
-                } else {
-                    return value.attr(prop);
-                }
-            }
-        },
-        {
-            name: 'promise',
-            test: function (value) {
-                return can.isPromise(value);
-            },
-            read: function (value, prop, index, options, state) {
-                if (!state.foundObservable && options.foundObservable) {
-                    options.foundObservable(value, index);
-                    state.foundObservable = true;
-                }
-                var observeData = value.__observeData;
-                if (!value.__observeData) {
-                    observeData = value.__observeData = {
-                        isPending: true,
-                        state: 'pending',
-                        isResolved: false,
-                        isRejected: false,
-                        value: undefined,
-                        reason: undefined
-                    };
-                    can.cid(observeData);
-                    can.simpleExtend(observeData, can.event);
-                    value.then(function (value) {
-                        observeData.isPending = false;
-                        observeData.isResolved = true;
-                        observeData.value = value;
-                        observeData.state = 'resolved';
-                        observeData.dispatch('state', [
-                            'resolved',
-                            'pending'
-                        ]);
-                    }, function (reason) {
-                        observeData.isPending = false;
-                        observeData.isRejected = true;
-                        observeData.reason = reason;
-                        observeData.state = 'rejected';
-                        observeData.dispatch('state', [
-                            'rejected',
-                            'pending'
-                        ]);
-                    });
-                }
-                can.__observe(observeData, 'state');
-                return prop in observeData ? observeData[prop] : value[prop];
-            }
-        },
-        {
-            name: 'object',
-            test: function () {
-                return true;
-            },
-            read: function (value, prop) {
-                if (value == null) {
-                    return undefined;
-                } else {
-                    return value[prop];
-                }
-            }
-        }
-    ];
-    read.write = function (parent, key, value, options) {
-        options = options || {};
-        if (can.isMapLike(parent)) {
-            if (!options.isArgument && parent._data && parent._data[key] && parent._data[key].isComputed) {
-                return parent._data[key](value);
-            } else {
-                return parent.attr(key, value);
-            }
-        }
-        if (parent[key] && parent[key].isComputed) {
-            return parent[key](value);
-        }
-        if (typeof parent === 'object') {
-            parent[key] = value;
-        }
-    };
-    return read;
-});
-/*can@2.2.9#compute/get_value_and_bind*/
-define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
-    function observe(func, context, oldInfo, onchanged) {
-        var info = getValueAndObserved(func, context), newObserveSet = info.observed, oldObserved = oldInfo.observed;
-        if (info.names !== oldInfo.names) {
-            bindNewSet(oldObserved, newObserveSet, onchanged);
-            unbindOldSet(oldObserved, onchanged);
-        }
-        can.batch.afterPreviousEvents(function () {
-            info.ready = true;
-        });
-        return info;
-    }
-    var observedStack = [];
-    can.__isRecordingObserves = function () {
-        return observedStack.length;
-    };
-    can.__observe = can.__reading = function (obj, event) {
-        if (observedStack.length) {
-            var name = obj._cid + '|' + event, top = observedStack[observedStack.length - 1];
-            top.names += name;
-            top.observed[name] = {
-                obj: obj,
-                event: event + ''
-            };
-        }
-    };
-    can.__notObserve = function (fn) {
-        return function () {
-            var previousReads = can.__clearObserved();
-            var res = fn.apply(this, arguments);
-            can.__setObserved(previousReads);
-            return res;
+    can.view.attr('can-href', function (el, attrData) {
+        var attrInfo = expression.parse('tmp(' + removeCurly(el.getAttribute('can-href')) + ')', { baseMethodType: 'Call' });
+        var getHash = attrInfo.hash(attrData.scope, null);
+        var routeHref = can.compute(function () {
+                return can.route.url(getHash());
+            });
+        el.setAttribute('href', routeHref());
+        var handler = function (ev, newVal) {
+            el.setAttribute('href', newVal);
         };
-    };
-    can.__clearObserved = can.__clearReading = function () {
-        if (observedStack.length) {
-            var ret = observedStack[observedStack.length - 1];
-            observedStack[observedStack.length - 1] = {
-                names: '',
-                observed: {}
-            };
-            return ret;
-        }
-    };
-    can.__setObserved = can.__setReading = function (o) {
-        if (observedStack.length) {
-            observedStack[observedStack.length - 1] = o;
-        }
-    };
-    can.__addObserved = can.__addReading = function (o) {
-        if (observedStack.length) {
-            var last = observedStack[observedStack.length - 1];
-            can.simpleExtend(last.observed, o.observed);
-            last.names += o.names;
-        }
-    };
-    var getValueAndObserved = function (func, self) {
-        observedStack.push({
-            names: '',
-            observed: {}
+        routeHref.bind('change', handler);
+        can.bind.call(el, 'removed', function () {
+            routeHref.unbind('change', handler);
         });
-        var value = func.call(self);
-        var stackItem = observedStack.pop();
-        stackItem.value = value;
-        return stackItem;
-    };
-    var bindNewSet = function (oldObserved, newObserveSet, onchanged) {
-        for (var name in newObserveSet) {
-            bindOrPreventUnbinding(oldObserved, newObserveSet, name, onchanged);
-        }
-    };
-    var bindOrPreventUnbinding = function (oldObserved, newObserveSet, name, onchanged) {
-        if (oldObserved[name]) {
-            delete oldObserved[name];
-        } else {
-            var obEv = newObserveSet[name];
-            obEv.obj.bind(obEv.event, onchanged);
-        }
-    };
-    var unbindOldSet = function (oldObserved, onchanged) {
-        for (var name in oldObserved) {
-            var obEv = oldObserved[name];
-            obEv.obj.unbind(obEv.event, onchanged);
-        }
-    };
-    return observe;
+    });
 });
-/*can@2.2.9#compute/proto_compute*/
-define('can/compute/proto_compute', [
+/*can@2.3.0#view/bindings/bindings*/
+define('can/view/bindings/bindings', [
     'can/util/util',
-    'can/util/bind/bind',
-    'can/compute/read',
-    'can/compute/get_value_and_bind',
-    'can/util/batch/batch'
-], function (can, bind, read, getValueAndBind) {
-    var updateOnChange = function (compute, newValue, oldValue, batchNum) {
-        if (newValue !== oldValue) {
-            can.batch.trigger(compute, batchNum ? {
-                type: 'change',
-                batchNum: batchNum
-            } : 'change', [
-                newValue,
-                oldValue
-            ]);
-        }
-    };
-    var setupComputeHandlers = function (compute, func, context, singleBind) {
-        var readInfo, onchanged, batchNum;
-        singleBind = false;
-        return {
-            on: function (updater) {
-                var self = this;
-                if (!onchanged) {
-                    onchanged = function (ev) {
-                        if (readInfo.ready && compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
-                            var oldValue = readInfo.value, newValue;
-                            if (singleBind) {
-                                newValue = func.call(context);
-                                readInfo.value = newValue;
-                            } else {
-                                readInfo = getValueAndBind(func, context, readInfo, onchanged);
-                                newValue = readInfo.value;
-                            }
-                            self.updater(newValue, oldValue, ev.batchNum);
-                            batchNum = batchNum = ev.batchNum;
+    'can/view/stache/expression',
+    'can/view/callbacks/callbacks',
+    'can/control/control',
+    'can/view/scope/scope',
+    'can/view/href/href'
+], function (can, expression) {
+    var isContentEditable = function () {
+            var values = {
+                    '': true,
+                    'true': true,
+                    'false': false
+                };
+            var editable = function (el) {
+                if (!el || !el.getAttribute) {
+                    return;
+                }
+                var attr = el.getAttribute('contenteditable');
+                return values[attr];
+            };
+            return function (el) {
+                var val = editable(el);
+                if (typeof val === 'boolean') {
+                    return val;
+                } else {
+                    return !!editable(el.parentNode);
+                }
+            };
+        }(), removeBrackets = function (value, open, close) {
+            open = open || '{';
+            close = close || '}';
+            if (value[0] === open && value[value.length - 1] === close) {
+                return value.substr(1, value.length - 2);
+            }
+            return value;
+        };
+    can.view.attr('can-value', function (el, data) {
+        var propName = '$value', attrValue = can.trim(removeBrackets(el.getAttribute('can-value'))), getterSetter;
+        if (el.nodeName.toLowerCase() === 'input' && (el.type === 'checkbox' || el.type === 'radio')) {
+            var property = getScopeCompute(el, data.scope, attrValue, {});
+            if (el.type === 'checkbox') {
+                var trueValue = can.attr.has(el, 'can-true-value') ? el.getAttribute('can-true-value') : true, falseValue = can.attr.has(el, 'can-false-value') ? el.getAttribute('can-false-value') : false;
+                getterSetter = can.compute(function (newValue) {
+                    if (arguments.length) {
+                        property(newValue ? trueValue : falseValue);
+                    } else {
+                        return property() == trueValue;
+                    }
+                });
+            } else if (el.type === 'radio') {
+                getterSetter = can.compute(function (newValue) {
+                    if (arguments.length) {
+                        if (newValue) {
+                            property(el.value);
                         }
-                    };
+                    } else {
+                        return property() == el.value;
+                    }
+                });
+            }
+            propName = '$checked';
+            attrValue = 'getterSetter';
+            data.scope = new can.view.Scope({ getterSetter: getterSetter });
+        } else if (isContentEditable(el)) {
+            propName = '$innerHTML';
+        }
+        bindings(el, data, {
+            attrValue: attrValue,
+            propName: propName,
+            childToParent: true,
+            parentToChild: true,
+            initializeValues: true,
+            syncChildWithParent: true
+        });
+    });
+    var special = {
+            enter: function (data, el, original) {
+                return {
+                    event: 'keyup',
+                    handler: function (ev) {
+                        if (ev.keyCode === 13) {
+                            return original.call(this, ev);
+                        }
+                    }
+                };
+            }
+        };
+    var handleEvent = function (el, data) {
+        var attributeName = data.attributeName, legacyBinding = attributeName.indexOf('can-') === 0, event = attributeName.indexOf('can-') === 0 ? attributeName.substr('can-'.length) : removeBrackets(attributeName, '(', ')'), onBindElement = legacyBinding;
+        if (event.charAt(0) === '$') {
+            event = event.substr(1);
+            onBindElement = true;
+        }
+        var handler = function (ev) {
+            var attrVal = el.getAttribute(attributeName);
+            if (!attrVal) {
+                return;
+            }
+            var $el = can.$(el), viewModel = can.viewModel($el[0]);
+            var expr = expression.parse(removeBrackets(attrVal), {
+                    lookupRule: 'method',
+                    methodRule: 'call'
+                });
+            if (!(expr instanceof expression.Call) && !(expr instanceof expression.Helper)) {
+                var defaultArgs = can.map([
+                        data.scope._context,
+                        $el
+                    ].concat(can.makeArray(arguments)), function (data) {
+                        return new expression.Literal(data);
+                    });
+                expr = new expression.Call(expr, defaultArgs, {});
+            }
+            var scopeData = data.scope.read(expr.methodExpr.key, { isArgument: true });
+            if (!scopeData.value) {
+                scopeData = data.scope.read(expr.methodExpr.key, { isArgument: true });
+                return null;
+            }
+            var localScope = data.scope.add({
+                    '@element': $el,
+                    '@event': ev,
+                    '@viewModel': viewModel,
+                    '@scope': data.scope,
+                    '@context': data.scope._context,
+                    '%element': this,
+                    '$element': $el,
+                    '%event': ev,
+                    '%viewModel': viewModel,
+                    '%scope': data.scope,
+                    '%context': data.scope._context
+                }, { notContext: true });
+            var args = expr.args(localScope, null)(), hash = expr.hash(localScope, null)();
+            if (!can.isEmptyObject(hash)) {
+                args.push(hash);
+            }
+            return scopeData.value.apply(scopeData.parent, args);
+        };
+        if (special[event]) {
+            var specialData = special[event](data, el, handler);
+            handler = specialData.handler;
+            event = specialData.event;
+        }
+        can.bind.call(onBindElement ? el : can.viewModel(el), event, handler);
+        var attributesHandler = function (ev) {
+            if (ev.attributeName === attributeName && !this.getAttribute(attributeName)) {
+                can.unbind.call(onBindElement ? el : can.viewModel(el), event, handler);
+                can.unbind.call(el, 'attributes', attributesHandler);
+            }
+        };
+        can.bind.call(el, 'attributes', attributesHandler);
+    };
+    can.view.attr(/can-[\w\.]+/, handleEvent);
+    can.view.attr(/^\([\$?\w\.]+\)$/, handleEvent);
+    var elementCompute = function (el, prop, event) {
+        if (!event) {
+            if (prop === 'innerHTML') {
+                event = [
+                    'blur',
+                    'change'
+                ];
+            } else {
+                event = 'change';
+            }
+        }
+        if (!can.isArray(event)) {
+            event = [event];
+        }
+        var hasChildren = el.nodeName.toLowerCase() === 'select', isMultiselectValue = prop === 'value' && hasChildren && el.multiple, isStringValue, lastSet, set = function (newVal) {
+                lastSet = newVal;
+                if (isMultiselectValue) {
+                    if (newVal && typeof newVal === 'string') {
+                        newVal = newVal.split(';');
+                        isStringValue = true;
+                    } else if (newVal) {
+                        newVal = can.makeArray(newVal);
+                    } else {
+                        newVal = [];
+                    }
+                    var isSelected = {};
+                    can.each(newVal, function (val) {
+                        isSelected[val] = true;
+                    });
+                    can.each(el.childNodes, function (option) {
+                        if (option.value) {
+                            option.selected = !!isSelected[option.value];
+                        }
+                    });
+                } else {
+                    can.attr.setAttrOrProp(el, prop, newVal == null ? '' : newVal);
                 }
-                readInfo = getValueAndBind(func, context, { observed: {} }, onchanged);
-                if (singleBind) {
-                    func = can.__notObserve(func);
-                }
-                compute.value = readInfo.value;
-                compute.hasDependencies = !can.isEmptyObject(readInfo.observed);
+                return newVal;
+            };
+        if (hasChildren) {
+            setTimeout(function () {
+                set(lastSet);
+            }, 1);
+        }
+        return can.compute(el[prop], {
+            on: function (updater) {
+                can.each(event, function (eventName) {
+                    can.bind.call(el, eventName, updater);
+                });
             },
             off: function (updater) {
-                for (var name in readInfo.observed) {
-                    var ob = readInfo.observed[name];
-                    ob.obj.unbind(ob.event, onchanged);
+                can.each(event, function (eventName) {
+                    can.unbind.call(el, eventName, updater);
+                });
+            },
+            get: function () {
+                if (isMultiselectValue) {
+                    var values = [], children = el.childNodes;
+                    can.each(children, function (child) {
+                        if (child.selected && child.value) {
+                            values.push(child.value);
+                        }
+                    });
+                    return isStringValue ? values.join(';') : values;
                 }
-            }
-        };
+                return can.attr.get(el, prop);
+            },
+            set: set
+        });
     };
-    var k = function () {
+    var getValue = function (value) {
+        return value && value.isComputed ? value() : value;
     };
-    var updater = function (newVal, oldVal, batchNum) {
-            this.value = newVal;
-            updateOnChange(this, newVal, oldVal, batchNum);
-        }, asyncGet = function (fn, context, lastSetValue) {
-            return function () {
-                return fn.call(context, lastSetValue.get());
+    var bindingsRegExp = /\{(\()?(\^)?([^\}\)]+)\)?\}/;
+    var attributeNameInfo = function (attributeName) {
+        var matches = attributeName.match(bindingsRegExp);
+        if (!matches) {
+            return {
+                childToParent: true,
+                parentToChild: true,
+                propName: attributeName
             };
-        }, asyncUpdater = function (context, oldUpdater) {
-            return function (newVal) {
-                if (newVal !== undefined) {
-                    oldUpdater(newVal, context.value);
-                }
-            };
-        };
-    can.Compute = function (getterSetter, context, eventName, bindOnce) {
-        var args = [];
-        for (var i = 0, arglen = arguments.length; i < arglen; i++) {
-            args[i] = arguments[i];
         }
-        var contextType = typeof args[1];
-        if (typeof args[0] === 'function') {
-            this._setupGetterSetterFn(args[0], args[1], args[2], args[3]);
-        } else if (args[1]) {
-            if (contextType === 'string') {
-                this._setupContextString(args[0], args[1], args[2]);
-            } else if (contextType === 'function') {
-                this._setupContextFunction(args[0], args[1], args[2]);
-            } else {
-                if (args[1] && args[1].fn) {
-                    this._setupAsyncCompute(args[0], args[1]);
-                } else {
-                    this._setupContextSettings(args[0], args[1]);
-                }
-            }
+        var twoWay = !!matches[1], childToParent = twoWay || !!matches[2], parentToChild = twoWay || !childToParent;
+        return {
+            childToParent: childToParent,
+            parentToChild: parentToChild,
+            propName: matches[3]
+        };
+    };
+    var getScopeCompute = function (el, scope, scopeProp, options) {
+        var parentExpression = expression.parse(scopeProp, { baseMethodType: 'Call' });
+        return parentExpression.value(scope, new can.view.Scope());
+    };
+    var getElementCompute = function (el, attributeName, options) {
+        var attrName = can.camelize(options.propName || attributeName.substr(1)), firstChar = attrName.charAt(0), isDOM = firstChar === '$', childCompute;
+        if (isDOM) {
+            childCompute = elementCompute(el, attrName.substr(1));
         } else {
-            this._setupInitialValue(args[0]);
+            var childExpression = expression.parse(attrName, { baseMethodType: 'Call' });
+            var childContext = can.viewModel(el);
+            var childScope = new can.view.Scope(childContext);
+            childCompute = childExpression.value(childScope, new can.view.Scope(), {});
         }
-        this._args = args;
-        this.isComputed = true;
-        can.cid(this, 'compute');
+        return childCompute;
     };
-    can.simpleExtend(can.Compute.prototype, {
-        _bindsetup: can.__notObserve(function () {
-            this.bound = true;
-            this._on(this.updater);
-        }),
-        _bindteardown: function () {
-            this._off(this.updater);
-            this.bound = false;
-        },
-        bind: can.bindAndSetup,
-        unbind: can.unbindAndTeardown,
-        clone: function (context) {
-            if (context && typeof this._args[0] === 'function') {
-                this._args[1] = context;
-            } else if (context) {
-                this._args[2] = context;
-            }
-            return new can.Compute(this._args[0], this._args[1], this._args[2], this._args[3]);
-        },
-        _on: k,
-        _off: k,
-        get: function () {
-            if (can.__isRecordingObserves() && this._canObserve !== false) {
-                can.__observe(this, 'change');
-                if (!this.bound) {
-                    can.Compute.temporarilyBind(this);
-                }
-            }
-            if (this.bound) {
-                return this.value;
-            } else {
-                return this._get();
-            }
-        },
-        _get: function () {
-            return this.value;
-        },
-        set: function (newVal) {
-            var old = this.value;
-            var setVal = this._set(newVal, old);
-            if (this.hasDependencies) {
-                if (this._setUpdates) {
-                    return this.value;
-                }
-                return this._get();
-            }
-            if (setVal === undefined) {
-                this.value = this._get();
-            } else {
-                this.value = setVal;
-            }
-            updateOnChange(this, this.value, old);
-            return this.value;
-        },
-        _set: function (newVal) {
-            return this.value = newVal;
-        },
-        updater: updater,
-        _computeFn: function (newVal) {
-            if (arguments.length) {
-                return this.set(newVal);
-            }
-            return this.get();
-        },
-        toFunction: function () {
-            return can.proxy(this._computeFn, this);
-        },
-        _setupGetterSetterFn: function (getterSetter, context, eventName, bindOnce) {
-            this._set = can.proxy(getterSetter, context);
-            this._get = can.proxy(getterSetter, context);
-            this._canObserve = eventName === false ? false : true;
-            var handlers = setupComputeHandlers(this, getterSetter, context || this, bindOnce);
-            this._on = handlers.on;
-            this._off = handlers.off;
-        },
-        _setupContextString: function (target, propertyName, eventName) {
-            var isObserve = can.isMapLike(target), self = this, handler = function (ev, newVal, oldVal) {
-                    self.updater(newVal, oldVal, ev.batchNum);
-                };
-            if (isObserve) {
-                this.hasDependencies = true;
-                this._get = function () {
-                    return target.attr(propertyName);
-                };
-                this._set = function (val) {
-                    target.attr(propertyName, val);
-                };
-                this._on = function (update) {
-                    target.bind(eventName || propertyName, handler);
-                    this.value = this._get();
-                };
-                this._off = function () {
-                    return target.unbind(eventName || propertyName, handler);
-                };
-            } else {
-                this._get = function () {
-                    return can.getObject(propertyName, [target]);
-                };
-                this._set = function (value) {
-                    var properties = propertyName.split('.'), leafPropertyName = properties.pop(), targetProperty = can.getObject(properties.join('.'), [target]);
-                    targetProperty[leafPropertyName] = value;
-                };
-            }
-        },
-        _setupContextFunction: function (initialValue, setter, eventName) {
-            this.value = initialValue;
-            this._set = setter;
-            can.simpleExtend(this, eventName);
-        },
-        _setupContextSettings: function (initialValue, settings) {
-            this.value = initialValue;
-            this._set = settings.set ? can.proxy(settings.set, settings) : this._set;
-            this._get = settings.get ? can.proxy(settings.get, settings) : this._get;
-            if (!settings.__selfUpdater) {
-                var self = this, oldUpdater = this.updater;
-                this.updater = function () {
-                    oldUpdater.call(self, self._get(), self.value);
-                };
-            }
-            this._on = settings.on ? settings.on : this._on;
-            this._off = settings.off ? settings.off : this._off;
-        },
-        _setupAsyncCompute: function (initialValue, settings) {
-            this.value = initialValue;
-            var oldUpdater = can.proxy(this.updater, this), self = this, fn = settings.fn, data;
-            this.updater = oldUpdater;
-            var lastSetValue = new can.Compute(initialValue);
-            this.lastSetValue = lastSetValue;
-            this._setUpdates = true;
-            this._set = function (newVal) {
-                if (newVal === lastSetValue.get()) {
-                    return this.value;
-                }
-                return lastSetValue.set(newVal);
-            };
-            this._get = asyncGet(fn, settings.context, lastSetValue);
-            if (fn.length === 0) {
-                data = setupComputeHandlers(this, fn, settings.context);
-            } else if (fn.length === 1) {
-                data = setupComputeHandlers(this, function () {
-                    return fn.call(settings.context, lastSetValue.get());
-                }, settings);
-            } else {
-                this.updater = asyncUpdater(this, oldUpdater);
-                data = setupComputeHandlers(this, function () {
-                    var res = fn.call(settings.context, lastSetValue.get(), function (newVal) {
-                            oldUpdater(newVal, self.value);
-                        });
-                    return res !== undefined ? res : this.value;
-                }, settings);
-            }
-            this._on = data.on;
-            this._off = data.off;
-        },
-        _setupInitialValue: function (initialValue) {
-            this.value = initialValue;
+    var bindParentToChild = function (el, parentCompute, childUpdate, bindingsSemaphore, attrName) {
+        var updateChild = function (ev, newValue) {
+            bindingsSemaphore[attrName] = (bindingsSemaphore[attrName] || 0) + 1;
+            childUpdate(newValue);
+            can.batch.after(function () {
+                --bindingsSemaphore[attrName];
+            });
+        };
+        if (parentCompute && parentCompute.isComputed) {
+            parentCompute.bind('change', updateChild);
+            can.one.call(el, 'removed', function () {
+                parentCompute.unbind('change', updateChild);
+            });
         }
+        return updateChild;
+    };
+    var bindChildToParent = function (el, parentUpdate, childCompute, bindingsSemaphore, attrName, syncChild) {
+        var parentUpdateIsFunction = typeof parentUpdate === 'function';
+        var updateScope = function (ev, newVal) {
+            if (!bindingsSemaphore[attrName]) {
+                if (parentUpdateIsFunction) {
+                    parentUpdate(newVal);
+                    if (syncChild) {
+                        if (parentUpdate() !== childCompute()) {
+                            bindingsSemaphore[attrName] = (bindingsSemaphore[attrName] || 0) + 1;
+                            childCompute(parentUpdate());
+                            can.batch.after(function () {
+                                --bindingsSemaphore[attrName];
+                            });
+                        }
+                    }
+                } else if (parentUpdate instanceof can.Map) {
+                    parentUpdate.attr(newVal, true);
+                }
+            }
+        };
+        if (childCompute && childCompute.isComputed) {
+            childCompute.bind('change', updateScope);
+            can.one.call(el, 'removed', function () {
+                childCompute.unbind('change', updateScope);
+            });
+        }
+        return updateScope;
+    };
+    var bindings = function (el, attrData, options) {
+        var attrName = attrData.attributeName;
+        var parentCompute = getScopeCompute(el, attrData.scope, options.attrValue || el.getAttribute(attrName) || '.', options);
+        var childCompute = getElementCompute(el, options.propName || attrName.replace(/^\{/, '').replace(/\}$/, ''), options);
+        var bindingsSemaphore = {}, updateChild, updateScope;
+        if (options.parentToChild) {
+            updateChild = bindParentToChild(el, parentCompute, childCompute, bindingsSemaphore, attrName);
+        }
+        if (options.childToParent) {
+            updateScope = bindChildToParent(el, parentCompute, childCompute, bindingsSemaphore, attrName, options.syncChildWithParent);
+        }
+        if (options.initializeValues) {
+            initializeValues(options, childCompute, parentCompute, updateChild, updateScope);
+        }
+        return {
+            parentCompute: parentCompute,
+            childCompute: childCompute
+        };
+    };
+    var initializeValues = function (options, childCompute, parentCompute, updateChild, updateScope) {
+        if (options.parentToChild && !options.childToParent) {
+            updateChild({}, getValue(parentCompute));
+        } else if (!options.parentToChild && options.childToParent) {
+            updateScope({}, getValue(childCompute));
+        } else if (getValue(childCompute) === undefined) {
+            updateChild({}, getValue(parentCompute));
+        } else if (getValue(parentCompute) === undefined) {
+            updateScope({}, getValue(childCompute));
+        } else {
+            updateChild({}, getValue(parentCompute));
+        }
+    };
+    var dataBindingsRegExp = /^\{[^\}]+\}$/;
+    can.view.attr(dataBindingsRegExp, function (el, attrData) {
+        if (can.data(can.$(el), 'preventDataBindings')) {
+            return;
+        }
+        var attrNameInfo = attributeNameInfo(attrData.attributeName);
+        attrNameInfo.initializeValues = true;
+        bindings(el, attrData, attrNameInfo);
     });
-    var computes, unbindComputes = function () {
-            for (var i = 0, len = computes.length; i < len; i++) {
-                computes[i].unbind('change', k);
-            }
-            computes = null;
-        };
-    can.Compute.temporarilyBind = function (compute) {
-        compute.bind('change', k);
-        if (!computes) {
-            computes = [];
-            setTimeout(unbindComputes, 10);
+    can.view.attr(/\*[\w\.\-_]+/, function (el, attrData) {
+        if (el.getAttribute(attrData.attributeName)) {
+            console.warn('&reference attributes can only export the view model.');
         }
-        computes.push(compute);
+        var name = can.camelize(attrData.attributeName.substr(1).toLowerCase());
+        var viewModel = can.viewModel(el);
+        var refs = attrData.scope.getRefs();
+        refs._context.attr('*' + name, viewModel);
+    });
+    return {
+        getParentCompute: getScopeCompute,
+        bindParentToChild: bindParentToChild,
+        bindChildToParent: bindChildToParent,
+        setupDataBinding: bindings,
+        dataBindingsRegExp: dataBindingsRegExp,
+        attributeNameInfo: attributeNameInfo,
+        initializeValues: initializeValues
     };
-    can.Compute.async = function (initialValue, asyncComputer, context) {
-        return new can.Compute(initialValue, {
-            fn: asyncComputer,
-            context: context
-        });
-    };
-    can.Compute.read = read;
-    can.Compute.set = read.write;
-    can.Compute.truthy = function (compute) {
-        return new can.Compute(function () {
-            var res = compute.get();
-            if (typeof res === 'function') {
-                res = res.get();
-            }
-            return !!res;
-        });
-    };
-    return can.Compute;
 });
-/*can@2.2.9#compute/compute*/
-define('can/compute/compute', [
-    'can/util/util',
-    'can/util/bind/bind',
-    'can/util/batch/batch',
-    'can/compute/proto_compute'
-], function (can, bind) {
-    can.compute = function (getterSetter, context, eventName, bindOnce) {
-        var internalCompute = new can.Compute(getterSetter, context, eventName, bindOnce);
-        var bind = internalCompute.bind;
-        var unbind = internalCompute.unbind;
-        var compute = function (val) {
-            if (arguments.length) {
-                return internalCompute.set(val);
-            }
-            return internalCompute.get();
-        };
-        var cid = can.cid(compute, 'compute');
-        var handlerKey = '__handler' + cid;
-        compute.bind = function (ev, handler) {
-            var computeHandler = handler && handler[handlerKey];
-            if (handler && !computeHandler) {
-                computeHandler = handler[handlerKey] = function () {
-                    handler.apply(compute, arguments);
-                };
-            }
-            return bind.call(internalCompute, ev, computeHandler);
-        };
-        compute.unbind = function (ev, handler) {
-            var computeHandler = handler && handler[handlerKey];
-            if (computeHandler) {
-                delete handler[handlerKey];
-                return internalCompute.unbind(ev, computeHandler);
-            }
-            return unbind.apply(internalCompute, arguments);
-        };
-        compute.isComputed = internalCompute.isComputed;
-        compute.clone = function (ctx) {
-            if (typeof getterSetter === 'function') {
-                context = ctx;
-            }
-            return can.compute(getterSetter, context, ctx, bindOnce);
-        };
-        compute.computeInstance = internalCompute;
-        return compute;
-    };
-    var k = function () {
-    };
-    var computes, unbindComputes = function () {
-            for (var i = 0, len = computes.length; i < len; i++) {
-                computes[i].unbind('change', k);
-            }
-            computes = null;
-        };
-    can.compute.temporarilyBind = function (compute) {
-        compute.bind('change', k);
-        if (!computes) {
-            computes = [];
-            setTimeout(unbindComputes, 10);
-        }
-        computes.push(compute);
-    };
-    can.compute.truthy = function (compute) {
-        return can.compute(function () {
-            var res = compute();
-            if (typeof res === 'function') {
-                res = res();
-            }
-            return !!res;
-        });
-    };
-    can.compute.async = function (initialValue, asyncComputer, context) {
-        return can.compute(initialValue, {
-            fn: asyncComputer,
-            context: context
-        });
-    };
-    can.compute.read = can.Compute.read;
-    can.compute.set = can.Compute.set;
-    return can.compute;
-});
-/*can@2.2.9#observe/observe*/
+/*can@2.3.0#observe/observe*/
 define('can/observe/observe', [
     'can/util/util',
     'can/map/map',
@@ -3525,229 +6116,7 @@ define('can/observe/observe', [
     can.Observe.triggerBatch = can.batch.trigger;
     return can;
 });
-/*can@2.2.9#view/scope/compute_data*/
-define('can/view/scope/compute_data', [
-    'can/util/util',
-    'can/compute/compute',
-    'can/compute/get_value_and_bind'
-], function (can, compute, getValueAndBind) {
-    var isFastPath = function (computeData) {
-        return computeData.reads && computeData.reads.length === 1 && computeData.root instanceof can.Map && !can.isFunction(computeData.root[computeData.reads[0]]);
-    };
-    var getValueAndBindScopeRead = function (scopeRead, scopeReadChanged) {
-        return getValueAndBind(scopeRead, null, { observed: {} }, scopeReadChanged);
-    };
-    var unbindScopeRead = function (readInfo, scopeReadChanged) {
-        for (var name in readInfo.observed) {
-            var ob = readInfo.observed[name];
-            ob.obj.unbind(ob.event, scopeReadChanged);
-        }
-    };
-    var getValueAndBindSinglePropertyRead = function (computeData, singlePropertyReadChanged) {
-        var target = computeData.root, prop = computeData.reads[0];
-        target.bind(prop, singlePropertyReadChanged);
-        return {
-            value: computeData.initialValue,
-            observed: { something: true }
-        };
-    };
-    var unbindSinglePropertyRead = function (computeData, singlePropertyReadChanged) {
-        computeData.root.unbind(computeData.reads[0], singlePropertyReadChanged);
-    };
-    var scopeReader = function (scope, key, options, computeData, newVal) {
-        if (arguments.length > 4) {
-            var root = computeData.root || computeData.setRoot;
-            if (root.isComputed) {
-                root(newVal);
-            } else if (computeData.reads.length) {
-                var last = computeData.reads.length - 1;
-                var obj = computeData.reads.length ? can.compute.read(root, computeData.reads.slice(0, last)).value : root;
-                can.compute.set(obj, computeData.reads[last], newVal, options);
-            }
-        } else {
-            if (computeData.root) {
-                return can.compute.read(computeData.root, computeData.reads, options).value;
-            }
-            var data = scope.read(key, options);
-            computeData.scope = data.scope;
-            computeData.initialValue = data.value;
-            computeData.reads = data.reads;
-            computeData.root = data.rootObserve;
-            computeData.setRoot = data.setRoot;
-            return data.value;
-        }
-    };
-    return function (scope, key, options) {
-        options = options || { args: [] };
-        var computeData = {}, scopeRead = function (newVal) {
-                if (arguments.length) {
-                    return scopeReader(scope, key, options, computeData, newVal);
-                } else {
-                    return scopeReader(scope, key, options, computeData);
-                }
-            }, batchNum, readInfo, scopeReadChanged = function (ev) {
-                if (readInfo.ready && compute.computeInstance.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
-                    var oldValue = readInfo.value, newValue;
-                    readInfo = getValueAndBind(scopeRead, null, readInfo, scopeReadChanged);
-                    newValue = readInfo.value;
-                    compute.computeInstance.updater(newValue, oldValue, ev.batchNum);
-                    batchNum = batchNum = ev.batchNum;
-                }
-            }, singlePropertyReadChanged = function (ev, newVal, oldVal) {
-                if (typeof newVal !== 'function') {
-                    compute.computeInstance.updater(newVal, oldVal, ev.batchNum);
-                } else {
-                    unbindSinglePropertyRead(computeData, singlePropertyReadChanged);
-                    readInfo = getValueAndBindScopeRead(scopeRead, scopeReadChanged);
-                    isFastPathBound = false;
-                    compute.computeInstance.updater(readInfo.value, oldVal, ev.batchNum);
-                }
-            }, isFastPathBound = false, compute = can.compute(undefined, {
-                on: function () {
-                    readInfo = getValueAndBindScopeRead(scopeRead, scopeReadChanged);
-                    if (isFastPath(computeData)) {
-                        var oldReadInfo = readInfo;
-                        readInfo = getValueAndBindSinglePropertyRead(computeData, singlePropertyReadChanged);
-                        unbindScopeRead(oldReadInfo, scopeReadChanged);
-                        isFastPathBound = true;
-                    }
-                    compute.computeInstance.value = readInfo.value;
-                    compute.computeInstance.hasDependencies = !can.isEmptyObject(readInfo.observed);
-                },
-                off: function () {
-                    if (isFastPathBound) {
-                        unbindSinglePropertyRead(computeData, singlePropertyReadChanged);
-                    } else {
-                        unbindScopeRead(readInfo, scopeReadChanged);
-                    }
-                },
-                set: scopeRead,
-                get: scopeRead,
-                __selfUpdater: true
-            });
-        computeData.compute = compute;
-        return computeData;
-    };
-});
-/*can@2.2.9#view/scope/scope*/
-define('can/view/scope/scope', [
-    'can/util/util',
-    'can/view/scope/compute_data',
-    'can/construct/construct',
-    'can/map/map',
-    'can/list/list',
-    'can/view/view',
-    'can/compute/compute'
-], function (can, makeComputeData) {
-    var escapeReg = /(\\)?\./g, escapeDotReg = /\\\./g, getNames = function (attr) {
-            var names = [], last = 0;
-            attr.replace(escapeReg, function (first, second, index) {
-                if (!second) {
-                    names.push(attr.slice(last, index).replace(escapeDotReg, '.'));
-                    last = index + first.length;
-                }
-            });
-            names.push(attr.slice(last).replace(escapeDotReg, '.'));
-            return names;
-        };
-    var Scope = can.Construct.extend({ read: can.compute.read }, {
-            init: function (context, parent) {
-                this._context = context;
-                this._parent = parent;
-                this.__cache = {};
-            },
-            attr: can.__notObserve(function (key, value) {
-                var options = {
-                        isArgument: true,
-                        returnObserveMethods: true,
-                        proxyMethods: false
-                    }, res = this.read(key, options);
-                if (arguments.length === 2) {
-                    var lastIndex = key.lastIndexOf('.'), readKey = lastIndex !== -1 ? key.substring(0, lastIndex) : '.', obj = this.read(readKey, options).value;
-                    if (lastIndex !== -1) {
-                        key = key.substring(lastIndex + 1, key.length);
-                    }
-                    can.compute.set(obj, key, value, options);
-                }
-                return res.value;
-            }),
-            add: function (context) {
-                if (context !== this._context) {
-                    return new this.constructor(context, this);
-                } else {
-                    return this;
-                }
-            },
-            computeData: function (key, options) {
-                return makeComputeData(this, key, options);
-            },
-            compute: function (key, options) {
-                return this.computeData(key, options).compute;
-            },
-            read: function (attr, options) {
-                var stopLookup;
-                if (attr.substr(0, 2) === './') {
-                    stopLookup = true;
-                    attr = attr.substr(2);
-                } else if (attr.substr(0, 3) === '../') {
-                    return this._parent.read(attr.substr(3), options);
-                } else if (attr === '..') {
-                    return { value: this._parent._context };
-                } else if (attr === '.' || attr === 'this') {
-                    return { value: this._context };
-                }
-                var names = attr.indexOf('\\.') === -1 ? attr.split('.') : getNames(attr), context, scope = this, undefinedObserves = [], currentObserve, currentReads, setObserveDepth = -1, currentSetReads, currentSetObserve;
-                while (scope) {
-                    context = scope._context;
-                    if (context !== null && (typeof context === 'object' || typeof context === 'function')) {
-                        var data = can.compute.read(context, names, can.simpleExtend({
-                                foundObservable: function (observe, nameIndex) {
-                                    currentObserve = observe;
-                                    currentReads = names.slice(nameIndex);
-                                },
-                                earlyExit: function (parentValue, nameIndex) {
-                                    if (nameIndex > setObserveDepth) {
-                                        currentSetObserve = currentObserve;
-                                        currentSetReads = currentReads;
-                                        setObserveDepth = nameIndex;
-                                    }
-                                },
-                                executeAnonymousFunctions: true
-                            }, options));
-                        if (data.value !== undefined) {
-                            return {
-                                scope: scope,
-                                rootObserve: currentObserve,
-                                value: data.value,
-                                reads: currentReads
-                            };
-                        } else {
-                            undefinedObserves.push(can.__clearObserved());
-                        }
-                    }
-                    if (!stopLookup) {
-                        scope = scope._parent;
-                    } else {
-                        scope = null;
-                    }
-                }
-                var len = undefinedObserves.length;
-                if (len) {
-                    for (var i = 0; i < len; i++) {
-                        can.__addObserved(undefinedObserves[i]);
-                    }
-                }
-                return {
-                    setRoot: currentSetObserve,
-                    reads: currentSetReads,
-                    value: undefined
-                };
-            }
-        });
-    can.view.Scope = Scope;
-    return Scope;
-});
-/*can@2.2.9#view/scanner*/
+/*can@2.3.0#view/scanner*/
 define('can/view/scanner', [
     'can/view/view',
     'can/view/elements',
@@ -4123,694 +6492,7 @@ define('can/view/scanner', [
     can.view.Scanner = Scanner;
     return Scanner;
 });
-/*can@2.2.9#view/node_lists/node_lists*/
-define('can/view/node_lists/node_lists', [
-    'can/util/util',
-    'can/view/elements'
-], function (can) {
-    var canExpando = true;
-    try {
-        document.createTextNode('')._ = 0;
-    } catch (ex) {
-        canExpando = false;
-    }
-    var nodeMap = {}, textNodeMap = {}, expando = 'ejs_' + Math.random(), _id = 0, id = function (node, localMap) {
-            var _textNodeMap = localMap || textNodeMap;
-            var id = readId(node, _textNodeMap);
-            if (id) {
-                return id;
-            } else {
-                if (canExpando || node.nodeType !== 3) {
-                    ++_id;
-                    return node[expando] = (node.nodeName ? 'element_' : 'obj_') + _id;
-                } else {
-                    ++_id;
-                    _textNodeMap['text_' + _id] = node;
-                    return 'text_' + _id;
-                }
-            }
-        }, readId = function (node, textNodeMap) {
-            if (canExpando || node.nodeType !== 3) {
-                return node[expando];
-            } else {
-                for (var textNodeID in textNodeMap) {
-                    if (textNodeMap[textNodeID] === node) {
-                        return textNodeID;
-                    }
-                }
-            }
-        }, splice = [].splice, push = [].push, itemsInChildListTree = function (list) {
-            var count = 0;
-            for (var i = 0, len = list.length; i < len; i++) {
-                var item = list[i];
-                if (item.nodeType) {
-                    count++;
-                } else {
-                    count += itemsInChildListTree(item);
-                }
-            }
-            return count;
-        }, replacementMap = function (replacements, idMap) {
-            var map = {};
-            for (var i = 0, len = replacements.length; i < len; i++) {
-                var node = nodeLists.first(replacements[i]);
-                map[id(node, idMap)] = replacements[i];
-            }
-            return map;
-        };
-    var nodeLists = {
-            id: id,
-            update: function (nodeList, newNodes) {
-                var oldNodes = nodeLists.unregisterChildren(nodeList);
-                newNodes = can.makeArray(newNodes);
-                var oldListLength = nodeList.length;
-                splice.apply(nodeList, [
-                    0,
-                    oldListLength
-                ].concat(newNodes));
-                if (nodeList.replacements) {
-                    nodeLists.nestReplacements(nodeList);
-                } else {
-                    nodeLists.nestList(nodeList);
-                }
-                return oldNodes;
-            },
-            nestReplacements: function (list) {
-                var index = 0, idMap = {}, rMap = replacementMap(list.replacements, idMap), rCount = list.replacements.length;
-                while (index < list.length && rCount) {
-                    var node = list[index], replacement = rMap[readId(node, idMap)];
-                    if (replacement) {
-                        list.splice(index, itemsInChildListTree(replacement), replacement);
-                        rCount--;
-                    }
-                    index++;
-                }
-                list.replacements = [];
-            },
-            nestList: function (list) {
-                var index = 0;
-                while (index < list.length) {
-                    var node = list[index], childNodeList = nodeMap[id(node)];
-                    if (childNodeList) {
-                        if (childNodeList !== list) {
-                            list.splice(index, itemsInChildListTree(childNodeList), childNodeList);
-                        }
-                    } else {
-                        nodeMap[id(node)] = list;
-                    }
-                    index++;
-                }
-            },
-            last: function (nodeList) {
-                var last = nodeList[nodeList.length - 1];
-                if (last.nodeType) {
-                    return last;
-                } else {
-                    return nodeLists.last(last);
-                }
-            },
-            first: function (nodeList) {
-                var first = nodeList[0];
-                if (first.nodeType) {
-                    return first;
-                } else {
-                    return nodeLists.first(first);
-                }
-            },
-            flatten: function (nodeList) {
-                var items = [];
-                for (var i = 0; i < nodeList.length; i++) {
-                    var item = nodeList[i];
-                    if (item.nodeType) {
-                        items.push(item);
-                    } else {
-                        items.push.apply(items, nodeLists.flatten(item));
-                    }
-                }
-                return items;
-            },
-            register: function (nodeList, unregistered, parent) {
-                nodeList.unregistered = unregistered;
-                nodeList.parentList = parent;
-                if (parent === true) {
-                    nodeList.replacements = [];
-                } else if (parent) {
-                    parent.replacements.push(nodeList);
-                    nodeList.replacements = [];
-                } else {
-                    nodeLists.nestList(nodeList);
-                }
-                return nodeList;
-            },
-            unregisterChildren: function (nodeList) {
-                var nodes = [];
-                can.each(nodeList, function (node) {
-                    if (node.nodeType) {
-                        if (!nodeList.replacements) {
-                            delete nodeMap[id(node)];
-                        }
-                        nodes.push(node);
-                    } else {
-                        push.apply(nodes, nodeLists.unregister(node));
-                    }
-                });
-                return nodes;
-            },
-            unregister: function (nodeList) {
-                var nodes = nodeLists.unregisterChildren(nodeList);
-                if (nodeList.unregistered) {
-                    var unregisteredCallback = nodeList.unregistered;
-                    delete nodeList.unregistered;
-                    delete nodeList.replacements;
-                    unregisteredCallback();
-                }
-                return nodes;
-            },
-            nodeMap: nodeMap
-        };
-    can.view.nodeLists = nodeLists;
-    return nodeLists;
-});
-/*can@2.2.9#view/parser/parser*/
-define('can/view/parser/parser', ['can/view/view'], function (can) {
-    function makeMap(str) {
-        var obj = {}, items = str.split(',');
-        for (var i = 0; i < items.length; i++) {
-            obj[items[i]] = true;
-        }
-        return obj;
-    }
-    function handleIntermediate(intermediate, handler) {
-        for (var i = 0, len = intermediate.length; i < len; i++) {
-            var item = intermediate[i];
-            handler[item.tokenType].apply(handler, item.args);
-        }
-        return intermediate;
-    }
-    var alphaNumericHU = '-:A-Za-z0-9_', attributeNames = '[a-zA-Z_:][' + alphaNumericHU + ':.]*', spaceEQspace = '\\s*=\\s*', dblQuote2dblQuote = '"((?:\\\\.|[^"])*)"', quote2quote = '\'((?:\\\\.|[^\'])*)\'', attributeEqAndValue = '(?:' + spaceEQspace + '(?:' + '(?:"[^"]*")|(?:\'[^\']*\')|[^>\\s]+))?', matchStash = '\\{\\{[^\\}]*\\}\\}\\}?', stash = '\\{\\{([^\\}]*)\\}\\}\\}?', startTag = new RegExp('^<([' + alphaNumericHU + ']+)' + '(' + '(?:\\s*' + '(?:(?:' + '(?:' + attributeNames + ')?' + attributeEqAndValue + ')|' + '(?:' + matchStash + ')+)' + ')*' + ')\\s*(\\/?)>'), endTag = new RegExp('^<\\/([' + alphaNumericHU + ']+)[^>]*>'), attr = new RegExp('(?:' + '(?:(' + attributeNames + ')|' + stash + ')' + '(?:' + spaceEQspace + '(?:' + '(?:' + dblQuote2dblQuote + ')|(?:' + quote2quote + ')|([^>\\s]+)' + ')' + ')?)', 'g'), mustache = new RegExp(stash, 'g'), txtBreak = /<|\{\{/;
-    var empty = makeMap('area,base,basefont,br,col,frame,hr,img,input,isindex,link,meta,param,embed');
-    var block = makeMap('a,address,article,applet,aside,audio,blockquote,button,canvas,center,dd,del,dir,div,dl,dt,fieldset,figcaption,figure,footer,form,frameset,h1,h2,h3,h4,h5,h6,header,hgroup,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,output,p,pre,section,script,table,tbody,td,tfoot,th,thead,tr,ul,video');
-    var inline = makeMap('abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var');
-    var closeSelf = makeMap('colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr');
-    var fillAttrs = makeMap('checked,compact,declare,defer,disabled,ismap,multiple,nohref,noresize,noshade,nowrap,readonly,selected');
-    var special = makeMap('script,style');
-    var tokenTypes = 'start,end,close,attrStart,attrEnd,attrValue,chars,comment,special,done'.split(',');
-    var fn = function () {
-    };
-    var HTMLParser = function (html, handler, returnIntermediate) {
-        if (typeof html === 'object') {
-            return handleIntermediate(html, handler);
-        }
-        var intermediate = [];
-        handler = handler || {};
-        if (returnIntermediate) {
-            can.each(tokenTypes, function (name) {
-                var callback = handler[name] || fn;
-                handler[name] = function () {
-                    if (callback.apply(this, arguments) !== false) {
-                        intermediate.push({
-                            tokenType: name,
-                            args: can.makeArray(arguments)
-                        });
-                    }
-                };
-            });
-        }
-        function parseStartTag(tag, tagName, rest, unary) {
-            tagName = tagName.toLowerCase();
-            if (block[tagName]) {
-                while (stack.last() && inline[stack.last()]) {
-                    parseEndTag('', stack.last());
-                }
-            }
-            if (closeSelf[tagName] && stack.last() === tagName) {
-                parseEndTag('', tagName);
-            }
-            unary = empty[tagName] || !!unary;
-            handler.start(tagName, unary);
-            if (!unary) {
-                stack.push(tagName);
-            }
-            HTMLParser.parseAttrs(rest, handler);
-            handler.end(tagName, unary);
-        }
-        function parseEndTag(tag, tagName) {
-            var pos;
-            if (!tagName) {
-                pos = 0;
-            } else {
-                for (pos = stack.length - 1; pos >= 0; pos--) {
-                    if (stack[pos] === tagName) {
-                        break;
-                    }
-                }
-            }
-            if (pos >= 0) {
-                for (var i = stack.length - 1; i >= pos; i--) {
-                    if (handler.close) {
-                        handler.close(stack[i]);
-                    }
-                }
-                stack.length = pos;
-            }
-        }
-        function parseMustache(mustache, inside) {
-            if (handler.special) {
-                handler.special(inside);
-            }
-        }
-        var index, chars, match, stack = [], last = html;
-        stack.last = function () {
-            return this[this.length - 1];
-        };
-        while (html) {
-            chars = true;
-            if (!stack.last() || !special[stack.last()]) {
-                if (html.indexOf('<!--') === 0) {
-                    index = html.indexOf('-->');
-                    if (index >= 0) {
-                        if (handler.comment) {
-                            handler.comment(html.substring(4, index));
-                        }
-                        html = html.substring(index + 3);
-                        chars = false;
-                    }
-                } else if (html.indexOf('</') === 0) {
-                    match = html.match(endTag);
-                    if (match) {
-                        html = html.substring(match[0].length);
-                        match[0].replace(endTag, parseEndTag);
-                        chars = false;
-                    }
-                } else if (html.indexOf('<') === 0) {
-                    match = html.match(startTag);
-                    if (match) {
-                        html = html.substring(match[0].length);
-                        match[0].replace(startTag, parseStartTag);
-                        chars = false;
-                    }
-                } else if (html.indexOf('{{') === 0) {
-                    match = html.match(mustache);
-                    if (match) {
-                        html = html.substring(match[0].length);
-                        match[0].replace(mustache, parseMustache);
-                    }
-                }
-                if (chars) {
-                    index = html.search(txtBreak);
-                    var text = index < 0 ? html : html.substring(0, index);
-                    html = index < 0 ? '' : html.substring(index);
-                    if (handler.chars && text) {
-                        handler.chars(text);
-                    }
-                }
-            } else {
-                html = html.replace(new RegExp('([\\s\\S]*?)</' + stack.last() + '[^>]*>'), function (all, text) {
-                    text = text.replace(/<!--([\s\S]*?)-->|<!\[CDATA\[([\s\S]*?)]]>/g, '$1$2');
-                    if (handler.chars) {
-                        handler.chars(text);
-                    }
-                    return '';
-                });
-                parseEndTag('', stack.last());
-            }
-            if (html === last) {
-                throw new Error('Parse Error: ' + html);
-            }
-            last = html;
-        }
-        parseEndTag();
-        handler.done();
-        return intermediate;
-    };
-    HTMLParser.parseAttrs = function (rest, handler) {
-        (rest != null ? rest : '').replace(attr, function (text, name, special, dblQuote, singleQuote, val) {
-            if (special) {
-                handler.special(special);
-            }
-            if (name || dblQuote || singleQuote || val) {
-                var value = arguments[3] ? arguments[3] : arguments[4] ? arguments[4] : arguments[5] ? arguments[5] : fillAttrs[name.toLowerCase()] ? name : '';
-                handler.attrStart(name || '');
-                var last = mustache.lastIndex = 0, res = mustache.exec(value), chars;
-                while (res) {
-                    chars = value.substring(last, mustache.lastIndex - res[0].length);
-                    if (chars.length) {
-                        handler.attrValue(chars);
-                    }
-                    handler.special(res[1]);
-                    last = mustache.lastIndex;
-                    res = mustache.exec(value);
-                }
-                chars = value.substr(last, value.length);
-                if (chars) {
-                    handler.attrValue(chars);
-                }
-                handler.attrEnd(name || '');
-            }
-        });
-    };
-    can.view.parser = HTMLParser;
-    return HTMLParser;
-});
-/*can@2.2.9#view/live/live*/
-define('can/view/live/live', [
-    'can/util/util',
-    'can/view/elements',
-    'can/view/view',
-    'can/view/node_lists/node_lists',
-    'can/view/parser/parser'
-], function (can, elements, view, nodeLists, parser) {
-    elements = elements || can.view.elements;
-    nodeLists = nodeLists || can.view.NodeLists;
-    parser = parser || can.view.parser;
-    var setup = function (el, bind, unbind) {
-            var tornDown = false, teardown = function () {
-                    if (!tornDown) {
-                        tornDown = true;
-                        unbind(data);
-                        can.unbind.call(el, 'removed', teardown);
-                    }
-                    return true;
-                }, data = {
-                    teardownCheck: function (parent) {
-                        return parent ? false : teardown();
-                    }
-                };
-            can.bind.call(el, 'removed', teardown);
-            bind(data);
-            return data;
-        }, listen = function (el, compute, change) {
-            return setup(el, function () {
-                compute.bind('change', change);
-            }, function (data) {
-                compute.unbind('change', change);
-                if (data.nodeList) {
-                    nodeLists.unregister(data.nodeList);
-                }
-            });
-        }, getAttributeParts = function (newVal) {
-            var attrs = {}, attr;
-            parser.parseAttrs(newVal, {
-                attrStart: function (name) {
-                    attrs[name] = '';
-                    attr = name;
-                },
-                attrValue: function (value) {
-                    attrs[attr] += value;
-                },
-                attrEnd: function () {
-                }
-            });
-            return attrs;
-        }, splice = [].splice, isNode = function (obj) {
-            return obj && obj.nodeType;
-        }, addTextNodeIfNoChildren = function (frag) {
-            if (!frag.childNodes.length) {
-                frag.appendChild(document.createTextNode(''));
-            }
-        };
-    var live = {
-            list: function (el, compute, render, context, parentNode, nodeList) {
-                var masterNodeList = nodeList || [el], indexMap = [], afterPreviousEvents = false, isTornDown = false, add = function (ev, items, index) {
-                        if (!afterPreviousEvents) {
-                            return;
-                        }
-                        var frag = document.createDocumentFragment(), newNodeLists = [], newIndicies = [];
-                        can.each(items, function (item, key) {
-                            var itemNodeList = [];
-                            if (nodeList) {
-                                nodeLists.register(itemNodeList, null, true);
-                            }
-                            var itemIndex = can.compute(key + index), itemHTML = render.call(context, item, itemIndex, itemNodeList), gotText = typeof itemHTML === 'string', itemFrag = can.frag(itemHTML);
-                            itemFrag = gotText ? can.view.hookup(itemFrag) : itemFrag;
-                            var childNodes = can.makeArray(itemFrag.childNodes);
-                            if (nodeList) {
-                                nodeLists.update(itemNodeList, childNodes);
-                                newNodeLists.push(itemNodeList);
-                            } else {
-                                newNodeLists.push(nodeLists.register(childNodes));
-                            }
-                            frag.appendChild(itemFrag);
-                            newIndicies.push(itemIndex);
-                        });
-                        var masterListIndex = index + 1;
-                        if (!masterNodeList[masterListIndex]) {
-                            elements.after(masterListIndex === 1 ? [text] : [nodeLists.last(masterNodeList[masterListIndex - 1])], frag);
-                        } else {
-                            var el = nodeLists.first(masterNodeList[masterListIndex]);
-                            can.insertBefore(el.parentNode, frag, el);
-                        }
-                        splice.apply(masterNodeList, [
-                            masterListIndex,
-                            0
-                        ].concat(newNodeLists));
-                        splice.apply(indexMap, [
-                            index,
-                            0
-                        ].concat(newIndicies));
-                        for (var i = index + newIndicies.length, len = indexMap.length; i < len; i++) {
-                            indexMap[i](i);
-                        }
-                    }, remove = function (ev, items, index, duringTeardown, fullTeardown) {
-                        if (!afterPreviousEvents) {
-                            return;
-                        }
-                        if (!duringTeardown && data.teardownCheck(text.parentNode)) {
-                            return;
-                        }
-                        if (index < 0) {
-                            index = indexMap.length + index;
-                        }
-                        var removedMappings = masterNodeList.splice(index + 1, items.length), itemsToRemove = [];
-                        can.each(removedMappings, function (nodeList) {
-                            var nodesToRemove = nodeLists.unregister(nodeList);
-                            [].push.apply(itemsToRemove, nodesToRemove);
-                        });
-                        indexMap.splice(index, items.length);
-                        for (var i = index, len = indexMap.length; i < len; i++) {
-                            indexMap[i](i);
-                        }
-                        if (!fullTeardown) {
-                            can.remove(can.$(itemsToRemove));
-                        } else {
-                            nodeLists.unregister(masterNodeList);
-                        }
-                    }, move = function (ev, item, newIndex, currentIndex) {
-                        if (!afterPreviousEvents) {
-                            return;
-                        }
-                        newIndex = newIndex + 1;
-                        currentIndex = currentIndex + 1;
-                        var referenceNodeList = masterNodeList[newIndex];
-                        var movedElements = can.frag(nodeLists.flatten(masterNodeList[currentIndex]));
-                        var referenceElement;
-                        if (currentIndex < newIndex) {
-                            referenceElement = nodeLists.last(referenceNodeList).nextSibling;
-                        } else {
-                            referenceElement = nodeLists.first(referenceNodeList);
-                        }
-                        var parentNode = masterNodeList[0].parentNode;
-                        parentNode.insertBefore(movedElements, referenceElement);
-                        var temp = masterNodeList[currentIndex];
-                        [].splice.apply(masterNodeList, [
-                            currentIndex,
-                            1
-                        ]);
-                        [].splice.apply(masterNodeList, [
-                            newIndex,
-                            0,
-                            temp
-                        ]);
-                    }, text = document.createTextNode(''), list, teardownList = function (fullTeardown) {
-                        if (list && list.unbind) {
-                            list.unbind('add', add).unbind('remove', remove).unbind('move', move);
-                        }
-                        remove({}, { length: masterNodeList.length - 1 }, 0, true, fullTeardown);
-                    }, updateList = function (ev, newList, oldList) {
-                        if (isTornDown) {
-                            return;
-                        }
-                        teardownList();
-                        list = newList || [];
-                        if (list.bind) {
-                            list.bind('add', add).bind('remove', remove).bind('move', move);
-                        }
-                        afterPreviousEvents = true;
-                        add({}, list, 0);
-                        afterPreviousEvents = false;
-                        can.batch.afterPreviousEvents(function () {
-                            afterPreviousEvents = true;
-                        });
-                    };
-                parentNode = elements.getParentNode(el, parentNode);
-                var data = setup(parentNode, function () {
-                        if (can.isFunction(compute)) {
-                            compute.bind('change', updateList);
-                        }
-                    }, function () {
-                        if (can.isFunction(compute)) {
-                            compute.unbind('change', updateList);
-                        }
-                        teardownList(true);
-                    });
-                if (!nodeList) {
-                    live.replace(masterNodeList, text, data.teardownCheck);
-                } else {
-                    elements.replace(masterNodeList, text);
-                    nodeLists.update(masterNodeList, [text]);
-                    nodeList.unregistered = function () {
-                        data.teardownCheck();
-                        isTornDown = true;
-                    };
-                }
-                updateList({}, can.isFunction(compute) ? compute() : compute);
-            },
-            html: function (el, compute, parentNode, nodeList) {
-                var data;
-                parentNode = elements.getParentNode(el, parentNode);
-                data = listen(parentNode, compute, function (ev, newVal, oldVal) {
-                    var attached = nodeLists.first(nodes).parentNode;
-                    if (attached) {
-                        makeAndPut(newVal);
-                    }
-                    data.teardownCheck(nodeLists.first(nodes).parentNode);
-                });
-                var nodes = nodeList || [el], makeAndPut = function (val) {
-                        var isFunction = typeof val === 'function', aNode = isNode(val), frag = can.frag(isFunction ? '' : val), oldNodes = can.makeArray(nodes);
-                        addTextNodeIfNoChildren(frag);
-                        if (!aNode && !isFunction) {
-                            frag = can.view.hookup(frag, parentNode);
-                        }
-                        oldNodes = nodeLists.update(nodes, frag.childNodes);
-                        if (isFunction) {
-                            val(frag.childNodes[0]);
-                        }
-                        elements.replace(oldNodes, frag);
-                    };
-                data.nodeList = nodes;
-                if (!nodeList) {
-                    nodeLists.register(nodes, data.teardownCheck);
-                } else {
-                    nodeList.unregistered = data.teardownCheck;
-                }
-                makeAndPut(compute());
-            },
-            replace: function (nodes, val, teardown) {
-                var oldNodes = nodes.slice(0), frag = can.frag(val);
-                nodeLists.register(nodes, teardown);
-                if (typeof val === 'string') {
-                    frag = can.view.hookup(frag, nodes[0].parentNode);
-                }
-                nodeLists.update(nodes, frag.childNodes);
-                elements.replace(oldNodes, frag);
-                return nodes;
-            },
-            text: function (el, compute, parentNode, nodeList) {
-                var parent = elements.getParentNode(el, parentNode);
-                var data = listen(parent, compute, function (ev, newVal, oldVal) {
-                        if (typeof node.nodeValue !== 'unknown') {
-                            node.nodeValue = can.view.toStr(newVal);
-                        }
-                        data.teardownCheck(node.parentNode);
-                    });
-                var node = document.createTextNode(can.view.toStr(compute()));
-                if (nodeList) {
-                    nodeList.unregistered = data.teardownCheck;
-                    data.nodeList = nodeList;
-                    nodeLists.update(nodeList, [node]);
-                    elements.replace([el], node);
-                } else {
-                    data.nodeList = live.replace([el], node, data.teardownCheck);
-                }
-            },
-            setAttributes: function (el, newVal) {
-                var attrs = getAttributeParts(newVal);
-                for (var name in attrs) {
-                    can.attr.set(el, name, attrs[name]);
-                }
-            },
-            attributes: function (el, compute, currentValue) {
-                var oldAttrs = {};
-                var setAttrs = function (newVal) {
-                    var newAttrs = getAttributeParts(newVal), name;
-                    for (name in newAttrs) {
-                        var newValue = newAttrs[name], oldValue = oldAttrs[name];
-                        if (newValue !== oldValue) {
-                            can.attr.set(el, name, newValue);
-                        }
-                        delete oldAttrs[name];
-                    }
-                    for (name in oldAttrs) {
-                        elements.removeAttr(el, name);
-                    }
-                    oldAttrs = newAttrs;
-                };
-                listen(el, compute, function (ev, newVal) {
-                    setAttrs(newVal);
-                });
-                if (arguments.length >= 3) {
-                    oldAttrs = getAttributeParts(currentValue);
-                } else {
-                    setAttrs(compute());
-                }
-            },
-            attributePlaceholder: '__!!__',
-            attributeReplace: /__!!__/g,
-            attribute: function (el, attributeName, compute) {
-                listen(el, compute, function (ev, newVal) {
-                    elements.setAttr(el, attributeName, hook.render());
-                });
-                var wrapped = can.$(el), hooks;
-                hooks = can.data(wrapped, 'hooks');
-                if (!hooks) {
-                    can.data(wrapped, 'hooks', hooks = {});
-                }
-                var attr = String(elements.getAttr(el, attributeName)), parts = attr.split(live.attributePlaceholder), goodParts = [], hook;
-                goodParts.push(parts.shift(), parts.join(live.attributePlaceholder));
-                if (hooks[attributeName]) {
-                    hooks[attributeName].computes.push(compute);
-                } else {
-                    hooks[attributeName] = {
-                        render: function () {
-                            var i = 0, newAttr = attr ? attr.replace(live.attributeReplace, function () {
-                                    return elements.contentText(hook.computes[i++]());
-                                }) : elements.contentText(hook.computes[i++]());
-                            return newAttr;
-                        },
-                        computes: [compute],
-                        batchNum: undefined
-                    };
-                }
-                hook = hooks[attributeName];
-                goodParts.splice(1, 0, compute());
-                elements.setAttr(el, attributeName, goodParts.join(''));
-            },
-            specialAttribute: function (el, attributeName, compute) {
-                listen(el, compute, function (ev, newVal) {
-                    elements.setAttr(el, attributeName, getValue(newVal));
-                });
-                elements.setAttr(el, attributeName, getValue(compute()));
-            },
-            simpleAttribute: function (el, attributeName, compute) {
-                listen(el, compute, function (ev, newVal) {
-                    elements.setAttr(el, attributeName, newVal);
-                });
-                elements.setAttr(el, attributeName, compute());
-            }
-        };
-    live.attr = live.simpleAttribute;
-    live.attrs = live.attributes;
-    live.getAttributeParts = getAttributeParts;
-    var newLine = /(\r|\n)+/g;
-    var getValue = function (val) {
-        var regexp = /^["'].*["']$/;
-        val = val.replace(elements.attrReg, '').replace(newLine, '');
-        return regexp.test(val) ? val.substr(1, val.length - 2) : val;
-    };
-    can.view.live = live;
-    return live;
-});
-/*can@2.2.9#view/render*/
+/*can@2.3.0#view/render*/
 define('can/view/render', [
     'can/view/view',
     'can/view/elements',
@@ -4935,756 +6617,7 @@ define('can/view/render', [
     });
     return can;
 });
-/*can@2.2.9#view/stache/utils*/
-define('can/view/stache/utils', ['can/util/util'], function () {
-    return {
-        isArrayLike: function (obj) {
-            return obj && obj.splice && typeof obj.length === 'number';
-        },
-        isObserveLike: function (obj) {
-            return obj instanceof can.Map || obj && !!obj._get;
-        },
-        emptyHandler: function () {
-        },
-        jsonParse: function (str) {
-            if (str[0] === '\'') {
-                return str.substr(1, str.length - 2);
-            } else if (str === 'undefined') {
-                return undefined;
-            } else if (can.global.JSON) {
-                return JSON.parse(str);
-            } else {
-                return eval('(' + str + ')');
-            }
-        },
-        mixins: {
-            last: function () {
-                return this.stack[this.stack.length - 1];
-            },
-            add: function (chars) {
-                this.last().add(chars);
-            },
-            subSectionDepth: function () {
-                return this.stack.length - 1;
-            }
-        }
-    };
-});
-/*can@2.2.9#view/stache/mustache_helpers*/
-define('can/view/stache/mustache_helpers', [
-    'can/util/util',
-    'can/view/stache/utils',
-    'can/view/live/live'
-], function (can, utils, live) {
-    live = live || can.view.live;
-    var resolve = function (value) {
-        if (utils.isObserveLike(value) && utils.isArrayLike(value) && value.attr('length')) {
-            return value;
-        } else if (can.isFunction(value)) {
-            return value();
-        } else {
-            return value;
-        }
-    };
-    var helpers = {
-            'each': function (items, options) {
-                var resolved = resolve(items), result = [], keys, key, i;
-                if (resolved instanceof can.List) {
-                    return function (el) {
-                        var nodeList = [el];
-                        nodeList.expression = 'live.list';
-                        can.view.nodeLists.register(nodeList, null, options.nodeList);
-                        can.view.nodeLists.update(options.nodeList, [el]);
-                        var cb = function (item, index, parentNodeList) {
-                            return options.fn(options.scope.add({ '@index': index }).add(item), options.options, parentNodeList);
-                        };
-                        live.list(el, items, cb, options.context, el.parentNode, nodeList);
-                    };
-                }
-                var expr = resolved;
-                if (!!expr && utils.isArrayLike(expr)) {
-                    for (i = 0; i < expr.length; i++) {
-                        result.push(options.fn(options.scope.add({ '@index': i }).add(expr[i])));
-                    }
-                } else if (utils.isObserveLike(expr)) {
-                    keys = can.Map.keys(expr);
-                    for (i = 0; i < keys.length; i++) {
-                        key = keys[i];
-                        result.push(options.fn(options.scope.add({ '@key': key }).add(expr[key])));
-                    }
-                } else if (expr instanceof Object) {
-                    for (key in expr) {
-                        result.push(options.fn(options.scope.add({ '@key': key }).add(expr[key])));
-                    }
-                }
-                return result;
-            },
-            '@index': function (offset, options) {
-                if (!options) {
-                    options = offset;
-                    offset = 0;
-                }
-                var index = options.scope.attr('@index');
-                return '' + ((can.isFunction(index) ? index() : index) + offset);
-            },
-            'if': function (expr, options) {
-                var value;
-                if (can.isFunction(expr)) {
-                    value = can.compute.truthy(expr)();
-                } else {
-                    value = !!resolve(expr);
-                }
-                if (value) {
-                    return options.fn(options.scope || this);
-                } else {
-                    return options.inverse(options.scope || this);
-                }
-            },
-            'is': function () {
-                var lastValue, curValue, options = arguments[arguments.length - 1];
-                if (arguments.length - 2 <= 0) {
-                    return options.inverse();
-                }
-                for (var i = 0; i < arguments.length - 1; i++) {
-                    curValue = resolve(arguments[i]);
-                    curValue = can.isFunction(curValue) ? curValue() : curValue;
-                    if (i > 0) {
-                        if (curValue !== lastValue) {
-                            return options.inverse();
-                        }
-                    }
-                    lastValue = curValue;
-                }
-                return options.fn();
-            },
-            'eq': function () {
-                return helpers.is.apply(this, arguments);
-            },
-            'unless': function (expr, options) {
-                return helpers['if'].apply(this, [
-                    can.isFunction(expr) ? can.compute(function () {
-                        return !expr();
-                    }) : !expr,
-                    options
-                ]);
-            },
-            'with': function (expr, options) {
-                var ctx = expr;
-                expr = resolve(expr);
-                if (!!expr) {
-                    return options.fn(ctx);
-                }
-            },
-            'log': function (expr, options) {
-                if (typeof console !== 'undefined' && console.log) {
-                    if (!options) {
-                        console.log(expr.context);
-                    } else {
-                        console.log(expr, options.context);
-                    }
-                }
-            },
-            'data': function (attr) {
-                var data = arguments.length === 2 ? this : arguments[1];
-                return function (el) {
-                    can.data(can.$(el), attr, data || this.context);
-                };
-            }
-        };
-    return {
-        registerHelper: function (name, callback) {
-            helpers[name] = callback;
-        },
-        getHelper: function (name, options) {
-            var helper = options.attr('helpers.' + name);
-            if (!helper) {
-                helper = helpers[name];
-            }
-            if (helper) {
-                return { fn: helper };
-            }
-        }
-    };
-});
-/*can@2.2.9#view/stache/mustache_core*/
-define('can/view/stache/mustache_core', [
-    'can/util/util',
-    'can/view/stache/utils',
-    'can/view/stache/mustache_helpers',
-    'can/view/live/live',
-    'can/view/elements',
-    'can/view/scope/scope',
-    'can/view/node_lists/node_lists'
-], function (can, utils, mustacheHelpers, live, elements, Scope, nodeLists) {
-    live = live || can.view.live;
-    elements = elements || can.view.elements;
-    Scope = Scope || can.view.Scope;
-    nodeLists = nodeLists || can.view.nodeLists;
-    var argumentsRegExp = /((([^'"\s]+?=)?('.*?'|".*?"))|.*?)\s/g, literalNumberStringBooleanRegExp = /^(?:(?:('.*?'|".*?")|([0-9]+\.?[0-9]*|true|false|null|undefined))|(?:(.+?)=(?:(?:('.*?'|".*?")|([0-9]+\.?[0-9]*|true|false|null|undefined))|(.+))))$/, mustacheLineBreakRegExp = /(?:(?:^|(\r?)\n)(\s*)(\{\{([^\}]*)\}\}\}?)([^\S\n\r]*)($|\r?\n))|(\{\{([^\}]*)\}\}\}?)/g, isLookup = function (obj) {
-            return obj && typeof obj.get === 'string';
-        }, getItemsFragContent = function (items, isObserveList, helperOptions, options) {
-            var frag = document.createDocumentFragment();
-            for (var i = 0, len = items.length; i < len; i++) {
-                append(frag, helperOptions.fn(isObserveList ? items.attr('' + i) : items[i], options));
-            }
-            return frag;
-        }, append = function (frag, content) {
-            if (content) {
-                frag.appendChild(typeof content === 'string' ? document.createTextNode(content) : content);
-            }
-        }, getItemsStringContent = function (items, isObserveList, helperOptions, options) {
-            var txt = '';
-            for (var i = 0, len = items.length; i < len; i++) {
-                txt += helperOptions.fn(isObserveList ? items.attr('' + i) : items[i], options);
-            }
-            return txt;
-        }, getKeyComputeData = function (key, scope, isArgument) {
-            var data = scope.computeData(key, {
-                    isArgument: isArgument,
-                    args: [
-                        scope.attr('.'),
-                        scope
-                    ]
-                });
-            can.compute.temporarilyBind(data.compute);
-            return data;
-        }, getKeyArgValue = function (key, scope) {
-            var data = getKeyComputeData(key, scope, true);
-            if (!data.compute.computeInstance.hasDependencies) {
-                return data.initialValue;
-            } else {
-                return data.compute;
-            }
-        }, convertToScopes = function (helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer) {
-            if (truthyRenderer) {
-                helperOptions.fn = makeRendererConvertScopes(truthyRenderer, scope, options, nodeList);
-            }
-            if (falseyRenderer) {
-                helperOptions.inverse = makeRendererConvertScopes(falseyRenderer, scope, options, nodeList);
-            }
-        }, makeRendererConvertScopes = function (renderer, parentScope, parentOptions, nodeList) {
-            var rendererWithScope = function (ctx, opts, parentNodeList) {
-                return renderer(ctx || parentScope, opts, parentNodeList);
-            };
-            return can.__notObserve(function (newScope, newOptions, parentNodeList) {
-                if (newScope !== undefined && !(newScope instanceof can.view.Scope)) {
-                    newScope = parentScope.add(newScope);
-                }
-                if (newOptions !== undefined && !(newOptions instanceof core.Options)) {
-                    newOptions = parentOptions.add(newOptions);
-                }
-                var result = rendererWithScope(newScope, newOptions || parentOptions, parentNodeList || nodeList);
-                return result;
-            });
-        };
-    var core = {
-            expressionData: function (expression) {
-                var args = [], hashes = {}, i = 0;
-                (can.trim(expression) + ' ').replace(argumentsRegExp, function (whole, arg) {
-                    var m;
-                    if (i && (m = arg.match(literalNumberStringBooleanRegExp))) {
-                        if (m[1] || m[2]) {
-                            args.push(utils.jsonParse(m[1] || m[2]));
-                        } else {
-                            hashes[m[3]] = m[6] ? { get: m[6] } : utils.jsonParse(m[4] || m[5]);
-                        }
-                    } else {
-                        args.push({ get: arg });
-                    }
-                    i++;
-                });
-                return {
-                    name: args.shift(),
-                    args: args,
-                    hash: hashes
-                };
-            },
-            makeEvaluator: function (scope, options, nodeList, mode, exprData, truthyRenderer, falseyRenderer, stringOnly) {
-                var args = [], hash = {}, helperOptions = {
-                        fn: function () {
-                        },
-                        inverse: function () {
-                        }
-                    }, context = scope.attr('.'), name = exprData.name, helper, looksLikeAHelper = exprData.args.length || !can.isEmptyObject(exprData.hash), initialValue, helperEvaluator;
-                for (var i = 0, len = exprData.args.length; i < len; i++) {
-                    var arg = exprData.args[i];
-                    if (arg && isLookup(arg)) {
-                        args.push(getKeyArgValue(arg.get, scope, true));
-                    } else {
-                        args.push(arg);
-                    }
-                }
-                for (var prop in exprData.hash) {
-                    if (isLookup(exprData.hash[prop])) {
-                        hash[prop] = getKeyArgValue(exprData.hash[prop].get, scope);
-                    } else {
-                        hash[prop] = exprData.hash[prop];
-                    }
-                }
-                if (isLookup(name)) {
-                    if (looksLikeAHelper) {
-                        helper = mustacheHelpers.getHelper(name.get, options);
-                        if (!helper && typeof context[name.get] === 'function') {
-                            helper = { fn: context[name.get] };
-                        }
-                    }
-                    if (!helper) {
-                        var get = name.get;
-                        var computeData = getKeyComputeData(name.get, scope, false), compute = computeData.compute;
-                        initialValue = computeData.initialValue;
-                        if (computeData.compute.computeInstance.hasDependencies) {
-                            name = compute;
-                        } else {
-                            name = initialValue;
-                        }
-                        if (!looksLikeAHelper && initialValue === undefined) {
-                            helper = mustacheHelpers.getHelper(get, options);
-                        } else if (typeof initialValue === 'function') {
-                            helper = { fn: initialValue };
-                        }
-                    }
-                }
-                if (mode === '^') {
-                    var temp = truthyRenderer;
-                    truthyRenderer = falseyRenderer;
-                    falseyRenderer = temp;
-                }
-                if (helper) {
-                    convertToScopes(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer);
-                    can.simpleExtend(helperOptions, {
-                        context: context,
-                        scope: scope,
-                        contexts: scope,
-                        hash: hash,
-                        nodeList: nodeList,
-                        exprData: exprData
-                    });
-                    args.push(helperOptions);
-                    helperEvaluator = function () {
-                        return helper.fn.apply(context, args) || '';
-                    };
-                    helperEvaluator.bindOnce = false;
-                    return helperEvaluator;
-                }
-                if (!mode) {
-                    if (name && name.isComputed) {
-                        return name;
-                    } else {
-                        return function () {
-                            return '' + (name != null ? name : '');
-                        };
-                    }
-                } else if (mode === '#' || mode === '^') {
-                    convertToScopes(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer);
-                    var evaluator = function () {
-                        var value;
-                        if (can.isFunction(name) && name.isComputed) {
-                            value = name();
-                        } else {
-                            value = name;
-                        }
-                        if (utils.isArrayLike(value)) {
-                            var isObserveList = utils.isObserveLike(value);
-                            if (isObserveList ? value.attr('length') : value.length) {
-                                return (stringOnly ? getItemsStringContent : getItemsFragContent)(value, isObserveList, helperOptions, options);
-                            } else {
-                                return helperOptions.inverse(scope, options);
-                            }
-                        } else {
-                            return value ? helperOptions.fn(value || scope, options) : helperOptions.inverse(scope, options);
-                        }
-                    };
-                    evaluator.bindOnce = false;
-                    return evaluator;
-                } else {
-                }
-            },
-            makeLiveBindingPartialRenderer: function (partialName, state) {
-                partialName = can.trim(partialName);
-                return function (scope, options, parentSectionNodeList) {
-                    var nodeList = [this];
-                    nodeList.expression = '>' + partialName;
-                    nodeLists.register(nodeList, null, state.directlyNested ? parentSectionNodeList || true : true);
-                    var partialFrag = can.compute(function () {
-                            var localPartialName = partialName;
-                            var partial = options.attr('partials.' + localPartialName), res;
-                            if (partial) {
-                                res = partial.render ? partial.render(scope, options) : partial(scope, options);
-                            } else {
-                                var scopePartialName = scope.read(localPartialName, {
-                                        isArgument: true,
-                                        returnObserveMethods: true,
-                                        proxyMethods: false
-                                    }).value;
-                                if (scopePartialName) {
-                                    localPartialName = scopePartialName;
-                                }
-                                res = can.view.render(localPartialName, scope, options);
-                            }
-                            return can.frag(res);
-                        });
-                    live.html(this, partialFrag, this.parentNode, nodeList);
-                };
-            },
-            makeStringBranchRenderer: function (mode, expression) {
-                var exprData = expressionData(expression), fullExpression = mode + expression;
-                return function branchRenderer(scope, options, truthyRenderer, falseyRenderer) {
-                    var evaluator = scope.__cache[fullExpression];
-                    if (mode || !evaluator) {
-                        evaluator = makeEvaluator(scope, options, null, mode, exprData, truthyRenderer, falseyRenderer, true);
-                        if (!mode) {
-                            scope.__cache[fullExpression] = evaluator;
-                        }
-                    }
-                    var res = evaluator();
-                    return res == null ? '' : '' + res;
-                };
-            },
-            makeLiveBindingBranchRenderer: function (mode, expression, state) {
-                var exprData = expressionData(expression);
-                return function branchRenderer(scope, options, parentSectionNodeList, truthyRenderer, falseyRenderer) {
-                    var nodeList = [this];
-                    nodeList.expression = expression;
-                    nodeLists.register(nodeList, null, state.directlyNested ? parentSectionNodeList || true : true);
-                    var evaluator = makeEvaluator(scope, options, nodeList, mode, exprData, truthyRenderer, falseyRenderer, state.tag);
-                    var compute = can.compute(evaluator, null, false, evaluator.bindOnce === false ? false : true);
-                    compute.bind('change', can.k);
-                    var value = compute();
-                    if (typeof value === 'function') {
-                        var old = can.__clearObserved();
-                        value(this);
-                        can.__setObserved(old);
-                    } else if (compute.computeInstance.hasDependencies) {
-                        if (state.attr) {
-                            live.simpleAttribute(this, state.attr, compute);
-                        } else if (state.tag) {
-                            live.attributes(this, compute);
-                        } else if (state.text && typeof value !== 'object') {
-                            live.text(this, compute, this.parentNode, nodeList);
-                        } else {
-                            live.html(this, compute, this.parentNode, nodeList);
-                        }
-                    } else {
-                        if (state.attr) {
-                            can.attr.set(this, state.attr, value);
-                        } else if (state.tag) {
-                            live.setAttributes(this, value);
-                        } else if (state.text && typeof value === 'string') {
-                            this.nodeValue = value;
-                        } else if (value) {
-                            elements.replace([this], can.frag(value));
-                        }
-                    }
-                    compute.unbind('change', can.k);
-                };
-            },
-            splitModeFromExpression: function (expression, state) {
-                expression = can.trim(expression);
-                var mode = expression.charAt(0);
-                if ('#/{&^>!'.indexOf(mode) >= 0) {
-                    expression = can.trim(expression.substr(1));
-                } else {
-                    mode = null;
-                }
-                if (mode === '{' && state.node) {
-                    mode = null;
-                }
-                return {
-                    mode: mode,
-                    expression: expression
-                };
-            },
-            cleanLineEndings: function (template) {
-                return template.replace(mustacheLineBreakRegExp, function (whole, returnBefore, spaceBefore, special, expression, spaceAfter, returnAfter, spaceLessSpecial, spaceLessExpression, matchIndex) {
-                    spaceAfter = spaceAfter || '';
-                    returnBefore = returnBefore || '';
-                    spaceBefore = spaceBefore || '';
-                    var modeAndExpression = splitModeFromExpression(expression || spaceLessExpression, {});
-                    if (spaceLessSpecial || '>{'.indexOf(modeAndExpression.mode) >= 0) {
-                        return whole;
-                    } else if ('^#!/'.indexOf(modeAndExpression.mode) >= 0) {
-                        return special + (matchIndex !== 0 && returnAfter.length ? returnBefore + '\n' : '');
-                    } else {
-                        return spaceBefore + special + spaceAfter + (spaceBefore.length || matchIndex !== 0 ? returnBefore + '\n' : '');
-                    }
-                });
-            },
-            Options: can.view.Scope.extend({
-                init: function (data, parent) {
-                    if (!data.helpers && !data.partials && !data.tags) {
-                        data = { helpers: data };
-                    }
-                    can.view.Scope.prototype.init.apply(this, arguments);
-                }
-            })
-        };
-    var makeEvaluator = core.makeEvaluator, expressionData = core.expressionData, splitModeFromExpression = core.splitModeFromExpression;
-    return core;
-});
-/*can@2.2.9#view/bindings/bindings*/
-define('can/view/bindings/bindings', [
-    'can/util/util',
-    'can/view/stache/mustache_core',
-    'can/view/callbacks/callbacks',
-    'can/control/control',
-    'can/view/scope/scope'
-], function (can, mustacheCore) {
-    var isContentEditable = function () {
-            var values = {
-                    '': true,
-                    'true': true,
-                    'false': false
-                };
-            var editable = function (el) {
-                if (!el || !el.getAttribute) {
-                    return;
-                }
-                var attr = el.getAttribute('contenteditable');
-                return values[attr];
-            };
-            return function (el) {
-                var val = editable(el);
-                if (typeof val === 'boolean') {
-                    return val;
-                } else {
-                    return !!editable(el.parentNode);
-                }
-            };
-        }(), removeCurly = function (value) {
-            if (value[0] === '{' && value[value.length - 1] === '}') {
-                return value.substr(1, value.length - 2);
-            }
-            return value;
-        };
-    can.view.attr('can-value', function (el, data) {
-        var attr = can.trim(removeCurly(el.getAttribute('can-value'))), value = data.scope.computeData(attr, { args: [] }).compute, trueValue, falseValue;
-        if (el.nodeName.toLowerCase() === 'input') {
-            if (el.type === 'checkbox') {
-                if (can.attr.has(el, 'can-true-value')) {
-                    trueValue = el.getAttribute('can-true-value');
-                } else {
-                    trueValue = true;
-                }
-                if (can.attr.has(el, 'can-false-value')) {
-                    falseValue = el.getAttribute('can-false-value');
-                } else {
-                    falseValue = false;
-                }
-            }
-            if (el.type === 'checkbox' || el.type === 'radio') {
-                new Checked(el, {
-                    value: value,
-                    trueValue: trueValue,
-                    falseValue: falseValue
-                });
-                return;
-            }
-        }
-        if (el.nodeName.toLowerCase() === 'select' && el.multiple) {
-            new Multiselect(el, { value: value });
-            return;
-        }
-        if (isContentEditable(el)) {
-            new Content(el, { value: value });
-            return;
-        }
-        new Value(el, { value: value });
-    });
-    var special = {
-            enter: function (data, el, original) {
-                return {
-                    event: 'keyup',
-                    handler: function (ev) {
-                        if (ev.keyCode === 13) {
-                            return original.call(this, ev);
-                        }
-                    }
-                };
-            }
-        };
-    can.view.attr(/can-[\w\.]+/, function (el, data) {
-        var attributeName = data.attributeName, event = attributeName.substr('can-'.length), handler = function (ev) {
-                var attrVal = el.getAttribute(attributeName);
-                if (!attrVal) {
-                    return;
-                }
-                var attrInfo = mustacheCore.expressionData(removeCurly(attrVal));
-                var scopeData = data.scope.read(attrInfo.name.get, {
-                        returnObserveMethods: true,
-                        isArgument: true,
-                        executeAnonymousFunctions: true
-                    });
-                var args = [];
-                var $el = can.$(this);
-                var viewModel = can.viewModel($el[0]);
-                var localScope = data.scope.add({
-                        '@element': $el,
-                        '@event': ev,
-                        '@viewModel': viewModel,
-                        '@scope': data.scope,
-                        '@context': data.scope._context
-                    });
-                if (!can.isEmptyObject(attrInfo.hash)) {
-                    var hash = {};
-                    can.each(attrInfo.hash, function (val, key) {
-                        if (val && val.hasOwnProperty('get')) {
-                            var s = !val.get.indexOf('@') ? localScope : data.scope;
-                            hash[key] = s.read(val.get, {}).value;
-                        } else {
-                            hash[key] = val;
-                        }
-                    });
-                    args.unshift(hash);
-                }
-                if (attrInfo.args.length) {
-                    var arg;
-                    for (var i = attrInfo.args.length - 1; i >= 0; i--) {
-                        arg = attrInfo.args[i];
-                        if (arg && arg.hasOwnProperty('get')) {
-                            var s = !arg.get.indexOf('@') ? localScope : data.scope;
-                            args.unshift(s.read(arg.get, {}).value);
-                        } else {
-                            args.unshift(arg);
-                        }
-                    }
-                }
-                if (!args.length) {
-                    args = [
-                        data.scope._context,
-                        $el
-                    ].concat(can.makeArray(arguments));
-                }
-                return scopeData.value.apply(scopeData.parent, args);
-            };
-        if (special[event]) {
-            var specialData = special[event](data, el, handler);
-            handler = specialData.handler;
-            event = specialData.event;
-        }
-        can.bind.call(el, event, handler);
-        var attributesHandler = function (ev) {
-            if (ev.attributeName === attributeName && !this.getAttribute(attributeName)) {
-                can.unbind.call(el, event, handler);
-                can.unbind.call(el, 'attributes', attributesHandler);
-            }
-        };
-        can.bind.call(el, 'attributes', attributesHandler);
-    });
-    var Value = can.Control.extend({
-            init: function () {
-                if (this.element[0].nodeName.toUpperCase() === 'SELECT') {
-                    setTimeout(can.proxy(this.set, this), 1);
-                } else {
-                    this.set();
-                }
-            },
-            '{value} change': 'set',
-            set: function () {
-                if (!this.element) {
-                    return;
-                }
-                var val = this.options.value();
-                if (val == null && this.element[0].nodeName.toUpperCase() !== 'SELECT') {
-                    val = '';
-                }
-                if (val != null) {
-                    this.element[0].value = val;
-                }
-            },
-            'change': function () {
-                if (!this.element) {
-                    return;
-                }
-                var el = this.element[0];
-                this.options.value(el.value);
-                var newVal = this.options.value();
-                if (el.value !== newVal) {
-                    el.value = newVal;
-                }
-            }
-        }), Checked = can.Control.extend({
-            init: function () {
-                this.isCheckbox = this.element[0].type.toLowerCase() === 'checkbox';
-                this.check();
-            },
-            '{value} change': 'check',
-            check: function () {
-                if (this.isCheckbox) {
-                    var value = this.options.value(), trueValue = this.options.trueValue || true;
-                    this.element[0].checked = value == trueValue;
-                } else {
-                    var setOrRemove = this.options.value() == this.element[0].value ? 'set' : 'remove';
-                    can.attr[setOrRemove](this.element[0], 'checked', true);
-                }
-            },
-            'change': function () {
-                if (this.isCheckbox) {
-                    this.options.value(this.element[0].checked ? this.options.trueValue : this.options.falseValue);
-                } else {
-                    if (this.element[0].checked) {
-                        this.options.value(this.element[0].value);
-                    }
-                }
-            }
-        }), Multiselect = Value.extend({
-            init: function () {
-                this.delimiter = ';';
-                setTimeout(can.proxy(this.set, this), 1);
-            },
-            set: function () {
-                var newVal = this.options.value();
-                if (typeof newVal === 'string') {
-                    newVal = newVal.split(this.delimiter);
-                    this.isString = true;
-                } else if (newVal) {
-                    newVal = can.makeArray(newVal);
-                }
-                var isSelected = {};
-                can.each(newVal, function (val) {
-                    isSelected[val] = true;
-                });
-                can.each(this.element[0].childNodes, function (option) {
-                    if (option.value) {
-                        option.selected = !!isSelected[option.value];
-                    }
-                });
-            },
-            get: function () {
-                var values = [], children = this.element[0].childNodes;
-                can.each(children, function (child) {
-                    if (child.selected && child.value) {
-                        values.push(child.value);
-                    }
-                });
-                return values;
-            },
-            'change': function () {
-                var value = this.get(), currentValue = this.options.value();
-                if (this.isString || typeof currentValue === 'string') {
-                    this.isString = true;
-                    this.options.value(value.join(this.delimiter));
-                } else if (currentValue instanceof can.List) {
-                    currentValue.attr(value, true);
-                } else {
-                    this.options.value(value);
-                }
-            }
-        }), Content = can.Control.extend({
-            init: function () {
-                this.set();
-                this.on('blur', 'setValue');
-            },
-            '{value} change': 'set',
-            set: function () {
-                var val = this.options.value();
-                this.element[0].innerHTML = typeof val === 'undefined' ? '' : val;
-            },
-            setValue: function () {
-                this.options.value(this.element[0].innerHTML);
-            }
-        });
-});
-/*can@2.2.9#view/mustache/mustache*/
+/*can@2.3.0#view/mustache/mustache*/
 define('can/view/mustache/mustache', [
     'can/util/util',
     'can/view/scope/scope',
@@ -5935,7 +6868,8 @@ define('can/view/mustache/mustache', [
             });
             args.push(helperOptions);
             return function () {
-                return helper.fn.apply(context, args) || '';
+                var result = helper.fn.apply(context, args);
+                return result == null ? '' : result;
             };
         }
         return function () {
@@ -6033,21 +6967,24 @@ define('can/view/mustache/mustache', [
             fn: fn
         };
     };
+    Mustache.registerSimpleHelper = function (name, fn) {
+        Mustache.registerHelper(name, can.view.simpleHelper(fn));
+    };
     Mustache.getHelper = function (name, options) {
         var helper;
         if (options) {
-            helper = options.attr('helpers.' + name);
+            helper = options.get('helpers.' + name, { proxyMethods: false });
         }
         return helper ? { fn: helper } : this._helpers[name];
     };
     Mustache.render = function (partial, scope, options) {
         if (!can.view.cached[partial]) {
-            var reads = can.__clearReading();
-            var scopePartialName = scope.attr(partial);
-            if (scopePartialName) {
-                partial = scopePartialName;
-            }
-            can.__setReading(reads);
+            can.__notObserve(function () {
+                var scopePartialName = scope.attr(partial);
+                if (scopePartialName) {
+                    partial = scopePartialName;
+                }
+            })();
         }
         return can.view.render(partial, scope, options);
     };
@@ -6059,7 +6996,7 @@ define('can/view/mustache/mustache', [
         };
     };
     Mustache.renderPartial = function (partialName, scope, options) {
-        var partial = options.attr('partials.' + partialName);
+        var partial = options.get('partials.' + partialName, { proxyMethods: false });
         if (partial) {
             return partial.render ? partial.render(scope, options) : partial(scope, options);
         } else {
@@ -6182,17 +7119,27 @@ define('can/view/mustache/mustache', [
     can.mustache.safeString = can.Mustache.safeString;
     return can;
 });
-/*can@2.2.9#component/component*/
+/*can@2.3.0#util/view_model/view_model*/
+define('can/util/view_model/view_model', ['can/util/util'], function (can) {
+    var $ = can.$;
+    if ($.fn) {
+        $.fn.scope = $.fn.viewModel = function () {
+            return can.viewModel.apply(can, [this].concat(can.makeArray(arguments)));
+        };
+    }
+});
+/*can@2.3.0#component/component*/
 define('can/component/component', [
     'can/util/util',
     'can/view/callbacks/callbacks',
     'can/view/elements',
+    'can/view/bindings/bindings',
     'can/control/control',
     'can/observe/observe',
     'can/view/mustache/mustache',
-    'can/view/bindings/bindings'
-], function (can, viewCallbacks, elements) {
-    var ignoreAttributesRegExp = /^(dataViewId|class|id)$/i, paramReplacer = /\{([^\}]+)\}/g;
+    'can/util/view_model/view_model'
+], function (can, viewCallbacks, elements, bindings) {
+    var ignoreAttributesRegExp = /^(dataViewId|class|id|\[[\w\.-]+\]|#[\w\.-])$/i, paramReplacer = /\{([^\}]+)\}/g;
     var Component = can.Component = can.Construct.extend({
             setup: function () {
                 can.Construct.setup.apply(this, arguments);
@@ -6226,92 +7173,107 @@ define('can/component/component', [
                 }
             }
         }, {
-            setup: function (el, hookupOptions) {
-                var initialScopeData = {}, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && this.template, twoWayBindings = {}, scope = this.scope || this.viewModel, viewModelPropertyUpdates = {}, componentScope, frag, teardownFunctions = [], callTeardownFunctions = function () {
+            setup: function (el, componentTagData) {
+                var initialScopeData = { '%root': componentTagData.scope.attr('%root') }, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && !!this.template, bindingsData = {}, scope = this.scope || this.viewModel, viewModelPropertyUpdates = {}, viewModel, frag, teardownFunctions = [], callTeardownFunctions = function () {
                         for (var i = 0, len = teardownFunctions.length; i < len; i++) {
                             teardownFunctions[i]();
                         }
-                    };
+                    }, $el = can.$(el);
                 can.each(this.constructor.attributeScopeMappings, function (val, prop) {
                     initialScopeData[prop] = el.getAttribute(can.hyphenate(val));
                 });
                 can.each(can.makeArray(el.attributes), function (node, index) {
-                    var name = can.camelize(node.nodeName.toLowerCase()), value = node.value;
-                    if (component.constructor.attributeScopeMappings[name] || ignoreAttributesRegExp.test(name) || viewCallbacks.attr(node.nodeName)) {
+                    var nodeName = node.name, name = can.camelize(nodeName.toLowerCase()), value = node.value;
+                    var isDataBindings = bindings.dataBindingsRegExp.test(nodeName);
+                    if (component.constructor.attributeScopeMappings[name] || ignoreAttributesRegExp.test(name) || viewCallbacks.attr(nodeName) && !isDataBindings) {
                         return;
                     }
                     if (value[0] === '{' && value[value.length - 1] === '}') {
                         value = value.substr(1, value.length - 2);
-                    } else {
-                        if (hookupOptions.templateType !== 'legacy') {
+                    } else if (!isDataBindings) {
+                        if (componentTagData.templateType !== 'legacy') {
                             initialScopeData[name] = value;
                             return;
                         }
                     }
-                    var computeData = hookupOptions.scope.computeData(value, { args: [] }), compute = computeData.compute;
-                    var handler = function (ev, newVal) {
-                        viewModelPropertyUpdates[name] = (viewModelPropertyUpdates[name] || 0) + 1;
-                        componentScope.attr(name, newVal);
-                        can.batch.afterPreviousEvents(function () {
-                            --viewModelPropertyUpdates[name];
-                        });
-                    };
-                    compute.bind('change', handler);
-                    initialScopeData[name] = compute();
-                    if (!compute.computeInstance.hasDependencies) {
-                        compute.unbind('change', handler);
+                    var bindingData = bindings.attributeNameInfo(nodeName);
+                    bindingData.propName = can.camelize(bindingData.propName);
+                    bindingsData[bindingData.propName] = bindingData;
+                    var compute = bindings.getParentCompute(el, componentTagData.scope, value, {});
+                    if (compute && compute.isComputed) {
+                        if (bindingData.parentToChild) {
+                            bindings.bindParentToChild(el, compute, function (newValue) {
+                                viewModel.attr(bindingData.propName, newValue);
+                            }, viewModelPropertyUpdates, bindingData.propName);
+                            var initialValue = compute();
+                            if (initialValue !== undefined) {
+                                initialScopeData[bindingData.propName] = initialValue;
+                            }
+                        }
+                        bindingsData[bindingData.propName].parentCompute = compute;
                     } else {
-                        teardownFunctions.push(function () {
-                            compute.unbind('change', handler);
-                        });
-                        twoWayBindings[name] = computeData;
+                        initialScopeData[bindingData.propName] = compute;
                     }
                 });
                 if (this.constructor.Map) {
-                    componentScope = new this.constructor.Map(initialScopeData);
+                    viewModel = new this.constructor.Map(initialScopeData);
                 } else if (scope instanceof can.Map) {
-                    componentScope = scope;
+                    viewModel = scope;
                 } else if (can.isFunction(scope)) {
-                    var scopeResult = scope.call(this, initialScopeData, hookupOptions.scope, el);
+                    var scopeResult = scope.call(this, initialScopeData, componentTagData.scope, el);
                     if (scopeResult instanceof can.Map) {
-                        componentScope = scopeResult;
+                        viewModel = scopeResult;
                     } else if (scopeResult.prototype instanceof can.Map) {
-                        componentScope = new scopeResult(initialScopeData);
+                        viewModel = new scopeResult(initialScopeData);
                     } else {
-                        componentScope = new (can.Map.extend(scopeResult))(initialScopeData);
+                        viewModel = new (can.Map.extend(scopeResult))(initialScopeData);
                     }
                 }
                 var handlers = {};
-                can.each(twoWayBindings, function (computeData, prop) {
-                    handlers[prop] = function (ev, newVal) {
-                        if (!viewModelPropertyUpdates[prop]) {
-                            computeData.compute(newVal);
+                can.each(bindingsData, function (bindingData, prop) {
+                    if (bindingData.childToParent) {
+                        handlers[prop] = function (ev, newVal) {
+                            if (!viewModelPropertyUpdates[prop]) {
+                                bindingData.parentCompute(newVal);
+                            }
+                        };
+                        viewModel.bind(prop, handlers[prop]);
+                        if (bindingData.parentCompute) {
+                            bindings.initializeValues(bindingData, prop === '.' ? viewModel : viewModel.attr(prop), bindingData.parentCompute, function () {
+                            }, function (ev, newVal) {
+                                bindingData.parentCompute(newVal);
+                            });
                         }
-                    };
-                    componentScope.bind(prop, handlers[prop]);
+                    }
                 });
-                if (!can.isEmptyObject(this.constructor.attributeScopeMappings) || hookupOptions.templateType !== 'legacy') {
+                if (!can.isEmptyObject(this.constructor.attributeScopeMappings) || componentTagData.templateType !== 'legacy') {
                     can.bind.call(el, 'attributes', function (ev) {
                         var camelized = can.camelize(ev.attributeName);
-                        if (!twoWayBindings[camelized] && !ignoreAttributesRegExp.test(camelized)) {
-                            componentScope.attr(camelized, el.getAttribute(ev.attributeName));
+                        if (!bindingsData[camelized] && !ignoreAttributesRegExp.test(camelized)) {
+                            viewModel.attr(camelized, el.getAttribute(ev.attributeName));
                         }
                     });
                 }
-                this.scope = this.viewModel = componentScope;
-                can.data(can.$(el), 'scope', this.scope);
-                can.data(can.$(el), 'viewModel', this.scope);
-                var renderedScope = lexicalContent ? this.scope : hookupOptions.scope.add(this.scope), options = { helpers: {} };
+                this.scope = this.viewModel = viewModel;
+                can.data($el, 'scope', this.scope);
+                can.data($el, 'viewModel', this.scope);
+                can.data($el, 'preventDataBindings', true);
+                var shadowScope = (lexicalContent ? can.view.Scope.refsScope() : componentTagData.scope.add(new can.view.Scope.Refs())).add(this.scope, { viewModel: true }), options = { helpers: {} }, addHelper = function (name, fn) {
+                        options.helpers[name] = function () {
+                            return fn.apply(viewModel, arguments);
+                        };
+                    };
                 can.each(this.helpers || {}, function (val, prop) {
                     if (can.isFunction(val)) {
-                        options.helpers[prop] = function () {
-                            return val.apply(componentScope, arguments);
-                        };
+                        addHelper(prop, val);
                     }
+                });
+                can.each(this.simpleHelpers || {}, function (val, prop) {
+                    addHelper(prop, can.view.simpleHelper(val));
                 });
                 teardownFunctions.push(function () {
                     can.each(handlers, function (handler, prop) {
-                        componentScope.unbind(prop, handlers[prop]);
+                        viewModel.unbind(prop, handlers[prop]);
                     });
                 });
                 this._control = new this.constructor.Control(el, {
@@ -6327,30 +7289,46 @@ define('can/component/component', [
                     if (!options.tags) {
                         options.tags = {};
                     }
-                    options.tags.content = function contentHookup(el, rendererOptions) {
-                        var subtemplate = hookupOptions.subtemplate || rendererOptions.subtemplate;
+                    options.tags.content = function contentHookup(el, contentTagData) {
+                        var subtemplate = componentTagData.subtemplate || contentTagData.subtemplate, renderingLightContent = subtemplate === componentTagData.subtemplate;
                         if (subtemplate) {
                             delete options.tags.content;
-                            var opts = !lexicalContent || subtemplate !== hookupOptions.subtemplate ? rendererOptions : hookupOptions;
-                            if (rendererOptions.parentNodeList) {
-                                var frag = subtemplate(opts.scope, opts.options, rendererOptions.parentNodeList);
+                            var lightTemplateData;
+                            if (renderingLightContent) {
+                                if (lexicalContent) {
+                                    lightTemplateData = componentTagData;
+                                } else {
+                                    lightTemplateData = {
+                                        scope: contentTagData.scope.cloneFromRef(),
+                                        options: contentTagData.options
+                                    };
+                                }
+                            } else {
+                                lightTemplateData = contentTagData;
+                            }
+                            lightTemplateData.scope = lightTemplateData.scope.add(viewModel, {
+                                'protected': true,
+                                viewModel: true
+                            });
+                            if (contentTagData.parentNodeList) {
+                                var frag = subtemplate(lightTemplateData.scope, lightTemplateData.options, contentTagData.parentNodeList);
                                 elements.replace([el], frag);
                             } else {
-                                can.view.live.replace([el], subtemplate(opts.scope, opts.options));
+                                can.view.live.replace([el], subtemplate(lightTemplateData.scope, lightTemplateData.options));
                             }
                             options.tags.content = contentHookup;
                         }
                     };
-                    frag = this.constructor.renderer(renderedScope, hookupOptions.options.add(options), nodeList);
+                    frag = this.constructor.renderer(shadowScope, componentTagData.options.add(options), nodeList);
                 } else {
-                    if (hookupOptions.templateType === 'legacy') {
-                        frag = can.view.frag(hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : '');
+                    if (componentTagData.templateType === 'legacy') {
+                        frag = can.view.frag(componentTagData.subtemplate ? componentTagData.subtemplate(shadowScope, componentTagData.options.add(options)) : '');
                     } else {
-                        frag = hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options), nodeList) : document.createDocumentFragment();
+                        frag = componentTagData.subtemplate ? componentTagData.subtemplate(shadowScope, componentTagData.options.add(options), nodeList) : document.createDocumentFragment();
                     }
                 }
-                can.appendChild(el, frag);
-                can.view.nodeLists.update(nodeList, el.childNodes);
+                can.appendChild(el, frag, can.document);
+                can.view.nodeLists.update(nodeList, can.childNodes(el));
             }
         });
     var ComponentControl = can.Control.extend({
@@ -6379,7 +7357,7 @@ define('can/component/component', [
                                     return '';
                                 }
                                 key = key.replace(/^(scope|^viewModel)\./, '');
-                                value = can.compute.read(options.scope, key.split('.'), { isArgument: true }).value;
+                                value = can.compute.read(options.scope, can.compute.read.reads(key), { isArgument: true }).value;
                                 if (value === undefined) {
                                     value = can.getObject(key);
                                 }
@@ -6443,7 +7421,7 @@ define('can/component/component', [
     }
     return Component;
 });
-/*can@2.2.9#model/model*/
+/*can@2.3.0#model/model*/
 define('can/model/model', [
     'can/util/util',
     'can/map/map',
@@ -6473,7 +7451,7 @@ define('can/model/model', [
             return d;
         }, modelNum = 0, getId = function (inst) {
             can.__observe(inst, inst.constructor.id);
-            return inst.__get(inst.constructor.id);
+            return inst.___get(inst.constructor.id);
         }, ajax = function (ajaxOb, data, type, dataType, success, error) {
             var params = {};
             if (typeof ajaxOb === 'string') {
@@ -6740,7 +7718,7 @@ define('can/model/model', [
             return makeRequest(this, 'destroy', success, error, 'destroyed');
         },
         _bindsetup: function () {
-            var modelInstance = this.__get(this.constructor.id);
+            var modelInstance = this.___get(this.constructor.id);
             if (modelInstance != null) {
                 this.constructor.store[modelInstance] = this;
             }
@@ -6794,9 +7772,9 @@ define('can/model/model', [
                 this.attr(can.isFunction(attrs.attr) ? attrs.attr() : attrs);
             }
             can.dispatch.call(this, {
-                type: 'change',
+                type: funcName,
                 target: this
-            }, [funcName]);
+            }, []);
             can.dispatch.call(constructor, funcName, [this]);
         };
     });
@@ -6814,9 +7792,7 @@ define('can/model/model', [
                 } else {
                     can.List.prototype.setup.apply(this, arguments);
                 }
-                this._init = 1;
                 this.bind('destroyed', can.proxy(this._destroyed, this));
-                delete this._init;
             },
             _destroyed: function (ev, attr) {
                 if (/\w+/.test(attr)) {
@@ -6829,7 +7805,7 @@ define('can/model/model', [
         });
     return can.Model;
 });
-/*can@2.2.9#util/string/deparam/deparam*/
+/*can@2.3.0#util/string/deparam/deparam*/
 define('can/util/string/deparam/deparam', [
     'can/util/util',
     'can/util/string/string'
@@ -6866,7 +7842,7 @@ define('can/util/string/deparam/deparam', [
     });
     return can;
 });
-/*can@2.2.9#route/route*/
+/*can@2.3.0#route/route*/
 define('can/route/route', [
     'can/util/util',
     'can/map/map',
@@ -7033,12 +8009,15 @@ define('can/route/route', [
         ready: function (val) {
             if (val !== true) {
                 can.route._setup();
-                can.route.setState();
+                if (can.isBrowserWindow || can.isWebWorker) {
+                    can.route.setState();
+                }
             }
             return can.route;
         },
         url: function (options, merge) {
             if (merge) {
+                can.__observe(eventsObject, '__url');
                 options = can.extend({}, can.route.deparam(can.route._call('matchingPartOfURL')), options);
             }
             return can.route._call('root') + can.route.param(options);
@@ -7062,7 +8041,8 @@ define('can/route/route', [
                     can.unbind.call(window, 'hashchange', setState);
                 },
                 matchingPartOfURL: function () {
-                    return location.href.split(/#!?/)[1] || '';
+                    var loc = can.route.location || location;
+                    return loc.href.split(/#!?/)[1] || '';
                 },
                 setURL: function (path) {
                     if (location.hash !== '#' + path) {
@@ -7110,7 +8090,7 @@ define('can/route/route', [
         'removeAttr',
         'compute',
         '_get',
-        '__get',
+        '___get',
         'each'
     ], function (name) {
         can.route[name] = function () {
@@ -7137,19 +8117,20 @@ define('can/route/route', [
         }
         return can.route.data.attr.apply(can.route.data, newArguments);
     };
+    can.route.batch = can.batch;
     var setState = can.route.setState = function () {
             var hash = can.route._call('matchingPartOfURL');
             var oldParams = curParams;
             curParams = can.route.deparam(hash);
             if (!changingData || hash !== lastHash) {
-                can.batch.start();
+                can.route.batch.start();
                 recursiveClean(oldParams, curParams, can.route.data);
                 can.route.attr(curParams);
-                can.batch.trigger(eventsObject, '__url', [
+                can.route.batch.trigger(eventsObject, '__url', [
                     hash,
                     lastHash
                 ]);
-                can.batch.stop();
+                can.route.batch.stop();
             }
         };
     var recursiveClean = function (old, cur, data) {
@@ -7163,7 +8144,7 @@ define('can/route/route', [
     };
     return can.route;
 });
-/*can@2.2.9#control/route/route*/
+/*can@2.3.0#control/route/route*/
 define('can/control/route/route', [
     'can/util/util',
     'can/route/route',

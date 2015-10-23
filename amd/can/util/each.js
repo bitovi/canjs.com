@@ -1,15 +1,15 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#util/array/each*/
+/*can@2.3.0#util/array/each*/
 define(['can/util/can'], function (can) {
     var isArrayLike = function (obj) {
-        var length = 'length' in obj && obj.length;
+        var length = obj && typeof obj !== 'boolean' && typeof obj !== 'number' && 'length' in obj && obj.length;
         return typeof arr !== 'function' && (length === 0 || typeof length === 'number' && length > 0 && length - 1 in obj);
     };
     can.each = function (elements, callback, context) {

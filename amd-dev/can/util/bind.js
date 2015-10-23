@@ -1,16 +1,16 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#util/bind/bind*/
+/*can@2.3.0#util/bind/bind*/
 define(['can/util/library'], function (can) {
     can.bindAndSetup = function () {
         can.addEvent.apply(this, arguments);
-        if (!this._init) {
+        if (!this.__inSetup) {
             if (!this._bindings) {
                 this._bindings = 1;
                 if (this._bindsetup) {

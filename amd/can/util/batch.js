@@ -1,14 +1,14 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#util/batch/batch*/
+/*can@2.3.0#util/batch/batch*/
 define(['can/util/can'], function (can) {
-    var batchNum = 1, transactions = 0, batchEvents = [], stopCallbacks = [], currentBatchEvents = null;
+    var batchNum = 1, transactions = 0, batchEvents = [], stopCallbacks = [], currentBatchEvents = null, currentBatchCallbacks = null;
     can.batch = {
         start: function (batchStopHandler) {
             transactions++;
@@ -26,8 +26,9 @@ define(['can/util/can'], function (can) {
                 if (currentBatchEvents !== null) {
                     return;
                 }
-                currentBatchEvents = batchEvents.slice(0);
-                var callbacks = stopCallbacks.slice(0), i, len;
+                currentBatchEvents = batchEvents;
+                currentBatchCallbacks = stopCallbacks;
+                var i, len;
                 batchEvents = [];
                 stopCallbacks = [];
                 can.batch.batchNum = batchNum;
@@ -39,14 +40,15 @@ define(['can/util/can'], function (can) {
                     can.dispatch.apply(currentBatchEvents[i][0], currentBatchEvents[i][1]);
                 }
                 currentBatchEvents = null;
-                for (i = 0, len = callbacks.length; i < callbacks.length; i++) {
-                    callbacks[i]();
+                for (i = 0, len = currentBatchCallbacks.length; i < currentBatchCallbacks.length; i++) {
+                    currentBatchCallbacks[i]();
                 }
+                currentBatchCallbacks = null;
                 can.batch.batchNum = undefined;
             }
         },
         trigger: function (item, event, args) {
-            if (!item._init) {
+            if (!item.__inSetup) {
                 event = typeof event === 'string' ? {
                     type: event,
                     batchNum: can.batch.batchNum
@@ -75,8 +77,7 @@ define(['can/util/can'], function (can) {
         },
         afterPreviousEvents: function (handler) {
             if (currentBatchEvents) {
-                var obj = {};
-                can.bind.call(obj, 'ready', handler);
+                var obj = { __bindEvents: { ready: [{ handler: handler }] } };
                 currentBatchEvents.push([
                     obj,
                     [
@@ -85,7 +86,14 @@ define(['can/util/can'], function (can) {
                     ]
                 ]);
             } else {
-                handler();
+                handler({});
+            }
+        },
+        after: function (handler) {
+            if (currentBatchEvents) {
+                currentBatchCallbacks.push(handler);
+            } else {
+                handler({});
             }
         }
     };

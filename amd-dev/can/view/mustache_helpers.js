@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#view/stache/mustache_helpers*/
+/*can@2.3.0#view/stache/mustache_helpers*/
 define([
     'can/util/library',
     'can/view/utils',
@@ -22,6 +22,21 @@ define([
             return value;
         }
     };
+    var resolveHash = function (hash) {
+        var params = {};
+        for (var prop in hash) {
+            var value = hash[prop];
+            if (value && value.isComputed) {
+                params[prop] = value();
+            } else {
+                params[prop] = value;
+            }
+        }
+        return params;
+    };
+    var looksLikeOptions = function (options) {
+        return options && typeof options.fn === 'function' && typeof options.inverse === 'function';
+    };
     var helpers = {
             'each': function (items, options) {
                 var resolved = resolve(items), result = [], keys, key, i;
@@ -34,7 +49,9 @@ define([
                         var cb = function (item, index, parentNodeList) {
                             return options.fn(options.scope.add({ '@index': index }).add(item), options.options, parentNodeList);
                         };
-                        live.list(el, items, cb, options.context, el.parentNode, nodeList);
+                        live.list(el, items, cb, options.context, el.parentNode, nodeList, function (list, parentNodeList) {
+                            return options.inverse(options.scope.add(list), options.options, parentNodeList);
+                        });
                     };
                 }
                 var expr = resolved;
@@ -125,14 +142,79 @@ define([
                 return function (el) {
                     can.data(can.$(el), attr, data || this.context);
                 };
+            },
+            'switch': function (expression, options) {
+                resolve(expression);
+                var found = false;
+                var newOptions = options.helpers.add({
+                        'case': function (value, options) {
+                            if (!found && resolve(expression) === resolve(value)) {
+                                found = true;
+                                return options.fn(options.scope || this);
+                            }
+                        },
+                        'default': function (options) {
+                            if (!found) {
+                                return options.fn(options.scope || this);
+                            }
+                        }
+                    });
+                return options.fn(options.scope, newOptions);
+            },
+            'joinBase': function (firstExpr) {
+                var args = [].slice.call(arguments);
+                var options = args.pop();
+                var moduleReference = can.map(args, function (expr) {
+                        var value = resolve(expr);
+                        return can.isFunction(value) ? value() : value;
+                    }).join('');
+                var templateModule = options.helpers.attr('helpers.module');
+                var parentAddress = templateModule ? templateModule.uri : undefined;
+                var isRelative = moduleReference[0] === '.';
+                if (isRelative && parentAddress) {
+                    return can.joinURIs(parentAddress, moduleReference);
+                } else {
+                    var baseURL = can.baseURL || typeof System !== 'undefined' && (System.renderingLoader && System.renderingLoader.baseURL || System.baseURL) || location.pathname;
+                    if (moduleReference[0] !== '/' && baseURL[baseURL.length - 1] !== '/') {
+                        baseURL += '/';
+                    }
+                    return can.joinURIs(baseURL, moduleReference);
+                }
+            },
+            routeUrl: function (params, merge) {
+                if (!params) {
+                    params = {};
+                }
+                if (typeof params.fn === 'function' && typeof params.inverse === 'function') {
+                    params = resolveHash(params.hash);
+                }
+                return can.route.url(params, typeof merge === 'boolean' ? merge : undefined);
+            },
+            routeCurrent: function (params) {
+                var last = can.last(arguments), isOptions = last && looksLikeOptions(last);
+                if (last && isOptions && !(last.exprData instanceof can.expression.Call)) {
+                    if (can.route.current(resolveHash(params.hash || {}))) {
+                        return params.fn();
+                    } else {
+                        return params.inverse();
+                    }
+                } else {
+                    return can.route.current(looksLikeOptions(params) ? {} : params || {});
+                }
             }
         };
+    helpers.routeCurrent.callAsMethod = true;
+    helpers.eachOf = helpers.each;
+    var registerHelper = function (name, callback) {
+        helpers[name] = callback;
+    };
     return {
-        registerHelper: function (name, callback) {
-            helpers[name] = callback;
+        registerHelper: registerHelper,
+        registerSimpleHelper: function (name, callback) {
+            registerHelper(name, can.view.simpleHelper(callback));
         },
         getHelper: function (name, options) {
-            var helper = options.attr('helpers.' + name);
+            var helper = options && options.get('helpers.' + name, { proxyMethods: false });
             if (!helper) {
                 helper = helpers[name];
             }

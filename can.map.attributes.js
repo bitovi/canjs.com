@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
@@ -43,10 +43,15 @@
 			};
 			args.push(require, module.exports, module);
 		}
-		// Babel uses only the exports objet
+		// Babel uses the exports and module object.
 		else if(!args[0] && deps[0] === "exports") {
 			module = { exports: {} };
 			args[0] = module.exports;
+			if(deps[1] === "module") {
+				args[1] = module;
+			}
+		} else if(!args[0] && deps[0] === "module") {
+			args[0] = { id: moduleName };
 		}
 
 		global.define = origDefine;
@@ -59,20 +64,27 @@
 	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
-	global.System = {
-		define: function(__name, __code){
-			global.define = origDefine;
-			eval("(function() { " + __code + " \n }).call(global);");
-			global.define = ourDefine;
-		}
-	};
+	ourDefine("@loader", [], function(){
+		// shim for @@global-helpers
+		var noop = function(){};
+		return {
+			get: function(){
+				return { prepareGlobal: noop, retrieveGlobal: noop };
+			},
+			global: global,
+			__exec: function(__load){
+				eval("(function() { " + __load.source + " \n }).call(global);");
+			}
+		};
+	});
 })({},window)
-/*can@2.2.9#map/attributes/attributes*/
+/*can@2.3.0#map/attributes/attributes*/
 define('can/map/attributes/attributes', [
     'can/util/util',
+    'can/map/map_helpers',
     'can/map/map',
     'can/list/list'
-], function (can, Map) {
+], function (can, mapHelpers, Map) {
     can.each([
         can.Map,
         can.Model
@@ -137,9 +149,9 @@ define('can/map/attributes/attributes', [
             }
         });
         var oldSetup = clss.setup;
-        clss.setup = function (superClass, stat, proto) {
+        clss.setup = function (superClass, fullName, stat, proto) {
             var self = this;
-            oldSetup.call(self, superClass, stat, proto);
+            oldSetup.call(self, superClass, fullName, stat, proto);
             can.each(['attributes'], function (name) {
                 if (!self[name] || superClass[name] === self[name]) {
                     self[name] = {};
@@ -164,10 +176,10 @@ define('can/map/attributes/attributes', [
         return value === null || !type ? value : converter.call(Class, value, oldVal, function () {
         }, type);
     };
-    var oldSerialize = can.Map.helpers._serialize;
-    can.Map.helpers._serialize = function (map, name, val) {
-        var constructor = map.constructor, type = constructor.attributes ? constructor.attributes[name] : 0, converter = constructor.serialize ? constructor.serialize[type] : 0;
-        return val && typeof val.serialize === 'function' ? oldSerialize.apply(this, arguments) : converter ? converter(val, type) : oldSerialize.apply(this, arguments);
+    var oldSerialize = can.Map.prototype.___serialize;
+    can.Map.prototype.___serialize = function (name, val) {
+        var constructor = this.constructor, type = constructor.attributes ? constructor.attributes[name] : 0, converter = constructor.serialize ? constructor.serialize[type] : 0;
+        return val && typeof val.serialize === 'function' ? oldSerialize.call(this, name, val) : converter ? converter(val, type) : oldSerialize.apply(this, arguments);
     };
     var mapSerialize = can.Map.prototype.serialize;
     can.Map.prototype.serialize = function (attrName) {

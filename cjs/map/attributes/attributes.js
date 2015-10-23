@@ -1,13 +1,14 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#map/attributes/attributes*/
+/*can@2.3.0#map/attributes/attributes*/
 var can = require('../../util/util.js');
+var mapHelpers = require('../map_helpers.js');
 var Map = require('../map.js');
 require('../../list/list.js');
 can.each([
@@ -74,9 +75,9 @@ can.each([
         }
     });
     var oldSetup = clss.setup;
-    clss.setup = function (superClass, stat, proto) {
+    clss.setup = function (superClass, fullName, stat, proto) {
         var self = this;
-        oldSetup.call(self, superClass, stat, proto);
+        oldSetup.call(self, superClass, fullName, stat, proto);
         can.each(['attributes'], function (name) {
             if (!self[name] || superClass[name] === self[name]) {
                 self[name] = {};
@@ -101,10 +102,10 @@ can.Map.prototype.__convert = function (prop, value) {
     return value === null || !type ? value : converter.call(Class, value, oldVal, function () {
     }, type);
 };
-var oldSerialize = can.Map.helpers._serialize;
-can.Map.helpers._serialize = function (map, name, val) {
-    var constructor = map.constructor, type = constructor.attributes ? constructor.attributes[name] : 0, converter = constructor.serialize ? constructor.serialize[type] : 0;
-    return val && typeof val.serialize === 'function' ? oldSerialize.apply(this, arguments) : converter ? converter(val, type) : oldSerialize.apply(this, arguments);
+var oldSerialize = can.Map.prototype.___serialize;
+can.Map.prototype.___serialize = function (name, val) {
+    var constructor = this.constructor, type = constructor.attributes ? constructor.attributes[name] : 0, converter = constructor.serialize ? constructor.serialize[type] : 0;
+    return val && typeof val.serialize === 'function' ? oldSerialize.call(this, name, val) : converter ? converter(val, type) : oldSerialize.apply(this, arguments);
 };
 var mapSerialize = can.Map.prototype.serialize;
 can.Map.prototype.serialize = function (attrName) {

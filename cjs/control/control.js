@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#control/control*/
+/*can@2.3.0#control/control*/
 var can = require('../util/util.js');
 require('../construct/construct.js');
 var bind = function (el, ev, callback) {
@@ -193,7 +193,14 @@ each([
     'touchend',
     'touchleave',
     'inserted',
-    'removed'
+    'removed',
+    'dragstart',
+    'dragenter',
+    'dragover',
+    'dragleave',
+    'drag',
+    'drop',
+    'dragend'
 ], function (v) {
     processors[v] = basicProcessor;
 });

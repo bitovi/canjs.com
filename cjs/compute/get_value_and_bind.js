@@ -1,95 +1,116 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#compute/get_value_and_bind*/
+/*can@2.3.0#compute/get_value_and_bind*/
 var can = require('../util/util.js');
-function observe(func, context, oldInfo, onchanged) {
-    var info = getValueAndObserved(func, context), newObserveSet = info.observed, oldObserved = oldInfo.observed;
-    if (info.names !== oldInfo.names) {
-        bindNewSet(oldObserved, newObserveSet, onchanged);
-        unbindOldSet(oldObserved, onchanged);
-    }
-    can.batch.afterPreviousEvents(function () {
-        info.ready = true;
-    });
-    return info;
+function ObservedInfo(func, context, onchanged) {
+    this.func = func;
+    this.context = context;
+    this.onchanged = onchanged;
 }
-var observedStack = [];
-can.__isRecordingObserves = function () {
-    return observedStack.length;
+function getValueAndBind(observedInfo) {
+    observedInfo.oldObserved = observedInfo.newObserved || {};
+    observedInfo.ignore = 0;
+    observedInfo.newObserved = {};
+    observedInfo.ready = false;
+    observedInfoStack.push(observedInfo);
+    observedInfo.value = observedInfo.func.call(observedInfo.context);
+    observedInfoStack.pop();
+    unbindOldSet(observedInfo);
+    can.batch.afterPreviousEvents(function () {
+        observedInfo.ready = true;
+    });
+    return observedInfo;
+}
+var unbindOldSet = function (observedInfo) {
+    var onchanged = observedInfo.onchanged, oldObserved = observedInfo.oldObserved;
+    for (var name in oldObserved) {
+        var obEv = oldObserved[name];
+        if (obEv) {
+            obEv.obj.unbind(obEv.event, onchanged);
+        }
+    }
 };
-can.__observe = can.__reading = function (obj, event) {
-    if (observedStack.length) {
-        var name = obj._cid + '|' + event, top = observedStack[observedStack.length - 1];
-        top.names += name;
-        top.observed[name] = {
-            obj: obj,
-            event: event + ''
+var observedInfoStack = [];
+can.__observe = function (obj, event) {
+    var top = observedInfoStack[observedInfoStack.length - 1];
+    if (top) {
+        var evStr = event + '', name = obj._cid + '|' + evStr;
+        if (top.traps) {
+            top.traps.push({
+                obj: obj,
+                event: evStr,
+                name: name
+            });
+        } else if (!top.ignore && !top.newObserved[name]) {
+            top.newObserved[name] = {
+                obj: obj,
+                event: evStr
+            };
+            if (!top.oldObserved[name]) {
+                obj.bind(evStr, top.onchanged);
+            }
+            top.oldObserved[name] = null;
+        }
+    }
+};
+can.__reading = can.__observe;
+can.__trapObserves = function () {
+    if (observedInfoStack.length) {
+        var top = observedInfoStack[observedInfoStack.length - 1];
+        var traps = top.traps = [];
+        return function () {
+            top.traps = null;
+            return traps;
+        };
+    } else {
+        return function () {
+            return [];
         };
     }
+};
+can.__observes = function (observes) {
+    var top = observedInfoStack[observedInfoStack.length - 1];
+    if (top) {
+        for (var i = 0, len = observes.length; i < len; i++) {
+            var trap = observes[i], name = trap.name;
+            if (!top.newObserved[name]) {
+                top.newObserved[name] = trap;
+                if (!top.oldObserved[name]) {
+                    trap.obj.bind(trap.event, top.onchanged);
+                }
+                top.oldObserved[name] = null;
+            }
+        }
+    }
+};
+can.__isRecordingObserves = function () {
+    return observedInfoStack.length;
 };
 can.__notObserve = function (fn) {
     return function () {
-        var previousReads = can.__clearObserved();
-        var res = fn.apply(this, arguments);
-        can.__setObserved(previousReads);
-        return res;
+        if (observedInfoStack.length) {
+            var top = observedInfoStack[observedInfoStack.length - 1];
+            top.ignore++;
+            var res = fn.apply(this, arguments);
+            top.ignore--;
+            return res;
+        } else {
+            return fn.apply(this, arguments);
+        }
     };
 };
-can.__clearObserved = can.__clearReading = function () {
-    if (observedStack.length) {
-        var ret = observedStack[observedStack.length - 1];
-        observedStack[observedStack.length - 1] = {
-            names: '',
-            observed: {}
-        };
-        return ret;
+getValueAndBind.unbindReadInfo = function (readInfo) {
+    var onchanged = readInfo.onchanged;
+    for (var name in readInfo.newObserved) {
+        var ob = readInfo.newObserved[name];
+        ob.obj.unbind(ob.event, onchanged);
     }
 };
-can.__setObserved = can.__setReading = function (o) {
-    if (observedStack.length) {
-        observedStack[observedStack.length - 1] = o;
-    }
-};
-can.__addObserved = can.__addReading = function (o) {
-    if (observedStack.length) {
-        var last = observedStack[observedStack.length - 1];
-        can.simpleExtend(last.observed, o.observed);
-        last.names += o.names;
-    }
-};
-var getValueAndObserved = function (func, self) {
-    observedStack.push({
-        names: '',
-        observed: {}
-    });
-    var value = func.call(self);
-    var stackItem = observedStack.pop();
-    stackItem.value = value;
-    return stackItem;
-};
-var bindNewSet = function (oldObserved, newObserveSet, onchanged) {
-    for (var name in newObserveSet) {
-        bindOrPreventUnbinding(oldObserved, newObserveSet, name, onchanged);
-    }
-};
-var bindOrPreventUnbinding = function (oldObserved, newObserveSet, name, onchanged) {
-    if (oldObserved[name]) {
-        delete oldObserved[name];
-    } else {
-        var obEv = newObserveSet[name];
-        obEv.obj.bind(obEv.event, onchanged);
-    }
-};
-var unbindOldSet = function (oldObserved, onchanged) {
-    for (var name in oldObserved) {
-        var obEv = oldObserved[name];
-        obEv.obj.unbind(obEv.event, onchanged);
-    }
-};
-module.exports = observe;
+getValueAndBind.ObservedInfo = ObservedInfo;
+module.exports = getValueAndBind;

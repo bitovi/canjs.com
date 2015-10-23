@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
@@ -43,10 +43,15 @@
 			};
 			args.push(require, module.exports, module);
 		}
-		// Babel uses only the exports objet
+		// Babel uses the exports and module object.
 		else if(!args[0] && deps[0] === "exports") {
 			module = { exports: {} };
 			args[0] = module.exports;
+			if(deps[1] === "module") {
+				args[1] = module;
+			}
+		} else if(!args[0] && deps[0] === "module") {
+			args[0] = { id: moduleName };
 		}
 
 		global.define = origDefine;
@@ -59,15 +64,21 @@
 	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
-	global.System = {
-		define: function(__name, __code){
-			global.define = origDefine;
-			eval("(function() { " + __code + " \n }).call(global);");
-			global.define = ourDefine;
-		}
-	};
+	ourDefine("@loader", [], function(){
+		// shim for @@global-helpers
+		var noop = function(){};
+		return {
+			get: function(){
+				return { prepareGlobal: noop, retrieveGlobal: noop };
+			},
+			global: global,
+			__exec: function(__load){
+				eval("(function() { " + __load.source + " \n }).call(global);");
+			}
+		};
+	});
 })({},window)
-/*can@2.2.9#util/array/makeArray*/
+/*can@2.3.0#util/array/makeArray*/
 define('can/util/array/makeArray', ['can/util/array/each'], function (can) {
     can.makeArray = function (arr) {
         var ret = [];
@@ -78,7 +89,7 @@ define('can/util/array/makeArray', ['can/util/array/each'], function (can) {
     };
     return can;
 });
-/*can@2.2.9#util/domless/domless*/
+/*can@2.3.0#util/domless/domless*/
 define('can/util/domless/domless', [
     'can/util/can',
     'can/util/attr/attr',
@@ -94,7 +105,10 @@ define('can/util/domless/domless', [
         return array.length > 0 ? Array.prototype.concat.apply([], array) : array;
     }
     can.isArray = function (arr) {
-        return arr instanceof Array;
+        if (Array.isArray) {
+            return Array.isArray(arr);
+        }
+        return Object.prototype.toString.call(arr) === '[object Array]';
     };
     can.isFunction = function () {
         if (typeof document !== 'undefined' && typeof document.getElementsByTagName('body') === 'function') {

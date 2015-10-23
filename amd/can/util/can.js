@@ -1,14 +1,14 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#util/can*/
+/*can@2.3.0#util/can*/
 define([], function () {
-    var glbl = typeof window !== 'undefined' ? window : global;
+    var glbl = typeof window !== 'undefined' ? window : typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope ? self : global;
     var can = {};
     if (typeof GLOBALCAN === 'undefined' || GLOBALCAN !== false) {
         glbl.can = can;
@@ -20,7 +20,7 @@ define([], function () {
         return obj && typeof obj.then === 'function' && typeof obj.pipe === 'function';
     };
     can.isMapLike = function (obj) {
-        return can.Map && (obj instanceof can.Map || obj && obj.__get);
+        return can.Map && (obj instanceof can.Map || obj && obj.___get);
     };
     var cid = 0;
     can.cid = function (object, name) {
@@ -30,7 +30,7 @@ define([], function () {
         }
         return object._cid;
     };
-    can.VERSION = '2.2.9';
+    can.VERSION = '2.3.0';
     can.simpleExtend = function (d, s) {
         for (var prop in s) {
             d[prop] = s[prop];
@@ -39,6 +39,23 @@ define([], function () {
     };
     can.last = function (arr) {
         return arr && arr[arr.length - 1];
+    };
+    can.isDOM = function (el) {
+        return (el.ownerDocument || el) === can.global.document;
+    };
+    can.childNodes = function (node) {
+        var childNodes = node.childNodes;
+        if ('length' in childNodes) {
+            return childNodes;
+        } else {
+            var cur = node.firstChild;
+            var nodes = [];
+            while (cur) {
+                nodes.push(cur);
+                cur = cur.nextSibling;
+            }
+            return nodes;
+        }
     };
     var protoBind = Function.prototype.bind;
     if (protoBind) {
@@ -52,10 +69,11 @@ define([], function () {
             };
         };
     }
-    can.frag = function (item) {
+    can.frag = function (item, doc) {
+        var document = doc || can.document || can.global.document;
         var frag;
         if (!item || typeof item === 'string') {
-            frag = can.buildFragment(item == null ? '' : '' + item, document.body);
+            frag = can.buildFragment(item == null ? '' : '' + item, document);
             if (!frag.childNodes.length) {
                 frag.appendChild(document.createTextNode(''));
             }
@@ -73,8 +91,8 @@ define([], function () {
             });
             return frag;
         } else {
-            frag = can.buildFragment('' + item, document.body);
-            if (!frag.childNodes.length) {
+            frag = can.buildFragment('' + item, document);
+            if (!can.childNodes(frag).length) {
                 frag.appendChild(document.createTextNode(''));
             }
             return frag;
@@ -99,10 +117,40 @@ define([], function () {
             return el;
         }
     };
-    can['import'] = function (moduleName) {
+    var parseURI = function (url) {
+        var m = String(url).replace(/^\s+|\s+$/g, '').match(/^([^:\/?#]+:)?(\/\/(?:[^:@]*(?::[^:@]*)?@)?(([^:\/?#]*)(?::(\d*))?))?([^?#]*)(\?[^#]*)?(#[\s\S]*)?/);
+        return m ? {
+            href: m[0] || '',
+            protocol: m[1] || '',
+            authority: m[2] || '',
+            host: m[3] || '',
+            hostname: m[4] || '',
+            port: m[5] || '',
+            pathname: m[6] || '',
+            search: m[7] || '',
+            hash: m[8] || ''
+        } : null;
+    };
+    can.joinURIs = function (base, href) {
+        function removeDotSegments(input) {
+            var output = [];
+            input.replace(/^(\.\.?(\/|$))+/, '').replace(/\/(\.(\/|$))+/g, '/').replace(/\/\.\.$/, '/../').replace(/\/?[^\/]*/g, function (p) {
+                if (p === '/..') {
+                    output.pop();
+                } else {
+                    output.push(p);
+                }
+            });
+            return output.join('').replace(/^\//, input.charAt(0) === '/' ? '/' : '');
+        }
+        href = parseURI(href || '');
+        base = parseURI(base || '');
+        return !href || !base ? null : (href.protocol || base.protocol) + (href.protocol || href.authority ? href.authority : base.authority) + removeDotSegments(href.protocol || href.authority || href.pathname.charAt(0) === '/' ? href.pathname : href.pathname ? (base.authority && !base.pathname ? '/' : '') + base.pathname.slice(0, base.pathname.lastIndexOf('/') + 1) + href.pathname : base.pathname) + (href.protocol || href.authority || href.pathname ? href.search : href.search || base.search) + href.hash;
+    };
+    can['import'] = function (moduleName, parentName) {
         var deferred = new can.Deferred();
         if (typeof window.System === 'object' && can.isFunction(window.System['import'])) {
-            window.System['import'](moduleName).then(can.proxy(deferred.resolve, deferred), can.proxy(deferred.reject, deferred));
+            window.System['import'](moduleName, { name: parentName }).then(can.proxy(deferred.resolve, deferred), can.proxy(deferred.reject, deferred));
         } else if (window.define && window.define.amd) {
             window.require([moduleName], function (value) {
                 deferred.resolve(value);
@@ -120,5 +168,8 @@ define([], function () {
     };
     can.__observe = function () {
     };
+    can.isNode = typeof process === 'object' && {}.toString.call(process) === '[object process]';
+    can.isBrowserWindow = typeof window !== 'undefined' && typeof document !== 'undefined' && typeof SimpleDOM === 'undefined';
+    can.isWebWorker = typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope;
     return can;
 });

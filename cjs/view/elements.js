@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#view/elements*/
+/*can@2.3.0#view/elements*/
 var can = require('../util/util.js');
 require('./view.js');
 var doc = typeof document !== 'undefined' ? document : null;
@@ -60,12 +60,16 @@ var elements = {
         after: function (oldElements, newFrag) {
             var last = oldElements[oldElements.length - 1];
             if (last.nextSibling) {
-                can.insertBefore(last.parentNode, newFrag, last.nextSibling);
+                can.insertBefore(last.parentNode, newFrag, last.nextSibling, can.document);
             } else {
-                can.appendChild(last.parentNode, newFrag);
+                can.appendChild(last.parentNode, newFrag, can.document);
             }
         },
         replace: function (oldElements, newFrag) {
+            var selectedValue, parentNode = oldElements[0].parentNode;
+            if (parentNode.nodeName.toUpperCase() === 'SELECT' && parentNode.selectedIndex >= 0) {
+                selectedValue = parentNode.value;
+            }
             elements.after(oldElements, newFrag);
             if (can.remove(can.$(oldElements)).length < oldElements.length && !selectsCommentNodes) {
                 can.each(oldElements, function (el) {
@@ -73,6 +77,9 @@ var elements = {
                         el.parentNode.removeChild(el);
                     }
                 });
+            }
+            if (selectedValue !== undefined) {
+                parentNode.value = selectedValue;
             }
         }
     };

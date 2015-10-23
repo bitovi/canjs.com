@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#route/route*/
+/*can@2.3.0#route/route*/
 define([
     'can/util/library',
     'can/map',
@@ -173,12 +173,15 @@ define([
         ready: function (val) {
             if (val !== true) {
                 can.route._setup();
-                can.route.setState();
+                if (can.isBrowserWindow || can.isWebWorker) {
+                    can.route.setState();
+                }
             }
             return can.route;
         },
         url: function (options, merge) {
             if (merge) {
+                can.__observe(eventsObject, '__url');
                 options = can.extend({}, can.route.deparam(can.route._call('matchingPartOfURL')), options);
             }
             return can.route._call('root') + can.route.param(options);
@@ -202,7 +205,8 @@ define([
                     can.unbind.call(window, 'hashchange', setState);
                 },
                 matchingPartOfURL: function () {
-                    return location.href.split(/#!?/)[1] || '';
+                    var loc = can.route.location || location;
+                    return loc.href.split(/#!?/)[1] || '';
                 },
                 setURL: function (path) {
                     if (location.hash !== '#' + path) {
@@ -250,7 +254,7 @@ define([
         'removeAttr',
         'compute',
         '_get',
-        '__get',
+        '___get',
         'each'
     ], function (name) {
         can.route[name] = function () {
@@ -277,19 +281,20 @@ define([
         }
         return can.route.data.attr.apply(can.route.data, newArguments);
     };
+    can.route.batch = can.batch;
     var setState = can.route.setState = function () {
             var hash = can.route._call('matchingPartOfURL');
             var oldParams = curParams;
             curParams = can.route.deparam(hash);
             if (!changingData || hash !== lastHash) {
-                can.batch.start();
+                can.route.batch.start();
                 recursiveClean(oldParams, curParams, can.route.data);
                 can.route.attr(curParams);
-                can.batch.trigger(eventsObject, '__url', [
+                can.route.batch.trigger(eventsObject, '__url', [
                     hash,
                     lastHash
                 ]);
-                can.batch.stop();
+                can.route.batch.stop();
             }
         };
     var recursiveClean = function (old, cur, data) {

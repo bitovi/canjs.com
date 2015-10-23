@@ -1,21 +1,20 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#view/stache/text_section*/
+/*can@2.3.0#view/stache/text_section*/
 var can = require('../../util/util.js');
 var live = require('../live/live.js');
 var utils = require('./utils.js');
 var liveStache = require('./live_attr.js');
 live = live || can.view.live;
 var TextSectionBuilder = function () {
-        this.stack = [new TextSection()];
-    }, emptyHandler = function () {
-    };
+    this.stack = [new TextSection()];
+};
 can.extend(TextSectionBuilder.prototype, utils.mixins);
 can.extend(TextSectionBuilder.prototype, {
     startSection: function (process) {
@@ -40,8 +39,8 @@ can.extend(TextSectionBuilder.prototype, {
         return function (scope, options) {
             var compute = can.compute(function () {
                     return renderer(scope, options);
-                }, this, false, true);
-            compute.bind('change', emptyHandler);
+                }, null, false);
+            compute.computeInstance.bind('change', can.k);
             var value = compute();
             if (compute.computeInstance.hasDependencies) {
                 if (state.attr) {
@@ -49,7 +48,7 @@ can.extend(TextSectionBuilder.prototype, {
                 } else {
                     liveStache.attributes(this, compute, scope, options);
                 }
-                compute.unbind('change', emptyHandler);
+                compute.computeInstance.unbind('change', can.k);
             } else {
                 if (state.attr) {
                     can.attr.set(this, state.attr, value);

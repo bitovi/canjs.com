@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#util/jquery/jquery*/
+/*can@2.3.0#util/jquery/jquery*/
 var $ = require('jquery');
 var can = require('../can.js');
 var attr = require('../attr/attr.js');
@@ -14,7 +14,7 @@ var event = require('../../event/event.js');
 require('../array/each.js');
 require('../inserted/inserted.js');
 var isBindableElement = function (node) {
-    return node.nodeName && (node.nodeType === 1 || node.nodeType === 9) || node == window;
+    return node.nodeName && (node.nodeType === 1 || node.nodeType === 9) || node == window || node.addEventListener;
 };
 $ = $ || window.jQuery;
 $.extend(can, $, {
@@ -137,7 +137,7 @@ $.fn.domManip = cbIndex === 2 ? function (args, table, callback) {
     return oldDomManip.call(this, args, table, function (elem) {
         var elems;
         if (elem.nodeType === 11) {
-            elems = can.makeArray(elem.childNodes);
+            elems = can.makeArray(can.childNodes(elem));
         }
         var ret = callback.apply(this, arguments);
         can.inserted(elems ? elems : [elem]);
@@ -147,16 +147,18 @@ $.fn.domManip = cbIndex === 2 ? function (args, table, callback) {
     return oldDomManip.call(this, args, function (elem) {
         var elems;
         if (elem.nodeType === 11) {
-            elems = can.makeArray(elem.childNodes);
+            elems = can.makeArray(can.childNodes(elem));
         }
         var ret = callback.apply(this, arguments);
         can.inserted(elems ? elems : [elem]);
         return ret;
     });
 };
-if (!can.attr.MutationObserver) {
-    var oldAttr = $.attr;
-    $.attr = function (el, attrName) {
+var oldAttr = $.attr;
+$.attr = function (el, attrName) {
+    if (can.isDOM(el) && can.attr.MutationObserver) {
+        return oldAttr.apply(this, arguments);
+    } else {
         var oldValue, newValue;
         if (arguments.length >= 3) {
             oldValue = oldAttr.call(this, el, attrName);
@@ -169,26 +171,23 @@ if (!can.attr.MutationObserver) {
             can.attr.trigger(el, attrName, oldValue);
         }
         return res;
-    };
-    var oldRemove = $.removeAttr;
-    $.removeAttr = function (el, attrName) {
+    }
+};
+var oldRemove = $.removeAttr;
+$.removeAttr = function (el, attrName) {
+    if (can.isDOM(el) && can.attr.MutationObserver) {
+        return oldRemove.apply(this, arguments);
+    } else {
         var oldValue = oldAttr.call(this, el, attrName), res = oldRemove.apply(this, arguments);
         if (oldValue != null) {
             can.attr.trigger(el, attrName, oldValue);
         }
         return res;
-    };
-    $.event.special.attributes = {
-        setup: function () {
-            can.data(can.$(this), 'canHasAttributesBindings', true);
-        },
-        teardown: function () {
-            $.removeData(this, 'canHasAttributesBindings');
-        }
-    };
-} else {
-    $.event.special.attributes = {
-        setup: function () {
+    }
+};
+$.event.special.attributes = {
+    setup: function () {
+        if (can.isDOM(this) && can.attr.MutationObserver) {
             var self = this;
             var observer = new can.attr.MutationObserver(function (mutations) {
                     mutations.forEach(function (mutation) {
@@ -201,21 +200,27 @@ if (!can.attr.MutationObserver) {
                 attributeOldValue: true
             });
             can.data(can.$(this), 'canAttributesObserver', observer);
-        },
-        teardown: function () {
+        } else {
+            can.data(can.$(this), 'canHasAttributesBindings', true);
+        }
+    },
+    teardown: function () {
+        if (can.isDOM(this) && can.attr.MutationObserver) {
             can.data(can.$(this), 'canAttributesObserver').disconnect();
             $.removeData(this, 'canAttributesObserver');
+        } else {
+            $.removeData(this, 'canHasAttributesBindings');
         }
-    };
-}
+    }
+};
 (function () {
     var text = '<-\n>', frag = can.buildFragment(text, document);
-    if (text !== frag.childNodes[0].nodeValue) {
+    if (frag.firstChild && text !== frag.firstChild.nodeValue) {
         var oldBuildFragment = can.buildFragment;
         can.buildFragment = function (content, context) {
             var res = oldBuildFragment(content, context);
-            if (res.childNodes.length === 1 && res.childNodes[0].nodeType === 3) {
-                res.childNodes[0].nodeValue = content;
+            if (res.childNodes.length === 1 && res.childNodes.item(0).nodeType === 3) {
+                res.childNodes.item(0).nodeValue = content;
             }
             return res;
         };

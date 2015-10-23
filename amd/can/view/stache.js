@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#view/stache/stache*/
+/*can@2.3.0#view/stache/stache*/
 define([
     'can/util/library',
     'can/view/parser',
@@ -20,6 +20,7 @@ define([
     'can/view/bindings'
 ], function (can, parser, target, HTMLSectionBuilder, TextSectionBuilder, mustacheCore, mustacheHelpers, getIntermediateAndImports, viewCallbacks) {
     parser = parser || can.view.parser;
+    can.view.parser = parser;
     viewCallbacks = viewCallbacks || can.view.callbacks;
     var svgNamespace = 'http://www.w3.org/2000/svg';
     var namespaces = {
@@ -71,7 +72,7 @@ define([
                 if (!node.attributes) {
                     node.attributes = [];
                 }
-                node.attributes.push(callback);
+                node.attributes.unshift(callback);
             };
         parser(template, {
             start: function (tagName, unary) {
@@ -193,13 +194,17 @@ define([
                         delete state.node.section;
                     }
                 } else if (state.attr) {
-                    if (!state.attr.section) {
-                        state.attr.section = new TextSectionBuilder();
-                        if (state.attr.value) {
-                            state.attr.section.add(state.attr.value);
+                    if (viewCallbacks.attr(state.attr.name) && !state.attr.value) {
+                        this.attrValue('{{' + text + '}}');
+                    } else {
+                        if (!state.attr.section) {
+                            state.attr.section = new TextSectionBuilder();
+                            if (state.attr.value) {
+                                state.attr.section.add(state.attr.value);
+                            }
                         }
+                        makeRendererAndUpdateSection(state.attr.section, mode, expression);
                     }
-                    makeRendererAndUpdateSection(state.attr.section, mode, expression);
                 } else if (state.node) {
                     if (!state.node.attributes) {
                         state.node.attributes = [];

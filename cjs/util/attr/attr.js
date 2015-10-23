@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#util/attr/attr*/
+/*can@2.3.0#util/attr/attr*/
 var can = require('../can.js');
 var setImmediate = can.global.setImmediate || function (cb) {
         return setTimeout(cb, 0);
@@ -16,10 +16,15 @@ var setImmediate = can.global.setImmediate || function (cb) {
             'class': 'className',
             'value': 'value',
             'innertext': 'innerText',
+            'innerhtml': 'innerHTML',
             'textcontent': 'textContent',
+            'for': 'htmlFor',
             'checked': true,
             'disabled': true,
-            'readonly': true,
+            'readonly': function (el, val) {
+                el.readOnly = true;
+                return val;
+            },
             'required': true,
             src: function (el, val) {
                 if (val == null || val === '') {
@@ -30,27 +35,46 @@ var setImmediate = can.global.setImmediate || function (cb) {
                     return val;
                 }
             },
-            style: function (el, val) {
-                return el.style.cssText = val || '';
-            }
+            style: function () {
+                var el = can.global.document && document.createElement('div');
+                if (el && el.style && 'cssText' in el.style) {
+                    return function (el, val) {
+                        return el.style.cssText = val || '';
+                    };
+                } else {
+                    return function (el, val) {
+                        return el.setAttribute('style', val);
+                    };
+                }
+            }()
         },
         defaultValue: [
             'input',
             'textarea'
         ],
+        setAttrOrProp: function (el, attrName, val) {
+            attrName = attrName.toLowerCase();
+            var prop = attr.map[attrName];
+            if (prop === true && !val) {
+                this.remove(el, attrName);
+            } else {
+                this.set(el, attrName, val);
+            }
+        },
         set: function (el, attrName, val) {
+            var usingMutationObserver = can.isDOM(el) && attr.MutationObserver;
             attrName = attrName.toLowerCase();
             var oldValue;
-            if (!attr.MutationObserver) {
+            if (!usingMutationObserver) {
                 oldValue = attr.get(el, attrName);
             }
-            var tagName = el.nodeName.toString().toLowerCase(), prop = attr.map[attrName], newValue;
+            var prop = attr.map[attrName], newValue;
             if (typeof prop === 'function') {
                 newValue = prop(el, val);
             } else if (prop === true) {
                 newValue = el[attrName] = true;
                 if (attrName === 'checked' && el.type === 'radio') {
-                    if (can.inArray(tagName, attr.defaultValue) >= 0) {
+                    if (can.inArray((el.nodeName + '').toLowerCase(), attr.defaultValue) >= 0) {
                         el.defaultChecked = true;
                     }
                 }
@@ -59,14 +83,14 @@ var setImmediate = can.global.setImmediate || function (cb) {
                 if (el[prop] !== val) {
                     el[prop] = val;
                 }
-                if (prop === 'value' && can.inArray(tagName, attr.defaultValue) >= 0) {
+                if (prop === 'value' && can.inArray((el.nodeName + '').toLowerCase(), attr.defaultValue) >= 0) {
                     el.defaultValue = val;
                 }
             } else {
                 el.setAttribute(attrName, val);
                 newValue = val;
             }
-            if (!attr.MutationObserver && newValue !== oldValue) {
+            if (!usingMutationObserver && newValue !== oldValue) {
                 attr.trigger(el, attrName, oldValue);
             }
         },
@@ -87,8 +111,10 @@ var setImmediate = can.global.setImmediate || function (cb) {
         get: function (el, attrName) {
             attrName = attrName.toLowerCase();
             var prop = attr.map[attrName];
-            if (typeof prop === 'string' && el[prop]) {
+            if (typeof prop === 'string' && prop in el) {
                 return el[prop];
+            } else if (prop === true) {
+                return el[attrName];
             }
             return el.getAttribute(attrName);
         },

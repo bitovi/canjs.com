@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#view/mustache/mustache*/
+/*can@2.3.0#view/mustache/mustache*/
 define([
     'can/util/library',
     'can/view/scope',
@@ -257,7 +257,8 @@ define([
             });
             args.push(helperOptions);
             return function () {
-                return helper.fn.apply(context, args) || '';
+                var result = helper.fn.apply(context, args);
+                return result == null ? '' : result;
             };
         }
         return function () {
@@ -359,21 +360,24 @@ define([
             fn: fn
         };
     };
+    Mustache.registerSimpleHelper = function (name, fn) {
+        Mustache.registerHelper(name, can.view.simpleHelper(fn));
+    };
     Mustache.getHelper = function (name, options) {
         var helper;
         if (options) {
-            helper = options.attr('helpers.' + name);
+            helper = options.get('helpers.' + name, { proxyMethods: false });
         }
         return helper ? { fn: helper } : this._helpers[name];
     };
     Mustache.render = function (partial, scope, options) {
         if (!can.view.cached[partial]) {
-            var reads = can.__clearReading();
-            var scopePartialName = scope.attr(partial);
-            if (scopePartialName) {
-                partial = scopePartialName;
-            }
-            can.__setReading(reads);
+            can.__notObserve(function () {
+                var scopePartialName = scope.attr(partial);
+                if (scopePartialName) {
+                    partial = scopePartialName;
+                }
+            })();
         }
         return can.view.render(partial, scope, options);
     };
@@ -385,7 +389,7 @@ define([
         };
     };
     Mustache.renderPartial = function (partialName, scope, options) {
-        var partial = options.attr('partials.' + partialName);
+        var partial = options.get('partials.' + partialName, { proxyMethods: false });
         if (partial) {
             return partial.render ? partial.render(scope, options) : partial(scope, options);
         } else {

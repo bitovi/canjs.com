@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.9
+ * CanJS - 2.3.0
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 11 Sep 2015 23:12:43 GMT
+ * Fri, 23 Oct 2015 20:30:08 GMT
  * Licensed MIT
  */
 
-/*can@2.2.9#compute/compute*/
+/*can@2.3.0#compute/compute*/
 var can = require('../util/util.js');
 var bind = require('../util/bind/bind.js');
 require('../util/batch/batch.js');
@@ -50,22 +50,6 @@ can.compute = function (getterSetter, context, eventName, bindOnce) {
     compute.computeInstance = internalCompute;
     return compute;
 };
-var k = function () {
-};
-var computes, unbindComputes = function () {
-        for (var i = 0, len = computes.length; i < len; i++) {
-            computes[i].unbind('change', k);
-        }
-        computes = null;
-    };
-can.compute.temporarilyBind = function (compute) {
-    compute.bind('change', k);
-    if (!computes) {
-        computes = [];
-        setTimeout(unbindComputes, 10);
-    }
-    computes.push(compute);
-};
 can.compute.truthy = function (compute) {
     return can.compute(function () {
         var res = compute();
@@ -83,4 +67,5 @@ can.compute.async = function (initialValue, asyncComputer, context) {
 };
 can.compute.read = can.Compute.read;
 can.compute.set = can.Compute.set;
+can.compute.temporarilyBind = can.Compute.temporarilyBind;
 module.exports = can.compute;
