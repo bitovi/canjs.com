@@ -1,38 +1,23 @@
 /*!
- * CanJS - 2.3.0
+ * CanJS - 2.3.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 23 Oct 2015 20:30:08 GMT
+ * Thu, 29 Oct 2015 18:42:07 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0#view/stache/system*/
-var loader = require('@loader/');
-var can = require('../../util/can.js');
+/*can@2.3.1#view/stache/system*/
 var stache = require('./stache.js');
 var getIntermediateAndImports = require('./intermediate_and_imports.js');
-function addBundles(dynamicImports) {
-    if (!dynamicImports.length) {
-        return;
-    }
-    var localLoader = loader.localLoader || loader;
-    var bundle = localLoader.bundle;
-    if (!bundle) {
-        bundle = localLoader.bundle = [];
-    }
-    can.each(dynamicImports, function (moduleName) {
-        if (!~bundle.indexOf(moduleName)) {
-            bundle.push(moduleName);
-        }
-    });
-}
+var addBundles = require('./add_bundles.js');
 function translate(load) {
     var intermediateAndImports = getIntermediateAndImports(load.source);
-    addBundles(intermediateAndImports.dynamicImports);
-    intermediateAndImports.imports.unshift('can/view/stache/mustache_core');
-    intermediateAndImports.imports.unshift('can/view/stache/stache');
-    intermediateAndImports.imports.unshift('module');
-    return template(intermediateAndImports.imports, intermediateAndImports.intermediate);
+    return addBundles(intermediateAndImports.dynamicImports, load.name).then(function () {
+        intermediateAndImports.imports.unshift('can/view/stache/mustache_core');
+        intermediateAndImports.imports.unshift('can/view/stache/stache');
+        intermediateAndImports.imports.unshift('module');
+        return template(intermediateAndImports.imports, intermediateAndImports.intermediate);
+    });
 }
 function template(imports, intermediate) {
     imports = JSON.stringify(imports);

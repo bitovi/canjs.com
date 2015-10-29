@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0
+ * CanJS - 2.3.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 23 Oct 2015 20:30:08 GMT
+ * Thu, 29 Oct 2015 18:42:07 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0#component/component*/
+/*can@2.3.1#component/component*/
 steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/view/bindings', 'can/control', 'can/observe', 'can/view/mustache', 'can/util/view_model', function (can, viewCallbacks, elements, bindings) {
     var ignoreAttributesRegExp = /^(dataViewId|class|id|\[[\w\.-]+\]|#[\w\.-])$/i, paramReplacer = /\{([^\}]+)\}/g;
     var Component = can.Component = can.Construct.extend({
@@ -130,7 +130,13 @@ steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/view/bindin
                 can.data($el, 'scope', this.scope);
                 can.data($el, 'viewModel', this.scope);
                 can.data($el, 'preventDataBindings', true);
-                var shadowScope = (lexicalContent ? can.view.Scope.refsScope() : componentTagData.scope.add(new can.view.Scope.Refs())).add(this.scope, { viewModel: true }), options = { helpers: {} }, addHelper = function (name, fn) {
+                var shadowScope;
+                if (lexicalContent) {
+                    shadowScope = can.view.Scope.refsScope().add(this.scope, { viewModel: true });
+                } else {
+                    shadowScope = (this.constructor.renderer ? componentTagData.scope.add(new can.view.Scope.Refs()) : componentTagData.scope).add(this.scope, { viewModel: true });
+                }
+                var options = { helpers: {} }, addHelper = function (name, fn) {
                         options.helpers[name] = function () {
                             return fn.apply(viewModel, arguments);
                         };

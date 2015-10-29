@@ -1,13 +1,13 @@
 /*!
- * CanJS - 2.3.0
+ * CanJS - 2.3.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 23 Oct 2015 20:30:08 GMT
+ * Thu, 29 Oct 2015 18:42:07 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0#util/object/isplain/isplain*/
-steal('can/util/can.js', function () {
+/*can@2.3.1#util/object/isplain/isplain*/
+steal('can/util/can.js', function (can) {
     var core_hasOwn = Object.prototype.hasOwnProperty, isWindow = function (obj) {
             return obj !== null && obj == obj.window;
         }, isPlainObject = function (obj) {

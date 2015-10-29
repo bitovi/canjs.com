@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0
+ * CanJS - 2.3.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 23 Oct 2015 20:30:08 GMT
+ * Thu, 29 Oct 2015 18:42:07 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0#view/scope/scope*/
+/*can@2.3.1#view/scope/scope*/
 var can = require('../../util/util.js');
 var makeComputeData = require('./compute_data.js');
 require('../../construct/construct.js');
@@ -16,7 +16,7 @@ require('../view.js');
 require('../../compute/compute.js');
 var Scope = can.Construct.extend({
         read: can.compute.read,
-        Refs: can.Map.extend({}),
+        Refs: can.Map.extend({ shortName: 'ReferenceMap' }, {}),
         Break: function () {
         },
         refsScope: function () {

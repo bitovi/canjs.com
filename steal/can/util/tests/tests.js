@@ -1,10 +1,10 @@
 /*!
- * CanJS - 2.3.0
+ * CanJS - 2.3.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 23 Oct 2015 20:30:08 GMT
+ * Thu, 29 Oct 2015 18:42:07 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0#util/tests/tests*/
+/*can@2.3.1#util/tests/tests*/
 steal('../string/string', '../inserted/inserted', '../attr/attr', '../array/each');

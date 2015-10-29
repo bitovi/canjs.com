@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0
+ * CanJS - 2.3.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 23 Oct 2015 20:30:08 GMT
+ * Thu, 29 Oct 2015 18:42:07 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0#compute/get_value_and_bind*/
+/*can@2.3.1#compute/get_value_and_bind*/
 steal('can/util', function (can) {
     function ObservedInfo(func, context, onchanged) {
         this.func = func;

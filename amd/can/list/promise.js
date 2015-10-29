@@ -1,13 +1,16 @@
 /*!
- * CanJS - 2.3.0
+ * CanJS - 2.3.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 23 Oct 2015 20:30:08 GMT
+ * Thu, 29 Oct 2015 18:42:07 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0#list/promise/promise*/
-define(['can/list'], function (list) {
+/*can@2.3.1#list/promise/promise*/
+define([
+    'can/util/can',
+    'can/list'
+], function (can) {
     var oldReplace = can.List.prototype.replace;
     can.List.prototype.replace = function (data) {
         var result = oldReplace.apply(this, arguments);

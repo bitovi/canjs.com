@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0
+ * CanJS - 2.3.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 23 Oct 2015 20:30:08 GMT
+ * Thu, 29 Oct 2015 18:42:07 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0#view/stache/live_attr*/
+/*can@2.3.1#view/stache/live_attr*/
 steal('can/util', 'can/view/live', 'can/view/elements.js', 'can/view/callbacks', function (can, live, elements, viewCallbacks) {
     live = live || can.view.live;
     elements = elements || can.view.elements;

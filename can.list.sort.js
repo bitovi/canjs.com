@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.0
+ * CanJS - 2.3.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 23 Oct 2015 20:30:08 GMT
+ * Thu, 29 Oct 2015 18:42:07 GMT
  * Licensed MIT
  */
 
@@ -78,11 +78,11 @@
 		};
 	});
 })({},window)
-/*can@2.3.0#list/sort/sort*/
+/*can@2.3.1#list/sort/sort*/
 define('can/list/sort/sort', [
     'can/util/util',
     'can/list/list'
-], function () {
+], function (can) {
     var oldBubbleRule = can.List._bubbleRule;
     can.List._bubbleRule = function (eventName, list) {
         var oldBubble = oldBubbleRule.apply(this, arguments);

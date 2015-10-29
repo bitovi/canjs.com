@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.0
+ * CanJS - 2.3.1
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 23 Oct 2015 20:30:08 GMT
+ * Thu, 29 Oct 2015 18:42:07 GMT
  * Licensed MIT
  */
 
-/*can@2.3.0#util/util*/
+/*can@2.3.1#util/util*/
 'format steal';
 steal('can/util/can.js', 'can/util/attr', 'dojo', 'can/event', 'can/util/fragment.js', 'can/util/array/each.js', 'can/util/object/isplain', 'can/util/deferred.js', 'can/util/hashchange.js', 'can/util/inserted', function (can, attr, djo) {
     var dojo = djo || window.dojo;
