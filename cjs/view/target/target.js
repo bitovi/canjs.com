@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.1
+ * CanJS - 2.3.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 29 Oct 2015 18:42:07 GMT
+ * Fri, 13 Nov 2015 23:57:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.1#view/target/target*/
+/*can@2.3.2#view/target/target*/
 var can = require('../../util/util.js');
 var elements = require('../elements.js');
 var processNodes = function (nodes, paths, location, document) {
@@ -140,13 +140,13 @@ function getCallbacks(el, pathData, elementCallbacks) {
     for (var i = 0; i < pathLength; i++) {
         child = child.childNodes.item(path[i]);
     }
+    for (i = 0; i < pathsLength; i++) {
+        getCallbacks(child, paths[i], elementCallbacks);
+    }
     elementCallbacks.push({
         element: child,
         callbacks: callbacks
     });
-    for (i = 0; i < pathsLength; i++) {
-        getCallbacks(child, paths[i], elementCallbacks);
-    }
 }
 function hydrateCallbacks(callbacks, args) {
     var len = callbacks.length, callbacksLength, callbackElement, callbackData;

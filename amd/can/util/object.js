@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.1
+ * CanJS - 2.3.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 29 Oct 2015 18:42:07 GMT
+ * Fri, 13 Nov 2015 23:57:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.1#util/object/object*/
+/*can@2.3.2#util/object/object*/
 define(['can/util/library'], function (can) {
     var isArray = can.isArray;
     can.Object = {};

@@ -1,14 +1,15 @@
 /*!
- * CanJS - 2.3.1
+ * CanJS - 2.3.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 29 Oct 2015 18:42:07 GMT
+ * Fri, 13 Nov 2015 23:57:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.1#view/import/import*/
+/*can@2.3.2#view/import/import*/
 steal('can/util', 'can/view/callbacks', function (can) {
     can.view.tag('can-import', function (el, tagData) {
+        var $el = can.$(el);
         var moduleName = el.getAttribute('from');
         var templateModule = tagData.options.attr('helpers.module');
         var parentName = templateModule ? templateModule.id : undefined;
@@ -22,15 +23,17 @@ steal('can/util', 'can/view/callbacks', function (can) {
         if (root && can.isFunction(root.waitFor)) {
             root.waitFor(importPromise);
         }
-        can.data(can.$(el), 'viewModel', importPromise);
-        can.data(can.$(el), 'scope', importPromise);
+        can.data($el, 'viewModel', importPromise);
+        can.data($el, 'scope', importPromise);
         var scope = tagData.scope.add(importPromise);
         var handOffTag = el.getAttribute('can-tag');
         if (handOffTag) {
             var callback = can.view.tag(handOffTag);
+            can.data($el, 'preventDataBindings', true);
             callback(el, can.extend(tagData, { scope: scope }));
-            can.data(can.$(el), 'viewModel', importPromise);
-            can.data(can.$(el), 'scope', importPromise);
+            can.data($el, 'preventDataBindings', false);
+            can.data($el, 'viewModel', importPromise);
+            can.data($el, 'scope', importPromise);
         } else {
             var frag = tagData.subtemplate ? tagData.subtemplate(scope, tagData.options) : document.createDocumentFragment();
             var nodeList = can.view.nodeLists.register([], undefined, true);

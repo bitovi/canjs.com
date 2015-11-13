@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.1
+ * CanJS - 2.3.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 29 Oct 2015 18:42:07 GMT
+ * Fri, 13 Nov 2015 23:57:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.1#view/live/live*/
+/*can@2.3.2#view/live/live*/
 var can = require('../../util/util.js');
 var elements = require('../elements.js');
 var view = require('../view.js');
@@ -143,6 +143,9 @@ var live = {
                     for (var i = index + newIndicies.length, len = indexMap.length; i < len; i++) {
                         indexMap[i](i);
                     }
+                }, set = function (ev, newVal, index) {
+                    remove({}, { length: 1 }, index, true);
+                    add({}, [newVal], index);
                 }, remove = function (ev, items, index, duringTeardown, fullTeardown) {
                     if (!afterPreviousEvents) {
                         return;
@@ -190,9 +193,26 @@ var live = {
                         0,
                         temp
                     ]);
+                    newIndex = newIndex - 1;
+                    currentIndex = currentIndex - 1;
+                    var indexCompute = indexMap[currentIndex];
+                    [].splice.apply(indexMap, [
+                        currentIndex,
+                        1
+                    ]);
+                    [].splice.apply(indexMap, [
+                        newIndex,
+                        0,
+                        indexCompute
+                    ]);
+                    var i = Math.min(currentIndex, newIndex);
+                    var len = indexMap.length;
+                    for (i, len; i < len; i++) {
+                        indexMap[i](i);
+                    }
                 }, text = el.ownerDocument.createTextNode(''), list, teardownList = function (fullTeardown) {
                     if (list && list.unbind) {
-                        list.unbind('add', add).unbind('remove', remove).unbind('move', move);
+                        list.unbind('add', add).unbind('set', set).unbind('remove', remove).unbind('move', move);
                     }
                     remove({}, { length: masterNodeList.length - 1 }, 0, true, fullTeardown);
                 }, updateList = function (ev, newList, oldList) {
@@ -204,7 +224,7 @@ var live = {
                         list = newList || [];
                         var patches = diff(oldList, newList);
                         if (oldList.unbind) {
-                            oldList.unbind('add', add).unbind('remove', remove).unbind('move', move);
+                            oldList.unbind('add', add).unbind('set', set).unbind('remove', remove).unbind('move', move);
                         }
                         for (var i = 0, patchLen = patches.length; i < patchLen; i++) {
                             var patch = patches[i];
@@ -225,7 +245,7 @@ var live = {
                     }
                     afterPreviousEvents = false;
                     if (list.bind) {
-                        list.bind('add', add).bind('remove', remove).bind('move', move);
+                        list.bind('add', add).bind('set', set).bind('remove', remove).bind('move', move);
                     }
                     can.batch.afterPreviousEvents(function () {
                         afterPreviousEvents = true;

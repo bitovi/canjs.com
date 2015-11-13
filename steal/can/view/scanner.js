@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.1
+ * CanJS - 2.3.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 29 Oct 2015 18:42:07 GMT
+ * Fri, 13 Nov 2015 23:57:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.1#view/scanner*/
+/*can@2.3.2#view/scanner*/
 steal('can/view', './elements', 'can/view/callbacks', function (can, elements, viewCallbacks) {
     var newLine = /(\r|\n)+/g, notEndTag = /\//, clean = function (content) {
             return content.split('\\').join('\\\\').split('\n').join('\\n').split('"').join('\\"').split('\t').join('\\t');

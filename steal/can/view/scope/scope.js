@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.1
+ * CanJS - 2.3.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 29 Oct 2015 18:42:07 GMT
+ * Fri, 13 Nov 2015 23:57:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.1#view/scope/scope*/
+/*can@2.3.2#view/scope/scope*/
 steal('can/util', 'can/view/scope/compute_data.js', 'can/construct', 'can/map', 'can/list', 'can/view', 'can/compute', function (can, makeComputeData) {
     var Scope = can.Construct.extend({
             read: can.compute.read,
@@ -129,7 +129,7 @@ steal('can/util', 'can/view/scope/compute_data.js', 'can/construct', 'can/map', 
                 } else if (attr === '%root') {
                     return { value: this.getRoot() };
                 }
-                var names = can.compute.read.reads(attr), context, scope = attr.charAt(0) === '*' ? this.getRefs() : this, undefinedObserves = [], currentObserve, currentReads, setObserveDepth = -1, currentSetReads, currentSetObserve, searchedRefsScope = false, refInstance, readOptions = can.simpleExtend({
+                var names = can.compute.read.reads(attr), context, scope = names[0].key.charAt(0) === '*' ? this.getRefs() : this, undefinedObserves = [], currentObserve, currentReads, setObserveDepth = -1, currentSetReads, currentSetObserve, searchedRefsScope = false, refInstance, readOptions = can.simpleExtend({
                         foundObservable: function (observe, nameIndex) {
                             currentObserve = observe;
                             currentReads = names.slice(nameIndex);

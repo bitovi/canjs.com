@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.1
+ * CanJS - 2.3.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 29 Oct 2015 18:42:07 GMT
+ * Fri, 13 Nov 2015 23:57:31 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.1#view/target/target*/
+/*can@2.3.2#view/target/target*/
 define('can/view/target/target', [
     'can/util/util',
     'can/view/elements'
@@ -214,13 +214,13 @@ define('can/view/target/target', [
         for (var i = 0; i < pathLength; i++) {
             child = child.childNodes.item(path[i]);
         }
+        for (i = 0; i < pathsLength; i++) {
+            getCallbacks(child, paths[i], elementCallbacks);
+        }
         elementCallbacks.push({
             element: child,
             callbacks: callbacks
         });
-        for (i = 0; i < pathsLength; i++) {
-            getCallbacks(child, paths[i], elementCallbacks);
-        }
     }
     function hydrateCallbacks(callbacks, args) {
         var len = callbacks.length, callbacksLength, callbackElement, callbackData;
@@ -255,7 +255,7 @@ define('can/view/target/target', [
     can.view.target = makeTarget;
     return makeTarget;
 });
-/*can@2.3.1#view/stache/mustache_core*/
+/*can@2.3.2#view/stache/mustache_core*/
 define('can/view/stache/mustache_core', [
     'can/util/util',
     'can/view/stache/utils',
@@ -381,7 +381,7 @@ define('can/view/stache/mustache_core', [
                                 res = partial.render ? partial.render(scope, options) : partial(scope, options);
                             } else {
                                 var scopePartialName = scope.read(localPartialName, { isArgument: true }).value;
-                                if (scopePartialName === null) {
+                                if (scopePartialName === null || !scopePartialName && localPartialName[0] === '*') {
                                     return can.frag('');
                                 }
                                 if (scopePartialName) {
@@ -492,7 +492,7 @@ define('can/view/stache/mustache_core', [
     can.view.mustacheCore = core;
     return core;
 });
-/*can@2.3.1#view/stache/html_section*/
+/*can@2.3.2#view/stache/html_section*/
 define('can/view/stache/html_section', [
     'can/util/util',
     'can/view/target/target',
@@ -613,7 +613,7 @@ define('can/view/stache/html_section', [
     });
     return HTMLSectionBuilder;
 });
-/*can@2.3.1#view/stache/live_attr*/
+/*can@2.3.2#view/stache/live_attr*/
 define('can/view/stache/live_attr', [
     'can/util/util',
     'can/view/live/live',
@@ -659,7 +659,7 @@ define('can/view/stache/live_attr', [
         }
     };
 });
-/*can@2.3.1#view/stache/text_section*/
+/*can@2.3.2#view/stache/text_section*/
 define('can/view/stache/text_section', [
     'can/util/util',
     'can/view/live/live',
@@ -749,12 +749,13 @@ define('can/view/stache/text_section', [
     });
     return TextSectionBuilder;
 });
-/*can@2.3.1#view/import/import*/
+/*can@2.3.2#view/import/import*/
 define('can/view/import/import', [
     'can/util/util',
     'can/view/callbacks/callbacks'
 ], function (can) {
     can.view.tag('can-import', function (el, tagData) {
+        var $el = can.$(el);
         var moduleName = el.getAttribute('from');
         var templateModule = tagData.options.attr('helpers.module');
         var parentName = templateModule ? templateModule.id : undefined;
@@ -768,15 +769,17 @@ define('can/view/import/import', [
         if (root && can.isFunction(root.waitFor)) {
             root.waitFor(importPromise);
         }
-        can.data(can.$(el), 'viewModel', importPromise);
-        can.data(can.$(el), 'scope', importPromise);
+        can.data($el, 'viewModel', importPromise);
+        can.data($el, 'scope', importPromise);
         var scope = tagData.scope.add(importPromise);
         var handOffTag = el.getAttribute('can-tag');
         if (handOffTag) {
             var callback = can.view.tag(handOffTag);
+            can.data($el, 'preventDataBindings', true);
             callback(el, can.extend(tagData, { scope: scope }));
-            can.data(can.$(el), 'viewModel', importPromise);
-            can.data(can.$(el), 'scope', importPromise);
+            can.data($el, 'preventDataBindings', false);
+            can.data($el, 'viewModel', importPromise);
+            can.data($el, 'scope', importPromise);
         } else {
             var frag = tagData.subtemplate ? tagData.subtemplate(scope, tagData.options) : document.createDocumentFragment();
             var nodeList = can.view.nodeLists.register([], undefined, true);
@@ -788,7 +791,7 @@ define('can/view/import/import', [
         }
     });
 });
-/*can@2.3.1#view/stache/intermediate_and_imports*/
+/*can@2.3.2#view/stache/intermediate_and_imports*/
 define('can/view/stache/intermediate_and_imports', [
     'can/view/stache/mustache_core',
     'can/view/parser/parser',
@@ -854,7 +857,7 @@ define('can/view/stache/intermediate_and_imports', [
         };
     };
 });
-/*can@2.3.1#view/stache/stache*/
+/*can@2.3.2#view/stache/stache*/
 define('can/view/stache/stache', [
     'can/util/util',
     'can/view/parser/parser',
@@ -1042,17 +1045,13 @@ define('can/view/stache/stache', [
                         delete state.node.section;
                     }
                 } else if (state.attr) {
-                    if (viewCallbacks.attr(state.attr.name) && !state.attr.value) {
-                        this.attrValue('{{' + text + '}}');
-                    } else {
-                        if (!state.attr.section) {
-                            state.attr.section = new TextSectionBuilder();
-                            if (state.attr.value) {
-                                state.attr.section.add(state.attr.value);
-                            }
+                    if (!state.attr.section) {
+                        state.attr.section = new TextSectionBuilder();
+                        if (state.attr.value) {
+                            state.attr.section.add(state.attr.value);
                         }
-                        makeRendererAndUpdateSection(state.attr.section, mode, expression);
                     }
+                    makeRendererAndUpdateSection(state.attr.section, mode, expression);
                 } else if (state.node) {
                     if (!state.node.attributes) {
                         state.node.attributes = [];

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.1
+ * CanJS - 2.3.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 29 Oct 2015 18:42:07 GMT
+ * Fri, 13 Nov 2015 23:57:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.1#view/mustache/mustache*/
+/*can@2.3.2#view/mustache/mustache*/
 var can = require('../../util/util.js');
 require('../scope/scope.js');
 require('../view.js');
@@ -426,10 +426,11 @@ can.each({
     },
     'unless': function (expr, options) {
         return Mustache._helpers['if'].fn.apply(this, [
-            can.isFunction(expr) ? can.compute(function () {
-                return !expr();
-            }) : !expr,
-            options
+            expr,
+            can.extend({}, options, {
+                fn: options.inverse,
+                inverse: options.fn
+            })
         ]);
     },
     'each': function (expr, options) {

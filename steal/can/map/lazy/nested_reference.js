@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.1
+ * CanJS - 2.3.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 29 Oct 2015 18:42:07 GMT
+ * Fri, 13 Nov 2015 23:57:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.1#map/lazy/nested_reference*/
+/*can@2.3.2#map/lazy/nested_reference*/
 steal('can/util', function (can) {
     var pathIterator = function (root, propPath, callback) {
         var props = propPath.split('.'), cur = root, part;

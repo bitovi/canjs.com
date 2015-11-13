@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.1
+ * CanJS - 2.3.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 29 Oct 2015 18:42:07 GMT
+ * Fri, 13 Nov 2015 23:57:31 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.1#util/can*/
+/*can@2.3.2#util/can*/
 define('can/util/can', [], function () {
     var glbl = typeof window !== 'undefined' ? window : typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope ? self : global;
     var can = {};
@@ -102,7 +102,7 @@ define('can/util/can', [], function () {
         }
         return object._cid;
     };
-    can.VERSION = '2.3.1';
+    can.VERSION = '2.3.2';
     can.simpleExtend = function (d, s) {
         for (var prop in s) {
             d[prop] = s[prop];
@@ -243,16 +243,59 @@ define('can/util/can', [], function () {
     can.isNode = typeof process === 'object' && {}.toString.call(process) === '[object process]';
     can.isBrowserWindow = typeof window !== 'undefined' && typeof document !== 'undefined' && typeof SimpleDOM === 'undefined';
     can.isWebWorker = typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope;
+    can.dev = {
+        warnTimeout: 5000,
+        logLevel: 0,
+        warn: function (out) {
+            var ll = this.logLevel;
+            if (ll < 2) {
+                Array.prototype.unshift.call(arguments, 'WARN:');
+                if (typeof window !== undefined && window.console && console.warn) {
+                    this._logger('warn', Array.prototype.slice.call(arguments));
+                } else if (window.console && console.log) {
+                    this._logger('log', Array.prototype.slice.call(arguments));
+                } else if (window.opera && window.opera.postError) {
+                    window.opera.postError('steal.js WARNING: ' + out);
+                }
+            }
+        },
+        log: function (out) {
+            var ll = this.logLevel;
+            if (ll < 1) {
+                if (window.console && console.log) {
+                    Array.prototype.unshift.call(arguments, 'Info:');
+                    this._logger('log', Array.prototype.slice.call(arguments));
+                } else if (window.opera && window.opera.postError) {
+                    window.opera.postError('steal.js INFO: ' + out);
+                }
+            }
+        },
+        _logger: function (type, arr) {
+            if (console.log.apply) {
+                console[type].apply(console, arr);
+            } else {
+                console[type](arr);
+            }
+        }
+    };
     return can;
 });
-/*can@2.3.1#util/attr/attr*/
+/*can@2.3.2#util/attr/attr*/
 define('can/util/attr/attr', ['can/util/can'], function (can) {
     var setImmediate = can.global.setImmediate || function (cb) {
             return setTimeout(cb, 0);
         }, attr = {
             MutationObserver: can.global.MutationObserver || can.global.WebKitMutationObserver || can.global.MozMutationObserver,
             map: {
-                'class': 'className',
+                'class': function (el, val) {
+                    val = val || '';
+                    if (el.namespaceURI === 'http://www.w3.org/2000/svg') {
+                        el.setAttribute('class', val);
+                    } else {
+                        el.className = val;
+                    }
+                    return val;
+                },
                 'value': 'value',
                 'innertext': 'innerText',
                 'innerhtml': 'innerHTML',
@@ -319,7 +362,7 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
                     }
                 } else if (prop) {
                     newValue = val;
-                    if (el[prop] !== val) {
+                    if (el[prop] !== val || el.nodeName.toUpperCase() === 'OPTION') {
                         el[prop] = val;
                     }
                     if (prop === 'value' && can.inArray((el.nodeName + '').toLowerCase(), attr.defaultValue) >= 0) {
@@ -393,7 +436,7 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
         };
     return attr;
 });
-/*can@2.3.1#event/event*/
+/*can@2.3.2#event/event*/
 define('can/event/event', ['can/util/can'], function (can) {
     can.addEvent = function (event, handler) {
         var allEvents = this.__bindEvents || (this.__bindEvents = {}), eventList = allEvents[event] || (allEvents[event] = []);
@@ -547,7 +590,7 @@ define('can/event/event', ['can/util/can'], function (can) {
     };
     return can.event;
 });
-/*can@2.3.1#util/array/each*/
+/*can@2.3.2#util/array/each*/
 define('can/util/array/each', ['can/util/can'], function (can) {
     var isArrayLike = function (obj) {
         var length = obj && typeof obj !== 'boolean' && typeof obj !== 'number' && 'length' in obj && obj.length;
@@ -595,7 +638,7 @@ define('can/util/array/each', ['can/util/can'], function (can) {
     };
     return can;
 });
-/*can@2.3.1#util/inserted/inserted*/
+/*can@2.3.2#util/inserted/inserted*/
 define('can/util/inserted/inserted', ['can/util/can'], function (can) {
     can.inserted = function (elems, document) {
         if (!elems.length) {
@@ -645,7 +688,7 @@ define('can/util/inserted/inserted', ['can/util/can'], function (can) {
         can.inserted(children, document);
     };
 });
-/*can@2.3.1#util/jquery/jquery*/
+/*can@2.3.2#util/jquery/jquery*/
 define('can/util/jquery/jquery', [
     'dist/jquery',
     'can/util/can',
@@ -871,11 +914,11 @@ define('can/util/jquery/jquery', [
     $.event.special.removed = {};
     return can;
 });
-/*can@2.3.1#util/util*/
+/*can@2.3.2#util/util*/
 define('can/util/util', ['can/util/jquery/jquery'], function (can) {
     return can;
 });
-/*can@2.3.1#view/view*/
+/*can@2.3.2#view/view*/
 define('can/view/view', ['can/util/util'], function (can) {
     var isFunction = can.isFunction, makeArray = can.makeArray, hookupId = 1;
     var makeRenderer = function (textRenderer) {
@@ -889,6 +932,7 @@ define('can/view/view', ['can/util/util'], function (can) {
     };
     var checkText = function (text, url) {
         if (!text.length) {
+            can.dev.log('can/view/view.js: There is no template or an empty template at ' + url);
             throw new Error('can.view: No template or empty template:' + url);
         }
     };
@@ -1017,6 +1061,13 @@ define('can/view/view', ['can/util/util'], function (can) {
         cache: true,
         register: function (info) {
             this.types['.' + info.suffix] = info;
+            if (typeof window !== 'undefined' && window.steal && steal.type) {
+                steal.type(info.suffix + ' view js', function (options, success, error) {
+                    var type = $view.types['.' + options.type], id = $view.toId(options.id + '');
+                    options.text = type.script(id, options.text);
+                    success();
+                });
+            }
             can[info.suffix] = $view[info.suffix] = function (id, text) {
                 var renderer, renderFunc;
                 if (!text) {
@@ -1157,9 +1208,17 @@ define('can/view/view', ['can/util/util'], function (can) {
             };
         }
     });
+    if (typeof window !== 'undefined' && window.steal && steal.type) {
+        steal.type('view js', function (options, success, error) {
+            var type = $view.types['.' + options.type], id = $view.toId(options.id);
+            var dependency = type.plugin || 'can/view/' + options.type, preload = type.fragRenderer ? 'preload' : 'preloadStringRenderer';
+            options.text = 'steal(\'can/view\',\'' + dependency + '\',function(can){return ' + 'can.view.' + preload + '(\'' + id + '\',' + options.text + ');\n})';
+            success();
+        });
+    }
     return can;
 });
-/*can@2.3.1#view/callbacks/callbacks*/
+/*can@2.3.2#view/callbacks/callbacks*/
 define('can/view/callbacks/callbacks', [
     'can/util/util',
     'can/view/view'
@@ -1191,6 +1250,9 @@ define('can/view/callbacks/callbacks', [
     var attributes = {}, regExpAttributes = [], automaticCustomElementCharacters = /[-\:]/;
     var tag = can.view.tag = function (tagName, tagHandler) {
             if (tagHandler) {
+                if (typeof tags[tagName.toLowerCase()] !== 'undefined') {
+                    can.dev.warn('Custom tag: ' + tagName.toLowerCase() + ' is already defined');
+                }
                 if (can.global.html5) {
                     can.global.html5.elements += ' ' + tagName;
                     can.global.html5.shivDocument();
@@ -1220,6 +1282,9 @@ define('can/view/callbacks/callbacks', [
             } else {
                 res = scope;
             }
+            if (!tagCallback) {
+                can.dev.warn('can/view/scanner.js: No custom element found for ' + tagName);
+            }
             if (res && tagData.subtemplate) {
                 if (scope !== res) {
                     scope = scope.add(res);
@@ -1232,7 +1297,7 @@ define('can/view/callbacks/callbacks', [
     };
     return can.view.callbacks;
 });
-/*can@2.3.1#view/elements*/
+/*can@2.3.2#view/elements*/
 define('can/view/elements', [
     'can/util/util',
     'can/view/view'
@@ -1314,7 +1379,7 @@ define('can/view/elements', [
     can.view.elements = elements;
     return elements;
 });
-/*can@2.3.1#util/bind/bind*/
+/*can@2.3.2#util/bind/bind*/
 define('can/util/bind/bind', ['can/util/util'], function (can) {
     can.bindAndSetup = function () {
         can.addEvent.apply(this, arguments);
@@ -1349,7 +1414,7 @@ define('can/util/bind/bind', ['can/util/util'], function (can) {
     };
     return can;
 });
-/*can@2.3.1#util/batch/batch*/
+/*can@2.3.2#util/batch/batch*/
 define('can/util/batch/batch', ['can/util/can'], function (can) {
     var batchNum = 1, transactions = 0, batchEvents = [], stopCallbacks = [], currentBatchEvents = null, currentBatchCallbacks = null;
     can.batch = {
@@ -1441,7 +1506,7 @@ define('can/util/batch/batch', ['can/util/can'], function (can) {
         }
     };
 });
-/*can@2.3.1#compute/read*/
+/*can@2.3.2#compute/read*/
 define('can/compute/read', ['can/util/util'], function (can) {
     var read = function (parent, reads, options) {
         options = options || {};
@@ -1604,6 +1669,7 @@ define('can/compute/read', ['can/util/util'], function (can) {
                     if (prop.key in value) {
                         return value[prop.key];
                     } else if (prop.at && specialRead[prop.key] && '@' + prop.key in value) {
+                        can.dev.warn('Use %' + prop.key + ' in place of @' + prop.key + '.');
                         return value['@' + prop.key];
                     }
                 }
@@ -1667,7 +1733,7 @@ define('can/compute/read', ['can/util/util'], function (can) {
     };
     return read;
 });
-/*can@2.3.1#compute/get_value_and_bind*/
+/*can@2.3.2#compute/get_value_and_bind*/
 define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
     function ObservedInfo(func, context, onchanged) {
         this.func = func;
@@ -1776,7 +1842,7 @@ define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
     getValueAndBind.ObservedInfo = ObservedInfo;
     return getValueAndBind;
 });
-/*can@2.3.1#compute/proto_compute*/
+/*can@2.3.2#compute/proto_compute*/
 define('can/compute/proto_compute', [
     'can/util/util',
     'can/util/bind/bind',
@@ -2045,7 +2111,7 @@ define('can/compute/proto_compute', [
     can.Compute.set = read.write;
     return can.Compute;
 });
-/*can@2.3.1#compute/compute*/
+/*can@2.3.2#compute/compute*/
 define('can/compute/compute', [
     'can/util/util',
     'can/util/bind/bind',
@@ -2111,7 +2177,7 @@ define('can/compute/compute', [
     can.compute.temporarilyBind = can.Compute.temporarilyBind;
     return can.compute;
 });
-/*can@2.3.1#view/scope/compute_data*/
+/*can@2.3.2#view/scope/compute_data*/
 define('can/view/scope/compute_data', [
     'can/util/util',
     'can/compute/compute',
@@ -2207,7 +2273,7 @@ define('can/view/scope/compute_data', [
         return computeData;
     };
 });
-/*can@2.3.1#util/string/string*/
+/*can@2.3.2#util/string/string*/
 define('can/util/string/string', ['can/util/util'], function (can) {
     var strUndHash = /_|-/, strColons = /\=\=/, strWords = /([A-Z]+)([A-Z][a-z])/g, strLowUp = /([a-z\d])([A-Z])/g, strDash = /([a-z\d])([A-Z])/g, strReplacer = /\{([^\}]+)\}/g, strQuote = /"/g, strSingleQuote = /'/g, strHyphenMatch = /-+(.)?/g, strCamelMatch = /[a-z][A-Z]/g, getNext = function (obj, prop, add) {
             var result = obj[prop];
@@ -2292,7 +2358,7 @@ define('can/util/string/string', ['can/util/util'], function (can) {
     });
     return can;
 });
-/*can@2.3.1#construct/construct*/
+/*can@2.3.2#construct/construct*/
 define('can/construct/construct', ['can/util/string/string'], function (can) {
     var initializing = 0;
     var canGetDescriptor;
@@ -2382,6 +2448,8 @@ define('can/construct/construct', ['can/util/string/string'], function (can) {
             } else if (this.shortName) {
                 shortName = this.shortName;
             }
+            var constructorName = shortName ? shortName.replace(/;/g, '') : 'Constructor';
+            eval('Constructor = function ' + constructorName + '() { return init.apply(this, arguments); }');
             if (typeof constructorName === 'undefined') {
                 Constructor = function () {
                     return init.apply(this, arguments);
@@ -2389,6 +2457,9 @@ define('can/construct/construct', ['can/util/string/string'], function (can) {
             }
             function init() {
                 if (!initializing) {
+                    if (this.constructor !== Constructor && arguments.length && Constructor.constructorExtends) {
+                        can.dev.warn('can/construct/construct.js: extending a can.Construct without calling extend');
+                    }
                     return this.constructor !== Constructor && arguments.length && Constructor.constructorExtends ? Constructor.extend.apply(Constructor, arguments) : Constructor.newInstance.apply(Constructor, arguments);
                 }
             }
@@ -2403,6 +2474,9 @@ define('can/construct/construct', ['can/util/string/string'], function (can) {
                 namespace = current;
                 _fullName = can.underscore(fullName.replace(/\./g, '_'));
                 _shortName = can.underscore(shortName);
+                if (current[shortName]) {
+                    can.dev.warn('can/construct/construct.js: There\'s already something called ' + fullName);
+                }
                 current[shortName] = Constructor;
             }
             can.extend(Constructor, {
@@ -2430,7 +2504,7 @@ define('can/construct/construct', ['can/util/string/string'], function (can) {
     };
     return can.Construct;
 });
-/*can@2.3.1#map/bubble*/
+/*can@2.3.2#map/bubble*/
 define('can/map/bubble', ['can/util/util'], function (can) {
     var bubble = can.bubble = {
             bind: function (parent, eventName) {
@@ -2548,7 +2622,7 @@ define('can/map/bubble', ['can/util/util'], function (can) {
         };
     return bubble;
 });
-/*can@2.3.1#util/object/isplain/isplain*/
+/*can@2.3.2#util/object/isplain/isplain*/
 define('can/util/object/isplain/isplain', ['can/util/can'], function (can) {
     var core_hasOwn = Object.prototype.hasOwnProperty, isWindow = function (obj) {
             return obj !== null && obj == obj.window;
@@ -2571,7 +2645,7 @@ define('can/util/object/isplain/isplain', ['can/util/can'], function (can) {
     can.isPlainObject = isPlainObject;
     return can;
 });
-/*can@2.3.1#map/map_helpers*/
+/*can@2.3.2#map/map_helpers*/
 define('can/map/map_helpers', [
     'can/util/util',
     'can/util/object/isplain/isplain'
@@ -2675,7 +2749,7 @@ define('can/map/map_helpers', [
     };
     return mapHelpers;
 });
-/*can@2.3.1#map/map*/
+/*can@2.3.2#map/map*/
 define('can/map/map', [
     'can/util/util',
     'can/util/bind/bind',
@@ -2689,6 +2763,12 @@ define('can/map/map', [
                 can.Construct.setup.apply(this, arguments);
                 this._computedPropertyNames = [];
                 if (can.Map) {
+                    if (this.prototype.define && !mapHelpers.define) {
+                        can.dev.warn('can/map/define is not included, yet there is a define property ' + 'used. You may want to add this plugin.');
+                    }
+                    if (this.define && !mapHelpers.define) {
+                        can.dev.warn('The define property should be on the map\'s prototype properties, ' + 'not the static properies. Also, can/map/define is not included.');
+                    }
                     if (!this.defaults) {
                         this.defaults = {};
                     }
@@ -3010,7 +3090,7 @@ define('can/map/map', [
     Map.off = Map.unbind;
     return Map;
 });
-/*can@2.3.1#list/list*/
+/*can@2.3.2#list/list*/
 define('can/list/list', [
     'can/util/util',
     'can/map/map',
@@ -3271,7 +3351,7 @@ define('can/list/list', [
     can.List = Map.List = list;
     return can.List;
 });
-/*can@2.3.1#view/scope/scope*/
+/*can@2.3.2#view/scope/scope*/
 define('can/view/scope/scope', [
     'can/util/util',
     'can/view/scope/compute_data',
@@ -3402,7 +3482,7 @@ define('can/view/scope/scope', [
                 } else if (attr === '%root') {
                     return { value: this.getRoot() };
                 }
-                var names = can.compute.read.reads(attr), context, scope = attr.charAt(0) === '*' ? this.getRefs() : this, undefinedObserves = [], currentObserve, currentReads, setObserveDepth = -1, currentSetReads, currentSetObserve, searchedRefsScope = false, refInstance, readOptions = can.simpleExtend({
+                var names = can.compute.read.reads(attr), context, scope = names[0].key.charAt(0) === '*' ? this.getRefs() : this, undefinedObserves = [], currentObserve, currentReads, setObserveDepth = -1, currentSetReads, currentSetObserve, searchedRefsScope = false, refInstance, readOptions = can.simpleExtend({
                         foundObservable: function (observe, nameIndex) {
                             currentObserve = observe;
                             currentReads = names.slice(nameIndex);
@@ -3454,7 +3534,7 @@ define('can/view/scope/scope', [
     can.view.Scope = Scope;
     return Scope;
 });
-/*can@2.3.1#view/stache/utils*/
+/*can@2.3.2#view/stache/utils*/
 define('can/view/stache/utils', [
     'can/util/util',
     'can/view/scope/scope'
@@ -3524,7 +3604,7 @@ define('can/view/stache/utils', [
         Options: Options
     };
 });
-/*can@2.3.1#view/node_lists/node_lists*/
+/*can@2.3.2#view/node_lists/node_lists*/
 define('can/view/node_lists/node_lists', [
     'can/util/util',
     'can/view/elements'
@@ -3692,7 +3772,7 @@ define('can/view/node_lists/node_lists', [
     can.view.nodeLists = nodeLists;
     return nodeLists;
 });
-/*can@2.3.1#view/parser/parser*/
+/*can@2.3.2#view/parser/parser*/
 define('can/view/parser/parser', [], function () {
     function each(items, callback) {
         for (var i = 0; i < items.length; i++) {
@@ -3978,7 +4058,7 @@ define('can/view/parser/parser', [], function () {
     };
     return HTMLParser;
 });
-/*can@2.3.1#util/array/diff*/
+/*can@2.3.2#util/array/diff*/
 define('can/util/array/diff', [], function () {
     var slice = [].slice;
     return function (oldList, newList) {
@@ -4028,7 +4108,7 @@ define('can/util/array/diff', [], function () {
         return patches;
     };
 });
-/*can@2.3.1#view/live/live*/
+/*can@2.3.2#view/live/live*/
 define('can/view/live/live', [
     'can/util/util',
     'can/view/elements',
@@ -4167,6 +4247,9 @@ define('can/view/live/live', [
                         for (var i = index + newIndicies.length, len = indexMap.length; i < len; i++) {
                             indexMap[i](i);
                         }
+                    }, set = function (ev, newVal, index) {
+                        remove({}, { length: 1 }, index, true);
+                        add({}, [newVal], index);
                     }, remove = function (ev, items, index, duringTeardown, fullTeardown) {
                         if (!afterPreviousEvents) {
                             return;
@@ -4214,9 +4297,26 @@ define('can/view/live/live', [
                             0,
                             temp
                         ]);
+                        newIndex = newIndex - 1;
+                        currentIndex = currentIndex - 1;
+                        var indexCompute = indexMap[currentIndex];
+                        [].splice.apply(indexMap, [
+                            currentIndex,
+                            1
+                        ]);
+                        [].splice.apply(indexMap, [
+                            newIndex,
+                            0,
+                            indexCompute
+                        ]);
+                        var i = Math.min(currentIndex, newIndex);
+                        var len = indexMap.length;
+                        for (i, len; i < len; i++) {
+                            indexMap[i](i);
+                        }
                     }, text = el.ownerDocument.createTextNode(''), list, teardownList = function (fullTeardown) {
                         if (list && list.unbind) {
-                            list.unbind('add', add).unbind('remove', remove).unbind('move', move);
+                            list.unbind('add', add).unbind('set', set).unbind('remove', remove).unbind('move', move);
                         }
                         remove({}, { length: masterNodeList.length - 1 }, 0, true, fullTeardown);
                     }, updateList = function (ev, newList, oldList) {
@@ -4228,7 +4328,7 @@ define('can/view/live/live', [
                             list = newList || [];
                             var patches = diff(oldList, newList);
                             if (oldList.unbind) {
-                                oldList.unbind('add', add).unbind('remove', remove).unbind('move', move);
+                                oldList.unbind('add', add).unbind('set', set).unbind('remove', remove).unbind('move', move);
                             }
                             for (var i = 0, patchLen = patches.length; i < patchLen; i++) {
                                 var patch = patches[i];
@@ -4249,7 +4349,7 @@ define('can/view/live/live', [
                         }
                         afterPreviousEvents = false;
                         if (list.bind) {
-                            list.bind('add', add).bind('remove', remove).bind('move', move);
+                            list.bind('add', add).bind('set', set).bind('remove', remove).bind('move', move);
                         }
                         can.batch.afterPreviousEvents(function () {
                             afterPreviousEvents = true;
@@ -4423,7 +4523,7 @@ define('can/view/live/live', [
     can.view.live = live;
     return live;
 });
-/*can@2.3.1#view/stache/mustache_helpers*/
+/*can@2.3.2#view/stache/mustache_helpers*/
 define('can/view/stache/mustache_helpers', [
     'can/util/util',
     'can/view/stache/utils',
@@ -4515,27 +4615,32 @@ define('can/view/stache/mustache_helpers', [
                 if (arguments.length - 2 <= 0) {
                     return options.inverse();
                 }
-                for (var i = 0; i < arguments.length - 1; i++) {
-                    curValue = resolve(arguments[i]);
-                    curValue = can.isFunction(curValue) ? curValue() : curValue;
-                    if (i > 0) {
-                        if (curValue !== lastValue) {
-                            return options.inverse();
+                var args = arguments;
+                var callFn = can.compute(function () {
+                        for (var i = 0; i < args.length - 1; i++) {
+                            curValue = resolve(args[i]);
+                            curValue = can.isFunction(curValue) ? curValue() : curValue;
+                            if (i > 0) {
+                                if (curValue !== lastValue) {
+                                    return false;
+                                }
+                            }
+                            lastValue = curValue;
                         }
-                    }
-                    lastValue = curValue;
-                }
-                return options.fn();
+                        return true;
+                    });
+                return callFn() ? options.fn() : options.inverse();
             },
             'eq': function () {
                 return helpers.is.apply(this, arguments);
             },
             'unless': function (expr, options) {
                 return helpers['if'].apply(this, [
-                    can.isFunction(expr) ? can.compute(function () {
-                        return !expr();
-                    }) : !expr,
-                    options
+                    expr,
+                    can.extend({}, options, {
+                        fn: options.inverse,
+                        inverse: options.fn
+                    })
                 ]);
             },
             'with': function (expr, options) {
@@ -4641,7 +4746,7 @@ define('can/view/stache/mustache_helpers', [
         }
     };
 });
-/*can@2.3.1#view/stache/expression*/
+/*can@2.3.2#view/stache/expression*/
 define('can/view/stache/expression', [
     'can/util/util',
     'can/view/stache/utils',
@@ -4831,6 +4936,7 @@ define('can/view/stache/expression', [
             helper = mustacheHelpers.getHelper(methodKey, helperOptions);
             var context = scope.attr('.');
             if (!helper && typeof context[methodKey] === 'function') {
+                can.dev.warn('can/view/stache/mustache_core.js: In 3.0, method "' + methodKey + '" will not be called as a helper, but as a method.');
                 helper = { fn: context[methodKey] };
             }
         }
@@ -4851,6 +4957,13 @@ define('can/view/stache/expression', [
             }
             if (!looksLikeAHelper && initialValue === undefined) {
                 helper = mustacheHelpers.getHelper(methodKey, helperOptions);
+            }
+        }
+        if (!helper && initialValue === undefined) {
+            if (looksLikeAHelper) {
+                can.dev.warn('can/view/stache/mustache_core.js: Unable to find helper "' + methodKey + '".');
+            } else {
+                can.dev.warn('can/view/stache/mustache_core.js: Unable to find key or helper "' + methodKey + '".');
             }
         }
         return {
@@ -5185,7 +5298,7 @@ define('can/view/stache/expression', [
     can.expression = expression;
     return expression;
 });
-/*can@2.3.1#control/control*/
+/*can@2.3.2#control/control*/
 define('can/control/control', [
     'can/util/util',
     'can/construct/construct'
@@ -5235,6 +5348,7 @@ define('can/control/control', [
                 if (options || !paramReplacer.test(methodName)) {
                     var convertedName = options ? can.sub(methodName, this._lookup(options)) : methodName;
                     if (!convertedName) {
+                        can.dev.log('can/control/control.js: No property found for handling ' + methodName);
                         return null;
                     }
                     var arr = can.isArray(convertedName), name = arr ? convertedName[1] : convertedName, parts = name.split(/\s+/g), event = parts.pop();
@@ -5329,6 +5443,7 @@ define('can/control/control', [
             },
             destroy: function () {
                 if (this.element === null) {
+                    can.dev.warn('can/control/control.js: Control already destroyed');
                     return;
                 }
                 var Class = this.constructor, pluginName = Class.pluginName || Class._fullName, controls;
@@ -5387,7 +5502,7 @@ define('can/control/control', [
     });
     return Control;
 });
-/*can@2.3.1#view/href/href*/
+/*can@2.3.2#view/href/href*/
 define('can/view/href/href', [
     'can/util/util',
     'can/view/stache/expression',
@@ -5416,7 +5531,7 @@ define('can/view/href/href', [
         });
     });
 });
-/*can@2.3.1#view/bindings/bindings*/
+/*can@2.3.2#view/bindings/bindings*/
 define('can/view/bindings/bindings', [
     'can/util/util',
     'can/view/stache/expression',
@@ -5490,7 +5605,8 @@ define('can/view/bindings/bindings', [
             childToParent: true,
             parentToChild: true,
             initializeValues: true,
-            syncChildWithParent: true
+            syncChildWithParent: true,
+            legacyBindings: true
         });
     });
     var special = {
@@ -5533,6 +5649,10 @@ define('can/view/bindings/bindings', [
             var scopeData = data.scope.read(expr.methodExpr.key, { isArgument: true });
             if (!scopeData.value) {
                 scopeData = data.scope.read(expr.methodExpr.key, { isArgument: true });
+                can.dev.warn('can/view/bindings: ' + attributeName + ' couldn\'t find method named ' + expr.methodExpr.key, {
+                    element: el,
+                    scope: data.scope
+                });
                 return null;
             }
             var localScope = data.scope.add({
@@ -5570,7 +5690,7 @@ define('can/view/bindings/bindings', [
     };
     can.view.attr(/can-[\w\.]+/, handleEvent);
     can.view.attr(/^\([\$?\w\.]+\)$/, handleEvent);
-    var elementCompute = function (el, prop, event) {
+    var elementCompute = function (el, prop, event, options) {
         if (!event) {
             if (prop === 'innerHTML') {
                 event = [
@@ -5584,7 +5704,13 @@ define('can/view/bindings/bindings', [
         if (!can.isArray(event)) {
             event = [event];
         }
-        var hasChildren = el.nodeName.toLowerCase() === 'select', isMultiselectValue = prop === 'value' && hasChildren && el.multiple, isStringValue, lastSet, set = function (newVal) {
+        var hasChildren = el.nodeName.toLowerCase() === 'select', isMultiselectValue = prop === 'value' && hasChildren && el.multiple, isStringValue, lastSet, scheduledAsyncSet = false, set = function (newVal) {
+                if (hasChildren && !scheduledAsyncSet) {
+                    scheduledAsyncSet = true;
+                    setTimeout(function () {
+                        set(newVal);
+                    }, 1);
+                }
                 lastSet = newVal;
                 if (isMultiselectValue) {
                     if (newVal && typeof newVal === 'string') {
@@ -5605,13 +5731,16 @@ define('can/view/bindings/bindings', [
                         }
                     });
                 } else {
+                    if (!options.legacyBindings && hasChildren && 'selectedIndex' in el) {
+                        el.selectedIndex = -1;
+                    }
                     can.attr.setAttrOrProp(el, prop, newVal == null ? '' : newVal);
                 }
                 return newVal;
             };
         if (hasChildren) {
             setTimeout(function () {
-                set(lastSet);
+                scheduledAsyncSet = true;
             }, 1);
         }
         return can.compute(el[prop], {
@@ -5657,7 +5786,8 @@ define('can/view/bindings/bindings', [
         return {
             childToParent: childToParent,
             parentToChild: parentToChild,
-            propName: matches[3]
+            propName: matches[3],
+            syntaxStyle: 'new'
         };
     };
     var getScopeCompute = function (el, scope, scopeProp, options) {
@@ -5667,7 +5797,7 @@ define('can/view/bindings/bindings', [
     var getElementCompute = function (el, attributeName, options) {
         var attrName = can.camelize(options.propName || attributeName.substr(1)), firstChar = attrName.charAt(0), isDOM = firstChar === '$', childCompute;
         if (isDOM) {
-            childCompute = elementCompute(el, attrName.substr(1));
+            childCompute = elementCompute(el, attrName.substr(1), undefined, options);
         } else {
             var childExpression = expression.parse(attrName, { baseMethodType: 'Call' });
             var childContext = can.viewModel(el);
@@ -5752,6 +5882,12 @@ define('can/view/bindings/bindings', [
             updateChild({}, getValue(parentCompute));
         }
     };
+    var syntaxWarning = function (el, attrData) {
+        can.dev.warn('can/view/bindings/bindings.js: mismatched binding syntax - ' + attrData.attributeName);
+    };
+    can.view.attr(/^\(.+\}$/, syntaxWarning);
+    can.view.attr(/^\{.+\)$/, syntaxWarning);
+    can.view.attr(/^\(\{.+\}\)$/, syntaxWarning);
     var dataBindingsRegExp = /^\{[^\}]+\}$/;
     can.view.attr(dataBindingsRegExp, function (el, attrData) {
         if (can.data(can.$(el), 'preventDataBindings')) {
@@ -5759,6 +5895,7 @@ define('can/view/bindings/bindings', [
         }
         var attrNameInfo = attributeNameInfo(attrData.attributeName);
         attrNameInfo.initializeValues = true;
+        attrNameInfo.templateType = attrData.templateType;
         bindings(el, attrData, attrNameInfo);
     });
     can.view.attr(/\*[\w\.\-_]+/, function (el, attrData) {
@@ -5780,7 +5917,7 @@ define('can/view/bindings/bindings', [
         initializeValues: initializeValues
     };
 });
-/*can@2.3.1#observe/observe*/
+/*can@2.3.2#observe/observe*/
 define('can/observe/observe', [
     'can/util/util',
     'can/map/map',
@@ -5793,7 +5930,7 @@ define('can/observe/observe', [
     can.Observe.triggerBatch = can.batch.trigger;
     return can;
 });
-/*can@2.3.1#view/scanner*/
+/*can@2.3.2#view/scanner*/
 define('can/view/scanner', [
     'can/view/view',
     'can/view/elements',
@@ -6169,7 +6306,7 @@ define('can/view/scanner', [
     can.view.Scanner = Scanner;
     return Scanner;
 });
-/*can@2.3.1#view/render*/
+/*can@2.3.2#view/render*/
 define('can/view/render', [
     'can/view/view',
     'can/view/elements',
@@ -6294,7 +6431,7 @@ define('can/view/render', [
     });
     return can;
 });
-/*can@2.3.1#view/mustache/mustache*/
+/*can@2.3.2#view/mustache/mustache*/
 define('can/view/mustache/mustache', [
     'can/util/util',
     'can/view/scope/scope',
@@ -6601,6 +6738,7 @@ define('can/view/mustache/mustache', [
             if (scopeAndOptions.scope && can.isFunction(context[key])) {
                 return context[key];
             }
+            can.dev.warn('can/view/mustache/mustache.js: Unable to find helper "' + key + '".');
         }
         var computeData = scopeAndOptions.scope.computeData(key, {
                 isArgument: isArgument,
@@ -6611,6 +6749,9 @@ define('can/view/mustache/mustache', [
             }), compute = computeData.compute;
         can.compute.temporarilyBind(compute);
         var initialValue = computeData.initialValue, helperObj = Mustache.getHelper(key, options);
+        if (initialValue === undefined && !isHelper && !helperObj) {
+            can.dev.warn('can/view/mustache/mustache.js: Unable to find key "' + key + '".');
+        }
         if (!isLookup && (initialValue === undefined || computeData.scope !== scopeAndOptions.scope) && Mustache.getHelper(key, options)) {
             return key;
         }
@@ -6716,10 +6857,11 @@ define('can/view/mustache/mustache', [
         },
         'unless': function (expr, options) {
             return Mustache._helpers['if'].fn.apply(this, [
-                can.isFunction(expr) ? can.compute(function () {
-                    return !expr();
-                }) : !expr,
-                options
+                expr,
+                can.extend({}, options, {
+                    fn: options.inverse,
+                    inverse: options.fn
+                })
             ]);
         },
         'each': function (expr, options) {
@@ -6796,7 +6938,7 @@ define('can/view/mustache/mustache', [
     can.mustache.safeString = can.Mustache.safeString;
     return can;
 });
-/*can@2.3.1#util/view_model/view_model*/
+/*can@2.3.2#util/view_model/view_model*/
 define('can/util/view_model/view_model', ['can/util/util'], function (can) {
     var $ = can.$;
     if ($.fn) {
@@ -6805,7 +6947,7 @@ define('can/util/view_model/view_model', ['can/util/util'], function (can) {
         };
     }
 });
-/*can@2.3.1#component/component*/
+/*can@2.3.2#component/component*/
 define('can/component/component', [
     'can/util/util',
     'can/view/callbacks/callbacks',
@@ -6855,43 +6997,48 @@ define('can/component/component', [
                         for (var i = 0, len = teardownFunctions.length; i < len; i++) {
                             teardownFunctions[i]();
                         }
-                    }, $el = can.$(el);
+                    }, $el = can.$(el), setupBindings = !can.data($el, 'preventDataBindings');
                 can.each(this.constructor.attributeScopeMappings, function (val, prop) {
                     initialScopeData[prop] = el.getAttribute(can.hyphenate(val));
                 });
-                can.each(can.makeArray(el.attributes), function (node, index) {
-                    var nodeName = node.name, name = can.camelize(nodeName.toLowerCase()), value = node.value;
-                    var isDataBindings = bindings.dataBindingsRegExp.test(nodeName);
-                    if (component.constructor.attributeScopeMappings[name] || ignoreAttributesRegExp.test(name) || viewCallbacks.attr(nodeName) && !isDataBindings) {
-                        return;
-                    }
-                    if (value[0] === '{' && value[value.length - 1] === '}') {
-                        value = value.substr(1, value.length - 2);
-                    } else if (!isDataBindings) {
-                        if (componentTagData.templateType !== 'legacy') {
-                            initialScopeData[name] = value;
+                if (setupBindings) {
+                    can.each(can.makeArray(el.attributes), function (node, index) {
+                        var nodeName = node.name, name = can.camelize(nodeName.toLowerCase()), value = node.value;
+                        if (ignoreAttributesRegExp.test(name) && value[0] === '{' && value[value.length - 1] === '}') {
+                            can.dev.warn('can/component: looks like you\'re trying to pass ' + name + ' as an attribute into a component, ' + 'but it is not a supported attribute');
+                        }
+                        var isDataBindings = bindings.dataBindingsRegExp.test(nodeName);
+                        if (component.constructor.attributeScopeMappings[name] || ignoreAttributesRegExp.test(name) || viewCallbacks.attr(nodeName) && !isDataBindings) {
                             return;
                         }
-                    }
-                    var bindingData = bindings.attributeNameInfo(nodeName);
-                    bindingData.propName = can.camelize(bindingData.propName);
-                    bindingsData[bindingData.propName] = bindingData;
-                    var compute = bindings.getParentCompute(el, componentTagData.scope, value, {});
-                    if (compute && compute.isComputed) {
-                        if (bindingData.parentToChild) {
-                            bindings.bindParentToChild(el, compute, function (newValue) {
-                                viewModel.attr(bindingData.propName, newValue);
-                            }, viewModelPropertyUpdates, bindingData.propName);
-                            var initialValue = compute();
-                            if (initialValue !== undefined) {
-                                initialScopeData[bindingData.propName] = initialValue;
+                        if (value[0] === '{' && value[value.length - 1] === '}') {
+                            value = value.substr(1, value.length - 2);
+                        } else if (!isDataBindings) {
+                            if (componentTagData.templateType !== 'legacy') {
+                                initialScopeData[name] = value;
+                                return;
                             }
                         }
-                        bindingsData[bindingData.propName].parentCompute = compute;
-                    } else {
-                        initialScopeData[bindingData.propName] = compute;
-                    }
-                });
+                        var bindingData = bindings.attributeNameInfo(nodeName);
+                        bindingData.propName = can.camelize(bindingData.propName);
+                        bindingsData[bindingData.propName] = bindingData;
+                        var compute = bindings.getParentCompute(el, componentTagData.scope, value, { templateType: componentTagData.templateType });
+                        if (compute && compute.isComputed) {
+                            if (bindingData.parentToChild) {
+                                bindings.bindParentToChild(el, compute, function (newValue) {
+                                    viewModel.attr(bindingData.propName, newValue);
+                                }, viewModelPropertyUpdates, bindingData.propName);
+                                var initialValue = compute();
+                                if (initialValue !== undefined) {
+                                    initialScopeData[bindingData.propName] = initialValue;
+                                }
+                            }
+                            bindingsData[bindingData.propName].parentCompute = compute;
+                        } else {
+                            initialScopeData[bindingData.propName] = compute;
+                        }
+                    });
+                }
                 if (this.constructor.Map) {
                     viewModel = new this.constructor.Map(initialScopeData);
                 } else if (scope instanceof can.Map) {
@@ -6907,22 +7054,24 @@ define('can/component/component', [
                     }
                 }
                 var handlers = {};
-                can.each(bindingsData, function (bindingData, prop) {
-                    if (bindingData.childToParent) {
-                        handlers[prop] = function (ev, newVal) {
-                            if (!viewModelPropertyUpdates[prop]) {
-                                bindingData.parentCompute(newVal);
+                if (setupBindings) {
+                    can.each(bindingsData, function (bindingData, prop) {
+                        if (bindingData.childToParent) {
+                            handlers[prop] = function (ev, newVal) {
+                                if (!viewModelPropertyUpdates[prop]) {
+                                    bindingData.parentCompute(newVal);
+                                }
+                            };
+                            viewModel.bind(prop, handlers[prop]);
+                            if (bindingData.syntaxStyle === 'new' && bindingData.parentCompute) {
+                                bindings.initializeValues(bindingData, prop === '.' ? viewModel : can.compute.read(viewModel, can.compute.read.reads(prop), {}).value, bindingData.parentCompute, function () {
+                                }, function (ev, newVal) {
+                                    bindingData.parentCompute(newVal);
+                                });
                             }
-                        };
-                        viewModel.bind(prop, handlers[prop]);
-                        if (bindingData.parentCompute) {
-                            bindings.initializeValues(bindingData, prop === '.' ? viewModel : viewModel.attr(prop), bindingData.parentCompute, function () {
-                            }, function (ev, newVal) {
-                                bindingData.parentCompute(newVal);
-                            });
                         }
-                    }
-                });
+                    });
+                }
                 if (!can.isEmptyObject(this.constructor.attributeScopeMappings) || componentTagData.templateType !== 'legacy') {
                     can.bind.call(el, 'attributes', function (ev) {
                         var camelized = can.camelize(ev.attributeName);
@@ -6952,6 +7101,9 @@ define('can/component/component', [
                     }
                 });
                 can.each(this.simpleHelpers || {}, function (val, prop) {
+                    if (options.helpers[prop]) {
+                        can.dev.warn('Component ' + component.tag + ' already has a helper called ' + prop);
+                    }
                     addHelper(prop, can.view.simpleHelper(val));
                 });
                 teardownFunctions.push(function () {
@@ -7104,7 +7256,7 @@ define('can/component/component', [
     }
     return Component;
 });
-/*can@2.3.1#model/model*/
+/*can@2.3.2#model/model*/
 define('can/model/model', [
     'can/util/util',
     'can/map/map',
@@ -7196,6 +7348,9 @@ define('can/model/model', [
                 }
                 if (typeof raw === 'undefined' || !can.isArray(raw)) {
                     throw new Error('Could not get any raw data while converting using .models');
+                }
+                if (!raw.length) {
+                    can.dev.warn('model.js models has no data.');
                 }
                 if (modelList.length) {
                     modelList.splice(0);
@@ -7302,6 +7457,7 @@ define('can/model/model', [
                 staticProps = fullName;
             }
             if (!protoProps) {
+                can.dev.warn('can/model/model.js: can.Model extended without static properties.');
                 protoProps = staticProps;
             }
             this.store = {};
@@ -7458,6 +7614,7 @@ define('can/model/model', [
                 type: funcName,
                 target: this
             }, []);
+            can.dev.log('Model.js - ' + constructor.shortName + ' ' + funcName);
             can.dispatch.call(constructor, funcName, [this]);
         };
     });
@@ -7488,7 +7645,7 @@ define('can/model/model', [
         });
     return can.Model;
 });
-/*can@2.3.1#util/string/deparam/deparam*/
+/*can@2.3.2#util/string/deparam/deparam*/
 define('can/util/string/deparam/deparam', [
     'can/util/util',
     'can/util/string/string'
@@ -7525,7 +7682,7 @@ define('can/util/string/deparam/deparam', [
     });
     return can;
 });
-/*can@2.3.1#route/route*/
+/*can@2.3.2#route/route*/
 define('can/route/route', [
     'can/util/util',
     'can/map/map',
@@ -7827,7 +7984,7 @@ define('can/route/route', [
     };
     return can.route;
 });
-/*can@2.3.1#control/route/route*/
+/*can@2.3.2#control/route/route*/
 define('can/control/route/route', [
     'can/util/util',
     'can/route/route',
@@ -7860,7 +8017,7 @@ define('can/control/route/route', [
     };
     return can;
 });
-/*can@2.3.1#util/event*/
+/*can@2.3.2#util/event*/
 define('can/util/event', [
     'can/util/can',
     'can/event/event'

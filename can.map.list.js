@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.1
+ * CanJS - 2.3.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 29 Oct 2015 18:42:07 GMT
+ * Fri, 13 Nov 2015 23:57:31 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.1#map/list/list*/
+/*can@2.3.2#map/list/list*/
 define('can/map/list/list', [
     'can/util/util',
     'can/map/map',

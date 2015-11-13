@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.1
+ * CanJS - 2.3.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 29 Oct 2015 18:42:07 GMT
+ * Fri, 13 Nov 2015 23:57:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.1#view/stache/mustache_core*/
+/*can@2.3.2#view/stache/mustache_core*/
 steal('can/util', './utils', './mustache_helpers', './expression.js', 'can/view/live', 'can/view/elements.js', 'can/view/scope', 'can/view/node_lists', function (can, utils, mustacheHelpers, expression, live, elements, Scope, nodeLists) {
     live = live || can.view.live;
     elements = elements || can.view.elements;
@@ -123,7 +123,7 @@ steal('can/util', './utils', './mustache_helpers', './expression.js', 'can/view/
                                 res = partial.render ? partial.render(scope, options) : partial(scope, options);
                             } else {
                                 var scopePartialName = scope.read(localPartialName, { isArgument: true }).value;
-                                if (scopePartialName === null) {
+                                if (scopePartialName === null || !scopePartialName && localPartialName[0] === '*') {
                                     return can.frag('');
                                 }
                                 if (scopePartialName) {

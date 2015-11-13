@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.1
+ * CanJS - 2.3.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 29 Oct 2015 18:42:07 GMT
+ * Fri, 13 Nov 2015 23:57:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.1#map/validations/validations*/
+/*can@2.3.2#map/validations/validations*/
 steal('can/util', 'can/map', function (can) {
     var validate = function (attrNames, options, proc) {
         if (!proc) {

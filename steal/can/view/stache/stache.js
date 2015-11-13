@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.1
+ * CanJS - 2.3.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 29 Oct 2015 18:42:07 GMT
+ * Fri, 13 Nov 2015 23:57:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.1#view/stache/stache*/
+/*can@2.3.2#view/stache/stache*/
 steal('can/util', 'can/view/parser', 'can/view/target', './html_section.js', './text_section.js', './mustache_core.js', './mustache_helpers.js', './intermediate_and_imports.js', 'can/view/callbacks', 'can/view/bindings', function (can, parser, target, HTMLSectionBuilder, TextSectionBuilder, mustacheCore, mustacheHelpers, getIntermediateAndImports, viewCallbacks) {
     parser = parser || can.view.parser;
     can.view.parser = parser;
@@ -183,17 +183,13 @@ steal('can/util', 'can/view/parser', 'can/view/target', './html_section.js', './
                         delete state.node.section;
                     }
                 } else if (state.attr) {
-                    if (viewCallbacks.attr(state.attr.name) && !state.attr.value) {
-                        this.attrValue('{{' + text + '}}');
-                    } else {
-                        if (!state.attr.section) {
-                            state.attr.section = new TextSectionBuilder();
-                            if (state.attr.value) {
-                                state.attr.section.add(state.attr.value);
-                            }
+                    if (!state.attr.section) {
+                        state.attr.section = new TextSectionBuilder();
+                        if (state.attr.value) {
+                            state.attr.section.add(state.attr.value);
                         }
-                        makeRendererAndUpdateSection(state.attr.section, mode, expression);
                     }
+                    makeRendererAndUpdateSection(state.attr.section, mode, expression);
                 } else if (state.node) {
                     if (!state.node.attributes) {
                         state.node.attributes = [];

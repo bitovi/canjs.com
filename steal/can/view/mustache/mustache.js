@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.1
+ * CanJS - 2.3.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 29 Oct 2015 18:42:07 GMT
+ * Fri, 13 Nov 2015 23:57:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.1#view/mustache/mustache*/
+/*can@2.3.2#view/mustache/mustache*/
 steal('can/util', 'can/view/scope', 'can/view', 'can/view/scanner.js', 'can/compute', 'can/view/render.js', 'can/view/bindings', function (can) {
     can.view.ext = '.mustache';
     var SCOPE = 'scope', HASH = '___h4sh', CONTEXT_OBJ = '{scope:' + SCOPE + ',options:options}', SPECIAL_CONTEXT_OBJ = '{scope:' + SCOPE + ',options:options, special: true}', ARG_NAMES = SCOPE + ',options', argumentsRegExp = /((([^'"\s]+?=)?('.*?'|".*?"))|.*?)\s/g, literalNumberStringBooleanRegExp = /^(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false|null|undefined)|((.+?)=(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false)|(.+))))$/, makeLookupLiteral = function (type) {
@@ -424,10 +424,11 @@ steal('can/util', 'can/view/scope', 'can/view', 'can/view/scanner.js', 'can/comp
         },
         'unless': function (expr, options) {
             return Mustache._helpers['if'].fn.apply(this, [
-                can.isFunction(expr) ? can.compute(function () {
-                    return !expr();
-                }) : !expr,
-                options
+                expr,
+                can.extend({}, options, {
+                    fn: options.inverse,
+                    inverse: options.fn
+                })
             ]);
         },
         'each': function (expr, options) {

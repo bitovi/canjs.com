@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.1
+ * CanJS - 2.3.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 29 Oct 2015 18:42:07 GMT
+ * Fri, 13 Nov 2015 23:57:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.1#view/bindings/bindings*/
+/*can@2.3.2#view/bindings/bindings*/
 steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/control', 'can/view/scope', 'can/view/href', function (can, expression) {
     var isContentEditable = function () {
             var values = {
@@ -73,7 +73,8 @@ steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/co
             childToParent: true,
             parentToChild: true,
             initializeValues: true,
-            syncChildWithParent: true
+            syncChildWithParent: true,
+            legacyBindings: true
         });
     });
     var special = {
@@ -157,7 +158,7 @@ steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/co
     };
     can.view.attr(/can-[\w\.]+/, handleEvent);
     can.view.attr(/^\([\$?\w\.]+\)$/, handleEvent);
-    var elementCompute = function (el, prop, event) {
+    var elementCompute = function (el, prop, event, options) {
         if (!event) {
             if (prop === 'innerHTML') {
                 event = [
@@ -171,7 +172,13 @@ steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/co
         if (!can.isArray(event)) {
             event = [event];
         }
-        var hasChildren = el.nodeName.toLowerCase() === 'select', isMultiselectValue = prop === 'value' && hasChildren && el.multiple, isStringValue, lastSet, set = function (newVal) {
+        var hasChildren = el.nodeName.toLowerCase() === 'select', isMultiselectValue = prop === 'value' && hasChildren && el.multiple, isStringValue, lastSet, scheduledAsyncSet = false, set = function (newVal) {
+                if (hasChildren && !scheduledAsyncSet) {
+                    scheduledAsyncSet = true;
+                    setTimeout(function () {
+                        set(newVal);
+                    }, 1);
+                }
                 lastSet = newVal;
                 if (isMultiselectValue) {
                     if (newVal && typeof newVal === 'string') {
@@ -192,13 +199,16 @@ steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/co
                         }
                     });
                 } else {
+                    if (!options.legacyBindings && hasChildren && 'selectedIndex' in el) {
+                        el.selectedIndex = -1;
+                    }
                     can.attr.setAttrOrProp(el, prop, newVal == null ? '' : newVal);
                 }
                 return newVal;
             };
         if (hasChildren) {
             setTimeout(function () {
-                set(lastSet);
+                scheduledAsyncSet = true;
             }, 1);
         }
         return can.compute(el[prop], {
@@ -244,7 +254,8 @@ steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/co
         return {
             childToParent: childToParent,
             parentToChild: parentToChild,
-            propName: matches[3]
+            propName: matches[3],
+            syntaxStyle: 'new'
         };
     };
     var getScopeCompute = function (el, scope, scopeProp, options) {
@@ -254,7 +265,7 @@ steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/co
     var getElementCompute = function (el, attributeName, options) {
         var attrName = can.camelize(options.propName || attributeName.substr(1)), firstChar = attrName.charAt(0), isDOM = firstChar === '$', childCompute;
         if (isDOM) {
-            childCompute = elementCompute(el, attrName.substr(1));
+            childCompute = elementCompute(el, attrName.substr(1), undefined, options);
         } else {
             var childExpression = expression.parse(attrName, { baseMethodType: 'Call' });
             var childContext = can.viewModel(el);
@@ -339,6 +350,12 @@ steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/co
             updateChild({}, getValue(parentCompute));
         }
     };
+    var syntaxWarning = function (el, attrData) {
+        can.dev.warn('can/view/bindings/bindings.js: mismatched binding syntax - ' + attrData.attributeName);
+    };
+    can.view.attr(/^\(.+\}$/, syntaxWarning);
+    can.view.attr(/^\{.+\)$/, syntaxWarning);
+    can.view.attr(/^\(\{.+\}\)$/, syntaxWarning);
     var dataBindingsRegExp = /^\{[^\}]+\}$/;
     can.view.attr(dataBindingsRegExp, function (el, attrData) {
         if (can.data(can.$(el), 'preventDataBindings')) {
@@ -346,6 +363,7 @@ steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/co
         }
         var attrNameInfo = attributeNameInfo(attrData.attributeName);
         attrNameInfo.initializeValues = true;
+        attrNameInfo.templateType = attrData.templateType;
         bindings(el, attrData, attrNameInfo);
     });
     can.view.attr(/\*[\w\.\-_]+/, function (el, attrData) {

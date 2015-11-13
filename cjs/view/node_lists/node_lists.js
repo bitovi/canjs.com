@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.1
+ * CanJS - 2.3.2
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 29 Oct 2015 18:42:07 GMT
+ * Fri, 13 Nov 2015 23:57:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.1#view/node_lists/node_lists*/
+/*can@2.3.2#view/node_lists/node_lists*/
 var can = require('../../util/util.js');
 require('../elements.js');
 var canExpando = true;
