@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.2
+ * CanJS - 2.3.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Nov 2015 23:57:31 GMT
+ * Mon, 30 Nov 2015 23:22:54 GMT
  * Licensed MIT
  */
 
-/*can@2.3.2#view/stache/html_section*/
+/*can@2.3.3#view/stache/html_section*/
 steal('can/util', 'can/view/target', './utils.js', './mustache_core.js', function (can, target, utils, mustacheCore) {
     var decodeHTML = typeof document !== 'undefined' && function () {
             var el = document.createElement('div');
@@ -94,7 +94,7 @@ steal('can/util', 'can/view/target', './utils.js', './mustache_core.js', functio
                 data = decodeHTML(data);
             }
             if (this.targetStack.length) {
-                this.targetStack[this.targetStack.length - 1].children.push(data);
+                can.last(this.targetStack).children.push(data);
             } else {
                 this[this.data].push(data);
             }
@@ -105,13 +105,12 @@ steal('can/util', 'can/view/target', './utils.js', './mustache_core.js', functio
                 this.inverseCompiled = target(this.inverseData, can.document || can.global.document);
                 delete this.inverseData;
             }
-            delete this.targetData;
-            delete this.targetStack;
+            this.targetStack = this.targetData = null;
             return this.compiled;
         },
         children: function () {
             if (this.targetStack.length) {
-                return this.targetStack[this.targetStack.length - 1].children;
+                return can.last(this.targetStack).children;
             } else {
                 return this[this.data];
             }
@@ -120,5 +119,6 @@ steal('can/util', 'can/view/target', './utils.js', './mustache_core.js', functio
             return !this.targetData.length;
         }
     });
+    HTMLSectionBuilder.HTMLSection = HTMLSection;
     return HTMLSectionBuilder;
 });

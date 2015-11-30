@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.2
+ * CanJS - 2.3.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Nov 2015 23:57:31 GMT
+ * Mon, 30 Nov 2015 23:22:54 GMT
  * Licensed MIT
  */
 
-/*can@2.3.2#construct/proxy/proxy*/
+/*can@2.3.3#construct/proxy/proxy*/
 steal('can/util', 'can/construct', function (can, Construct) {
     var isFunction = can.isFunction, isArray = can.isArray, makeArray = can.makeArray, proxy = function (funcs) {
             var args = makeArray(arguments), self;

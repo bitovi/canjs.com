@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.2
+ * CanJS - 2.3.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Nov 2015 23:57:31 GMT
+ * Mon, 30 Nov 2015 23:22:54 GMT
  * Licensed MIT
  */
 
-/*can@2.3.2#view/node_lists/node_lists*/
+/*can@2.3.3#view/node_lists/node_lists*/
 steal('can/util', 'can/view/elements.js', function (can) {
     var canExpando = true;
     try {

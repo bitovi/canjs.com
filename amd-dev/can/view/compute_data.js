@@ -1,21 +1,20 @@
 /*!
- * CanJS - 2.3.2
+ * CanJS - 2.3.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Nov 2015 23:57:31 GMT
+ * Mon, 30 Nov 2015 23:22:54 GMT
  * Licensed MIT
  */
 
-/*can@2.3.2#view/scope/compute_data*/
+/*can@2.3.3#view/scope/compute_data*/
 define([
     'can/util/library',
     'can/compute',
     'can/get_value_and_bind'
-], function (can, compute, getValueAndBind) {
+], function (can, compute, ObservedInfo) {
     var isFastPath = function (computeData) {
         return computeData.reads && computeData.reads.length === 1 && computeData.root instanceof can.Map && !can.isFunction(computeData.root[computeData.reads[0].key]);
     };
-    var unbindScopeRead = getValueAndBind.unbindReadInfo;
     var getValueAndBindSinglePropertyRead = function (readInfo, computeData, singlePropertyReadChanged) {
         var target = computeData.root, prop = computeData.reads[0].key;
         target.bind(prop, singlePropertyReadChanged);
@@ -58,29 +57,21 @@ define([
                 } else {
                     return scopeReader(scope, key, options, computeData);
                 }
-            }, batchNum, readInfo = new getValueAndBind.ObservedInfo(scopeRead, null, function (ev) {
-                if (readInfo.ready && compute.computeInstance.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
-                    var oldValue = readInfo.value, newValue;
-                    getValueAndBind(readInfo);
-                    newValue = readInfo.value;
-                    compute.computeInstance.updater(newValue, oldValue, ev.batchNum);
-                    batchNum = batchNum = ev.batchNum;
-                }
-            }), singlePropertyReadChanged = function (ev, newVal, oldVal) {
+            }, singlePropertyReadChanged = function (ev, newVal, oldVal) {
                 if (typeof newVal !== 'function') {
                     compute.computeInstance.updater(newVal, oldVal, ev.batchNum);
                 } else {
                     unbindSinglePropertyRead(computeData, singlePropertyReadChanged);
-                    getValueAndBind(readInfo);
+                    readInfo.getValueAndBind();
                     isFastPathBound = false;
                     compute.computeInstance.updater(readInfo.value, oldVal, ev.batchNum);
                 }
             }, isFastPathBound = false, compute = can.compute(undefined, {
                 on: function () {
-                    getValueAndBind(readInfo);
+                    readInfo.getValueAndBind();
                     if (isFastPath(computeData)) {
                         getValueAndBindSinglePropertyRead(readInfo, computeData, singlePropertyReadChanged);
-                        unbindScopeRead(readInfo);
+                        readInfo.teardown();
                         readInfo.newObserved = {};
                         isFastPathBound = true;
                     }
@@ -91,13 +82,13 @@ define([
                     if (isFastPathBound) {
                         unbindSinglePropertyRead(computeData, singlePropertyReadChanged);
                     } else {
-                        unbindScopeRead(readInfo);
+                        readInfo.teardown();
                     }
                 },
                 set: scopeRead,
                 get: scopeRead,
                 __selfUpdater: true
-            });
+            }), readInfo = new ObservedInfo(scopeRead, null, compute.computeInstance);
         computeData.compute = compute;
         return computeData;
     };

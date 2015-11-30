@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.2
+ * CanJS - 2.3.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Nov 2015 23:57:31 GMT
+ * Mon, 30 Nov 2015 23:22:54 GMT
  * Licensed MIT
  */
 
-/*can@2.3.2#component/component*/
+/*can@2.3.3#component/component*/
 var can = require('../util/util.js');
 var viewCallbacks = require('../view/callbacks/callbacks.js');
 var elements = require('../view/elements.js');
@@ -15,17 +15,17 @@ require('../control/control.js');
 require('../observe/observe.js');
 require('../view/mustache/mustache.js');
 require('../util/view_model/view_model.js');
-var ignoreAttributesRegExp = /^(dataViewId|class|id|\[[\w\.-]+\]|#[\w\.-])$/i, paramReplacer = /\{([^\}]+)\}/g;
+var paramReplacer = /\{([^\}]+)\}/g;
 var Component = can.Component = can.Construct.extend({
         setup: function () {
             can.Construct.setup.apply(this, arguments);
             if (can.Component) {
-                var self = this, scope = this.prototype.scope || this.prototype.viewModel;
+                var self = this, protoViewModel = this.prototype.scope || this.prototype.viewModel;
                 this.Control = ComponentControl.extend(this.prototype.events);
-                if (!scope || typeof scope === 'object' && !(scope instanceof can.Map)) {
-                    this.Map = can.Map.extend(scope || {});
-                } else if (scope.prototype instanceof can.Map) {
-                    this.Map = scope;
+                if (!protoViewModel || typeof protoViewModel === 'object' && !(protoViewModel instanceof can.Map)) {
+                    this.Map = can.Map.extend(protoViewModel || {});
+                } else if (protoViewModel.prototype instanceof can.Map) {
+                    this.Map = protoViewModel;
                 }
                 this.attributeScopeMappings = {};
                 can.each(this.Map ? this.Map.defaults : {}, function (val, prop) {
@@ -50,99 +50,43 @@ var Component = can.Component = can.Construct.extend({
         }
     }, {
         setup: function (el, componentTagData) {
-            var initialScopeData = { '%root': componentTagData.scope.attr('%root') }, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && !!this.template, bindingsData = {}, scope = this.scope || this.viewModel, viewModelPropertyUpdates = {}, viewModel, frag, teardownFunctions = [], callTeardownFunctions = function () {
+            var initialViewModelData = { '%root': componentTagData.scope.attr('%root') }, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && !!this.template, viewModel, frag, teardownFunctions = [], callTeardownFunctions = function () {
                     for (var i = 0, len = teardownFunctions.length; i < len; i++) {
                         teardownFunctions[i]();
                     }
                 }, $el = can.$(el), setupBindings = !can.data($el, 'preventDataBindings');
             can.each(this.constructor.attributeScopeMappings, function (val, prop) {
-                initialScopeData[prop] = el.getAttribute(can.hyphenate(val));
+                initialViewModelData[prop] = el.getAttribute(can.hyphenate(val));
             });
             if (setupBindings) {
-                can.each(can.makeArray(el.attributes), function (node, index) {
-                    var nodeName = node.name, name = can.camelize(nodeName.toLowerCase()), value = node.value;
-                    var isDataBindings = bindings.dataBindingsRegExp.test(nodeName);
-                    if (component.constructor.attributeScopeMappings[name] || ignoreAttributesRegExp.test(name) || viewCallbacks.attr(nodeName) && !isDataBindings) {
-                        return;
-                    }
-                    if (value[0] === '{' && value[value.length - 1] === '}') {
-                        value = value.substr(1, value.length - 2);
-                    } else if (!isDataBindings) {
-                        if (componentTagData.templateType !== 'legacy') {
-                            initialScopeData[name] = value;
-                            return;
+                teardownFunctions.push(bindings.behaviors.viewModel(el, componentTagData, function (initialViewModelData) {
+                    var protoViewModel = component.scope || component.viewModel;
+                    if (component.constructor.Map) {
+                        viewModel = new component.constructor.Map(initialViewModelData);
+                    } else if (protoViewModel instanceof can.Map) {
+                        viewModel = protoViewModel;
+                    } else if (can.isFunction(protoViewModel)) {
+                        var scopeResult = protoViewModel.call(component, initialViewModelData, componentTagData.scope, el);
+                        if (scopeResult instanceof can.Map) {
+                            viewModel = scopeResult;
+                        } else if (scopeResult.prototype instanceof can.Map) {
+                            viewModel = new scopeResult(initialViewModelData);
+                        } else {
+                            viewModel = new (can.Map.extend(scopeResult))(initialViewModelData);
                         }
                     }
-                    var bindingData = bindings.attributeNameInfo(nodeName);
-                    bindingData.propName = can.camelize(bindingData.propName);
-                    bindingsData[bindingData.propName] = bindingData;
-                    var compute = bindings.getParentCompute(el, componentTagData.scope, value, { templateType: componentTagData.templateType });
-                    if (compute && compute.isComputed) {
-                        if (bindingData.parentToChild) {
-                            bindings.bindParentToChild(el, compute, function (newValue) {
-                                viewModel.attr(bindingData.propName, newValue);
-                            }, viewModelPropertyUpdates, bindingData.propName);
-                            var initialValue = compute();
-                            if (initialValue !== undefined) {
-                                initialScopeData[bindingData.propName] = initialValue;
-                            }
-                        }
-                        bindingsData[bindingData.propName].parentCompute = compute;
-                    } else {
-                        initialScopeData[bindingData.propName] = compute;
-                    }
-                });
-            }
-            if (this.constructor.Map) {
-                viewModel = new this.constructor.Map(initialScopeData);
-            } else if (scope instanceof can.Map) {
-                viewModel = scope;
-            } else if (can.isFunction(scope)) {
-                var scopeResult = scope.call(this, initialScopeData, componentTagData.scope, el);
-                if (scopeResult instanceof can.Map) {
-                    viewModel = scopeResult;
-                } else if (scopeResult.prototype instanceof can.Map) {
-                    viewModel = new scopeResult(initialScopeData);
-                } else {
-                    viewModel = new (can.Map.extend(scopeResult))(initialScopeData);
-                }
-            }
-            var handlers = {};
-            if (setupBindings) {
-                can.each(bindingsData, function (bindingData, prop) {
-                    if (bindingData.childToParent) {
-                        handlers[prop] = function (ev, newVal) {
-                            if (!viewModelPropertyUpdates[prop]) {
-                                bindingData.parentCompute(newVal);
-                            }
-                        };
-                        viewModel.bind(prop, handlers[prop]);
-                        if (bindingData.syntaxStyle === 'new' && bindingData.parentCompute) {
-                            bindings.initializeValues(bindingData, prop === '.' ? viewModel : can.compute.read(viewModel, can.compute.read.reads(prop), {}).value, bindingData.parentCompute, function () {
-                            }, function (ev, newVal) {
-                                bindingData.parentCompute(newVal);
-                            });
-                        }
-                    }
-                });
-            }
-            if (!can.isEmptyObject(this.constructor.attributeScopeMappings) || componentTagData.templateType !== 'legacy') {
-                can.bind.call(el, 'attributes', function (ev) {
-                    var camelized = can.camelize(ev.attributeName);
-                    if (!bindingsData[camelized] && !ignoreAttributesRegExp.test(camelized)) {
-                        viewModel.attr(camelized, el.getAttribute(ev.attributeName));
-                    }
-                });
+                    return viewModel;
+                }, initialViewModelData));
             }
             this.scope = this.viewModel = viewModel;
-            can.data($el, 'scope', this.scope);
-            can.data($el, 'viewModel', this.scope);
+            can.data($el, 'scope', this.viewModel);
+            can.data($el, 'viewModel', this.viewModel);
             can.data($el, 'preventDataBindings', true);
             var shadowScope;
             if (lexicalContent) {
-                shadowScope = can.view.Scope.refsScope().add(this.scope, { viewModel: true });
+                shadowScope = can.view.Scope.refsScope().add(this.viewModel, { viewModel: true });
             } else {
-                shadowScope = (this.constructor.renderer ? componentTagData.scope.add(new can.view.Scope.Refs()) : componentTagData.scope).add(this.scope, { viewModel: true });
+                shadowScope = (this.constructor.renderer ? componentTagData.scope.add(new can.view.Scope.Refs()) : componentTagData.scope).add(this.viewModel, { viewModel: true });
             }
             var options = { helpers: {} }, addHelper = function (name, fn) {
                     options.helpers[name] = function () {
@@ -157,14 +101,9 @@ var Component = can.Component = can.Construct.extend({
             can.each(this.simpleHelpers || {}, function (val, prop) {
                 addHelper(prop, can.view.simpleHelper(val));
             });
-            teardownFunctions.push(function () {
-                can.each(handlers, function (handler, prop) {
-                    viewModel.unbind(prop, handlers[prop]);
-                });
-            });
             this._control = new this.constructor.Control(el, {
-                scope: this.scope,
-                viewModel: this.scope,
+                scope: this.viewModel,
+                viewModel: this.viewModel,
                 destroy: callTeardownFunctions
             });
             var nodeList = can.view.nodeLists.register([], undefined, true);
@@ -192,10 +131,6 @@ var Component = can.Component = can.Construct.extend({
                         } else {
                             lightTemplateData = contentTagData;
                         }
-                        lightTemplateData.scope = lightTemplateData.scope.add(viewModel, {
-                            'protected': true,
-                            viewModel: true
-                        });
                         if (contentTagData.parentNodeList) {
                             var frag = subtemplate(lightTemplateData.scope, lightTemplateData.options, contentTagData.parentNodeList);
                             elements.replace([el], frag);
@@ -239,11 +174,11 @@ var ComponentControl = can.Control.extend({
                     var name = methodName.replace(paramReplacer, function (matched, key) {
                             var value;
                             if (key === 'scope' || key === 'viewModel') {
-                                delegate = options.scope;
+                                delegate = options.viewModel;
                                 return '';
                             }
                             key = key.replace(/^(scope|^viewModel)\./, '');
-                            value = can.compute.read(options.scope, can.compute.read.reads(key), { isArgument: true }).value;
+                            value = can.compute.read(options.viewModel, can.compute.read.reads(key), { isArgument: true }).value;
                             if (value === undefined) {
                                 value = can.getObject(key);
                             }

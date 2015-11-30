@@ -1,19 +1,28 @@
 /*!
- * CanJS - 2.3.2
+ * CanJS - 2.3.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Nov 2015 23:57:31 GMT
+ * Mon, 30 Nov 2015 23:22:54 GMT
  * Licensed MIT
  */
 
-/*can@2.3.2#util/batch/batch*/
+/*can@2.3.3#util/batch/batch*/
 var can = require('../can.js');
-var batchNum = 1, transactions = 0, batchEvents = [], stopCallbacks = [], currentBatchEvents = null, currentBatchCallbacks = null;
+var batchNum = 1, transactions = 0, dispatchingBatch = null, collectingBatch = null, batches = [];
 can.batch = {
     start: function (batchStopHandler) {
         transactions++;
-        if (batchStopHandler) {
-            stopCallbacks.push(batchStopHandler);
+        if (transactions === 1) {
+            var batch = {
+                    events: [],
+                    callbacks: [],
+                    number: batchNum++
+                };
+            batches.push(batch);
+            if (batchStopHandler) {
+                batch.callbacks.push(batchStopHandler);
+            }
+            collectingBatch = batch;
         }
     },
     stop: function (force, callStart) {
@@ -23,75 +32,60 @@ can.batch = {
             transactions--;
         }
         if (transactions === 0) {
-            if (currentBatchEvents !== null) {
-                return;
+            collectingBatch = null;
+            var batch;
+            if (batches.length === 1) {
+                while (batch = batches.shift()) {
+                    var events = batch.events;
+                    var callbacks = batch.callbacks;
+                    dispatchingBatch = batch;
+                    can.batch.batchNum = batch.number;
+                    var i, len;
+                    if (callStart) {
+                        can.batch.start();
+                    }
+                    for (i = 0, len = events.length; i < len; i++) {
+                        can.dispatch.apply(events[i][0], events[i][1]);
+                    }
+                    can.batch._onDispatchedEvents(batch.number);
+                    for (i = 0; i < callbacks.length; i++) {
+                        callbacks[i]();
+                    }
+                    dispatchingBatch = null;
+                    can.batch.batchNum = undefined;
+                }
             }
-            currentBatchEvents = batchEvents;
-            currentBatchCallbacks = stopCallbacks;
-            var i, len;
-            batchEvents = [];
-            stopCallbacks = [];
-            can.batch.batchNum = batchNum;
-            batchNum++;
-            if (callStart) {
-                can.batch.start();
-            }
-            for (i = 0; i < currentBatchEvents.length; i++) {
-                can.dispatch.apply(currentBatchEvents[i][0], currentBatchEvents[i][1]);
-            }
-            currentBatchEvents = null;
-            for (i = 0, len = currentBatchCallbacks.length; i < currentBatchCallbacks.length; i++) {
-                currentBatchCallbacks[i]();
-            }
-            currentBatchCallbacks = null;
-            can.batch.batchNum = undefined;
         }
+    },
+    _onDispatchedEvents: function () {
     },
     trigger: function (item, event, args) {
         if (!item.__inSetup) {
-            event = typeof event === 'string' ? {
-                type: event,
-                batchNum: can.batch.batchNum
-            } : event;
-            if (currentBatchEvents) {
-                currentBatchEvents.push([
+            event = typeof event === 'string' ? { type: event } : event;
+            if (collectingBatch) {
+                event.batchNum = collectingBatch.number;
+                collectingBatch.events.push([
                     item,
                     [
                         event,
                         args
                     ]
                 ]);
-            } else if (transactions === 0) {
-                return can.dispatch.call(item, event, args);
             } else {
-                event.batchNum = batchNum;
-                batchEvents.push([
-                    item,
-                    [
-                        event,
-                        args
-                    ]
-                ]);
+                if (dispatchingBatch) {
+                    event.batchNum = dispatchingBatch.number;
+                }
+                can.dispatch.call(item, event, args);
             }
         }
     },
     afterPreviousEvents: function (handler) {
-        if (currentBatchEvents) {
-            var obj = { __bindEvents: { ready: [{ handler: handler }] } };
-            currentBatchEvents.push([
-                obj,
-                [
-                    { type: 'ready' },
-                    []
-                ]
-            ]);
-        } else {
-            handler({});
-        }
+        handler({});
     },
     after: function (handler) {
-        if (currentBatchEvents) {
-            currentBatchCallbacks.push(handler);
+        var batch = collectingBatch || dispatchingBatch;
+        if (batch) {
+            batch.callbacks.push(handler);
         } else {
             handler({});
         }

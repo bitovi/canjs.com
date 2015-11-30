@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.2
+ * CanJS - 2.3.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Nov 2015 23:57:31 GMT
+ * Mon, 30 Nov 2015 23:22:54 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.2#util/can*/
+/*can@2.3.3#util/can*/
 define('can/util/can', [], function () {
     var glbl = typeof window !== 'undefined' ? window : typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope ? self : global;
     var can = {};
@@ -102,7 +102,7 @@ define('can/util/can', [], function () {
         }
         return object._cid;
     };
-    can.VERSION = '2.3.2';
+    can.VERSION = '2.3.3';
     can.simpleExtend = function (d, s) {
         for (var prop in s) {
             d[prop] = s[prop];
@@ -245,10 +245,16 @@ define('can/util/can', [], function () {
     can.isWebWorker = typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope;
     return can;
 });
-/*can@2.3.2#util/attr/attr*/
+/*can@2.3.3#util/attr/attr*/
 define('can/util/attr/attr', ['can/util/can'], function (can) {
     var setImmediate = can.global.setImmediate || function (cb) {
             return setTimeout(cb, 0);
+        }, formElements = {
+            'input': true,
+            'textarea': true,
+            'select': true
+        }, hasProperty = function (el, attrName) {
+            return attrName in el || formElements[el.nodeName.toLowerCase()];
         }, attr = {
             MutationObserver: can.global.MutationObserver || can.global.WebKitMutationObserver || can.global.MozMutationObserver,
             map: {
@@ -318,14 +324,14 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
                 var prop = attr.map[attrName], newValue;
                 if (typeof prop === 'function') {
                     newValue = prop(el, val);
-                } else if (prop === true) {
+                } else if (prop === true && hasProperty(el, prop)) {
                     newValue = el[attrName] = true;
                     if (attrName === 'checked' && el.type === 'radio') {
                         if (can.inArray((el.nodeName + '').toLowerCase(), attr.defaultValue) >= 0) {
                             el.defaultChecked = true;
                         }
                     }
-                } else if (prop) {
+                } else if (prop !== true && hasProperty(el, prop)) {
                     newValue = val;
                     if (el[prop] !== val || el.nodeName.toUpperCase() === 'OPTION') {
                         el[prop] = val;
@@ -334,13 +340,40 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
                         el.defaultValue = val;
                     }
                 } else {
-                    el.setAttribute(attrName, val);
-                    newValue = val;
+                    attr.setAttribute(el, attrName, val);
                 }
                 if (!usingMutationObserver && newValue !== oldValue) {
                     attr.trigger(el, attrName, oldValue);
                 }
             },
+            setAttribute: function () {
+                var doc = can.global.document;
+                if (doc && document.createAttribute) {
+                    try {
+                        doc.createAttribute('{}');
+                    } catch (e) {
+                        var invalidNodes = {}, attributeDummy = document.createElement('div');
+                        return function (el, attrName, val) {
+                            var first = attrName.charAt(0), cachedNode, node;
+                            if ((first === '{' || first === '(' || first === '*') && el.setAttributeNode) {
+                                cachedNode = invalidNodes[attrName];
+                                if (!cachedNode) {
+                                    attributeDummy.innerHTML = '<div ' + attrName + '=""></div>';
+                                    cachedNode = invalidNodes[attrName] = attributeDummy.childNodes[0].attributes[0];
+                                }
+                                node = cachedNode.cloneNode();
+                                node.value = val;
+                                el.setAttributeNode(node);
+                            } else {
+                                el.setAttribute(attrName, val);
+                            }
+                        };
+                    }
+                }
+                return function (el, attrName, val) {
+                    el.setAttribute(attrName, val);
+                };
+            }(),
             trigger: function (el, attrName, oldValue) {
                 if (can.data(can.$(el), 'canHasAttributesBindings')) {
                     attrName = attrName.toLowerCase();
@@ -358,9 +391,9 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
             get: function (el, attrName) {
                 attrName = attrName.toLowerCase();
                 var prop = attr.map[attrName];
-                if (typeof prop === 'string' && prop in el) {
+                if (typeof prop === 'string' && hasProperty(el, prop)) {
                     return el[prop];
-                } else if (prop === true) {
+                } else if (prop === true && hasProperty(el, prop)) {
                     return el[attrName];
                 }
                 return el.getAttribute(attrName);
@@ -375,9 +408,9 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
                 if (typeof setter === 'function') {
                     setter(el, undefined);
                 }
-                if (setter === true) {
+                if (setter === true && hasProperty(el, attrName)) {
                     el[attrName] = false;
-                } else if (typeof setter === 'string') {
+                } else if (typeof setter === 'string' && hasProperty(el, setter)) {
                     el[setter] = '';
                 } else {
                     el.removeAttribute(attrName);
@@ -401,7 +434,7 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
         };
     return attr;
 });
-/*can@2.3.2#event/event*/
+/*can@2.3.3#event/event*/
 define('can/event/event', ['can/util/can'], function (can) {
     can.addEvent = function (event, handler) {
         var allEvents = this.__bindEvents || (this.__bindEvents = {}), eventList = allEvents[event] || (allEvents[event] = []);
@@ -555,7 +588,7 @@ define('can/event/event', ['can/util/can'], function (can) {
     };
     return can.event;
 });
-/*can@2.3.2#util/array/each*/
+/*can@2.3.3#util/array/each*/
 define('can/util/array/each', ['can/util/can'], function (can) {
     var isArrayLike = function (obj) {
         var length = obj && typeof obj !== 'boolean' && typeof obj !== 'number' && 'length' in obj && obj.length;
@@ -603,7 +636,7 @@ define('can/util/array/each', ['can/util/can'], function (can) {
     };
     return can;
 });
-/*can@2.3.2#util/inserted/inserted*/
+/*can@2.3.3#util/inserted/inserted*/
 define('can/util/inserted/inserted', ['can/util/can'], function (can) {
     can.inserted = function (elems, document) {
         if (!elems.length) {
@@ -653,7 +686,7 @@ define('can/util/inserted/inserted', ['can/util/can'], function (can) {
         can.inserted(children, document);
     };
 });
-/*can@2.3.2#util/jquery/jquery*/
+/*can@2.3.3#util/jquery/jquery*/
 define('can/util/jquery/jquery', [
     'dist/jquery',
     'can/util/can',
@@ -879,11 +912,11 @@ define('can/util/jquery/jquery', [
     $.event.special.removed = {};
     return can;
 });
-/*can@2.3.2#util/util*/
+/*can@2.3.3#util/util*/
 define('can/util/util', ['can/util/jquery/jquery'], function (can) {
     return can;
 });
-/*can@2.3.2#view/view*/
+/*can@2.3.3#view/view*/
 define('can/view/view', ['can/util/util'], function (can) {
     var isFunction = can.isFunction, makeArray = can.makeArray, hookupId = 1;
     var makeRenderer = function (textRenderer) {
@@ -1167,7 +1200,7 @@ define('can/view/view', ['can/util/util'], function (can) {
     });
     return can;
 });
-/*can@2.3.2#view/callbacks/callbacks*/
+/*can@2.3.3#view/callbacks/callbacks*/
 define('can/view/callbacks/callbacks', [
     'can/util/util',
     'can/view/view'
@@ -1240,7 +1273,7 @@ define('can/view/callbacks/callbacks', [
     };
     return can.view.callbacks;
 });
-/*can@2.3.2#view/elements*/
+/*can@2.3.3#view/elements*/
 define('can/view/elements', [
     'can/util/util',
     'can/view/view'
@@ -1322,7 +1355,7 @@ define('can/view/elements', [
     can.view.elements = elements;
     return elements;
 });
-/*can@2.3.2#util/bind/bind*/
+/*can@2.3.3#util/bind/bind*/
 define('can/util/bind/bind', ['can/util/util'], function (can) {
     can.bindAndSetup = function () {
         can.addEvent.apply(this, arguments);
@@ -1357,14 +1390,23 @@ define('can/util/bind/bind', ['can/util/util'], function (can) {
     };
     return can;
 });
-/*can@2.3.2#util/batch/batch*/
+/*can@2.3.3#util/batch/batch*/
 define('can/util/batch/batch', ['can/util/can'], function (can) {
-    var batchNum = 1, transactions = 0, batchEvents = [], stopCallbacks = [], currentBatchEvents = null, currentBatchCallbacks = null;
+    var batchNum = 1, transactions = 0, dispatchingBatch = null, collectingBatch = null, batches = [];
     can.batch = {
         start: function (batchStopHandler) {
             transactions++;
-            if (batchStopHandler) {
-                stopCallbacks.push(batchStopHandler);
+            if (transactions === 1) {
+                var batch = {
+                        events: [],
+                        callbacks: [],
+                        number: batchNum++
+                    };
+                batches.push(batch);
+                if (batchStopHandler) {
+                    batch.callbacks.push(batchStopHandler);
+                }
+                collectingBatch = batch;
             }
         },
         stop: function (force, callStart) {
@@ -1374,82 +1416,67 @@ define('can/util/batch/batch', ['can/util/can'], function (can) {
                 transactions--;
             }
             if (transactions === 0) {
-                if (currentBatchEvents !== null) {
-                    return;
+                collectingBatch = null;
+                var batch;
+                if (batches.length === 1) {
+                    while (batch = batches.shift()) {
+                        var events = batch.events;
+                        var callbacks = batch.callbacks;
+                        dispatchingBatch = batch;
+                        can.batch.batchNum = batch.number;
+                        var i, len;
+                        if (callStart) {
+                            can.batch.start();
+                        }
+                        for (i = 0, len = events.length; i < len; i++) {
+                            can.dispatch.apply(events[i][0], events[i][1]);
+                        }
+                        can.batch._onDispatchedEvents(batch.number);
+                        for (i = 0; i < callbacks.length; i++) {
+                            callbacks[i]();
+                        }
+                        dispatchingBatch = null;
+                        can.batch.batchNum = undefined;
+                    }
                 }
-                currentBatchEvents = batchEvents;
-                currentBatchCallbacks = stopCallbacks;
-                var i, len;
-                batchEvents = [];
-                stopCallbacks = [];
-                can.batch.batchNum = batchNum;
-                batchNum++;
-                if (callStart) {
-                    can.batch.start();
-                }
-                for (i = 0; i < currentBatchEvents.length; i++) {
-                    can.dispatch.apply(currentBatchEvents[i][0], currentBatchEvents[i][1]);
-                }
-                currentBatchEvents = null;
-                for (i = 0, len = currentBatchCallbacks.length; i < currentBatchCallbacks.length; i++) {
-                    currentBatchCallbacks[i]();
-                }
-                currentBatchCallbacks = null;
-                can.batch.batchNum = undefined;
             }
+        },
+        _onDispatchedEvents: function () {
         },
         trigger: function (item, event, args) {
             if (!item.__inSetup) {
-                event = typeof event === 'string' ? {
-                    type: event,
-                    batchNum: can.batch.batchNum
-                } : event;
-                if (currentBatchEvents) {
-                    currentBatchEvents.push([
+                event = typeof event === 'string' ? { type: event } : event;
+                if (collectingBatch) {
+                    event.batchNum = collectingBatch.number;
+                    collectingBatch.events.push([
                         item,
                         [
                             event,
                             args
                         ]
                     ]);
-                } else if (transactions === 0) {
-                    return can.dispatch.call(item, event, args);
                 } else {
-                    event.batchNum = batchNum;
-                    batchEvents.push([
-                        item,
-                        [
-                            event,
-                            args
-                        ]
-                    ]);
+                    if (dispatchingBatch) {
+                        event.batchNum = dispatchingBatch.number;
+                    }
+                    can.dispatch.call(item, event, args);
                 }
             }
         },
         afterPreviousEvents: function (handler) {
-            if (currentBatchEvents) {
-                var obj = { __bindEvents: { ready: [{ handler: handler }] } };
-                currentBatchEvents.push([
-                    obj,
-                    [
-                        { type: 'ready' },
-                        []
-                    ]
-                ]);
-            } else {
-                handler({});
-            }
+            handler({});
         },
         after: function (handler) {
-            if (currentBatchEvents) {
-                currentBatchCallbacks.push(handler);
+            var batch = collectingBatch || dispatchingBatch;
+            if (batch) {
+                batch.callbacks.push(handler);
             } else {
                 handler({});
             }
         }
     };
 });
-/*can@2.3.2#compute/read*/
+/*can@2.3.3#compute/read*/
 define('can/compute/read', ['can/util/util'], function (can) {
     var read = function (parent, reads, options) {
         options = options || {};
@@ -1547,8 +1574,9 @@ define('can/compute/read', ['can/util/util'], function (can) {
                     options.foundObservable(value, index);
                     state.foundObservable = true;
                 }
-                if (typeof value[prop.key] === 'function' && value.constructor.prototype[prop.key] === value[prop.key]) {
-                    return value[prop.key];
+                var val = value[prop.key];
+                if (typeof val === 'function' && value.constructor.prototype[prop.key] === val && !val.isComputed) {
+                    return val;
                 } else {
                     return value.attr(prop.key);
                 }
@@ -1675,35 +1703,128 @@ define('can/compute/read', ['can/util/util'], function (can) {
     };
     return read;
 });
-/*can@2.3.2#compute/get_value_and_bind*/
+/*can@2.3.3#compute/get_value_and_bind*/
 define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
-    function ObservedInfo(func, context, onchanged) {
+    function ObservedInfo(func, context, compute) {
+        this.newObserved = {};
+        this.oldObserved = null;
         this.func = func;
         this.context = context;
-        this.onchanged = onchanged;
+        this.compute = compute;
+        this.onDependencyChange = can.proxy(this.onDependencyChange, this);
+        this.depth = null;
+        this.childDepths = {};
+        this.ignore = 0;
+        this.inBatch = false;
+        compute.observedInfo = this;
     }
-    function getValueAndBind(observedInfo) {
-        observedInfo.oldObserved = observedInfo.newObserved || {};
-        observedInfo.ignore = 0;
-        observedInfo.newObserved = {};
-        observedInfo.ready = false;
-        observedInfoStack.push(observedInfo);
-        observedInfo.value = observedInfo.func.call(observedInfo.context);
-        observedInfoStack.pop();
-        unbindOldSet(observedInfo);
-        can.batch.afterPreviousEvents(function () {
-            observedInfo.ready = true;
-        });
-        return observedInfo;
-    }
-    var unbindOldSet = function (observedInfo) {
-        var onchanged = observedInfo.onchanged, oldObserved = observedInfo.oldObserved;
-        for (var name in oldObserved) {
-            var obEv = oldObserved[name];
-            if (obEv) {
-                obEv.obj.unbind(obEv.event, onchanged);
+    can.simpleExtend(ObservedInfo.prototype, {
+        getDepth: function () {
+            if (this.depth !== null) {
+                return this.depth;
+            } else {
+                return this.depth = this._getDepth();
+            }
+        },
+        _getDepth: function () {
+            var max = 0, childDepths = this.childDepths;
+            for (var cid in childDepths) {
+                if (childDepths[cid] > max) {
+                    max = childDepths[cid];
+                }
+            }
+            return max + 1;
+        },
+        addEdge: function (objEv) {
+            objEv.obj.bind(objEv.event, this.onDependencyChange);
+            if (objEv.obj.observedInfo) {
+                this.childDepths[objEv.obj._cid] = objEv.obj.observedInfo.getDepth();
+                this.depth = null;
+            }
+        },
+        removeEdge: function (objEv) {
+            objEv.obj.unbind(objEv.event, this.onDependencyChange);
+            if (objEv.obj.observedInfo) {
+                delete this.childDepths[objEv.obj._cid];
+                this.depth = null;
+            }
+        },
+        onDependencyChange: function (ev) {
+            if (this.bound) {
+                if (ev.batchNum !== undefined) {
+                    if (ev.batchNum !== this.batchNum) {
+                        ObservedInfo.registerUpdate(this);
+                        this.batchNum = ev.batchNum;
+                    }
+                } else {
+                    this.updateCompute(ev.batchNum);
+                }
+            }
+        },
+        updateCompute: function (batchNum) {
+            var oldValue = this.value;
+            this.getValueAndBind();
+            this.compute.updater(this.value, oldValue, batchNum);
+        },
+        getValueAndBind: function () {
+            this.bound = true;
+            this.oldObserved = this.newObserved || {};
+            this.ignore = 0;
+            this.newObserved = {};
+            observedInfoStack.push(this);
+            this.value = this.func.call(this.context);
+            observedInfoStack.pop();
+            this.updateBindings();
+        },
+        updateBindings: function () {
+            var newObserved = this.newObserved, oldObserved = this.oldObserved, name, obEv;
+            for (name in newObserved) {
+                obEv = newObserved[name];
+                if (!oldObserved[name]) {
+                    this.addEdge(obEv);
+                } else {
+                    oldObserved[name] = null;
+                }
+            }
+            for (name in oldObserved) {
+                obEv = oldObserved[name];
+                if (obEv) {
+                    this.removeEdge(obEv);
+                }
+            }
+        },
+        teardown: function () {
+            this.bound = false;
+            for (var name in this.newObserved) {
+                var ob = this.newObserved[name];
+                this.removeEdge(ob);
+            }
+            this.newObserved = {};
+        }
+    });
+    var updateOrder = [], curDepth = Infinity, maxDepth = 0;
+    ObservedInfo.registerUpdate = function (observeInfo, batchNum) {
+        var depth = observeInfo.getDepth() - 1;
+        curDepth = Math.min(depth, curDepth);
+        maxDepth = Math.max(maxDepth, depth);
+        var objs = updateOrder[depth];
+        if (!objs) {
+            objs = updateOrder[depth] = [];
+        }
+        objs.push(observeInfo);
+    };
+    ObservedInfo.batchEnd = function (batchNum) {
+        while (curDepth <= maxDepth) {
+            var cur = updateOrder[curDepth].pop();
+            if (cur) {
+                cur.updateCompute(batchNum);
+            } else {
+                curDepth++;
             }
         }
+        updateOrder = [];
+        curDepth = Infinity;
+        maxDepth = 0;
     };
     var observedInfoStack = [];
     can.__observe = function (obj, event) {
@@ -1721,10 +1842,6 @@ define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
                     obj: obj,
                     event: evStr
                 };
-                if (!top.oldObserved[name]) {
-                    obj.bind(evStr, top.onchanged);
-                }
-                top.oldObserved[name] = null;
             }
         }
     };
@@ -1750,16 +1867,13 @@ define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
                 var trap = observes[i], name = trap.name;
                 if (!top.newObserved[name]) {
                     top.newObserved[name] = trap;
-                    if (!top.oldObserved[name]) {
-                        trap.obj.bind(trap.event, top.onchanged);
-                    }
-                    top.oldObserved[name] = null;
                 }
             }
         }
     };
     can.__isRecordingObserves = function () {
-        return observedInfoStack.length;
+        var len = observedInfoStack.length;
+        return len && observedInfoStack[len - 1].ignore === 0;
     };
     can.__notObserve = function (fn) {
         return function () {
@@ -1774,25 +1888,19 @@ define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
             }
         };
     };
-    getValueAndBind.unbindReadInfo = function (readInfo) {
-        var onchanged = readInfo.onchanged;
-        for (var name in readInfo.newObserved) {
-            var ob = readInfo.newObserved[name];
-            ob.obj.unbind(ob.event, onchanged);
-        }
-    };
-    getValueAndBind.ObservedInfo = ObservedInfo;
-    return getValueAndBind;
+    can.batch._onDispatchedEvents = ObservedInfo.batchEnd;
+    return ObservedInfo;
 });
-/*can@2.3.2#compute/proto_compute*/
+/*can@2.3.3#compute/proto_compute*/
 define('can/compute/proto_compute', [
     'can/util/util',
     'can/util/bind/bind',
     'can/compute/read',
     'can/compute/get_value_and_bind',
     'can/util/batch/batch'
-], function (can, bind, read, getValueAndBind) {
+], function (can, bind, read, ObservedInfo) {
     can.Compute = function (getterSetter, context, eventName, bindOnce) {
+        can.cid(this, 'compute');
         var args = [];
         for (var i = 0, arglen = arguments.length; i < arglen; i++) {
             args[i] = arguments[i];
@@ -1817,7 +1925,6 @@ define('can/compute/proto_compute', [
         }
         this._args = args;
         this.isComputed = true;
-        can.cid(this, 'compute');
     };
     can.simpleExtend(can.Compute.prototype, {
         _setupGetterSetterFn: function (getterSetter, context, eventName) {
@@ -2000,22 +2107,15 @@ define('can/compute/proto_compute', [
         }
     };
     var setupComputeHandlers = function (compute, func, context) {
-        var readInfo = new getValueAndBind.ObservedInfo(func, context, function (ev) {
-                if (readInfo.ready && compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
-                    var oldValue = readInfo.value;
-                    getValueAndBind(readInfo);
-                    compute.updater(readInfo.value, oldValue, ev.batchNum);
-                    batchNum = ev.batchNum;
-                }
-            }), batchNum;
+        var readInfo = new ObservedInfo(func, context, compute);
         return {
             on: function () {
-                getValueAndBind(readInfo);
+                readInfo.getValueAndBind();
                 compute.value = readInfo.value;
                 compute.hasDependencies = !can.isEmptyObject(readInfo.newObserved);
             },
             off: function () {
-                getValueAndBind.unbindReadInfo(readInfo);
+                readInfo.teardown();
             }
         };
     };
@@ -2053,7 +2153,7 @@ define('can/compute/proto_compute', [
     can.Compute.set = read.write;
     return can.Compute;
 });
-/*can@2.3.2#compute/compute*/
+/*can@2.3.3#compute/compute*/
 define('can/compute/compute', [
     'can/util/util',
     'can/util/bind/bind',
@@ -2119,16 +2219,15 @@ define('can/compute/compute', [
     can.compute.temporarilyBind = can.Compute.temporarilyBind;
     return can.compute;
 });
-/*can@2.3.2#view/scope/compute_data*/
+/*can@2.3.3#view/scope/compute_data*/
 define('can/view/scope/compute_data', [
     'can/util/util',
     'can/compute/compute',
     'can/compute/get_value_and_bind'
-], function (can, compute, getValueAndBind) {
+], function (can, compute, ObservedInfo) {
     var isFastPath = function (computeData) {
         return computeData.reads && computeData.reads.length === 1 && computeData.root instanceof can.Map && !can.isFunction(computeData.root[computeData.reads[0].key]);
     };
-    var unbindScopeRead = getValueAndBind.unbindReadInfo;
     var getValueAndBindSinglePropertyRead = function (readInfo, computeData, singlePropertyReadChanged) {
         var target = computeData.root, prop = computeData.reads[0].key;
         target.bind(prop, singlePropertyReadChanged);
@@ -2171,29 +2270,21 @@ define('can/view/scope/compute_data', [
                 } else {
                     return scopeReader(scope, key, options, computeData);
                 }
-            }, batchNum, readInfo = new getValueAndBind.ObservedInfo(scopeRead, null, function (ev) {
-                if (readInfo.ready && compute.computeInstance.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
-                    var oldValue = readInfo.value, newValue;
-                    getValueAndBind(readInfo);
-                    newValue = readInfo.value;
-                    compute.computeInstance.updater(newValue, oldValue, ev.batchNum);
-                    batchNum = batchNum = ev.batchNum;
-                }
-            }), singlePropertyReadChanged = function (ev, newVal, oldVal) {
+            }, singlePropertyReadChanged = function (ev, newVal, oldVal) {
                 if (typeof newVal !== 'function') {
                     compute.computeInstance.updater(newVal, oldVal, ev.batchNum);
                 } else {
                     unbindSinglePropertyRead(computeData, singlePropertyReadChanged);
-                    getValueAndBind(readInfo);
+                    readInfo.getValueAndBind();
                     isFastPathBound = false;
                     compute.computeInstance.updater(readInfo.value, oldVal, ev.batchNum);
                 }
             }, isFastPathBound = false, compute = can.compute(undefined, {
                 on: function () {
-                    getValueAndBind(readInfo);
+                    readInfo.getValueAndBind();
                     if (isFastPath(computeData)) {
                         getValueAndBindSinglePropertyRead(readInfo, computeData, singlePropertyReadChanged);
-                        unbindScopeRead(readInfo);
+                        readInfo.teardown();
                         readInfo.newObserved = {};
                         isFastPathBound = true;
                     }
@@ -2204,18 +2295,18 @@ define('can/view/scope/compute_data', [
                     if (isFastPathBound) {
                         unbindSinglePropertyRead(computeData, singlePropertyReadChanged);
                     } else {
-                        unbindScopeRead(readInfo);
+                        readInfo.teardown();
                     }
                 },
                 set: scopeRead,
                 get: scopeRead,
                 __selfUpdater: true
-            });
+            }), readInfo = new ObservedInfo(scopeRead, null, compute.computeInstance);
         computeData.compute = compute;
         return computeData;
     };
 });
-/*can@2.3.2#util/string/string*/
+/*can@2.3.3#util/string/string*/
 define('can/util/string/string', ['can/util/util'], function (can) {
     var strUndHash = /_|-/, strColons = /\=\=/, strWords = /([A-Z]+)([A-Z][a-z])/g, strLowUp = /([a-z\d])([A-Z])/g, strDash = /([a-z\d])([A-Z])/g, strReplacer = /\{([^\}]+)\}/g, strQuote = /"/g, strSingleQuote = /'/g, strHyphenMatch = /-+(.)?/g, strCamelMatch = /[a-z][A-Z]/g, getNext = function (obj, prop, add) {
             var result = obj[prop];
@@ -2300,7 +2391,7 @@ define('can/util/string/string', ['can/util/util'], function (can) {
     });
     return can;
 });
-/*can@2.3.2#construct/construct*/
+/*can@2.3.3#construct/construct*/
 define('can/construct/construct', ['can/util/string/string'], function (can) {
     var initializing = 0;
     var canGetDescriptor;
@@ -2438,7 +2529,7 @@ define('can/construct/construct', ['can/util/string/string'], function (can) {
     };
     return can.Construct;
 });
-/*can@2.3.2#map/bubble*/
+/*can@2.3.3#map/bubble*/
 define('can/map/bubble', ['can/util/util'], function (can) {
     var bubble = can.bubble = {
             bind: function (parent, eventName) {
@@ -2556,7 +2647,7 @@ define('can/map/bubble', ['can/util/util'], function (can) {
         };
     return bubble;
 });
-/*can@2.3.2#util/object/isplain/isplain*/
+/*can@2.3.3#util/object/isplain/isplain*/
 define('can/util/object/isplain/isplain', ['can/util/can'], function (can) {
     var core_hasOwn = Object.prototype.hasOwnProperty, isWindow = function (obj) {
             return obj !== null && obj == obj.window;
@@ -2579,7 +2670,7 @@ define('can/util/object/isplain/isplain', ['can/util/can'], function (can) {
     can.isPlainObject = isPlainObject;
     return can;
 });
-/*can@2.3.2#map/map_helpers*/
+/*can@2.3.3#map/map_helpers*/
 define('can/map/map_helpers', [
     'can/util/util',
     'can/util/object/isplain/isplain'
@@ -2683,7 +2774,7 @@ define('can/map/map_helpers', [
     };
     return mapHelpers;
 });
-/*can@2.3.2#map/map*/
+/*can@2.3.3#map/map*/
 define('can/map/map', [
     'can/util/util',
     'can/util/bind/bind',
@@ -3018,7 +3109,7 @@ define('can/map/map', [
     Map.off = Map.unbind;
     return Map;
 });
-/*can@2.3.2#list/list*/
+/*can@2.3.3#list/list*/
 define('can/list/list', [
     'can/util/util',
     'can/map/map',
@@ -3279,7 +3370,7 @@ define('can/list/list', [
     can.List = Map.List = list;
     return can.List;
 });
-/*can@2.3.2#view/scope/scope*/
+/*can@2.3.3#view/scope/scope*/
 define('can/view/scope/scope', [
     'can/util/util',
     'can/view/scope/compute_data',
@@ -3289,192 +3380,194 @@ define('can/view/scope/scope', [
     'can/view/view',
     'can/compute/compute'
 ], function (can, makeComputeData) {
-    var Scope = can.Construct.extend({
-            read: can.compute.read,
-            Refs: can.Map.extend({ shortName: 'ReferenceMap' }, {}),
-            Break: function () {
-            },
-            refsScope: function () {
-                return new can.view.Scope(new this.Refs());
+    function Scope(context, parent, meta) {
+        this._context = context;
+        this._parent = parent;
+        this._meta = meta || {};
+        this.__cache = {};
+    }
+    can.simpleExtend(Scope, {
+        read: can.compute.read,
+        Refs: can.Map.extend({ shortName: 'ReferenceMap' }, {}),
+        refsScope: function () {
+            return new can.view.Scope(new this.Refs());
+        }
+    });
+    can.simpleExtend(Scope.prototype, {
+        add: function (context, meta) {
+            if (context !== this._context) {
+                return new this.constructor(context, this, meta);
+            } else {
+                return this;
             }
-        }, {
-            init: function (context, parent, meta) {
-                this._context = context;
-                this._parent = parent;
-                this.__cache = {};
-                this._meta = meta || {};
-            },
-            get: can.__notObserve(function (key, options) {
-                options = can.simpleExtend({ isArgument: true }, options);
-                var res = this.read(key, options);
-                return res.value;
-            }),
-            attr: can.__notObserve(function (key, value, options) {
-                options = can.simpleExtend({ isArgument: true }, options);
-                if (arguments.length === 2) {
-                    var lastIndex = key.lastIndexOf('.'), readKey = lastIndex !== -1 ? key.substring(0, lastIndex) : '.', obj = this.read(readKey, options).value;
-                    if (lastIndex !== -1) {
-                        key = key.substring(lastIndex + 1, key.length);
-                    }
-                    can.compute.set(obj, key, value, options);
-                } else {
-                    return this.get(key, options);
+        },
+        read: function (attr, options) {
+            if (attr === '%root') {
+                return { value: this.getRoot() };
+            }
+            var isInCurrentContext = attr.substr(0, 2) === './', isInParentContext = attr.substr(0, 3) === '../', isCurrentContext = attr === '.' || attr === 'this', isParentContext = attr === '..', isContextBased = isInCurrentContext || isInParentContext || isCurrentContext || isParentContext;
+            if (isContextBased && this._meta.notContext) {
+                return this._parent.read(attr, options);
+            }
+            var currentScopeOnly;
+            if (isInCurrentContext) {
+                currentScopeOnly = true;
+                attr = attr.substr(2);
+            } else if (isInParentContext) {
+                var parent = this._parent;
+                while (parent._meta.notContext) {
+                    parent = parent._parent;
                 }
-            }),
-            add: function (context, meta) {
-                if (context !== this._context) {
-                    return new this.constructor(context, this, meta);
-                } else {
-                    return this;
-                }
-            },
-            computeData: function (key, options) {
-                return makeComputeData(this, key, options);
-            },
-            compute: function (key, options) {
-                return this.computeData(key, options).compute;
-            },
-            getRefs: function () {
-                return this.getScope(function (scope) {
-                    return scope._context instanceof Scope.Refs;
-                });
-            },
-            getViewModel: function () {
-                return this.getContext(function (scope) {
-                    return scope._meta.viewModel;
-                });
-            },
-            getContext: function (tester) {
-                var res = this.getScope(tester);
-                return res && res._context;
-            },
-            getScope: function (tester) {
-                var scope = this;
-                while (scope) {
-                    if (tester(scope)) {
-                        return scope;
-                    }
-                    scope = scope._parent;
-                }
-            },
-            getRoot: function () {
-                var cur = this, child = this;
-                while (cur._parent) {
-                    child = cur;
-                    cur = cur._parent;
-                }
-                if (cur._context instanceof Scope.Refs) {
-                    cur = child;
-                }
-                return cur._context;
-            },
-            cloneFromRef: function () {
-                var contexts = [];
-                var scope = this, context, parent;
-                while (scope) {
-                    context = scope._context;
-                    if (context instanceof Scope.Refs) {
-                        parent = scope._parent;
-                        break;
-                    }
-                    contexts.push(context);
-                    scope = scope._parent;
-                }
-                if (parent) {
-                    can.each(contexts, function (context) {
-                        parent = parent.add(context);
-                    });
-                    return parent;
-                } else {
-                    return this;
-                }
-            },
-            read: function (attr, options) {
-                if (this._meta.protected) {
-                    return this._parent.read(attr, options);
-                }
-                var isInCurrentContext = attr.substr(0, 2) === './', isInParentContext = attr.substr(0, 3) === '../', isCurrentContext = attr === '.' || attr === 'this', isParentContext = attr === '..', isContextBased = isInCurrentContext || isInParentContext || isCurrentContext || isParentContext;
-                if (isContextBased && this._meta.notContext) {
-                    return this._parent.read(attr, options);
-                }
-                var stopLookup;
-                if (isInCurrentContext) {
-                    stopLookup = true;
-                    attr = attr.substr(2);
-                } else if (isInParentContext) {
-                    return this._parent.read(attr.substr(3), options);
-                } else if (isCurrentContext) {
-                    return { value: this._context };
-                } else if (isParentContext) {
-                    return { value: this._parent._context };
-                } else if (attr === '%root') {
-                    return { value: this.getRoot() };
-                }
-                var names = can.compute.read.reads(attr), context, scope = names[0].key.charAt(0) === '*' ? this.getRefs() : this, undefinedObserves = [], currentObserve, currentReads, setObserveDepth = -1, currentSetReads, currentSetObserve, searchedRefsScope = false, refInstance, readOptions = can.simpleExtend({
-                        foundObservable: function (observe, nameIndex) {
-                            currentObserve = observe;
-                            currentReads = names.slice(nameIndex);
-                        },
-                        earlyExit: function (parentValue, nameIndex) {
-                            if (nameIndex > setObserveDepth) {
-                                currentSetObserve = currentObserve;
-                                currentSetReads = currentReads;
-                                setObserveDepth = nameIndex;
-                            }
-                        }
-                    }, options);
-                while (scope) {
-                    context = scope._context;
-                    refInstance = context instanceof Scope.Refs;
-                    if (context !== null && (typeof context === 'object' || typeof context === 'function') && !(searchedRefsScope && refInstance) && !scope._meta.protected) {
-                        if (refInstance) {
-                            searchedRefsScope = true;
-                        }
-                        var getObserves = can.__trapObserves();
-                        var data = can.compute.read(context, names, readOptions);
-                        var observes = getObserves();
-                        if (data.value !== undefined) {
-                            can.__observes(observes);
-                            return {
-                                scope: scope,
-                                rootObserve: currentObserve,
-                                value: data.value,
-                                reads: currentReads
-                            };
-                        } else {
-                            undefinedObserves.push.apply(undefinedObserves, observes);
+                return parent.read(attr.substr(3), options);
+            } else if (isCurrentContext) {
+                return { value: this._context };
+            } else if (isParentContext) {
+                return { value: this._parent._context };
+            }
+            var keyReads = can.compute.read.reads(attr);
+            if (keyReads[0].key.charAt(0) === '*') {
+                return this.getRefs()._read(keyReads, options, true);
+            } else {
+                return this._read(keyReads, options, currentScopeOnly);
+            }
+        },
+        _read: function (keyReads, options, currentScopeOnly) {
+            var currentScope = this, currentContext, undefinedObserves = [], currentObserve, currentReads, setObserveDepth = -1, currentSetReads, currentSetObserve, readOptions = can.simpleExtend({
+                    foundObservable: function (observe, nameIndex) {
+                        currentObserve = observe;
+                        currentReads = keyReads.slice(nameIndex);
+                    },
+                    earlyExit: function (parentValue, nameIndex) {
+                        if (nameIndex > setObserveDepth) {
+                            currentSetObserve = currentObserve;
+                            currentSetReads = currentReads;
+                            setObserveDepth = nameIndex;
                         }
                     }
-                    if (!stopLookup) {
-                        scope = scope._parent;
+                }, options);
+            while (currentScope) {
+                currentContext = currentScope._context;
+                if (currentContext !== null && (typeof currentContext === 'object' || typeof currentContext === 'function')) {
+                    var getObserves = can.__trapObserves();
+                    var data = can.compute.read(currentContext, keyReads, readOptions);
+                    var observes = getObserves();
+                    if (data.value !== undefined) {
+                        can.__observes(observes);
+                        return {
+                            scope: currentScope,
+                            rootObserve: currentObserve,
+                            value: data.value,
+                            reads: currentReads
+                        };
                     } else {
-                        scope = null;
+                        undefinedObserves.push.apply(undefinedObserves, observes);
                     }
                 }
-                can.__observes(undefinedObserves);
-                return {
-                    setRoot: currentSetObserve,
-                    reads: currentSetReads,
-                    value: undefined
-                };
+                if (currentScopeOnly) {
+                    currentScope = null;
+                } else {
+                    currentScope = currentScope._parent;
+                }
             }
-        });
+            can.__observes(undefinedObserves);
+            return {
+                setRoot: currentSetObserve,
+                reads: currentSetReads,
+                value: undefined
+            };
+        },
+        get: can.__notObserve(function (key, options) {
+            options = can.simpleExtend({ isArgument: true }, options);
+            var res = this.read(key, options);
+            return res.value;
+        }),
+        getScope: function (tester) {
+            var scope = this;
+            while (scope) {
+                if (tester(scope)) {
+                    return scope;
+                }
+                scope = scope._parent;
+            }
+        },
+        getContext: function (tester) {
+            var res = this.getScope(tester);
+            return res && res._context;
+        },
+        getRefs: function () {
+            return this.getScope(function (scope) {
+                return scope._context instanceof Scope.Refs;
+            });
+        },
+        getRoot: function () {
+            var cur = this, child = this;
+            while (cur._parent) {
+                child = cur;
+                cur = cur._parent;
+            }
+            if (cur._context instanceof Scope.Refs) {
+                cur = child;
+            }
+            return cur._context;
+        },
+        attr: can.__notObserve(function (key, value, options) {
+            options = can.simpleExtend({ isArgument: true }, options);
+            if (arguments.length === 2) {
+                var lastIndex = key.lastIndexOf('.'), readKey = lastIndex !== -1 ? key.substring(0, lastIndex) : '.', obj = this.read(readKey, options).value;
+                if (lastIndex !== -1) {
+                    key = key.substring(lastIndex + 1, key.length);
+                }
+                can.compute.set(obj, key, value, options);
+            } else {
+                return this.get(key, options);
+            }
+        }),
+        computeData: function (key, options) {
+            return makeComputeData(this, key, options);
+        },
+        compute: function (key, options) {
+            return this.computeData(key, options).compute;
+        },
+        cloneFromRef: function () {
+            var contexts = [];
+            var scope = this, context, parent;
+            while (scope) {
+                context = scope._context;
+                if (context instanceof Scope.Refs) {
+                    parent = scope._parent;
+                    break;
+                }
+                contexts.push(context);
+                scope = scope._parent;
+            }
+            if (parent) {
+                can.each(contexts, function (context) {
+                    parent = parent.add(context);
+                });
+                return parent;
+            } else {
+                return this;
+            }
+        }
+    });
     can.view.Scope = Scope;
+    function Options(data, parent, meta) {
+        if (!data.helpers && !data.partials && !data.tags) {
+            data = { helpers: data };
+        }
+        Scope.call(this, data, parent, meta);
+    }
+    Options.prototype = new Scope();
+    Options.prototype.constructor = Options;
+    can.view.Options = Options;
     return Scope;
 });
-/*can@2.3.2#view/stache/utils*/
+/*can@2.3.3#view/stache/utils*/
 define('can/view/stache/utils', [
     'can/util/util',
     'can/view/scope/scope'
 ], function (can) {
-    var Options = can.view.Scope.extend({
-            init: function (data, parent) {
-                if (!data.helpers && !data.partials && !data.tags) {
-                    data = { helpers: data };
-                }
-                can.view.Scope.prototype.init.apply(this, arguments);
-            }
-        });
+    var Options = can.view.Options;
     return {
         isArrayLike: function (obj) {
             return obj && obj.splice && typeof obj.length === 'number';
@@ -3532,7 +3625,7 @@ define('can/view/stache/utils', [
         Options: Options
     };
 });
-/*can@2.3.2#view/node_lists/node_lists*/
+/*can@2.3.3#view/node_lists/node_lists*/
 define('can/view/node_lists/node_lists', [
     'can/util/util',
     'can/view/elements'
@@ -3700,7 +3793,7 @@ define('can/view/node_lists/node_lists', [
     can.view.nodeLists = nodeLists;
     return nodeLists;
 });
-/*can@2.3.2#view/parser/parser*/
+/*can@2.3.3#view/parser/parser*/
 define('can/view/parser/parser', [], function () {
     function each(items, callback) {
         for (var i = 0; i < items.length; i++) {
@@ -3726,7 +3819,7 @@ define('can/view/parser/parser', [], function () {
     var block = makeMap('a,address,article,applet,aside,audio,blockquote,button,canvas,center,dd,del,dir,div,dl,dt,fieldset,figcaption,figure,footer,form,frameset,h1,h2,h3,h4,h5,h6,header,hgroup,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,output,p,pre,section,script,table,tbody,td,tfoot,th,thead,tr,ul,video');
     var inline = makeMap('abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var');
     var closeSelf = makeMap('colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr');
-    var special = makeMap('script,style');
+    var special = makeMap('script');
     var tokenTypes = 'start,end,close,attrStart,attrEnd,attrValue,chars,comment,special,done'.split(',');
     var fn = function () {
     };
@@ -3986,7 +4079,7 @@ define('can/view/parser/parser', [], function () {
     };
     return HTMLParser;
 });
-/*can@2.3.2#util/array/diff*/
+/*can@2.3.3#util/array/diff*/
 define('can/util/array/diff', [], function () {
     var slice = [].slice;
     return function (oldList, newList) {
@@ -4036,7 +4129,7 @@ define('can/util/array/diff', [], function () {
         return patches;
     };
 });
-/*can@2.3.2#view/live/live*/
+/*can@2.3.3#view/live/live*/
 define('can/view/live/live', [
     'can/util/util',
     'can/view/elements',
@@ -4279,9 +4372,7 @@ define('can/view/live/live', [
                         if (list.bind) {
                             list.bind('add', add).bind('set', set).bind('remove', remove).bind('move', move);
                         }
-                        can.batch.afterPreviousEvents(function () {
-                            afterPreviousEvents = true;
-                        });
+                        afterPreviousEvents = true;
                     };
                 parentNode = elements.getParentNode(el, parentNode);
                 var data = setup(parentNode, function () {
@@ -4451,7 +4542,7 @@ define('can/view/live/live', [
     can.view.live = live;
     return live;
 });
-/*can@2.3.2#view/stache/mustache_helpers*/
+/*can@2.3.3#view/stache/mustache_helpers*/
 define('can/view/stache/mustache_helpers', [
     'can/util/util',
     'can/view/stache/utils',
@@ -4492,7 +4583,10 @@ define('can/view/stache/mustache_helpers', [
                         can.view.nodeLists.register(nodeList, null, options.nodeList);
                         can.view.nodeLists.update(options.nodeList, [el]);
                         var cb = function (item, index, parentNodeList) {
-                            return options.fn(options.scope.add({ '@index': index }).add(item), options.options, parentNodeList);
+                            return options.fn(options.scope.add({
+                                '%index': index,
+                                '@index': index
+                            }, { notContext: true }).add(item), options.options, parentNodeList);
                         };
                         live.list(el, items, cb, options.context, el.parentNode, nodeList, function (list, parentNodeList) {
                             return options.inverse(options.scope.add(list), options.options, parentNodeList);
@@ -4502,17 +4596,26 @@ define('can/view/stache/mustache_helpers', [
                 var expr = resolved;
                 if (!!expr && utils.isArrayLike(expr)) {
                     for (i = 0; i < expr.length; i++) {
-                        result.push(options.fn(options.scope.add({ '@index': i }).add(expr[i])));
+                        result.push(options.fn(options.scope.add({
+                            '%index': i,
+                            '@index': i
+                        }, { notContext: true }).add(expr[i])));
                     }
                 } else if (utils.isObserveLike(expr)) {
                     keys = can.Map.keys(expr);
                     for (i = 0; i < keys.length; i++) {
                         key = keys[i];
-                        result.push(options.fn(options.scope.add({ '@key': key }).add(expr[key])));
+                        result.push(options.fn(options.scope.add({
+                            '%key': key,
+                            '@key': key
+                        }, { notContext: true }).add(expr[key])));
                     }
                 } else if (expr instanceof Object) {
                     for (key in expr) {
-                        result.push(options.fn(options.scope.add({ '@key': key }).add(expr[key])));
+                        result.push(options.fn(options.scope.add({
+                            '%key': key,
+                            '@key': key
+                        }, { notContext: true }).add(expr[key])));
                     }
                 }
                 return result;
@@ -4674,7 +4777,7 @@ define('can/view/stache/mustache_helpers', [
         }
     };
 });
-/*can@2.3.2#view/stache/expression*/
+/*can@2.3.3#view/stache/expression*/
 define('can/view/stache/expression', [
     'can/util/util',
     'can/view/stache/utils',
@@ -5218,7 +5321,7 @@ define('can/view/stache/expression', [
     can.expression = expression;
     return expression;
 });
-/*can@2.3.2#control/control*/
+/*can@2.3.3#control/control*/
 define('can/control/control', [
     'can/util/util',
     'can/construct/construct'
@@ -5420,7 +5523,7 @@ define('can/control/control', [
     });
     return Control;
 });
-/*can@2.3.2#view/href/href*/
+/*can@2.3.3#view/href/href*/
 define('can/view/href/href', [
     'can/util/util',
     'can/view/stache/expression',
@@ -5449,7 +5552,7 @@ define('can/view/href/href', [
         });
     });
 });
-/*can@2.3.2#view/bindings/bindings*/
+/*can@2.3.3#view/bindings/bindings*/
 define('can/view/bindings/bindings', [
     'can/util/util',
     'can/view/stache/expression',
@@ -5457,7 +5560,459 @@ define('can/view/bindings/bindings', [
     'can/control/control',
     'can/view/scope/scope',
     'can/view/href/href'
-], function (can, expression) {
+], function (can, expression, viewCallbacks) {
+    var behaviors = {
+            viewModel: function (el, tagData, makeViewModel, initialViewModelData) {
+                initialViewModelData = initialViewModelData || {};
+                var bindingsSemaphore = {}, viewModel, onCompleteBindings = [], onTeardowns = {}, bindingInfos = {}, attributeViewModelBindings = can.extend({}, initialViewModelData);
+                can.each(can.makeArray(el.attributes), function (node) {
+                    var dataBinding = makeDataBinding(node, el, {
+                            templateType: tagData.templateType,
+                            scope: tagData.scope,
+                            semaphore: bindingsSemaphore,
+                            getViewModel: function () {
+                                return viewModel;
+                            },
+                            attributeViewModelBindings: attributeViewModelBindings
+                        });
+                    if (dataBinding) {
+                        if (dataBinding.onCompleteBinding) {
+                            if (dataBinding.bindingInfo.parentToChild && dataBinding.value !== undefined) {
+                                initialViewModelData[dataBinding.bindingInfo.childName] = dataBinding.value;
+                            }
+                            onCompleteBindings.push(dataBinding.onCompleteBinding);
+                        }
+                        onTeardowns[node.name] = dataBinding.onTeardown;
+                    }
+                });
+                viewModel = makeViewModel(initialViewModelData);
+                for (var i = 0, len = onCompleteBindings.length; i < len; i++) {
+                    onCompleteBindings[i]();
+                }
+                can.bind.call(el, 'attributes', function (ev) {
+                    var attrName = ev.attributeName, value = el.getAttribute(attrName);
+                    if (onTeardowns[attrName]) {
+                        onTeardowns[attrName]();
+                    }
+                    var parentBindingWasAttribute = bindingInfos[attrName] && bindingInfos[attrName].parent === 'attribute';
+                    if (value !== null || parentBindingWasAttribute) {
+                        var dataBinding = makeDataBinding({
+                                name: attrName,
+                                value: value
+                            }, el, {
+                                templateType: tagData.templateType,
+                                scope: tagData.scope,
+                                semaphore: {},
+                                getViewModel: function () {
+                                    return viewModel;
+                                },
+                                attributeViewModelBindings: attributeViewModelBindings,
+                                initializeValues: true
+                            });
+                        if (dataBinding) {
+                            if (dataBinding.onCompleteBinding) {
+                                dataBinding.onCompleteBinding();
+                            }
+                            bindingInfos[attrName] = dataBinding.bindingInfo;
+                            onTeardowns[attrName] = dataBinding.onTeardown;
+                        }
+                    }
+                });
+                return function () {
+                    for (var attrName in onTeardowns) {
+                        onTeardowns[attrName]();
+                    }
+                };
+            },
+            data: function (el, attrData) {
+                if (can.data(can.$(el), 'preventDataBindings')) {
+                    return;
+                }
+                var viewModel = can.viewModel(el);
+                var dataBinding = makeDataBinding({
+                        name: attrData.attributeName,
+                        value: el.getAttribute(attrData.attributeName)
+                    }, el, {
+                        templateType: attrData.templateType,
+                        scope: attrData.scope,
+                        semaphore: {},
+                        getViewModel: function () {
+                            return viewModel;
+                        }
+                    });
+                if (dataBinding.onCompleteBinding) {
+                    dataBinding.onCompleteBinding();
+                }
+                can.one.call(el, 'removed', dataBinding.onTeardown);
+            },
+            reference: function (el, attrData) {
+                if (el.getAttribute(attrData.attributeName)) {
+                    console.warn('*reference attributes can only export the view model.');
+                }
+                var name = can.camelize(attrData.attributeName.substr(1).toLowerCase());
+                var viewModel = can.viewModel(el);
+                var refs = attrData.scope.getRefs();
+                refs._context.attr('*' + name, viewModel);
+            },
+            event: function (el, data) {
+                var attributeName = data.attributeName, legacyBinding = attributeName.indexOf('can-') === 0, event = attributeName.indexOf('can-') === 0 ? attributeName.substr('can-'.length) : removeBrackets(attributeName, '(', ')'), onBindElement = legacyBinding;
+                if (event.charAt(0) === '$') {
+                    event = event.substr(1);
+                    onBindElement = true;
+                }
+                var handler = function (ev) {
+                    var attrVal = el.getAttribute(attributeName);
+                    if (!attrVal) {
+                        return;
+                    }
+                    var $el = can.$(el), viewModel = can.viewModel($el[0]);
+                    var expr = expression.parse(removeBrackets(attrVal), {
+                            lookupRule: 'method',
+                            methodRule: 'call'
+                        });
+                    if (!(expr instanceof expression.Call) && !(expr instanceof expression.Helper)) {
+                        var defaultArgs = can.map([
+                                data.scope._context,
+                                $el
+                            ].concat(can.makeArray(arguments)), function (data) {
+                                return new expression.Literal(data);
+                            });
+                        expr = new expression.Call(expr, defaultArgs, {});
+                    }
+                    var scopeData = data.scope.read(expr.methodExpr.key, { isArgument: true });
+                    if (!scopeData.value) {
+                        scopeData = data.scope.read(expr.methodExpr.key, { isArgument: true });
+                        return null;
+                    }
+                    var localScope = data.scope.add({
+                            '@element': $el,
+                            '@event': ev,
+                            '@viewModel': viewModel,
+                            '@scope': data.scope,
+                            '@context': data.scope._context,
+                            '%element': this,
+                            '$element': $el,
+                            '%event': ev,
+                            '%viewModel': viewModel,
+                            '%scope': data.scope,
+                            '%context': data.scope._context
+                        }, { notContext: true });
+                    var args = expr.args(localScope, null)(), hash = expr.hash(localScope, null)();
+                    if (!can.isEmptyObject(hash)) {
+                        args.push(hash);
+                    }
+                    return scopeData.value.apply(scopeData.parent, args);
+                };
+                if (special[event]) {
+                    var specialData = special[event](data, el, handler);
+                    handler = specialData.handler;
+                    event = specialData.event;
+                }
+                can.bind.call(onBindElement ? el : can.viewModel(el), event, handler);
+                var attributesHandler = function (ev) {
+                    if (ev.attributeName === attributeName && !this.getAttribute(attributeName)) {
+                        can.unbind.call(onBindElement ? el : can.viewModel(el), event, handler);
+                        can.unbind.call(el, 'attributes', attributesHandler);
+                    }
+                };
+                can.bind.call(el, 'attributes', attributesHandler);
+            },
+            value: function (el, data) {
+                var propName = '$value', attrValue = can.trim(removeBrackets(el.getAttribute('can-value'))), getterSetter;
+                if (el.nodeName.toLowerCase() === 'input' && (el.type === 'checkbox' || el.type === 'radio')) {
+                    var property = getComputeFrom.scope(el, data.scope, attrValue, {});
+                    if (el.type === 'checkbox') {
+                        var trueValue = can.attr.has(el, 'can-true-value') ? el.getAttribute('can-true-value') : true, falseValue = can.attr.has(el, 'can-false-value') ? el.getAttribute('can-false-value') : false;
+                        getterSetter = can.compute(function (newValue) {
+                            if (arguments.length) {
+                                property(newValue ? trueValue : falseValue);
+                            } else {
+                                return property() == trueValue;
+                            }
+                        });
+                    } else if (el.type === 'radio') {
+                        getterSetter = can.compute(function (newValue) {
+                            if (arguments.length) {
+                                if (newValue) {
+                                    property(el.value);
+                                }
+                            } else {
+                                return property() == el.value;
+                            }
+                        });
+                    }
+                    propName = '$checked';
+                    attrValue = 'getterSetter';
+                    data.scope = new can.view.Scope({ getterSetter: getterSetter });
+                } else if (isContentEditable(el)) {
+                    propName = '$innerHTML';
+                }
+                makeDataBinding({
+                    name: '{(' + propName + '})',
+                    value: attrValue
+                }, el, {
+                    templateType: data.templateType,
+                    scope: data.scope,
+                    semaphore: {},
+                    initializeValues: true,
+                    legacyBindings: true,
+                    syncChildWithParent: true
+                });
+            }
+        };
+    can.view.attr(/^\{[^\}]+\}$/, behaviors.data);
+    can.view.attr(/\*[\w\.\-_]+/, behaviors.reference);
+    can.view.attr(/^\([\$?\w\.]+\)$/, behaviors.event);
+    can.view.attr(/can-[\w\.]+/, behaviors.event);
+    can.view.attr('can-value', behaviors.value);
+    var getComputeFrom = {
+            scope: function (el, scope, scopeProp, options) {
+                var parentExpression = expression.parse(scopeProp, { baseMethodType: 'Call' });
+                return parentExpression.value(scope, new can.view.Options({}));
+            },
+            viewModel: function (el, scope, vmName, options) {
+                return can.compute(function (newVal) {
+                    var viewModel = options.getViewModel();
+                    if (arguments.length) {
+                        viewModel.attr(vmName, newVal);
+                    } else {
+                        return vmName === '.' ? viewModel : can.compute.read(viewModel, can.compute.read.reads(vmName), {}).value;
+                    }
+                });
+            },
+            attribute: function (el, scope, prop, options, event) {
+                if (!event) {
+                    if (prop === 'innerHTML') {
+                        event = [
+                            'blur',
+                            'change'
+                        ];
+                    } else {
+                        event = 'change';
+                    }
+                }
+                if (!can.isArray(event)) {
+                    event = [event];
+                }
+                var hasChildren = el.nodeName.toLowerCase() === 'select', isMultiselectValue = prop === 'value' && hasChildren && el.multiple, isStringValue, lastSet, scheduledAsyncSet = false, set = function (newVal) {
+                        if (hasChildren && !scheduledAsyncSet) {
+                            scheduledAsyncSet = true;
+                            setTimeout(function () {
+                                set(newVal);
+                            }, 1);
+                        }
+                        lastSet = newVal;
+                        if (isMultiselectValue) {
+                            if (newVal && typeof newVal === 'string') {
+                                newVal = newVal.split(';');
+                                isStringValue = true;
+                            } else if (newVal) {
+                                newVal = can.makeArray(newVal);
+                            } else {
+                                newVal = [];
+                            }
+                            var isSelected = {};
+                            can.each(newVal, function (val) {
+                                isSelected[val] = true;
+                            });
+                            can.each(el.childNodes, function (option) {
+                                if (option.value) {
+                                    option.selected = !!isSelected[option.value];
+                                }
+                            });
+                        } else {
+                            if (!options.legacyBindings && hasChildren && 'selectedIndex' in el) {
+                                el.selectedIndex = -1;
+                            }
+                            can.attr.setAttrOrProp(el, prop, newVal == null ? '' : newVal);
+                        }
+                        return newVal;
+                    }, get = function () {
+                        if (isMultiselectValue) {
+                            var values = [], children = el.childNodes;
+                            can.each(children, function (child) {
+                                if (child.selected && child.value) {
+                                    values.push(child.value);
+                                }
+                            });
+                            return isStringValue ? values.join(';') : values;
+                        }
+                        return can.attr.get(el, prop);
+                    };
+                if (hasChildren) {
+                    setTimeout(function () {
+                        scheduledAsyncSet = true;
+                    }, 1);
+                }
+                return can.compute(get(), {
+                    on: function (updater) {
+                        can.each(event, function (eventName) {
+                            can.bind.call(el, eventName, updater);
+                        });
+                    },
+                    off: function (updater) {
+                        can.each(event, function (eventName) {
+                            can.unbind.call(el, eventName, updater);
+                        });
+                    },
+                    get: get,
+                    set: set
+                });
+            }
+        };
+    var bind = {
+            childToParent: function (el, parentCompute, childCompute, bindingsSemaphore, attrName, syncChild) {
+                var parentUpdateIsFunction = typeof parentCompute === 'function';
+                var updateParent = function (ev, newVal) {
+                    if (!bindingsSemaphore[attrName]) {
+                        if (parentUpdateIsFunction) {
+                            parentCompute(newVal);
+                            if (syncChild) {
+                                if (parentCompute() !== childCompute()) {
+                                    bindingsSemaphore[attrName] = (bindingsSemaphore[attrName] || 0) + 1;
+                                    childCompute(parentCompute());
+                                    can.batch.after(function () {
+                                        --bindingsSemaphore[attrName];
+                                    });
+                                }
+                            }
+                        } else if (parentCompute instanceof can.Map) {
+                            parentCompute.attr(newVal, true);
+                        }
+                    }
+                };
+                if (childCompute && childCompute.isComputed) {
+                    childCompute.bind('change', updateParent);
+                }
+                return updateParent;
+            },
+            parentToChild: function (el, parentCompute, childUpdate, bindingsSemaphore, attrName) {
+                var updateChild = function (ev, newValue) {
+                    bindingsSemaphore[attrName] = (bindingsSemaphore[attrName] || 0) + 1;
+                    childUpdate(newValue);
+                    can.batch.after(function () {
+                        --bindingsSemaphore[attrName];
+                    });
+                };
+                if (parentCompute && parentCompute.isComputed) {
+                    parentCompute.bind('change', updateChild);
+                }
+                return updateChild;
+            }
+        };
+    var getBindingInfo = function (node, attributeViewModelBindings, templateType) {
+        var attributeName = node.name, attributeValue = node.value || '';
+        var matches = attributeName.match(bindingsRegExp);
+        if (!matches) {
+            var ignoreAttribute = ignoreAttributesRegExp.test(attributeName);
+            var vmName = can.camelize(attributeName);
+            if (ignoreAttribute || viewCallbacks.attr(attributeName)) {
+                return;
+            }
+            var syntaxRight = attributeValue[0] === '{' && can.last(attributeValue) === '}';
+            var isAttributeToChild = templateType === 'legacy' ? attributeViewModelBindings[vmName] : !syntaxRight;
+            var scopeName = syntaxRight ? attributeValue.substr(1, attributeValue.length - 2) : attributeValue;
+            if (isAttributeToChild) {
+                return {
+                    bindingAttributeName: attributeName,
+                    parent: 'attribute',
+                    parentName: attributeName,
+                    child: 'viewModel',
+                    childName: vmName,
+                    parentToChild: true,
+                    childToParent: true
+                };
+            } else {
+                return {
+                    bindingAttributeName: attributeName,
+                    parent: 'scope',
+                    parentName: scopeName,
+                    child: 'viewModel',
+                    childName: vmName,
+                    parentToChild: true,
+                    childToParent: true
+                };
+            }
+        }
+        var twoWay = !!matches[1], childToParent = twoWay || !!matches[2], parentToChild = twoWay || !childToParent;
+        var childName = matches[3];
+        var isDOM = childName.charAt(0) === '$';
+        if (isDOM) {
+            return {
+                parent: 'scope',
+                child: 'attribute',
+                childToParent: childToParent,
+                parentToChild: parentToChild,
+                bindingAttributeName: attributeName,
+                childName: childName.substr(1),
+                parentName: attributeValue,
+                initializeValues: true
+            };
+        } else {
+            return {
+                parent: 'scope',
+                child: 'viewModel',
+                childToParent: childToParent,
+                parentToChild: parentToChild,
+                bindingAttributeName: attributeName,
+                childName: can.camelize(childName),
+                parentName: attributeValue,
+                initializeValues: true
+            };
+        }
+    };
+    var bindingsRegExp = /\{(\()?(\^)?([^\}\)]+)\)?\}/, ignoreAttributesRegExp = /^(data-view-id|class|id|\[[\w\.-]+\]|#[\w\.-])$/i;
+    var makeDataBinding = function (node, el, bindingData) {
+        var bindingInfo = getBindingInfo(node, bindingData.attributeViewModelBindings, bindingData.templateType);
+        if (!bindingInfo) {
+            return;
+        }
+        var parentCompute = getComputeFrom[bindingInfo.parent](el, bindingData.scope, bindingInfo.parentName, bindingData);
+        var childCompute = getComputeFrom[bindingInfo.child](el, bindingData.scope, bindingInfo.childName, bindingData);
+        var updateParent;
+        if (bindingInfo.parentToChild) {
+            var updateChild = bind.parentToChild(el, parentCompute, childCompute, bindingData.semaphore, bindingInfo.bindingAttributeName);
+        }
+        var completeBinding = function () {
+            if (bindingInfo.childToParent) {
+                updateParent = bind.childToParent(el, parentCompute, childCompute, bindingData.semaphore, bindingInfo.bindingAttributeName, bindingData.syncChildWithParent);
+            }
+            if (bindingData.initializeValues || bindingInfo.initializeValues) {
+                initializeValues(bindingInfo, childCompute, parentCompute, updateChild, updateParent);
+            }
+        };
+        var onTeardown = function () {
+            unbindUpdate(parentCompute, updateChild);
+            unbindUpdate(childCompute, updateParent);
+        };
+        if (bindingInfo.child === 'viewModel') {
+            return {
+                value: getValue(parentCompute),
+                onCompleteBinding: completeBinding,
+                bindingInfo: bindingInfo,
+                onTeardown: onTeardown
+            };
+        } else {
+            completeBinding();
+            return {
+                bindingInfo: bindingInfo,
+                onTeardown: onTeardown
+            };
+        }
+    };
+    var initializeValues = function (options, childCompute, parentCompute, updateChild, updateParent) {
+        if (options.parentToChild && !options.childToParent) {
+            updateChild({}, getValue(parentCompute));
+        } else if (!options.parentToChild && options.childToParent) {
+            updateParent({}, getValue(childCompute));
+        } else if (getValue(childCompute) === undefined) {
+            updateChild({}, getValue(parentCompute));
+        } else if (getValue(parentCompute) === undefined) {
+            updateParent({}, getValue(childCompute));
+        } else {
+            updateChild({}, getValue(parentCompute));
+        }
+    };
     var isContentEditable = function () {
             var values = {
                     '': true,
@@ -5486,47 +6041,13 @@ define('can/view/bindings/bindings', [
                 return value.substr(1, value.length - 2);
             }
             return value;
-        };
-    can.view.attr('can-value', function (el, data) {
-        var propName = '$value', attrValue = can.trim(removeBrackets(el.getAttribute('can-value'))), getterSetter;
-        if (el.nodeName.toLowerCase() === 'input' && (el.type === 'checkbox' || el.type === 'radio')) {
-            var property = getScopeCompute(el, data.scope, attrValue, {});
-            if (el.type === 'checkbox') {
-                var trueValue = can.attr.has(el, 'can-true-value') ? el.getAttribute('can-true-value') : true, falseValue = can.attr.has(el, 'can-false-value') ? el.getAttribute('can-false-value') : false;
-                getterSetter = can.compute(function (newValue) {
-                    if (arguments.length) {
-                        property(newValue ? trueValue : falseValue);
-                    } else {
-                        return property() == trueValue;
-                    }
-                });
-            } else if (el.type === 'radio') {
-                getterSetter = can.compute(function (newValue) {
-                    if (arguments.length) {
-                        if (newValue) {
-                            property(el.value);
-                        }
-                    } else {
-                        return property() == el.value;
-                    }
-                });
+        }, getValue = function (value) {
+            return value && value.isComputed ? value() : value;
+        }, unbindUpdate = function (compute, updateOther) {
+            if (compute && compute.isComputed && typeof updateOther === 'function') {
+                compute.unbind('change', updateOther);
             }
-            propName = '$checked';
-            attrValue = 'getterSetter';
-            data.scope = new can.view.Scope({ getterSetter: getterSetter });
-        } else if (isContentEditable(el)) {
-            propName = '$innerHTML';
-        }
-        bindings(el, data, {
-            attrValue: attrValue,
-            propName: propName,
-            childToParent: true,
-            parentToChild: true,
-            initializeValues: true,
-            syncChildWithParent: true,
-            legacyBindings: true
-        });
-    });
+        };
     var special = {
             enter: function (data, el, original) {
                 return {
@@ -5539,293 +6060,14 @@ define('can/view/bindings/bindings', [
                 };
             }
         };
-    var handleEvent = function (el, data) {
-        var attributeName = data.attributeName, legacyBinding = attributeName.indexOf('can-') === 0, event = attributeName.indexOf('can-') === 0 ? attributeName.substr('can-'.length) : removeBrackets(attributeName, '(', ')'), onBindElement = legacyBinding;
-        if (event.charAt(0) === '$') {
-            event = event.substr(1);
-            onBindElement = true;
-        }
-        var handler = function (ev) {
-            var attrVal = el.getAttribute(attributeName);
-            if (!attrVal) {
-                return;
-            }
-            var $el = can.$(el), viewModel = can.viewModel($el[0]);
-            var expr = expression.parse(removeBrackets(attrVal), {
-                    lookupRule: 'method',
-                    methodRule: 'call'
-                });
-            if (!(expr instanceof expression.Call) && !(expr instanceof expression.Helper)) {
-                var defaultArgs = can.map([
-                        data.scope._context,
-                        $el
-                    ].concat(can.makeArray(arguments)), function (data) {
-                        return new expression.Literal(data);
-                    });
-                expr = new expression.Call(expr, defaultArgs, {});
-            }
-            var scopeData = data.scope.read(expr.methodExpr.key, { isArgument: true });
-            if (!scopeData.value) {
-                scopeData = data.scope.read(expr.methodExpr.key, { isArgument: true });
-                return null;
-            }
-            var localScope = data.scope.add({
-                    '@element': $el,
-                    '@event': ev,
-                    '@viewModel': viewModel,
-                    '@scope': data.scope,
-                    '@context': data.scope._context,
-                    '%element': this,
-                    '$element': $el,
-                    '%event': ev,
-                    '%viewModel': viewModel,
-                    '%scope': data.scope,
-                    '%context': data.scope._context
-                }, { notContext: true });
-            var args = expr.args(localScope, null)(), hash = expr.hash(localScope, null)();
-            if (!can.isEmptyObject(hash)) {
-                args.push(hash);
-            }
-            return scopeData.value.apply(scopeData.parent, args);
-        };
-        if (special[event]) {
-            var specialData = special[event](data, el, handler);
-            handler = specialData.handler;
-            event = specialData.event;
-        }
-        can.bind.call(onBindElement ? el : can.viewModel(el), event, handler);
-        var attributesHandler = function (ev) {
-            if (ev.attributeName === attributeName && !this.getAttribute(attributeName)) {
-                can.unbind.call(onBindElement ? el : can.viewModel(el), event, handler);
-                can.unbind.call(el, 'attributes', attributesHandler);
-            }
-        };
-        can.bind.call(el, 'attributes', attributesHandler);
+    can.bindings = {
+        behaviors: behaviors,
+        getBindingInfo: getBindingInfo,
+        special: special
     };
-    can.view.attr(/can-[\w\.]+/, handleEvent);
-    can.view.attr(/^\([\$?\w\.]+\)$/, handleEvent);
-    var elementCompute = function (el, prop, event, options) {
-        if (!event) {
-            if (prop === 'innerHTML') {
-                event = [
-                    'blur',
-                    'change'
-                ];
-            } else {
-                event = 'change';
-            }
-        }
-        if (!can.isArray(event)) {
-            event = [event];
-        }
-        var hasChildren = el.nodeName.toLowerCase() === 'select', isMultiselectValue = prop === 'value' && hasChildren && el.multiple, isStringValue, lastSet, scheduledAsyncSet = false, set = function (newVal) {
-                if (hasChildren && !scheduledAsyncSet) {
-                    scheduledAsyncSet = true;
-                    setTimeout(function () {
-                        set(newVal);
-                    }, 1);
-                }
-                lastSet = newVal;
-                if (isMultiselectValue) {
-                    if (newVal && typeof newVal === 'string') {
-                        newVal = newVal.split(';');
-                        isStringValue = true;
-                    } else if (newVal) {
-                        newVal = can.makeArray(newVal);
-                    } else {
-                        newVal = [];
-                    }
-                    var isSelected = {};
-                    can.each(newVal, function (val) {
-                        isSelected[val] = true;
-                    });
-                    can.each(el.childNodes, function (option) {
-                        if (option.value) {
-                            option.selected = !!isSelected[option.value];
-                        }
-                    });
-                } else {
-                    if (!options.legacyBindings && hasChildren && 'selectedIndex' in el) {
-                        el.selectedIndex = -1;
-                    }
-                    can.attr.setAttrOrProp(el, prop, newVal == null ? '' : newVal);
-                }
-                return newVal;
-            };
-        if (hasChildren) {
-            setTimeout(function () {
-                scheduledAsyncSet = true;
-            }, 1);
-        }
-        return can.compute(el[prop], {
-            on: function (updater) {
-                can.each(event, function (eventName) {
-                    can.bind.call(el, eventName, updater);
-                });
-            },
-            off: function (updater) {
-                can.each(event, function (eventName) {
-                    can.unbind.call(el, eventName, updater);
-                });
-            },
-            get: function () {
-                if (isMultiselectValue) {
-                    var values = [], children = el.childNodes;
-                    can.each(children, function (child) {
-                        if (child.selected && child.value) {
-                            values.push(child.value);
-                        }
-                    });
-                    return isStringValue ? values.join(';') : values;
-                }
-                return can.attr.get(el, prop);
-            },
-            set: set
-        });
-    };
-    var getValue = function (value) {
-        return value && value.isComputed ? value() : value;
-    };
-    var bindingsRegExp = /\{(\()?(\^)?([^\}\)]+)\)?\}/;
-    var attributeNameInfo = function (attributeName) {
-        var matches = attributeName.match(bindingsRegExp);
-        if (!matches) {
-            return {
-                childToParent: true,
-                parentToChild: true,
-                propName: attributeName
-            };
-        }
-        var twoWay = !!matches[1], childToParent = twoWay || !!matches[2], parentToChild = twoWay || !childToParent;
-        return {
-            childToParent: childToParent,
-            parentToChild: parentToChild,
-            propName: matches[3],
-            syntaxStyle: 'new'
-        };
-    };
-    var getScopeCompute = function (el, scope, scopeProp, options) {
-        var parentExpression = expression.parse(scopeProp, { baseMethodType: 'Call' });
-        return parentExpression.value(scope, new can.view.Scope());
-    };
-    var getElementCompute = function (el, attributeName, options) {
-        var attrName = can.camelize(options.propName || attributeName.substr(1)), firstChar = attrName.charAt(0), isDOM = firstChar === '$', childCompute;
-        if (isDOM) {
-            childCompute = elementCompute(el, attrName.substr(1), undefined, options);
-        } else {
-            var childExpression = expression.parse(attrName, { baseMethodType: 'Call' });
-            var childContext = can.viewModel(el);
-            var childScope = new can.view.Scope(childContext);
-            childCompute = childExpression.value(childScope, new can.view.Scope(), {});
-        }
-        return childCompute;
-    };
-    var bindParentToChild = function (el, parentCompute, childUpdate, bindingsSemaphore, attrName) {
-        var updateChild = function (ev, newValue) {
-            bindingsSemaphore[attrName] = (bindingsSemaphore[attrName] || 0) + 1;
-            childUpdate(newValue);
-            can.batch.after(function () {
-                --bindingsSemaphore[attrName];
-            });
-        };
-        if (parentCompute && parentCompute.isComputed) {
-            parentCompute.bind('change', updateChild);
-            can.one.call(el, 'removed', function () {
-                parentCompute.unbind('change', updateChild);
-            });
-        }
-        return updateChild;
-    };
-    var bindChildToParent = function (el, parentUpdate, childCompute, bindingsSemaphore, attrName, syncChild) {
-        var parentUpdateIsFunction = typeof parentUpdate === 'function';
-        var updateScope = function (ev, newVal) {
-            if (!bindingsSemaphore[attrName]) {
-                if (parentUpdateIsFunction) {
-                    parentUpdate(newVal);
-                    if (syncChild) {
-                        if (parentUpdate() !== childCompute()) {
-                            bindingsSemaphore[attrName] = (bindingsSemaphore[attrName] || 0) + 1;
-                            childCompute(parentUpdate());
-                            can.batch.after(function () {
-                                --bindingsSemaphore[attrName];
-                            });
-                        }
-                    }
-                } else if (parentUpdate instanceof can.Map) {
-                    parentUpdate.attr(newVal, true);
-                }
-            }
-        };
-        if (childCompute && childCompute.isComputed) {
-            childCompute.bind('change', updateScope);
-            can.one.call(el, 'removed', function () {
-                childCompute.unbind('change', updateScope);
-            });
-        }
-        return updateScope;
-    };
-    var bindings = function (el, attrData, options) {
-        var attrName = attrData.attributeName;
-        var parentCompute = getScopeCompute(el, attrData.scope, options.attrValue || el.getAttribute(attrName) || '.', options);
-        var childCompute = getElementCompute(el, options.propName || attrName.replace(/^\{/, '').replace(/\}$/, ''), options);
-        var bindingsSemaphore = {}, updateChild, updateScope;
-        if (options.parentToChild) {
-            updateChild = bindParentToChild(el, parentCompute, childCompute, bindingsSemaphore, attrName);
-        }
-        if (options.childToParent) {
-            updateScope = bindChildToParent(el, parentCompute, childCompute, bindingsSemaphore, attrName, options.syncChildWithParent);
-        }
-        if (options.initializeValues) {
-            initializeValues(options, childCompute, parentCompute, updateChild, updateScope);
-        }
-        return {
-            parentCompute: parentCompute,
-            childCompute: childCompute
-        };
-    };
-    var initializeValues = function (options, childCompute, parentCompute, updateChild, updateScope) {
-        if (options.parentToChild && !options.childToParent) {
-            updateChild({}, getValue(parentCompute));
-        } else if (!options.parentToChild && options.childToParent) {
-            updateScope({}, getValue(childCompute));
-        } else if (getValue(childCompute) === undefined) {
-            updateChild({}, getValue(parentCompute));
-        } else if (getValue(parentCompute) === undefined) {
-            updateScope({}, getValue(childCompute));
-        } else {
-            updateChild({}, getValue(parentCompute));
-        }
-    };
-    var dataBindingsRegExp = /^\{[^\}]+\}$/;
-    can.view.attr(dataBindingsRegExp, function (el, attrData) {
-        if (can.data(can.$(el), 'preventDataBindings')) {
-            return;
-        }
-        var attrNameInfo = attributeNameInfo(attrData.attributeName);
-        attrNameInfo.initializeValues = true;
-        attrNameInfo.templateType = attrData.templateType;
-        bindings(el, attrData, attrNameInfo);
-    });
-    can.view.attr(/\*[\w\.\-_]+/, function (el, attrData) {
-        if (el.getAttribute(attrData.attributeName)) {
-            console.warn('&reference attributes can only export the view model.');
-        }
-        var name = can.camelize(attrData.attributeName.substr(1).toLowerCase());
-        var viewModel = can.viewModel(el);
-        var refs = attrData.scope.getRefs();
-        refs._context.attr('*' + name, viewModel);
-    });
-    return {
-        getParentCompute: getScopeCompute,
-        bindParentToChild: bindParentToChild,
-        bindChildToParent: bindChildToParent,
-        setupDataBinding: bindings,
-        dataBindingsRegExp: dataBindingsRegExp,
-        attributeNameInfo: attributeNameInfo,
-        initializeValues: initializeValues
-    };
+    return can.bindings;
 });
-/*can@2.3.2#observe/observe*/
+/*can@2.3.3#observe/observe*/
 define('can/observe/observe', [
     'can/util/util',
     'can/map/map',
@@ -5838,7 +6080,7 @@ define('can/observe/observe', [
     can.Observe.triggerBatch = can.batch.trigger;
     return can;
 });
-/*can@2.3.2#view/scanner*/
+/*can@2.3.3#view/scanner*/
 define('can/view/scanner', [
     'can/view/view',
     'can/view/elements',
@@ -6214,7 +6456,7 @@ define('can/view/scanner', [
     can.view.Scanner = Scanner;
     return Scanner;
 });
-/*can@2.3.2#view/render*/
+/*can@2.3.3#view/render*/
 define('can/view/render', [
     'can/view/view',
     'can/view/elements',
@@ -6339,7 +6581,7 @@ define('can/view/render', [
     });
     return can;
 });
-/*can@2.3.2#view/mustache/mustache*/
+/*can@2.3.3#view/mustache/mustache*/
 define('can/view/mustache/mustache', [
     'can/util/util',
     'can/view/scope/scope',
@@ -6674,14 +6916,6 @@ define('can/view/mustache/mustache', [
             return value;
         }
     };
-    can.view.Options = can.view.Scope.extend({
-        init: function (data, parent) {
-            if (!data.helpers && !data.partials && !data.tags) {
-                data = { helpers: data };
-            }
-            can.view.Scope.prototype.init.apply(this, arguments);
-        }
-    });
     Mustache._helpers = {};
     Mustache.registerHelper = function (name, fn) {
         this._helpers[name] = {
@@ -6842,7 +7076,7 @@ define('can/view/mustache/mustache', [
     can.mustache.safeString = can.Mustache.safeString;
     return can;
 });
-/*can@2.3.2#util/view_model/view_model*/
+/*can@2.3.3#util/view_model/view_model*/
 define('can/util/view_model/view_model', ['can/util/util'], function (can) {
     var $ = can.$;
     if ($.fn) {
@@ -6851,7 +7085,7 @@ define('can/util/view_model/view_model', ['can/util/util'], function (can) {
         };
     }
 });
-/*can@2.3.2#component/component*/
+/*can@2.3.3#component/component*/
 define('can/component/component', [
     'can/util/util',
     'can/view/callbacks/callbacks',
@@ -6862,17 +7096,17 @@ define('can/component/component', [
     'can/view/mustache/mustache',
     'can/util/view_model/view_model'
 ], function (can, viewCallbacks, elements, bindings) {
-    var ignoreAttributesRegExp = /^(dataViewId|class|id|\[[\w\.-]+\]|#[\w\.-])$/i, paramReplacer = /\{([^\}]+)\}/g;
+    var paramReplacer = /\{([^\}]+)\}/g;
     var Component = can.Component = can.Construct.extend({
             setup: function () {
                 can.Construct.setup.apply(this, arguments);
                 if (can.Component) {
-                    var self = this, scope = this.prototype.scope || this.prototype.viewModel;
+                    var self = this, protoViewModel = this.prototype.scope || this.prototype.viewModel;
                     this.Control = ComponentControl.extend(this.prototype.events);
-                    if (!scope || typeof scope === 'object' && !(scope instanceof can.Map)) {
-                        this.Map = can.Map.extend(scope || {});
-                    } else if (scope.prototype instanceof can.Map) {
-                        this.Map = scope;
+                    if (!protoViewModel || typeof protoViewModel === 'object' && !(protoViewModel instanceof can.Map)) {
+                        this.Map = can.Map.extend(protoViewModel || {});
+                    } else if (protoViewModel.prototype instanceof can.Map) {
+                        this.Map = protoViewModel;
                     }
                     this.attributeScopeMappings = {};
                     can.each(this.Map ? this.Map.defaults : {}, function (val, prop) {
@@ -6897,99 +7131,43 @@ define('can/component/component', [
             }
         }, {
             setup: function (el, componentTagData) {
-                var initialScopeData = { '%root': componentTagData.scope.attr('%root') }, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && !!this.template, bindingsData = {}, scope = this.scope || this.viewModel, viewModelPropertyUpdates = {}, viewModel, frag, teardownFunctions = [], callTeardownFunctions = function () {
+                var initialViewModelData = { '%root': componentTagData.scope.attr('%root') }, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && !!this.template, viewModel, frag, teardownFunctions = [], callTeardownFunctions = function () {
                         for (var i = 0, len = teardownFunctions.length; i < len; i++) {
                             teardownFunctions[i]();
                         }
                     }, $el = can.$(el), setupBindings = !can.data($el, 'preventDataBindings');
                 can.each(this.constructor.attributeScopeMappings, function (val, prop) {
-                    initialScopeData[prop] = el.getAttribute(can.hyphenate(val));
+                    initialViewModelData[prop] = el.getAttribute(can.hyphenate(val));
                 });
                 if (setupBindings) {
-                    can.each(can.makeArray(el.attributes), function (node, index) {
-                        var nodeName = node.name, name = can.camelize(nodeName.toLowerCase()), value = node.value;
-                        var isDataBindings = bindings.dataBindingsRegExp.test(nodeName);
-                        if (component.constructor.attributeScopeMappings[name] || ignoreAttributesRegExp.test(name) || viewCallbacks.attr(nodeName) && !isDataBindings) {
-                            return;
-                        }
-                        if (value[0] === '{' && value[value.length - 1] === '}') {
-                            value = value.substr(1, value.length - 2);
-                        } else if (!isDataBindings) {
-                            if (componentTagData.templateType !== 'legacy') {
-                                initialScopeData[name] = value;
-                                return;
+                    teardownFunctions.push(bindings.behaviors.viewModel(el, componentTagData, function (initialViewModelData) {
+                        var protoViewModel = component.scope || component.viewModel;
+                        if (component.constructor.Map) {
+                            viewModel = new component.constructor.Map(initialViewModelData);
+                        } else if (protoViewModel instanceof can.Map) {
+                            viewModel = protoViewModel;
+                        } else if (can.isFunction(protoViewModel)) {
+                            var scopeResult = protoViewModel.call(component, initialViewModelData, componentTagData.scope, el);
+                            if (scopeResult instanceof can.Map) {
+                                viewModel = scopeResult;
+                            } else if (scopeResult.prototype instanceof can.Map) {
+                                viewModel = new scopeResult(initialViewModelData);
+                            } else {
+                                viewModel = new (can.Map.extend(scopeResult))(initialViewModelData);
                             }
                         }
-                        var bindingData = bindings.attributeNameInfo(nodeName);
-                        bindingData.propName = can.camelize(bindingData.propName);
-                        bindingsData[bindingData.propName] = bindingData;
-                        var compute = bindings.getParentCompute(el, componentTagData.scope, value, { templateType: componentTagData.templateType });
-                        if (compute && compute.isComputed) {
-                            if (bindingData.parentToChild) {
-                                bindings.bindParentToChild(el, compute, function (newValue) {
-                                    viewModel.attr(bindingData.propName, newValue);
-                                }, viewModelPropertyUpdates, bindingData.propName);
-                                var initialValue = compute();
-                                if (initialValue !== undefined) {
-                                    initialScopeData[bindingData.propName] = initialValue;
-                                }
-                            }
-                            bindingsData[bindingData.propName].parentCompute = compute;
-                        } else {
-                            initialScopeData[bindingData.propName] = compute;
-                        }
-                    });
-                }
-                if (this.constructor.Map) {
-                    viewModel = new this.constructor.Map(initialScopeData);
-                } else if (scope instanceof can.Map) {
-                    viewModel = scope;
-                } else if (can.isFunction(scope)) {
-                    var scopeResult = scope.call(this, initialScopeData, componentTagData.scope, el);
-                    if (scopeResult instanceof can.Map) {
-                        viewModel = scopeResult;
-                    } else if (scopeResult.prototype instanceof can.Map) {
-                        viewModel = new scopeResult(initialScopeData);
-                    } else {
-                        viewModel = new (can.Map.extend(scopeResult))(initialScopeData);
-                    }
-                }
-                var handlers = {};
-                if (setupBindings) {
-                    can.each(bindingsData, function (bindingData, prop) {
-                        if (bindingData.childToParent) {
-                            handlers[prop] = function (ev, newVal) {
-                                if (!viewModelPropertyUpdates[prop]) {
-                                    bindingData.parentCompute(newVal);
-                                }
-                            };
-                            viewModel.bind(prop, handlers[prop]);
-                            if (bindingData.syntaxStyle === 'new' && bindingData.parentCompute) {
-                                bindings.initializeValues(bindingData, prop === '.' ? viewModel : can.compute.read(viewModel, can.compute.read.reads(prop), {}).value, bindingData.parentCompute, function () {
-                                }, function (ev, newVal) {
-                                    bindingData.parentCompute(newVal);
-                                });
-                            }
-                        }
-                    });
-                }
-                if (!can.isEmptyObject(this.constructor.attributeScopeMappings) || componentTagData.templateType !== 'legacy') {
-                    can.bind.call(el, 'attributes', function (ev) {
-                        var camelized = can.camelize(ev.attributeName);
-                        if (!bindingsData[camelized] && !ignoreAttributesRegExp.test(camelized)) {
-                            viewModel.attr(camelized, el.getAttribute(ev.attributeName));
-                        }
-                    });
+                        return viewModel;
+                    }, initialViewModelData));
                 }
                 this.scope = this.viewModel = viewModel;
-                can.data($el, 'scope', this.scope);
-                can.data($el, 'viewModel', this.scope);
+                can.data($el, 'scope', this.viewModel);
+                can.data($el, 'viewModel', this.viewModel);
                 can.data($el, 'preventDataBindings', true);
                 var shadowScope;
                 if (lexicalContent) {
-                    shadowScope = can.view.Scope.refsScope().add(this.scope, { viewModel: true });
+                    shadowScope = can.view.Scope.refsScope().add(this.viewModel, { viewModel: true });
                 } else {
-                    shadowScope = (this.constructor.renderer ? componentTagData.scope.add(new can.view.Scope.Refs()) : componentTagData.scope).add(this.scope, { viewModel: true });
+                    shadowScope = (this.constructor.renderer ? componentTagData.scope.add(new can.view.Scope.Refs()) : componentTagData.scope).add(this.viewModel, { viewModel: true });
                 }
                 var options = { helpers: {} }, addHelper = function (name, fn) {
                         options.helpers[name] = function () {
@@ -7004,14 +7182,9 @@ define('can/component/component', [
                 can.each(this.simpleHelpers || {}, function (val, prop) {
                     addHelper(prop, can.view.simpleHelper(val));
                 });
-                teardownFunctions.push(function () {
-                    can.each(handlers, function (handler, prop) {
-                        viewModel.unbind(prop, handlers[prop]);
-                    });
-                });
                 this._control = new this.constructor.Control(el, {
-                    scope: this.scope,
-                    viewModel: this.scope,
+                    scope: this.viewModel,
+                    viewModel: this.viewModel,
                     destroy: callTeardownFunctions
                 });
                 var nodeList = can.view.nodeLists.register([], undefined, true);
@@ -7039,10 +7212,6 @@ define('can/component/component', [
                             } else {
                                 lightTemplateData = contentTagData;
                             }
-                            lightTemplateData.scope = lightTemplateData.scope.add(viewModel, {
-                                'protected': true,
-                                viewModel: true
-                            });
                             if (contentTagData.parentNodeList) {
                                 var frag = subtemplate(lightTemplateData.scope, lightTemplateData.options, contentTagData.parentNodeList);
                                 elements.replace([el], frag);
@@ -7086,11 +7255,11 @@ define('can/component/component', [
                         var name = methodName.replace(paramReplacer, function (matched, key) {
                                 var value;
                                 if (key === 'scope' || key === 'viewModel') {
-                                    delegate = options.scope;
+                                    delegate = options.viewModel;
                                     return '';
                                 }
                                 key = key.replace(/^(scope|^viewModel)\./, '');
-                                value = can.compute.read(options.scope, can.compute.read.reads(key), { isArgument: true }).value;
+                                value = can.compute.read(options.viewModel, can.compute.read.reads(key), { isArgument: true }).value;
                                 if (value === undefined) {
                                     value = can.getObject(key);
                                 }
@@ -7154,7 +7323,7 @@ define('can/component/component', [
     }
     return Component;
 });
-/*can@2.3.2#model/model*/
+/*can@2.3.3#model/model*/
 define('can/model/model', [
     'can/util/util',
     'can/map/map',
@@ -7538,7 +7707,7 @@ define('can/model/model', [
         });
     return can.Model;
 });
-/*can@2.3.2#util/string/deparam/deparam*/
+/*can@2.3.3#util/string/deparam/deparam*/
 define('can/util/string/deparam/deparam', [
     'can/util/util',
     'can/util/string/string'
@@ -7575,7 +7744,7 @@ define('can/util/string/deparam/deparam', [
     });
     return can;
 });
-/*can@2.3.2#route/route*/
+/*can@2.3.3#route/route*/
 define('can/route/route', [
     'can/util/util',
     'can/map/map',
@@ -7877,7 +8046,7 @@ define('can/route/route', [
     };
     return can.route;
 });
-/*can@2.3.2#control/route/route*/
+/*can@2.3.3#control/route/route*/
 define('can/control/route/route', [
     'can/util/util',
     'can/route/route',
@@ -7910,14 +8079,14 @@ define('can/control/route/route', [
     };
     return can;
 });
-/*can@2.3.2#util/event*/
+/*can@2.3.3#util/event*/
 define('can/util/event', [
     'can/util/can',
     'can/event/event'
 ], function (can) {
     return can;
 });
-/*can@2.3.2#map/define/define*/
+/*can@2.3.3#map/define/define*/
 define('can/map/define/define', [
     'can/util/util',
     'can/map/map_helpers',
@@ -8162,7 +8331,7 @@ define('can/map/define/define', [
     };
     return can.define;
 });
-/*can@2.3.2#can*/
+/*can@2.3.3#can*/
 define('can/can', [
     'can/util/util',
     'can/control/route/route',

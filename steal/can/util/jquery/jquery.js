@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.2
+ * CanJS - 2.3.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Nov 2015 23:57:31 GMT
+ * Mon, 30 Nov 2015 23:22:54 GMT
  * Licensed MIT
  */
 
-/*can@2.3.2#util/jquery/jquery*/
+/*can@2.3.3#util/jquery/jquery*/
 steal('jquery', 'can/util/can.js', 'can/util/attr', 'can/event', 'can/util/array/each.js', 'can/util/inserted', function ($, can, attr, event) {
     var isBindableElement = function (node) {
         return node.nodeName && (node.nodeType === 1 || node.nodeType === 9) || node == window || node.addEventListener;

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.2
+ * CanJS - 2.3.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Nov 2015 23:57:31 GMT
+ * Mon, 30 Nov 2015 23:22:54 GMT
  * Licensed MIT
  */
 
-/*can@2.3.2#compute/read*/
+/*can@2.3.3#compute/read*/
 define(['can/util/library'], function (can) {
     var read = function (parent, reads, options) {
         options = options || {};
@@ -104,8 +104,9 @@ define(['can/util/library'], function (can) {
                     options.foundObservable(value, index);
                     state.foundObservable = true;
                 }
-                if (typeof value[prop.key] === 'function' && value.constructor.prototype[prop.key] === value[prop.key]) {
-                    return value[prop.key];
+                var val = value[prop.key];
+                if (typeof val === 'function' && value.constructor.prototype[prop.key] === val && !val.isComputed) {
+                    return val;
                 } else {
                     return value.attr(prop.key);
                 }

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.2
+ * CanJS - 2.3.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Nov 2015 23:57:31 GMT
+ * Mon, 30 Nov 2015 23:22:54 GMT
  * Licensed MIT
  */
 
-/*can@2.3.2#view/live/live*/
+/*can@2.3.3#view/live/live*/
 steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'can/view/parser', 'can/util/array/diff.js', function (can, elements, view, nodeLists, parser, diff) {
     elements = elements || can.view.elements;
     nodeLists = nodeLists || can.view.NodeLists;
@@ -242,9 +242,7 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
                         if (list.bind) {
                             list.bind('add', add).bind('set', set).bind('remove', remove).bind('move', move);
                         }
-                        can.batch.afterPreviousEvents(function () {
-                            afterPreviousEvents = true;
-                        });
+                        afterPreviousEvents = true;
                     };
                 parentNode = elements.getParentNode(el, parentNode);
                 var data = setup(parentNode, function () {

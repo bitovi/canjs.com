@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.2
+ * CanJS - 2.3.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Nov 2015 23:57:31 GMT
+ * Mon, 30 Nov 2015 23:22:54 GMT
  * Licensed MIT
  */
 
-/*can@2.3.2#view/stache/stache*/
+/*can@2.3.3#view/stache/stache*/
 define([
     'can/util/library',
     'can/view/parser',
@@ -26,6 +26,9 @@ define([
     var namespaces = {
             'svg': svgNamespace,
             'g': svgNamespace
+        }, textContentOnlyTag = {
+            style: true,
+            script: true
         };
     function stache(template) {
         if (typeof template === 'string') {
@@ -36,7 +39,8 @@ define([
                 attr: null,
                 sectionElementStack: [],
                 text: false,
-                namespaceStack: []
+                namespaceStack: [],
+                textContentOnly: null
             }, makeRendererAndUpdateSection = function (section, mode, stache) {
                 if (mode === '>') {
                     section.add(mustacheCore.makeLiveBindingPartialRenderer(stache, state));
@@ -65,7 +69,8 @@ define([
                 var cur = {
                         tag: state.node && state.node.tag,
                         attr: state.attr && state.attr.name,
-                        directlyNested: state.sectionElementStack.length ? lastElement === 'section' || lastElement === 'custom' : true
+                        directlyNested: state.sectionElementStack.length ? lastElement === 'section' || lastElement === 'custom' : true,
+                        textContentOnly: !!state.textContentOnly
                     };
                 return overwrites ? can.simpleExtend(cur, overwrites) : cur;
             }, addAttributesCallback = function (node, callback) {
@@ -103,9 +108,11 @@ define([
                     }
                 } else {
                     section.push(state.node);
-                    state.sectionElementStack.push(isCustomTag ? 'custom' : 'element');
+                    state.sectionElementStack.push(isCustomTag ? 'custom' : tagName);
                     if (isCustomTag) {
                         section.startSubSection();
+                    } else if (textContentOnlyTag[tagName]) {
+                        state.textContentOnly = new TextSectionBuilder();
                     }
                 }
                 state.node = null;
@@ -118,6 +125,10 @@ define([
                 var isCustomTag = viewCallbacks.tag(tagName), renderer;
                 if (isCustomTag) {
                     renderer = section.endSubSectionAndReturnRenderer();
+                }
+                if (textContentOnlyTag[tagName]) {
+                    section.last().add(state.textContentOnly.compile(copyState()));
+                    state.textContentOnly = null;
                 }
                 var oldNode = section.pop();
                 if (isCustomTag) {
@@ -176,12 +187,12 @@ define([
                 }
             },
             chars: function (text) {
-                section.add(text);
+                (state.textContentOnly || section).add(text);
             },
             special: function (text) {
                 var firstAndText = mustacheCore.splitModeFromExpression(text, state), mode = firstAndText.mode, expression = firstAndText.expression;
                 if (expression === 'else') {
-                    (state.attr && state.attr.section ? state.attr.section : section).inverse();
+                    (state.attr && state.attr.section ? state.attr.section : state.textContentOnly || section).inverse();
                     return;
                 }
                 if (mode === '!') {
@@ -216,7 +227,7 @@ define([
                         throw new Error(mode + ' is currently not supported within a tag.');
                     }
                 } else {
-                    makeRendererAndUpdateSection(section, mode, expression);
+                    makeRendererAndUpdateSection(state.textContentOnly || section, mode, expression);
                 }
             },
             comment: function (text) {

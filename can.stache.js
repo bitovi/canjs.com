@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.2
+ * CanJS - 2.3.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Nov 2015 23:57:31 GMT
+ * Mon, 30 Nov 2015 23:22:54 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.2#view/target/target*/
+/*can@2.3.3#view/target/target*/
 define('can/view/target/target', [
     'can/util/util',
     'can/view/elements'
@@ -103,14 +103,7 @@ define('can/view/target/target', [
             a.innerHTML = '<xyz></xyz>';
             var clone = a.cloneNode(true);
             return clone.innerHTML === '<xyz></xyz>';
-        }(), namespacesWork = typeof document !== 'undefined' && !!document.createElementNS, attributeDummy = typeof document !== 'undefined' ? document.createElement('div') : null, setAttribute = function (el, attrName, value) {
-            try {
-                el.setAttribute(attrName, value);
-            } catch (e) {
-                attributeDummy.innerHTML = '<div ' + attrName + '="' + value + '"></div>';
-                el.setAttributeNode(attributeDummy.childNodes[0].attributes[0].cloneNode());
-            }
-        };
+        }(), namespacesWork = typeof document !== 'undefined' && !!document.createElementNS, setAttribute = can.attr.setAttribute;
     var cloneNode = clonesWork ? function (el) {
             return el.cloneNode(true);
         } : function (node) {
@@ -255,7 +248,7 @@ define('can/view/target/target', [
     can.view.target = makeTarget;
     return makeTarget;
 });
-/*can@2.3.2#view/stache/mustache_core*/
+/*can@2.3.3#view/stache/mustache_core*/
 define('can/view/stache/mustache_core', [
     'can/util/util',
     'can/view/stache/utils',
@@ -492,7 +485,7 @@ define('can/view/stache/mustache_core', [
     can.view.mustacheCore = core;
     return core;
 });
-/*can@2.3.2#view/stache/html_section*/
+/*can@2.3.3#view/stache/html_section*/
 define('can/view/stache/html_section', [
     'can/util/util',
     'can/view/target/target',
@@ -585,7 +578,7 @@ define('can/view/stache/html_section', [
                 data = decodeHTML(data);
             }
             if (this.targetStack.length) {
-                this.targetStack[this.targetStack.length - 1].children.push(data);
+                can.last(this.targetStack).children.push(data);
             } else {
                 this[this.data].push(data);
             }
@@ -596,13 +589,12 @@ define('can/view/stache/html_section', [
                 this.inverseCompiled = target(this.inverseData, can.document || can.global.document);
                 delete this.inverseData;
             }
-            delete this.targetData;
-            delete this.targetStack;
+            this.targetStack = this.targetData = null;
             return this.compiled;
         },
         children: function () {
             if (this.targetStack.length) {
-                return this.targetStack[this.targetStack.length - 1].children;
+                return can.last(this.targetStack).children;
             } else {
                 return this[this.data];
             }
@@ -611,9 +603,10 @@ define('can/view/stache/html_section', [
             return !this.targetData.length;
         }
     });
+    HTMLSectionBuilder.HTMLSection = HTMLSection;
     return HTMLSectionBuilder;
 });
-/*can@2.3.2#view/stache/live_attr*/
+/*can@2.3.3#view/stache/live_attr*/
 define('can/view/stache/live_attr', [
     'can/util/util',
     'can/view/live/live',
@@ -659,7 +652,7 @@ define('can/view/stache/live_attr', [
         }
     };
 });
-/*can@2.3.2#view/stache/text_section*/
+/*can@2.3.3#view/stache/text_section*/
 define('can/view/stache/text_section', [
     'can/util/util',
     'can/view/live/live',
@@ -698,14 +691,18 @@ define('can/view/stache/text_section', [
                 compute.computeInstance.bind('change', can.k);
                 var value = compute();
                 if (compute.computeInstance.hasDependencies) {
-                    if (state.attr) {
+                    if (state.textContentOnly) {
+                        live.text(this, compute);
+                    } else if (state.attr) {
                         live.simpleAttribute(this, state.attr, compute);
                     } else {
                         liveStache.attributes(this, compute, scope, options);
                     }
                     compute.computeInstance.unbind('change', can.k);
                 } else {
-                    if (state.attr) {
+                    if (state.textContentOnly) {
+                        this.nodeValue = value;
+                    } else if (state.attr) {
                         can.attr.set(this, state.attr, value);
                     } else {
                         live.setAttributes(this, value);
@@ -749,7 +746,7 @@ define('can/view/stache/text_section', [
     });
     return TextSectionBuilder;
 });
-/*can@2.3.2#view/import/import*/
+/*can@2.3.3#view/import/import*/
 define('can/view/import/import', [
     'can/util/util',
     'can/view/callbacks/callbacks'
@@ -791,7 +788,7 @@ define('can/view/import/import', [
         }
     });
 });
-/*can@2.3.2#view/stache/intermediate_and_imports*/
+/*can@2.3.3#view/stache/intermediate_and_imports*/
 define('can/view/stache/intermediate_and_imports', [
     'can/view/stache/mustache_core',
     'can/view/parser/parser',
@@ -857,7 +854,7 @@ define('can/view/stache/intermediate_and_imports', [
         };
     };
 });
-/*can@2.3.2#view/stache/stache*/
+/*can@2.3.3#view/stache/stache*/
 define('can/view/stache/stache', [
     'can/util/util',
     'can/view/parser/parser',
@@ -877,6 +874,9 @@ define('can/view/stache/stache', [
     var namespaces = {
             'svg': svgNamespace,
             'g': svgNamespace
+        }, textContentOnlyTag = {
+            style: true,
+            script: true
         };
     function stache(template) {
         if (typeof template === 'string') {
@@ -887,7 +887,8 @@ define('can/view/stache/stache', [
                 attr: null,
                 sectionElementStack: [],
                 text: false,
-                namespaceStack: []
+                namespaceStack: [],
+                textContentOnly: null
             }, makeRendererAndUpdateSection = function (section, mode, stache) {
                 if (mode === '>') {
                     section.add(mustacheCore.makeLiveBindingPartialRenderer(stache, state));
@@ -916,7 +917,8 @@ define('can/view/stache/stache', [
                 var cur = {
                         tag: state.node && state.node.tag,
                         attr: state.attr && state.attr.name,
-                        directlyNested: state.sectionElementStack.length ? lastElement === 'section' || lastElement === 'custom' : true
+                        directlyNested: state.sectionElementStack.length ? lastElement === 'section' || lastElement === 'custom' : true,
+                        textContentOnly: !!state.textContentOnly
                     };
                 return overwrites ? can.simpleExtend(cur, overwrites) : cur;
             }, addAttributesCallback = function (node, callback) {
@@ -954,9 +956,11 @@ define('can/view/stache/stache', [
                     }
                 } else {
                     section.push(state.node);
-                    state.sectionElementStack.push(isCustomTag ? 'custom' : 'element');
+                    state.sectionElementStack.push(isCustomTag ? 'custom' : tagName);
                     if (isCustomTag) {
                         section.startSubSection();
+                    } else if (textContentOnlyTag[tagName]) {
+                        state.textContentOnly = new TextSectionBuilder();
                     }
                 }
                 state.node = null;
@@ -969,6 +973,10 @@ define('can/view/stache/stache', [
                 var isCustomTag = viewCallbacks.tag(tagName), renderer;
                 if (isCustomTag) {
                     renderer = section.endSubSectionAndReturnRenderer();
+                }
+                if (textContentOnlyTag[tagName]) {
+                    section.last().add(state.textContentOnly.compile(copyState()));
+                    state.textContentOnly = null;
                 }
                 var oldNode = section.pop();
                 if (isCustomTag) {
@@ -1027,12 +1035,12 @@ define('can/view/stache/stache', [
                 }
             },
             chars: function (text) {
-                section.add(text);
+                (state.textContentOnly || section).add(text);
             },
             special: function (text) {
                 var firstAndText = mustacheCore.splitModeFromExpression(text, state), mode = firstAndText.mode, expression = firstAndText.expression;
                 if (expression === 'else') {
-                    (state.attr && state.attr.section ? state.attr.section : section).inverse();
+                    (state.attr && state.attr.section ? state.attr.section : state.textContentOnly || section).inverse();
                     return;
                 }
                 if (mode === '!') {
@@ -1067,7 +1075,7 @@ define('can/view/stache/stache', [
                         throw new Error(mode + ' is currently not supported within a tag.');
                     }
                 } else {
-                    makeRendererAndUpdateSection(section, mode, expression);
+                    makeRendererAndUpdateSection(state.textContentOnly || section, mode, expression);
                 }
             },
             comment: function (text) {

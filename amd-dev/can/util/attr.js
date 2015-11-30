@@ -1,15 +1,21 @@
 /*!
- * CanJS - 2.3.2
+ * CanJS - 2.3.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Nov 2015 23:57:31 GMT
+ * Mon, 30 Nov 2015 23:22:54 GMT
  * Licensed MIT
  */
 
-/*can@2.3.2#util/attr/attr*/
+/*can@2.3.3#util/attr/attr*/
 define(['can/util/can'], function (can) {
     var setImmediate = can.global.setImmediate || function (cb) {
             return setTimeout(cb, 0);
+        }, formElements = {
+            'input': true,
+            'textarea': true,
+            'select': true
+        }, hasProperty = function (el, attrName) {
+            return attrName in el || formElements[el.nodeName.toLowerCase()];
         }, attr = {
             MutationObserver: can.global.MutationObserver || can.global.WebKitMutationObserver || can.global.MozMutationObserver,
             map: {
@@ -79,14 +85,14 @@ define(['can/util/can'], function (can) {
                 var prop = attr.map[attrName], newValue;
                 if (typeof prop === 'function') {
                     newValue = prop(el, val);
-                } else if (prop === true) {
+                } else if (prop === true && hasProperty(el, prop)) {
                     newValue = el[attrName] = true;
                     if (attrName === 'checked' && el.type === 'radio') {
                         if (can.inArray((el.nodeName + '').toLowerCase(), attr.defaultValue) >= 0) {
                             el.defaultChecked = true;
                         }
                     }
-                } else if (prop) {
+                } else if (prop !== true && hasProperty(el, prop)) {
                     newValue = val;
                     if (el[prop] !== val || el.nodeName.toUpperCase() === 'OPTION') {
                         el[prop] = val;
@@ -95,13 +101,40 @@ define(['can/util/can'], function (can) {
                         el.defaultValue = val;
                     }
                 } else {
-                    el.setAttribute(attrName, val);
-                    newValue = val;
+                    attr.setAttribute(el, attrName, val);
                 }
                 if (!usingMutationObserver && newValue !== oldValue) {
                     attr.trigger(el, attrName, oldValue);
                 }
             },
+            setAttribute: function () {
+                var doc = can.global.document;
+                if (doc && document.createAttribute) {
+                    try {
+                        doc.createAttribute('{}');
+                    } catch (e) {
+                        var invalidNodes = {}, attributeDummy = document.createElement('div');
+                        return function (el, attrName, val) {
+                            var first = attrName.charAt(0), cachedNode, node;
+                            if ((first === '{' || first === '(' || first === '*') && el.setAttributeNode) {
+                                cachedNode = invalidNodes[attrName];
+                                if (!cachedNode) {
+                                    attributeDummy.innerHTML = '<div ' + attrName + '=""></div>';
+                                    cachedNode = invalidNodes[attrName] = attributeDummy.childNodes[0].attributes[0];
+                                }
+                                node = cachedNode.cloneNode();
+                                node.value = val;
+                                el.setAttributeNode(node);
+                            } else {
+                                el.setAttribute(attrName, val);
+                            }
+                        };
+                    }
+                }
+                return function (el, attrName, val) {
+                    el.setAttribute(attrName, val);
+                };
+            }(),
             trigger: function (el, attrName, oldValue) {
                 if (can.data(can.$(el), 'canHasAttributesBindings')) {
                     attrName = attrName.toLowerCase();
@@ -119,9 +152,9 @@ define(['can/util/can'], function (can) {
             get: function (el, attrName) {
                 attrName = attrName.toLowerCase();
                 var prop = attr.map[attrName];
-                if (typeof prop === 'string' && prop in el) {
+                if (typeof prop === 'string' && hasProperty(el, prop)) {
                     return el[prop];
-                } else if (prop === true) {
+                } else if (prop === true && hasProperty(el, prop)) {
                     return el[attrName];
                 }
                 return el.getAttribute(attrName);
@@ -136,9 +169,9 @@ define(['can/util/can'], function (can) {
                 if (typeof setter === 'function') {
                     setter(el, undefined);
                 }
-                if (setter === true) {
+                if (setter === true && hasProperty(el, attrName)) {
                     el[attrName] = false;
-                } else if (typeof setter === 'string') {
+                } else if (typeof setter === 'string' && hasProperty(el, setter)) {
                     el[setter] = '';
                 } else {
                     el.removeAttribute(attrName);

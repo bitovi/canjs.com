@@ -1,18 +1,19 @@
 /*!
- * CanJS - 2.3.2
+ * CanJS - 2.3.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Nov 2015 23:57:31 GMT
+ * Mon, 30 Nov 2015 23:22:54 GMT
  * Licensed MIT
  */
 
-/*can@2.3.2#compute/proto_compute*/
+/*can@2.3.3#compute/proto_compute*/
 var can = require('../util/util.js');
 var bind = require('../util/bind/bind.js');
 var read = require('./read.js');
-var getValueAndBind = require('./get_value_and_bind.js');
+var ObservedInfo = require('./get_value_and_bind.js');
 require('../util/batch/batch.js');
 can.Compute = function (getterSetter, context, eventName, bindOnce) {
+    can.cid(this, 'compute');
     var args = [];
     for (var i = 0, arglen = arguments.length; i < arglen; i++) {
         args[i] = arguments[i];
@@ -37,7 +38,6 @@ can.Compute = function (getterSetter, context, eventName, bindOnce) {
     }
     this._args = args;
     this.isComputed = true;
-    can.cid(this, 'compute');
 };
 can.simpleExtend(can.Compute.prototype, {
     _setupGetterSetterFn: function (getterSetter, context, eventName) {
@@ -220,22 +220,15 @@ var updateOnChange = function (compute, newValue, oldValue, batchNum) {
     }
 };
 var setupComputeHandlers = function (compute, func, context) {
-    var readInfo = new getValueAndBind.ObservedInfo(func, context, function (ev) {
-            if (readInfo.ready && compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum)) {
-                var oldValue = readInfo.value;
-                getValueAndBind(readInfo);
-                compute.updater(readInfo.value, oldValue, ev.batchNum);
-                batchNum = ev.batchNum;
-            }
-        }), batchNum;
+    var readInfo = new ObservedInfo(func, context, compute);
     return {
         on: function () {
-            getValueAndBind(readInfo);
+            readInfo.getValueAndBind();
             compute.value = readInfo.value;
             compute.hasDependencies = !can.isEmptyObject(readInfo.newObserved);
         },
         off: function () {
-            getValueAndBind.unbindReadInfo(readInfo);
+            readInfo.teardown();
         }
     };
 };

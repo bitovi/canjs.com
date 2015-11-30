@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.2
+ * CanJS - 2.3.3
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Fri, 13 Nov 2015 23:57:31 GMT
+ * Mon, 30 Nov 2015 23:22:54 GMT
  * Licensed MIT
  */
 
-/*can@2.3.2#view/stache/mustache_helpers*/
+/*can@2.3.3#view/stache/mustache_helpers*/
 define([
     'can/util/library',
     'can/view/utils',
@@ -47,7 +47,10 @@ define([
                         can.view.nodeLists.register(nodeList, null, options.nodeList);
                         can.view.nodeLists.update(options.nodeList, [el]);
                         var cb = function (item, index, parentNodeList) {
-                            return options.fn(options.scope.add({ '@index': index }).add(item), options.options, parentNodeList);
+                            return options.fn(options.scope.add({
+                                '%index': index,
+                                '@index': index
+                            }, { notContext: true }).add(item), options.options, parentNodeList);
                         };
                         live.list(el, items, cb, options.context, el.parentNode, nodeList, function (list, parentNodeList) {
                             return options.inverse(options.scope.add(list), options.options, parentNodeList);
@@ -57,17 +60,26 @@ define([
                 var expr = resolved;
                 if (!!expr && utils.isArrayLike(expr)) {
                     for (i = 0; i < expr.length; i++) {
-                        result.push(options.fn(options.scope.add({ '@index': i }).add(expr[i])));
+                        result.push(options.fn(options.scope.add({
+                            '%index': i,
+                            '@index': i
+                        }, { notContext: true }).add(expr[i])));
                     }
                 } else if (utils.isObserveLike(expr)) {
                     keys = can.Map.keys(expr);
                     for (i = 0; i < keys.length; i++) {
                         key = keys[i];
-                        result.push(options.fn(options.scope.add({ '@key': key }).add(expr[key])));
+                        result.push(options.fn(options.scope.add({
+                            '%key': key,
+                            '@key': key
+                        }, { notContext: true }).add(expr[key])));
                     }
                 } else if (expr instanceof Object) {
                     for (key in expr) {
-                        result.push(options.fn(options.scope.add({ '@key': key }).add(expr[key])));
+                        result.push(options.fn(options.scope.add({
+                            '%key': key,
+                            '@key': key
+                        }, { notContext: true }).add(expr[key])));
                     }
                 }
                 return result;
