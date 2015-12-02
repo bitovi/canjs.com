@@ -36,7 +36,8 @@
 		},
 		"2.1" : "git://github.com/bitovi/canjs#664214f77031591bb2b59375cb31b4e7a5dd9fae",
 		"2.2": {
-			"source": "git://github.com/bitovi/canjs#958bed09a78d4e4f43e7e95fe4e049d75b7ac3bf", "npmInstall": [
+			"source": "git://github.com/bitovi/canjs#2.2-legacy",
+			"npmInstall": [
 				"steal@0.7.X","jquery@^1.11.0",
 				"steal-qunit@0.0.2",
 				"jquerypp@2.0.0",
