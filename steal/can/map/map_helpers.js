@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.3
+ * CanJS - 2.3.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Mon, 30 Nov 2015 23:22:54 GMT
+ * Wed, 02 Dec 2015 22:49:52 GMT
  * Licensed MIT
  */
 
-/*can@2.3.3#map/map_helpers*/
+/*can@2.3.4#map/map_helpers*/
 steal('can/util', 'can/util/object/isplain', function (can) {
     var mapHelpers = {
             attrParts: function (attr, keepKey) {

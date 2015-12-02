@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.3
+ * CanJS - 2.3.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Mon, 30 Nov 2015 23:22:54 GMT
+ * Wed, 02 Dec 2015 22:49:52 GMT
  * Licensed MIT
  */
 
-/*can@2.3.3#view/bindings/bindings*/
+/*can@2.3.4#view/bindings/bindings*/
 var can = require('../../util/util.js');
 var expression = require('../stache/expression.js');
 var viewCallbacks = require('../callbacks/callbacks.js');
@@ -80,14 +80,14 @@ var behaviors = {
             if (can.data(can.$(el), 'preventDataBindings')) {
                 return;
             }
-            var viewModel = can.viewModel(el);
+            var viewModel = can.viewModel(el), semaphore = {}, teardown;
             var dataBinding = makeDataBinding({
                     name: attrData.attributeName,
                     value: el.getAttribute(attrData.attributeName)
                 }, el, {
                     templateType: attrData.templateType,
                     scope: attrData.scope,
-                    semaphore: {},
+                    semaphore: semaphore,
                     getViewModel: function () {
                         return viewModel;
                     }
@@ -95,7 +95,38 @@ var behaviors = {
             if (dataBinding.onCompleteBinding) {
                 dataBinding.onCompleteBinding();
             }
-            can.one.call(el, 'removed', dataBinding.onTeardown);
+            teardown = dataBinding.onTeardown;
+            can.one.call(el, 'removed', function () {
+                teardown();
+            });
+            can.bind.call(el, 'attributes', function (ev) {
+                var attrName = ev.attributeName, value = el.getAttribute(attrName);
+                if (attrName === attrData.attributeName) {
+                    if (teardown) {
+                        teardown();
+                    }
+                    if (value !== null) {
+                        var dataBinding = makeDataBinding({
+                                name: attrName,
+                                value: value
+                            }, el, {
+                                templateType: attrData.templateType,
+                                scope: attrData.scope,
+                                semaphore: semaphore,
+                                getViewModel: function () {
+                                    return viewModel;
+                                },
+                                initializeValues: true
+                            });
+                        if (dataBinding) {
+                            if (dataBinding.onCompleteBinding) {
+                                dataBinding.onCompleteBinding();
+                            }
+                            teardown = dataBinding.onTeardown;
+                        }
+                    }
+                }
+            });
         },
         reference: function (el, attrData) {
             if (el.getAttribute(attrData.attributeName)) {
@@ -219,8 +250,12 @@ can.view.attr(/can-[\w\.]+/, behaviors.event);
 can.view.attr('can-value', behaviors.value);
 var getComputeFrom = {
         scope: function (el, scope, scopeProp, options) {
-            var parentExpression = expression.parse(scopeProp, { baseMethodType: 'Call' });
-            return parentExpression.value(scope, new can.view.Options({}));
+            if (!scopeProp) {
+                return can.compute();
+            } else {
+                var parentExpression = expression.parse(scopeProp, { baseMethodType: 'Call' });
+                return parentExpression.value(scope, new can.view.Options({}));
+            }
         },
         viewModel: function (el, scope, vmName, options) {
             return can.compute(function (newVal) {

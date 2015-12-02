@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.3
+ * CanJS - 2.3.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Mon, 30 Nov 2015 23:22:54 GMT
+ * Wed, 02 Dec 2015 22:49:52 GMT
  * Licensed MIT
  */
 
-/*can@2.3.3#view/node_lists/node_lists*/
+/*can@2.3.4#view/node_lists/node_lists*/
 var can = require('../../util/util.js');
 require('../elements.js');
 var canExpando = true;
@@ -58,6 +58,12 @@ var nodeMap = {}, textNodeMap = {}, expando = 'ejs_' + Math.random(), _id = 0, i
             map[id(node, idMap)] = replacements[i];
         }
         return map;
+    }, addUnfoundAsDeepChildren = function (list, rMap, foundIds) {
+        for (var repId in rMap) {
+            if (!foundIds[repId]) {
+                list.newDeepChildren.push(rMap[repId]);
+            }
+        }
     };
 var nodeLists = {
         id: id,
@@ -71,20 +77,26 @@ var nodeLists = {
             ].concat(newNodes));
             if (nodeList.replacements) {
                 nodeLists.nestReplacements(nodeList);
+                nodeList.deepChildren = nodeList.newDeepChildren;
+                nodeList.newDeepChildren = [];
             } else {
                 nodeLists.nestList(nodeList);
             }
             return oldNodes;
         },
         nestReplacements: function (list) {
-            var index = 0, idMap = {}, rMap = replacementMap(list.replacements, idMap), rCount = list.replacements.length;
+            var index = 0, idMap = {}, rMap = replacementMap(list.replacements, idMap), rCount = list.replacements.length, foundIds = {};
             while (index < list.length && rCount) {
-                var node = list[index], replacement = rMap[readId(node, idMap)];
+                var node = list[index], nodeId = readId(node, idMap), replacement = rMap[nodeId];
                 if (replacement) {
                     list.splice(index, itemsInChildListTree(replacement), replacement);
+                    foundIds[nodeId] = true;
                     rCount--;
                 }
                 index++;
+            }
+            if (rCount) {
+                addUnfoundAsDeepChildren(list, rMap, foundIds);
             }
             list.replacements = [];
         },
@@ -130,14 +142,21 @@ var nodeLists = {
             }
             return items;
         },
-        register: function (nodeList, unregistered, parent) {
+        register: function (nodeList, unregistered, parent, directlyNested) {
+            can.cid(nodeList);
             nodeList.unregistered = unregistered;
             nodeList.parentList = parent;
-            if (parent === true) {
+            if (parent) {
+                nodeList.deepChildren = [];
+                nodeList.newDeepChildren = [];
                 nodeList.replacements = [];
-            } else if (parent) {
-                parent.replacements.push(nodeList);
-                nodeList.replacements = [];
+                if (parent !== true) {
+                    if (directlyNested) {
+                        parent.replacements.push(nodeList);
+                    } else {
+                        parent.newDeepChildren.push(nodeList);
+                    }
+                }
             } else {
                 nodeLists.nestList(nodeList);
             }
@@ -152,17 +171,28 @@ var nodeLists = {
                     }
                     nodes.push(node);
                 } else {
-                    push.apply(nodes, nodeLists.unregister(node));
+                    push.apply(nodes, nodeLists.unregister(node, true));
                 }
+            });
+            can.each(nodeList.deepChildren, function (nodeList) {
+                nodeLists.unregister(nodeList, true);
             });
             return nodes;
         },
-        unregister: function (nodeList) {
-            var nodes = nodeLists.unregisterChildren(nodeList);
+        unregister: function (nodeList, isChild) {
+            var nodes = nodeLists.unregisterChildren(nodeList, true);
             if (nodeList.unregistered) {
                 var unregisteredCallback = nodeList.unregistered;
-                delete nodeList.unregistered;
-                delete nodeList.replacements;
+                nodeList.replacements = nodeList.unregistered = null;
+                if (!isChild) {
+                    var deepChildren = nodeList.parentList && nodeList.parentList.deepChildren;
+                    if (deepChildren) {
+                        var index = deepChildren.indexOf(nodeList);
+                        if (index !== -1) {
+                            deepChildren.splice(index, 1);
+                        }
+                    }
+                }
                 unregisteredCallback();
             }
             return nodes;

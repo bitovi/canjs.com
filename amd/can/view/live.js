@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.3
+ * CanJS - 2.3.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Mon, 30 Nov 2015 23:22:54 GMT
+ * Wed, 02 Dec 2015 22:49:52 GMT
  * Licensed MIT
  */
 
-/*can@2.3.3#view/live/live*/
+/*can@2.3.4#view/live/live*/
 define([
     'can/util/library',
     'can/elements',
@@ -79,14 +79,16 @@ define([
         }, getLiveFragment = function (itemHTML) {
             var gotText = typeof itemHTML === 'string', itemFrag = can.frag(itemHTML);
             return gotText ? can.view.hookup(itemFrag) : itemFrag;
-        }, renderAndAddToNodeLists = function (newNodeLists, nodeList, render, context, args) {
+        }, renderAndAddToNodeLists = function (newNodeLists, parentNodeList, render, context, args) {
             var itemNodeList = [];
-            if (nodeList) {
-                nodeLists.register(itemNodeList, null, true);
+            if (parentNodeList) {
+                nodeLists.register(itemNodeList, null, parentNodeList, true);
+                itemNodeList.parentList = parentNodeList;
+                itemNodeList.expression = '#each SUBEXPRESSION';
             }
             var itemHTML = render.apply(context, args.concat([itemNodeList])), itemFrag = getLiveFragment(itemHTML);
             var childNodes = can.makeArray(getChildNodes(itemFrag));
-            if (nodeList) {
+            if (parentNodeList) {
                 nodeLists.update(itemNodeList, childNodes);
                 newNodeLists.push(itemNodeList);
             } else {
@@ -163,8 +165,8 @@ define([
                         for (var i = index, len = indexMap.length; i < len; i++) {
                             indexMap[i](i);
                         }
-                        addFalseyIfEmpty(list, falseyRender, masterNodeList, nodeList);
                         if (!fullTeardown) {
+                            addFalseyIfEmpty(list, falseyRender, masterNodeList, nodeList);
                             can.remove(can.$(itemsToRemove));
                         } else {
                             nodeLists.unregister(masterNodeList);

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.3
+ * CanJS - 2.3.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Mon, 30 Nov 2015 23:22:54 GMT
+ * Wed, 02 Dec 2015 22:49:52 GMT
  * Licensed MIT
  */
 
-/*can@2.3.3#view/parser/parser*/
+/*can@2.3.4#view/parser/parser*/
 function each(items, callback) {
     for (var i = 0; i < items.length; i++) {
         callback(items[i], i);
@@ -26,7 +26,7 @@ function handleIntermediate(intermediate, handler) {
     }
     return intermediate;
 }
-var alphaNumericHU = '-:A-Za-z0-9_', attributeNames = '[^=>\\s\\/]+', spaceEQspace = '\\s*=\\s*', attributeEqAndValue = '(?:' + spaceEQspace + '(?:' + '(?:"[^"]*")|(?:\'[^\']*\')|[^>\\s]+))?', matchStash = '\\{\\{[^\\}]*\\}\\}\\}?', stash = '\\{\\{([^\\}]*)\\}\\}\\}?', startTag = new RegExp('^<([' + alphaNumericHU + ']+)' + '(' + '(?:\\s*' + '(?:(?:' + '(?:' + attributeNames + ')?' + attributeEqAndValue + ')|' + '(?:' + matchStash + ')+)' + ')*' + ')\\s*(\\/?)>'), endTag = new RegExp('^<\\/([' + alphaNumericHU + ']+)[^>]*>'), mustache = new RegExp(stash, 'g'), txtBreak = /<|\{\{/, space = /\s/;
+var alphaNumericHU = '-:A-Za-z0-9_', attributeNames = '[^=>\\s\\/]+', spaceEQspace = '\\s*=\\s*', singleCurly = '\\{[^\\}\\{]\\}', doubleCurly = '\\{\\{[^\\}]\\}\\}\\}?', attributeEqAndValue = '(?:' + spaceEQspace + '(?:' + '(?:' + doubleCurly + ')|(?:' + singleCurly + ')|(?:"[^"]*")|(?:\'[^\']*\')|[^>\\s]+))?', matchStash = '\\{\\{[^\\}]*\\}\\}\\}?', stash = '\\{\\{([^\\}]*)\\}\\}\\}?', startTag = new RegExp('^<([' + alphaNumericHU + ']+)' + '(' + '(?:\\s*' + '(?:(?:' + '(?:' + attributeNames + ')?' + attributeEqAndValue + ')|' + '(?:' + matchStash + ')+)' + ')*' + ')\\s*(\\/?)>'), endTag = new RegExp('^<\\/([' + alphaNumericHU + ']+)[^>]*>'), mustache = new RegExp(stash, 'g'), txtBreak = /<|\{\{/, space = /\s/;
 var empty = makeMap('area,base,basefont,br,col,frame,hr,img,input,isindex,link,meta,param,embed');
 var block = makeMap('a,address,article,applet,aside,audio,blockquote,button,canvas,center,dd,del,dir,div,dl,dt,fieldset,figcaption,figure,footer,form,frameset,h1,h2,h3,h4,h5,h6,header,hgroup,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,output,p,pre,section,script,table,tbody,td,tfoot,th,thead,tr,ul,video');
 var inline = makeMap('abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var');
@@ -194,6 +194,7 @@ var callAttrEnd = function (state, curIndex, handler, rest) {
     state.valueStart = undefined;
     state.inValue = false;
     state.inName = false;
+    state.lookingForEq = false;
     state.inQuote = false;
     state.lookingForName = true;
 };
@@ -226,6 +227,10 @@ HTMLParser.parseAttrs = function (rest, handler) {
                 handler.attrValue(rest.substring(state.valueStart, curIndex));
             } else if (state.inName && state.nameStart < curIndex) {
                 callAttrStart(state, curIndex, handler, rest);
+                callAttrEnd(state, curIndex, handler, rest);
+            } else if (state.lookingForValue) {
+                state.inValue = true;
+            } else if (state.lookingForEq && state.attrStart) {
                 callAttrEnd(state, curIndex, handler, rest);
             }
             state.inDoubleCurly = true;
@@ -286,6 +291,8 @@ HTMLParser.parseAttrs = function (rest, handler) {
         callAttrStart(state, curIndex + 1, handler, rest);
         callAttrEnd(state, curIndex + 1, handler, rest);
     } else if (state.lookingForEq) {
+        callAttrEnd(state, curIndex + 1, handler, rest);
+    } else if (state.inValue) {
         callAttrEnd(state, curIndex + 1, handler, rest);
     }
 };

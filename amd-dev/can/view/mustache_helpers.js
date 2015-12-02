@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.3
+ * CanJS - 2.3.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Mon, 30 Nov 2015 23:22:54 GMT
+ * Wed, 02 Dec 2015 22:49:52 GMT
  * Licensed MIT
  */
 
-/*can@2.3.3#view/stache/mustache_helpers*/
+/*can@2.3.4#view/stache/mustache_helpers*/
 define([
     'can/util/library',
     'can/view/utils',
@@ -44,7 +44,7 @@ define([
                     return function (el) {
                         var nodeList = [el];
                         nodeList.expression = 'live.list';
-                        can.view.nodeLists.register(nodeList, null, options.nodeList);
+                        can.view.nodeLists.register(nodeList, null, options.nodeList, true);
                         can.view.nodeLists.update(options.nodeList, [el]);
                         var cb = function (item, index, parentNodeList) {
                             return options.fn(options.scope.add({

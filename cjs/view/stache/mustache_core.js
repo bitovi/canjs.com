@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.3
+ * CanJS - 2.3.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Mon, 30 Nov 2015 23:22:54 GMT
+ * Wed, 02 Dec 2015 22:49:52 GMT
  * Licensed MIT
  */
 
-/*can@2.3.3#view/stache/mustache_core*/
+/*can@2.3.4#view/stache/mustache_core*/
 var can = require('../../util/util.js');
 var utils = require('./utils.js');
 var mustacheHelpers = require('./mustache_helpers.js');
@@ -122,7 +122,7 @@ var core = {
             return function (scope, options, parentSectionNodeList) {
                 var nodeList = [this];
                 nodeList.expression = '>' + partialName;
-                nodeLists.register(nodeList, null, state.directlyNested ? parentSectionNodeList || true : true);
+                nodeLists.register(nodeList, null, parentSectionNodeList || true, state.directlyNested);
                 var partialFrag = can.compute(function () {
                         var localPartialName = partialName;
                         var partial = options.attr('partials.' + localPartialName), res;
@@ -168,7 +168,7 @@ var core = {
             return function branchRenderer(scope, options, parentSectionNodeList, truthyRenderer, falseyRenderer) {
                 var nodeList = [this];
                 nodeList.expression = expressionString;
-                nodeLists.register(nodeList, null, state.directlyNested ? parentSectionNodeList || true : true);
+                nodeLists.register(nodeList, null, parentSectionNodeList || true, state.directlyNested);
                 var evaluator = makeEvaluator(scope, options, nodeList, mode, exprData, truthyRenderer, falseyRenderer, state.tag);
                 var gotCompute = evaluator.isComputed, compute;
                 if (gotCompute) {

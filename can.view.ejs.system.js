@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.3
+ * CanJS - 2.3.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Mon, 30 Nov 2015 23:22:54 GMT
+ * Wed, 02 Dec 2015 22:49:52 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.3#view/ejs/ejs*/
+/*can@2.3.4#view/ejs/ejs*/
 define('can/view/ejs/ejs', [
     'can/util/util',
     'can/view/view',
@@ -231,7 +231,7 @@ define('can/view/ejs/ejs', [
     can.ejs.Helpers = EJS.Helpers;
     return can;
 });
-/*can@2.3.3#view/ejs/system*/
+/*can@2.3.4#view/ejs/system*/
 'format steal';
 define('can/view/ejs/system', ['can/view/ejs/ejs'], function (can) {
     function translate(load) {

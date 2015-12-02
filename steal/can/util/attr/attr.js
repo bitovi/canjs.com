@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.3
+ * CanJS - 2.3.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Mon, 30 Nov 2015 23:22:54 GMT
+ * Wed, 02 Dec 2015 22:49:52 GMT
  * Licensed MIT
  */
 
-/*can@2.3.3#util/attr/attr*/
+/*can@2.3.4#util/attr/attr*/
 steal('can/util/can.js', function (can) {
     var setImmediate = can.global.setImmediate || function (cb) {
             return setTimeout(cb, 0);
@@ -15,7 +15,7 @@ steal('can/util/can.js', function (can) {
             'textarea': true,
             'select': true
         }, hasProperty = function (el, attrName) {
-            return attrName in el || formElements[el.nodeName.toLowerCase()];
+            return attrName in el || can.document && formElements[el.nodeName.toLowerCase()];
         }, attr = {
             MutationObserver: can.global.MutationObserver || can.global.WebKitMutationObserver || can.global.MozMutationObserver,
             map: {
@@ -85,14 +85,14 @@ steal('can/util/can.js', function (can) {
                 var prop = attr.map[attrName], newValue;
                 if (typeof prop === 'function') {
                     newValue = prop(el, val);
-                } else if (prop === true && hasProperty(el, prop)) {
+                } else if (prop === true && hasProperty(el, attrName)) {
                     newValue = el[attrName] = true;
                     if (attrName === 'checked' && el.type === 'radio') {
                         if (can.inArray((el.nodeName + '').toLowerCase(), attr.defaultValue) >= 0) {
                             el.defaultChecked = true;
                         }
                     }
-                } else if (prop !== true && hasProperty(el, prop)) {
+                } else if (typeof prop === 'string' && hasProperty(el, prop)) {
                     newValue = val;
                     if (el[prop] !== val || el.nodeName.toUpperCase() === 'OPTION') {
                         el[prop] = val;
@@ -154,7 +154,7 @@ steal('can/util/can.js', function (can) {
                 var prop = attr.map[attrName];
                 if (typeof prop === 'string' && hasProperty(el, prop)) {
                     return el[prop];
-                } else if (prop === true && hasProperty(el, prop)) {
+                } else if (prop === true && hasProperty(el, attrName)) {
                     return el[attrName];
                 }
                 return el.getAttribute(attrName);

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.3
+ * CanJS - 2.3.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Mon, 30 Nov 2015 23:22:54 GMT
+ * Wed, 02 Dec 2015 22:49:52 GMT
  * Licensed MIT
  */
 
-/*can@2.3.3#view/stache/mustache_core*/
+/*can@2.3.4#view/stache/mustache_core*/
 steal('can/util', './utils', './mustache_helpers', './expression.js', 'can/view/live', 'can/view/elements.js', 'can/view/scope', 'can/view/node_lists', function (can, utils, mustacheHelpers, expression, live, elements, Scope, nodeLists) {
     live = live || can.view.live;
     elements = elements || can.view.elements;
@@ -115,7 +115,7 @@ steal('can/util', './utils', './mustache_helpers', './expression.js', 'can/view/
                 return function (scope, options, parentSectionNodeList) {
                     var nodeList = [this];
                     nodeList.expression = '>' + partialName;
-                    nodeLists.register(nodeList, null, state.directlyNested ? parentSectionNodeList || true : true);
+                    nodeLists.register(nodeList, null, parentSectionNodeList || true, state.directlyNested);
                     var partialFrag = can.compute(function () {
                             var localPartialName = partialName;
                             var partial = options.attr('partials.' + localPartialName), res;
@@ -161,7 +161,7 @@ steal('can/util', './utils', './mustache_helpers', './expression.js', 'can/view/
                 return function branchRenderer(scope, options, parentSectionNodeList, truthyRenderer, falseyRenderer) {
                     var nodeList = [this];
                     nodeList.expression = expressionString;
-                    nodeLists.register(nodeList, null, state.directlyNested ? parentSectionNodeList || true : true);
+                    nodeLists.register(nodeList, null, parentSectionNodeList || true, state.directlyNested);
                     var evaluator = makeEvaluator(scope, options, nodeList, mode, exprData, truthyRenderer, falseyRenderer, state.tag);
                     var gotCompute = evaluator.isComputed, compute;
                     if (gotCompute) {

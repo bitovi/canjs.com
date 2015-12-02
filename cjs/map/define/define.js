@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.3
+ * CanJS - 2.3.4
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Mon, 30 Nov 2015 23:22:54 GMT
+ * Wed, 02 Dec 2015 22:49:52 GMT
  * Licensed MIT
  */
 
-/*can@2.3.3#map/define/define*/
+/*can@2.3.4#map/define/define*/
 var can = require('../../util/util.js');
 var mapHelpers = require('../map_helpers.js');
 require('../map.js');
