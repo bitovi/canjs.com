@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.4
+ * CanJS - 2.3.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 02 Dec 2015 22:49:52 GMT
+ * Thu, 03 Dec 2015 23:34:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.4#view/scope/compute_data*/
+/*can@2.3.5#view/scope/compute_data*/
 steal('can/util', 'can/compute', 'can/compute/get_value_and_bind.js', function (can, compute, ObservedInfo) {
     var isFastPath = function (computeData) {
         return computeData.reads && computeData.reads.length === 1 && computeData.root instanceof can.Map && !can.isFunction(computeData.root[computeData.reads[0].key]);

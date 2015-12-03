@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.4
+ * CanJS - 2.3.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 02 Dec 2015 22:49:52 GMT
+ * Thu, 03 Dec 2015 23:34:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.4#list/sort/sort*/
+/*can@2.3.5#list/sort/sort*/
 steal('can/util', 'can/list', function (can) {
     var oldBubbleRule = can.List._bubbleRule;
     can.List._bubbleRule = function (eventName, list) {

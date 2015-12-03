@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.4
+ * CanJS - 2.3.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 02 Dec 2015 22:49:52 GMT
+ * Thu, 03 Dec 2015 23:34:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.4#view/bindings/bindings*/
+/*can@2.3.5#view/bindings/bindings*/
 define([
     'can/util/library',
     'can/view/expression',
@@ -27,12 +27,13 @@ define([
                             getViewModel: function () {
                                 return viewModel;
                             },
-                            attributeViewModelBindings: attributeViewModelBindings
+                            attributeViewModelBindings: attributeViewModelBindings,
+                            alreadyUpdatedChild: true
                         });
                     if (dataBinding) {
                         if (dataBinding.onCompleteBinding) {
                             if (dataBinding.bindingInfo.parentToChild && dataBinding.value !== undefined) {
-                                initialViewModelData[dataBinding.bindingInfo.childName] = dataBinding.value;
+                                initialViewModelData[cleanVMName(dataBinding.bindingInfo.childName)] = dataBinding.value;
                             }
                             onCompleteBindings.push(dataBinding.onCompleteBinding);
                         }
@@ -209,7 +210,7 @@ define([
             value: function (el, data) {
                 var propName = '$value', attrValue = can.trim(removeBrackets(el.getAttribute('can-value'))), getterSetter;
                 if (el.nodeName.toLowerCase() === 'input' && (el.type === 'checkbox' || el.type === 'radio')) {
-                    var property = getComputeFrom.scope(el, data.scope, attrValue, {});
+                    var property = getComputeFrom.scope(el, data.scope, attrValue, {}, true);
                     if (el.type === 'checkbox') {
                         var trueValue = can.attr.has(el, 'can-true-value') ? el.getAttribute('can-true-value') : true, falseValue = can.attr.has(el, 'can-false-value') ? el.getAttribute('can-false-value') : false;
                         getterSetter = can.compute(function (newValue) {
@@ -261,25 +262,38 @@ define([
     can.view.attr(/can-[\w\.]+/, behaviors.event);
     can.view.attr('can-value', behaviors.value);
     var getComputeFrom = {
-            scope: function (el, scope, scopeProp, options) {
+            scope: function (el, scope, scopeProp, bindingData, mustBeACompute) {
                 if (!scopeProp) {
                     return can.compute();
                 } else {
-                    var parentExpression = expression.parse(scopeProp, { baseMethodType: 'Call' });
-                    return parentExpression.value(scope, new can.view.Options({}));
+                    if (mustBeACompute) {
+                        var parentExpression = expression.parse(scopeProp, { baseMethodType: 'Call' });
+                        return parentExpression.value(scope, new can.view.Options({}));
+                    } else {
+                        return function (newVal) {
+                            scope.attr(cleanVMName(scopeProp), newVal);
+                        };
+                    }
                 }
             },
-            viewModel: function (el, scope, vmName, options) {
-                return can.compute(function (newVal) {
-                    var viewModel = options.getViewModel();
-                    if (arguments.length) {
-                        viewModel.attr(vmName, newVal);
-                    } else {
-                        return vmName === '.' ? viewModel : can.compute.read(viewModel, can.compute.read.reads(vmName), {}).value;
-                    }
-                });
+            viewModel: function (el, scope, vmName, bindingData, mustBeACompute) {
+                var setName = cleanVMName(vmName);
+                if (mustBeACompute) {
+                    return can.compute(function (newVal) {
+                        var viewModel = bindingData.getViewModel();
+                        if (arguments.length) {
+                            viewModel.attr(setName, newVal);
+                        } else {
+                            return vmName === '.' ? viewModel : can.compute.read(viewModel, can.compute.read.reads(vmName), {}).value;
+                        }
+                    });
+                } else {
+                    return function (newVal) {
+                        bindingData.getViewModel().attr(setName, newVal);
+                    };
+                }
             },
-            attribute: function (el, scope, prop, options, event) {
+            attribute: function (el, scope, prop, bindingData, mustBeACompute, event) {
                 if (!event) {
                     if (prop === 'innerHTML') {
                         event = [
@@ -320,7 +334,7 @@ define([
                                 }
                             });
                         } else {
-                            if (!options.legacyBindings && hasChildren && 'selectedIndex' in el) {
+                            if (!bindingData.legacyBindings && hasChildren && 'selectedIndex' in el) {
                                 el.selectedIndex = -1;
                             }
                             can.attr.setAttrOrProp(el, prop, newVal == null ? '' : newVal);
@@ -469,17 +483,19 @@ define([
         if (!bindingInfo) {
             return;
         }
-        var parentCompute = getComputeFrom[bindingInfo.parent](el, bindingData.scope, bindingInfo.parentName, bindingData);
-        var childCompute = getComputeFrom[bindingInfo.child](el, bindingData.scope, bindingInfo.childName, bindingData);
-        var updateParent;
+        bindingInfo.alreadyUpdatedChild = bindingData.alreadyUpdatedChild;
+        if (bindingData.initializeValues) {
+            bindingInfo.initializeValues = true;
+        }
+        var parentCompute = getComputeFrom[bindingInfo.parent](el, bindingData.scope, bindingInfo.parentName, bindingData, bindingInfo.parentToChild), childCompute = getComputeFrom[bindingInfo.child](el, bindingData.scope, bindingInfo.childName, bindingData, bindingInfo.childToParent), updateParent, updateChild;
         if (bindingInfo.parentToChild) {
-            var updateChild = bind.parentToChild(el, parentCompute, childCompute, bindingData.semaphore, bindingInfo.bindingAttributeName);
+            updateChild = bind.parentToChild(el, parentCompute, childCompute, bindingData.semaphore, bindingInfo.bindingAttributeName);
         }
         var completeBinding = function () {
             if (bindingInfo.childToParent) {
                 updateParent = bind.childToParent(el, parentCompute, childCompute, bindingData.semaphore, bindingInfo.bindingAttributeName, bindingData.syncChildWithParent);
             }
-            if (bindingData.initializeValues || bindingInfo.initializeValues) {
+            if (bindingInfo.initializeValues) {
                 initializeValues(bindingInfo, childCompute, parentCompute, updateChild, updateParent);
             }
         };
@@ -502,17 +518,21 @@ define([
             };
         }
     };
-    var initializeValues = function (options, childCompute, parentCompute, updateChild, updateParent) {
-        if (options.parentToChild && !options.childToParent) {
-            updateChild({}, getValue(parentCompute));
-        } else if (!options.parentToChild && options.childToParent) {
-            updateParent({}, getValue(childCompute));
+    var initializeValues = function (bindingInfo, childCompute, parentCompute, updateChild, updateParent) {
+        var doUpdateParent = false;
+        if (bindingInfo.parentToChild && !bindingInfo.childToParent) {
+        } else if (!bindingInfo.parentToChild && bindingInfo.childToParent) {
+            doUpdateParent = true;
         } else if (getValue(childCompute) === undefined) {
-            updateChild({}, getValue(parentCompute));
         } else if (getValue(parentCompute) === undefined) {
+            doUpdateParent = true;
+        }
+        if (doUpdateParent) {
             updateParent({}, getValue(childCompute));
         } else {
-            updateChild({}, getValue(parentCompute));
+            if (!bindingInfo.alreadyUpdatedChild) {
+                updateChild({}, getValue(parentCompute));
+            }
         }
     };
     var isContentEditable = function () {
@@ -549,6 +569,8 @@ define([
             if (compute && compute.isComputed && typeof updateOther === 'function') {
                 compute.unbind('change', updateOther);
             }
+        }, cleanVMName = function (name) {
+            return name.replace(/@/g, '');
         };
     var special = {
             enter: function (data, el, original) {

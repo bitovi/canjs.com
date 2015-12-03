@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.4
+ * CanJS - 2.3.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 02 Dec 2015 22:49:52 GMT
+ * Thu, 03 Dec 2015 23:34:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.4#view/stache/text_section*/
+/*can@2.3.5#view/stache/text_section*/
 steal('can/util', 'can/view/live', './utils.js', './live_attr.js', function (can, live, utils, liveStache) {
     live = live || can.view.live;
     var TextSectionBuilder = function () {

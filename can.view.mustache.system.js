@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.4
+ * CanJS - 2.3.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 02 Dec 2015 22:49:52 GMT
+ * Thu, 03 Dec 2015 23:34:11 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.4#view/mustache/system*/
+/*can@2.3.5#view/mustache/system*/
 'format steal';
 define('can/view/mustache/system', ['can/view/mustache/mustache'], function (can) {
     function translate(load) {

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.4
+ * CanJS - 2.3.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 02 Dec 2015 22:49:52 GMT
+ * Thu, 03 Dec 2015 23:34:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.4#view/scope/scope*/
+/*can@2.3.5#view/scope/scope*/
 steal('can/util', 'can/view/scope/compute_data.js', 'can/construct', 'can/map', 'can/list', 'can/view', 'can/compute', function (can, makeComputeData) {
     function Scope(context, parent, meta) {
         this._context = context;
@@ -145,7 +145,11 @@ steal('can/util', 'can/view/scope/compute_data.js', 'can/construct', 'can/map', 
                 if (lastIndex !== -1) {
                     key = key.substring(lastIndex + 1, key.length);
                 }
-                can.compute.set(obj, key, value, options);
+                if (key.charAt(0) === '*') {
+                    can.compute.set(this.getRefs()._context, key, value, options);
+                } else {
+                    can.compute.set(obj, key, value, options);
+                }
             } else {
                 return this.get(key, options);
             }

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.4
+ * CanJS - 2.3.5
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Wed, 02 Dec 2015 22:49:52 GMT
+ * Thu, 03 Dec 2015 23:34:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.4#map/map*/
+/*can@2.3.5#map/map*/
 var can = require('../util/util.js');
 var bind = require('../util/bind/bind.js');
 var bubble = require('./bubble.js');
