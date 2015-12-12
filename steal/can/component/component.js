@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.5
+ * CanJS - 2.3.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 03 Dec 2015 23:34:11 GMT
+ * Sat, 12 Dec 2015 01:07:53 GMT
  * Licensed MIT
  */
 
-/*can@2.3.5#component/component*/
+/*can@2.3.6#component/component*/
 steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/view/bindings', 'can/control', 'can/observe', 'can/view/mustache', 'can/util/view_model', function (can, viewCallbacks, elements, bindings) {
     var paramReplacer = /\{([^\}]+)\}/g;
     var Component = can.Component = can.Construct.extend({
@@ -68,6 +68,12 @@ steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/view/bindin
                                 viewModel = new (can.Map.extend(scopeResult))(initialViewModelData);
                             }
                         }
+                        var oldSerialize = viewModel.serialize;
+                        viewModel.serialize = function () {
+                            var result = oldSerialize.apply(this, arguments);
+                            delete result['%root'];
+                            return result;
+                        };
                         return viewModel;
                     }, initialViewModelData));
                 }

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.5
+ * CanJS - 2.3.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 03 Dec 2015 23:34:11 GMT
+ * Sat, 12 Dec 2015 01:07:53 GMT
  * Licensed MIT
  */
 
-/*can@2.3.5#view/elements*/
+/*can@2.3.6#view/elements*/
 steal('can/util', 'can/view', function (can) {
     var doc = typeof document !== 'undefined' ? document : null;
     var selectsCommentNodes = doc && function () {
@@ -41,6 +41,7 @@ steal('can/util', 'can/view', function (can) {
                 th: 'tr',
                 li: 'ul'
             },
+            selfClosingTags: { col: true },
             getParentNode: function (el, defaultParentNode) {
                 return defaultParentNode && el.parentNode.nodeType === 11 ? defaultParentNode : el.parentNode;
             },

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.5
+ * CanJS - 2.3.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 03 Dec 2015 23:34:11 GMT
+ * Sat, 12 Dec 2015 01:07:53 GMT
  * Licensed MIT
  */
 
-/*can@2.3.5#util/fragment*/
+/*can@2.3.6#util/fragment*/
 steal('can/util/can.js', function (can) {
     var fragmentRE = /^\s*<(\w+)[^>]*>/, toString = {}.toString, fragment = function (html, name) {
             if (name === undefined) {
@@ -16,9 +16,12 @@ steal('can/util/can.js', function (can) {
                 html = html.replace(/<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi, '<$1></$2>');
             }
             var container = document.createElement('div'), temp = document.createElement('div');
-            if (name === 'tbody' || name === 'tfoot' || name === 'thead') {
+            if (name === 'tbody' || name === 'tfoot' || name === 'thead' || name === 'colgroup') {
                 temp.innerHTML = '<table>' + html + '</table>';
                 container = temp.firstChild.nodeType === 3 ? temp.lastChild : temp.firstChild;
+            } else if (name === 'col') {
+                temp.innerHTML = '<table><colgroup>' + html + '</colgroup></table>';
+                container = temp.firstChild.nodeType === 3 ? temp.lastChild : temp.firstChild.firstChild;
             } else if (name === 'tr') {
                 temp.innerHTML = '<table><tbody>' + html + '</tbody></table>';
                 container = temp.firstChild.nodeType === 3 ? temp.lastChild : temp.firstChild.firstChild;

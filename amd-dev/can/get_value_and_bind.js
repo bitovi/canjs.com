@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.5
+ * CanJS - 2.3.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 03 Dec 2015 23:34:11 GMT
+ * Sat, 12 Dec 2015 01:07:53 GMT
  * Licensed MIT
  */
 
-/*can@2.3.5#compute/get_value_and_bind*/
+/*can@2.3.6#compute/get_value_and_bind*/
 define(['can/util/library'], function (can) {
     function ObservedInfo(func, context, compute) {
         this.newObserved = {};
@@ -117,9 +117,10 @@ define(['can/util/library'], function (can) {
         objs.push(observeInfo);
     };
     ObservedInfo.batchEnd = function (batchNum) {
+        var cur;
         while (curDepth <= maxDepth) {
-            var cur = updateOrder[curDepth].pop();
-            if (cur) {
+            var last = updateOrder[curDepth];
+            if (last && (cur = last.pop())) {
                 cur.updateCompute(batchNum);
             } else {
                 curDepth++;

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.5
+ * CanJS - 2.3.6
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Thu, 03 Dec 2015 23:34:11 GMT
+ * Sat, 12 Dec 2015 01:07:53 GMT
  * Licensed MIT
  */
 
-/*can@2.3.5#util/util*/
+/*can@2.3.6#util/util*/
 steal('can/util/can.js', 'can/util/attr', 'mootools', 'can/event', 'can/util/fragment.js', 'can/util/deferred.js', 'can/util/array/each.js', 'can/util/object/isplain', 'can/util/inserted', function (can, attr) {
     can.trim = function (s) {
         return s ? s.trim() : s;
