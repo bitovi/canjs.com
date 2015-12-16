@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.6
+ * CanJS - 2.3.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Sat, 12 Dec 2015 01:07:53 GMT
+ * Wed, 16 Dec 2015 03:10:33 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.6#list/sort/sort*/
+/*can@2.3.7#list/sort/sort*/
 define('can/list/sort/sort', [
     'can/util/util',
     'can/list/list'

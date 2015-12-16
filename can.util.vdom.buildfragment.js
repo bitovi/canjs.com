@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.6
+ * CanJS - 2.3.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Sat, 12 Dec 2015 01:07:53 GMT
+ * Wed, 16 Dec 2015 03:10:33 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can-simple-dom@0.2.20#simple-dom/document/node*/
+/*can-simple-dom@0.2.23#simple-dom/document/node*/
 define('simple-dom/document/node', [
     'exports',
     'module'
@@ -158,46 +158,51 @@ define('simple-dom/document/node', [
         fragment.firstChild = null;
         fragment.lastChild = null;
     }
-    Node.prototype.insertBefore = function (node, refNode) {
-        if (refNode == null) {
-            return this.appendChild(node);
-        }
-        if (node.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
-            insertFragment(node, this, refNode ? refNode.previousSibling : null, refNode);
+    var nodeInsertBefore = Node.prototype.insertBefore = function (node, refNode) {
+            if (refNode == null) {
+                return this.appendChild(node);
+            }
+            if (node.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+                insertFragment(node, this, refNode ? refNode.previousSibling : null, refNode);
+                return node;
+            }
+            if (node.parentNode) {
+                node.parentNode.removeChild(node);
+            }
+            node.parentNode = this;
+            var previousSibling = refNode.previousSibling;
+            if (previousSibling) {
+                previousSibling.nextSibling = node;
+                node.previousSibling = previousSibling;
+            }
+            refNode.previousSibling = node;
+            node.nextSibling = refNode;
+            if (this.firstChild === refNode) {
+                this.firstChild = node;
+            }
             return node;
-        }
-        if (node.parentNode) {
-            node.parentNode.removeChild(node);
-        }
-        node.parentNode = this;
-        var previousSibling = refNode.previousSibling;
-        if (previousSibling) {
-            previousSibling.nextSibling = node;
-            node.previousSibling = previousSibling;
-        }
-        refNode.previousSibling = node;
-        node.nextSibling = refNode;
-        if (this.firstChild === refNode) {
-            this.firstChild = node;
-        }
-        return node;
-    };
-    Node.prototype.removeChild = function (refNode) {
-        if (this.firstChild === refNode) {
-            this.firstChild = refNode.nextSibling;
-        }
-        if (this.lastChild === refNode) {
-            this.lastChild = refNode.previousSibling;
-        }
-        if (refNode.previousSibling) {
-            refNode.previousSibling.nextSibling = refNode.nextSibling;
-        }
-        if (refNode.nextSibling) {
-            refNode.nextSibling.previousSibling = refNode.previousSibling;
-        }
-        refNode.parentNode = null;
-        refNode.nextSibling = null;
-        refNode.previousSibling = null;
+        };
+    var nodeRemoveChild = Node.prototype.removeChild = function (refNode) {
+            if (this.firstChild === refNode) {
+                this.firstChild = refNode.nextSibling;
+            }
+            if (this.lastChild === refNode) {
+                this.lastChild = refNode.previousSibling;
+            }
+            if (refNode.previousSibling) {
+                refNode.previousSibling.nextSibling = refNode.nextSibling;
+            }
+            if (refNode.nextSibling) {
+                refNode.nextSibling.previousSibling = refNode.previousSibling;
+            }
+            refNode.parentNode = null;
+            refNode.nextSibling = null;
+            refNode.previousSibling = null;
+        };
+    Node.prototype.replaceChild = function (newChild, oldChild) {
+        nodeInsertBefore.call(this, newChild, oldChild);
+        nodeRemoveChild.call(this, oldChild);
+        return oldChild;
     };
     Node.prototype.addEventListener = function () {
     };
@@ -227,7 +232,7 @@ define('simple-dom/document/node', [
     };
     module.exports = Node;
 });
-/*can-simple-dom@0.2.20#simple-dom/document/element*/
+/*can-simple-dom@0.2.23#simple-dom/document/element*/
 define('simple-dom/document/element', [
     'exports',
     'module',
@@ -238,6 +243,11 @@ define('simple-dom/document/element', [
         return obj && obj.__esModule ? obj : { 'default': obj };
     }
     var _Node = _interopRequireDefault(_node);
+    var attrSpecial = {
+            'class': function _class(element, value) {
+                element._className = value;
+            }
+        };
     function Element(tagName, ownerDocument) {
         tagName = tagName.toUpperCase();
         this.nodeConstructor(1, tagName, null, ownerDocument);
@@ -291,6 +301,10 @@ define('simple-dom/document/element', [
             specified: true
         });
         attributes[name] = value;
+        var special = attrSpecial[name];
+        if (special) {
+            special(this, value);
+        }
     };
     Element.prototype.removeAttribute = function (name) {
         var attributes = this.attributes;
@@ -373,7 +387,7 @@ define('simple-dom/document/element', [
     }
     module.exports = Element;
 });
-/*can-simple-dom@0.2.20#simple-dom/document/text*/
+/*can-simple-dom@0.2.23#simple-dom/document/text*/
 define('simple-dom/document/text', [
     'exports',
     'module',
@@ -395,7 +409,7 @@ define('simple-dom/document/text', [
     Text.prototype.nodeConstructor = _Node['default'];
     module.exports = Text;
 });
-/*can-simple-dom@0.2.20#simple-dom/document/comment*/
+/*can-simple-dom@0.2.23#simple-dom/document/comment*/
 define('simple-dom/document/comment', [
     'exports',
     'module',
@@ -417,7 +431,7 @@ define('simple-dom/document/comment', [
     Comment.prototype.nodeConstructor = _Node['default'];
     module.exports = Comment;
 });
-/*can-simple-dom@0.2.20#simple-dom/document/document-fragment*/
+/*can-simple-dom@0.2.23#simple-dom/document/document-fragment*/
 define('simple-dom/document/document-fragment', [
     'exports',
     'module',
@@ -439,27 +453,110 @@ define('simple-dom/document/document-fragment', [
     DocumentFragment.prototype.nodeConstructor = _Node['default'];
     module.exports = DocumentFragment;
 });
-/*micro-location@0.1.4#lib/micro-location*/
-define('micro-location@0.1.4#lib/micro-location', [
-    'module',
-    '@loader'
-], function (module, loader) {
-    loader.get('@@global-helpers').prepareGlobal(module.id, [], 'Location');
-    var define = loader.global.define;
-    var require = loader.global.require;
-    var source = '/**\n * https://github.com/cho45/micro-location.js\n * (c) cho45 http://cho45.github.com/mit-license\n */\n// immutable object, should not assign a value to properties\nfunction Location () { this.init.apply(this, arguments) }\nLocation.prototype = {\n\tinit : function (protocol, host, hostname, port, pathname, search, hash) {\n\t\tthis.protocol  = protocol;\n\t\tthis.host      = host;\n\t\tthis.hostname  = hostname;\n\t\tthis.port      = port || "";\n\t\tthis.pathname  = pathname || "";\n\t\tthis.search    = search || "";\n\t\tthis.hash      = hash || "";\n\t\tif (protocol) {\n\t\t\twith (this) this.href = protocol + \'//\' + host + pathname + search + hash;\n\t\t} else\n\t\tif (host) {\n\t\t\twith (this) this.href = \'//\' + host + pathname + search + hash;\n\t\t} else {\n\t\t\twith (this) this.href = pathname + search + hash;\n\t\t}\n\t},\n\n\tparams : function (name) {\n\t\tif (!this._params) {\n\t\t\tvar params = {};\n\n\t\t\tvar pairs = this.search.substring(1).split(/[;&]/);\n\t\t\tfor (var i = 0, len = pairs.length; i < len; i++) {\n\t\t\t\tif (!pairs[i]) continue;\n\t\t\t\tvar pair = pairs[i].split(/=/);\n\t\t\t\tvar key  = decodeURIComponent(pair[0].replace(/\\+/g, \'%20\'));\n\t\t\t\tvar val  = decodeURIComponent(pair[1].replace(/\\+/g, \'%20\'));\n\n\t\t\t\tif (!params[key]) params[key] = [];\n\t\t\t\tparams[key].push(val);\n\t\t\t}\n\n\t\t\tthis._params = params;\n\t\t}\n\n\t\tswitch (typeof name) {\n\t\t\tcase "undefined": return this._params;\n\t\t\tcase "object"   : return this.build(name);\n\t\t}\n\t\treturn this._params[name] ? this._params[name][0] : null;\n\t},\n\n\tbuild : function (params) {\n\t\tif (!params) params = this._params;\n\n\t\tvar ret = new Location();\n\t\tvar _search = this.search;\n\t\tif (params) {\n\t\t\tvar search = [];\n\t\t\tfor (var key in params) if (params.hasOwnProperty(key)) {\n\t\t\t\tvar val = params[key];\n\t\t\t\tswitch (typeof val) {\n\t\t\t\t\tcase "object":\n\t\t\t\t\t\tfor (var i = 0, len = val.length; i < len; i++) {\n\t\t\t\t\t\t\tsearch.push(encodeURIComponent(key) + \'=\' + encodeURIComponent(val[i]));\n\t\t\t\t\t\t}\n\t\t\t\t\t\tbreak;\n\t\t\t\t\tdefault:\n\t\t\t\t\t\tsearch.push(encodeURIComponent(key) + \'=\' + encodeURIComponent(val));\n\t\t\t\t}\n\t\t\t}\n\t\t\t_search = \'?\' + search.join(\'&\');\n\t\t}\n\n\t\twith (this) ret.init.apply(ret, [\n\t\t\tprotocol,\n\t\t\thost,\n\t\t\thostname,\n\t\t\tport,\n\t\t\tpathname,\n\t\t\t_search,\n\t\t\thash\n\t\t]);\n\t\treturn ret;\n\t}\n};\nLocation.regexp = new RegExp(\'^(?:(https?:)//(([^:/]+)(:[^/]+)?))?([^#?]*)(\\\\?[^#]*)?(#.*)?$\');\nLocation.parse = function (string) {\n\tvar matched = String(string).match(this.regexp);\n\tvar ret = new Location();\n\tret.init.apply(ret, matched.slice(1));\n\treturn ret;\n};\n\nthis.Location = Location;\n';
-    loader.global.define = undefined;
-    loader.global.module = undefined;
-    loader.global.exports = undefined;
-    loader.__exec({
-        'source': source,
-        'address': module.uri
-    });
-    loader.global.require = require;
-    loader.global.define = define;
-    return loader.get('@@global-helpers').retrieveGlobal(module.id, 'Location');
-});
-/*can-simple-dom@0.2.20#simple-dom/extend*/
+/*micro-location@0.1.5#lib/micro-location*/
+function Location() {
+    this.init.apply(this, arguments);
+}
+Location.prototype = {
+    init: function (protocol, host, hostname, port, pathname, search, hash) {
+        this.protocol = protocol;
+        this.host = host;
+        this.hostname = hostname;
+        this.port = port || '';
+        this.pathname = pathname || '';
+        this.search = search || '';
+        this.hash = hash || '';
+        if (protocol) {
+            with (this)
+                this.href = protocol + '//' + host + pathname + search + hash;
+        } else if (host) {
+            with (this)
+                this.href = '//' + host + pathname + search + hash;
+        } else {
+            with (this)
+                this.href = pathname + search + hash;
+        }
+    },
+    params: function (name) {
+        if (!this._params) {
+            var params = {};
+            var pairs = this.search.substring(1).split(/[;&]/);
+            for (var i = 0, len = pairs.length; i < len; i++) {
+                if (!pairs[i])
+                    continue;
+                var pair = pairs[i].split(/=/);
+                var key = decodeURIComponent(pair[0].replace(/\+/g, '%20'));
+                var val = decodeURIComponent(pair[1].replace(/\+/g, '%20'));
+                if (!params[key])
+                    params[key] = [];
+                params[key].push(val);
+            }
+            this._params = params;
+        }
+        switch (typeof name) {
+        case 'undefined':
+            return this._params;
+        case 'object':
+            return this.build(name);
+        }
+        return this._params[name] ? this._params[name][0] : null;
+    },
+    build: function (params) {
+        if (!params)
+            params = this._params;
+        var ret = new Location();
+        var _search = this.search;
+        if (params) {
+            var search = [];
+            for (var key in params)
+                if (params.hasOwnProperty(key)) {
+                    var val = params[key];
+                    switch (typeof val) {
+                    case 'object':
+                        for (var i = 0, len = val.length; i < len; i++) {
+                            search.push(encodeURIComponent(key) + '=' + encodeURIComponent(val[i]));
+                        }
+                        break;
+                    default:
+                        search.push(encodeURIComponent(key) + '=' + encodeURIComponent(val));
+                    }
+                }
+            _search = '?' + search.join('&');
+        }
+        with (this)
+            ret.init.apply(ret, [
+                protocol,
+                host,
+                hostname,
+                port,
+                pathname,
+                _search,
+                hash
+            ]);
+        return ret;
+    }
+};
+Location.regexp = new RegExp('^(?:(https?:)//(([^:/]+)(:[^/]+)?))?([^#?]*)(\\?[^#]*)?(#.*)?$');
+Location.parse = function (string) {
+    var matched = String(string).match(this.regexp);
+    var ret = new Location();
+    ret.init.apply(ret, matched.slice(1));
+    return ret;
+};
+(function (root, factory) {
+    if (typeof module === 'object' && module.exports) {
+        module.exports = { Location: factory() };
+    } else if (typeof define === 'function' && define.amd) {
+        define('lib/micro-location', [], function () {
+            return { Location: factory() };
+        });
+    } else {
+        root.Location = factory();
+    }
+}(this, function () {
+    return Location;
+}));
+/*can-simple-dom@0.2.23#simple-dom/extend*/
 define('simple-dom/extend', [
     'exports',
     'module'
@@ -473,7 +570,7 @@ define('simple-dom/extend', [
     };
     ;
 });
-/*can-simple-dom@0.2.20#simple-dom/document/anchor-element*/
+/*can-simple-dom@0.2.23#simple-dom/document/anchor-element*/
 define('simple-dom/document/anchor-element', [
     'exports',
     'module',
@@ -486,11 +583,12 @@ define('simple-dom/document/anchor-element', [
         return obj && obj.__esModule ? obj : { 'default': obj };
     }
     var _Element = _interopRequireDefault(_element);
-    var _Location = _interopRequireDefault(_microLocation);
+    var _microLocation2 = _interopRequireDefault(_microLocation);
     var _extend2 = _interopRequireDefault(_extend);
+    var Location = _microLocation2['default'].Location || _microLocation2['default'];
     function AnchorElement(tagName, ownerDocument) {
         this.elementConstructor(tagName, ownerDocument);
-        (0, _extend2['default'])(this, _Location['default'].parse(''));
+        (0, _extend2['default'])(this, Location.parse(''));
     }
     AnchorElement.prototype = Object.create(_Element['default'].prototype);
     AnchorElement.prototype.constructor = AnchorElement;
@@ -498,12 +596,12 @@ define('simple-dom/document/anchor-element', [
     AnchorElement.prototype.setAttribute = function (_name, value) {
         _Element['default'].prototype.setAttribute.apply(this, arguments);
         if (_name.toLowerCase() === 'href') {
-            (0, _extend2['default'])(this, _Location['default'].parse(value));
+            (0, _extend2['default'])(this, Location.parse(value));
         }
     };
     module.exports = AnchorElement;
 });
-/*can-simple-dom@0.2.20#simple-dom/document*/
+/*can-simple-dom@0.2.23#simple-dom/document*/
 define('simple-dom/document', [
     'exports',
     'module',
@@ -583,7 +681,7 @@ define('simple-dom/document', [
     }
     module.exports = Document;
 });
-/*can-simple-dom@0.2.20#simple-dom/html-parser*/
+/*can-simple-dom@0.2.23#simple-dom/html-parser*/
 define('simple-dom/html-parser', [
     'exports',
     'module'
@@ -653,7 +751,7 @@ define('simple-dom/html-parser', [
     };
     module.exports = HTMLParser;
 });
-/*can-simple-dom@0.2.20#simple-dom/html-serializer*/
+/*can-simple-dom@0.2.23#simple-dom/html-serializer*/
 define('simple-dom/html-serializer', [
     'exports',
     'module'
@@ -738,6 +836,8 @@ define('simple-dom/html-serializer', [
         next = node.firstChild;
         if (next) {
             buffer += this.serialize(next);
+        } else if (node.textContent) {
+            buffer += node.textContent;
         }
         if (node.nodeType === 1 && !this.isVoid(node)) {
             buffer += this.closeTag(node);
@@ -750,7 +850,7 @@ define('simple-dom/html-serializer', [
     };
     module.exports = HTMLSerializer;
 });
-/*can-simple-dom@0.2.20#simple-dom/void-map*/
+/*can-simple-dom@0.2.23#simple-dom/void-map*/
 define('simple-dom/void-map', [
     'exports',
     'module'
@@ -775,7 +875,7 @@ define('simple-dom/void-map', [
         WBR: true
     };
 });
-/*can-simple-dom@0.2.20#simple-dom/dom*/
+/*can-simple-dom@0.2.23#simple-dom/dom*/
 define('simple-dom/dom', [
     'exports',
     'simple-dom/document/node',
@@ -803,7 +903,7 @@ define('simple-dom/dom', [
     exports.HTMLSerializer = _HTMLSerializer['default'];
     exports.voidMap = _voidMap2['default'];
 });
-/*can-simple-dom@0.2.20#simple-dom*/
+/*can-simple-dom@0.2.23#simple-dom*/
 define('simple-dom', [
     'exports',
     'simple-dom/dom'
@@ -841,7 +941,7 @@ define('simple-dom', [
     }
     _defaults(exports, _interopRequireWildcard(_simpleDomDom));
 });
-/*can@2.3.6#util/vdom/build_fragment/make_parser*/
+/*can@2.3.7#util/vdom/build_fragment/make_parser*/
 define('can/util/vdom/build_fragment/make_parser', [
     'can/view/parser/parser',
     'simple-dom'
@@ -901,7 +1001,7 @@ define('can/util/vdom/build_fragment/make_parser', [
         }, document, simpleDOM.voidMap);
     };
 });
-/*can@2.3.6#util/vdom/build_fragment/build_fragment*/
+/*can@2.3.7#util/vdom/build_fragment/build_fragment*/
 define('can/util/vdom/build_fragment/build_fragment', [
     'can/util/vdom/build_fragment/make_parser',
     'can/util/util'

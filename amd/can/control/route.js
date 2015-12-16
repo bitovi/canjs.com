@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.6
+ * CanJS - 2.3.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Sat, 12 Dec 2015 01:07:53 GMT
+ * Wed, 16 Dec 2015 03:10:33 GMT
  * Licensed MIT
  */
 
-/*can@2.3.6#control/route/route*/
+/*can@2.3.7#control/route/route*/
 define([
     'can/util/library',
     'can/route',

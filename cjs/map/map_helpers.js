@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.6
+ * CanJS - 2.3.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Sat, 12 Dec 2015 01:07:53 GMT
+ * Wed, 16 Dec 2015 03:10:33 GMT
  * Licensed MIT
  */
 
-/*can@2.3.6#map/map_helpers*/
+/*can@2.3.7#map/map_helpers*/
 var can = require('../util/util.js');
 require('../util/object/isplain/isplain.js');
 var mapHelpers = {
@@ -65,14 +65,7 @@ var mapHelpers = {
                 compute: compute,
                 count: 0,
                 handler: function (ev, newVal, oldVal) {
-                    can.batch.trigger(map, {
-                        type: attrName,
-                        batchNum: ev.batchNum,
-                        target: map
-                    }, [
-                        newVal,
-                        oldVal
-                    ]);
+                    map._triggerChange(attrName, 'set', newVal, oldVal, ev.batchNum);
                 }
             };
         },

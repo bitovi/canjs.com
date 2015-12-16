@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.6
+ * CanJS - 2.3.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Sat, 12 Dec 2015 01:07:53 GMT
+ * Wed, 16 Dec 2015 03:10:33 GMT
  * Licensed MIT
  */
 
-/*can-simple-dom@0.2.20#simple-dom/document/node*/
+/*can-simple-dom@0.2.23#simple-dom/document/node*/
 steal('', function () {
     'use strict';
     Object.defineProperty(exports, '__esModule', { value: true });
@@ -84,46 +84,51 @@ steal('', function () {
         fragment.firstChild = null;
         fragment.lastChild = null;
     }
-    Node.prototype.insertBefore = function (node, refNode) {
-        if (refNode == null) {
-            return this.appendChild(node);
-        }
-        if (node.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
-            insertFragment(node, this, refNode ? refNode.previousSibling : null, refNode);
+    var nodeInsertBefore = Node.prototype.insertBefore = function (node, refNode) {
+            if (refNode == null) {
+                return this.appendChild(node);
+            }
+            if (node.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+                insertFragment(node, this, refNode ? refNode.previousSibling : null, refNode);
+                return node;
+            }
+            if (node.parentNode) {
+                node.parentNode.removeChild(node);
+            }
+            node.parentNode = this;
+            var previousSibling = refNode.previousSibling;
+            if (previousSibling) {
+                previousSibling.nextSibling = node;
+                node.previousSibling = previousSibling;
+            }
+            refNode.previousSibling = node;
+            node.nextSibling = refNode;
+            if (this.firstChild === refNode) {
+                this.firstChild = node;
+            }
             return node;
-        }
-        if (node.parentNode) {
-            node.parentNode.removeChild(node);
-        }
-        node.parentNode = this;
-        var previousSibling = refNode.previousSibling;
-        if (previousSibling) {
-            previousSibling.nextSibling = node;
-            node.previousSibling = previousSibling;
-        }
-        refNode.previousSibling = node;
-        node.nextSibling = refNode;
-        if (this.firstChild === refNode) {
-            this.firstChild = node;
-        }
-        return node;
-    };
-    Node.prototype.removeChild = function (refNode) {
-        if (this.firstChild === refNode) {
-            this.firstChild = refNode.nextSibling;
-        }
-        if (this.lastChild === refNode) {
-            this.lastChild = refNode.previousSibling;
-        }
-        if (refNode.previousSibling) {
-            refNode.previousSibling.nextSibling = refNode.nextSibling;
-        }
-        if (refNode.nextSibling) {
-            refNode.nextSibling.previousSibling = refNode.previousSibling;
-        }
-        refNode.parentNode = null;
-        refNode.nextSibling = null;
-        refNode.previousSibling = null;
+        };
+    var nodeRemoveChild = Node.prototype.removeChild = function (refNode) {
+            if (this.firstChild === refNode) {
+                this.firstChild = refNode.nextSibling;
+            }
+            if (this.lastChild === refNode) {
+                this.lastChild = refNode.previousSibling;
+            }
+            if (refNode.previousSibling) {
+                refNode.previousSibling.nextSibling = refNode.nextSibling;
+            }
+            if (refNode.nextSibling) {
+                refNode.nextSibling.previousSibling = refNode.previousSibling;
+            }
+            refNode.parentNode = null;
+            refNode.nextSibling = null;
+            refNode.previousSibling = null;
+        };
+    Node.prototype.replaceChild = function (newChild, oldChild) {
+        nodeInsertBefore.call(this, newChild, oldChild);
+        nodeRemoveChild.call(this, oldChild);
+        return oldChild;
     };
     Node.prototype.addEventListener = function () {
     };

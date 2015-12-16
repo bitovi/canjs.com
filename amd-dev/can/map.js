@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.6
+ * CanJS - 2.3.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Sat, 12 Dec 2015 01:07:53 GMT
+ * Wed, 16 Dec 2015 03:10:33 GMT
  * Licensed MIT
  */
 
-/*can@2.3.6#map/map*/
+/*can@2.3.7#map/map*/
 define([
     'can/util/library',
     'can/util/bind',
@@ -166,9 +166,10 @@ define([
             },
             __set: function (prop, value, current) {
                 if (value !== current) {
-                    var changeType = current !== undefined || this.___get().hasOwnProperty(prop) ? 'set' : 'add';
+                    var computedAttr = this._computedAttrs[prop];
+                    var changeType = computedAttr || current !== undefined || this.___get().hasOwnProperty(prop) ? 'set' : 'add';
                     this.___set(prop, typeof value === 'object' ? bubble.set(this, prop, value, current) : value);
-                    if (!this._computedAttrs[prop]) {
+                    if (!computedAttr || !computedAttr.count) {
                         this._triggerChange(prop, changeType, value, current);
                     }
                     if (typeof current === 'object') {
@@ -257,11 +258,12 @@ define([
             serialize: function () {
                 return mapHelpers.serialize(this, 'serialize', {});
             },
-            _triggerChange: function (attr, how, newVal, oldVal) {
+            _triggerChange: function (attr, how, newVal, oldVal, batchNum) {
                 if (bubble.isBubbling(this, 'change')) {
                     can.batch.trigger(this, {
                         type: 'change',
-                        target: this
+                        target: this,
+                        batchNum: batchNum
                     }, [
                         attr,
                         how,
@@ -271,7 +273,8 @@ define([
                 }
                 can.batch.trigger(this, {
                     type: attr,
-                    target: this
+                    target: this,
+                    batchNum: batchNum
                 }, [
                     newVal,
                     oldVal
@@ -279,7 +282,8 @@ define([
                 if (how === 'remove' || how === 'add') {
                     can.batch.trigger(this, {
                         type: '__keys',
-                        target: this
+                        target: this,
+                        batchNum: batchNum
                     });
                 }
             },

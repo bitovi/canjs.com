@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.6
+ * CanJS - 2.3.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Sat, 12 Dec 2015 01:07:53 GMT
+ * Wed, 16 Dec 2015 03:10:33 GMT
  * Licensed MIT
  */
 
-/*can@2.3.6#compute/proto_compute*/
+/*can@2.3.7#compute/proto_compute*/
 var can = require('../util/util.js');
 var bind = require('../util/bind/bind.js');
 var read = require('./read.js');
@@ -209,7 +209,8 @@ can.simpleExtend(can.Compute.prototype, {
     }
 });
 var updateOnChange = function (compute, newValue, oldValue, batchNum) {
-    if (newValue !== oldValue) {
+    var valueChanged = newValue !== oldValue && !(newValue !== newValue && oldValue !== oldValue);
+    if (valueChanged) {
         can.batch.trigger(compute, {
             type: 'change',
             batchNum: batchNum

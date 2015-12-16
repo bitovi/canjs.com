@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.6
+ * CanJS - 2.3.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Sat, 12 Dec 2015 01:07:53 GMT
+ * Wed, 16 Dec 2015 03:10:33 GMT
  * Licensed MIT
  */
 
-/*can@2.3.6#list/list*/
+/*can@2.3.7#list/list*/
 steal('can/util', 'can/map', 'can/map/bubble.js', 'can/map/map_helpers.js', function (can, Map, bubble, mapHelpers) {
     var splice = [].splice, spliceRemovesProps = function () {
             var obj = {
@@ -231,7 +231,17 @@ steal('can/util', 'can/map', 'can/map/bubble.js', 'can/map/map_helpers.js', func
         },
         replace: function (newList) {
             if (can.isDeferred(newList)) {
-                newList.then(can.proxy(this.replace, this));
+                if (this._promise) {
+                    this._promise.__isCurrentPromise = false;
+                }
+                var promise = this._promise = newList;
+                promise.__isCurrentPromise = true;
+                var self = this;
+                newList.then(function (newList) {
+                    if (promise.__isCurrentPromise) {
+                        self.replace(newList);
+                    }
+                });
             } else {
                 this.splice.apply(this, [
                     0,

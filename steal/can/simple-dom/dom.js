@@ -1,29 +1,29 @@
 /*!
- * CanJS - 2.3.6
+ * CanJS - 2.3.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Sat, 12 Dec 2015 01:07:53 GMT
+ * Wed, 16 Dec 2015 03:10:33 GMT
  * Licensed MIT
  */
 
-/*can-simple-dom@0.2.20#simple-dom/dom*/
-steal('can-simple-dom@0.2.20#simple-dom/document/node', 'can-simple-dom@0.2.20#simple-dom/document/element', 'can-simple-dom@0.2.20#simple-dom/document', 'can-simple-dom@0.2.20#simple-dom/html-parser', 'can-simple-dom@0.2.20#simple-dom/html-serializer', 'can-simple-dom@0.2.20#simple-dom/void-map', function (__can_simple_dom_0_2_20_simple_dom_document_node, __can_simple_dom_0_2_20_simple_dom_document_element, __can_simple_dom_0_2_20_simple_dom_document, __can_simple_dom_0_2_20_simple_dom_html_parser, __can_simple_dom_0_2_20_simple_dom_html_serializer, __can_simple_dom_0_2_20_simple_dom_void_map) {
+/*can-simple-dom@0.2.23#simple-dom/dom*/
+steal('can-simple-dom@0.2.23#simple-dom/document/node', 'can-simple-dom@0.2.23#simple-dom/document/element', 'can-simple-dom@0.2.23#simple-dom/document', 'can-simple-dom@0.2.23#simple-dom/html-parser', 'can-simple-dom@0.2.23#simple-dom/html-serializer', 'can-simple-dom@0.2.23#simple-dom/void-map', function (__can_simple_dom_0_2_23_simple_dom_document_node, __can_simple_dom_0_2_23_simple_dom_document_element, __can_simple_dom_0_2_23_simple_dom_document, __can_simple_dom_0_2_23_simple_dom_html_parser, __can_simple_dom_0_2_23_simple_dom_html_serializer, __can_simple_dom_0_2_23_simple_dom_void_map) {
     'use strict';
     Object.defineProperty(exports, '__esModule', { value: true });
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : { 'default': obj };
     }
-    var _documentNode = __can_simple_dom_0_2_20_simple_dom_document_node;
+    var _documentNode = __can_simple_dom_0_2_23_simple_dom_document_node;
     var _documentNode2 = _interopRequireDefault(_documentNode);
-    var _documentElement = __can_simple_dom_0_2_20_simple_dom_document_element;
+    var _documentElement = __can_simple_dom_0_2_23_simple_dom_document_element;
     var _documentElement2 = _interopRequireDefault(_documentElement);
-    var _document = __can_simple_dom_0_2_20_simple_dom_document;
+    var _document = __can_simple_dom_0_2_23_simple_dom_document;
     var _document2 = _interopRequireDefault(_document);
-    var _htmlParser = __can_simple_dom_0_2_20_simple_dom_html_parser;
+    var _htmlParser = __can_simple_dom_0_2_23_simple_dom_html_parser;
     var _htmlParser2 = _interopRequireDefault(_htmlParser);
-    var _htmlSerializer = __can_simple_dom_0_2_20_simple_dom_html_serializer;
+    var _htmlSerializer = __can_simple_dom_0_2_23_simple_dom_html_serializer;
     var _htmlSerializer2 = _interopRequireDefault(_htmlSerializer);
-    var _voidMap = __can_simple_dom_0_2_20_simple_dom_void_map;
+    var _voidMap = __can_simple_dom_0_2_23_simple_dom_void_map;
     var _voidMap2 = _interopRequireDefault(_voidMap);
     exports.Node = _documentNode2['default'];
     exports.Element = _documentElement2['default'];

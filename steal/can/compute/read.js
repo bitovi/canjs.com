@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.6
+ * CanJS - 2.3.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Sat, 12 Dec 2015 01:07:53 GMT
+ * Wed, 16 Dec 2015 03:10:33 GMT
  * Licensed MIT
  */
 
-/*can@2.3.6#compute/read*/
+/*can@2.3.7#compute/read*/
 steal('can/util', function (can) {
     var read = function (parent, reads, options) {
         options = options || {};
@@ -171,6 +171,7 @@ steal('can/util', function (can) {
                         return value[prop.key];
                     } else if (prop.at && specialRead[prop.key] && '@' + prop.key in value) {
                         can.dev.warn('Use %' + prop.key + ' in place of @' + prop.key + '.');
+                        prop.at = false;
                         return value['@' + prop.key];
                     }
                 }

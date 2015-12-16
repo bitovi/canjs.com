@@ -1,13 +1,13 @@
 /*!
- * CanJS - 2.3.6
+ * CanJS - 2.3.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Sat, 12 Dec 2015 01:07:53 GMT
+ * Wed, 16 Dec 2015 03:10:33 GMT
  * Licensed MIT
  */
 
-/*can-simple-dom@0.2.20#simple-dom*/
-steal('can-simple-dom@0.2.20#simple-dom/dom', function (__can_simple_dom_0_2_20_simple_dom_dom) {
+/*can-simple-dom@0.2.23#simple-dom*/
+steal('can-simple-dom@0.2.23#simple-dom/dom', function (__can_simple_dom_0_2_23_simple_dom_dom) {
     'use strict';
     Object.defineProperty(exports, '__esModule', { value: true });
     function _defaults(obj, defaults) {
@@ -36,7 +36,7 @@ steal('can-simple-dom@0.2.20#simple-dom/dom', function (__can_simple_dom_0_2_20_
             return newObj;
         }
     }
-    var _simpleDomDom = __can_simple_dom_0_2_20_simple_dom_dom;
+    var _simpleDomDom = __can_simple_dom_0_2_23_simple_dom_dom;
     var SimpleDOM = _interopRequireWildcard(_simpleDomDom);
     if (typeof window !== 'undefined') {
         window.SimpleDOM = SimpleDOM;

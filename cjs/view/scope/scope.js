@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.6
+ * CanJS - 2.3.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Sat, 12 Dec 2015 01:07:53 GMT
+ * Wed, 16 Dec 2015 03:10:33 GMT
  * Licensed MIT
  */
 
-/*can@2.3.6#view/scope/scope*/
+/*can@2.3.7#view/scope/scope*/
 var can = require('../../util/util.js');
 var makeComputeData = require('./compute_data.js');
 require('../../construct/construct.js');
@@ -144,18 +144,31 @@ can.simpleExtend(Scope.prototype, {
         }
         return cur._context;
     },
+    set: function (key, value, options) {
+        var dotIndex = key.lastIndexOf('.'), slashIndex = key.lastIndexOf('/'), contextPath, propName;
+        if (slashIndex > dotIndex) {
+            contextPath = key.substring(0, slashIndex);
+            propName = key.substring(slashIndex + 1, key.length);
+        } else {
+            if (dotIndex !== -1) {
+                contextPath = key.substring(0, dotIndex);
+                propName = key.substring(dotIndex + 1, key.length);
+            } else {
+                contextPath = '.';
+                propName = key;
+            }
+        }
+        if (key.charAt(0) === '*') {
+            can.compute.set(this.getRefs()._context, key, value, options);
+        } else {
+            var context = this.read(contextPath, options).value;
+            can.compute.set(context, propName, value, options);
+        }
+    },
     attr: can.__notObserve(function (key, value, options) {
         options = can.simpleExtend({ isArgument: true }, options);
         if (arguments.length === 2) {
-            var lastIndex = key.lastIndexOf('.'), readKey = lastIndex !== -1 ? key.substring(0, lastIndex) : '.', obj = this.read(readKey, options).value;
-            if (lastIndex !== -1) {
-                key = key.substring(lastIndex + 1, key.length);
-            }
-            if (key.charAt(0) === '*') {
-                can.compute.set(this.getRefs()._context, key, value, options);
-            } else {
-                can.compute.set(obj, key, value, options);
-            }
+            return this.set(key, value, options);
         } else {
             return this.get(key, options);
         }
@@ -175,7 +188,7 @@ can.simpleExtend(Scope.prototype, {
                 parent = scope._parent;
                 break;
             }
-            contexts.push(context);
+            contexts.unshift(context);
             scope = scope._parent;
         }
         if (parent) {

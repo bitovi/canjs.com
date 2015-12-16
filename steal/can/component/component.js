@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.6
+ * CanJS - 2.3.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Sat, 12 Dec 2015 01:07:53 GMT
+ * Wed, 16 Dec 2015 03:10:33 GMT
  * Licensed MIT
  */
 
-/*can@2.3.6#component/component*/
+/*can@2.3.7#component/component*/
 steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/view/bindings', 'can/control', 'can/observe', 'can/view/mustache', 'can/util/view_model', function (can, viewCallbacks, elements, bindings) {
     var paramReplacer = /\{([^\}]+)\}/g;
     var Component = can.Component = can.Construct.extend({

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.6
+ * CanJS - 2.3.7
  * http://canjs.com/
  * Copyright (c) 2015 Bitovi
- * Sat, 12 Dec 2015 01:07:53 GMT
+ * Wed, 16 Dec 2015 03:10:33 GMT
  * Licensed MIT
  */
 
-/*can@2.3.6#view/bindings/bindings*/
+/*can@2.3.7#view/bindings/bindings*/
 steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/control', 'can/view/scope', 'can/view/href', function (can, expression, viewCallbacks) {
     var behaviors = {
             viewModel: function (el, tagData, makeViewModel, initialViewModelData) {
@@ -300,10 +300,10 @@ steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/co
                 if (!can.isArray(event)) {
                     event = [event];
                 }
-                var hasChildren = el.nodeName.toLowerCase() === 'select', isMultiselectValue = prop === 'value' && hasChildren && el.multiple, isStringValue, lastSet, scheduledAsyncSet = false, set = function (newVal) {
+                var hasChildren = el.nodeName.toLowerCase() === 'select', isMultiselectValue = prop === 'value' && hasChildren && el.multiple, isStringValue, lastSet, scheduledAsyncSet = false, timer, set = function (newVal) {
                         if (hasChildren && !scheduledAsyncSet) {
-                            scheduledAsyncSet = true;
-                            setTimeout(function () {
+                            clearTimeout(timer);
+                            timer = setTimeout(function () {
                                 set(newVal);
                             }, 1);
                         }
