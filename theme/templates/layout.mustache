@@ -37,7 +37,6 @@
 				<a class="brand" href="{{urlFromConfig 'index.html'}}">CanJS</a>
 				<ul class="dropdown-menu">
 				  <li><a href="http://donejs.com">DoneJS</a></li>
-		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
 		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
 		          <li><a href="http://jquerypp.com">jQuery++</a></li>
 		          <li><a href="http://stealjs.com">StealJS</a></li>
@@ -56,17 +55,14 @@
 		          <a href="{{urlFromConfig 'community.html#!forums'}}">Community</a>
 		          <ul class="dropdown-menu">
 		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
-		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/app/">Apps</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/plugin/">Plugins</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/article/">Articles</a></li>
-		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
 		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
-		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
 		          </ul>
 		        </li>
-		        <li {{#ifCurrentFromConfig "blog/index.html"}}class="active"{{/ifCurrentFromConfig}}>
-	              <a href="{{urlFromConfig 'blog/index.html'}}">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
                 </li>
 		        <li {{#ifCurrentFromConfig "download.html"}}class="active"{{/ifCurrentFromConfig}}>
 	              <a href="{{urlFromConfig 'download.html'}}">Download</a>
@@ -104,11 +100,8 @@
 	            </li>
 		        {{{navToGuides}}}
 		        {{{navToApi}}}
-		        <li class="{{#ifCurrentFromConfig "community.html"}}active community-menu{{/ifCurrentFromConfig}}">
-		          <a href="{{urlFromConfig 'community.html#!forums'}}">Community</a>
-		        </li>
-		        <li {{#ifCurrentFromConfig "blog/index.html"}}class="active"{{/ifCurrentFromConfig}}>
-	              <a href="{{urlFromConfig 'blog/index.html'}}">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
 	            </li>
 		        <li {{#ifCurrentFromConfig "download.html"}}class="active"{{/ifCurrentFromConfig}}>
 	              <a href="{{urlFromConfig 'download.html'}}">Download</a>
