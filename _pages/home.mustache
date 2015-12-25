@@ -96,19 +96,19 @@ can.Component.extend({
   &lt;h2&gt;Todays to-dos&lt;/h2&gt;
   \{{#selectedTodo}}
   &lt;input type="text"
-         can-value="description"
-         can-change="save"&gt;
+         ({$value})="description"
+         ($change)="save()"&gt;
   \{{/selectedTodo}}
   &lt;ul&gt;
     \{{#each todos}}
     &lt;li&gt;
       &lt;input type="checkbox"
-             can-value="complete"&gt;
+              ({$checked})="complete"&gt;
       &lt;span class="\{{#if complete}}done\{{/if}}"
-            can-click="select"&gt;
+            ($click)="select()"&gt;
         \{{description}}
       &lt;/span&gt;
-      &lt;button can-click="destroy"&gt;&lt;/button&gt;
+      &lt;button ($click)="destroy()"&gt;&lt;/button&gt;
     &lt;/li&gt;
     \{{/each}}
   &lt;/ul&gt;
